@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LitePlacer", "LitePlacer\LitePlacer.csproj", "{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+		x64|Any CPU = x64|Any CPU
+		x64|Mixed Platforms = x64|Mixed Platforms
+		x64|x64 = x64|x64
+		x64|x86 = x64|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Debug|x64.ActiveCfg = Debug|x64
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Debug|x64.Build.0 = Debug|x64
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Debug|x86.ActiveCfg = Debug|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Debug|x86.Build.0 = Debug|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Release|Any CPU.ActiveCfg = Release|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Release|Mixed Platforms.Build.0 = Release|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Release|x64.ActiveCfg = Release|x64
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Release|x64.Build.0 = Release|x64
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Release|x86.ActiveCfg = Release|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.Release|x86.Build.0 = Release|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|Any CPU.ActiveCfg = x64|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|Mixed Platforms.ActiveCfg = x64|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|Mixed Platforms.Build.0 = x64|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|x64.ActiveCfg = x64|x64
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|x64.Build.0 = x64|x64
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|x86.ActiveCfg = x64|x86
+		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|x86.Build.0 = x64|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
