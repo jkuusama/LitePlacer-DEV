@@ -1,6 +1,6 @@
 # LitePlacer
 LitePlacer pick andpPlace machine user interface and control software
-See ** http://www.liteplacer.com/ ** for information.
+**See  http://www.liteplacer.com/ for information.**
 
 To get this to compile: 
 
