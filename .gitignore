@@ -5,6 +5,12 @@ ehthumbs.db
 # Folder config file
 Desktop.ini
 
+# Binaries
+packages/
+LitePlacer/bin/
+LitePlacer/obj/
+
+
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
