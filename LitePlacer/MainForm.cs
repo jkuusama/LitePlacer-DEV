@@ -292,6 +292,10 @@ namespace LitePlacer
         {
             try
             {
+                if (!File.Exists(FileName))
+                {
+                    return;
+                }
                 dgv.Rows.Clear();
                 using (BinaryReader bw = new BinaryReader(File.Open(FileName, FileMode.Open)))
                 {
