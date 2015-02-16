@@ -105,11 +105,11 @@ namespace LitePlacer
 
 		public bool Start(string cam, int DeviceNo)
 		{
+            
 			FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
 			MonikerString = videoDevices[DeviceNo].MonikerString;
 			Id = cam;
 			MainForm.DisplayText(Id + " start: " + MonikerString);
-
 			VideoSource = new VideoCaptureDevice(MonikerString);
 
 			VideoCapabilities Capability = VideoSource.VideoCapabilities[0];  // using default settings, retrieve them

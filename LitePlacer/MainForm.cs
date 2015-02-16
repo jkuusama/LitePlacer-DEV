@@ -1371,20 +1371,21 @@ namespace LitePlacer
         // =================================================================================
         private void SelectCamera(Camera cam)
         {
+            if (UpCamera.IsRunning())
+            {
+                UpCamera.Close();
+            };
+            if (DownCamera.IsRunning())
+            {
+                DownCamera.Close();
+            };
+
             if (cam == DownCamera)
             {
-                if (UpCamera.IsRunning())
-                {
-                    UpCamera.Close();
-                }
                 StartDownCamera_m();
             }
             else
             {
-                if (DownCamera.IsRunning())
-                {
-                    DownCamera.Close();
-                }
                 StartUpCamera_m();
             }
         }
@@ -1618,7 +1619,7 @@ namespace LitePlacer
                 DownCam_comboBox.Items.Add("----");
                 DownCamStatus_label.Text = "No Cam";
             }
-            if (Devices.Count >= Properties.Settings.Default.DownCam_index)
+            if ((Devices.Count >= Properties.Settings.Default.DownCam_index) && (Properties.Settings.Default.DownCam_index > 0))
             {
                 DownCam_comboBox.SelectedIndex = Properties.Settings.Default.DownCam_index;
             }
@@ -1626,6 +1627,7 @@ namespace LitePlacer
             {
                 DownCam_comboBox.SelectedIndex = 0;  // default to first
             }
+            DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString());
         }
 
         // ====
@@ -1645,7 +1647,7 @@ namespace LitePlacer
                 UpCam_comboBox.Items.Add("----");
                 UpCamStatus_label.Text = "No Cam";
             }
-            if (Devices.Count >= Properties.Settings.Default.UpCam_index)
+            if ((Devices.Count >= Properties.Settings.Default.UpCam_index) && (Properties.Settings.Default.UpCam_index > 0))
             {
                 UpCam_comboBox.SelectedIndex = Properties.Settings.Default.UpCam_index;
             }
@@ -1653,6 +1655,8 @@ namespace LitePlacer
             {
                 UpCam_comboBox.SelectedIndex = 0;  // default to first
             }
+            DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString());
+
         }
 
 
@@ -1677,6 +1681,8 @@ namespace LitePlacer
         // =================================================================================
         private void ConnectDownCamera_button_Click(object sender, EventArgs e)
         {
+            DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString());
+            Properties.Settings.Default.DownCam_index = DownCam_comboBox.SelectedIndex;
             SelectCamera(DownCamera);
             if (DownCamera.IsRunning())
             {
@@ -1687,6 +1693,8 @@ namespace LitePlacer
         // ====
         private void ConnectUpCamera_button_Click(object sender, EventArgs e)
         {
+            DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString());
+            Properties.Settings.Default.UpCam_index = UpCam_comboBox.SelectedIndex;
             SelectCamera(UpCamera);
             if (UpCamera.IsRunning())
             {
