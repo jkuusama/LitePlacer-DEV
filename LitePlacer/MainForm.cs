@@ -2855,9 +2855,9 @@ namespace LitePlacer
             {
 
 #if (TINYG_SHORTUNITS)
-                CNC_Write_m("{\"xjh\":" + xjm_maskedTextBox.Text + "}");
+                CNC_Write_m("{\"xjh\":" + xjh_maskedTextBox.Text + "}");
 #else
-                CNC_Write_m("{\"xjh\":" + xjm_maskedTextBox.Text + "000000}");
+                CNC_Write_m("{\"xjh\":" + xjh_maskedTextBox.Text + "000000}");
 #endif
                 Thread.Sleep(50);
                 xjh_maskedTextBox.ForeColor = Color.Black;
