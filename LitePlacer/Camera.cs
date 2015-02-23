@@ -105,33 +105,39 @@ namespace LitePlacer
 
 		public bool Start(string cam, int DeviceNo)
 		{
-            
-			FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-			MonikerString = videoDevices[DeviceNo].MonikerString;
-			Id = cam;
-			MainForm.DisplayText(cam + " start: Id= "+ Id.ToString() +  "moniker= " + MonikerString);
-			VideoSource = new VideoCaptureDevice(MonikerString);
+            try
+            {
+			    FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+			    MonikerString = videoDevices[DeviceNo].MonikerString;
+			    Id = cam;
+			    MainForm.DisplayText(cam + " start: Id= "+ Id.ToString() +  "moniker= " + MonikerString);
+			    VideoSource = new VideoCaptureDevice(MonikerString);
 
-			VideoCapabilities Capability = VideoSource.VideoCapabilities[0];  // using default settings, retrieve them
+			    VideoCapabilities Capability = VideoSource.VideoCapabilities[0];  // using default settings, retrieve them
 
-			FrameSizeX = Capability.FrameSize.Width;
-			FrameSizeY = Capability.FrameSize.Height;
-			FrameCenterX = FrameSizeX / 2;
-			FrameCenterY = FrameSizeY / 2;
-			ImageCenterX = ImageBox.Width / 2;
-			ImageCenterY = ImageBox.Height / 2;
-			PauseProcessing = false;
+			    FrameSizeX = Capability.FrameSize.Width;
+			    FrameSizeY = Capability.FrameSize.Height;
+			    FrameCenterX = FrameSizeX / 2;
+			    FrameCenterY = FrameSizeY / 2;
+			    ImageCenterX = ImageBox.Width / 2;
+			    ImageCenterY = ImageBox.Height / 2;
+			    PauseProcessing = false;
 
-			VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
-			VideoSource.Start();
-			if (VideoSource.IsRunning)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			    VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
+			    VideoSource.Start();
+			    if (VideoSource.IsRunning)
+			    {
+				    return true;
+			    }
+			    else
+			    {
+				    return false;
+			    }
+            }
+            catch
+            {
+                return false;
+            }
 		}
 
 		public List<string> GetDeviceList()

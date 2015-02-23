@@ -478,6 +478,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
+            this.ChangeNeedle_button = new System.Windows.Forms.Button();
+            this.ValidMeasurement_checkBox = new System.Windows.Forms.CheckBox();
             this.NextGroup_label = new System.Windows.Forms.Label();
             this.label125 = new System.Windows.Forms.Label();
             this.PreviousGroup_label = new System.Windows.Forms.Label();
@@ -533,16 +535,13 @@
             this.label59 = new System.Windows.Forms.Label();
             this.Placement_pictureBox = new System.Windows.Forms.PictureBox();
             this.JobData_GridView = new System.Windows.Forms.DataGridView();
+            this.ComponentCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ComponentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GroupMethod = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MethodParamAllComponents = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ComponentList = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Bottom_checkBox = new System.Windows.Forms.CheckBox();
             this.CadData_GridView = new System.Windows.Forms.DataGridView();
-            this.CadFilePath_label = new System.Windows.Forms.Label();
-            this.label56 = new System.Windows.Forms.Label();
-            this.CadFileName_label = new System.Windows.Forms.Label();
-            this.label54 = new System.Windows.Forms.Label();
-            this.tabControlPages = new System.Windows.Forms.TabControl();
-            this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.TrueX_label = new System.Windows.Forms.Label();
             this.Component = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value_Footprint = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.X_nominal = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -551,13 +550,14 @@
             this.X_Machine = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Y_machine = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Rotation_machine = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GroupMethod = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MethodParamAllComponents = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentList = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ValidMeasurement_checkBox = new System.Windows.Forms.CheckBox();
-            this.ChangeNeedle_button = new System.Windows.Forms.Button();
+            this.CadFilePath_label = new System.Windows.Forms.Label();
+            this.label56 = new System.Windows.Forms.Label();
+            this.CadFileName_label = new System.Windows.Forms.Label();
+            this.label54 = new System.Windows.Forms.Label();
+            this.tabControlPages = new System.Windows.Forms.TabControl();
+            this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.TrueX_label = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -5609,6 +5609,26 @@
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
             // 
+            // ChangeNeedle_button
+            // 
+            this.ChangeNeedle_button.Location = new System.Drawing.Point(352, 629);
+            this.ChangeNeedle_button.Name = "ChangeNeedle_button";
+            this.ChangeNeedle_button.Size = new System.Drawing.Size(110, 23);
+            this.ChangeNeedle_button.TabIndex = 72;
+            this.ChangeNeedle_button.Text = "Change Needle";
+            this.ChangeNeedle_button.UseVisualStyleBackColor = true;
+            this.ChangeNeedle_button.Click += new System.EventHandler(this.ChangeNeedle_button_Click);
+            // 
+            // ValidMeasurement_checkBox
+            // 
+            this.ValidMeasurement_checkBox.AutoSize = true;
+            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(468, 576);
+            this.ValidMeasurement_checkBox.Name = "ValidMeasurement_checkBox";
+            this.ValidMeasurement_checkBox.Size = new System.Drawing.Size(138, 17);
+            this.ValidMeasurement_checkBox.TabIndex = 71;
+            this.ValidMeasurement_checkBox.Text = "Measurements are valid";
+            this.ValidMeasurement_checkBox.UseVisualStyleBackColor = true;
+            // 
             // NextGroup_label
             // 
             this.NextGroup_label.AutoSize = true;
@@ -6216,6 +6236,37 @@
             this.JobData_GridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellClick);
             this.JobData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellEndEdit);
             // 
+            // ComponentCount
+            // 
+            this.ComponentCount.HeaderText = "Count";
+            this.ComponentCount.Name = "ComponentCount";
+            this.ComponentCount.Width = 40;
+            // 
+            // ComponentType
+            // 
+            this.ComponentType.HeaderText = "Component Type";
+            this.ComponentType.Name = "ComponentType";
+            this.ComponentType.Width = 130;
+            // 
+            // GroupMethod
+            // 
+            this.GroupMethod.HeaderText = "Method";
+            this.GroupMethod.Name = "GroupMethod";
+            this.GroupMethod.ReadOnly = true;
+            this.GroupMethod.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.GroupMethod.Width = 80;
+            // 
+            // MethodParamAllComponents
+            // 
+            this.MethodParamAllComponents.HeaderText = "Method Parameters";
+            this.MethodParamAllComponents.Name = "MethodParamAllComponents";
+            // 
+            // ComponentList
+            // 
+            this.ComponentList.HeaderText = "Components";
+            this.ComponentList.Name = "ComponentList";
+            this.ComponentList.Width = 130;
+            // 
             // Bottom_checkBox
             // 
             this.Bottom_checkBox.AutoSize = true;
@@ -6259,6 +6310,52 @@
             this.CadData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.CadData_GridView.Size = new System.Drawing.Size(457, 212);
             this.CadData_GridView.TabIndex = 5;
+            // 
+            // Component
+            // 
+            this.Component.HeaderText = "Component";
+            this.Component.Name = "Component";
+            // 
+            // Value_Footprint
+            // 
+            this.Value_Footprint.HeaderText = "Component Type";
+            this.Value_Footprint.Name = "Value_Footprint";
+            this.Value_Footprint.Width = 130;
+            // 
+            // X_nominal
+            // 
+            this.X_nominal.HeaderText = "X, nom.";
+            this.X_nominal.Name = "X_nominal";
+            this.X_nominal.Width = 80;
+            // 
+            // Y_nominal
+            // 
+            this.Y_nominal.HeaderText = "Y, nom.";
+            this.Y_nominal.Name = "Y_nominal";
+            this.Y_nominal.Width = 80;
+            // 
+            // Rotation
+            // 
+            this.Rotation.HeaderText = "Rotation";
+            this.Rotation.Name = "Rotation";
+            this.Rotation.Width = 70;
+            // 
+            // X_Machine
+            // 
+            this.X_Machine.HeaderText = "X, machine";
+            this.X_Machine.Name = "X_Machine";
+            this.X_Machine.Width = 80;
+            // 
+            // Y_machine
+            // 
+            this.Y_machine.HeaderText = "Y, machine";
+            this.Y_machine.Name = "Y_machine";
+            this.Y_machine.Width = 80;
+            // 
+            // Rotation_machine
+            // 
+            this.Rotation_machine.HeaderText = "Rotation, machine";
+            this.Rotation_machine.Name = "Rotation_machine";
             // 
             // CadFilePath_label
             // 
@@ -6338,103 +6435,6 @@
             this.TrueX_label.Text = "000.000";
             this.TrueX_label.Visible = false;
             // 
-            // Component
-            // 
-            this.Component.HeaderText = "Component";
-            this.Component.Name = "Component";
-            // 
-            // Value_Footprint
-            // 
-            this.Value_Footprint.HeaderText = "Component Type";
-            this.Value_Footprint.Name = "Value_Footprint";
-            this.Value_Footprint.Width = 130;
-            // 
-            // X_nominal
-            // 
-            this.X_nominal.HeaderText = "X, nom.";
-            this.X_nominal.Name = "X_nominal";
-            this.X_nominal.Width = 80;
-            // 
-            // Y_nominal
-            // 
-            this.Y_nominal.HeaderText = "Y, nom.";
-            this.Y_nominal.Name = "Y_nominal";
-            this.Y_nominal.Width = 80;
-            // 
-            // Rotation
-            // 
-            this.Rotation.HeaderText = "Rotation";
-            this.Rotation.Name = "Rotation";
-            this.Rotation.Width = 70;
-            // 
-            // X_Machine
-            // 
-            this.X_Machine.HeaderText = "X, machine";
-            this.X_Machine.Name = "X_Machine";
-            this.X_Machine.Width = 80;
-            // 
-            // Y_machine
-            // 
-            this.Y_machine.HeaderText = "Y, machine";
-            this.Y_machine.Name = "Y_machine";
-            this.Y_machine.Width = 80;
-            // 
-            // Rotation_machine
-            // 
-            this.Rotation_machine.HeaderText = "Rotation, machine";
-            this.Rotation_machine.Name = "Rotation_machine";
-            // 
-            // ComponentCount
-            // 
-            this.ComponentCount.HeaderText = "Count";
-            this.ComponentCount.Name = "ComponentCount";
-            this.ComponentCount.Width = 40;
-            // 
-            // ComponentType
-            // 
-            this.ComponentType.HeaderText = "Component Type";
-            this.ComponentType.Name = "ComponentType";
-            this.ComponentType.Width = 130;
-            // 
-            // GroupMethod
-            // 
-            this.GroupMethod.HeaderText = "Method";
-            this.GroupMethod.Name = "GroupMethod";
-            this.GroupMethod.ReadOnly = true;
-            this.GroupMethod.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.GroupMethod.Width = 80;
-            // 
-            // MethodParamAllComponents
-            // 
-            this.MethodParamAllComponents.HeaderText = "Method Parameters";
-            this.MethodParamAllComponents.Name = "MethodParamAllComponents";
-            // 
-            // ComponentList
-            // 
-            this.ComponentList.HeaderText = "Components";
-            this.ComponentList.Name = "ComponentList";
-            this.ComponentList.Width = 130;
-            // 
-            // ValidMeasurement_checkBox
-            // 
-            this.ValidMeasurement_checkBox.AutoSize = true;
-            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(468, 576);
-            this.ValidMeasurement_checkBox.Name = "ValidMeasurement_checkBox";
-            this.ValidMeasurement_checkBox.Size = new System.Drawing.Size(138, 17);
-            this.ValidMeasurement_checkBox.TabIndex = 71;
-            this.ValidMeasurement_checkBox.Text = "Measurements are valid";
-            this.ValidMeasurement_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // ChangeNeedle_button
-            // 
-            this.ChangeNeedle_button.Location = new System.Drawing.Point(352, 629);
-            this.ChangeNeedle_button.Name = "ChangeNeedle_button";
-            this.ChangeNeedle_button.Size = new System.Drawing.Size(110, 23);
-            this.ChangeNeedle_button.TabIndex = 72;
-            this.ChangeNeedle_button.Text = "Change Needle";
-            this.ChangeNeedle_button.UseVisualStyleBackColor = true;
-            this.ChangeNeedle_button.Click += new System.EventHandler(this.ChangeNeedle_button_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -6476,6 +6476,7 @@
             this.Controls.Add(this.label14);
             this.Controls.Add(this.tabControlPages);
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "FormMain";
             this.Text = "LitePlacer";
