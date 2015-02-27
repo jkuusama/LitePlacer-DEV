@@ -6,10 +6,10 @@
       <Value Profile="(Default)">COM3</Value>
     </Setting>
     <Setting Name="DownCam_XmmPerPixel" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">20.5</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="DownCam_YmmPerPixel" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">20.5</Value>
+      <Value Profile="(Default)">0.5</Value>
     </Setting>
     <Setting Name="TinyG_sys" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

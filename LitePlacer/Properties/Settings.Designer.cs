@@ -37,7 +37,7 @@ namespace LitePlacer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20.5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public double DownCam_XmmPerPixel {
             get {
                 return ((double)(this["DownCam_XmmPerPixel"]));
@@ -49,7 +49,7 @@ namespace LitePlacer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20.5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
         public double DownCam_YmmPerPixel {
             get {
                 return ((double)(this["DownCam_YmmPerPixel"]));
