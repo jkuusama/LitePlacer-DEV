@@ -4726,6 +4726,7 @@ namespace LitePlacer
                     (Headers[i] == "name") ||
                     (Headers[i] == "Part") ||
                     (Headers[i] == "part") ||
+                    (Headers[i] == "RefDes") ||
                     (Headers[i] == "Component") ||
                     (Headers[i] == "component")
                   )
@@ -4815,7 +4816,8 @@ namespace LitePlacer
             for (i = 0; i < Headers.Count; i++)
             {
                 if ((Headers[i] == "Rotation") ||
-                    (Headers[i] == "rotation")
+                    (Headers[i] == "rotation") ||
+                    (Headers[i] == "Rotate")
                   )
                 {
                     break;
