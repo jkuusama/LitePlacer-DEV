@@ -6414,7 +6414,7 @@
             // 
             // CAD_openFileDialog
             // 
-            this.CAD_openFileDialog.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            this.CAD_openFileDialog.Filter = "CSV files (*.csv)|*.csv|KiCad files (*.pos)|*.pos|All files (*.*)|*.*";
             this.CAD_openFileDialog.ReadOnlyChecked = true;
             this.CAD_openFileDialog.SupportMultiDottedExtensions = true;
             // 

@@ -4525,14 +4525,24 @@ namespace LitePlacer
             {
                 try
                 {
+                    bool result;
                     CadDataFileName = CAD_openFileDialog.FileName;
                     CadFileName_label.Text = Path.GetFileName(CadDataFileName);
                     CadFilePath_label.Text = Path.GetDirectoryName(CadDataFileName);
                     AllLines = File.ReadAllLines(CadDataFileName);
-                    return ParseCadData_m(AllLines);
+                    if(Path.GetExtension(CAD_openFileDialog.FileName) == ".pos")
+                    {
+                        result= ParseKiCadData_m(AllLines);
+                    }
+                    else
+                    {
+                        result = ParseCadData_m(AllLines, false);
+                    }
+                    return result;
                 }
                 catch (Exception ex)
                 {
+                    Cursor.Current = Cursors.Default;
                     MessageBox.Show(this,
                         "Error in file, Msg: " + ex.Message,
                         "Can't read CAD file",
@@ -4603,7 +4613,15 @@ namespace LitePlacer
                     JobFileName_label.Text = "--";
                     JobFilePath_label.Text = "--";
                 }
-            };
+            }
+            else
+            {
+                // CAD data load failed, clear to false data
+                CadData_GridView.Rows.Clear();
+                CadFileName_label.Text = "--";
+                CadFilePath_label.Text = "--";
+                CadDataFileName = "--";
+            }
         }
 
         // =================================================================================
@@ -6863,7 +6881,81 @@ namespace LitePlacer
         //CAD data reading functions: Tries to understand different pick and place file formats
         // =================================================================================
         #region CAD data reading functions
-     
+
+        // =================================================================================
+        // CADdataToMMs_m(): Data was in inches, convert to mms
+
+        private bool CADdataToMMs_m()
+        {
+            double val;
+            foreach (DataGridViewRow Row in CadData_GridView.Rows)
+            {
+                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out val))
+                {
+                    MessageBox.Show(this,
+                        "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
+                        "Bad data",
+                        MessageBoxButtons.OK);
+                    return false;
+                };
+                Row.Cells["X_nominal"].Value = Math.Round((val / 2.54),3).ToString();
+                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out val))
+                {
+                    MessageBox.Show(this,
+                        "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
+                        "Bad data",
+                        MessageBoxButtons.OK);
+                    return false;
+                };
+                Row.Cells["Y_nominal"].Value = Math.Round((val / 2.54), 3).ToString();
+            }
+            return true;
+        }
+
+        // =================================================================================
+        // ParseKiCadData_m()
+        // =================================================================================
+        private bool ParseKiCadData_m(String[] AllLines)
+        {
+            // Convert KiCad data to regular CSV
+            int i = 0;
+            bool inches = false;
+            // Skip headers until find one starting with "## "
+            while (!(AllLines[i].StartsWith("## ")))
+            {
+                i++;
+            };
+
+            // inches vs mms
+            if(AllLines[i++].Contains("inches"))
+            {
+                inches = true;
+            }
+            i++; // skip the "Side" line
+            List<string> KiCadLines = new List<string>();
+            KiCadLines.Add(AllLines[i++].Substring(2));  // add header, skip the "# " start
+            // add rest of the lines
+            while (!(AllLines[i]).StartsWith("## End"))
+            {
+                KiCadLines.Add(AllLines[i++]);
+            };
+            // parse the data
+            string[] KicadArr = KiCadLines.ToArray();
+            if(!ParseCadData_m(KicadArr, true))
+            {
+                return false;
+            };
+            // convert to mm'f if needed
+            if(inches)
+            {
+                return(CADdataToMMs_m());
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         // =================================================================================
         // ParseCadData_m(): main function called from file open
         // =================================================================================
@@ -6908,7 +7000,7 @@ namespace LitePlacer
             return false;
         }
         
-        private bool ParseCadData_m(String[] AllLines)
+        private bool ParseCadData_m(String[] AllLines, bool KiCad)
         {
             int ComponentIndex;
             int ValueIndex;
@@ -6943,10 +7035,17 @@ namespace LitePlacer
             };
 
             char delimiter;
-            if(!FindDelimiter_m(AllLines[0], out delimiter))
+            if(KiCad)
             {
-                return false;
-            };
+                delimiter = ' ';
+            }
+            else 
+            {
+                if(!FindDelimiter_m(AllLines[0], out delimiter))
+                {
+                    return false;
+                };
+            }
 
             List<String> Headers = SplitCSV(AllLines[LineIndex++], delimiter);
 
@@ -6957,6 +7056,7 @@ namespace LitePlacer
                     (Headers[i] == "Part") ||
                     (Headers[i] == "part") ||
                     (Headers[i] == "RefDes") ||
+                    (Headers[i] == "Ref") ||
                     (Headers[i] == "Component") ||
                     (Headers[i] == "component")
                   )
@@ -6975,6 +7075,8 @@ namespace LitePlacer
             {
                 if ((Headers[i] == "Value") ||
                     (Headers[i] == "value") ||
+                    (Headers[i] == "Val") ||
+                    (Headers[i] == "val") ||
                     (Headers[i] == "Comment") ||
                     (Headers[i] == "comment")
                   )
@@ -6995,6 +7097,8 @@ namespace LitePlacer
                     (Headers[i] == "footprint") ||
                     (Headers[i] == "Name") ||
                     (Headers[i] == "name") ||
+                    (Headers[i] == "Package") ||
+                    (Headers[i] == "package") ||
                     (Headers[i] == "Pattern") ||
                     (Headers[i] == "pattern")
                   )
@@ -7015,6 +7119,7 @@ namespace LitePlacer
                     (Headers[i] == "x") ||
                     (Headers[i] == "X (mm)") ||
                     (Headers[i] == "x (mm)") ||
+                    (Headers[i] == "PosX") ||
                     (Headers[i] == "Ref X") ||
                     (Headers[i] == "ref x")
                   )
@@ -7035,6 +7140,7 @@ namespace LitePlacer
                     (Headers[i] == "y") ||
                     (Headers[i] == "Y (mm)") ||
                     (Headers[i] == "y (mm)") ||
+                    (Headers[i] == "PosY") ||
                     (Headers[i] == "Ref Y") ||
                     (Headers[i] == "ref y")
                   )
@@ -7053,6 +7159,8 @@ namespace LitePlacer
             {
                 if ((Headers[i] == "Rotation") ||
                     (Headers[i] == "rotation") ||
+                    (Headers[i] == "Rot") ||
+                    (Headers[i] == "rot") ||
                     (Headers[i] == "Rotate")
                   )
                 {
@@ -7118,7 +7226,11 @@ namespace LitePlacer
                 {
                     if (Bottom_checkBox.Checked)
                     {
-                        if ((Line[LayerIndex] == "Top") || (Line[LayerIndex] == "top") || (Line[LayerIndex] == "T") || (Line[LayerIndex] == "t"))
+                        if ((Line[LayerIndex] == "Top") || 
+                            (Line[LayerIndex] == "top") ||
+                            (Line[LayerIndex] == "F.Cu") ||
+                            (Line[LayerIndex] == "T") || 
+                            (Line[LayerIndex] == "t"))
                         {
                             continue;
                         }
@@ -7129,13 +7241,13 @@ namespace LitePlacer
                             (Line[LayerIndex] == "bottom") ||
                             (Line[LayerIndex] == "B") ||
                             (Line[LayerIndex] == "b") ||
+                            (Line[LayerIndex] == "B.Cu") ||
                             (Line[LayerIndex] == "Bot") ||
                             (Line[LayerIndex] == "bot"))
                         {
                             continue;
                         }
                     }
-
                 }
                 CadData_GridView.Rows.Add();
                 int Last = CadData_GridView.RowCount - 1;
@@ -7191,12 +7303,12 @@ namespace LitePlacer
 
             while (Line != "")
             {
-                // if this is not the first token, skip the ','
-                if (Line[0] == delimiter)
+                // skip the delimiter(s)
+                while (Line[0] == delimiter)
                 {
                     Line = Line.Substring(1);
                 };
-
+                // add token
                 if (Line[0] == '"')
                 {
                     // token is "xxx"
