@@ -14,3 +14,5 @@ To get the code to compile:
 * Add reference to <your LitePlacer software directory>/packages/HomographyEstimation/HomographyEstimation.dll
 
 * Run the following command in the Tools-NuGet Package Manager-Package Manager Console: PM> Install-Package MathNet.Numerics
+
+To avoid issues in debugging, turn off the "Enable property evaluation and other implicit function calls" option in Tools->Options->Debugging 
