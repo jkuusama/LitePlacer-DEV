@@ -46,11 +46,28 @@ namespace LitePlacer
         // Note about thread guards: The prologue "if(InvokeRequired) {something long}" at a start of a function, 
         // makes the function safe to call from another thread.
         // See http://stackoverflow.com/questions/661561/how-to-update-the-gui-from-another-thread-in-c, 
-        // "MajesticRa"'s answer near the bottom
+        // "MajesticRa"'s answer near the bottom of first page
+
+        // =================================================================================
+        // Thread safe dialog box:
+        // (see http://stackoverflow.com/questions/559252/does-messagebox-show-automatically-marshall-to-the-ui-thread )
+
+        public DialogResult ShowMessageBox(String message, String header, MessageBoxButtons buttons)
+        {
+            if (this.InvokeRequired)
+            {
+                return (DialogResult)this.Invoke(new PassStringStringReturnDialogResultDelegate(ShowMessageBox), message, header, buttons);
+            }
+            return MessageBox.Show(this, message, header, buttons);
+        }
+        public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
+
+        // =================================================================================
 
         // We need some functions both in JSON and in text mode:
         public const bool JSON = true;
         public const bool TextMode = false;
+
 
         private static ManualResetEventSlim Cnc_ReadyEvent = new ManualResetEventSlim(false);
         // This event is raised in the CNC class, and we'll wait for it when we want to continue only after TinyG has stabilized
@@ -59,6 +76,7 @@ namespace LitePlacer
         {
             InitializeComponent();
         }
+
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -806,7 +824,7 @@ namespace LitePlacer
             SelectCamera(UpCamera);
             if (!UpCamera.IsRunning())
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Up camera not running, can't calibrate needle.",
                     "Nedle calibration failed.",
                     MessageBoxButtons.OK);
@@ -849,7 +867,7 @@ namespace LitePlacer
             }
             else
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Nedle calibration failed.",
                     "Nedle calibration failed.",
                     MessageBoxButtons.OK);
@@ -869,6 +887,10 @@ namespace LitePlacer
             //if (!CNC_Write_m("G28.2 " + axis + "0"))
             if (!CNC_Write_m("{\"gc\":\"G28.2 " + axis + "0\"}"))
             {
+                ShowMessageBox(
+                    "Homing operation mechanical step failed, CNC issue",
+                    "Homing failed",
+                    MessageBoxButtons.OK);
                 Cnc.Homing = false;
                 return false;
             }
@@ -918,13 +940,14 @@ namespace LitePlacer
                 i++;
                 if (i > Timeout)
                 {
-                    MessageBox.Show(this,
+                    Cnc_ReadyEvent.Set();  // terminates the CNC_BlockingWrite_thread
+                    ShowMessageBox(
                         "Debug: CNC_BlockingWrite: Timeout on command " + s,
                         "Timeout",
                         MessageBoxButtons.OK);
                     CNC_BlockingWriteDone = true;
                     JoggingBusy = false;
-                    Cnc_ReadyEvent.Set();
+
                     return false;
                 }
             }
@@ -935,7 +958,7 @@ namespace LitePlacer
         {
             if ((X < -3.0) || (X > Properties.Settings.Default.General_MachineSizeX))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Attempt to move outside safe limits (X " + X.ToString("0.000", CultureInfo.InvariantCulture) + ")",
                     "Limits corossed",
                     MessageBoxButtons.OK);
@@ -948,7 +971,7 @@ namespace LitePlacer
         {
             if ((Y < -3.0) || (Y > Properties.Settings.Default.General_MachineSizeY))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Attempt to move outside safe limits (Y " + Y.ToString("0.000", CultureInfo.InvariantCulture) + ")",
                     "Limits corssed",
                     MessageBoxButtons.OK);
@@ -972,7 +995,7 @@ namespace LitePlacer
             if ((Cnc.CurrentZ > 5) && _Zguard)
             {
                 DisplayText("Needle down error.");
-                MessageBox.Show(
+                ShowMessageBox(
                    "Attempt to move while needle is down.",
                    "Danger to Needle",
                    MessageBoxButtons.OK);
@@ -1007,7 +1030,7 @@ namespace LitePlacer
             if (AbortPlacement)
             {
                 AbortPlacement = false;  // one shot
-                MessageBox.Show(this,
+                ShowMessageBox(
                            "Operation aborted",
                            "Operation aborted",
                            MessageBoxButtons.OK);
@@ -1026,14 +1049,12 @@ namespace LitePlacer
 
             if (!Cnc.Connected)
             {
-                //MessageBox.Show(this,
-                //   "Attempt to move, TinyG is not connected.",
-                //   "CNC not connected",
-                //   MessageBoxButtons.OK);
-                DisplayText(" ##### Attempt to move, TinyG is not connected. #######");
+                ShowMessageBox(
+                    "CNC_XY: Cnc not connected",
+                    "Cnc not connected",
+                    MessageBoxButtons.OK);
                 return false;
             }
-
             CNC_BlockingWriteDone = false;
             Thread t = new Thread(() => CNC_BlockingXY_thread(X, Y));
             t.IsBackground = true;
@@ -1054,7 +1075,7 @@ namespace LitePlacer
             CNC_BlockingWriteDone = true;
             if ((i > CNC_MoveTimeout) && Cnc.Connected)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                            "CNC_XY: Timeout / Cnc connection cut!",
                            "Timeout",
                            MessageBoxButtons.OK);
@@ -1070,7 +1091,7 @@ namespace LitePlacer
             if (AbortPlacement)
             {
                 AbortPlacement = false;  // one shot
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Operation aborted.",
                     "Operation aborted.",
                     MessageBoxButtons.OK);
@@ -1089,6 +1110,15 @@ namespace LitePlacer
 
             if (!CNC_MoveIsSafeY_m(Y))
             {
+                return false;
+            }
+
+            if (!Cnc.Connected)
+            {
+                ShowMessageBox(
+                    "CNC_XYA: Cnc not connected",
+                    "Cnc not connected",
+                    MessageBoxButtons.OK);
                 return false;
             }
 
@@ -1112,7 +1142,7 @@ namespace LitePlacer
             CNC_BlockingWriteDone = true;
             if ((i > CNC_MoveTimeout) && Cnc.Connected)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                            "CNC_XYA: Timeout / Cnc connection cut!",
                            "Timeout",
                            MessageBoxButtons.OK);
@@ -1136,9 +1166,17 @@ namespace LitePlacer
             if (AbortPlacement)
             {
                 AbortPlacement = false;  // one shot
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Operation aborted.",
                     "Operation aborted.",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            if (!Cnc.Connected)
+            {
+                ShowMessageBox(
+                    "CNC_Z: Cnc not connected",
+                    "Cnc not connected",
                     MessageBoxButtons.OK);
                 return false;
             }
@@ -1158,9 +1196,9 @@ namespace LitePlacer
                     Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
                 }
             }
-            if ((i > CNC_MoveTimeout) && Cnc.Connected)
+            if ((i > CNC_MoveTimeout)  || !Cnc.Connected)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                            "CNC_Z: Timeout / Cnc connection cut!",
                            "Timeout",
                            MessageBoxButtons.OK);
@@ -1184,6 +1222,14 @@ namespace LitePlacer
             t.IsBackground = true;
             t.Start();
             int i = 0;
+            if (!Cnc.Connected)
+            {
+                ShowMessageBox(
+                    "CNC_A: Cnc not connected",
+                    "Cnc not connected",
+                    MessageBoxButtons.OK);
+                return false;
+            }
             while (!CNC_BlockingWriteDone)
             {
                 Thread.Sleep(2);
@@ -1198,7 +1244,7 @@ namespace LitePlacer
             CNC_BlockingWriteDone = true;
             if ((i > CNC_MoveTimeout) && Cnc.Connected)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                            "CNC_A: Timeout / Cnc connection cut!",
                            "Timeout",
                            MessageBoxButtons.OK);
@@ -1226,7 +1272,7 @@ namespace LitePlacer
             FindTolerance = FindTolerance / Properties.Settings.Default.DownCam_XmmPerPixel;
             if (!DownCamera.IsRunning())
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Attempt to optical homing, downcamera is not running.",
                     "Camera not running",
                     MessageBoxButtons.OK);
@@ -1249,7 +1295,7 @@ namespace LitePlacer
                     if (tries >= 7)
                     {
                         DisplayText("Failed in 8 tries.");
-                        MessageBox.Show(this,
+                        ShowMessageBox(
                             "Optical positioning: Can't find Circle",
                             "No Circle found",
                             MessageBoxButtons.OK);
@@ -1272,7 +1318,7 @@ namespace LitePlacer
             DownCamera.PauseProcessing = ProcessingStateSave;
             if (count >= 7)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Optical positioning: Process is unstable, result is unreliable!",
                     "Count exeeded",
                     MessageBoxButtons.OK);
@@ -1406,7 +1452,7 @@ namespace LitePlacer
 
             if (!DownCamera.Start("DownCamera", Properties.Settings.Default.DownCam_index))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Problem Starting down camera.",
                     "Down Camera problem",
                     MessageBoxButtons.OK
@@ -1435,7 +1481,7 @@ namespace LitePlacer
             UpCamera.ImageBox = this.Cam_pictureBox;
             if (!UpCamera.Start("UpCamera", Properties.Settings.Default.UpCam_index))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Problem Starting up camera.",
                     "Up Camera problem",
                     MessageBoxButtons.OK
@@ -2182,7 +2228,7 @@ namespace LitePlacer
                     NeedleOffsetY_textBox.Text = Properties.Settings.Default.DownCam_NeedleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
                     NeedleOffset_label.Visible = false;
                     NeedleOffset_label.Text = "   ";
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Now, jog the needle above the up camera,\n\rtake needle down, jog it to the image center\n\rand set Up Camera location",
                         "Done here",
                         MessageBoxButtons.OK);
@@ -4068,7 +4114,7 @@ namespace LitePlacer
 
         private void BuiltInSettings_button_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show(this,
+            DialogResult dialogResult = ShowMessageBox(
                 "All your current settings on TinyG will be lost. Are you sure?",
                 "Confirm Loading Built-In settings", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
@@ -4298,7 +4344,7 @@ namespace LitePlacer
             // No need to touch A homing parameters
 
             UpdateWindowValues_m();
-            MessageBox.Show(
+            ShowMessageBox(
                 "Default settings written.",
                 "Default settings written",
                 MessageBoxButtons.OK);
@@ -4337,13 +4383,13 @@ namespace LitePlacer
         {
             if (!Properties.Settings.Default.TinyG_settings_saved)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                 "You don't have saved User Default settings.",
                 "No Saved settings", MessageBoxButtons.OK);
                 return;
             }
 
-            DialogResult dialogResult = MessageBox.Show(this,
+            DialogResult dialogResult = ShowMessageBox(
                 "All your current settings on TinyG will be lost. Are you sure?",
                 "Confirm Loading Saved settings", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
@@ -4382,7 +4428,7 @@ namespace LitePlacer
             CNC_Write_m(Properties.Settings.Default.TinyG_m4);
             Thread.Sleep(150);
             UpdateWindowValues_m();
-            MessageBox.Show(
+            ShowMessageBox(
                 "Settings restored.",
                 "Saved settings restored",
                 MessageBoxButtons.OK);
@@ -4418,7 +4464,7 @@ namespace LitePlacer
                     Zlb_label.Text = "";
                     Zlb_label.Visible = false;
                     CNC_Home_m("Z");
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                        "Probing Backoff set successfully.\n" +
                             "PCB surface: " + Properties.Settings.Default.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) +
                             "\nBackoff:  " + Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture),
@@ -4490,7 +4536,7 @@ namespace LitePlacer
             SelectCamera(DownCamera);
             if (!DownCamera.IsRunning())
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Problem starting down camera. Please fix before continuing.",
                     "Down Camera problem",
                     MessageBoxButtons.OK
@@ -4530,9 +4576,9 @@ namespace LitePlacer
                     CadFileName_label.Text = Path.GetFileName(CadDataFileName);
                     CadFilePath_label.Text = Path.GetDirectoryName(CadDataFileName);
                     AllLines = File.ReadAllLines(CadDataFileName);
-                    if(Path.GetExtension(CAD_openFileDialog.FileName) == ".pos")
+                    if (Path.GetExtension(CAD_openFileDialog.FileName) == ".pos")
                     {
-                        result= ParseKiCadData_m(AllLines);
+                        result = ParseKiCadData_m(AllLines);
                     }
                     else
                     {
@@ -4543,7 +4589,7 @@ namespace LitePlacer
                 catch (Exception ex)
                 {
                     Cursor.Current = Cursors.Default;
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Error in file, Msg: " + ex.Message,
                         "Can't read CAD file",
                         MessageBoxButtons.OK);
@@ -4573,7 +4619,7 @@ namespace LitePlacer
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Error in file, Msg: " + ex.Message,
                     "Can't read job file (" + JobFileName + ")",
                     MessageBoxButtons.OK);
@@ -4599,7 +4645,7 @@ namespace LitePlacer
                 {
                     if (!LoadJobData_m(JobFileName))
                     {
-                        MessageBox.Show(this,
+                        ShowMessageBox(
                             "Attempt to read in existing Job Data file failed. Job data automatically created, review situation!",
                             "Job Data load error",
                             MessageBoxButtons.OK);
@@ -4643,7 +4689,7 @@ namespace LitePlacer
 
             if (JobData_GridView.RowCount < 1)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "No Data",
                     "Empty Job",
                     MessageBoxButtons.OK
@@ -4842,7 +4888,7 @@ namespace LitePlacer
         {
             if (!PrepareToPlace_m())
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Placement operation failed, nothing done.",
                     "Placement failed",
                     MessageBoxButtons.OK
@@ -4872,7 +4918,7 @@ namespace LitePlacer
             if (!DoRow)
             {
                 CleanupPlacement(true);
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Nothing selected, nothing done.",
                     "Done",
                     MessageBoxButtons.OK);
@@ -4933,7 +4979,7 @@ namespace LitePlacer
                 // Labels are updated, place the row:
                 if (!PlaceRow_m(CurrentRow))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Placement operation failed. Review job status.",
                         "Placement failed",
                         MessageBoxButtons.OK);
@@ -4943,7 +4989,7 @@ namespace LitePlacer
             };
 
             CleanupPlacement(true);
-            MessageBox.Show(this,
+            ShowMessageBox(
                 "Selected components succesfully placed.",
                 "Done",
                 MessageBoxButtons.OK);
@@ -4963,7 +5009,7 @@ namespace LitePlacer
             // Preparations:
             if (!PrepareToPlace_m())
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Placement operation failed, nothing done.",
                     "Placement failed",
                     MessageBoxButtons.OK
@@ -5010,7 +5056,7 @@ namespace LitePlacer
                 if (JobRowNo >= JobData_GridView.RowCount)
                 {
                     PumpOff();
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Did not find " + component + " from Job data.",
                         "Job data error",
                         MessageBoxButtons.OK);
@@ -5176,7 +5222,7 @@ namespace LitePlacer
 
             if (!PrepareToPlace_m())
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Placement operation failed, nothing done.",
                     "Placement failed",
                     MessageBoxButtons.OK
@@ -5209,7 +5255,7 @@ namespace LitePlacer
             }
 
             CleanupPlacement(true);
-            MessageBox.Show(this,
+            ShowMessageBox(
                 "All components placed.",
                 "Done",
                 MessageBoxButtons.OK);
@@ -5227,7 +5273,7 @@ namespace LitePlacer
             // Component exist. Footprint, X, Y and rotation data should be there:
             if (JobData_GridView.Rows[GroupRow].Cells["ComponentType"].Value == null)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                         "Component " + Component + ": No Footprint",
                         "Missing Data",
                         MessageBoxButtons.OK);
@@ -5236,7 +5282,7 @@ namespace LitePlacer
 
             if (CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value == null)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                         "Component " + Component + ": No X data",
                         "Missing Data",
                         MessageBoxButtons.OK);
@@ -5245,7 +5291,7 @@ namespace LitePlacer
 
             if (CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value == null)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                         "Component " + Component + ": No Y data",
                         "Missing Data",
                         MessageBoxButtons.OK);
@@ -5254,7 +5300,7 @@ namespace LitePlacer
 
             if (CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value == null)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                         "Component " + Component + ": No Rotation data",
                         "Missing Data",
                         MessageBoxButtons.OK);
@@ -5265,7 +5311,7 @@ namespace LitePlacer
                 double Rotation;
                 if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString(), out Rotation))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Component " + Component + ": Bad Rotation data",
                         "Conversion Error",
                         MessageBoxButtons.OK);
@@ -5281,7 +5327,7 @@ namespace LitePlacer
                 ||
                 (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString(), out Y)))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Component " + Component + ", bad machine coordinate",
                     "Sloppy programmer error",
                     MessageBoxButtons.OK);
@@ -5289,7 +5335,7 @@ namespace LitePlacer
             }
             if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString(), out A))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Bad data at Rotation, machine",
                     "Sloppy programmer error",
                     MessageBoxButtons.OK);
@@ -5299,7 +5345,7 @@ namespace LitePlacer
             // Even if component is not specified, Method data should be there:
             if (JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value == null)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                         "Component " + Component + ", No method data",
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
@@ -5339,7 +5385,7 @@ namespace LitePlacer
                 }
                 if (CADdataRow < 0)
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Component " + Component + " data not found.",
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
@@ -5408,7 +5454,7 @@ namespace LitePlacer
             if (AbortPlacement)
             {
                 AbortPlacement = false;  // one shot
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Operation aborted.",
                     "Operation aborted.",
                     MessageBoxButtons.OK);
@@ -5422,14 +5468,14 @@ namespace LitePlacer
             switch (Method)
             {
                 case "?":
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Method is ? at run time",
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
                     return false;
 
                 case "Pause":
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Job pause, click OK to continue.",
                         "Pause",
                         MessageBoxButtons.OK);
@@ -5438,7 +5484,7 @@ namespace LitePlacer
                 case "LoosePart":
                     if (Component == "--")
                     {
-                        MessageBox.Show(this,
+                        ShowMessageBox(
                             "Attempt to \"place\" non-existing component(\"--\")",
                             "Data error",
                             MessageBoxButtons.OK);
@@ -5453,7 +5499,7 @@ namespace LitePlacer
                 case "Place":
                     if (Component == "--")
                     {
-                        MessageBox.Show(this,
+                        ShowMessageBox(
                             "Attempt to \"place\" non-existing component(\"--\")",
                             "Data error",
                             MessageBoxButtons.OK);
@@ -5467,7 +5513,7 @@ namespace LitePlacer
                 case "Place Fast":
                     if (Component == "--")
                     {
-                        MessageBox.Show(this,
+                        ShowMessageBox(
                             "Attempt to \"place\" non-existing component(\"--\")",
                             "Data error",
                             MessageBoxButtons.OK);
@@ -5481,7 +5527,7 @@ namespace LitePlacer
                 //case "Place with UpCam":
                 //    if (Component == "--")
                 //    {
-                //        MessageBox.Show(this,
+                //        ShowMessageBox(
                 //            "Attempt to \"place\" non-existing component(\"--\")",
                 //            "Data error",
                 //            MessageBoxButtons.OK);
@@ -5539,7 +5585,7 @@ namespace LitePlacer
                     else
                     {
                         // If no time specified, show a dialog:
-                        MessageBox.Show(this,
+                        ShowMessageBox(
                             "This is " + Component,
                             "Locate Component",
                             MessageBoxButtons.OK);
@@ -5548,7 +5594,7 @@ namespace LitePlacer
                     break;
 
                 default:
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "No code for method " + JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value.ToString(),
                         "Lazy programmer error",
                         MessageBoxButtons.OK);
@@ -5569,7 +5615,7 @@ namespace LitePlacer
             Thread.Sleep(50);
             PumpOff();
             MotorPowerOff();
-            MessageBox.Show(this,
+            ShowMessageBox(
                 "Change Needle now, press OK when done",
                 "Needle change pause",
                 MessageBoxButtons.OK);
@@ -5607,7 +5653,7 @@ namespace LitePlacer
         {
             if (JobData_GridView.RowCount < 1)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "No Job loaded.",
                     "No Job",
                     MessageBoxButtons.OK
@@ -5701,7 +5747,7 @@ namespace LitePlacer
                 double Z;
                 if (!double.TryParse(Z_str, out Z))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Bad pickup Z data at Tape " + TapeID,
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
@@ -5714,7 +5760,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            //MessageBox.Show(this,
+            //ShowMessageBox(
             //    "Debug: Needle down.",
             //    "Debug",
             //    MessageBoxButtons.OK);
@@ -5725,7 +5771,7 @@ namespace LitePlacer
                 return false;
             }
 
-            //MessageBox.Show(this,
+            //ShowMessageBox(
             //    "Debug: Needle up.",
             //    "Debug",
             //    MessageBoxButtons.OK);
@@ -5760,7 +5806,7 @@ namespace LitePlacer
                 double Z;
                 if (!double.TryParse(Z_str, out Z))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Bad place Z data at Tape " + TapeID,
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
@@ -5772,7 +5818,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            //MessageBox.Show(this,
+            //ShowMessageBox(
             //    "Debug: Needle down at component." + Component,
             //    "Debug",
             //    MessageBoxButtons.OK);
@@ -5782,7 +5828,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            //MessageBox.Show(this,
+            //ShowMessageBox(
             //    "Debug: Needle up.",
             //    "Debug",
             //    MessageBoxButtons.OK);
@@ -5833,7 +5879,7 @@ namespace LitePlacer
 
             // ask for it
             string ComponentType = CadData_GridView.Rows[CADdataRow].Cells["Value_Footprint"].Value.ToString();
-            DialogResult dialogResult = MessageBox.Show(this,
+            DialogResult dialogResult = ShowMessageBox(
                 "Put one " + ComponentType + " to the pickup location.",
                 "Placing " + Component,
                 MessageBoxButtons.OKCancel);
@@ -5854,7 +5900,7 @@ namespace LitePlacer
                 int count = MeasureClosestComponentInPx(out X, out Y, out A, DownCamera, (8.0 / Properties.Settings.Default.DownCam_XmmPerPixel), 5);
                 if (count == 0)
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Could not see component",
                         "No component",
                         MessageBoxButtons.OK);
@@ -5904,7 +5950,7 @@ namespace LitePlacer
             if (AbortPlacement)
             {
                 AbortPlacement = false;
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Operation aborted.",
                     "Operation aborted.",
                     MessageBoxButtons.OK);
@@ -5919,7 +5965,7 @@ namespace LitePlacer
             if (AbortPlacement)
             {
                 AbortPlacement = false;
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Operation aborted.",
                     "Operation aborted.",
                     MessageBoxButtons.OK);
@@ -5987,7 +6033,7 @@ namespace LitePlacer
             if (AbortPlacement)
             {
                 AbortPlacement = false;
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Operation aborted.",
                     "Operation aborted.",
                     MessageBoxButtons.OK);
@@ -6030,7 +6076,7 @@ namespace LitePlacer
             {
                 if (!double.TryParse(Z_str, out Z))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Bad place Z data at Tape " + TapeID,
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
@@ -6095,7 +6141,7 @@ namespace LitePlacer
                 }
                 else
                 {
-                    DialogResult dialogResult = MessageBox.Show(this,
+                    DialogResult dialogResult = ShowMessageBox(
                         "Did not get correction values from camera.\n Abort job / Retry / Place anyway?",
                         "Did not see component",
                         MessageBoxButtons.AbortRetryIgnore
@@ -6178,7 +6224,7 @@ namespace LitePlacer
                 {
                     if (FiducialsFound)
                     {
-                        MessageBox.Show(this,
+                        ShowMessageBox(
                             "Fiducials selected twice in Methods. Please fix!",
                             "Double Fiducials",
                             MessageBoxButtons.OK);
@@ -6218,7 +6264,7 @@ namespace LitePlacer
                     {
                         if (FiducialsFound)
                         {
-                            MessageBox.Show(this,
+                            ShowMessageBox(
                                 "Two group of components starting with FI*. Please indicate Fiducials",
                                 "Double Fiducials",
                                 MessageBoxButtons.OK);
@@ -6240,7 +6286,7 @@ namespace LitePlacer
             }
             if (!FiducialsFound)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Fiducials definitions not found.",
                     "Fiducials not defined",
                     MessageBoxButtons.OK);
@@ -6263,7 +6309,7 @@ namespace LitePlacer
             double Y;
             if (!GoToCircleLocation_m(3, 0.1, out X, out Y))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Finding fiducial: Can't regognize fiducial " + fid.Designator,
                     "No Circle found",
                     MessageBoxButtons.OK);
@@ -6291,7 +6337,7 @@ namespace LitePlacer
             {
                 if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out x))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
                         "Bad data",
                         MessageBoxButtons.OK);
@@ -6299,7 +6345,7 @@ namespace LitePlacer
                 };
                 if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out y))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
                         "Bad data",
                         MessageBoxButtons.OK);
@@ -6307,7 +6353,7 @@ namespace LitePlacer
                 };
                 if (!double.TryParse(Row.Cells["Rotation"].Value.ToString(), out r))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " rotation data",
                         "Bad data",
                         MessageBoxButtons.OK);
@@ -6342,7 +6388,7 @@ namespace LitePlacer
             // Are there at least two?
             if (FiducialDesignators.Length < 2)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Only one fiducial found.",
                     "Too few fiducials",
                     MessageBoxButtons.OK);
@@ -6401,7 +6447,7 @@ namespace LitePlacer
             bool res = transform.Estimate(nominals, measured, ErrorMetric.Transfer, 450, 450);  // the PCBs are smaller than 450mm
             if (!res)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Transform estimation failed.",
                     "Data error",
                     MessageBoxButtons.OK);
@@ -6492,7 +6538,7 @@ namespace LitePlacer
                 DisplayText(" ** when applied the same calculations than regular componets.");
                 DisplayText(" ** (Maybe the camera picked a via instead of a fiducial?)");
                 DisplayText(" ** Placement data is likely not good.");
-                DialogResult dialogResult = MessageBox.Show(this,
+                DialogResult dialogResult = ShowMessageBox(
                     "Nominal to machine trasnformation seems to be off. (See log window)",
                     "Cancel operation?",
                     MessageBoxButtons.OKCancel
@@ -6515,7 +6561,7 @@ namespace LitePlacer
         // =================================================================================
         private void PausePlacement_button_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show(this,
+            DialogResult dialogResult = ShowMessageBox(
                 "Placement Paused. Continue? (Cancel aborts)",
                 "Placement Paused",
                 MessageBoxButtons.OKCancel
@@ -6595,7 +6641,7 @@ namespace LitePlacer
             }
             if (!double.TryParse(cell.OwningRow.Cells["X_nominal"].Value.ToString(), out X))
             {
-                DialogResult dialogResult = MessageBox.Show(this,
+                DialogResult dialogResult = ShowMessageBox(
                     "Bad data at X_nominal",
                     "Bad data",
                     MessageBoxButtons.OK);
@@ -6604,7 +6650,7 @@ namespace LitePlacer
 
             if (!double.TryParse(cell.OwningRow.Cells["Y_nominal"].Value.ToString(), out Y))
             {
-                DialogResult dialogResult = MessageBox.Show(this,
+                DialogResult dialogResult = ShowMessageBox(
                     "Bad data at Y_nominal",
                     "Bad data",
                     MessageBoxButtons.OK);
@@ -6613,7 +6659,7 @@ namespace LitePlacer
 
             CNC_XY_m(X + JobOffsetX + Properties.Settings.Default.General_JigOffsetX,
                 Y + JobOffsetY + Properties.Settings.Default.General_JigOffsetY);
-            MessageBox.Show(this,
+            ShowMessageBox(
                 "This is " + cell.OwningRow.Cells["Component"].Value.ToString() + " approximate (nominal) location",
                 "Locate Component",
                 MessageBoxButtons.OK);
@@ -6638,7 +6684,7 @@ namespace LitePlacer
             }
             if (cell.OwningRow.Cells["X_machine"].Value.ToString() == "Nan")
             {
-                DialogResult dialogResult = MessageBox.Show(this,
+                DialogResult dialogResult = ShowMessageBox(
                     "Component locations not yet measured. Measure now?",
                     "Measure now?", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
@@ -6653,7 +6699,7 @@ namespace LitePlacer
 
             if (!double.TryParse(cell.OwningRow.Cells["X_machine"].Value.ToString(), out X))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Bad data at X_machine",
                     "Sloppy programmer error",
                     MessageBoxButtons.OK);
@@ -6662,7 +6708,7 @@ namespace LitePlacer
 
             if (!double.TryParse(cell.OwningRow.Cells["Y_machine"].Value.ToString(), out Y))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Bad data at Y_machine",
                     "Sloppy programmer error",
                     MessageBoxButtons.OK);
@@ -6685,7 +6731,7 @@ namespace LitePlacer
             DataGridViewCell cell = CadData_GridView.CurrentCell;
             CNC_XY_m(X, Y);
             //bool KnownComponent = ShowFootPrint_m(cell.OwningRow.Index);
-            //MessageBox.Show(this,
+            //ShowMessageBox(
             //    "This is " + cell.OwningRow.Cells["Component"].Value.ToString() + " location",
             //    "Locate Component",
             //    MessageBoxButtons.OK);
@@ -6713,7 +6759,7 @@ namespace LitePlacer
             }
             if (FiducialsRow == 0)
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "ResetPositionByFiducial: Fiducials not indicated",
                     "Missing data",
                     MessageBoxButtons.OK);
@@ -6734,7 +6780,7 @@ namespace LitePlacer
                     {
                         if (!double.TryParse(Row.Cells["X_Machine"].Value.ToString(), out X_fid))
                         {
-                            MessageBox.Show(this,
+                            ShowMessageBox(
                                 "Problem with " + FiducialDesignators[i] + "X machine coordinate data",
                                 "Bad data",
                                 MessageBoxButtons.OK);
@@ -6742,7 +6788,7 @@ namespace LitePlacer
                         };
                         if (!double.TryParse(Row.Cells["Y_Machine"].Value.ToString(), out Y_fid))
                         {
-                            MessageBox.Show(this,
+                            ShowMessageBox(
                                 "Problem with " + FiducialDesignators[i] + "Y machine coordinate data",
                                 "Bad data",
                                 MessageBoxButtons.OK);
@@ -6754,7 +6800,7 @@ namespace LitePlacer
                 // This is the fid we want. It is measured to be at X_fid, Y_fid
                 if (double.IsNaN(X_fid) || double.IsNaN(Y_fid))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Machine coord data for fiducial " + FiducialDesignators[i] + "not found",
                         "Bad data",
                         MessageBoxButtons.OK);
@@ -6773,7 +6819,7 @@ namespace LitePlacer
             }
             if (double.IsNaN(X_shortest) || double.IsNaN(Y_shortest))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Problem finding nearest fiducial",
                     "Sloppy programmer error",
                     MessageBoxButtons.OK);
@@ -6794,7 +6840,7 @@ namespace LitePlacer
                 }
                 if (tries >= 4)
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Finding fiducial: Can't regognize fiducial " + FiducialDesignators[i],
                         "No Circle found",
                         MessageBoxButtons.OK);
@@ -6834,7 +6880,7 @@ namespace LitePlacer
                     {
                         if (!double.TryParse(SizeRow.Cells["SizeX"].Value.ToString(), out sizeX))
                         {
-                            MessageBox.Show(this,
+                            ShowMessageBox(
                                 "Bad data at " + SizeRow.Cells["PartialName"].Value.ToString() + ", SizeX",
                                 "Sloppy programmer error",
                                 MessageBoxButtons.OK);
@@ -6842,7 +6888,7 @@ namespace LitePlacer
                         }
                         if (!double.TryParse(SizeRow.Cells["SizeY"].Value.ToString(), out sizeY))
                         {
-                            MessageBox.Show(this,
+                            ShowMessageBox(
                                 "Bad data at " + SizeRow.Cells["PartialName"].Value.ToString() + ", SizeY",
                                 "Sloppy programmer error",
                                 MessageBoxButtons.OK);
@@ -6861,7 +6907,7 @@ namespace LitePlacer
             double rot;
             if (!double.TryParse(CadData_GridView.Rows[Row].Cells["Rotation_machine"].Value.ToString(), out rot))
             {
-                MessageBox.Show(this,
+                ShowMessageBox(
                     "Bad data at Rotation, machine",
                     "Sloppy programmer error",
                     MessageBoxButtons.OK);
@@ -6892,16 +6938,16 @@ namespace LitePlacer
             {
                 if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out val))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
                         "Bad data",
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Row.Cells["X_nominal"].Value = Math.Round((val / 2.54),3).ToString();
+                Row.Cells["X_nominal"].Value = Math.Round((val / 2.54), 3).ToString();
                 if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out val))
                 {
-                    MessageBox.Show(this,
+                    ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
                         "Bad data",
                         MessageBoxButtons.OK);
@@ -6927,7 +6973,7 @@ namespace LitePlacer
             };
 
             // inches vs mms
-            if(AllLines[i++].Contains("inches"))
+            if (AllLines[i++].Contains("inches"))
             {
                 inches = true;
             }
@@ -6941,14 +6987,14 @@ namespace LitePlacer
             };
             // parse the data
             string[] KicadArr = KiCadLines.ToArray();
-            if(!ParseCadData_m(KicadArr, true))
+            if (!ParseCadData_m(KicadArr, true))
             {
                 return false;
             };
             // convert to mm'f if needed
-            if(inches)
+            if (inches)
             {
-                return(CADdataToMMs_m());
+                return (CADdataToMMs_m());
             }
             else
             {
@@ -6991,7 +7037,7 @@ namespace LitePlacer
                 return true;
             };
 
-            MessageBox.Show(this,
+            ShowMessageBox(
                 "File header parse fail",
                 "Data format error",
                 MessageBoxButtons.OK
@@ -6999,7 +7045,7 @@ namespace LitePlacer
             delimiter = ',';
             return false;
         }
-        
+
         private bool ParseCadData_m(String[] AllLines, bool KiCad)
         {
             int ComponentIndex;
@@ -7035,13 +7081,13 @@ namespace LitePlacer
             };
 
             char delimiter;
-            if(KiCad)
+            if (KiCad)
             {
                 delimiter = ' ';
             }
-            else 
+            else
             {
-                if(!FindDelimiter_m(AllLines[0], out delimiter))
+                if (!FindDelimiter_m(AllLines[0], out delimiter))
                 {
                     return false;
                 };
@@ -7066,7 +7112,7 @@ namespace LitePlacer
             }
             if (i >= Headers.Count)
             {
-                MessageBox.Show(this, "Component/Designator/Name not found in header line", "Syntax error", MessageBoxButtons.OK);
+                ShowMessageBox("Component/Designator/Name not found in header line", "Syntax error", MessageBoxButtons.OK);
                 return false;
             }
             ComponentIndex = i;
@@ -7086,7 +7132,7 @@ namespace LitePlacer
             }
             if (i >= Headers.Count)
             {
-                MessageBox.Show(this, "Component value/comment not found in header line", "Syntax error", MessageBoxButtons.OK);
+                ShowMessageBox("Component value/comment not found in header line", "Syntax error", MessageBoxButtons.OK);
                 return false;
             }
             ValueIndex = i;
@@ -7095,8 +7141,6 @@ namespace LitePlacer
             {
                 if ((Headers[i] == "Footprint") ||
                     (Headers[i] == "footprint") ||
-                    (Headers[i] == "Name") ||
-                    (Headers[i] == "name") ||
                     (Headers[i] == "Package") ||
                     (Headers[i] == "package") ||
                     (Headers[i] == "Pattern") ||
@@ -7108,7 +7152,7 @@ namespace LitePlacer
             }
             if (i >= Headers.Count)
             {
-                MessageBox.Show(this, "Component footprint/pattern not found in header line", "Syntax error", MessageBoxButtons.OK);
+                ShowMessageBox("Component footprint/pattern not found in header line", "Syntax error", MessageBoxButtons.OK);
                 return false;
             }
             FootPrintIndex = i;
@@ -7129,7 +7173,7 @@ namespace LitePlacer
             }
             if (i >= Headers.Count)
             {
-                MessageBox.Show(this, "Component X not found in header line", "Syntax error", MessageBoxButtons.OK);
+                ShowMessageBox("Component X not found in header line", "Syntax error", MessageBoxButtons.OK);
                 return false;
             }
             X_Nominal_Index = i;
@@ -7150,7 +7194,7 @@ namespace LitePlacer
             }
             if (i >= Headers.Count)
             {
-                MessageBox.Show(this, "Component Y not found in header line", "Syntax error", MessageBoxButtons.OK);
+                ShowMessageBox("Component Y not found in header line", "Syntax error", MessageBoxButtons.OK);
                 return false;
             }
             Y_Nominal_Index = i;
@@ -7169,7 +7213,7 @@ namespace LitePlacer
             }
             if (i >= Headers.Count)
             {
-                MessageBox.Show(this, "Component rotation not found in header line", "Syntax error", MessageBoxButtons.OK);
+                ShowMessageBox("Component rotation not found in header line", "Syntax error", MessageBoxButtons.OK);
                 return false;
             }
             RotationIndex = i;
@@ -7226,10 +7270,10 @@ namespace LitePlacer
                 {
                     if (Bottom_checkBox.Checked)
                     {
-                        if ((Line[LayerIndex] == "Top") || 
+                        if ((Line[LayerIndex] == "Top") ||
                             (Line[LayerIndex] == "top") ||
                             (Line[LayerIndex] == "F.Cu") ||
-                            (Line[LayerIndex] == "T") || 
+                            (Line[LayerIndex] == "T") ||
                             (Line[LayerIndex] == "t"))
                         {
                             continue;
@@ -7349,7 +7393,7 @@ namespace LitePlacer
             Test3_button.Text = "Probe (n.c.)";
             Test4_button.Text = "Needle to cam";
             Test5_button.Text = "Probe down";
-            Test6_button.Text = "Needle Up";
+            Test6_button.Text = "Needle up";
         }
 
         // test 1
@@ -7437,13 +7481,33 @@ namespace LitePlacer
             Needle.ProbingMode(false, JSON);
             CNC_Z_m(0);  // go up
             CNC_XY_m(Xmark, Ymark);
+
+            // ShowMessageBox test
+            //    Cnc_ReadyEvent.Reset();
+            //    Thread t = new Thread(() => test_thread());
+            //    t.IsBackground = true;
+            //    t.Start();
+            //    while (!Cnc_ReadyEvent.IsSet)
+            //    {
+            //        Thread.Sleep(20);
+            //        Application.DoEvents();
+            //    }
+            //    ShowMessageBox(
+            //       "Done",
+            //       "test_6",
+            //       MessageBoxButtons.OK);
+            //}
+
+            //private void test_thread()
+            //{
+            //    ShowMessageBox(
+            //        "err",
+            //        "t1",
+            //        MessageBoxButtons.OK);
+            //    Cnc_ReadyEvent.Set();
+
         }
 
-        // test to find unused functions
-        private void foo(object sender, EventArgs e)
-        {
-            CNC_Z_m(0);  // go up
-        }
         #endregion
 
 

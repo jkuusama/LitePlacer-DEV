@@ -65,7 +65,7 @@ namespace LitePlacer
 					return true;
 				}
 			}
-			MessageBox.Show(
+			MainForm.ShowMessageBox(
 				"Did not find tape " + Id.ToString(),
 				"Tape data error",
 				MessageBoxButtons.OK
@@ -158,7 +158,7 @@ namespace LitePlacer
 			double Y= 0;
 			if (!double.TryParse(Grid.Rows[Tape].Cells["NextX_Column"].Value.ToString(), out X))
 			{
-				MessageBox.Show(
+				MainForm.ShowMessageBox(
 					"Bad data at Tape " + Tape.ToString() + ", Next X",
 					"Tape data error",
 					MessageBoxButtons.OK
@@ -168,7 +168,7 @@ namespace LitePlacer
 
 			if (!double.TryParse(Grid.Rows[Tape].Cells["NextY_Column"].Value.ToString(), out Y))
 			{
-				MessageBox.Show(
+				MainForm.ShowMessageBox(
 					"Bad data at Tape " + Tape.ToString() + ", Next Y",
 					"Tape data error",
 					MessageBoxButtons.OK
@@ -186,7 +186,7 @@ namespace LitePlacer
 			// of picking a wrong hole.)
 			if (!MainForm.GoToCircleLocation_m(1.8, 0.5, out X, out Y))
 			{
-				MessageBox.Show(
+				MainForm.ShowMessageBox(
 					"Can't find tape hole",
 					"Tape error",
 					MessageBoxButtons.OK
@@ -198,7 +198,7 @@ namespace LitePlacer
 			X = Cnc.CurrentX + X;
 			Y = Cnc.CurrentY + Y;
 
-			//MessageBox.Show(
+			//MainForm.ShowMessageBox(
 			//    "exactly over the hole",
 			//    "test",
 			//    MessageBoxButtons.OK
@@ -268,7 +268,7 @@ namespace LitePlacer
 					break;
 
 				default:
-					MessageBox.Show(
+					MainForm.ShowMessageBox(
 						"Bad data at Tape #" + Tape.ToString() + ", Width",
 						"Tape data error",
 						MessageBoxButtons.OK
@@ -285,7 +285,7 @@ namespace LitePlacer
 			int pos = 0;
 			if (!int.TryParse(Grid.Rows[Tape].Cells["Next_Column"].Value.ToString(), out pos))
 			{
-				MessageBox.Show(
+				MainForm.ShowMessageBox(
 					"Bad data at Tape " + Tape.ToString() + ", Next",
 					"Tape data error",
 					MessageBoxButtons.OK
@@ -326,7 +326,7 @@ namespace LitePlacer
 					break;
 
 				default:
-					MessageBox.Show(
+					MainForm.ShowMessageBox(
 						"Bad data at Tape #" + Tape.ToString() + ", Orientation",
 						"Tape data error",
 						MessageBoxButtons.OK
@@ -336,7 +336,7 @@ namespace LitePlacer
 			// rotation:
 			if (Grid.Rows[Tape].Cells["RotationColumn"].Value == null)
 			{
-				MessageBox.Show(
+				MainForm.ShowMessageBox(
 					"Bad data at tape " + Id +" rotation" ,
 					"Assertion error",
 					MessageBoxButtons.OK
@@ -361,7 +361,7 @@ namespace LitePlacer
 					break;
 
 				default:
-					MessageBox.Show(
+					MainForm.ShowMessageBox(
 						"Bad data at Tape " + Id + " rotation",
 						"Tape data error",
 						MessageBoxButtons.OK
@@ -445,7 +445,7 @@ namespace LitePlacer
 					return true;
 
 				default:
-					MessageBox.Show(
+					MainForm.ShowMessageBox(
 						"Bad Type data on row " + row.ToString() + ": " + Grid.Rows[row].Cells["TypeColumn"].Value.ToString(),
 						"Bad Type data",
 						MessageBoxButtons.OK

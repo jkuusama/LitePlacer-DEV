@@ -363,13 +363,10 @@ namespace LitePlacer
             if (line.Contains("SYSTEM READY"))
             {
                 Close();
-                MainForm.Invoke(new Action(() =>
-                {
-                    MessageBox.Show(MainForm,
-                      "TinyG Reset.",
-                      "System Reset",
-                      MessageBoxButtons.OK);
-                }));
+                MainForm.ShowMessageBox(
+                    "TinyG Reset.",
+                    "System Reset",
+                    MessageBoxButtons.OK);
                 MainForm.UpdateCncConnectionStatus();
                 return;
             }
@@ -379,13 +376,10 @@ namespace LitePlacer
                 line = line.Substring(13);
                 int i = line.IndexOf('"');
                 line = line.Substring(0, i);
-                MainForm.Invoke(new Action(() =>
-                {
-                    MessageBox.Show(MainForm,
-                      "TinyG Message:",
-                       line,
-                      MessageBoxButtons.OK);
-                }));
+                MainForm.ShowMessageBox(
+                    "TinyG Message:",
+                    line,
+                    MessageBoxButtons.OK);
                 return;
             }
 
@@ -399,14 +393,10 @@ namespace LitePlacer
                 };
                 // Close();
                 MainForm.UpdateCncConnectionStatus();
-                MainForm.Invoke(new Action(() =>
-                {
-                    MessageBox.Show(MainForm,
-                      "TinyG error. Review situation and restart if needed.",
-                       "TinyG Error",
-                      MessageBoxButtons.OK);
-                }));
-                MainForm.AbortPlacement = true;
+                MainForm.ShowMessageBox(
+                    "TinyG error. Review situation and restart if needed.",
+                    "TinyG Error",
+                    MessageBoxButtons.OK);
                 return;
             }
 

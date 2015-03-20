@@ -140,17 +140,29 @@ namespace LitePlacer
             }
 		}
 
-		public List<string> GetDeviceList()
-		{
-			List<string> Devices = new List<string>();
+        public List<string> GetDeviceList()
+        {
+            List<string> Devices = new List<string>();
 
-			FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-			foreach (FilterInfo device in videoDevices)
-			{
-				Devices.Add(device.Name);
-			}
-			return (Devices);
-		}
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo device in videoDevices)
+            {
+                Devices.Add(device.Name);
+            }
+            return (Devices);
+        }
+
+        public List<string> GetMonikerStrings()
+        {
+            List<string> Monikers = new List<string>();
+
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo device in videoDevices)
+            {
+                Monikers.Add(device.MonikerString);
+            }
+            return (Monikers);
+        }
 
 
 

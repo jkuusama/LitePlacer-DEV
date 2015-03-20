@@ -67,6 +67,8 @@ namespace LitePlacer
                 Port.StopBits = StopBits.One;
                 Port.DataBits = 8;
                 Port.Handshake = Handshake.RequestToSend;
+                Port.DtrEnable = true;  // prevent hangs on some drivers
+                Port.RtsEnable = true;
                 Port.Open();
                 if (Port.IsOpen)
                 {

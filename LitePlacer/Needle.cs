@@ -97,7 +97,7 @@ namespace LitePlacer
         {
             if (!Calibrated)
             {
-				MessageBox.Show(
+                MainForm.ShowMessageBox(
 					"CorrectedPosition() call, needle not calibrated.",
 					"Sloppy programmer error",
 					MessageBoxButtons.OK);
@@ -145,7 +145,7 @@ namespace LitePlacer
 						return true;
                     }
                 }
-                MessageBox.Show(
+                MainForm.ShowMessageBox(
                     "Needle Calibration value read: value not found",
                     "Sloppy programmer error",
                     MessageBoxButtons.OK);
@@ -162,7 +162,7 @@ namespace LitePlacer
             Calibrated = false;
             if (!Cam.IsRunning())
             {
-                MessageBox.Show(
+                MainForm.ShowMessageBox(
                     "Attempt to calibrate needle, camera is not running.",
                     "Camera not running",
                     MessageBoxButtons.OK);
@@ -191,7 +191,7 @@ namespace LitePlacer
 
 					if (tries >= 9)
 					{
-						MessageBox.Show(
+                        MainForm.ShowMessageBox(
 							"Needle calibration: Can't see Needle",
 							"No Circle found",
 							MessageBoxButtons.OK);
@@ -200,7 +200,7 @@ namespace LitePlacer
 				}
                 if (res == 0)
                 {
-                    MessageBox.Show(
+                    MainForm.ShowMessageBox(
                         "Needle Calibration: Can't find needle",
                         "No Circle found",
                         MessageBoxButtons.OK);
