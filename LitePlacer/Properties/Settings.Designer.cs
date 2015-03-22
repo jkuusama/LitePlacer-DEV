@@ -814,5 +814,17 @@ namespace LitePlacer.Properties {
                 this["CNC_SquareCorrection"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public double General_ZTestTravel {
+            get {
+                return ((double)(this["General_ZTestTravel"]));
+            }
+            set {
+                this["General_ZTestTravel"] = value;
+            }
+        }
     }
 }

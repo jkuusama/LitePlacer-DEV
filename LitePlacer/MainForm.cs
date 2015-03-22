@@ -210,6 +210,8 @@ namespace LitePlacer
             SlackCompensation_checkBox.Checked = Properties.Settings.Default.CNC_SlackCompensation;
             Cnc.SmallMovementString = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed + " ";
 
+            ZTestTravel_textBox.Text = Properties.Settings.Default.General_ZTestTravel.ToString();
+
             UpdateCncConnectionStatus();
             if (Cnc.Connected)
             {
@@ -4007,7 +4009,7 @@ namespace LitePlacer
         {
             if (!CNC_Z_m(0))
                 return;
-            if (!CNC_Z_m(25))
+            if (!CNC_Z_m(Properties.Settings.Default.General_ZTestTravel))
                 return;
             if (!CNC_Z_m(0))
                 return;
@@ -9167,6 +9169,16 @@ namespace LitePlacer
         private void ChangeNeedle_button_Click(object sender, EventArgs e)
         {
             ChangeNeedle_m();
+        }
+
+        private void ZTestTravel_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(ZTestTravel_textBox.Text, out val))
+            {
+                Properties.Settings.Default.General_ZTestTravel = val;
+            }
+
         }
 
 
