@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -310,6 +310,8 @@
             this.Cam_pictureBox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.label123 = new System.Windows.Forms.Label();
+            this.ZTestTravel_textBox = new System.Windows.Forms.TextBox();
             this.VacuumRelease_textBox = new System.Windows.Forms.TextBox();
             this.label119 = new System.Windows.Forms.Label();
             this.VacuumTime_textBox = new System.Windows.Forms.TextBox();
@@ -558,8 +560,6 @@
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.TrueX_label = new System.Windows.Forms.Label();
-            this.ZTestTravel_textBox = new System.Windows.Forms.TextBox();
-            this.label123 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -3765,6 +3765,23 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
+            // label123
+            // 
+            this.label123.AutoSize = true;
+            this.label123.Location = new System.Drawing.Point(1064, 241);
+            this.label123.Name = "label123";
+            this.label123.Size = new System.Drawing.Size(70, 13);
+            this.label123.TabIndex = 83;
+            this.label123.Text = "Z Test travel:";
+            // 
+            // ZTestTravel_textBox
+            // 
+            this.ZTestTravel_textBox.Location = new System.Drawing.Point(1141, 238);
+            this.ZTestTravel_textBox.Name = "ZTestTravel_textBox";
+            this.ZTestTravel_textBox.Size = new System.Drawing.Size(75, 20);
+            this.ZTestTravel_textBox.TabIndex = 82;
+            this.ZTestTravel_textBox.TextChanged += new System.EventHandler(this.ZTestTravel_textBox_TextChanged);
+            // 
             // VacuumRelease_textBox
             // 
             this.VacuumRelease_textBox.Location = new System.Drawing.Point(1158, 382);
@@ -3808,7 +3825,7 @@
             // Z_Backoff_label
             // 
             this.Z_Backoff_label.AutoSize = true;
-            this.Z_Backoff_label.Location = new System.Drawing.Point(650, 638);
+            this.Z_Backoff_label.Location = new System.Drawing.Point(655, 625);
             this.Z_Backoff_label.Name = "Z_Backoff_label";
             this.Z_Backoff_label.Size = new System.Drawing.Size(47, 13);
             this.Z_Backoff_label.TabIndex = 77;
@@ -3817,7 +3834,7 @@
             // label117
             // 
             this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(585, 637);
+            this.label117.Location = new System.Drawing.Point(590, 624);
             this.label117.Name = "label117";
             this.label117.Size = new System.Drawing.Size(47, 13);
             this.label117.TabIndex = 76;
@@ -3826,7 +3843,7 @@
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(585, 605);
+            this.label112.Location = new System.Drawing.Point(590, 592);
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(45, 13);
             this.label112.TabIndex = 75;
@@ -4051,7 +4068,7 @@
             // Z0toPCB_BasicTab_label
             // 
             this.Z0toPCB_BasicTab_label.AutoSize = true;
-            this.Z0toPCB_BasicTab_label.Location = new System.Drawing.Point(650, 621);
+            this.Z0toPCB_BasicTab_label.Location = new System.Drawing.Point(655, 608);
             this.Z0toPCB_BasicTab_label.Name = "Z0toPCB_BasicTab_label";
             this.Z0toPCB_BasicTab_label.Size = new System.Drawing.Size(53, 13);
             this.Z0toPCB_BasicTab_label.TabIndex = 53;
@@ -4071,7 +4088,7 @@
             // label111
             // 
             this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(585, 621);
+            this.label111.Location = new System.Drawing.Point(590, 608);
             this.label111.Name = "label111";
             this.label111.Size = new System.Drawing.Size(59, 13);
             this.label111.TabIndex = 52;
@@ -4082,7 +4099,7 @@
             this.Zlb_label.AutoSize = true;
             this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Zlb_label.Location = new System.Drawing.Point(588, 651);
+            this.Zlb_label.Location = new System.Drawing.Point(593, 638);
             this.Zlb_label.Name = "Zlb_label";
             this.Zlb_label.Size = new System.Drawing.Size(153, 20);
             this.Zlb_label.TabIndex = 51;
@@ -4102,7 +4119,7 @@
             // 
             // SetProbing_button
             // 
-            this.SetProbing_button.Location = new System.Drawing.Point(588, 579);
+            this.SetProbing_button.Location = new System.Drawing.Point(593, 566);
             this.SetProbing_button.Name = "SetProbing_button";
             this.SetProbing_button.Size = new System.Drawing.Size(75, 23);
             this.SetProbing_button.TabIndex = 50;
@@ -4114,7 +4131,7 @@
             // label116
             // 
             this.label116.AutoSize = true;
-            this.label116.Location = new System.Drawing.Point(585, 559);
+            this.label116.Location = new System.Drawing.Point(590, 546);
             this.label116.Name = "label116";
             this.label116.Size = new System.Drawing.Size(124, 13);
             this.label116.TabIndex = 49;
@@ -6215,14 +6232,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6289,14 +6306,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -6439,23 +6456,6 @@
             this.TrueX_label.TabIndex = 77;
             this.TrueX_label.Text = "000.000";
             this.TrueX_label.Visible = false;
-            // 
-            // ZTestTravel_textBox
-            // 
-            this.ZTestTravel_textBox.Location = new System.Drawing.Point(653, 526);
-            this.ZTestTravel_textBox.Name = "ZTestTravel_textBox";
-            this.ZTestTravel_textBox.Size = new System.Drawing.Size(54, 20);
-            this.ZTestTravel_textBox.TabIndex = 82;
-            this.ZTestTravel_textBox.TextChanged += new System.EventHandler(this.ZTestTravel_textBox_TextChanged);
-            // 
-            // label123
-            // 
-            this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(590, 529);
-            this.label123.Name = "label123";
-            this.label123.Size = new System.Drawing.Size(60, 13);
-            this.label123.TabIndex = 83;
-            this.label123.Text = "Test travel:";
             // 
             // FormMain
             // 
