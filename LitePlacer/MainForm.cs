@@ -1436,7 +1436,6 @@ namespace LitePlacer
             {
                 DownCamera.Close();
             };
-
             if (cam == DownCamera)
             {
                 StartDownCamera_m();
@@ -1453,6 +1452,7 @@ namespace LitePlacer
         {
             if (DownCamera.IsRunning())
             {
+                DisplayText("DownCamera already running");
                 return true;
             };
             if (Properties.Settings.Default.DownCam_index == -1)
@@ -1481,6 +1481,7 @@ namespace LitePlacer
         {
             if (UpCamera.IsRunning())
             {
+                DisplayText("UpCamera already running");
                 return true;
             };
             if (Properties.Settings.Default.UpCam_index == -1)
@@ -1489,7 +1490,6 @@ namespace LitePlacer
                 return true;
             };
 
-            UpCamera.ImageBox = this.Cam_pictureBox;
             if (!UpCamera.Start("UpCamera", Properties.Settings.Default.UpCam_index))
             {
                 ShowMessageBox(
@@ -1745,6 +1745,13 @@ namespace LitePlacer
             {
                 SetCurrentCameraParameters();
             }
+            else
+            {
+                ShowMessageBox(
+                    "Problem starting this camera",
+                    "Problem starting camera",
+                    MessageBoxButtons.OK);
+            }
         }
 
         // ====
@@ -1756,6 +1763,13 @@ namespace LitePlacer
             if (UpCamera.IsRunning())
             {
                 SetCurrentCameraParameters();
+            }
+            else
+            {
+                ShowMessageBox(
+                    "Problem starting this camera",
+                    "Problem starting camera",
+                    MessageBoxButtons.OK);
             }
         }
 
