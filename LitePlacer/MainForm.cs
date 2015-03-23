@@ -183,8 +183,15 @@ namespace LitePlacer
 
             Display_dataGridView.DataError += new
                 DataGridViewDataErrorEventHandler(Display_dataGridView_DataError);
+        }
 
+        private void ShowBuildNumber()
+        {
+            // see https://social.msdn.microsoft.com/Forums/en-US/172201e0-c47b-40a8-a5d7-0a052cb42532/get-compile-date-and-time-in-application?forum=csharplanguage
 
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+            DateTime value = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.MinorRevision * 2);
+            DisplayText("Version: " + version.ToString() + ", build date: " + value.ToString());
         }
 
         private string LastTabPage = "";
@@ -192,6 +199,8 @@ namespace LitePlacer
         private void FormMain_Shown(object sender, EventArgs e)
         {
             LabelTestButtons();
+
+            ShowBuildNumber();
 
             DownCamZoom_checkBox.Checked = Properties.Settings.Default.DownCam_Zoom;
             DownCamera.Zoom = Properties.Settings.Default.DownCam_Zoom;
