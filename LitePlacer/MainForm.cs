@@ -118,6 +118,7 @@ namespace LitePlacer
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Size = new Size(1280, 960);
             DisplayText("Application Start");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
