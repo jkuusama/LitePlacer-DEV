@@ -120,6 +120,15 @@ namespace LitePlacer
         {
             this.Size = new Size(1280, 960);
             DisplayText("Application Start");
+
+            if (Properties.Settings.Default.General_UpgradeRequired)
+            {
+                DisplayText("Updating from previous version");
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.General_UpgradeRequired = false;
+                Properties.Settings.Default.Save();
+            }
+
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
             Cnc_ReadyEvent = Cnc.ReadyEvent;
@@ -128,6 +137,7 @@ namespace LitePlacer
             UpCamera = new Camera(this);
             Needle = new NeedleClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Needle, DownCamera, Cnc, this);
+
 
             this.KeyPreview = true;
             RemoveCursorNavigation(this.Controls);
@@ -188,11 +198,13 @@ namespace LitePlacer
 
         private void ShowBuildNumber()
         {
-            // see https://social.msdn.microsoft.com/Forums/en-US/172201e0-c47b-40a8-a5d7-0a052cb42532/get-compile-date-and-time-in-application?forum=csharplanguage
+            // see http://stackoverflow.com/questions/1600962/displaying-the-build-date
 
-            Version version = Assembly.GetExecutingAssembly().GetName().Version;
-            DateTime value = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.MinorRevision * 2);
-            DisplayText("Version: " + version.ToString() + ", build date: " + value.ToString());
+            var version = Assembly.GetEntryAssembly().GetName().Version;
+            var buildDateTime = new DateTime(2000, 1, 1).Add(new TimeSpan(
+            TimeSpan.TicksPerDay * version.Build + // days since 1 January 2000
+            TimeSpan.TicksPerSecond * 2 * version.Revision)); // seconds since midnight, (multiply by 2 to get original)
+            DisplayText("Version: " + version.ToString() + ", build date: " + buildDateTime.ToString());
         }
 
         private string LastTabPage = "";

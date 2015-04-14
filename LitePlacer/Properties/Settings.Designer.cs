@@ -826,5 +826,17 @@ namespace LitePlacer.Properties {
                 this["General_ZTestTravel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool General_UpgradeRequired {
+            get {
+                return ((bool)(this["General_UpgradeRequired"]));
+            }
+            set {
+                this["General_UpgradeRequired"] = value;
+            }
+        }
     }
 }
