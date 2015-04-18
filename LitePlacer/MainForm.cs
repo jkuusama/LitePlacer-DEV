@@ -823,12 +823,12 @@ namespace LitePlacer
                 return false;
             }
             Cnc.Homing = false;
-            // CNC_Z_m(Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff);
-            if (!CNC_Z_m(Cnc.CurrentZ - 1.0))
-            {
-                Needle.ProbingMode(false, JSON);
-                return false;
-            }
+            //// CNC_Z_m(Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff);
+            //if (!CNC_Z_m(Cnc.CurrentZ - 0.1))
+            //{
+            //    Needle.ProbingMode(false, JSON);
+            //    return false;
+            //}
             Needle.ProbingMode(false, JSON);
             return true;
         }
