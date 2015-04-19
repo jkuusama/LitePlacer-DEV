@@ -48,6 +48,7 @@ namespace LitePlacer
         // See http://stackoverflow.com/questions/661561/how-to-update-the-gui-from-another-thread-in-c, 
         // "MajesticRa"'s answer near the bottom of first page
 
+
         // =================================================================================
         // Thread safe dialog box:
         // (see http://stackoverflow.com/questions/559252/does-messagebox-show-automatically-marshall-to-the-ui-thread )
@@ -63,6 +64,7 @@ namespace LitePlacer
         public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
 
         // =================================================================================
+
 
         // We need some functions both in JSON and in text mode:
         public const bool JSON = true;
@@ -5471,7 +5473,7 @@ namespace LitePlacer
 
             // Data is now validated, all variables have values that check out. Place the component.
             // Update "Now placing" labels:
-            if ((Method == "LoosePart") || (Method == "Place"))
+            if ((Method == "LoosePart") || (Method == "Place") || (Method == "Place Fast"))
             {
                 PlacedComponent_label.Text = Component;
                 PlacedComponent_label.Update();
@@ -9215,6 +9217,82 @@ namespace LitePlacer
                 Properties.Settings.Default.General_ZTestTravel = val;
             }
 
+        }
+
+        private bool DemoRunning = false;
+        private Thread DemoThread;
+
+        private void DemoWork()
+        {
+            int i= 0;
+            double X = Properties.Settings.Default.General_JigOffsetX + Properties.Settings.Default.DownCam_NeedleOffsetX + 25.0;
+            double Y = Properties.Settings.Default.General_JigOffsetY + Properties.Settings.Default.DownCam_NeedleOffsetY + 25.0;
+            double Xp;
+            NumberStyles style = NumberStyles.AllowDecimalPoint;
+            CultureInfo culture = CultureInfo.InvariantCulture;
+            string s = Tapes_dataGridView.Rows[1].Cells["X_Column"].Value.ToString();
+            if (!double.TryParse(s, style, culture, out Xp))
+                {
+                ShowMessageBox(
+                    "Bad X data at Tape 1",
+                    "Tape data error",
+                    MessageBoxButtons.OK
+                );
+                return;
+            }
+            Xp = Xp + Properties.Settings.Default.DownCam_NeedleOffsetX;
+            double Yp;
+            s = Tapes_dataGridView.Rows[1].Cells["Y_Column"].Value.ToString();
+            if (!double.TryParse(s, style, culture, out Yp))
+            {
+                ShowMessageBox(
+                    "Bad Y data at Tape 1",
+                    "Tape data error",
+                    MessageBoxButtons.OK
+                );
+                return;
+            }
+            Yp = Yp + Properties.Settings.Default.DownCam_NeedleOffsetY;
+
+            while (DemoRunning)
+	        {
+                i++;
+                DisplayText("Demo, round " + i.ToString());
+                CNC_XY_m(X, Y);
+                if (!DemoRunning)
+                {
+                    return;
+                }
+                CNC_Z_m(Properties.Settings.Default.General_ZtoPCB - 0.5);
+                Thread.Sleep(Properties.Settings.Default.General_PickupReleaseTime);
+                CNC_Z_m(0.0);
+                if (!DemoRunning)
+                {
+                    return;   
+                }
+                CNC_XY_m(Xp - 2.0, Yp + 4.0);
+                if (!DemoRunning)
+                {
+                    return;
+                }
+                CNC_Z_m(Properties.Settings.Default.General_ZtoPCB - 2.0);
+                Thread.Sleep(Properties.Settings.Default.General_PickupVacuumTime);
+                CNC_Z_m(0.0);
+	        }
+        }
+
+        private void Demo_button_Click(object sender, EventArgs e)
+        {
+            DemoThread = new Thread(() => DemoWork());
+            DemoRunning = true;
+            CNC_Z_m(0.0);
+            DemoThread.IsBackground = true;
+            DemoThread.Start();
+        }
+
+        private void StopDemo_button_Click(object sender, EventArgs e)
+        {
+            DemoRunning = false;
         }
 
 

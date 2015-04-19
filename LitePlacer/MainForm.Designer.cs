@@ -83,19 +83,6 @@
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
-            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label108 = new System.Windows.Forms.Label();
             this.Tapes_pictureBox = new System.Windows.Forms.PictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
@@ -560,6 +547,23 @@
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.TrueX_label = new System.Windows.Forms.Label();
+            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Demo_button = new System.Windows.Forms.Button();
+            this.StopDemo_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -1185,7 +1189,9 @@
             this.PickupZ_Column,
             this.PlaceZ_Column,
             this.NextX_Column,
-            this.NextY_column});
+            this.NextY_column,
+            this.LastX,
+            this.LastY});
             this.Tapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.Tapes_dataGridView.Location = new System.Drawing.Point(652, 19);
             this.Tapes_dataGridView.MultiSelect = false;
@@ -1196,119 +1202,6 @@
             this.Tapes_dataGridView.Size = new System.Drawing.Size(494, 480);
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
-            // 
-            // SelectButtonColumn
-            // 
-            this.SelectButtonColumn.HeaderText = "Select";
-            this.SelectButtonColumn.Name = "SelectButtonColumn";
-            this.SelectButtonColumn.Text = "Reset";
-            this.SelectButtonColumn.Width = 43;
-            // 
-            // IdColumn
-            // 
-            this.IdColumn.HeaderText = "ID";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
-            // 
-            // OrientationColumn
-            // 
-            this.OrientationColumn.HeaderText = "Orientation";
-            this.OrientationColumn.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.OrientationColumn.Name = "OrientationColumn";
-            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 83;
-            // 
-            // RotationColumn
-            // 
-            this.RotationColumn.HeaderText = "Part Rotation";
-            this.RotationColumn.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.RotationColumn.Name = "RotationColumn";
-            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 94;
-            // 
-            // WidthColumn
-            // 
-            this.WidthColumn.HeaderText = "Width";
-            this.WidthColumn.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm"});
-            this.WidthColumn.MinimumWidth = 55;
-            this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.WidthColumn.Width = 60;
-            // 
-            // TypeColumn
-            // 
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.Width = 37;
-            // 
-            // Next_Column
-            // 
-            this.Next_Column.HeaderText = "Next";
-            this.Next_Column.Name = "Next_Column";
-            this.Next_Column.Width = 54;
-            // 
-            // X_Column
-            // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.Width = 39;
-            // 
-            // Y_Column
-            // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.Width = 39;
-            // 
-            // PickupZ_Column
-            // 
-            this.PickupZ_Column.HeaderText = "Pickup Z";
-            this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
-            // 
-            // PlaceZ_Column
-            // 
-            this.PlaceZ_Column.HeaderText = "PlaceZ";
-            this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
-            // 
-            // NextX_Column
-            // 
-            this.NextX_Column.HeaderText = "Next X";
-            this.NextX_Column.Name = "NextX_Column";
-            this.NextX_Column.Width = 64;
-            // 
-            // NextY_column
-            // 
-            this.NextY_column.HeaderText = "Next Y";
-            this.NextY_column.Name = "NextY_column";
-            this.NextY_column.Width = 64;
             // 
             // label108
             // 
@@ -5584,6 +5477,8 @@
             // 
             // RunJob_tabPage
             // 
+            this.RunJob_tabPage.Controls.Add(this.StopDemo_button);
+            this.RunJob_tabPage.Controls.Add(this.Demo_button);
             this.RunJob_tabPage.Controls.Add(this.ChangeNeedle_button);
             this.RunJob_tabPage.Controls.Add(this.ValidMeasurement_checkBox);
             this.RunJob_tabPage.Controls.Add(this.NextGroup_label);
@@ -6457,6 +6352,151 @@
             this.TrueX_label.Text = "000.000";
             this.TrueX_label.Visible = false;
             // 
+            // SelectButtonColumn
+            // 
+            this.SelectButtonColumn.HeaderText = "Select";
+            this.SelectButtonColumn.Name = "SelectButtonColumn";
+            this.SelectButtonColumn.Text = "Reset";
+            this.SelectButtonColumn.Width = 43;
+            // 
+            // IdColumn
+            // 
+            this.IdColumn.HeaderText = "ID";
+            this.IdColumn.Name = "IdColumn";
+            this.IdColumn.Width = 43;
+            // 
+            // OrientationColumn
+            // 
+            this.OrientationColumn.HeaderText = "Orientation";
+            this.OrientationColumn.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.OrientationColumn.Name = "OrientationColumn";
+            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.OrientationColumn.Width = 83;
+            // 
+            // RotationColumn
+            // 
+            this.RotationColumn.HeaderText = "Part Rotation";
+            this.RotationColumn.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.RotationColumn.Name = "RotationColumn";
+            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.RotationColumn.Width = 94;
+            // 
+            // WidthColumn
+            // 
+            this.WidthColumn.HeaderText = "Width";
+            this.WidthColumn.Items.AddRange(new object[] {
+            "8/2mm",
+            "8/4mm",
+            "12/4mm",
+            "12/8mm",
+            "16/4mm",
+            "16/8mm",
+            "16/12mm",
+            "24/4mm",
+            "24/8mm",
+            "24/12mm",
+            "24/16mm",
+            "24/20mm"});
+            this.WidthColumn.MinimumWidth = 55;
+            this.WidthColumn.Name = "WidthColumn";
+            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.WidthColumn.Width = 60;
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.TypeColumn.Name = "TypeColumn";
+            this.TypeColumn.Width = 37;
+            // 
+            // Next_Column
+            // 
+            this.Next_Column.HeaderText = "Next";
+            this.Next_Column.Name = "Next_Column";
+            this.Next_Column.Width = 54;
+            // 
+            // X_Column
+            // 
+            this.X_Column.HeaderText = "X";
+            this.X_Column.Name = "X_Column";
+            this.X_Column.Width = 39;
+            // 
+            // Y_Column
+            // 
+            this.Y_Column.HeaderText = "Y";
+            this.Y_Column.Name = "Y_Column";
+            this.Y_Column.Width = 39;
+            // 
+            // PickupZ_Column
+            // 
+            this.PickupZ_Column.HeaderText = "Pickup Z";
+            this.PickupZ_Column.Name = "PickupZ_Column";
+            this.PickupZ_Column.Width = 75;
+            // 
+            // PlaceZ_Column
+            // 
+            this.PlaceZ_Column.HeaderText = "PlaceZ";
+            this.PlaceZ_Column.Name = "PlaceZ_Column";
+            this.PlaceZ_Column.Width = 66;
+            // 
+            // NextX_Column
+            // 
+            this.NextX_Column.HeaderText = "Next X";
+            this.NextX_Column.Name = "NextX_Column";
+            this.NextX_Column.Width = 64;
+            // 
+            // NextY_column
+            // 
+            this.NextY_column.HeaderText = "Next Y";
+            this.NextY_column.Name = "NextY_column";
+            this.NextY_column.Width = 64;
+            // 
+            // LastX
+            // 
+            this.LastX.HeaderText = "Last X";
+            this.LastX.Name = "LastX";
+            this.LastX.Width = 62;
+            // 
+            // LastY
+            // 
+            this.LastY.HeaderText = "Last Y";
+            this.LastY.Name = "LastY";
+            this.LastY.Width = 62;
+            // 
+            // Demo_button
+            // 
+            this.Demo_button.Location = new System.Drawing.Point(6, 666);
+            this.Demo_button.Name = "Demo_button";
+            this.Demo_button.Size = new System.Drawing.Size(75, 23);
+            this.Demo_button.TabIndex = 73;
+            this.Demo_button.Text = "Start Demo";
+            this.Demo_button.UseVisualStyleBackColor = true;
+            this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
+            // 
+            // StopDemo_button
+            // 
+            this.StopDemo_button.Location = new System.Drawing.Point(87, 666);
+            this.StopDemo_button.Name = "StopDemo_button";
+            this.StopDemo_button.Size = new System.Drawing.Size(75, 23);
+            this.StopDemo_button.TabIndex = 74;
+            this.StopDemo_button.Text = "Stop Demo";
+            this.StopDemo_button.UseVisualStyleBackColor = true;
+            this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -7055,20 +7095,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn40;
 		private System.Windows.Forms.Button UpCamComponentsMeasure_button;
 		private System.Windows.Forms.Button UpCamComponentsToDisplay_button;
-		private System.Windows.Forms.Button UpCamComponentsToHere_button;
-		private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
-		private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
-		private System.Windows.Forms.DataGridViewComboBoxColumn RotationColumn;
-		private System.Windows.Forms.DataGridViewComboBoxColumn WidthColumn;
-		private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
-		private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PickupZ_Column;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
-		private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
-		private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
+        private System.Windows.Forms.Button UpCamComponentsToHere_button;
 		private System.Windows.Forms.Label label67;
 		private System.Windows.Forms.Label label62;
 		private System.Windows.Forms.Button SetPartNo_button;
@@ -7105,6 +7132,23 @@
         private System.Windows.Forms.Button ChangeNeedle_button;
         private System.Windows.Forms.Label label123;
         private System.Windows.Forms.TextBox ZTestTravel_textBox;
+        private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn RotationColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn WidthColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PickupZ_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastX;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastY;
+        private System.Windows.Forms.Button Demo_button;
+        private System.Windows.Forms.Button StopDemo_button;
     }
 }
 
