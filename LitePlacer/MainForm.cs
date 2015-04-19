@@ -1299,25 +1299,27 @@ namespace LitePlacer
             if (!DownCamera.IsRunning())
             {
                 ShowMessageBox(
-                    "Attempt to optical homing, downcamera is not running.",
+                    "Attempt to find circle, downcamera is not running.",
                     "Camera not running",
                     MessageBoxButtons.OK);
                 return false;
             }
             int count = 0;
             int res = 0;
+            int tries = 0;
             bool ProcessingStateSave = DownCamera.PauseProcessing;
             DownCamera.PauseProcessing = true;
             do
             {
-                for (int tries = 0; tries < 8; tries++)
+                // Measure circle location
+                for (tries = 0; tries < 8; tries++)
                 {
                     res = DownCamera.GetClosestCircle(out X, out Y, FindTolerance);
                     if (res != 0)
                     {
                         break;
                     }
-
+                    Thread.Sleep(20); // next frame
                     if (tries >= 7)
                     {
                         DisplayText("Failed in 8 tries.");
@@ -1331,16 +1333,18 @@ namespace LitePlacer
                 }
                 X = X * Properties.Settings.Default.DownCam_XmmPerPixel;
                 Y = -Y * Properties.Settings.Default.DownCam_YmmPerPixel;
-                DisplayText("Optical positioning, round " + count.ToString() + ", dX= " + X.ToString() + ", dY= " + Y.ToString());
+                DisplayText("Optical positioning, round " + count.ToString() + ", dX= " + X.ToString() + ", dY= " + Y.ToString() +  ", tries= " + tries.ToString());
+                // If we are further than move tolerance, go there
                 if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance))
                 {
                     CNC_XY_m(Cnc.CurrentX + X, Cnc.CurrentY + Y);
                 }
                 count++;
-            }
+            }  // repeat this until we didn't need to move
             while ((count < 8)
                 && ((Math.Abs(X) > MoveTolerance)
                 || (Math.Abs(Y) > MoveTolerance)));
+
             DownCamera.PauseProcessing = ProcessingStateSave;
             if (count >= 7)
             {
