@@ -118,18 +118,38 @@ namespace LitePlacer
             Thread.Sleep(200);
         }
 
+        // =================================================================================
+        // get setings form old version
+
+        private void Do_Upgrade()
+        {
+            try
+            {
+                if (Properties.Settings.Default.General_UpgradeRequired)
+                {
+                    DisplayText("Updating from previous version");
+                    Properties.Settings.Default.Upgrade();
+                    Properties.Settings.Default.General_UpgradeRequired = false;
+                    Properties.Settings.Default.Save();
+                }
+            }
+            catch (SettingsPropertyNotFoundException)
+            {
+                DisplayText("Updating from previous version (through ex)");
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.General_UpgradeRequired = false;
+                Properties.Settings.Default.Save();
+            }
+
+        }
+        // =================================================================================
+
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Size = new Size(1280, 960);
             DisplayText("Application Start");
 
-            if (Properties.Settings.Default.General_UpgradeRequired)
-            {
-                DisplayText("Updating from previous version");
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.General_UpgradeRequired = false;
-                Properties.Settings.Default.Save();
-            }
+            Do_Upgrade();
 
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
@@ -825,12 +845,6 @@ namespace LitePlacer
                 return false;
             }
             Cnc.Homing = false;
-            //// CNC_Z_m(Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff);
-            //if (!CNC_Z_m(Cnc.CurrentZ - 0.1))
-            //{
-            //    Needle.ProbingMode(false, JSON);
-            //    return false;
-            //}
             Needle.ProbingMode(false, JSON);
             return true;
         }

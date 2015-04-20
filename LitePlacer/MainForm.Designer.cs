@@ -83,6 +83,21 @@
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
+            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label108 = new System.Windows.Forms.Label();
             this.Tapes_pictureBox = new System.Windows.Forms.PictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
@@ -467,6 +482,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
+            this.StopDemo_button = new System.Windows.Forms.Button();
+            this.Demo_button = new System.Windows.Forms.Button();
             this.ChangeNeedle_button = new System.Windows.Forms.Button();
             this.ValidMeasurement_checkBox = new System.Windows.Forms.CheckBox();
             this.NextGroup_label = new System.Windows.Forms.Label();
@@ -547,23 +564,6 @@
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.TrueX_label = new System.Windows.Forms.Label();
-            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Demo_button = new System.Windows.Forms.Button();
-            this.StopDemo_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -1202,6 +1202,131 @@
             this.Tapes_dataGridView.Size = new System.Drawing.Size(494, 480);
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
+            // 
+            // SelectButtonColumn
+            // 
+            this.SelectButtonColumn.HeaderText = "Select";
+            this.SelectButtonColumn.Name = "SelectButtonColumn";
+            this.SelectButtonColumn.Text = "Reset";
+            this.SelectButtonColumn.Width = 43;
+            // 
+            // IdColumn
+            // 
+            this.IdColumn.HeaderText = "ID";
+            this.IdColumn.Name = "IdColumn";
+            this.IdColumn.Width = 43;
+            // 
+            // OrientationColumn
+            // 
+            this.OrientationColumn.HeaderText = "Orientation";
+            this.OrientationColumn.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.OrientationColumn.Name = "OrientationColumn";
+            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.OrientationColumn.Width = 83;
+            // 
+            // RotationColumn
+            // 
+            this.RotationColumn.HeaderText = "Part Rotation";
+            this.RotationColumn.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.RotationColumn.Name = "RotationColumn";
+            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.RotationColumn.Width = 94;
+            // 
+            // WidthColumn
+            // 
+            this.WidthColumn.HeaderText = "Width";
+            this.WidthColumn.Items.AddRange(new object[] {
+            "8/2mm",
+            "8/4mm",
+            "12/4mm",
+            "12/8mm",
+            "16/4mm",
+            "16/8mm",
+            "16/12mm",
+            "24/4mm",
+            "24/8mm",
+            "24/12mm",
+            "24/16mm",
+            "24/20mm"});
+            this.WidthColumn.MinimumWidth = 55;
+            this.WidthColumn.Name = "WidthColumn";
+            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.WidthColumn.Width = 60;
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.TypeColumn.Name = "TypeColumn";
+            this.TypeColumn.Width = 37;
+            // 
+            // Next_Column
+            // 
+            this.Next_Column.HeaderText = "Next";
+            this.Next_Column.Name = "Next_Column";
+            this.Next_Column.Width = 54;
+            // 
+            // X_Column
+            // 
+            this.X_Column.HeaderText = "X";
+            this.X_Column.Name = "X_Column";
+            this.X_Column.Width = 39;
+            // 
+            // Y_Column
+            // 
+            this.Y_Column.HeaderText = "Y";
+            this.Y_Column.Name = "Y_Column";
+            this.Y_Column.Width = 39;
+            // 
+            // PickupZ_Column
+            // 
+            this.PickupZ_Column.HeaderText = "Pickup Z";
+            this.PickupZ_Column.Name = "PickupZ_Column";
+            this.PickupZ_Column.Width = 75;
+            // 
+            // PlaceZ_Column
+            // 
+            this.PlaceZ_Column.HeaderText = "PlaceZ";
+            this.PlaceZ_Column.Name = "PlaceZ_Column";
+            this.PlaceZ_Column.Width = 66;
+            // 
+            // NextX_Column
+            // 
+            this.NextX_Column.HeaderText = "Next X";
+            this.NextX_Column.Name = "NextX_Column";
+            this.NextX_Column.Width = 64;
+            // 
+            // NextY_column
+            // 
+            this.NextY_column.HeaderText = "Next Y";
+            this.NextY_column.Name = "NextY_column";
+            this.NextY_column.Width = 64;
+            // 
+            // LastX
+            // 
+            this.LastX.HeaderText = "Last X";
+            this.LastX.Name = "LastX";
+            this.LastX.Width = 62;
+            // 
+            // LastY
+            // 
+            this.LastY.HeaderText = "Last Y";
+            this.LastY.Name = "LastY";
+            this.LastY.Width = 62;
             // 
             // label108
             // 
@@ -3661,7 +3786,7 @@
             // label123
             // 
             this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(1064, 241);
+            this.label123.Location = new System.Drawing.Point(516, 526);
             this.label123.Name = "label123";
             this.label123.Size = new System.Drawing.Size(70, 13);
             this.label123.TabIndex = 83;
@@ -3669,7 +3794,7 @@
             // 
             // ZTestTravel_textBox
             // 
-            this.ZTestTravel_textBox.Location = new System.Drawing.Point(1141, 238);
+            this.ZTestTravel_textBox.Location = new System.Drawing.Point(593, 523);
             this.ZTestTravel_textBox.Name = "ZTestTravel_textBox";
             this.ZTestTravel_textBox.Size = new System.Drawing.Size(75, 20);
             this.ZTestTravel_textBox.TabIndex = 82;
@@ -3718,7 +3843,7 @@
             // Z_Backoff_label
             // 
             this.Z_Backoff_label.AutoSize = true;
-            this.Z_Backoff_label.Location = new System.Drawing.Point(655, 625);
+            this.Z_Backoff_label.Location = new System.Drawing.Point(655, 630);
             this.Z_Backoff_label.Name = "Z_Backoff_label";
             this.Z_Backoff_label.Size = new System.Drawing.Size(47, 13);
             this.Z_Backoff_label.TabIndex = 77;
@@ -3727,7 +3852,7 @@
             // label117
             // 
             this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(590, 624);
+            this.label117.Location = new System.Drawing.Point(590, 629);
             this.label117.Name = "label117";
             this.label117.Size = new System.Drawing.Size(47, 13);
             this.label117.TabIndex = 76;
@@ -3736,7 +3861,7 @@
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(590, 592);
+            this.label112.Location = new System.Drawing.Point(590, 597);
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(45, 13);
             this.label112.TabIndex = 75;
@@ -3961,7 +4086,7 @@
             // Z0toPCB_BasicTab_label
             // 
             this.Z0toPCB_BasicTab_label.AutoSize = true;
-            this.Z0toPCB_BasicTab_label.Location = new System.Drawing.Point(655, 608);
+            this.Z0toPCB_BasicTab_label.Location = new System.Drawing.Point(655, 613);
             this.Z0toPCB_BasicTab_label.Name = "Z0toPCB_BasicTab_label";
             this.Z0toPCB_BasicTab_label.Size = new System.Drawing.Size(53, 13);
             this.Z0toPCB_BasicTab_label.TabIndex = 53;
@@ -3981,7 +4106,7 @@
             // label111
             // 
             this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(590, 608);
+            this.label111.Location = new System.Drawing.Point(590, 613);
             this.label111.Name = "label111";
             this.label111.Size = new System.Drawing.Size(59, 13);
             this.label111.TabIndex = 52;
@@ -3992,11 +4117,11 @@
             this.Zlb_label.AutoSize = true;
             this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Zlb_label.Location = new System.Drawing.Point(593, 638);
+            this.Zlb_label.Location = new System.Drawing.Point(593, 646);
             this.Zlb_label.Name = "Zlb_label";
-            this.Zlb_label.Size = new System.Drawing.Size(153, 20);
+            this.Zlb_label.Size = new System.Drawing.Size(153, 38);
             this.Zlb_label.TabIndex = 51;
-            this.Zlb_label.Text = "Probing instructions...";
+            this.Zlb_label.Text = "Probing instructions...\r\nLine 2";
             this.Zlb_label.Visible = false;
             // 
             // SetMark3_button
@@ -4012,7 +4137,7 @@
             // 
             // SetProbing_button
             // 
-            this.SetProbing_button.Location = new System.Drawing.Point(593, 566);
+            this.SetProbing_button.Location = new System.Drawing.Point(593, 571);
             this.SetProbing_button.Name = "SetProbing_button";
             this.SetProbing_button.Size = new System.Drawing.Size(75, 23);
             this.SetProbing_button.TabIndex = 50;
@@ -4024,11 +4149,11 @@
             // label116
             // 
             this.label116.AutoSize = true;
-            this.label116.Location = new System.Drawing.Point(590, 546);
+            this.label116.Location = new System.Drawing.Point(590, 555);
             this.label116.Name = "label116";
-            this.label116.Size = new System.Drawing.Size(124, 13);
+            this.label116.Size = new System.Drawing.Size(127, 13);
             this.label116.TabIndex = 49;
-            this.label116.Text = "Needle height calibration";
+            this.label116.Text = "Needle height calibration:";
             // 
             // SetMark2_button
             // 
@@ -5525,6 +5650,28 @@
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
             // 
+            // StopDemo_button
+            // 
+            this.StopDemo_button.Location = new System.Drawing.Point(87, 666);
+            this.StopDemo_button.Name = "StopDemo_button";
+            this.StopDemo_button.Size = new System.Drawing.Size(75, 23);
+            this.StopDemo_button.TabIndex = 74;
+            this.StopDemo_button.Text = "Stop Demo";
+            this.StopDemo_button.UseVisualStyleBackColor = true;
+            this.StopDemo_button.Visible = false;
+            this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
+            // 
+            // Demo_button
+            // 
+            this.Demo_button.Location = new System.Drawing.Point(6, 666);
+            this.Demo_button.Name = "Demo_button";
+            this.Demo_button.Size = new System.Drawing.Size(75, 23);
+            this.Demo_button.TabIndex = 73;
+            this.Demo_button.Text = "Start Demo";
+            this.Demo_button.UseVisualStyleBackColor = true;
+            this.Demo_button.Visible = false;
+            this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
+            // 
             // ChangeNeedle_button
             // 
             this.ChangeNeedle_button.Location = new System.Drawing.Point(352, 629);
@@ -6351,151 +6498,6 @@
             this.TrueX_label.TabIndex = 77;
             this.TrueX_label.Text = "000.000";
             this.TrueX_label.Visible = false;
-            // 
-            // SelectButtonColumn
-            // 
-            this.SelectButtonColumn.HeaderText = "Select";
-            this.SelectButtonColumn.Name = "SelectButtonColumn";
-            this.SelectButtonColumn.Text = "Reset";
-            this.SelectButtonColumn.Width = 43;
-            // 
-            // IdColumn
-            // 
-            this.IdColumn.HeaderText = "ID";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
-            // 
-            // OrientationColumn
-            // 
-            this.OrientationColumn.HeaderText = "Orientation";
-            this.OrientationColumn.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.OrientationColumn.Name = "OrientationColumn";
-            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 83;
-            // 
-            // RotationColumn
-            // 
-            this.RotationColumn.HeaderText = "Part Rotation";
-            this.RotationColumn.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.RotationColumn.Name = "RotationColumn";
-            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 94;
-            // 
-            // WidthColumn
-            // 
-            this.WidthColumn.HeaderText = "Width";
-            this.WidthColumn.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm"});
-            this.WidthColumn.MinimumWidth = 55;
-            this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.WidthColumn.Width = 60;
-            // 
-            // TypeColumn
-            // 
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.Width = 37;
-            // 
-            // Next_Column
-            // 
-            this.Next_Column.HeaderText = "Next";
-            this.Next_Column.Name = "Next_Column";
-            this.Next_Column.Width = 54;
-            // 
-            // X_Column
-            // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.Width = 39;
-            // 
-            // Y_Column
-            // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.Width = 39;
-            // 
-            // PickupZ_Column
-            // 
-            this.PickupZ_Column.HeaderText = "Pickup Z";
-            this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
-            // 
-            // PlaceZ_Column
-            // 
-            this.PlaceZ_Column.HeaderText = "PlaceZ";
-            this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
-            // 
-            // NextX_Column
-            // 
-            this.NextX_Column.HeaderText = "Next X";
-            this.NextX_Column.Name = "NextX_Column";
-            this.NextX_Column.Width = 64;
-            // 
-            // NextY_column
-            // 
-            this.NextY_column.HeaderText = "Next Y";
-            this.NextY_column.Name = "NextY_column";
-            this.NextY_column.Width = 64;
-            // 
-            // LastX
-            // 
-            this.LastX.HeaderText = "Last X";
-            this.LastX.Name = "LastX";
-            this.LastX.Width = 62;
-            // 
-            // LastY
-            // 
-            this.LastY.HeaderText = "Last Y";
-            this.LastY.Name = "LastY";
-            this.LastY.Width = 62;
-            // 
-            // Demo_button
-            // 
-            this.Demo_button.Location = new System.Drawing.Point(6, 666);
-            this.Demo_button.Name = "Demo_button";
-            this.Demo_button.Size = new System.Drawing.Size(75, 23);
-            this.Demo_button.TabIndex = 73;
-            this.Demo_button.Text = "Start Demo";
-            this.Demo_button.UseVisualStyleBackColor = true;
-            this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
-            // 
-            // StopDemo_button
-            // 
-            this.StopDemo_button.Location = new System.Drawing.Point(87, 666);
-            this.StopDemo_button.Name = "StopDemo_button";
-            this.StopDemo_button.Size = new System.Drawing.Size(75, 23);
-            this.StopDemo_button.TabIndex = 74;
-            this.StopDemo_button.Text = "Stop Demo";
-            this.StopDemo_button.UseVisualStyleBackColor = true;
-            this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
             // 
             // FormMain
             // 
