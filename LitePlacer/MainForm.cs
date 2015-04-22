@@ -119,7 +119,8 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // get setings form old version
+        // Get and save settings from old version if necessary
+        // http://blog.johnsworkshop.net/automatically-upgrading-user-settings-after-an-application-version-change/
 
         private void Do_Upgrade()
         {
@@ -759,7 +760,7 @@ namespace LitePlacer
         // =================================================================================
         #region CNC interface functions
 
-        private bool VacuumIsOn = true;
+        private bool VacuumIsOn = false;
 
         private void VacuumDefaultSetting()
         {
