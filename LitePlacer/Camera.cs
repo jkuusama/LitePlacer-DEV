@@ -376,7 +376,7 @@ namespace LitePlacer
 		}
 
 		// And calls xx_measure() funtion. (Any function doing measurement from video frames.)
-		// The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame form the stream, 
+		// The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame from the stream, 
 		// processes it with the MeasurementFunctions list and returns the processed frame:
 
 		private Bitmap GetMeasurementFrame()
@@ -549,7 +549,7 @@ namespace LitePlacer
 		// ==========================================================================================================
 		// Eventhandler if new frame is ready
 		// ==========================================================================================================
-		// Each frame goes trough Video_NewFrame
+		// Each frame goes through Video_NewFrame
 		private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
 			Bitmap frame = (Bitmap)eventArgs.Frame.Clone();

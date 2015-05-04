@@ -1343,6 +1343,7 @@
             this.Tapes_pictureBox.Location = new System.Drawing.Point(6, 19);
             this.Tapes_pictureBox.Name = "Tapes_pictureBox";
             this.Tapes_pictureBox.Size = new System.Drawing.Size(640, 480);
+            this.Tapes_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.Tapes_pictureBox.TabIndex = 13;
             this.Tapes_pictureBox.TabStop = false;
             this.Tapes_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
@@ -3690,6 +3691,7 @@
             this.Cam_pictureBox.Location = new System.Drawing.Point(6, 19);
             this.Cam_pictureBox.Name = "Cam_pictureBox";
             this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
+            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.Cam_pictureBox.TabIndex = 10;
             this.Cam_pictureBox.TabStop = false;
             this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
@@ -5658,6 +5660,7 @@
             this.StopDemo_button.TabIndex = 74;
             this.StopDemo_button.Text = "Stop Demo";
             this.StopDemo_button.UseVisualStyleBackColor = true;
+            this.StopDemo_button.Visible = false;
             this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
             // 
             // Demo_button
@@ -5668,6 +5671,7 @@
             this.Demo_button.TabIndex = 73;
             this.Demo_button.Text = "Start Demo";
             this.Demo_button.UseVisualStyleBackColor = true;
+            this.Demo_button.Visible = false;
             this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
             // 
             // ChangeNeedle_button
