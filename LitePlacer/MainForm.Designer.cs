@@ -1358,6 +1358,7 @@
             this.Tapes_pictureBox.TabIndex = 13;
             this.Tapes_pictureBox.TabStop = false;
             this.Tapes_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
+            this.Tapes_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             // 
             // Components_tabPage
             // 
@@ -3827,6 +3828,7 @@
             this.Cam_pictureBox.TabIndex = 10;
             this.Cam_pictureBox.TabStop = false;
             this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
+            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             // 
             // label1
             // 
@@ -5793,6 +5795,7 @@
             this.StopDemo_button.Text = "Stop Demo";
             this.StopDemo_button.UseVisualStyleBackColor = true;
             this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
+            this.StopDemo_button.Visible = false;
             // 
             // Demo_button
             // 
@@ -5803,6 +5806,7 @@
             this.Demo_button.Text = "Start Demo";
             this.Demo_button.UseVisualStyleBackColor = true;
             this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
+            this.Demo_button.Visible = false;
             // 
             // ChangeNeedle_button
             // 

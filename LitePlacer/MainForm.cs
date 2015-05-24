@@ -2499,12 +2499,13 @@ namespace LitePlacer
         }
 
 
-        // TinyG communication monitor textbox 
-        public void DisplayText(string txt)
+
+        // TinyG communication monitor textbox  
+        public void DisplayText(string txt, Color color)
         {
             try
             {
-                if (InvokeRequired) { Invoke(new Action<string>(DisplayText), new[] { txt }); return; }
+                if (InvokeRequired) { Invoke(new Action<string,Color>(DisplayText), new Object[] { txt, color }); return; }
                 txt = txt.Replace("\n", "");
                 // TinyG sends \n, textbox needs \r\n. (TinyG could be set to send \n\r, which does not work with textbox.)
                 // Adding end of line here saves typing elsewhere
@@ -2513,12 +2514,16 @@ namespace LitePlacer
                 {
                     SerialMonitor_richTextBox.Text = SerialMonitor_richTextBox.Text.Substring(SerialMonitor_richTextBox.Text.Length - 10000);
                 }
-                SerialMonitor_richTextBox.AppendText(txt);
+                SerialMonitor_richTextBox.AppendText(txt,color);
                 SerialMonitor_richTextBox.ScrollToCaret();
             }
             catch
             {
             }
+        }
+
+        public void DisplayText(string txt) {
+            DisplayText(txt, SerialMonitor_richTextBox.ForeColor);                
         }
 
 
@@ -9546,5 +9551,19 @@ namespace LitePlacer
 
     }	// end of: 	public partial class FormMain : Form
 
+    // allows additionl of color info to displayText
+    public static class RichTextBoxExtensions {
+        public static void AppendText(this RichTextBox box, string text, Color color) {
+            if (color != box.ForeColor) {
+                box.SelectionStart = box.TextLength;
+                box.SelectionLength = 0;
+                box.SelectionColor = color;
+                box.AppendText(text);
+                box.SelectionColor = box.ForeColor;
+            } else {
+                box.AppendText(text);
+            }
+        }
+    }
 
 }	// end of: namespace LitePlacer

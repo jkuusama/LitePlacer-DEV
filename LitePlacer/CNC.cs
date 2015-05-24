@@ -347,7 +347,7 @@ namespace LitePlacer
             }
             _readyEvent.Reset();
             //Com.Write(command);
-            MainForm.DisplayText(command);
+            MainForm.DisplayText(command,System.Drawing.Color.Red);
             Com.Write("{\"gc\":\"" + command + "\"}");
             _readyEvent.Wait();
         }
@@ -358,7 +358,7 @@ namespace LitePlacer
         public void InterpretLine(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
-            MainForm.DisplayText(line);
+            MainForm.DisplayText(line,System.Drawing.Color.Gray);
 
             if (line.Contains("SYSTEM READY"))
             {
