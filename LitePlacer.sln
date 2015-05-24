@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LitePlacer", "LitePlacer\LitePlacer.csproj", "{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{F328130A-3F78-41F4-9E62-2CA9174084F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +42,18 @@ Global
 		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|x64.Build.0 = x64|x64
 		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|x86.ActiveCfg = x64|x86
 		{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}.x64|x86.Build.0 = x64|x86
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.Debug|Any CPU.ActiveCfg = Debug
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.Debug|x64.ActiveCfg = Debug
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.Debug|x86.ActiveCfg = Debug
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.Release|Any CPU.ActiveCfg = Release
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.Release|Mixed Platforms.ActiveCfg = Release
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.Release|x64.ActiveCfg = Release
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.Release|x86.ActiveCfg = Release
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.x64|Any CPU.ActiveCfg = Release
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.x64|Mixed Platforms.ActiveCfg = Release
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.x64|x64.ActiveCfg = Release
+		{F328130A-3F78-41F4-9E62-2CA9174084F0}.x64|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

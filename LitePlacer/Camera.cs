@@ -15,6 +15,10 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
 
+using Emgu.CV;
+using Emgu.CV.Structure;
+using Emgu.Util;
+using Emgu;
 
 
 namespace LitePlacer
@@ -376,7 +380,7 @@ namespace LitePlacer
 		}
 
 		// And calls xx_measure() funtion. (Any function doing measurement from video frames.)
-		// The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame from the stream, 
+		// The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame form the stream, 
 		// processes it with the MeasurementFunctions list and returns the processed frame:
 
 		private Bitmap GetMeasurementFrame()
@@ -455,6 +459,7 @@ namespace LitePlacer
 		public bool DrawDashedCross { get; set; }   // If a dashed crosshaircursor is drawn (so that the center remains visible)
 		public bool FindCircles { get; set; }       // Find and highlight circles in the image
 		public bool FindRectangles { get; set; }    // Find and draw regtangles in the image
+        public bool FindFiducial { get; set; }      // Find and marks location of template based fiducials in image
 		public bool FindComponent { get; set; }     // Finds a component and identifies its center
 		public bool TakeSnapshot { get; set; }      // Takes a b&w snapshot (of a component, most likely)     
 		public bool Draw_Snapshot { get; set; }     // Draws the snapshot on the image 
@@ -549,7 +554,7 @@ namespace LitePlacer
 		// ==========================================================================================================
 		// Eventhandler if new frame is ready
 		// ==========================================================================================================
-		// Each frame goes through Video_NewFrame
+		// Each frame goes trough Video_NewFrame
 		private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
 			Bitmap frame = (Bitmap)eventArgs.Frame.Clone();
@@ -581,6 +586,8 @@ namespace LitePlacer
 			{
 				frame = DrawRectanglesFunct(frame);
 			};
+
+            if (FindFiducial) frame = DrawFiducialFunct(frame);
 
 			if (TakeSnapshot)
 			{
@@ -1125,8 +1132,89 @@ namespace LitePlacer
 		}
 
 
+        /// <summary>
+        /// Will get the X and Y offset of closest shape to current camera location and will retry multiple times (tries)
+        /// </summary>
+        public int GetClosest(Shapes.ShapeTypes thing, out double X, out double Y, double MaxDistance, int tries) {
+            int res = 0;
+            X = 0; Y = 0;
+            while (tries-- > 0 && res == 0) {                
+                res = GetClosest(thing, out X, out Y, MaxDistance);
+                if (res == 0) Thread.Sleep(20); // next frame
+            }
+            return res;
+        }
+
+        // for backwards compatibility
+        public int GetClosestCircle(out double X, out double Y, double MaxDistance, int tries) {
+            return GetClosest(Shapes.ShapeTypes.Circle, out X, out Y, MaxDistance, tries);
+        }
+        public int GetClosestCircle(out double X, out double Y, double MaxDistance) {
+            return GetClosest(Shapes.ShapeTypes.Circle, out X, out Y, MaxDistance);
+        }
+
+        /// <summary>
+        /// This function will take a bitmap image and find the locations of a template image in the file for a given threhsold
+        /// </summary>
+        /// <param name="image">Bitmap of image to look at</param>
+        /// <param name="template_filename">File containg template image</param>
+        /// <returns>imagefinder object</returns>
+        public ImageFinder FindTemplatesInBitmap(Bitmap image, string template_filename, double threshold) {
+            Image<Bgr, Byte> img = new Image<Bgr, byte>(image);
+
+            // template plus 90deg roated version of the template
+            Image<Bgr, Byte> templ1 = new Image<Bgr, byte>(template_filename);
+            Image<Bgr, Byte> templ2 = new Image<Bgr,byte>(templ1.Height, templ1.Width);
+            CvInvoke.cvTranspose(templ1.Ptr, templ2.Ptr);
+
+            ImageFinder imageFinder = new ImageFinder(img, threshold); 
+            imageFinder.FindImage(templ1);
+            imageFinder.FindImage(templ2);
+
+            return imageFinder;
+        }
+
+        public int GetClosest( Shapes.ShapeTypes type, out double X, out double Y, double MaxDistance) {
+            List<Shapes.Thing> RawThings;
+
+            switch (type) {
+                case Shapes.ShapeTypes.Circle :
+                    RawThings = FindCirclesFunct(GetMeasurementFrame()).ConvertAll( x => (Shapes.Thing) x);
+                    break;
+                case Shapes.ShapeTypes.Fiducial:
+                    ImageFinder imageFinder = FindTemplatesInBitmap(GetMeasurementFrame(), 
+                                                      Properties.Settings.Default.template_file, 
+                                                      Properties.Settings.Default.template_threshold); 
+                    RawThings = imageFinder.Points.Select(x => new Shapes.Thing(x.X, x.Y)).ToList();
+                    break;
+                default:
+                    RawThings = new List<Shapes.Thing>();
+                    break;
+            }
+
+			X = 0.0; Y = 0.0;
+
+            // how many objects are within MaxDistance
+            int good_count = RawThings.Count( x => x.DistanceFrom(FrameCenterX,FrameCenterY) <= MaxDistance*GetMeasurementZoom() );
+
+            if (good_count > 0) {
+                // find closest object
+                Shapes.Thing closest = RawThings.Aggregate((c, d) => c.DistanceFrom(FrameCenterX,FrameCenterY) < d.DistanceFrom(FrameCenterX,FrameCenterY) ? c : d);
+                var Vector = closest.VectorFrom(FrameCenterX,FrameCenterY,GetMeasurementZoom());
+                X = Vector.X;
+                Y = Vector.Y;
+            }
+      
+            return good_count;
+        }
+
+                        
+                 
+
+
+
 		// =========================================================
-		public int GetClosestCircle(out double X, out double Y, double MaxDistance)
+		public int GetClosestCircle_Orig(out double X, out double Y, double MaxDistance)
 		// Sets X, Y position of the closest circle to the frame center in pixels, return value is number of circles found
 		{
 			List<Shapes.Circle> GoodCircles = new List<Shapes.Circle>();
@@ -1216,6 +1304,23 @@ namespace LitePlacer
 			frame = RBfilter.Apply(frame);
 		}
 
+        // =========================================================
+        private Bitmap DrawFiducialFunct(Bitmap image) {
+
+            // step 1 - Find Fiducials
+            var imageFinder  = FindTemplatesInBitmap(image,
+                                                   Properties.Settings.Default.template_file,
+                                                   Properties.Settings.Default.template_threshold); 
+
+            // step 2 - draw X on fiducials
+            imageFinder.MarkLocationsOnImage();
+
+            // step 3 - return 
+            return imageFinder.ResultBitmap;
+
+        }
+
+
 		// =========================================================
 		private Bitmap DrawRectanglesFunct(Bitmap image)
 		{
@@ -1284,11 +1389,16 @@ namespace LitePlacer
 		// =========================================================
 
 		private void DrawCrossFunct(ref Bitmap img)
-		{
-			Pen pen = new Pen(Color.Red, 1);
-			Graphics g = Graphics.FromImage(img);
-			g.DrawLine(pen, FrameCenterX, 0, FrameCenterX, FrameSizeY);
-			g.DrawLine(pen, 0, FrameCenterY, FrameSizeX, FrameCenterY);
+		{  // i get out of memory errors here all the time - not sure why 
+           // so protecting execution this way.
+            try {
+                Pen pen = new Pen(Color.Red, 1);
+                Graphics g = Graphics.FromImage(img);
+                g.DrawLine(pen, FrameCenterX, 0, FrameCenterX, FrameSizeY);
+                g.DrawLine(pen, 0, FrameCenterY, FrameSizeX, FrameCenterY);
+            } catch (Exception e) {
+                Console.WriteLine("DrawCrossFunct Error: " + e);
+            }
 		}
 
 		// =========================================================

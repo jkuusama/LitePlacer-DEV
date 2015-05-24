@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Emgu.CV.VideoStab</name>
+    </assembly>
+    <members>
+        <member name="T:Emgu.CV.VideoStab.CaptureFrameSource">
+            <summary>
+            Use the Capture class as a FrameSource
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.VideoStab.FrameSource">
+            <summary>
+            A FrameSource that can be used by the Video Stabilizer
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.VideoStab.FrameSource.FrameSourcePtr">
+            <summary>
+            The unmanaged pointer the the frameSource
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.FrameSource.NextFrame">
+            <summary>
+            Retrieve the next frame from the FrameSoure
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.FrameSource.DisposeObject">
+            <summary>
+            Release the unmanaged memory associated with this FrameSource
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.VideoStab.FrameSource.CaptureSource">
+            <summary>
+            Get or Set the capture type
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.CaptureFrameSource.#ctor(Emgu.CV.Capture)">
+            <summary>
+            Create a Capture frame source
+            </summary>
+            <param name="capture">The capture object that will be converted to a FrameSource</param>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.CaptureFrameSource.DisposeObject">
+            <summary>
+            Release the unmanaged memory associated with this CaptureFrameSource
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.VideoStab.GaussianMotionFilter">
+            <summary>
+            Gaussian motion filter
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.GaussianMotionFilter.#ctor">
+            <summary>
+            Create a Gaussian motion filter
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.GaussianMotionFilter.DisposeObject">
+            <summary>
+            Release all the unmanaged memory associated with this object
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.VideoStab.OnePassStabilizer">
+            <summary>
+            A one pass video stabilizer
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.OnePassStabilizer.#ctor(Emgu.CV.VideoStab.FrameSource)">
+            <summary>
+            Create a one pass stabilizer
+            </summary>
+            <param name="baseFrameSource">The capture object to be stabalized</param>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.OnePassStabilizer.SetMotionFilter(Emgu.CV.VideoStab.GaussianMotionFilter)">
+            <summary>
+            Set the Motion Filter
+            </summary>
+            <param name="motionFilter">The motion filter</param>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.OnePassStabilizer.DisposeObject">
+            <summary>
+            Release the unmanaged memory associated with the stabilizer
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.VideoStab.TwoPassStabilizer">
+            <summary>
+            A two pass video stabilizer
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.TwoPassStabilizer.#ctor(Emgu.CV.VideoStab.FrameSource)">
+            <summary>
+            Create a two pass video stabilizer.
+            </summary>
+            <param name="baseFrameSource">The capture object to be stabilized. Should not be a camera stream.</param>
+        </member>
+        <member name="M:Emgu.CV.VideoStab.TwoPassStabilizer.DisposeObject">
+            <summary>
+            Release the unmanaged memory
+            </summary>
+        </member>
+    </members>
+</doc>

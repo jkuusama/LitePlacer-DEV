@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -106,19 +106,8 @@
             this.SizeX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SizeY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.label127 = new System.Windows.Forms.Label();
-            this.fiducial_designator_regexp_textBox = new System.Windows.Forms.TextBox();
-            this.button_setTemplate = new System.Windows.Forms.Button();
-            this.label126 = new System.Windows.Forms.Label();
-            this.fiducialTemlateMatch_textBox = new System.Windows.Forms.TextBox();
-            this.cb_useTemplate = new System.Windows.Forms.CheckBox();
             this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
-            this.FindFiducials_cb = new System.Windows.Forms.CheckBox();
-            this.SlackMeasurement_label = new System.Windows.Forms.Label();
-            this.button_saveSettings = new System.Windows.Forms.Button();
-            this.button_camera_calibrate = new System.Windows.Forms.Button();
             this.DownCameraDrawTicks_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.Components_dataGridView = new System.Windows.Forms.DataGridView();
@@ -581,7 +570,6 @@
             this.Components_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
             this.tabPageSetupCameras.SuspendLayout();
-            this.groupBox12.SuspendLayout();
             this.CamerasSetUp_tabControl.SuspendLayout();
             this.DownCamera_tabPage.SuspendLayout();
             this.groupBox9.SuspendLayout();
@@ -1400,7 +1388,6 @@
             // 
             // tabPageSetupCameras
             // 
-            this.tabPageSetupCameras.Controls.Add(this.groupBox12);
             this.tabPageSetupCameras.Controls.Add(this.CamerasSetUp_tabControl);
             this.tabPageSetupCameras.Controls.Add(this.label101);
             this.tabPageSetupCameras.Controls.Add(this.label100);
@@ -1450,79 +1437,6 @@
             this.tabPageSetupCameras.Text = "Setup Cameras";
             this.tabPageSetupCameras.UseVisualStyleBackColor = true;
             // 
-            // groupBox12
-            // 
-            this.groupBox12.Controls.Add(this.label127);
-            this.groupBox12.Controls.Add(this.fiducial_designator_regexp_textBox);
-            this.groupBox12.Controls.Add(this.button_setTemplate);
-            this.groupBox12.Controls.Add(this.label126);
-            this.groupBox12.Controls.Add(this.fiducialTemlateMatch_textBox);
-            this.groupBox12.Controls.Add(this.cb_useTemplate);
-            this.groupBox12.Location = new System.Drawing.Point(191, 505);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(148, 87);
-            this.groupBox12.TabIndex = 129;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "Fiducial Settings";
-            // 
-            // label127
-            // 
-            this.label127.AutoSize = true;
-            this.label127.Location = new System.Drawing.Point(7, 67);
-            this.label127.Name = "label127";
-            this.label127.Size = new System.Drawing.Size(65, 13);
-            this.label127.TabIndex = 133;
-            this.label127.Text = "Fid RegExp:";
-            // 
-            // fiducial_designator_regexp_textBox
-            // 
-            this.fiducial_designator_regexp_textBox.Location = new System.Drawing.Point(70, 64);
-            this.fiducial_designator_regexp_textBox.Name = "fiducial_designator_regexp_textBox";
-            this.fiducial_designator_regexp_textBox.Size = new System.Drawing.Size(63, 20);
-            this.fiducial_designator_regexp_textBox.TabIndex = 132;
-            this.fiducial_designator_regexp_textBox.Text = "^FID?";
-            this.fiducial_designator_regexp_textBox.TextChanged += new System.EventHandler(this.fiducial_designator_regexp_textBox_TextChanged);
-            // 
-            // button_setTemplate
-            // 
-            this.button_setTemplate.Location = new System.Drawing.Point(98, 15);
-            this.button_setTemplate.Name = "button_setTemplate";
-            this.button_setTemplate.Size = new System.Drawing.Size(35, 23);
-            this.button_setTemplate.TabIndex = 131;
-            this.button_setTemplate.Text = "...";
-            this.button_setTemplate.UseVisualStyleBackColor = true;
-            this.button_setTemplate.Click += new System.EventHandler(this.button_setTemplate_Click);
-            // 
-            // label126
-            // 
-            this.label126.AutoSize = true;
-            this.label126.Location = new System.Drawing.Point(7, 43);
-            this.label126.Name = "label126";
-            this.label126.Size = new System.Drawing.Size(60, 13);
-            this.label126.TabIndex = 130;
-            this.label126.Text = "Threshold :";
-            // 
-            // fiducialTemlateMatch_textBox
-            // 
-            this.fiducialTemlateMatch_textBox.Location = new System.Drawing.Point(70, 40);
-            this.fiducialTemlateMatch_textBox.Name = "fiducialTemlateMatch_textBox";
-            this.fiducialTemlateMatch_textBox.Size = new System.Drawing.Size(33, 20);
-            this.fiducialTemlateMatch_textBox.TabIndex = 129;
-            this.fiducialTemlateMatch_textBox.Text = "0.7";
-            this.fiducialTemlateMatch_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fiducialTemlateMatch_textBox_KeyPress);
-            this.fiducialTemlateMatch_textBox.Leave += new System.EventHandler(this.fiducialTemlateMatch_textBox_Leave);
-            // 
-            // cb_useTemplate
-            // 
-            this.cb_useTemplate.AutoSize = true;
-            this.cb_useTemplate.Location = new System.Drawing.Point(6, 19);
-            this.cb_useTemplate.Name = "cb_useTemplate";
-            this.cb_useTemplate.Size = new System.Drawing.Size(92, 17);
-            this.cb_useTemplate.TabIndex = 127;
-            this.cb_useTemplate.Text = "Use Template";
-            this.cb_useTemplate.UseVisualStyleBackColor = true;
-            this.cb_useTemplate.CheckedChanged += new System.EventHandler(this.cb_useTemplate_CheckedChanged);
-            // 
             // CamerasSetUp_tabControl
             // 
             this.CamerasSetUp_tabControl.Controls.Add(this.DownCamera_tabPage);
@@ -1530,16 +1444,12 @@
             this.CamerasSetUp_tabControl.Location = new System.Drawing.Point(656, 8);
             this.CamerasSetUp_tabControl.Name = "CamerasSetUp_tabControl";
             this.CamerasSetUp_tabControl.SelectedIndex = 0;
-            this.CamerasSetUp_tabControl.Size = new System.Drawing.Size(587, 678);
+            this.CamerasSetUp_tabControl.Size = new System.Drawing.Size(587, 630);
             this.CamerasSetUp_tabControl.TabIndex = 126;
             this.CamerasSetUp_tabControl.SelectedIndexChanged += new System.EventHandler(this.CamerasSetUp_tabControl_SelectedIndexChanged);
             // 
             // DownCamera_tabPage
             // 
-            this.DownCamera_tabPage.Controls.Add(this.FindFiducials_cb);
-            this.DownCamera_tabPage.Controls.Add(this.SlackMeasurement_label);
-            this.DownCamera_tabPage.Controls.Add(this.button_saveSettings);
-            this.DownCamera_tabPage.Controls.Add(this.button_camera_calibrate);
             this.DownCamera_tabPage.Controls.Add(this.DownCameraDrawTicks_checkBox);
             this.DownCamera_tabPage.Controls.Add(this.groupBox9);
             this.DownCamera_tabPage.Controls.Add(this.ColorHelp_label);
@@ -1588,54 +1498,10 @@
             this.DownCamera_tabPage.Controls.Add(this.groupBox4);
             this.DownCamera_tabPage.Location = new System.Drawing.Point(4, 22);
             this.DownCamera_tabPage.Name = "DownCamera_tabPage";
-            this.DownCamera_tabPage.Size = new System.Drawing.Size(579, 652);
+            this.DownCamera_tabPage.Size = new System.Drawing.Size(579, 604);
             this.DownCamera_tabPage.TabIndex = 3;
             this.DownCamera_tabPage.Text = "Down Looking Camera";
             this.DownCamera_tabPage.UseVisualStyleBackColor = true;
-            // 
-            // FindFiducials_cb
-            // 
-            this.FindFiducials_cb.AutoSize = true;
-            this.FindFiducials_cb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindFiducials_cb.Location = new System.Drawing.Point(3, 127);
-            this.FindFiducials_cb.Name = "FindFiducials_cb";
-            this.FindFiducials_cb.Size = new System.Drawing.Size(90, 17);
-            this.FindFiducials_cb.TabIndex = 143;
-            this.FindFiducials_cb.Text = "Find Fiducials";
-            this.toolTip1.SetToolTip(this.FindFiducials_cb, "Find fiducials in display based on template matching");
-            this.FindFiducials_cb.UseVisualStyleBackColor = true;
-            this.FindFiducials_cb.CheckedChanged += new System.EventHandler(this.FindFiducials_cb_CheckedChanged);
-            // 
-            // SlackMeasurement_label
-            // 
-            this.SlackMeasurement_label.AutoSize = true;
-            this.SlackMeasurement_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SlackMeasurement_label.Location = new System.Drawing.Point(399, 113);
-            this.SlackMeasurement_label.Name = "SlackMeasurement_label";
-            this.SlackMeasurement_label.Size = new System.Drawing.Size(16, 13);
-            this.SlackMeasurement_label.TabIndex = 142;
-            this.SlackMeasurement_label.Text = "---";
-            this.toolTip1.SetToolTip(this.SlackMeasurement_label, "Set the true size of the box on the image.");
-            // 
-            // button_saveSettings
-            // 
-            this.button_saveSettings.Location = new System.Drawing.Point(447, 610);
-            this.button_saveSettings.Name = "button_saveSettings";
-            this.button_saveSettings.Size = new System.Drawing.Size(75, 24);
-            this.button_saveSettings.TabIndex = 141;
-            this.button_saveSettings.Text = "Save Settings";
-            this.button_saveSettings.UseVisualStyleBackColor = true;
-            this.button_saveSettings.Click += new System.EventHandler(this.button_saveSettings_Click);
-            // 
-            // button_camera_calibrate
-            // 
-            this.button_camera_calibrate.Location = new System.Drawing.Point(347, 108);
-            this.button_camera_calibrate.Name = "button_camera_calibrate";
-            this.button_camera_calibrate.Size = new System.Drawing.Size(46, 23);
-            this.button_camera_calibrate.TabIndex = 140;
-            this.button_camera_calibrate.Text = "Calib.";
-            this.button_camera_calibrate.UseVisualStyleBackColor = true;
-            this.button_camera_calibrate.Click += new System.EventHandler(this.button_camera_calibrate_Click);
             // 
             // DownCameraDrawTicks_checkBox
             // 
@@ -2385,7 +2251,7 @@
             this.groupBox11.Controls.Add(this.FiducialsToHere_button);
             this.groupBox11.Location = new System.Drawing.Point(6, 458);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(255, 58);
+            this.groupBox11.Size = new System.Drawing.Size(255, 59);
             this.groupBox11.TabIndex = 124;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Fiducials";
@@ -2876,7 +2742,7 @@
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5});
             this.Homing_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Homing_dataGridView.Location = new System.Drawing.Point(163, 43);
+            this.Homing_dataGridView.Location = new System.Drawing.Point(177, 47);
             this.Homing_dataGridView.Name = "Homing_dataGridView";
             this.Homing_dataGridView.RowHeadersVisible = false;
             this.Homing_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
@@ -2972,7 +2838,7 @@
             this.UpCamera_tabPage.Controls.Add(this.label105);
             this.UpCamera_tabPage.Location = new System.Drawing.Point(4, 22);
             this.UpCamera_tabPage.Name = "UpCamera_tabPage";
-            this.UpCamera_tabPage.Size = new System.Drawing.Size(579, 652);
+            this.UpCamera_tabPage.Size = new System.Drawing.Size(579, 604);
             this.UpCamera_tabPage.TabIndex = 4;
             this.UpCamera_tabPage.Text = "Up Looking Camera";
             this.UpCamera_tabPage.UseVisualStyleBackColor = true;
@@ -6406,14 +6272,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6480,14 +6346,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -6688,8 +6554,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
             this.tabPageSetupCameras.ResumeLayout(false);
             this.tabPageSetupCameras.PerformLayout();
-            this.groupBox12.ResumeLayout(false);
-            this.groupBox12.PerformLayout();
             this.CamerasSetUp_tabControl.ResumeLayout(false);
             this.DownCamera_tabPage.ResumeLayout(false);
             this.DownCamera_tabPage.PerformLayout();
@@ -7285,17 +7149,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastY;
         private System.Windows.Forms.Button Demo_button;
         private System.Windows.Forms.Button StopDemo_button;
-        private System.Windows.Forms.Button button_camera_calibrate;
-        private System.Windows.Forms.Button button_saveSettings;
-        private System.Windows.Forms.Label SlackMeasurement_label;
-        private System.Windows.Forms.CheckBox cb_useTemplate;
-        private System.Windows.Forms.GroupBox groupBox12;
-        private System.Windows.Forms.Button button_setTemplate;
-        private System.Windows.Forms.Label label126;
-        private System.Windows.Forms.TextBox fiducialTemlateMatch_textBox;
-        private System.Windows.Forms.CheckBox FindFiducials_cb;
-        private System.Windows.Forms.Label label127;
-        private System.Windows.Forms.TextBox fiducial_designator_regexp_textBox;
     }
 }
 

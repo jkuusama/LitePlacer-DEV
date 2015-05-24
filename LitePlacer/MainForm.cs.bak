@@ -23,12 +23,6 @@ using AForge.Imaging;
 using System.Windows.Media;
 using MathNet.Numerics;
 using HomographyEstimation;
-using System.Text.RegularExpressions;
-using Emgu.CV;
-using Emgu.CV.Structure;
-using Emgu.Util;
-using Emgu;
-
 
 namespace LitePlacer
 {
@@ -43,7 +37,6 @@ namespace LitePlacer
         Camera UpCamera;
         NeedleClass Needle;
         TapesClass Tapes;
-        SlackCompensation slackCompensation; 
 
         // =================================================================================
         // General and "global" functions 
@@ -89,7 +82,20 @@ namespace LitePlacer
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            button_saveSettings_Click(sender,  e);
+            Properties.Settings.Default.Save();
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+            SaveDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
+            SaveDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
+            SaveDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
+            SaveDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
+            SaveDataGrid(path + "LitePlacer.ComponentsFunctions", Components_dataGridView);
+            SaveDataGrid(path + "LitePlacer.PaperTapeFunctions", PaperTape_dataGridView);
+            SaveDataGrid(path + "LitePlacer.BlackTapeFunctions", BlackTape_dataGridView);
+            SaveDataGrid(path + "LitePlacer.ClearTapeFunctions", ClearTape_dataGridView);
+            SaveDataGrid(path + "LitePlacer.NeedleFunctions", Needle_dataGridView);
+            SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView);
 
             if (Cnc.Connected)
             {
@@ -197,13 +203,6 @@ namespace LitePlacer
             Mark4_textBox.Text = Properties.Settings.Default.General_Mark4Name;
             Mark5_textBox.Text = Properties.Settings.Default.General_Mark5Name;
             Mark6_textBox.Text = Properties.Settings.Default.General_Mark6Name;
-
-
-            // template based fudical locating RN
-            cb_useTemplate.Checked = Properties.Settings.Default.use_template;
-            FindFiducials_cb.Enabled = Properties.Settings.Default.use_template;
-            fiducialTemlateMatch_textBox.Text = Properties.Settings.Default.template_threshold.ToString();
-            fiducial_designator_regexp_textBox.Text = Properties.Settings.Default.fiducial_designator_regexp;
 
             // The components tab is more a distraction than useful.
             // To add data, comment out the next line.
@@ -1064,11 +1063,6 @@ namespace LitePlacer
 
         public bool CNC_XY_m(double X, double Y)
         {
-            if (slackCompensation != null) {
-                X = slackCompensation.X((float)X);
-                Y = slackCompensation.Y((float)Y);
-            }
-
             DisplayText("CNC_XY_m, x: " + X.ToString() + ", y: " + Y.ToString());
             if (CNC_NeedleIsDown_m())
             {
@@ -1303,19 +1297,22 @@ namespace LitePlacer
 
 
         // =====================================================================
-        // This routine finds an accurate location of a shpe that downcamera is looking at.
+        // This routine finds an accurate location of a circle that downcamera is looking at.
         // Used in homing and locating fiducials.
         // Tolerances in mm; find: how far from center to accept a circle, move: how close to go (set small to ensure view from straight up)
         // At return, the camera is located on top of the circle.
         // X and Y are set to remainding error (true position: currect + error)
         // =====================================================================
-        public bool GoToLocation_m(Shapes.ShapeTypes type, double FindTolerance, double MoveTolerance, out double X, out double Y) {
+
+        public bool GoToCircleLocation_m(double FindTolerance, double MoveTolerance, out double X, out double Y)
+        {
             DisplayText("GoToCircleLocation_m(), FindTolerance: " + FindTolerance.ToString() + ", MoveTolerance: " + MoveTolerance.ToString());
             SelectCamera(DownCamera);
             X = 100;
             Y = 100;
             FindTolerance = FindTolerance / Properties.Settings.Default.DownCam_XmmPerPixel;
-            if (!DownCamera.IsRunning()) {
+            if (!DownCamera.IsRunning())
+            {
                 ShowMessageBox(
                     "Attempt to find circle, downcamera is not running.",
                     "Camera not running",
@@ -1327,25 +1324,34 @@ namespace LitePlacer
             int tries = 0;
             bool ProcessingStateSave = DownCamera.PauseProcessing;
             DownCamera.PauseProcessing = true;
-            do {
-                // Measure thing location
-
-                res = DownCamera.GetClosest(type, out X, out Y, FindTolerance, 8);
-                if (res == 0) {
-                    DisplayText("Failed in 8 tries.");
-                    ShowMessageBox(
-                        "Optical positioning: Can't find "+type,
-                        "No "+type+" found",
-                        MessageBoxButtons.OK);
-                    DownCamera.PauseProcessing = ProcessingStateSave;
-                    return false;
+            do
+            {
+                // Measure circle location
+                for (tries = 0; tries < 8; tries++)
+                {
+                    res = DownCamera.GetClosestCircle(out X, out Y, FindTolerance);
+                    if (res != 0)
+                    {
+                        break;
+                    }
+                    Thread.Sleep(20); // next frame
+                    if (tries >= 7)
+                    {
+                        DisplayText("Failed in 8 tries.");
+                        ShowMessageBox(
+                            "Optical positioning: Can't find Circle",
+                            "No Circle found",
+                            MessageBoxButtons.OK);
+                        DownCamera.PauseProcessing = ProcessingStateSave;
+                        return false;
+                    }
                 }
-
                 X = X * Properties.Settings.Default.DownCam_XmmPerPixel;
                 Y = -Y * Properties.Settings.Default.DownCam_YmmPerPixel;
-                DisplayText("Optical positioning, round " + count.ToString() + ", dX= " + X.ToString() + ", dY= " + Y.ToString() + ", tries= " + tries.ToString());
+                DisplayText("Optical positioning, round " + count.ToString() + ", dX= " + X.ToString() + ", dY= " + Y.ToString() +  ", tries= " + tries.ToString());
                 // If we are further than move tolerance, go there
-                if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance)) {
+                if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance))
+                {
                     CNC_XY_m(Cnc.CurrentX + X, Cnc.CurrentY + Y);
                 }
                 count++;
@@ -1355,7 +1361,8 @@ namespace LitePlacer
                 || (Math.Abs(Y) > MoveTolerance)));
 
             DownCamera.PauseProcessing = ProcessingStateSave;
-            if (count >= 7) {
+            if (count >= 7)
+            {
                 ShowMessageBox(
                     "Optical positioning: Process is unstable, result is unreliable!",
                     "Count exeeded",
@@ -1366,8 +1373,6 @@ namespace LitePlacer
         }
 
 
-
-
         private bool OpticalHoming_m()
         {
             DisplayText("Optical homing");
@@ -1375,7 +1380,7 @@ namespace LitePlacer
             double X;
             double Y;
             // Find within 20mm, goto within 0.05
-            if (!GoToLocation_m(Shapes.ShapeTypes.Circle, 20.0, 0.05, out X, out Y))
+            if (!GoToCircleLocation_m(20.0, 0.05, out X, out Y))
             {
                 return false;
             }
@@ -1617,7 +1622,6 @@ namespace LitePlacer
             Overlay_checkBox.Checked = false;
             DownCamera.DrawBox = false;
             DownCameraDrawBox_checkBox.Checked = false;
-            DownCamera.FindFiducial = false;
         }
         // ====
         private void SetUpCameraDefaults()
@@ -6295,17 +6299,26 @@ namespace LitePlacer
             if (!FiducialsFound)
             {
                 // Ib) Fiducials not pointed out yet. Find them automatically.
-                // Fiducials designators are specified as a REGEX and default to ^FID?
+                // Fiducials designators are FI*** or FID*** where *** is a number.
                 string Fids;
                 bool FidsOnThisRow = false;
-                Regex regex = new Regex(Properties.Settings.Default.fiducial_designator_regexp);
-
-                for (int i = 0; i < JobData_GridView.RowCount; i++)                {
-                    
+                for (int i = 0; i < JobData_GridView.RowCount; i++)
+                {
                     Fids = JobData_GridView.Rows[i].Cells["ComponentList"].Value.ToString();
-                    FidsOnThisRow = regex.Match(Fids).Success;
-
-                    
+                    if (Fids.StartsWith("FI", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        if (Char.IsDigit(Fids[2]))
+                        {
+                            FidsOnThisRow = true;
+                        }
+                        else if (Fids.StartsWith("FID", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            if (Char.IsDigit(Fids[3]))
+                            {
+                                FidsOnThisRow = true;
+                            }
+                        }
+                    }
                     if (FidsOnThisRow)
                     {
                         if (FiducialsFound)
@@ -6346,28 +6359,21 @@ namespace LitePlacer
         // Takes the parameter nominal location and measures its physical location.
         // Assumes measurement parameters already set.
 
-        private bool MeasureFiducial_m(ref PhysicalComponent fid)        {
+        private bool MeasureFiducial_m(ref PhysicalComponent fid)
+        {
             CNC_XY_m(fid.X_nominal + JobOffsetX + Properties.Settings.Default.General_JigOffsetX,
                      fid.Y_nominal + JobOffsetY + Properties.Settings.Default.General_JigOffsetY);
             // If more than 3mm off here, not good.
-            double X, Y;
-
-            // what type of fiducail are we interested in?
-            Shapes.ShapeTypes type;
-            if (Properties.Settings.Default.use_template) {
-                type = Shapes.ShapeTypes.Fiducial;  //template based mathing
-            } else {
-                type = Shapes.ShapeTypes.Circle;    //circle based matching
-            }
-
-            if (!GoToLocation_m(type, 3, 0.1, out X, out Y)) {
+            double X;
+            double Y;
+            if (!GoToCircleLocation_m(3, 0.1, out X, out Y))
+            {
                 ShowMessageBox(
                     "Finding fiducial: Can't regognize fiducial " + fid.Designator,
                     "No Circle found",
                     MessageBoxButtons.OK);
                 return false;
             }
-
             fid.X_machine = Cnc.CurrentX + X;
             fid.Y_machine = Cnc.CurrentY + Y;
             // For user confidence, show it:
@@ -6883,21 +6889,21 @@ namespace LitePlacer
             CNC_XY_m(X_shortest, Y_shortest);
             SetFiducialsMeasurement();
 
-            for (int tries = 0; tries < 5; tries++)  {
-                if (cb_useTemplate.Checked) {
-
-                } else {
-                    // Look for circular Fiducials
-                    // 3mm max. error - break loop if found
-                    if (DownCamera.GetClosestCircle(out errX, out errY, 3.0 / Properties.Settings.Default.DownCam_XmmPerPixel) != 0) break;
-                
-                    if (tries >= 4)  {
-                        ShowMessageBox(
-                            "Finding fiducial: Can't regognize fiducial " + FiducialDesignators[i],
-                            "No Circle found",
-                            MessageBoxButtons.OK);
-                        return false;
-                    }
+            for (int tries = 0; tries < 5; tries++)
+            {
+                // 3mm max. error
+                int res = DownCamera.GetClosestCircle(out errX, out errY, 3.0 / Properties.Settings.Default.DownCam_XmmPerPixel);
+                if (res != 0)
+                {
+                    break;
+                }
+                if (tries >= 4)
+                {
+                    ShowMessageBox(
+                        "Finding fiducial: Can't regognize fiducial " + FiducialDesignators[i],
+                        "No Circle found",
+                        MessageBoxButtons.OK);
+                    return false;
                 }
             }
             errX = errX * Properties.Settings.Default.DownCam_XmmPerPixel;
@@ -8009,7 +8015,7 @@ namespace LitePlacer
             {
                 UpCamera.FindCircles = false;
             }
-        }        
+        }
 
         private void DownCamFindRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -8022,10 +8028,6 @@ namespace LitePlacer
                 DownCamera.FindRectangles = false;
             }
 
-        }
-
-        private void FindFiducials_cb_CheckedChanged(object sender, EventArgs e) {
-            DownCamera.FindFiducial = ((CheckBox)sender).Checked;
         }
 
         private void DownCam_FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
@@ -8151,7 +8153,6 @@ namespace LitePlacer
         {
             DataGridViewCopy(Fiducials_dataGridView, ref Display_dataGridView);
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-            DownCamera.BuildMeasurementFunctionsList(Display_dataGridView);
         }
 
         private void SetFiducialsMeasurement()
@@ -9312,236 +9313,6 @@ namespace LitePlacer
         {
             DemoRunning = false;
         }
-
-/// <summary>
-        /// This function will locate a circle, move the camera, measure the new location of the circle and determine
-        /// the mm per pixel scale
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button_camera_calibrate_Click(object sender, EventArgs e) {
-            if (! DownCamera.IsRunning()) {
-                DisplayText("No results.");
-                return;
-            }
-            // turn off slack compensation
-            slackCompensation = null;
-
-            //setup camera
-            SetHomingMeasurement();
-           
-            List<AForge.Point> pts = new List<AForge.Point>();
-            List<AForge.Point> offsets = new List<AForge.Point>();
-          
-            // move a little to get rid of slack
-            JoggingBusy = true;
-            CNC_XY_m(Cnc.CurrentX + .2, Cnc.CurrentY + .2);
-            JoggingBusy = false;
-
-            // try to get 10 points
-            float off_x = .2f; 
-            float off_y = .2f;
-            const float off_inc = .5f;
-            for (int i = 0; i < 10; i++) {
-                double X, Y;
-                double zoom = DownCamera.GetMeasurementZoom();
-                if (DownCamera.GetClosestCircle(out X, out Y, 200) > 0) {
-                    offsets.Add(new AForge.Point(off_x, off_y));
-                    pts.Add(new AForge.Point((float)(X*zoom), (float)(Y*zoom)));
-                }
-                // now move
-                JoggingBusy = true;
-                CNC_XY_m(Cnc.CurrentX + off_inc, Cnc.CurrentY + off_inc);
-                JoggingBusy = false;
-                off_x += off_inc;
-                off_y += off_inc;
-            }
-
-            //debug
-            for (int i=0; i<pts.Count; i++) 
-                Console.WriteLine("{0},{1},{2},{3}", offsets[i].X, offsets[i].Y, pts[i].X, pts[i].Y);
-
-            //compute slope - ideally w/ least squares but i don't think it's that critical
-            float[] x1 = offsets.Select(x => x.X).ToArray();
-            float[] x2 = pts.Select(x => x.X).ToArray();
-            float slopeX1 = 0;
-            float slopeX2 = 0;
-            for (int i = 0; i < x1.Length - 1; i++) {
-                slopeX1 += x1[i + 1] - x1[i];
-                slopeX2 += x2[i + 1] - x2[i];
-            }
-            slopeX1 /= x1.Length - 1;
-            slopeX2 /= x2.Length - 1;
-
-            float[] y1 = offsets.Select(x => x.Y).ToArray();
-            float[] y2 = pts.Select(x => x.Y).ToArray();
-            float slopeY1 = 0;
-            float slopeY2 = 0;
-            for (int i = 0; i < y1.Length - 1; i++) {
-                slopeY1 += y1[i + 1] - y1[i];
-                slopeY2 += y2[i + 1] - y2[i];
-            }
-            slopeY1 /= y1.Length - 1;
-            slopeY2 /= y2.Length - 1;
-
-            float Xratio = slopeX1 / slopeX2;
-            float Yratio = slopeY1 / slopeY2;
-
-            Console.WriteLine("{0} mm/pixel   {1} mm/pixel", Xratio, Yratio);
-
-            // update values
-            Properties.Settings.Default.DownCam_XmmPerPixel = Math.Abs(Xratio);
-            Properties.Settings.Default.DownCam_YmmPerPixel = Math.Abs(Yratio);
-            DownCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            DownCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-                        
-            //now measure the slack of the system inherent in moving from one axis to another
-            JoggingBusy = true;
-            // recenter
-            CNC_XY_m(Cnc.CurrentX - off_x, Cnc.CurrentY - off_y);
-
-            //move in one direction, measure circle, move in opposite direction, measure where we
-            //are vs. where we ares upposed to be - the difference is the slack in the system in that direction
-            float slack_xltor=0, slack_xrtol=0, slack_yttob=0, slack_ybtot=0;
-            CNC_XY_m(Cnc.CurrentX +3, Cnc.CurrentY);
-            slack_xrtol = MeasureSlack(-.5f, 0f);
-
-            CNC_XY_m(Cnc.CurrentX - 3, Cnc.CurrentY);
-            slack_xltor = MeasureSlack(.5f, 0f);
-
-            CNC_XY_m(Cnc.CurrentX, Cnc.CurrentY + 3);
-            slack_yttob = MeasureSlack(0f, -.5f);
-
-            CNC_XY_m(Cnc.CurrentX, Cnc.CurrentY - 3);
-            slack_ybtot = MeasureSlack(0f, .5f);
-            JoggingBusy = false;
-
-            SlackMeasurement_label.Text = String.Format("Slack X:{0:0.###}/{1:0.###}\nSlack Y:{2:0.###}/{3:0.###}", slack_xltor, slack_xrtol, slack_yttob, slack_ybtot);
-
-            Console.WriteLine("slack x : {0} / {1}", slack_xltor, slack_xrtol);
-            Console.WriteLine("slack y : {0} / {1}", slack_ybtot, slack_yttob);
-
-            // final movement to set slack to a known direction
-            // - any positive movements go to desired target
-            // - any negative movements have an extra distance added
-            //CNC_XY_m(Cnc.CurrentX - 3, Cnc.CurrentY - 3);
-            //CNC_XY_m(Cnc.CurrentX + 3, Cnc.CurrentY + 3);
-           // slackCompensation = new SlackCompensation(slack_xltor, slack_xrtol, slack_yttob, slack_ybtot);
-            
-        }
-
-
-
-        private float MeasureSlack(float dx, float dy) {
-            Thread.Sleep(150);
-            var circle1 = MeasureCircle();
-            CNC_XY_m(Cnc.CurrentX + dx, Cnc.CurrentY + dy);
-            var circle2 = MeasureCircle();
-            AForge.Point circleMove = circle2-circle1;
-            double zoom = DownCamera.GetMeasurementZoom();
-            circleMove.X *=(float) (Properties.Settings.Default.DownCam_XmmPerPixel / zoom);
-            circleMove.Y *=(float) (Properties.Settings.Default.DownCam_YmmPerPixel / zoom);
-            
-            var desired_diff = Math.Sqrt(dx*dx+dy*dy);
-            var actual_diff  = Math.Sqrt(circleMove.X*circleMove.X + circleMove.Y*circleMove.Y);
-
-            return (float)(desired_diff - actual_diff);
-        }
-
-        private AForge.Point MeasureCircle() {
-            double X, Y;
-            double xx = 0, yy = 0, cc = 0; 
-      
-            double zoom = DownCamera.GetMeasurementZoom();
-            for (int i = 0; i < 5; i++) {
-                var count = DownCamera.GetClosestCircle(out X, out Y, 200);
-                if (count == 1) {
-                    xx += X;
-                    yy += Y;
-                    cc++;
-                }
-            }
-            return new AForge.Point((float)((xx / cc) * zoom), (float)((yy / cc) * zoom));
-        }
-
-        private void button_saveSettings_Click(object sender, EventArgs e) {
-            Properties.Settings.Default.Save();
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-            SaveDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
-            SaveDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
-            SaveDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
-            SaveDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
-            SaveDataGrid(path + "LitePlacer.ComponentsFunctions", Components_dataGridView);
-            SaveDataGrid(path + "LitePlacer.PaperTapeFunctions", PaperTape_dataGridView);
-            SaveDataGrid(path + "LitePlacer.BlackTapeFunctions", BlackTape_dataGridView);
-            SaveDataGrid(path + "LitePlacer.ClearTapeFunctions", ClearTape_dataGridView);
-            SaveDataGrid(path + "LitePlacer.NeedleFunctions", Needle_dataGridView);
-            SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView);
-        }
-
-
-
-
-        // Template Based Fiducal Finding Settings - RN 5/23
-        #region Template Based Fiducal Settings
-
-        /// <summary>
-        /// If the use template checkbox is toggled, save the state
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cb_useTemplate_CheckedChanged(object sender, EventArgs e)   {
-            FindFiducials_cb.Enabled = ((CheckBox)sender).Checked;
-            Properties.Settings.Default.use_template = ((CheckBox)sender).Checked;
-            Properties.Settings.Default.Save();        
-        }
-
-        private void button_setTemplate_Click(object sender, EventArgs e) {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "jpg (*.jpg)|*.jpg|png (*.png)|*.png|All Files (*.*)|*.*";
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                Properties.Settings.Default.template_file = ofd.FileName;
-                Properties.Settings.Default.Save();
-            }       
-        }
-
-        private void fiducialTemlateMatch_textBox_KeyPress(object sender, KeyPressEventArgs e) {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.')) {
-                e.Handled = true;
-            }
-
-            // only allow one decimal point
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1)) {
-                e.Handled = true;
-            }
-
-            // save
-            double val;
-            if (e.KeyChar == '\r' && double.TryParse(((TextBox)sender).Text, out val)) {
-                Properties.Settings.Default.template_threshold = val;
-                Properties.Settings.Default.Save();
-            }
-            
-        }
-
-
-        private void fiducialTemlateMatch_textBox_Leave(object sender, EventArgs e) {
-            fiducialTemlateMatch_textBox_KeyPress(sender, new KeyPressEventArgs('\r'));
-        }
-
-        
-        private void fiducial_designator_regexp_textBox_TextChanged(object sender, EventArgs e) {
-            Properties.Settings.Default.fiducial_designator_regexp = ((TextBox)sender).Text;
-            Properties.Settings.Default.Save();
-        }
-#endregion
-
-
-
-
-
 
 
     }	// end of: 	public partial class FormMain : Form

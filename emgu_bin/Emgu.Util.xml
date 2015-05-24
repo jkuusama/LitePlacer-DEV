@@ -1,0 +1,487 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Emgu.Util</name>
+    </assembly>
+    <members>
+        <member name="T:Emgu.Util.BinaryFileStorage`1">
+            <summary>
+            A raw data storage
+            </summary>
+            <typeparam name="T">The type of elments in the storage</typeparam>
+        </member>
+        <member name="F:Emgu.Util.BinaryFileStorage`1._fileInfo">
+            <summary>
+            The file info
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.BinaryFileStorage`1.#ctor(System.String)">
+            <summary>
+            Create a binary File Storage
+            </summary>
+            <param name="fileName">The file name of the storage</param>
+        </member>
+        <member name="M:Emgu.Util.BinaryFileStorage`1.#ctor(System.String,System.Int32)">
+            <summary>
+            Create a binary File Storage
+            </summary>
+            <param name="fileName">The file name of the storage</param>
+            <param name="trunkSize">The data will be read in trunk of this size internally. Can be use to seed up the file read. A good number will be 4096</param>
+        </member>
+        <member name="M:Emgu.Util.BinaryFileStorage`1.#ctor(System.String,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Create a binary File Storage with the specific data
+            </summary>
+            <param name="fileName">The file name of the storage, all data in the existing file will be replaced</param>
+            <param name="samples">The data which will be stored in the storage</param>
+        </member>
+        <member name="M:Emgu.Util.BinaryFileStorage`1.Append(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Append the samples to the end of the storage
+            </summary>
+            <param name="samples">The samples to be appended to the storage</param>
+        </member>
+        <member name="M:Emgu.Util.BinaryFileStorage`1.Clear">
+            <summary>
+            Delete all data in the existing storage, if there is any.
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.BinaryFileStorage`1.EstimateSize">
+            <summary>
+            Estimate the number of elements in this storage as the size of the storage divided by the size of the elements
+            </summary>
+            <returns>An estimation of the number of elements in this storage</returns>
+        </member>
+        <member name="M:Emgu.Util.BinaryFileStorage`1.Peek">
+            <summary>
+            Get a copy of the first element in the storage. If the storage is empty, a default value will be returned
+            </summary>
+            <returns>A copy of the first element in the storage. If the storage is empty, a default value will be returned</returns>
+        </member>
+        <member name="M:Emgu.Util.BinaryFileStorage`1.GetSubsamples(System.Int32)">
+            <summary>
+            Get the subsampled data in this storage
+            </summary>
+            <param name="subsampleRate">The subsample rate</param>
+            <returns>The subsampled data in this storage</returns>
+        </member>
+        <member name="M:Emgu.Util.BinaryFileStorage`1.GetEnumerator">
+            <summary>
+            Get the data in this storage
+            </summary>
+            <returns>The data in this storage</returns>
+        </member>
+        <member name="P:Emgu.Util.BinaryFileStorage`1.FileName">
+            <summary>
+            The file name of the storage
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.DisposableObject">
+            <summary>
+            An abstract class that wrap around a disposable object
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.DisposableObject._disposed">
+            <summary> Track whether Dispose has been called. </summary>
+        </member>
+        <member name="M:Emgu.Util.DisposableObject.Dispose">
+            <summary>
+            The dispose function that implements IDisposable interface
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.DisposableObject.Dispose(System.Boolean)">
+            <summary> 
+             Dispose(bool disposing) executes in two distinct scenarios.
+             If disposing equals true, the method has been called directly
+             or indirectly by a user's code. Managed and unmanaged resources
+             can be disposed.
+             If disposing equals false, the method has been called by the
+             runtime from inside the finalizer and you should not reference
+             other objects. Only unmanaged resources can be disposed.
+            </summary>
+             <param name="disposing">
+             If disposing equals false, the method has been called by the
+             runtime from inside the finalizer and you should not reference
+             other objects. Only unmanaged resources can be disposed.
+             </param>
+        </member>
+        <member name="M:Emgu.Util.DisposableObject.ReleaseManagedResources">
+            <summary>
+            Release the managed resources. This function will be called during the disposal of the current object.
+            override ride this function if you need to call the Dispose() function on any managed IDisposable object created by the current object
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.DisposableObject.DisposeObject">
+            <summary>
+            Release the unmanaged resources
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.DisposableObject.Finalize">
+            <summary>
+            Destructor
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.EventArgs`1">
+            <summary>
+            A generic EventArgs
+            </summary>
+            <typeparam name="T">The type of arguments</typeparam>
+        </member>
+        <member name="M:Emgu.Util.EventArgs`1.#ctor(`0)">
+            <summary>
+            Create a generic EventArgs with the specific value
+            </summary>
+            <param name="value">The value</param>
+        </member>
+        <member name="P:Emgu.Util.EventArgs`1.Value">
+            <summary>
+            The value of the EventArgs
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.EventArgs`2">
+            <summary>
+            A generic EventArgs
+            </summary>
+            <typeparam name="T1">The type of the first value</typeparam>
+            <typeparam name="T2">The type of the second value</typeparam>
+        </member>
+        <member name="M:Emgu.Util.EventArgs`2.#ctor(`0,`1)">
+            <summary>
+            Create a generic EventArgs with two values
+            </summary>
+            <param name="value1">The first value</param>
+            <param name="value2">The second value</param>
+        </member>
+        <member name="P:Emgu.Util.EventArgs`2.Value1">
+            <summary>
+            The first value
+            </summary>
+        </member>
+        <member name="P:Emgu.Util.EventArgs`2.Value2">
+            <summary>
+            The second value
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.ICodeGenerable">
+            <summary>
+            Implement this interface if the object can output code to generate it self.
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.ICodeGenerable.ToCode(Emgu.Util.TypeEnum.ProgrammingLanguage)">
+            <summary>
+            Return the code to generate the object itself from the specific language
+            </summary>
+            <param name="language">The programming language to output code</param>
+            <returns>The code to generate the object from the specific language</returns>
+        </member>
+        <member name="T:Emgu.Util.IInterpolatable`1">
+            <summary>
+            An object that can be interpolated
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.IInterpolatable`1.LinearInterpolate(`0,System.Double)">
+            <summary>
+            Interpolate base on this point and the other point with the given index
+            </summary>
+            <param name="other">The other point</param>
+            <param name="index">The interpolation index</param>
+            <returns>The interpolated point</returns>
+        </member>
+        <member name="P:Emgu.Util.IInterpolatable`1.InterpolationIndex">
+            <summary>
+            The index that will be used for interpolation
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.PinnedArray`1">
+            <summary>
+            A Pinnned array of the specific type
+            </summary>
+            <typeparam name="T">The type of the array</typeparam>
+        </member>
+        <member name="M:Emgu.Util.PinnedArray`1.#ctor(System.Int32)">
+            <summary>
+            Create a Pinnned array of the specific type
+            </summary>
+            <param name="size">The size of the array</param>
+        </member>
+        <member name="M:Emgu.Util.PinnedArray`1.AddrOfPinnedObject">
+            <summary>
+            Get the address of the pinned array
+            </summary>
+            <returns>A pointer to the address of the the pinned array</returns>
+        </member>
+        <member name="M:Emgu.Util.PinnedArray`1.ReleaseManagedResources">
+            <summary>
+            Release the GCHandle
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.PinnedArray`1.DisposeObject">
+            <summary>
+            Disposed the unmanaged data
+            </summary>
+        </member>
+        <member name="P:Emgu.Util.PinnedArray`1.Array">
+            <summary>
+            Get the array
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.Platform">
+            <summary>
+            Provide information for the platform which is using. 
+            </summary>
+        </member>
+        <member name="P:Emgu.Util.Platform.OperationSystem">
+            <summary>
+            Get the type of the current operating system
+            </summary>
+        </member>
+        <member name="P:Emgu.Util.Platform.ClrType">
+            <summary>
+            Get the type of the current runtime environment
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.Toolbox">
+            <summary>
+            utilities functions for Emgu
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlSerialize``1(``0)">
+            <summary>
+            Convert an object to an xml document
+            </summary>
+            <typeparam name="T">The type of the object to be converted</typeparam>
+            <param name="sourceObject">The object to be serialized</param>
+            <returns>An xml document that represents the object</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlSerialize``1(``0,System.Type[])">
+            <summary>
+            Convert an object to an xml document
+            </summary>
+            <typeparam name="T">The type of the object to be converted</typeparam>
+            <param name="sourceObject">The object to be serialized</param>
+            <param name="knownTypes">Other types that it must known ahead to serialize the object</param>
+            <returns>An xml document that represents the object</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlDeserialize``1(System.Xml.Linq.XDocument)">
+            <summary>
+            Convert an xml document to an object
+            </summary>
+            <typeparam name="T">The type of the object to be converted to</typeparam>
+            <param name="document">The xml document</param>
+            <returns>The object representation as a result of the deserialization of the xml document</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlDeserialize``1(System.Xml.Linq.XDocument,System.Type[])">
+            <summary>
+            Convert an xml document to an object
+            </summary>
+            <typeparam name="T">The type of the object to be converted to</typeparam>
+            <param name="xDoc">The xml document</param>
+            <param name="knownTypes">Other types that it must known ahead to deserialize the object</param>
+            <returns>The object representation as a result of the deserialization of the xml document</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.XmlStringDeserialize``1(System.String)">
+            <summary>
+            Convert an xml string to an object
+            </summary>
+            <typeparam name="T">The type of the object to be converted to</typeparam>
+            <param name="xmlString">The xml document as a string</param>
+            <returns>The object representation as a result of the deserialization of the xml string</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.MergeBytes(System.Byte[],System.Byte[])">
+            <summary>
+            Merges two byte vector into one
+            </summary>
+            <param name="a">the first byte vector to be merged</param>
+            <param name="b">the second byte vector to be merged</param>
+            <returns>The bytes that is a concatenation of a and b</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.ExecuteCmd(System.String,System.String)">
+            <summary>
+            Call a command from command line
+            </summary>
+            <param name="execFileName">The name of the executable</param>
+            <param name="arguments">The arguments to the executeable</param>
+            <returns>The standard output</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.GetBaseType(System.Type,System.String)">
+            <summary>
+            Use reflection to find the base type. If such type do not exist, null is returned
+            </summary>
+            <param name="currentType">The type to search from</param>
+            <param name="baseClassName">The name of the base class to search</param>
+            <returns>The base type</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.ToBytes``1(``0[])">
+            <summary>
+            Convert some generic vector to vector of Bytes
+            </summary>
+            <typeparam name="TData">type of the input vector</typeparam>
+            <param name="data">array of data</param>
+            <returns>the byte vector</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.CopyVector``1(``0[],System.IntPtr)">
+            <summary>
+            Copy a generic vector to the unmanaged memory
+            </summary>
+            <typeparam name="TData">The data type of the vector</typeparam>
+            <param name="src">The source vector</param>
+            <param name="dest">Pointer to the destination unmanaged memory</param>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.CopyMatrix``1(``0[][],System.IntPtr)">
+            <summary>
+            Copy a jagged two dimensional array to the unmanaged memory
+            </summary>
+            <typeparam name="TData">The data type of the jagged two dimensional</typeparam>
+            <param name="source">The source array</param>
+            <param name="dest">Pointer to the destination unmanaged memory</param>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.CopyMatrix``1(System.IntPtr,``0[][])">
+            <summary>
+            Copy a jagged two dimensional array from the unmanaged memory
+            </summary>
+            <typeparam name="D">The data type of the jagged two dimensional</typeparam>
+            <param name="src">The src array</param>
+            <param name="dest">Pointer to the destination unmanaged memory</param>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.LinearInterpolate``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{System.Double})">
+            <summary>
+            Perform first degree interpolation give the sorted data <paramref name="src"/> and the interpolation <paramref name="indexes"/>
+            </summary>
+            <param name="src">The sorted data that will be interpolated from</param>
+            <param name="indexes">The indexes of the interpolate result</param>
+            <returns></returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.LinearSubsample``1(System.Collections.Generic.IEnumerable{``0},System.Double)">
+            <summary>
+            Get subsamples with the specific rate
+            </summary>
+            <param name="src">The source which the subsamples will be derived from</param>
+            <param name="subsampleRate">The subsample rate</param>
+            <returns><paramref name="src"/> subsampled with the specific rate </returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.JoinInterpolatables``1(System.Collections.Generic.IEnumerable{``0}[])">
+            <summary>
+            Joining multiple index ascending IInterpolatables together as a single index ascending IInterpolatable. 
+            </summary>
+            <typeparam name="T">The type of objects that will be joined</typeparam>
+            <param name="enums">The enumerables, each should be stored in index ascending order</param>
+            <returns>A single enumerable sorted in index ascending order</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.memcpy(System.IntPtr,System.IntPtr,System.Int32)">
+            <summary>
+            memcpy function
+            </summary>
+            <param name="dest">the destination of memory copy</param>
+            <param name="src">the source of memory copy</param>
+            <param name="len">the number of bytes to be copied</param>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.LoadLibrary(System.String)">
+            <summary>
+            Maps the specified executable module into the address space of the calling process.
+            </summary>
+            <param name="dllname">The name of the dll</param>
+            <returns>The handle to the library</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.FreeLibrary(System.IntPtr)">
+            <summary>
+            Decrements the reference count of the loaded dynamic-link library (DLL). When the reference count reaches zero, the module is unmapped from the address space of the calling process and the handle is no longer valid
+            </summary>
+            <param name="handle">The handle to the library</param>
+            <returns>If the function succeeds, the return value is true. If the function fails, the return value is false.</returns>
+        </member>
+        <member name="M:Emgu.Util.Toolbox.SetDllDirectory(System.String)">
+            <summary>
+            Adds a directory to the search path used to locate DLLs for the application
+            </summary>
+            <param name="path">The directory to be searched for DLLs</param>
+            <returns>True if success</returns>
+        </member>
+        <member name="T:Emgu.Util.TypeEnum.OS">
+            <summary>
+            Type of operating system
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.OS.Windows">
+            <summary>
+            Windows
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.OS.Linux">
+            <summary>
+            Linux
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.OS.MacOSX">
+            <summary>
+            Mac OSX
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.OS.IOS">
+            <summary>
+            iOS devices. iPhone, iPad, iPod Touch
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.OS.Android">
+            <summary>
+            Android devices
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.TypeEnum.ClrType">
+            <summary>
+            The runtime environment
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.ClrType.DotNet">
+            <summary>
+            .Net runtime
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.ClrType.NetFxCore">
+            <summary>
+            Windows Store app runtime
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.ClrType.Mono">
+            <summary>
+            Mono runtime
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.TypeEnum.ProgrammingLanguage">
+            <summary>
+            The type of Programming languages
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.ProgrammingLanguage.CSharp">
+            <summary>
+            C#
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.TypeEnum.ProgrammingLanguage.CPlusPlus">
+            <summary>
+            C++
+            </summary>
+        </member>
+        <member name="T:Emgu.Util.UnmanagedObject">
+            <summary>
+            An Unmanaged Object is a disposable object with a Ptr property pointing to the unmanaged object
+            </summary>
+        </member>
+        <member name="F:Emgu.Util.UnmanagedObject._ptr">
+            <summary>
+            A pointer to the unmanaged object
+            </summary>
+        </member>
+        <member name="M:Emgu.Util.UnmanagedObject.op_Implicit(Emgu.Util.UnmanagedObject)~System.IntPtr">
+            <summary>
+            Implicit operator for IntPtr
+            </summary>
+            <param name="obj">The UnmanagedObject</param>
+            <returns>The unmanaged pointer for this object</returns>
+        </member>
+        <member name="P:Emgu.Util.UnmanagedObject.Ptr">
+            <summary>
+            Pointer to the unmanaged object
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Emgu.CV.Stitching</name>
+    </assembly>
+    <members>
+        <member name="T:Emgu.CV.Stitching.Stitcher">
+            <summary>
+            Image Stitching.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.Stitching.Stitcher.#ctor(System.Boolean)">
+            <summary>
+            Creates a stitcher with the default parameters.
+            </summary>
+            <param name="tryUseGpu">If true, the stitcher will try to use GPU for processing when available</param>
+        </member>
+        <member name="M:Emgu.CV.Stitching.Stitcher.Stitch(Emgu.CV.Image{Emgu.CV.Structure.Bgr,System.Byte}[])">
+            <summary>
+            Compute the panoramic images given the images
+            </summary>
+            <param name="images">The input images</param>
+            <returns>The panoramic image</returns>
+        </member>
+        <member name="M:Emgu.CV.Stitching.Stitcher.DisposeObject">
+            <summary>
+            Release memory associated with this stitcher
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -9,6 +9,12 @@ namespace LitePlacer
 {
 	public class Shapes
 	{
+        public enum ShapeTypes {
+            Thing,
+            Circle,
+            Fiducial
+        };
+
 		public class Component
 		{
 			public AForge.Point Center { get; set; }	// Centerpoint of component
@@ -30,19 +36,54 @@ namespace LitePlacer
 			}
 		}
 
-		public class Circle
-		{
-			public double X { get; set; }
-			public double Y { get; set; }
+        /// <summary>
+        ///  Generic class for an object that is located someplace
+        /// </summary>
+        public class Thing {
+            public double X { get; set; }
+            public double Y { get; set; }
+           
+            public AForge.Point Center { 
+                get { return new AForge.Point((float)this.X, (float)this.Y); }
+                set { X = value.X; Y = value.Y; }
+            }
+            public Thing(double x, double y) {
+                X = x;
+                Y = y;
+            }
+
+            public double DistanceFrom(AForge.Point point) {
+                return DistanceFrom(point.X, point.Y);
+            }
+
+            public double DistanceFrom(double x, double y) {
+                return Math.Sqrt(Math.Pow((x - X), 2) + Math.Pow((y - Y), 2));
+            }
+
+            public Point VectorFrom(double x, double y) {
+                return new Point((float)(X - x), (float)(Y - y));
+            }
+
+            /// <summary>
+            /// Distance from this Thing to x,y divided by zoom
+            /// </summary>
+            public Point VectorFrom(double x, double y, double zoom) {
+                return new Point((float)((X - x)/zoom), (float)((Y - y)/zoom));
+            }
+
+        }
+
+		public class Circle : Thing {
 			public double Radius { get; set; }
 
-			public Circle(double x, double y, double r)
-			{
-				X = x;
-				Y = y;
+			public Circle(double x, double y, double r) : base(x,y) {
 				Radius = r;
 			}
 		}
+
+        public class Fiducal : Thing {
+            public Fiducal(double x, double y) : base(x, y) { }
+        }
 
 	}
 

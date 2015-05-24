@@ -206,5 +206,17 @@
     <Setting Name="General_UpgradeRequired" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="template_file" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="use_template" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="template_threshold" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.7</Value>
+    </Setting>
+    <Setting Name="fiducial_designator_regexp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">^FID?</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
