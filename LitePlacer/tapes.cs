@@ -51,6 +51,28 @@ namespace LitePlacer
 			Grid.Rows[tape].Cells["NextY_Column"].Value = Grid.Rows[tape].Cells["Y_Column"].Value;
 		}
 
+        /// <summary>
+        /// Returns the row corresponding to the row #
+        /// </summary>
+        /// <param name="row">row #</param>
+        /// <returns></returns>
+        public DataGridViewCellCollection GetTapeRow(int row) {
+            return Grid.Rows[row].Cells;
+        }
+
+        /// <summary>
+        /// Returns the row corresponding to the string name or null if not found 
+        /// </summary>
+        /// <param name="id">string name</param>
+        /// <returns></returns>
+        public DataGridViewCellCollection GetTapeRow(string id) {
+            int row;
+            if (IdValidates_m(id, out row)) {
+                return GetTapeRow(row);
+            }
+            return null;            
+        }
+
 		// ========================================================================================
 		// IdValidates_m(): Checks that tape with description of "Id" exists.
 		// Tape is set to the corresponding row of the Grid.
@@ -138,11 +160,66 @@ namespace LitePlacer
 		}
 
 
+        // ========================================================================================
+        // GotoNextPart_m(): Takes needle to exact location of the part, tape rotation taken in to account.
+        // The position is measured using tape holes and knowledge about tape width and pitch (see EIA-481 standard).
+        // Id tells the tape name. 
+        public bool GotoNextPart_m(string Id) {
+            int Tape = 0;
+            MainForm.DisplayText("GotoNextPart_m(), tape id: " + Id);
+            if (!IdValidates_m(Id, out Tape)) return false;
+            
+            //Load & Parse Data
+            TapeObj tapeObj = new TapeObj(GetTapeRow(Tape));
+
+            //Setup Camera
+            if (!SetCurrentTapeMeasurement_m(tapeObj.Type)) return false;
+
+            // Go:
+            var p = tapeObj.GetNearestCurrentPartHole();
+            double X = p.X;
+            double Y = p.Y;
+            if (!MainForm.CNC_XY_m(p.X, p.Y)) return false;
+            
+            // goto hole exact location:
+            if (!MainForm.GoToLocation_m(Shapes.ShapeTypes.Circle, 1.8, 0.5, out X, out Y)) {
+                MainForm.ShowMessageBox(
+                    "Can't find tape hole",
+                    "Tape error",
+                    MessageBoxButtons.OK
+                );
+                return false;
+            }
+
+            // X,Y are the offsets form the previous location (Cnc.Current{X,y}) 
+            // the sum gives us the measured location of the circle
+            X += Cnc.CurrentX;
+            Y += Cnc.CurrentY;
+
+            // ==================================================
+            // find the part location and go there:
+            // this is done as a local offset from the hole location detected closest to the part
+            var partOffset = tapeObj.GetCurrentPartLocation() - tapeObj.GetNearestCurrentPartHole();
+            X += partOffset.X;
+            Y += partOffset.Y;
+            double A = partOffset.A;
+
+            // Take needle there:
+            if (!Needle.Move_m(X, Y, A)) return false;
+            
+            // Increment Part 
+            tapeObj.NextPart();
+            // increment table to keep backwards compatibility
+            Grid.Rows[Tape].Cells["Next_Column"].Value = tapeObj.CurrentPartIndex();
+
+            return true;
+        }	
+
 		// ========================================================================================
 		// GotoNextPart_m(): Takes needle to exact location of the part, tape rotation taken in to account.
 		// The position is measured using tape holes and knowledge about tape width and pitch (see EIA-481 standard).
 		// Id tells the tape name. 
-		public bool GotoNextPart_m(string Id)
+		public bool OLD_GotoNextPart_m(string Id)
 		{
 			int Tape= 0;
             MainForm.DisplayText("GotoNextPart_m(), tape id: " + Id);
@@ -151,7 +228,7 @@ namespace LitePlacer
 				return false;
 			}
 			// goto next hole approximate location:
-			if (!SetCurrentTapeMeasurement_m(Tape))  // having the measurement setup here helps with the automatic gain lag
+			if (!OLD_SetCurrentTapeMeasurement_m(Tape))  // having the measurement setup here helps with the automatic gain lag
 				return false;
 
 			double X= 0;
@@ -423,9 +500,30 @@ namespace LitePlacer
 			return true;
 		}	// end GotoNextPart_m
 
+
+        //-----------
+        public bool SetCurrentTapeMeasurement_m(TapeType type) {
+            switch (type) {
+                case TapeType.Clear:
+                    MainForm.SetClearTapeMeasurement();
+                    break;
+                case TapeType.Black:
+                    MainForm.SetBlackTapeMeasurement();
+                    break;
+                case TapeType.White:
+                    MainForm.SetPaperTapeMeasurement();
+                    break;
+                default:
+                    return false;
+            }
+            Thread.Sleep(200);
+            return true;
+        }
+		
+
 		// ========================================================================================
 		// SetCurrentTapeMeasurement_m(): sets the camera measurement parameters according to the tape type.
-		private bool SetCurrentTapeMeasurement_m(int row)
+		public bool OLD_SetCurrentTapeMeasurement_m(int row)
 		{
 			switch (Grid.Rows[row].Cells["TypeColumn"].Value.ToString())
 			{

@@ -15,19 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_0100A43EF05D984BF8A8965CA1F879D5"
-        "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
+        "MsmKey" = "8:_0F3F66569A3EB3CBBE36CAE96BD47922"
+        "OwnerKey" = "8:_F9F17E0C7C7E27E7B1D3B5BF1D02346E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_08220745ACE279EEE10171C17FE08927"
-        "OwnerKey" = "8:_0100A43EF05D984BF8A8965CA1F879D5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_08220745ACE279EEE10171C17FE08927"
+        "MsmKey" = "8:_0F3F66569A3EB3CBBE36CAE96BD47922"
         "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -39,20 +33,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_434AFA04EA7A0257D2B5C63199BB00DE"
+        "MsmKey" = "8:_23ED859D0EDDAD403A705B207954ABD5"
+        "OwnerKey" = "8:_5739934BE265DD74BFD94F49F3AF15F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_23ED859D0EDDAD403A705B207954ABD5"
         "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_47275344C0B2C33B25CC0B19EBDE950E"
-        "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_47275344C0B2C33B25CC0B19EBDE950E"
-        "OwnerKey" = "8:_53AFC114BCD3AD4B925385802BCD62F4"
+        "MsmKey" = "8:_23ED859D0EDDAD403A705B207954ABD5"
+        "OwnerKey" = "8:_F9F17E0C7C7E27E7B1D3B5BF1D02346E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -105,13 +99,37 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_527E688B847726D17ABFC318879924C2"
+        "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_53AFC114BCD3AD4B925385802BCD62F4"
         "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_64A8F7D41A248F7B2ED84F78EC917F4E"
+        "MsmKey" = "8:_5739934BE265DD74BFD94F49F3AF15F2"
+        "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5739934BE265DD74BFD94F49F3AF15F2"
+        "OwnerKey" = "8:_F9F17E0C7C7E27E7B1D3B5BF1D02346E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_621642866B5C9D3C64C4B027582603AE"
+        "OwnerKey" = "8:_53AFC114BCD3AD4B925385802BCD62F4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_621642866B5C9D3C64C4B027582603AE"
         "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -131,36 +149,6 @@
         {
         "MsmKey" = "8:_6615224D2989A62149B0BC89E7D49B77"
         "OwnerKey" = "8:_53AFC114BCD3AD4B925385802BCD62F4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_933598888A545955052E56355CCEDD48"
-        "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_933598888A545955052E56355CCEDD48"
-        "OwnerKey" = "8:_0100A43EF05D984BF8A8965CA1F879D5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9988137C80A82F3FBCB2B640AE4EA8A6"
-        "OwnerKey" = "8:_933598888A545955052E56355CCEDD48"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9988137C80A82F3FBCB2B640AE4EA8A6"
-        "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9988137C80A82F3FBCB2B640AE4EA8A6"
-        "OwnerKey" = "8:_0100A43EF05D984BF8A8965CA1F879D5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -185,6 +173,12 @@
         {
         "MsmKey" = "8:_A3608C841D554CDA972CB0F51A25FB63"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B9BC41725856234E65682E88824EE811"
+        "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -219,8 +213,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_47275344C0B2C33B25CC0B19EBDE950E"
+        "MsmKey" = "8:_F9F17E0C7C7E27E7B1D3B5BF1D02346E"
+        "OwnerKey" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -239,6 +233,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_53AFC114BCD3AD4B925385802BCD62F4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_621642866B5C9D3C64C4B027582603AE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -274,37 +274,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_434AFA04EA7A0257D2B5C63199BB00DE"
+        "OwnerKey" = "8:_527E688B847726D17ABFC318879924C2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_64A8F7D41A248F7B2ED84F78EC917F4E"
+        "OwnerKey" = "8:_B9BC41725856234E65682E88824EE811"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0100A43EF05D984BF8A8965CA1F879D5"
+        "OwnerKey" = "8:_F9F17E0C7C7E27E7B1D3B5BF1D02346E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_08220745ACE279EEE10171C17FE08927"
+        "OwnerKey" = "8:_0F3F66569A3EB3CBBE36CAE96BD47922"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_933598888A545955052E56355CCEDD48"
+        "OwnerKey" = "8:_5739934BE265DD74BFD94F49F3AF15F2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9988137C80A82F3FBCB2B640AE4EA8A6"
+        "OwnerKey" = "8:_23ED859D0EDDAD403A705B207954ABD5"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -325,6 +325,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -341,6 +362,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -370,45 +399,14 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0100A43EF05D984BF8A8965CA1F879D5"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Emgu.CV.UI, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_0100A43EF05D984BF8A8965CA1F879D5"
-                    {
-                    "Name" = "8:Emgu.CV.UI.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Emgu.CV.UI.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_08220745ACE279EEE10171C17FE08927"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0F3F66569A3EB3CBBE36CAE96BD47922"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:ZedGraph, Version=5.1.5.28844, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_08220745ACE279EEE10171C17FE08927"
+                    "_0F3F66569A3EB3CBBE36CAE96BD47922"
                     {
                     "Name" = "8:ZedGraph.dll"
                     "Attributes" = "3:512"
@@ -463,51 +461,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_434AFA04EA7A0257D2B5C63199BB00DE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_23ED859D0EDDAD403A705B207954ABD5"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MathNet.Numerics, Version=3.5.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Emgu.Util, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_434AFA04EA7A0257D2B5C63199BB00DE"
+                    "_23ED859D0EDDAD403A705B207954ABD5"
                     {
-                    "Name" = "8:MathNet.Numerics.dll"
+                    "Name" = "8:Emgu.Util.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:MathNet.Numerics.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_47275344C0B2C33B25CC0B19EBDE950E"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.VisualStudio.DebuggerVisualizers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_47275344C0B2C33B25CC0B19EBDE950E"
-                    {
-                    "Name" = "8:Microsoft.VisualStudio.DebuggerVisualizers.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.VisualStudio.DebuggerVisualizers.dll"
+            "SourcePath" = "8:Emgu.Util.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
@@ -587,6 +554,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_527E688B847726D17ABFC318879924C2"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MathNet.Numerics, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_527E688B847726D17ABFC318879924C2"
+                    {
+                    "Name" = "8:MathNet.Numerics.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:MathNet.Numerics.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_53AFC114BCD3AD4B925385802BCD62F4"
             {
             "AssemblyRegister" = "3:1"
@@ -618,20 +616,51 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_64A8F7D41A248F7B2ED84F78EC917F4E"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5739934BE265DD74BFD94F49F3AF15F2"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:HomographyEstimation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Emgu.CV, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_64A8F7D41A248F7B2ED84F78EC917F4E"
+                    "_5739934BE265DD74BFD94F49F3AF15F2"
                     {
-                    "Name" = "8:HomographyEstimation.dll"
+                    "Name" = "8:Emgu.CV.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:HomographyEstimation.dll"
+            "SourcePath" = "8:Emgu.CV.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_621642866B5C9D3C64C4B027582603AE"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.VisualStudio.DebuggerVisualizers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_621642866B5C9D3C64C4B027582603AE"
+                    {
+                    "Name" = "8:Microsoft.VisualStudio.DebuggerVisualizers.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.VisualStudio.DebuggerVisualizers.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
@@ -663,68 +692,6 @@
                     }
                 }
             "SourcePath" = "8:AForge.Math.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_933598888A545955052E56355CCEDD48"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Emgu.CV, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_933598888A545955052E56355CCEDD48"
-                    {
-                    "Name" = "8:Emgu.CV.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Emgu.CV.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9988137C80A82F3FBCB2B640AE4EA8A6"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Emgu.Util, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_9988137C80A82F3FBCB2B640AE4EA8A6"
-                    {
-                    "Name" = "8:Emgu.Util.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Emgu.Util.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
@@ -791,6 +758,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B9BC41725856234E65682E88824EE811"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:HomographyEstimation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B9BC41725856234E65682E88824EE811"
+                    {
+                    "Name" = "8:HomographyEstimation.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:HomographyEstimation.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C5E10FBBC008479C85D0827302F5D2AD"
@@ -864,6 +862,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F9F17E0C7C7E27E7B1D3B5BF1D02346E"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Emgu.CV.UI, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F9F17E0C7C7E27E7B1D3B5BF1D02346E"
+                    {
+                    "Name" = "8:Emgu.CV.UI.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Emgu.CV.UI.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -902,6 +931,17 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_4FF795CCE29248B1905CF9240153DD0F"
+                    {
+                    "Name" = "8:LitePlacer RMod"
+                    "AlwaysCreate" = "11:TRUE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_572EB84388504F1EB156282C6F77CE7B"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
         }
@@ -921,7 +961,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Installer"
         "ProductCode" = "8:{A23C6EDA-C8C4-4C44-9997-0CBB63C41D4E}"
-        "PackageCode" = "8:{BC597A80-2AA4-4A96-BC21-FA24653C8BC7}"
+        "PackageCode" = "8:{E709C6D9-1220-4AB6-97DB-7DECA939488E}"
         "UpgradeCode" = "8:{FCFAD360-C03E-43B9-9F3C-61C4B5C3B4CC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1041,6 +1081,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_BC1E1515EFD7408F93382F814EA270C3"
+            {
+            "Name" = "8:lp-rmod"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_D5A1607DA78F43E4B8504E5CF35CCC76"
+            "Folder" = "8:_4FF795CCE29248B1905CF9240153DD0F"
+            "WorkingFolder" = "8:_6507520CF5BA42729C9A4BE15A40D934"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {

@@ -25,6 +25,11 @@ namespace LitePlacer
 {
 	class Camera
 	{
+        //these are locations to draw as an overlay on the image
+        //the points are relative to the centeral point (0,0) on the screen
+        public List<PointF> MarkA = new List<PointF>();
+        public List<PointF> MarkB = new List<PointF>();
+
 		private VideoCaptureDevice VideoSource = null;
 		private FormMain MainForm;
 
@@ -383,7 +388,7 @@ namespace LitePlacer
 		// The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame form the stream, 
 		// processes it with the MeasurementFunctions list and returns the processed frame:
 
-		private Bitmap GetMeasurementFrame()
+		public Bitmap GetMeasurementFrame()
 		{
 			// Take a snapshot:
 			CopyFrame = true;
@@ -460,6 +465,7 @@ namespace LitePlacer
 		public bool FindCircles { get; set; }       // Find and highlight circles in the image
 		public bool FindRectangles { get; set; }    // Find and draw regtangles in the image
         public bool FindFiducial { get; set; }      // Find and marks location of template based fiducials in image
+        public bool Draw1mmGrid { get; set; }       // overlay image with a 1mm grid pattern based on optical mapping
 		public bool FindComponent { get; set; }     // Finds a component and identifies its center
 		public bool TakeSnapshot { get; set; }      // Takes a b&w snapshot (of a component, most likely)     
 		public bool Draw_Snapshot { get; set; }     // Draws the snapshot on the image 
@@ -558,81 +564,39 @@ namespace LitePlacer
 		private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
 			Bitmap frame = (Bitmap)eventArgs.Frame.Clone();
-			if (CopyFrame)
-			{
+			if (CopyFrame)	{
 				TemporaryFrame = (Bitmap)frame.Clone();
 				CopyFrame = false;
-			};
-			if (PauseProcessing)
-			{
+			}
+			if (PauseProcessing) {
 				paused = true;
 				return;
-			};
+			}
 
-			if (DisplayFunctions != null)
-			{
-				foreach (AForgeFunction f in DisplayFunctions)
-				{
+			if (DisplayFunctions != null)			{
+				foreach (AForgeFunction f in DisplayFunctions)	{
 					f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
 				}
 			}
 
-			if (FindCircles)
-			{
-				DrawCirclesFunct(frame);
-			};
+			if (FindCircles)     DrawCirclesFunct(frame);
+			if (FindRectangles)  frame = DrawRectanglesFunct(frame);
+            if (FindFiducial)    frame = DrawFiducialFunct(frame);
+			if (FindComponent)   frame = DrawComponentsFunct(frame);
+			if (Draw_Snapshot)   frame = Draw_SnapshotFunct(frame);
+			if (Mirror)          frame = MirrorFunct(frame);
+			if (DrawBox)         DrawBoxFunct(frame);
+			if (Zoom)            ZoomFunct(ref frame, ZoomFactor);
+			if (DrawCross)       DrawCrossFunct(ref frame);
+            if (Draw1mmGrid)     DrawGridFunct(ref frame);
+            if (DrawSidemarks)   DrawSidemarksFunct(ref frame);
+			if (DrawDashedCross) DrawDashedCrossFunct(frame);
+            if (MarkA.Count > 0) frame = DrawMarks(frame, MarkA, Color.Blue, 20);
+            if (MarkB.Count > 0) frame = DrawMarks(frame, MarkB, Color.Red, 20);
 
-			if (FindRectangles)
-			{
-				frame = DrawRectanglesFunct(frame);
-			};
-
-            if (FindFiducial) frame = DrawFiducialFunct(frame);
-
-			if (TakeSnapshot)
-			{
+			if (TakeSnapshot)			{
 				TakeSnapshot_funct(frame);
 				TakeSnapshot = false;
-			};
-
-			if (FindComponent)
-			{
-				frame = DrawComponentsFunct(frame);
-			};
-
-			if (Draw_Snapshot)
-			{
-				frame = Draw_SnapshotFunct(frame);
-			};
-
-			if (Mirror)
-			{
-				frame = MirrorFunct(frame);
-			};
-
-			if (DrawBox)
-			{
-				DrawBoxFunct(frame);
-			};
-
-			if (Zoom)
-			{
-				ZoomFunct(ref frame, ZoomFactor);
-			};
-
-			if (DrawCross) 
-			{
-				DrawCrossFunct(ref frame);
-			};
-
-			if (DrawSidemarks) 
-			{
-				DrawSidemarksFunct(ref frame);
-			};
-
-			if (DrawDashedCross)
-			{
-				DrawDashedCrossFunct(frame);
 			};
 
 			ImageBox.Image = frame;
@@ -1084,7 +1048,7 @@ namespace LitePlacer
 		// ==========================================================================================================
 		// Circles:
 		// ==========================================================================================================
-		private List<Shapes.Circle> FindCirclesFunct(Bitmap bitmap)
+		public List<Shapes.Circle> FindCirclesFunct(Bitmap bitmap)
 		{
 			// locating objects
 			BlobCounter blobCounter = new BlobCounter();
@@ -1305,6 +1269,23 @@ namespace LitePlacer
 		}
 
         // =========================================================
+        /// <summary>
+        /// This function will display markings at specified locations on the image
+        /// </summary>
+        private Bitmap DrawMarks(Bitmap image, List<PointF> points, Color color, int size) {
+            try {
+                Image<Bgr, Byte> img = new Image<Bgr, byte>(image);
+                foreach (var pt in points) {
+                    PointF p = new PointF(pt.X + FrameCenterX, pt.Y + FrameCenterY);
+                    img.Draw(new Cross2DF(p, size, size), new Bgr(color), 2);
+                }
+                return img.ToBitmap();
+            } catch {
+                return image;
+            }
+        }
+
+        // =========================================================
         private Bitmap DrawFiducialFunct(Bitmap image) {
 
             // step 1 - Find Fiducials
@@ -1386,6 +1367,32 @@ namespace LitePlacer
 				i = i + 2 * step;
 			}
 		}
+
+        // =========================================================
+
+        private void DrawGridFunct(ref Bitmap img) {  // i get out of memory errors here all the time - not sure why 
+            // so protecting execution this way.
+            try {
+                Pen pen = new Pen(Color.Red, 1);
+                Graphics g = Graphics.FromImage(img);
+
+                var xscale = Properties.Settings.Default.DownCam_XmmPerPixel;
+                var yscale = Properties.Settings.Default.DownCam_YmmPerPixel;
+                var xlines = FrameSizeX / 2 * xscale;
+                var ylines = FrameSizeY / 2 * yscale;
+
+                for (int i = 0; i < xlines; i++) {
+                    g.DrawLine(pen, FrameCenterX+(int)(i / xscale), FrameSizeY, FrameCenterX+(int)(i / xscale), 0);
+                    g.DrawLine(pen, FrameCenterX+(int)(-i / xscale), FrameSizeY,FrameCenterX+(int)(-i / xscale), 0);
+                }
+                for (int i = 0; i < ylines; i++) {
+                    g.DrawLine(pen, 0, FrameCenterY+(int)(i/yscale), FrameSizeX, FrameCenterY+(int)(i/yscale));
+                    g.DrawLine(pen, 0, FrameCenterY+(int)(-i/yscale), FrameSizeX, FrameCenterY+(int)(-i/yscale));
+                }
+            } catch (Exception e) {
+                Console.WriteLine("DrawGridFunct Error: " + e);
+            }
+        }
 		// =========================================================
 
 		private void DrawCrossFunct(ref Bitmap img)

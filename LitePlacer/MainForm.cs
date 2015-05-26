@@ -23,7 +23,9 @@ using AForge.Imaging;
 using System.Windows.Media;
 using MathNet.Numerics;
 using HomographyEstimation;
+
 using System.Text.RegularExpressions;
+
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.Util;
@@ -882,8 +884,6 @@ namespace LitePlacer
             result &= CNC_XY_m(Properties.Settings.Default.UpCam_PositionX, Properties.Settings.Default.UpCam_PositionY);
             result &= CNC_Z_m(Properties.Settings.Default.General_ZtoPCB - 1.0); // Average small component height 1mm (?)
 
-
-            // measure the values
             SetNeedleMeasurement();
             result &= Needle.Calibrate(4.0 / Properties.Settings.Default.UpCam_XmmPerPixel);  // have to find the tip within 4mm of center
 
@@ -1060,6 +1060,14 @@ namespace LitePlacer
             Cnc.XYA(X, Y, A);
             Cnc_ReadyEvent.Wait();
             CNC_BlockingWriteDone = true;
+        }
+
+        public bool CNC_XYA_m(PartLocation loc) {
+            return CNC_XYA_m(loc.X, loc.Y, loc.A);
+        }
+
+        public bool CNC_XY_m(PartLocation loc) {
+            return CNC_XY_m(loc.X, loc.Y);
         }
 
         public bool CNC_XY_m(double X, double Y)
@@ -1618,6 +1626,9 @@ namespace LitePlacer
             DownCamera.DrawBox = false;
             DownCameraDrawBox_checkBox.Checked = false;
             DownCamera.FindFiducial = false;
+            DownCamera.Draw1mmGrid = false;
+            DownCamera.MarkA.Clear();
+            DownCamera.MarkB.Clear();
         }
         // ====
         private void SetUpCameraDefaults()
@@ -1639,6 +1650,8 @@ namespace LitePlacer
             UpCamera.Draw_Snapshot = false;
             UpCamera.DrawBox = false;
             UpCameraDrawBox_checkBox.Checked = false;
+            UpCamera.MarkA.Clear();
+            UpCamera.MarkB.Clear();               
         }
 
         // =================================================================================
@@ -2001,32 +2014,15 @@ namespace LitePlacer
 
 
         // =================================================================================
-        private void DownCamZoom_checkBox_Click(object sender, EventArgs e)
-        {
-            if (DownCamZoom_checkBox.Checked)
-            {
-                DownCamera.Zoom = true;
-                Properties.Settings.Default.DownCam_Zoom = true;
-            }
-            else
-            {
-                DownCamera.Zoom = false;
-                Properties.Settings.Default.DownCam_Zoom = false;
-            }
+        private void DownCamZoom_checkBox_Click(object sender, EventArgs e)        {
+            DownCamera.Zoom = DownCamZoom_checkBox.Checked;
+            Properties.Settings.Default.DownCam_Zoom = DownCamera.Zoom;
         }
+
         // ====
-        private void UpCamZoom_checkBox_Click(object sender, EventArgs e)
-        {
-            if (UpCamZoom_checkBox.Checked)
-            {
-                UpCamera.Zoom = true;
-                Properties.Settings.Default.UpCam_Zoom = true;
-            }
-            else
-            {
-                UpCamera.Zoom = false;
-                Properties.Settings.Default.UpCam_Zoom = false;
-            }
+        private void UpCamZoom_checkBox_Click(object sender, EventArgs e)    {
+            UpCamera.Zoom = UpCamZoom_checkBox.Checked;
+            Properties.Settings.Default.UpCam_Zoom = UpCamera.Zoom;
         }
 
         // =================================================================================
@@ -2270,7 +2266,7 @@ namespace LitePlacer
                     NeedleOffsetMarkX = Cnc.CurrentX;
                     NeedleOffsetMarkY = Cnc.CurrentY;
                     CNC_Z_m(0);
-                    CNC_XY_m(Cnc.CurrentX - 75.0, Cnc.CurrentY - 29.0);
+                    CNC_XY_m(Cnc.CurrentX - 75.0, Cnc.CurrentY - 25.0);
                     DownCamera.DrawCross = true;
                     NeedleOffset_label.Text = "Jog camera above the same point, \n\rthen click \"Next\"";
                     break;
@@ -8029,6 +8025,10 @@ namespace LitePlacer
 
         }
 
+        private void drawGrid_checkBox_CheckedChanged(object sender, EventArgs e) {
+            DownCamera.Draw1mmGrid = ((CheckBox)sender).Checked;
+        }
+
         private void FindFiducials_cb_CheckedChanged(object sender, EventArgs e) {
             DownCamera.FindFiducial = ((CheckBox)sender).Checked;
         }
@@ -9110,25 +9110,34 @@ namespace LitePlacer
             }
         }
 
-        private void Tape_GoToNext_button_Click(object sender, EventArgs e)
-        {
-            if (Tapes_dataGridView.SelectedCells.Count != 1)
-            {
-                return;
-            };
-            double X;
-            double Y;
-            int row = Tapes_dataGridView.CurrentCell.RowIndex;
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["NextX_Column"].Value.ToString(), out X))
-            {
-                return;
-            }
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["NextY_Column"].Value.ToString(), out Y))
-            {
-                return;
-            }
-            CNC_XY_m(X, Y);
+
+
+
+        // will go to the nearest hole to the next part and display what it will pick up gooz
+        private void Tape_GoToNext_button_Click(object sender, EventArgs e)        {
+            if (Tapes_dataGridView.SelectedCells.Count != 1) return;
+            int row =  Tapes_dataGridView.CurrentCell.RowIndex;
+
+            TapeObj to = new TapeObj(Tapes.GetTapeRow(row));
+            Tapes.SetCurrentTapeMeasurement_m(to.Type); //setup tape type to measure
+            
+            // move to closest hole to the part we are looking for
+            CNC_XY_m(to.GetNearestCurrentPartHole());
+            var hole = CenterCameraOnCircle();
+
+            // move camera on top of the part, and then move from there to the part to pick up
+            var offset = to.GetCurrentPartLocation() - to.GetNearestCurrentPartHole();
+            CNC_XY_m(hole + offset);
+
+            // clear marks
+           // DownCamera.MarkA.Clear();
+           // DownCamera.MarkB.Clear();
+
+            // mark location
+           // DownCamera.MarkB.Add((to.GetCurrentPartLocation() - hole).ToPixels().ToPointF());
+
         }
+
 
         private void Tape_resetZs_button_Click(object sender, EventArgs e)
         {
@@ -9334,6 +9343,10 @@ namespace LitePlacer
 
             //setup camera
             SetHomingMeasurement();
+
+            // temp turn off zoom
+            var savedZoom = DownCamera.Zoom;
+            DownCamera.Zoom = false;
            
             List<AForge.Point> pts = new List<AForge.Point>();
             List<AForge.Point> offsets = new List<AForge.Point>();
@@ -9363,9 +9376,11 @@ namespace LitePlacer
             }
 
             //debug
+            DisplayText("---- AUTO OPTICAL CALIBRATION ----", Color.Purple);
+            DisplayText("CircleX,CircleY,MovementX,MovementY", Color.Purple);
             for (int i=0; i<pts.Count; i++) 
-                Console.WriteLine("{0},{1},{2},{3}", offsets[i].X, offsets[i].Y, pts[i].X, pts[i].Y);
-
+                DisplayText(String.Format("{0},{1},{2},{3}", offsets[i].X, offsets[i].Y, pts[i].X, pts[i].Y),Color.Purple);
+            
             //compute slope - ideally w/ least squares but i don't think it's that critical
             float[] x1 = offsets.Select(x => x.X).ToArray();
             float[] x2 = pts.Select(x => x.X).ToArray();
@@ -9392,7 +9407,7 @@ namespace LitePlacer
             float Xratio = slopeX1 / slopeX2;
             float Yratio = slopeY1 / slopeY2;
 
-            Console.WriteLine("{0} mm/pixel   {1} mm/pixel", Xratio, Yratio);
+            DisplayText(String.Format("{0} Xmm/pixel   {1} Ymm/pixel", Xratio, Yratio),Color.Purple);
 
             // update values
             Properties.Settings.Default.DownCam_XmmPerPixel = Math.Abs(Xratio);
@@ -9432,6 +9447,9 @@ namespace LitePlacer
             //CNC_XY_m(Cnc.CurrentX - 3, Cnc.CurrentY - 3);
             //CNC_XY_m(Cnc.CurrentX + 3, Cnc.CurrentY + 3);
            // slackCompensation = new SlackCompensation(slack_xltor, slack_xrtol, slack_yttob, slack_ybtot);
+
+            
+            DownCamera.Zoom = savedZoom;
             
         }
 
@@ -9543,7 +9561,84 @@ namespace LitePlacer
         }
 #endregion
 
+        private void tape_ViewComponents_button_Click(object sender, EventArgs e) {
+            // current index
+            int row =  Tapes_dataGridView.CurrentCell.RowIndex;
+            if (row == -1) return;
 
+            TapeObj to = new TapeObj(Tapes.GetTapeRow(row));
+
+            // move to first hole
+            CNC_XY_m(to.FirstHole.X, to.FirstHole.Y);
+
+            DownCamera.MarkA.Clear();
+            DownCamera.MarkB.Clear();
+            // show current hole, next hole, and first 5 parts
+            for (int i=0; i<3; i++) 
+                DownCamera.MarkA.Add((to.GetHoleLocation(i) - to.GetHoleLocation(0)).ToPixels().ToPointF());
+            
+            for (int i=to.CurrentPartIndex();i<to.CurrentPartIndex()+5;i++) 
+                DownCamera.MarkB.Add((to.GetPartLocation(i) - to.GetHoleLocation(0)).ToPixels().ToPointF());
+
+        }
+
+
+
+
+
+        
+
+            /*
+            if (!DownCamera.IsRunning()) {
+                DisplayText("Camera is not running",Color.Red);
+                return;
+            }
+
+            // configure analytics for selected tape
+            int id = Tapes_dataGridView.CurrentCell.RowIndex;
+            if (!Tapes.OLD_SetCurrentTapeMeasurement_m(id)) {
+                DisplayText("Unable to configure measuremnt", Color.Red);
+                return;
+            }
+
+            // move to hold 1
+            TapeSet1_button_Click(null, null);
+
+            // See how many cicrcles we can measure
+            var circles = DownCamera.FindCirclesFunct(DownCamera.GetMeasurementFrame());
+            if (circles.Count < 2) {
+                DisplayText("Could only find " + circles.Count + " circle(s) - unable to auto-calibrate tape", Color.Red);
+                return;
+            }
+
+
+            // Fit circle to linear regression // y:x->a+b*x
+            foreach (var circle in circles) circle.SetMMMode(DownCamera.GetMeasurementZoom());
+            Double[] Xs = circles.Select(x => x.X).ToArray();
+            Double[] Ys = circles.Select(x => x.Y).ToArray();
+            Tuple<double,double> result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs,Ys);
+            double a = result.Item1;
+            double b = result.Item2;
+
+            // Stats
+            double tape_angle = Math.Atan(b) * 180d / Math.PI;
+            double hole_spacing = Math.Abs(circles[1].DistanceFrom(circles[2]));
+
+            // Results
+            DisplayText(String.Format("Tape angle = {0} degrees.  Hole Spacing = {1}mm", tape_angle,hole_spacing),Color.Orange);
+           
+
+        }
+ */
+        /// <summary>
+        /// Center camera on nearest hole and return hole location
+        /// </summary>
+        public PartLocation CenterCameraOnCircle() {
+            double X, Y;
+
+            if (!GoToLocation_m(Shapes.ShapeTypes.Circle, 1.8, 0.5, out X, out Y)) return null;
+            return new PartLocation(Cnc.CurrentX + X, Cnc.CurrentY + Y);
+        }
 
 
 

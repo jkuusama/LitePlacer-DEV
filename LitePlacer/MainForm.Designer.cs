@@ -69,6 +69,7 @@
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.label145 = new System.Windows.Forms.Label();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.tape_ViewComponents_button = new System.Windows.Forms.Button();
             this.TapeSet1_button = new System.Windows.Forms.Button();
             this.Tape_resetZs_button = new System.Windows.Forms.Button();
             this.Tape_GoToNext_button = new System.Windows.Forms.Button();
@@ -115,6 +116,7 @@
             this.cb_useTemplate = new System.Windows.Forms.CheckBox();
             this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
+            this.drawGrid_checkBox = new System.Windows.Forms.CheckBox();
             this.FindFiducials_cb = new System.Windows.Forms.CheckBox();
             this.SlackMeasurement_label = new System.Windows.Forms.Label();
             this.button_saveSettings = new System.Windows.Forms.Button();
@@ -1021,6 +1023,7 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.tape_ViewComponents_button);
             this.Tapes_tabPage.Controls.Add(this.TapeSet1_button);
             this.Tapes_tabPage.Controls.Add(this.Tape_resetZs_button);
             this.Tapes_tabPage.Controls.Add(this.Tape_GoToNext_button);
@@ -1044,6 +1047,17 @@
             this.Tapes_tabPage.TabIndex = 6;
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // tape_ViewComponents_button
+            // 
+            this.tape_ViewComponents_button.Location = new System.Drawing.Point(1152, 319);
+            this.tape_ViewComponents_button.Name = "tape_ViewComponents_button";
+            this.tape_ViewComponents_button.Size = new System.Drawing.Size(75, 23);
+            this.tape_ViewComponents_button.TabIndex = 41;
+            this.tape_ViewComponents_button.Text = "ViewPickupLocation";
+            this.toolTip1.SetToolTip(this.tape_ViewComponents_button, "Shows where the parts are to be picked up");
+            this.tape_ViewComponents_button.UseVisualStyleBackColor = true;
+            this.tape_ViewComponents_button.Click += new System.EventHandler(this.tape_ViewComponents_button_Click);
             // 
             // TapeSet1_button
             // 
@@ -1355,10 +1369,10 @@
             this.Tapes_pictureBox.Location = new System.Drawing.Point(6, 19);
             this.Tapes_pictureBox.Name = "Tapes_pictureBox";
             this.Tapes_pictureBox.Size = new System.Drawing.Size(640, 480);
+            this.Tapes_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.Tapes_pictureBox.TabIndex = 13;
             this.Tapes_pictureBox.TabStop = false;
             this.Tapes_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
-            this.Tapes_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             // 
             // Components_tabPage
             // 
@@ -1459,9 +1473,9 @@
             this.groupBox12.Controls.Add(this.label126);
             this.groupBox12.Controls.Add(this.fiducialTemlateMatch_textBox);
             this.groupBox12.Controls.Add(this.cb_useTemplate);
-            this.groupBox12.Location = new System.Drawing.Point(191, 505);
+            this.groupBox12.Location = new System.Drawing.Point(400, 628);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(148, 87);
+            this.groupBox12.Size = new System.Drawing.Size(245, 63);
             this.groupBox12.TabIndex = 129;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Fiducial Settings";
@@ -1469,7 +1483,7 @@
             // label127
             // 
             this.label127.AutoSize = true;
-            this.label127.Location = new System.Drawing.Point(7, 67);
+            this.label127.Location = new System.Drawing.Point(109, 43);
             this.label127.Name = "label127";
             this.label127.Size = new System.Drawing.Size(65, 13);
             this.label127.TabIndex = 133;
@@ -1477,7 +1491,7 @@
             // 
             // fiducial_designator_regexp_textBox
             // 
-            this.fiducial_designator_regexp_textBox.Location = new System.Drawing.Point(70, 64);
+            this.fiducial_designator_regexp_textBox.Location = new System.Drawing.Point(176, 39);
             this.fiducial_designator_regexp_textBox.Name = "fiducial_designator_regexp_textBox";
             this.fiducial_designator_regexp_textBox.Size = new System.Drawing.Size(63, 20);
             this.fiducial_designator_regexp_textBox.TabIndex = 132;
@@ -1537,6 +1551,7 @@
             // 
             // DownCamera_tabPage
             // 
+            this.DownCamera_tabPage.Controls.Add(this.drawGrid_checkBox);
             this.DownCamera_tabPage.Controls.Add(this.FindFiducials_cb);
             this.DownCamera_tabPage.Controls.Add(this.SlackMeasurement_label);
             this.DownCamera_tabPage.Controls.Add(this.button_saveSettings);
@@ -1593,6 +1608,19 @@
             this.DownCamera_tabPage.TabIndex = 3;
             this.DownCamera_tabPage.Text = "Down Looking Camera";
             this.DownCamera_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // drawGrid_checkBox
+            // 
+            this.drawGrid_checkBox.AutoSize = true;
+            this.drawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.drawGrid_checkBox.Location = new System.Drawing.Point(141, 127);
+            this.drawGrid_checkBox.Name = "drawGrid_checkBox";
+            this.drawGrid_checkBox.Size = new System.Drawing.Size(98, 17);
+            this.drawGrid_checkBox.TabIndex = 144;
+            this.drawGrid_checkBox.Text = "Draw 1mm Grid";
+            this.toolTip1.SetToolTip(this.drawGrid_checkBox, "Find fiducials in display based on template matching");
+            this.drawGrid_checkBox.UseVisualStyleBackColor = true;
+            this.drawGrid_checkBox.CheckedChanged += new System.EventHandler(this.drawGrid_checkBox_CheckedChanged);
             // 
             // FindFiducials_cb
             // 
@@ -2541,7 +2569,7 @@
             // 
             this.DownCameraDrawDashedCross_checkBox.AutoSize = true;
             this.DownCameraDrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(206, 127);
+            this.DownCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(256, 127);
             this.DownCameraDrawDashedCross_checkBox.Name = "DownCameraDrawDashedCross_checkBox";
             this.DownCameraDrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
             this.DownCameraDrawDashedCross_checkBox.TabIndex = 42;
@@ -2625,7 +2653,7 @@
             // 
             this.Overlay_checkBox.AutoSize = true;
             this.Overlay_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Overlay_checkBox.Location = new System.Drawing.Point(206, 140);
+            this.Overlay_checkBox.Location = new System.Drawing.Point(256, 140);
             this.Overlay_checkBox.Name = "Overlay_checkBox";
             this.Overlay_checkBox.Size = new System.Drawing.Size(99, 17);
             this.Overlay_checkBox.TabIndex = 31;
@@ -3825,10 +3853,10 @@
             this.Cam_pictureBox.Location = new System.Drawing.Point(6, 19);
             this.Cam_pictureBox.Name = "Cam_pictureBox";
             this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
+            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.Cam_pictureBox.TabIndex = 10;
             this.Cam_pictureBox.TabStop = false;
             this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
-            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             // 
             // label1
             // 
@@ -5794,8 +5822,8 @@
             this.StopDemo_button.TabIndex = 74;
             this.StopDemo_button.Text = "Stop Demo";
             this.StopDemo_button.UseVisualStyleBackColor = true;
-            this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
             this.StopDemo_button.Visible = false;
+            this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
             // 
             // Demo_button
             // 
@@ -5805,8 +5833,8 @@
             this.Demo_button.TabIndex = 73;
             this.Demo_button.Text = "Start Demo";
             this.Demo_button.UseVisualStyleBackColor = true;
-            this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
             this.Demo_button.Visible = false;
+            this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
             // 
             // ChangeNeedle_button
             // 
@@ -7300,6 +7328,8 @@
         private System.Windows.Forms.CheckBox FindFiducials_cb;
         private System.Windows.Forms.Label label127;
         private System.Windows.Forms.TextBox fiducial_designator_regexp_textBox;
+        private System.Windows.Forms.CheckBox drawGrid_checkBox;
+        private System.Windows.Forms.Button tape_ViewComponents_button;
     }
 }
 

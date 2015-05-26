@@ -42,7 +42,25 @@ namespace LitePlacer
         public class Thing {
             public double X { get; set; }
             public double Y { get; set; }
-           
+
+            private bool _pixelMode = true;
+            private double zoom = 1d;
+
+            public void SetPixelMode() {
+                if (_pixelMode) return;
+                X /= Properties.Settings.Default.DownCam_XmmPerPixel / zoom;
+                Y /= Properties.Settings.Default.DownCam_YmmPerPixel / zoom;
+                _pixelMode = true;
+            }
+
+            public void SetMMMode(double zoom) {
+                if (!_pixelMode) return;
+                X *= Properties.Settings.Default.DownCam_XmmPerPixel / zoom;
+                Y *= Properties.Settings.Default.DownCam_YmmPerPixel / zoom;
+                this.zoom = zoom;
+                _pixelMode = false;
+            }
+
             public AForge.Point Center { 
                 get { return new AForge.Point((float)this.X, (float)this.Y); }
                 set { X = value.X; Y = value.Y; }
@@ -50,6 +68,10 @@ namespace LitePlacer
             public Thing(double x, double y) {
                 X = x;
                 Y = y;
+            }
+
+            public double DistanceFrom(Thing thing) {
+                return DistanceFrom(thing.X, thing.Y);
             }
 
             public double DistanceFrom(AForge.Point point) {
