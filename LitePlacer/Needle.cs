@@ -176,7 +176,7 @@ namespace LitePlacer
             {
                 NeedlePoint Point = new NeedlePoint();
                 Point.Angle = Convert.ToDouble(i) / 10.0;
-				if (!CNC_A_m(Point.Angle))
+                if (!MainForm.CNC_A_m(Point.Angle))
 				{
 					return false;
 				}
@@ -224,18 +224,28 @@ namespace LitePlacer
             return true;
         }
 
-        public bool Move_m(double X, double Y, double A)
-        {
+        public bool Move_m(PartLocation p) {
+            return Move_m(p.X, p.Y, p.A);
+        }
+
+        public bool Move_m(double X, double Y, double A)        {
             double dX;
             double dY;
-			MainForm.DisplayText("Needle.Move_m(): X= " + X.ToString() + ", Y= " + Y.ToString() + ", A= " + A.ToString());
 			if (!CorrectedPosition_m(A, out dX, out dY))
 			{
 				return false;
 			};
             double Xoff = Properties.Settings.Default.DownCam_NeedleOffsetX;
             double Yoff = Properties.Settings.Default.DownCam_NeedleOffsetY;
-            return CNC_XYA(X + Xoff + dX, Y + Yoff + dY, A);
+
+            var loc = new PartLocation(X, Y, A);
+            var wobble = new PartLocation(dX, dY, 0);
+            var needle_offset = new PartLocation(Xoff, Yoff, 0);
+            var dest = loc+wobble+needle_offset;
+            MainForm.DisplayText("== NEEDLE MOVE ==", System.Drawing.Color.ForestGreen);
+            MainForm.DisplayText(String.Format("pos {0} + offset {1} + wobble {2} = {3}", loc, needle_offset, wobble, dest), System.Drawing.Color.ForestGreen); 
+        
+            return MainForm.CNC_XYA_m(dest);
         }
 
 
@@ -243,24 +253,7 @@ namespace LitePlacer
         // =================================================================================
         // CNC interface functions
         // =================================================================================
-        
-        private bool CNC_A_m(double A)
-        {
-			return MainForm.CNC_A_m(A);
-        }
-
-        private bool CNC_XY_m(double X, double Y)
-        {
-			return MainForm.CNC_XY_m(X, Y);
-        }
-
-        private bool CNC_XYA(double X, double Y, double A)
-        {
-			return MainForm.CNC_XYA_m(X, Y, A);
-        }
-
-        private bool CNC_Write(string s)
-        {
+        private bool CNC_Write(string s)  {
 			return MainForm.CNC_Write_m(s);
         }
     }

@@ -61,6 +61,10 @@ namespace LitePlacer
                 _pixelMode = false;
             }
 
+            public PartLocation ToPartLocation() {
+                return new PartLocation(X, Y);
+            }
+
             public AForge.Point Center { 
                 get { return new AForge.Point((float)this.X, (float)this.Y); }
                 set { X = value.X; Y = value.Y; }
@@ -101,11 +105,15 @@ namespace LitePlacer
 			public Circle(double x, double y, double r) : base(x,y) {
 				Radius = r;
 			}
+            public override string ToString() {
+                return String.Format("({0},{1} R={2})", X, Y, Radius);
+            }
 		}
 
         public class Fiducal : Thing {
             public Fiducal(double x, double y) : base(x, y) { }
         }
+
 
 	}
 

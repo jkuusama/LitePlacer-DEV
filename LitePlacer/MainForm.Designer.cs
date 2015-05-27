@@ -69,6 +69,8 @@
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.label145 = new System.Windows.Forms.Label();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.pickup_next_button = new System.Windows.Forms.Button();
+            this.label128 = new System.Windows.Forms.Label();
             this.tape_ViewComponents_button = new System.Windows.Forms.Button();
             this.TapeSet1_button = new System.Windows.Forms.Button();
             this.Tape_resetZs_button = new System.Windows.Forms.Button();
@@ -95,10 +97,9 @@
             this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HolePitch_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Slope_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsCalibrated_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.label108 = new System.Windows.Forms.Label();
             this.Tapes_pictureBox = new System.Windows.Forms.PictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
@@ -577,6 +578,7 @@
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.TrueX_label = new System.Windows.Forms.Label();
+            this.DownCamera_Calibration_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -1023,6 +1025,8 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.pickup_next_button);
+            this.Tapes_tabPage.Controls.Add(this.label128);
             this.Tapes_tabPage.Controls.Add(this.tape_ViewComponents_button);
             this.Tapes_tabPage.Controls.Add(this.TapeSet1_button);
             this.Tapes_tabPage.Controls.Add(this.Tape_resetZs_button);
@@ -1048,6 +1052,25 @@
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
             // 
+            // pickup_next_button
+            // 
+            this.pickup_next_button.Location = new System.Drawing.Point(1152, 348);
+            this.pickup_next_button.Name = "pickup_next_button";
+            this.pickup_next_button.Size = new System.Drawing.Size(75, 22);
+            this.pickup_next_button.TabIndex = 43;
+            this.pickup_next_button.Text = "Pickup Next";
+            this.pickup_next_button.UseVisualStyleBackColor = true;
+            this.pickup_next_button.Click += new System.EventHandler(this.pickup_next_button_Click);
+            // 
+            // label128
+            // 
+            this.label128.AutoSize = true;
+            this.label128.Location = new System.Drawing.Point(9, 521);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(479, 52);
+            this.label128.TabIndex = 42;
+            this.label128.Text = resources.GetString("label128.Text");
+            // 
             // tape_ViewComponents_button
             // 
             this.tape_ViewComponents_button.Location = new System.Drawing.Point(1152, 319);
@@ -1065,7 +1088,7 @@
             this.TapeSet1_button.Name = "TapeSet1_button";
             this.TapeSet1_button.Size = new System.Drawing.Size(75, 23);
             this.TapeSet1_button.TabIndex = 40;
-            this.TapeSet1_button.Text = "Set hole 1";
+            this.TapeSet1_button.Text = "Cal@Hole 1";
             this.toolTip1.SetToolTip(this.TapeSet1_button, "Set this to first hole location");
             this.TapeSet1_button.UseVisualStyleBackColor = true;
             this.TapeSet1_button.Click += new System.EventHandler(this.TapeSet1_button_Click);
@@ -1100,6 +1123,7 @@
             this.label67.Size = new System.Drawing.Size(39, 13);
             this.label67.TabIndex = 37;
             this.label67.Text = "Part #:";
+            this.label67.Visible = false;
             // 
             // label62
             // 
@@ -1109,6 +1133,7 @@
             this.label62.Size = new System.Drawing.Size(66, 13);
             this.label62.TabIndex = 36;
             this.label62.Text = "for next part.";
+            this.label62.Visible = false;
             // 
             // SetPartNo_button
             // 
@@ -1118,6 +1143,7 @@
             this.SetPartNo_button.TabIndex = 35;
             this.SetPartNo_button.Text = "Set this hole";
             this.SetPartNo_button.UseVisualStyleBackColor = true;
+            this.SetPartNo_button.Visible = false;
             this.SetPartNo_button.Click += new System.EventHandler(this.SetPartNo_button_Click);
             // 
             // NextPart_TextBox
@@ -1131,6 +1157,7 @@
             this.NextPart_TextBox.TabIndex = 34;
             this.NextPart_TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.NextPart_TextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.NextPart_TextBox.Visible = false;
             // 
             // TapeGoTo_button
             // 
@@ -1152,6 +1179,7 @@
             this.TapeDown_button.Text = "Move Down";
             this.toolTip1.SetToolTip(this.TapeDown_button, "Moves the selected tape definition down on the table.");
             this.TapeDown_button.UseVisualStyleBackColor = true;
+            this.TapeDown_button.Visible = false;
             this.TapeDown_button.Click += new System.EventHandler(this.TapeDown_button_Click);
             // 
             // TapeUp_button
@@ -1163,6 +1191,7 @@
             this.TapeUp_button.Text = "Move Up";
             this.toolTip1.SetToolTip(this.TapeUp_button, "Moves the selected tape definition up on the table.");
             this.TapeUp_button.UseVisualStyleBackColor = true;
+            this.TapeUp_button.Visible = false;
             this.TapeUp_button.Click += new System.EventHandler(this.TapeUp_button_Click);
             // 
             // DeleteTape_button
@@ -1214,10 +1243,9 @@
             this.Y_Column,
             this.PickupZ_Column,
             this.PlaceZ_Column,
-            this.NextX_Column,
-            this.NextY_column,
-            this.LastX,
-            this.LastY});
+            this.HolePitch_Column,
+            this.Slope_column,
+            this.IsCalibrated_Column});
             this.Tapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.Tapes_dataGridView.Location = new System.Drawing.Point(652, 19);
             this.Tapes_dataGridView.MultiSelect = false;
@@ -1330,29 +1358,24 @@
             this.PlaceZ_Column.Name = "PlaceZ_Column";
             this.PlaceZ_Column.Width = 66;
             // 
-            // NextX_Column
+            // HolePitch_Column
             // 
-            this.NextX_Column.HeaderText = "Next X";
-            this.NextX_Column.Name = "NextX_Column";
-            this.NextX_Column.Width = 64;
+            this.HolePitch_Column.HeaderText = "HolePitch";
+            this.HolePitch_Column.Name = "HolePitch_Column";
+            this.HolePitch_Column.Width = 78;
             // 
-            // NextY_column
+            // Slope_column
             // 
-            this.NextY_column.HeaderText = "Next Y";
-            this.NextY_column.Name = "NextY_column";
-            this.NextY_column.Width = 64;
+            this.Slope_column.HeaderText = "Slope";
+            this.Slope_column.Name = "Slope_column";
+            this.Slope_column.Width = 59;
             // 
-            // LastX
+            // IsCalibrated_Column
             // 
-            this.LastX.HeaderText = "Last X";
-            this.LastX.Name = "LastX";
-            this.LastX.Width = 62;
-            // 
-            // LastY
-            // 
-            this.LastY.HeaderText = "Last Y";
-            this.LastY.Name = "LastY";
-            this.LastY.Width = 62;
+            this.IsCalibrated_Column.HeaderText = "IsCalibrated";
+            this.IsCalibrated_Column.Name = "IsCalibrated_Column";
+            this.IsCalibrated_Column.ReadOnly = true;
+            this.IsCalibrated_Column.Width = 68;
             // 
             // label108
             // 
@@ -2978,6 +3001,7 @@
             // 
             // UpCamera_tabPage
             // 
+            this.UpCamera_tabPage.Controls.Add(this.DownCamera_Calibration_button);
             this.UpCamera_tabPage.Controls.Add(this.groupBox10);
             this.UpCamera_tabPage.Controls.Add(this.UpCam_FindComponents_checkBox);
             this.UpCamera_tabPage.Controls.Add(this.checkBox2);
@@ -6663,6 +6687,16 @@
             this.TrueX_label.Text = "000.000";
             this.TrueX_label.Visible = false;
             // 
+            // DownCamera_Calibration_button
+            // 
+            this.DownCamera_Calibration_button.Location = new System.Drawing.Point(347, 108);
+            this.DownCamera_Calibration_button.Name = "DownCamera_Calibration_button";
+            this.DownCamera_Calibration_button.Size = new System.Drawing.Size(46, 23);
+            this.DownCamera_Calibration_button.TabIndex = 141;
+            this.DownCamera_Calibration_button.Text = "Calib.";
+            this.DownCamera_Calibration_button.UseVisualStyleBackColor = true;
+            this.DownCamera_Calibration_button.Click += new System.EventHandler(this.DownCamera_Calibration_button_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -7300,21 +7334,6 @@
         private System.Windows.Forms.Button ChangeNeedle_button;
         private System.Windows.Forms.Label label123;
         private System.Windows.Forms.TextBox ZTestTravel_textBox;
-        private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn RotationColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn WidthColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PickupZ_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastX;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastY;
         private System.Windows.Forms.Button Demo_button;
         private System.Windows.Forms.Button StopDemo_button;
         private System.Windows.Forms.Button button_camera_calibrate;
@@ -7330,6 +7349,23 @@
         private System.Windows.Forms.TextBox fiducial_designator_regexp_textBox;
         private System.Windows.Forms.CheckBox drawGrid_checkBox;
         private System.Windows.Forms.Button tape_ViewComponents_button;
+        private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn RotationColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn WidthColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PickupZ_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HolePitch_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Slope_column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsCalibrated_Column;
+        private System.Windows.Forms.Label label128;
+        private System.Windows.Forms.Button pickup_next_button;
+        private System.Windows.Forms.Button DownCamera_Calibration_button;
     }
 }
 

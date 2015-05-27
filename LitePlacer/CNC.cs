@@ -110,6 +110,16 @@ namespace LitePlacer
 		private static double CurrX;
 		private static double _trueX;
 
+        public PartLocation XYLocation  { 
+            get { return new PartLocation(CurrentX,CurrentY); }
+            set { CurrentX = value.X; CurrentY=value.Y; }
+        }
+
+        public PartLocation XYALocation {
+            get { return new PartLocation(CurrentX, CurrentY, CurrentA); }
+            set { CurrentX = value.X; CurrentY = value.Y; CurrentA = value.A; }
+        }
+
         public double TrueX
         {
             get
@@ -591,7 +601,7 @@ namespace LitePlacer
                 line = line.Replace("{\"4", "{\"motor4");
                 NewSetting(line);
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent r");
+                MainForm.DisplayText("<== r",System.Drawing.Color.Green);
                 return;
             }
 

@@ -21,10 +21,8 @@ using Emgu.Util;
 using Emgu;
 
 
-namespace LitePlacer
-{
-	class Camera
-	{
+namespace LitePlacer{
+	public class Camera	{
         //these are locations to draw as an overlay on the image
         //the points are relative to the centeral point (0,0) on the screen
         public List<PointF> MarkA = new List<PointF>();
@@ -58,21 +56,15 @@ namespace LitePlacer
 			VideoSource.Stop();
 		}
 
-		public void Close()
-		{
-			if (!(VideoSource == null))
-			{
-				if (!VideoSource.IsRunning)
-				{
-					return;
-				}
-				VideoSource.SignalToStop();
-				VideoSource.WaitForStop();  // problem?
-				VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
-				VideoSource = null;
-				MainForm.DisplayText(Id + " stop: " + MonikerString);
-				MonikerString = "unconnected";
-			}
+		public void Close(){
+			if (VideoSource == null ||  !VideoSource.IsRunning)  return;				
+			VideoSource.SignalToStop();
+			VideoSource.WaitForStop();  // problem?
+			VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
+			VideoSource = null;
+			MainForm.DisplayText(Id + " stop: " + MonikerString);
+			MonikerString = "unconnected";
+			
 		}
 
 		public void DisplayPropertyPage()
@@ -112,10 +104,8 @@ namespace LitePlacer
 		private string MonikerString = "unconnected";
 		private string Id = "unconnected";
 
-		public bool Start(string cam, int DeviceNo)
-		{
-            try
-            {
+		public bool Start(string cam, int DeviceNo)		{
+            try {
 			    FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
 			    MonikerString = videoDevices[DeviceNo].MonikerString;
 			    Id = cam;
@@ -134,17 +124,8 @@ namespace LitePlacer
 
 			    VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
 			    VideoSource.Start();
-			    if (VideoSource.IsRunning)
-			    {
-				    return true;
-			    }
-			    else
-			    {
-				    return false;
-			    }
-            }
-            catch
-            {
+                return VideoSource.IsRunning;
+            }  catch {
                 return false;
             }
 		}
@@ -581,18 +562,19 @@ namespace LitePlacer
 
 			if (FindCircles)     DrawCirclesFunct(frame);
 			if (FindRectangles)  frame = DrawRectanglesFunct(frame);
-            if (FindFiducial)    frame = DrawFiducialFunct(frame);
+            if (FindFiducial)    DrawFiducialFunct(ref frame);
 			if (FindComponent)   frame = DrawComponentsFunct(frame);
 			if (Draw_Snapshot)   frame = Draw_SnapshotFunct(frame);
 			if (Mirror)          frame = MirrorFunct(frame);
 			if (DrawBox)         DrawBoxFunct(frame);
+            if (MarkA.Count > 0) DrawMarks(ref frame, MarkA, Color.Blue, 20);
+            if (MarkB.Count > 0) DrawMarks(ref frame, MarkB, Color.Red, 20);
+            // Thing after this point are affected by the zoom
 			if (Zoom)            ZoomFunct(ref frame, ZoomFactor);
 			if (DrawCross)       DrawCrossFunct(ref frame);
             if (Draw1mmGrid)     DrawGridFunct(ref frame);
             if (DrawSidemarks)   DrawSidemarksFunct(ref frame);
 			if (DrawDashedCross) DrawDashedCrossFunct(frame);
-            if (MarkA.Count > 0) frame = DrawMarks(frame, MarkA, Color.Blue, 20);
-            if (MarkB.Count > 0) frame = DrawMarks(frame, MarkB, Color.Red, 20);
 
 			if (TakeSnapshot)			{
 				TakeSnapshot_funct(frame);
@@ -1072,7 +1054,9 @@ namespace LitePlacer
 				{
 					if (radius > 3)  // filter out some noise
 					{
-						Circles.Add(new Shapes.Circle(center.X, center.Y, radius));
+                        var circle = new Shapes.Circle(center.X, center.Y, radius);
+                        //MainForm.DisplayText("Circle @ " + circle);
+						Circles.Add(circle);
 					}
 				}
 			}
@@ -1272,21 +1256,23 @@ namespace LitePlacer
         /// <summary>
         /// This function will display markings at specified locations on the image
         /// </summary>
-        private Bitmap DrawMarks(Bitmap image, List<PointF> points, Color color, int size) {
+        private void DrawMarks(ref Bitmap image, List<PointF> points, Color color, int size) {
             try {
-                Image<Bgr, Byte> img = new Image<Bgr, byte>(image);
-                foreach (var pt in points) {
-                    PointF p = new PointF(pt.X + FrameCenterX, pt.Y + FrameCenterY);
-                    img.Draw(new Cross2DF(p, size, size), new Bgr(color), 2);
+                using (Image<Bgr, Byte> img = new Image<Bgr, byte>(image)) {
+                    foreach (var pt in points) {
+                        PointF p = new PointF(pt.X + FrameCenterX, pt.Y + FrameCenterY);
+                        var cross = new Cross2DF(p, size, size);
+                        img.Draw(cross, new Bgr(color), 2);
+                    }
+                    image = img.ToBitmap();
                 }
-                return img.ToBitmap();
             } catch {
-                return image;
+                
             }
         }
 
         // =========================================================
-        private Bitmap DrawFiducialFunct(Bitmap image) {
+        private void  DrawFiducialFunct(ref Bitmap image) {
 
             // step 1 - Find Fiducials
             var imageFinder  = FindTemplatesInBitmap(image,
@@ -1297,8 +1283,7 @@ namespace LitePlacer
             imageFinder.MarkLocationsOnImage();
 
             // step 3 - return 
-            return imageFinder.ResultBitmap;
-
+            image =  imageFinder.ResultBitmap;
         }
 
 

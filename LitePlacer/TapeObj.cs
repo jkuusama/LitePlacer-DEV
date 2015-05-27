@@ -49,7 +49,15 @@ namespace LitePlacer {
                 Y / Properties.Settings.Default.DownCam_YmmPerPixel * zoom * -1,
                 A);
         }
-        
+
+        public double DistanceTo(PartLocation p) {
+            return Math.Sqrt(Math.Pow(X-p.X, 2) + Math.Pow(Y-p.Y, 2));
+        }
+
+        public override string ToString() {
+            return String.Format("({0},{1},{2})", X, Y, A);
+        }
+
         /// <summary>
         /// This will rotate the X,Y vector by radians and leave A alone.
         /// It will return itself
@@ -80,6 +88,15 @@ namespace LitePlacer {
             return new PartLocation(scalar * p.X, scalar * p.Y, p.A);
         }
 
+        public static double MeasureSlope(PartLocation[] list) {
+            // Fit  to linear regression // y:x->a+b*x
+            Double[] Xs = list.Select(xx => xx.X).ToArray();
+            Double[] Ys = list.Select(xx => xx.Y).ToArray();
+            Tuple<double, double> result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
+            //x.a = result.Item1; //this should be as close to zero as possible if things worked correctly
+            return result.Item2; //this represents the slope of the tape            
+        }
+
         public PointF ToPointF() {
             return new PointF((float)X,(float)Y);
         }
@@ -88,6 +105,7 @@ namespace LitePlacer {
     
     public class TapeObj {
         public TapeType Type;
+        public string ID; // name 
         public double HoleDiameter; //Do
         public double HolePitch; // P0
         public double PartPitch; // P1
@@ -95,24 +113,79 @@ namespace LitePlacer {
         public double HoleToPartSpacingY { get { return TapeWidth/2-.5; }} // F
         public double HoleToPartSpacingX; //P2
         public PartLocation FirstHole;
-        public double PickupZ, PlaceZ;
+        public double _PickupZ, _PlaceZ;
         public int row;
         public bool isPickupZSet = false;
         public bool isPlaceZSet = false;
+        public bool isFullyCalibrated = false;
+        public double a; //coeffients of equation defining location of tape a + b*x
+        private double _b;
+        private int currentPart = 0;
+        private DataGridViewCellCollection myRow;
 
         // these 2 are used as directional vectors
         private PartLocation _TapeOrientation;
         private PartLocation _PartOrientation;
         public string TapeOrientation {
-            get { return VectorToOrientation(_TapeOrientation); }
-            set { _TapeOrientation = OrienationToVector(value); }
+            get { return (_TapeOrientation.ToRadians() * 180 / Math.PI).ToString() + " deg" ; }
+            set {
+                if (isFullyCalibrated) throw new Exception("Fully Calibrated Tape - updating TapeOrientation is not advised");
+                _TapeOrientation = OrienationToVector(value); 
+            }
+
         }
         public string PartOrientation {
             get { return VectorToOrientation(_PartOrientation); }
             set { _PartOrientation = OrienationToVector(value); }
         }
+        public string PickupZ {
+            get { return (isPickupZSet) ? _PickupZ.ToString() : "--"; }
+            set {
+                    try {
+                        _PickupZ = double.Parse(value);
+                        isPickupZSet = true;
+                    } catch {
+                        isPickupZSet = false;
+                    }
+                }       
+        }
+        public string PlaceZ {
+            get { return (isPlaceZSet) ? _PlaceZ.ToString() : "--"; }
+            set {
+                try {
+                    _PlaceZ = double.Parse(value);
+                    isPlaceZSet = true;
+                } catch {
+                    isPlaceZSet = false;
+                }
+            }
+        }
+        /// <summary>
+        /// This is the slope of the line for the tape and is more accurate than the intial settings
+        /// </summary>
+        public double b {
+            set {
+                _b = value;
+                _TapeOrientation = new PartLocation(1, value);
+            }
+            get {
+                return _b;
+            }
+        }
 
-        private int currentPart = 0;
+
+
+
+        /// <summary>
+        /// If given a reference to a DataGridViewCellCollection, it will
+        /// auto-populate itself with what's in there and throw an exception 
+        /// if it can't parse something
+        /// </summary>
+        /// <param name="rowData">DataGridRow with the data</param>
+        /// <param name="rowIndex">The index from the DataGridRow</param>
+        public TapeObj(DataGridViewCellCollection rowData, int rowIndex) : this(rowData) {
+            row = rowIndex;
+        }
 
         /// <summary>
         /// If given a reference to a DataGridViewCellCollection, it will
@@ -124,38 +197,66 @@ namespace LitePlacer {
             HolePitch = 4d;
             HoleToPartSpacingX = -2d; // first part is to the "left" of the hole
             HoleDiameter = 1.5d;
-            
+            myRow = rowData;
+            ReParse();
+        }
+
+        /// <summary>
+        /// These values are user defined and not super critical and should be updated every time we 
+        /// need to do anything that can be effected by changes in these values
+        /// </summary>
+        public void UpdateValues() {
+            if (myRow == null) throw new Exception("my row dissapeared");
+            PartOrientation = myRow["RotationColumn"].Value.ToString();
+            string tape_size = myRow["WidthColumn"].Value.ToString();
+            string[] sizes = tape_size.Split(new string[] { "/", "mm" }, StringSplitOptions.RemoveEmptyEntries);
+            TapeWidth = double.Parse(sizes[0]);
+            PartPitch = double.Parse(sizes[1]);
+            currentPart = int.Parse(myRow["Next_Column"].Value.ToString()); //XXX might need to subtract 1?
+            switch (myRow["TypeColumn"].Value.ToString()) {
+                case "Paper (White)": Type = TapeType.White; break;
+                case "Black Plastic": Type = TapeType.Black; break;
+                case "Clear Plastic": Type = TapeType.Clear; break;
+                default:
+                    throw new Exception("Unable to parse tape type");
+            }
+        }
+
+        public void ReParse() {
             try {
-                PartOrientation = rowData["RotationColumn"].Value.ToString();
-                TapeOrientation = rowData["OrientationColumn"].Value.ToString();
-                FirstHole = new PartLocation(float.Parse(rowData["X_Column"].Value.ToString()),
-                                      float.Parse(rowData["Y_Column"].Value.ToString()));
-                string tape_size = rowData["WidthColumn"].Value.ToString();
-                string[] sizes = tape_size.Split(new string[] { "/", "mm" }, StringSplitOptions.RemoveEmptyEntries);
-                TapeWidth = double.Parse(sizes[0]);
-                PartPitch = double.Parse(sizes[1]);
-                currentPart = int.Parse(rowData["Next_Column"].Value.ToString()); //XXX might need to subtract 1?
-                switch (rowData["TypeColumn"].Value.ToString()) {
-                    case "Paper (White)": Type = TapeType.White; break;
-                    case "Black Plastic": Type = TapeType.Black; break;
-                    case "Clear Plastic": Type = TapeType.Clear; break;
-                    default:
-                        throw new Exception("Unable to parse tape type");
-                }
+                isFullyCalibrated = false;
+                ID = myRow["IdColumn"].Value.ToString();
+                TapeOrientation = myRow["OrientationColumn"].Value.ToString();
+                FirstHole = new PartLocation(float.Parse(myRow["X_Column"].Value.ToString()),
+                                      float.Parse(myRow["Y_Column"].Value.ToString()));
             } catch (Exception e) {
-                throw new Exception("Tape: Unable to parse row data : "+e.ToString());
+                throw new Exception("Tape: Unable to parse row data : " + e.ToString());
             }
 
             try {
-                PlaceZ = double.Parse(rowData["PlaceZ_Column"].Value.ToString());
+                _PlaceZ = double.Parse(myRow["PlaceZ_Column"].Value.ToString());
                 isPlaceZSet = true;
             } catch { }
 
             try {
-                PickupZ = double.Parse(rowData["PickupZ_Column"].Value.ToString());
+                _PickupZ = double.Parse(myRow["PickupZ_Column"].Value.ToString());
                 isPickupZSet = true;
             } catch { }
 
+            try { b=double.Parse(myRow["Slope_Column"].Value.ToString()); } catch {}
+            try { HolePitch = double.Parse(myRow["HolePitch_Column"].Value.ToString()); } catch {}
+            try { isFullyCalibrated = bool.Parse(myRow["IsCalibrated_Column"].Value.ToString()); } catch {}
+
+
+        }
+
+        public void PushChangesToRow() {
+            if (myRow == null) throw new Exception("my row dissapeared");
+            myRow["IsCalibrated_Column"].Value = true;
+            myRow["Slope_Column"].Value = b.ToString();
+            myRow["HolePitch_Column"].Value = HolePitch.ToString();
+            myRow["X_Column"].Value = FirstHole.X.ToString();
+            myRow["Y_Column"].Value = FirstHole.Y.ToString();
         }
 
 
@@ -193,20 +294,26 @@ namespace LitePlacer {
             return GetPartLocation(currentPart);
         }
         public PartLocation GetPartLocation(int componentNumber) {
+            UpdateValues(); //pull in changes (?)
             PartLocation offset = new PartLocation(componentNumber * PartPitch + HoleToPartSpacingX, HoleToPartSpacingY);
             // add the vector to the part rotated by the tape orientation
             PartLocation part = new PartLocation(FirstHole) + offset.Rotate(_TapeOrientation.ToRadians());
-            part.A =_PartOrientation.ToRadians() * 180d / Math.PI;
-
+            // add deviation from expected orientation to part orientation
+            var originalOrientation = OrienationToVector(myRow["OrientationColumn"].Value.ToString());
+            var deltaOrientation = _TapeOrientation.ToRadians() - originalOrientation.ToRadians();
+            part.A = (_PartOrientation.ToRadians() + deltaOrientation) * 180d / Math.PI;
+            
             return part;
         }
 
         // HOLES //
         public PartLocation GetHoleLocation(int holeNumber) {
+            UpdateValues();
             return new PartLocation(FirstHole) + new PartLocation(holeNumber * HolePitch, 0).Rotate(_TapeOrientation.ToRadians());
         }
 
         public PartLocation GetNearestCurrentPartHole() {
+            UpdateValues();
             double distanceX = currentPart * PartPitch + HoleToPartSpacingX;
             int holeNumber = (int)(distanceX / HolePitch);
             return GetHoleLocation(holeNumber);

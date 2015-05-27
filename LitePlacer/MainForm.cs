@@ -45,7 +45,6 @@ namespace LitePlacer
         Camera UpCamera;
         NeedleClass Needle;
         TapesClass Tapes;
-        SlackCompensation slackCompensation; 
 
         // =================================================================================
         // General and "global" functions 
@@ -168,7 +167,7 @@ namespace LitePlacer
             path = path.Remove(i + 1);
             LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
             LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
-
+            Tapes.ParseAll(); // Convert Table To Object List
             LoadDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
             LoadDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
             LoadDataGrid(path + "LitePlacer.ComponentsFunctions", Components_dataGridView);
@@ -973,7 +972,7 @@ namespace LitePlacer
             int i = 0;
             if (Cnc.Homing)
             {
-                Timeout = 8000;
+                Timeout = 10000;
             };
             while (!CNC_BlockingWriteDone)
             {
@@ -1023,19 +1022,15 @@ namespace LitePlacer
         }
 
         private bool _Zguard = true;
-        private void ZGuardOn()
-        {
+        private void ZGuardOn()   {
             _Zguard = true;
         }
-        private void ZGuardOff()
-        {
+        private void ZGuardOff()  {
             _Zguard = false;
         }
 
-        private bool CNC_NeedleIsDown_m()
-        {
-            if ((Cnc.CurrentZ > 5) && _Zguard)
-            {
+        private bool CNC_NeedleIsDown_m()   {
+            if ((Cnc.CurrentZ > 5) && _Zguard)  {
                 DisplayText("Needle down error.");
                 ShowMessageBox(
                    "Attempt to move while needle is down.",
@@ -1046,16 +1041,14 @@ namespace LitePlacer
             return false;
         }
 
-        private void CNC_BlockingXY_thread(double X, double Y)
-        {
+        private void CNC_BlockingXY_thread(double X, double Y)        {
             Cnc_ReadyEvent.Reset();
             Cnc.XY(X, Y);
             Cnc_ReadyEvent.Wait();
             CNC_BlockingWriteDone = true;
         }
 
-        private void CNC_BlockingXYA_thread(double X, double Y, double A)
-        {
+        private void CNC_BlockingXYA_thread(double X, double Y, double A)        {
             Cnc_ReadyEvent.Reset();
             Cnc.XYA(X, Y, A);
             Cnc_ReadyEvent.Wait();
@@ -1070,20 +1063,12 @@ namespace LitePlacer
             return CNC_XY_m(loc.X, loc.Y);
         }
 
-        public bool CNC_XY_m(double X, double Y)
-        {
-            if (slackCompensation != null) {
-                X = slackCompensation.X((float)X);
-                Y = slackCompensation.Y((float)Y);
-            }
-
+        public bool CNC_XY_m(double X, double Y)        {
             DisplayText("CNC_XY_m, x: " + X.ToString() + ", y: " + Y.ToString());
-            if (CNC_NeedleIsDown_m())
-            {
+            if (CNC_NeedleIsDown_m())            {
                 return false;
             }
-            if (AbortPlacement)
-            {
+            if (AbortPlacement)            {
                 AbortPlacement = false;  // one shot
                 ShowMessageBox(
                            "Operation aborted",
@@ -1092,24 +1077,18 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!CNC_MoveIsSafeX_m(X))
-            {
+            if (!CNC_MoveIsSafeX_m(X) || !CNC_MoveIsSafeY_m(Y))  {
                 return false;
             }
 
-            if (!CNC_MoveIsSafeY_m(Y))
-            {
-                return false;
-            }
-
-            if (!Cnc.Connected)
-            {
+            if (!Cnc.Connected)            {
                 ShowMessageBox(
                     "CNC_XY: Cnc not connected",
                     "Cnc not connected",
                     MessageBoxButtons.OK);
                 return false;
             }
+
             CNC_BlockingWriteDone = false;
             Thread t = new Thread(() => CNC_BlockingXY_thread(X, Y));
             t.IsBackground = true;
@@ -1310,6 +1289,16 @@ namespace LitePlacer
         }
 
 
+        /// <summary>
+        /// Will return the actual location of the part
+        /// </summary>
+        public PartLocation FindPositionOfClosest(Shapes.ShapeTypes type, double FindTolerance, double MoveTolerance) {
+            double X, Y;
+            if (!GoToLocation_m(type, FindTolerance, MoveTolerance, out X, out Y)) return null;
+            return Cnc.XYLocation + new PartLocation(X, Y);
+        }
+
+
         // =====================================================================
         // This routine finds an accurate location of a shpe that downcamera is looking at.
         // Used in homing and locating fiducials.
@@ -1318,39 +1307,43 @@ namespace LitePlacer
         // X and Y are set to remainding error (true position: currect + error)
         // =====================================================================
         public bool GoToLocation_m(Shapes.ShapeTypes type, double FindTolerance, double MoveTolerance, out double X, out double Y) {
+            return GoToLocation_m(DownCamera, type, FindTolerance, MoveTolerance, out X, out Y);
+        }
+
+        public bool GoToLocation_m(Camera cam, Shapes.ShapeTypes type, double FindTolerance, double MoveTolerance, out double X, out double Y) {
             DisplayText("GoToCircleLocation_m(), FindTolerance: " + FindTolerance.ToString() + ", MoveTolerance: " + MoveTolerance.ToString());
-            SelectCamera(DownCamera);
-            X = 100;
-            Y = 100;
-            FindTolerance = FindTolerance / Properties.Settings.Default.DownCam_XmmPerPixel;
-            if (!DownCamera.IsRunning()) {
-                ShowMessageBox(
-                    "Attempt to find circle, downcamera is not running.",
-                    "Camera not running",
-                    MessageBoxButtons.OK);
-                return false;
-            }
+
+            X = 0; Y = 0;
+
+            // switch to this camera
+            if (!SelectCamera(cam)) return false;
+
+            var xmmPerPixel = (cam == DownCamera) ? Properties.Settings.Default.DownCam_XmmPerPixel : Properties.Settings.Default.UpCam_XmmPerPixel;
+            var ymmPerPixel = (cam == DownCamera) ? Properties.Settings.Default.DownCam_YmmPerPixel : Properties.Settings.Default.UpCam_YmmPerPixel;
+                        
+            FindTolerance = FindTolerance / xmmPerPixel;
+
             int count = 0;
             int res = 0;
             int tries = 0;
-            bool ProcessingStateSave = DownCamera.PauseProcessing;
-            DownCamera.PauseProcessing = true;
+            bool ProcessingStateSave = cam.PauseProcessing;
+            cam.PauseProcessing = true;
+
             do {
                 // Measure thing location
-
-                res = DownCamera.GetClosest(type, out X, out Y, FindTolerance, 8);
+                res = cam.GetClosest(type, out X, out Y, FindTolerance, 8);
                 if (res == 0) {
-                    DisplayText("Failed in 8 tries.");
                     ShowMessageBox(
                         "Optical positioning: Can't find "+type,
                         "No "+type+" found",
                         MessageBoxButtons.OK);
-                    DownCamera.PauseProcessing = ProcessingStateSave;
+                    cam.PauseProcessing = ProcessingStateSave;
                     return false;
                 }
 
                 X = X * Properties.Settings.Default.DownCam_XmmPerPixel;
                 Y = -Y * Properties.Settings.Default.DownCam_YmmPerPixel;
+
                 DisplayText("Optical positioning, round " + count.ToString() + ", dX= " + X.ToString() + ", dY= " + Y.ToString() + ", tries= " + tries.ToString());
                 // If we are further than move tolerance, go there
                 if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance)) {
@@ -1362,7 +1355,7 @@ namespace LitePlacer
                 && ((Math.Abs(X) > MoveTolerance)
                 || (Math.Abs(Y) > MoveTolerance)));
 
-            DownCamera.PauseProcessing = ProcessingStateSave;
+            cam.PauseProcessing = ProcessingStateSave;
             if (count >= 7) {
                 ShowMessageBox(
                     "Optical positioning: Process is unstable, result is unreliable!",
@@ -1463,7 +1456,8 @@ namespace LitePlacer
         // =================================================================================
         // Common
         // =================================================================================
-        private void SelectCamera(Camera cam)
+        /* GOOZ 
+         * private void SelectCamera(Camera cam)
         {
             if (UpCamera.IsRunning())
             {
@@ -1481,7 +1475,24 @@ namespace LitePlacer
             {
                 StartUpCamera_m();
             }
+        } */
+
+        private bool SelectCamera(Camera cam) {
+            if (cam == DownCamera) {
+                if (UpCamera.IsRunning()) UpCamera.Close();
+                if (!DownCamera.IsRunning()) StartDownCamera_m();
+            } else {
+                if (DownCamera.IsRunning()) DownCamera.Close();
+                if (!UpCamera.IsRunning()) StartUpCamera_m();
+            }
+            if (!cam.IsRunning()) {
+                ShowMessageBox("Camera is not running.","Camera not running",MessageBoxButtons.OK);
+                return false;
+            }
+            return true;
         }
+
+               
 
 
         // =================================================================================
@@ -1960,49 +1971,32 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        private void DownCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                DownCameraUpdateYmmPerPixel();
-            }
+        private void DownCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)        {
+            if (e.KeyChar == '\r') DownCameraUpdateYmmPerPixel();
         }
 
-        private void DownCameraBoxY_textBox_Leave(object sender, EventArgs e)
-        {
+        private void DownCameraBoxY_textBox_Leave(object sender, EventArgs e)        {
             DownCameraUpdateYmmPerPixel();
         }
 
-        private void DownCameraUpdateYmmPerPixel()
-        {
+        private void DownCameraUpdateYmmPerPixel()        {
             double val;
-            if (double.TryParse(DownCameraBoxY_textBox.Text, out val))
-            {
+            if (double.TryParse(DownCameraBoxY_textBox.Text, out val)) {
                 Properties.Settings.Default.DownCam_YmmPerPixel = val / DownCamera.BoxSizeY;
                 DownCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
             }
         }
 
         // ====
-        private void UpCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                UpCameraUpdateYmmPerPixel();
-            }
+        private void UpCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)        {
+            if (e.KeyChar == '\r')  UpCameraUpdateYmmPerPixel();
         }
 
-        private void UpCameraBoxY_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(UpCameraBoxY_textBox.Text, out val))
-            {
+        private void UpCameraBoxY_textBox_Leave(object sender, EventArgs e){
                 UpCameraUpdateYmmPerPixel();
-            }
         }
 
-        private void UpCameraUpdateYmmPerPixel()
-        {
+        private void UpCameraUpdateYmmPerPixel()        {
             double val;
             if (double.TryParse(UpCameraBoxY_textBox.Text, out val))
             {
@@ -2275,6 +2269,7 @@ namespace LitePlacer
                     SetNeedleOffset_stage = 0;
                     Properties.Settings.Default.DownCam_NeedleOffsetX = NeedleOffsetMarkX - Cnc.CurrentX;
                     Properties.Settings.Default.DownCam_NeedleOffsetY = NeedleOffsetMarkY - Cnc.CurrentY;
+                    Properties.Settings.Default.Save();
                     NeedleOffsetX_textBox.Text = Properties.Settings.Default.DownCam_NeedleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
                     NeedleOffsetY_textBox.Text = Properties.Settings.Default.DownCam_NeedleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
                     NeedleOffset_label.Visible = false;
@@ -2338,7 +2333,12 @@ namespace LitePlacer
                 Properties.Settings.Default.UpCam_PositionY = val;
             }
         }
-
+        /// <summary>
+        /// This will set the up cam position taking into account the needle offset (if just calibrated) 
+        /// so that if you go to this location, the down camera is exactly here.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SetUpCamPosition_button_Click(object sender, EventArgs e)
         {
             UpcamPositionX_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
@@ -2497,8 +2497,9 @@ namespace LitePlacer
 
 
         // TinyG communication monitor textbox  
-        public void DisplayText(string txt, Color color)
-        {
+        public void DisplayText(string txt, Color color)        {
+            // XXX need to add robust mechanism to only show desired debugging messages
+            if (color.Equals(Color.Gray)) return;
             try
             {
                 if (InvokeRequired) { Invoke(new Action<string,Color>(DisplayText), new Object[] { txt, color }); return; }
@@ -5775,10 +5776,8 @@ namespace LitePlacer
             DisplayText("PickUpPart_m(), tape id: " + TapeID);
             // Go to part location:
             VacuumOff();
-            if (!Tapes.GotoNextPart_m(TapeID))
-            {
-                return false;
-            }
+            if (!Tapes.GotoNextPart_m(TapeID)) return false;
+            
             // Pick it up:
             string Z_str;
             if (!Tapes.GetCurrentPickupZ_m(TapeID, out Z_str))
@@ -6062,7 +6061,7 @@ namespace LitePlacer
             };
 
             // Take the part to position:
-            DisplayText("PlacePart_m: goto placement position");
+            DisplayText("PlacePart_m: goto placement position "+new PartLocation(X,Y,A).ToString(),System.Drawing.Color.Blue);
             if (!Needle.Move_m(X, Y, A))
             {
                 // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
@@ -7496,7 +7495,8 @@ namespace LitePlacer
             Xmark = Cnc.CurrentX;
             Ymark = Cnc.CurrentY;
             Needle.ProbingMode(true, JSON);
-            CNC_XY_m((Cnc.CurrentX + Properties.Settings.Default.DownCam_NeedleOffsetX), (Cnc.CurrentY + Properties.Settings.Default.DownCam_NeedleOffsetY));
+            Needle.Move_m(Cnc.CurrentX, Cnc.CurrentY ,Cnc.CurrentA);
+            //CNC_XY_m((Cnc.CurrentX + Properties.Settings.Default.DownCam_NeedleOffsetX), (Cnc.CurrentY + Properties.Settings.Default.DownCam_NeedleOffsetY));
             Needle_ProbeDown_m();
         }
 
@@ -7893,12 +7893,12 @@ namespace LitePlacer
             // Next_Column tells the part number of next part. 
             // NextX, NextY tell the approximate hole location for the next part. Incremented when a part is picked up.
             Tapes_dataGridView.Rows[index].Cells["Next_Column"].Value = "1";
-            Tapes_dataGridView.Rows[index].Cells["NextX_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            Tapes_dataGridView.Rows[index].Cells["NextY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             // PickupZ_Column, PlaceZ_Column: The Z values are measured when first part is placed. Picking up and
             // placing the next parts will then be faster.
             Tapes_dataGridView.Rows[index].Cells["PickupZ_Column"].Value = "--";
             Tapes_dataGridView.Rows[index].Cells["PlaceZ_Column"].Value = "--";
+
+            Tapes.AddTapeObject(index);
         }
         private void Tapes_tabPage_Begin()
         {
@@ -7912,149 +7912,81 @@ namespace LitePlacer
             DownCamera.ImageBox = Tapes_pictureBox;
         }
 
-        private void Tapes_tabPage_End()
-        {
+        private void Tapes_tabPage_End()   {
             ZGuardOn();
         }
 
 
-        private void SmallMovement_numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
+        private void SmallMovement_numericUpDown_ValueChanged(object sender, EventArgs e)        {
             Properties.Settings.Default.CNC_SmallMovementSpeed = SmallMovement_numericUpDown.Value;
             Cnc.SmallMovementString = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed.ToString() + " ";
         }
 
         private DataGridViewRow ClipBoardRow;
 
-        private void CopyRow_button_Click(object sender, EventArgs e)
-        {
+        private void CopyRow_button_Click(object sender, EventArgs e)        {
             ClipBoardRow = JobData_GridView.CurrentRow;
         }
 
-        private void PasteRow_button_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < JobData_GridView.ColumnCount; i++)
-            {
+        private void PasteRow_button_Click(object sender, EventArgs e) {
+            for (int i = 0; i < JobData_GridView.ColumnCount; i++) {
                 JobData_GridView.CurrentRow.Cells[i].Value = ClipBoardRow.Cells[i].Value;
             }
         }
 
-
-        private void TapeUp_button_Click(object sender, EventArgs e)
-        {
+        private void TapeUp_button_Click(object sender, EventArgs e)        {
             DataGrid_Up_button(Tapes_dataGridView);
         }
 
-        private void TapeDown_button_Click(object sender, EventArgs e)
-        {
+        private void TapeDown_button_Click(object sender, EventArgs e)        {
             DataGrid_Down_button(Tapes_dataGridView);
         }
 
-        private void DeleteTape_button_Click(object sender, EventArgs e)
-        {
-            Tapes_dataGridView.Rows.RemoveAt(Tapes_dataGridView.CurrentCell.RowIndex);
-        }
-
-        private void TapeGoTo_button_Click(object sender, EventArgs e)
-        {
-            if (Tapes_dataGridView.SelectedCells.Count != 1)
-            {
-                return;
-            };
-            double X;
-            double Y;
+        private void DeleteTape_button_Click(object sender, EventArgs e)        {
+            if (Tapes_dataGridView.SelectedCells.Count != 1) return;
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["X_Column"].Value.ToString(), out X))
-            {
-                return;
-            }
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["Y_Column"].Value.ToString(), out Y))
-            {
-                return;
-            }
-            CNC_XY_m(X, Y);
+            Tapes_dataGridView.Rows.RemoveAt(row);
+            Tapes.DeleteTapeObject(row);
         }
 
-        private void TapeSet1_button_Click(object sender, EventArgs e)
-        {
-            if (Tapes_dataGridView.SelectedCells.Count != 1)
-            {
-                return;
-            };
+        private void TapeGoTo_button_Click(object sender, EventArgs e)        {
+            if (Tapes_dataGridView.SelectedCells.Count != 1) return;
+            int row = Tapes_dataGridView.CurrentCell.RowIndex;
+            CNC_XY_m(Tapes.GetTapeObjByIndex(row).FirstHole);
+        }
+
+        private void TapeSet1_button_Click(object sender, EventArgs e)  {
+            if (Tapes_dataGridView.SelectedCells.Count != 1) return;
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
             Tapes_dataGridView.Rows[row].Cells["X_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[row].Cells["Y_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+
+            // Calibrate the selected tape
+            Tapes.CalibrateTape(Tapes.GetTapeObjByIndex(row));            
         }
 
-        // ==========================================================================================================
+        // =======================  Configure settings based on checkboxes ============================
 
-        private void DownCamFindCircles_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCamFindCircles_checkBox.Checked)
-            {
-                DownCamera.FindCircles = true;
-            }
-            else
-            {
-                DownCamera.FindCircles = false;
-            }
+        private void DownCamFindCircles_checkBox_CheckedChanged(object sender, EventArgs e)        {
+            DownCamera.FindCircles = DownCamFindCircles_checkBox.Checked;
         }
-
-        private void UpCamFindCircles_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCamFindCircles_checkBox.Checked)
-            {
-                UpCamera.FindCircles = true;
-            }
-            else
-            {
-                UpCamera.FindCircles = false;
-            }
-        }        
-
-        private void DownCamFindRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCamFindRectangles_checkBox.Checked)
-            {
-                DownCamera.FindRectangles = true;
-            }
-            else
-            {
-                DownCamera.FindRectangles = false;
-            }
-
+        private void UpCamFindCircles_checkBox_CheckedChanged(object sender, EventArgs e)        {
+            UpCamera.FindCircles = UpCamFindCircles_checkBox.Checked;
         }
-
+        private void DownCamFindRectangles_checkBox_CheckedChanged(object sender, EventArgs e)        {
+            DownCamera.FindRectangles = DownCamFindRectangles_checkBox.Checked;
+        }
         private void drawGrid_checkBox_CheckedChanged(object sender, EventArgs e) {
             DownCamera.Draw1mmGrid = ((CheckBox)sender).Checked;
         }
-
         private void FindFiducials_cb_CheckedChanged(object sender, EventArgs e) {
             DownCamera.FindFiducial = ((CheckBox)sender).Checked;
         }
-
-        private void DownCam_FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCam_FindComponents_checkBox.Checked)
-            {
-                DownCamera.FindComponent = true;
-            }
-            else
-            {
-                DownCamera.FindComponent = false;
-            }
+        private void DownCam_FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)         {
+            DownCamera.FindComponent = ((CheckBox)sender).Checked;
         }
-
-        private void UpCam_FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCam_FindComponents_checkBox.Checked)
-            {
-                UpCamera.FindComponent = true;
-            }
-            else
-            {
-                UpCamera.FindComponent = false;
-            }
+        private void UpCam_FindComponents_checkBox_CheckedChanged(object sender, EventArgs e) {
+            UpCamera.FindComponent = ((CheckBox)sender).Checked;
         }
 
 
@@ -8315,14 +8247,12 @@ namespace LitePlacer
             DataGridViewCopy(Display_dataGridView, ref Needle_dataGridView);
         }
 
-        private void NeedleToDisplay_button_Click(object sender, EventArgs e)
-        {
+        private void NeedleToDisplay_button_Click(object sender, EventArgs e)        {
             DataGridViewCopy(Needle_dataGridView, ref Display_dataGridView);
             UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
         }
 
-        private void SetNeedleMeasurement()
-        {
+        private void SetNeedleMeasurement()        {
             UpCamera.BuildMeasurementFunctionsList(Needle_dataGridView);
         }
 
@@ -8440,6 +8370,10 @@ namespace LitePlacer
             Display_dataGridView.Rows.Clear();
             UpdateDisplayFunctions();
             ClearEditTargets();
+            UpCamera.MarkA.Clear();
+            UpCamera.MarkB.Clear();
+            DownCamera.MarkA.Clear();
+            DownCamera.MarkB.Clear();
         }
 
         // ==========================================================================================================
@@ -9083,8 +9017,6 @@ namespace LitePlacer
             }
             DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             Row.Cells["Next_Column"].Value = no.ToString();
-            Row.Cells["NextX_Column"].Value = Cnc.CurrentX.ToString();
-            Row.Cells["NextY_Column"].Value = Cnc.CurrentY.ToString();
         }
 
         private void SquareCorrection_textBox_Leave(object sender, EventArgs e)
@@ -9338,8 +9270,6 @@ namespace LitePlacer
                 DisplayText("No results.");
                 return;
             }
-            // turn off slack compensation
-            slackCompensation = null;
 
             //setup camera
             SetHomingMeasurement();
@@ -9506,7 +9436,6 @@ namespace LitePlacer
 
 
 
-
         // Template Based Fiducal Finding Settings - RN 5/23
         #region Template Based Fiducal Settings
 
@@ -9561,6 +9490,8 @@ namespace LitePlacer
         }
 #endregion
 
+
+        // some stuf for testing
         private void tape_ViewComponents_button_Click(object sender, EventArgs e) {
             // current index
             int row =  Tapes_dataGridView.CurrentCell.RowIndex;
@@ -9582,54 +9513,6 @@ namespace LitePlacer
 
         }
 
-
-
-
-
-        
-
-            /*
-            if (!DownCamera.IsRunning()) {
-                DisplayText("Camera is not running",Color.Red);
-                return;
-            }
-
-            // configure analytics for selected tape
-            int id = Tapes_dataGridView.CurrentCell.RowIndex;
-            if (!Tapes.OLD_SetCurrentTapeMeasurement_m(id)) {
-                DisplayText("Unable to configure measuremnt", Color.Red);
-                return;
-            }
-
-            // move to hold 1
-            TapeSet1_button_Click(null, null);
-
-            // See how many cicrcles we can measure
-            var circles = DownCamera.FindCirclesFunct(DownCamera.GetMeasurementFrame());
-            if (circles.Count < 2) {
-                DisplayText("Could only find " + circles.Count + " circle(s) - unable to auto-calibrate tape", Color.Red);
-                return;
-            }
-
-
-            // Fit circle to linear regression // y:x->a+b*x
-            foreach (var circle in circles) circle.SetMMMode(DownCamera.GetMeasurementZoom());
-            Double[] Xs = circles.Select(x => x.X).ToArray();
-            Double[] Ys = circles.Select(x => x.Y).ToArray();
-            Tuple<double,double> result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs,Ys);
-            double a = result.Item1;
-            double b = result.Item2;
-
-            // Stats
-            double tape_angle = Math.Atan(b) * 180d / Math.PI;
-            double hole_spacing = Math.Abs(circles[1].DistanceFrom(circles[2]));
-
-            // Results
-            DisplayText(String.Format("Tape angle = {0} degrees.  Hole Spacing = {1}mm", tape_angle,hole_spacing),Color.Orange);
-           
-
-        }
- */
         /// <summary>
         /// Center camera on nearest hole and return hole location
         /// </summary>
@@ -9638,6 +9521,128 @@ namespace LitePlacer
 
             if (!GoToLocation_m(Shapes.ShapeTypes.Circle, 1.8, 0.5, out X, out Y)) return null;
             return new PartLocation(Cnc.CurrentX + X, Cnc.CurrentY + Y);
+        }
+
+        /// <summary>
+        /// test to see how well we pick up the parts
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pickup_next_button_Click(object sender, EventArgs e) {
+            Tapes.GotoNextPart_m("0");
+
+            PumpOn();
+            VacuumOff();
+            Needle_ProbeDown_m();
+            VacuumOn();
+            CNC_Z_m(0);  // pick up
+
+
+        }
+
+        private void DownCamera_Calibration_button_Click(object sender, EventArgs e) {
+            SelectCamera(UpCamera);
+            if (!UpCamera.IsRunning()) {
+                DisplayText("No results.");
+                return;
+            }
+
+            //setup camera
+            CamFunctionsClear_button_Click(null, null);
+            SetNeedleMeasurement();
+            NeedleToDisplay_button_Click(null, null);
+
+            // temp turn off zoom
+            var savedZoom = UpCamera.Zoom;
+            UpCamera.Zoom = false;
+
+            List<PartLocation> distance = new List<PartLocation>();
+            List<PartLocation> pixels = new List<PartLocation>();
+
+            // turn on slack compensation
+            bool slackSetting = Cnc.SlackCompensation;
+            Cnc.SlackCompensation = true;
+
+            // move to upcamera position
+            ZUp_button_Click(null,null); // move needle up
+            GotoUpCamPosition_button_Click(null, null);
+            ZDown_button_Click(null, null);
+
+            var movement = new PartLocation(.1, .1);
+            var startingPos = Cnc.XYLocation;
+            startingPos.A = 0;
+
+            var zoom = UpCamera.GetMeasurementZoom();
+            UpCamera.MarkA.Clear();
+            for (int i = -4; i < 5; i++) {
+                //move
+                var newLocation = startingPos + (i * movement);
+                CNC_XYA_m(newLocation);
+
+                //try 5 times to find a circle
+                List<Shapes.Circle> circles = new List<Shapes.Circle>();
+                for (int tries = 5; tries > 0 && circles.Count == 0; tries--)
+                    circles = UpCamera.FindCirclesFunct(UpCamera.GetMeasurementFrame());
+                if (circles.Count == 0) continue; //not found, move and try again
+
+                //find largest circle of the bunch
+                var circle = circles.Aggregate((c, d) => c.Radius > d.Radius ? c : d); //find largest circle if we have multiple 
+
+                distance.Add(newLocation);
+                pixels.Add((1/zoom) * circle.ToPartLocation());
+
+                UpCamera.MarkA.Add(new PointF((float)(UpCamera.FrameCenterX - circle.X), (float)(circle.Y - UpCamera.FrameCenterY)));
+            }
+
+            if (pixels.Count < 2) {
+                ShowMessageBox("Unable To Detect Circles",
+                    "Try to adjust upcamera processing to see circles, and ensure upcamera needle position is correctly configured",
+                    MessageBoxButtons.OK);
+            } else {
+                // Do regression on X and Y 
+                var Xs = pixels.Select(xx => xx.X).ToArray();
+                var Ys = distance.Select(xx => xx.X).ToArray();
+                var result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
+                double XmmPerPixel = result.Item2;
+
+                Xs = pixels.Select(xx => xx.Y).ToArray();
+                Ys = distance.Select(xx => xx.Y).ToArray();
+                result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
+                double YmmPerPixel = result.Item2;
+
+
+                DisplayText(String.Format("{0} Xmm/pixel   {1} Ymm/pixel", XmmPerPixel, YmmPerPixel), Color.Purple);
+
+                // update values
+                Properties.Settings.Default.UpCam_XmmPerPixel = Math.Abs(XmmPerPixel);
+                Properties.Settings.Default.UpCam_YmmPerPixel = Math.Abs(YmmPerPixel);
+                UpCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+                UpCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+                UpCameraBoxX_textBox.Text = (Math.Abs(XmmPerPixel) * UpCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
+                UpCameraBoxY_textBox.Text = (Math.Abs(YmmPerPixel) * UpCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
+
+                // Now move to the center
+               /* need to get gotolocation upcamera working still
+                double X, Y; //error offset
+                GotoUpCamPosition_button_Click(null, null);
+                for (int tries = 5; tries > 0; tries--) {
+                    if (GoToLocation_m(UpCamera, Shapes.ShapeTypes.Circle, 1.8, 0.5, out X, out Y)) {
+                        Properties.Settings.Default.UpCam_PositionX = Cnc.CurrentX + X;
+                        Properties.Settings.Default.UpCam_PositionY = Cnc.CurrentY - Y;
+                        UpcamPositionX_textBox.Text = Properties.Settings.Default.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
+                        UpcamPositionY_textBox.Text = Properties.Settings.Default.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
+
+                    }
+                }
+                */
+
+            }
+
+            //restore settings
+            UpCamera.Zoom = savedZoom;
+            Cnc.SlackCompensation = slackSetting;
+            ZUp_button_Click(null, null); //move up
+            CamFunctionsClear_button_Click(null, null); //clear viewport
         }
 
 
