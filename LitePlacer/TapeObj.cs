@@ -14,94 +14,9 @@ using System.Drawing;
 
 namespace LitePlacer {
     public enum TapeType { White, Black, Clear }
-    public enum TapeDefault { T0402, T0603, T0806 }
+    public enum TapeDefault { T0402, T0603, T0806, QFN }
 
-    public class PartLocation {
-        public double X;
-        public double Y;
-        public double A;
-
-        public PartLocation() {}
-        public PartLocation(PartLocation p) {
-            X = p.X; Y = p.Y; A = p.A;
-        }
-        public PartLocation(PointF p) {
-            X=p.X; Y=p.Y;
-        }
-        public PartLocation(double x, double y) {
-            X=x; Y=y; A=0;
-        }
-        public PartLocation(double x, double y, double a) {
-            X=x; Y=y; A=a;
-        }
-
-        public double ToRadians() {
-            return Math.Atan2(Y, X);
-        }
-
-        public PartLocation ToPixels() {
-            return ToPixels(1d);
-        }
-
-        public PartLocation ToPixels(double zoom) {
-            return new PartLocation(
-                X / Properties.Settings.Default.DownCam_XmmPerPixel * zoom,
-                Y / Properties.Settings.Default.DownCam_YmmPerPixel * zoom * -1,
-                A);
-        }
-
-        public double DistanceTo(PartLocation p) {
-            return Math.Sqrt(Math.Pow(X-p.X, 2) + Math.Pow(Y-p.Y, 2));
-        }
-
-        public override string ToString() {
-            return String.Format("({0},{1},{2})", X, Y, A);
-        }
-
-        /// <summary>
-        /// This will rotate the X,Y vector by radians and leave A alone.
-        /// It will return itself
-        /// </summary>
-        public  PartLocation Rotate(double radians) {
-            var x2 = X * Math.Cos(radians) - Y * Math.Sin(radians);
-            var y2 = X * Math.Sin(radians) + Y * Math.Cos(radians);
-            X = x2;
-            Y = y2;
-            return this;
-        }
-
-        public static PartLocation operator + (PartLocation p1, PartLocation p2) {
-            return new PartLocation(p1.X+p2.X, p1.Y+p2.Y, p1.A+p2.A);
-        }
-        public static PartLocation operator -(PartLocation p1, PartLocation p2) {
-            return new PartLocation(p1.X - p2.X, p1.Y- p2.Y, p1.A - p2.A);
-        }
-        public static PartLocation operator + (PartLocation p1, PointF p2) {
-            return new PartLocation(p1.X+p2.X, p1.Y+p2.Y, p1.A);
-        }
-
-        public static PartLocation operator - (PartLocation p1, PointF p2) {
-            return new PartLocation(p1.X-p2.X, p1.Y-p2.Y, p1.A);
-        }
-
-        public static PartLocation operator *(double scalar, PartLocation p) {
-            return new PartLocation(scalar * p.X, scalar * p.Y, p.A);
-        }
-
-        public static double MeasureSlope(PartLocation[] list) {
-            // Fit  to linear regression // y:x->a+b*x
-            Double[] Xs = list.Select(xx => xx.X).ToArray();
-            Double[] Ys = list.Select(xx => xx.Y).ToArray();
-            Tuple<double, double> result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
-            //x.a = result.Item1; //this should be as close to zero as possible if things worked correctly
-            return result.Item2; //this represents the slope of the tape            
-        }
-
-        public PointF ToPointF() {
-            return new PointF((float)X,(float)Y);
-        }
-
-    }
+   
     
     public class TapeObj {
         public TapeType Type;
@@ -121,7 +36,8 @@ namespace LitePlacer {
         public double a; //coeffients of equation defining location of tape a + b*x
         private double _b;
         private int currentPart = 0;
-        private DataGridViewCellCollection myRow;
+        public DataGridViewCellCollection myRow;
+        
 
         // these 2 are used as directional vectors
         private PartLocation _TapeOrientation;
@@ -133,6 +49,11 @@ namespace LitePlacer {
                 _TapeOrientation = OrienationToVector(value); 
             }
 
+        }
+
+        public PartLocation PartOrientationVector {
+            get { return _PartOrientation; }
+            set { _PartOrientation = value; }
         }
         public string PartOrientation {
             get { return VectorToOrientation(_PartOrientation); }
@@ -213,6 +134,7 @@ namespace LitePlacer {
             TapeWidth = double.Parse(sizes[0]);
             PartPitch = double.Parse(sizes[1]);
             currentPart = int.Parse(myRow["Next_Column"].Value.ToString()); //XXX might need to subtract 1?
+Console.WriteLine("ID " + this.ID + " Next=" + currentPart);
             switch (myRow["TypeColumn"].Value.ToString()) {
                 case "Paper (White)": Type = TapeType.White; break;
                 case "Black Plastic": Type = TapeType.Black; break;
@@ -229,6 +151,7 @@ namespace LitePlacer {
                 TapeOrientation = myRow["OrientationColumn"].Value.ToString();
                 FirstHole = new PartLocation(float.Parse(myRow["X_Column"].Value.ToString()),
                                       float.Parse(myRow["Y_Column"].Value.ToString()));
+                UpdateValues();
             } catch (Exception e) {
                 throw new Exception("Tape: Unable to parse row data : " + e.ToString());
             }
@@ -259,7 +182,6 @@ namespace LitePlacer {
             myRow["Y_Column"].Value = FirstHole.Y.ToString();
         }
 
-
         public TapeObj ( TapeDefault x ) {
             // pretty standard settings that can be overridden
             PartPitch = 2d;
@@ -279,20 +201,29 @@ namespace LitePlacer {
         }
 
         public int CurrentPartIndex() {
+            UpdateValues();
             return currentPart;
         }
         public void NextPart() {
-            currentPart++;
+            UpdateValues();
+            SetPart(currentPart + 1);
         }
         public void SetPart(int part) {
             currentPart = part;
+            if (myRow == null) throw new Exception("my row dissapeared");
+            myRow["Next_Column"].Value = currentPart.ToString();
         }
 
+        
 
         // PART //
         public PartLocation GetCurrentPartLocation() {
+            UpdateValues();
             return GetPartLocation(currentPart);
         }
+
+        // Part Orientation = orientation if tape is perfectly oriented the way it is oriented
+        // deltaOrientation = how far offf the tape is from it's stated orientation
         public PartLocation GetPartLocation(int componentNumber) {
             UpdateValues(); //pull in changes (?)
             PartLocation offset = new PartLocation(componentNumber * PartPitch + HoleToPartSpacingX, HoleToPartSpacingY);
@@ -305,6 +236,7 @@ namespace LitePlacer {
             
             return part;
         }
+
 
         // HOLES //
         public PartLocation GetHoleLocation(int holeNumber) {

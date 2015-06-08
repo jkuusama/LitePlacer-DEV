@@ -15,7 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Reflection;
-using System.Web.Script.Serialization;
+//using System.Web.Script.Serialization;
 using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
@@ -40,11 +40,12 @@ namespace LitePlacer
 
     public partial class FormMain : Form
     {
-        CNC Cnc;
-        Camera DownCamera;
-        Camera UpCamera;
+        public CNC Cnc;
+        public Camera DownCamera;
+        public Camera UpCamera;
         NeedleClass Needle;
         TapesClass Tapes;
+     //   CAD cad;
 
         // =================================================================================
         // General and "global" functions 
@@ -71,6 +72,14 @@ namespace LitePlacer
         }
         public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
 
+        public DialogResult ShowSimpleMessageBox(String message) {
+            if (this.InvokeRequired) {
+                return (DialogResult)this.Invoke(new PassStringDelegate(ShowSimpleMessageBox), message);
+            }
+            return MessageBox.Show(this, message, "Error", MessageBoxButtons.OK);
+        }
+        public delegate DialogResult PassStringDelegate(String s1);
+
         // =================================================================================
 
 
@@ -84,7 +93,7 @@ namespace LitePlacer
 
         public FormMain()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
 
@@ -121,20 +130,20 @@ namespace LitePlacer
         {
             try
             {
-                if (Properties.Settings.Default.General_UpgradeRequired)
+                if (setting.General_UpgradeRequired)
                 {
                     DisplayText("Updating from previous version");
-                    Properties.Settings.Default.Upgrade();
-                    Properties.Settings.Default.General_UpgradeRequired = false;
-                    Properties.Settings.Default.Save();
+                    setting.Upgrade();
+                    setting.General_UpgradeRequired = false;
+                    setting.Save();
                 }
             }
             catch (SettingsPropertyNotFoundException)
             {
                 DisplayText("Updating from previous version (through ex)");
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.General_UpgradeRequired = false;
-                Properties.Settings.Default.Save();
+                setting.Upgrade();
+                setting.General_UpgradeRequired = false;
+                setting.Save();
             }
 
         }
@@ -150,61 +159,19 @@ namespace LitePlacer
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
             Cnc_ReadyEvent = Cnc.ReadyEvent;
-            CNC.SquareCorrection = Properties.Settings.Default.CNC_SquareCorrection;
+            CNC.SquareCorrection = setting.CNC_SquareCorrection;
             DownCamera = new Camera(this);
             UpCamera = new Camera(this);
             Needle = new NeedleClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Needle, DownCamera, Cnc, this);
-
+        //    cad = new CAD(this);
 
             this.KeyPreview = true;
             RemoveCursorNavigation(this.Controls);
             // this.KeyDown += new KeyEventHandler(My_KeyDown);
             this.KeyUp += new KeyEventHandler(My_KeyUp);
 
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-            LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
-            LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
-            Tapes.ParseAll(); // Convert Table To Object List
-            LoadDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
-            LoadDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
-            LoadDataGrid(path + "LitePlacer.ComponentsFunctions", Components_dataGridView);
-            LoadDataGrid(path + "LitePlacer.PaperTapeFunctions", PaperTape_dataGridView);
-            LoadDataGrid(path + "LitePlacer.BlackTapeFunctions", BlackTape_dataGridView);
-            LoadDataGrid(path + "LitePlacer.ClearTapeFunctions", ClearTape_dataGridView);
-            LoadDataGrid(path + "LitePlacer.NeedleFunctions", Needle_dataGridView);
-            LoadDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView);
-            SetProcessingFunctions(Display_dataGridView);
-            SetProcessingFunctions(Homing_dataGridView);
-            SetProcessingFunctions(Fiducials_dataGridView);
-            SetProcessingFunctions(Components_dataGridView);
-            SetProcessingFunctions(PaperTape_dataGridView);
-            SetProcessingFunctions(BlackTape_dataGridView);
-            SetProcessingFunctions(ClearTape_dataGridView);
-            SetProcessingFunctions(Needle_dataGridView);
-            SetProcessingFunctions(UpCamComponents_dataGridView);
-
-            Bookmark1_button.Text = Properties.Settings.Default.General_Mark1Name;
-            Bookmark2_button.Text = Properties.Settings.Default.General_Mark2Name;
-            Bookmark3_button.Text = Properties.Settings.Default.General_Mark3Name;
-            Bookmark4_button.Text = Properties.Settings.Default.General_Mark4Name;
-            Bookmark5_button.Text = Properties.Settings.Default.General_Mark5Name;
-            Bookmark6_button.Text = Properties.Settings.Default.General_Mark6Name;
-            Mark1_textBox.Text = Properties.Settings.Default.General_Mark1Name;
-            Mark2_textBox.Text = Properties.Settings.Default.General_Mark2Name;
-            Mark3_textBox.Text = Properties.Settings.Default.General_Mark3Name;
-            Mark4_textBox.Text = Properties.Settings.Default.General_Mark4Name;
-            Mark5_textBox.Text = Properties.Settings.Default.General_Mark5Name;
-            Mark6_textBox.Text = Properties.Settings.Default.General_Mark6Name;
-
-
-            // template based fudical locating RN
-            cb_useTemplate.Checked = Properties.Settings.Default.use_template;
-            FindFiducials_cb.Enabled = Properties.Settings.Default.use_template;
-            fiducialTemlateMatch_textBox.Text = Properties.Settings.Default.template_threshold.ToString();
-            fiducial_designator_regexp_textBox.Text = Properties.Settings.Default.fiducial_designator_regexp;
+            LoadConfiguration(); 
 
             // The components tab is more a distraction than useful.
             // To add data, comment out the next line.
@@ -240,24 +207,24 @@ namespace LitePlacer
 
             ShowBuildNumber();
 
-            DownCamZoom_checkBox.Checked = Properties.Settings.Default.DownCam_Zoom;
-            DownCamera.Zoom = Properties.Settings.Default.DownCam_Zoom;
-            DownCamZoomFactor_textBox.Text = Properties.Settings.Default.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
-            DownCamera.ZoomFactor = Properties.Settings.Default.DownCam_Zoomfactor;
+            DownCamZoom_checkBox.Checked = setting.DownCam_Zoom;
+            DownCamera.Zoom = setting.DownCam_Zoom;
+            DownCamZoomFactor_textBox.Text = setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
+            DownCamera.ZoomFactor = setting.DownCam_Zoomfactor;
 
-            UpCamZoom_checkBox.Checked = Properties.Settings.Default.UpCam_Zoom;
-            UpCamera.Zoom = Properties.Settings.Default.UpCam_Zoom;
-            UpCamZoomFactor_textBox.Text = Properties.Settings.Default.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
-            UpCamera.ZoomFactor = Properties.Settings.Default.UpCam_Zoomfactor;
+            UpCamZoom_checkBox.Checked = setting.UpCam_Zoom;
+            UpCamera.Zoom = setting.UpCam_Zoom;
+            UpCamZoomFactor_textBox.Text = setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
+            UpCamera.ZoomFactor = setting.UpCam_Zoomfactor;
 
             tabControlPages.SelectedTab = tabPageBasicSetup;
             LastTabPage = "tabPageBasicSetup";
 
-            Cnc.SlackCompensation = Properties.Settings.Default.CNC_SlackCompensation;
-            SlackCompensation_checkBox.Checked = Properties.Settings.Default.CNC_SlackCompensation;
-            Cnc.SmallMovementString = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed + " ";
+            Cnc.SlackCompensation = setting.CNC_SlackCompensation;
+            SlackCompensation_checkBox.Checked = setting.CNC_SlackCompensation;
+            Cnc.SmallMovementString = "G1 F" + setting.CNC_SmallMovementSpeed + " ";
 
-            ZTestTravel_textBox.Text = Properties.Settings.Default.General_ZTestTravel.ToString();
+            ZTestTravel_textBox.Text = setting.General_ZTestTravel.ToString();
 
             UpdateCncConnectionStatus();
             if (Cnc.Connected)
@@ -319,82 +286,7 @@ namespace LitePlacer
             }
         }
 
-        // =================================================================================
-        // Saving and restoring data tables (Note: Not job files)
-        // =================================================================================
-        private void SaveDataGrid(string FileName, DataGridView dgv)
-        {
-            try
-            {
-                using (BinaryWriter bw = new BinaryWriter(File.Open(FileName, FileMode.Create)))
-                {
-                    bw.Write(dgv.Columns.Count);
-                    bw.Write(dgv.Rows.Count);
-                    foreach (DataGridViewRow dgvR in dgv.Rows)
-                    {
-                        for (int j = 0; j < dgv.Columns.Count; ++j)
-                        {
-                            object val = dgvR.Cells[j].Value;
-                            if (val == null)
-                            {
-                                bw.Write(false);
-                                bw.Write(false);
-                            }
-                            else
-                            {
-                                bw.Write(true);
-                                bw.Write(val.ToString());
-                            }
-                        }
-                    }
-                }
-            }
-            catch (System.Exception excep)
-            {
-                MessageBox.Show(excep.Message);
-            }
-        }
-
-        private void LoadDataGrid(string FileName, DataGridView dgv)
-        {
-            try
-            {
-                if (!File.Exists(FileName))
-                {
-                    return;
-                }
-                dgv.Rows.Clear();
-                using (BinaryReader bw = new BinaryReader(File.Open(FileName, FileMode.Open)))
-                {
-                    int n = bw.ReadInt32();
-                    int m = bw.ReadInt32();
-                    if (dgv.AllowUserToAddRows)
-                    {
-                        // There is an empty row in the bottom that is visible for manual add.
-                        // It is saved in the file. It is automatically added, so we don't want to add it also.
-                        // It is not there when rows are added only programmatically, so we need to do it here.
-                        m = m - 1;
-                    }
-                    for (int i = 0; i < m; ++i)
-                    {
-                        dgv.Rows.Add();
-                        for (int j = 0; j < n; ++j)
-                        {
-                            if (bw.ReadBoolean())
-                            {
-                                dgv.Rows[i].Cells[j].Value = bw.ReadString();
-                            }
-                            else bw.ReadBoolean();
-                        }
-                    }
-                }
-            }
-            catch (System.Exception excep)
-            {
-                MessageBox.Show(excep.Message);
-            }
-        }
-
+      
         // =================================================================================
         // Scrolling & arranging datagridviews...
         // =================================================================================
@@ -495,15 +387,17 @@ namespace LitePlacer
         // =================================================================================
         // Forcing a DataGridview display update
         // Ugly hack if you ask me, but MS didn't give us any other reliable way...
-        private void Update_GridView(DataGridView Grid)
-        {
+        private void Update_GridView(DataGridView Grid)        {
             Grid.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            Grid.Invalidate();
+            Grid.Update();
+            /*
             BindingSource bs = new BindingSource(); // create a BindingSource
             bs.DataSource = Grid.DataSource;  // copy jobdata to bs
             DataTable dat = (DataTable)(bs.DataSource);  // make a datatable from bs
             Grid.DataSource = dat;  // and copy datatable data to jobdata, forcing redraw
             Grid.RefreshEdit();
-            Grid.Refresh();
+            Grid.Refresh();*/
         }
 
         #endregion
@@ -581,7 +475,7 @@ namespace LitePlacer
                 JoggingBusy = true;
                 //DisplayText("up");
                 //return;
-                Cnc.RawWrite(Movestr + "Y" + Properties.Settings.Default.General_MachineSizeY.ToString() + "\"}");
+                Cnc.RawWrite(Movestr + "Y" + setting.General_MachineSizeY.ToString() + "\"}");
             }
             else if (e.KeyCode == Keys.Down)
             {
@@ -602,7 +496,7 @@ namespace LitePlacer
                 JoggingBusy = true;
                 //DisplayText("right");
                 //return;
-                Cnc.RawWrite(Movestr + "X" + Properties.Settings.Default.General_MachineSizeX.ToString() + "\"}");
+                Cnc.RawWrite(Movestr + "X" + setting.General_MachineSizeX.ToString() + "\"}");
             }
             Jog(sender, e);
         }
@@ -700,8 +594,8 @@ namespace LitePlacer
                 CNC_A_m(Cnc.CurrentA + Mag);
                 if (DownCamera.Draw_Snapshot)
                 {
-                    DownCamera.RotateSnapshot(Cnc.CurrentA);
-                    while (DownCamera.rotating)
+                    DownCamera.videoProcessing.RotateSnapshot(Cnc.CurrentA);
+                    while (DownCamera.videoProcessing.rotating)
                     {
                         Thread.Sleep(10);
                     }
@@ -722,8 +616,8 @@ namespace LitePlacer
                 CNC_A_m(Cnc.CurrentA - Mag);
                 if (DownCamera.Draw_Snapshot)
                 {
-                    DownCamera.RotateSnapshot(Cnc.CurrentA);
-                    while (DownCamera.rotating)
+                    DownCamera.videoProcessing.RotateSnapshot(Cnc.CurrentA);
+                    while (DownCamera.videoProcessing.rotating)
                     {
                         Thread.Sleep(10);
                     }
@@ -764,43 +658,37 @@ namespace LitePlacer
 
         private bool VacuumIsOn = false;
 
-        private void VacuumDefaultSetting()
-        {
+        private void VacuumDefaultSetting()        {
             VacuumOff();
         }
 
-        private void VacuumOn()
-        {
-            if (!VacuumIsOn)
-            {
+        private void VacuumOn()        {
+            if (!VacuumIsOn)            {
                 DisplayText("VacuumOn()");
                 CNC_RawWrite("{\"gc\":\"M08\"}");
                 VacuumIsOn = true;
                 Vacuum_checkBox.Checked = true;
-                Thread.Sleep(Properties.Settings.Default.General_PickupVacuumTime);
+                Thread.Sleep(setting.General_PickupVacuumTime);
             }
         }
 
-        private void VacuumOff()
-        {
+        private void VacuumOff()        {
             if (VacuumIsOn)
             {
                 DisplayText("VacuumOff()");
                 CNC_RawWrite("{\"gc\":\"M09\"}");
                 VacuumIsOn = false;
                 Vacuum_checkBox.Checked = false;
-                Thread.Sleep(Properties.Settings.Default.General_PickupReleaseTime);
+                Thread.Sleep(setting.General_PickupReleaseTime);
             }
         }
 
         private bool PumpIsOn = false;
-        private void PumpDefaultSetting()
-        {
+        private void PumpDefaultSetting()        {
             PumpOff();
         }
 
-        private void BugWorkaround()
-        {
+        private void BugWorkaround()        {
             // see https://www.synthetos.com/topics/file-not-open-error/#post-7194
             // Summary: In some cases, we need a dummy move.
             bool slackSave = Cnc.SlackCompensation;
@@ -810,10 +698,8 @@ namespace LitePlacer
             Cnc.SlackCompensation = slackSave;
         }
 
-        private void PumpOn()
-        {
-            if (!PumpIsOn)
-            {
+        private void PumpOn()        {
+            if (!PumpIsOn)            {
                 //CNC_RawWrite("M03");
                 CNC_RawWrite("{\"gc\":\"M03\"}");
                 Pump_checkBox.Checked = true;
@@ -823,10 +709,8 @@ namespace LitePlacer
             }
         }
 
-        private void PumpOff()
-        {
-            if (PumpIsOn)
-            {
+        private void PumpOff()        {
+            if (PumpIsOn)            {
                 //CNC_RawWrite("M05");
                 CNC_RawWrite("{\"gc\":\"M05\"}");
                 Thread.Sleep(50);
@@ -836,8 +720,7 @@ namespace LitePlacer
             }
         }
 
-        private bool Needle_ProbeDown_m()
-        {
+        private bool Needle_ProbeDown_m()        {
             Needle.ProbingMode(true, JSON);
             Cnc.Homing = true;
             //CNC_Write_m("G28.4 Z0", 4000);
@@ -852,443 +735,20 @@ namespace LitePlacer
             return true;
         }
 
-        private bool CalibrateNeedle_m()
-        {
-            double MarkX = Cnc.CurrentX;
-            double MarkY = Cnc.CurrentY;
-            double MarkZ = Cnc.CurrentZ;
-            double MarkA = Cnc.CurrentA;
-
-            bool UpCamWasRunning = false;
-            if (UpCamera.IsRunning())
-            {
-                UpCamWasRunning = true;
-            }
-            SelectCamera(UpCamera);
-            if (!UpCamera.IsRunning())
-            {
-                ShowMessageBox(
-                    "Up camera not running, can't calibrate needle.",
-                    "Nedle calibration failed.",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            UpCamera.PauseProcessing = true;
-
-            // take needle up
-            bool result = true;
-            result &= CNC_Z_m(0.0);
-
-            // take needle to camera
-            result &= CNC_XY_m(Properties.Settings.Default.UpCam_PositionX, Properties.Settings.Default.UpCam_PositionY);
-            result &= CNC_Z_m(Properties.Settings.Default.General_ZtoPCB - 1.0); // Average small component height 1mm (?)
-
-            SetNeedleMeasurement();
-            result &= Needle.Calibrate(4.0 / Properties.Settings.Default.UpCam_XmmPerPixel);  // have to find the tip within 4mm of center
-
-            // take needle up
-            result &= CNC_Z_m(0.0);
-
-            // restore position
-            // result &= CNC_XYA_m(MarkX, MarkY, MarkA);
-
-            UpCamera.PauseProcessing = false;
-            if (!UpCamWasRunning)
-            {
-                SelectCamera(DownCamera);
-            }
-            if (result)
-            {
-                for (int i = 0; i < Needle.CalibrationPoints.Count; i++)
-                {
-                    DisplayText("A: " + Needle.CalibrationPoints[i].Angle.ToString("0.000") +
-                        ", X: " + Needle.CalibrationPoints[i].X.ToString("0.000") +
-                        ", Y: " + Needle.CalibrationPoints[i].Y.ToString("0.000"));
-                }
-            }
-            else
-            {
-                ShowMessageBox(
-                    "Nedle calibration failed.",
-                    "Nedle calibration failed.",
-                    MessageBoxButtons.OK);
-            }
-            return (result);
-        }
-
-        private void CNC_Park()
-        {
-            CNC_Z_m(0);
-            CNC_XY_m(Properties.Settings.Default.General_ParkX, Properties.Settings.Default.General_ParkY);
-        }
-
-        private bool CNC_Home_m(string axis)
-        {
-            Cnc.Homing = true;
-            //if (!CNC_Write_m("G28.2 " + axis + "0"))
-            if (!CNC_Write_m("{\"gc\":\"G28.2 " + axis + "0\"}"))
-            {
-                ShowMessageBox(
-                    "Homing operation mechanical step failed, CNC issue",
-                    "Homing failed",
-                    MessageBoxButtons.OK);
-                Cnc.Homing = false;
-                return false;
-            }
-            Cnc.Homing = false;
-            DisplayText("Homing " + axis + " done.");
-            return true;
-        }
-
-        // =================================================================================
-        // CNC_Write_m
-        // Sends a command to CNC, doesn't return until the response is handled
-        // by the CNC class. (See _readyEvent )
-        // =================================================================================
-        private const int CNC_MoveTimeout = 3000; // timeout for X,Y,Z,A movements; 2x ms. (3000= 6s timeout)
-
-        private void CNC_RawWrite(string s)
-        {
-            // This for operations that cause conflicts with event firings. Caller does waiting, if needed.
-            Cnc.RawWrite(s);
-        }
-
-        bool CNC_BlockingWriteDone = false;
-        bool CNC_WriteOk = true;
-        private void CNC_BlockingWrite_thread(string cmd)
-        {
-            Cnc_ReadyEvent.Reset();
-            CNC_WriteOk = Cnc.Write(cmd);
-            Cnc_ReadyEvent.Wait();
-            CNC_BlockingWriteDone = true;
-        }
-
-        public bool CNC_Write_m(string s, int Timeout = 250)
-        {
-            CNC_BlockingWriteDone = false;
-            Thread t = new Thread(() => CNC_BlockingWrite_thread(s));
-            t.IsBackground = true;
-            t.Start();
-            int i = 0;
-            if (Cnc.Homing)
-            {
-                Timeout = 10000;
-            };
-            while (!CNC_BlockingWriteDone)
-            {
-                Thread.Sleep(2);
-                Application.DoEvents();
-                i++;
-                if (i > Timeout)
-                {
-                    Cnc_ReadyEvent.Set();  // terminates the CNC_BlockingWrite_thread
-                    ShowMessageBox(
-                        "Debug: CNC_BlockingWrite: Timeout on command " + s,
-                        "Timeout",
-                        MessageBoxButtons.OK);
-                    CNC_BlockingWriteDone = true;
-                    JoggingBusy = false;
-
-                    return false;
-                }
-            }
-            return (CNC_WriteOk);
-        }
-
-        private bool CNC_MoveIsSafeX_m(double X)
-        {
-            if ((X < -3.0) || (X > Properties.Settings.Default.General_MachineSizeX))
-            {
-                ShowMessageBox(
-                    "Attempt to move outside safe limits (X " + X.ToString("0.000", CultureInfo.InvariantCulture) + ")",
-                    "Limits corossed",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            return true;
-        }
-
-        private bool CNC_MoveIsSafeY_m(double Y)
-        {
-            if ((Y < -3.0) || (Y > Properties.Settings.Default.General_MachineSizeY))
-            {
-                ShowMessageBox(
-                    "Attempt to move outside safe limits (Y " + Y.ToString("0.000", CultureInfo.InvariantCulture) + ")",
-                    "Limits corssed",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            return true;
-        }
-
-        private bool _Zguard = true;
-        private void ZGuardOn()   {
-            _Zguard = true;
-        }
-        private void ZGuardOff()  {
-            _Zguard = false;
-        }
-
-        private bool CNC_NeedleIsDown_m()   {
-            if ((Cnc.CurrentZ > 5) && _Zguard)  {
-                DisplayText("Needle down error.");
-                ShowMessageBox(
-                   "Attempt to move while needle is down.",
-                   "Danger to Needle",
-                   MessageBoxButtons.OK);
+        // moved logic from this function into Needle.Calibrate
+        private bool CalibrateNeedle_m() {
+            if (Needle.Calibrate(4.0 / setting.UpCam_XmmPerPixel)) {
+                for (int i = 0; i < Needle.CalibrationPoints.Count; i++)                
+                        DisplayText(Needle.CalibrationPoints[i].ToPartLocation().ToString(), Color.Purple);
+                Needle.Calibrated = true;
                 return true;
-            }
-            return false;
+            } 
+            ShowSimpleMessageBox("Needle Calibration Failed");
+            Needle.Calibrated = false;
+            return false;           
         }
 
-        private void CNC_BlockingXY_thread(double X, double Y)        {
-            Cnc_ReadyEvent.Reset();
-            Cnc.XY(X, Y);
-            Cnc_ReadyEvent.Wait();
-            CNC_BlockingWriteDone = true;
-        }
-
-        private void CNC_BlockingXYA_thread(double X, double Y, double A)        {
-            Cnc_ReadyEvent.Reset();
-            Cnc.XYA(X, Y, A);
-            Cnc_ReadyEvent.Wait();
-            CNC_BlockingWriteDone = true;
-        }
-
-        public bool CNC_XYA_m(PartLocation loc) {
-            return CNC_XYA_m(loc.X, loc.Y, loc.A);
-        }
-
-        public bool CNC_XY_m(PartLocation loc) {
-            return CNC_XY_m(loc.X, loc.Y);
-        }
-
-        public bool CNC_XY_m(double X, double Y)        {
-            DisplayText("CNC_XY_m, x: " + X.ToString() + ", y: " + Y.ToString());
-            if (CNC_NeedleIsDown_m())            {
-                return false;
-            }
-            if (AbortPlacement)            {
-                AbortPlacement = false;  // one shot
-                ShowMessageBox(
-                           "Operation aborted",
-                           "Operation aborted",
-                           MessageBoxButtons.OK);
-                return false;
-            }
-
-            if (!CNC_MoveIsSafeX_m(X) || !CNC_MoveIsSafeY_m(Y))  {
-                return false;
-            }
-
-            if (!Cnc.Connected)            {
-                ShowMessageBox(
-                    "CNC_XY: Cnc not connected",
-                    "Cnc not connected",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-
-            CNC_BlockingWriteDone = false;
-            Thread t = new Thread(() => CNC_BlockingXY_thread(X, Y));
-            t.IsBackground = true;
-            t.Start();
-            int i = 0;
-
-            while (!CNC_BlockingWriteDone)
-            {
-                Thread.Sleep(2);
-                Application.DoEvents();
-                i++;
-                if (i > CNC_MoveTimeout)
-                {
-                    Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
-                }
-            }
-
-            CNC_BlockingWriteDone = true;
-            if ((i > CNC_MoveTimeout) && Cnc.Connected)
-            {
-                ShowMessageBox(
-                           "CNC_XY: Timeout / Cnc connection cut!",
-                           "Timeout",
-                           MessageBoxButtons.OK);
-                Cnc.Close();
-                UpdateCncConnectionStatus();
-            }
-            DisplayText("CNC_XY_m ok");
-            return (Cnc.Connected);
-        }
-
-        public bool CNC_XYA_m(double X, double Y, double A)
-        {
-            if (AbortPlacement)
-            {
-                AbortPlacement = false;  // one shot
-                ShowMessageBox(
-                    "Operation aborted.",
-                    "Operation aborted.",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-
-            if (CNC_NeedleIsDown_m())
-            {
-                return false;
-            }
-
-            if (!CNC_MoveIsSafeX_m(X))
-            {
-                return false;
-            }
-
-            if (!CNC_MoveIsSafeY_m(Y))
-            {
-                return false;
-            }
-
-            if (!Cnc.Connected)
-            {
-                ShowMessageBox(
-                    "CNC_XYA: Cnc not connected",
-                    "Cnc not connected",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-
-            CNC_BlockingWriteDone = false;
-            Thread t = new Thread(() => CNC_BlockingXYA_thread(X, Y, A));
-            t.IsBackground = true;
-            t.Start();
-            int i = 0;
-
-            while (!CNC_BlockingWriteDone)
-            {
-                Thread.Sleep(2);
-                Application.DoEvents();
-                i++;
-                if (i > CNC_MoveTimeout)
-                {
-                    Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
-                }
-            }
-
-            CNC_BlockingWriteDone = true;
-            if ((i > CNC_MoveTimeout) && Cnc.Connected)
-            {
-                ShowMessageBox(
-                           "CNC_XYA: Timeout / Cnc connection cut!",
-                           "Timeout",
-                           MessageBoxButtons.OK);
-                Cnc.Close();
-                UpdateCncConnectionStatus();
-            }
-            return (Cnc.Connected);
-        }
-
-
-        private void CNC_BlockingZ_thread(double Z)
-        {
-            Cnc_ReadyEvent.Reset();
-            Cnc.Z(Z);
-            Cnc_ReadyEvent.Wait();
-            CNC_BlockingWriteDone = true;
-        }
-
-        private bool CNC_Z_m(double Z)
-        {
-            if (AbortPlacement)
-            {
-                AbortPlacement = false;  // one shot
-                ShowMessageBox(
-                    "Operation aborted.",
-                    "Operation aborted.",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            if (!Cnc.Connected)
-            {
-                ShowMessageBox(
-                    "CNC_Z: Cnc not connected",
-                    "Cnc not connected",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-
-            CNC_BlockingWriteDone = false;
-            Thread t = new Thread(() => CNC_BlockingZ_thread(Z));
-            t.IsBackground = true;
-            t.Start();
-            int i = 0;
-            while (!CNC_BlockingWriteDone)
-            {
-                Thread.Sleep(2);
-                Application.DoEvents();
-                i++;
-                if (i > CNC_MoveTimeout)
-                {
-                    Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
-                }
-            }
-            if ((i > CNC_MoveTimeout)  || !Cnc.Connected)
-            {
-                ShowMessageBox(
-                           "CNC_Z: Timeout / Cnc connection cut!",
-                           "Timeout",
-                           MessageBoxButtons.OK);
-                Cnc.Close();
-            }
-            return (Cnc.Connected);
-        }
-
-        private void CNC_BlockingA_thread(double A)
-        {
-            Cnc_ReadyEvent.Reset();
-            Cnc.A(A);
-            Cnc_ReadyEvent.Wait();
-            CNC_BlockingWriteDone = true;
-        }
-
-        public bool CNC_A_m(double A)
-        {
-            CNC_BlockingWriteDone = false;
-            Thread t = new Thread(() => CNC_BlockingA_thread(A));
-            t.IsBackground = true;
-            t.Start();
-            int i = 0;
-            if (!Cnc.Connected)
-            {
-                ShowMessageBox(
-                    "CNC_A: Cnc not connected",
-                    "Cnc not connected",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            while (!CNC_BlockingWriteDone)
-            {
-                Thread.Sleep(2);
-                Application.DoEvents();
-                i++;
-                if (i > CNC_MoveTimeout)
-                {
-                    Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
-                }
-            }
-
-            CNC_BlockingWriteDone = true;
-            if ((i > CNC_MoveTimeout) && Cnc.Connected)
-            {
-                ShowMessageBox(
-                           "CNC_A: Timeout / Cnc connection cut!",
-                           "Timeout",
-                           MessageBoxButtons.OK);
-                Cnc.Close();
-                UpdateCncConnectionStatus();
-            }
-            return (Cnc.Connected);
-        }
-
-
+     
         /// <summary>
         /// Will return the actual location of the part
         /// </summary>
@@ -1310,59 +770,78 @@ namespace LitePlacer
             return GoToLocation_m(DownCamera, type, FindTolerance, MoveTolerance, out X, out Y);
         }
 
+
+        public Shapes.Thing FindClosest(Camera cam, Shapes.ShapeTypes type, double FindTolerance, int retries) {
+            while (retries-->0) {
+                for (int i=0; i<10; i++) cam.GetMeasurementFrame(); //skip 10 frames
+                Shapes.Thing thing = null;
+                switch (type) {
+                    case Shapes.ShapeTypes.Circle:
+                        thing = cam.videoDetection.GetClosestCircle(FindTolerance);
+                        break;
+                    case Shapes.ShapeTypes.Fiducial:
+                        thing = cam.videoDetection.GetClosestTemplate(FindTolerance);
+                        break;
+                    case Shapes.ShapeTypes.Rectangle:
+                        thing = cam.videoDetection.GetSmallestCenteredRectangle(cam.videoDetection.FindRectangles(cam.GetMeasurementFrame()));
+                        break;
+                    default:
+                        DisplayText("detection of " + type + " not yet supported", System.Drawing.Color.Red);
+                        break;
+                }
+                if (thing != null) return thing;
+            } 
+            return null;
+        }
+
+
         public bool GoToLocation_m(Camera cam, Shapes.ShapeTypes type, double FindTolerance, double MoveTolerance, out double X, out double Y) {
-            DisplayText("GoToCircleLocation_m(), FindTolerance: " + FindTolerance.ToString() + ", MoveTolerance: " + MoveTolerance.ToString());
+            DisplayText("GoToLocation_m("+type+"), FindTolerance: " + FindTolerance.ToString() + ", MoveTolerance: " + MoveTolerance.ToString(), Color.Orange);
 
             X = 0; Y = 0;
 
             // switch to this camera
             if (!SelectCamera(cam)) return false;
+            
 
-            var xmmPerPixel = (cam == DownCamera) ? Properties.Settings.Default.DownCam_XmmPerPixel : Properties.Settings.Default.UpCam_XmmPerPixel;
-            var ymmPerPixel = (cam == DownCamera) ? Properties.Settings.Default.DownCam_YmmPerPixel : Properties.Settings.Default.UpCam_YmmPerPixel;
-                        
-            FindTolerance = FindTolerance / xmmPerPixel;
-
-            int count = 0;
-            int res = 0;
-            int tries = 0;
             bool ProcessingStateSave = cam.PauseProcessing;
             cam.PauseProcessing = true;
 
-            do {
-                // Measure thing location
-                res = cam.GetClosest(type, out X, out Y, FindTolerance, 8);
-                if (res == 0) {
-                    ShowMessageBox(
-                        "Optical positioning: Can't find "+type,
-                        "No "+type+" found",
-                        MessageBoxButtons.OK);
+            //move up to 8 times
+            PartLocation location = null;
+            for (int i=0; i<8; i++) {
+                var thing = FindClosest(cam,type,FindTolerance,8); 
+
+                if (thing == null) {
+                    ShowSimpleMessageBox("Optical positioning: Can't find "+type);
                     cam.PauseProcessing = ProcessingStateSave;
                     return false;
                 }
 
-                X = X * Properties.Settings.Default.DownCam_XmmPerPixel;
-                Y = -Y * Properties.Settings.Default.DownCam_YmmPerPixel;
+                thing.ToMMResolution();
+                DisplayText("Optical positioning, round " + i.ToString() + ", offset= " + thing + "  dist/tol = "+thing.ToPartLocation().VectorLength()+"/"+FindTolerance);
+                Console.WriteLine("Optical positioning, round " + i.ToString() + ", offset= " + thing + "  dist/tol = " + thing.ToPartLocation().VectorLength() + "/" + FindTolerance);
 
-                DisplayText("Optical positioning, round " + count.ToString() + ", dX= " + X.ToString() + ", dY= " + Y.ToString() + ", tries= " + tries.ToString());
-                // If we are further than move tolerance, go there
-                if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance)) {
-                    CNC_XY_m(Cnc.CurrentX + X, Cnc.CurrentY + Y);
+                // If we are further than move tolerance, go there, else end loop
+                if (thing.ToPartLocation().VectorLength() > MoveTolerance) {
+                    Console.WriteLine("\tmoving " + thing.ToPartLocation().VectorLength() + " > " + MoveTolerance);
+                    CNC_XY_m(Cnc.XYLocation + thing.ToPartLocation());
+                } else {
+                    location = thing.ToPartLocation();
+                    break;
                 }
-                count++;
-            }  // repeat this until we didn't need to move
-            while ((count < 8)
-                && ((Math.Abs(X) > MoveTolerance)
-                || (Math.Abs(Y) > MoveTolerance)));
+            }
+  
 
             cam.PauseProcessing = ProcessingStateSave;
-            if (count >= 7) {
-                ShowMessageBox(
-                    "Optical positioning: Process is unstable, result is unreliable!",
-                    "Count exeeded",
-                    MessageBoxButtons.OK);
+
+            if (location == null) {
+                ShowSimpleMessageBox("Optical positioning: Process is unstable, result is unreliable!");
                 return false;
             }
+
+            X = location.X; 
+            Y = location.Y;
             return true;
         }
 
@@ -1385,12 +864,30 @@ namespace LitePlacer
             // CNC_RawWrite("G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000"));
             CNC_RawWrite("{\"gc\":\"G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000") + "\"}");
             Thread.Sleep(50);
+            /*
             Cnc.CurrentX = 0.0;
             Cnc.CurrentY = 0.0;
             Update_xpos("0.00");
             Update_ypos("0.00");
+             */
+            Cnc.CurrentX = X;
+            Cnc.CurrentY = Y;
+            Update_xpos(X.ToString("F3"));
+            Update_ypos(Y.ToString("F3"));
+            
             DisplayText("Optical homing OK.");
+            ClearDownVisualFilter();
             return true;
+        }
+
+        public void ClearDownVisualFilter() {
+            DownCamera.videoProcessing.ClearFunctionsList(); //clear measurements
+            clear_gb.BackColor = Color.Transparent;
+            black_gb.BackColor = Color.Transparent;
+            white_gb.BackColor = Color.Transparent;
+            fiducials_gb.BackColor = Color.Transparent;
+            components_gb.BackColor = Color.Transparent;
+            homing_gb.BackColor = Color.Transparent;
         }
 
         private bool MechanicalHoming_m()
@@ -1421,13 +918,7 @@ namespace LitePlacer
             {
                 return false;
             };
-            //ZGuardOff();
-            //if (!CNC_XY_m(10.0, 10.0))  // make room for the shade
-            //{
-            //    ZGuardOn();
-            //    return false;
-            //};
-            //ZGuardOn();
+
             DisplayText("Move Z");  // Z back up
             if (!CNC_Z_m(0))
             {
@@ -1437,12 +928,8 @@ namespace LitePlacer
         }
 
 
-        private void OpticalHome_button_Click(object sender, EventArgs e)
-        {
-            if (!MechanicalHoming_m())
-            {
-                return;
-            }
+        private void OpticalHome_button_Click(object sender, EventArgs e)        {
+            if (!MechanicalHoming_m()) return;
             OpticalHoming_m();
         }
 
@@ -1456,28 +943,8 @@ namespace LitePlacer
         // =================================================================================
         // Common
         // =================================================================================
-        /* GOOZ 
-         * private void SelectCamera(Camera cam)
-        {
-            if (UpCamera.IsRunning())
-            {
-                UpCamera.Close();
-            };
-            if (DownCamera.IsRunning())
-            {
-                DownCamera.Close();
-            };
-            if (cam == DownCamera)
-            {
-                StartDownCamera_m();
-            }
-            else
-            {
-                StartUpCamera_m();
-            }
-        } */
 
-        private bool SelectCamera(Camera cam) {
+        public bool SelectCamera(Camera cam) {
             if (cam == DownCamera) {
                 if (UpCamera.IsRunning()) UpCamera.Close();
                 if (!DownCamera.IsRunning()) StartDownCamera_m();
@@ -1503,13 +970,13 @@ namespace LitePlacer
                 DisplayText("DownCamera already running");
                 return true;
             };
-            if (Properties.Settings.Default.DownCam_index == -1)
+            if (setting.DownCam_index == -1)
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
                 return true;
             };
 
-            if (!DownCamera.Start("DownCamera", Properties.Settings.Default.DownCam_index))
+            if (!DownCamera.Start("DownCamera", setting.DownCam_index))
             {
                 ShowMessageBox(
                     "Problem Starting down camera.",
@@ -1532,13 +999,13 @@ namespace LitePlacer
                 DisplayText("UpCamera already running");
                 return true;
             };
-            if (Properties.Settings.Default.UpCam_index == -1)
+            if (setting.UpCam_index == -1)
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
                 return true;
             };
 
-            if (!UpCamera.Start("UpCamera", Properties.Settings.Default.UpCam_index))
+            if (!UpCamera.Start("UpCamera", setting.UpCam_index))
             {
                 ShowMessageBox(
                     "Problem Starting up camera.",
@@ -1560,9 +1027,9 @@ namespace LitePlacer
             {
                 // Cntrl-click
                 double X = Convert.ToDouble(e.X) / Convert.ToDouble(Cam_pictureBox.Size.Width);
-                X = X * Properties.Settings.Default.General_MachineSizeX;
+                X = X * setting.General_MachineSizeX;
                 double Y = Convert.ToDouble(Cam_pictureBox.Size.Height - e.Y) / Convert.ToDouble(Cam_pictureBox.Size.Height);
-                Y = Y * Properties.Settings.Default.General_MachineSizeY;
+                Y = Y * setting.General_MachineSizeY;
                 CNC_XY_m(X, Y);
             }
             else if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
@@ -1576,8 +1043,8 @@ namespace LitePlacer
                 double Xmm, Ymm;
                 if (DownCamera.IsRunning())
                 {
-                    Xmm = Convert.ToDouble(X) * Properties.Settings.Default.DownCam_XmmPerPixel;
-                    Ymm = Convert.ToDouble(Y) * Properties.Settings.Default.DownCam_YmmPerPixel;
+                    Xmm = Convert.ToDouble(X) * setting.DownCam_XmmPerPixel;
+                    Ymm = Convert.ToDouble(Y) * setting.DownCam_YmmPerPixel;
                     if (DownCamera.Zoom)  // if zoomed for display
                     {
                         Xmm = Xmm / DownCamera.ZoomFactor;
@@ -1588,8 +1055,8 @@ namespace LitePlacer
                 }
                 else if (UpCamera.IsRunning())
                 {
-                    Xmm = Convert.ToDouble(X) * Properties.Settings.Default.UpCam_XmmPerPixel;
-                    Ymm = Convert.ToDouble(Y) * Properties.Settings.Default.UpCam_YmmPerPixel;
+                    Xmm = Convert.ToDouble(X) * setting.UpCam_XmmPerPixel;
+                    Ymm = Convert.ToDouble(Y) * setting.UpCam_YmmPerPixel;
                     if (UpCamera.Zoom)
                     {
                         Xmm = -Xmm / UpCamera.ZoomFactor;
@@ -1615,8 +1082,7 @@ namespace LitePlacer
             DownCamera.BoxSizeY = 200;
             DownCamera.BoxRotationDeg = 0;
             DownCamera.ImageBox = this.Cam_pictureBox;
-            DownCamera.Mirror = false;
-            DownCamera.ClearDisplayFunctionsList();
+            DownCamera.videoProcessing.ClearFunctionsList();
             // Draws
             DownCamera.DrawCross = true;
             DownCameraDrawCross_checkBox.Checked = true;
@@ -1640,6 +1106,7 @@ namespace LitePlacer
             DownCamera.Draw1mmGrid = false;
             DownCamera.MarkA.Clear();
             DownCamera.MarkB.Clear();
+            DownCamera.ClearMarkupText();
         }
         // ====
         private void SetUpCameraDefaults()
@@ -1648,7 +1115,6 @@ namespace LitePlacer
             UpCamera.BoxSizeY = 200;
             UpCamera.BoxRotationDeg = 0;
             UpCamera.ImageBox = this.Cam_pictureBox;
-            UpCamera.Mirror = true;
             UpCamera.DrawCross = true;
             UpCameraDrawCross_checkBox.Checked = true;
             UpCamera.DrawDashedCross = false;
@@ -1662,7 +1128,8 @@ namespace LitePlacer
             UpCamera.DrawBox = false;
             UpCameraDrawBox_checkBox.Checked = false;
             UpCamera.MarkA.Clear();
-            UpCamera.MarkB.Clear();               
+            UpCamera.MarkB.Clear();
+            UpCamera.ClearMarkupText();
         }
 
         // =================================================================================
@@ -1674,35 +1141,35 @@ namespace LitePlacer
             ClearEditTargets();
 
             double f;
-            f = Properties.Settings.Default.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
+            f = setting.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
             DownCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            DownCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            f = Properties.Settings.Default.DownCam_YmmPerPixel * DownCamera.BoxSizeY;
+            DownCameraBoxXmmPerPixel_label.Text = "(" + setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            f = setting.DownCam_YmmPerPixel * DownCamera.BoxSizeY;
             DownCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            DownCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            DownCameraBoxYmmPerPixel_label.Text = "(" + setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
 
-            f = Properties.Settings.Default.UpCam_XmmPerPixel * UpCamera.BoxSizeX;
+            f = setting.UpCam_XmmPerPixel * UpCamera.BoxSizeX;
             UpCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            UpCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_XmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            f = Properties.Settings.Default.UpCam_YmmPerPixel * UpCamera.BoxSizeY;
+            UpCameraBoxXmmPerPixel_label.Text = "(" + setting.UpCam_XmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            f = setting.UpCam_YmmPerPixel * UpCamera.BoxSizeY;
             UpCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            UpCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_YmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            UpCameraBoxYmmPerPixel_label.Text = "(" + setting.UpCam_YmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture) + "mm/pixel)";
 
-            // Threshold_numericUpDown.Value = Properties.Settings.Default.Downcam_OpticalHomingThreshold;
-            JigX_textBox.Text = Properties.Settings.Default.General_JigOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
-            JigY_textBox.Text = Properties.Settings.Default.General_JigOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
-            PickupCenterX_textBox.Text = Properties.Settings.Default.General_PickupCenterX.ToString("0.00", CultureInfo.InvariantCulture);
-            PickupCenterY_textBox.Text = Properties.Settings.Default.General_PickupCenterY.ToString("0.00", CultureInfo.InvariantCulture);
-            NeedleOffsetX_textBox.Text = Properties.Settings.Default.DownCam_NeedleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
-            NeedleOffsetY_textBox.Text = Properties.Settings.Default.DownCam_NeedleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
-            Z0toPCB_CamerasTab_label.Text = Properties.Settings.Default.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) + " mm";
+            // Threshold_numericUpDown.Value = setting.Downcam_OpticalHomingThreshold;
+            JigX_textBox.Text = setting.General_JigOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
+            JigY_textBox.Text = setting.General_JigOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
+            PickupCenterX_textBox.Text = setting.General_PickupCenterX.ToString("0.00", CultureInfo.InvariantCulture);
+            PickupCenterY_textBox.Text = setting.General_PickupCenterY.ToString("0.00", CultureInfo.InvariantCulture);
+            NeedleOffsetX_textBox.Text = setting.DownCam_NeedleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
+            NeedleOffsetY_textBox.Text = setting.DownCam_NeedleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
+            Z0toPCB_CamerasTab_label.Text = setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) + " mm";
 
-            UpcamPositionX_textBox.Text = Properties.Settings.Default.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
-            UpcamPositionY_textBox.Text = Properties.Settings.Default.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
+            UpcamPositionX_textBox.Text = setting.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
+            UpcamPositionY_textBox.Text = setting.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
 
-            DownCamera.SideMarksX = Properties.Settings.Default.General_MachineSizeX / 100;
-            DownCamera.SideMarksY = Properties.Settings.Default.General_MachineSizeY / 100;
-            DownCameraDrawTicks_checkBox.Checked = Properties.Settings.Default.DownCam_DrawTicks;
+            DownCamera.SideMarksX = setting.General_MachineSizeX / 100;
+            DownCamera.SideMarksY = setting.General_MachineSizeY / 100;
+            DownCameraDrawTicks_checkBox.Checked = setting.DownCam_DrawTicks;
 
 
             Display_dataGridView.Rows.Clear();
@@ -1716,7 +1183,7 @@ namespace LitePlacer
         // get the devices         
         private void getDownCamList()
         {
-            List<string> Devices = DownCamera.GetDeviceList();
+            List<string> Devices = Camera.GetDeviceList();
             DownCam_comboBox.Items.Clear();
             if (Devices.Count != 0)
             {
@@ -1730,9 +1197,9 @@ namespace LitePlacer
                 DownCam_comboBox.Items.Add("----");
                 DownCamStatus_label.Text = "No Cam";
             }
-            if ((Devices.Count >= Properties.Settings.Default.DownCam_index) && (Properties.Settings.Default.DownCam_index > 0))
+            if ((Devices.Count >= setting.DownCam_index) && (setting.DownCam_index > 0))
             {
-                DownCam_comboBox.SelectedIndex = Properties.Settings.Default.DownCam_index;
+                DownCam_comboBox.SelectedIndex = setting.DownCam_index;
             }
             else
             {
@@ -1744,7 +1211,7 @@ namespace LitePlacer
         // ====
         private void getUpCamList()
         {
-            List<string> Devices = UpCamera.GetDeviceList();
+            List<string> Devices = Camera.GetDeviceList();
             UpCam_comboBox.Items.Clear();
             if (Devices.Count != 0)
             {
@@ -1758,9 +1225,9 @@ namespace LitePlacer
                 UpCam_comboBox.Items.Add("----");
                 UpCamStatus_label.Text = "No Cam";
             }
-            if ((Devices.Count >= Properties.Settings.Default.UpCam_index) && (Properties.Settings.Default.UpCam_index > 0))
+            if ((Devices.Count >= setting.UpCam_index) && (setting.UpCam_index > 0))
             {
-                UpCam_comboBox.SelectedIndex = Properties.Settings.Default.UpCam_index;
+                UpCam_comboBox.SelectedIndex = setting.UpCam_index;
             }
             else
             {
@@ -1790,282 +1257,22 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        private void ConnectDownCamera_button_Click(object sender, EventArgs e)
-        {
+        private void ConnectDownCamera_button_Click(object sender, EventArgs e)        {
             DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString());
-            Properties.Settings.Default.DownCam_index = DownCam_comboBox.SelectedIndex;
+            setting.DownCam_index = DownCam_comboBox.SelectedIndex;
             SelectCamera(DownCamera);
-            if (DownCamera.IsRunning())
-            {
-                SetCurrentCameraParameters();
-            }
-            else
-            {
-                ShowMessageBox(
-                    "Problem starting this camera",
-                    "Problem starting camera",
-                    MessageBoxButtons.OK);
-            }
+            SetCurrentCameraParameters();
         }
 
         // ====
-        private void ConnectUpCamera_button_Click(object sender, EventArgs e)
-        {
+        private void ConnectUpCamera_button_Click(object sender, EventArgs e)        {
             DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString());
-            Properties.Settings.Default.UpCam_index = UpCam_comboBox.SelectedIndex;
+            setting.UpCam_index = UpCam_comboBox.SelectedIndex;
             SelectCamera(UpCamera);
-            if (UpCamera.IsRunning())
-            {
-                SetCurrentCameraParameters();
-            }
-            else
-            {
-                ShowMessageBox(
-                    "Problem starting this camera",
-                    "Problem starting camera",
-                    MessageBoxButtons.OK);
-            }
+            SetCurrentCameraParameters();
         }
 
-        // =================================================================================
-        private void DownCameraDrawDashedCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawDashedCross_checkBox.Checked)
-            {
-                DownCamera.DrawDashedCross = true;
-            }
-            else
-            {
-                DownCamera.DrawDashedCross = false;
-            }
-        }
-
-        // ====
-        private void UpCameraDrawDashedCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCameraDrawDashedCross_checkBox.Checked)
-            {
-                UpCamera.DrawDashedCross = true;
-            }
-            else
-            {
-                UpCamera.DrawDashedCross = false;
-            }
-        }
-
-
-        // =================================================================================
-        private void DownCameraDrawTicks_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawTicks_checkBox.Checked)
-            {
-                DownCamera.DrawSidemarks = true;
-                Properties.Settings.Default.DownCam_DrawTicks = true;
-            }
-            else
-            {
-                DownCamera.DrawSidemarks = false;
-                Properties.Settings.Default.DownCam_DrawTicks = false;
-            }
-        }
-
-        // =================================================================================
-        private void DownCameraDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawCross_checkBox.Checked)
-            {
-                DownCamera.DrawCross = true;
-            }
-            else
-            {
-                DownCamera.DrawCross = false;
-            }
-        }
-
-        // ====
-        private void UpCameraDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCameraDrawCross_checkBox.Checked)
-            {
-                UpCamera.DrawCross = true;
-            }
-            else
-            {
-                UpCamera.DrawCross = false;
-            }
-        }
-
-        // =================================================================================
-        private void DownCameraDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawBox_checkBox.Checked)
-            {
-                DownCamera.DrawBox = true;
-            }
-            else
-            {
-                DownCamera.DrawBox = false;
-            }
-        }
-
-        // ====
-        private void UpCameraDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCameraDrawBox_checkBox.Checked)
-            {
-                UpCamera.DrawBox = true;
-            }
-            else
-            {
-                UpCamera.DrawBox = false;
-            }
-        }
-
-        // =================================================================================
-        private void DownCameraBoxX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                DownCameraUpdateXmmPerPixel();
-            }
-        }
-
-        private void DownCameraBoxX_textBox_Leave(object sender, EventArgs e)
-        {
-            DownCameraUpdateXmmPerPixel();
-        }
-
-
-        private void DownCameraUpdateXmmPerPixel()
-        {
-            double val;
-            if (double.TryParse(DownCameraBoxX_textBox.Text, out val))
-            {
-                Properties.Settings.Default.DownCam_XmmPerPixel = val / DownCamera.BoxSizeX;
-                DownCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            }
-        }
-
-        // ====
-        private void UpCameraBoxX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                UpCameraUpdateXmmPerPixel();
-            }
-        }
-
-        private void UpCameraBoxX_textBox_Leave(object sender, EventArgs e)
-        {
-            UpCameraUpdateXmmPerPixel();
-        }
-
-        private void UpCameraUpdateXmmPerPixel()
-        {
-            double val;
-            if (double.TryParse(UpCameraBoxX_textBox.Text, out val))
-            {
-                Properties.Settings.Default.UpCam_XmmPerPixel = val / UpCamera.BoxSizeX;
-                UpCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            }
-        }
-
-        // =================================================================================
-        private void DownCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)        {
-            if (e.KeyChar == '\r') DownCameraUpdateYmmPerPixel();
-        }
-
-        private void DownCameraBoxY_textBox_Leave(object sender, EventArgs e)        {
-            DownCameraUpdateYmmPerPixel();
-        }
-
-        private void DownCameraUpdateYmmPerPixel()        {
-            double val;
-            if (double.TryParse(DownCameraBoxY_textBox.Text, out val)) {
-                Properties.Settings.Default.DownCam_YmmPerPixel = val / DownCamera.BoxSizeY;
-                DownCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            }
-        }
-
-        // ====
-        private void UpCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)        {
-            if (e.KeyChar == '\r')  UpCameraUpdateYmmPerPixel();
-        }
-
-        private void UpCameraBoxY_textBox_Leave(object sender, EventArgs e){
-                UpCameraUpdateYmmPerPixel();
-        }
-
-        private void UpCameraUpdateYmmPerPixel()        {
-            double val;
-            if (double.TryParse(UpCameraBoxY_textBox.Text, out val))
-            {
-                Properties.Settings.Default.UpCam_YmmPerPixel = val / UpCamera.BoxSizeY;
-                UpCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            }
-        }
-
-
-
-        // =================================================================================
-        private void DownCamZoom_checkBox_Click(object sender, EventArgs e)        {
-            DownCamera.Zoom = DownCamZoom_checkBox.Checked;
-            Properties.Settings.Default.DownCam_Zoom = DownCamera.Zoom;
-        }
-
-        // ====
-        private void UpCamZoom_checkBox_Click(object sender, EventArgs e)    {
-            UpCamera.Zoom = UpCamZoom_checkBox.Checked;
-            Properties.Settings.Default.UpCam_Zoom = UpCamera.Zoom;
-        }
-
-        // =================================================================================
-        private void DownCamZoomFactor_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(DownCamZoomFactor_textBox.Text, out val))
-                {
-                    DownCamera.ZoomFactor = val;
-                    Properties.Settings.Default.DownCam_Zoomfactor = val;
-                }
-            }
-        }
-
-        private void DownCamZoomFactor_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(DownCamZoomFactor_textBox.Text, out val))
-            {
-                DownCamera.ZoomFactor = val;
-                Properties.Settings.Default.DownCam_Zoomfactor = val;
-            }
-        }
-
-        // ====
-        private void UpCamZoomFactor_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(UpCamZoomFactor_textBox.Text, out val))
-                {
-                    UpCamera.ZoomFactor = val;
-                    Properties.Settings.Default.UpCam_Zoomfactor = val;
-                }
-            }
-        }
-
-        private void UpCamZoomFactor_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(UpCamZoomFactor_textBox.Text, out val))
-            {
-                UpCamera.ZoomFactor = val;
-                Properties.Settings.Default.UpCam_Zoomfactor = val;
-            }
-        }
+      
 
         // =================================================================================
 
@@ -2074,30 +1281,7 @@ namespace LitePlacer
         // =================================================================================
 
         // =================================================================================
-        private void ImageTest_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ImageTest_checkBox.Checked)
-            {
-                DownCamera.TestAlgorithm = true;
-            }
-            else
-            {
-                DownCamera.TestAlgorithm = false;
-            }
-        }
-
-        // =================================================================================
-        private void Overlay_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Overlay_checkBox.Checked)
-            {
-                DownCamera.Draw_Snapshot = true;
-            }
-            else
-            {
-                DownCamera.Draw_Snapshot = false;
-            }
-        }
+    
 
         // =================================================================================
         private void Snapshot_button_Click(object sender, EventArgs e)
@@ -2106,130 +1290,37 @@ namespace LitePlacer
             DownCamera.TakeSnapshot = true;
         }
 
-        // =================================================================================
-        private void JigX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(JigX_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_JigOffsetX = val;
-                }
-            }
-        }
-
-        private void JigX_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(JigX_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_JigOffsetX = val;
-            }
-        }
-
-        // =================================================================================
-        private void JigY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(JigY_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_JigOffsetY = val;
-                }
-            }
-        }
-
-        private void JigY_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(JigY_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_JigOffsetY = val;
-            }
-        }
-
+      
         // =================================================================================
         private void GotoPCB0_button_Click(object sender, EventArgs e)
         {
-            CNC_XY_m(Properties.Settings.Default.General_JigOffsetX, Properties.Settings.Default.General_JigOffsetY);
+            CNC_XY_m(setting.General_JigOffsetX, setting.General_JigOffsetY);
         }
 
         // =================================================================================
         private void SetPCB0_button_Click(object sender, EventArgs e)
         {
             JigX_textBox.Text = Cnc.CurrentX.ToString("0.00", CultureInfo.InvariantCulture);
-            Properties.Settings.Default.General_JigOffsetX = Cnc.CurrentX;
+            setting.General_JigOffsetX = Cnc.CurrentX;
             JigY_textBox.Text = Cnc.CurrentY.ToString("0.00", CultureInfo.InvariantCulture);
-            Properties.Settings.Default.General_JigOffsetY = Cnc.CurrentY;
+            setting.General_JigOffsetY = Cnc.CurrentY;
         }
 
 
-
-        // =================================================================================
-        private void PickupCenterX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            PickupCenterX_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(PickupCenterX_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_PickupCenterX = val;
-                    PickupCenterX_textBox.ForeColor = Color.Black;
-                }
-            }
-        }
-
-        private void PickupCenterX_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(PickupCenterX_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_PickupCenterX = val;
-                PickupCenterX_textBox.ForeColor = Color.Black;
-            }
-        }
-
-        // =================================================================================
-        private void PickupCenterY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            PickupCenterY_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(PickupCenterY_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_PickupCenterY = val;
-                    PickupCenterY_textBox.ForeColor = Color.Black;
-                }
-            }
-        }
-
-        private void PickupCenterY_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(PickupCenterY_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_PickupCenterY = val;
-                PickupCenterY_textBox.ForeColor = Color.Black;
-            }
-        }
 
         // =================================================================================
         private void GotoPickupCenter_button_Click(object sender, EventArgs e)
         {
-            CNC_XY_m(Properties.Settings.Default.General_PickupCenterX, Properties.Settings.Default.General_PickupCenterY);
+            CNC_XY_m(setting.General_PickupCenterX, setting.General_PickupCenterY);
         }
 
         // =================================================================================
         private void SetPickupCenter_button_Click(object sender, EventArgs e)
         {
             PickupCenterX_textBox.Text = Cnc.CurrentX.ToString("0.00", CultureInfo.InvariantCulture);
-            Properties.Settings.Default.General_PickupCenterX = Cnc.CurrentX;
+            setting.General_PickupCenterX = Cnc.CurrentX;
             PickupCenterY_textBox.Text = Cnc.CurrentY.ToString("0.00", CultureInfo.InvariantCulture);
-            Properties.Settings.Default.General_PickupCenterY = Cnc.CurrentY;
+            setting.General_PickupCenterY = Cnc.CurrentY;
             PickupCenterX_textBox.ForeColor = Color.Black;
             PickupCenterY_textBox.ForeColor = Color.Black;
         }
@@ -2267,11 +1358,11 @@ namespace LitePlacer
 
                 case 2:
                     SetNeedleOffset_stage = 0;
-                    Properties.Settings.Default.DownCam_NeedleOffsetX = NeedleOffsetMarkX - Cnc.CurrentX;
-                    Properties.Settings.Default.DownCam_NeedleOffsetY = NeedleOffsetMarkY - Cnc.CurrentY;
-                    Properties.Settings.Default.Save();
-                    NeedleOffsetX_textBox.Text = Properties.Settings.Default.DownCam_NeedleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
-                    NeedleOffsetY_textBox.Text = Properties.Settings.Default.DownCam_NeedleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
+                    setting.DownCam_NeedleOffsetX = NeedleOffsetMarkX - Cnc.CurrentX;
+                    setting.DownCam_NeedleOffsetY = NeedleOffsetMarkY - Cnc.CurrentY;
+                    setting.Save();
+                    NeedleOffsetX_textBox.Text = setting.DownCam_NeedleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
+                    NeedleOffsetY_textBox.Text = setting.DownCam_NeedleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
                     NeedleOffset_label.Visible = false;
                     NeedleOffset_label.Text = "   ";
                     ShowMessageBox(
@@ -2288,51 +1379,6 @@ namespace LitePlacer
         }
 
 
-        // =================================================================================
-        // UpCam specific functions
-        // =================================================================================
-
-        private void UpcamPositionX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                double val;
-                if (double.TryParse(UpcamPositionX_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.UpCam_PositionX = val;
-                }
-            }
-        }
-
-        private void UpcamPositionX_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(UpcamPositionX_textBox.Text, out val))
-            {
-                Properties.Settings.Default.UpCam_PositionX = val;
-            }
-        }
-
-        private void UpcamPositionY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                double val;
-                if (double.TryParse(UpcamPositionY_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.UpCam_PositionY = val;
-                }
-            }
-        }
-
-        private void UpcamPositionY_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(UpcamPositionY_textBox.Text, out val))
-            {
-                Properties.Settings.Default.UpCam_PositionY = val;
-            }
-        }
         /// <summary>
         /// This will set the up cam position taking into account the needle offset (if just calibrated) 
         /// so that if you go to this location, the down camera is exactly here.
@@ -2342,28 +1388,34 @@ namespace LitePlacer
         private void SetUpCamPosition_button_Click(object sender, EventArgs e)
         {
             UpcamPositionX_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            Properties.Settings.Default.UpCam_PositionX = Cnc.CurrentX;
+            setting.UpCam_PositionX = Cnc.CurrentX;
             UpcamPositionY_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
-            Properties.Settings.Default.UpCam_PositionY = Cnc.CurrentY;
+            setting.UpCam_PositionY = Cnc.CurrentY;
             DisplayText("True position (with needle offset):");
-            DisplayText("X: " + (Cnc.CurrentX - Properties.Settings.Default.DownCam_NeedleOffsetX).ToString());
-            DisplayText("Y: " + (Cnc.CurrentY - Properties.Settings.Default.DownCam_NeedleOffsetY).ToString());
+            DisplayText("X: " + (Cnc.CurrentX - setting.DownCam_NeedleOffsetX).ToString());
+            DisplayText("Y: " + (Cnc.CurrentY - setting.DownCam_NeedleOffsetY).ToString());
         }
 
-        private void GotoUpCamPosition_button_Click(object sender, EventArgs e)
+        public void GotoUpCamPosition_button_Click(object sender, EventArgs e)
         {
-            CNC_XY_m(Properties.Settings.Default.UpCam_PositionX, Properties.Settings.Default.UpCam_PositionY);
+            CNC_XY_m(setting.UpCam_PositionX, setting.UpCam_PositionY);
         }
 
 
         // =================================================================================
 
-        private void TestNeedleRecognition_button_Click(object sender, EventArgs e)
-        {
-            double X = Cnc.CurrentX;
-            double Y = Cnc.CurrentY;
+        public void TestNeedleRecognition_button_Click(object sender, EventArgs e) {
+            var p = Cnc.XYLocation;
+            // setup camera
+            SetUpCameraDefaults();
+            UpCamera.FindCircles = true;
+            UpCamera.ImageBox = Placement_pictureBox;
             CalibrateNeedle_m();
-            CNC_XYA_m(X, Y, 0.0);
+
+            //revert to previous state
+            CNC_XYA_m(p);
+            SetDownCameraDefaults();
+            DownCamera.ImageBox = Placement_pictureBox;
         }
 
         #endregion  Up/Down Camera setup pages functions
@@ -2377,17 +1429,17 @@ namespace LitePlacer
         {
             SetDownCameraDefaults();
             UpdateCncConnectionStatus();
-            Z0toPCB_BasicTab_label.Text = Properties.Settings.Default.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
-            Z_Backoff_label.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
-            SizeXMax_textBox.Text = Properties.Settings.Default.General_MachineSizeX.ToString();
-            SizeYMax_textBox.Text = Properties.Settings.Default.General_MachineSizeY.ToString();
+            Z0toPCB_BasicTab_label.Text = setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
+            Z_Backoff_label.Text = setting.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
+            SizeXMax_textBox.Text = setting.General_MachineSizeX.ToString();
+            SizeYMax_textBox.Text = setting.General_MachineSizeY.ToString();
 
-            ParkLocationX_textBox.Text = Properties.Settings.Default.General_ParkX.ToString();
-            ParkLocationY_textBox.Text = Properties.Settings.Default.General_ParkY.ToString();
-            SquareCorrection_textBox.Text = Properties.Settings.Default.CNC_SquareCorrection.ToString();
-            VacuumTime_textBox.Text = Properties.Settings.Default.General_PickupVacuumTime.ToString();
-            VacuumRelease_textBox.Text = Properties.Settings.Default.General_PickupReleaseTime.ToString();
-            SmallMovement_numericUpDown.Value = Properties.Settings.Default.CNC_SmallMovementSpeed;
+            ParkLocationX_textBox.Text = GeneralParkLocation.X.ToString();
+            ParkLocationY_textBox.Text = GeneralParkLocation.Y.ToString();
+            SquareCorrection_textBox.Text = setting.CNC_SquareCorrection.ToString();
+            VacuumTime_textBox.Text = setting.General_PickupVacuumTime.ToString();
+            VacuumRelease_textBox.Text = setting.General_PickupReleaseTime.ToString();
+            SmallMovement_numericUpDown.Value = setting.CNC_SmallMovementSpeed;
 
 
             // Does this machine have any ports? (Maybe not, if TinyG is powered down.)
@@ -2402,7 +1454,7 @@ namespace LitePlacer
             int i = 0;
             foreach (var item in comboBoxSerialPorts.Items)
             {
-                if (item.ToString() == Properties.Settings.Default.CNC_SerialPort)
+                if (item.ToString() == setting.CNC_SerialPort)
                 {
                     found = true;
                     comboBoxSerialPorts.SelectedIndex = i;
@@ -2487,7 +1539,7 @@ namespace LitePlacer
             {
                 if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
                 {
-                    Properties.Settings.Default.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
+                    setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                     UpdateWindowValues_m();
                 }
             }
@@ -2676,6 +1728,8 @@ namespace LitePlacer
             {
                 return false;
             };
+            //RN - needed to change angle of rotation of needle to match stuff
+            if (!CNC_Write_m("{\"4po\":1}")) return false;
 
             // Do settings that need to be done always
             Cnc.IgnoreError = true;
@@ -3403,7 +2457,7 @@ namespace LitePlacer
                 Thread.Sleep(50);
                 zvm_maskedTextBox.ForeColor = Color.Black;
                 int peek = Convert.ToInt32(zvm_maskedTextBox.Text);
-                Properties.Settings.Default.CNC_ZspeedMax = peek;
+                setting.CNC_ZspeedMax = peek;
             }
         }
 
@@ -3418,7 +2472,7 @@ namespace LitePlacer
                 Thread.Sleep(50);
                 avm_maskedTextBox.ForeColor = Color.Black;
                 int peek = Convert.ToInt32(avm_maskedTextBox.Text);
-                Properties.Settings.Default.CNC_AspeedMax = peek;
+                setting.CNC_AspeedMax = peek;
             }
         }
 
@@ -3829,115 +2883,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region Machine_Size
-
-        private void SizeXMax_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            SizeXMax_textBox.ForeColor = Color.Red;
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(SizeXMax_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_MachineSizeX = val;
-                    SizeXMax_textBox.ForeColor = Color.Black;
-                    DownCamera.SideMarksX = Properties.Settings.Default.General_MachineSizeX / 100;
-                }
-            }
-        }
-
-        private void SizeXMax_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(SizeXMax_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_MachineSizeX = val;
-                SizeXMax_textBox.ForeColor = Color.Black;
-                DownCamera.SideMarksX = Properties.Settings.Default.General_MachineSizeX / 100;
-
-            }
-        }
-
-        private void SizeYMax_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            SizeYMax_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(SizeYMax_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_MachineSizeY = val;
-                    SizeYMax_textBox.ForeColor = Color.Black;
-                    DownCamera.SideMarksY = Properties.Settings.Default.General_MachineSizeY / 100;
-                }
-            }
-        }
-
-        private void SizeYMax_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(SizeYMax_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_MachineSizeY = val;
-                SizeYMax_textBox.ForeColor = Color.Black;
-                DownCamera.SideMarksY = Properties.Settings.Default.General_MachineSizeY / 100;
-            }
-        }
-
-
-        #endregion
-
-        // =========================================================================
-        #region park_location
-
-        private void ParkLocationX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(ParkLocationX_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_ParkX = val;
-                }
-            }
-        }
-
-        private void ParkLocationX_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(ParkLocationX_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_ParkX = val;
-            }
-        }
-
-        private void ParkLocationY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(ParkLocationY_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_ParkY = val;
-                }
-            }
-        }
-
-        private void ParkLocationY_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(ParkLocationY_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_ParkY = val;
-            }
-        }
-
-        private void Park_button_Click(object sender, EventArgs e)
-        {
-            CNC_Park();
-        }
-
-        #endregion
+  
 
         // =========================================================================
 
@@ -3950,7 +2896,7 @@ namespace LitePlacer
         {
             //if (!CNC_XY_m(0.0, Cnc.CurrentY))
             //    return;
-            //if (!CNC_XY_m(Properties.Settings.Default.General_MachineSizeX, Cnc.CurrentY))
+            //if (!CNC_XY_m(setting.General_MachineSizeX, Cnc.CurrentY))
             //    return;
             //if (!CNC_XY_m(0.0, Cnc.CurrentY))
             //    return;
@@ -3960,7 +2906,7 @@ namespace LitePlacer
         {
             if (!CNC_XY_m(0.0, Cnc.CurrentY))
                 return;
-            if (!CNC_XY_m(Properties.Settings.Default.General_MachineSizeX, Cnc.CurrentY))
+            if (!CNC_XY_m(setting.General_MachineSizeX, Cnc.CurrentY))
                 return;
             if (!CNC_XY_m(0.0, Cnc.CurrentY))
                 return;
@@ -3973,7 +2919,7 @@ namespace LitePlacer
         {
             if (!CNC_XY_m(Cnc.CurrentX, 0))
                 return;
-            if (!CNC_XY_m(Cnc.CurrentX, Properties.Settings.Default.General_MachineSizeY))
+            if (!CNC_XY_m(Cnc.CurrentX, setting.General_MachineSizeY))
                 return;
             if (!CNC_XY_m(Cnc.CurrentX, 0))
                 return;
@@ -3990,7 +2936,7 @@ namespace LitePlacer
         {
             if (!CNC_XYA_m(0, 0, 0))
                 return;
-            if (!CNC_XYA_m(Properties.Settings.Default.General_MachineSizeX, Properties.Settings.Default.General_MachineSizeY, 360.0))
+            if (!CNC_XYA_m(setting.General_MachineSizeX, setting.General_MachineSizeY, 360.0))
                 return;
             if (!CNC_XYA_m(0, 0, 0))
                 return;
@@ -4007,7 +2953,7 @@ namespace LitePlacer
         {
             if (!CNC_XY_m(0, 0))
                 return;
-            if (!CNC_XY_m(Properties.Settings.Default.General_MachineSizeX, Properties.Settings.Default.General_MachineSizeY))
+            if (!CNC_XY_m(setting.General_MachineSizeX, setting.General_MachineSizeY))
                 return;
             if (!CNC_XY_m(0, 0))
                 return;
@@ -4022,11 +2968,11 @@ namespace LitePlacer
 
         private void TestYX_thread()
         {
-            if (!CNC_XY_m(Properties.Settings.Default.General_MachineSizeX, 0))
+            if (!CNC_XY_m(setting.General_MachineSizeX, 0))
                 return;
-            if (!CNC_XY_m(0, Properties.Settings.Default.General_MachineSizeY))
+            if (!CNC_XY_m(0, setting.General_MachineSizeY))
                 return;
-            if (!CNC_XY_m(Properties.Settings.Default.General_MachineSizeX, 0))
+            if (!CNC_XY_m(setting.General_MachineSizeX, 0))
                 return;
         }
 
@@ -4064,7 +3010,7 @@ namespace LitePlacer
         {
             if (!CNC_Z_m(0))
                 return;
-            if (!CNC_Z_m(Properties.Settings.Default.General_ZTestTravel))
+            if (!CNC_Z_m(setting.General_ZTestTravel))
                 return;
             if (!CNC_Z_m(0))
                 return;
@@ -4160,12 +3106,12 @@ namespace LitePlacer
             if (SlackCompensation_checkBox.Checked)
             {
                 Cnc.SlackCompensation = true;
-                Properties.Settings.Default.CNC_SlackCompensation = true;
+                setting.CNC_SlackCompensation = true;
             }
             else
             {
                 Cnc.SlackCompensation = false;
-                Properties.Settings.Default.CNC_SlackCompensation = false;
+                setting.CNC_SlackCompensation = false;
             }
         }
 
@@ -4422,23 +3368,23 @@ namespace LitePlacer
             CNC_Write_m("{\"4\":\"\"}");
 
             // And save
-            Properties.Settings.Default.Save();
+            setting.Save();
             DisplayText("Settings saved.");
-            Properties.Settings.Default.TinyG_settings_saved = true;
+            setting.TinyG_settings_saved = true;
             DisplayText("sys:");
-            DisplayText(Properties.Settings.Default.TinyG_sys);
+            DisplayText(setting.TinyG_sys);
             DisplayText("x:");
-            DisplayText(Properties.Settings.Default.TinyG_x);
+            DisplayText(setting.TinyG_x);
             DisplayText("y:");
-            DisplayText(Properties.Settings.Default.TinyG_y);
+            DisplayText(setting.TinyG_y);
             DisplayText("m1:");
-            DisplayText(Properties.Settings.Default.TinyG_m1);
+            DisplayText(setting.TinyG_m1);
         }
 
 
         private void DefaultSettings_button_Click(object sender, EventArgs e)
         {
-            if (!Properties.Settings.Default.TinyG_settings_saved)
+            if (!setting.TinyG_settings_saved)
             {
                 ShowMessageBox(
                 "You don't have saved User Default settings.",
@@ -4456,33 +3402,33 @@ namespace LitePlacer
 
             DisplayText("Start of DefaultSettings()");
             /*
-            DisplayText("sys: " + Properties.Settings.Default.TinyG_sys);
-            DisplayText("x: " + Properties.Settings.Default.TinyG_x);
-            DisplayText("y: " + Properties.Settings.Default.TinyG_y);
-            DisplayText("z: " + Properties.Settings.Default.TinyG_z);
-            DisplayText("a: " + Properties.Settings.Default.TinyG_a);
-            DisplayText("1: " + Properties.Settings.Default.TinyG_m1);
-            DisplayText("2: " + Properties.Settings.Default.TinyG_m2);
-            DisplayText("3: " + Properties.Settings.Default.TinyG_m3);
-            DisplayText("4: " + Properties.Settings.Default.TinyG_m4");
+            DisplayText("sys: " + setting.TinyG_sys);
+            DisplayText("x: " + setting.TinyG_x);
+            DisplayText("y: " + setting.TinyG_y);
+            DisplayText("z: " + setting.TinyG_z);
+            DisplayText("a: " + setting.TinyG_a);
+            DisplayText("1: " + setting.TinyG_m1);
+            DisplayText("2: " + setting.TinyG_m2);
+            DisplayText("3: " + setting.TinyG_m3);
+            DisplayText("4: " + setting.TinyG_m4");
             */
-            CNC_Write_m(Properties.Settings.Default.TinyG_sys);
+            CNC_Write_m(setting.TinyG_sys);
             Thread.Sleep(150);
-            CNC_Write_m(Properties.Settings.Default.TinyG_x);
+            CNC_Write_m(setting.TinyG_x);
             Thread.Sleep(150);
-            CNC_Write_m(Properties.Settings.Default.TinyG_y);
+            CNC_Write_m(setting.TinyG_y);
             Thread.Sleep(150);
-            CNC_Write_m(Properties.Settings.Default.TinyG_z);
+            CNC_Write_m(setting.TinyG_z);
             Thread.Sleep(150);
-            CNC_Write_m(Properties.Settings.Default.TinyG_a);
+            CNC_Write_m(setting.TinyG_a);
             Thread.Sleep(150);
-            CNC_Write_m(Properties.Settings.Default.TinyG_m1);
+            CNC_Write_m(setting.TinyG_m1);
             Thread.Sleep(150);
-            CNC_Write_m(Properties.Settings.Default.TinyG_m2);
+            CNC_Write_m(setting.TinyG_m2);
             Thread.Sleep(150);
-            CNC_Write_m(Properties.Settings.Default.TinyG_m3);
+            CNC_Write_m(setting.TinyG_m3);
             Thread.Sleep(150);
-            CNC_Write_m(Properties.Settings.Default.TinyG_m4);
+            CNC_Write_m(setting.TinyG_m4);
             Thread.Sleep(150);
             UpdateWindowValues_m();
             ShowMessageBox(
@@ -4508,14 +3454,14 @@ namespace LitePlacer
                     Needle.ProbingMode(true, JSON);
                     //CNC_Write_m("G28.4 Z0", 2000);
                     CNC_Write_m("{\"gc\":\"G28.4 Z0\"}", 2000);
-                    Properties.Settings.Default.General_ZtoPCB = Cnc.CurrentZ;
+                    setting.General_ZtoPCB = Cnc.CurrentZ;
                     Zlb_label.Text = "Jog Z axis until the needle just barely touches the PCB\nThen click \"Next\"";
                     SetProbing_stage = 2;
                     break;
 
                 case 2:
-                    Properties.Settings.Default.General_ProbingBackOff = Properties.Settings.Default.General_ZtoPCB - Cnc.CurrentZ;
-                    Properties.Settings.Default.General_ZtoPCB = Cnc.CurrentZ;
+                    setting.General_ProbingBackOff = setting.General_ZtoPCB - Cnc.CurrentZ;
+                    setting.General_ZtoPCB = Cnc.CurrentZ;
                     Needle.ProbingMode(false, JSON);
                     SetProbing_button.Text = "Start";
                     Zlb_label.Text = "";
@@ -4523,13 +3469,13 @@ namespace LitePlacer
                     CNC_Home_m("Z");
                     ShowMessageBox(
                        "Probing Backoff set successfully.\n" +
-                            "PCB surface: " + Properties.Settings.Default.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) +
-                            "\nBackoff:  " + Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture),
+                            "PCB surface: " + setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) +
+                            "\nBackoff:  " + setting.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture),
                        "Done",
                        MessageBoxButtons.OK);
                     SetProbing_stage = 0;
-                    Z0toPCB_BasicTab_label.Text = Properties.Settings.Default.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
-                    Z_Backoff_label.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
+                    Z0toPCB_BasicTab_label.Text = setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
+                    Z_Backoff_label.Text = setting.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
                     ZGuardOn();
                     break;
             }
@@ -4541,22 +3487,13 @@ namespace LitePlacer
         // Run job page functions
         // =================================================================================
         #region Job page functions
-
+        private PartLocation JobOffset = new PartLocation();
         private double JobOffsetX;
         private double JobOffsetY;
-
-        private class PhysicalComponent
-        {
-            public string Designator { get; set; }
-            public string Footprint { get; set; }
-            public double X_nominal { get; set; }
-            public double Y_nominal { get; set; }
-            public double Rotation { get; set; }
-            public double X_machine { get; set; }
-            public double Y_machine { get; set; }
-            public string Method { get; set; }
-            public string MethodParameter { get; set; }
+        private PartLocation JigOffset {
+            get {return new PartLocation(setting.General_JigOffsetX, setting.General_JigOffsetY); }
         }
+
 
         private void Placement_pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
@@ -4564,9 +3501,9 @@ namespace LitePlacer
             {
                 // Cntrl-click
                 double X = Convert.ToDouble(e.X) / Convert.ToDouble(Placement_pictureBox.Size.Width);
-                X = X * Properties.Settings.Default.General_MachineSizeX;
+                X = X * setting.General_MachineSizeX;
                 double Y = Convert.ToDouble(Placement_pictureBox.Size.Height - e.Y) / Convert.ToDouble(Placement_pictureBox.Size.Height);
-                Y = Y * Properties.Settings.Default.General_MachineSizeY;
+                Y = Y * setting.General_MachineSizeY;
                 CNC_XY_m(X, Y);
             }
             else
@@ -4574,8 +3511,8 @@ namespace LitePlacer
                 int X = e.X - Placement_pictureBox.Size.Width / 2;  // X= diff from center
                 int Y = e.Y - Placement_pictureBox.Size.Height / 2;
 
-                double Xmm = Convert.ToDouble(X) * Properties.Settings.Default.DownCam_XmmPerPixel;
-                double Ymm = Convert.ToDouble(Y) * Properties.Settings.Default.DownCam_YmmPerPixel;
+                double Xmm = Convert.ToDouble(X) * setting.DownCam_XmmPerPixel;
+                double Ymm = Convert.ToDouble(Y) * setting.DownCam_YmmPerPixel;
                 if (DownCamera.Zoom)
                 {
                     Xmm = Xmm / DownCamera.ZoomFactor;
@@ -4619,32 +3556,27 @@ namespace LitePlacer
         private string CadDataFileName = "";
         private string JobFileName = "";
 
-        private bool LoadCadData_m()
-        {
+      
+
+
+        private bool LoadCadData_m()         {
             String[] AllLines;
 
             // read in CAD data (.csv file)
-            if (CAD_openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
+            if (CAD_openFileDialog.ShowDialog() == DialogResult.OK) {
+                try                {
                     bool result;
                     CadDataFileName = CAD_openFileDialog.FileName;
                     CadFileName_label.Text = Path.GetFileName(CadDataFileName);
                     CadFilePath_label.Text = Path.GetDirectoryName(CadDataFileName);
                     AllLines = File.ReadAllLines(CadDataFileName);
-                    if (Path.GetExtension(CAD_openFileDialog.FileName) == ".pos")
-                    {
+                    if (Path.GetExtension(CAD_openFileDialog.FileName) == ".pos")         {
                         result = ParseKiCadData_m(AllLines);
-                    }
-                    else
-                    {
-                        result = ParseCadData_m(AllLines, false);
+                    }  else       {
+                        result = ParseCadData_m(AllLines, false);    
                     }
                     return result;
-                }
-                catch (Exception ex)
-                {
+                }   catch (Exception ex) {
                     Cursor.Current = Cursors.Default;
                     ShowMessageBox(
                         "Error in file, Msg: " + ex.Message,
@@ -4807,8 +3739,7 @@ namespace LitePlacer
         //
         // This table has the components of same type grouped to one component type per line.
         // =================================================================================
-        private void FillJobData_GridView()
-        {
+        private void FillJobData_GridView()        {
             string CurrentComponentType = "";
             int ComponentCount = 0;
             JobData_GridView.Rows.Clear();
@@ -4850,8 +3781,7 @@ namespace LitePlacer
                     JobData_GridView.Rows[TypeRow].Cells["ComponentList"].Value = CurrentComponentList;
                 }
             }
-            int dummy;
-            FindFiducials_m(out dummy);  // don't care of the result, jus try to find fids
+            FindFiducials_m();  // don't care of the result, jus try to find fids
         }
 
 
@@ -5183,7 +4113,7 @@ namespace LitePlacer
                     MethodDialog.ShowCheckBox = true;
                     MethodDialog.HeaderString = CurrentGroup_label.Text;
                     MethodDialog.ShowDialog(this);
-                    if (Properties.Settings.Default.Placement_UpdateJobGridAtRuntime)
+                    if (setting.Placement_UpdateJobGridAtRuntime)
                     {
                         RestoreRow = false;
                     };
@@ -5192,7 +4122,7 @@ namespace LitePlacer
                     {
                         // show the tape selection dialog
                         NewID = SelectTape("Select tape for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString());
-                        if (!Properties.Settings.Default.Placement_UpdateJobGridAtRuntime)
+                        if (!setting.Placement_UpdateJobGridAtRuntime)
                         {
                             RestoreRow = true;   // In case user unselected it at the tape selection dialog
                         };
@@ -5325,91 +4255,17 @@ namespace LitePlacer
         // ComponentDataValidates_m():
         // Checks that CAD data for a component is good. (Used by PlaceComponent_m() )
 
-        private bool ComponentDataValidates_m(string Component, int CADdataRow, int GroupRow)
-        {
-            // Component exist. Footprint, X, Y and rotation data should be there:
-            if (JobData_GridView.Rows[GroupRow].Cells["ComponentType"].Value == null)
-            {
-                ShowMessageBox(
-                        "Component " + Component + ": No Footprint",
-                        "Missing Data",
-                        MessageBoxButtons.OK);
-                return false;
-            }
-
-            if (CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value == null)
-            {
-                ShowMessageBox(
-                        "Component " + Component + ": No X data",
-                        "Missing Data",
-                        MessageBoxButtons.OK);
-                return false;
-            }
-
-            if (CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value == null)
-            {
-                ShowMessageBox(
-                        "Component " + Component + ": No Y data",
-                        "Missing Data",
-                        MessageBoxButtons.OK);
-                return false;
-            }
-
-            if (CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value == null)
-            {
-                ShowMessageBox(
-                        "Component " + Component + ": No Rotation data",
-                        "Missing Data",
-                        MessageBoxButtons.OK);
-                return false;
-            }
-            else
-            {
-                double Rotation;
-                if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString(), out Rotation))
-                {
-                    ShowMessageBox(
-                        "Component " + Component + ": Bad Rotation data",
-                        "Conversion Error",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-            }
-
-            // Machine coordinate data should be also there, properly formatted:
-            double X;
-            double Y;
-            double A;
-            if ((!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString(), out X))
-                ||
-                (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString(), out Y)))
-            {
-                ShowMessageBox(
-                    "Component " + Component + ", bad machine coordinate",
-                    "Sloppy programmer error",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString(), out A))
-            {
-                ShowMessageBox(
-                    "Bad data at Rotation, machine",
-                    "Sloppy programmer error",
-                    MessageBoxButtons.OK);
-                return false;
-            };
-
-            // Even if component is not specified, Method data should be there:
-            if (JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value == null)
-            {
-                ShowMessageBox(
-                        "Component " + Component + ", No method data",
-                        "Sloppy programmer error",
-                        MessageBoxButtons.OK);
-                return false;
+        private bool ComponentDataValidates_m(string Component, int CADdataRow, int GroupRow) {
+            JobEntry a;
+            PhysicalComponent b;
+            try {
+                a = new JobEntry(JobData_GridView.Rows[GroupRow]);
+                b = new PhysicalComponent(CadData_GridView.Rows[CADdataRow]);
+            } catch (Exception e) {
+                DisplayText("Unable to validate component " + Component + " : " + e);
             }
             return true;
-        } // end of ComponentDataValidates_m()
+        }
 
 
         // =================================================================================
@@ -5419,29 +4275,24 @@ namespace LitePlacer
         // GroupRow is the row index to Job data grid view.
         // =================================================================================
 
-        private bool PlaceComponent_m(string Component, int GroupRow, bool FirstInRow)
-        {
+        private bool PlaceComponent_m(string Component, int GroupRow, bool FirstInRow)        {
             DisplayText("PlaceComponent_m: Component: " + Component + ", Row:" + GroupRow.ToString());
-            // Skip fiducials
-            if (JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value.ToString() == "Fiducials")
-            {
-                DisplayText("PlaceComponent_m(): Skip fiducials");
-                return true;
-            }
+
+            JobEntry job = new JobEntry(JobData_GridView.Rows[GroupRow]);
+            if (job.GroupMethod.Equals("Fiducials")) return true; //skip fiducials
+
             // If component is specified, find its row in CAD data:
             int CADdataRow = -1;
-            if (Component != "--")
-            {
-                foreach (DataGridViewRow Row in CadData_GridView.Rows)
-                {
-                    if (Row.Cells["Component"].Value.ToString() == Component)
-                    {
+            PhysicalComponent comp=null;
+            if (Component != "--")  {
+                foreach (DataGridViewRow Row in CadData_GridView.Rows) {
+                    comp = new PhysicalComponent(Row);
+                    if (comp.Designator.Equals(Component)) {
                         CADdataRow = Row.Index;
                         break;
                     }
                 }
-                if (CADdataRow < 0)
-                {
+                if (comp == null) {
                     ShowMessageBox(
                         "Component " + Component + " data not found.",
                         "Sloppy programmer error",
@@ -5451,6 +4302,7 @@ namespace LitePlacer
             }
 
             // Validate data:
+            /*
             string Footprint = "n/a";
             string Xstr = "n/a";
             string Ystr = "n/a";
@@ -5479,37 +4331,35 @@ namespace LitePlacer
                 double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString(), out Y_machine);
                 double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString(), out A_machine);
             }
-
+            
             Method = JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value.ToString();
+            
             // Even if component is not specified, Method data should be there:
             // it is not an error if method does not have parameters.
             if (JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value != null)
             {
                 MethodParameter = JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString();
             };
-
+            */
             // Data is now validated, all variables have values that check out. Place the component.
             // Update "Now placing" labels:
-            if ((Method == "LoosePart") || (Method == "Place") || (Method == "Place Fast"))
+            if ((comp.Method == "LoosePart") || (comp.Method == "Place") || (comp.Method == "Place Fast"))
             {
                 PlacedComponent_label.Text = Component;
                 PlacedComponent_label.Update();
-                PlacedValue_label.Text = Footprint;
+                PlacedValue_label.Text = comp.Footprint;
                 PlacedValue_label.Update();
-                PlacedX_label.Text = Xstr;
+                PlacedX_label.Text = comp.machine.X.ToString();
                 PlacedX_label.Update();
-                PlacedY_label.Text = Ystr;
+                PlacedY_label.Text = comp.machine.Y.ToString();
                 PlacedY_label.Update();
-                PlacedRotation_label.Text = RotationStr;
+                PlacedRotation_label.Text = comp.machine.A.ToString("F2");
                 PlacedRotation_label.Update();
-                MachineCoords_label.Text = "( " +
-                    CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString() + ", " +
-                    CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString() + " )";
+                MachineCoords_label.Text = "( " + comp.machine + ")";
                 MachineCoords_label.Update();
             };
 
-            if (AbortPlacement)
-            {
+            if (AbortPlacement)            {
                 AbortPlacement = false;  // one shot
                 ShowMessageBox(
                     "Operation aborted.",
@@ -5522,8 +4372,7 @@ namespace LitePlacer
             // What to do to it is at  JobData_GridView.Rows[GroupRow].
 
             int time;
-            switch (Method)
-            {
+            switch (comp.Method)            {
                 case "?":
                     ShowMessageBox(
                         "Method is ? at run time",
@@ -5547,8 +4396,7 @@ namespace LitePlacer
                             MessageBoxButtons.OK);
                         return false;
                     }
-                    if (!PlacePart_m(true, CADdataRow, Component, JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(),
-                            X_machine, Y_machine, A_machine, FirstInRow))
+                    if (!PlacePart_m(true, CADdataRow, Component, job.MethodParamAllComponents, comp.machine, FirstInRow))
                         return false;
                     break;
                 //break;
@@ -5562,8 +4410,7 @@ namespace LitePlacer
                             MessageBoxButtons.OK);
                         return false;
                     }
-                    if (!PlacePart_m(false, CADdataRow, Component, JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(),
-                            X_machine, Y_machine, A_machine, FirstInRow))
+                    if (!PlacePart_m(false, CADdataRow, Component,job.MethodParamAllComponents, comp.machine, FirstInRow))
                         return false;
                     break;
 
@@ -5576,25 +4423,9 @@ namespace LitePlacer
                             MessageBoxButtons.OK);
                         return false;
                     }
-                    if (!PlacePart_m(false, CADdataRow, Component, JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(),
-                            X_machine, Y_machine, A_machine, FirstInRow))
+                    if (!PlacePart_m(false, CADdataRow, Component, job.MethodParamAllComponents, comp.machine, FirstInRow))
                         return false;
                     break;
-
-                //case "Place with UpCam":
-                //    if (Component == "--")
-                //    {
-                //        ShowMessageBox(
-                //            "Attempt to \"place\" non-existing component(\"--\")",
-                //            "Data error",
-                //            MessageBoxButtons.OK);
-                //        return false;
-                //    }
-                //    if (!PlacePartWithUpCamHelp_m(CADdataRow, Component, JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(),
-                //            X_machine, Y_machine, A_machine))
-                //        return false;
-                //    break;
-
                 case "Change needle":
                     if (!ChangeNeedle_m())
                         return false;
@@ -5607,7 +4438,7 @@ namespace LitePlacer
 
                 case "Ignore":
                     // Optionally, method parameter specifies pause time (used in debugging, I can't think of a real-life use case for that)
-                    if (int.TryParse(JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(), out time))
+                    if (int.TryParse(job.MethodParamAllComponents, out time))
                     {
                         for (int z = 0; z < time / 5; z++)
                         {
@@ -5622,33 +4453,6 @@ namespace LitePlacer
                     return true;  // To next row...
                 // break; 
 
-
-                // Used this for debugging, but is unreachable now
-                case "Locate":
-                    // Shows the component and its footprint(if known)...
-                    CNC_XY_m(X_machine, Y_machine);
-                    if (!ShowFootPrint_m(CADdataRow))
-                        return false;
-
-                    // ... either for the time specified in method parameter
-                    if (int.TryParse(JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(), out time))
-                    {
-                        for (int z = 0; z < time / 5; z++)
-                        {
-                            Application.DoEvents();  // keeping video running
-                            Thread.Sleep(5);
-                        }
-                    }
-                    else
-                    {
-                        // If no time specified, show a dialog:
-                        ShowMessageBox(
-                            "This is " + Component,
-                            "Locate Component",
-                            MessageBoxButtons.OK);
-                    }
-                    DownCamera.DrawBox = false;
-                    break;
 
                 default:
                     ShowMessageBox(
@@ -5927,7 +4731,7 @@ namespace LitePlacer
 
         private bool PickUpLoosePart_m(bool Probe, int CADdataRow, string Component)
         {
-            if (!CNC_XY_m(Properties.Settings.Default.General_PickupCenterX, Properties.Settings.Default.General_PickupCenterY))
+            if (!CNC_XY_m(setting.General_PickupCenterX, setting.General_PickupCenterY))
             {
                 return false;
             }
@@ -5952,7 +4756,7 @@ namespace LitePlacer
             for (int i = 0; i < 2; i++)
             {
                 // measure 5 averages, component must be 8.0mm from its place
-                int count = MeasureClosestComponentInPx(out X, out Y, out A, DownCamera, (8.0 / Properties.Settings.Default.DownCam_XmmPerPixel), 5);
+                int count = MeasureClosestComponentInPx(out X, out Y, out A, DownCamera, (8.0 / setting.DownCam_XmmPerPixel), 5);
                 if (count == 0)
                 {
                     ShowMessageBox(
@@ -5961,8 +4765,8 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 }
-                X = X * Properties.Settings.Default.DownCam_XmmPerPixel;
-                Y = -Y * Properties.Settings.Default.DownCam_YmmPerPixel;
+                X = X * setting.DownCam_XmmPerPixel;
+                Y = -Y * setting.DownCam_YmmPerPixel;
                 DisplayText("PickUpLoosePart_m(): measurement " + i.ToString() + ", X: " + X.ToString() + ", Y: " + Y.ToString() + ", A: " + A.ToString());
                 if ((Math.Abs(X) < 2.0) && (Math.Abs(Y) < 2.0))
                 {
@@ -6015,6 +4819,9 @@ namespace LitePlacer
         }
 
         // PlacePart_m(): Simple placement
+        private bool PlacePart_m(bool LoosePart, int CADdataRow, string Component, string TapeID, PartLocation p, bool FirstInRow) {
+            return PlacePart_m(LoosePart, CADdataRow, Component, TapeID, p.X, p.Y, p.A, FirstInRow);
+        }
         private bool PlacePart_m(bool LoosePart, int CADdataRow, string Component, string TapeID, double X, double Y, double A, bool FirstInRow)
         {
             if (AbortPlacement)
@@ -6109,8 +4916,8 @@ namespace LitePlacer
             }
             // take it to camera
             if (!Needle.Move_m(
-                Properties.Settings.Default.UpCam_PositionX - Properties.Settings.Default.DownCam_NeedleOffsetX,
-                Properties.Settings.Default.UpCam_PositionY - Properties.Settings.Default.DownCam_NeedleOffsetY, A))
+                setting.UpCam_PositionX - setting.DownCam_NeedleOffsetX,
+                setting.UpCam_PositionY - setting.DownCam_NeedleOffsetY, A))
             {
                 // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
                 return false;
@@ -6125,7 +4932,7 @@ namespace LitePlacer
             if (Z_str == "--")
             {
                 // Don't know it yet, use PCB height -1mm
-                Z = Properties.Settings.Default.General_ZtoPCB - 1.0;
+                Z = setting.General_ZtoPCB - 1.0;
             }
             else
             {
@@ -6223,36 +5030,25 @@ namespace LitePlacer
             return result;
         }
 
-        private bool MeasureUpCamComponent(double Tolerance, out double dX, out double dY, out double dA)
-        {
-            double X = 0;
-            double Xsum = 0;
-            double Y = 0;
-            double Ysum = 0;
-            int count = 0;
-            dX = 0;
-            dY = 0;
-            dA = 0;
-            for (int i = 0; i < 5; i++)
-            {
-                if (UpCamera.GetClosestComponent(out X, out Y, out dA, Tolerance * Properties.Settings.Default.UpCam_XmmPerPixel) > 0)
-                {
-                    count++;
-                    Xsum += X;
-                    Ysum += Y;
-                }
-            };
-            if (count == 0)
-            {
-                return false;
-            }
-            X = Xsum / Properties.Settings.Default.UpCam_XmmPerPixel;
-            dX = X / (float)count;
-            Y = -Y / Properties.Settings.Default.UpCam_XmmPerPixel;
-            dY = Y / (float)count;
+        private bool MeasureUpCamComponent(double Tolerance, out double dX, out double dY, out double dA)   {
+            dX = 0; dY = 0; dA = 0;            
+            // make 5 measurements and return the closest component detected each time
+            List<Shapes.Component> components = new List<Shapes.Component>();
+            for (int i = 0; i < 5; i++) components.Add( 
+                DownCamera.videoDetection.GetClosest( 
+                DownCamera.videoDetection.FindComponents( DownCamera.GetMeasurementFrame() )));
+
+            if (components.Count == 0) return false;
+
+            var c = DownCamera.videoDetection.AverageLocation(components).ToMMResolution(  );
+            dX = c.X;
+            dY = c.Y;
+            dA = c.A;
+
+
             DisplayText("Component measurement:");
-            DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture) + " (" + count.ToString() + " results out of 5)");
-            DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
+            DisplayText("X: " + dX.ToString("0.000", CultureInfo.InvariantCulture) + " (" + components.Count+ " results out of 5)");
+            DisplayText("Y: " + dY.ToString("0.000", CultureInfo.InvariantCulture));
             return true;
         }
 
@@ -6266,79 +5062,47 @@ namespace LitePlacer
         // Finds the fiducials from job data (which by now, exists).
         // Sets FiducialsRow to indicate the row in JobData_GridView
 
-        private bool FindFiducials_m(out int FiducialsRow)
-        {
-            // I) Find fiducials nominal placement data
-            // Ia) Are fiducials indicated and only once?
-            bool FiducialsFound = false;
-            FiducialsRow = 0;
+        List<JobEntry> jobEntries = null;
+        private void LoadJobEntries() {
+            jobEntries = new List<JobEntry>();
+            for (int i = 0; i < JobData_GridView.RowCount; i++) jobEntries.Add(new JobEntry(JobData_GridView.Rows[i]));
+        }
 
-            for (int i = 0; i < JobData_GridView.RowCount; i++)
-            {
-                if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() == "Fiducials")
-                {
-                    if (FiducialsFound)
-                    {
-                        ShowMessageBox(
-                            "Fiducials selected twice in Methods. Please fix!",
-                            "Double Fiducials",
-                            MessageBoxButtons.OK);
-                        return false;
-                    }
-                    else
-                    {
-                        FiducialsFound = true;
-                        FiducialsRow = i;
-                    }
+        List<PhysicalComponent> physicalComponents = null;
+        private void LoadComponents() {
+            physicalComponents = new List<PhysicalComponent>();
+            for (int i = 0; i < CadData_GridView.RowCount; i++) physicalComponents.Add(new PhysicalComponent(CadData_GridView.Rows[i]));
+        }
+        private PhysicalComponent FindDesignator(string designator) {
+            if (physicalComponents == null) throw new Exception("FindDesignator called before LoadComponents()");
+            var y = physicalComponents.Where(x => x.Designator.Equals(designator)).ToArray();
+            if (y.Length == 0) return null;
+            if (y.Length > 1) throw new Exception("More than one entry with designator " + designator);
+            return y[0];
+        }
+
+
+        private JobEntry FindFiducials_m() {
+            // find fiducials
+            LoadJobEntries();
+            // update fiducial entries
+            foreach (var x in jobEntries) {
+                if (x.IsFiducial) {
+                    x.GroupMethod = "Fiducials";
+                    x.UpdateRow();                    
                 }
             }
-            if (!FiducialsFound)
-            {
-                // Ib) Fiducials not pointed out yet. Find them automatically.
-                // Fiducials designators are specified as a REGEX and default to ^FID?
-                string Fids;
-                bool FidsOnThisRow = false;
-                Regex regex = new Regex(Properties.Settings.Default.fiducial_designator_regexp);
+            JobData_GridView.Invalidate(); //force redraw
 
-                for (int i = 0; i < JobData_GridView.RowCount; i++)                {
-                    
-                    Fids = JobData_GridView.Rows[i].Cells["ComponentList"].Value.ToString();
-                    FidsOnThisRow = regex.Match(Fids).Success;
-
-                    
-                    if (FidsOnThisRow)
-                    {
-                        if (FiducialsFound)
-                        {
-                            ShowMessageBox(
-                                "Two group of components starting with FI*. Please indicate Fiducials",
-                                "Double Fiducials",
-                                MessageBoxButtons.OK);
-                            return false;
-                        }
-                        else
-                        {
-                            FiducialsFound = true;
-                            FiducialsRow = i;
-                            FidsOnThisRow = false;
-                        }
-                    }
-                }
-                // If fids were found, the row is unique. Mark it:
-                if (FiducialsFound)
-                {
-                    JobData_GridView.Rows[FiducialsRow].Cells["GroupMethod"].Value = "Fiducials";
-                }
+            // find them
+            List<JobEntry> fiducials = jobEntries.Where(x => x.GroupMethod.Equals("Fiducials")).ToList();
+            if (fiducials.Count == 0) {
+                ShowSimpleMessageBox("No Fiducials Set"); return null;
             }
-            if (!FiducialsFound)
-            {
-                ShowMessageBox(
-                    "Fiducials definitions not found.",
-                    "Fiducials not defined",
-                    MessageBoxButtons.OK);
-                return false;
+            if (fiducials.Count > 1) {
+                ShowSimpleMessageBox("More than one row specified as a fiducial"); return null;
             }
-            return true;
+            return fiducials[0];
         }
 
         // =================================================================================
@@ -6347,14 +5111,14 @@ namespace LitePlacer
         // Assumes measurement parameters already set.
 
         private bool MeasureFiducial_m(ref PhysicalComponent fid)        {
-            CNC_XY_m(fid.X_nominal + JobOffsetX + Properties.Settings.Default.General_JigOffsetX,
-                     fid.Y_nominal + JobOffsetY + Properties.Settings.Default.General_JigOffsetY);
+            CNC_XY_m(fid.nominal + JobOffset + JigOffset);
+            
             // If more than 3mm off here, not good.
             double X, Y;
 
             // what type of fiducail are we interested in?
             Shapes.ShapeTypes type;
-            if (Properties.Settings.Default.use_template) {
+            if (setting.use_template) {
                 type = Shapes.ShapeTypes.Fiducial;  //template based mathing
             } else {
                 type = Shapes.ShapeTypes.Circle;    //circle based matching
@@ -6381,66 +5145,31 @@ namespace LitePlacer
 
         // =================================================================================
         // ValidateCADdata_m(): Checks, that supplied nominal values are good numbers:
-        private bool ValidateCADdata_m()
-        {
-            double x;
-            double y;
-            double r;
-            foreach (DataGridViewRow Row in CadData_GridView.Rows)
-            {
-                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out x))
-                {
-                    ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                };
-                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out y))
-                {
-                    ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                };
-                if (!double.TryParse(Row.Cells["Rotation"].Value.ToString(), out r))
-                {
-                    ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " rotation data",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                };
-                // DisplayText(Row.Cells["Component"].Value.ToString() + ": x= " + x.ToString() + ", y= " + y.ToString() + ", r= " + r.ToString());
-            }
+        private bool ValidateCADdata_m()        {
+            
+            LoadComponents(); //if it loads then it's good
+
             return true;
         }
 
 
         // =================================================================================
         // BuildMachineCoordinateData_m():
-        private bool BuildMachineCoordinateData_m()
-        {
-            if (ValidMeasurement_checkBox.Checked)
-            {
-                return true;
-            }
+        private bool BuildMachineCoordinateData_m()        {
+            if (ValidMeasurement_checkBox.Checked) return true;
+            
             // Check, that our data is good:
-            if (!ValidateCADdata_m())
-                return false;
+            if (!ValidateCADdata_m())  return false;
 
             // Find the fiducials form CAD data:
-            int FiducialsRow = 0;
-            if (!FindFiducials_m(out FiducialsRow))
-            {
+            var fid = FindFiducials_m();
+            if (fid == null) {
                 return false;
             }
             // Fiducials are at JobData_GridView.Rows[FiducialsRow]
-            string[] FiducialDesignators = JobData_GridView.Rows[FiducialsRow].Cells["ComponentList"].Value.ToString().Split(',');
+            string[] FiducialDesignators = fid.Components;
             // Are there at least two?
-            if (FiducialDesignators.Length < 2)
-            {
+            if (FiducialDesignators.Length < 2)            {
                 ShowMessageBox(
                     "Only one fiducial found.",
                     "Too few fiducials",
@@ -6450,143 +5179,50 @@ namespace LitePlacer
             // Get ready for position measurements
             DisplayText("SetFiducialsMeasurement");
             SetFiducialsMeasurement();
-            // Move them to our array, checking the data:
+
+            // populate fiducal data
+            LoadComponents();//parse data from cad table
             PhysicalComponent[] Fiducials = new PhysicalComponent[FiducialDesignators.Length];  // store the data here
-            double X_nom = 0;
-            double Y_nom = 0;
-            for (int i = 0; i < FiducialDesignators.Length; i++)  // for each fiducial in our Fiducials array,
-            {
-                Fiducials[i] = new PhysicalComponent();
-                Fiducials[i].Designator = FiducialDesignators[i];
-                // find the fiducial in CAD data.
-                foreach (DataGridViewRow Row in CadData_GridView.Rows)
-                {
-                    if (Row.Cells["Component"].Value.ToString() == FiducialDesignators[i]) // If this is the fiducial we want,
-                    {
-                        // Get its nominal position (value already checked).
-                        double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out X_nom);
-                        double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out Y_nom);
-                        break;
-                    }
-                }
-                Fiducials[i].X_nominal = X_nom;
-                Fiducials[i].Y_nominal = Y_nom;
-                // And measure it's true location:
-                if (!MeasureFiducial_m(ref Fiducials[i]))
-                {
+            for (int i = 0; i < FiducialDesignators.Length; i++)  {
+                Fiducials[i] = FindDesignator(FiducialDesignators[i]);
+                if (Fiducials[i] == null) {
+                    ShowSimpleMessageBox("Fiducial " + FiducialDesignators[i] + " Not found in cad table - aborting");
                     return false;
                 }
-                // We could put the machine data in place at this point. However, 
-                // we don't, as if the algorithms below are correct, the data will not change more than measurement error.
-                // During development, that is a good checkpoint.
+                // And measure it's true location:
+                if (!MeasureFiducial_m(ref Fiducials[i])) return false;
             }
 
             // Find the homographic tranformation from CAD data (fiducials.nominal) to measured machine coordinates
             // (fiducials.machine):
-            Transform transform = new Transform();
-            HomographyEstimation.Point[] nominals = new HomographyEstimation.Point[Fiducials.Length];
-            HomographyEstimation.Point[] measured = new HomographyEstimation.Point[Fiducials.Length];
-            // build point data arrays:
-            for (int i = 0; i < Fiducials.Length; i++)
-            {
-                nominals[i].X = Fiducials[i].X_nominal;
-                nominals[i].Y = Fiducials[i].Y_nominal;
-                nominals[i].W = 1.0;
-                measured[i].X = Fiducials[i].X_machine;
-                measured[i].Y = Fiducials[i].Y_machine;
-                measured[i].W = 1.0;
-            }
-            // find the tranformation
-            bool res = transform.Estimate(nominals, measured, ErrorMetric.Transfer, 450, 450);  // the PCBs are smaller than 450mm
-            if (!res)
-            {
-                ShowMessageBox(
-                    "Transform estimation failed.",
-                    "Data error",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            // Analyze the transform: Displacement is for debug. We could also calculate X & Y stretch and shear, but why bother.
-            // Find out the displacement in the transform (where nominal origin ends up):
-            HomographyEstimation.Point Loc, Loc2;
-            Loc.X = 0.0;
-            Loc.Y = 0.0;
-            Loc.W = 1.0;
-            Loc = transform.TransformPoint(Loc);
-            Loc = Loc.NormalizeHomogeneous();
-            DisplayText("Transform:");
-            DisplayText("dX= " + (Loc.X).ToString());
-            DisplayText("dY= " + Loc.Y.ToString());
-            // We do need rotation. Find out by rotatíng a unit vector:
-            Loc2.X = 1.0;
-            Loc2.Y = 0.0;
-            Loc2.W = 1.0;
-            Loc2 = transform.TransformPoint(Loc2);
-            Loc2 = Loc2.NormalizeHomogeneous();
-            DisplayText("dX= " + Loc2.X.ToString());
-            DisplayText("dY= " + Loc2.Y.ToString());
-            double angle = Math.Asin(Loc2.Y - Loc.Y) * 180.0 / Math.PI; // in degrees
-            DisplayText("angle= " + angle.ToString());
 
-            // Calculate machine coordinates of all components:
-            foreach (DataGridViewRow Row in CadData_GridView.Rows)
-            {
-                // build a point from CAD data values
-                double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out Loc.X);
-                double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out Loc.Y);
-                Loc.W = 1;
-                // transform it
-                Loc = transform.TransformPoint(Loc);
-                Loc = Loc.NormalizeHomogeneous();
-                // store calculated location values
-                Row.Cells["X_machine"].Value = Loc.X.ToString("0.000", CultureInfo.InvariantCulture);
-                Row.Cells["Y_machine"].Value = Loc.Y.ToString("0.000", CultureInfo.InvariantCulture);
-                // handle rotation
-                double rot;
-                double.TryParse(Row.Cells["Rotation"].Value.ToString(), out rot);
-                rot += angle;
-                while (rot > 360.0)
-                {
-                    rot -= 360.0;
-                }
-                while (rot < 0.0)
-                {
-                    rot += 360.0;
-                }
-                Row.Cells["Rotation_machine"].Value = rot.ToString("0.0000", CultureInfo.InvariantCulture);
-
+            // RN - setup lists of points and do a least squares fit of a afine transform
+            List<PartLocation> nominalLocations = new List<PartLocation>(Fiducials.Length);
+            List<PartLocation> measuredLocations = new List<PartLocation>(Fiducials.Length);
+            for (int i = 0; i < Fiducials.Length; i++) {
+                nominalLocations.Add(Fiducials[i].nominal);
+                measuredLocations.Add(Fiducials[i].machine);
             }
+            LeastSquaresMapping lsm = new LeastSquaresMapping(nominalLocations, measuredLocations);
+            var error = lsm.RMSError();
+        //    if (error > 1) { //some arbitrary thershold
+         //       ShowSimpleMessageBox("Fiducial fit high RMS diff value - aborting (" + error + ")");
+         //       return false;
+        //    }
+            
+           
+            //apply mapping
+            foreach (DataGridViewRow Row in CadData_GridView.Rows) {
+                var x = new PhysicalComponent(Row);
+                x.machine = lsm.Map(x.nominal);
+                x.UpdateRow(); //push changes to table
+            }
+
             // Refresh UI:
             Update_GridView(CadData_GridView);
 
-            // For debug, compare fiducials true measured locations and the locations.
-            // Also, if a fiducials moves more than 0.5mm, something is off (maybe there
-            // was a via too close to a fid, and we picked that for a measurement). Warn the user!
-            bool DataOk = true;
-            double dx, dy;
-            for (int i = 0; i < Fiducials.Length; i++)
-            {
-                Loc.X = Fiducials[i].X_nominal;
-                Loc.Y = Fiducials[i].Y_nominal;
-                Loc.W = 1.0;
-                Loc = transform.TransformPoint(Loc);
-                Loc = Loc.NormalizeHomogeneous();
-                dx = Math.Abs(Loc.X - Fiducials[i].X_machine);
-                dy = Math.Abs(Loc.Y - Fiducials[i].Y_machine);
-                DisplayText(Fiducials[i].Designator +
-                    ": x_meas= " + Fiducials[i].X_machine.ToString("0.000", CultureInfo.InvariantCulture) +
-                    ", x_calc= " + Loc.X.ToString("0.000", CultureInfo.InvariantCulture) +
-                    ", dx= " + dx.ToString("0.000", CultureInfo.InvariantCulture) +
-                    ": y_meas= " + Fiducials[i].Y_machine.ToString("0.000", CultureInfo.InvariantCulture) +
-                    ", y_calc= " + Loc.Y.ToString("0.000", CultureInfo.InvariantCulture) +
-                    ", dy= " + dy.ToString("0.000", CultureInfo.InvariantCulture));
-                if ((Math.Abs(dx) > 0.4) || (Math.Abs(dy) > 0.4))
-                {
-                    DataOk = false;
-                }
-            };
-            if (!DataOk)
-            {
+            // verify that no fiducial moved more then 0.4mm
+            if (lsm.MaxFiducialMovement() > 0.4)  {
                 DisplayText(" ** A fiducial moved more than 0.4mm from its measured location");
                 DisplayText(" ** when applied the same calculations than regular componets.");
                 DisplayText(" ** (Maybe the camera picked a via instead of a fiducial?)");
@@ -6596,13 +5232,11 @@ namespace LitePlacer
                     "Cancel operation?",
                     MessageBoxButtons.OKCancel
                 );
-                if (dialogResult == DialogResult.Cancel)
-                {
-                    return false;
-                }
+                if (dialogResult == DialogResult.Cancel) return false;
             }
             // Done! 
             ValidMeasurement_checkBox.Checked = true;
+            DownCamera.videoProcessing.ClearFunctionsList();
             return true;
         }// end BuildMachineCoordinateData_m
 
@@ -6633,89 +5267,19 @@ namespace LitePlacer
         }
 
 
+      
         // =================================================================================
-        private void JobOffsetX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(JobOffsetX_textBox.Text, out val))
-                {
-                    JobOffsetX = val;
-                }
-            }
-        }
-
-        private void JobOffsetX_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(JobOffsetX_textBox.Text, out val))
-            {
-                JobOffsetX = val;
-            }
-        }
-
-        // =================================================================================
-        private void JobOffsetY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(JobOffsetY_textBox.Text, out val))
-                {
-                    JobOffsetY = val;
-                }
-            }
-        }
-
-        private void JobOffsetY_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(JobOffsetY_textBox.Text, out val))
-            {
-                JobOffsetY = val;
-            }
-        }
-
-        // =================================================================================
-        private void ShowNominal_button_Click(object sender, EventArgs e)
-        {
-            double X;
-            double Y;
-
-            DataGridViewCell cell = CadData_GridView.CurrentCell;
-            if (cell == null)
-            {
-                return;  // no component selected
-            }
-            if (cell.OwningRow.Index < 0)
-            {
-                return;  // header row
-            }
-            if (!double.TryParse(cell.OwningRow.Cells["X_nominal"].Value.ToString(), out X))
-            {
-                DialogResult dialogResult = ShowMessageBox(
-                    "Bad data at X_nominal",
-                    "Bad data",
-                    MessageBoxButtons.OK);
+        private void ShowNominal_button_Click(object sender, EventArgs e)        {
+            
+            PhysicalComponent component;
+            try {
+                component = new PhysicalComponent(CadData_GridView.CurrentRow);
+            } catch (Exception ee) {
+                ShowSimpleMessageBox("Invalid Row Selection : " + ee);
                 return;
             }
 
-            if (!double.TryParse(cell.OwningRow.Cells["Y_nominal"].Value.ToString(), out Y))
-            {
-                DialogResult dialogResult = ShowMessageBox(
-                    "Bad data at Y_nominal",
-                    "Bad data",
-                    MessageBoxButtons.OK);
-                return;
-            }
-
-            CNC_XY_m(X + JobOffsetX + Properties.Settings.Default.General_JigOffsetX,
-                Y + JobOffsetY + Properties.Settings.Default.General_JigOffsetY);
-            ShowMessageBox(
-                "This is " + cell.OwningRow.Cells["Component"].Value.ToString() + " approximate (nominal) location",
-                "Locate Component",
-                MessageBoxButtons.OK);
+            CNC_XY_m(component.nominal + JobOffset + JigOffset); 
         }
 
         // =================================================================================
@@ -6794,124 +5358,12 @@ namespace LitePlacer
             //}
         }
 
-        // =================================================================================
-        private bool MeasurePositionErrorByFiducial_m(double X, double Y, out double errX, out double errY)
-        {
-
-            // find nearest fiducial
-            int FiducialsRow = 0;
-            errX = 0;
-            errY = 0;
-            foreach (DataGridViewRow Row in JobData_GridView.Rows)
-            {
-                if (Row.Cells["GroupMethod"].Value.ToString() == "Fiducials")
-                {
-                    FiducialsRow = Row.Index;
-                    break;
-                }
-            }
-            if (FiducialsRow == 0)
-            {
-                ShowMessageBox(
-                    "ResetPositionByFiducial: Fiducials not indicated",
-                    "Missing data",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            string[] FiducialDesignators = JobData_GridView.Rows[FiducialsRow].Cells["ComponentList"].Value.ToString().Split(',');
-            double ShortestDistance = 10000;
-            double X_fid = Double.NaN;
-            double Y_fid = Double.NaN;
-            double X_shortest = Double.NaN;
-            double Y_shortest = Double.NaN;
-            int i;
-            for (i = 0; i < FiducialDesignators.Count(); i++)
-            {
-                foreach (DataGridViewRow Row in CadData_GridView.Rows)
-                {
-                    if (Row.Cells["Component"].Value.ToString() == FiducialDesignators[i])
-                    {
-                        if (!double.TryParse(Row.Cells["X_Machine"].Value.ToString(), out X_fid))
-                        {
-                            ShowMessageBox(
-                                "Problem with " + FiducialDesignators[i] + "X machine coordinate data",
-                                "Bad data",
-                                MessageBoxButtons.OK);
-                            return false;
-                        };
-                        if (!double.TryParse(Row.Cells["Y_Machine"].Value.ToString(), out Y_fid))
-                        {
-                            ShowMessageBox(
-                                "Problem with " + FiducialDesignators[i] + "Y machine coordinate data",
-                                "Bad data",
-                                MessageBoxButtons.OK);
-                            return false;
-                        };
-                        break;
-                    }  // end "if this is the row of the current fiducial, ...
-                }
-                // This is the fid we want. It is measured to be at X_fid, Y_fid
-                if (double.IsNaN(X_fid) || double.IsNaN(Y_fid))
-                {
-                    ShowMessageBox(
-                        "Machine coord data for fiducial " + FiducialDesignators[i] + "not found",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-                double dX = X_fid - X;
-                double dY = Y_fid - Y;
-                double Distance = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
-
-                if (Distance < ShortestDistance)
-                {
-                    X_shortest = X_fid;
-                    Y_shortest = Y_fid;
-                    ShortestDistance = Distance;
-                }
-            }
-            if (double.IsNaN(X_shortest) || double.IsNaN(Y_shortest))
-            {
-                ShowMessageBox(
-                    "Problem finding nearest fiducial",
-                    "Sloppy programmer error",
-                    MessageBoxButtons.OK);
-                return false;
-            };
-
-            // go there
-            CNC_XY_m(X_shortest, Y_shortest);
-            SetFiducialsMeasurement();
-
-            for (int tries = 0; tries < 5; tries++)  {
-                if (cb_useTemplate.Checked) {
-
-                } else {
-                    // Look for circular Fiducials
-                    // 3mm max. error - break loop if found
-                    if (DownCamera.GetClosestCircle(out errX, out errY, 3.0 / Properties.Settings.Default.DownCam_XmmPerPixel) != 0) break;
-                
-                    if (tries >= 4)  {
-                        ShowMessageBox(
-                            "Finding fiducial: Can't regognize fiducial " + FiducialDesignators[i],
-                            "No Circle found",
-                            MessageBoxButtons.OK);
-                        return false;
-                    }
-                }
-            }
-            errX = errX * Properties.Settings.Default.DownCam_XmmPerPixel;
-            errY = -errY * Properties.Settings.Default.DownCam_YmmPerPixel;
-            // and err_ now tell how much we are off.
-            return true;
-        }
-
+     
         // =================================================================================
         private void ReMeasure_button_Click(object sender, EventArgs e)
         {
             ValidMeasurement_checkBox.Checked = false;
-            BuildMachineCoordinateData_m();
-            ValidMeasurement_checkBox.Checked = true;
+            ValidMeasurement_checkBox.Checked = BuildMachineCoordinateData_m();
             // CNC_Park();
         }
 
@@ -6967,8 +5419,8 @@ namespace LitePlacer
                 return false;
             }
 
-            DownCamera.BoxSizeX = (int)Math.Round((sizeX) / Properties.Settings.Default.DownCam_XmmPerPixel);
-            DownCamera.BoxSizeY = (int)Math.Round((sizeY) / Properties.Settings.Default.DownCam_YmmPerPixel);
+            DownCamera.BoxSizeX = (int)Math.Round((sizeX) / setting.DownCam_XmmPerPixel);
+            DownCamera.BoxSizeY = (int)Math.Round((sizeY) / setting.DownCam_YmmPerPixel);
             DownCamera.BoxRotationDeg = rot;
             DownCamera.DrawBox = true;
             return true;
@@ -6976,462 +5428,6 @@ namespace LitePlacer
 
         #endregion
 
-        // =================================================================================
-        //CAD data reading functions: Tries to understand different pick and place file formats
-        // =================================================================================
-        #region CAD data reading functions
-
-        // =================================================================================
-        // CADdataToMMs_m(): Data was in inches, convert to mms
-
-        private bool CADdataToMMs_m()
-        {
-            double val;
-            foreach (DataGridViewRow Row in CadData_GridView.Rows)
-            {
-                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out val))
-                {
-                    ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                };
-                Row.Cells["X_nominal"].Value = Math.Round((val / 2.54), 3).ToString();
-                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out val))
-                {
-                    ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                };
-                Row.Cells["Y_nominal"].Value = Math.Round((val / 2.54), 3).ToString();
-            }
-            return true;
-        }
-
-        // =================================================================================
-        // ParseKiCadData_m()
-        // =================================================================================
-        private bool ParseKiCadData_m(String[] AllLines)
-        {
-            // Convert KiCad data to regular CSV
-            int i = 0;
-            bool inches = false;
-            // Skip headers until find one starting with "## "
-            while (!(AllLines[i].StartsWith("## ")))
-            {
-                i++;
-            };
-
-            // inches vs mms
-            if (AllLines[i++].Contains("inches"))
-            {
-                inches = true;
-            }
-            i++; // skip the "Side" line
-            List<string> KiCadLines = new List<string>();
-            KiCadLines.Add(AllLines[i++].Substring(2));  // add header, skip the "# " start
-            // add rest of the lines
-            while (!(AllLines[i]).StartsWith("## End"))
-            {
-                KiCadLines.Add(AllLines[i++]);
-            };
-            // parse the data
-            string[] KicadArr = KiCadLines.ToArray();
-            if (!ParseCadData_m(KicadArr, true))
-            {
-                return false;
-            };
-            // convert to mm'f if needed
-            if (inches)
-            {
-                return (CADdataToMMs_m());
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        // =================================================================================
-        // ParseCadData_m(): main function called from file open
-        // =================================================================================
-
-        // =================================================================================
-        // FindDelimiter_m(): Tries to find the difference with comma and semicolon separated files  
-        bool FindDelimiter_m(String Line, out char delimiter)
-        {
-            int commas = 0;
-            foreach (char c in Line)
-            {
-                if (c == ',')
-                {
-                    commas++;
-                }
-            };
-            int semicolons = 0;
-            foreach (char c in Line)
-            {
-                if (c == ';')
-                {
-                    semicolons++;
-                }
-            };
-            if ((commas == 0) && (semicolons > 4))
-            {
-                delimiter = ';';
-                return true;
-            };
-            if ((semicolons == 0) && (commas > 4))
-            {
-                delimiter = ',';
-                return true;
-            };
-
-            ShowMessageBox(
-                "File header parse fail",
-                "Data format error",
-                MessageBoxButtons.OK
-            );
-            delimiter = ',';
-            return false;
-        }
-
-        private bool ParseCadData_m(String[] AllLines, bool KiCad)
-        {
-            int ComponentIndex;
-            int ValueIndex;
-            int FootPrintIndex;
-            int X_Nominal_Index;
-            int Y_Nominal_Index;
-            int RotationIndex;
-            int LayerIndex = -1;
-            bool LayerDataPresent = false;
-            int i;
-            int LineIndex = 0;
-
-            // Parse header. Skip empty lines and comment lines (starting with # or "//")
-            foreach (string s in AllLines)
-            {
-                if (s == "")
-                {
-                    LineIndex++;
-                    continue;
-                }
-                if (s[0] == '#')
-                {
-                    LineIndex++;
-                    continue;
-                };
-                if ((s.Length > 1) && (s[0] == '/') && (s[1] == '/'))
-                {
-                    LineIndex++;
-                    continue;
-                };
-                break;
-            };
-
-            char delimiter;
-            if (KiCad)
-            {
-                delimiter = ' ';
-            }
-            else
-            {
-                if (!FindDelimiter_m(AllLines[0], out delimiter))
-                {
-                    return false;
-                };
-            }
-
-            List<String> Headers = SplitCSV(AllLines[LineIndex++], delimiter);
-
-            for (i = 0; i < Headers.Count; i++)
-            {
-                if ((Headers[i] == "Designator") ||
-                    (Headers[i] == "designator") ||
-                    (Headers[i] == "Part") ||
-                    (Headers[i] == "part") ||
-                    (Headers[i] == "RefDes") ||
-                    (Headers[i] == "Ref") ||
-                    (Headers[i] == "Component") ||
-                    (Headers[i] == "component")
-                  )
-                {
-                    break;
-                }
-            }
-            if (i >= Headers.Count)
-            {
-                ShowMessageBox("Component/Designator/Name not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            ComponentIndex = i;
-
-            for (i = 0; i < Headers.Count; i++)
-            {
-                if ((Headers[i] == "Value") ||
-                    (Headers[i] == "value") ||
-                    (Headers[i] == "Val") ||
-                    (Headers[i] == "val") ||
-                    (Headers[i] == "Comment") ||
-                    (Headers[i] == "comment")
-                  )
-                {
-                    break;
-                }
-            }
-            if (i >= Headers.Count)
-            {
-                ShowMessageBox("Component value/comment not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            ValueIndex = i;
-
-            for (i = 0; i < Headers.Count; i++)
-            {
-                if ((Headers[i] == "Footprint") ||
-                    (Headers[i] == "footprint") ||
-                    (Headers[i] == "Package") ||
-                    (Headers[i] == "package") ||
-                    (Headers[i] == "Pattern") ||
-                    (Headers[i] == "pattern")
-                  )
-                {
-                    break;
-                }
-            }
-            if (i >= Headers.Count)
-            {
-                ShowMessageBox("Component footprint/pattern not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            FootPrintIndex = i;
-
-            for (i = 0; i < Headers.Count; i++)
-            {
-                if ((Headers[i] == "X") ||
-                    (Headers[i] == "x") ||
-                    (Headers[i] == "X (mm)") ||
-                    (Headers[i] == "x (mm)") ||
-                    (Headers[i] == "PosX") ||
-                    (Headers[i] == "Ref X") ||
-                    (Headers[i] == "ref x")
-                  )
-                {
-                    break;
-                }
-            }
-            if (i >= Headers.Count)
-            {
-                ShowMessageBox("Component X not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            X_Nominal_Index = i;
-
-            for (i = 0; i < Headers.Count; i++)
-            {
-                if ((Headers[i] == "Y") ||
-                    (Headers[i] == "y") ||
-                    (Headers[i] == "Y (mm)") ||
-                    (Headers[i] == "y (mm)") ||
-                    (Headers[i] == "PosY") ||
-                    (Headers[i] == "Ref Y") ||
-                    (Headers[i] == "ref y")
-                  )
-                {
-                    break;
-                }
-            }
-            if (i >= Headers.Count)
-            {
-                ShowMessageBox("Component Y not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            Y_Nominal_Index = i;
-
-            for (i = 0; i < Headers.Count; i++)
-            {
-                if ((Headers[i] == "Rotation") ||
-                    (Headers[i] == "rotation") ||
-                    (Headers[i] == "Rot") ||
-                    (Headers[i] == "rot") ||
-                    (Headers[i] == "Rotate")
-                  )
-                {
-                    break;
-                }
-            }
-            if (i >= Headers.Count)
-            {
-                ShowMessageBox("Component rotation not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            RotationIndex = i;
-
-
-            for (i = 0; i < Headers.Count; i++)
-            {
-                if ((Headers[i] == "Layer") ||
-                    (Headers[i] == "layer") ||
-                    (Headers[i] == "Side") ||
-                    (Headers[i] == "side") ||
-                    (Headers[i] == "TB") ||
-                    (Headers[i] == "tb")
-                  )
-                {
-                    LayerIndex = i;
-                    LayerDataPresent = true;
-                    break;
-                }
-            }
-
-            // clear and rebuild the data tables
-            CadData_GridView.Rows.Clear();
-            JobData_GridView.Rows.Clear();
-            foreach (DataGridViewColumn column in JobData_GridView.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;   // disable manual sort
-            }
-
-            // Parse data
-            List<String> Line;
-            string peek;
-
-            for (i = LineIndex; i < AllLines.Count(); i++)   // for each component
-            {
-                peek = AllLines[i];
-                // Skip: empty lines and comment lines (starting with # or "//")
-                if (
-                        (AllLines[i] == "")  // empty lines
-                        ||
-                        (AllLines[i] == "\"\"")  // empty lines ("")
-                        ||
-                        (AllLines[i][0] == '#')  // comment lines starting with #
-                        ||
-                        ((AllLines[i].Length > 1) && (AllLines[i][0] == '/') && (AllLines[i][1] == '/'))  // // comment lines starting with //
-                    )
-                {
-                    continue;
-                }
-
-                Line = SplitCSV(AllLines[i], delimiter);
-                // If layer is indicated and the component is not on this layer, skip it
-                if (LayerDataPresent)
-                {
-                    if (Bottom_checkBox.Checked)
-                    {
-                        if ((Line[LayerIndex] == "Top") ||
-                            (Line[LayerIndex] == "top") ||
-                            (Line[LayerIndex] == "F.Cu") ||
-                            (Line[LayerIndex] == "T") ||
-                            (Line[LayerIndex] == "t"))
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        if ((Line[LayerIndex] == "Bottom") ||
-                            (Line[LayerIndex] == "bottom") ||
-                            (Line[LayerIndex] == "B") ||
-                            (Line[LayerIndex] == "b") ||
-                            (Line[LayerIndex] == "B.Cu") ||
-                            (Line[LayerIndex] == "Bot") ||
-                            (Line[LayerIndex] == "bot"))
-                        {
-                            continue;
-                        }
-                    }
-                }
-                CadData_GridView.Rows.Add();
-                int Last = CadData_GridView.RowCount - 1;
-                CadData_GridView.Rows[Last].Cells["Component"].Value = Line[ComponentIndex];
-                CadData_GridView.Rows[Last].Cells["Value_Footprint"].Value = Line[ValueIndex] + "  |  " + Line[FootPrintIndex];
-                if (LayerDataPresent)
-                {
-                    if (Bottom_checkBox.Checked)
-                    {
-                        CadData_GridView.Rows[Last].Cells["X_nominal"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
-                    }
-                    else
-                    {
-                        CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
-                    }
-                }
-                else
-                {
-                    CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
-                }
-                CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = Line[Y_Nominal_Index].Replace("mm", "");
-                CadData_GridView.Rows[Last].Cells["X_nominal"].Value = CadData_GridView.Rows[Last].Cells["X_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = CadData_GridView.Rows[Last].Cells["Y_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["Rotation"].Value = Line[RotationIndex];
-                CadData_GridView.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
-                CadData_GridView.Rows[Last].Cells["Y_Machine"].Value = "Nan";
-                CadData_GridView.Rows[Last].Cells["Rotation_machine"].Value = "Nan";
-            }   // end "for each component..."
-
-            // Disable manual sorting
-            foreach (DataGridViewColumn column in CadData_GridView.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
-            CadData_GridView.ClearSelection();
-            // Check, that our data is good:
-            if (!ValidateCADdata_m())
-                return false;
-
-            return true;
-        }   // end ParseCadData
-
-        // =================================================================================
-        // Helper function for ParseCadData() (and some others, hence public static)
-
-        public static List<String> SplitCSV(string Line, char delimiter)
-        {
-            // input lines can be "xxx","xxxx","xx"; output is array: xxx  xxxxx  xx
-            // or xxx,xxxx,xx; output is array: xxx  xxxx  xx
-            // or xxx,"xx,xx",xxxx; output is array: xxx  xx,xx  xxxx
-
-            List<String> Tokens = new List<string>();
-
-            while (Line != "")
-            {
-                // skip the delimiter(s)
-                while (Line[0] == delimiter)
-                {
-                    Line = Line.Substring(1);
-                };
-                // add token
-                if (Line[0] == '"')
-                {
-                    // token is "xxx"
-                    Line = Line.Substring(1);   // skip the first "
-                    Tokens.Add(Line.Substring(0, Line.IndexOf('"')));
-                    Line = Line.Substring(Line.IndexOf('"') + 1);
-                }
-                else
-                {
-                    // token does not have "" 's
-                    if (Line.IndexOf(delimiter) < 0)
-                    {
-                        Tokens.Add(Line);   // last element
-                        Line = "";
-                    }
-                    else
-                    {
-                        Tokens.Add(Line.Substring(0, Line.IndexOf(delimiter)));
-                        Line = Line.Substring(Line.IndexOf(delimiter));
-                    }
-                }
-            }
-            return (Tokens);
-        }
-
-        #endregion
 
         // =================================================================================
         // Test functions
@@ -7496,7 +5492,7 @@ namespace LitePlacer
             Ymark = Cnc.CurrentY;
             Needle.ProbingMode(true, JSON);
             Needle.Move_m(Cnc.CurrentX, Cnc.CurrentY ,Cnc.CurrentA);
-            //CNC_XY_m((Cnc.CurrentX + Properties.Settings.Default.DownCam_NeedleOffsetX), (Cnc.CurrentY + Properties.Settings.Default.DownCam_NeedleOffsetY));
+            //CNC_XY_m((Cnc.CurrentX + setting.DownCam_NeedleOffsetX), (Cnc.CurrentY + setting.DownCam_NeedleOffsetY));
             Needle_ProbeDown_m();
         }
 
@@ -7506,10 +5502,12 @@ namespace LitePlacer
 
         private void Test4_button_Click(object sender, EventArgs e)
         {
-            double xp = Properties.Settings.Default.UpCam_PositionX;
-            double xo = Properties.Settings.Default.DownCam_NeedleOffsetX;
-            double yp = Properties.Settings.Default.UpCam_PositionY;
-            double yo = Properties.Settings.Default.DownCam_NeedleOffsetY;
+            double xp = setting.UpCam_PositionX;
+            double yp = setting.UpCam_PositionY;
+
+            double xo = setting.DownCam_NeedleOffsetX;
+            double yo = setting.DownCam_NeedleOffsetY;
+            
             Needle.Move_m(xp - xo, yp - yo, Cnc.CurrentA);
         }
 
@@ -7565,13 +5563,13 @@ namespace LitePlacer
         #endregion
 
 
-        private void ZDown_button_Click(object sender, EventArgs e)
+        public void ZDown_button_Click(object sender, EventArgs e)
         {
             ZGuardOff();
-            CNC_Z_m(Properties.Settings.Default.General_ZtoPCB);
+            CNC_Z_m(setting.General_ZtoPCB);
         }
 
-        private void ZUp_button_Click(object sender, EventArgs e)
+        public void ZUp_button_Click(object sender, EventArgs e)
         {
             ZGuardOn();
             CNC_Z_m(0);
@@ -7580,133 +5578,129 @@ namespace LitePlacer
 
         private void SetMark1_button_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.General_Mark1X = Cnc.CurrentX;
-            Properties.Settings.Default.General_Mark1Y = Cnc.CurrentY;
-            Properties.Settings.Default.General_Mark1Name = Mark1_textBox.Text;
-            Bookmark1_button.Text = Properties.Settings.Default.General_Mark1Name;
+            setting.General_Mark1X = Cnc.CurrentX;
+            setting.General_Mark1Y = Cnc.CurrentY;
+            setting.General_Mark1Name = Mark1_textBox.Text;
+            Bookmark1_button.Text = setting.General_Mark1Name;
         }
 
         private void SetMark2_button_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.General_Mark2X = Cnc.CurrentX;
-            Properties.Settings.Default.General_Mark2Y = Cnc.CurrentY;
-            Properties.Settings.Default.General_Mark2Name = Mark2_textBox.Text;
-            Bookmark2_button.Text = Properties.Settings.Default.General_Mark2Name;
+            setting.General_Mark2X = Cnc.CurrentX;
+            setting.General_Mark2Y = Cnc.CurrentY;
+            setting.General_Mark2Name = Mark2_textBox.Text;
+            Bookmark2_button.Text = setting.General_Mark2Name;
         }
 
         private void SetMark3_button_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.General_Mark3X = Cnc.CurrentX;
-            Properties.Settings.Default.General_Mark3Y = Cnc.CurrentY;
-            Properties.Settings.Default.General_Mark3Name = Mark3_textBox.Text;
-            Bookmark3_button.Text = Properties.Settings.Default.General_Mark3Name;
+            setting.General_Mark3X = Cnc.CurrentX;
+            setting.General_Mark3Y = Cnc.CurrentY;
+            setting.General_Mark3Name = Mark3_textBox.Text;
+            Bookmark3_button.Text = setting.General_Mark3Name;
         }
 
         private void SetMark4_button_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.General_Mark4X = Cnc.CurrentX;
-            Properties.Settings.Default.General_Mark4Y = Cnc.CurrentY;
-            Properties.Settings.Default.General_Mark4Name = Mark4_textBox.Text;
-            Bookmark4_button.Text = Properties.Settings.Default.General_Mark4Name;
+            setting.General_Mark4X = Cnc.CurrentX;
+            setting.General_Mark4Y = Cnc.CurrentY;
+            setting.General_Mark4Name = Mark4_textBox.Text;
+            Bookmark4_button.Text = setting.General_Mark4Name;
         }
 
         private void SetMark5_button_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.General_Mark5X = Cnc.CurrentX;
-            Properties.Settings.Default.General_Mark5Y = Cnc.CurrentY;
-            Properties.Settings.Default.General_Mark5Name = Mark5_textBox.Text;
-            Bookmark5_button.Text = Properties.Settings.Default.General_Mark5Name;
+            setting.General_Mark5X = Cnc.CurrentX;
+            setting.General_Mark5Y = Cnc.CurrentY;
+            setting.General_Mark5Name = Mark5_textBox.Text;
+            Bookmark5_button.Text = setting.General_Mark5Name;
         }
 
-        private void SetMark6_button_Click(object sender, EventArgs e)
+      /*  private void SetMark6_button_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.General_Mark6X = Cnc.CurrentX;
-            Properties.Settings.Default.General_Mark6Y = Cnc.CurrentY;
-            Properties.Settings.Default.General_Mark6Name = Mark6_textBox.Text;
-            Bookmark6_button.Text = Properties.Settings.Default.General_Mark6Name;
-        }
+            setting.General_Mark6X = Cnc.CurrentX;
+            setting.General_Mark6Y = Cnc.CurrentY;
+            setting.General_Mark6Name = Mark6_textBox.Text;
+            Bookmark6_button.Text = setting.General_Mark6Name;
+        }*/
 
         private void Bookmark1_button_Click(object sender, EventArgs e)
         {
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
-                Properties.Settings.Default.General_Mark1X = Cnc.CurrentX;
-                Properties.Settings.Default.General_Mark1Y = Cnc.CurrentY;
+                setting.General_Mark1X = Cnc.CurrentX;
+                setting.General_Mark1Y = Cnc.CurrentY;
                 return;
             };
-            CNC_XY_m(Properties.Settings.Default.General_Mark1X, Properties.Settings.Default.General_Mark1Y);
+            CNC_XY_m(setting.General_Mark1X, setting.General_Mark1Y);
         }
 
         private void Bookmark2_button_Click(object sender, EventArgs e)
         {
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
-                Properties.Settings.Default.General_Mark2X = Cnc.CurrentX;
-                Properties.Settings.Default.General_Mark2Y = Cnc.CurrentY;
+                setting.General_Mark2X = Cnc.CurrentX;
+                setting.General_Mark2Y = Cnc.CurrentY;
                 return;
             };
-            CNC_XY_m(Properties.Settings.Default.General_Mark2X, Properties.Settings.Default.General_Mark2Y);
+            CNC_XY_m(setting.General_Mark2X, setting.General_Mark2Y);
         }
 
         private void Bookmark3_button_Click(object sender, EventArgs e)
         {
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
-                Properties.Settings.Default.General_Mark3X = Cnc.CurrentX;
-                Properties.Settings.Default.General_Mark3Y = Cnc.CurrentY;
+                setting.General_Mark3X = Cnc.CurrentX;
+                setting.General_Mark3Y = Cnc.CurrentY;
                 return;
             };
-            CNC_XY_m(Properties.Settings.Default.General_Mark3X, Properties.Settings.Default.General_Mark3Y);
+            CNC_XY_m(setting.General_Mark3X, setting.General_Mark3Y);
         }
 
         private void Bookmark4_button_Click(object sender, EventArgs e)
         {
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
-                Properties.Settings.Default.General_Mark4X = Cnc.CurrentX;
-                Properties.Settings.Default.General_Mark4Y = Cnc.CurrentY;
+                setting.General_Mark4X = Cnc.CurrentX;
+                setting.General_Mark4Y = Cnc.CurrentY;
                 return;
             };
-            CNC_XY_m(Properties.Settings.Default.General_Mark4X, Properties.Settings.Default.General_Mark4Y);
+            CNC_XY_m(setting.General_Mark4X, setting.General_Mark4Y);
         }
 
         private void Bookmark5_button_Click(object sender, EventArgs e)
         {
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
-                Properties.Settings.Default.General_Mark5X = Cnc.CurrentX;
-                Properties.Settings.Default.General_Mark5Y = Cnc.CurrentY;
+                setting.General_Mark5X = Cnc.CurrentX;
+                setting.General_Mark5Y = Cnc.CurrentY;
                 return;
             };
-            CNC_XY_m(Properties.Settings.Default.General_Mark5X, Properties.Settings.Default.General_Mark5Y);
+            CNC_XY_m(setting.General_Mark5X, setting.General_Mark5Y);
         }
 
         private void Bookmark6_button_Click(object sender, EventArgs e)
         {
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
-                Properties.Settings.Default.General_Mark6X = Cnc.CurrentX;
-                Properties.Settings.Default.General_Mark6Y = Cnc.CurrentY;
+                setting.General_Mark6X = Cnc.CurrentX;
+                setting.General_Mark6Y = Cnc.CurrentY;
                 return;
             };
-            CNC_XY_m(Properties.Settings.Default.General_Mark6X, Properties.Settings.Default.General_Mark6Y);
+            CNC_XY_m(setting.General_Mark6X, setting.General_Mark6Y);
         }
 
         // =================================================================================
 
-        private void DebugCirclesDownCamera(double Tolerance)
-        {
-            double X, Y;
-            if (DownCamera.GetClosestCircle(out X, out Y, Tolerance) > 0)
-            {
-                X = X * Properties.Settings.Default.DownCam_XmmPerPixel;
-                Y = -Y * Properties.Settings.Default.DownCam_YmmPerPixel;
-                DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
-                DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                DisplayText("No results.");
+        public  Shapes.Thing DebugCirclesDownCamera(double Tolerance)        {
+            var circle = DownCamera.videoDetection.GetClosestCircle(Tolerance);
+            if (circle != null) {
+                circle.ToMMResolution();
+                DisplayText("Circle Detected @ " + circle, Color.Blue);
+                return (Shapes.Thing)circle;
+            }  else {
+                DisplayText("No Circle Detected", Color.Red);
+                return null;
             }
         }
 
@@ -7725,31 +5719,28 @@ namespace LitePlacer
             return rot;
         }
 
-        private int MeasureClosestComponentInPx(out double X, out double Y, out double A, Camera Cam, double Tolerance, int averages)
-        {
+        private int MeasureClosestComponentInPx(out double X, out double Y, out double A, Camera Cam, double Tolerance, int averages)        {
             X = 0;
             double Xsum = 0;
             Y = 0;
             double Ysum = 0;
             A = 0.0;
             double Asum = 0.0;
-            int count = 0;
-            for (int i = 0; i < averages; i++)
-            {
-                if (Cam.GetClosestComponent(out X, out Y, out A, Tolerance) > 0)
-                {
-                    //DisplayText("GetClosestComponent, X: " + X.ToString() + ", Y: " + Y.ToString() + ", A: " + A.ToString()+
-                    //    ", red: "+ReduceRotation(A).ToString());
-                    count++;
-                    Xsum += X;
-                    Ysum += Y;
-                    Asum += ReduceRotation(A);
-                }
+
+            List<Shapes.Component> components = new List<Shapes.Component>();
+            for (int i = 0; i < 5; i++) components.Add(
+                DownCamera.videoDetection.GetClosest(
+                DownCamera.videoDetection.GetWithin(
+                    DownCamera.videoDetection.FindComponents(DownCamera.GetMeasurementFrame()),Tolerance
+                )));
+            int count = components.Count;
+            if (count == 0) return 0;
+            foreach (var c in components) {
+                    Xsum += c.X;
+                    Ysum += c.Y;
+                    Asum += ReduceRotation(c.A);
             }
-            if (count == 0)
-            {
-                return 0;
-            }
+            
             X = Xsum / (float)count;
             Y = Ysum / (float)count;
             A = -Asum / (float)count;
@@ -7775,24 +5766,10 @@ namespace LitePlacer
             DisplayText("A: " + A.ToString("0.000", CultureInfo.InvariantCulture));
         }
 
-        private void DebugCirclesUpCamera(double Tolerance)
-        {
-            double X, Y;
-            double Xpx, Ypx;
-            if (UpCamera.GetClosestCircle(out X, out Y, Tolerance) > 0)
-            {
-                Xpx = X * UpCamera.GetMeasurementZoom();
-                Ypx = Y * UpCamera.GetMeasurementZoom();
-                DisplayText("X: " + Xpx.ToString() + "pixels, Y: " + Ypx.ToString() + "pixels");
-                X = X * Properties.Settings.Default.UpCam_XmmPerPixel;
-                Y = -Y * Properties.Settings.Default.UpCam_YmmPerPixel;
-                DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
-                DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                DisplayText("No results.");
-            }
+        private void DebugCirclesUpCamera(double Tolerance)        {
+            var circle = UpCamera.videoDetection.GetClosestCircle(Tolerance);
+            if (circle != null) DisplayText("Circle Found @ "+circle,Color.Blue);
+            else DisplayText("No Circle Found",Color.Red);
         }
 
 
@@ -7820,37 +5797,20 @@ namespace LitePlacer
             }
         }
 
-        private void SetCurrentCameraParameters()
-        {
-            Camera CurrentCam;
-            if (UpCamera.IsRunning())
-            {
-                CurrentCam = UpCamera;
-            }
-            else if (DownCamera.IsRunning())
-            {
-                CurrentCam = DownCamera;
-            }
-            else
-            {
-                return;
-            };
+        /// <summary>
+        /// This function will update the ZoomFactors for the up and down cameras
+        /// </summary>
+        private void SetCurrentCameraParameters()        {
             double val;
-            if (UpCamera.IsRunning())
-            {
-                CurrentCam.Zoom = UpCamZoom_checkBox.Checked;
-                if (double.TryParse(UpCamZoomFactor_textBox.Text, out val))
-                {
-                    UpCamera.ZoomFactor = val;
-                }
+
+            UpCamera.Zoom = UpCamZoom_checkBox.Checked;
+            DownCamera.Zoom = DownCamZoom_checkBox.Checked;
+
+            if (double.TryParse(UpCamZoomFactor_textBox.Text, out val)) {
+                UpCamera.ZoomFactor = val;
             }
-            else
-            {
-                CurrentCam.Zoom = DownCamZoom_checkBox.Checked;
-                if (double.TryParse(DownCamZoomFactor_textBox.Text, out val))
-                {
-                    DownCamera.ZoomFactor = val;
-                }
+            if (double.TryParse(DownCamZoomFactor_textBox.Text, out val))                {
+                DownCamera.ZoomFactor = val;
             }
         }
 
@@ -7918,8 +5878,8 @@ namespace LitePlacer
 
 
         private void SmallMovement_numericUpDown_ValueChanged(object sender, EventArgs e)        {
-            Properties.Settings.Default.CNC_SmallMovementSpeed = SmallMovement_numericUpDown.Value;
-            Cnc.SmallMovementString = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed.ToString() + " ";
+            setting.CNC_SmallMovementSpeed = SmallMovement_numericUpDown.Value;
+            Cnc.SmallMovementString = "G1 F" + setting.CNC_SmallMovementSpeed.ToString() + " ";
         }
 
         private DataGridViewRow ClipBoardRow;
@@ -8052,10 +6012,19 @@ namespace LitePlacer
             DataGridViewCopy(Display_dataGridView, ref Homing_dataGridView);
         }
 
+        public void SetComponentView() {
+            DownCamera.BuildDisplayFunctionsList(Components_dataGridView);
+        }
+
+        public void ClearDownView() {
+            DownCamera.videoProcessing.ClearFunctionsList();
+        }
+
         private void HomingToDisplay_button_Click(object sender, EventArgs e)
         {
             DataGridViewCopy(Homing_dataGridView, ref Display_dataGridView);
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
+            homing_gb.BackColor = Color.Yellow;
         }
 
         private void HomingMeasure_button_Click(object sender, EventArgs e)
@@ -8064,35 +6033,35 @@ namespace LitePlacer
             {
                 SetHomingMeasurement();
                 // Big tolerance for manual debug
-                DebugCirclesDownCamera(20.0 / Properties.Settings.Default.DownCam_XmmPerPixel);
+                DebugCirclesDownCamera(20.0 / setting.DownCam_XmmPerPixel);
             }
             else
             {
                 DisplayText("Down camera is not running.");
             }
         }
-
-        private void SetHomingMeasurement()
-        {
+       
+        private void SetHomingMeasurement()        {
+            homing_gb.BackColor = Color.Yellow;
             DownCamera.BuildMeasurementFunctionsList(Homing_dataGridView);
         }
 
+        
+
         // ==========================================================================================================
         // Fiducials:
-        private void FiducialsToHere_button_Click(object sender, EventArgs e)
-        {
+        private void FiducialsToHere_button_Click(object sender, EventArgs e)        {
             DataGridViewCopy(Display_dataGridView, ref Fiducials_dataGridView);
         }
 
-        private void FiducialsToDisplay_button_Click(object sender, EventArgs e)
-        {
+        private void FiducialsToDisplay_button_Click(object sender, EventArgs e)        {
             DataGridViewCopy(Fiducials_dataGridView, ref Display_dataGridView);
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-            DownCamera.BuildMeasurementFunctionsList(Display_dataGridView);
+           // DownCamera.BuildMeasurementFunctionsList(Display_dataGridView);
+            fiducials_gb.BackColor = Color.Yellow;
         }
 
-        private void SetFiducialsMeasurement()
-        {
+        private void SetFiducialsMeasurement()        {
             DownCamera.BuildMeasurementFunctionsList(Fiducials_dataGridView);
             Thread.Sleep(100);   // for automatic camera gain to have an effect
         }
@@ -8102,7 +6071,7 @@ namespace LitePlacer
             if (DownCamera.IsRunning())
             {
                 SetFiducialsMeasurement();
-                DebugCirclesDownCamera(20.0 / Properties.Settings.Default.DownCam_XmmPerPixel);
+                DebugCirclesDownCamera(20.0 / setting.DownCam_XmmPerPixel);
             }
             else
             {
@@ -8121,6 +6090,7 @@ namespace LitePlacer
         {
             DataGridViewCopy(Components_dataGridView, ref Display_dataGridView);
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
+            components_gb.BackColor = Color.Yellow;
         }
 
 
@@ -8135,9 +6105,9 @@ namespace LitePlacer
             {
                 SetComponentsMeasurement();
                 DebugComponents_Camera(
-                    10.0 / Properties.Settings.Default.DownCam_XmmPerPixel,
+                    10.0 / setting.DownCam_XmmPerPixel,
                     DownCamera,
-                    Properties.Settings.Default.DownCam_XmmPerPixel);
+                    setting.DownCam_XmmPerPixel);
             }
             else
             {
@@ -8157,6 +6127,7 @@ namespace LitePlacer
         {
             DataGridViewCopy(PaperTape_dataGridView, ref Display_dataGridView);
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
+            white_gb.BackColor = Color.Yellow;
         }
 
         public void SetPaperTapeMeasurement()
@@ -8169,7 +6140,11 @@ namespace LitePlacer
             if (DownCamera.IsRunning())
             {
                 SetPaperTapeMeasurement();
-                DebugCirclesDownCamera(20.0 / Properties.Settings.Default.DownCam_XmmPerPixel);
+                var x = DebugCirclesDownCamera(20.0);
+                if (x != null) {
+                    x.ToMMResolution();
+                    CNC_XY_m(Cnc.XYLocation + x.ToPartLocation());
+                }
             }
             else
             {
@@ -8188,6 +6163,7 @@ namespace LitePlacer
         {
             DataGridViewCopy(ClearTape_dataGridView, ref Display_dataGridView);
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
+            clear_gb.BackColor = Color.Yellow;
         }
 
         public void SetClearTapeMeasurement()
@@ -8200,7 +6176,7 @@ namespace LitePlacer
             if (DownCamera.IsRunning())
             {
                 SetClearTapeMeasurement();
-                DebugCirclesDownCamera(20.0 / Properties.Settings.Default.DownCam_XmmPerPixel);
+                DebugCirclesDownCamera(20.0 / setting.DownCam_XmmPerPixel);
             }
             else
             {
@@ -8219,6 +6195,8 @@ namespace LitePlacer
         {
             DataGridViewCopy(BlackTape_dataGridView, ref Display_dataGridView);
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
+            black_gb.BackColor = Color.Yellow;
+
         }
 
         public void SetBlackTapeMeasurement()
@@ -8231,7 +6209,7 @@ namespace LitePlacer
             if (DownCamera.IsRunning())
             {
                 SetBlackTapeMeasurement();
-                DebugCirclesDownCamera(20.0 / Properties.Settings.Default.DownCam_XmmPerPixel);
+                DebugCirclesDownCamera(20.0 / setting.DownCam_XmmPerPixel);
             }
             else
             {
@@ -8247,12 +6225,12 @@ namespace LitePlacer
             DataGridViewCopy(Display_dataGridView, ref Needle_dataGridView);
         }
 
-        private void NeedleToDisplay_button_Click(object sender, EventArgs e)        {
+        public void NeedleToDisplay_button_Click(object sender, EventArgs e)        {
             DataGridViewCopy(Needle_dataGridView, ref Display_dataGridView);
             UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
         }
 
-        private void SetNeedleMeasurement()        {
+        public void SetNeedleMeasurement()        {
             UpCamera.BuildMeasurementFunctionsList(Needle_dataGridView);
         }
 
@@ -8262,7 +6240,7 @@ namespace LitePlacer
             {
                 SetNeedleMeasurement();
                 // Manual debug, big tolerance
-                DebugCirclesUpCamera(20.0 / Properties.Settings.Default.UpCam_XmmPerPixel);
+                DebugCirclesUpCamera(20.0 / setting.UpCam_XmmPerPixel);
             }
             else
             {
@@ -8294,9 +6272,9 @@ namespace LitePlacer
             {
                 SetUpCamComponentsMeasurement();
                 DebugComponents_Camera(
-                    10.0 / Properties.Settings.Default.UpCam_XmmPerPixel,
+                    10.0 / setting.UpCam_XmmPerPixel,
                     UpCamera,
-                    Properties.Settings.Default.UpCam_XmmPerPixel);
+                    setting.UpCam_XmmPerPixel);
             }
             else
             {
@@ -8365,7 +6343,7 @@ namespace LitePlacer
             DataGrid_Down_button(Display_dataGridView);
         }
 
-        private void CamFunctionsClear_button_Click(object sender, EventArgs e)
+        public void CamFunctionsClear_button_Click(object sender, EventArgs e)
         {
             Display_dataGridView.Rows.Clear();
             UpdateDisplayFunctions();
@@ -8974,33 +6952,11 @@ namespace LitePlacer
             return ID;
         }
 
-        private void ResetOneTape_button_Click(object sender, EventArgs e)
-        {
-            for (int CurrentRow = 0; CurrentRow < JobData_GridView.RowCount; CurrentRow++)
-            {
-                DataGridViewRow Row = JobData_GridView.Rows[CurrentRow];
-                bool DoRow = false;
-                foreach (DataGridViewCell oneCell in Row.Cells)
-                {
-                    if (oneCell.Selected)
-                    {
-                        DoRow = true;
-                        break;
-                    }
-                }
-
-                if (!DoRow)
-                {
-                    continue;
-                };
-                // Reset this component's tape:
-                string ID = JobData_GridView.Rows[CurrentRow].Cells[3].Value.ToString();
-                int TapeNo = 0;
-                if (Tapes.IdValidates_m(ID, out TapeNo))
-                {
-                    Tapes_dataGridView.Rows[TapeNo].Cells["Next_Column"].Value = 1;
-                }
-            }
+        // XXX GOOZ I might have broken this
+        private void ResetOneTape_button_Click(object sender, EventArgs e)        {
+            var rows = JobData_GridView.SelectedRows;
+            if (rows.Count != 1) return;
+            Tapes.GetTapeObjByID(rows[0].Cells[3].Value.ToString()).SetPart(1);
         }
 
         private void ResetAllTapes_button_Click(object sender, EventArgs e)
@@ -9019,29 +6975,7 @@ namespace LitePlacer
             Row.Cells["Next_Column"].Value = no.ToString();
         }
 
-        private void SquareCorrection_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(SquareCorrection_textBox.Text, out val))
-            {
-                Properties.Settings.Default.CNC_SquareCorrection = val;
-                CNC.SquareCorrection = val;
-            }
-        }
-
-        private void SquareCorrection_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(SquareCorrection_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.CNC_SquareCorrection = val;
-                    CNC.SquareCorrection = val;
-                }
-            }
-        }
-
+    
 
 
 
@@ -9071,102 +7005,14 @@ namespace LitePlacer
         }
 
 
-        private void Tape_resetZs_button_Click(object sender, EventArgs e)
-        {
+        private void Tape_resetZs_button_Click(object sender, EventArgs e)        {
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
             Tapes_dataGridView.Rows[row].Cells["PickupZ_Column"].Value = "--";
             Tapes_dataGridView.Rows[row].Cells["PlaceZ_Column"].Value = "--";
+            Tapes.GetTapeObjByIndex(row).isPickupZSet = false;
+            Tapes.GetTapeObjByIndex(row).isPlaceZSet = false;
         }
 
-        private void VacuumTime_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            int val;
-            VacuumTime_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (int.TryParse(VacuumTime_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_PickupVacuumTime = val;
-                    VacuumTime_textBox.ForeColor = Color.Black;
-                }
-            }
-        }
-
-        private void VacuumTime_textBox_Leave(object sender, EventArgs e)
-        {
-            int val;
-            if (int.TryParse(VacuumTime_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_PickupVacuumTime = val;
-                VacuumTime_textBox.ForeColor = Color.Black;
-            }
-        }
-
-        private void VacuumRelease_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            int val;
-            VacuumRelease_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (int.TryParse(VacuumRelease_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_PickupReleaseTime = val;
-                    VacuumRelease_textBox.ForeColor = Color.Black;
-                }
-            }
-        }
-
-        private void VacuumRelease_textBox_Leave(object sender, EventArgs e)
-        {
-            int val;
-            if (int.TryParse(VacuumRelease_textBox.Text, out val))
-            {
-                Properties.Settings.Default.General_PickupReleaseTime = val;
-                VacuumRelease_textBox.ForeColor = Color.Black;
-            }
-        }
-
-        private void NeedleOffsetX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(NeedleOffsetX_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.DownCam_NeedleOffsetX = val;
-                }
-            }
-        }
-
-        private void NeedleOffsetX_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(NeedleOffsetX_textBox.Text, out val))
-            {
-                Properties.Settings.Default.DownCam_NeedleOffsetX = val;
-            }
-        }
-
-        private void NeedleOffsetY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(NeedleOffsetY_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.DownCam_NeedleOffsetY = val;
-                }
-            }
-        }
-
-        private void NeedleOffsetY_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(NeedleOffsetY_textBox.Text, out val))
-            {
-                Properties.Settings.Default.DownCam_NeedleOffsetY = val;
-            }
-        }
 
         private void ChangeNeedle_button_Click(object sender, EventArgs e)
         {
@@ -9178,19 +7024,20 @@ namespace LitePlacer
             double val;
             if (double.TryParse(ZTestTravel_textBox.Text, out val))
             {
-                Properties.Settings.Default.General_ZTestTravel = val;
+                setting.General_ZTestTravel = val;
             }
 
         }
 
+        #region Demo
         private bool DemoRunning = false;
         private Thread DemoThread;
 
         private void DemoWork()
         {
             int i= 0;
-            double X = Properties.Settings.Default.General_JigOffsetX + Properties.Settings.Default.DownCam_NeedleOffsetX + 25.0;
-            double Y = Properties.Settings.Default.General_JigOffsetY + Properties.Settings.Default.DownCam_NeedleOffsetY + 25.0;
+            double X = setting.General_JigOffsetX + setting.DownCam_NeedleOffsetX + 25.0;
+            double Y = setting.General_JigOffsetY + setting.DownCam_NeedleOffsetY + 25.0;
             double Xp;
             NumberStyles style = NumberStyles.AllowDecimalPoint;
             CultureInfo culture = CultureInfo.InvariantCulture;
@@ -9204,7 +7051,7 @@ namespace LitePlacer
                 );
                 return;
             }
-            Xp = Xp + Properties.Settings.Default.DownCam_NeedleOffsetX;
+            Xp = Xp + setting.DownCam_NeedleOffsetX;
             double Yp;
             s = Tapes_dataGridView.Rows[1].Cells["Y_Column"].Value.ToString();
             if (!double.TryParse(s, style, culture, out Yp))
@@ -9216,7 +7063,7 @@ namespace LitePlacer
                 );
                 return;
             }
-            Yp = Yp + Properties.Settings.Default.DownCam_NeedleOffsetY;
+            Yp = Yp + setting.DownCam_NeedleOffsetY;
 
             while (DemoRunning)
 	        {
@@ -9227,8 +7074,8 @@ namespace LitePlacer
                 {
                     return;
                 }
-                CNC_Z_m(Properties.Settings.Default.General_ZtoPCB - 0.5);
-                Thread.Sleep(Properties.Settings.Default.General_PickupReleaseTime);
+                CNC_Z_m(setting.General_ZtoPCB - 0.5);
+                Thread.Sleep(setting.General_PickupReleaseTime);
                 CNC_Z_m(0.0);
                 if (!DemoRunning)
                 {
@@ -9239,8 +7086,8 @@ namespace LitePlacer
                 {
                     return;
                 }
-                CNC_Z_m(Properties.Settings.Default.General_ZtoPCB - 2.0);
-                Thread.Sleep(Properties.Settings.Default.General_PickupVacuumTime);
+                CNC_Z_m(setting.General_ZtoPCB - 2.0);
+                Thread.Sleep(setting.General_PickupVacuumTime);
                 CNC_Z_m(0.0);
 	        }
         }
@@ -9258,237 +7105,15 @@ namespace LitePlacer
         {
             DemoRunning = false;
         }
-
-/// <summary>
-        /// This function will locate a circle, move the camera, measure the new location of the circle and determine
-        /// the mm per pixel scale
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button_camera_calibrate_Click(object sender, EventArgs e) {
-            if (! DownCamera.IsRunning()) {
-                DisplayText("No results.");
-                return;
-            }
-
-            //setup camera
-            SetHomingMeasurement();
-
-            // temp turn off zoom
-            var savedZoom = DownCamera.Zoom;
-            DownCamera.Zoom = false;
-           
-            List<AForge.Point> pts = new List<AForge.Point>();
-            List<AForge.Point> offsets = new List<AForge.Point>();
-          
-            // move a little to get rid of slack
-            JoggingBusy = true;
-            CNC_XY_m(Cnc.CurrentX + .2, Cnc.CurrentY + .2);
-            JoggingBusy = false;
-
-            // try to get 10 points
-            float off_x = .2f; 
-            float off_y = .2f;
-            const float off_inc = .5f;
-            for (int i = 0; i < 10; i++) {
-                double X, Y;
-                double zoom = DownCamera.GetMeasurementZoom();
-                if (DownCamera.GetClosestCircle(out X, out Y, 200) > 0) {
-                    offsets.Add(new AForge.Point(off_x, off_y));
-                    pts.Add(new AForge.Point((float)(X*zoom), (float)(Y*zoom)));
-                }
-                // now move
-                JoggingBusy = true;
-                CNC_XY_m(Cnc.CurrentX + off_inc, Cnc.CurrentY + off_inc);
-                JoggingBusy = false;
-                off_x += off_inc;
-                off_y += off_inc;
-            }
-
-            //debug
-            DisplayText("---- AUTO OPTICAL CALIBRATION ----", Color.Purple);
-            DisplayText("CircleX,CircleY,MovementX,MovementY", Color.Purple);
-            for (int i=0; i<pts.Count; i++) 
-                DisplayText(String.Format("{0},{1},{2},{3}", offsets[i].X, offsets[i].Y, pts[i].X, pts[i].Y),Color.Purple);
-            
-            //compute slope - ideally w/ least squares but i don't think it's that critical
-            float[] x1 = offsets.Select(x => x.X).ToArray();
-            float[] x2 = pts.Select(x => x.X).ToArray();
-            float slopeX1 = 0;
-            float slopeX2 = 0;
-            for (int i = 0; i < x1.Length - 1; i++) {
-                slopeX1 += x1[i + 1] - x1[i];
-                slopeX2 += x2[i + 1] - x2[i];
-            }
-            slopeX1 /= x1.Length - 1;
-            slopeX2 /= x2.Length - 1;
-
-            float[] y1 = offsets.Select(x => x.Y).ToArray();
-            float[] y2 = pts.Select(x => x.Y).ToArray();
-            float slopeY1 = 0;
-            float slopeY2 = 0;
-            for (int i = 0; i < y1.Length - 1; i++) {
-                slopeY1 += y1[i + 1] - y1[i];
-                slopeY2 += y2[i + 1] - y2[i];
-            }
-            slopeY1 /= y1.Length - 1;
-            slopeY2 /= y2.Length - 1;
-
-            float Xratio = slopeX1 / slopeX2;
-            float Yratio = slopeY1 / slopeY2;
-
-            DisplayText(String.Format("{0} Xmm/pixel   {1} Ymm/pixel", Xratio, Yratio),Color.Purple);
-
-            // update values
-            Properties.Settings.Default.DownCam_XmmPerPixel = Math.Abs(Xratio);
-            Properties.Settings.Default.DownCam_YmmPerPixel = Math.Abs(Yratio);
-            DownCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            DownCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-                        
-            //now measure the slack of the system inherent in moving from one axis to another
-            JoggingBusy = true;
-            // recenter
-            CNC_XY_m(Cnc.CurrentX - off_x, Cnc.CurrentY - off_y);
-
-            //move in one direction, measure circle, move in opposite direction, measure where we
-            //are vs. where we ares upposed to be - the difference is the slack in the system in that direction
-            float slack_xltor=0, slack_xrtol=0, slack_yttob=0, slack_ybtot=0;
-            CNC_XY_m(Cnc.CurrentX +3, Cnc.CurrentY);
-            slack_xrtol = MeasureSlack(-.5f, 0f);
-
-            CNC_XY_m(Cnc.CurrentX - 3, Cnc.CurrentY);
-            slack_xltor = MeasureSlack(.5f, 0f);
-
-            CNC_XY_m(Cnc.CurrentX, Cnc.CurrentY + 3);
-            slack_yttob = MeasureSlack(0f, -.5f);
-
-            CNC_XY_m(Cnc.CurrentX, Cnc.CurrentY - 3);
-            slack_ybtot = MeasureSlack(0f, .5f);
-            JoggingBusy = false;
-
-            SlackMeasurement_label.Text = String.Format("Slack X:{0:0.###}/{1:0.###}\nSlack Y:{2:0.###}/{3:0.###}", slack_xltor, slack_xrtol, slack_yttob, slack_ybtot);
-
-            Console.WriteLine("slack x : {0} / {1}", slack_xltor, slack_xrtol);
-            Console.WriteLine("slack y : {0} / {1}", slack_ybtot, slack_yttob);
-
-            // final movement to set slack to a known direction
-            // - any positive movements go to desired target
-            // - any negative movements have an extra distance added
-            //CNC_XY_m(Cnc.CurrentX - 3, Cnc.CurrentY - 3);
-            //CNC_XY_m(Cnc.CurrentX + 3, Cnc.CurrentY + 3);
-           // slackCompensation = new SlackCompensation(slack_xltor, slack_xrtol, slack_yttob, slack_ybtot);
-
-            
-            DownCamera.Zoom = savedZoom;
-            
-        }
-
-
-
-        private float MeasureSlack(float dx, float dy) {
-            Thread.Sleep(150);
-            var circle1 = MeasureCircle();
-            CNC_XY_m(Cnc.CurrentX + dx, Cnc.CurrentY + dy);
-            var circle2 = MeasureCircle();
-            AForge.Point circleMove = circle2-circle1;
-            double zoom = DownCamera.GetMeasurementZoom();
-            circleMove.X *=(float) (Properties.Settings.Default.DownCam_XmmPerPixel / zoom);
-            circleMove.Y *=(float) (Properties.Settings.Default.DownCam_YmmPerPixel / zoom);
-            
-            var desired_diff = Math.Sqrt(dx*dx+dy*dy);
-            var actual_diff  = Math.Sqrt(circleMove.X*circleMove.X + circleMove.Y*circleMove.Y);
-
-            return (float)(desired_diff - actual_diff);
-        }
-
-        private AForge.Point MeasureCircle() {
-            double X, Y;
-            double xx = 0, yy = 0, cc = 0; 
-      
-            double zoom = DownCamera.GetMeasurementZoom();
-            for (int i = 0; i < 5; i++) {
-                var count = DownCamera.GetClosestCircle(out X, out Y, 200);
-                if (count == 1) {
-                    xx += X;
-                    yy += Y;
-                    cc++;
-                }
-            }
-            return new AForge.Point((float)((xx / cc) * zoom), (float)((yy / cc) * zoom));
-        }
+        #endregion
 
         private void button_saveSettings_Click(object sender, EventArgs e) {
-            Properties.Settings.Default.Save();
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-            SaveDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
-            SaveDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
-            SaveDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
-            SaveDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
-            SaveDataGrid(path + "LitePlacer.ComponentsFunctions", Components_dataGridView);
-            SaveDataGrid(path + "LitePlacer.PaperTapeFunctions", PaperTape_dataGridView);
-            SaveDataGrid(path + "LitePlacer.BlackTapeFunctions", BlackTape_dataGridView);
-            SaveDataGrid(path + "LitePlacer.ClearTapeFunctions", ClearTape_dataGridView);
-            SaveDataGrid(path + "LitePlacer.NeedleFunctions", Needle_dataGridView);
-            SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView);
+            SaveConfiguration();
         }
 
 
 
-        // Template Based Fiducal Finding Settings - RN 5/23
-        #region Template Based Fiducal Settings
 
-        /// <summary>
-        /// If the use template checkbox is toggled, save the state
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cb_useTemplate_CheckedChanged(object sender, EventArgs e)   {
-            FindFiducials_cb.Enabled = ((CheckBox)sender).Checked;
-            Properties.Settings.Default.use_template = ((CheckBox)sender).Checked;
-            Properties.Settings.Default.Save();        
-        }
-
-        private void button_setTemplate_Click(object sender, EventArgs e) {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "jpg (*.jpg)|*.jpg|png (*.png)|*.png|All Files (*.*)|*.*";
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                Properties.Settings.Default.template_file = ofd.FileName;
-                Properties.Settings.Default.Save();
-            }       
-        }
-
-        private void fiducialTemlateMatch_textBox_KeyPress(object sender, KeyPressEventArgs e) {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.')) {
-                e.Handled = true;
-            }
-
-            // only allow one decimal point
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1)) {
-                e.Handled = true;
-            }
-
-            // save
-            double val;
-            if (e.KeyChar == '\r' && double.TryParse(((TextBox)sender).Text, out val)) {
-                Properties.Settings.Default.template_threshold = val;
-                Properties.Settings.Default.Save();
-            }
-            
-        }
-
-
-        private void fiducialTemlateMatch_textBox_Leave(object sender, EventArgs e) {
-            fiducialTemlateMatch_textBox_KeyPress(sender, new KeyPressEventArgs('\r'));
-        }
-
-        
-        private void fiducial_designator_regexp_textBox_TextChanged(object sender, EventArgs e) {
-            Properties.Settings.Default.fiducial_designator_regexp = ((TextBox)sender).Text;
-            Properties.Settings.Default.Save();
-        }
-#endregion
 
 
         // some stuf for testing
@@ -9502,14 +7127,21 @@ namespace LitePlacer
             // move to first hole
             CNC_XY_m(to.FirstHole.X, to.FirstHole.Y);
 
+            DownCamera.videoProcessing.ClearFunctionsList();
             DownCamera.MarkA.Clear();
             DownCamera.MarkB.Clear();
             // show current hole, next hole, and first 5 parts
-            for (int i=0; i<3; i++) 
-                DownCamera.MarkA.Add((to.GetHoleLocation(i) - to.GetHoleLocation(0)).ToPixels().ToPointF());
+            for (int i = 0; i < 3; i++) {
+                var hole = to.GetHoleLocation(i) - to.GetHoleLocation(0);
+                DownCamera.MarkA.Add(Shapes.Thing.Convert(DownCamera, hole, Shapes.PointMode.MM, Shapes.PointMode.Screen).ToPointF());
+            }
             
-            for (int i=to.CurrentPartIndex();i<to.CurrentPartIndex()+5;i++) 
-                DownCamera.MarkB.Add((to.GetPartLocation(i) - to.GetHoleLocation(0)).ToPixels().ToPointF());
+            for (int i=to.CurrentPartIndex();i<to.CurrentPartIndex()+5;i++) {
+                var part = to.GetPartLocation(i) - to.GetHoleLocation(0);
+                DownCamera.MarkB.Add(Shapes.Thing.Convert(DownCamera, part, Shapes.PointMode.MM, Shapes.PointMode.Screen).ToPointF());
+            }
+        
+                
 
         }
 
@@ -9529,7 +7161,11 @@ namespace LitePlacer
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void pickup_next_button_Click(object sender, EventArgs e) {
-            Tapes.GotoNextPart_m("0");
+            if (Tapes_dataGridView.SelectedCells.Count != 1) return;
+            int row = Tapes_dataGridView.CurrentCell.RowIndex;
+            var name = Tapes.GetTapeObjByIndex(row).ID;
+
+            if (!Tapes.GotoNextPart_m(name)) return;
 
             PumpOn();
             VacuumOff();
@@ -9537,116 +7173,126 @@ namespace LitePlacer
             VacuumOn();
             CNC_Z_m(0);  // pick up
 
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+            // set angle to zero
+            CNC_A_m(0); 
+        }
+
+        private void button2_Click(object sender, EventArgs e) {
+            var loc = Cnc.XYALocation;
+            CNC_Z_m(0); //needle up
+            for (int i = 0; i <= 360; i += 90) {
+                Needle.Move_m(loc); // move to target
+                ZGuardOff();
+                CNC_Z_m(setting.General_ZtoPCB);//move down
+                Thread.Sleep(1000); //wait 1 second
+                ZGuardOn(); //Needle up
+                CNC_Z_m(0);
+
+                loc.A = i;
+            }
+                
+        }
+
+        private void MultiCalibrate_button_Click(object sender, EventArgs e) {
+            ((Button)sender).BackColor = Color.Yellow;
+            if (!MechanicalHoming_m()) return;
+            if (!OpticalHoming_m()) return;
+            TestNeedleRecognition_button_Click(null, null);
+            ReMeasure_button_Click(null, null);
+            CNC_XYA_m(0, 0, 0); //go back home
+            ((Button)sender).BackColor = Color.Chartreuse;
+
 
         }
 
-        private void DownCamera_Calibration_button_Click(object sender, EventArgs e) {
+        private void resetTapeColors() {
+            foreach (var name in Tapes.GetListOfTapeIDs()) {
+                var obj = Tapes.GetTapeObjByID(name);
+                obj.myRow["IdColumn"].Style.BackColor = Color.White;
+            }
+        }
+
+
+        int tape_index = 0;
+        private void view_nextParts_button_Click(object sender, EventArgs e) {
+            if (!SelectCamera(DownCamera)) return;
+            DownCamera.videoProcessing.ClearFunctionsList();
+            resetTapeColors();
+
+            var list = Tapes.GetListOfTapeIDs();
+            if (tape_index == list.Count() - 1) tape_index = 0;
+
+            var tape = Tapes.GetTapeObjByID( list[tape_index] );
+            tape.ReParse();
+            DisplayText("Examining Tape "+list[tape_index]+" NextPart="+tape.CurrentPartIndex(),Color.Green);
+
+            CNC_XY_m(tape.GetCurrentPartLocation());
+            tape.myRow["IdColumn"].Style.BackColor = Color.Yellow;
+            tape.myRow["Next_Column"].Selected = true;
+            tape_index++;
+          //  DownCamera.AddMarkupText(new VideoTextMarkup(DownCamera, new PartLocation(0,0), tape.ID + " #" + tape.CurrentPartIndex()));
+     
+           // Thread.Sleep(5000);
+          //  DownCamera.ClearMarkupText();
+            
+        }
+
+        private void needle_calibration_test_button_Click(object sender, EventArgs e) {
+            //reza
+            var originalLocation = Cnc.XYALocation;
+            PartLocation testLocation = new PartLocation(setting.UpCam_PositionX, setting.UpCam_PositionY);
+            CNC_Z_m(0); //needle up
+            CNC_XY_m(testLocation);
+
+            ZGuardOff();
+            CNC_Z_m(setting.General_ZtoPCB); //needle down
+
+            // setup camera
+            SetUpCameraDefaults();
             SelectCamera(UpCamera);
-            if (!UpCamera.IsRunning()) {
-                DisplayText("No results.");
-                return;
-            }
-
-            //setup camera
-            CamFunctionsClear_button_Click(null, null);
+            UpCamera.FindCircles = true;
+            UpCamera.Draw1mmGrid = true;
+            UpCamera.ImageBox = Placement_pictureBox;
             SetNeedleMeasurement();
-            NeedleToDisplay_button_Click(null, null);
+            List<PartLocation> offsetError = new List<PartLocation>();
+            for (int i = 0; i <= 360; i += 90) {
+                testLocation.A = i;
+                var pp = testLocation - Needle.NeedleOffset;
 
-            // temp turn off zoom
-            var savedZoom = UpCamera.Zoom;
-            UpCamera.Zoom = false;
-
-            List<PartLocation> distance = new List<PartLocation>();
-            List<PartLocation> pixels = new List<PartLocation>();
-
-            // turn on slack compensation
-            bool slackSetting = Cnc.SlackCompensation;
-            Cnc.SlackCompensation = true;
-
-            // move to upcamera position
-            ZUp_button_Click(null,null); // move needle up
-            GotoUpCamPosition_button_Click(null, null);
-            ZDown_button_Click(null, null);
-
-            var movement = new PartLocation(.1, .1);
-            var startingPos = Cnc.XYLocation;
-            startingPos.A = 0;
-
-            var zoom = UpCamera.GetMeasurementZoom();
-            UpCamera.MarkA.Clear();
-            for (int i = -4; i < 5; i++) {
-                //move
-                var newLocation = startingPos + (i * movement);
-                CNC_XYA_m(newLocation);
-
-                //try 5 times to find a circle
-                List<Shapes.Circle> circles = new List<Shapes.Circle>();
-                for (int tries = 5; tries > 0 && circles.Count == 0; tries--)
-                    circles = UpCamera.FindCirclesFunct(UpCamera.GetMeasurementFrame());
-                if (circles.Count == 0) continue; //not found, move and try again
-
-                //find largest circle of the bunch
-                var circle = circles.Aggregate((c, d) => c.Radius > d.Radius ? c : d); //find largest circle if we have multiple 
-
-                distance.Add(newLocation);
-                pixels.Add((1/zoom) * circle.ToPartLocation());
-
-                UpCamera.MarkA.Add(new PointF((float)(UpCamera.FrameCenterX - circle.X), (float)(circle.Y - UpCamera.FrameCenterY)));
-            }
-
-            if (pixels.Count < 2) {
-                ShowMessageBox("Unable To Detect Circles",
-                    "Try to adjust upcamera processing to see circles, and ensure upcamera needle position is correctly configured",
-                    MessageBoxButtons.OK);
-            } else {
-                // Do regression on X and Y 
-                var Xs = pixels.Select(xx => xx.X).ToArray();
-                var Ys = distance.Select(xx => xx.X).ToArray();
-                var result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
-                double XmmPerPixel = result.Item2;
-
-                Xs = pixels.Select(xx => xx.Y).ToArray();
-                Ys = distance.Select(xx => xx.Y).ToArray();
-                result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
-                double YmmPerPixel = result.Item2;
-
-
-                DisplayText(String.Format("{0} Xmm/pixel   {1} Ymm/pixel", XmmPerPixel, YmmPerPixel), Color.Purple);
-
-                // update values
-                Properties.Settings.Default.UpCam_XmmPerPixel = Math.Abs(XmmPerPixel);
-                Properties.Settings.Default.UpCam_YmmPerPixel = Math.Abs(YmmPerPixel);
-                UpCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-                UpCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-                UpCameraBoxX_textBox.Text = (Math.Abs(XmmPerPixel) * UpCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
-                UpCameraBoxY_textBox.Text = (Math.Abs(YmmPerPixel) * UpCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
-
-                // Now move to the center
-               /* need to get gotolocation upcamera working still
-                double X, Y; //error offset
-                GotoUpCamPosition_button_Click(null, null);
-                for (int tries = 5; tries > 0; tries--) {
-                    if (GoToLocation_m(UpCamera, Shapes.ShapeTypes.Circle, 1.8, 0.5, out X, out Y)) {
-                        Properties.Settings.Default.UpCam_PositionX = Cnc.CurrentX + X;
-                        Properties.Settings.Default.UpCam_PositionY = Cnc.CurrentY - Y;
-                        UpcamPositionX_textBox.Text = Properties.Settings.Default.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
-                        UpcamPositionY_textBox.Text = Properties.Settings.Default.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
-
-                    }
+                Needle.Move_m(pp); // move to target
+                // mark erro
+                var circle = UpCamera.videoDetection.GetClosestCircle(10);
+                if (circle != null) {
+                    UpCamera.MarkA.Add(circle.ToScreenResolution().ToPartLocation().ToPointF());
                 }
-                */
-
+                circle.ToMMResolution();
+                offsetError.Add(circle.ToPartLocation());
+                Thread.Sleep(500); //wait 1 second
             }
 
-            //restore settings
-            UpCamera.Zoom = savedZoom;
-            Cnc.SlackCompensation = slackSetting;
-            ZUp_button_Click(null, null); //move up
-            CamFunctionsClear_button_Click(null, null); //clear viewport
+            ShowSimpleMessageBox("Upcamera offset Error is " + PartLocation.Average(offsetError) +"\nMax Error is "+PartLocation.MaxValues(offsetError));
+
+            ZGuardOn(); //Needle up
+            CNC_Z_m(0);
+
+            //revert to previous state
+            SetDownCameraDefaults();
+            SelectCamera(DownCamera);
+            DownCamera.ImageBox = Placement_pictureBox;
+            DownCamera.videoProcessing.ClearFunctionsList();
+            CNC_XYA_m(originalLocation);
         }
 
+        private void mechHome_button_Click(object sender, EventArgs e) {
+            MechanicalHoming_m();
+        }
 
-
+        private void OptHome_button_Click(object sender, EventArgs e) {
+            OpticalHoming_m();
+        }
 
 
     }	// end of: 	public partial class FormMain : Form

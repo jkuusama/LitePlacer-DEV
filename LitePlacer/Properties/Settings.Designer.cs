@@ -886,5 +886,17 @@ namespace LitePlacer.Properties {
                 this["fiducial_designator_regexp"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double z_offset {
+            get {
+                return ((double)(this["z_offset"]));
+            }
+            set {
+                this["z_offset"] = value;
+            }
+        }
     }
 }

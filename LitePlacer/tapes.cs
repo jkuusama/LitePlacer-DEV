@@ -49,6 +49,10 @@ namespace LitePlacer
             tapeObjs[tape].isPlaceZSet = false;    
 		}
 
+        public string[] GetListOfTapeIDs() {
+            return tapeObjs.Select(x => x.ID).ToArray();
+        }
+
         public TapeObj GetTapeObjByID(string id) {
             foreach (var x in tapeObjs) {
                 if (x.ID.Equals(id)) return x;
@@ -190,12 +194,53 @@ namespace LitePlacer
             TapeObj tapeObj = GetTapeObjByID(Id);
             if (tapeObj == null) return false;
 
-           // if (tapeObj.isFullyCalibrated) {
-            if (false) {
+            if (tapeObj.isFullyCalibrated) {
+            
                 // if the tape is calibrated, we can skip the hole detection BS
-            //    var loc = tapeObj.GetCurrentPartLocation();
-             //   MainForm.DisplayText("Source Location = " + loc.ToString(),System.Drawing.Color.Blue);
-             //   if (!Needle.Move_m(loc)) return false;
+                var OriginalLocationPrediction = tapeObj.GetCurrentPartLocation();
+                PartLocation targetLocation = OriginalLocationPrediction;
+                MainForm.DisplayText("Part "+tapeObj.CurrentPartIndex()+"  Source Location = " + OriginalLocationPrediction.ToString(),System.Drawing.Color.Blue);
+                
+                // see if it's a component and compute it's actual orientation
+                if (tapeObj.Type == TapeType.Black) {
+                    MainForm.DisplayText("USING ENHANCE PART PICKUP", System.Drawing.Color.HotPink);
+                    //assume it's a qfn - need to build up video recognition lib
+                    if (!MainForm.CNC_XY_m(OriginalLocationPrediction)) return false;
+                    // setup view
+                    MainForm.SetComponentView();
+                    MainForm.DownCamera.FindRectangles = true;
+                    // move closer
+                    double X, Y;
+                    MainForm.GoToLocation_m(Shapes.ShapeTypes.Rectangle, 1.5, .2, out  X, out  Y);
+                    // new location 
+                    targetLocation = Cnc.XYLocation;
+                    targetLocation.OffsetBy(X, Y);
+
+
+                    //pickup
+                    var vd = MainForm.DownCamera.videoDetection;
+                    var rects = vd.FindRectangles(DownCamera.GetMeasurementFrame());
+                    var rect = vd.GetSmallestCenteredRectangle(rects);
+                    if (rect == null) return false;
+                    var rectAngle = rect.AngleOffsetFrom90();
+                   // rect.ToScreenResolution();
+                   // DownCamera.MarkA.Add(rect.ToPartLocation().ToPointF());
+                /*    rect.ToMMResolution();
+                    loc = rect.ToPartLocation() + MainForm.Cnc.XYLocation;
+                */
+
+                    targetLocation.A = tapeObj.PartOrientationVector.ToDegrees() + rectAngle;
+                    MainForm.DisplayText("QFN @ " + targetLocation);
+
+                   // MainForm.ShowSimpleMessageBox("Win:"+OriginalLocationPrediction.ToString());
+                    MainForm.ClearDownVisualFilter();
+                   // DownCamera.MarkA.Clear();
+                    DownCamera.FindRectangles = false;
+                    MainForm.DisplayText("Moving to " + targetLocation, System.Drawing.Color.Red);
+                    MainForm.DisplayText("instead of " + OriginalLocationPrediction, System.Drawing.Color.Red);
+                }
+
+                if (!Needle.Move_m(targetLocation)) return false;
            } else {
                 //Setup Camera
                 if (!SetCurrentTapeMeasurement_m(tapeObj.Type)) return false;
@@ -261,6 +306,7 @@ namespace LitePlacer
             return true;
         }
 
+  
         public bool CalibrateTape(TapeObj x) {
             // pull in any changes to the settings
             x.ReParse();
@@ -268,8 +314,13 @@ namespace LitePlacer
             SetCurrentTapeMeasurement_m(x.Type);
 
             //1 - ensure first hole is correct
+            MainForm.DisplayText("Moving to first hole @ " + x.FirstHole, System.Drawing.Color.Purple);
             if (!MainForm.CNC_XY_m(x.FirstHole)) return false;
-            x.FirstHole = MainForm.FindPositionOfClosest(Shapes.ShapeTypes.Circle, 1.8, 0.5);
+            var holepos = MainForm.FindPositionOfClosest(Shapes.ShapeTypes.Circle, 1.8, 0.2); //find this hole with high precision
+            if (holepos == null) return false;
+            x.FirstHole = holepos;
+            MainForm.DisplayText("Found new hole locaiton @ " + x.FirstHole, System.Drawing.Color.Purple);
+
             // move to first hole for shits & giggles
             if (!MainForm.CNC_XY_m(x.FirstHole)) return false;
             List<PartLocation> holes = new List<PartLocation>();
@@ -279,8 +330,9 @@ namespace LitePlacer
 
             //2 - Look for for a few more holes 
             //    XXX-should be adjsuted to acocomodate smaller strips
-            for (int i = 2; i < 15; i += 2) {
+            for (int i = 2; i < 8; i += 2) {
                 if (!MainForm.CNC_XY_m(x.GetHoleLocation(i))) break;
+                Thread.Sleep(1000);
                 var loc = MainForm.FindPositionOfClosest(Shapes.ShapeTypes.Circle, 1.8, 0.5);
                 if (loc == null) break;
                 holes.Add(loc);
@@ -314,7 +366,11 @@ namespace LitePlacer
             MainForm.DisplayText("Tape " + x.ID + " Calibrated", System.Drawing.Color.Brown);
             //MainForm.DisplayText(String.Format("\tEquation = {3} + (0,{0}) + {1} * ({2} * holeNumber)", x.a, x.b, x.HolePitch), System.Drawing.Color.Brown);
 
+            DownCamera.videoProcessing.ClearFunctionsList();
+            if (!MainForm.CNC_XY_m(x.FirstHole)) return false;
+
             return true;
+ 
         }
 
 

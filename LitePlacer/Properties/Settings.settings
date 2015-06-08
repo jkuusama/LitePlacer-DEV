@@ -218,5 +218,8 @@
     <Setting Name="fiducial_designator_regexp" Type="System.String" Scope="User">
       <Value Profile="(Default)">^FID?</Value>
     </Setting>
+    <Setting Name="z_offset" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

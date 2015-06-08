@@ -1,4 +1,4 @@
-﻿namespace LitePlacer.Properties {
+﻿/*namespace LitePlacer.Properties {
     
     
     // This class allows you to handle specific events on the settings class:
@@ -26,3 +26,4 @@
         }
     }
 }
+*/

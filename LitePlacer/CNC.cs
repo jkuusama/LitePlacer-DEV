@@ -9,18 +9,15 @@ using System.Globalization;
 using System.Web.Script.Serialization;
 
 
-namespace LitePlacer
-{
+namespace LitePlacer{
 
-    class CNC
-    {
+    public class CNC    {
         private static FormMain MainForm;
         private SerialComm Com;
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
 
-        public CNC(FormMain MainF)
-        {
+        public CNC(FormMain MainF)        {
             MainForm = MainF;
             Com = new SerialComm(this, MainF);
             Connect(Properties.Settings.Default.CNC_SerialPort);
@@ -259,8 +256,8 @@ namespace LitePlacer
             }
             else
             {
-				XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, Am);
-                XY_move(X, Y);
+				XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, Am - 10);
+                XYA_move(X, Y, Am);
             }
         }
 
@@ -615,11 +612,11 @@ namespace LitePlacer
         // Status report
 
         public StatusReport Status;
+        private JavaScriptSerializer serializer = new JavaScriptSerializer();
         public void NewStatusReport(string line)
         {
-            //MainForm.DisplayText("NewStatusReport: " + line);
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
             Status = serializer.Deserialize<StatusReport>(line);
+            
         }
 
         [Serializable]

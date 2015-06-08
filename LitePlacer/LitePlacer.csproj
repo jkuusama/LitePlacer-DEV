@@ -159,9 +159,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoCalibration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CAD-new.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CAD.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Camera.cs" />
     <Compile Include="CNC.cs" />
+    <Compile Include="CNCMovement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ImageFinder.cs" />
+    <Compile Include="LeastSquaresMapping.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +191,8 @@
       <DependentUpon>MethodSelectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Needle.cs" />
+    <Compile Include="PartLocation.cs" />
+    <Compile Include="PhysicalComponent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialComm.cs" />
@@ -189,6 +207,12 @@
     <Compile Include="TapeSelectionForm.Designer.cs">
       <DependentUpon>TapeSelectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIDataMapping.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VideoDetection.cs" />
+    <Compile Include="VideoProcessing.cs" />
+    <Compile Include="VideoTextMarkup.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -211,6 +235,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\PhysicalComponent.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
