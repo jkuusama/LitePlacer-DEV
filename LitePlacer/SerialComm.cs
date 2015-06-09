@@ -90,7 +90,7 @@ namespace LitePlacer
             if (Port.IsOpen)
             {
                 Port.Write(TxText + "\r\n");
-                 MainForm.DisplayText("==> " + TxText); 
+                 MainForm.DisplayText("==> " + TxText, System.Drawing.Color.Green); 
            }
         }
 

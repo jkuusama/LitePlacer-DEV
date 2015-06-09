@@ -124,11 +124,24 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\AForge.NET\Framework\Release\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
+    <Reference Include="Emgu.CV, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\emgu_bin\Emgu.CV.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.UI, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\emgu_bin\Emgu.CV.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.Util, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\emgu_bin\Emgu.Util.dll</HintPath>
+    </Reference>
     <Reference Include="HomographyEstimation">
       <HintPath>..\packages\HomographyEstimation\HomographyEstimation.dll</HintPath>
     </Reference>
-    <Reference Include="MathNet.Numerics">
-      <HintPath>..\packages\MathNet.Numerics.3.5.0\lib\net40\MathNet.Numerics.dll</HintPath>
+    <Reference Include="MathNet.Numerics, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MathNet.Numerics.3.7.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -146,8 +159,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoCalibration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CAD-new.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CAD.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Camera.cs" />
     <Compile Include="CNC.cs" />
+    <Compile Include="CNCMovement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImageFinder.cs" />
+    <Compile Include="LeastSquaresMapping.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,11 +191,15 @@
       <DependentUpon>MethodSelectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Needle.cs" />
+    <Compile Include="PartLocation.cs" />
+    <Compile Include="PhysicalComponent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialComm.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Shapes.cs" />
+    <Compile Include="SlackCompensation.cs" />
+    <Compile Include="TapeObj.cs" />
     <Compile Include="tapes.cs" />
     <Compile Include="TapeSelectionForm.cs">
       <SubType>Form</SubType>
@@ -173,6 +207,12 @@
     <Compile Include="TapeSelectionForm.Designer.cs">
       <DependentUpon>TapeSelectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIDataMapping.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VideoDetection.cs" />
+    <Compile Include="VideoProcessing.cs" />
+    <Compile Include="VideoTextMarkup.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -195,6 +235,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\PhysicalComponent.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -229,6 +270,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="liteplacer icon.ico" />
+    <Content Include="opencv_core2410.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="opencv_highgui2410.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="opencv_imgproc2410.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

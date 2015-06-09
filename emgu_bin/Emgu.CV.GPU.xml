@@ -1,0 +1,2274 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Emgu.CV.GPU</name>
+    </assembly>
+    <members>
+        <member name="T:Emgu.CV.GPU.GpuBroxOpticalFlow">
+            <summary>
+            Brox optical flow
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuBroxOpticalFlow.#ctor(System.Single,System.Single,System.Single,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create the Brox optical flow solver
+            </summary>
+            <param name="alpha">Flow smoothness</param>
+            <param name="gamma">Gradient constancy importance</param>
+            <param name="scaleFactor">Pyramid scale factor</param>
+            <param name="innerIterations">Number of lagged non-linearity iterations (inner loop)</param>
+            <param name="outerIterations">Number of warping iterations (number of pyramid levels)</param>
+            <param name="solverIterations">Number of linear system solver iterations</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuBroxOpticalFlow.Compute(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.Stream)">
+            <summary>
+            Compute the optical flow.
+            </summary>
+            <param name="frame0">Source frame</param>
+            <param name="frame1">Frame to track (with the same size as <paramref name="frame0"/>)</param>
+            <param name="u">Flow horizontal component (along x axis)</param>
+            <param name="v">Flow vertical component (along y axis)</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuBroxOpticalFlow.DisposeObject">
+            <summary>
+            Release all the unmanaged memory associated with this optical flow solver.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuInvoke">
+            <summary>
+            This class wraps the functional calls to the opencv_gpu module
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.gpuDeviceInfoComputeCapability(System.IntPtr,System.Int32@,System.Int32@)">
+            <summary>
+            Get the compute capability of the device
+            </summary>
+            <param name="device">The device</param>
+            <param name="major">The major version of the compute capability</param>
+            <param name="minor">The minor version of the compute capability</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.gpuDeviceInfoMultiProcessorCount(System.IntPtr)">
+            <summary>
+            Get the number of multiprocessors on device
+            </summary>
+            <param name="device">The device</param>
+            <returns>The number of multiprocessors on device</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.gpuDeviceInfoDeviceName(System.IntPtr,System.Text.StringBuilder,System.Int32)">
+            <summary>
+            Get the device name
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GetCudaEnabledDeviceCount">
+            <summary>
+            Get the number of Cuda enabled devices
+            </summary>
+            <returns>The number of Cuda enabled devices</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.SetDevice(System.Int32)">
+            <summary>
+            Set the current Gpu Device
+            </summary>
+            <param name="deviceId">The id of the device to be setted as current</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GetDevice">
+            <summary>
+            Get the current Cuda device id
+            </summary>
+            <returns>The current Cuda device id</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatCreateDefault">
+            <summary>
+            Create an empty GpuMat 
+            </summary>
+            <returns>Pointer to an empty GpuMat</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatCreate(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create a GpuMat of the specified size
+            </summary>
+            <param name="rows">The number of rows (height)</param>
+            <param name="cols">The number of columns (width)</param>
+            <param name="type">The type of GpuMat</param>
+            <returns>Pointer to the GpuMat</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatCreateContinuous(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create a GpuMat of the specified size. The allocated data is continuous within this GpuMat.
+            </summary>
+            <param name="rows">The number of rows (height)</param>
+            <param name="cols">The number of columns (width)</param>
+            <param name="type">The type of GpuMat</param>
+            <returns>Pointer to the GpuMat</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatIsContinuous(System.IntPtr)">
+            <summary>
+            Returns true iff the GpuMatrix data is continuous
+            (i.e. when there are no gaps between successive rows).
+            </summary>
+            <param name="gpuMat">The GpuMat to be checked</param>
+            <returns>True if the GpuMat is continuous</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatGetRegion(System.IntPtr,Emgu.CV.Structure.MCvSlice,Emgu.CV.Structure.MCvSlice)">
+            <summary>
+            Create a GpuMat from the specific region of <paramref name="gpuMat"/>. The data is shared between the two GpuMat.
+            </summary>
+            <param name="gpuMat">The gpuMat to extract regions from.</param>
+            <param name="colRange">The column range. Use MCvSlice.WholeSeq for all columns.</param>
+            <param name="rowRange">The row range. Use MCvSlice.WholeSeq for all rows.</param>
+            <returns>Pointer to the GpuMat</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatIsEmpty(System.IntPtr)">
+            <summary>
+            Check if the GpuMat is empty
+            </summary>
+            <param name="gpuMat">The GpuMat</param>
+            <returns>True if the GpuMat is empty</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatSetTo(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr)">
+            <summary>
+            Copies scalar value to every selected element of the destination GpuMat:
+            arr(I)=value if mask(I)!=0
+            </summary>
+            <param name="mat">The destination GpuMat</param>
+            <param name="value">Fill value</param>
+            <param name="mask">Operation mask, 8-bit single channel GpuMat; specifies elements of destination GpuMat to be changed. Can be IntPtr.Zero if not used</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatResize(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.INTER,System.IntPtr)">
+            <summary>
+            Resize the GpuMat
+            </summary>
+            <param name="src">The input GpuMat</param>
+            <param name="dst">The resulting GpuMat</param>
+            <param name="interpolation">The interpolation type</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>     
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatReshape(System.IntPtr,System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+            Reshape the src GpuMat  
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The resulting GpuMat, as input it should be an empty GpuMat.</param>
+            <param name="cn">The new number of channels</param>
+            <param name="rows">The new number of rows</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatRelease(System.IntPtr@)">
+            <summary>
+            Release the GpuMat
+            </summary>
+            <param name="mat">Pointer to the GpuMat</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatCreateFromArr(System.IntPtr)">
+            <summary>
+            Convert a CvArr to a GpuMat
+            </summary>
+            <param name="arr">Pointer to a CvArr</param>
+            <returns>Pointer to the GpuMat</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatGetSize(System.IntPtr)">
+            <summary>
+            Get the GpuMat size:
+            width == number of columns, height == number of rows
+            </summary>
+            <param name="gpuMat">The GpuMat</param>
+            <returns>The size of the matrix</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatGetChannels(System.IntPtr)">
+            <summary>
+            Get the number of channels in the GpuMat
+            </summary>
+            <param name="gpuMat">The GpuMat</param>
+            <returns>The number of channels in the GpuMat</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatGetType(System.IntPtr)">
+            <summary>
+            Get the GpuMat type
+            </summary>
+            <param name="gpuMat">The GpuMat</param>
+            <returns>The GpuMat type</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatUpload(System.IntPtr,System.IntPtr)">
+            <summary>
+            Pefroms blocking upload data to GpuMat.
+            </summary>
+            <param name="gpuMat">The destination gpuMat</param>
+            <param name="arr">The CvArray to be uploaded to GPU</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GpuMatDownload(System.IntPtr,System.IntPtr)">
+            <summary>
+            Downloads data from device to host memory. Blocking calls.
+            </summary>
+            <param name="gpuMat">The source GpuMat</param>
+            <param name="arr">The CvArray where data will be downloaded to</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.CvtColor(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.COLOR_CONVERSION,System.IntPtr)">
+            <summary>
+            Converts image from one color space to another
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="code">The color conversion code</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.SwapChannels(System.IntPtr,System.Int32[],System.IntPtr)">
+            <summary>
+            Swap channels.
+            </summary>
+            <param name="src">The image where the channels will be swapped</param>
+            <param name="dstOrder">
+            Integer array describing how channel values are permutated. The n-th entry
+            of the array contains the number of the channel that is stored in the n-th channel of
+            the output image. E.g. Given an RGBA image, aDstOrder = [3,2,1,0] converts this to ABGR
+            channel order.
+            </param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Copy(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Copy the source GpuMat to destination GpuMat, using an optional mask.
+            </summary>
+            <param name="src">The GpuMat to be copied from</param>
+            <param name="dst">The GpuMat to be copied to</param>
+            <param name="mask">The optional mask, use IntPtr.Zero if not needed.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GetSubRect(System.IntPtr,System.Drawing.Rectangle)">
+            <summary>
+            Returns header, corresponding to a specified rectangle of the input GpuMat. In other words, it allows the user to treat a rectangular part of input array as a stand-alone array.
+            </summary>
+            <param name="mat">Input GpuMat</param>
+            <param name="rect">Zero-based coordinates of the rectangle of interest.</param>
+            <returns>Pointer to the resultant sub-array header.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.LShift(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Shifts a matrix to the left (c = a &lt;&lt; scalar)
+            </summary>
+            <param name="a">The matrix to be shifted.</param>
+            <param name="scalar">The scalar to shift by.</param>
+            <param name="c">The result of the shift</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.RShift(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Shifts a matrix to the right (c = a >> scalar)
+            </summary>
+            <param name="a">The matrix to be shifted.</param>
+            <param name="scalar">The scalar to shift by.</param>
+            <param name="c">The result of the shift</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Add(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Adds one matrix to another (c = a + b).
+            </summary>
+            <param name="a">The first matrix to be added.</param>
+            <param name="b">The second matrix to be added.</param>
+            <param name="c">The sum of the two matrix</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Add(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Adds scalar to a matrix (c = a + scalar)
+            </summary>
+            <param name="a">The matrix to be added.</param>
+            <param name="scalar">The scalar to be added.</param>
+            <param name="c">The sum of the matrix and the scalar</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Subtract(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Subtracts one matrix from another (c = a - b).
+            </summary>
+            <param name="a">The matrix where subtraction take place</param>
+            <param name="b">The matrix to be substracted</param>
+            <param name="c">The result of a - b</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Subtract(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes element-wise weighted product of the two arrays (c = scale * a * b) 
+            Supports CV_32FC1 and CV_32FC2 type.
+            </summary>
+            <param name="a">The matrix to be substraced from</param>
+            <param name="scalar">The scalar to be substracted</param>
+            <param name="c">The matrix substraced by the scalar</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Multiply(System.IntPtr,System.IntPtr,System.IntPtr,System.Double,System.IntPtr)">
+            <summary>
+            Computes element-wise product of the two GpuMat: c = scale * a * b.
+            </summary>
+            <param name="a">The first GpuMat to be element-wise multiplied.</param>
+            <param name="b">The second GpuMat to be element-wise multiplied.</param>
+            <param name="c">The element-wise multiplication of the two GpuMat</param>
+            <param name="scale">The scale</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Multiply(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Multiplies GpuMat to a scalar (c = a * scalar).
+            </summary>
+            <param name="a">The first GpuMat to be element-wise multiplied.</param>
+            <param name="scalar">The scalar to be multiplied</param>
+            <param name="c">The result of the GpuMat mutiplied by the scalar</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Divide(System.IntPtr,System.IntPtr,System.IntPtr,System.Double,System.IntPtr)">
+            <summary>
+            Computes element-wise quotient of the two GpuMat (c = scale *  a / b).
+            </summary>
+            <param name="a">The first GpuMat</param>
+            <param name="b">The second GpuMat</param>
+            <param name="c">The element-wise quotient of the two GpuMat</param>
+            <param name="scale">The scale</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Divide(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes element-wise quotient of a GpuMat and scalar (c = a / scalar).
+            </summary>
+            <param name="a">The first GpuMat to be element-wise divided.</param>
+            <param name="scalar">The scalar to be divided</param>
+            <param name="c">The result of the GpuMat divided by the scalar</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Divide(System.Double,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes element-wise weighted reciprocal of an array (c = scale/ b).
+            </summary>
+            <param name="b">The second GpuMat to be element-wise divided.</param>
+            <param name="scalar">The first scalar to be divided</param>
+            <param name="c">The result of the scalar dividing the GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.AddWeighted(System.IntPtr,System.Double,System.IntPtr,System.Double,System.Double,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes the weighted sum of two arrays (dst = alpha*src1 + beta*src2 + gamma)
+            </summary>
+            <param name="src1">The first source GpuMat</param>
+            <param name="alpha">The weight for <paramref name="src1"/></param>
+            <param name="src2">The second source GpuMat</param>
+            <param name="beta">The weight for <paramref name="src2"/></param>
+            <param name="gamma">The constant to be added</param>
+            <param name="dst">The result</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Absdiff(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes element-wise absolute difference of two GpuMats (c = abs(a - b)).
+            </summary>
+            <param name="a">The first GpuMat</param>
+            <param name="b">The second GpuMat</param>
+            <param name="c">The result of the element-wise absolute difference.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Absdiff(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes element-wise absolute difference of GpuMat and scalar (c = abs(a - s)).
+            </summary>
+            <param name="a">A GpuMat</param>
+            <param name="scalar">A scalar</param>
+            <param name="c">The result of the element-wise absolute difference.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Abs(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes absolute value of each pixel in an image
+            </summary>
+            <param name="src">The source GpuMat, support depth of Int16 and float.</param>
+            <param name="dst">The resulting GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Sqr(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes square of each pixel in an image
+            </summary>
+            <param name="src">The source GpuMat, support depth of byte, UInt16, Int16 and float.</param>
+            <param name="dst">The resulting GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Sqrt(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes square root of each pixel in an image
+            </summary>
+            <param name="src">The source GpuMat, support depth of byte, UInt16, Int16 and float.</param>
+            <param name="dst">The resulting GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Compare(System.IntPtr,System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.CMP_TYPE,System.IntPtr)">
+            <summary>
+            Compares elements of two GpuMats (c = a &lt;cmpop&gt; b).
+            Supports CV_8UC4, CV_32FC1 types
+            </summary>
+            <param name="a">The first GpuMat</param>
+            <param name="b">The second GpuMat</param>
+            <param name="c">The result of the comparison.</param>
+            <param name="cmpop">The type of comparison</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Resize(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.INTER,System.IntPtr)">
+            <summary>
+            Resizes the image.
+            </summary>
+            <param name="src">The source image. Has to be GpuMat&lt;Byte&gt;. If stream is used, the GpuMat has to be either single channel or 4 channels.</param>
+            <param name="dst">The destination image.</param>
+            <param name="interpolation">The interpolation type. Supports INTER_NEAREST, INTER_LINEAR.</param>
+            <param name="stream">Use a stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Reshape(System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+            Changes shape of GpuMat without copying data.
+            </summary>
+            <param name="src">The GpuMat to be reshaped.</param>
+            <param name="newCn">New number of channels. newCn = 0 means that the number of channels remains unchanged.</param>
+            <param name="newRows">New number of rows. newRows = 0 means that the number of rows remains unchanged unless it needs to be changed according to newCn value.</param>
+            <returns>A GpuMat of different shape</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Split(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Copies each plane of a multi-channel GpuMat to a dedicated GpuMat
+            </summary>
+            <param name="src">The multi-channel gpuMat</param>
+            <param name="dstArray">Pointer to an array of single channel GpuMat pointers</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Merge(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Makes multi-channel GpuMat out of several single-channel GpuMats
+            </summary>
+            <param name="srcArr">Pointer to an array of single channel GpuMat pointers</param>
+            <param name="dst">The multi-channel gpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Exp(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes exponent of each matrix element (b = exp(a))
+            </summary>
+            <param name="src">The source GpuMat. Supports Byte, UInt16, Int16 and float type.</param>
+            <param name="dst">The resulting GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Pow(System.IntPtr,System.Double,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes power of each matrix element:
+              (dst(i,j) = pow(     src(i,j) , power), if src.type() is integer;
+              (dst(i,j) = pow(fabs(src(i,j)), power), otherwise.
+            supports all, except depth == CV_64F
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="power">The power</param>
+            <param name="dst">The resulting GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Log(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes natural logarithm of absolute value of each matrix element: b = log(abs(a))
+            </summary>
+            <param name="src">The source GpuMat. Supports Byte, UInt16, Int16 and float type.</param>
+            <param name="dst">The resulting GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Magnitude(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes magnitude of each (x(i), y(i)) vector
+            </summary>
+            <param name="x">The source GpuMat. Supports only floating-point type</param>
+            <param name="y">The source GpuMat. Supports only floating-point type</param>
+            <param name="magnitude">The destination GpuMat. Supports only floating-point type</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.MagnitudeSqr(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes squared magnitude of each (x(i), y(i)) vector
+            </summary>
+            <param name="x">The source GpuMat. Supports only floating-point type</param>
+            <param name="y">The source GpuMat. Supports only floating-point type</param>
+            <param name="magnitude">The destination GpuMat. Supports only floating-point type</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Phase(System.IntPtr,System.IntPtr,System.IntPtr,System.Boolean,System.IntPtr)">
+            <summary>
+            Computes angle (angle(i)) of each (x(i), y(i)) vector
+            </summary>
+            <param name="x">The source GpuMat. Supports only floating-point type</param>
+            <param name="y">The source GpuMat. Supports only floating-point type</param>
+            <param name="angle">The destination GpuMat. Supports only floating-point type</param>
+            <param name="angleInDegrees">If true, the output angle is in degrees, otherwise in radian</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.CartToPolar(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Boolean,System.IntPtr)">
+            <summary>
+            Converts Cartesian coordinates to polar
+            </summary>
+            <param name="x">The source GpuMat. Supports only floating-point type</param>
+            <param name="y">The source GpuMat. Supports only floating-point type</param>
+            <param name="magnitude">The destination GpuMat. Supports only floating-point type</param>
+            <param name="angle">The destination GpuMat. Supports only floating-point type</param>
+            <param name="angleInDegrees">If true, the output angle is in degrees, otherwise in radian</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.PolarToCart(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Boolean,System.IntPtr)">
+            <summary>
+            Converts polar coordinates to Cartesian
+            </summary>
+            <param name="magnitude">The source GpuMat. Supports only floating-point type</param>
+            <param name="angle">The source GpuMat. Supports only floating-point type</param>
+            <param name="x">The destination GpuMat. Supports only floating-point type</param>
+            <param name="y">The destination GpuMat. Supports only floating-point type</param>
+            <param name="angleInDegrees">If true, the input angle is in degrees, otherwise in radian</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.ConvertTo(System.IntPtr,System.IntPtr,System.Double,System.Double)">
+            <summary>
+            This function has several different purposes and thus has several synonyms. It copies one GpuMat to another with optional scaling, which is performed first, and/or optional type conversion, performed after:
+            dst(I)=src(I)*scale + (shift,shift,...)
+            All the channels of multi-channel GpuMats are processed independently.
+            The type conversion is done with rounding and saturation, that is if a result of scaling + conversion can not be represented exactly by a value of destination GpuMat element type, it is set to the nearest representable value on the real axis.
+            In case of scale=1, shift=0 no prescaling is done. This is a specially optimized case and it has the appropriate convertTo synonym.
+            </summary>
+            <param name="src">Source GpuMat</param>
+            <param name="dst">Destination GpuMat</param>
+            <param name="scale">Scale factor</param>
+            <param name="shift">Value added to the scaled source GpuMat elements</param>   
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.MinMaxLoc(System.IntPtr,System.Double@,System.Double@,System.Drawing.Point@,System.Drawing.Point@,System.IntPtr)">
+            <summary>
+            Finds minimum and maximum element values and their positions. The extremums are searched over the whole GpuMat or, if mask is not IntPtr.Zero, in the specified GpuMat region.
+            </summary>
+            <param name="gpuMat">The source GpuMat, single-channel</param>
+            <param name="minVal">Pointer to returned minimum value</param>
+            <param name="maxVal">Pointer to returned maximum value</param>
+            <param name="minLoc">Pointer to returned minimum location</param>
+            <param name="maxLoc">Pointer to returned maximum location</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.PyrDown(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Performs downsampling step of Gaussian pyramid decomposition. 
+            </summary>
+            <param name="src">The source GpuImage.</param>
+            <param name="dst">The destination GpuImage, should have 2x smaller width and height than the source.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>  
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.PyrUp(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Performs up-sampling step of Gaussian pyramid decomposition.
+            </summary>
+            <param name="src">The source GpuImage.</param>
+            <param name="dst">The destination image, should have 2x smaller width and height than the source.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>  
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.MeanStdDev(System.IntPtr,Emgu.CV.Structure.MCvScalar@,Emgu.CV.Structure.MCvScalar@,System.IntPtr)">
+            <summary>
+            Computes mean value and standard deviation
+            </summary>
+            <param name="mtx">The GpuMat. Supports only CV_8UC1 type</param>
+            <param name="mean">The mean value</param>
+            <param name="stddev">The standard deviation</param>
+            <param name="buffer">The buffer for the processing. Can be IntPtr.Zero if you do not wants to specify such.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Norm(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.NORM_TYPE)">
+            <summary>
+            Computes norm of the difference between two GpuMats
+            </summary>
+            <param name="src1">The GpuMat. Supports only CV_8UC1 type</param>
+            <param name="src2">If IntPtr.Zero, norm operation is apply to <paramref name="src1"/> only. Otherwise, this is the GpuMat of type CV_8UC1</param>
+            <param name="normType">The norm type. Supports NORM_INF, NORM_L1, NORM_L2.</param>
+            <returns>The norm of the <paramref name="src1"/> if <paramref name="src2"/> is IntPtr.Zero. Otherwise the norm of the difference between two GpuMats.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.CountNonZero(System.IntPtr)">
+            <summary>
+            Counts non-zero array elements
+            </summary>
+            <param name="src">The GpuMat</param>
+            <returns>The number of non-zero GpuMat elements</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Reduce(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.REDUCE_DIMENSION,Emgu.CV.CvEnum.REDUCE_TYPE,System.IntPtr)">
+            <summary>
+            Reduces GpuMat to a vector by treating the GpuMat rows/columns as a set of 1D vectors and performing the specified operation on the vectors until a single row/column is obtained. 
+            </summary>
+            <param name="mtx">The input GpuMat</param>
+            <param name="vec">The destination GpuMat. Must be preallocated 1 x n matrix and have the same number of channels as the input GpuMat</param>
+            <param name="dim">The dimension index along which the matrix is reduce.</param>
+            <param name="reduceOp">The reduction operation type</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>      
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.gpuMatFlip(System.IntPtr,System.IntPtr,System.Int32,System.IntPtr)">
+             <summary>
+             Flips the GpuMat in one of different 3 ways (row and column indices are 0-based):
+             dst(i,j)=src(rows(src)-i-1,j) if flip_mode = 0
+             dst(i,j)=src(i,cols(src1)-j-1) if flip_mode &gt; 0
+             dst(i,j)=src(rows(src)-i-1,cols(src)-j-1) if flip_mode &lt; 0
+             </summary>
+             <param name="src">Source GpuMat.</param>
+             <param name="dst">Destination GpuMat.</param>
+             <param name="flipMode">
+             Specifies how to flip the GpuMat.
+             flip_mode = 0 means flipping around x-axis, 
+             flip_mode &gt; 0 (e.g. 1) means flipping around y-axis and 
+             flip_mode &lt; 0 (e.g. -1) means flipping around both axises. 
+            </param>
+             <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>      
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Flip(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.FLIP,Emgu.CV.GPU.Stream)">
+            <summary>
+            Flips the GpuMat&lt;Byte&gt; in one of different 3 ways (row and column indices are 0-based). 
+            </summary>
+            <param name="src">The source GpuMat. supports 1, 3 and 4 channels GpuMat with Byte, UInt16, int or float depth</param>
+            <param name="dst">Destination GpuMat. The same source and type as <paramref name="src"/></param>
+            <param name="flipType">Specifies how to flip the GpuMat.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>      
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Erode(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Drawing.Point,System.Int32,System.IntPtr)">
+            <summary>
+            Erodes the image (applies the local minimum operator).
+            Supports CV_8UC1, CV_8UC4 type.
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="kernel">The morphology kernel, pointer to an CvArr. If it is IntPtr.Zero, a 3x3 rectangular structuring element is used.</param>
+            <param name="buffer">Temperary buffer. Should be the same size and type as the <paramref name="src"/> GpuMat. </param>
+            <param name="anchor">The center of the kernel. User (-1, -1) for the default kernel center.</param>
+            <param name="iterations">The number of iterations morphology is applied</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Dilate(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Drawing.Point,System.Int32,System.IntPtr)">
+            <summary>
+            Dilate the image (applies the local maximum operator).
+            Supports CV_8UC1, CV_8UC4 type.
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="kernel">The morphology kernel, pointer to an CvArr. If it is IntPtr.Zero, a 3x3 rectangular structuring element is used.</param>
+            <param name="buffer">Temperary buffer. Should be the same size and type as the <paramref name="src"/> GpuMat. </param>
+            <param name="anchor">The center of the kernel. User (-1, -1) for the default kernel center.</param>
+            <param name="iterations">The number of iterations morphology is applied</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.MorphologyEx(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.CV_MORPH_OP,System.IntPtr,System.IntPtr,System.IntPtr,System.Drawing.Point,System.Int32,System.IntPtr)">
+            <summary>
+            Applies an advanced morphological operation to the image
+            Supports CV_8UC1, CV_8UC4 type.
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="op">The type of morphological operation</param>
+            <param name="kernel">The morphology kernel, pointer to an CvArr. </param>
+            <param name="buffer1">Temperary buffer. Should be the same size and type as the <paramref name="src"/> GpuMat. </param>
+            <param name="buffer2">Temperary buffer. Should be the same size and type as the <paramref name="src"/> GpuMat. Required for morphology operations other than erode or dilate. For erode and dilate operation, you can use IntPtr.Zero here.</param>
+            <param name="anchor">The center of the kernel. User (-1, -1) for the default kernel center.</param>
+            <param name="iterations">The number of iterations morphology is applied</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.BitwiseXor(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical conjunction of two GpuMats:
+            dst(I)=src1(I)^src2(I) if mask(I)!=0
+            In the case of floating-point GpuMats their bit representations are used for the operation. All the GpuMats must have the same type, except the mask, and the same size
+            </summary>
+            <param name="src1">The first source GpuMat</param>
+            <param name="src2">The second source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="mask">Mask, 8-bit single channel GpuMat; specifies elements of destination GpuMat to be changed. Use IntPtr.Zero if not needed.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.BitwiseXor(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical conjunction of a GpuMat and a scalar:
+            dst(I)=src1(I)^scalar
+            In the case of a floating-point GpuMat its bit representation is used for the operation.
+            </summary>
+            <param name="src1">The first source GpuMat</param>
+            <param name="scalar">The scalar</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.BitwiseOr(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical or of two GpuMats:
+            dst(I)=src1(I) | src2(I) if mask(I)!=0
+            In the case of floating-point GpuMats their bit representations are used for the operation. All the GpuMats must have the same type, except the mask, and the same size
+            </summary>
+            <param name="src1">The first source GpuMat</param>
+            <param name="src2">The second source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="mask">Mask, 8-bit single channel GpuMat; specifies elements of destination GpuMat to be changed. Use IntPtr.Zero if not needed.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.BitwiseOr(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical or a GpuMat and a scalar:
+            dst(I)=src1(I) | scalar
+            In the case of a floating-point GpuMat its bit representation is used for the operation.
+            </summary>
+            <param name="src1">The first source GpuMat</param>
+            <param name="scalar">The scalar</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.BitwiseAnd(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical and of two GpuMats:
+            dst(I)=src1(I) &amp; src2(I) if mask(I)!=0
+            In the case of floating-point GpuMats their bit representations are used for the operation. All the GpuMats must have the same type, except the mask, and the same size
+            </summary>
+            <param name="src1">The first source GpuMat</param>
+            <param name="src2">The second source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="mask">Mask, 8-bit single channel GpuMat; specifies elements of destination GpuMat to be changed. Use IntPtr.Zero if not needed.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.BitwiseAnd(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical and of a GpuMat and a scalar:
+            dst(I)=src1(I) &amp; scalar
+            In the case of a floating-point GpuMat its bit representation is used for the operation.
+            </summary>
+            <param name="src1">The first source GpuMat</param>
+            <param name="scalar">The scalar</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.BitwiseNot(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical not
+            dst(I)=~src(I) if mask(I)!=0
+            In the case of floating-point GpuMats their bit representations are used for the operation. All the GpuMats must have the same type, except the mask, and the same size
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="mask">Mask, 8-bit single channel GpuMat; specifies elements of destination GpuMat to be changed. Use IntPtr.Zero if not needed.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Min(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes per-element minimum of two GpuMats (dst = min(src1, src2))
+            </summary>
+            <param name="src1">The first GpuMat</param>
+            <param name="src2">The second GpuMat</param>
+            <param name="dst">The result GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Min(System.IntPtr,System.Double,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes per-element minimum of GpuMat and scalar (dst = min(src1, src2))
+            </summary>
+            <param name="src1">The first GpuMat</param>
+            <param name="src2">The scalar</param>
+            <param name="dst">The result GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Max(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes per-element maximum of two GpuMats (dst = max(src1, src2))
+            </summary>
+            <param name="src1">The first GpuMat</param>
+            <param name="src2">The second GpuMat</param>
+            <param name="dst">The result GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Max(System.IntPtr,System.Double,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes per-element maximum of GpuMat and scalar (dst = max(src1, src2))
+            </summary>
+            <param name="src1">The first GpuMat</param>
+            <param name="src2">The scalar</param>
+            <param name="dst">The result GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Threshold(System.IntPtr,System.IntPtr,System.Double,System.Double,Emgu.CV.CvEnum.THRESH,System.IntPtr)">
+            <summary>
+            Applies fixed-level thresholding to single-channel array. The function is typically used to get bi-level (binary) image out of grayscale image or for removing a noise, i.e. filtering out pixels with too small or too large values. There are several types of thresholding the function supports that are determined by thresholdType
+            </summary>
+            <param name="src">Source array (single-channel, 8-bit of 32-bit floating point). </param>
+            <param name="dst">Destination array; must be either the same type as src or 8-bit. </param>
+            <param name="threshold">Threshold value</param>
+            <param name="maxValue">Maximum value to use with CV_THRESH_BINARY and CV_THRESH_BINARY_INV thresholding types</param>
+            <param name="thresholdType">Thresholding type</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Gemm(System.IntPtr,System.IntPtr,System.Double,System.IntPtr,System.Double,System.IntPtr,Emgu.CV.CvEnum.GEMM_TYPE,System.IntPtr)">
+            <summary>
+            Performs generalized matrix multiplication:
+            dst = alpha*op(src1)*op(src2) + beta*op(src3), where op(X) is X or XT
+            </summary>
+            <param name="src1">The first source array. </param>
+            <param name="src2">The second source array. </param>
+            <param name="alpha">The scalar</param>
+            <param name="src3">The third source array (shift). Can be IntPtr.Zero, if there is no shift.</param>
+            <param name="beta">The scalar</param>
+            <param name="dst">The destination array.</param>
+            <param name="tABC">The gemm operation type</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.WarpAffine(System.IntPtr,System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.INTER,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.Structure.MCvScalar,System.IntPtr)">
+            <summary>
+            Warps the image using affine transformation
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="M">The 2x3 transformation matrix (pointer to CvArr)</param>
+            <param name="flags">Supports NN, LINEAR, CUBIC</param>
+            <param name="borderMode">The border mode, use BORDER_TYPE.CONSTANT for default.</param>
+            <param name="borderValue">The border value, use new MCvScalar() for default.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.WarpPerspective(System.IntPtr,System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.INTER,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.Structure.MCvScalar,System.IntPtr)">
+            <summary>
+            Warps the image using perspective transformation
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="M">The 2x3 transformation matrix (pointer to CvArr)</param>
+            <param name="flags">Supports NN, LINEAR, CUBIC</param>
+            <param name="borderMode">The border mode, use BORDER_TYPE.CONSTANT for default.</param>
+            <param name="borderValue">The border value, use new MCvScalar() for default.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Remap(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.INTER,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.Structure.MCvScalar,System.IntPtr)">
+            <summary>
+            DST[x,y] = SRC[xmap[x,y],ymap[x,y]] with bilinear interpolation.
+            </summary>
+            <param name="src">The source GpuMat. Supports CV_8UC1, CV_8UC3 source types. </param>
+            <param name="dst">The dstination GpuMat. Supports CV_8UC1, CV_8UC3 source types. </param>
+            <param name="xmap">The xmap. Supports CV_32FC1 map type.</param>
+            <param name="ymap">The ymap. Supports CV_32FC1 map type.</param>
+            <param name="interpolation">Interpolation type.</param>
+            <param name="borderMode">Border mode. Use BORDER_CONSTANT for default.</param>
+            <param name="borderValue">The value of the border.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.MeanShiftFiltering(System.IntPtr,System.IntPtr,System.Int32,System.Int32,Emgu.CV.Structure.MCvTermCriteria@,System.IntPtr)">
+            <summary>
+            Performs mean-shift filtering for each point of the source image. It maps each point of the source
+            image into another point, and as the result we have new color and new position of each point.
+            </summary>
+            <param name="src">Source GpuImage. Only CV 8UC4 images are supported for now.</param>
+            <param name="dst">Destination GpuImage, containing color of mapped points. Will have the same size and type as src.</param>
+            <param name="sp">Spatial window radius.</param>
+            <param name="sr">Color window radius.</param>
+            <param name="criteria">Termination criteria.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>  
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.MeanShiftProc(System.IntPtr,System.IntPtr,System.IntPtr,System.Int32,System.Int32,Emgu.CV.Structure.MCvTermCriteria@,System.IntPtr)">
+            <summary>
+            Performs mean-shift procedure and stores information about processed points (i.e. their colors
+            and positions) into two images.
+            </summary>
+            <param name="src">Source GpuImage. Only CV 8UC4 images are supported for now.</param>
+            <param name="dstr">Destination GpuImage, containing color of mapped points. Will have the same size and type as src.</param>
+            <param name="dstsp">Destination GpuImage, containing position of mapped points. Will have the same size as src and CV 16SC2 type.</param>
+            <param name="sp">Spatial window radius.</param>
+            <param name="sr">Color window radius.</param>
+            <param name="criteria">Termination criteria.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>  
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.MeanShiftSegmentation(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,Emgu.CV.Structure.MCvTermCriteria@)">
+            <summary>
+            Performs mean-shift segmentation of the source image and eleminates small segments.
+            </summary>
+            <param name="src">Source GpuImage. Only CV 8UC4 images are supported for now.</param>
+            <param name="dst">Segmented Image. Will have the same size and type as src. Note that this is an Image type and not GpuImage type</param>
+            <param name="sp">Spatial window radius.</param>
+            <param name="sr">Color window radius.</param>
+            <param name="minsize">Minimum segment size. Smaller segements will be merged.</param>
+            <param name="criteria">Termination criteria.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Rotate(System.IntPtr,System.IntPtr,System.Double,System.Double,System.Double,Emgu.CV.CvEnum.INPAINT_TYPE,System.IntPtr)">
+            <summary>
+            Rotates an image around the origin (0,0) and then shifts it.
+            </summary>
+            <param name="src">Source image. Supports 1, 3 or 4 channels images with Byte, UInt16 or float depth</param>
+            <param name="dst">Destination image with the same type as src. Must be pre-allocated</param>
+            <param name="angle">Angle of rotation in degrees</param>
+            <param name="xShift">Shift along the horizontal axis</param>
+            <param name="yShift">Shift along the verticle axis</param>
+            <param name="interpolation">Interpolation method. Only INTER_NEAREST, INTER_LINEAR, and INTER_CUBIC are supported.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.CopyMakeBorder(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.Structure.MCvScalar,System.IntPtr)">
+            <summary>
+            Copies a 2D array to a larger destination array and pads borders with the given constant.
+            </summary>
+            <param name="src">Source image.</param>
+            <param name="dst">Destination image with the same type as src. The size is Size(src.cols+left+right, src.rows+top+bottom).</param>
+            <param name="top">Number of pixels in each direction from the source image rectangle to extrapolate.</param>
+            <param name="bottom">Number of pixels in each direction from the source image rectangle to extrapolate.</param>
+            <param name="left">Number of pixels in each direction from the source image rectangle to extrapolate.</param>
+            <param name="right">Number of pixels in each direction from the source image rectangle to extrapolate.</param>
+            <param name="borderType">Border Type</param>
+            <param name="value">Border value.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.IntegralBuffered(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes the integral image and integral for the squared image
+            </summary>
+            <param name="src">The source GpuMat, supports only CV_8UC1 source type</param>
+            <param name="sum">The sum GpuMat, supports only CV_32S source type, but will contain unsigned int values</param>
+            <param name="buffer">The buffer GpuMat, supports only CV32F source type.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Integral(System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes the integral image
+            </summary>
+            <param name="src">The source GpuMat, supports only CV_8UC1 source type</param>
+            <param name="sum">The sum GpuMat, supports only CV_32S source type, but will contain unsigned int values</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.SqrIntegral(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes squared integral image 
+            </summary>
+            <param name="src">The source GpuMat, supports only CV_8UC1 source type</param>
+            <param name="sqsum">The sqsum GpuMat, supports only CV32F source type.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.CornerHarris(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Double,Emgu.CV.CvEnum.BORDER_TYPE)">
+            <summary>
+            Runs the Harris edge detector on image. Similarly to cvCornerMinEigenVal and cvCornerEigenValsAndVecs, for each pixel it calculates 2x2 gradient covariation matrix M over block_size x block_size neighborhood. Then, it stores
+            det(M) - k*trace(M)^2
+            to the destination image. Corners in the image can be found as local maxima of the destination image.
+            </summary>
+            <param name="image">Input GpuMat</param>
+            <param name="harrisResponce">GpuMat to store the Harris detector responces. Should have the same size as <paramref name="image"/>. </param>
+            <param name="blockSize">Neighborhood size </param>
+            <param name="kSize"></param>
+            <param name="k">Harris detector free parameter.</param>
+            <param name="borderType">Boreder type, use REFLECT101 for default</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Dft(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.CV_DXT,System.IntPtr)">
+             <summary>
+             Performs a forward or inverse discrete Fourier transform (1D or 2D) of floating point matrix.
+             Param dft_size is the size of DFT transform.
+             
+             If the source matrix is not continous, then additional copy will be done,
+             so to avoid copying ensure the source matrix is continous one. If you want to use
+             preallocated output ensure it is continuous too, otherwise it will be reallocated.
+            
+             Being implemented via CUFFT real-to-complex transform result contains only non-redundant values
+             in CUFFT's format. Result as full complex matrix for such kind of transform cannot be retrieved.
+            
+             For complex-to-real transform it is assumed that the source matrix is packed in CUFFT's format.
+             </summary>
+             <param name="src">The source GpuMat</param>
+             <param name="dst">The resulting GpuMat of the DST, must be pre-allocated and continious. If single channel, the result is real. If double channel, the result is complex</param>
+             <param name="flags">DFT flags</param>
+             <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>  
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.HistEven(System.IntPtr,System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.IntPtr)">
+            <summary>
+            Calculates histogram with evenly distributed bins for signle channel source.
+            </summary>
+            <param name="src">The source GpuMat. Supports CV_8UC1, CV_16UC1 and CV_16SC1 types.</param>
+            <param name="buffer">The GpuMat Buffer</param>
+            <param name="histSize">The size of histogram (number of levels)</param>
+            <param name="lowerLevel">The lower level</param>
+            <param name="upperLevel">The upper level</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>  
+            <param name="hist">Histogram with evenly distributed bins. A GpuMat&lt;int&gt; type.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.HistEven(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.IntPtr)">
+            <summary>
+            Calculates histogram with evenly distributed bins for signle channel source.
+            </summary>
+            <param name="src">The source GpuMat. Supports CV_8UC1, CV_16UC1 and CV_16SC1 types.</param>
+            <param name="buffer">The GpuMat Buffer</param>
+            <param name="histSize">The size of histogram (number of levels)</param>
+            <param name="lowerLevel">The lower level</param>
+            <param name="upperLevel">The upper level</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>  
+            <returns>Histogram with evenly distributed bins</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.CreateOpticalFlowNeedleMap(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.GPU.GpuMat{System.Single},Emgu.CV.GPU.GpuMat{System.Single})">
+            <summary>
+            Draw the optical flow needle map
+            </summary>
+            <param name="u"></param>
+            <param name="v"></param>
+            <param name="vertex"></param>
+            <param name="colors"></param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Filter2D(System.IntPtr,System.IntPtr,System.IntPtr,System.Drawing.Point,Emgu.CV.CvEnum.BORDER_TYPE,System.IntPtr)">
+            <summary>
+            Applies arbitrary linear filter to the image. In-place operation is supported. When the aperture is partially outside the image, the function interpolates outlier pixel values from the nearest pixels that is inside the image
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMmage</param>
+            <param name="kernel">Convolution kernel, single-channel floating point matrix (e.g. Emgu.CV.Matrix). If you want to apply different kernels to different channels, split the gpu image into separate color planes and process them individually</param>
+            <param name="anchor">The anchor of the kernel that indicates the relative position of a filtered point within the kernel. The anchor shoud lie within the kernel. The special default value (-1,-1) means that it is at the kernel center</param>
+            <param name="borderType">Border type. Use REFLECT101 as default.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Canny(System.IntPtr,System.IntPtr,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Finds the edges on the input <paramref name="image"/> and marks them in the output image edges using the Canny algorithm. The smallest of threshold1 and threshold2 is used for edge linking, the largest - to find initial segments of strong edges.
+            </summary>
+            <param name="image">Input image</param>
+            <param name="edges">Image to store the edges found by the function</param>
+            <param name="lowThreshold">The first threshold</param>
+            <param name="highThreshold">The second threshold</param>
+            <param name="apertureSize">Aperture parameter for Sobel operator, use 3 for default</param>
+            <param name="L2gradient">Use false for default</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Sobel(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.IntPtr,System.Int32,System.Double,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.CvEnum.BORDER_TYPE,System.IntPtr)">
+            <summary>
+            Applies generalized Sobel operator to the image
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The resulting GpuMat</param>
+            <param name="dx">Order of the derivative x</param>
+            <param name="dy">Order of the derivative y</param>
+            <param name="buffer">A GpuMat that is used for buffer. Use IntPtr.Zero for default.</param>
+            <param name="ksize">Size of the extended Sobel kernel</param>
+            <param name="scale">Optional scale, use 1 for default.</param>
+            <param name="rowBorderType">The row border type.</param>
+            <param name="columnBorderType">The column border type.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.Laplacian(System.IntPtr,System.IntPtr,System.Int32,System.Double,Emgu.CV.CvEnum.BORDER_TYPE,System.IntPtr)">
+            <summary>
+            Applies Laplacian operator to the GpuMat
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The resulting GpuMat</param>
+            <param name="ksize">Either 1 or 3</param>
+            <param name="scale">Optional scale. Use 1.0 for default</param>
+            <param name="borderType">The border type.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.GaussianBlur(System.IntPtr,System.IntPtr,System.Drawing.Size,System.IntPtr,System.Double,System.Double,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.CvEnum.BORDER_TYPE,System.IntPtr)">
+            <summary>
+            Smooths the GpuMat using Gaussian filter.
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The smoothed GpuMat</param>
+            <param name="ksize">The size of the kernel</param>
+            <param name="buffer">A GpuMat that is used for buffer. Use IntPtr.Zero for default.</param>
+            <param name="sigma1">This parameter may specify Gaussian sigma (standard deviation). If it is zero, it is calculated from the kernel size.</param>
+            <param name="sigma2">In case of non-square Gaussian kernel the parameter may be used to specify a different (from param3) sigma in the vertical direction. Use 0 for default</param>
+            <param name="rowBorderType">The row border type.</param>
+            <param name="columnBorderType">The column border type.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.LUT(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Transforms 8-bit unsigned integers using lookup table: dst(i)=lut(src(i)).
+            Destination GpuMat will have the depth type as lut and the same channels number as source.
+            Supports CV_8UC1, CV_8UC3 types.
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="lut">Pointer to a CvArr (e.g. Emgu.CV.Matrix).</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuInvoke.gpuTemplateMatchingMatch(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            This function is similiar to cvCalcBackProjectPatch. It slids through image, compares overlapped patches of size wxh with templ using the specified method and stores the comparison results to result
+            </summary>
+            <param name="image">Image where the search is running. It should be 8-bit or 32-bit floating-point</param>
+            <param name="templ">Searched template; must be not greater than the source image and the same data type as the image</param>
+            <param name="result">A map of comparison results; single-channel 32-bit floating-point. If image is WxH and templ is wxh then result must be W-w+1xH-h+1.</param>
+            <param name="tm">Pointer to cv::gpu::TemplateMatching</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or IntPtr.Zero to call the function synchronously (blocking).</param>  
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuInvoke.HasCuda">
+            <summary>
+            Return true if Cuda is found on the system
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuBruteForceMatcher`1">
+            <summary>
+            A Brute force matcher using GPU
+            </summary>
+            <typeparam name="T">The type of data to be matched. Can be either float or Byte</typeparam>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuBruteForceMatcher`1.#ctor(Emgu.CV.Features2D.DistanceType)">
+            <summary>
+            Create a GPUBruteForce Matcher using the specific distance type
+            </summary>
+            <param name="distanceType">The distance type</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuBruteForceMatcher`1.KnnMatchSingle(Emgu.CV.GPU.GpuMat{`0},Emgu.CV.GPU.GpuMat{`0},Emgu.CV.GPU.GpuMat{System.Int32},Emgu.CV.GPU.GpuMat{System.Single},System.Int32,Emgu.CV.GPU.GpuMat{System.Byte},Emgu.CV.GPU.Stream)">
+            <summary>
+            Find the k nearest neighbour using the brute force matcher. 
+            </summary>
+            <param name="queryDescriptors">The query descriptors</param>
+            <param name="modelDescriptors">The model descriptors</param>
+            <param name="modelIdx">The model index. A n x <paramref name="k"/> matrix where n = <paramref name="queryDescriptors"/>.Cols</param>
+            <param name="distance">The matrix where the distance valus is stored. A n x <paramref name="k"/> matrix where n = <paramref name="queryDescriptors"/>.Size.Height</param>
+            <param name="k">The number of nearest neighbours to be searched</param>
+            <param name="mask">The mask</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuBruteForceMatcher`1.DisposeObject">
+            <summary>
+            Release all the unmanaged memory associated with this matcher
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuCascadeClassifier">
+            <summary>
+            Cascade Classifier for object detection using GPU
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuCascadeClassifier.#ctor(System.String)">
+            <summary>
+            Create a GPU cascade classifier using the specific file
+            </summary>
+            <param name="fileName">The file to create the classifier from</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuCascadeClassifier.DetectMultiScale``1(Emgu.CV.GPU.GpuImage{``0,System.Byte},System.Double,System.Int32,System.Drawing.Size)">
+            <summary>
+            Finds rectangular regions in the given image that are likely to contain objects the cascade has been trained for and returns those regions as a sequence of rectangles.
+            </summary>
+            <param name="image">The image where search will take place</param>
+            <param name="scaleFactor">The factor by which the search window is scaled between the subsequent scans, for example, 1.1 means increasing window by 10%. Use 1.2 for default.</param>
+            <param name="minNeighbors">Minimum number (minus 1) of neighbor rectangles that makes up an object. All the groups of a smaller number of rectangles than min_neighbors-1 are rejected. If min_neighbors is 0, the function does not any grouping at all and returns all the detected candidate rectangles, which may be useful if the user wants to apply a customized grouping procedure. Use 4 for default.</param>
+            <param name="minSize">Minimum window size. By default, it is set to the size of samples the classifier has been trained on (~20x20 for face detection). Use Size.Empty for default</param>
+            <returns>An array of regions for the detected objects</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuCascadeClassifier.DisposeObject">
+            <summary>
+            Release all unmanaged resources associated with this object
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuDeviceInfo">
+            <summary>
+            The Gpu device information
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuDeviceInfo.#ctor">
+            <summary>
+            Query the information of the gpu device that is currently in use.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuDeviceInfo.#ctor(System.Int32)">
+            <summary>
+            Query the information of the gpu device with the specific id.
+            </summary>
+            <param name="deviceId">The device id</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuDeviceInfo.Supports(Emgu.CV.GPU.GpuDeviceInfo.GpuFeature)">
+            <summary>
+            Indicates if the decive has the specific feature
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuDeviceInfo.DisposeObject">
+            <summary>
+            Release the unmanaged resource related to the GpuDevice
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuDeviceInfo.ID">
+            <summary>
+            The id of the device
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuDeviceInfo.Name">
+            <summary>
+            The name of the device
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuDeviceInfo.CudaComputeCapability">
+            <summary>
+            The compute capability
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuDeviceInfo.MultiProcessorCount">
+            <summary>
+            The number of single multi processors
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuDeviceInfo.FreeMemory">
+            <summary>
+            Get the amount of free memory at the moment
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuDeviceInfo.TotalMemory">
+            <summary>
+            Get the amount of total memory
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuDeviceInfo.IsCompatible">
+            <summary>
+            Checks whether the GPU module can be run on the given device
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature">
+            <summary>
+            GPU feature
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature.Compute10">
+            <summary>
+            Cuda compute 1.0
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature.Compute11">
+            <summary>
+            Cuda compute 1.1
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature.Compute12">
+            <summary>
+            Cuda compute 1.2
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature.Compute13">
+            <summary>
+            Cuda compute 1.3
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature.Compute20">
+            <summary>
+            Cuda compute 2.0
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature.Compute21">
+            <summary>
+            Cuda compute 2.1
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature.GlobalAtomics">
+            <summary>
+            Global Atomic
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature.SharedAtomics">
+            <summary>
+            Shared Atomic
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.GPU.GpuDeviceInfo.GpuFeature.NativeDouble">
+            <summary>
+            Native double
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuDisparityBilateralFilter">
+            <summary>
+            Disparity map refinement using joint bilateral filtering given a single color image.
+            Qingxiong Yang, Liang Wang†, Narendra Ahuja
+            http://vision.ai.uiuc.edu/~qyang6/
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuDisparityBilateralFilter.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create a GpuDisparityBilateralFilter
+            </summary>
+            <param name="ndisp">Number of disparities. Use 64 as default</param>
+            <param name="radius">Filter radius, use 3 as default</param>
+            <param name="iters">Number of iterations, use 1 as default</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuDisparityBilateralFilter.Apply(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.Stream)">
+            <summary>
+            Apply the filter to the disparity image
+            </summary>
+            <param name="disparity">The input disparity map</param>
+            <param name="image">The image</param>
+            <param name="dst">The output disparity map, should have the same size as the input disparity map</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuDisparityBilateralFilter.DisposeObject">
+            <summary>
+            Release the unmanaged resources associated with the filter.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuFarnebackOpticalFlow">
+            <summary>
+            Farneback optical flow
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuFarnebackOpticalFlow.#ctor(System.Int32,System.Double,System.Boolean,System.Int32,System.Int32,System.Int32,System.Double,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="numLevels"></param>
+            <param name="pyrScale"></param>
+            <param name="fastPyramids"></param>
+            <param name="winSize"></param>
+            <param name="numIters"></param>
+            <param name="polyN"></param>
+            <param name="polySigma"></param>
+            <param name="flags"></param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuFarnebackOpticalFlow.Compute(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.Stream)">
+            <summary>
+            Compute the optical flow.
+            </summary>
+            <param name="frame0">Source frame</param>
+            <param name="frame1">Frame to track (with the same size as <paramref name="frame0"/>)</param>
+            <param name="u">Flow horizontal component (along x axis)</param>
+            <param name="v">Flow vertical component (along y axis)</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuFarnebackOpticalFlow.DisposeObject">
+            <summary>
+            Release all the unmanaged memory associated with this optical flow solver.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuFASTDetector">
+            <summary>
+            A FAST detector using GPU
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuFASTDetector.#ctor(System.Int32,System.Boolean,System.Double)">
+            <summary>
+            Create a fast detector with the specific parameters
+            </summary>
+            <param name="threshold">Threshold on difference between intensity of center pixel and pixels on circle around
+            this pixel. Use 10 for default.</param>
+            <param name="nonmaxSupression">Specifiy if non-maximum supression should be used. Use true for default.</param>
+            <param name="keypointsRatio">MaxKeypoints = keypointsRatio * img.size().area(); Use 0.05 for default.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuFASTDetector.DetectKeyPointsRaw(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Detect keypoints in the GpuImage
+            </summary>
+            <param name="img">The image where keypoints will be detected from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <returns>
+            The keypoints GpuMat that will have 1 row.
+            keypoints.at&lt;float[6]&gt;(1, i) contains i'th keypoint
+            format: (x, y, size, response, angle, octave)
+            </returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuFASTDetector.DetectKeyPoints(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Detect keypoints in the GpuImage
+            </summary>
+            <param name="img">The image where keypoints will be detected from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <returns>An array of keypoints</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuFASTDetector.DownloadKeypoints(Emgu.CV.GPU.GpuMat{System.Single},Emgu.CV.Util.VectorOfKeyPoint)">
+            <summary>
+            Obtain the keypoints array from GpuMat
+            </summary>
+            <param name="src">The keypoints obtained from DetectKeyPointsRaw</param>
+            <param name="dst">The vector of keypoints</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuFASTDetector.DisposeObject">
+            <summary>
+            Release the unmanaged resource associate to the Detector
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuGoodFeaturesToTrackDetector`2">
+            <summary>
+            Gpu implementation of GoodFeaturesToTrackDetector
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuGoodFeaturesToTrackDetector`2.#ctor(System.Int32,System.Double,System.Double,System.Int32,System.Boolean,System.Double)">
+            <summary>
+            Create the Gpu implementation of GoodFeaturesToTrackDetector
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuGoodFeaturesToTrackDetector`2.Detect(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Find the good features to track
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuGoodFeaturesToTrackDetector`2.DisposeObject">
+            <summary>
+            Release all the unmanaged memory associated with this detector
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuHOGDescriptor">
+            <summary>
+            A HOG descriptor
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.#ctor">
+            <summary>
+            Create a new HOGDescriptor
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.#ctor(System.Drawing.Size,System.Drawing.Size,System.Drawing.Size,System.Drawing.Size,System.Int32,System.Double,System.Double,System.Boolean,System.Int32)">
+            <summary>
+            Create a new HOGDescriptor using the specific parameters
+            </summary>
+            <param name="blockSize">Block size in cells. Use (16, 16) for default.</param>
+            <param name="cellSize">Cell size. Use (8, 8) for default.</param>
+            <param name="blockStride">Block stride. Must be a multiple of cell size. Use (8,8) for default.</param>
+            <param name="gammaCorrection">Do gamma correction preprocessing or not. Use true for default.</param>
+            <param name="L2HysThreshold">L2-Hys normalization method shrinkage. Use 0.2 for default.</param>
+            <param name="nbins">Number of bins. Use 9 bins per cell for deafault.</param>
+            <param name="nLevels">Maximum number of detection window increases. Use 64 for default</param>
+            <param name="winSigma">Gaussian smoothing window parameter. Use -1 for default.</param>
+            <param name="winSize">Detection window size. Must be aligned to block size and block stride. Must match the size of the training image. Use (64, 128) for default.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.GetDefaultPeopleDetector">
+            <summary>
+            Returns coefficients of the classifier trained for people detection (for default window size).
+            </summary>
+            <returns>The default people detector</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.GetPeopleDetector48x96">
+            <summary>
+            Returns coefficients of the classifier trained for people detection (for size 64x128). Only compatible with HOG detector with the same windows size.
+            </summary>
+            <returns>The people detector of 48x96 resolution</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.GetPeopleDetector64x128">
+            <summary>
+            Returns coefficients of the classifier trained for people detection (for size 64x128).
+            </summary>
+            <returns>The people detector of 64x128 resolution.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.SetSVMDetector(System.Single[])">
+            <summary>
+            Set the SVM detector 
+            </summary>
+            <param name="detector">The SVM detector</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.DetectMultiScale(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Bgra,System.Byte},System.Double,System.Drawing.Size,System.Drawing.Size,System.Double,System.Int32)">
+            <summary>
+            Perfroms object detection with increasing detection window.
+            </summary>
+            <param name="image">The GpuImage to search in</param>
+            <param name="hitThreshold">The threshold for the distance between features and classifying plane.</param>
+            <param name="winStride">Window stride. Must be a multiple of block stride.</param>
+            <param name="padding">Mock parameter to keep CPU interface compatibility. Must be (0,0).</param>
+            <param name="scale">Coefficient of the detection window increase.</param>
+            <param name="groupThreshold">After detection some objects could be covered by many rectangles. This coefficient regulates similarity threshold. 0 means don't perform grouping.</param>
+            <returns>The regions where positives are found</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.DetectMultiScale(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},System.Double,System.Drawing.Size,System.Drawing.Size,System.Double,System.Int32)">
+            <summary>
+            Perfroms object detection with increasing detection window.
+            </summary>
+            <param name="image">The GpuImage to search in</param>
+            <param name="hitThreshold">The threshold for the distance between features and classifying plane.</param>
+            <param name="winStride">Window stride. Must be a multiple of block stride.</param>
+            <param name="padding">Mock parameter to keep CPU interface compatibility. Must be (0,0).</param>
+            <param name="scale">Coefficient of the detection window increase.</param>
+            <param name="groupThreshold">After detection some objects could be covered by many rectangles. This coefficient regulates similarity threshold. 0 means don't perform grouping.</param>
+            <returns>The regions where positives are found</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.DetectMultiScale(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Bgra,System.Byte})">
+            <summary>
+            Perfroms object detection with increasing detection window.
+            </summary>
+            <param name="image">The GpuImage to search in</param>
+            <returns>The regions where positives are found</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.DetectMultiScale(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Perfroms object detection with increasing detection window.
+            </summary>
+            <param name="image">The GpuImage to search in</param>
+            <returns>The regions where positives are found</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuHOGDescriptor.DisposeObject">
+            <summary>
+            Release the unmanaged memory associated with this HOGDescriptor
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuImage`2">
+            <summary>
+            An GpuImage is very similar to the Emgu.CV.Image except that it is being used for GPU processing
+            </summary>
+            <typeparam name="TColor">Color type of this image (either Gray, Bgr, Bgra, Hsv, Hls, Lab, Luv, Xyz, Ycc, Rgb or Rbga)</typeparam>
+            <typeparam name="TDepth">Depth of this image (either Byte, SByte, Single, double, UInt16, Int16 or Int32)</typeparam>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuMat`1">
+            <summary>
+            Similar to CvArray but use GPU for processing
+            </summary>
+            <typeparam name="TDepth">The type of element in the matrix</typeparam>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuMat">
+            <summary>
+            A GpuMat, use the generic version if possible. The non generic version is good for use as buffer in stream calls.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat.#ctor">
+            <summary>
+            Create an empty GpuMat
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat.#ctor(System.IntPtr)">
+            <summary>
+            Create a GpuMat from the specific pointer
+            </summary>
+            <param name="ptr">Pointer to the unmanaged gpuMat</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat.DisposeObject">
+            <summary>
+            Release the unmanaged memory associated with this GpuMat
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuMat.IsEmpty">
+            <summary>
+            Check if the GpuMat is Empty
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuMat.IsContinuous">
+            <summary>
+            Check if the GpuMat is Continuous
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuMat.Size">
+            <summary>
+            Get the GpuMat size:
+            width == number of columns, height == number of rows
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuMat.NumberOfChannels">
+            <summary>
+            Get the number of channels in the GpuMat
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuMat.Type">
+            <summary>
+            Get the type of the GpuMat
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.#ctor(System.IntPtr)">
+            <summary>
+            Create a GpuMat from the unmanaged pointer
+            </summary>
+            <param name="ptr">The unmanaged pointer to the GpuMat</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.#ctor">
+            <summary>
+            Create an empty GpuMat
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.#ctor(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Create a GpuMat of the specified size
+            </summary>
+            <param name="rows">The number of rows (height)</param>
+            <param name="cols">The number of columns (width)</param>
+            <param name="channels">The number of channels</param>
+            <param name="continuous">Indicates if the data should be continuous</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create a GpuMat of the specified size
+            </summary>
+            <param name="rows">The number of rows (height)</param>
+            <param name="cols">The number of columns (width)</param>
+            <param name="channels">The number of channels</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.#ctor(System.Drawing.Size,System.Int32)">
+            <summary>
+            Create a GpuMat of the specified size
+            </summary>
+            <param name="size">The size of the GpuMat</param>
+            <param name="channels">The number of channels</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.#ctor(Emgu.CV.GPU.GpuMat{`0},Emgu.CV.Structure.MCvSlice,Emgu.CV.Structure.MCvSlice)">
+            <summary>
+            Create a GpuMat from the specific region of <paramref name="mat"/>. The data is shared between the two GpuMat
+            </summary>
+            <param name="mat">The matrix where the region is extracted from</param>
+            <param name="colRange">The column range. Use MCvSlice.WholeSeq for all columns.</param>
+            <param name="rowRange">The row range. Use MCvSlice.WholeSeq for all rows.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.#ctor(Emgu.CV.CvArray{`0})">
+            <summary>
+            Create a GpuMat from an CvArray of the same depth type
+            </summary>
+            <param name="arr">The CvArry to be converted to GpuMat</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.Upload(Emgu.CV.CvArray{`0})">
+            <summary>
+            Pefroms blocking upload data to GpuMat
+            </summary>
+            <param name="arr">The CvArray to be uploaded to GpuMat</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.Download(Emgu.CV.CvArray{`0})">
+            <summary>
+            Downloads data from device to host memory. Blocking calls
+            </summary>
+            <param name="arr">The destination CvArray where the GpuMat data will be downloaded to.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.ToMatrix">
+            <summary>
+            Convert this GpuMat to a Matrix
+            </summary>
+            <returns>The matrix that contains the same values as this GpuMat</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.SplitInto(Emgu.CV.GPU.GpuMat{`0}[])">
+            <summary> 
+            Split current Image into an array of gray scale images where each element 
+            in the array represent a single color channel of the original image
+            </summary>
+            <param name="gpuMats"> 
+            An array of single channel GpuMat where each item
+            in the array represent a single channel of the original GpuMat 
+            </param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.MergeFrom(Emgu.CV.GPU.GpuMat{`0}[])">
+             <summary>
+             Makes multi-channel array out of several single-channel arrays
+             </summary>
+            <param name="gpuMats"> 
+            An array of single channel GpuMat where each item
+            in the array represent a single channel of the GpuMat 
+            </param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.Split">
+            <summary> 
+            Split current GpuMat into an array of single channel GpuMat where each element 
+            in the array represent a single channel of the original GpuMat
+            </summary>
+            <returns> 
+            An array of single channel GpuMat where each element  
+            in the array represent a single channel of the original GpuMat 
+            </returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.MinMax(System.Double[]@,System.Double[]@,System.Drawing.Point[]@,System.Drawing.Point[]@)">
+            <summary>
+            Returns the min / max location and values for the image
+            </summary>
+            <param name="maxLocations">The maximum locations for each channel </param>
+            <param name="maxValues">The maximum values for each channel</param>
+            <param name="minLocations">The minimum locations for each channel</param>
+            <param name="minValues">The minimum values for each channel</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.Equals(Emgu.CV.GPU.GpuMat{`0})">
+            <summary>
+            Returns true if the two GpuMat equals
+            </summary>
+            <param name="other">The other GpuMat to be compares with</param>
+            <returns>True if the two GpuMat equals</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.Convert``1">
+            <summary>
+            Convert this GpuMat to different depth
+            </summary>
+            <typeparam name="TOtherDepth">The depth type to convert to</typeparam>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+            <returns>GpuMat of different depth</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.Reshape(System.Int32,System.Int32)">
+            <summary>
+            Changes shape of GpuMat without copying data.
+            </summary>
+            <param name="newCn">New number of channels. newCn = 0 means that the number of channels remains unchanged.</param>
+            <param name="newRows">New number of rows. newRows = 0 means that the number of rows remains unchanged unless it needs to be changed according to newCn value.</param>
+            <returns>A GpuMat of different shape</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.SetTo(Emgu.CV.Structure.MCvScalar,Emgu.CV.GPU.GpuMat{System.Byte})">
+            <summary>
+            Copies scalar value to every selected element of the destination GpuMat:
+            GpuMat(I)=value if mask(I)!=0
+            </summary>
+            <param name="value">Fill value</param>
+            <param name="mask">Operation mask, 8-bit single channel GpuMat; specifies elements of destination array to be changed. Can be null if not used.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.GetSubRect(System.Drawing.Rectangle)">
+            <summary>
+            Returns a GpuMat corresponding to a specified rectangle of the current GpuMat. The data is shared with the current matrix. In other words, it allows the user to treat a rectangular part of input array as a stand-alone array.
+            </summary>
+            <param name="region">Zero-based coordinates of the rectangle of interest.</param>
+            <returns>A GpuMat that represent the region of the current matrix.</returns>
+            <remarks>The parent GpuMat should never be released before the returned GpuMat the represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.Row(System.Int32)">
+            <summary>
+            Returns a GpuMat corresponding to the ith row of the GpuMat. The data is shared with the current GpuMat. 
+            </summary>
+            <param name="i">The row to be extracted</param>
+            <returns>The ith row of the GpuMat</returns>
+            <remarks>The parent GpuMat should never be released before the returned GpuMat that represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.RowRange(System.Int32,System.Int32)">
+            <summary>
+            Returns a GpuMat corresponding to the [<paramref name="start"/> <paramref name="end"/>) rows of the GpuMat. The data is shared with the current GpuMat. 
+            </summary>
+            <param name="start">The inclusive stating row to be extracted</param>
+            <param name="end">The exclusive ending row to be extracted</param>
+            <returns>The [<paramref name="start"/> <paramref name="end"/>) rows of the GpuMat</returns>
+            <remarks>The parent GpuMat should never be released before the returned GpuMat that represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.Col(System.Int32)">
+            <summary>
+            Returns a GpuMat corresponding to the ith column of the GpuMat. The data is shared with the current GpuMat. 
+            </summary>
+            <param name="i">The column to be extracted</param>
+            <returns>The ith column of the GpuMat</returns>
+            <remarks>The parent GpuMat should never be released before the returned GpuMat that represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMat`1.ColRange(System.Int32,System.Int32)">
+            <summary>
+            Returns a GpuMat corresponding to the [<paramref name="start"/> <paramref name="end"/>) columns of the GpuMat. The data is shared with the current GpuMat. 
+            </summary>
+            <param name="start">The inclusive stating column to be extracted</param>
+            <param name="end">The exclusive ending column to be extracted</param>
+            <returns>The [<paramref name="start"/> <paramref name="end"/>) columns of the GpuMat</returns>
+            <remarks>The parent GpuMat should never be released before the returned GpuMat that represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.#ctor">
+            <summary>
+            Create an empty GpuImage
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.#ctor(System.IntPtr)">
+            <summary>
+            Create the GpuImage from the unmanaged pointer.
+            </summary>
+            <param name="ptr">The unmanaged pointer to the GpuMat. It is the user's responsibility that the Color type and depth matches between the managed class and unmanaged pointer.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.#ctor(Emgu.CV.Image{`0,`1})">
+            <summary>
+            Create a GPU image from a regular image
+            </summary>
+            <param name="img">The image to be converted to GPU image</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.#ctor(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Create a GpuImage of the specific size
+            </summary>
+            <param name="rows">The number of rows (height)</param>
+            <param name="cols">The number of columns (width)</param>
+            <param name="continuous">Indicates if the data should be continuous</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Create a GpuImage of the specific size
+            </summary>
+            <param name="rows">The number of rows (height)</param>
+            <param name="cols">The number of columns (width)</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.#ctor(System.Drawing.Size)">
+            <summary>
+            Create a GpuImage of the specific size
+            </summary>
+            <param name="size">The size of the image</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.#ctor(Emgu.CV.GPU.GpuImage{`0,`1},Emgu.CV.Structure.MCvSlice,Emgu.CV.Structure.MCvSlice)">
+            <summary>
+            Create a GpuImage from the specific region of <paramref name="image"/>. The data is shared between the two GpuImage
+            </summary>
+            <param name="image">The GpuImage where the region is extracted from</param>
+            <param name="colRange">The column range. Use MCvSlice.WholeSeq for all columns.</param>
+            <param name="rowRange">The row range. Use MCvSlice.WholeSeq for all rows.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.ToImage">
+            <summary>
+            Convert the current GpuImage to a regular Image.
+            </summary>
+            <returns>A regular image</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.Convert``2">
+            <summary> Convert the current GpuImage to the specific color and depth </summary>
+            <typeparam name="TOtherColor"> The type of color to be converted to </typeparam>
+            <typeparam name="TOtherDepth"> The type of pixel depth to be converted to </typeparam>
+            <returns>GpuImage of the specific color and depth </returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.ConvertFrom``2(Emgu.CV.GPU.GpuImage{``0,``1})">
+            <summary>
+            Convert the source image to the current image, if the size are different, the current image will be a resized version of the srcImage. 
+            </summary>
+            <typeparam name="TSrcColor">The color type of the source image</typeparam>
+            <typeparam name="TSrcDepth">The color depth of the source image</typeparam>
+            <param name="srcImage">The sourceImage</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.Clone">
+            <summary>
+            Create a clone of this GpuImage
+            </summary>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+            <returns>A clone of this GpuImage</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.Split">
+            <summary> 
+            Split current Image into an array of gray scale images where each element 
+            in the array represent a single color channel of the original image
+            </summary>
+            <returns> 
+            An array of gray scale images where each element  
+            in the array represent a single color channel of the original image 
+            </returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.Resize(System.Drawing.Size,Emgu.CV.CvEnum.INTER,Emgu.CV.GPU.Stream)">
+            <summary>
+            Resize the GpuImage. The calling GpuMat be GpuMat%lt;Byte&gt;. If stream is specified, it has to be either 1 or 4 channels.
+            </summary>
+            <param name="size">The new size</param>
+            <param name="interpolationType">The interpolation type</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+            <returns>A GpuImage of the new size</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.GetSubRect(System.Drawing.Rectangle)">
+            <summary>
+            Returns a GpuImage corresponding to a specified rectangle of the current GpuImage. The data is shared with the current matrix. In other words, it allows the user to treat a rectangular part of input array as a stand-alone array.
+            </summary>
+            <param name="region">Zero-based coordinates of the rectangle of interest.</param>
+            <returns>A GpuImage that represent the region of the current GpuImage.</returns>
+            <remarks>The parent GpuImage should never be released before the returned GpuImage that represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.Row(System.Int32)">
+            <summary>
+            Returns a GpuImage corresponding to the ith row of the GpuImage. The data is shared with the current Image. 
+            </summary>
+            <param name="i">The row to be extracted</param>
+            <returns>The ith row of the GpuImage</returns>
+            <remarks>The parent GpuImage should never be released before the returned GpuImage that represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.RowRange(System.Int32,System.Int32)">
+            <summary>
+            Returns a GpuImage corresponding to the [<paramref name="start"/> <paramref name="end"/>) rows of the GpuImage. The data is shared with the current Image. 
+            </summary>
+            <param name="start">The inclusive stating row to be extracted</param>
+            <param name="end">The exclusive ending row to be extracted</param>
+            <returns>The [<paramref name="start"/> <paramref name="end"/>) rows of the GpuImage</returns>
+            <remarks>The parent GpuImage should never be released before the returned GpuImage that represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.Col(System.Int32)">
+            <summary>
+            Returns a GpuImage corresponding to the ith column of the GpuImage. The data is shared with the current Image. 
+            </summary>
+            <param name="i">The column to be extracted</param>
+            <returns>The ith column of the GpuImage</returns>
+            <remarks>The parent GpuImage should never be released before the returned GpuImage that represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.ColRange(System.Int32,System.Int32)">
+            <summary>
+            Returns a GpuImage corresponding to the [<paramref name="start"/> <paramref name="end"/>) columns of the GpuImage. The data is shared with the current Image. 
+            </summary>
+            <param name="start">The inclusive stating column to be extracted</param>
+            <param name="end">The exclusive ending column to be extracted</param>
+            <returns>The [<paramref name="start"/> <paramref name="end"/>) columns of the GpuImage</returns>
+            <remarks>The parent GpuImage should never be released before the returned GpuImage that represent the subregion</remarks>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.Save(System.String)">
+            <summary>
+            Saving the GPU image to file
+            </summary>
+            <param name="fileName">The file to be saved to</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuImage`2.Emgu#CV#IImage#get_Ptr">
+            <summary>
+            An GpuImage is very similar to the Emgu.CV.Image except that it is being used for GPU processing
+            </summary>
+            <typeparam name="TColor">Color type of this image (either Gray, Bgr, Bgra, Hsv, Hls, Lab, Luv, Xyz, Ycc, Rgb or Rbga)</typeparam>
+            <typeparam name="TDepth">Depth of this image (either Byte, SByte, Single, double, UInt16, Int16 or Int32)</typeparam>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuImage`2.Bitmap">
+             <summary>
+             convert the current GpuImage to its equavalent Bitmap representation
+             </summary>
+            
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuMOG2`1">
+            <summary>
+            Gaussian Mixture-based Background/Foreground Segmentation Algorithm.
+            </summary>
+            <typeparam name="TColor">The color type of the GpuImage to be processed</typeparam>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMOG2`1.#ctor(System.Int32,System.Double,System.Boolean)">
+            <summary>
+            Create a Gaussian Mixture-based Background/Foreground Segmentation model
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMOG2`1.Update(Emgu.CV.GPU.GpuImage{`0,System.Byte},System.Single,Emgu.CV.GPU.Stream)">
+            <summary>
+            Updates the background model
+            </summary>
+            <param name="frame">Next video frame.</param>
+            <param name="learningRate">The learning rate, use -1.0f for default value.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMOG2`1.ReleaseManagedResources">
+            <summary>
+            Release all the managed resource associated with this object
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuMOG2`1.DisposeObject">
+            <summary>
+            Release all the unmanaged resource associated with this object
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuMOG2`1.ForgroundMask">
+            <summary>
+            The forground mask
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuORBDetector">
+            <summary>
+            An ORB detector using GPU
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuORBDetector.#ctor(System.Int32,System.Single,System.Int32,System.Int32,System.Int32,System.Int32,Emgu.CV.Features2D.ORBDetector.ScoreType,System.Int32)">
+            <summary>
+            Create a ORBDetector using the specific values
+            </summary>
+            <param name="numberOfFeatures">The number of desired features. Use 500 for default.</param>
+            <param name="scaleFactor">Coefficient by which we divide the dimensions from one scale pyramid level to the next. Use 1.2f for default value</param>
+            <param name="nLevels">The number of levels in the scale pyramid. Use 3 for default value.</param>
+            <param name="firstLevel">The level at which the image is given. If 1, that means we will also look at the image.<paramref name="scaleFactor"/> times bigger</param>
+            <param name="edgeThreshold">How far from the boundary the points should be. Use 0 for default.</param>
+            <param name="WTK_A">How many random points are used to produce each cell of the descriptor (2, 3, 4 ...). Use 2 for default.</param>
+            <param name="scoreType">Type of the score to use. Use Harris for default.</param>
+            <param name="patchSize">Patch size. Use 31 for default.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuORBDetector.#ctor(System.Int32)">
+            <summary>
+            Create a GpuORBDetector with the default parameters
+            </summary>
+            <param name="numberOfFeatures">The number of desired features. Use 500 for default.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuORBDetector.DetectKeyPointsRaw(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Detect keypoints in the GpuImage
+            </summary>
+            <param name="img">The image where keypoints will be detected from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <returns>
+            The keypoints GpuMat that will have 1 row.
+            keypoints.at&lt;float[6]&gt;(1, i) contains i'th keypoint
+            format: (x, y, size, response, angle, octave)
+            </returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuORBDetector.DetectKeyPoints(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Detect keypoints in the GpuImage
+            </summary>
+            <param name="img">The image where keypoints will be detected from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <returns>An array of keypoints</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuORBDetector.DownloadKeypoints(Emgu.CV.GPU.GpuMat{System.Single},Emgu.CV.Util.VectorOfKeyPoint)">
+            <summary>
+            Obtain the keypoints array from GpuMat
+            </summary>
+            <param name="src">The keypoints obtained from DetectKeyPointsRaw</param>
+            <param name="dst">The vector of keypoints</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuORBDetector.ComputeRaw(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuMat{System.Single}@,Emgu.CV.GPU.GpuMat{System.Byte}@)">
+            <summary>
+            Compute the keypoints and descriptors given the image
+            </summary>
+            <param name="image">The image where the keypoints and descriptors will be computed from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <param name="descriptors">The resulting descriptors</param>
+            <param name="keyPoints">The resulting keypoints</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuORBDetector.DisposeObject">
+            <summary>
+            Release the unmanaged resource associate to the Detector
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuORBDetector.DescriptorSize">
+            <summary>
+            Return the size of the descriptor (64/128)
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuPyrLKOpticalFlow">
+            <summary>
+            PyrLK optical flow
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuPyrLKOpticalFlow.#ctor(System.Drawing.Size,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Create the PyrLK optical flow solver
+            </summary>
+            <param name="winSize">Windows size. Use 21x21 for default</param>
+            <param name="maxLevel">The maximum number of pyramid leveles. Use 3 for default</param>
+            <param name="iters">The number of iterations. Use 30 for default.</param>
+            <param name="useInitialFlow">Weather or not use the initial flow in the input matrix. Use false for default.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuPyrLKOpticalFlow.Dense(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Single})">
+            <summary>
+            Compute the dense optical flow.
+            </summary>
+            <param name="frame0">Source frame</param>
+            <param name="frame1">Frame to track (with the same size as <paramref name="frame0"/>)</param>
+            <param name="u">Flow horizontal component (along x axis)</param>
+            <param name="v">Flow vertical component (along y axis)</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuPyrLKOpticalFlow.Sparse(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuMat{System.Single},Emgu.CV.GPU.GpuMat{System.Single}@,Emgu.CV.GPU.GpuMat{System.Byte}@,Emgu.CV.GPU.GpuMat{System.Single}@)">
+            <summary>
+            Calculate an optical flow for a sparse feature set.
+            </summary>
+            <param name="frame0">First 8-bit input image (supports both grayscale and color images).</param>
+            <param name="frame1">Second input image of the same size and the same type as <paramref name="frame0"/></param>
+            <param name="points0">
+            Vector of 2D points for which the flow needs to be found. It must be one row
+            matrix with 2 channels
+            </param>
+            <param name="points1">
+            Output vector of 2D points (with single-precision two channel floating-point coordinates)
+            containing the calculated new positions of input features in the second image.</param>
+            <param name="status">
+            Output status vector (CV_8UC1 type). Each element of the vector is set to 1 if the
+            flow for the corresponding features has been found. Otherwise, it is set to 0.
+            </param>
+            <param name="err">
+            Output vector (CV_32FC1 type) that contains the difference between patches around
+            the original and moved points or min eigen value if getMinEigenVals is checked. It can be
+            null, if not needed.
+            </param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuPyrLKOpticalFlow.DisposeObject">
+            <summary>
+            Release all the unmanaged memory associated with this optical flow solver.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuStereoBM">
+            <summary>
+            Use Block Matching algorithm to find stereo correspondence
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuStereoBM.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Create a stereoBM 
+            </summary>
+            <param name="numberOfDisparities">The number of disparities. Must be multiple of 8. Use 64 for default </param>
+            <param name="blockSize">The SAD window size. Use 19 for default</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuStereoBM.FindStereoCorrespondence(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.Stream)">
+            <summary>
+            Computes disparity map for the input rectified stereo pair.
+            </summary>
+            <param name="left">The left single-channel, 8-bit image</param>
+            <param name="right">The right image of the same size and the same type</param>
+            <param name="disparity">The disparity map</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuStereoBM.DisposeObject">
+            <summary>
+            Release the stereo state and all the memory associate with it
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuStereoConstantSpaceBP">
+            <summary>
+            A Constant-Space Belief Propagation Algorithm for Stereo Matching.
+            Qingxiong Yang, Liang Wang, Narendra Ahuja.
+            http://vision.ai.uiuc.edu/~qyang6/
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuStereoConstantSpaceBP.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            A Constant-Space Belief Propagation Algorithm for Stereo Matching
+            </summary>
+            <param name="ndisp">The number of disparities. Use 128 as default</param>
+            <param name="iters">The number of BP iterations on each level. Use 8 as default.</param>
+            <param name="levels">The number of levels. Use 4 as default</param>
+            <param name="nrPlane">The number of active disparity on the first level. Use 4 as default.</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuStereoConstantSpaceBP.FindStereoCorrespondence(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.Stream)">
+            <summary>
+            Computes disparity map for the input rectified stereo pair.
+            </summary>
+            <param name="left">The left single-channel, 8-bit image</param>
+            <param name="right">The right image of the same size and the same type</param>
+            <param name="disparity">The disparity map</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuStereoConstantSpaceBP.DisposeObject">
+            <summary>
+            Release the unmanaged memory
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuSURFDetector">
+            <summary>
+            A SURF detector using GPU
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuSURFDetector.#ctor">
+            <summary>
+            Create a GPU SURF detector using the default parameters
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuSURFDetector.#ctor(Emgu.CV.Structure.MCvSURFParams,System.Single)">
+            <summary>
+            Create a GPU SURF detector using the default parameters
+            </summary>
+            <param name="detector">The surf detector where the parameters will be borrow from</param>
+            <param name="featuresRatio">Max features = featuresRatio * img.size().srea(). Use 0.01 for default</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuSURFDetector.#ctor(System.Single,System.Int32,System.Int32,System.Boolean,System.Single,System.Boolean)">
+            <summary>
+            Create a GPU SURF detector
+            </summary>
+            <param name="hessianThreshold">The interest operator threshold. Use 100 for default</param>
+            <param name="nOctaves">The number of octaves to process. Use 4 for default</param>
+            <param name="nIntervals">The number of intervals in each octave. Use 4 for default</param>
+            <param name="extended">True, if generate 128-len descriptors, false - 64-len descriptors. Use true for default.</param>
+            <param name="featuresRatio">Max features = featuresRatio * img.size().srea(). Use 0.01 for default</param>
+            <param name="upright">Use false for default. If set to true, the orientation is not computed for the keypoints</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuSURFDetector.DetectKeyPointsRaw(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Detect keypoints in the GpuImage
+            </summary>
+            <param name="img">The image where keypoints will be detected from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <returns>
+            The keypoints GpuMat that will have 1 row.
+            keypoints.at&lt;float[6]&gt;(1, i) contains i'th keypoint
+            format: (x, y, size, response, angle, octave)
+            </returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuSURFDetector.DetectKeyPoints(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Detect keypoints in the GpuImage
+            </summary>
+            <param name="img">The image where keypoints will be detected from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <returns>An array of keypoints</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuSURFDetector.DownloadKeypoints(Emgu.CV.GPU.GpuMat{System.Single},Emgu.CV.Util.VectorOfKeyPoint)">
+            <summary>
+            Obtain the keypoints array from GpuMat
+            </summary>
+            <param name="src">The keypoints obtained from DetectKeyPointsRaw</param>
+            <param name="dst">The vector of keypoints</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuSURFDetector.UploadKeypoints(Emgu.CV.Util.VectorOfKeyPoint,Emgu.CV.GPU.GpuMat{System.Single})">
+            <summary>
+            Obtain a GpuMat from the keypoints array
+            </summary>
+            <param name="src">The keypoints array</param>
+            <param name="dst">A GpuMat that represent the keypoints</param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuSURFDetector.ComputeDescriptorsRaw(Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.GPU.GpuMat{System.Single})">
+            <summary>
+            Compute the descriptor given the image and the point location
+            </summary>
+            <param name="image">The image where the descriptor will be computed from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <param name="keyPoints">The keypoint where the descriptor will be computed from. The order of the keypoints might be changed unless the GPU_SURF detector is UP-RIGHT.</param>
+            <returns>The image features founded on the keypoint location</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuSURFDetector.DisposeObject">
+            <summary>
+            Release the unmanaged resource associate to the Detector
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.GpuSURFDetector.DescriptorSize">
+            <summary>
+            Return the size of the descriptor (64/128)
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.GpuTemplateMatching`2">
+            <summary>
+            Gpu match template buffer, used by the gpu version of MatchTemplate function.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuTemplateMatching`2.#ctor(Emgu.CV.CvEnum.TM_TYPE,System.Drawing.Size)">
+            <summary>
+            Create a GpuMatchTemplateBuf
+            </summary>
+            <param name="method">Specifies the way the template must be compared with image regions </param>
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuTemplateMatching`2.Match(Emgu.CV.GPU.GpuImage{`0,`1},Emgu.CV.GPU.GpuImage{`0,`1},Emgu.CV.GPU.GpuImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.GPU.Stream)">
+            <summary>
+             This function is similiar to cvCalcBackProjectPatch. It slids through image, compares overlapped patches of size wxh with templ using the specified method and stores the comparison results to result
+            </summary>
+            <param name="image">Image where the search is running. It should be 8-bit or 32-bit floating-point</param>
+            <param name="templ">Searched template; must be not greater than the source image and the same data type as the image</param>
+            <param name="result">A map of comparison results; single-channel 32-bit floating-point. If image is WxH and templ is wxh then result must be W-w+1xH-h+1.</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>  
+        </member>
+        <member name="M:Emgu.CV.GPU.GpuTemplateMatching`2.DisposeObject">
+            <summary>
+            Release the buffer
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.Stream">
+            <summary>
+            Encapculates Cuda Stream. Provides interface for async coping.
+            Passed to each function that supports async kernel execution.
+            Reference counting is enabled
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.Stream.#ctor">
+            <summary>
+            Create a new Cuda Stream
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.Stream.WaitForCompletion">
+            <summary>
+            Wait for the completion
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.Stream.DisposeObject">
+            <summary>
+            Release the stream
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.GPU.Stream.Completed">
+            <summary>
+            Check if the stream is completed
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.GPU.TargetArchs">
+            <summary>
+            Gives information about what GPU archs this OpenCV GPU module was compiled for
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.GPU.TargetArchs.BuildWith(Emgu.CV.GPU.GpuDeviceInfo.GpuFeature)">
+            <summary>
+            Check if the GPU module is build with the specific feature set.
+            </summary>
+            <param name="featureSet">The feature set to be checked.</param>
+            <returns>True if the GPU module is build with the specific feature set.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.TargetArchs.Has(System.Int32,System.Int32)">
+            <summary>
+            Check if the GPU module is targeted for the specific device version
+            </summary>
+            <param name="major">The major version</param>
+            <param name="minor">The minor version</param>
+            <returns>True if the GPU module is targeted for the specific device version.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.TargetArchs.HasPtx(System.Int32,System.Int32)">
+            <summary>
+            Check if the GPU module is targeted for the specific PTX version
+            </summary>
+            <param name="major">The major version</param>
+            <param name="minor">The minor version</param>
+            <returns>True if the GPU module is targeted for the specific PTX version.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.TargetArchs.HasBin(System.Int32,System.Int32)">
+            <summary>
+            Check if the GPU module is targeted for the specific BIN version
+            </summary>
+            <param name="major">The major version</param>
+            <param name="minor">The minor version</param>
+            <returns>True if the GPU module is targeted for the specific BIN version.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.TargetArchs.HasEqualOrLessPtx(System.Int32,System.Int32)">
+            <summary>
+            Check if the GPU module is targeted for equal or less PTX version
+            </summary>
+            <param name="major">The major version</param>
+            <param name="minor">The minor version</param>
+            <returns>True if the GPU module is targeted for equal or less PTX version.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.TargetArchs.HasEqualOrGreater(System.Int32,System.Int32)">
+            <summary>
+            Check if the GPU module is targeted for equal or greater device version
+            </summary>
+            <param name="major">The major version</param>
+            <param name="minor">The minor version</param>
+            <returns>True if the GPU module is targeted for equal or greater device version.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.TargetArchs.HasEqualOrGreaterPtx(System.Int32,System.Int32)">
+            <summary>
+            Check if the GPU module is targeted for equal or greater PTX version
+            </summary>
+            <param name="major">The major version</param>
+            <param name="minor">The minor version</param>
+            <returns>True if the GPU module is targeted for equal or greater PTX version.</returns>
+        </member>
+        <member name="M:Emgu.CV.GPU.TargetArchs.HasEqualOrGreaterBin(System.Int32,System.Int32)">
+            <summary>
+            Check if the GPU module is targeted for equal or greater BIN version
+            </summary>
+            <param name="major">The major version</param>
+            <param name="minor">The minor version</param>
+            <returns>True if the GPU module is targeted for equal or greater BIN version.</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,1488 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Emgu.CV.OpenCL</name>
+    </assembly>
+    <members>
+        <member name="F:Emgu.CV.OpenCL.OclMatcherDistanceType.L1Dist">
+            <summary>
+            Manhattan distance (city block distance)
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OpenCL.OclMatcherDistanceType.L2Dist">
+            <summary>
+            Squared Euclidean distance
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OpenCL.OclMatcherDistanceType.HammingDist">
+            <summary>
+            Hamming distance functor - counts the bit differences between two strings - useful for the Brief descriptor, 
+            bit count of A exclusive XOR'ed with B. 
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclBruteForceMatcher`1">
+            <summary>
+            A Brute force matcher using OpenCL
+            </summary>
+            <typeparam name="T">The type of data to be matched. Can be either float or Byte</typeparam>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclBruteForceMatcher`1.#ctor(Emgu.CV.Features2D.DistanceType)">
+            <summary>
+            Create a OclBruteForce Matcher using the specific distance type
+            </summary>
+            <param name="distanceType">The distance type</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclBruteForceMatcher`1.KnnMatchSingle(Emgu.CV.OpenCL.OclMat{`0},Emgu.CV.OpenCL.OclMat{`0},Emgu.CV.OpenCL.OclMat{System.Int32},Emgu.CV.OpenCL.OclMat{System.Single},System.Int32,Emgu.CV.OpenCL.OclMat{System.Byte})">
+            <summary>
+            Find the k nearest neighbour using the brute force matcher. 
+            </summary>
+            <param name="queryDescriptors">The query descriptors</param>
+            <param name="modelDescriptors">The model descriptors</param>
+            <param name="modelIdx">The model index. A n x <paramref name="k"/> matrix where n = <paramref name="queryDescriptors"/>.Cols</param>
+            <param name="distance">The matrix where the distance valus is stored. A n x <paramref name="k"/> matrix where n = <paramref name="queryDescriptors"/>.Size.Height</param>
+            <param name="k">The number of nearest neighbours to be searched</param>
+            <param name="mask">The mask</param>
+            <param name="stream">Use a Stream to call the function asynchronously (non-blocking) or null to call the function synchronously (blocking).</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclBruteForceMatcher`1.DisposeObject">
+            <summary>
+            Release all the unmanaged memory associated with this matcher
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclInvoke">
+            <summary>
+            This class wraps the functional calls to the opencv_ocl module
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatCreateDefault">
+            <summary>
+            Create an empty OclMat 
+            </summary>
+            <returns>Pointer to an empty OclMat</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatCreate(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create a OclMat of the specified size
+            </summary>
+            <param name="rows">The number of rows (height)</param>
+            <param name="cols">The number of columns (width)</param>
+            <param name="type">The type of OclMat</param>
+            <returns>Pointer to the OclMat</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatCreateFromArr(System.IntPtr)">
+            <summary>
+            Convert a CvArr to an OclMat
+            </summary>
+            <param name="arr">Pointer to a CvArr</param>
+            <returns>Pointer to the OclMat</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatSetTo(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr)">
+            <summary>
+            Copies scalar value to every selected element of the destination OclMat:
+            arr(I)=value if mask(I)!=0
+            </summary>
+            <param name="mat">The destination OclMat</param>
+            <param name="value">Fill value</param>
+            <param name="mask">Operation mask, 8-bit single channel OclMat; specifies elements of destination OclMat to be changed. Can be IntPtr.Zero if not used</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatIsEmpty(System.IntPtr)">
+            <summary>
+            Check if the OclMat is empty
+            </summary>
+            <param name="oclMat">The OclMat</param>
+            <returns>True if the OclMat is empty</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatIsContinuous(System.IntPtr)">
+            <summary>
+            Returns true iff the OclMat data is continuous
+            (i.e. when there are no gaps between successive rows).
+            </summary>
+            <param name="oclMat">The OclMat to be checked</param>
+            <returns>True if the OclMat is continuous</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatRelease(System.IntPtr@)">
+            <summary>
+            Release the OclMat
+            </summary>
+            <param name="mat">Pointer to the OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatGetType(System.IntPtr)">
+            <summary>
+            Get the OclMat type.
+            </summary>
+            <param name="oclMat">The OclMat</param>
+            <returns>The type of the matrix</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatGetSize(System.IntPtr)">
+            <summary>
+            Get the OclMat size:
+            width == number of columns, height == number of rows
+            </summary>
+            <param name="oclMat">The OclMat</param>
+            <returns>The size of the matrix</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatGetWholeSize(System.IntPtr)">
+            <summary>
+            Get the OclMat wholeSize:
+            width == wholecols, height == wholerows
+            </summary>
+            <param name="oclMat">The OclMat</param>
+            <returns>The whole size of the matrix</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatGetChannels(System.IntPtr)">
+            <summary>
+            Get the number of channels in the OclMat
+            </summary>
+            <param name="oclMat">The OclMat</param>
+            <returns>The number of channels in the OclMat</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatUpload(System.IntPtr,System.IntPtr)">
+            <summary>
+            Pefroms blocking upload data to OclMat.
+            </summary>
+            <param name="oclMat">The destination oclMat</param>
+            <param name="arr">The CvArray to be uploaded to GPU</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatDownload(System.IntPtr,System.IntPtr)">
+            <summary>
+            Downloads data from device to host memory. Blocking calls.
+            </summary>
+            <param name="oclMat">The source OclMat</param>
+            <param name="arr">The CvArray where data will be downloaded to</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.CountNonZero(System.IntPtr)">
+            <summary>
+            Counts non-zero array elements
+            </summary>
+            <param name="src">The OclMat</param>
+            <returns>The number of non-zero OclMat elements</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Add(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Adds one matrix to another (c = a + b).
+            </summary>
+            <param name="a">The first matrix to be added.</param>
+            <param name="b">The second matrix to be added.</param>
+            <param name="c">The sum of the two matrix</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Add(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Adds scalar to a matrix (c = a + scalar)
+            </summary>
+            <param name="a">The matrix to be added.</param>
+            <param name="scalar">The scalar to be added.</param>
+            <param name="c">The sum of the matrix and the scalar</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Subtract(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Subtracts one matrix from another (c = a - b).
+            </summary>
+            <param name="a">The matrix where subtraction take place</param>
+            <param name="b">The matrix to be substracted</param>
+            <param name="c">The result of a - b</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Subtract(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes element-wise weighted product of the two arrays (c = scale * a * b) 
+            </summary>
+            <param name="a">The matrix to be substraced from</param>
+            <param name="scalar">The scalar to be substracted</param>
+            <param name="c">The matrix substraced by the scalar</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Multiply(System.IntPtr,System.IntPtr,System.IntPtr,System.Double)">
+            <summary>
+            Computes element-wise product of the two OclMat: c = scale * a * b.
+            </summary>
+            <param name="a">The first OclMat to be element-wise multiplied.</param>
+            <param name="b">The second OclMat to be element-wise multiplied.</param>
+            <param name="c">The element-wise multiplication of the two OclMat</param>
+            <param name="scale">The scale</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Multiply(System.IntPtr,System.Double,System.IntPtr)">
+            <summary>
+            Multiplies OclMat to a scalar (c = a * scalar).
+            </summary>
+            <param name="a">The first OclMat to be element-wise multiplied.</param>
+            <param name="scalar">The scalar to be multiplied</param>
+            <param name="c">The result of the OclMat mutiplied by the scalar</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Divide(System.IntPtr,System.IntPtr,System.IntPtr,System.Double)">
+            <summary>
+            Computes element-wise quotient of the two OclMat (c = scale *  a / b).
+            </summary>
+            <param name="a">The first OclMat</param>
+            <param name="b">The second OclMat</param>
+            <param name="c">The element-wise quotient of the two OclMat</param>
+            <param name="scale">The scale</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Divide(System.Double,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes element-wise weighted reciprocal of an array (c = scale/ b).
+            </summary>
+            <param name="b">The second OclMat to be element-wise divided.</param>
+            <param name="scalar">The first scalar to be divided</param>
+            <param name="c">The result of the scalar dividing the OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.AddWeighted(System.IntPtr,System.Double,System.IntPtr,System.Double,System.Double,System.IntPtr)">
+            <summary>
+            Computes the weighted sum of two arrays (dst = alpha*src1 + beta*src2 + gamma)
+            </summary>
+            <param name="src1">The first source OclMat</param>
+            <param name="alpha">The weight for <paramref name="src1"/></param>
+            <param name="src2">The second source OclMat</param>
+            <param name="beta">The weight for <paramref name="src2"/></param>
+            <param name="gamma">The constant to be added</param>
+            <param name="dst">The result</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Absdiff(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes element-wise absolute difference of two OclMats (c = abs(a - b)).
+            </summary>
+            <param name="a">The first OclMat</param>
+            <param name="b">The second OclMat</param>
+            <param name="c">The result of the element-wise absolute difference.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Absdiff(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr)">
+            <summary>
+            Computes element-wise absolute difference of OclMat and scalar (c = abs(a - s)).
+            </summary>
+            <param name="a">An OclMat</param>
+            <param name="scalar">A scalar</param>
+            <param name="c">The result of the element-wise absolute difference.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.oclMatFlip(System.IntPtr,System.IntPtr,System.Int32)">
+             <summary>
+             Flips the OclMat in one of different 3 ways (row and column indices are 0-based):
+             dst(i,j)=src(rows(src)-i-1,j) if flip_mode = 0
+             dst(i,j)=src(i,cols(src1)-j-1) if flip_mode &gt; 0
+             dst(i,j)=src(rows(src)-i-1,cols(src)-j-1) if flip_mode &lt; 0
+             </summary>
+             <param name="src">Source OclMat.</param>
+             <param name="dst">Destination OclMat.</param>
+             <param name="flipMode">
+             Specifies how to flip the OclMat.
+             flip_mode = 0 means flipping around x-axis, 
+             flip_mode &gt; 0 (e.g. 1) means flipping around y-axis and 
+             flip_mode &lt; 0 (e.g. -1) means flipping around both axises. 
+            </param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Flip(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.FLIP)">
+            <summary>
+            Flips the OclMat in one of different 3 ways (row and column indices are 0-based). 
+            </summary>
+            <param name="src">The source OclMat. Supports all types</param>
+            <param name="dst">Destination OclMat. The same source and type as <paramref name="src"/></param>
+            <param name="flipType">Specifies how to flip the OclMat.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Compare(System.IntPtr,System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.CMP_TYPE)">
+            <summary>
+            Compares elements of two OclMats (c = a &lt;cmpop&gt; b).
+            Supports all types except CV_8SC1,CV_8SC2,CV8SC3,CV_8SC4 types
+            </summary>
+            <param name="a">The first OclMat</param>
+            <param name="b">The second OclMat</param>
+            <param name="c">The result of the comparison.</param>
+            <param name="cmpop">The type of comparison</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.CvtColor(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.COLOR_CONVERSION)">
+            <summary>
+            Converts image from one color space to another
+            </summary>
+            <param name="src">The source oclMat</param>
+            <param name="dst">The destination oclMat</param>
+            <param name="code">The color conversion code</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Copy(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Copy the source OclMat to destination OclMat, using an optional mask.
+            </summary>
+            <param name="src">The OclMat to be copied from</param>
+            <param name="dst">The OclMat to be copied to</param>
+            <param name="mask">The optional mask, use IntPtr.Zero if not needed.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Resize(System.IntPtr,System.IntPtr,System.Double,System.Double,Emgu.CV.CvEnum.INTER)">
+            <summary>
+            Resizes the image.
+            </summary>
+            <param name="src">The source image.</param>
+            <param name="dst">The destination image.</param>
+            <param name="interpolation">The interpolation type. Supports INTER_NEAREST, INTER_LINEAR.</param>
+            <param name="fx">Use 0 for default</param>
+            <param name="fy">Use 0 for default</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.MinMaxLoc(System.IntPtr,System.Double@,System.Double@,System.Drawing.Point@,System.Drawing.Point@,System.IntPtr)">
+            <summary>
+            Finds minimum and maximum element values and their positions. The extremums are searched over the whole OclMat or, if mask is not IntPtr.Zero, in the specified OclMat region.
+            </summary>
+            <param name="oclMat">The source OclMat, single-channel</param>
+            <param name="minVal">Pointer to returned minimum value</param>
+            <param name="maxVal">Pointer to returned maximum value</param>
+            <param name="minLoc">Pointer to returned minimum location</param>
+            <param name="maxLoc">Pointer to returned maximum location</param>
+            <param name="mask">The optional mask that is used to select a subarray. Use IntPtr.Zero if not needed</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.MatchTemplate(System.IntPtr,System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.TM_TYPE,System.IntPtr)">
+            <summary>
+            This function is similiar to cvCalcBackProjectPatch. It slids through image, compares overlapped patches of size wxh with templ using the specified method and stores the comparison results to result
+            </summary>
+            <param name="image">Image where the search is running. It should be 8-bit or 32-bit floating-point</param>
+            <param name="templ">Searched template; must be not greater than the source image and the same data type as the image</param>
+            <param name="result">A map of comparison results; single-channel 32-bit floating-point. If image is WxH and templ is wxh then result must be W-w+1xH-h+1.</param>
+            <param name="method">Specifies the way the template must be compared with image regions </param>
+            <param name="oclMatchTemplateBuf">Pointer to OclMatchTemplateBuf</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.PyrDown(System.IntPtr,System.IntPtr)">
+            <summary>
+            Performs downsampling step of Gaussian pyramid decomposition. 
+            </summary>
+            <param name="src">The source GpuImage.</param>
+            <param name="dst">The destination GpuImage, should have 2x smaller width and height than the source.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.PyrUp(System.IntPtr,System.IntPtr)">
+            <summary>
+            Performs up-sampling step of Gaussian pyramid decomposition.
+            </summary>
+            <param name="src">The source GpuImage.</param>
+            <param name="dst">The destination image, should have 2x smaller width and height than the source.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.MeanStdDev(System.IntPtr,Emgu.CV.Structure.MCvScalar@,Emgu.CV.Structure.MCvScalar@)">
+            <summary>
+            Computes mean value and standard deviation
+            </summary>
+            <param name="mtx">The OclMat. Supports only CV_8UC1 type</param>
+            <param name="mean">The mean value</param>
+            <param name="stddev">The standard deviation</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Norm(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.NORM_TYPE)">
+            <summary>
+            Computes norm of the difference between two OclMats
+            </summary>
+            <param name="src1">The OclMat. Supports only CV_8UC1 type</param>
+            <param name="src2">If IntPtr.Zero, norm operation is apply to <paramref name="src1"/> only. Otherwise, this is the OclMat of type CV_8UC1</param>
+            <param name="normType">The norm type. Supports NORM_INF, NORM_L1, NORM_L2.</param>
+            <returns>The norm of the <paramref name="src1"/> if <paramref name="src2"/> is IntPtr.Zero. Otherwise the norm of the difference between two OclMats.</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.LUT(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Transforms 8-bit unsigned integers using lookup table: dst(i)=lut(src(i)).
+            Destination OclMat will have the depth type as lut and the same channels number as source.
+            Supports CV_8UC1, CV_8UC3 types.
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="lut">The OclMat that contains the look up table</param>
+            <param name="dst">The destination OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.CopyMakeBorder(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.Structure.MCvScalar)">
+            <summary>
+            Copies a 2D array to a larger destination array and pads borders with the given constant.
+            </summary>
+            <param name="src">Source image.</param>
+            <param name="dst">Destination image with the same type as src. The size is Size(src.cols+left+right, src.rows+top+bottom).</param>
+            <param name="top">Number of pixels in each direction from the source image rectangle to extrapolate.</param>
+            <param name="bottom">Number of pixels in each direction from the source image rectangle to extrapolate.</param>
+            <param name="left">Number of pixels in each direction from the source image rectangle to extrapolate.</param>
+            <param name="right">Number of pixels in each direction from the source image rectangle to extrapolate.</param>
+            <param name="borderType">Border Type</param>
+            <param name="value">Border value.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Integral(System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes the integral image and integral for the squared image
+            </summary>
+            <param name="src">The source OclMat, supports only CV_8UC1 source type</param>
+            <param name="sum">The sum OclMat, supports only CV_32S source type, but will contain unsigned int values.</param>
+            <param name="sqrSum">The sqsum OclMat, supports only CV32F source type. Use IntPtr.Zero if you don't want the sqrSum to be computed.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.CornerHarris(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Double,Emgu.CV.CvEnum.BORDER_TYPE)">
+            <summary>
+            Runs the Harris edge detector on image. Similarly to cvCornerMinEigenVal and cvCornerEigenValsAndVecs, for each pixel it calculates 2x2 gradient covariation matrix M over block_size x block_size neighborhood. Then, it stores
+            det(M) - k*trace(M)^2
+            to the destination image. Corners in the image can be found as local maxima of the destination image.
+            </summary>
+            <param name="image">Input OclMat</param>
+            <param name="harrisResponce">OclMat to store the Harris detector responces. Should have the same size as <paramref name="image"/>. </param>
+            <param name="blockSize">Neighborhood size </param>
+            <param name="kSize"></param>
+            <param name="k">Harris detector free parameter.</param>
+            <param name="borderType">Boreder type, use REFLECT101 for default</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.BilateralFilter(System.IntPtr,System.IntPtr,System.Int32,System.Double,System.Double,Emgu.CV.CvEnum.BORDER_TYPE)">
+            <summary>
+            Applies bilateral filter to the image. Supports 8UC1 8UC4 data types.
+            </summary>
+            <param name="src">The source image</param>
+            <param name="dst">The destination image; will have the same size and the same type as src</param>
+            <param name="d">The diameter of each pixel neighborhood, that is used during filtering. If it is non-positive, it’s computed from sigmaSpace</param>
+            <param name="sigmaColor">Filter sigma in the color space. Larger value of the parameter means that farther colors within the pixel neighborhood (see sigmaSpace) will be mixed together, resulting in larger areas of semi-equal color</param>
+            <param name="sigmaSpave">Filter sigma in the coordinate space. Larger value of the parameter means that farther pixels will influence each other (as long as their colors are close enough; see sigmaColor). Then d&gt;0, it specifies the neighborhood size regardless of sigmaSpace, otherwise d is proportional to sigmaSpace.</param>
+            <param name="borderType">Pixel extrapolation method, use DEFAULT for default</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Exp(System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes exponent of each matrix element (b = exp(a))
+            </summary>
+            <param name="src">The source OclMat. Supports single channel float type.</param>
+            <param name="dst">The resulting OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Log(System.IntPtr,System.IntPtr)">
+            <summary>
+            Computes natural logarithm of absolute value of each matrix element: b = log(abs(a))
+            </summary>
+            <param name="src">The source OclMat. Supports single channel float type.</param>
+            <param name="dst">The resulting OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Pow(System.IntPtr,System.Double,System.IntPtr)">
+            <summary>
+            The function pow raises every element of the input array to <paramref name="power"/>. Supports only CV_32FC1 and CV_64FC1 data type.
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="power">The power</param>
+            <param name="dst">The resulting OclMat, should be the same type as the source</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.CartToPolar(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Boolean)">
+            <summary>
+            Calculates the magnitude and angle of 2d vectors. Supports only CV_32F and CV_64F data types.
+            </summary>
+            <param name="x">The source OclMat of x-coordinates; must be single-precision or double-precision floating-point array</param>
+            <param name="y">The source OclMat of y-coordinates; it must have the same size and same type as x</param>
+            <param name="magnitude">The destination array of magnitudes of the same size and same type as x</param>
+            <param name="angle">The destination array of angles of the same size and same type as x. The angles are measured in radians (0 to 2pi ) or in degrees (0 to 360 degrees).</param>
+            <param name="angleInDegrees">The flag indicating whether the angles are measured in radians, which is default mode, or in degrees</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.PolarToCart(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Boolean)">
+            <summary>
+            The function polarToCart computes the cartesian coordinates of each 2D vector represented by the corresponding elements of magnitude and angle. Supports only CV_32F and CV_64F data types.
+            </summary>
+            <param name="magnitude">he source floating-point array of magnitudes of 2D vectors. It can be an empty matrix (=Mat()) - in this case the function assumes that all the magnitudes are =1. If it’s not empty, it must have the same size and same type as angle</param>
+            <param name="angle">The source floating-point array of angles of the 2D vectors</param>
+            <param name="x">The destination array of x-coordinates of 2D vectors; will have the same size and the same type as angle</param>
+            <param name="y">The destination array of y-coordinates of 2D vectors; will have the same size and the same type as angle</param>
+            <param name="angleInDegrees">The flag indicating whether the angles are measured in radians, which is default mode, or in degrees</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.CalcHist(System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates histogram of one or more arrays. 
+            </summary>
+            <param name="src">Source historgram array. Supports only 8UC1 data type.</param>
+            <param name="hist">The output histogram, only 256 bins is supported now</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.EqualizeHist(System.IntPtr,System.IntPtr)">
+            <summary>
+            The algorithm normalizes brightness and increases contrast of the image
+            </summary>
+            <param name="src">The source OclMat. only 8UC1 is supported now</param>
+            <param name="dst">The destination OclMat, only 256 bins is supported now</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Split(System.IntPtr,System.IntPtr)">
+            <summary>
+            Copies each plane of a multi-channel OclMat to a dedicated OclMat
+            </summary>
+            <param name="src">The multi-channel OclMat</param>
+            <param name="dstArray">Pointer to an array of single channel OclMat pointers</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Merge(System.IntPtr,System.IntPtr)">
+            <summary>
+            Makes multi-channel OclMat out of several single-channel OclMats
+            </summary>
+            <param name="srcArr">Pointer to an array of single channel OclMat pointers</param>
+            <param name="dst">The multi-channel oclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.ConvertTo(System.IntPtr,System.IntPtr,System.Double,System.Double)">
+            <summary>
+            This function has several different purposes and thus has several synonyms. It copies one OclMat to another with optional scaling, which is performed first, and/or optional type conversion, performed after:
+            dst(I)=src(I)*scale + (shift,shift,...)
+            All the channels of multi-channel OclMats are processed independently.
+            The type conversion is done with rounding and saturation, that is if a result of scaling + conversion can not be represented exactly by a value of destination OclMat element type, it is set to the nearest representable value on the real axis.
+            In case of scale=1, shift=0 no prescaling is done. This is a specially optimized case and it has the appropriate convertTo synonym.
+            </summary>
+            <param name="src">Source OclMat</param>
+            <param name="dst">Destination OclMat</param>
+            <param name="scale">Scale factor</param>
+            <param name="shift">Value added to the scaled source OclMat elements</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.BitwiseXor(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical conjunction of two OclMats:
+            dst(I)=src1(I)^src2(I) if mask(I)!=0
+            In the case of floating-point OclMats their bit representations are used for the operation. All the OclMats must have the same type, except the mask, and the same size
+            </summary>
+            <param name="src1">The first source OclMat</param>
+            <param name="src2">The second source OclMat</param>
+            <param name="dst">The destination OclMat</param>
+            <param name="mask">Mask, 8-bit single channel OclMat; specifies elements of destination OclMat to be changed. Use IntPtr.Zero if not needed.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.BitwiseXor(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical conjunction of a OclMat and a scalar:
+            dst(I)=src1(I)^scalar
+            In the case of a floating-point OclMat its bit representation is used for the operation.
+            </summary>
+            <param name="src1">The first source OclMat</param>
+            <param name="scalar">The scalar</param>
+            <param name="dst">The destination OclMat</param>
+            <param name="mask">Mask, 8-bit single channel OclMat; specifies elements of destination OclMat to be changed. Use IntPtr.Zero if not needed.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.BitwiseOr(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical or of two OclMats:
+            dst(I)=src1(I) | src2(I) if mask(I)!=0
+            In the case of floating-point OclMats their bit representations are used for the operation. All the OclMats must have the same type, except the mask, and the same size
+            </summary>
+            <param name="src1">The first source OclMat</param>
+            <param name="src2">The second source OclMat</param>
+            <param name="dst">The destination OclMat</param>
+            <param name="mask">Mask, 8-bit single channel OclMat; specifies elements of destination OclMat to be changed. Use IntPtr.Zero if not needed.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.BitwiseOr(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical or a OclMat and a scalar:
+            dst(I)=src1(I) | scalar
+            In the case of a floating-point OclMat its bit representation is used for the operation.
+            </summary>
+            <param name="src1">The first source OclMat</param>
+            <param name="scalar">The scalar</param>
+            <param name="dst">The destination OclMat</param>
+            <param name="mask">Mask, 8-bit single channel OclMat; specifies elements of destination OclMat to be changed. Use IntPtr.Zero if not needed.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.BitwiseAnd(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical and of two OclMats:
+            dst(I)=src1(I) &amp; src2(I) if mask(I)!=0
+            In the case of floating-point OclMats their bit representations are used for the operation. All the OclMats must have the same type, except the mask, and the same size
+            </summary>
+            <param name="src1">The first source OclMat</param>
+            <param name="src2">The second source OclMat</param>
+            <param name="dst">The destination OclMat</param>
+            <param name="mask">Mask, 8-bit single channel OclMat; specifies elements of destination OclMat to be changed. Use IntPtr.Zero if not needed.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.BitwiseAnd(System.IntPtr,Emgu.CV.Structure.MCvScalar,System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical and of a OclMat and a scalar:
+            dst(I)=src1(I) &amp; scalar
+            In the case of a floating-point OclMat its bit representation is used for the operation.
+            </summary>
+            <param name="src1">The first source OclMat</param>
+            <param name="scalar">The scalar</param>
+            <param name="dst">The destination OclMat</param>
+            <param name="mask">Mask, 8-bit single channel OclMat; specifies elements of destination OclMat to be changed. Use IntPtr.Zero if not needed.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.BitwiseNot(System.IntPtr,System.IntPtr)">
+            <summary>
+            Calculates per-element bit-wise logical not
+            dst(I)=~src(I) if mask(I)!=0
+            In the case of floating-point OclMats their bit representations are used for the operation. All the OclMats must have the same type, except the mask, and the same size
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="dst">The destination OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Filter2D(System.IntPtr,System.IntPtr,System.IntPtr,System.Drawing.Point,Emgu.CV.CvEnum.BORDER_TYPE)">
+            <summary>
+            Applies arbitrary linear filter to the image. In-place operation is supported. When the aperture is partially outside the image, the function interpolates outlier pixel values from the nearest pixels that is inside the image
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="dst">The destination OclImage</param>
+            <param name="kernel">Convolution kernel, single-channel floating point matrix (e.g. Emgu.CV.Matrix). If you want to apply different kernels to different channels, split the ocl image into separate color planes and process them individually</param>
+            <param name="anchor">The anchor of the kernel that indicates the relative position of a filtered point within the kernel. The anchor shoud lie within the kernel. The special default value (-1,-1) means that it is at the kernel center</param>
+            <param name="borderType">Border type. Use REFLECT101 for default.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Sobel(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.IntPtr,System.Int32,System.Double,Emgu.CV.CvEnum.BORDER_TYPE)">
+            <summary>
+            Applies generalized Sobel operator to the image
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="dst">The resulting OclMat</param>
+            <param name="dx">Order of the derivative x</param>
+            <param name="dy">Order of the derivative y</param>
+            <param name="ksize">Size of the extended Sobel kernel</param>
+            <param name="scale">Optional scale, use 1 for default.</param>
+            <param name="borderType">The border type.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Laplacian(System.IntPtr,System.IntPtr,System.Int32,System.Double)">
+            <summary>
+            Applies Laplacian operator to the OclMat
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="dst">The resulting OclMat</param>
+            <param name="ksize">Either 1 or 3</param>
+            <param name="scale">Optional scale. Use 1.0 for default</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Gemm(System.IntPtr,System.IntPtr,System.Double,System.IntPtr,System.Double,System.IntPtr,Emgu.CV.CvEnum.GEMM_TYPE)">
+            <summary>
+            Performs generalized matrix multiplication:
+            dst = alpha*op(src1)*op(src2) + beta*op(src3), where op(X) is X or XT
+            </summary>
+            <param name="src1">The first source array. </param>
+            <param name="src2">The second source array. </param>
+            <param name="alpha">The scalar</param>
+            <param name="src3">The third source array (shift). Can be IntPtr.Zero, if there is no shift.</param>
+            <param name="beta">The scalar</param>
+            <param name="dst">The destination array.</param>
+            <param name="tABC">The gemm operation type</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.GaussianBlur(System.IntPtr,System.IntPtr,System.Drawing.Size,System.Double,System.Double,Emgu.CV.CvEnum.BORDER_TYPE)">
+            <summary>
+            Smooths the OclMat using Gaussian filter.
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="dst">The smoothed OclMat</param>
+            <param name="ksize">The size of the kernel</param>
+            <param name="sigma1">This parameter may specify Gaussian sigma (standard deviation). If it is zero, it is calculated from the kernel size.</param>
+            <param name="sigma2">In case of non-square Gaussian kernel the parameter may be used to specify a different (from param3) sigma in the vertical direction. Use 0 for default</param>
+            <param name="borderType">The border type.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Canny(System.IntPtr,System.IntPtr,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Finds the edges on the input <paramref name="image"/> and marks them in the output image edges using the Canny algorithm. The smallest of threshold1 and threshold2 is used for edge linking, the largest - to find initial segments of strong edges.
+            </summary>
+            <param name="image">Input image</param>
+            <param name="edges">Image to store the edges found by the function</param>
+            <param name="lowThreshold">The first threshold</param>
+            <param name="highThreshold">The second threshold</param>
+            <param name="apertureSize">Aperture parameter for Sobel operator, use 3 for default</param>
+            <param name="L2gradient">Use false for default</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.OclMatReshape(System.IntPtr,System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+            Reshape the src OclMat  
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="dst">The resulting OclMat, as input it should be an empty OclMat.</param>
+            <param name="cn">The new number of channels</param>
+            <param name="rows">The new number of rows</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.HoughCircles(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.HOUGH_TYPE,System.Single,System.Single,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Finds circles in a grayscale image using the Hough transform.
+            </summary>
+            <param name="src"> 8-bit, single-channel grayscale input image.</param>
+            <param name="circles">Output vector of found circles. Each vector is encoded as a 3-element floating-point vector (x, y, radius)</param>
+            <param name="method">Detection method to use. Currently, the only implemented method is CV_HOUGH_GRADIENT , which is basically 21HT</param>
+            <param name="dp">Inverse ratio of the accumulator resolution to the image resolution. For example, if dp=1 , the accumulator has the same resolution as the input image. If dp=2 , the accumulator has half as big width and height.</param>
+            <param name="minDist">Minimum distance between the centers of the detected circles. If the parameter is too small, multiple neighbor circles may be falsely detected in addition to a true one. If it is too large, some circles may be missed.</param>
+            <param name="cannyThreshold">The higher threshold of the two passed to the ocl::Canny() edge detector (the lower one is twice smaller).</param>
+            <param name="votesThreshold"> The accumulator threshold for the circle centers at the detection stage. The smaller it is, the more false circles may be detected.</param>
+            <param name="minRadius">Minimum circle radius.</param>
+            <param name="maxRadius">Maximum circle radius.</param>
+            <param name="maxCircles">Maximum number of output circles.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.HoughCircles(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},System.Single,System.Single,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Finds circles in a grayscale image using the Hough transform.
+            </summary>
+            <param name="src">8-bit, single-channel grayscale input image.</param>
+            <param name="dp">Inverse ratio of the accumulator resolution to the image resolution. For example, if dp=1 , the accumulator has the same resolution as the input image. If dp=2 , the accumulator has half as big width and height.</param>
+            <param name="minDist">Minimum distance between the centers of the detected circles. If the parameter is too small, multiple neighbor circles may be falsely detected in addition to a true one. If it is too large, some circles may be missed.</param>
+            <param name="cannyThreshold">The higher threshold of the two passed to the ocl::Canny() edge detector (the lower one is twice smaller).</param>
+            <param name="votesThreshold"> The accumulator threshold for the circle centers at the detection stage. The smaller it is, the more false circles may be detected.</param>
+            <param name="minRadius">Minimum circle radius.</param>
+            <param name="maxRadius">Maximum circle radius.</param>
+            <param name="maxCircles">Maximum number of output circles.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Erode(System.IntPtr,System.IntPtr,System.IntPtr,System.Drawing.Point,System.Int32)">
+            <summary>
+            Erodes the image (applies the local minimum operator).
+            Supports CV_8UC1, CV_8UC4 type.
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="dst">The destination OclMat</param>
+            <param name="kernel">The morphology kernel, pointer to an CvArr. If it is IntPtr.Zero, a 3x3 rectangular structuring element is used.</param>
+            <param name="anchor">The center of the kernel. User (-1, -1) for the default kernel center.</param>
+            <param name="iterations">The number of iterations morphology is applied</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Erode(System.IntPtr,System.IntPtr,System.IntPtr,System.Drawing.Point,System.Int32,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.Structure.MCvScalar)">
+            <summary>
+            Erodes the image (applies the local minimum operator).
+            Supports CV_8UC1, CV_8UC4 type.
+            </summary>
+            <param name="src">The source OclMat</param>
+            <param name="dst">The destination OclMat</param>
+            <param name="kernel">The morphology kernel, pointer to an CvArr. If it is IntPtr.Zero, a 3x3 rectangular structuring element is used.</param>
+            <param name="anchor">The center of the kernel. User (-1, -1) for the default kernel center.</param>
+            <param name="iterations">The number of iterations morphology is applied</param>
+            <param name="bordertype">Type of the border to create around the copied source image rectangle</param>
+            <param name="borderValue">Value of the border pixels if bordertype=CONSTANT</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Dilate(System.IntPtr,System.IntPtr,System.IntPtr,System.Drawing.Point,System.Int32)">
+            <summary>
+            Dilate the image (applies the local maximum operator).
+            Supports CV_8UC1, CV_8UC4 type.
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="kernel">The morphology kernel, pointer to an CvArr. If it is IntPtr.Zero, a 3x3 rectangular structuring element is used.</param>
+            <param name="anchor">The center of the kernel. User (-1, -1) for the default kernel center.</param>
+            <param name="iterations">The number of iterations morphology is applied</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.Dilate(System.IntPtr,System.IntPtr,System.IntPtr,System.Drawing.Point,System.Int32,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.Structure.MCvScalar)">
+            <summary>
+            Dilate the image (applies the local maximum operator).
+            Supports CV_8UC1, CV_8UC4 type.
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="kernel">The morphology kernel, pointer to an CvArr. If it is IntPtr.Zero, a 3x3 rectangular structuring element is used.</param>
+            <param name="anchor">The center of the kernel. User (-1, -1) for the default kernel center.</param>
+            <param name="iterations">The number of iterations morphology is applied</param>
+            <param name="bordertype">Type of the border to create around the copied source image rectangle</param>
+            <param name="borderValue">Value of the border pixels if bordertype=CONSTANT</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.MorphologyEx(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.CV_MORPH_OP,System.IntPtr,System.Drawing.Point,System.Int32)">
+            <summary>
+            Applies an advanced morphological operation to the image
+            Supports CV_8UC1, CV_8UC4 type.
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="op">The type of morphological operation</param>
+            <param name="kernel">The morphology kernel, pointer to an CvArr. </param>
+            <param name="anchor">The center of the kernel. User (-1, -1) for the default kernel center.</param>
+            <param name="iterations">The number of iterations morphology is applied</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.MorphologyEx(System.IntPtr,System.IntPtr,Emgu.CV.CvEnum.CV_MORPH_OP,System.IntPtr,System.Drawing.Point,System.Int32,Emgu.CV.CvEnum.BORDER_TYPE,Emgu.CV.Structure.MCvScalar)">
+            <summary>
+            Applies an advanced morphological operation to the image
+            Supports CV_8UC1, CV_8UC4 type.
+            </summary>
+            <param name="src">The source GpuMat</param>
+            <param name="dst">The destination GpuMat</param>
+            <param name="op">The type of morphological operation</param>
+            <param name="kernel">The morphology kernel, pointer to an CvArr. </param>
+            <param name="anchor">The center of the kernel. User (-1, -1) for the default kernel center.</param>
+            <param name="iterations">The number of iterations morphology is applied</param>
+            <param name="bordertype">Type of the border to create around the copied source image rectangle</param>
+            <param name="borderValue">Value of the border pixels if bordertype=CONSTANT</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.MeanShiftFiltering(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Bgra,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Bgra,System.Byte},System.Int32,System.Int32,Emgu.CV.Structure.MCvTermCriteria)">
+            <summary>
+            Performs mean-shift filtering for each point of the source image. It maps each point of the source
+            image into another point, and as the result we have new color and new position of each point.
+            </summary>
+            <param name="src">Source OclImage. Only CV 8UC4 images are supported for now.</param>
+            <param name="dst">Destination OclImage, containing color of mapped points. Will have the same size and type as src.</param>
+            <param name="sp">Spatial window radius.</param>
+            <param name="sr">Color window radius.</param>
+            <param name="criteria">Termination criteria.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.oclMatMeanShiftFiltering(System.IntPtr,System.IntPtr,System.Int32,System.Int32,Emgu.CV.Structure.MCvTermCriteria@)">
+            <summary>
+            Performs mean-shift filtering for each point of the source image. It maps each point of the source
+            image into another point, and as the result we have new color and new position of each point.
+            </summary>
+            <param name="src">Source OclImage. Only CV 8UC4 images are supported for now.</param>
+            <param name="dst">Destination OclImage, containing color of mapped points. Will have the same size and type as src.</param>
+            <param name="sp">Spatial window radius.</param>
+            <param name="sr">Color window radius.</param>
+            <param name="criteria">Termination criteria.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.MeanShiftProc(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Bgra,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Bgra,System.Byte},Emgu.CV.OpenCL.OclMat{System.Int16},System.Int32,System.Int32,Emgu.CV.Structure.MCvTermCriteria)">
+            <summary>
+            Performs mean-shift procedure and stores information about processed points (i.e. their colors
+            and positions) into two images.
+            </summary>
+            <param name="src">Source OclImage. Only CV 8UC4 images are supported for now.</param>
+            <param name="dstr">Destination OclImage, containing color of mapped points. Will have the same size and type as src.</param>
+            <param name="dstsp">Destination OclImage, containing position of mapped points. Will have the same size as src and CV 16SC2 type.</param>
+            <param name="sp">Spatial window radius.</param>
+            <param name="sr">Color window radius.</param>
+            <param name="criteria">Termination criteria.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.oclMatMeanShiftProc(System.IntPtr,System.IntPtr,System.IntPtr,System.Int32,System.Int32,Emgu.CV.Structure.MCvTermCriteria@)">
+            <summary>
+            Performs mean-shift procedure and stores information about processed points (i.e. their colors
+            and positions) into two images.
+            </summary>
+            <param name="src">Source OclImage. Only CV 8UC4 images are supported for now.</param>
+            <param name="dstr">Destination OclImage, containing color of mapped points. Will have the same size and type as src.</param>
+            <param name="dstsp">Destination OclImage, containing position of mapped points. Will have the same size as src and CV 16SC2 type.</param>
+            <param name="sp">Spatial window radius.</param>
+            <param name="sr">Color window radius.</param>
+            <param name="criteria">Termination criteria.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.MeanShiftSegmentation(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Bgra,System.Byte},Emgu.CV.Image{Emgu.CV.Structure.Bgra,System.Byte},System.Int32,System.Int32,System.Int32,Emgu.CV.Structure.MCvTermCriteria)">
+            <summary>
+            Performs mean-shift segmentation of the source image and eleminates small segments.
+            </summary>
+            <param name="src">Source OclImage. </param>
+            <param name="dst">Segmented Image. Will have the same size and type as src. Note that this is an Image type and not OclImage type</param>
+            <param name="sp">Spatial window radius.</param>
+            <param name="sr">Color window radius.</param>
+            <param name="minsize">Minimum segment size. Smaller segements will be merged.</param>
+            <param name="criteria">Termination criteria.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclInvoke.oclMatMeanShiftSegmentation(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,Emgu.CV.Structure.MCvTermCriteria@)">
+            <summary>
+            Performs mean-shift segmentation of the source image and eleminates small segments.
+            </summary>
+            <param name="src">Source OclImage. Only CV 8UC4 images are supported for now.</param>
+            <param name="dst">Segmented Image. Will have the same size and type as src. Note that this is an Image type and not OclImage type</param>
+            <param name="sp">Spatial window radius.</param>
+            <param name="sr">Color window radius.</param>
+            <param name="minsize">Minimum segment size. Smaller segements will be merged.</param>
+            <param name="criteria">Termination criteria.</param>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclCascadeClassifier">
+            <summary>
+            Cascade Classifier for object detection using OpenCL
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclCascadeClassifier.#ctor(System.String)">
+            <summary>
+            Create a OpenCL cascade classifier using the specific file
+            </summary>
+            <param name="fileName">The file to create the classifier from</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclCascadeClassifier.DisposeObject">
+            <summary>
+            Release all unmanaged resources associated with this object
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclHOGDescriptor">
+            <summary>
+            A HOG descriptor
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.#ctor">
+            <summary>
+            Create a new HOGDescriptor
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.#ctor(System.Drawing.Size,System.Drawing.Size,System.Drawing.Size,System.Drawing.Size,System.Int32,System.Double,System.Double,System.Boolean,System.Int32)">
+            <summary>
+            Create a new HOGDescriptor using the specific parameters
+            </summary>
+            <param name="blockSize">Block size in cells. Use (16, 16) for default.</param>
+            <param name="cellSize">Cell size. Use (8, 8) for default.</param>
+            <param name="blockStride">Block stride. Must be a multiple of cell size. Use (8,8) for default.</param>
+            <param name="gammaCorrection">Do gamma correction preprocessing or not. Use true for default.</param>
+            <param name="L2HysThreshold">L2-Hys normalization method shrinkage. Use 0.2 for default.</param>
+            <param name="nbins">Number of bins. Use 9 bins per cell for deafault.</param>
+            <param name="nLevels">Maximum number of detection window increases. Use 64 for default</param>
+            <param name="winSigma">Gaussian smoothing window parameter. Use -1 for default.</param>
+            <param name="winSize">Detection window size. Must be aligned to block size and block stride. Must match the size of the training image. Use (64, 128) for default.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.GetDefaultPeopleDetector">
+            <summary>
+            Returns coefficients of the classifier trained for people detection (for default window size).
+            </summary>
+            <returns>The default people detector</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.GetPeopleDetector48x96">
+            <summary>
+            Returns coefficients of the classifier trained for people detection (for size 64x128). Only compatible with HOG detector with the same windows size.
+            </summary>
+            <returns>The people detector of 48x96 resolution</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.GetPeopleDetector64x128">
+            <summary>
+            Returns coefficients of the classifier trained for people detection (for size 64x128).
+            </summary>
+            <returns>The people detector of 64x128 resolution.</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.SetSVMDetector(System.Single[])">
+            <summary>
+            Set the SVM detector 
+            </summary>
+            <param name="detector">The SVM detector</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.DetectMultiScale(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Bgra,System.Byte},System.Double,System.Drawing.Size,System.Drawing.Size,System.Double,System.Int32)">
+            <summary>
+            Perfroms object detection with increasing detection window.
+            </summary>
+            <param name="image">The OclImage to search in</param>
+            <param name="hitThreshold">The threshold for the distance between features and classifying plane.</param>
+            <param name="winStride">Window stride. Must be a multiple of block stride.</param>
+            <param name="padding">Mock parameter to keep CPU interface compatibility. Must be (0,0).</param>
+            <param name="scale">Coefficient of the detection window increase.</param>
+            <param name="groupThreshold">After detection some objects could be covered by many rectangles. This coefficient regulates similarity threshold. 0 means don't perform grouping.</param>
+            <returns>The regions where positives are found</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.DetectMultiScale(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},System.Double,System.Drawing.Size,System.Drawing.Size,System.Double,System.Int32)">
+            <summary>
+            Perfroms object detection with increasing detection window.
+            </summary>
+            <param name="image">The OclImage to search in</param>
+            <param name="hitThreshold">The threshold for the distance between features and classifying plane.</param>
+            <param name="winStride">Window stride. Must be a multiple of block stride.</param>
+            <param name="padding">Mock parameter to keep CPU interface compatibility. Must be (0,0).</param>
+            <param name="scale">Coefficient of the detection window increase.</param>
+            <param name="groupThreshold">After detection some objects could be covered by many rectangles. This coefficient regulates similarity threshold. 0 means don't perform grouping.</param>
+            <returns>The regions where positives are found</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.DetectMultiScale(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Bgra,System.Byte})">
+            <summary>
+            Perfroms object detection with increasing detection window.
+            </summary>
+            <param name="image">The OclImage to search in</param>
+            <returns>The regions where positives are found</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.DetectMultiScale(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Perfroms object detection with increasing detection window.
+            </summary>
+            <param name="image">The GpuImage to search in</param>
+            <returns>The regions where positives are found</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclHOGDescriptor.DisposeObject">
+            <summary>
+            Release the unmanaged memory associated with this HOGDescriptor
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclImage`2">
+            <summary>
+            An OclImage is very similar to the Emgu.CV.Image except that it is being used for OpenCL processing
+            </summary>
+            <typeparam name="TColor">Color type of this image (either Gray, Bgr, Bgra, Hsv, Hls, Lab, Luv, Xyz, Ycc, Rgb or Rbga)</typeparam>
+            <typeparam name="TDepth">Depth of this image (either Byte, SByte, Single, double, UInt16, Int16 or Int32)</typeparam>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclMat`1">
+            <summary>
+            Similar to CvArray but use OpenCL for processing
+            </summary>
+            <typeparam name="TDepth">The type of element in the matrix</typeparam>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclMat">
+            <summary>
+            A OclMat, use the generic version if possible. 
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat.#ctor">
+            <summary>
+            Create an empty OclMat
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat.#ctor(System.IntPtr)">
+            <summary>
+            Create an OclMat from the unmanaged pointer
+            </summary>
+            <param name="ptr">The unmanaged pointer to the OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat.DisposeObject">
+            <summary>
+            Release the unmanaged memory associated with this OclMat
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.OclMat.IsEmpty">
+            <summary>
+            Check if the OclMat is Empty
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.OclMat.IsContinuous">
+            <summary>
+            Check if the OclMat is Continuous
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.OclMat.Type">
+            <summary>
+            Get the OclMat type
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.OclMat.Size">
+            <summary>
+            Get the OclMat size:
+            width == number of columns, height == number of rows
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.OclMat.Rows">
+            <summary>
+            Get the number of rows
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.OclMat.Cols">
+            <summary>
+            Get the number of columns
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.OclMat.WholeSize">
+            <summary>
+            Get the OclMat size:
+            width == wholcols, height == wholerows
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.OclMat.NumberOfChannels">
+            <summary>
+            Get the number of channels in the GpuMat
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.#ctor(System.IntPtr)">
+            <summary>
+            Create an OclMat from the unmanaged pointer
+            </summary>
+            <param name="ptr">The unmanaged pointer to the OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.#ctor">
+            <summary>
+            Create an empty OclMat
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create an OclMat of the specified size
+            </summary>
+            <param name="rows">The number of rows (height)</param>
+            <param name="cols">The number of columns (width)</param>
+            <param name="channels">The number of channels</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.#ctor(System.Drawing.Size,System.Int32)">
+            <summary>
+            Create an OclMat of the specified size
+            </summary>
+            <param name="size">The size of the OclMat</param>
+            <param name="channels">The number of channels</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.#ctor(Emgu.CV.CvArray{`0})">
+            <summary>
+            Create an OclMat from an CvArray of the same depth type
+            </summary>
+            <param name="arr">The CvArry to be converted to OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.Upload(Emgu.CV.CvArray{`0})">
+            <summary>
+            Pefroms blocking upload data to OclMat
+            </summary>
+            <param name="arr">The CvArray to be uploaded to OclMat</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.Download(Emgu.CV.CvArray{`0})">
+            <summary>
+            Downloads data from device to host memory. Blocking calls
+            </summary>
+            <param name="arr">The destination CvArray where the OclMat data will be downloaded to.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.MinMax(System.Double[]@,System.Double[]@,System.Drawing.Point[]@,System.Drawing.Point[]@)">
+            <summary>
+            Returns the min / max location and values for the image
+            </summary>
+            <param name="maxLocations">The maximum locations for each channel </param>
+            <param name="maxValues">The maximum values for each channel</param>
+            <param name="minLocations">The minimum locations for each channel</param>
+            <param name="minValues">The minimum values for each channel</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.SplitInto(Emgu.CV.OpenCL.OclMat{`0}[])">
+            <summary> 
+            Split current Image into an array of gray scale images where each element 
+            in the array represent a single color channel of the original image
+            </summary>
+            <param name="oclMats"> 
+            An array of single channel OclMat where each item
+            in the array represent a single channel of the original OclMat 
+            </param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.Split">
+            <summary> 
+            Split current OclMat into an array of single channel OclMat where each element 
+            in the array represent a single channel of the original OclMat
+            </summary>
+            <returns> 
+            An array of single channel OclMat where each element  
+            in the array represent a single channel of the original OclMat 
+            </returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.MergeFrom(Emgu.CV.OpenCL.OclMat{`0}[])">
+             <summary>
+             Makes multi-channel array out of several single-channel arrays
+             </summary>
+            <param name="gpuMats"> 
+            An array of single channel OclMat where each item
+            in the array represent a single channel of the GpuMat 
+            </param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.Reshape(System.Int32,System.Int32)">
+            <summary>
+            Changes shape of OclMat without copying data.
+            </summary>
+            <param name="newCn">New number of channels. newCn = 0 means that the number of channels remains unchanged.</param>
+            <param name="newRows">New number of rows. newRows = 0 means that the number of rows remains unchanged unless it needs to be changed according to newCn value.</param>
+            <returns>An OclMat of different shape</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.SetTo(Emgu.CV.Structure.MCvScalar,Emgu.CV.OpenCL.OclMat{System.Byte})">
+            <summary>
+            Copies scalar value to every selected element of the destination OclMat:
+            OclMat(I)=value if mask(I)!=0
+            </summary>
+            <param name="value">Fill value</param>
+            <param name="mask">Operation mask, 8-bit single channel OclMat; specifies elements of destination array to be changed. Can be null if not used.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMat`1.Equals(Emgu.CV.OpenCL.OclMat{`0})">
+            <summary>
+            Returns true if the two GpuMat equals
+            </summary>
+            <param name="other">The other GpuMat to be compares with</param>
+            <returns>True if the two GpuMat equals</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.#ctor">
+            <summary>
+            Create an empty GpuImage
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.#ctor(System.IntPtr)">
+            <summary>
+            Create the GpuImage from the unmanaged pointer.
+            </summary>
+            <param name="ptr">The unmanaged pointer to the GpuMat. It is the user's responsibility that the Color type and depth matches between the managed class and unmanaged pointer.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.#ctor(Emgu.CV.Image{`0,`1})">
+            <summary>
+            Create a GPU image from a regular image
+            </summary>
+            <param name="img">The image to be converted to GPU image</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Create an OclImage of the specific size
+            </summary>
+            <param name="rows">The number of rows (height)</param>
+            <param name="cols">The number of columns (width)</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.#ctor(System.Drawing.Size)">
+            <summary>
+            Create a GpuImage of the specific size
+            </summary>
+            <param name="size">The size of the image</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.Resize(System.Drawing.Size,Emgu.CV.CvEnum.INTER)">
+            <summary>
+            Resize the OclImage. The calling OclMat be OclMat%lt;Byte&gt;. 
+            </summary>
+            <param name="size">The new size</param>
+            <param name="interpolationType">The interpolation type</param>
+            <returns>An OclImage of the new size</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.Split">
+            <summary> 
+            Split current Image into an array of gray scale images where each element 
+            in the array represent a single color channel of the original image
+            </summary>
+            <returns> 
+            An array of gray scale images where each element  
+            in the array represent a single color channel of the original image 
+            </returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.Convert``2">
+            <summary> Convert the current GpuImage to the specific color and depth </summary>
+            <typeparam name="TOtherColor"> The type of color to be converted to </typeparam>
+            <typeparam name="TOtherDepth"> The type of pixel depth to be converted to </typeparam>
+            <returns>GpuImage of the specific color and depth </returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.ConvertFrom``2(Emgu.CV.OpenCL.OclImage{``0,``1})">
+            <summary>
+            Convert the source image to the current image, if the size are different, the current image will be a resized version of the srcImage. 
+            </summary>
+            <typeparam name="TSrcColor">The color type of the source image</typeparam>
+            <typeparam name="TSrcDepth">The color depth of the source image</typeparam>
+            <param name="srcImage">The sourceImage</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.ToImage">
+            <summary>
+            Convert the current GpuImage to a regular Image.
+            </summary>
+            <returns>A regular image</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.Convolution(Emgu.CV.ConvolutionKernelF)">
+            <summary> 
+            Performs a convolution using the specific <paramref name="kernel"/> 
+            </summary>
+            <param name="kernel">The convolution kernel</param>
+            <returns>The result of the convolution</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.Clone">
+            <summary>
+            Create a clone of this OclImage
+            </summary>
+            <returns>A clone of this GpuImage</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclImage`2.Emgu#CV#IImage#get_Ptr">
+            <summary>
+            An OclImage is very similar to the Emgu.CV.Image except that it is being used for OpenCL processing
+            </summary>
+            <typeparam name="TColor">Color type of this image (either Gray, Bgr, Bgra, Hsv, Hls, Lab, Luv, Xyz, Ycc, Rgb or Rbga)</typeparam>
+            <typeparam name="TDepth">Depth of this image (either Byte, SByte, Single, double, UInt16, Int16 or Int32)</typeparam>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclMatchTemplateBuf">
+            <summary>
+            Ocl match template buffer, used by the OpenCL version of MatchTemplate function.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMatchTemplateBuf.#ctor">
+            <summary>
+            Create a OclMatchTemplateBuf
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclMatchTemplateBuf.DisposeObject">
+            <summary>
+            Release the buffer
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclOpticalFlowDual_TVL1">
+            <summary>
+            Dual TV L1 Optical Flow Algorithm.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclOpticalFlowDual_TVL1.#ctor">
+            <summary>
+            Create the Dual TV L1 optical flow solver
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclOpticalFlowDual_TVL1.Dense(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Single})">
+            <summary>
+            Compute the dense optical flow.
+            </summary>
+            <param name="frame0">Source frame</param>
+            <param name="frame1">Frame to track (with the same size as <paramref name="frame0"/>)</param>
+            <param name="u">Flow horizontal component (along x axis)</param>
+            <param name="v">Flow vertical component (along y axis)</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclOpticalFlowDual_TVL1.DisposeObject">
+            <summary>
+            Release all the unmanaged memory associated with this optical flow solver.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclPyrLKOpticalFlow">
+            <summary>
+            PyrLK optical flow
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclPyrLKOpticalFlow.#ctor(System.Drawing.Size,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Create the PyrLK optical flow solver
+            </summary>
+            <param name="winSize">Windows size. Use 21x21 for default</param>
+            <param name="maxLevel">The maximum number of pyramid leveles. Use 3 for default</param>
+            <param name="iters">The number of iterations. Use 30 for default.</param>
+            <param name="useInitialFlow">Weather or not use the initial flow in the input matrix. Use false for default.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclPyrLKOpticalFlow.Dense(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Single},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Single})">
+            <summary>
+            Compute the dense optical flow.
+            </summary>
+            <param name="frame0">Source frame</param>
+            <param name="frame1">Frame to track (with the same size as <paramref name="frame0"/>)</param>
+            <param name="u">Flow horizontal component (along x axis)</param>
+            <param name="v">Flow vertical component (along y axis)</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclPyrLKOpticalFlow.Sparse(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclMat{System.Single},Emgu.CV.OpenCL.OclMat{System.Single}@,Emgu.CV.OpenCL.OclMat{System.Byte}@,Emgu.CV.OpenCL.OclMat{System.Single}@)">
+            <summary>
+            Calculate an optical flow for a sparse feature set.
+            </summary>
+            <param name="frame0">First 8-bit input image (supports both grayscale and color images).</param>
+            <param name="frame1">Second input image of the same size and the same type as <paramref name="frame0"/></param>
+            <param name="points0">
+            Vector of 2D points for which the flow needs to be found. It must be one row
+            matrix with 2 channels
+            </param>
+            <param name="points1">
+            Output vector of 2D points (with single-precision two channel floating-point coordinates)
+            containing the calculated new positions of input features in the second image.</param>
+            <param name="status">
+            Output status vector (CV_8UC1 type). Each element of the vector is set to 1 if the
+            flow for the corresponding features has been found. Otherwise, it is set to 0.
+            </param>
+            <param name="err">
+            Output vector (CV_32FC1 type) that contains the difference between patches around
+            the original and moved points or min eigen value if getMinEigenVals is checked. It can be
+            null, if not needed.
+            </param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclPyrLKOpticalFlow.DisposeObject">
+            <summary>
+            Release all the unmanaged memory associated with this optical flow solver.
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclStereoBM">
+            <summary>
+            Use Block Matching algorithm to find stereo correspondence
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclStereoBM.#ctor(Emgu.CV.OpenCL.OclStereoBM.PresetType,System.Int32,System.Int32)">
+            <summary>
+            Create a stereoBM 
+            </summary>
+            <param name="preset">Preset type</param>
+            <param name="numberOfDisparities">The number of disparities. Must be multiple of 8. Use 64 for default </param>
+            <param name="winSize">The SAD window size. Use 19 for default</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclStereoBM.FindStereoCorrespondence(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Computes disparity map for the input rectified stereo pair.
+            </summary>
+            <param name="left">The left single-channel, 8-bit image</param>
+            <param name="right">The right image of the same size and the same type</param>
+            <param name="disparity">The disparity map</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclStereoBM.DisposeObject">
+            <summary>
+            Release the stereo state and all the memory associate with it
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclStereoBM.PresetType">
+            <summary>
+            Preset type
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OpenCL.OclStereoBM.PresetType.BasicPreset">
+            <summary>
+            Basic
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.OpenCL.OclStereoBM.PresetType.PrefilterXSobel">
+            <summary>
+            prefilter xsobel
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclStereoConstantSpaceBP">
+            <summary>
+            A Constant-Space Belief Propagation Algorithm for Stereo Matching.
+            Qingxiong Yang, Liang Wang, Narendra Ahuja.
+            http://vision.ai.uiuc.edu/~qyang6/
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclStereoConstantSpaceBP.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            A Constant-Space Belief Propagation Algorithm for Stereo Matching
+            </summary>
+            <param name="ndisp">The number of disparities. Use 128 as default</param>
+            <param name="iters">The number of BP iterations on each level. Use 8 as default.</param>
+            <param name="levels">The number of levels. Use 4 as default</param>
+            <param name="nrPlane">The number of active disparity on the first level. Use 4 as default.</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclStereoConstantSpaceBP.FindStereoCorrespondence(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Computes disparity map for the input rectified stereo pair.
+            </summary>
+            <param name="left">The left single-channel, 8-bit image</param>
+            <param name="right">The right image of the same size and the same type</param>
+            <param name="disparity">The disparity map</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclStereoConstantSpaceBP.DisposeObject">
+            <summary>
+            Release the unmanaged memory
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.OclSURFDetector">
+            <summary>
+            A SURF detector using OpenCL
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclSURFDetector.#ctor">
+            <summary>
+            Create an OpenCL SURF detector using the default parameters
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclSURFDetector.#ctor(Emgu.CV.Structure.MCvSURFParams,System.Single)">
+            <summary>
+            Create an OpenCL SURF detector using the default parameters
+            </summary>
+            <param name="detector">The surf detector where the parameters will be borrow from</param>
+            <param name="FeaturesRatio">Max features = featuresRatio * img.size().srea(). Use 0.01 for default</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclSURFDetector.#ctor(System.Single,System.Int32,System.Int32,System.Boolean,System.Single,System.Boolean)">
+            <summary>
+            Create an OpenCL SURF detector
+            </summary>
+            <param name="hessianThreshold">The interest operator threshold. Use 100 for default</param>
+            <param name="nOctaves">The number of octaves to process. Use 4 for default</param>
+            <param name="nIntervals">The number of intervals in each octave. Use 4 for default</param>
+            <param name="extended">True, if generate 128-len descriptors, false - 64-len descriptors. Use true for default.</param>
+            <param name="featuresRatio">Max features = featuresRatio * img.size().srea(). Use 0.01 for default</param>
+            <param name="upright">Use false for default. If set to true, the orientation is not computed for the keypoints</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclSURFDetector.DetectKeyPointsRaw(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Detect keypoints in the OclImage
+            </summary>
+            <param name="img">The image where keypoints will be detected from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <returns>
+            The keypoints OclMat that will have 1 row.
+            keypoints.at&lt;float[6]&gt;(1, i) contains i'th keypoint
+            format: (x, y, size, response, angle, octave)
+            </returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclSURFDetector.DetectKeyPoints(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte})">
+            <summary>
+            Detect keypoints in the OclImage
+            </summary>
+            <param name="img">The image where keypoints will be detected from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <returns>An array of keypoints</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclSURFDetector.DownloadKeypoints(Emgu.CV.OpenCL.OclMat{System.Single},Emgu.CV.Util.VectorOfKeyPoint)">
+            <summary>
+            Obtain the keypoints array from OclMat
+            </summary>
+            <param name="src">The keypoints obtained from DetectKeyPointsRaw</param>
+            <param name="dst">The vector of keypoints</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclSURFDetector.UploadKeypoints(Emgu.CV.Util.VectorOfKeyPoint,Emgu.CV.OpenCL.OclMat{System.Single})">
+            <summary>
+            Obtain an OclMat from the keypoints array
+            </summary>
+            <param name="src">The keypoints array</param>
+            <param name="dst">An OclMat that represent the keypoints</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclSURFDetector.ComputeDescriptorsRaw(Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclImage{Emgu.CV.Structure.Gray,System.Byte},Emgu.CV.OpenCL.OclMat{System.Single})">
+            <summary>
+            Compute the descriptor given the image and the point location
+            </summary>
+            <param name="image">The image where the descriptor will be computed from</param>
+            <param name="mask">The optional mask, can be null if not needed</param>
+            <param name="keyPoints">The keypoint where the descriptor will be computed from. The order of the keypoints might be changed unless the GPU_SURF detector is UP-RIGHT.</param>
+            <returns>The image features founded on the keypoint location</returns>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.OclSURFDetector.DisposeObject">
+            <summary>
+            Release the unmanaged resource associate to the Detector
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.OclSURFDetector.DescriptorSize">
+            <summary>
+            Return the size of the descriptor (64/128)
+            </summary>
+        </member>
+        <member name="T:Emgu.CV.OpenCL.VectorOfOclInfo">
+            <summary>
+            Wraped class of the C++ standard vector of OclInfo.
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.VectorOfOclInfo.#ctor">
+            <summary>
+            Create an empty standard vector of OclInfo
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.VectorOfOclInfo.#ctor(System.Int32)">
+            <summary>
+            Create an standard vector of OclInfo of the specific size
+            </summary>
+            <param name="size">The size of the vector</param>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.VectorOfOclInfo.Clear">
+            <summary>
+            Clear the vector
+            </summary>
+        </member>
+        <member name="M:Emgu.CV.OpenCL.VectorOfOclInfo.DisposeObject">
+            <summary>
+            Release the standard vector
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.VectorOfOclInfo.Size">
+            <summary>
+            Get the size of the vector
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.VectorOfOclInfo.StartAddress">
+            <summary>
+            The pointer to the first element on the vector. In case of an empty vector, IntPtr.Zero will be returned.
+            </summary>
+        </member>
+        <member name="P:Emgu.CV.OpenCL.VectorOfOclInfo.Item(System.Int32)">
+            <summary>
+            Get the item in the specific index
+            </summary>
+            <param name="index">The index</param>
+            <returns>The item in the specific index</returns>
+        </member>
+    </members>
+</doc>

@@ -9,18 +9,15 @@ using System.Globalization;
 using System.Web.Script.Serialization;
 
 
-namespace LitePlacer
-{
+namespace LitePlacer{
 
-    class CNC
-    {
+    public class CNC    {
         private static FormMain MainForm;
         private SerialComm Com;
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
 
-        public CNC(FormMain MainF)
-        {
+        public CNC(FormMain MainF)        {
             MainForm = MainF;
             Com = new SerialComm(this, MainF);
             Connect(Properties.Settings.Default.CNC_SerialPort);
@@ -109,6 +106,16 @@ namespace LitePlacer
 
 		private static double CurrX;
 		private static double _trueX;
+
+        public PartLocation XYLocation  { 
+            get { return new PartLocation(CurrentX,CurrentY); }
+            set { CurrentX = value.X; CurrentY=value.Y; }
+        }
+
+        public PartLocation XYALocation {
+            get { return new PartLocation(CurrentX, CurrentY, CurrentA); }
+            set { CurrentX = value.X; CurrentY = value.Y; CurrentA = value.A; }
+        }
 
         public double TrueX
         {
@@ -249,8 +256,8 @@ namespace LitePlacer
             }
             else
             {
-				XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, Am);
-                XY_move(X, Y);
+				XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, Am - 10);
+                XYA_move(X, Y, Am);
             }
         }
 
@@ -347,7 +354,7 @@ namespace LitePlacer
             }
             _readyEvent.Reset();
             //Com.Write(command);
-            MainForm.DisplayText(command);
+            MainForm.DisplayText(command,System.Drawing.Color.Red);
             Com.Write("{\"gc\":\"" + command + "\"}");
             _readyEvent.Wait();
         }
@@ -358,7 +365,7 @@ namespace LitePlacer
         public void InterpretLine(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
-            MainForm.DisplayText(line);
+            MainForm.DisplayText(line,System.Drawing.Color.Gray);
 
             if (line.Contains("SYSTEM READY"))
             {
@@ -591,7 +598,7 @@ namespace LitePlacer
                 line = line.Replace("{\"4", "{\"motor4");
                 NewSetting(line);
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent r");
+                MainForm.DisplayText("<== r",System.Drawing.Color.Green);
                 return;
             }
 
@@ -605,11 +612,11 @@ namespace LitePlacer
         // Status report
 
         public StatusReport Status;
+        private JavaScriptSerializer serializer = new JavaScriptSerializer();
         public void NewStatusReport(string line)
         {
-            //MainForm.DisplayText("NewStatusReport: " + line);
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
             Status = serializer.Deserialize<StatusReport>(line);
+            
         }
 
         [Serializable]
