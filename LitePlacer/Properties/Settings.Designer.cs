@@ -838,5 +838,17 @@ namespace LitePlacer.Properties {
                 this["General_UpgradeRequired"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double General_ShadeGuard_mm {
+            get {
+                return ((double)(this["General_ShadeGuard_mm"]));
+            }
+            set {
+                this["General_ShadeGuard_mm"] = value;
+            }
+        }
     }
 }

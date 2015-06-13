@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -69,6 +69,8 @@
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.label145 = new System.Windows.Forms.Label();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.LoadAllTapes_button = new System.Windows.Forms.Button();
+            this.SaveAllTapes_button = new System.Windows.Forms.Button();
             this.TapeSet1_button = new System.Windows.Forms.Button();
             this.Tape_resetZs_button = new System.Windows.Forms.Button();
             this.Tape_GoToNext_button = new System.Windows.Forms.Button();
@@ -90,6 +92,7 @@
             this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -564,6 +567,10 @@
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.TrueX_label = new System.Windows.Forms.Label();
+            this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.label126 = new System.Windows.Forms.Label();
+            this.ShadeGuard_textBox = new System.Windows.Forms.TextBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -1009,6 +1016,8 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.LoadAllTapes_button);
+            this.Tapes_tabPage.Controls.Add(this.SaveAllTapes_button);
             this.Tapes_tabPage.Controls.Add(this.TapeSet1_button);
             this.Tapes_tabPage.Controls.Add(this.Tape_resetZs_button);
             this.Tapes_tabPage.Controls.Add(this.Tape_GoToNext_button);
@@ -1032,6 +1041,26 @@
             this.Tapes_tabPage.TabIndex = 6;
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // LoadAllTapes_button
+            // 
+            this.LoadAllTapes_button.Location = new System.Drawing.Point(732, 505);
+            this.LoadAllTapes_button.Name = "LoadAllTapes_button";
+            this.LoadAllTapes_button.Size = new System.Drawing.Size(75, 23);
+            this.LoadAllTapes_button.TabIndex = 42;
+            this.LoadAllTapes_button.Text = "Load All";
+            this.LoadAllTapes_button.UseVisualStyleBackColor = true;
+            this.LoadAllTapes_button.Click += new System.EventHandler(this.LoadAllTapes_button_Click);
+            // 
+            // SaveAllTapes_button
+            // 
+            this.SaveAllTapes_button.Location = new System.Drawing.Point(651, 505);
+            this.SaveAllTapes_button.Name = "SaveAllTapes_button";
+            this.SaveAllTapes_button.Size = new System.Drawing.Size(75, 23);
+            this.SaveAllTapes_button.TabIndex = 41;
+            this.SaveAllTapes_button.Text = "Save All";
+            this.SaveAllTapes_button.UseVisualStyleBackColor = true;
+            this.SaveAllTapes_button.Click += new System.EventHandler(this.SaveAllTapes_button_Click);
             // 
             // TapeSet1_button
             // 
@@ -1184,6 +1213,7 @@
             this.WidthColumn,
             this.TypeColumn,
             this.Next_Column,
+            this.Tray_Column,
             this.X_Column,
             this.Y_Column,
             this.PickupZ_Column,
@@ -1225,7 +1255,7 @@
             "+Y",
             "-Y"});
             this.OrientationColumn.Name = "OrientationColumn";
-            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.OrientationColumn.Width = 83;
             // 
@@ -1279,6 +1309,12 @@
             this.Next_Column.HeaderText = "Next";
             this.Next_Column.Name = "Next_Column";
             this.Next_Column.Width = 54;
+            // 
+            // Tray_Column
+            // 
+            this.Tray_Column.HeaderText = "Tray";
+            this.Tray_Column.Name = "Tray_Column";
+            this.Tray_Column.Width = 53;
             // 
             // X_Column
             // 
@@ -3707,6 +3743,8 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.ShadeGuard_textBox);
+            this.tabPageBasicSetup.Controls.Add(this.label126);
             this.tabPageBasicSetup.Controls.Add(this.label123);
             this.tabPageBasicSetup.Controls.Add(this.ZTestTravel_textBox);
             this.tabPageBasicSetup.Controls.Add(this.VacuumRelease_textBox);
@@ -3788,7 +3826,7 @@
             // label123
             // 
             this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(516, 526);
+            this.label123.Location = new System.Drawing.Point(517, 526);
             this.label123.Name = "label123";
             this.label123.Size = new System.Drawing.Size(70, 13);
             this.label123.TabIndex = 83;
@@ -3845,7 +3883,7 @@
             // Z_Backoff_label
             // 
             this.Z_Backoff_label.AutoSize = true;
-            this.Z_Backoff_label.Location = new System.Drawing.Point(655, 630);
+            this.Z_Backoff_label.Location = new System.Drawing.Point(739, 631);
             this.Z_Backoff_label.Name = "Z_Backoff_label";
             this.Z_Backoff_label.Size = new System.Drawing.Size(47, 13);
             this.Z_Backoff_label.TabIndex = 77;
@@ -3854,7 +3892,7 @@
             // label117
             // 
             this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(590, 629);
+            this.label117.Location = new System.Drawing.Point(674, 630);
             this.label117.Name = "label117";
             this.label117.Size = new System.Drawing.Size(47, 13);
             this.label117.TabIndex = 76;
@@ -3863,7 +3901,7 @@
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(590, 597);
+            this.label112.Location = new System.Drawing.Point(674, 598);
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(45, 13);
             this.label112.TabIndex = 75;
@@ -4088,7 +4126,7 @@
             // Z0toPCB_BasicTab_label
             // 
             this.Z0toPCB_BasicTab_label.AutoSize = true;
-            this.Z0toPCB_BasicTab_label.Location = new System.Drawing.Point(655, 613);
+            this.Z0toPCB_BasicTab_label.Location = new System.Drawing.Point(739, 614);
             this.Z0toPCB_BasicTab_label.Name = "Z0toPCB_BasicTab_label";
             this.Z0toPCB_BasicTab_label.Size = new System.Drawing.Size(53, 13);
             this.Z0toPCB_BasicTab_label.TabIndex = 53;
@@ -4108,7 +4146,7 @@
             // label111
             // 
             this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(590, 613);
+            this.label111.Location = new System.Drawing.Point(674, 614);
             this.label111.Name = "label111";
             this.label111.Size = new System.Drawing.Size(59, 13);
             this.label111.TabIndex = 52;
@@ -4119,7 +4157,7 @@
             this.Zlb_label.AutoSize = true;
             this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Zlb_label.Location = new System.Drawing.Point(593, 646);
+            this.Zlb_label.Location = new System.Drawing.Point(593, 647);
             this.Zlb_label.Name = "Zlb_label";
             this.Zlb_label.Size = new System.Drawing.Size(153, 38);
             this.Zlb_label.TabIndex = 51;
@@ -4139,7 +4177,7 @@
             // 
             // SetProbing_button
             // 
-            this.SetProbing_button.Location = new System.Drawing.Point(593, 571);
+            this.SetProbing_button.Location = new System.Drawing.Point(593, 597);
             this.SetProbing_button.Name = "SetProbing_button";
             this.SetProbing_button.Size = new System.Drawing.Size(75, 23);
             this.SetProbing_button.TabIndex = 50;
@@ -4151,7 +4189,7 @@
             // label116
             // 
             this.label116.AutoSize = true;
-            this.label116.Location = new System.Drawing.Point(590, 555);
+            this.label116.Location = new System.Drawing.Point(590, 581);
             this.label116.Name = "label116";
             this.label116.Size = new System.Drawing.Size(127, 13);
             this.label116.TabIndex = 49;
@@ -6276,14 +6314,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6350,14 +6388,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -6500,6 +6538,27 @@
             this.TrueX_label.TabIndex = 77;
             this.TrueX_label.Text = "000.000";
             this.TrueX_label.Visible = false;
+            // 
+            // TapesAll_saveFileDialog
+            // 
+            this.TapesAll_saveFileDialog.DefaultExt = "tapes";
+            // 
+            // label126
+            // 
+            this.label126.AutoSize = true;
+            this.label126.Location = new System.Drawing.Point(508, 552);
+            this.label126.Name = "label126";
+            this.label126.Size = new System.Drawing.Size(79, 13);
+            this.label126.TabIndex = 84;
+            this.label126.Text = "Z shade guard:";
+            // 
+            // ShadeGuard_textBox
+            // 
+            this.ShadeGuard_textBox.Location = new System.Drawing.Point(593, 549);
+            this.ShadeGuard_textBox.Name = "ShadeGuard_textBox";
+            this.ShadeGuard_textBox.Size = new System.Drawing.Size(75, 20);
+            this.ShadeGuard_textBox.TabIndex = 85;
+            this.ShadeGuard_textBox.TextChanged += new System.EventHandler(this.ShadeGuard_textBox_TextChanged);
             // 
             // FormMain
             // 
@@ -7136,6 +7195,10 @@
         private System.Windows.Forms.Button ChangeNeedle_button;
         private System.Windows.Forms.Label label123;
         private System.Windows.Forms.TextBox ZTestTravel_textBox;
+        private System.Windows.Forms.Button Demo_button;
+        private System.Windows.Forms.Button StopDemo_button;
+        private System.Windows.Forms.Button LoadAllTapes_button;
+        private System.Windows.Forms.Button SaveAllTapes_button;
         private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
@@ -7143,6 +7206,7 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn WidthColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Tray_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn PickupZ_Column;
@@ -7151,8 +7215,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastX;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastY;
-        private System.Windows.Forms.Button Demo_button;
-        private System.Windows.Forms.Button StopDemo_button;
+        private System.Windows.Forms.SaveFileDialog TapesAll_saveFileDialog;
+        private System.Windows.Forms.OpenFileDialog TapesAll_openFileDialog;
+        private System.Windows.Forms.TextBox ShadeGuard_textBox;
+        private System.Windows.Forms.Label label126;
     }
 }
 
