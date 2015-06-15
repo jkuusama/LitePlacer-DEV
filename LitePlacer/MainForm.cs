@@ -151,7 +151,7 @@ namespace LitePlacer
             DisplayText("Application Start");
 
             Do_Upgrade();
-
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
             Cnc_ReadyEvent = Cnc.ReadyEvent;
@@ -8191,7 +8191,6 @@ namespace LitePlacer
         }
 
 
-
         private void SaveAllTapes_button_Click(object sender, EventArgs e)
         {
             TapesAll_saveFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
@@ -8204,7 +8203,6 @@ namespace LitePlacer
 
         private void LoadAllTapes_button_Click(object sender, EventArgs e)
         {
-            // TapesAll_openFileDialog
             TapesAll_openFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
 
             if (TapesAll_openFileDialog.ShowDialog() == DialogResult.OK)
@@ -8212,6 +8210,160 @@ namespace LitePlacer
                 LoadDataGrid(TapesAll_openFileDialog.FileName, Tapes_dataGridView);
             }
         }
+
+        // =================================================================================
+        // Trays:
+
+        private void SaveTray_button_Click(object sender, EventArgs e)
+        {
+            TapesAll_saveFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
+
+            if (TapesAll_saveFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            // Get current tray ID
+            int CurrRow = Tapes_dataGridView.CurrentCell.RowIndex;
+            string TrayID = Tapes_dataGridView.Rows[CurrRow].Cells["Tray_Column"].Value.ToString();
+
+            // Copy the tapes with this ID to Clipboard datagridview:
+            DataGridView ClipBoard_dgw= new DataGridView();
+            ClipBoard_dgw.AllowUserToAddRows = false;  // this prevents an empty row in the end
+            foreach (DataGridViewColumn col in Tapes_dataGridView.Columns)
+            {
+                ClipBoard_dgw.Columns.Add(col.Clone() as DataGridViewColumn);
+            }
+            DataGridViewRow NewRow = new DataGridViewRow();
+            foreach (DataGridViewRow row in Tapes_dataGridView.Rows)
+            {
+                if(row.Cells["Tray_Column"].Value.ToString() == TrayID)
+                {
+                    NewRow = (DataGridViewRow)row.Clone();
+                    int intColIndex = 0;
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        NewRow.Cells[intColIndex].Value = cell.Value;
+                        intColIndex++;
+                    }
+                    ClipBoard_dgw.Rows.Add(NewRow);
+                }
+            }
+
+            // Save the Clipboard
+            SaveDataGrid(TapesAll_saveFileDialog.FileName, ClipBoard_dgw);
+        }
+
+        private void LoadTrayFromFile(string FileName)
+        {
+            DataGridView ClipBoard_dgw = new DataGridView();
+            ClipBoard_dgw.AllowUserToAddRows = false;  // this prevents an empty row in the end
+            foreach (DataGridViewColumn col in Tapes_dataGridView.Columns)
+            {
+                ClipBoard_dgw.Columns.Add(new DataGridViewColumn(col.CellTemplate));
+            }
+            LoadDataGrid(FileName, ClipBoard_dgw);
+            DataGridViewRow NewRow = new DataGridViewRow();
+            foreach (DataGridViewRow row in ClipBoard_dgw.Rows)
+            {
+                NewRow = (DataGridViewRow)row.Clone();
+                int intColIndex = 0;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    NewRow.Cells[intColIndex].Value = cell.Value;
+                    intColIndex++;
+                }
+                Tapes_dataGridView.Rows.Add(NewRow);
+            }
+            Update_GridView(Tapes_dataGridView);
+        }
+
+        private void LoadTray_button_Click(object sender, EventArgs e)
+        {
+            TapesAll_openFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
+
+            if (TapesAll_openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            LoadTrayFromFile(TapesAll_openFileDialog.FileName);
+        }
+
+        private void DeleteTray(string TrayID, int col_index)
+        {
+            // removes a tray from Tapes_dataGridView
+            // Can't modify the gridview and iterate through it at the same time, so:
+
+            // Copy current to clipboard
+            DataGridView ClipBoard_dgw = new DataGridView();
+            ClipBoard_dgw.AllowUserToAddRows = false;  // this prevents an empty row in the end
+            // create columns
+            foreach (DataGridViewColumn col in Tapes_dataGridView.Columns)
+            {
+                ClipBoard_dgw.Columns.Add(new DataGridViewColumn(col.CellTemplate));
+            }
+            // copy rows
+            DataGridViewRow NewRow = new DataGridViewRow();
+            foreach (DataGridViewRow row in Tapes_dataGridView.Rows)
+            {
+                NewRow = (DataGridViewRow)row.Clone();
+                int intColIndex = 0;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    NewRow.Cells[intColIndex].Value = cell.Value;
+                    intColIndex++;
+                }
+                ClipBoard_dgw.Rows.Add(NewRow);
+            }
+
+            Tapes_dataGridView.Rows.Clear();   // Clear existing
+            // Copy back if needed
+            foreach (DataGridViewRow row in ClipBoard_dgw.Rows)
+            {
+                NewRow = (DataGridViewRow)row.Clone();
+                int intColIndex = 0;
+                if (row.Cells[col_index].Value.ToString() != TrayID)
+                {
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        NewRow.Cells[intColIndex].Value = cell.Value;
+                        intColIndex++;
+                    }
+                    Tapes_dataGridView.Rows.Add(NewRow);                    
+                }
+            }
+        }
+
+        private void ReplaceTray_button_Click(object sender, EventArgs e)
+        {
+            TapesAll_openFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
+
+            if (TapesAll_openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            // Get current tray ID
+            int CurrRow = Tapes_dataGridView.CurrentCell.RowIndex;
+            string TrayID = Tapes_dataGridView.Rows[CurrRow].Cells["Tray_Column"].Value.ToString();
+            int col = Tapes_dataGridView.Rows[CurrRow].Cells["Tray_Column"].ColumnIndex;
+            DeleteTray(TrayID, col);
+            LoadTrayFromFile(TapesAll_openFileDialog.FileName);
+        }
+
+        private void ReloadTray_button_Click(object sender, EventArgs e)
+        {
+            // Get current tray ID
+            int CurrRow = Tapes_dataGridView.CurrentCell.RowIndex;
+            string TrayID = Tapes_dataGridView.Rows[CurrRow].Cells["Tray_Column"].Value.ToString();
+            foreach (DataGridViewRow row in Tapes_dataGridView.Rows)
+            {
+                if (row.Cells["Tray_Column"].Value.ToString() == TrayID)
+                {
+                    row.Cells["Next_Column"].Value = 1;
+                }
+            }
+
+        }
+
 
 
         #endregion  Tape Positions page functions
@@ -9338,7 +9490,6 @@ namespace LitePlacer
 
         }
         #endregion
-
 
     }	// end of: 	public partial class FormMain : Form
 
