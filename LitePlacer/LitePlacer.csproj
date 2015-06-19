@@ -136,9 +136,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\emgu_bin\Emgu.Util.dll</HintPath>
     </Reference>
-    <Reference Include="HomographyEstimation">
-      <HintPath>..\packages\HomographyEstimation\HomographyEstimation.dll</HintPath>
-    </Reference>
     <Reference Include="MathNet.Numerics, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MathNet.Numerics.3.7.0\lib\net40\MathNet.Numerics.dll</HintPath>
@@ -159,24 +156,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoCalibration.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AForgeFunction.cs" />
+    <Compile Include="AutoCalibration.cs" />
+    <Compile Include="PropertyComparer.cs" />
+    <Compile Include="SortableBindingList.cs" />
+    <Compile Include="VideoCapture.cs" />
     <Compile Include="CAD-new.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CAD.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Camera.cs" />
+    <Compile Include="CameraView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CameraView.Designer.cs">
+      <DependentUpon>CameraView.cs</DependentUpon>
+    </Compile>
     <Compile Include="CNC.cs" />
-    <Compile Include="CNCMovement.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Configuration.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Configuration.cs" />
     <Compile Include="ImageFinder.cs" />
+    <Compile Include="JobData.cs" />
     <Compile Include="LeastSquaresMapping.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -200,7 +198,7 @@
     <Compile Include="Shapes.cs" />
     <Compile Include="SlackCompensation.cs" />
     <Compile Include="TapeObj.cs" />
-    <Compile Include="tapes.cs" />
+    <Compile Include="TapesClass.cs" />
     <Compile Include="TapeSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -210,9 +208,13 @@
     <Compile Include="UIDataMapping.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Global.cs" />
     <Compile Include="VideoDetection.cs" />
     <Compile Include="VideoProcessing.cs" />
     <Compile Include="VideoTextMarkup.cs" />
+    <EmbeddedResource Include="CameraView.resx">
+      <DependentUpon>CameraView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -235,7 +237,10 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\AForgeFunction.datasource" />
+    <None Include="Properties\DataSources\JobData.datasource" />
     <None Include="Properties\DataSources\PhysicalComponent.datasource" />
+    <None Include="Properties\DataSources\TapeObj.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

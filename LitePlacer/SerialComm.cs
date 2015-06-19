@@ -1,48 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Drawing;
 using System.IO.Ports;
+using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace LitePlacer
-{
-    class SerialComm
-    {
-        
+namespace LitePlacer{
+    delegate void SerialRXDelegate(string msg);
+    class SerialComm    {
+        const int ReadBufferSize = 10000;
+        private string RxString = string.Empty;
         SerialPort Port = new SerialPort();
+        public SerialRXDelegate serialDelegate = null;
 
-        // To process data on the DataReceived thread, get reference of Cnc, so we can pass data to it.
-        private CNC Cnc;
-        // To show what we send, we need a reference to mainform.
-        private static FormMain MainForm;
+ 
+        public bool IsOpen { get  { return Port.IsOpen; } }
 
-       public SerialComm(CNC caller, FormMain MainF)
-        {
-            Cnc = caller;
-            MainForm = MainF;
-        }
+        private void Close_thread()  {Port.Close();}
 
-        public bool IsOpen
-        {
-            get 
-            { 
-                return Port.IsOpen;
-            }
-        }
-
-        private void Close_thread()
-        {
-            Port.Close();
-        }
-
-        public void Close()
-        {
-            try
-            {
-                if (Port.IsOpen)
-                {
+        public void Close()        {
+            try  {
+                if (Port.IsOpen)                {
                     Port.DiscardInBuffer();
                     Port.DiscardOutBuffer();
                 }
@@ -50,17 +27,12 @@ namespace LitePlacer
                 // the workaround is to close in another thread
                 Thread t = new Thread(() => Close_thread());
                 t.Start();
-            }
-            catch
-            {
-            }
+            }   catch     {     }
         }
 
-        public bool Open(string Com)
-        {
+        public bool Open(string Com)        {
             Close();
-            try
-            {
+            try            {
                 Port.PortName = Com;
                 Port.BaudRate = 115200;
                 Port.Parity = Parity.None;
@@ -70,36 +42,26 @@ namespace LitePlacer
                 Port.DtrEnable = true;  // prevent hangs on some drivers
                 Port.RtsEnable = true;
                 Port.Open();
-                if (Port.IsOpen)
-                {
+                if (Port.IsOpen)                {
                     Port.DiscardOutBuffer();
                     Port.DiscardInBuffer();
                 }
-                Port.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
+                Port.DataReceived += DataReceived;
                 return Port.IsOpen;
-            }
-            catch
-            {
+            }            catch            {
                 return false;
             }
         }
 
 
-        public void Write(string TxText)
-        {
-            if (Port.IsOpen)
-            {
+        public void Write(string TxText)        {
+            if (Port.IsOpen)            {
                 Port.Write(TxText + "\r\n");
-                 MainForm.DisplayText("==> " + TxText, System.Drawing.Color.Green); 
+                 Global.Instance.DisplayText("==> " + TxText, Color.Green); 
            }
         }
-
-
-        const int ReadBufferSize = 10000;
-        private string RxString = string.Empty;
-
-        void DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
+        
+        void DataReceived(object sender, SerialDataReceivedEventArgs e)        {
             //Initialize a buffer to hold the received data 
             byte[] buffer = new byte[ReadBufferSize];
             string WorkingString;
@@ -119,12 +81,11 @@ namespace LitePlacer
                         WorkingString = RxString.Substring(0, RxString.IndexOf("\n")+1);
                         //Remove the data and the terminator from tString 
                         RxString = RxString.Substring(RxString.IndexOf("\n") + 1);
-                        Cnc.InterpretLine(WorkingString);
+                        if (serialDelegate != null) serialDelegate(WorkingString);
                 }
             }
-            catch (Exception ex)
-            {
-                MainForm.DisplayText("########## " + ex);
+            catch (Exception ex)            {
+                Global.Instance.DisplayText("########## " + ex);
             }
          } 
 

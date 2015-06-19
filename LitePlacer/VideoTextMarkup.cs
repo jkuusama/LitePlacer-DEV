@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace LitePlacer {
     public class VideoTextMarkup {
@@ -11,11 +7,11 @@ namespace LitePlacer {
         public Color color = Color.Blue;
         public Font font = new Font("Tahoma",20);
 
-        public VideoTextMarkup(Camera cam, PartLocation location, string text) {
-            this.location = new Shapes.Thing(location, Shapes.PointMode.MM);
-            this.location.camera = cam;
-            this.text = text;
-        }
+     //   public VideoTextMarkup(Camera cam, PartLocation location, string text) {
+       //     this.location = new Shapes.Thing(location, Shapes.PointMode.MM);
+     //       this.location.camera = cam;
+     //       this.text = text;
+     //   }
 
 
         public void Draw(ref Bitmap image) {

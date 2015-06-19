@@ -1,47 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-
 using System.Drawing;
-using System.Threading;
-using System.Drawing.Imaging;
-
+using System.Linq;
 using AForge;
-using AForge.Video;
-using AForge.Video.DirectShow;
 using AForge.Imaging;
-using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
-
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.Util;
-using Emgu;
+using LitePlacer.Properties;
+using Point = AForge.Point;
+
 namespace LitePlacer {
     public class VideoDetection {
-        private Camera camera;
-
-        public VideoDetection(Camera camera) {
-            this.camera = camera;
-        }
-                   
 
         /************** These functions are intelligent about their resolution/offset and can be changed dynamically *****/
-        
+
+
+        public static List<Shapes.Circle> FindCircles(VideoProcessing vp) {
+            return FindCircles(vp, vp.GetMeasurementFrame());
+        }
+
+
         /// <summary>
         /// Finds circles - zoom is NOT compensated for in returned results
         /// </summary>
-        /// <param name="bitmap"></param>
         /// <returns>Graphic coordinates with zoom not accounted for for found circles</returns>
-        public List<Shapes.Circle> FindCircles(Bitmap bitmap) {
+        public static List<Shapes.Circle> FindCircles(VideoProcessing vp, Bitmap frame) {
             // locating objects
             BlobCounter blobCounter = new BlobCounter();
             blobCounter.FilterBlobs = true;
             blobCounter.MinHeight = 5;
             blobCounter.MinWidth = 5;
-            blobCounter.ProcessImage(bitmap);
+            blobCounter.ProcessImage(frame);
             Blob[] blobs = blobCounter.GetObjectsInformation();
 
             List<Shapes.Circle> Circles = new List<Shapes.Circle>();
@@ -49,7 +40,7 @@ namespace LitePlacer {
             for (int i = 0, n = blobs.Length; i < n; i++) {
                 SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
                 List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
-                AForge.Point center;
+                Point center;
                 float radius;
 
                 // is circle ?
@@ -60,11 +51,15 @@ namespace LitePlacer {
                     }
                 }
             }
-            SetCamera(Circles);
+            SetVideoProcessing(Circles, vp);
             return (Circles);
         }
 
-        public List<Shapes.Rectangle> FindRectangles(Bitmap frame) {
+        public static List<Shapes.Rectangle> FindRectangles(VideoProcessing vp) {
+            return FindRectangles(vp, vp.GetMeasurementFrame());
+        }
+        public static List<Shapes.Rectangle> FindRectangles(VideoProcessing vp, Bitmap frame) {
+            
             List<Shapes.Rectangle> rects = new List<Shapes.Rectangle>();
 
             using (Image<Bgr, Byte> img = new Image<Bgr, byte>(frame)) {
@@ -78,8 +73,8 @@ namespace LitePlacer {
 
                 using (MemStorage storage = new MemStorage()) //allocate storage for contour approximation
                     for ( Contour<System.Drawing.Point> contours = gray.FindContours(
-                          Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE,
-                          Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST,
+                          CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE,
+                          RETR_TYPE.CV_RETR_LIST,
                           storage);
                           contours != null;
                           contours = contours.HNext) {
@@ -106,8 +101,7 @@ namespace LitePlacer {
                                     var box = currentContour.GetMinAreaRect();
                                     Shapes.Rectangle r = new Shapes.Rectangle(box.center.X, box.center.Y, box.angle);                                 
                                     r.Height = box.size.Height;
-                                    r.Width = box.size.Width;
-                                    r.camera = this.camera;                                    
+                                    r.Width = box.size.Width;                               
                                     rects.Add(r);
                                 }
 
@@ -115,25 +109,12 @@ namespace LitePlacer {
                         }
                  }
             }
+            SetVideoProcessing(rects, vp);
             return rects;
         }
 
         //gooz
-        public List<Shapes.Circle> FindCircles() {
-            camera.MainForm.DisplayText("FindCircles()", System.Drawing.Color.Orange);
 
-            Bitmap frame = camera.GetMeasurementFrame();
-            var circles = FindCircles(frame);
-            List<PointF> t = new List<PointF>();
-            foreach (var circle in circles) {
-                circle.ToScreenResolution();
-                t.Add(circle.ToPartLocation().ToPointF());
-            }
-            camera.videoProcessing.DrawMarks(ref frame, t, Color.Green, 30);
-            camera.videoProcessing.DrawCrossFunct(ref frame);
-            frame.Save(@"c:\findCircles.bmp");
-            return circles;
-        }
 
 
 
@@ -145,7 +126,7 @@ namespace LitePlacer {
         /// <param name="image">Bitmap of image to look at</param>
         /// <param name="template_filename">File containg template image</param>
         /// <returns>imagefinder object</returns>
-        public List<Shapes.Fiducal> FindTemplates(Bitmap image, string template_filename, double threshold) {
+        public static List<Shapes.Fiducal> FindTemplates(VideoProcessing vp, Bitmap image, string template_filename, double threshold) {
             Image<Bgr, Byte> img = new Image<Bgr, byte>(image);
 
             // template plus 90deg roated version of the template
@@ -158,26 +139,29 @@ namespace LitePlacer {
             imageFinder.FindImage(templ2);
 
             var ret = imageFinder.Points.Select(x => new Shapes.Fiducal(x.X, x.Y)).ToList();
-            SetCamera(ret);
+
+            SetVideoProcessing(ret, vp);
             return ret;
         }
-        public List<Shapes.Fiducal> FindTemplates(string template_filename, double threshold) {
-            return FindTemplates(camera.GetMeasurementFrame(), template_filename, threshold);
-        }
+
 
         /// <summary>
         /// Will use default settings for finding the template
         /// </summary>
         /// <param name="image">the image to search</param>
         /// <returns>list of fiducary points</returns>
-        public List<Shapes.Fiducal> FindTemplates(Bitmap image) {
-            return FindTemplates(image, Properties.Settings.Default.template_file, Properties.Settings.Default.template_threshold);
-        }
-        public List<Shapes.Fiducal> FindTemplates() {
-            return FindTemplates(camera.GetMeasurementFrame());
+        public static List<Shapes.Fiducal> FindTemplates(VideoProcessing vp) {
+            return FindTemplates(vp, vp.GetMeasurementFrame(), Settings.Default.template_file, Settings.Default.template_threshold);
         }
 
-        public List<Shapes.Component> FindComponents(Bitmap bitmap) {
+        public static List<Shapes.Fiducal> FindTemplates(VideoProcessing vp, Bitmap image) {
+            return FindTemplates(vp, image, Settings.Default.template_file, Settings.Default.template_threshold);
+        }
+
+        public static List<Shapes.Component> FindComponents(VideoProcessing vp) {
+            return FindComponents(vp, vp.GetMeasurementFrame());
+        }
+        public static List<Shapes.Component> FindComponents(VideoProcessing vp, Bitmap bitmap) {
             // Locating objects
             BlobCounter blobCounter = new BlobCounter();
             blobCounter.FilterBlobs = true;
@@ -236,11 +220,11 @@ namespace LitePlacer {
                     }
                 }
                 // Get the center point of it
-                AForge.Point LongestCenter = new AForge.Point();
+                Point LongestCenter = new Point();
                 LongestCenter.X = (float)Math.Round((Longest.End.X - Longest.Start.X) / 2.0 + Longest.Start.X);
                 LongestCenter.Y = (float)Math.Round((Longest.End.Y - Longest.Start.Y) / 2.0 + Longest.Start.Y);
-                AForge.Point NormalStart = new AForge.Point();
-                AForge.Point NormalEnd = new AForge.Point();
+                Point NormalStart = new Point();
+                Point NormalEnd = new Point();
                 // Find normal: 
                 // start= longest.start rotated +90deg relative to center
                 // end= longest.end rotated -90deg and relative to center
@@ -260,8 +244,8 @@ namespace LitePlacer {
                 Line Normal = Line.FromPoints(NormalStart, NormalEnd);
 
                 // Find the furthest intersection to the normal (skip the Longest)
-                AForge.Point InterSection = new AForge.Point();
-                AForge.Point Furthest = new AForge.Point();
+                Point InterSection = new Point();
+                Point Furthest = new Point();
                 bool FurhtestAssinged = false;
                 LineSegment seg;
                 dist = 0;
@@ -281,7 +265,7 @@ namespace LitePlacer {
                     if (seg.GetIntersectionWith(Normal) == null) {
                         continue;
                     }
-                    InterSection = (AForge.Point)seg.GetIntersectionWith(Normal);
+                    InterSection = (Point)seg.GetIntersectionWith(Normal);
                     if (InterSection.DistanceTo(LongestCenter) > dist) {
                         Furthest = InterSection;
                         FurhtestAssinged = true;
@@ -289,7 +273,7 @@ namespace LitePlacer {
                     }
                 }
                 // Check, if there is a edge point that is close to the normal even further
-                AForge.Point fPoint = new AForge.Point();
+                Point fPoint = new Point();
                 for (int i = 0; i < Outline.Count; i++) {
                     fPoint.X = Outline[i].X;
                     fPoint.Y = Outline[i].Y;
@@ -301,7 +285,7 @@ namespace LitePlacer {
                         }
                     }
                 }
-                AForge.Point ComponentCenter = new AForge.Point();
+                Point ComponentCenter = new Point();
                 if (FurhtestAssinged) {
                     // Find the midpoint of LongestCenter and Furthest: This is the centerpoint of component
                     ComponentCenter.X = (float)Math.Round((LongestCenter.X - Furthest.X) / 2.0 + Furthest.X);
@@ -317,36 +301,22 @@ namespace LitePlacer {
                     Components.Add(new Shapes.Component(ComponentCenter, Alignment, Outline, Longest, NormalStart, NormalEnd));
                 }
             }
-            SetCamera(Components);
+            SetVideoProcessing(Components, vp);
             return Components;
         }
-        public List<Shapes.Component> FindComponents() {
-            return FindComponents(camera.GetMeasurementFrame());
-        }
-        // standard paradigms
 
 
 
-        public Shapes.Fiducal GetClosestTemplate(double tolerance) {
-            return GetClosest(GetWithin(FindTemplates(), tolerance));
-        }
 
        
-        public Shapes.Circle GetClosestCircle(double tolerance) {
-            camera.MainForm.DisplayText("GetClosestCircle(" + tolerance + ")", Color.Orange);
-           /* var circles = FindCircles();
-            foreach (var c in circles) Console.WriteLine("found circle @ " + c);
-            circles = GetWithin(circles, tolerance);
-            foreach (var c in circles) Console.WriteLine("tolerance found circle @ " + c);
-            var circle = GetClosest(circles);
-            Console.WriteLine("closest @ " + circle);
-            return circle; */
-            return GetClosest( GetWithin( FindCircles(), tolerance) );
+        public static Shapes.Circle GetClosestCircle(VideoProcessing vp, double tolerance) {
+            Global.Instance.DisplayText("GetClosestCircle(" + tolerance + ")", Color.Orange);
+            return GetClosest( GetWithin( FindCircles(vp), tolerance) );
         }
 
-        public Shapes.Circle GetClosestAverageCircle(double tolerance, double retries) {
+        public static Shapes.Circle GetClosestAverageCircle(VideoProcessing vp, double tolerance, double retries) {
             List<Shapes.Circle> circles = new List<Shapes.Circle>();
-            while (retries-- > 0) circles.Add(GetClosestCircle(tolerance));
+            while (retries-- > 0) circles.Add(GetClosestCircle(vp, tolerance));
             return AverageLocation(circles);
         }
 
@@ -355,18 +325,17 @@ namespace LitePlacer {
         
         // Sorting Routines ================================
 
-        public void SetCamera<T>(List<T> list) where T : Shapes.Thing {
+        public static void SetVideoProcessing<T>(List<T> list, VideoProcessing vp) where T : Shapes.Thing {
             list.RemoveAll(x => x == null);
-            if (this.camera == null) throw new Exception("SetCamera / VideoDetection doesn't have vlid camera object set");
-            foreach (var x in list) x.camera = this.camera;
+            foreach (var x in list) x.videoProcessing = vp;
         }
 
-        public int GetCountWithin<T>(List<T> list, double distanceMM) where T : Shapes.Thing {
+        public static int GetCountWithin<T>(List<T> list, double distanceMM) where T : Shapes.Thing {
             list.RemoveAll(x => x == null);
             return GetWithin(list, distanceMM).Count;
         }
             
-        public List<T> GetWithin<T>(List<T> list, double distanceMM) where T : Shapes.Thing {
+        public static List<T> GetWithin<T>(List<T> list, double distanceMM) where T : Shapes.Thing {
             list.RemoveAll(x => x == null);
             foreach (var x in list) {
                 x.ToMMResolution();
@@ -381,7 +350,7 @@ namespace LitePlacer {
 
         }
 
-        public Shapes.Rectangle GetSmallestCenteredRectangle(List<Shapes.Rectangle> list) {
+        public static Shapes.Rectangle GetSmallestCenteredRectangle(List<Shapes.Rectangle> list) {
             list.RemoveAll(x => x == null);
             if (list == null || list.Count == 0) return null;
            // remove entries not containing the center point
@@ -392,7 +361,7 @@ namespace LitePlacer {
             return list.Aggregate((c, d) => c.Area() < d.Area() ? c : d);
         }
 
-        public T GetClosest<T>(List<T> list) where T : Shapes.Thing {
+        public static T GetClosest<T>(List<T> list) where T : Shapes.Thing {
             list.RemoveAll(x => x == null);
             if (list == null || list.Count == 0) return null;
             foreach (var x in list) x.ToMMResolution();
@@ -403,7 +372,7 @@ namespace LitePlacer {
         /// <summary>
         /// This assumes that the list is all repeated measurements of the same part - this will return one part with the average value for X,Y
         /// </summary>
-        public T AverageLocation<T>(List<T> list) where T : Shapes.Thing {
+        public static T AverageLocation<T>(List<T> list) where T : Shapes.Thing {
             list.RemoveAll(x => x == null);
             if (list.Count == 0) return null;
             double xx = 0, yy = 0, aa = 0;
@@ -413,6 +382,63 @@ namespace LitePlacer {
             list[0].A = aa / list.Count;
             return list[0];
         }
+
+
+        // higher levels tuff
+        public static int MeasureClosestComponentInPx(out double X, out double Y, out double A, VideoProcessing vp, double Tolerance, int averages) {
+            X = 0;
+            double Xsum = 0;
+            Y = 0;
+            double Ysum = 0;
+            A = 0.0;
+            double Asum = 0.0;
+
+            List<Shapes.Component> components = new List<Shapes.Component>();
+            for (int i = 0; i < 5; i++) components.Add(
+                GetClosest(
+                GetWithin( FindComponents(vp), Tolerance )
+                ));
+            int count = components.Count;
+            if (count == 0) return 0;
+            foreach (var c in components) {
+                Xsum += c.X;
+                Ysum += c.Y;
+                Asum += Global.ReduceRotation(c.A);
+            }
+
+            X = Xsum / count;
+            Y = Ysum / count;
+            A = -Asum / count;
+            return count;
+        }
+
+
+
+        public static Shapes.Thing FindClosest(VideoProcessing vp, Shapes.ShapeTypes type, double FindTolerance, int retries) {
+            while (retries-- > 0) {
+                for (int i = 0; i < 10; i++) vp.GetMeasurementFrame(); //skip 10 frames
+                Shapes.Thing thing = null;
+                switch (type) {
+                    case Shapes.ShapeTypes.Circle:
+                        thing = GetClosestCircle(vp,FindTolerance);
+                        break;
+                    case Shapes.ShapeTypes.Fiducial:
+                        var things = FindTemplates(vp);
+                        thing = GetClosest( GetWithin( things, FindTolerance));
+                        break;
+                    case Shapes.ShapeTypes.Rectangle:
+                        thing = GetSmallestCenteredRectangle(FindRectangles(vp));
+                        break;
+                    default:
+                        Global.Instance.DisplayText("detection of " + type + " not yet supported", Color.Red);
+                        break;
+                }
+                if (thing != null) return thing;
+            }
+            return null;
+        }
+
+
 
     }
 }

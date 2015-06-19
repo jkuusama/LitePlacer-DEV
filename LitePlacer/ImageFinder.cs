@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing.Printing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 
 // based on post http://www.emgu.com/forum/viewtopic.php?f=7&t=3056&p=10417&hilit=template#p10417
@@ -48,8 +44,8 @@ namespace LitePlacer {
 
         public void MarkLocationsOnImage() {
             ResultImage = BaseImage.Copy();
-            foreach (var pt in this.Points) {
-                ResultImage.Draw(new Cross2DF((PointF)pt, 10, 10), new Bgr(Color.Red), 2);
+            foreach (var pt in Points) {
+                ResultImage.Draw(new Cross2DF(pt, 10, 10), new Bgr(Color.Red), 2);
             }
         }
 
@@ -66,7 +62,7 @@ namespace LitePlacer {
 
             // FindImage all occurences of imgFind
             while (true) {
-                using (Image<Gray, float> result = imgSrc.MatchTemplate(SubImage, Emgu.CV.CvEnum.TM_TYPE.CV_TM_CCOEFF_NORMED)) {
+                using (Image<Gray, float> result = imgSrc.MatchTemplate(SubImage, TM_TYPE.CV_TM_CCOEFF_NORMED)) {
 
                     double[] minValues, maxValues;
                     Point[] minLocations, maxLocations;

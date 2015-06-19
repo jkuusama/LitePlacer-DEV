@@ -29,7 +29,7 @@ using Emgu.Util;
 using Emgu;
 
 namespace LitePlacer {
-    public partial class FormMain   {
+  /*  public partial class FormMain   {
         // =================================================================================
         //CAD data reading functions: Tries to understand different pick and place file formats
         // =================================================================================
@@ -371,9 +371,7 @@ namespace LitePlacer {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
             CadData_GridView.ClearSelection();
-            // Check, that our data is good:
-            if (!ValidateCADdata_m())
-                return false;
+ 
 
             return true;
         }   // end ParseCadData
@@ -415,4 +413,5 @@ namespace LitePlacer {
 
 
     }
+ */
 }

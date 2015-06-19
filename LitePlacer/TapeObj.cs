@@ -1,86 +1,84 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
-using System.Drawing;
-
+using System.ComponentModel;
 
 // http://www.yageo.com/exep/pages/download/literatures/UPY-C_GEN_15.pdf
 
 namespace LitePlacer {
-    public enum TapeType { White, Black, Clear }
-    public enum TapeDefault { T0402, T0603, T0806, QFN }
+    public enum ComponentType { T0402, T0603, T0806, QFN }
+    public enum Orientation {PosX,PosY,NegX,NegY}
 
-   
-    
-    public class TapeObj {
-        public TapeType Type;
-        public string ID; // name 
-        public double HoleDiameter; //Do
-        public double HolePitch; // P0
-        public double PartPitch; // P1
-        public double TapeWidth; //W
-        public double HoleToPartSpacingY { get { return TapeWidth/2-.5; }} // F
-        public double HoleToPartSpacingX; //P2
+    [Serializable]
+    public class TapeObj : INotifyPropertyChanged {
+
+        private string __tapeType = "Paper";
+        public string TapeType { get { return __tapeType; } set { __tapeType = value; notify("TapeType"); } } //tapetype
+        private string __partType = "T0402";
+        public string PartType { get { return __partType; } set { __partType = value; ToDefaults(_PartType); notify("PartType"); } } //tapedefault
+
+        public ComponentType _PartType { get { return ToTapeDefault(PartType); } }
+
+        private string _ID;
+        public string ID { get { return _ID; } set { _ID = value; notify("ID"); } } // name 
+
+        public double HoleDiameter {get;  set;} //Do
+
+        private double _HolePitch;
+        public double HolePitch { get { return _HolePitch; } set { _HolePitch = value; notify("HolePitch");} } // P0
+
+        private double _PartPitch;
+        public double PartPitch { get { return _PartPitch; } set { _PartPitch = value; notify("PartPitch"); } }
+
+        private double _HoleToPartSpacingX;
+        public double HoleToPartSpacingX { get { return _HoleToPartSpacingX; } set { _HoleToPartSpacingX = value; notify("HoleToPartSpacingX"); } }
+
+        private double _HoleToPartSpacyingY;
+        public double HoleToPartSpacyingY { get { return _HoleToPartSpacyingY; } set { _HoleToPartSpacyingY = value; notify("HoleToPartSpacyingY"); } }
+
+        private double _PickupZ;
+        public double PickupZ { get { return _PickupZ; } set { _PickupZ = value; notify("PickupZ"); } }
+
+        private double _PlaceZ;
+        public double PlaceZ { get { return _PlaceZ; } set { _PlaceZ = value; notify("PlaceZ"); } }
+
+        private double _Slope;
+        public double Slope { get { return _Slope; } set { _Slope = value; notify("Slope"); } }
+
+        private double _TapeWidth;
+        public double TapeWidth { get { return _TapeWidth; } set { _TapeWidth = value; notify("TapeWidth"); notify("HoleToPartSpacingY"); } }
+
+        public double HoleToPartSpacingY { get { return TapeWidth / 2 - .5; } } // F
         public PartLocation FirstHole;
-        public double _PickupZ, _PlaceZ;
-        public int row;
-        public bool isPickupZSet = false;
-        public bool isPlaceZSet = false;
-        public bool isFullyCalibrated = false;
+
+        public bool IsPickupZSet { get { return (_PickupZ == -1) ?false : true; } }
+        public bool IsPlaceZSet { get { return (_PlaceZ == -1) ?false : true; } }
+        public bool IsFullyCalibrated = false;
         public double a; //coeffients of equation defining location of tape a + b*x
         private double _b;
-        private int currentPart = 0;
-        public DataGridViewCellCollection myRow;
-        
+        private int currentPart;
 
-        // these 2 are used as directional vectors
+        public void Reset() {
+            TapeType = "Paper";
+            currentPart = 1;
+            PickupZ = -1;
+            PlaceZ = -1;
+            OriginalTapeOrientation = "PositiveX";
+            OriginalPartOrientation = "PositiveX";
+            b = 0;
+            PartType = "T0402"; //will reset defaults
+        }
+
+        // these are the actual anglees of the part - represted as slopes
         private PartLocation _TapeOrientation;
-        private PartLocation _PartOrientation;
-        public string TapeOrientation {
-            get { return (_TapeOrientation.ToRadians() * 180 / Math.PI).ToString() + " deg" ; }
-            set {
-                if (isFullyCalibrated) throw new Exception("Fully Calibrated Tape - updating TapeOrientation is not advised");
-                _TapeOrientation = OrienationToVector(value); 
-            }
+        // this is the user defined direction of the part
+        // if tape is orthogonal to axis, then part orientation refers to the orientation of the part at that time
 
-        }
+        public PartLocation OriginalTapeOrientationVector { get { return OrientationToVector(OriginalTapeOrientation); } }
+        public PartLocation OriginalPartOrientationVector { get { return OrientationToVector(OriginalPartOrientation); } }
+        public String OriginalTapeOrientation {get;set;}
+        public String OriginalPartOrientation {get;set;}
 
-        public PartLocation PartOrientationVector {
-            get { return _PartOrientation; }
-            set { _PartOrientation = value; }
-        }
-        public string PartOrientation {
-            get { return VectorToOrientation(_PartOrientation); }
-            set { _PartOrientation = OrienationToVector(value); }
-        }
-        public string PickupZ {
-            get { return (isPickupZSet) ? _PickupZ.ToString() : "--"; }
-            set {
-                    try {
-                        _PickupZ = double.Parse(value);
-                        isPickupZSet = true;
-                    } catch {
-                        isPickupZSet = false;
-                    }
-                }       
-        }
-        public string PlaceZ {
-            get { return (isPlaceZSet) ? _PlaceZ.ToString() : "--"; }
-            set {
-                try {
-                    _PlaceZ = double.Parse(value);
-                    isPlaceZSet = true;
-                } catch {
-                    isPlaceZSet = false;
-                }
-            }
-        }
+
+       
         /// <summary>
         /// This is the slope of the line for the tape and is more accurate than the intial settings
         /// </summary>
@@ -95,103 +93,29 @@ namespace LitePlacer {
         }
 
 
-
-
-        /// <summary>
-        /// If given a reference to a DataGridViewCellCollection, it will
-        /// auto-populate itself with what's in there and throw an exception 
-        /// if it can't parse something
-        /// </summary>
-        /// <param name="rowData">DataGridRow with the data</param>
-        /// <param name="rowIndex">The index from the DataGridRow</param>
-        public TapeObj(DataGridViewCellCollection rowData, int rowIndex) : this(rowData) {
-            row = rowIndex;
-        }
-
         /// <summary>
         /// If given a reference to a DataGridViewCellCollection, it will
         /// auto-populate itself with what's in there and throw an exception 
         /// if it can't parse something
         /// </summary>
         /// <param name="rowData"></param>
-        public TapeObj(DataGridViewCellCollection rowData) {
+        public TapeObj() : this(ComponentType.T0402) {
             HolePitch = 4d;
             HoleToPartSpacingX = -2d; // first part is to the "left" of the hole
             HoleDiameter = 1.5d;
-            myRow = rowData;
-            ReParse();
         }
 
-        /// <summary>
-        /// These values are user defined and not super critical and should be updated every time we 
-        /// need to do anything that can be effected by changes in these values
-        /// </summary>
-        public void UpdateValues() {
-            if (myRow == null) throw new Exception("my row dissapeared");
-            PartOrientation = myRow["RotationColumn"].Value.ToString();
-            string tape_size = myRow["WidthColumn"].Value.ToString();
-            string[] sizes = tape_size.Split(new string[] { "/", "mm" }, StringSplitOptions.RemoveEmptyEntries);
-            TapeWidth = double.Parse(sizes[0]);
-            PartPitch = double.Parse(sizes[1]);
-            currentPart = int.Parse(myRow["Next_Column"].Value.ToString()); //XXX might need to subtract 1?
-Console.WriteLine("ID " + this.ID + " Next=" + currentPart);
-            switch (myRow["TypeColumn"].Value.ToString()) {
-                case "Paper (White)": Type = TapeType.White; break;
-                case "Black Plastic": Type = TapeType.Black; break;
-                case "Clear Plastic": Type = TapeType.Clear; break;
-                default:
-                    throw new Exception("Unable to parse tape type");
-            }
-        }
-
-        public void ReParse() {
-            try {
-                isFullyCalibrated = false;
-                ID = myRow["IdColumn"].Value.ToString();
-                TapeOrientation = myRow["OrientationColumn"].Value.ToString();
-                FirstHole = new PartLocation(float.Parse(myRow["X_Column"].Value.ToString()),
-                                      float.Parse(myRow["Y_Column"].Value.ToString()));
-                UpdateValues();
-            } catch (Exception e) {
-                throw new Exception("Tape: Unable to parse row data : " + e.ToString());
-            }
-
-            try {
-                _PlaceZ = double.Parse(myRow["PlaceZ_Column"].Value.ToString());
-                isPlaceZSet = true;
-            } catch { }
-
-            try {
-                _PickupZ = double.Parse(myRow["PickupZ_Column"].Value.ToString());
-                isPickupZSet = true;
-            } catch { }
-
-            try { b=double.Parse(myRow["Slope_Column"].Value.ToString()); } catch {}
-            try { HolePitch = double.Parse(myRow["HolePitch_Column"].Value.ToString()); } catch {}
-            try { isFullyCalibrated = bool.Parse(myRow["IsCalibrated_Column"].Value.ToString()); } catch {}
-
-
-        }
-
-        public void PushChangesToRow() {
-            if (myRow == null) throw new Exception("my row dissapeared");
-            myRow["IsCalibrated_Column"].Value = true;
-            myRow["Slope_Column"].Value = b.ToString();
-            myRow["HolePitch_Column"].Value = HolePitch.ToString();
-            myRow["X_Column"].Value = FirstHole.X.ToString();
-            myRow["Y_Column"].Value = FirstHole.Y.ToString();
-        }
-
-        public TapeObj ( TapeDefault x ) {
-            // pretty standard settings that can be overridden
+        public void ToDefaults(ComponentType x) {
             PartPitch = 2d;
             TapeWidth = 8d;
             HolePitch = 4d;
             HoleToPartSpacingX = -2d; // first part is to the "left" of the hole
             HoleDiameter = 1.5d;
+            PickupZ = -1;
+            PlaceZ = -1;
 
             switch (x) {
-                case TapeDefault.T0402:
+                case ComponentType.T0402:
                     PartPitch = 2d;
                     break;
                 default:
@@ -200,76 +124,79 @@ Console.WriteLine("ID " + this.ID + " Next=" + currentPart);
             }
         }
 
+        public TapeObj(ComponentType x) {
+            ToDefaults(x);            
+        }
+
         public int CurrentPartIndex() {
-            UpdateValues();
             return currentPart;
         }
         public void NextPart() {
-            UpdateValues();
             SetPart(currentPart + 1);
         }
         public void SetPart(int part) {
             currentPart = part;
-            if (myRow == null) throw new Exception("my row dissapeared");
-            myRow["Next_Column"].Value = currentPart.ToString();
         }
 
-        
-
-        // PART //
         public PartLocation GetCurrentPartLocation() {
-            UpdateValues();
             return GetPartLocation(currentPart);
         }
 
         // Part Orientation = orientation if tape is perfectly oriented the way it is oriented
         // deltaOrientation = how far offf the tape is from it's stated orientation
         public PartLocation GetPartLocation(int componentNumber) {
-            UpdateValues(); //pull in changes (?)
             PartLocation offset = new PartLocation(componentNumber * PartPitch + HoleToPartSpacingX, HoleToPartSpacingY);
             // add the vector to the part rotated by the tape orientation
             PartLocation part = new PartLocation(FirstHole) + offset.Rotate(_TapeOrientation.ToRadians());
             // add deviation from expected orientation to part orientation
-            var originalOrientation = OrienationToVector(myRow["OrientationColumn"].Value.ToString());
-            var deltaOrientation = _TapeOrientation.ToRadians() - originalOrientation.ToRadians();
-            part.A = (_PartOrientation.ToRadians() + deltaOrientation) * 180d / Math.PI;
-            
+            var deltaOrientation = _TapeOrientation.ToRadians() - OriginalTapeOrientationVector.ToRadians();
+            part.A = (OriginalPartOrientationVector.ToRadians() + deltaOrientation) * 180d / Math.PI;
+
             return part;
         }
 
 
         // HOLES //
-        public PartLocation GetHoleLocation(int holeNumber) {
-            UpdateValues();
+        public PartLocation GetHoleLocation(int holeNumber) {;
             return new PartLocation(FirstHole) + new PartLocation(holeNumber * HolePitch, 0).Rotate(_TapeOrientation.ToRadians());
         }
 
         public PartLocation GetNearestCurrentPartHole() {
-            UpdateValues();
             double distanceX = currentPart * PartPitch + HoleToPartSpacingX;
             int holeNumber = (int)(distanceX / HolePitch);
             return GetHoleLocation(holeNumber);
         }
 
+        private PartLocation OrientationToVector(string o) {
+            return OrientationToVector((Orientation)Enum.Parse(typeof(Orientation), o));
+        }
 
-        private PartLocation OrienationToVector(string orientation) {
+
+        private ComponentType ToTapeDefault(string s) {
+            return (ComponentType)Enum.Parse(typeof(ComponentType), s);
+        }
+
+        private PartLocation OrientationToVector(Orientation orientation) {
             switch (orientation) {
-                case "0deg.":   case "+X": return new PartLocation(1,0);
-                case "90deg.":  case "+Y": return new PartLocation(0,1);
-                case "180deg.": case "-X": return new PartLocation(-1,0);
-                case "270deg.": case "-Y": return new PartLocation(0,-1);
-                default:   throw new Exception("Invalid Orientation");
+                case Orientation.PosX: return new PartLocation(1, 0);
+                case Orientation.PosY: return new PartLocation(0, 1);
+                case Orientation.NegX: return new PartLocation(-1, 0);
+                case Orientation.NegY: return new PartLocation(0, -1);
+                default: throw new Exception("Invalid Orientation");
             }
         }
 
-        private string VectorToOrientation(PartLocation x) {
-            if (x.X == 1) return "+X";
-            if (x.X == -1) return "-X";
-            if (x.Y == 1) return "+Y";
-            if (x.Y == -1) return "-Y";
-            throw new Exception("Invalid Vector");
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void notify(string name) {
+            if (PropertyChanged != null) {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
         }
 
+        public override string ToString() {
+            return ID;
+        }
 
     }
 }

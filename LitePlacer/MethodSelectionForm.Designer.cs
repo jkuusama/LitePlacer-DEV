@@ -1,11 +1,14 @@
-﻿namespace LitePlacer
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace LitePlacer
 {
 	partial class MethodSelectionForm
 	{
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+		private IContainer components = null;
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -42,7 +45,6 @@
             this.Fiducials_button = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.Pause_button = new System.Windows.Forms.Button();
-            this.UpdateJobGrid_checkBox = new System.Windows.Forms.CheckBox();
             this.PlaceWithCam_button = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.LoosePart_button = new System.Windows.Forms.Button();
@@ -57,7 +59,7 @@
             this.Question_button.TabIndex = 0;
             this.Question_button.Text = "?";
             this.Question_button.UseVisualStyleBackColor = true;
-            this.Question_button.Click += new System.EventHandler(this.Question_button_Click);
+            this.Question_button.Click += new System.EventHandler(this.button_Click);
             // 
             // Place_button
             // 
@@ -67,7 +69,7 @@
             this.Place_button.TabIndex = 1;
             this.Place_button.Text = "Place";
             this.Place_button.UseVisualStyleBackColor = true;
-            this.Place_button.Click += new System.EventHandler(this.Place_button_Click);
+            this.Place_button.Click += new System.EventHandler(this.button_Click);
             // 
             // label1
             // 
@@ -95,7 +97,7 @@
             this.ChangeNeedle_button.TabIndex = 4;
             this.ChangeNeedle_button.Text = "Change needle";
             this.ChangeNeedle_button.UseVisualStyleBackColor = true;
-            this.ChangeNeedle_button.Click += new System.EventHandler(this.ChangeNeedle_button_Click);
+            this.ChangeNeedle_button.Click += new System.EventHandler(this.button_Click);
             // 
             // label3
             // 
@@ -123,7 +125,7 @@
             this.Recalibrate_button.TabIndex = 6;
             this.Recalibrate_button.Text = "Recalibrate";
             this.Recalibrate_button.UseVisualStyleBackColor = true;
-            this.Recalibrate_button.Click += new System.EventHandler(this.Recalibrate_button_Click);
+            this.Recalibrate_button.Click += new System.EventHandler(this.button_Click);
             // 
             // label5
             // 
@@ -142,7 +144,7 @@
             this.Ignore_button.TabIndex = 8;
             this.Ignore_button.Text = "Ignore";
             this.Ignore_button.UseVisualStyleBackColor = true;
-            this.Ignore_button.Click += new System.EventHandler(this.Ignore_button_Click);
+            this.Ignore_button.Click += new System.EventHandler(this.button_Click);
             // 
             // label6
             // 
@@ -161,7 +163,7 @@
             this.Fiducials_button.TabIndex = 10;
             this.Fiducials_button.Text = "Fiducials";
             this.Fiducials_button.UseVisualStyleBackColor = true;
-            this.Fiducials_button.Click += new System.EventHandler(this.Fiducials_button_Click);
+            this.Fiducials_button.Click += new System.EventHandler(this.button_Click);
             // 
             // label7
             // 
@@ -180,18 +182,7 @@
             this.Pause_button.TabIndex = 12;
             this.Pause_button.Text = "Pause";
             this.Pause_button.UseVisualStyleBackColor = true;
-            this.Pause_button.Click += new System.EventHandler(this.Pause_button_Click);
-            // 
-            // UpdateJobGrid_checkBox
-            // 
-            this.UpdateJobGrid_checkBox.AutoSize = true;
-            this.UpdateJobGrid_checkBox.Location = new System.Drawing.Point(24, 256);
-            this.UpdateJobGrid_checkBox.Name = "UpdateJobGrid_checkBox";
-            this.UpdateJobGrid_checkBox.Size = new System.Drawing.Size(107, 17);
-            this.UpdateJobGrid_checkBox.TabIndex = 14;
-            this.UpdateJobGrid_checkBox.Text = "Update Job Data";
-            this.UpdateJobGrid_checkBox.UseVisualStyleBackColor = true;
-            this.UpdateJobGrid_checkBox.CheckedChanged += new System.EventHandler(this.UpdateJobGrid_checkBox_CheckedChanged);
+            this.Pause_button.Click += new System.EventHandler(this.button_Click);
             // 
             // PlaceWithCam_button
             // 
@@ -202,12 +193,12 @@
             this.PlaceWithCam_button.Text = "Place with UpCam";
             this.PlaceWithCam_button.UseVisualStyleBackColor = true;
             this.PlaceWithCam_button.Visible = false;
-            this.PlaceWithCam_button.Click += new System.EventHandler(this.PlaceWithCam_button_Click);
+            this.PlaceWithCam_button.Click += new System.EventHandler(this.button_Click);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(140, 266);
+            this.label8.Location = new System.Drawing.Point(23, 261);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(170, 13);
             this.label8.TabIndex = 16;
@@ -220,9 +211,9 @@
             this.LoosePart_button.Name = "LoosePart_button";
             this.LoosePart_button.Size = new System.Drawing.Size(109, 23);
             this.LoosePart_button.TabIndex = 17;
-            this.LoosePart_button.Text = "Loose Part Pickup";
+            this.LoosePart_button.Text = "LoosePart";
             this.LoosePart_button.UseVisualStyleBackColor = true;
-            this.LoosePart_button.Click += new System.EventHandler(this.LoosePart_button_Click);
+            this.LoosePart_button.Click += new System.EventHandler(this.button_Click);
             // 
             // label9
             // 
@@ -242,7 +233,6 @@
             this.Controls.Add(this.LoosePart_button);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.PlaceWithCam_button);
-            this.Controls.Add(this.UpdateJobGrid_checkBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.Pause_button);
             this.Controls.Add(this.label6);
@@ -260,7 +250,6 @@
             this.Name = "MethodSelectionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select Method";
-            this.Load += new System.EventHandler(this.MethodSelectionForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -268,24 +257,23 @@
 
 		#endregion
 
-		private System.Windows.Forms.Button Question_button;
-		private System.Windows.Forms.Button Place_button;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Button ChangeNeedle_button;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Button Recalibrate_button;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Button Ignore_button;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Button Fiducials_button;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Button Pause_button;
-		private System.Windows.Forms.CheckBox UpdateJobGrid_checkBox;
-		private System.Windows.Forms.Button PlaceWithCam_button;
-		private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button LoosePart_button;
-        private System.Windows.Forms.Label label9;
+		private Button Question_button;
+		private Button Place_button;
+		private Label label1;
+		private Label label2;
+		private Button ChangeNeedle_button;
+		private Label label3;
+		private Label label4;
+		private Button Recalibrate_button;
+		private Label label5;
+		private Button Ignore_button;
+		private Label label6;
+		private Button Fiducials_button;
+		private Label label7;
+        private Button Pause_button;
+		private Button PlaceWithCam_button;
+		private Label label8;
+        private Button LoosePart_button;
+        private Label label9;
 	}
 }

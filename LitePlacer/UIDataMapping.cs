@@ -1,35 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO.Ports;
-using System.IO;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Drawing;
-using System.Reflection;
+using System.Globalization;
+using System.Windows.Forms;
+using LitePlacer.Properties;
 //using System.Web.Script.Serialization;
-using System.Configuration;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using AForge.Imaging;
-using System.Windows.Media;
-using MathNet.Numerics;
-using HomographyEstimation;
 
-using System.Text.RegularExpressions;
-
-using Emgu.CV;
-using Emgu.CV.Structure;
-using Emgu.Util;
-using Emgu;
 
 namespace LitePlacer {
     public partial class FormMain : Form {
+
+        Settings setting= Settings.Default;
 
         private void VacuumTime_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -144,100 +124,6 @@ namespace LitePlacer {
             }
         }
 
-  // =================================================================================
-        private void DownCameraDrawDashedCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawDashedCross_checkBox.Checked)
-            {
-                DownCamera.DrawDashedCross = true;
-            }
-            else
-            {
-                DownCamera.DrawDashedCross = false;
-            }
-        }
-
-        // ====
-        private void UpCameraDrawDashedCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCameraDrawDashedCross_checkBox.Checked)
-            {
-                UpCamera.DrawDashedCross = true;
-            }
-            else
-            {
-                UpCamera.DrawDashedCross = false;
-            }
-        }
-
-
-        // =================================================================================
-        private void DownCameraDrawTicks_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawTicks_checkBox.Checked)
-            {
-                DownCamera.DrawSidemarks = true;
-                setting.DownCam_DrawTicks = true;
-            }
-            else
-            {
-                DownCamera.DrawSidemarks = false;
-                setting.DownCam_DrawTicks = false;
-            }
-        }
-
-        // =================================================================================
-        private void DownCameraDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawCross_checkBox.Checked)
-            {
-                DownCamera.DrawCross = true;
-            }
-            else
-            {
-                DownCamera.DrawCross = false;
-            }
-        }
-
-        // ====
-        private void UpCameraDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCameraDrawCross_checkBox.Checked)
-            {
-                UpCamera.DrawCross = true;
-            }
-            else
-            {
-                UpCamera.DrawCross = false;
-            }
-        }
-
-        // =================================================================================
-        private void DownCameraDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawBox_checkBox.Checked)
-            {
-                DownCamera.DrawBox = true;
-            }
-            else
-            {
-                DownCamera.DrawBox = false;
-            }
-        }
-
-        // ====
-        private void UpCameraDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCameraDrawBox_checkBox.Checked)
-            {
-                UpCamera.DrawBox = true;
-            }
-            else
-            {
-                UpCamera.DrawBox = false;
-            }
-        }
-
         // =================================================================================
         private void DownCameraBoxX_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -258,7 +144,7 @@ namespace LitePlacer {
             double val;
             if (double.TryParse(DownCameraBoxX_textBox.Text, out val))
             {
-                setting.DownCam_XmmPerPixel = val / DownCamera.BoxSizeX;
+                setting.DownCam_XmmPerPixel = val / cameraView.downVideoProcessing.box.Width;
                 DownCameraBoxXmmPerPixel_label.Text = "(" + setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
             }
         }
@@ -277,12 +163,10 @@ namespace LitePlacer {
             UpCameraUpdateXmmPerPixel();
         }
 
-        private void UpCameraUpdateXmmPerPixel()
-        {
+        private void UpCameraUpdateXmmPerPixel()        {
             double val;
-            if (double.TryParse(UpCameraBoxX_textBox.Text, out val))
-            {
-                setting.UpCam_XmmPerPixel = val / UpCamera.BoxSizeX;
+            if (double.TryParse(UpCameraBoxX_textBox.Text, out val))            {
+                setting.UpCam_XmmPerPixel = val / cameraView.upVideoProcessing.box.Width;
                 UpCameraBoxXmmPerPixel_label.Text = "(" + setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
             }
         }
@@ -299,7 +183,7 @@ namespace LitePlacer {
         private void DownCameraUpdateYmmPerPixel()        {
             double val;
             if (double.TryParse(DownCameraBoxY_textBox.Text, out val)) {
-                setting.DownCam_YmmPerPixel = val / DownCamera.BoxSizeY;
+                setting.DownCam_YmmPerPixel = val / cameraView.downVideoProcessing.box.Height;
                 DownCameraBoxYmmPerPixel_label.Text = "(" + setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
             }
         }
@@ -317,96 +201,16 @@ namespace LitePlacer {
             double val;
             if (double.TryParse(UpCameraBoxY_textBox.Text, out val))
             {
-                setting.UpCam_YmmPerPixel = val / UpCamera.BoxSizeY;
+                setting.UpCam_YmmPerPixel = val / cameraView.upVideoProcessing.box.Height;
                 UpCameraBoxYmmPerPixel_label.Text = "(" + setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
             }
         }
 
 
 
-        // =================================================================================
-        private void DownCamZoom_checkBox_Click(object sender, EventArgs e)        {
-            DownCamera.Zoom = DownCamZoom_checkBox.Checked;
-            setting.DownCam_Zoom = DownCamera.Zoom;
-        }
+   
 
-        // ====
-        private void UpCamZoom_checkBox_Click(object sender, EventArgs e)    {
-            UpCamera.Zoom = UpCamZoom_checkBox.Checked;
-            setting.UpCam_Zoom = UpCamera.Zoom;
-        }
 
-        // =================================================================================
-        private void DownCamZoomFactor_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(DownCamZoomFactor_textBox.Text, out val))
-                {
-                    DownCamera.ZoomFactor = val;
-                    setting.DownCam_Zoomfactor = val;
-                }
-            }
-        }
-
-        private void DownCamZoomFactor_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(DownCamZoomFactor_textBox.Text, out val))
-            {
-                DownCamera.ZoomFactor = val;
-                setting.DownCam_Zoomfactor = val;
-            }
-        }
-
-        // ====
-        private void UpCamZoomFactor_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(UpCamZoomFactor_textBox.Text, out val))
-                {
-                    UpCamera.ZoomFactor = val;
-                    setting.UpCam_Zoomfactor = val;
-                }
-            }
-        }
-
-        private void UpCamZoomFactor_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(UpCamZoomFactor_textBox.Text, out val))
-            {
-                UpCamera.ZoomFactor = val;
-                setting.UpCam_Zoomfactor = val;
-            }
-        }
-    private void ImageTest_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ImageTest_checkBox.Checked)
-            {
-                DownCamera.TestAlgorithm = true;
-            }
-            else
-            {
-                DownCamera.TestAlgorithm = false;
-            }
-        }
-
-        // =================================================================================
-        private void Overlay_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Overlay_checkBox.Checked)
-            {
-                DownCamera.Draw_Snapshot = true;
-            }
-            else
-            {
-                DownCamera.Draw_Snapshot = false;
-            }
-        }
   // =================================================================================
         private void JigX_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -555,7 +359,6 @@ namespace LitePlacer {
                 {
                     setting.General_MachineSizeX = val;
                     SizeXMax_textBox.ForeColor = Color.Black;
-                    DownCamera.SideMarksX = setting.General_MachineSizeX / 100;
                 }
             }
         }
@@ -567,7 +370,6 @@ namespace LitePlacer {
             {
                 setting.General_MachineSizeX = val;
                 SizeXMax_textBox.ForeColor = Color.Black;
-                DownCamera.SideMarksX = setting.General_MachineSizeX / 100;
 
             }
         }
@@ -582,7 +384,6 @@ namespace LitePlacer {
                 {
                     setting.General_MachineSizeY = val;
                     SizeYMax_textBox.ForeColor = Color.Black;
-                    DownCamera.SideMarksY = setting.General_MachineSizeY / 100;
                 }
             }
         }
@@ -594,7 +395,6 @@ namespace LitePlacer {
             {
                 setting.General_MachineSizeY = val;
                 SizeYMax_textBox.ForeColor = Color.Black;
-                DownCamera.SideMarksY = setting.General_MachineSizeY / 100;
             }
         }
 
@@ -643,9 +443,8 @@ namespace LitePlacer {
             }
         }
 
-        private void Park_button_Click(object sender, EventArgs e)
-        {
-            CNC_Park();
+        private void Park_button_Click(object sender, EventArgs e)        {
+            Cnc.CNC_Park();
         }
 
         #endregion
@@ -714,7 +513,6 @@ namespace LitePlacer {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void cb_useTemplate_CheckedChanged(object sender, EventArgs e) {
-            FindFiducials_cb.Enabled = ((CheckBox)sender).Checked;
             setting.use_template = ((CheckBox)sender).Checked;
             setting.Save();
         }
@@ -722,7 +520,7 @@ namespace LitePlacer {
         private void button_setTemplate_Click(object sender, EventArgs e) {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "jpg (*.jpg)|*.jpg|png (*.png)|*.png|All Files (*.*)|*.*";
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+            if (ofd.ShowDialog() == DialogResult.OK) {
                 setting.template_file = ofd.FileName;
                 setting.Save();
             }
@@ -760,8 +558,8 @@ namespace LitePlacer {
             // save
             double val;
             if (e.KeyChar == '\r' && double.TryParse(((TextBox)sender).Text, out val)) {
-                z_offset = val; //setter has some intelligence to prevent bad values
-                setting.z_offset = z_offset;
+                Cnc.z_offset = val; //setter has some intelligence to prevent bad values
+                setting.z_offset = Cnc.z_offset;
                 setting.Save();
             }
 

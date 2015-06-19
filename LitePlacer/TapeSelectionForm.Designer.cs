@@ -1,11 +1,14 @@
-﻿namespace LitePlacer
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace LitePlacer
 {
 	partial class TapeSelectionForm
 	{
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+		private IContainer components = null;
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -95,10 +98,10 @@
 
 		#endregion
 
-		private System.Windows.Forms.Button AbortJob_button;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Button Ignore_button;
-        private System.Windows.Forms.CheckBox UpdateJobData_checkBox;
+		private Button AbortJob_button;
+		private Label label1;
+		private Button Ignore_button;
+        private CheckBox UpdateJobData_checkBox;
 
 	}
 }

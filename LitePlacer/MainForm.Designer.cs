@@ -1,11 +1,14 @@
-﻿namespace LitePlacer
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace LitePlacer
 {
     partial class FormMain
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -34,9 +37,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
-            this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
-            this.DownCamZoom_checkBox = new System.Windows.Forms.CheckBox();
-            this.reset_button = new System.Windows.Forms.Button();
             this.textBoxSendtoTinyG = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -53,19 +53,12 @@
             this.Job_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.Job_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OpticalHome_button = new System.Windows.Forms.Button();
-            this.UpCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
-            this.UpCamZoom_checkBox = new System.Windows.Forms.CheckBox();
             this.label97 = new System.Windows.Forms.Label();
             this.Test3_button = new System.Windows.Forms.Button();
             this.Test4_button = new System.Windows.Forms.Button();
             this.label124 = new System.Windows.Forms.Label();
             this.Test5_button = new System.Windows.Forms.Button();
             this.Test6_button = new System.Windows.Forms.Button();
-            this.Bookmark1_button = new System.Windows.Forms.Button();
-            this.Bookmark2_button = new System.Windows.Forms.Button();
-            this.Bookmark3_button = new System.Windows.Forms.Button();
-            this.Bookmark4_button = new System.Windows.Forms.Button();
-            this.Bookmark5_button = new System.Windows.Forms.Button();
             this.label145 = new System.Windows.Forms.Label();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
             this.view_nextParts_button = new System.Windows.Forms.Button();
@@ -87,27 +80,43 @@
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
             this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HolePitch_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Slope_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsCalibrated_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.label108 = new System.Windows.Forms.Label();
-            this.Tapes_pictureBox = new System.Windows.Forms.PictureBox();
-            this.Components_tabPage = new System.Windows.Forms.TabPage();
-            this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
-            this.PartialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SizeX = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SizeY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OriginalTapeOrientation = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.OriginalPartOrientation = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.PartType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.HolePitch = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PartPitch = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HoleToPartSpacingX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.holeToPartSpacingYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pickupZDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.placeZDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tapeObjBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label101 = new System.Windows.Forms.Label();
+            this.label100 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.CameraSetupTest_button = new System.Windows.Forms.Button();
+            this.GotoUpCamPosition_button = new System.Windows.Forms.Button();
+            this.SetUpCamPosition_button = new System.Windows.Forms.Button();
+            this.label99 = new System.Windows.Forms.Label();
+            this.label98 = new System.Windows.Forms.Label();
+            this.UpcamPositionY_textBox = new System.Windows.Forms.TextBox();
+            this.UpcamPositionX_textBox = new System.Windows.Forms.TextBox();
+            this.PickupCenterY_textBox = new System.Windows.Forms.TextBox();
+            this.PickupCenterX_textBox = new System.Windows.Forms.TextBox();
+            this.JigY_textBox = new System.Windows.Forms.TextBox();
+            this.JigX_textBox = new System.Windows.Forms.TextBox();
+            this.SetPickupCenter_button = new System.Windows.Forms.Button();
+            this.SetPCB0_button = new System.Windows.Forms.Button();
+            this.GotoPickupCenter_button = new System.Windows.Forms.Button();
+            this.GotoPCB0_button = new System.Windows.Forms.Button();
+            this.label95 = new System.Windows.Forms.Label();
+            this.label96 = new System.Windows.Forms.Label();
+            this.label93 = new System.Windows.Forms.Label();
+            this.label94 = new System.Windows.Forms.Label();
+            this.Snapshot_button = new System.Windows.Forms.Button();
+            this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.zoffset_textbox = new System.Windows.Forms.TextBox();
@@ -119,297 +128,40 @@
             this.button_setTemplate = new System.Windows.Forms.Button();
             this.label126 = new System.Windows.Forms.Label();
             this.fiducialTemlateMatch_textBox = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.cb_useTemplate = new System.Windows.Forms.CheckBox();
-            this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
-            this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
             this.label129 = new System.Windows.Forms.Label();
             this.calibMoveDistance_textBox = new System.Windows.Forms.TextBox();
-            this.drawGrid_checkBox = new System.Windows.Forms.CheckBox();
-            this.FindFiducials_cb = new System.Windows.Forms.CheckBox();
             this.SlackMeasurement_label = new System.Windows.Forms.Label();
-            this.button_saveSettings = new System.Windows.Forms.Button();
             this.button_camera_calibrate = new System.Windows.Forms.Button();
-            this.DownCameraDrawTicks_checkBox = new System.Windows.Forms.CheckBox();
-            this.components_gb = new System.Windows.Forms.GroupBox();
-            this.Components_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewComboBoxColumn5 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewCheckBoxColumn5 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewTextBoxColumn21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentsMeasure_button = new System.Windows.Forms.Button();
-            this.ComponentsToDisplay_button = new System.Windows.Forms.Button();
-            this.ComponentsToHere_button = new System.Windows.Forms.Button();
-            this.ColorHelp_label = new System.Windows.Forms.Label();
-            this.B_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.B_label = new System.Windows.Forms.Label();
-            this.G_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.G_label = new System.Windows.Forms.Label();
-            this.R_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.R_label = new System.Windows.Forms.Label();
-            this.Color_label = new System.Windows.Forms.Label();
-            this.Color_Box = new System.Windows.Forms.TextBox();
-            this.CamFunctionsClear_button = new System.Windows.Forms.Button();
-            this.clear_gb = new System.Windows.Forms.GroupBox();
-            this.ClearTape_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewComboBoxColumn6 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewCheckBoxColumn6 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewTextBoxColumn26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn30 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ClearTapeMeasure_button = new System.Windows.Forms.Button();
-            this.ClearTapeToDisplay_button = new System.Windows.Forms.Button();
-            this.ClearTapeToHere_button = new System.Windows.Forms.Button();
-            this.black_gb = new System.Windows.Forms.GroupBox();
-            this.BlackTape_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewComboBoxColumn7 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewCheckBoxColumn7 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewTextBoxColumn31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn34 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn35 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BlackTapeMeasure_button = new System.Windows.Forms.Button();
-            this.BlackTapeToDisplay_button = new System.Windows.Forms.Button();
-            this.BlackTapeToHere_button = new System.Windows.Forms.Button();
-            this.Parameter_double_label = new System.Windows.Forms.Label();
-            this.DownCam_FindComponents_checkBox = new System.Windows.Forms.CheckBox();
-            this.Parameter_double_textBox = new System.Windows.Forms.TextBox();
-            this.white_gb = new System.Windows.Forms.GroupBox();
-            this.PaperTape_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PaperTapeMeasure_button = new System.Windows.Forms.Button();
-            this.PaperTapeToDisplay_button = new System.Windows.Forms.Button();
-            this.PaperTapeToHere_button = new System.Windows.Forms.Button();
-            this.Parameter_Int_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.DownCam_comboBox = new System.Windows.Forms.ComboBox();
-            this.Parameter_int_label = new System.Windows.Forms.Label();
-            this.DownCamFindRectangles_checkBox = new System.Windows.Forms.CheckBox();
-            this.fiducials_gb = new System.Windows.Forms.GroupBox();
-            this.Fiducials_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewComboBoxColumn4 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewCheckBoxColumn4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewTextBoxColumn16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FiducialsMeasure_button = new System.Windows.Forms.Button();
-            this.FiducialsToDisplay_button = new System.Windows.Forms.Button();
-            this.FiducialsToHere_button = new System.Windows.Forms.Button();
-            this.RefreshDownCameraList_button = new System.Windows.Forms.Button();
-            this.DownCamFindCircles_checkBox = new System.Windows.Forms.CheckBox();
-            this.ConnectDownCamera_button = new System.Windows.Forms.Button();
-            this.DownCameraDrawDashedCross_checkBox = new System.Windows.Forms.CheckBox();
-            this.DownCamStatus_label = new System.Windows.Forms.Label();
-            this.CamFunctionDown_button = new System.Windows.Forms.Button();
-            this.DownCameraDrawCross_checkBox = new System.Windows.Forms.CheckBox();
-            this.DownCameraDrawBox_checkBox = new System.Windows.Forms.CheckBox();
-            this.CamFunctionUp_button = new System.Windows.Forms.Button();
-            this.label53 = new System.Windows.Forms.Label();
-            this.Overlay_checkBox = new System.Windows.Forms.CheckBox();
-            this.DeleteCamFunction_button = new System.Windows.Forms.Button();
             this.DownCameraBoxYmmPerPixel_label = new System.Windows.Forms.Label();
-            this.label68 = new System.Windows.Forms.Label();
-            this.AddCamFunction_button = new System.Windows.Forms.Button();
             this.DownCameraBoxXmmPerPixel_label = new System.Windows.Forms.Label();
-            this.label69 = new System.Windows.Forms.Label();
-            this.Display_dataGridView = new System.Windows.Forms.DataGridView();
-            this.Function = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Active = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Parameter_int = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Parameter_double = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Parameter_R = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Parameter_G = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Parameter_B = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label71 = new System.Windows.Forms.Label();
             this.DownCameraBoxX_textBox = new System.Windows.Forms.TextBox();
             this.label70 = new System.Windows.Forms.Label();
             this.DownCameraBoxY_textBox = new System.Windows.Forms.TextBox();
-            this.homing_gb = new System.Windows.Forms.GroupBox();
-            this.HomingMeasure_button = new System.Windows.Forms.Button();
-            this.HomingToDisplay_button = new System.Windows.Forms.Button();
-            this.Homing_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewComboBoxColumn2 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewCheckBoxColumn2 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HomingToHere_button = new System.Windows.Forms.Button();
-            this.UpCamera_tabPage = new System.Windows.Forms.TabPage();
             this.DownCamera_Calibration_button = new System.Windows.Forms.Button();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.UpCamComponents_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewComboBoxColumn8 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewCheckBoxColumn8 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewTextBoxColumn36 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn37 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn38 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn39 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn40 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UpCamComponentsMeasure_button = new System.Windows.Forms.Button();
-            this.UpCamComponentsToDisplay_button = new System.Windows.Forms.Button();
-            this.UpCamComponentsToHere_button = new System.Windows.Forms.Button();
-            this.UpCam_FindComponents_checkBox = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.Needle_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewComboBoxColumn3 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewCheckBoxColumn3 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NeedleMeasure_button = new System.Windows.Forms.Button();
-            this.NeedleToDisplay_button = new System.Windows.Forms.Button();
-            this.NeedleToHere_button = new System.Windows.Forms.Button();
-            this.UpCamFindCircles_checkBox = new System.Windows.Forms.CheckBox();
-            this.UpCam_comboBox = new System.Windows.Forms.ComboBox();
-            this.UpCameraDrawDashedCross_checkBox = new System.Windows.Forms.CheckBox();
             this.UpCameraBoxYmmPerPixel_label = new System.Windows.Forms.Label();
-            this.UpCameraDrawBox_checkBox = new System.Windows.Forms.CheckBox();
-            this.ConnectUpCamera_button = new System.Windows.Forms.Button();
-            this.UpCameraDrawCross_checkBox = new System.Windows.Forms.CheckBox();
-            this.label110 = new System.Windows.Forms.Label();
             this.UpCameraBoxXmmPerPixel_label = new System.Windows.Forms.Label();
-            this.RefreshUpCameraList_button = new System.Windows.Forms.Button();
-            this.label103 = new System.Windows.Forms.Label();
             this.UpCameraBoxY_textBox = new System.Windows.Forms.TextBox();
             this.UpCameraBoxX_textBox = new System.Windows.Forms.TextBox();
             this.label106 = new System.Windows.Forms.Label();
-            this.UpCamStatus_label = new System.Windows.Forms.Label();
-            this.label104 = new System.Windows.Forms.Label();
             this.label105 = new System.Windows.Forms.Label();
-            this.label101 = new System.Windows.Forms.Label();
-            this.label100 = new System.Windows.Forms.Label();
-            this.label55 = new System.Windows.Forms.Label();
-            this.CameraSetupTest_button = new System.Windows.Forms.Button();
-            this.GotoUpCamPosition_button = new System.Windows.Forms.Button();
-            this.SetUpCamPosition_button = new System.Windows.Forms.Button();
-            this.label99 = new System.Windows.Forms.Label();
-            this.label98 = new System.Windows.Forms.Label();
-            this.UpcamPositionY_textBox = new System.Windows.Forms.TextBox();
-            this.UpcamPositionX_textBox = new System.Windows.Forms.TextBox();
             this.NeedleOffsetY_textBox = new System.Windows.Forms.TextBox();
             this.NeedleOffsetX_textBox = new System.Windows.Forms.TextBox();
-            this.PickupCenterY_textBox = new System.Windows.Forms.TextBox();
-            this.PickupCenterX_textBox = new System.Windows.Forms.TextBox();
-            this.JigY_textBox = new System.Windows.Forms.TextBox();
-            this.JigX_textBox = new System.Windows.Forms.TextBox();
             this.label149 = new System.Windows.Forms.Label();
             this.label148 = new System.Windows.Forms.Label();
             this.label146 = new System.Windows.Forms.Label();
             this.label143 = new System.Windows.Forms.Label();
-            this.Z0toPCB_CamerasTab_label = new System.Windows.Forms.Label();
-            this.label120 = new System.Windows.Forms.Label();
             this.Offset2Method_button = new System.Windows.Forms.Button();
             this.NeedleOffset_label = new System.Windows.Forms.Label();
             this.label115 = new System.Windows.Forms.Label();
-            this.label114 = new System.Windows.Forms.Label();
-            this.SetPickupCenter_button = new System.Windows.Forms.Button();
-            this.SetPCB0_button = new System.Windows.Forms.Button();
-            this.GotoPickupCenter_button = new System.Windows.Forms.Button();
-            this.GotoPCB0_button = new System.Windows.Forms.Button();
-            this.label95 = new System.Windows.Forms.Label();
-            this.label96 = new System.Windows.Forms.Label();
-            this.label93 = new System.Windows.Forms.Label();
-            this.label94 = new System.Windows.Forms.Label();
-            this.Snapshot_button = new System.Windows.Forms.Button();
-            this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
-            this.Cam_pictureBox = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.ZUp_button = new System.Windows.Forms.Button();
             this.ZDown_button = new System.Windows.Forms.Button();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
-            this.label123 = new System.Windows.Forms.Label();
-            this.ZTestTravel_textBox = new System.Windows.Forms.TextBox();
-            this.VacuumRelease_textBox = new System.Windows.Forms.TextBox();
-            this.label119 = new System.Windows.Forms.Label();
-            this.VacuumTime_textBox = new System.Windows.Forms.TextBox();
-            this.label118 = new System.Windows.Forms.Label();
-            this.Z_Backoff_label = new System.Windows.Forms.Label();
-            this.label117 = new System.Windows.Forms.Label();
-            this.label112 = new System.Windows.Forms.Label();
-            this.label90 = new System.Windows.Forms.Label();
-            this.SquareCorrection_textBox = new System.Windows.Forms.TextBox();
-            this.SmallMovement_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label87 = new System.Windows.Forms.Label();
-            this.label152 = new System.Windows.Forms.Label();
-            this.SlackCompensation_checkBox = new System.Windows.Forms.CheckBox();
-            this.SetMark6_button = new System.Windows.Forms.Button();
-            this.TestXYA_button = new System.Windows.Forms.Button();
-            this.Mark6_textBox = new System.Windows.Forms.TextBox();
-            this.Mark5_textBox = new System.Windows.Forms.TextBox();
-            this.Mark4_textBox = new System.Windows.Forms.TextBox();
-            this.Mark3_textBox = new System.Windows.Forms.TextBox();
-            this.Mark2_textBox = new System.Windows.Forms.TextBox();
-            this.SizeYMax_textBox = new System.Windows.Forms.TextBox();
-            this.Mark1_textBox = new System.Windows.Forms.TextBox();
-            this.SizeXMax_textBox = new System.Windows.Forms.TextBox();
-            this.ParkLocationY_textBox = new System.Windows.Forms.TextBox();
-            this.ParkLocationX_textBox = new System.Windows.Forms.TextBox();
-            this.TestYX_button = new System.Windows.Forms.Button();
-            this.SetMark5_button = new System.Windows.Forms.Button();
-            this.Z0toPCB_BasicTab_label = new System.Windows.Forms.Label();
-            this.SetMark4_button = new System.Windows.Forms.Button();
-            this.label111 = new System.Windows.Forms.Label();
-            this.Zlb_label = new System.Windows.Forms.Label();
-            this.SetMark3_button = new System.Windows.Forms.Button();
-            this.SetProbing_button = new System.Windows.Forms.Button();
-            this.label116 = new System.Windows.Forms.Label();
-            this.SetMark2_button = new System.Windows.Forms.Button();
-            this.label113 = new System.Windows.Forms.Label();
-            this.label102 = new System.Windows.Forms.Label();
-            this.SetMark1_button = new System.Windows.Forms.Button();
-            this.label107 = new System.Windows.Forms.Label();
-            this.label92 = new System.Windows.Forms.Label();
-            this.label61 = new System.Windows.Forms.Label();
-            this.label72 = new System.Windows.Forms.Label();
-            this.TestA_button = new System.Windows.Forms.Button();
-            this.Homebutton = new System.Windows.Forms.Button();
-            this.TestZ_button = new System.Windows.Forms.Button();
-            this.HomeZ_button = new System.Windows.Forms.Button();
-            this.HomeY_button = new System.Windows.Forms.Button();
-            this.HomeXY_button = new System.Windows.Forms.Button();
-            this.HomeX_button = new System.Windows.Forms.Button();
-            this.BuiltInSettings_button = new System.Windows.Forms.Button();
-            this.SaveSettings_button = new System.Windows.Forms.Button();
-            this.DefaultSettings_button = new System.Windows.Forms.Button();
-            this.TestXY_button = new System.Windows.Forms.Button();
-            this.TestY_button = new System.Windows.Forms.Button();
-            this.TestX_button = new System.Windows.Forms.Button();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.tr4_textBox = new System.Windows.Forms.TextBox();
-            this.m4deg18_radioButton = new System.Windows.Forms.RadioButton();
-            this.m4deg09_radioButton = new System.Windows.Forms.RadioButton();
-            this.label42 = new System.Windows.Forms.Label();
-            this.label43 = new System.Windows.Forms.Label();
-            this.label44 = new System.Windows.Forms.Label();
-            this.mi4_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label45 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
-            this.label47 = new System.Windows.Forms.Label();
-            this.label48 = new System.Windows.Forms.Label();
-            this.avm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label49 = new System.Windows.Forms.Label();
-            this.label50 = new System.Windows.Forms.Label();
-            this.label51 = new System.Windows.Forms.Label();
-            this.ajm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label52 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabpage1 = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label73 = new System.Windows.Forms.Label();
             this.xsv_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -438,34 +190,10 @@
             this.label29 = new System.Windows.Forms.Label();
             this.xjm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label30 = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.label81 = new System.Windows.Forms.Label();
-            this.zsv_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label82 = new System.Windows.Forms.Label();
-            this.label83 = new System.Windows.Forms.Label();
-            this.zjh_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label84 = new System.Windows.Forms.Label();
-            this.Zmax_checkBox = new System.Windows.Forms.CheckBox();
-            this.Zlim_checkBox = new System.Windows.Forms.CheckBox();
-            this.Zhome_checkBox = new System.Windows.Forms.CheckBox();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.tr3_textBox = new System.Windows.Forms.TextBox();
-            this.m3deg18_radioButton = new System.Windows.Forms.RadioButton();
-            this.m3deg09_radioButton = new System.Windows.Forms.RadioButton();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.mi3_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label34 = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.zvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label38 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label40 = new System.Windows.Forms.Label();
-            this.zjm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label41 = new System.Windows.Forms.Label();
+            this.TestX_button = new System.Windows.Forms.Button();
+            this.TestXY_button = new System.Windows.Forms.Button();
+            this.TestYX_button = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label77 = new System.Windows.Forms.Label();
             this.ysv_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -494,31 +222,118 @@
             this.label6 = new System.Windows.Forms.Label();
             this.yjm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.TestY_button = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label123 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.label81 = new System.Windows.Forms.Label();
+            this.zsv_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label82 = new System.Windows.Forms.Label();
+            this.label83 = new System.Windows.Forms.Label();
+            this.zjh_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label84 = new System.Windows.Forms.Label();
+            this.Zmax_checkBox = new System.Windows.Forms.CheckBox();
+            this.Zlim_checkBox = new System.Windows.Forms.CheckBox();
+            this.Zhome_checkBox = new System.Windows.Forms.CheckBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.tr3_textBox = new System.Windows.Forms.TextBox();
+            this.m3deg18_radioButton = new System.Windows.Forms.RadioButton();
+            this.m3deg09_radioButton = new System.Windows.Forms.RadioButton();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.mi3_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.zvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.zjm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label41 = new System.Windows.Forms.Label();
+            this.ZTestTravel_textBox = new System.Windows.Forms.TextBox();
+            this.TestZ_button = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.tr4_textBox = new System.Windows.Forms.TextBox();
+            this.m4deg18_radioButton = new System.Windows.Forms.RadioButton();
+            this.m4deg09_radioButton = new System.Windows.Forms.RadioButton();
+            this.label42 = new System.Windows.Forms.Label();
+            this.label43 = new System.Windows.Forms.Label();
+            this.label44 = new System.Windows.Forms.Label();
+            this.mi4_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label45 = new System.Windows.Forms.Label();
+            this.label46 = new System.Windows.Forms.Label();
+            this.label47 = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.avm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label49 = new System.Windows.Forms.Label();
+            this.label50 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
+            this.ajm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.TestA_button = new System.Windows.Forms.Button();
+            this.VacuumRelease_textBox = new System.Windows.Forms.TextBox();
+            this.label119 = new System.Windows.Forms.Label();
+            this.VacuumTime_textBox = new System.Windows.Forms.TextBox();
+            this.label118 = new System.Windows.Forms.Label();
+            this.label90 = new System.Windows.Forms.Label();
+            this.SquareCorrection_textBox = new System.Windows.Forms.TextBox();
+            this.SmallMovement_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label87 = new System.Windows.Forms.Label();
+            this.SlackCompensation_checkBox = new System.Windows.Forms.CheckBox();
+            this.SizeYMax_textBox = new System.Windows.Forms.TextBox();
+            this.SizeXMax_textBox = new System.Windows.Forms.TextBox();
+            this.ParkLocationY_textBox = new System.Windows.Forms.TextBox();
+            this.ParkLocationX_textBox = new System.Windows.Forms.TextBox();
+            this.label113 = new System.Windows.Forms.Label();
+            this.label102 = new System.Windows.Forms.Label();
+            this.label107 = new System.Windows.Forms.Label();
+            this.label92 = new System.Windows.Forms.Label();
+            this.label61 = new System.Windows.Forms.Label();
+            this.Homebutton = new System.Windows.Forms.Button();
+            this.HomeZ_button = new System.Windows.Forms.Button();
+            this.HomeY_button = new System.Windows.Forms.Button();
+            this.HomeXY_button = new System.Windows.Forms.Button();
+            this.HomeX_button = new System.Windows.Forms.Button();
+            this.BuiltInSettings_button = new System.Windows.Forms.Button();
+            this.SaveSettings_button = new System.Windows.Forms.Button();
+            this.DefaultSettings_button = new System.Windows.Forms.Button();
             this.buttonRefreshPortList = new System.Windows.Forms.Button();
-            this.labelSerialPortStatus = new System.Windows.Forms.Label();
-            this.buttonConnectSerial = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
+            this.labelSerialPortStatus = new System.Windows.Forms.Label();
+            this.Z_Backoff_label = new System.Windows.Forms.Label();
+            this.label117 = new System.Windows.Forms.Label();
+            this.Z0toPCB_BasicTab_label = new System.Windows.Forms.Label();
+            this.label111 = new System.Windows.Forms.Label();
+            this.Zlb_label = new System.Windows.Forms.Label();
+            this.SetProbing_button = new System.Windows.Forms.Button();
+            this.buttonConnectSerial = new System.Windows.Forms.Button();
             this.MotorPower_checkBox = new System.Windows.Forms.CheckBox();
             this.Vacuum_checkBox = new System.Windows.Forms.CheckBox();
             this.Pump_checkBox = new System.Windows.Forms.CheckBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
+            this.AbortPlacement_button = new System.Windows.Forms.Button();
             this.needle_calibration_test_button = new System.Windows.Forms.Button();
-            this.MultiCalibrate_button = new System.Windows.Forms.Button();
-            this.StopDemo_button = new System.Windows.Forms.Button();
-            this.Demo_button = new System.Windows.Forms.Button();
+            this.PausePlacement_button = new System.Windows.Forms.Button();
             this.ChangeNeedle_button = new System.Windows.Forms.Button();
             this.ValidMeasurement_checkBox = new System.Windows.Forms.CheckBox();
-            this.NextGroup_label = new System.Windows.Forms.Label();
-            this.label125 = new System.Windows.Forms.Label();
-            this.PreviousGroup_label = new System.Windows.Forms.Label();
             this.ReMeasure_button = new System.Windows.Forms.Button();
-            this.label122 = new System.Windows.Forms.Label();
-            this.CurrentGroup_label = new System.Windows.Forms.Label();
-            this.label57 = new System.Windows.Forms.Label();
             this.JobFilePath_label = new System.Windows.Forms.Label();
             this.label91 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ResetAllTapes_button = new System.Windows.Forms.Button();
+            this.ResetOneTape_button = new System.Windows.Forms.Button();
+            this.NewRow_button = new System.Windows.Forms.Button();
+            this.PlaceThese_button = new System.Windows.Forms.Button();
+            this.DeleteComponentGroup_button = new System.Windows.Forms.Button();
+            this.Down_button = new System.Windows.Forms.Button();
+            this.Up_button = new System.Windows.Forms.Button();
+            this.PlaceAll_button = new System.Windows.Forms.Button();
             this.JobFileName_label = new System.Windows.Forms.Label();
             this.label121 = new System.Windows.Forms.Label();
             this.JobDataSave_button = new System.Windows.Forms.Button();
@@ -528,24 +343,9 @@
             this.PlaceOne_button = new System.Windows.Forms.Button();
             this.ShowMachine_button = new System.Windows.Forms.Button();
             this.ShowNominal_button = new System.Windows.Forms.Button();
-            this.JobCounterCW_checkBox = new System.Windows.Forms.CheckBox();
-            this.RotationOffset_textBox = new System.Windows.Forms.TextBox();
             this.JobOffsetY_textBox = new System.Windows.Forms.TextBox();
             this.JobOffsetX_textBox = new System.Windows.Forms.TextBox();
-            this.label60 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ResetOneTape_button = new System.Windows.Forms.Button();
-            this.PasteRow_button = new System.Windows.Forms.Button();
-            this.CopyRow_button = new System.Windows.Forms.Button();
-            this.NewRow_button = new System.Windows.Forms.Button();
-            this.PlaceThese_button = new System.Windows.Forms.Button();
-            this.DeleteComponentGroup_button = new System.Windows.Forms.Button();
-            this.Down_button = new System.Windows.Forms.Button();
-            this.Up_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.ResetAllTapes_button = new System.Windows.Forms.Button();
-            this.AbortPlacement_button = new System.Windows.Forms.Button();
-            this.PausePlacement_button = new System.Windows.Forms.Button();
             this.MachineCoords_label = new System.Windows.Forms.Label();
             this.PlacedValue_label = new System.Windows.Forms.Label();
             this.PlacedRotation_label = new System.Windows.Forms.Label();
@@ -557,96 +357,86 @@
             this.label64 = new System.Windows.Forms.Label();
             this.label63 = new System.Windows.Forms.Label();
             this.label58 = new System.Windows.Forms.Label();
-            this.PlaceAll_button = new System.Windows.Forms.Button();
             this.label89 = new System.Windows.Forms.Label();
             this.label88 = new System.Windows.Forms.Label();
             this.label86 = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
-            this.label59 = new System.Windows.Forms.Label();
-            this.Placement_pictureBox = new System.Windows.Forms.PictureBox();
             this.JobData_GridView = new System.Windows.Forms.DataGridView();
-            this.ComponentCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GroupMethod = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MethodParamAllComponents = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentList = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.countDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.componentListDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.componentTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.methodDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.methodParametersDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.jobDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Bottom_checkBox = new System.Windows.Forms.CheckBox();
             this.CadData_GridView = new System.Windows.Forms.DataGridView();
-            this.Component = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Value_Footprint = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_nominal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_nominal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rotation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Machine = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_machine = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rotation_machine = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.designatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.footprintDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.xnominalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ynominalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rotationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.xmachineDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ymachineDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rotationmachineDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.methodDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isFiducialDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.physicalComponentBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.CadFilePath_label = new System.Windows.Forms.Label();
             this.label56 = new System.Windows.Forms.Label();
             this.CadFileName_label = new System.Windows.Forms.Label();
             this.label54 = new System.Windows.Forms.Label();
+            this.MultiCalibrate_button = new System.Windows.Forms.Button();
+            this.StopDemo_button = new System.Windows.Forms.Button();
+            this.Demo_button = new System.Windows.Forms.Button();
             this.tabControlPages = new System.Windows.Forms.TabControl();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.TrueX_label = new System.Windows.Forms.Label();
             this.mechHome_button = new System.Windows.Forms.Button();
             this.OptHome_button = new System.Windows.Forms.Button();
-            this.physicalComponentBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
-            this.Components_tabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
-            this.tabPageSetupCameras.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tapeObjBindingSource)).BeginInit();
             this.groupBox12.SuspendLayout();
-            this.CamerasSetUp_tabControl.SuspendLayout();
-            this.DownCamera_tabPage.SuspendLayout();
-            this.components_gb.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Components_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.G_numericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).BeginInit();
-            this.clear_gb.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ClearTape_dataGridView)).BeginInit();
-            this.black_gb.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BlackTape_dataGridView)).BeginInit();
-            this.white_gb.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PaperTape_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Parameter_Int_numericUpDown)).BeginInit();
-            this.fiducials_gb.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Fiducials_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Display_dataGridView)).BeginInit();
-            this.homing_gb.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Homing_dataGridView)).BeginInit();
-            this.UpCamera_tabPage.SuspendLayout();
-            this.groupBox10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.UpCamComponents_dataGridView)).BeginInit();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Needle_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
             this.tabPageBasicSetup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SmallMovement_numericUpDown)).BeginInit();
-            this.panel7.SuspendLayout();
-            this.panel8.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabpage1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel6.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SmallMovement_numericUpDown)).BeginInit();
             this.RunJob_tabPage.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Placement_pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.JobData_GridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.jobDataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CadData_GridView)).BeginInit();
-            this.tabControlPages.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.physicalComponentBindingSource)).BeginInit();
+            this.tabControlPages.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // Park_button
             // 
-            this.Park_button.Location = new System.Drawing.Point(1148, 889);
+            this.Park_button.Location = new System.Drawing.Point(551, 887);
             this.Park_button.Name = "Park_button";
             this.Park_button.Size = new System.Drawing.Size(75, 23);
             this.Park_button.TabIndex = 41;
@@ -657,7 +447,7 @@
             // 
             // TestNeedleRecognition_button
             // 
-            this.TestNeedleRecognition_button.Location = new System.Drawing.Point(352, 600);
+            this.TestNeedleRecognition_button.Location = new System.Drawing.Point(16, 96);
             this.TestNeedleRecognition_button.Name = "TestNeedleRecognition_button";
             this.TestNeedleRecognition_button.Size = new System.Drawing.Size(110, 23);
             this.TestNeedleRecognition_button.TabIndex = 63;
@@ -666,47 +456,9 @@
             this.TestNeedleRecognition_button.UseVisualStyleBackColor = true;
             this.TestNeedleRecognition_button.Click += new System.EventHandler(this.TestNeedleRecognition_button_Click);
             // 
-            // DownCamZoomFactor_textBox
-            // 
-            this.DownCamZoomFactor_textBox.Location = new System.Drawing.Point(1092, 729);
-            this.DownCamZoomFactor_textBox.Name = "DownCamZoomFactor_textBox";
-            this.DownCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 20);
-            this.DownCamZoomFactor_textBox.TabIndex = 57;
-            this.DownCamZoomFactor_textBox.Text = "1.0";
-            this.DownCamZoomFactor_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.DownCamZoomFactor_textBox, "Digital zoom for Downcam image");
-            this.DownCamZoomFactor_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCamZoomFactor_textBox_KeyPress);
-            this.DownCamZoomFactor_textBox.Leave += new System.EventHandler(this.DownCamZoomFactor_textBox_Leave);
-            // 
-            // DownCamZoom_checkBox
-            // 
-            this.DownCamZoom_checkBox.AutoSize = true;
-            this.DownCamZoom_checkBox.Location = new System.Drawing.Point(946, 733);
-            this.DownCamZoom_checkBox.Name = "DownCamZoom_checkBox";
-            this.DownCamZoom_checkBox.Size = new System.Drawing.Size(140, 17);
-            this.DownCamZoom_checkBox.TabIndex = 56;
-            this.DownCamZoom_checkBox.Text = "Downcam Zoom, factor:";
-            this.toolTip1.SetToolTip(this.DownCamZoom_checkBox, "Digital zoom for Downcam image");
-            this.DownCamZoom_checkBox.UseVisualStyleBackColor = true;
-            this.DownCamZoom_checkBox.Click += new System.EventHandler(this.DownCamZoom_checkBox_Click);
-            // 
-            // reset_button
-            // 
-            this.reset_button.BackColor = System.Drawing.Color.OrangeRed;
-            this.reset_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.reset_button.Location = new System.Drawing.Point(923, 808);
-            this.reset_button.Name = "reset_button";
-            this.reset_button.Size = new System.Drawing.Size(75, 23);
-            this.reset_button.TabIndex = 15;
-            this.reset_button.Text = "RESET";
-            this.toolTip1.SetToolTip(this.reset_button, "Sends reset to TinyG");
-            this.reset_button.UseVisualStyleBackColor = false;
-            this.reset_button.Visible = false;
-            this.reset_button.Click += new System.EventHandler(this.reset_button_Click);
-            // 
             // textBoxSendtoTinyG
             // 
-            this.textBoxSendtoTinyG.Location = new System.Drawing.Point(612, 892);
+            this.textBoxSendtoTinyG.Location = new System.Drawing.Point(499, 609);
             this.textBoxSendtoTinyG.Name = "textBoxSendtoTinyG";
             this.textBoxSendtoTinyG.Size = new System.Drawing.Size(313, 20);
             this.textBoxSendtoTinyG.TabIndex = 8;
@@ -716,7 +468,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(613, 876);
+            this.label4.Location = new System.Drawing.Point(424, 612);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 13);
             this.label4.TabIndex = 7;
@@ -726,7 +478,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(608, 728);
+            this.label14.Location = new System.Drawing.Point(11, 726);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(24, 18);
             this.label14.TabIndex = 7;
@@ -736,7 +488,7 @@
             // 
             this.xpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.xpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xpos_textBox.Location = new System.Drawing.Point(643, 727);
+            this.xpos_textBox.Location = new System.Drawing.Point(46, 725);
             this.xpos_textBox.Name = "xpos_textBox";
             this.xpos_textBox.ReadOnly = true;
             this.xpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -750,7 +502,7 @@
             // 
             this.ypos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ypos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ypos_textBox.Location = new System.Drawing.Point(643, 754);
+            this.ypos_textBox.Location = new System.Drawing.Point(46, 752);
             this.ypos_textBox.Name = "ypos_textBox";
             this.ypos_textBox.ReadOnly = true;
             this.ypos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -764,7 +516,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(608, 755);
+            this.label17.Location = new System.Drawing.Point(11, 753);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(23, 18);
             this.label17.TabIndex = 10;
@@ -774,7 +526,7 @@
             // 
             this.zpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.zpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.zpos_textBox.Location = new System.Drawing.Point(643, 781);
+            this.zpos_textBox.Location = new System.Drawing.Point(46, 779);
             this.zpos_textBox.Name = "zpos_textBox";
             this.zpos_textBox.ReadOnly = true;
             this.zpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -788,7 +540,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(608, 782);
+            this.label18.Location = new System.Drawing.Point(11, 780);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(23, 18);
             this.label18.TabIndex = 12;
@@ -798,7 +550,7 @@
             // 
             this.apos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.apos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.apos_textBox.Location = new System.Drawing.Point(643, 808);
+            this.apos_textBox.Location = new System.Drawing.Point(46, 806);
             this.apos_textBox.Name = "apos_textBox";
             this.apos_textBox.ReadOnly = true;
             this.apos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -812,7 +564,7 @@
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(608, 809);
+            this.label19.Location = new System.Drawing.Point(11, 807);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(23, 18);
             this.label19.TabIndex = 14;
@@ -822,11 +574,11 @@
             // 
             this.SerialMonitor_richTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SerialMonitor_richTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SerialMonitor_richTextBox.Location = new System.Drawing.Point(3, 729);
+            this.SerialMonitor_richTextBox.Location = new System.Drawing.Point(499, 12);
             this.SerialMonitor_richTextBox.Name = "SerialMonitor_richTextBox";
             this.SerialMonitor_richTextBox.ReadOnly = true;
             this.SerialMonitor_richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(599, 189);
+            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(316, 574);
             this.SerialMonitor_richTextBox.TabIndex = 16;
             this.SerialMonitor_richTextBox.TabStop = false;
             this.SerialMonitor_richTextBox.Text = "";
@@ -834,7 +586,7 @@
             // 
             // Test1_button
             // 
-            this.Test1_button.Location = new System.Drawing.Point(1148, 727);
+            this.Test1_button.Location = new System.Drawing.Point(551, 725);
             this.Test1_button.Name = "Test1_button";
             this.Test1_button.Size = new System.Drawing.Size(108, 23);
             this.Test1_button.TabIndex = 18;
@@ -844,7 +596,7 @@
             // 
             // Test2_button
             // 
-            this.Test2_button.Location = new System.Drawing.Point(1148, 754);
+            this.Test2_button.Location = new System.Drawing.Point(551, 752);
             this.Test2_button.Name = "Test2_button";
             this.Test2_button.Size = new System.Drawing.Size(108, 23);
             this.Test2_button.TabIndex = 19;
@@ -866,7 +618,7 @@
             // OpticalHome_button
             // 
             this.OpticalHome_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OpticalHome_button.Location = new System.Drawing.Point(709, 830);
+            this.OpticalHome_button.Location = new System.Drawing.Point(112, 840);
             this.OpticalHome_button.Name = "OpticalHome_button";
             this.OpticalHome_button.Size = new System.Drawing.Size(75, 45);
             this.OpticalHome_button.TabIndex = 37;
@@ -876,34 +628,10 @@
             this.OpticalHome_button.UseVisualStyleBackColor = true;
             this.OpticalHome_button.Click += new System.EventHandler(this.OpticalHome_button_Click);
             // 
-            // UpCamZoomFactor_textBox
-            // 
-            this.UpCamZoomFactor_textBox.Location = new System.Drawing.Point(1092, 755);
-            this.UpCamZoomFactor_textBox.Name = "UpCamZoomFactor_textBox";
-            this.UpCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 20);
-            this.UpCamZoomFactor_textBox.TabIndex = 59;
-            this.UpCamZoomFactor_textBox.Text = "1.0";
-            this.UpCamZoomFactor_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.UpCamZoomFactor_textBox, "Digital zoom for Upcam image");
-            this.UpCamZoomFactor_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCamZoomFactor_textBox_KeyPress);
-            this.UpCamZoomFactor_textBox.Leave += new System.EventHandler(this.UpCamZoomFactor_textBox_Leave);
-            // 
-            // UpCamZoom_checkBox
-            // 
-            this.UpCamZoom_checkBox.AutoSize = true;
-            this.UpCamZoom_checkBox.Location = new System.Drawing.Point(946, 757);
-            this.UpCamZoom_checkBox.Name = "UpCamZoom_checkBox";
-            this.UpCamZoom_checkBox.Size = new System.Drawing.Size(126, 17);
-            this.UpCamZoom_checkBox.TabIndex = 58;
-            this.UpCamZoom_checkBox.Text = "Upcam Zoom, factor:";
-            this.toolTip1.SetToolTip(this.UpCamZoom_checkBox, "Digital zoom for Upcam image");
-            this.UpCamZoom_checkBox.UseVisualStyleBackColor = true;
-            this.UpCamZoom_checkBox.Click += new System.EventHandler(this.UpCamZoom_checkBox_Click);
-            // 
             // label97
             // 
             this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(943, 784);
+            this.label97.Location = new System.Drawing.Point(350, 758);
             this.label97.Name = "label97";
             this.label97.Size = new System.Drawing.Size(53, 117);
             this.label97.TabIndex = 61;
@@ -913,7 +641,7 @@
             // 
             // Test3_button
             // 
-            this.Test3_button.Location = new System.Drawing.Point(1148, 781);
+            this.Test3_button.Location = new System.Drawing.Point(551, 779);
             this.Test3_button.Name = "Test3_button";
             this.Test3_button.Size = new System.Drawing.Size(108, 23);
             this.Test3_button.TabIndex = 66;
@@ -923,7 +651,7 @@
             // 
             // Test4_button
             // 
-            this.Test4_button.Location = new System.Drawing.Point(1148, 808);
+            this.Test4_button.Location = new System.Drawing.Point(551, 806);
             this.Test4_button.Name = "Test4_button";
             this.Test4_button.Size = new System.Drawing.Size(108, 23);
             this.Test4_button.TabIndex = 52;
@@ -934,7 +662,7 @@
             // label124
             // 
             this.label124.AutoSize = true;
-            this.label124.Location = new System.Drawing.Point(1002, 774);
+            this.label124.Location = new System.Drawing.Point(409, 748);
             this.label124.Name = "label124";
             this.label124.Size = new System.Drawing.Size(52, 91);
             this.label124.TabIndex = 67;
@@ -943,7 +671,7 @@
             // 
             // Test5_button
             // 
-            this.Test5_button.Location = new System.Drawing.Point(1148, 835);
+            this.Test5_button.Location = new System.Drawing.Point(551, 833);
             this.Test5_button.Name = "Test5_button";
             this.Test5_button.Size = new System.Drawing.Size(108, 23);
             this.Test5_button.TabIndex = 68;
@@ -953,7 +681,7 @@
             // 
             // Test6_button
             // 
-            this.Test6_button.Location = new System.Drawing.Point(1148, 861);
+            this.Test6_button.Location = new System.Drawing.Point(551, 859);
             this.Test6_button.Name = "Test6_button";
             this.Test6_button.Size = new System.Drawing.Size(108, 23);
             this.Test6_button.TabIndex = 69;
@@ -961,65 +689,10 @@
             this.Test6_button.UseVisualStyleBackColor = true;
             this.Test6_button.Click += new System.EventHandler(this.Test6_button_Click);
             // 
-            // Bookmark1_button
-            // 
-            this.Bookmark1_button.Location = new System.Drawing.Point(792, 728);
-            this.Bookmark1_button.Name = "Bookmark1_button";
-            this.Bookmark1_button.Size = new System.Drawing.Size(124, 22);
-            this.Bookmark1_button.TabIndex = 70;
-            this.Bookmark1_button.Text = "Mark 1";
-            this.toolTip1.SetToolTip(this.Bookmark1_button, "Goes to location 1\r\n(Named and set on the Basic Setup tab.)");
-            this.Bookmark1_button.UseVisualStyleBackColor = true;
-            this.Bookmark1_button.Click += new System.EventHandler(this.Bookmark1_button_Click);
-            // 
-            // Bookmark2_button
-            // 
-            this.Bookmark2_button.Location = new System.Drawing.Point(792, 751);
-            this.Bookmark2_button.Name = "Bookmark2_button";
-            this.Bookmark2_button.Size = new System.Drawing.Size(124, 22);
-            this.Bookmark2_button.TabIndex = 71;
-            this.Bookmark2_button.Text = "Mark 2";
-            this.toolTip1.SetToolTip(this.Bookmark2_button, "Goes to location 2\r\n(Named and set on the Basic Setup tab.)");
-            this.Bookmark2_button.UseVisualStyleBackColor = true;
-            this.Bookmark2_button.Click += new System.EventHandler(this.Bookmark2_button_Click);
-            // 
-            // Bookmark3_button
-            // 
-            this.Bookmark3_button.Location = new System.Drawing.Point(792, 774);
-            this.Bookmark3_button.Name = "Bookmark3_button";
-            this.Bookmark3_button.Size = new System.Drawing.Size(124, 22);
-            this.Bookmark3_button.TabIndex = 72;
-            this.Bookmark3_button.Text = "Mark 3";
-            this.toolTip1.SetToolTip(this.Bookmark3_button, "Goes to location 3\r\n(Named and set on the Basic Setup tab.)");
-            this.Bookmark3_button.UseVisualStyleBackColor = true;
-            this.Bookmark3_button.Click += new System.EventHandler(this.Bookmark3_button_Click);
-            // 
-            // Bookmark4_button
-            // 
-            this.Bookmark4_button.Location = new System.Drawing.Point(792, 797);
-            this.Bookmark4_button.Name = "Bookmark4_button";
-            this.Bookmark4_button.Size = new System.Drawing.Size(124, 22);
-            this.Bookmark4_button.TabIndex = 73;
-            this.Bookmark4_button.Text = "Mark 4";
-            this.toolTip1.SetToolTip(this.Bookmark4_button, "Goes to location 4\r\n(Named and set on the Basic Setup tab.)");
-            this.Bookmark4_button.UseVisualStyleBackColor = true;
-            this.Bookmark4_button.Click += new System.EventHandler(this.Bookmark4_button_Click);
-            // 
-            // Bookmark5_button
-            // 
-            this.Bookmark5_button.Location = new System.Drawing.Point(792, 820);
-            this.Bookmark5_button.Name = "Bookmark5_button";
-            this.Bookmark5_button.Size = new System.Drawing.Size(124, 22);
-            this.Bookmark5_button.TabIndex = 74;
-            this.Bookmark5_button.Text = "Mark 5";
-            this.toolTip1.SetToolTip(this.Bookmark5_button, "Goes to location 5\r\n(Named and set on the Basic Setup tab.)");
-            this.Bookmark5_button.UseVisualStyleBackColor = true;
-            this.Bookmark5_button.Click += new System.EventHandler(this.Bookmark5_button_Click);
-            // 
             // label145
             // 
             this.label145.AutoSize = true;
-            this.label145.Location = new System.Drawing.Point(1051, 774);
+            this.label145.Location = new System.Drawing.Point(458, 748);
             this.label145.Name = "label145";
             this.label145.Size = new System.Drawing.Size(91, 91);
             this.label145.TabIndex = 76;
@@ -1045,19 +718,17 @@
             this.Tapes_tabPage.Controls.Add(this.AddTape_button);
             this.Tapes_tabPage.Controls.Add(this.label109);
             this.Tapes_tabPage.Controls.Add(this.Tapes_dataGridView);
-            this.Tapes_tabPage.Controls.Add(this.label108);
-            this.Tapes_tabPage.Controls.Add(this.Tapes_pictureBox);
             this.Tapes_tabPage.Location = new System.Drawing.Point(4, 22);
             this.Tapes_tabPage.Name = "Tapes_tabPage";
             this.Tapes_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Tapes_tabPage.Size = new System.Drawing.Size(1249, 695);
+            this.Tapes_tabPage.Size = new System.Drawing.Size(821, 690);
             this.Tapes_tabPage.TabIndex = 6;
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
             // 
             // view_nextParts_button
             // 
-            this.view_nextParts_button.Location = new System.Drawing.Point(651, 515);
+            this.view_nextParts_button.Location = new System.Drawing.Point(8, 515);
             this.view_nextParts_button.Name = "view_nextParts_button";
             this.view_nextParts_button.Size = new System.Drawing.Size(128, 25);
             this.view_nextParts_button.TabIndex = 77;
@@ -1067,7 +738,7 @@
             // 
             // pickup_next_button
             // 
-            this.pickup_next_button.Location = new System.Drawing.Point(1152, 348);
+            this.pickup_next_button.Location = new System.Drawing.Point(740, 348);
             this.pickup_next_button.Name = "pickup_next_button";
             this.pickup_next_button.Size = new System.Drawing.Size(75, 22);
             this.pickup_next_button.TabIndex = 43;
@@ -1078,7 +749,7 @@
             // label128
             // 
             this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(9, 521);
+            this.label128.Location = new System.Drawing.Point(6, 558);
             this.label128.Name = "label128";
             this.label128.Size = new System.Drawing.Size(479, 52);
             this.label128.TabIndex = 42;
@@ -1086,18 +757,17 @@
             // 
             // tape_ViewComponents_button
             // 
-            this.tape_ViewComponents_button.Location = new System.Drawing.Point(1152, 319);
+            this.tape_ViewComponents_button.Location = new System.Drawing.Point(740, 319);
             this.tape_ViewComponents_button.Name = "tape_ViewComponents_button";
             this.tape_ViewComponents_button.Size = new System.Drawing.Size(75, 23);
             this.tape_ViewComponents_button.TabIndex = 41;
             this.tape_ViewComponents_button.Text = "ViewPickupLocation";
             this.toolTip1.SetToolTip(this.tape_ViewComponents_button, "Shows where the parts are to be picked up");
             this.tape_ViewComponents_button.UseVisualStyleBackColor = true;
-            this.tape_ViewComponents_button.Click += new System.EventHandler(this.tape_ViewComponents_button_Click);
             // 
             // TapeSet1_button
             // 
-            this.TapeSet1_button.Location = new System.Drawing.Point(1152, 164);
+            this.TapeSet1_button.Location = new System.Drawing.Point(740, 164);
             this.TapeSet1_button.Name = "TapeSet1_button";
             this.TapeSet1_button.Size = new System.Drawing.Size(75, 23);
             this.TapeSet1_button.TabIndex = 40;
@@ -1108,7 +778,7 @@
             // 
             // Tape_resetZs_button
             // 
-            this.Tape_resetZs_button.Location = new System.Drawing.Point(1152, 290);
+            this.Tape_resetZs_button.Location = new System.Drawing.Point(740, 290);
             this.Tape_resetZs_button.Name = "Tape_resetZs_button";
             this.Tape_resetZs_button.Size = new System.Drawing.Size(75, 23);
             this.Tape_resetZs_button.TabIndex = 39;
@@ -1119,19 +789,18 @@
             // 
             // Tape_GoToNext_button
             // 
-            this.Tape_GoToNext_button.Location = new System.Drawing.Point(1152, 193);
+            this.Tape_GoToNext_button.Location = new System.Drawing.Point(740, 193);
             this.Tape_GoToNext_button.Name = "Tape_GoToNext_button";
             this.Tape_GoToNext_button.Size = new System.Drawing.Size(75, 23);
             this.Tape_GoToNext_button.TabIndex = 38;
             this.Tape_GoToNext_button.Text = "Go to next";
             this.toolTip1.SetToolTip(this.Tape_GoToNext_button, "Moves to hole of next part on the selected tape.");
             this.Tape_GoToNext_button.UseVisualStyleBackColor = true;
-            this.Tape_GoToNext_button.Click += new System.EventHandler(this.Tape_GoToNext_button_Click);
             // 
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(1152, 267);
+            this.label67.Location = new System.Drawing.Point(740, 267);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(39, 13);
             this.label67.TabIndex = 37;
@@ -1141,7 +810,7 @@
             // label62
             // 
             this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(1161, 248);
+            this.label62.Location = new System.Drawing.Point(749, 248);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(66, 13);
             this.label62.TabIndex = 36;
@@ -1150,7 +819,7 @@
             // 
             // SetPartNo_button
             // 
-            this.SetPartNo_button.Location = new System.Drawing.Point(1152, 222);
+            this.SetPartNo_button.Location = new System.Drawing.Point(740, 222);
             this.SetPartNo_button.Name = "SetPartNo_button";
             this.SetPartNo_button.Size = new System.Drawing.Size(75, 23);
             this.SetPartNo_button.TabIndex = 35;
@@ -1161,7 +830,7 @@
             // 
             // NextPart_TextBox
             // 
-            this.NextPart_TextBox.Location = new System.Drawing.Point(1195, 264);
+            this.NextPart_TextBox.Location = new System.Drawing.Point(783, 264);
             this.NextPart_TextBox.Mask = "999";
             this.NextPart_TextBox.Name = "NextPart_TextBox";
             this.NextPart_TextBox.PromptChar = ' ';
@@ -1174,7 +843,7 @@
             // 
             // TapeGoTo_button
             // 
-            this.TapeGoTo_button.Location = new System.Drawing.Point(1152, 135);
+            this.TapeGoTo_button.Location = new System.Drawing.Point(740, 135);
             this.TapeGoTo_button.Name = "TapeGoTo_button";
             this.TapeGoTo_button.Size = new System.Drawing.Size(75, 23);
             this.TapeGoTo_button.TabIndex = 21;
@@ -1185,7 +854,7 @@
             // 
             // TapeDown_button
             // 
-            this.TapeDown_button.Location = new System.Drawing.Point(1152, 106);
+            this.TapeDown_button.Location = new System.Drawing.Point(740, 106);
             this.TapeDown_button.Name = "TapeDown_button";
             this.TapeDown_button.Size = new System.Drawing.Size(75, 23);
             this.TapeDown_button.TabIndex = 20;
@@ -1197,7 +866,7 @@
             // 
             // TapeUp_button
             // 
-            this.TapeUp_button.Location = new System.Drawing.Point(1152, 77);
+            this.TapeUp_button.Location = new System.Drawing.Point(740, 77);
             this.TapeUp_button.Name = "TapeUp_button";
             this.TapeUp_button.Size = new System.Drawing.Size(75, 23);
             this.TapeUp_button.TabIndex = 19;
@@ -1209,7 +878,7 @@
             // 
             // DeleteTape_button
             // 
-            this.DeleteTape_button.Location = new System.Drawing.Point(1152, 48);
+            this.DeleteTape_button.Location = new System.Drawing.Point(740, 48);
             this.DeleteTape_button.Name = "DeleteTape_button";
             this.DeleteTape_button.Size = new System.Drawing.Size(75, 23);
             this.DeleteTape_button.TabIndex = 18;
@@ -1220,7 +889,7 @@
             // 
             // AddTape_button
             // 
-            this.AddTape_button.Location = new System.Drawing.Point(1152, 19);
+            this.AddTape_button.Location = new System.Drawing.Point(740, 19);
             this.AddTape_button.Name = "AddTape_button";
             this.AddTape_button.Size = new System.Drawing.Size(75, 23);
             this.AddTape_button.TabIndex = 17;
@@ -1232,7 +901,7 @@
             // label109
             // 
             this.label109.AutoSize = true;
-            this.label109.Location = new System.Drawing.Point(649, 3);
+            this.label109.Location = new System.Drawing.Point(6, 3);
             this.label109.Name = "label109";
             this.label109.Size = new System.Drawing.Size(77, 13);
             this.label109.TabIndex = 16;
@@ -1241,34 +910,36 @@
             // Tapes_dataGridView
             // 
             this.Tapes_dataGridView.AllowUserToAddRows = false;
+            this.Tapes_dataGridView.AutoGenerateColumns = false;
             this.Tapes_dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.Tapes_dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.Tapes_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Tapes_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.SelectButtonColumn,
-            this.IdColumn,
-            this.OrientationColumn,
-            this.RotationColumn,
-            this.WidthColumn,
-            this.TypeColumn,
-            this.Next_Column,
-            this.X_Column,
-            this.Y_Column,
-            this.PickupZ_Column,
-            this.PlaceZ_Column,
-            this.HolePitch_Column,
-            this.Slope_column,
-            this.IsCalibrated_Column});
+            this.ID,
+            this.OriginalTapeOrientation,
+            this.OriginalPartOrientation,
+            this.Type,
+            this.PartType,
+            this.HolePitch,
+            this.PartPitch,
+            this.HoleToPartSpacingX,
+            this.holeToPartSpacingYDataGridViewTextBoxColumn,
+            this.pickupZDataGridViewTextBoxColumn,
+            this.placeZDataGridViewTextBoxColumn,
+            this.bDataGridViewTextBoxColumn});
+            this.Tapes_dataGridView.DataSource = this.tapeObjBindingSource;
             this.Tapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Tapes_dataGridView.Location = new System.Drawing.Point(652, 19);
+            this.Tapes_dataGridView.Location = new System.Drawing.Point(3, 19);
             this.Tapes_dataGridView.MultiSelect = false;
             this.Tapes_dataGridView.Name = "Tapes_dataGridView";
             this.Tapes_dataGridView.RowHeadersVisible = false;
             this.Tapes_dataGridView.RowHeadersWidth = 50;
             this.Tapes_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Tapes_dataGridView.Size = new System.Drawing.Size(494, 480);
+            this.Tapes_dataGridView.Size = new System.Drawing.Size(725, 480);
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
+            this.Tapes_dataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.EndEditModeForTapeSelection);
             // 
             // SelectButtonColumn
             // 
@@ -1277,236 +948,335 @@
             this.SelectButtonColumn.Text = "Reset";
             this.SelectButtonColumn.Width = 43;
             // 
-            // IdColumn
+            // ID
             // 
-            this.IdColumn.HeaderText = "ID";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
+            this.ID.DataPropertyName = "ID";
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.Width = 43;
             // 
-            // OrientationColumn
+            // OriginalTapeOrientation
             // 
-            this.OrientationColumn.HeaderText = "Orientation";
-            this.OrientationColumn.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.OrientationColumn.Name = "OrientationColumn";
-            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 83;
+            this.OriginalTapeOrientation.DataPropertyName = "OriginalTapeOrientation";
+            this.OriginalTapeOrientation.HeaderText = "TapeOrient";
+            this.OriginalTapeOrientation.Name = "OriginalTapeOrientation";
+            this.OriginalTapeOrientation.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.OriginalTapeOrientation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.OriginalTapeOrientation.Width = 85;
             // 
-            // RotationColumn
+            // OriginalPartOrientation
             // 
-            this.RotationColumn.HeaderText = "Part Rotation";
-            this.RotationColumn.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.RotationColumn.Name = "RotationColumn";
-            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 94;
+            this.OriginalPartOrientation.DataPropertyName = "OriginalPartOrientation";
+            this.OriginalPartOrientation.HeaderText = "PartOrientation";
+            this.OriginalPartOrientation.Name = "OriginalPartOrientation";
+            this.OriginalPartOrientation.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.OriginalPartOrientation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.OriginalPartOrientation.Width = 102;
             // 
-            // WidthColumn
+            // Type
             // 
-            this.WidthColumn.HeaderText = "Width";
-            this.WidthColumn.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm"});
-            this.WidthColumn.MinimumWidth = 55;
-            this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.WidthColumn.Width = 60;
+            this.Type.DataPropertyName = "Type";
+            this.Type.HeaderText = "TapeType";
+            this.Type.Name = "Type";
+            this.Type.Width = 62;
             // 
-            // TypeColumn
+            // PartType
             // 
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.Width = 37;
+            this.PartType.DataPropertyName = "PartType";
+            this.PartType.HeaderText = "PartType";
+            this.PartType.Name = "PartType";
+            this.PartType.Width = 56;
             // 
-            // Next_Column
+            // HolePitch
             // 
-            this.Next_Column.HeaderText = "Next";
-            this.Next_Column.Name = "Next_Column";
-            this.Next_Column.Width = 54;
+            this.HolePitch.DataPropertyName = "HolePitch";
+            this.HolePitch.HeaderText = "HolePitch";
+            this.HolePitch.Name = "HolePitch";
+            this.HolePitch.Width = 78;
             // 
-            // X_Column
+            // PartPitch
             // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.Width = 39;
+            this.PartPitch.DataPropertyName = "PartPitch";
+            this.PartPitch.HeaderText = "PartPitch";
+            this.PartPitch.Name = "PartPitch";
+            this.PartPitch.Width = 75;
             // 
-            // Y_Column
+            // HoleToPartSpacingX
             // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.Width = 39;
+            this.HoleToPartSpacingX.DataPropertyName = "HoleToPartSpacingX";
+            this.HoleToPartSpacingX.HeaderText = "HoleToPartSpacingX";
+            this.HoleToPartSpacingX.Name = "HoleToPartSpacingX";
+            this.HoleToPartSpacingX.Width = 132;
             // 
-            // PickupZ_Column
+            // holeToPartSpacingYDataGridViewTextBoxColumn
             // 
-            this.PickupZ_Column.HeaderText = "Pickup Z";
-            this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
+            this.holeToPartSpacingYDataGridViewTextBoxColumn.DataPropertyName = "HoleToPartSpacingY";
+            this.holeToPartSpacingYDataGridViewTextBoxColumn.HeaderText = "HoleToPartSpacingY";
+            this.holeToPartSpacingYDataGridViewTextBoxColumn.Name = "holeToPartSpacingYDataGridViewTextBoxColumn";
+            this.holeToPartSpacingYDataGridViewTextBoxColumn.ReadOnly = true;
+            this.holeToPartSpacingYDataGridViewTextBoxColumn.Width = 132;
             // 
-            // PlaceZ_Column
+            // pickupZDataGridViewTextBoxColumn
             // 
-            this.PlaceZ_Column.HeaderText = "PlaceZ";
-            this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
+            this.pickupZDataGridViewTextBoxColumn.DataPropertyName = "PickupZ";
+            this.pickupZDataGridViewTextBoxColumn.HeaderText = "PickupZ";
+            this.pickupZDataGridViewTextBoxColumn.Name = "pickupZDataGridViewTextBoxColumn";
+            this.pickupZDataGridViewTextBoxColumn.Width = 72;
             // 
-            // HolePitch_Column
+            // placeZDataGridViewTextBoxColumn
             // 
-            this.HolePitch_Column.HeaderText = "HolePitch";
-            this.HolePitch_Column.Name = "HolePitch_Column";
-            this.HolePitch_Column.Width = 78;
+            this.placeZDataGridViewTextBoxColumn.DataPropertyName = "PlaceZ";
+            this.placeZDataGridViewTextBoxColumn.HeaderText = "PlaceZ";
+            this.placeZDataGridViewTextBoxColumn.Name = "placeZDataGridViewTextBoxColumn";
+            this.placeZDataGridViewTextBoxColumn.Width = 66;
             // 
-            // Slope_column
+            // bDataGridViewTextBoxColumn
             // 
-            this.Slope_column.HeaderText = "Slope";
-            this.Slope_column.Name = "Slope_column";
-            this.Slope_column.Width = 59;
+            this.bDataGridViewTextBoxColumn.DataPropertyName = "b";
+            this.bDataGridViewTextBoxColumn.HeaderText = "Slope";
+            this.bDataGridViewTextBoxColumn.Name = "bDataGridViewTextBoxColumn";
+            this.bDataGridViewTextBoxColumn.Width = 59;
             // 
-            // IsCalibrated_Column
+            // tapeObjBindingSource
             // 
-            this.IsCalibrated_Column.HeaderText = "IsCalibrated";
-            this.IsCalibrated_Column.Name = "IsCalibrated_Column";
-            this.IsCalibrated_Column.ReadOnly = true;
-            this.IsCalibrated_Column.Width = 68;
+            this.tapeObjBindingSource.DataSource = typeof(LitePlacer.TapeObj);
             // 
-            // label108
+            // label101
             // 
-            this.label108.AutoSize = true;
-            this.label108.Location = new System.Drawing.Point(6, 3);
-            this.label108.Name = "label108";
-            this.label108.Size = new System.Drawing.Size(106, 13);
-            this.label108.TabIndex = 14;
-            this.label108.Text = "Down Camera Image";
+            this.label101.AutoSize = true;
+            this.label101.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label101.Location = new System.Drawing.Point(194, 16);
+            this.label101.Name = "label101";
+            this.label101.Size = new System.Drawing.Size(53, 18);
+            this.label101.TabIndex = 117;
+            this.label101.Text = "Pickup";
             // 
-            // Tapes_pictureBox
+            // label100
             // 
-            this.Tapes_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tapes_pictureBox.Location = new System.Drawing.Point(6, 19);
-            this.Tapes_pictureBox.Name = "Tapes_pictureBox";
-            this.Tapes_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Tapes_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.Tapes_pictureBox.TabIndex = 13;
-            this.Tapes_pictureBox.TabStop = false;
-            this.Tapes_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
+            this.label100.AutoSize = true;
+            this.label100.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label100.Location = new System.Drawing.Point(93, 16);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(73, 18);
+            this.label100.TabIndex = 116;
+            this.label100.Text = "PCB zero";
             // 
-            // Components_tabPage
+            // label55
             // 
-            this.Components_tabPage.Controls.Add(this.ComponentData_dataGridView);
-            this.Components_tabPage.Location = new System.Drawing.Point(4, 22);
-            this.Components_tabPage.Name = "Components_tabPage";
-            this.Components_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Components_tabPage.Size = new System.Drawing.Size(1249, 695);
-            this.Components_tabPage.TabIndex = 3;
-            this.Components_tabPage.Text = "Component Data";
-            this.Components_tabPage.UseVisualStyleBackColor = true;
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label55.Location = new System.Drawing.Point(3, 16);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(84, 18);
+            this.label55.TabIndex = 115;
+            this.label55.Text = "Up Camera";
             // 
-            // ComponentData_dataGridView
+            // CameraSetupTest_button
             // 
-            this.ComponentData_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ComponentData_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.PartialName,
-            this.SizeX,
-            this.SizeY});
-            this.ComponentData_dataGridView.Location = new System.Drawing.Point(24, 31);
-            this.ComponentData_dataGridView.Name = "ComponentData_dataGridView";
-            this.ComponentData_dataGridView.Size = new System.Drawing.Size(495, 598);
-            this.ComponentData_dataGridView.TabIndex = 0;
+            this.CameraSetupTest_button.Location = new System.Drawing.Point(747, 800);
+            this.CameraSetupTest_button.Name = "CameraSetupTest_button";
+            this.CameraSetupTest_button.Size = new System.Drawing.Size(75, 23);
+            this.CameraSetupTest_button.TabIndex = 114;
+            this.CameraSetupTest_button.Text = "Test";
+            this.CameraSetupTest_button.UseVisualStyleBackColor = true;
+            this.CameraSetupTest_button.Visible = false;
             // 
-            // PartialName
+            // GotoUpCamPosition_button
             // 
-            this.PartialName.HeaderText = "String in Component Name";
-            this.PartialName.Name = "PartialName";
-            this.PartialName.Width = 250;
+            this.GotoUpCamPosition_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(235, 726);
+            this.GotoUpCamPosition_button.Name = "GotoUpCamPosition_button";
+            this.GotoUpCamPosition_button.Size = new System.Drawing.Size(84, 23);
+            this.GotoUpCamPosition_button.TabIndex = 79;
+            this.GotoUpCamPosition_button.Text = "GoTo UpCamera";
+            this.GotoUpCamPosition_button.UseVisualStyleBackColor = true;
+            this.GotoUpCamPosition_button.Click += new System.EventHandler(this.GotoUpCamPosition_button_Click);
             // 
-            // SizeX
+            // SetUpCamPosition_button
             // 
-            this.SizeX.HeaderText = "X, mm";
-            this.SizeX.Name = "SizeX";
+            this.SetUpCamPosition_button.Location = new System.Drawing.Point(21, 37);
+            this.SetUpCamPosition_button.Name = "SetUpCamPosition_button";
+            this.SetUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
+            this.SetUpCamPosition_button.TabIndex = 72;
+            this.SetUpCamPosition_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetUpCamPosition_button, "Sets Up camera location");
+            this.SetUpCamPosition_button.UseVisualStyleBackColor = true;
+            this.SetUpCamPosition_button.Click += new System.EventHandler(this.SetUpCamPosition_button_Click);
             // 
-            // SizeY
+            // label99
             // 
-            this.SizeY.HeaderText = "Y, mm";
-            this.SizeY.Name = "SizeY";
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(18, 95);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(17, 13);
+            this.label99.TabIndex = 71;
+            this.label99.Text = "Y:";
             // 
-            // tabPageSetupCameras
+            // label98
             // 
-            this.tabPageSetupCameras.Controls.Add(this.button2);
-            this.tabPageSetupCameras.Controls.Add(this.button1);
-            this.tabPageSetupCameras.Controls.Add(this.zoffset_textbox);
-            this.tabPageSetupCameras.Controls.Add(this.label130);
-            this.tabPageSetupCameras.Controls.Add(this.label131);
-            this.tabPageSetupCameras.Controls.Add(this.groupBox12);
-            this.tabPageSetupCameras.Controls.Add(this.CamerasSetUp_tabControl);
-            this.tabPageSetupCameras.Controls.Add(this.label101);
-            this.tabPageSetupCameras.Controls.Add(this.label100);
-            this.tabPageSetupCameras.Controls.Add(this.label55);
-            this.tabPageSetupCameras.Controls.Add(this.CameraSetupTest_button);
-            this.tabPageSetupCameras.Controls.Add(this.GotoUpCamPosition_button);
-            this.tabPageSetupCameras.Controls.Add(this.SetUpCamPosition_button);
-            this.tabPageSetupCameras.Controls.Add(this.label99);
-            this.tabPageSetupCameras.Controls.Add(this.label98);
-            this.tabPageSetupCameras.Controls.Add(this.UpcamPositionY_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.UpcamPositionX_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.NeedleOffsetY_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.NeedleOffsetX_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.PickupCenterY_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.PickupCenterX_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.JigY_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.JigX_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.label149);
-            this.tabPageSetupCameras.Controls.Add(this.label148);
-            this.tabPageSetupCameras.Controls.Add(this.label146);
-            this.tabPageSetupCameras.Controls.Add(this.label143);
-            this.tabPageSetupCameras.Controls.Add(this.Z0toPCB_CamerasTab_label);
-            this.tabPageSetupCameras.Controls.Add(this.label120);
-            this.tabPageSetupCameras.Controls.Add(this.Offset2Method_button);
-            this.tabPageSetupCameras.Controls.Add(this.NeedleOffset_label);
-            this.tabPageSetupCameras.Controls.Add(this.label115);
-            this.tabPageSetupCameras.Controls.Add(this.label114);
-            this.tabPageSetupCameras.Controls.Add(this.SetPickupCenter_button);
-            this.tabPageSetupCameras.Controls.Add(this.SetPCB0_button);
-            this.tabPageSetupCameras.Controls.Add(this.GotoPickupCenter_button);
-            this.tabPageSetupCameras.Controls.Add(this.GotoPCB0_button);
-            this.tabPageSetupCameras.Controls.Add(this.label95);
-            this.tabPageSetupCameras.Controls.Add(this.label96);
-            this.tabPageSetupCameras.Controls.Add(this.label93);
-            this.tabPageSetupCameras.Controls.Add(this.label94);
-            this.tabPageSetupCameras.Controls.Add(this.Snapshot_button);
-            this.tabPageSetupCameras.Controls.Add(this.ImageTest_checkBox);
-            this.tabPageSetupCameras.Controls.Add(this.Cam_pictureBox);
-            this.tabPageSetupCameras.Controls.Add(this.label1);
-            this.tabPageSetupCameras.Location = new System.Drawing.Point(4, 22);
-            this.tabPageSetupCameras.Name = "tabPageSetupCameras";
-            this.tabPageSetupCameras.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSetupCameras.Size = new System.Drawing.Size(1249, 695);
-            this.tabPageSetupCameras.TabIndex = 0;
-            this.tabPageSetupCameras.Text = "Setup Cameras";
-            this.tabPageSetupCameras.UseVisualStyleBackColor = true;
+            this.label98.AutoSize = true;
+            this.label98.Location = new System.Drawing.Point(18, 69);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(17, 13);
+            this.label98.TabIndex = 70;
+            this.label98.Text = "X:";
+            // 
+            // UpcamPositionY_textBox
+            // 
+            this.UpcamPositionY_textBox.Location = new System.Drawing.Point(41, 92);
+            this.UpcamPositionY_textBox.Name = "UpcamPositionY_textBox";
+            this.UpcamPositionY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.UpcamPositionY_textBox.TabIndex = 69;
+            this.UpcamPositionY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionY_textBox_KeyPress);
+            this.UpcamPositionY_textBox.Leave += new System.EventHandler(this.UpcamPositionY_textBox_Leave);
+            // 
+            // UpcamPositionX_textBox
+            // 
+            this.UpcamPositionX_textBox.Location = new System.Drawing.Point(41, 66);
+            this.UpcamPositionX_textBox.Name = "UpcamPositionX_textBox";
+            this.UpcamPositionX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.UpcamPositionX_textBox.TabIndex = 68;
+            this.UpcamPositionX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionX_textBox_KeyPress);
+            this.UpcamPositionX_textBox.Leave += new System.EventHandler(this.UpcamPositionX_textBox_Leave);
+            // 
+            // PickupCenterY_textBox
+            // 
+            this.PickupCenterY_textBox.Location = new System.Drawing.Point(202, 92);
+            this.PickupCenterY_textBox.Name = "PickupCenterY_textBox";
+            this.PickupCenterY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.PickupCenterY_textBox.TabIndex = 39;
+            this.PickupCenterY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PickupCenterY_textBox_KeyPress);
+            this.PickupCenterY_textBox.Leave += new System.EventHandler(this.PickupCenterY_textBox_Leave);
+            // 
+            // PickupCenterX_textBox
+            // 
+            this.PickupCenterX_textBox.Location = new System.Drawing.Point(202, 66);
+            this.PickupCenterX_textBox.Name = "PickupCenterX_textBox";
+            this.PickupCenterX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.PickupCenterX_textBox.TabIndex = 38;
+            this.PickupCenterX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PickupCenterX_textBox_KeyPress);
+            this.PickupCenterX_textBox.Leave += new System.EventHandler(this.PickupCenterX_textBox_Leave);
+            // 
+            // JigY_textBox
+            // 
+            this.JigY_textBox.Location = new System.Drawing.Point(120, 92);
+            this.JigY_textBox.Name = "JigY_textBox";
+            this.JigY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.JigY_textBox.TabIndex = 35;
+            this.JigY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JigY_textBox_KeyPress);
+            this.JigY_textBox.Leave += new System.EventHandler(this.JigY_textBox_Leave);
+            // 
+            // JigX_textBox
+            // 
+            this.JigX_textBox.Location = new System.Drawing.Point(120, 66);
+            this.JigX_textBox.Name = "JigX_textBox";
+            this.JigX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.JigX_textBox.TabIndex = 34;
+            this.JigX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JigX_textBox_KeyPress);
+            this.JigX_textBox.Leave += new System.EventHandler(this.JigX_textBox_Leave);
+            // 
+            // SetPickupCenter_button
+            // 
+            this.SetPickupCenter_button.Location = new System.Drawing.Point(183, 37);
+            this.SetPickupCenter_button.Name = "SetPickupCenter_button";
+            this.SetPickupCenter_button.Size = new System.Drawing.Size(65, 23);
+            this.SetPickupCenter_button.TabIndex = 44;
+            this.SetPickupCenter_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetPickupCenter_button, "Sets manual pick up postion");
+            this.SetPickupCenter_button.UseVisualStyleBackColor = true;
+            this.SetPickupCenter_button.Click += new System.EventHandler(this.SetPickupCenter_button_Click);
+            // 
+            // SetPCB0_button
+            // 
+            this.SetPCB0_button.Location = new System.Drawing.Point(101, 37);
+            this.SetPCB0_button.Name = "SetPCB0_button";
+            this.SetPCB0_button.Size = new System.Drawing.Size(65, 23);
+            this.SetPCB0_button.TabIndex = 43;
+            this.SetPCB0_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetPCB0_button, "Sets PCB jig lower left location");
+            this.SetPCB0_button.UseVisualStyleBackColor = true;
+            this.SetPCB0_button.Click += new System.EventHandler(this.SetPCB0_button_Click);
+            // 
+            // GotoPickupCenter_button
+            // 
+            this.GotoPickupCenter_button.Location = new System.Drawing.Point(235, 782);
+            this.GotoPickupCenter_button.Name = "GotoPickupCenter_button";
+            this.GotoPickupCenter_button.Size = new System.Drawing.Size(84, 23);
+            this.GotoPickupCenter_button.TabIndex = 41;
+            this.GotoPickupCenter_button.Text = "GoTo Pickup";
+            this.GotoPickupCenter_button.UseVisualStyleBackColor = true;
+            this.GotoPickupCenter_button.Click += new System.EventHandler(this.GotoPickupCenter_button_Click);
+            // 
+            // GotoPCB0_button
+            // 
+            this.GotoPCB0_button.Location = new System.Drawing.Point(235, 754);
+            this.GotoPCB0_button.Name = "GotoPCB0_button";
+            this.GotoPCB0_button.Size = new System.Drawing.Size(84, 23);
+            this.GotoPCB0_button.TabIndex = 40;
+            this.GotoPCB0_button.Text = "GoTo PCB";
+            this.GotoPCB0_button.UseVisualStyleBackColor = true;
+            this.GotoPCB0_button.Click += new System.EventHandler(this.GotoPCB0_button_Click);
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Location = new System.Drawing.Point(179, 95);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(17, 13);
+            this.label95.TabIndex = 37;
+            this.label95.Text = "Y:";
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(179, 69);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(17, 13);
+            this.label96.TabIndex = 36;
+            this.label96.Text = "X:";
+            // 
+            // label93
+            // 
+            this.label93.AutoSize = true;
+            this.label93.Location = new System.Drawing.Point(98, 95);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(17, 13);
+            this.label93.TabIndex = 33;
+            this.label93.Text = "Y:";
+            // 
+            // label94
+            // 
+            this.label94.AutoSize = true;
+            this.label94.Location = new System.Drawing.Point(98, 69);
+            this.label94.Name = "label94";
+            this.label94.Size = new System.Drawing.Size(17, 13);
+            this.label94.TabIndex = 32;
+            this.label94.Text = "X:";
+            // 
+            // Snapshot_button
+            // 
+            this.Snapshot_button.Location = new System.Drawing.Point(747, 748);
+            this.Snapshot_button.Name = "Snapshot_button";
+            this.Snapshot_button.Size = new System.Drawing.Size(75, 23);
+            this.Snapshot_button.TabIndex = 30;
+            this.Snapshot_button.Text = "Snapshot";
+            this.Snapshot_button.UseVisualStyleBackColor = true;
+            this.Snapshot_button.Visible = false;
+            // 
+            // ImageTest_checkBox
+            // 
+            this.ImageTest_checkBox.AutoSize = true;
+            this.ImageTest_checkBox.Location = new System.Drawing.Point(747, 777);
+            this.ImageTest_checkBox.Name = "ImageTest_checkBox";
+            this.ImageTest_checkBox.Size = new System.Drawing.Size(75, 17);
+            this.ImageTest_checkBox.TabIndex = 29;
+            this.ImageTest_checkBox.Text = "For testing";
+            this.ImageTest_checkBox.UseVisualStyleBackColor = true;
+            this.ImageTest_checkBox.Visible = false;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(176, 522);
+            this.button2.Location = new System.Drawing.Point(338, 412);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 134;
@@ -1516,7 +1286,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(91, 524);
+            this.button1.Location = new System.Drawing.Point(253, 414);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 133;
@@ -1526,9 +1296,9 @@
             // 
             // zoffset_textbox
             // 
-            this.zoffset_textbox.Location = new System.Drawing.Point(173, 623);
+            this.zoffset_textbox.Location = new System.Drawing.Point(35, 192);
             this.zoffset_textbox.Name = "zoffset_textbox";
-            this.zoffset_textbox.Size = new System.Drawing.Size(26, 20);
+            this.zoffset_textbox.Size = new System.Drawing.Size(36, 20);
             this.zoffset_textbox.TabIndex = 130;
             this.zoffset_textbox.Text = "0";
             this.toolTip1.SetToolTip(this.zoffset_textbox, "Nominal postion difference between\r\nthe needle tip and down camera image center.");
@@ -1537,7 +1307,7 @@
             // label130
             // 
             this.label130.AutoSize = true;
-            this.label130.Location = new System.Drawing.Point(203, 626);
+            this.label130.Location = new System.Drawing.Point(75, 194);
             this.label130.Name = "label130";
             this.label130.Size = new System.Drawing.Size(23, 13);
             this.label130.TabIndex = 132;
@@ -1546,11 +1316,11 @@
             // label131
             // 
             this.label131.AutoSize = true;
-            this.label131.Location = new System.Drawing.Point(101, 625);
+            this.label131.Location = new System.Drawing.Point(12, 192);
             this.label131.Name = "label131";
-            this.label131.Size = new System.Drawing.Size(75, 13);
+            this.label131.Size = new System.Drawing.Size(20, 13);
             this.label131.TabIndex = 131;
-            this.label131.Text = "Z move offset:";
+            this.label131.Text = "Z: ";
             // 
             // groupBox12
             // 
@@ -1559,10 +1329,11 @@
             this.groupBox12.Controls.Add(this.button_setTemplate);
             this.groupBox12.Controls.Add(this.label126);
             this.groupBox12.Controls.Add(this.fiducialTemlateMatch_textBox);
+            this.groupBox12.Controls.Add(this.button3);
             this.groupBox12.Controls.Add(this.cb_useTemplate);
-            this.groupBox12.Location = new System.Drawing.Point(400, 628);
+            this.groupBox12.Location = new System.Drawing.Point(3, 261);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(245, 63);
+            this.groupBox12.Size = new System.Drawing.Size(402, 114);
             this.groupBox12.TabIndex = 129;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Fiducial Settings";
@@ -1614,6 +1385,18 @@
             this.fiducialTemlateMatch_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fiducialTemlateMatch_textBox_KeyPress);
             this.fiducialTemlateMatch_textBox.Leave += new System.EventHandler(this.fiducialTemlateMatch_textBox_Leave);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(10, 66);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(150, 23);
+            this.button3.TabIndex = 77;
+            this.button3.Text = "Measure PCB Fiducials";
+            this.toolTip1.SetToolTip(this.button3, "Re-measures PCB, convertign CAD data coordinates to \r\nmachine coordinates, based " +
+        "on PCB fiducials.");
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.ReMeasure_button_Click);
+            // 
             // cb_useTemplate
             // 
             this.cb_useTemplate.AutoSize = true;
@@ -1625,1303 +1408,70 @@
             this.cb_useTemplate.UseVisualStyleBackColor = true;
             this.cb_useTemplate.CheckedChanged += new System.EventHandler(this.cb_useTemplate_CheckedChanged);
             // 
-            // CamerasSetUp_tabControl
-            // 
-            this.CamerasSetUp_tabControl.Controls.Add(this.DownCamera_tabPage);
-            this.CamerasSetUp_tabControl.Controls.Add(this.UpCamera_tabPage);
-            this.CamerasSetUp_tabControl.Location = new System.Drawing.Point(656, 8);
-            this.CamerasSetUp_tabControl.Name = "CamerasSetUp_tabControl";
-            this.CamerasSetUp_tabControl.SelectedIndex = 0;
-            this.CamerasSetUp_tabControl.Size = new System.Drawing.Size(587, 678);
-            this.CamerasSetUp_tabControl.TabIndex = 126;
-            this.CamerasSetUp_tabControl.SelectedIndexChanged += new System.EventHandler(this.CamerasSetUp_tabControl_SelectedIndexChanged);
-            // 
-            // DownCamera_tabPage
-            // 
-            this.DownCamera_tabPage.Controls.Add(this.label129);
-            this.DownCamera_tabPage.Controls.Add(this.calibMoveDistance_textBox);
-            this.DownCamera_tabPage.Controls.Add(this.drawGrid_checkBox);
-            this.DownCamera_tabPage.Controls.Add(this.FindFiducials_cb);
-            this.DownCamera_tabPage.Controls.Add(this.SlackMeasurement_label);
-            this.DownCamera_tabPage.Controls.Add(this.button_saveSettings);
-            this.DownCamera_tabPage.Controls.Add(this.button_camera_calibrate);
-            this.DownCamera_tabPage.Controls.Add(this.DownCameraDrawTicks_checkBox);
-            this.DownCamera_tabPage.Controls.Add(this.components_gb);
-            this.DownCamera_tabPage.Controls.Add(this.ColorHelp_label);
-            this.DownCamera_tabPage.Controls.Add(this.B_numericUpDown);
-            this.DownCamera_tabPage.Controls.Add(this.B_label);
-            this.DownCamera_tabPage.Controls.Add(this.G_numericUpDown);
-            this.DownCamera_tabPage.Controls.Add(this.G_label);
-            this.DownCamera_tabPage.Controls.Add(this.R_numericUpDown);
-            this.DownCamera_tabPage.Controls.Add(this.R_label);
-            this.DownCamera_tabPage.Controls.Add(this.Color_label);
-            this.DownCamera_tabPage.Controls.Add(this.Color_Box);
-            this.DownCamera_tabPage.Controls.Add(this.CamFunctionsClear_button);
-            this.DownCamera_tabPage.Controls.Add(this.clear_gb);
-            this.DownCamera_tabPage.Controls.Add(this.black_gb);
-            this.DownCamera_tabPage.Controls.Add(this.Parameter_double_label);
-            this.DownCamera_tabPage.Controls.Add(this.DownCam_FindComponents_checkBox);
-            this.DownCamera_tabPage.Controls.Add(this.Parameter_double_textBox);
-            this.DownCamera_tabPage.Controls.Add(this.white_gb);
-            this.DownCamera_tabPage.Controls.Add(this.Parameter_Int_numericUpDown);
-            this.DownCamera_tabPage.Controls.Add(this.DownCam_comboBox);
-            this.DownCamera_tabPage.Controls.Add(this.Parameter_int_label);
-            this.DownCamera_tabPage.Controls.Add(this.DownCamFindRectangles_checkBox);
-            this.DownCamera_tabPage.Controls.Add(this.fiducials_gb);
-            this.DownCamera_tabPage.Controls.Add(this.RefreshDownCameraList_button);
-            this.DownCamera_tabPage.Controls.Add(this.DownCamFindCircles_checkBox);
-            this.DownCamera_tabPage.Controls.Add(this.ConnectDownCamera_button);
-            this.DownCamera_tabPage.Controls.Add(this.DownCameraDrawDashedCross_checkBox);
-            this.DownCamera_tabPage.Controls.Add(this.DownCamStatus_label);
-            this.DownCamera_tabPage.Controls.Add(this.CamFunctionDown_button);
-            this.DownCamera_tabPage.Controls.Add(this.DownCameraDrawCross_checkBox);
-            this.DownCamera_tabPage.Controls.Add(this.DownCameraDrawBox_checkBox);
-            this.DownCamera_tabPage.Controls.Add(this.CamFunctionUp_button);
-            this.DownCamera_tabPage.Controls.Add(this.label53);
-            this.DownCamera_tabPage.Controls.Add(this.Overlay_checkBox);
-            this.DownCamera_tabPage.Controls.Add(this.DeleteCamFunction_button);
-            this.DownCamera_tabPage.Controls.Add(this.DownCameraBoxYmmPerPixel_label);
-            this.DownCamera_tabPage.Controls.Add(this.label68);
-            this.DownCamera_tabPage.Controls.Add(this.AddCamFunction_button);
-            this.DownCamera_tabPage.Controls.Add(this.DownCameraBoxXmmPerPixel_label);
-            this.DownCamera_tabPage.Controls.Add(this.label69);
-            this.DownCamera_tabPage.Controls.Add(this.Display_dataGridView);
-            this.DownCamera_tabPage.Controls.Add(this.label71);
-            this.DownCamera_tabPage.Controls.Add(this.DownCameraBoxX_textBox);
-            this.DownCamera_tabPage.Controls.Add(this.label70);
-            this.DownCamera_tabPage.Controls.Add(this.DownCameraBoxY_textBox);
-            this.DownCamera_tabPage.Controls.Add(this.homing_gb);
-            this.DownCamera_tabPage.Location = new System.Drawing.Point(4, 22);
-            this.DownCamera_tabPage.Name = "DownCamera_tabPage";
-            this.DownCamera_tabPage.Size = new System.Drawing.Size(579, 652);
-            this.DownCamera_tabPage.TabIndex = 3;
-            this.DownCamera_tabPage.Text = "Down Looking Camera";
-            this.DownCamera_tabPage.UseVisualStyleBackColor = true;
-            // 
             // label129
             // 
             this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(242, 114);
+            this.label129.Location = new System.Drawing.Point(170, 131);
             this.label129.Name = "label129";
-            this.label129.Size = new System.Drawing.Size(99, 13);
+            this.label129.Size = new System.Drawing.Size(57, 26);
             this.label129.TabIndex = 146;
-            this.label129.Text = "CalibMoveDistance";
+            this.label129.Text = "CalibMove\r\nDistance";
             // 
             // calibMoveDistance_textBox
             // 
-            this.calibMoveDistance_textBox.Location = new System.Drawing.Point(347, 111);
+            this.calibMoveDistance_textBox.Location = new System.Drawing.Point(173, 106);
             this.calibMoveDistance_textBox.Name = "calibMoveDistance_textBox";
             this.calibMoveDistance_textBox.Size = new System.Drawing.Size(46, 20);
             this.calibMoveDistance_textBox.TabIndex = 145;
             this.calibMoveDistance_textBox.Text = ".25";
             // 
-            // drawGrid_checkBox
-            // 
-            this.drawGrid_checkBox.AutoSize = true;
-            this.drawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.drawGrid_checkBox.Location = new System.Drawing.Point(141, 127);
-            this.drawGrid_checkBox.Name = "drawGrid_checkBox";
-            this.drawGrid_checkBox.Size = new System.Drawing.Size(98, 17);
-            this.drawGrid_checkBox.TabIndex = 144;
-            this.drawGrid_checkBox.Text = "Draw 1mm Grid";
-            this.toolTip1.SetToolTip(this.drawGrid_checkBox, "Find fiducials in display based on template matching");
-            this.drawGrid_checkBox.UseVisualStyleBackColor = true;
-            this.drawGrid_checkBox.CheckedChanged += new System.EventHandler(this.drawGrid_checkBox_CheckedChanged);
-            // 
-            // FindFiducials_cb
-            // 
-            this.FindFiducials_cb.AutoSize = true;
-            this.FindFiducials_cb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindFiducials_cb.Location = new System.Drawing.Point(3, 127);
-            this.FindFiducials_cb.Name = "FindFiducials_cb";
-            this.FindFiducials_cb.Size = new System.Drawing.Size(90, 17);
-            this.FindFiducials_cb.TabIndex = 143;
-            this.FindFiducials_cb.Text = "Find Fiducials";
-            this.toolTip1.SetToolTip(this.FindFiducials_cb, "Find fiducials in display based on template matching");
-            this.FindFiducials_cb.UseVisualStyleBackColor = true;
-            this.FindFiducials_cb.CheckedChanged += new System.EventHandler(this.FindFiducials_cb_CheckedChanged);
-            // 
             // SlackMeasurement_label
             // 
             this.SlackMeasurement_label.AutoSize = true;
             this.SlackMeasurement_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SlackMeasurement_label.Location = new System.Drawing.Point(406, 131);
+            this.SlackMeasurement_label.Location = new System.Drawing.Point(115, 215);
             this.SlackMeasurement_label.Name = "SlackMeasurement_label";
             this.SlackMeasurement_label.Size = new System.Drawing.Size(16, 13);
             this.SlackMeasurement_label.TabIndex = 142;
             this.SlackMeasurement_label.Text = "---";
             this.toolTip1.SetToolTip(this.SlackMeasurement_label, "Set the true size of the box on the image.");
             // 
-            // button_saveSettings
-            // 
-            this.button_saveSettings.Location = new System.Drawing.Point(447, 610);
-            this.button_saveSettings.Name = "button_saveSettings";
-            this.button_saveSettings.Size = new System.Drawing.Size(75, 24);
-            this.button_saveSettings.TabIndex = 141;
-            this.button_saveSettings.Text = "Save Settings";
-            this.button_saveSettings.UseVisualStyleBackColor = true;
-            this.button_saveSettings.Click += new System.EventHandler(this.button_saveSettings_Click);
-            // 
             // button_camera_calibrate
             // 
-            this.button_camera_calibrate.Location = new System.Drawing.Point(347, 137);
+            this.button_camera_calibrate.Location = new System.Drawing.Point(118, 103);
             this.button_camera_calibrate.Name = "button_camera_calibrate";
             this.button_camera_calibrate.Size = new System.Drawing.Size(46, 23);
             this.button_camera_calibrate.TabIndex = 140;
             this.button_camera_calibrate.Text = "Calib.";
             this.button_camera_calibrate.UseVisualStyleBackColor = true;
-            this.button_camera_calibrate.Click += new System.EventHandler(this.button_camera_calibrate_Click);
-            // 
-            // DownCameraDrawTicks_checkBox
-            // 
-            this.DownCameraDrawTicks_checkBox.AutoSize = true;
-            this.DownCameraDrawTicks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawTicks_checkBox.Location = new System.Drawing.Point(3, 104);
-            this.DownCameraDrawTicks_checkBox.Name = "DownCameraDrawTicks_checkBox";
-            this.DownCameraDrawTicks_checkBox.Size = new System.Drawing.Size(103, 17);
-            this.DownCameraDrawTicks_checkBox.TabIndex = 139;
-            this.DownCameraDrawTicks_checkBox.Text = "Draw Tickmarks";
-            this.toolTip1.SetToolTip(this.DownCameraDrawTicks_checkBox, "Draws tickmarks on image side\r\ncorresponding to 10cm in workarea\r\n(cntrl-click mo" +
-        "ves machine to position, \r\nthese help in navigating)\r\n");
-            this.DownCameraDrawTicks_checkBox.UseVisualStyleBackColor = true;
-            this.DownCameraDrawTicks_checkBox.CheckedChanged += new System.EventHandler(this.DownCameraDrawTicks_checkBox_CheckedChanged);
-            // 
-            // components_gb
-            // 
-            this.components_gb.BackColor = System.Drawing.Color.Transparent;
-            this.components_gb.Controls.Add(this.Components_dataGridView);
-            this.components_gb.Controls.Add(this.ComponentsMeasure_button);
-            this.components_gb.Controls.Add(this.ComponentsToDisplay_button);
-            this.components_gb.Controls.Add(this.ComponentsToHere_button);
-            this.components_gb.Location = new System.Drawing.Point(6, 533);
-            this.components_gb.Name = "components_gb";
-            this.components_gb.Size = new System.Drawing.Size(255, 59);
-            this.components_gb.TabIndex = 138;
-            this.components_gb.TabStop = false;
-            this.components_gb.Text = "Components";
-            // 
-            // Components_dataGridView
-            // 
-            this.Components_dataGridView.AllowUserToAddRows = false;
-            this.Components_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Components_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewComboBoxColumn5,
-            this.dataGridViewCheckBoxColumn5,
-            this.dataGridViewTextBoxColumn21,
-            this.dataGridViewTextBoxColumn22,
-            this.dataGridViewTextBoxColumn23,
-            this.dataGridViewTextBoxColumn24,
-            this.dataGridViewTextBoxColumn25});
-            this.Components_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Components_dataGridView.Location = new System.Drawing.Point(168, 47);
-            this.Components_dataGridView.Name = "Components_dataGridView";
-            this.Components_dataGridView.RowHeadersVisible = false;
-            this.Components_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Components_dataGridView.Size = new System.Drawing.Size(157, 137);
-            this.Components_dataGridView.TabIndex = 126;
-            this.Components_dataGridView.Visible = false;
-            // 
-            // dataGridViewComboBoxColumn5
-            // 
-            this.dataGridViewComboBoxColumn5.HeaderText = "Function";
-            this.dataGridViewComboBoxColumn5.Items.AddRange(new object[] {
-            "Threshold",
-            "Histogram",
-            "Grayscale",
-            "Contrast scretch",
-            "Kill color",
-            "Keep color",
-            "Invert",
-            "Meas. zoom"});
-            this.dataGridViewComboBoxColumn5.Name = "dataGridViewComboBoxColumn5";
-            this.dataGridViewComboBoxColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dataGridViewCheckBoxColumn5
-            // 
-            this.dataGridViewCheckBoxColumn5.HeaderText = "Enabled";
-            this.dataGridViewCheckBoxColumn5.Name = "dataGridViewCheckBoxColumn5";
-            this.dataGridViewCheckBoxColumn5.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn21
-            // 
-            this.dataGridViewTextBoxColumn21.HeaderText = "Int1";
-            this.dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
-            this.dataGridViewTextBoxColumn21.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn22
-            // 
-            this.dataGridViewTextBoxColumn22.HeaderText = "Double1";
-            this.dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
-            this.dataGridViewTextBoxColumn22.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn23
-            // 
-            this.dataGridViewTextBoxColumn23.HeaderText = "R";
-            this.dataGridViewTextBoxColumn23.Name = "dataGridViewTextBoxColumn23";
-            this.dataGridViewTextBoxColumn23.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn24
-            // 
-            this.dataGridViewTextBoxColumn24.HeaderText = "G";
-            this.dataGridViewTextBoxColumn24.Name = "dataGridViewTextBoxColumn24";
-            this.dataGridViewTextBoxColumn24.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn25
-            // 
-            this.dataGridViewTextBoxColumn25.HeaderText = "B";
-            this.dataGridViewTextBoxColumn25.Name = "dataGridViewTextBoxColumn25";
-            this.dataGridViewTextBoxColumn25.ReadOnly = true;
-            // 
-            // ComponentsMeasure_button
-            // 
-            this.ComponentsMeasure_button.Location = new System.Drawing.Point(168, 19);
-            this.ComponentsMeasure_button.Name = "ComponentsMeasure_button";
-            this.ComponentsMeasure_button.Size = new System.Drawing.Size(75, 23);
-            this.ComponentsMeasure_button.TabIndex = 24;
-            this.ComponentsMeasure_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.ComponentsMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.ComponentsMeasure_button.UseVisualStyleBackColor = true;
-            this.ComponentsMeasure_button.Click += new System.EventHandler(this.ComponentsMeasure_button_Click);
-            // 
-            // ComponentsToDisplay_button
-            // 
-            this.ComponentsToDisplay_button.Location = new System.Drawing.Point(87, 19);
-            this.ComponentsToDisplay_button.Name = "ComponentsToDisplay_button";
-            this.ComponentsToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.ComponentsToDisplay_button.TabIndex = 23;
-            this.ComponentsToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.ComponentsToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
-        "ing.");
-            this.ComponentsToDisplay_button.UseVisualStyleBackColor = true;
-            this.ComponentsToDisplay_button.Click += new System.EventHandler(this.ComponentsToDisplay_button_Click);
-            // 
-            // ComponentsToHere_button
-            // 
-            this.ComponentsToHere_button.Location = new System.Drawing.Point(6, 19);
-            this.ComponentsToHere_button.Name = "ComponentsToHere_button";
-            this.ComponentsToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.ComponentsToHere_button.TabIndex = 22;
-            this.ComponentsToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.ComponentsToHere_button, "Copies the algorithms from the table to be used\r\nin finding components at loose c" +
-        "omponent pick-up.\r\n");
-            this.ComponentsToHere_button.UseVisualStyleBackColor = true;
-            this.ComponentsToHere_button.Click += new System.EventHandler(this.ComponentsToHere_button_Click);
-            // 
-            // ColorHelp_label
-            // 
-            this.ColorHelp_label.AutoSize = true;
-            this.ColorHelp_label.Location = new System.Drawing.Point(266, 353);
-            this.ColorHelp_label.Name = "ColorHelp_label";
-            this.ColorHelp_label.Size = new System.Drawing.Size(122, 13);
-            this.ColorHelp_label.TabIndex = 137;
-            this.ColorHelp_label.Text = "(Alt+click to select color)";
-            this.toolTip1.SetToolTip(this.ColorHelp_label, "Set parameters for the selected algorithm");
-            // 
-            // B_numericUpDown
-            // 
-            this.B_numericUpDown.Location = new System.Drawing.Point(442, 330);
-            this.B_numericUpDown.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.B_numericUpDown.Name = "B_numericUpDown";
-            this.B_numericUpDown.Size = new System.Drawing.Size(46, 20);
-            this.B_numericUpDown.TabIndex = 136;
-            this.toolTip1.SetToolTip(this.B_numericUpDown, "Set parameters for the selected algorithm");
-            this.B_numericUpDown.Value = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            this.B_numericUpDown.ValueChanged += new System.EventHandler(this.B_numericUpDown_ValueChanged);
-            // 
-            // B_label
-            // 
-            this.B_label.AutoSize = true;
-            this.B_label.Location = new System.Drawing.Point(439, 314);
-            this.B_label.Name = "B_label";
-            this.B_label.Size = new System.Drawing.Size(14, 13);
-            this.B_label.TabIndex = 135;
-            this.B_label.Text = "B";
-            this.toolTip1.SetToolTip(this.B_label, "Set parameters for the selected algorithm");
-            // 
-            // G_numericUpDown
-            // 
-            this.G_numericUpDown.Location = new System.Drawing.Point(390, 329);
-            this.G_numericUpDown.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.G_numericUpDown.Name = "G_numericUpDown";
-            this.G_numericUpDown.Size = new System.Drawing.Size(46, 20);
-            this.G_numericUpDown.TabIndex = 134;
-            this.toolTip1.SetToolTip(this.G_numericUpDown, "Set parameters for the selected algorithm");
-            this.G_numericUpDown.Value = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            this.G_numericUpDown.ValueChanged += new System.EventHandler(this.G_numericUpDown_ValueChanged);
-            // 
-            // G_label
-            // 
-            this.G_label.AutoSize = true;
-            this.G_label.Location = new System.Drawing.Point(387, 313);
-            this.G_label.Name = "G_label";
-            this.G_label.Size = new System.Drawing.Size(15, 13);
-            this.G_label.TabIndex = 133;
-            this.G_label.Text = "G";
-            this.toolTip1.SetToolTip(this.G_label, "Set parameters for the selected algorithm");
-            // 
-            // R_numericUpDown
-            // 
-            this.R_numericUpDown.Location = new System.Drawing.Point(338, 330);
-            this.R_numericUpDown.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.R_numericUpDown.Name = "R_numericUpDown";
-            this.R_numericUpDown.Size = new System.Drawing.Size(46, 20);
-            this.R_numericUpDown.TabIndex = 132;
-            this.toolTip1.SetToolTip(this.R_numericUpDown, "Set parameters for the selected algorithm");
-            this.R_numericUpDown.Value = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            this.R_numericUpDown.ValueChanged += new System.EventHandler(this.R_numericUpDown_ValueChanged);
-            // 
-            // R_label
-            // 
-            this.R_label.AutoSize = true;
-            this.R_label.Location = new System.Drawing.Point(335, 314);
-            this.R_label.Name = "R_label";
-            this.R_label.Size = new System.Drawing.Size(15, 13);
-            this.R_label.TabIndex = 131;
-            this.R_label.Text = "R";
-            this.toolTip1.SetToolTip(this.R_label, "Set parameters for the selected algorithm");
-            // 
-            // Color_label
-            // 
-            this.Color_label.AutoSize = true;
-            this.Color_label.Location = new System.Drawing.Point(266, 315);
-            this.Color_label.Name = "Color_label";
-            this.Color_label.Size = new System.Drawing.Size(61, 13);
-            this.Color_label.TabIndex = 130;
-            this.Color_label.Text = "Color to kill:";
-            this.toolTip1.SetToolTip(this.Color_label, "Set parameters for the selected algorithm");
-            // 
-            // Color_Box
-            // 
-            this.Color_Box.Location = new System.Drawing.Point(269, 330);
-            this.Color_Box.Name = "Color_Box";
-            this.Color_Box.ReadOnly = true;
-            this.Color_Box.Size = new System.Drawing.Size(21, 20);
-            this.Color_Box.TabIndex = 129;
-            this.toolTip1.SetToolTip(this.Color_Box, "Set parameters for the selected algorithm");
-            // 
-            // CamFunctionsClear_button
-            // 
-            this.CamFunctionsClear_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CamFunctionsClear_button.Location = new System.Drawing.Point(6, 279);
-            this.CamFunctionsClear_button.Name = "CamFunctionsClear_button";
-            this.CamFunctionsClear_button.Size = new System.Drawing.Size(75, 23);
-            this.CamFunctionsClear_button.TabIndex = 128;
-            this.CamFunctionsClear_button.Text = "Clear";
-            this.toolTip1.SetToolTip(this.CamFunctionsClear_button, "Deletes all algorithms from the table");
-            this.CamFunctionsClear_button.UseVisualStyleBackColor = true;
-            this.CamFunctionsClear_button.Click += new System.EventHandler(this.CamFunctionsClear_button_Click);
-            // 
-            // clear_gb
-            // 
-            this.clear_gb.BackColor = System.Drawing.Color.Transparent;
-            this.clear_gb.Controls.Add(this.ClearTape_dataGridView);
-            this.clear_gb.Controls.Add(this.ClearTapeMeasure_button);
-            this.clear_gb.Controls.Add(this.ClearTapeToDisplay_button);
-            this.clear_gb.Controls.Add(this.ClearTapeToHere_button);
-            this.clear_gb.Location = new System.Drawing.Point(279, 458);
-            this.clear_gb.Name = "clear_gb";
-            this.clear_gb.Size = new System.Drawing.Size(255, 59);
-            this.clear_gb.TabIndex = 127;
-            this.clear_gb.TabStop = false;
-            this.clear_gb.Text = "Clear Plastic Tape";
-            // 
-            // ClearTape_dataGridView
-            // 
-            this.ClearTape_dataGridView.AllowUserToAddRows = false;
-            this.ClearTape_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ClearTape_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewComboBoxColumn6,
-            this.dataGridViewCheckBoxColumn6,
-            this.dataGridViewTextBoxColumn26,
-            this.dataGridViewTextBoxColumn27,
-            this.dataGridViewTextBoxColumn28,
-            this.dataGridViewTextBoxColumn29,
-            this.dataGridViewTextBoxColumn30});
-            this.ClearTape_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.ClearTape_dataGridView.Location = new System.Drawing.Point(168, 45);
-            this.ClearTape_dataGridView.Name = "ClearTape_dataGridView";
-            this.ClearTape_dataGridView.RowHeadersVisible = false;
-            this.ClearTape_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.ClearTape_dataGridView.Size = new System.Drawing.Size(485, 110);
-            this.ClearTape_dataGridView.TabIndex = 128;
-            this.ClearTape_dataGridView.Visible = false;
-            // 
-            // dataGridViewComboBoxColumn6
-            // 
-            this.dataGridViewComboBoxColumn6.HeaderText = "Function";
-            this.dataGridViewComboBoxColumn6.Items.AddRange(new object[] {
-            "Threshold",
-            "Histogram",
-            "Grayscale",
-            "Contrast scretch",
-            "Kill color",
-            "Keep color",
-            "Invert",
-            "Meas. zoom"});
-            this.dataGridViewComboBoxColumn6.Name = "dataGridViewComboBoxColumn6";
-            this.dataGridViewComboBoxColumn6.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewComboBoxColumn6.Width = 190;
-            // 
-            // dataGridViewCheckBoxColumn6
-            // 
-            this.dataGridViewCheckBoxColumn6.HeaderText = "Enabled";
-            this.dataGridViewCheckBoxColumn6.Name = "dataGridViewCheckBoxColumn6";
-            this.dataGridViewCheckBoxColumn6.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn26
-            // 
-            this.dataGridViewTextBoxColumn26.HeaderText = "Int1";
-            this.dataGridViewTextBoxColumn26.Name = "dataGridViewTextBoxColumn26";
-            this.dataGridViewTextBoxColumn26.ReadOnly = true;
-            this.dataGridViewTextBoxColumn26.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn27
-            // 
-            this.dataGridViewTextBoxColumn27.HeaderText = "Double1";
-            this.dataGridViewTextBoxColumn27.Name = "dataGridViewTextBoxColumn27";
-            this.dataGridViewTextBoxColumn27.ReadOnly = true;
-            this.dataGridViewTextBoxColumn27.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn28
-            // 
-            this.dataGridViewTextBoxColumn28.HeaderText = "R";
-            this.dataGridViewTextBoxColumn28.Name = "dataGridViewTextBoxColumn28";
-            this.dataGridViewTextBoxColumn28.ReadOnly = true;
-            this.dataGridViewTextBoxColumn28.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn29
-            // 
-            this.dataGridViewTextBoxColumn29.HeaderText = "G";
-            this.dataGridViewTextBoxColumn29.Name = "dataGridViewTextBoxColumn29";
-            this.dataGridViewTextBoxColumn29.ReadOnly = true;
-            this.dataGridViewTextBoxColumn29.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn30
-            // 
-            this.dataGridViewTextBoxColumn30.HeaderText = "B";
-            this.dataGridViewTextBoxColumn30.Name = "dataGridViewTextBoxColumn30";
-            this.dataGridViewTextBoxColumn30.ReadOnly = true;
-            this.dataGridViewTextBoxColumn30.Width = 50;
-            // 
-            // ClearTapeMeasure_button
-            // 
-            this.ClearTapeMeasure_button.Location = new System.Drawing.Point(168, 19);
-            this.ClearTapeMeasure_button.Name = "ClearTapeMeasure_button";
-            this.ClearTapeMeasure_button.Size = new System.Drawing.Size(75, 23);
-            this.ClearTapeMeasure_button.TabIndex = 24;
-            this.ClearTapeMeasure_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.ClearTapeMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.ClearTapeMeasure_button.UseVisualStyleBackColor = true;
-            this.ClearTapeMeasure_button.Click += new System.EventHandler(this.ClearTapeMeasure_button_Click);
-            // 
-            // ClearTapeToDisplay_button
-            // 
-            this.ClearTapeToDisplay_button.Location = new System.Drawing.Point(87, 19);
-            this.ClearTapeToDisplay_button.Name = "ClearTapeToDisplay_button";
-            this.ClearTapeToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.ClearTapeToDisplay_button.TabIndex = 23;
-            this.ClearTapeToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.ClearTapeToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
-        "ing.");
-            this.ClearTapeToDisplay_button.UseVisualStyleBackColor = true;
-            this.ClearTapeToDisplay_button.Click += new System.EventHandler(this.ClearTapeToDisplay_button_Click);
-            // 
-            // ClearTapeToHere_button
-            // 
-            this.ClearTapeToHere_button.Location = new System.Drawing.Point(6, 19);
-            this.ClearTapeToHere_button.Name = "ClearTapeToHere_button";
-            this.ClearTapeToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.ClearTapeToHere_button.TabIndex = 22;
-            this.ClearTapeToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.ClearTapeToHere_button, "Copies the algorithms from the table to be used\r\nin finding clear plastic tape al" +
-        "ingment hole.\r\n");
-            this.ClearTapeToHere_button.UseVisualStyleBackColor = true;
-            this.ClearTapeToHere_button.Click += new System.EventHandler(this.ClearTapeToHere_button_Click);
-            // 
-            // black_gb
-            // 
-            this.black_gb.BackColor = System.Drawing.Color.Transparent;
-            this.black_gb.Controls.Add(this.BlackTape_dataGridView);
-            this.black_gb.Controls.Add(this.BlackTapeMeasure_button);
-            this.black_gb.Controls.Add(this.BlackTapeToDisplay_button);
-            this.black_gb.Controls.Add(this.BlackTapeToHere_button);
-            this.black_gb.Location = new System.Drawing.Point(279, 533);
-            this.black_gb.Name = "black_gb";
-            this.black_gb.Size = new System.Drawing.Size(255, 59);
-            this.black_gb.TabIndex = 126;
-            this.black_gb.TabStop = false;
-            this.black_gb.Text = "Black Plastic Tape";
-            // 
-            // BlackTape_dataGridView
-            // 
-            this.BlackTape_dataGridView.AllowUserToAddRows = false;
-            this.BlackTape_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.BlackTape_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewComboBoxColumn7,
-            this.dataGridViewCheckBoxColumn7,
-            this.dataGridViewTextBoxColumn31,
-            this.dataGridViewTextBoxColumn32,
-            this.dataGridViewTextBoxColumn33,
-            this.dataGridViewTextBoxColumn34,
-            this.dataGridViewTextBoxColumn35});
-            this.BlackTape_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.BlackTape_dataGridView.Location = new System.Drawing.Point(168, 48);
-            this.BlackTape_dataGridView.Name = "BlackTape_dataGridView";
-            this.BlackTape_dataGridView.RowHeadersVisible = false;
-            this.BlackTape_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.BlackTape_dataGridView.Size = new System.Drawing.Size(485, 110);
-            this.BlackTape_dataGridView.TabIndex = 128;
-            this.BlackTape_dataGridView.Visible = false;
-            // 
-            // dataGridViewComboBoxColumn7
-            // 
-            this.dataGridViewComboBoxColumn7.HeaderText = "Function";
-            this.dataGridViewComboBoxColumn7.Items.AddRange(new object[] {
-            "Threshold",
-            "Histogram",
-            "Grayscale",
-            "Contrast scretch",
-            "Kill color",
-            "Keep color",
-            "Invert",
-            "Meas. zoom"});
-            this.dataGridViewComboBoxColumn7.Name = "dataGridViewComboBoxColumn7";
-            this.dataGridViewComboBoxColumn7.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewComboBoxColumn7.Width = 190;
-            // 
-            // dataGridViewCheckBoxColumn7
-            // 
-            this.dataGridViewCheckBoxColumn7.HeaderText = "Enabled";
-            this.dataGridViewCheckBoxColumn7.Name = "dataGridViewCheckBoxColumn7";
-            this.dataGridViewCheckBoxColumn7.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn31
-            // 
-            this.dataGridViewTextBoxColumn31.HeaderText = "Int1";
-            this.dataGridViewTextBoxColumn31.Name = "dataGridViewTextBoxColumn31";
-            this.dataGridViewTextBoxColumn31.ReadOnly = true;
-            this.dataGridViewTextBoxColumn31.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn32
-            // 
-            this.dataGridViewTextBoxColumn32.HeaderText = "Double1";
-            this.dataGridViewTextBoxColumn32.Name = "dataGridViewTextBoxColumn32";
-            this.dataGridViewTextBoxColumn32.ReadOnly = true;
-            this.dataGridViewTextBoxColumn32.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn33
-            // 
-            this.dataGridViewTextBoxColumn33.HeaderText = "R";
-            this.dataGridViewTextBoxColumn33.Name = "dataGridViewTextBoxColumn33";
-            this.dataGridViewTextBoxColumn33.ReadOnly = true;
-            this.dataGridViewTextBoxColumn33.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn34
-            // 
-            this.dataGridViewTextBoxColumn34.HeaderText = "G";
-            this.dataGridViewTextBoxColumn34.Name = "dataGridViewTextBoxColumn34";
-            this.dataGridViewTextBoxColumn34.ReadOnly = true;
-            this.dataGridViewTextBoxColumn34.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn35
-            // 
-            this.dataGridViewTextBoxColumn35.HeaderText = "B";
-            this.dataGridViewTextBoxColumn35.Name = "dataGridViewTextBoxColumn35";
-            this.dataGridViewTextBoxColumn35.ReadOnly = true;
-            this.dataGridViewTextBoxColumn35.Width = 50;
-            // 
-            // BlackTapeMeasure_button
-            // 
-            this.BlackTapeMeasure_button.Location = new System.Drawing.Point(168, 19);
-            this.BlackTapeMeasure_button.Name = "BlackTapeMeasure_button";
-            this.BlackTapeMeasure_button.Size = new System.Drawing.Size(75, 23);
-            this.BlackTapeMeasure_button.TabIndex = 24;
-            this.BlackTapeMeasure_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.BlackTapeMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.BlackTapeMeasure_button.UseVisualStyleBackColor = true;
-            this.BlackTapeMeasure_button.Click += new System.EventHandler(this.BlackTapeMeasure_button_Click);
-            // 
-            // BlackTapeToDisplay_button
-            // 
-            this.BlackTapeToDisplay_button.Location = new System.Drawing.Point(87, 19);
-            this.BlackTapeToDisplay_button.Name = "BlackTapeToDisplay_button";
-            this.BlackTapeToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.BlackTapeToDisplay_button.TabIndex = 23;
-            this.BlackTapeToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.BlackTapeToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
-        "ing.");
-            this.BlackTapeToDisplay_button.UseVisualStyleBackColor = true;
-            this.BlackTapeToDisplay_button.Click += new System.EventHandler(this.BlackTapeToDisplay_button_Click);
-            // 
-            // BlackTapeToHere_button
-            // 
-            this.BlackTapeToHere_button.Location = new System.Drawing.Point(6, 19);
-            this.BlackTapeToHere_button.Name = "BlackTapeToHere_button";
-            this.BlackTapeToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.BlackTapeToHere_button.TabIndex = 22;
-            this.BlackTapeToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.BlackTapeToHere_button, "Copies the algorithms from the table to be used\r\nin finding black plastic tape al" +
-        "ingment hole.\r\n\r\n");
-            this.BlackTapeToHere_button.UseVisualStyleBackColor = true;
-            this.BlackTapeToHere_button.Click += new System.EventHandler(this.BlackTapeToHere_button_Click);
-            // 
-            // Parameter_double_label
-            // 
-            this.Parameter_double_label.AutoSize = true;
-            this.Parameter_double_label.Location = new System.Drawing.Point(203, 315);
-            this.Parameter_double_label.Name = "Parameter_double_label";
-            this.Parameter_double_label.Size = new System.Drawing.Size(41, 13);
-            this.Parameter_double_label.TabIndex = 122;
-            this.Parameter_double_label.Text = "label90";
-            this.toolTip1.SetToolTip(this.Parameter_double_label, "Set parameters for the selected algorithm");
-            // 
-            // DownCam_FindComponents_checkBox
-            // 
-            this.DownCam_FindComponents_checkBox.AutoSize = true;
-            this.DownCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(141, 104);
-            this.DownCam_FindComponents_checkBox.Name = "DownCam_FindComponents_checkBox";
-            this.DownCam_FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
-            this.DownCam_FindComponents_checkBox.TabIndex = 54;
-            this.DownCam_FindComponents_checkBox.Text = "Find Components";
-            this.toolTip1.SetToolTip(this.DownCam_FindComponents_checkBox, "Tries to find component shapes on the image,\r\nusing video processing from the tab" +
-        "le below.");
-            this.DownCam_FindComponents_checkBox.UseVisualStyleBackColor = true;
-            this.DownCam_FindComponents_checkBox.CheckedChanged += new System.EventHandler(this.DownCam_FindComponents_checkBox_CheckedChanged);
-            // 
-            // Parameter_double_textBox
-            // 
-            this.Parameter_double_textBox.Location = new System.Drawing.Point(206, 331);
-            this.Parameter_double_textBox.Name = "Parameter_double_textBox";
-            this.Parameter_double_textBox.Size = new System.Drawing.Size(38, 20);
-            this.Parameter_double_textBox.TabIndex = 121;
-            this.Parameter_double_textBox.Text = "1.0";
-            this.Parameter_double_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.Parameter_double_textBox, "Set parameters for the selected algorithm");
-            this.Parameter_double_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Parameter_double_textBox_KeyPress);
-            this.Parameter_double_textBox.Leave += new System.EventHandler(this.Parameter_double_textBox_Leave);
-            // 
-            // white_gb
-            // 
-            this.white_gb.BackColor = System.Drawing.Color.Transparent;
-            this.white_gb.Controls.Add(this.PaperTape_dataGridView);
-            this.white_gb.Controls.Add(this.PaperTapeMeasure_button);
-            this.white_gb.Controls.Add(this.PaperTapeToDisplay_button);
-            this.white_gb.Controls.Add(this.PaperTapeToHere_button);
-            this.white_gb.Location = new System.Drawing.Point(279, 384);
-            this.white_gb.Name = "white_gb";
-            this.white_gb.Size = new System.Drawing.Size(255, 59);
-            this.white_gb.TabIndex = 125;
-            this.white_gb.TabStop = false;
-            this.white_gb.Text = "Paper Tape";
-            // 
-            // PaperTape_dataGridView
-            // 
-            this.PaperTape_dataGridView.AllowUserToAddRows = false;
-            this.PaperTape_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.PaperTape_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewComboBoxColumn1,
-            this.dataGridViewCheckBoxColumn1,
-            this.dataGridViewTextBoxColumn11,
-            this.dataGridViewTextBoxColumn12,
-            this.dataGridViewTextBoxColumn13,
-            this.dataGridViewTextBoxColumn14,
-            this.dataGridViewTextBoxColumn15});
-            this.PaperTape_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.PaperTape_dataGridView.Location = new System.Drawing.Point(168, 47);
-            this.PaperTape_dataGridView.Name = "PaperTape_dataGridView";
-            this.PaperTape_dataGridView.RowHeadersVisible = false;
-            this.PaperTape_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.PaperTape_dataGridView.Size = new System.Drawing.Size(485, 110);
-            this.PaperTape_dataGridView.TabIndex = 128;
-            this.PaperTape_dataGridView.Visible = false;
-            // 
-            // dataGridViewComboBoxColumn1
-            // 
-            this.dataGridViewComboBoxColumn1.HeaderText = "Function";
-            this.dataGridViewComboBoxColumn1.Items.AddRange(new object[] {
-            "Threshold",
-            "Histogram",
-            "Grayscale",
-            "Contrast scretch",
-            "Kill color",
-            "Keep color",
-            "Invert",
-            "Meas. zoom"});
-            this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
-            this.dataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewComboBoxColumn1.Width = 190;
-            // 
-            // dataGridViewCheckBoxColumn1
-            // 
-            this.dataGridViewCheckBoxColumn1.HeaderText = "Enabled";
-            this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
-            this.dataGridViewCheckBoxColumn1.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn11
-            // 
-            this.dataGridViewTextBoxColumn11.HeaderText = "Int1";
-            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            this.dataGridViewTextBoxColumn11.ReadOnly = true;
-            this.dataGridViewTextBoxColumn11.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn12
-            // 
-            this.dataGridViewTextBoxColumn12.HeaderText = "Double1";
-            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
-            this.dataGridViewTextBoxColumn12.ReadOnly = true;
-            this.dataGridViewTextBoxColumn12.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn13
-            // 
-            this.dataGridViewTextBoxColumn13.HeaderText = "R";
-            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
-            this.dataGridViewTextBoxColumn13.ReadOnly = true;
-            this.dataGridViewTextBoxColumn13.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn14
-            // 
-            this.dataGridViewTextBoxColumn14.HeaderText = "G";
-            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
-            this.dataGridViewTextBoxColumn14.ReadOnly = true;
-            this.dataGridViewTextBoxColumn14.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn15
-            // 
-            this.dataGridViewTextBoxColumn15.HeaderText = "B";
-            this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
-            this.dataGridViewTextBoxColumn15.ReadOnly = true;
-            this.dataGridViewTextBoxColumn15.Width = 50;
-            // 
-            // PaperTapeMeasure_button
-            // 
-            this.PaperTapeMeasure_button.Location = new System.Drawing.Point(168, 19);
-            this.PaperTapeMeasure_button.Name = "PaperTapeMeasure_button";
-            this.PaperTapeMeasure_button.Size = new System.Drawing.Size(75, 23);
-            this.PaperTapeMeasure_button.TabIndex = 24;
-            this.PaperTapeMeasure_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.PaperTapeMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.PaperTapeMeasure_button.UseVisualStyleBackColor = true;
-            this.PaperTapeMeasure_button.Click += new System.EventHandler(this.PaperTapeMeasure_button_Click);
-            // 
-            // PaperTapeToDisplay_button
-            // 
-            this.PaperTapeToDisplay_button.Location = new System.Drawing.Point(87, 19);
-            this.PaperTapeToDisplay_button.Name = "PaperTapeToDisplay_button";
-            this.PaperTapeToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.PaperTapeToDisplay_button.TabIndex = 23;
-            this.PaperTapeToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.PaperTapeToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
-        "ing.");
-            this.PaperTapeToDisplay_button.UseVisualStyleBackColor = true;
-            this.PaperTapeToDisplay_button.Click += new System.EventHandler(this.PaperTapeToDisplay_button_Click);
-            // 
-            // PaperTapeToHere_button
-            // 
-            this.PaperTapeToHere_button.Location = new System.Drawing.Point(6, 19);
-            this.PaperTapeToHere_button.Name = "PaperTapeToHere_button";
-            this.PaperTapeToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.PaperTapeToHere_button.TabIndex = 22;
-            this.PaperTapeToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.PaperTapeToHere_button, "Copies the algorithms from the table to be used\r\nin finding paper tape alignment " +
-        "hole.\r\n");
-            this.PaperTapeToHere_button.UseVisualStyleBackColor = true;
-            this.PaperTapeToHere_button.Click += new System.EventHandler(this.PaperTapeToHere_button_Click);
-            // 
-            // Parameter_Int_numericUpDown
-            // 
-            this.Parameter_Int_numericUpDown.Location = new System.Drawing.Point(141, 331);
-            this.Parameter_Int_numericUpDown.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.Parameter_Int_numericUpDown.Name = "Parameter_Int_numericUpDown";
-            this.Parameter_Int_numericUpDown.Size = new System.Drawing.Size(46, 20);
-            this.Parameter_Int_numericUpDown.TabIndex = 120;
-            this.toolTip1.SetToolTip(this.Parameter_Int_numericUpDown, "Set parameters for the selected algorithm");
-            this.Parameter_Int_numericUpDown.Value = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            this.Parameter_Int_numericUpDown.ValueChanged += new System.EventHandler(this.Parameter_Int_numericUpDown_ValueChanged);
-            // 
-            // DownCam_comboBox
-            // 
-            this.DownCam_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DownCam_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCam_comboBox.FormattingEnabled = true;
-            this.DownCam_comboBox.Location = new System.Drawing.Point(3, 8);
-            this.DownCam_comboBox.Name = "DownCam_comboBox";
-            this.DownCam_comboBox.Size = new System.Drawing.Size(132, 21);
-            this.DownCam_comboBox.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.DownCam_comboBox, "List of USB cameras found on this computer.\r\nSelect Down looking camera form this" +
-        " list.");
-            // 
-            // Parameter_int_label
-            // 
-            this.Parameter_int_label.AutoSize = true;
-            this.Parameter_int_label.Location = new System.Drawing.Point(138, 315);
-            this.Parameter_int_label.Name = "Parameter_int_label";
-            this.Parameter_int_label.Size = new System.Drawing.Size(35, 13);
-            this.Parameter_int_label.TabIndex = 119;
-            this.Parameter_int_label.Text = "ParInt";
-            this.toolTip1.SetToolTip(this.Parameter_int_label, "Set parameters for the selected algorithm");
-            // 
-            // DownCamFindRectangles_checkBox
-            // 
-            this.DownCamFindRectangles_checkBox.AutoSize = true;
-            this.DownCamFindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(141, 81);
-            this.DownCamFindRectangles_checkBox.Name = "DownCamFindRectangles_checkBox";
-            this.DownCamFindRectangles_checkBox.Size = new System.Drawing.Size(103, 17);
-            this.DownCamFindRectangles_checkBox.TabIndex = 53;
-            this.DownCamFindRectangles_checkBox.Text = "Find Rectangles";
-            this.toolTip1.SetToolTip(this.DownCamFindRectangles_checkBox, "Tries to find rectangels on the image,\r\nusing video processing from the table bel" +
-        "ow.");
-            this.DownCamFindRectangles_checkBox.UseVisualStyleBackColor = true;
-            this.DownCamFindRectangles_checkBox.CheckedChanged += new System.EventHandler(this.DownCamFindRectangles_checkBox_CheckedChanged);
-            // 
-            // fiducials_gb
-            // 
-            this.fiducials_gb.BackColor = System.Drawing.Color.Transparent;
-            this.fiducials_gb.Controls.Add(this.Fiducials_dataGridView);
-            this.fiducials_gb.Controls.Add(this.FiducialsMeasure_button);
-            this.fiducials_gb.Controls.Add(this.FiducialsToDisplay_button);
-            this.fiducials_gb.Controls.Add(this.FiducialsToHere_button);
-            this.fiducials_gb.Location = new System.Drawing.Point(6, 458);
-            this.fiducials_gb.Name = "fiducials_gb";
-            this.fiducials_gb.Size = new System.Drawing.Size(255, 58);
-            this.fiducials_gb.TabIndex = 124;
-            this.fiducials_gb.TabStop = false;
-            this.fiducials_gb.Text = "Fiducials";
-            // 
-            // Fiducials_dataGridView
-            // 
-            this.Fiducials_dataGridView.AllowUserToAddRows = false;
-            this.Fiducials_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Fiducials_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewComboBoxColumn4,
-            this.dataGridViewCheckBoxColumn4,
-            this.dataGridViewTextBoxColumn16,
-            this.dataGridViewTextBoxColumn17,
-            this.dataGridViewTextBoxColumn18,
-            this.dataGridViewTextBoxColumn19,
-            this.dataGridViewTextBoxColumn20});
-            this.Fiducials_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Fiducials_dataGridView.Location = new System.Drawing.Point(168, 47);
-            this.Fiducials_dataGridView.Name = "Fiducials_dataGridView";
-            this.Fiducials_dataGridView.RowHeadersVisible = false;
-            this.Fiducials_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Fiducials_dataGridView.Size = new System.Drawing.Size(157, 137);
-            this.Fiducials_dataGridView.TabIndex = 126;
-            this.Fiducials_dataGridView.Visible = false;
-            // 
-            // dataGridViewComboBoxColumn4
-            // 
-            this.dataGridViewComboBoxColumn4.HeaderText = "Function";
-            this.dataGridViewComboBoxColumn4.Items.AddRange(new object[] {
-            "Threshold",
-            "Histogram",
-            "Grayscale",
-            "Contrast scretch",
-            "Kill color",
-            "Keep color",
-            "Invert",
-            "Meas. zoom"});
-            this.dataGridViewComboBoxColumn4.Name = "dataGridViewComboBoxColumn4";
-            this.dataGridViewComboBoxColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dataGridViewCheckBoxColumn4
-            // 
-            this.dataGridViewCheckBoxColumn4.HeaderText = "Enabled";
-            this.dataGridViewCheckBoxColumn4.Name = "dataGridViewCheckBoxColumn4";
-            this.dataGridViewCheckBoxColumn4.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn16
-            // 
-            this.dataGridViewTextBoxColumn16.HeaderText = "Int1";
-            this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
-            this.dataGridViewTextBoxColumn16.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn17
-            // 
-            this.dataGridViewTextBoxColumn17.HeaderText = "Double1";
-            this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
-            this.dataGridViewTextBoxColumn17.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn18
-            // 
-            this.dataGridViewTextBoxColumn18.HeaderText = "R";
-            this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
-            this.dataGridViewTextBoxColumn18.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn19
-            // 
-            this.dataGridViewTextBoxColumn19.HeaderText = "G";
-            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
-            this.dataGridViewTextBoxColumn19.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn20
-            // 
-            this.dataGridViewTextBoxColumn20.HeaderText = "B";
-            this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
-            this.dataGridViewTextBoxColumn20.ReadOnly = true;
-            // 
-            // FiducialsMeasure_button
-            // 
-            this.FiducialsMeasure_button.Location = new System.Drawing.Point(168, 19);
-            this.FiducialsMeasure_button.Name = "FiducialsMeasure_button";
-            this.FiducialsMeasure_button.Size = new System.Drawing.Size(75, 23);
-            this.FiducialsMeasure_button.TabIndex = 24;
-            this.FiducialsMeasure_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.FiducialsMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.FiducialsMeasure_button.UseVisualStyleBackColor = true;
-            this.FiducialsMeasure_button.Click += new System.EventHandler(this.FiducialsMeasure_button_Click);
-            // 
-            // FiducialsToDisplay_button
-            // 
-            this.FiducialsToDisplay_button.Location = new System.Drawing.Point(87, 19);
-            this.FiducialsToDisplay_button.Name = "FiducialsToDisplay_button";
-            this.FiducialsToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.FiducialsToDisplay_button.TabIndex = 23;
-            this.FiducialsToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.FiducialsToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
-        "ing.");
-            this.FiducialsToDisplay_button.UseVisualStyleBackColor = true;
-            this.FiducialsToDisplay_button.Click += new System.EventHandler(this.FiducialsToDisplay_button_Click);
-            // 
-            // FiducialsToHere_button
-            // 
-            this.FiducialsToHere_button.Location = new System.Drawing.Point(6, 19);
-            this.FiducialsToHere_button.Name = "FiducialsToHere_button";
-            this.FiducialsToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.FiducialsToHere_button.TabIndex = 22;
-            this.FiducialsToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.FiducialsToHere_button, "Copies the algorithms from the table to be used\r\nin finding fiducials on the PCB." +
-        "");
-            this.FiducialsToHere_button.UseVisualStyleBackColor = true;
-            this.FiducialsToHere_button.Click += new System.EventHandler(this.FiducialsToHere_button_Click);
-            // 
-            // RefreshDownCameraList_button
-            // 
-            this.RefreshDownCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshDownCameraList_button.Location = new System.Drawing.Point(141, 8);
-            this.RefreshDownCameraList_button.Name = "RefreshDownCameraList_button";
-            this.RefreshDownCameraList_button.Size = new System.Drawing.Size(75, 23);
-            this.RefreshDownCameraList_button.TabIndex = 7;
-            this.RefreshDownCameraList_button.Text = "Refresh List";
-            this.toolTip1.SetToolTip(this.RefreshDownCameraList_button, "Re-scans USB cameras on this computer");
-            this.RefreshDownCameraList_button.UseVisualStyleBackColor = true;
-            this.RefreshDownCameraList_button.Click += new System.EventHandler(this.RefreshDownCameraList_button_Click);
-            // 
-            // DownCamFindCircles_checkBox
-            // 
-            this.DownCamFindCircles_checkBox.AutoSize = true;
-            this.DownCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(141, 58);
-            this.DownCamFindCircles_checkBox.Name = "DownCamFindCircles_checkBox";
-            this.DownCamFindCircles_checkBox.Size = new System.Drawing.Size(80, 17);
-            this.DownCamFindCircles_checkBox.TabIndex = 43;
-            this.DownCamFindCircles_checkBox.Text = "Find Circles";
-            this.toolTip1.SetToolTip(this.DownCamFindCircles_checkBox, "Tries to find circles on the image,\r\nusing video processing from the table below." +
-        "");
-            this.DownCamFindCircles_checkBox.UseVisualStyleBackColor = true;
-            this.DownCamFindCircles_checkBox.CheckedChanged += new System.EventHandler(this.DownCamFindCircles_checkBox_CheckedChanged);
-            // 
-            // ConnectDownCamera_button
-            // 
-            this.ConnectDownCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConnectDownCamera_button.Location = new System.Drawing.Point(222, 8);
-            this.ConnectDownCamera_button.Name = "ConnectDownCamera_button";
-            this.ConnectDownCamera_button.Size = new System.Drawing.Size(75, 23);
-            this.ConnectDownCamera_button.TabIndex = 3;
-            this.ConnectDownCamera_button.Text = "Select";
-            this.toolTip1.SetToolTip(this.ConnectDownCamera_button, "Connets to selected camera");
-            this.ConnectDownCamera_button.UseVisualStyleBackColor = true;
-            this.ConnectDownCamera_button.Click += new System.EventHandler(this.ConnectDownCamera_button_Click);
-            // 
-            // DownCameraDrawDashedCross_checkBox
-            // 
-            this.DownCameraDrawDashedCross_checkBox.AutoSize = true;
-            this.DownCameraDrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(447, 137);
-            this.DownCameraDrawDashedCross_checkBox.Name = "DownCameraDrawDashedCross_checkBox";
-            this.DownCameraDrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
-            this.DownCameraDrawDashedCross_checkBox.TabIndex = 42;
-            this.DownCameraDrawDashedCross_checkBox.Text = "Draw Dashed Cross";
-            this.DownCameraDrawDashedCross_checkBox.UseVisualStyleBackColor = true;
-            this.DownCameraDrawDashedCross_checkBox.Visible = false;
-            this.DownCameraDrawDashedCross_checkBox.CheckedChanged += new System.EventHandler(this.DownCameraDrawDashedCross_checkBox_CheckedChanged);
-            // 
-            // DownCamStatus_label
-            // 
-            this.DownCamStatus_label.AutoSize = true;
-            this.DownCamStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamStatus_label.Location = new System.Drawing.Point(349, 9);
-            this.DownCamStatus_label.Name = "DownCamStatus_label";
-            this.DownCamStatus_label.Size = new System.Drawing.Size(105, 18);
-            this.DownCamStatus_label.TabIndex = 6;
-            this.DownCamStatus_label.Text = "Not connected";
-            this.toolTip1.SetToolTip(this.DownCamStatus_label, "Camera conection status");
-            // 
-            // CamFunctionDown_button
-            // 
-            this.CamFunctionDown_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CamFunctionDown_button.Location = new System.Drawing.Point(6, 250);
-            this.CamFunctionDown_button.Name = "CamFunctionDown_button";
-            this.CamFunctionDown_button.Size = new System.Drawing.Size(75, 23);
-            this.CamFunctionDown_button.TabIndex = 47;
-            this.CamFunctionDown_button.Text = "Move Down";
-            this.toolTip1.SetToolTip(this.CamFunctionDown_button, "Moves the selected algorithm down");
-            this.CamFunctionDown_button.UseVisualStyleBackColor = true;
-            this.CamFunctionDown_button.Click += new System.EventHandler(this.CamFunctionDown_button_Click);
-            // 
-            // DownCameraDrawCross_checkBox
-            // 
-            this.DownCameraDrawCross_checkBox.AutoSize = true;
-            this.DownCameraDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawCross_checkBox.Location = new System.Drawing.Point(3, 58);
-            this.DownCameraDrawCross_checkBox.Name = "DownCameraDrawCross_checkBox";
-            this.DownCameraDrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
-            this.DownCameraDrawCross_checkBox.TabIndex = 11;
-            this.DownCameraDrawCross_checkBox.Text = "Draw Cross";
-            this.toolTip1.SetToolTip(this.DownCameraDrawCross_checkBox, "Draws crosshair cursor on the image");
-            this.DownCameraDrawCross_checkBox.UseVisualStyleBackColor = true;
-            this.DownCameraDrawCross_checkBox.CheckedChanged += new System.EventHandler(this.DownCameraDrawCross_checkBox_CheckedChanged);
-            // 
-            // DownCameraDrawBox_checkBox
-            // 
-            this.DownCameraDrawBox_checkBox.AutoSize = true;
-            this.DownCameraDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawBox_checkBox.Location = new System.Drawing.Point(3, 81);
-            this.DownCameraDrawBox_checkBox.Name = "DownCameraDrawBox_checkBox";
-            this.DownCameraDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
-            this.DownCameraDrawBox_checkBox.TabIndex = 25;
-            this.DownCameraDrawBox_checkBox.Text = "Draw Box";
-            this.toolTip1.SetToolTip(this.DownCameraDrawBox_checkBox, "Draws a box on the image\r\n(Used to set camera scale)\r\n");
-            this.DownCameraDrawBox_checkBox.UseVisualStyleBackColor = true;
-            this.DownCameraDrawBox_checkBox.CheckedChanged += new System.EventHandler(this.DownCameraDrawBox_checkBox_CheckedChanged);
-            // 
-            // CamFunctionUp_button
-            // 
-            this.CamFunctionUp_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CamFunctionUp_button.Location = new System.Drawing.Point(6, 221);
-            this.CamFunctionUp_button.Name = "CamFunctionUp_button";
-            this.CamFunctionUp_button.Size = new System.Drawing.Size(75, 23);
-            this.CamFunctionUp_button.TabIndex = 46;
-            this.CamFunctionUp_button.Text = "Move Up";
-            this.toolTip1.SetToolTip(this.CamFunctionUp_button, "Moves the selected algorithm up");
-            this.CamFunctionUp_button.UseVisualStyleBackColor = true;
-            this.CamFunctionUp_button.Click += new System.EventHandler(this.CamFunctionUp_button_Click);
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label53.Location = new System.Drawing.Point(303, 13);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(40, 13);
-            this.label53.TabIndex = 8;
-            this.label53.Text = "Status:";
-            // 
-            // Overlay_checkBox
-            // 
-            this.Overlay_checkBox.AutoSize = true;
-            this.Overlay_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Overlay_checkBox.Location = new System.Drawing.Point(447, 114);
-            this.Overlay_checkBox.Name = "Overlay_checkBox";
-            this.Overlay_checkBox.Size = new System.Drawing.Size(99, 17);
-            this.Overlay_checkBox.TabIndex = 31;
-            this.Overlay_checkBox.Text = "Draw Snapshot";
-            this.Overlay_checkBox.UseVisualStyleBackColor = true;
-            this.Overlay_checkBox.Visible = false;
-            this.Overlay_checkBox.CheckedChanged += new System.EventHandler(this.Overlay_checkBox_CheckedChanged);
-            // 
-            // DeleteCamFunction_button
-            // 
-            this.DeleteCamFunction_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DeleteCamFunction_button.Location = new System.Drawing.Point(6, 192);
-            this.DeleteCamFunction_button.Name = "DeleteCamFunction_button";
-            this.DeleteCamFunction_button.Size = new System.Drawing.Size(75, 23);
-            this.DeleteCamFunction_button.TabIndex = 45;
-            this.DeleteCamFunction_button.Text = "Delete";
-            this.toolTip1.SetToolTip(this.DeleteCamFunction_button, "Deletes selected algorithm from the table");
-            this.DeleteCamFunction_button.UseVisualStyleBackColor = true;
-            this.DeleteCamFunction_button.Click += new System.EventHandler(this.DeleteCamFunction_button_Click);
             // 
             // DownCameraBoxYmmPerPixel_label
             // 
             this.DownCameraBoxYmmPerPixel_label.AutoSize = true;
             this.DownCameraBoxYmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(428, 85);
+            this.DownCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(115, 192);
             this.DownCameraBoxYmmPerPixel_label.Name = "DownCameraBoxYmmPerPixel_label";
             this.DownCameraBoxYmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.DownCameraBoxYmmPerPixel_label.TabIndex = 27;
             this.DownCameraBoxYmmPerPixel_label.Text = "---";
             this.toolTip1.SetToolTip(this.DownCameraBoxYmmPerPixel_label, "Set the true size of the box on the image.");
             // 
-            // label68
-            // 
-            this.label68.AutoSize = true;
-            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label68.Location = new System.Drawing.Point(303, 59);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(38, 13);
-            this.label68.TabIndex = 18;
-            this.label68.Text = "Box X:";
-            this.toolTip1.SetToolTip(this.label68, "Set the true size of the box on the image.");
-            // 
-            // AddCamFunction_button
-            // 
-            this.AddCamFunction_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddCamFunction_button.Location = new System.Drawing.Point(6, 163);
-            this.AddCamFunction_button.Name = "AddCamFunction_button";
-            this.AddCamFunction_button.Size = new System.Drawing.Size(75, 23);
-            this.AddCamFunction_button.TabIndex = 44;
-            this.AddCamFunction_button.Text = "Add";
-            this.toolTip1.SetToolTip(this.AddCamFunction_button, "Adds an algorithm to the table");
-            this.AddCamFunction_button.UseVisualStyleBackColor = true;
-            this.AddCamFunction_button.Click += new System.EventHandler(this.AddCamFunction_button_Click);
-            // 
             // DownCameraBoxXmmPerPixel_label
             // 
             this.DownCameraBoxXmmPerPixel_label.AutoSize = true;
             this.DownCameraBoxXmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(428, 59);
+            this.DownCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(115, 172);
             this.DownCameraBoxXmmPerPixel_label.Name = "DownCameraBoxXmmPerPixel_label";
             this.DownCameraBoxXmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.DownCameraBoxXmmPerPixel_label.TabIndex = 26;
             this.DownCameraBoxXmmPerPixel_label.Text = "---";
             this.toolTip1.SetToolTip(this.DownCameraBoxXmmPerPixel_label, "Set the true size of the box on the image.");
             // 
-            // label69
-            // 
-            this.label69.AutoSize = true;
-            this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label69.Location = new System.Drawing.Point(303, 85);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(38, 13);
-            this.label69.TabIndex = 19;
-            this.label69.Text = "Box Y:";
-            this.toolTip1.SetToolTip(this.label69, "Set the true size of the box on the image.");
-            // 
-            // Display_dataGridView
-            // 
-            this.Display_dataGridView.AllowUserToAddRows = false;
-            this.Display_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Display_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Function,
-            this.Active,
-            this.Parameter_int,
-            this.Parameter_double,
-            this.Parameter_R,
-            this.Parameter_G,
-            this.Parameter_B});
-            this.Display_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Display_dataGridView.Location = new System.Drawing.Point(87, 163);
-            this.Display_dataGridView.Name = "Display_dataGridView";
-            this.Display_dataGridView.RowHeadersVisible = false;
-            this.Display_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Display_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Display_dataGridView.Size = new System.Drawing.Size(485, 139);
-            this.Display_dataGridView.TabIndex = 43;
-            this.Display_dataGridView.CurrentCellChanged += new System.EventHandler(this.Display_dataGridView_CurrentCellChanged);
-            this.Display_dataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.Display_dataGridView_CurrentCellDirtyStateChanged);
-            // 
-            // Function
-            // 
-            this.Function.HeaderText = "Function";
-            this.Function.Items.AddRange(new object[] {
-            "Threshold",
-            "Histogram",
-            "Grayscale",
-            "Contrast scretch",
-            "Kill color",
-            "Keep color",
-            "Invert",
-            "Meas. zoom"});
-            this.Function.Name = "Function";
-            this.Function.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Function.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Function.Width = 160;
-            // 
-            // Active
-            // 
-            this.Active.HeaderText = "Enabled";
-            this.Active.Name = "Active";
-            this.Active.Width = 50;
-            // 
-            // Parameter_int
-            // 
-            this.Parameter_int.HeaderText = "Int1";
-            this.Parameter_int.Name = "Parameter_int";
-            this.Parameter_int.ReadOnly = true;
-            this.Parameter_int.Width = 50;
-            // 
-            // Parameter_double
-            // 
-            this.Parameter_double.HeaderText = "Double1";
-            this.Parameter_double.Name = "Parameter_double";
-            this.Parameter_double.ReadOnly = true;
-            this.Parameter_double.Width = 50;
-            // 
-            // Parameter_R
-            // 
-            this.Parameter_R.HeaderText = "R";
-            this.Parameter_R.Name = "Parameter_R";
-            this.Parameter_R.ReadOnly = true;
-            this.Parameter_R.Width = 50;
-            // 
-            // Parameter_G
-            // 
-            this.Parameter_G.HeaderText = "G";
-            this.Parameter_G.Name = "Parameter_G";
-            this.Parameter_G.ReadOnly = true;
-            this.Parameter_G.Width = 50;
-            // 
-            // Parameter_B
-            // 
-            this.Parameter_B.HeaderText = "B";
-            this.Parameter_B.Name = "Parameter_B";
-            this.Parameter_B.ReadOnly = true;
-            this.Parameter_B.Width = 50;
-            // 
             // label71
             // 
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(399, 85);
+            this.label71.Location = new System.Drawing.Point(170, 74);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(23, 13);
             this.label71.TabIndex = 23;
@@ -2931,7 +1481,7 @@
             // DownCameraBoxX_textBox
             // 
             this.DownCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(347, 56);
+            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(118, 45);
             this.DownCameraBoxX_textBox.Name = "DownCameraBoxX_textBox";
             this.DownCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxX_textBox.TabIndex = 20;
@@ -2943,7 +1493,7 @@
             // 
             this.label70.AutoSize = true;
             this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.Location = new System.Drawing.Point(399, 59);
+            this.label70.Location = new System.Drawing.Point(170, 48);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(23, 13);
             this.label70.TabIndex = 22;
@@ -2953,7 +1503,7 @@
             // DownCameraBoxY_textBox
             // 
             this.DownCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(347, 82);
+            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(118, 71);
             this.DownCameraBoxY_textBox.Name = "DownCameraBoxY_textBox";
             this.DownCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxY_textBox.TabIndex = 21;
@@ -2961,574 +1511,42 @@
             this.DownCameraBoxY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCameraBoxY_textBox_KeyPress);
             this.DownCameraBoxY_textBox.Leave += new System.EventHandler(this.DownCameraBoxY_textBox_Leave);
             // 
-            // homing_gb
-            // 
-            this.homing_gb.BackColor = System.Drawing.Color.Transparent;
-            this.homing_gb.Controls.Add(this.HomingMeasure_button);
-            this.homing_gb.Controls.Add(this.HomingToDisplay_button);
-            this.homing_gb.Controls.Add(this.Homing_dataGridView);
-            this.homing_gb.Controls.Add(this.HomingToHere_button);
-            this.homing_gb.Location = new System.Drawing.Point(6, 384);
-            this.homing_gb.Name = "homing_gb";
-            this.homing_gb.Size = new System.Drawing.Size(255, 59);
-            this.homing_gb.TabIndex = 101;
-            this.homing_gb.TabStop = false;
-            this.homing_gb.Text = "Homing";
-            // 
-            // HomingMeasure_button
-            // 
-            this.HomingMeasure_button.Location = new System.Drawing.Point(168, 19);
-            this.HomingMeasure_button.Name = "HomingMeasure_button";
-            this.HomingMeasure_button.Size = new System.Drawing.Size(75, 23);
-            this.HomingMeasure_button.TabIndex = 24;
-            this.HomingMeasure_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.HomingMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.HomingMeasure_button.UseVisualStyleBackColor = true;
-            this.HomingMeasure_button.Click += new System.EventHandler(this.HomingMeasure_button_Click);
-            // 
-            // HomingToDisplay_button
-            // 
-            this.HomingToDisplay_button.Location = new System.Drawing.Point(87, 19);
-            this.HomingToDisplay_button.Name = "HomingToDisplay_button";
-            this.HomingToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.HomingToDisplay_button.TabIndex = 23;
-            this.HomingToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.HomingToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
-        "ing.");
-            this.HomingToDisplay_button.UseVisualStyleBackColor = true;
-            this.HomingToDisplay_button.Click += new System.EventHandler(this.HomingToDisplay_button_Click);
-            // 
-            // Homing_dataGridView
-            // 
-            this.Homing_dataGridView.AllowUserToAddRows = false;
-            this.Homing_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Homing_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewComboBoxColumn2,
-            this.dataGridViewCheckBoxColumn2,
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4,
-            this.dataGridViewTextBoxColumn5});
-            this.Homing_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Homing_dataGridView.Location = new System.Drawing.Point(163, 43);
-            this.Homing_dataGridView.Name = "Homing_dataGridView";
-            this.Homing_dataGridView.RowHeadersVisible = false;
-            this.Homing_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Homing_dataGridView.Size = new System.Drawing.Size(157, 162);
-            this.Homing_dataGridView.TabIndex = 123;
-            this.Homing_dataGridView.Visible = false;
-            // 
-            // dataGridViewComboBoxColumn2
-            // 
-            this.dataGridViewComboBoxColumn2.HeaderText = "Funct";
-            this.dataGridViewComboBoxColumn2.Items.AddRange(new object[] {
-            "Threshold",
-            "Histogram",
-            "Grayscale",
-            "Contrast scretch",
-            "Kill color",
-            "Keep color",
-            "Invert",
-            "Meas. zoom"});
-            this.dataGridViewComboBoxColumn2.Name = "dataGridViewComboBoxColumn2";
-            this.dataGridViewComboBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dataGridViewCheckBoxColumn2
-            // 
-            this.dataGridViewCheckBoxColumn2.HeaderText = "Enabled";
-            this.dataGridViewCheckBoxColumn2.Name = "dataGridViewCheckBoxColumn2";
-            this.dataGridViewCheckBoxColumn2.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Int1";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Double1";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "R";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "G";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "B";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            // 
-            // HomingToHere_button
-            // 
-            this.HomingToHere_button.Location = new System.Drawing.Point(6, 19);
-            this.HomingToHere_button.Name = "HomingToHere_button";
-            this.HomingToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.HomingToHere_button.TabIndex = 22;
-            this.HomingToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.HomingToHere_button, "Copies the algorithms from the table to be used\r\nin homing operations.");
-            this.HomingToHere_button.UseVisualStyleBackColor = true;
-            this.HomingToHere_button.Click += new System.EventHandler(this.HomingToHere_button_Click);
-            // 
-            // UpCamera_tabPage
-            // 
-            this.UpCamera_tabPage.Controls.Add(this.DownCamera_Calibration_button);
-            this.UpCamera_tabPage.Controls.Add(this.groupBox10);
-            this.UpCamera_tabPage.Controls.Add(this.UpCam_FindComponents_checkBox);
-            this.UpCamera_tabPage.Controls.Add(this.checkBox2);
-            this.UpCamera_tabPage.Controls.Add(this.groupBox5);
-            this.UpCamera_tabPage.Controls.Add(this.UpCamFindCircles_checkBox);
-            this.UpCamera_tabPage.Controls.Add(this.UpCam_comboBox);
-            this.UpCamera_tabPage.Controls.Add(this.UpCameraDrawDashedCross_checkBox);
-            this.UpCamera_tabPage.Controls.Add(this.UpCameraBoxYmmPerPixel_label);
-            this.UpCamera_tabPage.Controls.Add(this.UpCameraDrawBox_checkBox);
-            this.UpCamera_tabPage.Controls.Add(this.ConnectUpCamera_button);
-            this.UpCamera_tabPage.Controls.Add(this.UpCameraDrawCross_checkBox);
-            this.UpCamera_tabPage.Controls.Add(this.label110);
-            this.UpCamera_tabPage.Controls.Add(this.UpCameraBoxXmmPerPixel_label);
-            this.UpCamera_tabPage.Controls.Add(this.RefreshUpCameraList_button);
-            this.UpCamera_tabPage.Controls.Add(this.label103);
-            this.UpCamera_tabPage.Controls.Add(this.UpCameraBoxY_textBox);
-            this.UpCamera_tabPage.Controls.Add(this.UpCameraBoxX_textBox);
-            this.UpCamera_tabPage.Controls.Add(this.label106);
-            this.UpCamera_tabPage.Controls.Add(this.UpCamStatus_label);
-            this.UpCamera_tabPage.Controls.Add(this.label104);
-            this.UpCamera_tabPage.Controls.Add(this.label105);
-            this.UpCamera_tabPage.Location = new System.Drawing.Point(4, 22);
-            this.UpCamera_tabPage.Name = "UpCamera_tabPage";
-            this.UpCamera_tabPage.Size = new System.Drawing.Size(579, 652);
-            this.UpCamera_tabPage.TabIndex = 4;
-            this.UpCamera_tabPage.Text = "Up Looking Camera";
-            this.UpCamera_tabPage.UseVisualStyleBackColor = true;
-            // 
             // DownCamera_Calibration_button
             // 
-            this.DownCamera_Calibration_button.Location = new System.Drawing.Point(347, 108);
+            this.DownCamera_Calibration_button.Location = new System.Drawing.Point(53, 100);
             this.DownCamera_Calibration_button.Name = "DownCamera_Calibration_button";
             this.DownCamera_Calibration_button.Size = new System.Drawing.Size(46, 23);
             this.DownCamera_Calibration_button.TabIndex = 141;
             this.DownCamera_Calibration_button.Text = "Calib.";
             this.DownCamera_Calibration_button.UseVisualStyleBackColor = true;
-            this.DownCamera_Calibration_button.Click += new System.EventHandler(this.UpCamera_Calibration_button_Click);
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox10.Controls.Add(this.UpCamComponents_dataGridView);
-            this.groupBox10.Controls.Add(this.UpCamComponentsMeasure_button);
-            this.groupBox10.Controls.Add(this.UpCamComponentsToDisplay_button);
-            this.groupBox10.Controls.Add(this.UpCamComponentsToHere_button);
-            this.groupBox10.Location = new System.Drawing.Point(6, 458);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(255, 59);
-            this.groupBox10.TabIndex = 126;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Components";
-            // 
-            // UpCamComponents_dataGridView
-            // 
-            this.UpCamComponents_dataGridView.AllowUserToAddRows = false;
-            this.UpCamComponents_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.UpCamComponents_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewComboBoxColumn8,
-            this.dataGridViewCheckBoxColumn8,
-            this.dataGridViewTextBoxColumn36,
-            this.dataGridViewTextBoxColumn37,
-            this.dataGridViewTextBoxColumn38,
-            this.dataGridViewTextBoxColumn39,
-            this.dataGridViewTextBoxColumn40});
-            this.UpCamComponents_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.UpCamComponents_dataGridView.Location = new System.Drawing.Point(209, 44);
-            this.UpCamComponents_dataGridView.Name = "UpCamComponents_dataGridView";
-            this.UpCamComponents_dataGridView.RowHeadersVisible = false;
-            this.UpCamComponents_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.UpCamComponents_dataGridView.Size = new System.Drawing.Size(157, 137);
-            this.UpCamComponents_dataGridView.TabIndex = 125;
-            this.UpCamComponents_dataGridView.Visible = false;
-            // 
-            // dataGridViewComboBoxColumn8
-            // 
-            this.dataGridViewComboBoxColumn8.HeaderText = "Function";
-            this.dataGridViewComboBoxColumn8.Items.AddRange(new object[] {
-            "Threshold",
-            "Histogram",
-            "Grayscale",
-            "Contrast scretch",
-            "Kill color",
-            "Keep color",
-            "Invert",
-            "Meas. zoom"});
-            this.dataGridViewComboBoxColumn8.Name = "dataGridViewComboBoxColumn8";
-            this.dataGridViewComboBoxColumn8.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dataGridViewCheckBoxColumn8
-            // 
-            this.dataGridViewCheckBoxColumn8.HeaderText = "Enabled";
-            this.dataGridViewCheckBoxColumn8.Name = "dataGridViewCheckBoxColumn8";
-            this.dataGridViewCheckBoxColumn8.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn36
-            // 
-            this.dataGridViewTextBoxColumn36.HeaderText = "Int1";
-            this.dataGridViewTextBoxColumn36.Name = "dataGridViewTextBoxColumn36";
-            this.dataGridViewTextBoxColumn36.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn37
-            // 
-            this.dataGridViewTextBoxColumn37.HeaderText = "Double1";
-            this.dataGridViewTextBoxColumn37.Name = "dataGridViewTextBoxColumn37";
-            this.dataGridViewTextBoxColumn37.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn38
-            // 
-            this.dataGridViewTextBoxColumn38.HeaderText = "R";
-            this.dataGridViewTextBoxColumn38.Name = "dataGridViewTextBoxColumn38";
-            this.dataGridViewTextBoxColumn38.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn39
-            // 
-            this.dataGridViewTextBoxColumn39.HeaderText = "G";
-            this.dataGridViewTextBoxColumn39.Name = "dataGridViewTextBoxColumn39";
-            this.dataGridViewTextBoxColumn39.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn40
-            // 
-            this.dataGridViewTextBoxColumn40.HeaderText = "B";
-            this.dataGridViewTextBoxColumn40.Name = "dataGridViewTextBoxColumn40";
-            this.dataGridViewTextBoxColumn40.ReadOnly = true;
-            // 
-            // UpCamComponentsMeasure_button
-            // 
-            this.UpCamComponentsMeasure_button.Location = new System.Drawing.Point(168, 19);
-            this.UpCamComponentsMeasure_button.Name = "UpCamComponentsMeasure_button";
-            this.UpCamComponentsMeasure_button.Size = new System.Drawing.Size(75, 23);
-            this.UpCamComponentsMeasure_button.TabIndex = 24;
-            this.UpCamComponentsMeasure_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.UpCamComponentsMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.UpCamComponentsMeasure_button.UseVisualStyleBackColor = true;
-            this.UpCamComponentsMeasure_button.Click += new System.EventHandler(this.UpCamComponentsMeasure_button_Click);
-            // 
-            // UpCamComponentsToDisplay_button
-            // 
-            this.UpCamComponentsToDisplay_button.Location = new System.Drawing.Point(87, 19);
-            this.UpCamComponentsToDisplay_button.Name = "UpCamComponentsToDisplay_button";
-            this.UpCamComponentsToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.UpCamComponentsToDisplay_button.TabIndex = 23;
-            this.UpCamComponentsToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.UpCamComponentsToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
-        "ing.\r\n");
-            this.UpCamComponentsToDisplay_button.UseVisualStyleBackColor = true;
-            this.UpCamComponentsToDisplay_button.Click += new System.EventHandler(this.UpCamComponentsToDisplay_button_Click);
-            // 
-            // UpCamComponentsToHere_button
-            // 
-            this.UpCamComponentsToHere_button.Location = new System.Drawing.Point(6, 19);
-            this.UpCamComponentsToHere_button.Name = "UpCamComponentsToHere_button";
-            this.UpCamComponentsToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.UpCamComponentsToHere_button.TabIndex = 22;
-            this.UpCamComponentsToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.UpCamComponentsToHere_button, "Copies the algorithms from the table to be used\r\nin finding needle tip during nee" +
-        "dle calibration.");
-            this.UpCamComponentsToHere_button.UseVisualStyleBackColor = true;
-            this.UpCamComponentsToHere_button.Click += new System.EventHandler(this.UpCamComponentsToHere_button_Click);
-            // 
-            // UpCam_FindComponents_checkBox
-            // 
-            this.UpCam_FindComponents_checkBox.AutoSize = true;
-            this.UpCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCam_FindComponents_checkBox.Location = new System.Drawing.Point(141, 81);
-            this.UpCam_FindComponents_checkBox.Name = "UpCam_FindComponents_checkBox";
-            this.UpCam_FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
-            this.UpCam_FindComponents_checkBox.TabIndex = 70;
-            this.UpCam_FindComponents_checkBox.Text = "Find Components";
-            this.UpCam_FindComponents_checkBox.UseVisualStyleBackColor = true;
-            this.UpCam_FindComponents_checkBox.CheckedChanged += new System.EventHandler(this.UpCam_FindComponents_checkBox_CheckedChanged);
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox2.Location = new System.Drawing.Point(3, 127);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(103, 17);
-            this.checkBox2.TabIndex = 69;
-            this.checkBox2.Text = "Find Rectangles";
-            this.toolTip1.SetToolTip(this.checkBox2, "Tries to find rectangels on the image,\r\nusing video processing from the table bel" +
-        "ow.\r\n");
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.Visible = false;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox5.Controls.Add(this.Needle_dataGridView);
-            this.groupBox5.Controls.Add(this.NeedleMeasure_button);
-            this.groupBox5.Controls.Add(this.NeedleToDisplay_button);
-            this.groupBox5.Controls.Add(this.NeedleToHere_button);
-            this.groupBox5.Location = new System.Drawing.Point(6, 384);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(255, 59);
-            this.groupBox5.TabIndex = 102;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Needle";
-            // 
-            // Needle_dataGridView
-            // 
-            this.Needle_dataGridView.AllowUserToAddRows = false;
-            this.Needle_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Needle_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewComboBoxColumn3,
-            this.dataGridViewCheckBoxColumn3,
-            this.dataGridViewTextBoxColumn6,
-            this.dataGridViewTextBoxColumn7,
-            this.dataGridViewTextBoxColumn8,
-            this.dataGridViewTextBoxColumn9,
-            this.dataGridViewTextBoxColumn10});
-            this.Needle_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Needle_dataGridView.Location = new System.Drawing.Point(209, 44);
-            this.Needle_dataGridView.Name = "Needle_dataGridView";
-            this.Needle_dataGridView.RowHeadersVisible = false;
-            this.Needle_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Needle_dataGridView.Size = new System.Drawing.Size(157, 137);
-            this.Needle_dataGridView.TabIndex = 125;
-            this.Needle_dataGridView.Visible = false;
-            // 
-            // dataGridViewComboBoxColumn3
-            // 
-            this.dataGridViewComboBoxColumn3.HeaderText = "Function";
-            this.dataGridViewComboBoxColumn3.Items.AddRange(new object[] {
-            "Threshold",
-            "Histogram",
-            "Grayscale",
-            "Contrast scretch",
-            "Kill color",
-            "Keep color",
-            "Invert",
-            "Meas. zoom"});
-            this.dataGridViewComboBoxColumn3.Name = "dataGridViewComboBoxColumn3";
-            this.dataGridViewComboBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dataGridViewCheckBoxColumn3
-            // 
-            this.dataGridViewCheckBoxColumn3.HeaderText = "Enabled";
-            this.dataGridViewCheckBoxColumn3.Name = "dataGridViewCheckBoxColumn3";
-            this.dataGridViewCheckBoxColumn3.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.HeaderText = "Int1";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.HeaderText = "Double1";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "R";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.HeaderText = "G";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn10
-            // 
-            this.dataGridViewTextBoxColumn10.HeaderText = "B";
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            this.dataGridViewTextBoxColumn10.ReadOnly = true;
-            // 
-            // NeedleMeasure_button
-            // 
-            this.NeedleMeasure_button.Location = new System.Drawing.Point(168, 19);
-            this.NeedleMeasure_button.Name = "NeedleMeasure_button";
-            this.NeedleMeasure_button.Size = new System.Drawing.Size(75, 23);
-            this.NeedleMeasure_button.TabIndex = 24;
-            this.NeedleMeasure_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.NeedleMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.NeedleMeasure_button.UseVisualStyleBackColor = true;
-            this.NeedleMeasure_button.Click += new System.EventHandler(this.NeedleMeasure_button_Click);
-            // 
-            // NeedleToDisplay_button
-            // 
-            this.NeedleToDisplay_button.Location = new System.Drawing.Point(87, 19);
-            this.NeedleToDisplay_button.Name = "NeedleToDisplay_button";
-            this.NeedleToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.NeedleToDisplay_button.TabIndex = 23;
-            this.NeedleToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.NeedleToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
-        "ing.\r\n");
-            this.NeedleToDisplay_button.UseVisualStyleBackColor = true;
-            this.NeedleToDisplay_button.Click += new System.EventHandler(this.NeedleToDisplay_button_Click);
-            // 
-            // NeedleToHere_button
-            // 
-            this.NeedleToHere_button.Location = new System.Drawing.Point(6, 19);
-            this.NeedleToHere_button.Name = "NeedleToHere_button";
-            this.NeedleToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.NeedleToHere_button.TabIndex = 22;
-            this.NeedleToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.NeedleToHere_button, "Copies the algorithms from the table to be used\r\nin finding needle tip during nee" +
-        "dle calibration.");
-            this.NeedleToHere_button.UseVisualStyleBackColor = true;
-            this.NeedleToHere_button.Click += new System.EventHandler(this.NeedleToHere_button_Click);
-            // 
-            // UpCamFindCircles_checkBox
-            // 
-            this.UpCamFindCircles_checkBox.AutoSize = true;
-            this.UpCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamFindCircles_checkBox.Location = new System.Drawing.Point(141, 58);
-            this.UpCamFindCircles_checkBox.Name = "UpCamFindCircles_checkBox";
-            this.UpCamFindCircles_checkBox.Size = new System.Drawing.Size(80, 17);
-            this.UpCamFindCircles_checkBox.TabIndex = 68;
-            this.UpCamFindCircles_checkBox.Text = "Find Circles";
-            this.toolTip1.SetToolTip(this.UpCamFindCircles_checkBox, "Tries to find circles on the image,\r\nusing video processing from the table below." +
-        "\r\n");
-            this.UpCamFindCircles_checkBox.UseVisualStyleBackColor = true;
-            this.UpCamFindCircles_checkBox.CheckedChanged += new System.EventHandler(this.UpCamFindCircles_checkBox_CheckedChanged);
-            // 
-            // UpCam_comboBox
-            // 
-            this.UpCam_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.UpCam_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCam_comboBox.FormattingEnabled = true;
-            this.UpCam_comboBox.Location = new System.Drawing.Point(3, 8);
-            this.UpCam_comboBox.Name = "UpCam_comboBox";
-            this.UpCam_comboBox.Size = new System.Drawing.Size(132, 21);
-            this.UpCam_comboBox.TabIndex = 44;
-            this.toolTip1.SetToolTip(this.UpCam_comboBox, "List of USB cameras found on this computer.\r\nSelect up looking camera form this l" +
-        "ist.\r\n");
-            // 
-            // UpCameraDrawDashedCross_checkBox
-            // 
-            this.UpCameraDrawDashedCross_checkBox.AutoSize = true;
-            this.UpCameraDrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(3, 104);
-            this.UpCameraDrawDashedCross_checkBox.Name = "UpCameraDrawDashedCross_checkBox";
-            this.UpCameraDrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
-            this.UpCameraDrawDashedCross_checkBox.TabIndex = 67;
-            this.UpCameraDrawDashedCross_checkBox.Text = "Draw Dashed Cross";
-            this.UpCameraDrawDashedCross_checkBox.UseVisualStyleBackColor = true;
-            this.UpCameraDrawDashedCross_checkBox.Visible = false;
-            this.UpCameraDrawDashedCross_checkBox.CheckedChanged += new System.EventHandler(this.UpCameraDrawDashedCross_checkBox_CheckedChanged);
+            this.DownCamera_Calibration_button.Click += new System.EventHandler(this.DownCamera_Calibration_button_Click);
             // 
             // UpCameraBoxYmmPerPixel_label
             // 
             this.UpCameraBoxYmmPerPixel_label.AutoSize = true;
             this.UpCameraBoxYmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(428, 85);
+            this.UpCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(11, 199);
             this.UpCameraBoxYmmPerPixel_label.Name = "UpCameraBoxYmmPerPixel_label";
             this.UpCameraBoxYmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.UpCameraBoxYmmPerPixel_label.TabIndex = 66;
             this.UpCameraBoxYmmPerPixel_label.Text = "---";
             this.toolTip1.SetToolTip(this.UpCameraBoxYmmPerPixel_label, "Set the true size of the box on the image.");
             // 
-            // UpCameraDrawBox_checkBox
-            // 
-            this.UpCameraDrawBox_checkBox.AutoSize = true;
-            this.UpCameraDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraDrawBox_checkBox.Location = new System.Drawing.Point(3, 81);
-            this.UpCameraDrawBox_checkBox.Name = "UpCameraDrawBox_checkBox";
-            this.UpCameraDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
-            this.UpCameraDrawBox_checkBox.TabIndex = 64;
-            this.UpCameraDrawBox_checkBox.Text = "Draw Box";
-            this.toolTip1.SetToolTip(this.UpCameraDrawBox_checkBox, "Draws a box on the image\r\n(Used to set camera scale)");
-            this.UpCameraDrawBox_checkBox.UseVisualStyleBackColor = true;
-            this.UpCameraDrawBox_checkBox.CheckedChanged += new System.EventHandler(this.UpCameraDrawBox_checkBox_CheckedChanged);
-            // 
-            // ConnectUpCamera_button
-            // 
-            this.ConnectUpCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConnectUpCamera_button.Location = new System.Drawing.Point(222, 8);
-            this.ConnectUpCamera_button.Name = "ConnectUpCamera_button";
-            this.ConnectUpCamera_button.Size = new System.Drawing.Size(75, 23);
-            this.ConnectUpCamera_button.TabIndex = 42;
-            this.ConnectUpCamera_button.Text = "Select";
-            this.toolTip1.SetToolTip(this.ConnectUpCamera_button, "Connets to selected camera");
-            this.ConnectUpCamera_button.UseVisualStyleBackColor = true;
-            this.ConnectUpCamera_button.Click += new System.EventHandler(this.ConnectUpCamera_button_Click);
-            // 
-            // UpCameraDrawCross_checkBox
-            // 
-            this.UpCameraDrawCross_checkBox.AutoSize = true;
-            this.UpCameraDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraDrawCross_checkBox.Location = new System.Drawing.Point(3, 58);
-            this.UpCameraDrawCross_checkBox.Name = "UpCameraDrawCross_checkBox";
-            this.UpCameraDrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
-            this.UpCameraDrawCross_checkBox.TabIndex = 50;
-            this.UpCameraDrawCross_checkBox.Text = "Draw Cross";
-            this.toolTip1.SetToolTip(this.UpCameraDrawCross_checkBox, "Draws crosshair cursor on the image");
-            this.UpCameraDrawCross_checkBox.UseVisualStyleBackColor = true;
-            this.UpCameraDrawCross_checkBox.CheckedChanged += new System.EventHandler(this.UpCameraDrawCross_checkBox_CheckedChanged);
-            // 
-            // label110
-            // 
-            this.label110.AutoSize = true;
-            this.label110.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label110.Location = new System.Drawing.Point(303, 13);
-            this.label110.Name = "label110";
-            this.label110.Size = new System.Drawing.Size(40, 13);
-            this.label110.TabIndex = 47;
-            this.label110.Text = "Status:";
-            // 
             // UpCameraBoxXmmPerPixel_label
             // 
             this.UpCameraBoxXmmPerPixel_label.AutoSize = true;
             this.UpCameraBoxXmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(428, 59);
+            this.UpCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(11, 174);
             this.UpCameraBoxXmmPerPixel_label.Name = "UpCameraBoxXmmPerPixel_label";
             this.UpCameraBoxXmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.UpCameraBoxXmmPerPixel_label.TabIndex = 65;
             this.UpCameraBoxXmmPerPixel_label.Text = "---";
             this.toolTip1.SetToolTip(this.UpCameraBoxXmmPerPixel_label, "Set the true size of the box on the image.");
             // 
-            // RefreshUpCameraList_button
-            // 
-            this.RefreshUpCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUpCameraList_button.Location = new System.Drawing.Point(141, 8);
-            this.RefreshUpCameraList_button.Name = "RefreshUpCameraList_button";
-            this.RefreshUpCameraList_button.Size = new System.Drawing.Size(75, 23);
-            this.RefreshUpCameraList_button.TabIndex = 46;
-            this.RefreshUpCameraList_button.Text = "Refresh List";
-            this.toolTip1.SetToolTip(this.RefreshUpCameraList_button, "Re-scans USB cameras on this computer");
-            this.RefreshUpCameraList_button.UseVisualStyleBackColor = true;
-            this.RefreshUpCameraList_button.Click += new System.EventHandler(this.RefreshUpCameraList_button_Click);
-            // 
-            // label103
-            // 
-            this.label103.AutoSize = true;
-            this.label103.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label103.Location = new System.Drawing.Point(399, 85);
-            this.label103.Name = "label103";
-            this.label103.Size = new System.Drawing.Size(23, 13);
-            this.label103.TabIndex = 62;
-            this.label103.Text = "mm";
-            this.toolTip1.SetToolTip(this.label103, "Set the true size of the box on the image.");
-            // 
             // UpCameraBoxY_textBox
             // 
             this.UpCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraBoxY_textBox.Location = new System.Drawing.Point(347, 82);
+            this.UpCameraBoxY_textBox.Location = new System.Drawing.Point(53, 71);
             this.UpCameraBoxY_textBox.Name = "UpCameraBoxY_textBox";
             this.UpCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraBoxY_textBox.TabIndex = 60;
@@ -3539,7 +1557,7 @@
             // UpCameraBoxX_textBox
             // 
             this.UpCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraBoxX_textBox.Location = new System.Drawing.Point(347, 56);
+            this.UpCameraBoxX_textBox.Location = new System.Drawing.Point(53, 45);
             this.UpCameraBoxX_textBox.Name = "UpCameraBoxX_textBox";
             this.UpCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraBoxX_textBox.TabIndex = 59;
@@ -3551,146 +1569,27 @@
             // 
             this.label106.AutoSize = true;
             this.label106.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label106.Location = new System.Drawing.Point(303, 59);
+            this.label106.Location = new System.Drawing.Point(9, 48);
             this.label106.Name = "label106";
             this.label106.Size = new System.Drawing.Size(38, 13);
             this.label106.TabIndex = 57;
             this.label106.Text = "Box X:";
             this.toolTip1.SetToolTip(this.label106, "Set the true size of the box on the image.");
             // 
-            // UpCamStatus_label
-            // 
-            this.UpCamStatus_label.AutoSize = true;
-            this.UpCamStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamStatus_label.Location = new System.Drawing.Point(349, 9);
-            this.UpCamStatus_label.Name = "UpCamStatus_label";
-            this.UpCamStatus_label.Size = new System.Drawing.Size(105, 18);
-            this.UpCamStatus_label.TabIndex = 45;
-            this.UpCamStatus_label.Text = "Not connected";
-            this.toolTip1.SetToolTip(this.UpCamStatus_label, "Camera conection status");
-            // 
-            // label104
-            // 
-            this.label104.AutoSize = true;
-            this.label104.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label104.Location = new System.Drawing.Point(399, 59);
-            this.label104.Name = "label104";
-            this.label104.Size = new System.Drawing.Size(23, 13);
-            this.label104.TabIndex = 61;
-            this.label104.Text = "mm";
-            this.toolTip1.SetToolTip(this.label104, "Set the true size of the box on the image.");
-            // 
             // label105
             // 
             this.label105.AutoSize = true;
             this.label105.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label105.Location = new System.Drawing.Point(303, 85);
+            this.label105.Location = new System.Drawing.Point(9, 74);
             this.label105.Name = "label105";
             this.label105.Size = new System.Drawing.Size(38, 13);
             this.label105.TabIndex = 58;
             this.label105.Text = "Box Y:";
             this.toolTip1.SetToolTip(this.label105, "Set the true size of the box on the image.");
             // 
-            // label101
-            // 
-            this.label101.AutoSize = true;
-            this.label101.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label101.Location = new System.Drawing.Point(592, 503);
-            this.label101.Name = "label101";
-            this.label101.Size = new System.Drawing.Size(53, 18);
-            this.label101.TabIndex = 117;
-            this.label101.Text = "Pickup";
-            // 
-            // label100
-            // 
-            this.label100.AutoSize = true;
-            this.label100.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label100.Location = new System.Drawing.Point(491, 503);
-            this.label100.Name = "label100";
-            this.label100.Size = new System.Drawing.Size(73, 18);
-            this.label100.TabIndex = 116;
-            this.label100.Text = "PCB zero";
-            // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label55.Location = new System.Drawing.Point(401, 503);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(84, 18);
-            this.label55.TabIndex = 115;
-            this.label55.Text = "Up Camera";
-            // 
-            // CameraSetupTest_button
-            // 
-            this.CameraSetupTest_button.Location = new System.Drawing.Point(319, 667);
-            this.CameraSetupTest_button.Name = "CameraSetupTest_button";
-            this.CameraSetupTest_button.Size = new System.Drawing.Size(75, 23);
-            this.CameraSetupTest_button.TabIndex = 114;
-            this.CameraSetupTest_button.Text = "Test";
-            this.CameraSetupTest_button.UseVisualStyleBackColor = true;
-            this.CameraSetupTest_button.Visible = false;
-            // 
-            // GotoUpCamPosition_button
-            // 
-            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(419, 605);
-            this.GotoUpCamPosition_button.Name = "GotoUpCamPosition_button";
-            this.GotoUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
-            this.GotoUpCamPosition_button.TabIndex = 79;
-            this.GotoUpCamPosition_button.Text = "Go there";
-            this.GotoUpCamPosition_button.UseVisualStyleBackColor = true;
-            this.GotoUpCamPosition_button.Click += new System.EventHandler(this.GotoUpCamPosition_button_Click);
-            // 
-            // SetUpCamPosition_button
-            // 
-            this.SetUpCamPosition_button.Location = new System.Drawing.Point(419, 524);
-            this.SetUpCamPosition_button.Name = "SetUpCamPosition_button";
-            this.SetUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
-            this.SetUpCamPosition_button.TabIndex = 72;
-            this.SetUpCamPosition_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetUpCamPosition_button, "Sets Up camera location");
-            this.SetUpCamPosition_button.UseVisualStyleBackColor = true;
-            this.SetUpCamPosition_button.Click += new System.EventHandler(this.SetUpCamPosition_button_Click);
-            // 
-            // label99
-            // 
-            this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(416, 582);
-            this.label99.Name = "label99";
-            this.label99.Size = new System.Drawing.Size(17, 13);
-            this.label99.TabIndex = 71;
-            this.label99.Text = "Y:";
-            // 
-            // label98
-            // 
-            this.label98.AutoSize = true;
-            this.label98.Location = new System.Drawing.Point(416, 556);
-            this.label98.Name = "label98";
-            this.label98.Size = new System.Drawing.Size(17, 13);
-            this.label98.TabIndex = 70;
-            this.label98.Text = "X:";
-            // 
-            // UpcamPositionY_textBox
-            // 
-            this.UpcamPositionY_textBox.Location = new System.Drawing.Point(439, 579);
-            this.UpcamPositionY_textBox.Name = "UpcamPositionY_textBox";
-            this.UpcamPositionY_textBox.Size = new System.Drawing.Size(46, 20);
-            this.UpcamPositionY_textBox.TabIndex = 69;
-            this.UpcamPositionY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionY_textBox_KeyPress);
-            this.UpcamPositionY_textBox.Leave += new System.EventHandler(this.UpcamPositionY_textBox_Leave);
-            // 
-            // UpcamPositionX_textBox
-            // 
-            this.UpcamPositionX_textBox.Location = new System.Drawing.Point(439, 553);
-            this.UpcamPositionX_textBox.Name = "UpcamPositionX_textBox";
-            this.UpcamPositionX_textBox.Size = new System.Drawing.Size(46, 20);
-            this.UpcamPositionX_textBox.TabIndex = 68;
-            this.UpcamPositionX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionX_textBox_KeyPress);
-            this.UpcamPositionX_textBox.Leave += new System.EventHandler(this.UpcamPositionX_textBox_Leave);
-            // 
             // NeedleOffsetY_textBox
             // 
-            this.NeedleOffsetY_textBox.Location = new System.Drawing.Point(32, 622);
+            this.NeedleOffsetY_textBox.Location = new System.Drawing.Point(35, 167);
             this.NeedleOffsetY_textBox.Name = "NeedleOffsetY_textBox";
             this.NeedleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
             this.NeedleOffsetY_textBox.TabIndex = 86;
@@ -3701,7 +1600,7 @@
             // 
             // NeedleOffsetX_textBox
             // 
-            this.NeedleOffsetX_textBox.Location = new System.Drawing.Point(31, 599);
+            this.NeedleOffsetX_textBox.Location = new System.Drawing.Point(34, 144);
             this.NeedleOffsetX_textBox.Name = "NeedleOffsetX_textBox";
             this.NeedleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
             this.NeedleOffsetX_textBox.TabIndex = 85;
@@ -3710,46 +1609,10 @@
             this.NeedleOffsetX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NeedleOffsetX_textBox_KeyPress);
             this.NeedleOffsetX_textBox.Leave += new System.EventHandler(this.NeedleOffsetX_textBox_Leave);
             // 
-            // PickupCenterY_textBox
-            // 
-            this.PickupCenterY_textBox.Location = new System.Drawing.Point(600, 579);
-            this.PickupCenterY_textBox.Name = "PickupCenterY_textBox";
-            this.PickupCenterY_textBox.Size = new System.Drawing.Size(46, 20);
-            this.PickupCenterY_textBox.TabIndex = 39;
-            this.PickupCenterY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PickupCenterY_textBox_KeyPress);
-            this.PickupCenterY_textBox.Leave += new System.EventHandler(this.PickupCenterY_textBox_Leave);
-            // 
-            // PickupCenterX_textBox
-            // 
-            this.PickupCenterX_textBox.Location = new System.Drawing.Point(600, 553);
-            this.PickupCenterX_textBox.Name = "PickupCenterX_textBox";
-            this.PickupCenterX_textBox.Size = new System.Drawing.Size(46, 20);
-            this.PickupCenterX_textBox.TabIndex = 38;
-            this.PickupCenterX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PickupCenterX_textBox_KeyPress);
-            this.PickupCenterX_textBox.Leave += new System.EventHandler(this.PickupCenterX_textBox_Leave);
-            // 
-            // JigY_textBox
-            // 
-            this.JigY_textBox.Location = new System.Drawing.Point(518, 579);
-            this.JigY_textBox.Name = "JigY_textBox";
-            this.JigY_textBox.Size = new System.Drawing.Size(46, 20);
-            this.JigY_textBox.TabIndex = 35;
-            this.JigY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JigY_textBox_KeyPress);
-            this.JigY_textBox.Leave += new System.EventHandler(this.JigY_textBox_Leave);
-            // 
-            // JigX_textBox
-            // 
-            this.JigX_textBox.Location = new System.Drawing.Point(518, 553);
-            this.JigX_textBox.Name = "JigX_textBox";
-            this.JigX_textBox.Size = new System.Drawing.Size(46, 20);
-            this.JigX_textBox.TabIndex = 34;
-            this.JigX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JigX_textBox_KeyPress);
-            this.JigX_textBox.Leave += new System.EventHandler(this.JigX_textBox_Leave);
-            // 
             // label149
             // 
             this.label149.AutoSize = true;
-            this.label149.Location = new System.Drawing.Point(72, 625);
+            this.label149.Location = new System.Drawing.Point(75, 170);
             this.label149.Name = "label149";
             this.label149.Size = new System.Drawing.Size(23, 13);
             this.label149.TabIndex = 90;
@@ -3758,7 +1621,7 @@
             // label148
             // 
             this.label148.AutoSize = true;
-            this.label148.Location = new System.Drawing.Point(72, 602);
+            this.label148.Location = new System.Drawing.Point(75, 147);
             this.label148.Name = "label148";
             this.label148.Size = new System.Drawing.Size(23, 13);
             this.label148.TabIndex = 89;
@@ -3767,7 +1630,7 @@
             // label146
             // 
             this.label146.AutoSize = true;
-            this.label146.Location = new System.Drawing.Point(9, 625);
+            this.label146.Location = new System.Drawing.Point(12, 170);
             this.label146.Name = "label146";
             this.label146.Size = new System.Drawing.Size(17, 13);
             this.label146.TabIndex = 88;
@@ -3776,38 +1639,20 @@
             // label143
             // 
             this.label143.AutoSize = true;
-            this.label143.Location = new System.Drawing.Point(8, 601);
+            this.label143.Location = new System.Drawing.Point(11, 146);
             this.label143.Name = "label143";
             this.label143.Size = new System.Drawing.Size(17, 13);
             this.label143.TabIndex = 87;
             this.label143.Text = "X:";
             // 
-            // Z0toPCB_CamerasTab_label
-            // 
-            this.Z0toPCB_CamerasTab_label.AutoSize = true;
-            this.Z0toPCB_CamerasTab_label.Location = new System.Drawing.Point(173, 602);
-            this.Z0toPCB_CamerasTab_label.Name = "Z0toPCB_CamerasTab_label";
-            this.Z0toPCB_CamerasTab_label.Size = new System.Drawing.Size(53, 13);
-            this.Z0toPCB_CamerasTab_label.TabIndex = 84;
-            this.Z0toPCB_CamerasTab_label.Text = "37.00 mm";
-            // 
-            // label120
-            // 
-            this.label120.AutoSize = true;
-            this.label120.Location = new System.Drawing.Point(101, 602);
-            this.label120.Name = "label120";
-            this.label120.Size = new System.Drawing.Size(59, 13);
-            this.label120.TabIndex = 83;
-            this.label120.Text = "Z0 to PCB:";
-            // 
             // Offset2Method_button
             // 
-            this.Offset2Method_button.Location = new System.Drawing.Point(9, 523);
+            this.Offset2Method_button.Location = new System.Drawing.Point(9, 117);
             this.Offset2Method_button.Name = "Offset2Method_button";
-            this.Offset2Method_button.Size = new System.Drawing.Size(75, 23);
+            this.Offset2Method_button.Size = new System.Drawing.Size(108, 23);
             this.Offset2Method_button.TabIndex = 53;
             this.Offset2Method_button.Tag = "Runs the needle calibration routine";
-            this.Offset2Method_button.Text = "Start";
+            this.Offset2Method_button.Text = "Camera Offset";
             this.Offset2Method_button.UseVisualStyleBackColor = true;
             this.Offset2Method_button.Click += new System.EventHandler(this.Offset2Method_button_Click);
             // 
@@ -3816,7 +1661,7 @@
             this.NeedleOffset_label.AutoSize = true;
             this.NeedleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NeedleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NeedleOffset_label.Location = new System.Drawing.Point(9, 553);
+            this.NeedleOffset_label.Location = new System.Drawing.Point(3, 430);
             this.NeedleOffset_label.Name = "NeedleOffset_label";
             this.NeedleOffset_label.Size = new System.Drawing.Size(130, 22);
             this.NeedleOffset_label.TabIndex = 50;
@@ -3826,145 +1671,15 @@
             // 
             this.label115.AutoSize = true;
             this.label115.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label115.Location = new System.Drawing.Point(9, 502);
+            this.label115.Location = new System.Drawing.Point(264, 388);
             this.label115.Name = "label115";
-            this.label115.Size = new System.Drawing.Size(128, 18);
+            this.label115.Size = new System.Drawing.Size(56, 18);
             this.label115.TabIndex = 49;
-            this.label115.Text = "Needle Calibration";
-            // 
-            // label114
-            // 
-            this.label114.AutoSize = true;
-            this.label114.Location = new System.Drawing.Point(9, 579);
-            this.label114.Name = "label114";
-            this.label114.Size = new System.Drawing.Size(116, 13);
-            this.label114.TabIndex = 45;
-            this.label114.Text = "Needle Nominal Offset:";
-            // 
-            // SetPickupCenter_button
-            // 
-            this.SetPickupCenter_button.Location = new System.Drawing.Point(581, 524);
-            this.SetPickupCenter_button.Name = "SetPickupCenter_button";
-            this.SetPickupCenter_button.Size = new System.Drawing.Size(65, 23);
-            this.SetPickupCenter_button.TabIndex = 44;
-            this.SetPickupCenter_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetPickupCenter_button, "Sets manual pick up postion");
-            this.SetPickupCenter_button.UseVisualStyleBackColor = true;
-            this.SetPickupCenter_button.Click += new System.EventHandler(this.SetPickupCenter_button_Click);
-            // 
-            // SetPCB0_button
-            // 
-            this.SetPCB0_button.Location = new System.Drawing.Point(499, 524);
-            this.SetPCB0_button.Name = "SetPCB0_button";
-            this.SetPCB0_button.Size = new System.Drawing.Size(65, 23);
-            this.SetPCB0_button.TabIndex = 43;
-            this.SetPCB0_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetPCB0_button, "Sets PCB jig lower left location");
-            this.SetPCB0_button.UseVisualStyleBackColor = true;
-            this.SetPCB0_button.Click += new System.EventHandler(this.SetPCB0_button_Click);
-            // 
-            // GotoPickupCenter_button
-            // 
-            this.GotoPickupCenter_button.Location = new System.Drawing.Point(582, 605);
-            this.GotoPickupCenter_button.Name = "GotoPickupCenter_button";
-            this.GotoPickupCenter_button.Size = new System.Drawing.Size(65, 23);
-            this.GotoPickupCenter_button.TabIndex = 41;
-            this.GotoPickupCenter_button.Text = "Go there";
-            this.GotoPickupCenter_button.UseVisualStyleBackColor = true;
-            this.GotoPickupCenter_button.Click += new System.EventHandler(this.GotoPickupCenter_button_Click);
-            // 
-            // GotoPCB0_button
-            // 
-            this.GotoPCB0_button.Location = new System.Drawing.Point(499, 605);
-            this.GotoPCB0_button.Name = "GotoPCB0_button";
-            this.GotoPCB0_button.Size = new System.Drawing.Size(65, 23);
-            this.GotoPCB0_button.TabIndex = 40;
-            this.GotoPCB0_button.Text = "Go there";
-            this.GotoPCB0_button.UseVisualStyleBackColor = true;
-            this.GotoPCB0_button.Click += new System.EventHandler(this.GotoPCB0_button_Click);
-            // 
-            // label95
-            // 
-            this.label95.AutoSize = true;
-            this.label95.Location = new System.Drawing.Point(577, 582);
-            this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(17, 13);
-            this.label95.TabIndex = 37;
-            this.label95.Text = "Y:";
-            // 
-            // label96
-            // 
-            this.label96.AutoSize = true;
-            this.label96.Location = new System.Drawing.Point(577, 556);
-            this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(17, 13);
-            this.label96.TabIndex = 36;
-            this.label96.Text = "X:";
-            // 
-            // label93
-            // 
-            this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(496, 582);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(17, 13);
-            this.label93.TabIndex = 33;
-            this.label93.Text = "Y:";
-            // 
-            // label94
-            // 
-            this.label94.AutoSize = true;
-            this.label94.Location = new System.Drawing.Point(496, 556);
-            this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(17, 13);
-            this.label94.TabIndex = 32;
-            this.label94.Text = "X:";
-            // 
-            // Snapshot_button
-            // 
-            this.Snapshot_button.Location = new System.Drawing.Point(319, 615);
-            this.Snapshot_button.Name = "Snapshot_button";
-            this.Snapshot_button.Size = new System.Drawing.Size(75, 23);
-            this.Snapshot_button.TabIndex = 30;
-            this.Snapshot_button.Text = "Snapshot";
-            this.Snapshot_button.UseVisualStyleBackColor = true;
-            this.Snapshot_button.Visible = false;
-            this.Snapshot_button.Click += new System.EventHandler(this.Snapshot_button_Click);
-            // 
-            // ImageTest_checkBox
-            // 
-            this.ImageTest_checkBox.AutoSize = true;
-            this.ImageTest_checkBox.Location = new System.Drawing.Point(319, 644);
-            this.ImageTest_checkBox.Name = "ImageTest_checkBox";
-            this.ImageTest_checkBox.Size = new System.Drawing.Size(75, 17);
-            this.ImageTest_checkBox.TabIndex = 29;
-            this.ImageTest_checkBox.Text = "For testing";
-            this.ImageTest_checkBox.UseVisualStyleBackColor = true;
-            this.ImageTest_checkBox.Visible = false;
-            this.ImageTest_checkBox.CheckedChanged += new System.EventHandler(this.ImageTest_checkBox_CheckedChanged);
-            // 
-            // Cam_pictureBox
-            // 
-            this.Cam_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Cam_pictureBox.Location = new System.Drawing.Point(6, 19);
-            this.Cam_pictureBox.Name = "Cam_pictureBox";
-            this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.Cam_pictureBox.TabIndex = 10;
-            this.Cam_pictureBox.TabStop = false;
-            this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Camera image";
+            this.label115.Text = "Testing";
             // 
             // ZUp_button
             // 
-            this.ZUp_button.Location = new System.Drawing.Point(832, 842);
+            this.ZUp_button.Location = new System.Drawing.Point(235, 838);
             this.ZUp_button.Name = "ZUp_button";
             this.ZUp_button.Size = new System.Drawing.Size(84, 23);
             this.ZUp_button.TabIndex = 86;
@@ -3975,7 +1690,7 @@
             // 
             // ZDown_button
             // 
-            this.ZDown_button.Location = new System.Drawing.Point(832, 868);
+            this.ZDown_button.Location = new System.Drawing.Point(235, 866);
             this.ZDown_button.Name = "ZDown_button";
             this.ZDown_button.Size = new System.Drawing.Size(84, 23);
             this.ZDown_button.TabIndex = 85;
@@ -3986,866 +1701,100 @@
             // 
             // tabPageBasicSetup
             // 
-            this.tabPageBasicSetup.Controls.Add(this.label123);
-            this.tabPageBasicSetup.Controls.Add(this.ZTestTravel_textBox);
+            this.tabPageBasicSetup.Controls.Add(this.groupBox6);
+            this.tabPageBasicSetup.Controls.Add(this.tabControl1);
             this.tabPageBasicSetup.Controls.Add(this.VacuumRelease_textBox);
             this.tabPageBasicSetup.Controls.Add(this.label119);
             this.tabPageBasicSetup.Controls.Add(this.VacuumTime_textBox);
             this.tabPageBasicSetup.Controls.Add(this.label118);
-            this.tabPageBasicSetup.Controls.Add(this.Z_Backoff_label);
-            this.tabPageBasicSetup.Controls.Add(this.label117);
-            this.tabPageBasicSetup.Controls.Add(this.label112);
             this.tabPageBasicSetup.Controls.Add(this.label90);
             this.tabPageBasicSetup.Controls.Add(this.SquareCorrection_textBox);
             this.tabPageBasicSetup.Controls.Add(this.SmallMovement_numericUpDown);
             this.tabPageBasicSetup.Controls.Add(this.label87);
-            this.tabPageBasicSetup.Controls.Add(this.label152);
             this.tabPageBasicSetup.Controls.Add(this.SlackCompensation_checkBox);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark6_button);
-            this.tabPageBasicSetup.Controls.Add(this.TestXYA_button);
-            this.tabPageBasicSetup.Controls.Add(this.Mark6_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark5_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark4_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark3_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark2_textBox);
             this.tabPageBasicSetup.Controls.Add(this.SizeYMax_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark1_textBox);
             this.tabPageBasicSetup.Controls.Add(this.SizeXMax_textBox);
             this.tabPageBasicSetup.Controls.Add(this.ParkLocationY_textBox);
             this.tabPageBasicSetup.Controls.Add(this.ParkLocationX_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.TestYX_button);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark5_button);
-            this.tabPageBasicSetup.Controls.Add(this.Z0toPCB_BasicTab_label);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark4_button);
-            this.tabPageBasicSetup.Controls.Add(this.label111);
-            this.tabPageBasicSetup.Controls.Add(this.Zlb_label);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark3_button);
-            this.tabPageBasicSetup.Controls.Add(this.SetProbing_button);
-            this.tabPageBasicSetup.Controls.Add(this.label116);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark2_button);
             this.tabPageBasicSetup.Controls.Add(this.label113);
             this.tabPageBasicSetup.Controls.Add(this.label102);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark1_button);
             this.tabPageBasicSetup.Controls.Add(this.label107);
             this.tabPageBasicSetup.Controls.Add(this.label92);
             this.tabPageBasicSetup.Controls.Add(this.label61);
-            this.tabPageBasicSetup.Controls.Add(this.label72);
-            this.tabPageBasicSetup.Controls.Add(this.TestA_button);
             this.tabPageBasicSetup.Controls.Add(this.Homebutton);
-            this.tabPageBasicSetup.Controls.Add(this.TestZ_button);
             this.tabPageBasicSetup.Controls.Add(this.HomeZ_button);
             this.tabPageBasicSetup.Controls.Add(this.HomeY_button);
+            this.tabPageBasicSetup.Controls.Add(this.SerialMonitor_richTextBox);
             this.tabPageBasicSetup.Controls.Add(this.HomeXY_button);
             this.tabPageBasicSetup.Controls.Add(this.HomeX_button);
             this.tabPageBasicSetup.Controls.Add(this.BuiltInSettings_button);
             this.tabPageBasicSetup.Controls.Add(this.SaveSettings_button);
             this.tabPageBasicSetup.Controls.Add(this.DefaultSettings_button);
-            this.tabPageBasicSetup.Controls.Add(this.TestXY_button);
-            this.tabPageBasicSetup.Controls.Add(this.TestY_button);
-            this.tabPageBasicSetup.Controls.Add(this.TestX_button);
-            this.tabPageBasicSetup.Controls.Add(this.panel7);
-            this.tabPageBasicSetup.Controls.Add(this.panel3);
-            this.tabPageBasicSetup.Controls.Add(this.panel5);
-            this.tabPageBasicSetup.Controls.Add(this.panel1);
-            this.tabPageBasicSetup.Controls.Add(this.label3);
+            this.tabPageBasicSetup.Controls.Add(this.label4);
             this.tabPageBasicSetup.Controls.Add(this.buttonRefreshPortList);
-            this.tabPageBasicSetup.Controls.Add(this.labelSerialPortStatus);
-            this.tabPageBasicSetup.Controls.Add(this.buttonConnectSerial);
             this.tabPageBasicSetup.Controls.Add(this.label2);
             this.tabPageBasicSetup.Controls.Add(this.comboBoxSerialPorts);
+            this.tabPageBasicSetup.Controls.Add(this.textBoxSendtoTinyG);
             this.tabPageBasicSetup.Location = new System.Drawing.Point(4, 22);
             this.tabPageBasicSetup.Name = "tabPageBasicSetup";
             this.tabPageBasicSetup.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageBasicSetup.Size = new System.Drawing.Size(1249, 695);
+            this.tabPageBasicSetup.Size = new System.Drawing.Size(821, 690);
             this.tabPageBasicSetup.TabIndex = 1;
-            this.tabPageBasicSetup.Text = "Basic Setup";
+            this.tabPageBasicSetup.Text = "Hardware Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
-            // label123
-            // 
-            this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(516, 526);
-            this.label123.Name = "label123";
-            this.label123.Size = new System.Drawing.Size(70, 13);
-            this.label123.TabIndex = 83;
-            this.label123.Text = "Z Test travel:";
-            // 
-            // ZTestTravel_textBox
-            // 
-            this.ZTestTravel_textBox.Location = new System.Drawing.Point(593, 523);
-            this.ZTestTravel_textBox.Name = "ZTestTravel_textBox";
-            this.ZTestTravel_textBox.Size = new System.Drawing.Size(75, 20);
-            this.ZTestTravel_textBox.TabIndex = 82;
-            this.ZTestTravel_textBox.TextChanged += new System.EventHandler(this.ZTestTravel_textBox_TextChanged);
-            // 
-            // VacuumRelease_textBox
-            // 
-            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1158, 382);
-            this.VacuumRelease_textBox.Name = "VacuumRelease_textBox";
-            this.VacuumRelease_textBox.Size = new System.Drawing.Size(58, 20);
-            this.VacuumRelease_textBox.TabIndex = 81;
-            this.toolTip1.SetToolTip(this.VacuumRelease_textBox, "If set to zero: For each mm of +Y movement, the \r\nmachine moves this much in X. S" +
-        "et the value\r\nfor square movement.");
-            this.VacuumRelease_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.VacuumRelease_textBox_KeyPress);
-            this.VacuumRelease_textBox.Leave += new System.EventHandler(this.VacuumRelease_textBox_Leave);
-            // 
-            // label119
-            // 
-            this.label119.AutoSize = true;
-            this.label119.Location = new System.Drawing.Point(1018, 385);
-            this.label119.Name = "label119";
-            this.label119.Size = new System.Drawing.Size(130, 13);
-            this.label119.TabIndex = 80;
-            this.label119.Text = "Vacuum release time (ms):";
-            // 
-            // VacuumTime_textBox
-            // 
-            this.VacuumTime_textBox.Location = new System.Drawing.Point(1158, 356);
-            this.VacuumTime_textBox.Name = "VacuumTime_textBox";
-            this.VacuumTime_textBox.Size = new System.Drawing.Size(58, 20);
-            this.VacuumTime_textBox.TabIndex = 79;
-            this.toolTip1.SetToolTip(this.VacuumTime_textBox, "If set to zero: For each mm of +Y movement, the \r\nmachine moves this much in X. S" +
-        "et the value\r\nfor square movement.");
-            this.VacuumTime_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.VacuumTime_textBox_KeyPress);
-            this.VacuumTime_textBox.Leave += new System.EventHandler(this.VacuumTime_textBox_Leave);
-            // 
-            // label118
-            // 
-            this.label118.AutoSize = true;
-            this.label118.Location = new System.Drawing.Point(1018, 359);
-            this.label118.Name = "label118";
-            this.label118.Size = new System.Drawing.Size(128, 13);
-            this.label118.TabIndex = 78;
-            this.label118.Text = "Pickup vacuum time (ms):";
-            // 
-            // Z_Backoff_label
-            // 
-            this.Z_Backoff_label.AutoSize = true;
-            this.Z_Backoff_label.Location = new System.Drawing.Point(655, 630);
-            this.Z_Backoff_label.Name = "Z_Backoff_label";
-            this.Z_Backoff_label.Size = new System.Drawing.Size(47, 13);
-            this.Z_Backoff_label.TabIndex = 77;
-            this.Z_Backoff_label.Text = "3.00 mm";
-            // 
-            // label117
-            // 
-            this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(590, 629);
-            this.label117.Name = "label117";
-            this.label117.Size = new System.Drawing.Size(47, 13);
-            this.label117.TabIndex = 76;
-            this.label117.Text = "Backoff:";
-            // 
-            // label112
-            // 
-            this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(590, 597);
-            this.label112.Name = "label112";
-            this.label112.Size = new System.Drawing.Size(45, 13);
-            this.label112.TabIndex = 75;
-            this.label112.Text = "Results:";
-            // 
-            // label90
-            // 
-            this.label90.AutoSize = true;
-            this.label90.Location = new System.Drawing.Point(1018, 324);
-            this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(116, 13);
-            this.label90.TabIndex = 74;
-            this.label90.Text = "Squareness correction:";
-            // 
-            // SquareCorrection_textBox
-            // 
-            this.SquareCorrection_textBox.Location = new System.Drawing.Point(1140, 321);
-            this.SquareCorrection_textBox.Name = "SquareCorrection_textBox";
-            this.SquareCorrection_textBox.Size = new System.Drawing.Size(76, 20);
-            this.SquareCorrection_textBox.TabIndex = 73;
-            this.toolTip1.SetToolTip(this.SquareCorrection_textBox, "If set to zero: For each mm of +Y movement, the \r\nmachine moves this much in X. S" +
-        "et the value\r\nfor square movement.");
-            this.SquareCorrection_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SquareCorrection_textBox_KeyPress);
-            this.SquareCorrection_textBox.Leave += new System.EventHandler(this.SquareCorrection_textBox_Leave);
-            // 
-            // SmallMovement_numericUpDown
-            // 
-            this.SmallMovement_numericUpDown.Location = new System.Drawing.Point(1168, 295);
-            this.SmallMovement_numericUpDown.Maximum = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
-            this.SmallMovement_numericUpDown.Name = "SmallMovement_numericUpDown";
-            this.SmallMovement_numericUpDown.Size = new System.Drawing.Size(48, 20);
-            this.SmallMovement_numericUpDown.TabIndex = 72;
-            this.toolTip1.SetToolTip(this.SmallMovement_numericUpDown, "To avoid jerkiness, small movements are done\r\nwith smaller speed. That speed is s" +
-        "et here.");
-            this.SmallMovement_numericUpDown.Value = new decimal(new int[] {
-            250,
-            0,
-            0,
-            0});
-            this.SmallMovement_numericUpDown.ValueChanged += new System.EventHandler(this.SmallMovement_numericUpDown_ValueChanged);
-            // 
-            // label87
-            // 
-            this.label87.AutoSize = true;
-            this.label87.Location = new System.Drawing.Point(1061, 300);
-            this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(101, 13);
-            this.label87.TabIndex = 71;
-            this.label87.Text = "Small moves speed:";
-            // 
-            // label152
-            // 
-            this.label152.AutoSize = true;
-            this.label152.Location = new System.Drawing.Point(1090, 500);
-            this.label152.Name = "label152";
-            this.label152.Size = new System.Drawing.Size(35, 13);
-            this.label152.TabIndex = 70;
-            this.label152.Text = "Name";
-            // 
-            // SlackCompensation_checkBox
-            // 
-            this.SlackCompensation_checkBox.AutoSize = true;
-            this.SlackCompensation_checkBox.Location = new System.Drawing.Point(1093, 272);
-            this.SlackCompensation_checkBox.Name = "SlackCompensation_checkBox";
-            this.SlackCompensation_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.SlackCompensation_checkBox.Size = new System.Drawing.Size(123, 17);
-            this.SlackCompensation_checkBox.TabIndex = 57;
-            this.SlackCompensation_checkBox.Text = "Slack Compensation";
-            this.toolTip1.SetToolTip(this.SlackCompensation_checkBox, "All movements will go to position from same direction.\r\nIf there is slack in your" +
-        " machine, the same side is loaded,\r\npresumably minimizing slack effects.");
-            this.SlackCompensation_checkBox.UseVisualStyleBackColor = true;
-            this.SlackCompensation_checkBox.Click += new System.EventHandler(this.SlackCompensation_checkBox_Click);
-            // 
-            // SetMark6_button
-            // 
-            this.SetMark6_button.Location = new System.Drawing.Point(1004, 645);
-            this.SetMark6_button.Name = "SetMark6_button";
-            this.SetMark6_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark6_button.TabIndex = 69;
-            this.SetMark6_button.Text = "Set Mark 6";
-            this.toolTip1.SetToolTip(this.SetMark6_button, "Sets and names your \"special\" locations.");
-            this.SetMark6_button.UseVisualStyleBackColor = true;
-            // 
-            // TestXYA_button
-            // 
-            this.TestXYA_button.Location = new System.Drawing.Point(735, 495);
-            this.TestXYA_button.Name = "TestXYA_button";
-            this.TestXYA_button.Size = new System.Drawing.Size(75, 23);
-            this.TestXYA_button.TabIndex = 56;
-            this.TestXYA_button.Text = "Test XYA";
-            this.toolTip1.SetToolTip(this.TestXYA_button, "Makes some moves to test axis settings");
-            this.TestXYA_button.UseVisualStyleBackColor = true;
-            this.TestXYA_button.Click += new System.EventHandler(this.TestXYA_button_Click);
-            // 
-            // Mark6_textBox
-            // 
-            this.Mark6_textBox.Location = new System.Drawing.Point(1093, 647);
-            this.Mark6_textBox.Name = "Mark6_textBox";
-            this.Mark6_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark6_textBox.TabIndex = 68;
-            this.toolTip1.SetToolTip(this.Mark6_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // Mark5_textBox
-            // 
-            this.Mark5_textBox.Location = new System.Drawing.Point(1093, 621);
-            this.Mark5_textBox.Name = "Mark5_textBox";
-            this.Mark5_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark5_textBox.TabIndex = 66;
-            this.toolTip1.SetToolTip(this.Mark5_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // Mark4_textBox
-            // 
-            this.Mark4_textBox.Location = new System.Drawing.Point(1093, 595);
-            this.Mark4_textBox.Name = "Mark4_textBox";
-            this.Mark4_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark4_textBox.TabIndex = 64;
-            this.toolTip1.SetToolTip(this.Mark4_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // Mark3_textBox
-            // 
-            this.Mark3_textBox.Location = new System.Drawing.Point(1093, 569);
-            this.Mark3_textBox.Name = "Mark3_textBox";
-            this.Mark3_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark3_textBox.TabIndex = 62;
-            this.toolTip1.SetToolTip(this.Mark3_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // Mark2_textBox
-            // 
-            this.Mark2_textBox.Location = new System.Drawing.Point(1093, 543);
-            this.Mark2_textBox.Name = "Mark2_textBox";
-            this.Mark2_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark2_textBox.TabIndex = 60;
-            this.toolTip1.SetToolTip(this.Mark2_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // SizeYMax_textBox
-            // 
-            this.SizeYMax_textBox.Location = new System.Drawing.Point(1140, 212);
-            this.SizeYMax_textBox.Name = "SizeYMax_textBox";
-            this.SizeYMax_textBox.Size = new System.Drawing.Size(76, 20);
-            this.SizeYMax_textBox.TabIndex = 44;
-            this.toolTip1.SetToolTip(this.SizeYMax_textBox, "Allows for custom machine size");
-            this.SizeYMax_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SizeYMax_textBox_KeyPress);
-            this.SizeYMax_textBox.Leave += new System.EventHandler(this.SizeYMax_textBox_Leave);
-            // 
-            // Mark1_textBox
-            // 
-            this.Mark1_textBox.Location = new System.Drawing.Point(1093, 517);
-            this.Mark1_textBox.Name = "Mark1_textBox";
-            this.Mark1_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark1_textBox.TabIndex = 58;
-            this.toolTip1.SetToolTip(this.Mark1_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // SizeXMax_textBox
-            // 
-            this.SizeXMax_textBox.Location = new System.Drawing.Point(1140, 186);
-            this.SizeXMax_textBox.Name = "SizeXMax_textBox";
-            this.SizeXMax_textBox.Size = new System.Drawing.Size(76, 20);
-            this.SizeXMax_textBox.TabIndex = 42;
-            this.toolTip1.SetToolTip(this.SizeXMax_textBox, "Allows for custom machine size");
-            this.SizeXMax_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SizeXMax_textBox_KeyPress);
-            this.SizeXMax_textBox.Leave += new System.EventHandler(this.SizeXMax_textBox_Leave);
-            // 
-            // ParkLocationY_textBox
-            // 
-            this.ParkLocationY_textBox.Location = new System.Drawing.Point(1140, 141);
-            this.ParkLocationY_textBox.Name = "ParkLocationY_textBox";
-            this.ParkLocationY_textBox.Size = new System.Drawing.Size(76, 20);
-            this.ParkLocationY_textBox.TabIndex = 39;
-            this.toolTip1.SetToolTip(this.ParkLocationY_textBox, "Define \"Park\" location, where machine\r\ngoes to make room for tape loadings etc.");
-            this.ParkLocationY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ParkLocationY_textBox_KeyPress);
-            this.ParkLocationY_textBox.Leave += new System.EventHandler(this.ParkLocationY_textBox_Leave);
-            // 
-            // ParkLocationX_textBox
-            // 
-            this.ParkLocationX_textBox.Location = new System.Drawing.Point(1140, 115);
-            this.ParkLocationX_textBox.Name = "ParkLocationX_textBox";
-            this.ParkLocationX_textBox.Size = new System.Drawing.Size(76, 20);
-            this.ParkLocationX_textBox.TabIndex = 37;
-            this.toolTip1.SetToolTip(this.ParkLocationX_textBox, "Define \"Park\" location, where machine\r\ngoes to make room for tape loadings etc.");
-            this.ParkLocationX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ParkLocationX_textBox_KeyPress);
-            this.ParkLocationX_textBox.Leave += new System.EventHandler(this.ParkLocationX_textBox_Leave);
-            // 
-            // TestYX_button
-            // 
-            this.TestYX_button.Location = new System.Drawing.Point(230, 526);
-            this.TestYX_button.Name = "TestYX_button";
-            this.TestYX_button.Size = new System.Drawing.Size(75, 23);
-            this.TestYX_button.TabIndex = 55;
-            this.TestYX_button.Text = "Test YX";
-            this.toolTip1.SetToolTip(this.TestYX_button, "Makes some moves to test axis settings");
-            this.TestYX_button.UseVisualStyleBackColor = true;
-            this.TestYX_button.Click += new System.EventHandler(this.TestYX_button_Click);
-            // 
-            // SetMark5_button
-            // 
-            this.SetMark5_button.Location = new System.Drawing.Point(1004, 619);
-            this.SetMark5_button.Name = "SetMark5_button";
-            this.SetMark5_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark5_button.TabIndex = 67;
-            this.SetMark5_button.Text = "Set Mark 5";
-            this.toolTip1.SetToolTip(this.SetMark5_button, "Sets and names your \"special\" locations.");
-            this.SetMark5_button.UseVisualStyleBackColor = true;
-            this.SetMark5_button.Click += new System.EventHandler(this.SetMark5_button_Click);
-            // 
-            // Z0toPCB_BasicTab_label
-            // 
-            this.Z0toPCB_BasicTab_label.AutoSize = true;
-            this.Z0toPCB_BasicTab_label.Location = new System.Drawing.Point(655, 613);
-            this.Z0toPCB_BasicTab_label.Name = "Z0toPCB_BasicTab_label";
-            this.Z0toPCB_BasicTab_label.Size = new System.Drawing.Size(53, 13);
-            this.Z0toPCB_BasicTab_label.TabIndex = 53;
-            this.Z0toPCB_BasicTab_label.Text = "37.00 mm";
-            // 
-            // SetMark4_button
-            // 
-            this.SetMark4_button.Location = new System.Drawing.Point(1004, 593);
-            this.SetMark4_button.Name = "SetMark4_button";
-            this.SetMark4_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark4_button.TabIndex = 65;
-            this.SetMark4_button.Text = "Set Mark 4";
-            this.toolTip1.SetToolTip(this.SetMark4_button, "Sets and names your \"special\" locations.");
-            this.SetMark4_button.UseVisualStyleBackColor = true;
-            this.SetMark4_button.Click += new System.EventHandler(this.SetMark4_button_Click);
-            // 
-            // label111
-            // 
-            this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(590, 613);
-            this.label111.Name = "label111";
-            this.label111.Size = new System.Drawing.Size(59, 13);
-            this.label111.TabIndex = 52;
-            this.label111.Text = "Z0 to PCB:";
-            // 
-            // Zlb_label
-            // 
-            this.Zlb_label.AutoSize = true;
-            this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Zlb_label.Location = new System.Drawing.Point(593, 646);
-            this.Zlb_label.Name = "Zlb_label";
-            this.Zlb_label.Size = new System.Drawing.Size(153, 38);
-            this.Zlb_label.TabIndex = 51;
-            this.Zlb_label.Text = "Probing instructions...\r\nLine 2";
-            this.Zlb_label.Visible = false;
-            // 
-            // SetMark3_button
-            // 
-            this.SetMark3_button.Location = new System.Drawing.Point(1004, 567);
-            this.SetMark3_button.Name = "SetMark3_button";
-            this.SetMark3_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark3_button.TabIndex = 63;
-            this.SetMark3_button.Text = "Set Mark 3";
-            this.toolTip1.SetToolTip(this.SetMark3_button, "Sets and names your \"special\" locations.");
-            this.SetMark3_button.UseVisualStyleBackColor = true;
-            this.SetMark3_button.Click += new System.EventHandler(this.SetMark3_button_Click);
-            // 
-            // SetProbing_button
-            // 
-            this.SetProbing_button.Location = new System.Drawing.Point(593, 571);
-            this.SetProbing_button.Name = "SetProbing_button";
-            this.SetProbing_button.Size = new System.Drawing.Size(75, 23);
-            this.SetProbing_button.TabIndex = 50;
-            this.SetProbing_button.Text = "Start";
-            this.toolTip1.SetToolTip(this.SetProbing_button, "Runs needle height calibration routine");
-            this.SetProbing_button.UseVisualStyleBackColor = true;
-            this.SetProbing_button.Click += new System.EventHandler(this.SetProbing_button_Click);
-            // 
-            // label116
-            // 
-            this.label116.AutoSize = true;
-            this.label116.Location = new System.Drawing.Point(590, 555);
-            this.label116.Name = "label116";
-            this.label116.Size = new System.Drawing.Size(127, 13);
-            this.label116.TabIndex = 49;
-            this.label116.Text = "Needle height calibration:";
-            // 
-            // SetMark2_button
-            // 
-            this.SetMark2_button.Location = new System.Drawing.Point(1004, 541);
-            this.SetMark2_button.Name = "SetMark2_button";
-            this.SetMark2_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark2_button.TabIndex = 61;
-            this.SetMark2_button.Text = "Set Mark 2";
-            this.toolTip1.SetToolTip(this.SetMark2_button, "Sets and names your \"special\" locations.");
-            this.SetMark2_button.UseVisualStyleBackColor = true;
-            this.SetMark2_button.Click += new System.EventHandler(this.SetMark2_button_Click);
-            // 
-            // label113
-            // 
-            this.label113.AutoSize = true;
-            this.label113.Location = new System.Drawing.Point(1060, 172);
-            this.label113.Name = "label113";
-            this.label113.Size = new System.Drawing.Size(74, 13);
-            this.label113.TabIndex = 48;
-            this.label113.Text = "Machine Size:";
-            // 
-            // label102
-            // 
-            this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(1094, 215);
-            this.label102.Name = "label102";
-            this.label102.Size = new System.Drawing.Size(40, 13);
-            this.label102.TabIndex = 45;
-            this.label102.Text = "Max Y:";
-            // 
-            // SetMark1_button
-            // 
-            this.SetMark1_button.Location = new System.Drawing.Point(1004, 515);
-            this.SetMark1_button.Name = "SetMark1_button";
-            this.SetMark1_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark1_button.TabIndex = 59;
-            this.SetMark1_button.Text = "Set Mark 1";
-            this.toolTip1.SetToolTip(this.SetMark1_button, "Sets and names your \"special\" locations.");
-            this.SetMark1_button.UseVisualStyleBackColor = true;
-            this.SetMark1_button.Click += new System.EventHandler(this.SetMark1_button_Click);
-            // 
-            // label107
-            // 
-            this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(1094, 189);
-            this.label107.Name = "label107";
-            this.label107.Size = new System.Drawing.Size(40, 13);
-            this.label107.TabIndex = 43;
-            this.label107.Text = "Max X:";
-            // 
-            // label92
-            // 
-            this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(1048, 144);
-            this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(86, 13);
-            this.label92.TabIndex = 40;
-            this.label92.Text = "Park Location Y:";
-            // 
-            // label61
-            // 
-            this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(1048, 118);
-            this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(86, 13);
-            this.label61.TabIndex = 38;
-            this.label61.Text = "Park Location X:";
-            // 
-            // label72
-            // 
-            this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(857, 473);
-            this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(89, 13);
-            this.label72.TabIndex = 36;
-            this.label72.Text = "(No homing on A)";
-            // 
-            // TestA_button
-            // 
-            this.TestA_button.Location = new System.Drawing.Point(860, 497);
-            this.TestA_button.Name = "TestA_button";
-            this.TestA_button.Size = new System.Drawing.Size(75, 23);
-            this.TestA_button.TabIndex = 35;
-            this.TestA_button.Text = "Test A";
-            this.toolTip1.SetToolTip(this.TestA_button, "Makes some moves to test axis settings");
-            this.TestA_button.UseVisualStyleBackColor = true;
-            this.TestA_button.Click += new System.EventHandler(this.TestA_button_Click);
-            // 
-            // Homebutton
-            // 
-            this.Homebutton.Location = new System.Drawing.Point(477, 468);
-            this.Homebutton.Name = "Homebutton";
-            this.Homebutton.Size = new System.Drawing.Size(75, 23);
-            this.Homebutton.TabIndex = 17;
-            this.Homebutton.Text = "Home XYZ";
-            this.toolTip1.SetToolTip(this.Homebutton, "Homes X, Y and Z axis, using limit switch only.");
-            this.Homebutton.UseVisualStyleBackColor = true;
-            this.Homebutton.Click += new System.EventHandler(this.Homebutton_Click);
-            // 
-            // TestZ_button
-            // 
-            this.TestZ_button.Location = new System.Drawing.Point(593, 497);
-            this.TestZ_button.Name = "TestZ_button";
-            this.TestZ_button.Size = new System.Drawing.Size(75, 23);
-            this.TestZ_button.TabIndex = 34;
-            this.TestZ_button.Text = "Test Z";
-            this.toolTip1.SetToolTip(this.TestZ_button, "Makes some moves to test axis settings");
-            this.TestZ_button.UseVisualStyleBackColor = true;
-            this.TestZ_button.Click += new System.EventHandler(this.TestZ_button_Click);
-            // 
-            // HomeZ_button
-            // 
-            this.HomeZ_button.Location = new System.Drawing.Point(593, 468);
-            this.HomeZ_button.Name = "HomeZ_button";
-            this.HomeZ_button.Size = new System.Drawing.Size(75, 23);
-            this.HomeZ_button.TabIndex = 33;
-            this.HomeZ_button.Text = "Home Z";
-            this.toolTip1.SetToolTip(this.HomeZ_button, "Homes Z axis, using limit switch only.");
-            this.HomeZ_button.UseVisualStyleBackColor = true;
-            this.HomeZ_button.Click += new System.EventHandler(this.HomeZ_button_Click);
-            // 
-            // HomeY_button
-            // 
-            this.HomeY_button.Location = new System.Drawing.Point(341, 468);
-            this.HomeY_button.Name = "HomeY_button";
-            this.HomeY_button.Size = new System.Drawing.Size(75, 23);
-            this.HomeY_button.TabIndex = 32;
-            this.HomeY_button.Text = "Home Y";
-            this.toolTip1.SetToolTip(this.HomeY_button, "Homes Y axis, using limit switch only.");
-            this.HomeY_button.UseVisualStyleBackColor = true;
-            this.HomeY_button.Click += new System.EventHandler(this.HomeY_button_Click);
-            // 
-            // HomeXY_button
-            // 
-            this.HomeXY_button.Location = new System.Drawing.Point(230, 468);
-            this.HomeXY_button.Name = "HomeXY_button";
-            this.HomeXY_button.Size = new System.Drawing.Size(75, 23);
-            this.HomeXY_button.TabIndex = 31;
-            this.HomeXY_button.Text = "Home XY";
-            this.toolTip1.SetToolTip(this.HomeXY_button, "Homes X and Y axis, using limit switch only.");
-            this.HomeXY_button.UseVisualStyleBackColor = true;
-            this.HomeXY_button.Click += new System.EventHandler(this.HomeXY_button_Click);
-            // 
-            // HomeX_button
-            // 
-            this.HomeX_button.Location = new System.Drawing.Point(88, 468);
-            this.HomeX_button.Name = "HomeX_button";
-            this.HomeX_button.Size = new System.Drawing.Size(75, 23);
-            this.HomeX_button.TabIndex = 30;
-            this.HomeX_button.Text = "Home X";
-            this.toolTip1.SetToolTip(this.HomeX_button, "Homes X axis, using limit switch only.");
-            this.HomeX_button.UseVisualStyleBackColor = true;
-            this.HomeX_button.Click += new System.EventHandler(this.HomeX_button_Click);
-            // 
-            // BuiltInSettings_button
-            // 
-            this.BuiltInSettings_button.Location = new System.Drawing.Point(498, 11);
-            this.BuiltInSettings_button.Name = "BuiltInSettings_button";
-            this.BuiltInSettings_button.Size = new System.Drawing.Size(210, 23);
-            this.BuiltInSettings_button.TabIndex = 29;
-            this.BuiltInSettings_button.Text = "Reset all to Built-In Defaults";
-            this.toolTip1.SetToolTip(this.BuiltInSettings_button, "Resets all settings to conservative defualt settings.\r\nALL YOUR SETTINGS MODIFICA" +
-        "TIONS WILL BE LOST!");
-            this.BuiltInSettings_button.UseVisualStyleBackColor = true;
-            this.BuiltInSettings_button.Click += new System.EventHandler(this.BuiltInSettings_button_Click);
-            // 
-            // SaveSettings_button
-            // 
-            this.SaveSettings_button.Location = new System.Drawing.Point(498, 67);
-            this.SaveSettings_button.Name = "SaveSettings_button";
-            this.SaveSettings_button.Size = new System.Drawing.Size(210, 23);
-            this.SaveSettings_button.TabIndex = 28;
-            this.SaveSettings_button.Text = "Save Current Settings to User Defaults";
-            this.toolTip1.SetToolTip(this.SaveSettings_button, "Saves these settings, so they can be retrieved by\r\nthe above button.");
-            this.SaveSettings_button.UseVisualStyleBackColor = true;
-            this.SaveSettings_button.Click += new System.EventHandler(this.SaveSettings_button_Click);
-            // 
-            // DefaultSettings_button
-            // 
-            this.DefaultSettings_button.Location = new System.Drawing.Point(498, 40);
-            this.DefaultSettings_button.Name = "DefaultSettings_button";
-            this.DefaultSettings_button.Size = new System.Drawing.Size(210, 21);
-            this.DefaultSettings_button.TabIndex = 27;
-            this.DefaultSettings_button.Text = "Load User Defaults to TinyG";
-            this.toolTip1.SetToolTip(this.DefaultSettings_button, "Loads your saved settings back to system.");
-            this.DefaultSettings_button.UseVisualStyleBackColor = true;
-            this.DefaultSettings_button.Click += new System.EventHandler(this.DefaultSettings_button_Click);
-            // 
-            // TestXY_button
-            // 
-            this.TestXY_button.Location = new System.Drawing.Point(230, 497);
-            this.TestXY_button.Name = "TestXY_button";
-            this.TestXY_button.Size = new System.Drawing.Size(75, 23);
-            this.TestXY_button.TabIndex = 24;
-            this.TestXY_button.Text = "Test XY";
-            this.toolTip1.SetToolTip(this.TestXY_button, "Makes some moves to test axis settings");
-            this.TestXY_button.UseVisualStyleBackColor = true;
-            this.TestXY_button.Click += new System.EventHandler(this.TestXY_button_Click);
-            // 
-            // TestY_button
-            // 
-            this.TestY_button.Location = new System.Drawing.Point(341, 497);
-            this.TestY_button.Name = "TestY_button";
-            this.TestY_button.Size = new System.Drawing.Size(75, 23);
-            this.TestY_button.TabIndex = 23;
-            this.TestY_button.Text = "Test Y";
-            this.toolTip1.SetToolTip(this.TestY_button, "Makes some moves to test axis settings");
-            this.TestY_button.UseVisualStyleBackColor = true;
-            this.TestY_button.Click += new System.EventHandler(this.TestY_button_Click);
-            // 
-            // TestX_button
-            // 
-            this.TestX_button.Location = new System.Drawing.Point(88, 497);
-            this.TestX_button.Name = "TestX_button";
-            this.TestX_button.Size = new System.Drawing.Size(75, 23);
-            this.TestX_button.TabIndex = 22;
-            this.TestX_button.Text = "Test X";
-            this.toolTip1.SetToolTip(this.TestX_button, "Makes some moves to test axis settings");
-            this.TestX_button.UseVisualStyleBackColor = true;
-            this.TestX_button.Click += new System.EventHandler(this.TestX_button_Click);
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel7.Controls.Add(this.panel8);
-            this.panel7.Controls.Add(this.label48);
-            this.panel7.Controls.Add(this.avm_maskedTextBox);
-            this.panel7.Controls.Add(this.label49);
-            this.panel7.Controls.Add(this.label50);
-            this.panel7.Controls.Add(this.label51);
-            this.panel7.Controls.Add(this.ajm_maskedTextBox);
-            this.panel7.Controls.Add(this.label52);
-            this.panel7.Location = new System.Drawing.Point(764, 112);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(244, 350);
-            this.panel7.TabIndex = 21;
-            // 
-            // panel8
-            // 
-            this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel8.Controls.Add(this.tr4_textBox);
-            this.panel8.Controls.Add(this.m4deg18_radioButton);
-            this.panel8.Controls.Add(this.m4deg09_radioButton);
-            this.panel8.Controls.Add(this.label42);
-            this.panel8.Controls.Add(this.label43);
-            this.panel8.Controls.Add(this.label44);
-            this.panel8.Controls.Add(this.mi4_maskedTextBox);
-            this.panel8.Controls.Add(this.label45);
-            this.panel8.Controls.Add(this.label46);
-            this.panel8.Controls.Add(this.label47);
-            this.panel8.Location = new System.Drawing.Point(3, 246);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(236, 99);
-            this.panel8.TabIndex = 18;
-            // 
-            // tr4_textBox
-            // 
-            this.tr4_textBox.Location = new System.Drawing.Point(101, 65);
-            this.tr4_textBox.Name = "tr4_textBox";
-            this.tr4_textBox.Size = new System.Drawing.Size(55, 20);
-            this.tr4_textBox.TabIndex = 21;
-            this.tr4_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tr4_textBox_KeyPress);
-            // 
-            // m4deg18_radioButton
-            // 
-            this.m4deg18_radioButton.AutoSize = true;
-            this.m4deg18_radioButton.Location = new System.Drawing.Point(153, 40);
-            this.m4deg18_radioButton.Name = "m4deg18_radioButton";
-            this.m4deg18_radioButton.Size = new System.Drawing.Size(64, 17);
-            this.m4deg18_radioButton.TabIndex = 28;
-            this.m4deg18_radioButton.TabStop = true;
-            this.m4deg18_radioButton.Text = "1.8 deg.";
-            this.m4deg18_radioButton.UseVisualStyleBackColor = true;
-            this.m4deg18_radioButton.Click += new System.EventHandler(this.m4deg18_radioButton_Click);
-            // 
-            // m4deg09_radioButton
-            // 
-            this.m4deg09_radioButton.AutoSize = true;
-            this.m4deg09_radioButton.Location = new System.Drawing.Point(91, 40);
-            this.m4deg09_radioButton.Name = "m4deg09_radioButton";
-            this.m4deg09_radioButton.Size = new System.Drawing.Size(64, 17);
-            this.m4deg09_radioButton.TabIndex = 27;
-            this.m4deg09_radioButton.TabStop = true;
-            this.m4deg09_radioButton.Text = "0.9 deg.";
-            this.m4deg09_radioButton.UseVisualStyleBackColor = true;
-            this.m4deg09_radioButton.Click += new System.EventHandler(this.m4deg09_radioButton_Click);
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(3, 68);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(100, 13);
-            this.label42.TabIndex = 25;
-            this.label42.Text = "Travel per rev. [4tr]:";
-            // 
-            // label43
-            // 
-            this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(162, 68);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(23, 13);
-            this.label43.TabIndex = 24;
-            this.label43.Text = "mm";
-            // 
-            // label44
-            // 
-            this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(3, 42);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(87, 13);
-            this.label44.TabIndex = 22;
-            this.label44.Text = "Step angle [4sa]:";
-            // 
-            // mi4_maskedTextBox
-            // 
-            this.mi4_maskedTextBox.Location = new System.Drawing.Point(101, 13);
-            this.mi4_maskedTextBox.Mask = "99999";
-            this.mi4_maskedTextBox.Name = "mi4_maskedTextBox";
-            this.mi4_maskedTextBox.PromptChar = ' ';
-            this.mi4_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.mi4_maskedTextBox.Size = new System.Drawing.Size(43, 20);
-            this.mi4_maskedTextBox.TabIndex = 20;
-            this.mi4_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.mi4_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.mi4_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.mi4_maskedTextBox_KeyPress);
-            // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(3, 16);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(86, 13);
-            this.label45.TabIndex = 19;
-            this.label45.Text = "Microsteps [4mi]:";
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(150, 16);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(55, 13);
-            this.label46.TabIndex = 18;
-            this.label46.Text = "[1, 2, 4, 8]";
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label47.Location = new System.Drawing.Point(3, 0);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(59, 16);
-            this.label47.TabIndex = 15;
-            this.label47.Text = "Motor4:";
-            // 
-            // label48
-            // 
-            this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(3, 53);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(91, 13);
-            this.label48.TabIndex = 16;
-            this.label48.Text = "Speed [avm, avr]:";
-            // 
-            // avm_maskedTextBox
-            // 
-            this.avm_maskedTextBox.Location = new System.Drawing.Point(105, 50);
-            this.avm_maskedTextBox.Mask = "99999";
-            this.avm_maskedTextBox.Name = "avm_maskedTextBox";
-            this.avm_maskedTextBox.PromptChar = ' ';
-            this.avm_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.avm_maskedTextBox.Size = new System.Drawing.Size(43, 20);
-            this.avm_maskedTextBox.TabIndex = 17;
-            this.avm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.avm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.avm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.avm_maskedTextBox_KeyPress);
-            // 
-            // label49
-            // 
-            this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(154, 54);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(67, 13);
-            this.label49.TabIndex = 15;
-            this.label49.Text = "000 deg/min";
-            // 
-            // label50
-            // 
-            this.label50.AutoSize = true;
-            this.label50.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label50.Location = new System.Drawing.Point(3, 4);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(26, 20);
-            this.label50.TabIndex = 14;
-            this.label50.Text = "A:";
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(3, 28);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(74, 13);
-            this.label51.TabIndex = 12;
-            this.label51.Text = "Acceler. [ajm]:";
-            // 
-            // ajm_maskedTextBox
-            // 
-            this.ajm_maskedTextBox.Location = new System.Drawing.Point(105, 25);
-            this.ajm_maskedTextBox.Mask = "99999";
-            this.ajm_maskedTextBox.Name = "ajm_maskedTextBox";
-            this.ajm_maskedTextBox.PromptChar = ' ';
-            this.ajm_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.ajm_maskedTextBox.Size = new System.Drawing.Size(43, 20);
-            this.ajm_maskedTextBox.TabIndex = 13;
-            this.ajm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ajm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.ajm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ajm_maskedTextBox_KeyPress);
-            // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(151, 27);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(80, 13);
-            this.label52.TabIndex = 11;
-            this.label52.Text = "10^6mm/min^3";
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.SetUpCamPosition_button);
+            this.groupBox6.Controls.Add(this.label101);
+            this.groupBox6.Controls.Add(this.label94);
+            this.groupBox6.Controls.Add(this.label93);
+            this.groupBox6.Controls.Add(this.label96);
+            this.groupBox6.Controls.Add(this.label95);
+            this.groupBox6.Controls.Add(this.label100);
+            this.groupBox6.Controls.Add(this.SetPCB0_button);
+            this.groupBox6.Controls.Add(this.SetPickupCenter_button);
+            this.groupBox6.Controls.Add(this.label55);
+            this.groupBox6.Controls.Add(this.JigX_textBox);
+            this.groupBox6.Controls.Add(this.JigY_textBox);
+            this.groupBox6.Controls.Add(this.PickupCenterX_textBox);
+            this.groupBox6.Controls.Add(this.PickupCenterY_textBox);
+            this.groupBox6.Controls.Add(this.UpcamPositionX_textBox);
+            this.groupBox6.Controls.Add(this.label99);
+            this.groupBox6.Controls.Add(this.UpcamPositionY_textBox);
+            this.groupBox6.Controls.Add(this.label98);
+            this.groupBox6.Location = new System.Drawing.Point(219, 452);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(259, 121);
+            this.groupBox6.TabIndex = 90;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Special Locations";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabpage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Location = new System.Drawing.Point(6, 17);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(268, 424);
+            this.tabControl1.TabIndex = 89;
+            // 
+            // tabpage1
+            // 
+            this.tabpage1.Controls.Add(this.panel3);
+            this.tabpage1.Controls.Add(this.TestX_button);
+            this.tabpage1.Controls.Add(this.TestXY_button);
+            this.tabpage1.Controls.Add(this.TestYX_button);
+            this.tabpage1.Location = new System.Drawing.Point(4, 22);
+            this.tabpage1.Name = "tabpage1";
+            this.tabpage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabpage1.Size = new System.Drawing.Size(260, 398);
+            this.tabpage1.TabIndex = 0;
+            this.tabpage1.Text = "X";
+            this.tabpage1.UseVisualStyleBackColor = true;
             // 
             // panel3
             // 
@@ -4868,7 +1817,7 @@
             this.panel3.Controls.Add(this.label29);
             this.panel3.Controls.Add(this.xjm_maskedTextBox);
             this.panel3.Controls.Add(this.label30);
-            this.panel3.Location = new System.Drawing.Point(14, 112);
+            this.panel3.Location = new System.Drawing.Point(6, 12);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(244, 350);
             this.panel3.TabIndex = 19;
@@ -5158,316 +2107,50 @@
             this.label30.TabIndex = 11;
             this.label30.Text = "10^6mm/min^3";
             // 
-            // panel5
+            // TestX_button
             // 
-            this.panel5.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel5.Controls.Add(this.label81);
-            this.panel5.Controls.Add(this.zsv_maskedTextBox);
-            this.panel5.Controls.Add(this.label82);
-            this.panel5.Controls.Add(this.label83);
-            this.panel5.Controls.Add(this.zjh_maskedTextBox);
-            this.panel5.Controls.Add(this.label84);
-            this.panel5.Controls.Add(this.Zmax_checkBox);
-            this.panel5.Controls.Add(this.Zlim_checkBox);
-            this.panel5.Controls.Add(this.Zhome_checkBox);
-            this.panel5.Controls.Add(this.panel6);
-            this.panel5.Controls.Add(this.label37);
-            this.panel5.Controls.Add(this.zvm_maskedTextBox);
-            this.panel5.Controls.Add(this.label38);
-            this.panel5.Controls.Add(this.label39);
-            this.panel5.Controls.Add(this.label40);
-            this.panel5.Controls.Add(this.zjm_maskedTextBox);
-            this.panel5.Controls.Add(this.label41);
-            this.panel5.Location = new System.Drawing.Point(514, 112);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(244, 350);
-            this.panel5.TabIndex = 20;
+            this.TestX_button.Location = new System.Drawing.Point(6, 369);
+            this.TestX_button.Name = "TestX_button";
+            this.TestX_button.Size = new System.Drawing.Size(75, 23);
+            this.TestX_button.TabIndex = 22;
+            this.TestX_button.Text = "Test X";
+            this.toolTip1.SetToolTip(this.TestX_button, "Makes some moves to test axis settings");
+            this.TestX_button.UseVisualStyleBackColor = true;
+            this.TestX_button.Click += new System.EventHandler(this.TestX_button_Click);
             // 
-            // label81
+            // TestXY_button
             // 
-            this.label81.AutoSize = true;
-            this.label81.Location = new System.Drawing.Point(3, 189);
-            this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(78, 13);
-            this.label81.TabIndex = 32;
-            this.label81.Text = "Homing speed:";
+            this.TestXY_button.Location = new System.Drawing.Point(87, 369);
+            this.TestXY_button.Name = "TestXY_button";
+            this.TestXY_button.Size = new System.Drawing.Size(75, 23);
+            this.TestXY_button.TabIndex = 24;
+            this.TestXY_button.Text = "Test XY";
+            this.toolTip1.SetToolTip(this.TestXY_button, "Makes some moves to test axis settings");
+            this.TestXY_button.UseVisualStyleBackColor = true;
+            this.TestXY_button.Click += new System.EventHandler(this.TestXY_button_Click);
             // 
-            // zsv_maskedTextBox
+            // TestYX_button
             // 
-            this.zsv_maskedTextBox.Location = new System.Drawing.Point(110, 186);
-            this.zsv_maskedTextBox.Mask = "99999";
-            this.zsv_maskedTextBox.Name = "zsv_maskedTextBox";
-            this.zsv_maskedTextBox.PromptChar = ' ';
-            this.zsv_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.zsv_maskedTextBox.Size = new System.Drawing.Size(43, 20);
-            this.zsv_maskedTextBox.TabIndex = 33;
-            this.zsv_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.zsv_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.zsv_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zsv_maskedTextBox_KeyPress);
+            this.TestYX_button.Location = new System.Drawing.Point(169, 369);
+            this.TestYX_button.Name = "TestYX_button";
+            this.TestYX_button.Size = new System.Drawing.Size(75, 23);
+            this.TestYX_button.TabIndex = 55;
+            this.TestYX_button.Text = "Test YX";
+            this.toolTip1.SetToolTip(this.TestYX_button, "Makes some moves to test axis settings");
+            this.TestYX_button.UseVisualStyleBackColor = true;
+            this.TestYX_button.Click += new System.EventHandler(this.TestYX_button_Click);
             // 
-            // label82
+            // tabPage2
             // 
-            this.label82.AutoSize = true;
-            this.label82.Location = new System.Drawing.Point(159, 189);
-            this.label82.Name = "label82";
-            this.label82.Size = new System.Drawing.Size(44, 13);
-            this.label82.TabIndex = 31;
-            this.label82.Text = "mm/min";
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Location = new System.Drawing.Point(3, 163);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(107, 13);
-            this.label83.TabIndex = 29;
-            this.label83.Text = "Homing acceleration:";
-            // 
-            // zjh_maskedTextBox
-            // 
-            this.zjh_maskedTextBox.Location = new System.Drawing.Point(110, 160);
-            this.zjh_maskedTextBox.Mask = "99999";
-            this.zjh_maskedTextBox.Name = "zjh_maskedTextBox";
-            this.zjh_maskedTextBox.PromptChar = ' ';
-            this.zjh_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.zjh_maskedTextBox.Size = new System.Drawing.Size(43, 20);
-            this.zjh_maskedTextBox.TabIndex = 30;
-            this.zjh_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.zjh_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.zjh_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zjh_maskedTextBox_KeyPress);
-            // 
-            // label84
-            // 
-            this.label84.AutoSize = true;
-            this.label84.Location = new System.Drawing.Point(159, 163);
-            this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(80, 13);
-            this.label84.TabIndex = 28;
-            this.label84.Text = "10^6mm/min^3";
-            // 
-            // Zmax_checkBox
-            // 
-            this.Zmax_checkBox.AutoSize = true;
-            this.Zmax_checkBox.Location = new System.Drawing.Point(7, 133);
-            this.Zmax_checkBox.Name = "Zmax_checkBox";
-            this.Zmax_checkBox.Size = new System.Drawing.Size(125, 17);
-            this.Zmax_checkBox.TabIndex = 24;
-            this.Zmax_checkBox.Text = "Max limit switch used";
-            this.Zmax_checkBox.UseVisualStyleBackColor = true;
-            this.Zmax_checkBox.Click += new System.EventHandler(this.Zmax_checkBox_Click);
-            // 
-            // Zlim_checkBox
-            // 
-            this.Zlim_checkBox.AutoSize = true;
-            this.Zlim_checkBox.Location = new System.Drawing.Point(7, 110);
-            this.Zlim_checkBox.Name = "Zlim_checkBox";
-            this.Zlim_checkBox.Size = new System.Drawing.Size(122, 17);
-            this.Zlim_checkBox.TabIndex = 23;
-            this.Zlim_checkBox.Text = "Min limit switch used";
-            this.Zlim_checkBox.UseVisualStyleBackColor = true;
-            this.Zlim_checkBox.Click += new System.EventHandler(this.Zlim_checkBox_Click);
-            // 
-            // Zhome_checkBox
-            // 
-            this.Zhome_checkBox.AutoSize = true;
-            this.Zhome_checkBox.Location = new System.Drawing.Point(7, 87);
-            this.Zhome_checkBox.Name = "Zhome_checkBox";
-            this.Zhome_checkBox.Size = new System.Drawing.Size(121, 17);
-            this.Zhome_checkBox.TabIndex = 22;
-            this.Zhome_checkBox.Text = "Homing switch used";
-            this.Zhome_checkBox.UseVisualStyleBackColor = true;
-            this.Zhome_checkBox.Click += new System.EventHandler(this.Zhome_checkBox_Click);
-            // 
-            // panel6
-            // 
-            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel6.Controls.Add(this.tr3_textBox);
-            this.panel6.Controls.Add(this.m3deg18_radioButton);
-            this.panel6.Controls.Add(this.m3deg09_radioButton);
-            this.panel6.Controls.Add(this.label31);
-            this.panel6.Controls.Add(this.label32);
-            this.panel6.Controls.Add(this.label33);
-            this.panel6.Controls.Add(this.mi3_maskedTextBox);
-            this.panel6.Controls.Add(this.label34);
-            this.panel6.Controls.Add(this.label35);
-            this.panel6.Controls.Add(this.label36);
-            this.panel6.Location = new System.Drawing.Point(3, 246);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(236, 99);
-            this.panel6.TabIndex = 18;
-            // 
-            // tr3_textBox
-            // 
-            this.tr3_textBox.Location = new System.Drawing.Point(101, 65);
-            this.tr3_textBox.Name = "tr3_textBox";
-            this.tr3_textBox.Size = new System.Drawing.Size(54, 20);
-            this.tr3_textBox.TabIndex = 21;
-            this.tr3_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tr3_textBox_KeyPress);
-            // 
-            // m3deg18_radioButton
-            // 
-            this.m3deg18_radioButton.AutoSize = true;
-            this.m3deg18_radioButton.Location = new System.Drawing.Point(153, 40);
-            this.m3deg18_radioButton.Name = "m3deg18_radioButton";
-            this.m3deg18_radioButton.Size = new System.Drawing.Size(64, 17);
-            this.m3deg18_radioButton.TabIndex = 28;
-            this.m3deg18_radioButton.TabStop = true;
-            this.m3deg18_radioButton.Text = "1.8 deg.";
-            this.m3deg18_radioButton.UseVisualStyleBackColor = true;
-            this.m3deg18_radioButton.Click += new System.EventHandler(this.m3deg18_radioButton_Click);
-            // 
-            // m3deg09_radioButton
-            // 
-            this.m3deg09_radioButton.AutoSize = true;
-            this.m3deg09_radioButton.Location = new System.Drawing.Point(91, 40);
-            this.m3deg09_radioButton.Name = "m3deg09_radioButton";
-            this.m3deg09_radioButton.Size = new System.Drawing.Size(64, 17);
-            this.m3deg09_radioButton.TabIndex = 27;
-            this.m3deg09_radioButton.TabStop = true;
-            this.m3deg09_radioButton.Text = "0.9 deg.";
-            this.m3deg09_radioButton.UseVisualStyleBackColor = true;
-            this.m3deg09_radioButton.Click += new System.EventHandler(this.m3deg09_radioButton_Click);
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(3, 68);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(100, 13);
-            this.label31.TabIndex = 25;
-            this.label31.Text = "Travel per rev. [3tr]:";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(161, 68);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(23, 13);
-            this.label32.TabIndex = 24;
-            this.label32.Text = "mm";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(3, 42);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(87, 13);
-            this.label33.TabIndex = 22;
-            this.label33.Text = "Step angle [3sa]:";
-            // 
-            // mi3_maskedTextBox
-            // 
-            this.mi3_maskedTextBox.Location = new System.Drawing.Point(101, 13);
-            this.mi3_maskedTextBox.Mask = "99999";
-            this.mi3_maskedTextBox.Name = "mi3_maskedTextBox";
-            this.mi3_maskedTextBox.PromptChar = ' ';
-            this.mi3_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.mi3_maskedTextBox.Size = new System.Drawing.Size(43, 20);
-            this.mi3_maskedTextBox.TabIndex = 20;
-            this.mi3_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.mi3_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.mi3_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.mi3_maskedTextBox_KeyPress);
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(3, 16);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(86, 13);
-            this.label34.TabIndex = 19;
-            this.label34.Text = "Microsteps [3mi]:";
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(150, 16);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(55, 13);
-            this.label35.TabIndex = 18;
-            this.label35.Text = "[1, 2, 4, 8]";
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label36.Location = new System.Drawing.Point(3, 0);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(59, 16);
-            this.label36.TabIndex = 15;
-            this.label36.Text = "Motor3:";
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(3, 54);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(89, 13);
-            this.label37.TabIndex = 16;
-            this.label37.Text = "Speed [zvm, zvr]:";
-            // 
-            // zvm_maskedTextBox
-            // 
-            this.zvm_maskedTextBox.Location = new System.Drawing.Point(110, 50);
-            this.zvm_maskedTextBox.Mask = "99999";
-            this.zvm_maskedTextBox.Name = "zvm_maskedTextBox";
-            this.zvm_maskedTextBox.PromptChar = ' ';
-            this.zvm_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.zvm_maskedTextBox.Size = new System.Drawing.Size(43, 20);
-            this.zvm_maskedTextBox.TabIndex = 17;
-            this.zvm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.zvm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.zvm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zvm_maskedTextBox_KeyPress);
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(159, 54);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(44, 13);
-            this.label38.TabIndex = 15;
-            this.label38.Text = "mm/min";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label39.Location = new System.Drawing.Point(3, 4);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(25, 20);
-            this.label39.TabIndex = 14;
-            this.label39.Text = "Z:";
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(3, 28);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(73, 13);
-            this.label40.TabIndex = 12;
-            this.label40.Text = "Acceler. [zjm]:";
-            // 
-            // zjm_maskedTextBox
-            // 
-            this.zjm_maskedTextBox.Location = new System.Drawing.Point(110, 25);
-            this.zjm_maskedTextBox.Mask = "99999";
-            this.zjm_maskedTextBox.Name = "zjm_maskedTextBox";
-            this.zjm_maskedTextBox.PromptChar = ' ';
-            this.zjm_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.zjm_maskedTextBox.Size = new System.Drawing.Size(43, 20);
-            this.zjm_maskedTextBox.TabIndex = 13;
-            this.zjm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.zjm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.zjm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zjm_maskedTextBox_KeyPress);
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(159, 27);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(80, 13);
-            this.label41.TabIndex = 11;
-            this.label41.Text = "10^6mm/min^3";
+            this.tabPage2.Controls.Add(this.panel1);
+            this.tabPage2.Controls.Add(this.TestY_button);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(260, 398);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Y";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
@@ -5490,7 +2173,7 @@
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.yjm_maskedTextBox);
             this.panel1.Controls.Add(this.label5);
-            this.panel1.Location = new System.Drawing.Point(264, 112);
+            this.panel1.Location = new System.Drawing.Point(6, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(244, 350);
             this.panel1.TabIndex = 14;
@@ -5780,52 +2463,892 @@
             this.label5.TabIndex = 11;
             this.label5.Text = "10^6mm/min^3";
             // 
-            // label3
+            // TestY_button
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 72);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Status:";
+            this.TestY_button.Location = new System.Drawing.Point(6, 368);
+            this.TestY_button.Name = "TestY_button";
+            this.TestY_button.Size = new System.Drawing.Size(75, 23);
+            this.TestY_button.TabIndex = 23;
+            this.TestY_button.Text = "Test Y";
+            this.toolTip1.SetToolTip(this.TestY_button, "Makes some moves to test axis settings");
+            this.TestY_button.UseVisualStyleBackColor = true;
+            this.TestY_button.Click += new System.EventHandler(this.TestY_button_Click);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.label123);
+            this.tabPage3.Controls.Add(this.panel5);
+            this.tabPage3.Controls.Add(this.ZTestTravel_textBox);
+            this.tabPage3.Controls.Add(this.TestZ_button);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(260, 398);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Z";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label123
+            // 
+            this.label123.AutoSize = true;
+            this.label123.Location = new System.Drawing.Point(92, 365);
+            this.label123.Name = "label123";
+            this.label123.Size = new System.Drawing.Size(70, 13);
+            this.label123.TabIndex = 83;
+            this.label123.Text = "Z Test travel:";
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.label81);
+            this.panel5.Controls.Add(this.zsv_maskedTextBox);
+            this.panel5.Controls.Add(this.label82);
+            this.panel5.Controls.Add(this.label83);
+            this.panel5.Controls.Add(this.zjh_maskedTextBox);
+            this.panel5.Controls.Add(this.label84);
+            this.panel5.Controls.Add(this.Zmax_checkBox);
+            this.panel5.Controls.Add(this.Zlim_checkBox);
+            this.panel5.Controls.Add(this.Zhome_checkBox);
+            this.panel5.Controls.Add(this.panel6);
+            this.panel5.Controls.Add(this.label37);
+            this.panel5.Controls.Add(this.zvm_maskedTextBox);
+            this.panel5.Controls.Add(this.label38);
+            this.panel5.Controls.Add(this.label39);
+            this.panel5.Controls.Add(this.label40);
+            this.panel5.Controls.Add(this.zjm_maskedTextBox);
+            this.panel5.Controls.Add(this.label41);
+            this.panel5.Location = new System.Drawing.Point(6, 6);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(244, 350);
+            this.panel5.TabIndex = 20;
+            // 
+            // label81
+            // 
+            this.label81.AutoSize = true;
+            this.label81.Location = new System.Drawing.Point(3, 189);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(78, 13);
+            this.label81.TabIndex = 32;
+            this.label81.Text = "Homing speed:";
+            // 
+            // zsv_maskedTextBox
+            // 
+            this.zsv_maskedTextBox.Location = new System.Drawing.Point(110, 186);
+            this.zsv_maskedTextBox.Mask = "99999";
+            this.zsv_maskedTextBox.Name = "zsv_maskedTextBox";
+            this.zsv_maskedTextBox.PromptChar = ' ';
+            this.zsv_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.zsv_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.zsv_maskedTextBox.TabIndex = 33;
+            this.zsv_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.zsv_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.zsv_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zsv_maskedTextBox_KeyPress);
+            // 
+            // label82
+            // 
+            this.label82.AutoSize = true;
+            this.label82.Location = new System.Drawing.Point(159, 189);
+            this.label82.Name = "label82";
+            this.label82.Size = new System.Drawing.Size(44, 13);
+            this.label82.TabIndex = 31;
+            this.label82.Text = "mm/min";
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(3, 163);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(107, 13);
+            this.label83.TabIndex = 29;
+            this.label83.Text = "Homing acceleration:";
+            // 
+            // zjh_maskedTextBox
+            // 
+            this.zjh_maskedTextBox.Location = new System.Drawing.Point(110, 160);
+            this.zjh_maskedTextBox.Mask = "99999";
+            this.zjh_maskedTextBox.Name = "zjh_maskedTextBox";
+            this.zjh_maskedTextBox.PromptChar = ' ';
+            this.zjh_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.zjh_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.zjh_maskedTextBox.TabIndex = 30;
+            this.zjh_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.zjh_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.zjh_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zjh_maskedTextBox_KeyPress);
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(159, 163);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(80, 13);
+            this.label84.TabIndex = 28;
+            this.label84.Text = "10^6mm/min^3";
+            // 
+            // Zmax_checkBox
+            // 
+            this.Zmax_checkBox.AutoSize = true;
+            this.Zmax_checkBox.Location = new System.Drawing.Point(7, 133);
+            this.Zmax_checkBox.Name = "Zmax_checkBox";
+            this.Zmax_checkBox.Size = new System.Drawing.Size(125, 17);
+            this.Zmax_checkBox.TabIndex = 24;
+            this.Zmax_checkBox.Text = "Max limit switch used";
+            this.Zmax_checkBox.UseVisualStyleBackColor = true;
+            this.Zmax_checkBox.Click += new System.EventHandler(this.Zmax_checkBox_Click);
+            // 
+            // Zlim_checkBox
+            // 
+            this.Zlim_checkBox.AutoSize = true;
+            this.Zlim_checkBox.Location = new System.Drawing.Point(7, 110);
+            this.Zlim_checkBox.Name = "Zlim_checkBox";
+            this.Zlim_checkBox.Size = new System.Drawing.Size(122, 17);
+            this.Zlim_checkBox.TabIndex = 23;
+            this.Zlim_checkBox.Text = "Min limit switch used";
+            this.Zlim_checkBox.UseVisualStyleBackColor = true;
+            this.Zlim_checkBox.Click += new System.EventHandler(this.Zlim_checkBox_Click);
+            // 
+            // Zhome_checkBox
+            // 
+            this.Zhome_checkBox.AutoSize = true;
+            this.Zhome_checkBox.Location = new System.Drawing.Point(7, 87);
+            this.Zhome_checkBox.Name = "Zhome_checkBox";
+            this.Zhome_checkBox.Size = new System.Drawing.Size(121, 17);
+            this.Zhome_checkBox.TabIndex = 22;
+            this.Zhome_checkBox.Text = "Homing switch used";
+            this.Zhome_checkBox.UseVisualStyleBackColor = true;
+            this.Zhome_checkBox.Click += new System.EventHandler(this.Zhome_checkBox_Click);
+            // 
+            // panel6
+            // 
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.tr3_textBox);
+            this.panel6.Controls.Add(this.m3deg18_radioButton);
+            this.panel6.Controls.Add(this.m3deg09_radioButton);
+            this.panel6.Controls.Add(this.label31);
+            this.panel6.Controls.Add(this.label32);
+            this.panel6.Controls.Add(this.label33);
+            this.panel6.Controls.Add(this.mi3_maskedTextBox);
+            this.panel6.Controls.Add(this.label34);
+            this.panel6.Controls.Add(this.label35);
+            this.panel6.Controls.Add(this.label36);
+            this.panel6.Location = new System.Drawing.Point(3, 246);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(236, 99);
+            this.panel6.TabIndex = 18;
+            // 
+            // tr3_textBox
+            // 
+            this.tr3_textBox.Location = new System.Drawing.Point(101, 65);
+            this.tr3_textBox.Name = "tr3_textBox";
+            this.tr3_textBox.Size = new System.Drawing.Size(54, 20);
+            this.tr3_textBox.TabIndex = 21;
+            this.tr3_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tr3_textBox_KeyPress);
+            // 
+            // m3deg18_radioButton
+            // 
+            this.m3deg18_radioButton.AutoSize = true;
+            this.m3deg18_radioButton.Location = new System.Drawing.Point(153, 40);
+            this.m3deg18_radioButton.Name = "m3deg18_radioButton";
+            this.m3deg18_radioButton.Size = new System.Drawing.Size(64, 17);
+            this.m3deg18_radioButton.TabIndex = 28;
+            this.m3deg18_radioButton.TabStop = true;
+            this.m3deg18_radioButton.Text = "1.8 deg.";
+            this.m3deg18_radioButton.UseVisualStyleBackColor = true;
+            this.m3deg18_radioButton.Click += new System.EventHandler(this.m3deg18_radioButton_Click);
+            // 
+            // m3deg09_radioButton
+            // 
+            this.m3deg09_radioButton.AutoSize = true;
+            this.m3deg09_radioButton.Location = new System.Drawing.Point(91, 40);
+            this.m3deg09_radioButton.Name = "m3deg09_radioButton";
+            this.m3deg09_radioButton.Size = new System.Drawing.Size(64, 17);
+            this.m3deg09_radioButton.TabIndex = 27;
+            this.m3deg09_radioButton.TabStop = true;
+            this.m3deg09_radioButton.Text = "0.9 deg.";
+            this.m3deg09_radioButton.UseVisualStyleBackColor = true;
+            this.m3deg09_radioButton.Click += new System.EventHandler(this.m3deg09_radioButton_Click);
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(3, 68);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(100, 13);
+            this.label31.TabIndex = 25;
+            this.label31.Text = "Travel per rev. [3tr]:";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(161, 68);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(23, 13);
+            this.label32.TabIndex = 24;
+            this.label32.Text = "mm";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(3, 42);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(87, 13);
+            this.label33.TabIndex = 22;
+            this.label33.Text = "Step angle [3sa]:";
+            // 
+            // mi3_maskedTextBox
+            // 
+            this.mi3_maskedTextBox.Location = new System.Drawing.Point(101, 13);
+            this.mi3_maskedTextBox.Mask = "99999";
+            this.mi3_maskedTextBox.Name = "mi3_maskedTextBox";
+            this.mi3_maskedTextBox.PromptChar = ' ';
+            this.mi3_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.mi3_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.mi3_maskedTextBox.TabIndex = 20;
+            this.mi3_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.mi3_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.mi3_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.mi3_maskedTextBox_KeyPress);
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(3, 16);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(86, 13);
+            this.label34.TabIndex = 19;
+            this.label34.Text = "Microsteps [3mi]:";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(150, 16);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(55, 13);
+            this.label35.TabIndex = 18;
+            this.label35.Text = "[1, 2, 4, 8]";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label36.Location = new System.Drawing.Point(3, 0);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(59, 16);
+            this.label36.TabIndex = 15;
+            this.label36.Text = "Motor3:";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(3, 54);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(89, 13);
+            this.label37.TabIndex = 16;
+            this.label37.Text = "Speed [zvm, zvr]:";
+            // 
+            // zvm_maskedTextBox
+            // 
+            this.zvm_maskedTextBox.Location = new System.Drawing.Point(110, 50);
+            this.zvm_maskedTextBox.Mask = "99999";
+            this.zvm_maskedTextBox.Name = "zvm_maskedTextBox";
+            this.zvm_maskedTextBox.PromptChar = ' ';
+            this.zvm_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.zvm_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.zvm_maskedTextBox.TabIndex = 17;
+            this.zvm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.zvm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.zvm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zvm_maskedTextBox_KeyPress);
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(159, 54);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(44, 13);
+            this.label38.TabIndex = 15;
+            this.label38.Text = "mm/min";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label39.Location = new System.Drawing.Point(3, 4);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(25, 20);
+            this.label39.TabIndex = 14;
+            this.label39.Text = "Z:";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(3, 28);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(73, 13);
+            this.label40.TabIndex = 12;
+            this.label40.Text = "Acceler. [zjm]:";
+            // 
+            // zjm_maskedTextBox
+            // 
+            this.zjm_maskedTextBox.Location = new System.Drawing.Point(110, 25);
+            this.zjm_maskedTextBox.Mask = "99999";
+            this.zjm_maskedTextBox.Name = "zjm_maskedTextBox";
+            this.zjm_maskedTextBox.PromptChar = ' ';
+            this.zjm_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.zjm_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.zjm_maskedTextBox.TabIndex = 13;
+            this.zjm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.zjm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.zjm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zjm_maskedTextBox_KeyPress);
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(159, 27);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(80, 13);
+            this.label41.TabIndex = 11;
+            this.label41.Text = "10^6mm/min^3";
+            // 
+            // ZTestTravel_textBox
+            // 
+            this.ZTestTravel_textBox.Location = new System.Drawing.Point(169, 362);
+            this.ZTestTravel_textBox.Name = "ZTestTravel_textBox";
+            this.ZTestTravel_textBox.Size = new System.Drawing.Size(75, 20);
+            this.ZTestTravel_textBox.TabIndex = 82;
+            this.ZTestTravel_textBox.TextChanged += new System.EventHandler(this.ZTestTravel_textBox_TextChanged);
+            // 
+            // TestZ_button
+            // 
+            this.TestZ_button.Location = new System.Drawing.Point(10, 362);
+            this.TestZ_button.Name = "TestZ_button";
+            this.TestZ_button.Size = new System.Drawing.Size(75, 23);
+            this.TestZ_button.TabIndex = 34;
+            this.TestZ_button.Text = "Test Z";
+            this.toolTip1.SetToolTip(this.TestZ_button, "Makes some moves to test axis settings");
+            this.TestZ_button.UseVisualStyleBackColor = true;
+            this.TestZ_button.Click += new System.EventHandler(this.TestZ_button_Click);
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.panel7);
+            this.tabPage4.Controls.Add(this.TestA_button);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(260, 398);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "A";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel7.Controls.Add(this.panel8);
+            this.panel7.Controls.Add(this.label48);
+            this.panel7.Controls.Add(this.avm_maskedTextBox);
+            this.panel7.Controls.Add(this.label49);
+            this.panel7.Controls.Add(this.label50);
+            this.panel7.Controls.Add(this.label51);
+            this.panel7.Controls.Add(this.ajm_maskedTextBox);
+            this.panel7.Controls.Add(this.label52);
+            this.panel7.Location = new System.Drawing.Point(6, 6);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(244, 350);
+            this.panel7.TabIndex = 21;
+            // 
+            // panel8
+            // 
+            this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel8.Controls.Add(this.tr4_textBox);
+            this.panel8.Controls.Add(this.m4deg18_radioButton);
+            this.panel8.Controls.Add(this.m4deg09_radioButton);
+            this.panel8.Controls.Add(this.label42);
+            this.panel8.Controls.Add(this.label43);
+            this.panel8.Controls.Add(this.label44);
+            this.panel8.Controls.Add(this.mi4_maskedTextBox);
+            this.panel8.Controls.Add(this.label45);
+            this.panel8.Controls.Add(this.label46);
+            this.panel8.Controls.Add(this.label47);
+            this.panel8.Location = new System.Drawing.Point(3, 246);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(236, 99);
+            this.panel8.TabIndex = 18;
+            // 
+            // tr4_textBox
+            // 
+            this.tr4_textBox.Location = new System.Drawing.Point(101, 65);
+            this.tr4_textBox.Name = "tr4_textBox";
+            this.tr4_textBox.Size = new System.Drawing.Size(55, 20);
+            this.tr4_textBox.TabIndex = 21;
+            this.tr4_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tr4_textBox_KeyPress);
+            // 
+            // m4deg18_radioButton
+            // 
+            this.m4deg18_radioButton.AutoSize = true;
+            this.m4deg18_radioButton.Location = new System.Drawing.Point(153, 40);
+            this.m4deg18_radioButton.Name = "m4deg18_radioButton";
+            this.m4deg18_radioButton.Size = new System.Drawing.Size(64, 17);
+            this.m4deg18_radioButton.TabIndex = 28;
+            this.m4deg18_radioButton.TabStop = true;
+            this.m4deg18_radioButton.Text = "1.8 deg.";
+            this.m4deg18_radioButton.UseVisualStyleBackColor = true;
+            this.m4deg18_radioButton.Click += new System.EventHandler(this.m4deg18_radioButton_Click);
+            // 
+            // m4deg09_radioButton
+            // 
+            this.m4deg09_radioButton.AutoSize = true;
+            this.m4deg09_radioButton.Location = new System.Drawing.Point(91, 40);
+            this.m4deg09_radioButton.Name = "m4deg09_radioButton";
+            this.m4deg09_radioButton.Size = new System.Drawing.Size(64, 17);
+            this.m4deg09_radioButton.TabIndex = 27;
+            this.m4deg09_radioButton.TabStop = true;
+            this.m4deg09_radioButton.Text = "0.9 deg.";
+            this.m4deg09_radioButton.UseVisualStyleBackColor = true;
+            this.m4deg09_radioButton.Click += new System.EventHandler(this.m4deg09_radioButton_Click);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(3, 68);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(100, 13);
+            this.label42.TabIndex = 25;
+            this.label42.Text = "Travel per rev. [4tr]:";
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(162, 68);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(23, 13);
+            this.label43.TabIndex = 24;
+            this.label43.Text = "mm";
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(3, 42);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(87, 13);
+            this.label44.TabIndex = 22;
+            this.label44.Text = "Step angle [4sa]:";
+            // 
+            // mi4_maskedTextBox
+            // 
+            this.mi4_maskedTextBox.Location = new System.Drawing.Point(101, 13);
+            this.mi4_maskedTextBox.Mask = "99999";
+            this.mi4_maskedTextBox.Name = "mi4_maskedTextBox";
+            this.mi4_maskedTextBox.PromptChar = ' ';
+            this.mi4_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.mi4_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.mi4_maskedTextBox.TabIndex = 20;
+            this.mi4_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.mi4_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.mi4_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.mi4_maskedTextBox_KeyPress);
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(3, 16);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(86, 13);
+            this.label45.TabIndex = 19;
+            this.label45.Text = "Microsteps [4mi]:";
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(150, 16);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(55, 13);
+            this.label46.TabIndex = 18;
+            this.label46.Text = "[1, 2, 4, 8]";
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label47.Location = new System.Drawing.Point(3, 0);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(59, 16);
+            this.label47.TabIndex = 15;
+            this.label47.Text = "Motor4:";
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(3, 53);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(91, 13);
+            this.label48.TabIndex = 16;
+            this.label48.Text = "Speed [avm, avr]:";
+            // 
+            // avm_maskedTextBox
+            // 
+            this.avm_maskedTextBox.Location = new System.Drawing.Point(105, 50);
+            this.avm_maskedTextBox.Mask = "99999";
+            this.avm_maskedTextBox.Name = "avm_maskedTextBox";
+            this.avm_maskedTextBox.PromptChar = ' ';
+            this.avm_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.avm_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.avm_maskedTextBox.TabIndex = 17;
+            this.avm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.avm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.avm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.avm_maskedTextBox_KeyPress);
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(154, 54);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(67, 13);
+            this.label49.TabIndex = 15;
+            this.label49.Text = "000 deg/min";
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label50.Location = new System.Drawing.Point(3, 4);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(26, 20);
+            this.label50.TabIndex = 14;
+            this.label50.Text = "A:";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(3, 28);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(74, 13);
+            this.label51.TabIndex = 12;
+            this.label51.Text = "Acceler. [ajm]:";
+            // 
+            // ajm_maskedTextBox
+            // 
+            this.ajm_maskedTextBox.Location = new System.Drawing.Point(105, 25);
+            this.ajm_maskedTextBox.Mask = "99999";
+            this.ajm_maskedTextBox.Name = "ajm_maskedTextBox";
+            this.ajm_maskedTextBox.PromptChar = ' ';
+            this.ajm_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.ajm_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.ajm_maskedTextBox.TabIndex = 13;
+            this.ajm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ajm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.ajm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ajm_maskedTextBox_KeyPress);
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(151, 27);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(80, 13);
+            this.label52.TabIndex = 11;
+            this.label52.Text = "10^6mm/min^3";
+            // 
+            // TestA_button
+            // 
+            this.TestA_button.Location = new System.Drawing.Point(6, 362);
+            this.TestA_button.Name = "TestA_button";
+            this.TestA_button.Size = new System.Drawing.Size(75, 23);
+            this.TestA_button.TabIndex = 35;
+            this.TestA_button.Text = "Test A";
+            this.toolTip1.SetToolTip(this.TestA_button, "Makes some moves to test axis settings");
+            this.TestA_button.UseVisualStyleBackColor = true;
+            this.TestA_button.Click += new System.EventHandler(this.TestA_button_Click);
+            // 
+            // VacuumRelease_textBox
+            // 
+            this.VacuumRelease_textBox.Location = new System.Drawing.Point(420, 382);
+            this.VacuumRelease_textBox.Name = "VacuumRelease_textBox";
+            this.VacuumRelease_textBox.Size = new System.Drawing.Size(58, 20);
+            this.VacuumRelease_textBox.TabIndex = 81;
+            this.toolTip1.SetToolTip(this.VacuumRelease_textBox, "If set to zero: For each mm of +Y movement, the \r\nmachine moves this much in X. S" +
+        "et the value\r\nfor square movement.");
+            this.VacuumRelease_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.VacuumRelease_textBox_KeyPress);
+            this.VacuumRelease_textBox.Leave += new System.EventHandler(this.VacuumRelease_textBox_Leave);
+            // 
+            // label119
+            // 
+            this.label119.AutoSize = true;
+            this.label119.Location = new System.Drawing.Point(280, 385);
+            this.label119.Name = "label119";
+            this.label119.Size = new System.Drawing.Size(130, 13);
+            this.label119.TabIndex = 80;
+            this.label119.Text = "Vacuum release time (ms):";
+            // 
+            // VacuumTime_textBox
+            // 
+            this.VacuumTime_textBox.Location = new System.Drawing.Point(420, 356);
+            this.VacuumTime_textBox.Name = "VacuumTime_textBox";
+            this.VacuumTime_textBox.Size = new System.Drawing.Size(58, 20);
+            this.VacuumTime_textBox.TabIndex = 79;
+            this.toolTip1.SetToolTip(this.VacuumTime_textBox, "If set to zero: For each mm of +Y movement, the \r\nmachine moves this much in X. S" +
+        "et the value\r\nfor square movement.");
+            this.VacuumTime_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.VacuumTime_textBox_KeyPress);
+            this.VacuumTime_textBox.Leave += new System.EventHandler(this.VacuumTime_textBox_Leave);
+            // 
+            // label118
+            // 
+            this.label118.AutoSize = true;
+            this.label118.Location = new System.Drawing.Point(280, 359);
+            this.label118.Name = "label118";
+            this.label118.Size = new System.Drawing.Size(128, 13);
+            this.label118.TabIndex = 78;
+            this.label118.Text = "Pickup vacuum time (ms):";
+            // 
+            // label90
+            // 
+            this.label90.AutoSize = true;
+            this.label90.Location = new System.Drawing.Point(280, 324);
+            this.label90.Name = "label90";
+            this.label90.Size = new System.Drawing.Size(116, 13);
+            this.label90.TabIndex = 74;
+            this.label90.Text = "Squareness correction:";
+            // 
+            // SquareCorrection_textBox
+            // 
+            this.SquareCorrection_textBox.Location = new System.Drawing.Point(402, 321);
+            this.SquareCorrection_textBox.Name = "SquareCorrection_textBox";
+            this.SquareCorrection_textBox.Size = new System.Drawing.Size(76, 20);
+            this.SquareCorrection_textBox.TabIndex = 73;
+            this.toolTip1.SetToolTip(this.SquareCorrection_textBox, "If set to zero: For each mm of +Y movement, the \r\nmachine moves this much in X. S" +
+        "et the value\r\nfor square movement.");
+            this.SquareCorrection_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SquareCorrection_textBox_KeyPress);
+            this.SquareCorrection_textBox.Leave += new System.EventHandler(this.SquareCorrection_textBox_Leave);
+            // 
+            // SmallMovement_numericUpDown
+            // 
+            this.SmallMovement_numericUpDown.Location = new System.Drawing.Point(430, 295);
+            this.SmallMovement_numericUpDown.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.SmallMovement_numericUpDown.Name = "SmallMovement_numericUpDown";
+            this.SmallMovement_numericUpDown.Size = new System.Drawing.Size(48, 20);
+            this.SmallMovement_numericUpDown.TabIndex = 72;
+            this.toolTip1.SetToolTip(this.SmallMovement_numericUpDown, "To avoid jerkiness, small movements are done\r\nwith smaller speed. That speed is s" +
+        "et here.");
+            this.SmallMovement_numericUpDown.Value = new decimal(new int[] {
+            250,
+            0,
+            0,
+            0});
+            this.SmallMovement_numericUpDown.ValueChanged += new System.EventHandler(this.SmallMovement_numericUpDown_ValueChanged);
+            // 
+            // label87
+            // 
+            this.label87.AutoSize = true;
+            this.label87.Location = new System.Drawing.Point(323, 300);
+            this.label87.Name = "label87";
+            this.label87.Size = new System.Drawing.Size(101, 13);
+            this.label87.TabIndex = 71;
+            this.label87.Text = "Small moves speed:";
+            // 
+            // SlackCompensation_checkBox
+            // 
+            this.SlackCompensation_checkBox.AutoSize = true;
+            this.SlackCompensation_checkBox.Location = new System.Drawing.Point(355, 272);
+            this.SlackCompensation_checkBox.Name = "SlackCompensation_checkBox";
+            this.SlackCompensation_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SlackCompensation_checkBox.Size = new System.Drawing.Size(123, 17);
+            this.SlackCompensation_checkBox.TabIndex = 57;
+            this.SlackCompensation_checkBox.Text = "Slack Compensation";
+            this.toolTip1.SetToolTip(this.SlackCompensation_checkBox, "All movements will go to position from same direction.\r\nIf there is slack in your" +
+        " machine, the same side is loaded,\r\npresumably minimizing slack effects.");
+            this.SlackCompensation_checkBox.UseVisualStyleBackColor = true;
+            this.SlackCompensation_checkBox.Click += new System.EventHandler(this.SlackCompensation_checkBox_Click);
+            // 
+            // SizeYMax_textBox
+            // 
+            this.SizeYMax_textBox.Location = new System.Drawing.Point(402, 212);
+            this.SizeYMax_textBox.Name = "SizeYMax_textBox";
+            this.SizeYMax_textBox.Size = new System.Drawing.Size(76, 20);
+            this.SizeYMax_textBox.TabIndex = 44;
+            this.toolTip1.SetToolTip(this.SizeYMax_textBox, "Allows for custom machine size");
+            this.SizeYMax_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SizeYMax_textBox_KeyPress);
+            this.SizeYMax_textBox.Leave += new System.EventHandler(this.SizeYMax_textBox_Leave);
+            // 
+            // SizeXMax_textBox
+            // 
+            this.SizeXMax_textBox.Location = new System.Drawing.Point(402, 186);
+            this.SizeXMax_textBox.Name = "SizeXMax_textBox";
+            this.SizeXMax_textBox.Size = new System.Drawing.Size(76, 20);
+            this.SizeXMax_textBox.TabIndex = 42;
+            this.toolTip1.SetToolTip(this.SizeXMax_textBox, "Allows for custom machine size");
+            this.SizeXMax_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SizeXMax_textBox_KeyPress);
+            this.SizeXMax_textBox.Leave += new System.EventHandler(this.SizeXMax_textBox_Leave);
+            // 
+            // ParkLocationY_textBox
+            // 
+            this.ParkLocationY_textBox.Location = new System.Drawing.Point(402, 141);
+            this.ParkLocationY_textBox.Name = "ParkLocationY_textBox";
+            this.ParkLocationY_textBox.Size = new System.Drawing.Size(76, 20);
+            this.ParkLocationY_textBox.TabIndex = 39;
+            this.toolTip1.SetToolTip(this.ParkLocationY_textBox, "Define \"Park\" location, where machine\r\ngoes to make room for tape loadings etc.");
+            this.ParkLocationY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ParkLocationY_textBox_KeyPress);
+            this.ParkLocationY_textBox.Leave += new System.EventHandler(this.ParkLocationY_textBox_Leave);
+            // 
+            // ParkLocationX_textBox
+            // 
+            this.ParkLocationX_textBox.Location = new System.Drawing.Point(402, 115);
+            this.ParkLocationX_textBox.Name = "ParkLocationX_textBox";
+            this.ParkLocationX_textBox.Size = new System.Drawing.Size(76, 20);
+            this.ParkLocationX_textBox.TabIndex = 37;
+            this.toolTip1.SetToolTip(this.ParkLocationX_textBox, "Define \"Park\" location, where machine\r\ngoes to make room for tape loadings etc.");
+            this.ParkLocationX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ParkLocationX_textBox_KeyPress);
+            this.ParkLocationX_textBox.Leave += new System.EventHandler(this.ParkLocationX_textBox_Leave);
+            // 
+            // label113
+            // 
+            this.label113.AutoSize = true;
+            this.label113.Location = new System.Drawing.Point(322, 172);
+            this.label113.Name = "label113";
+            this.label113.Size = new System.Drawing.Size(74, 13);
+            this.label113.TabIndex = 48;
+            this.label113.Text = "Machine Size:";
+            // 
+            // label102
+            // 
+            this.label102.AutoSize = true;
+            this.label102.Location = new System.Drawing.Point(356, 215);
+            this.label102.Name = "label102";
+            this.label102.Size = new System.Drawing.Size(40, 13);
+            this.label102.TabIndex = 45;
+            this.label102.Text = "Max Y:";
+            // 
+            // label107
+            // 
+            this.label107.AutoSize = true;
+            this.label107.Location = new System.Drawing.Point(356, 189);
+            this.label107.Name = "label107";
+            this.label107.Size = new System.Drawing.Size(40, 13);
+            this.label107.TabIndex = 43;
+            this.label107.Text = "Max X:";
+            // 
+            // label92
+            // 
+            this.label92.AutoSize = true;
+            this.label92.Location = new System.Drawing.Point(310, 144);
+            this.label92.Name = "label92";
+            this.label92.Size = new System.Drawing.Size(86, 13);
+            this.label92.TabIndex = 40;
+            this.label92.Text = "Park Location Y:";
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Location = new System.Drawing.Point(310, 118);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(86, 13);
+            this.label61.TabIndex = 38;
+            this.label61.Text = "Park Location X:";
+            // 
+            // Homebutton
+            // 
+            this.Homebutton.Location = new System.Drawing.Point(89, 489);
+            this.Homebutton.Name = "Homebutton";
+            this.Homebutton.Size = new System.Drawing.Size(75, 23);
+            this.Homebutton.TabIndex = 17;
+            this.Homebutton.Text = "Home XYZ";
+            this.toolTip1.SetToolTip(this.Homebutton, "Homes X, Y and Z axis, using limit switch only.");
+            this.Homebutton.UseVisualStyleBackColor = true;
+            this.Homebutton.Click += new System.EventHandler(this.Homebutton_Click);
+            // 
+            // HomeZ_button
+            // 
+            this.HomeZ_button.Location = new System.Drawing.Point(8, 503);
+            this.HomeZ_button.Name = "HomeZ_button";
+            this.HomeZ_button.Size = new System.Drawing.Size(75, 23);
+            this.HomeZ_button.TabIndex = 33;
+            this.HomeZ_button.Text = "Home Z";
+            this.toolTip1.SetToolTip(this.HomeZ_button, "Homes Z axis, using limit switch only.");
+            this.HomeZ_button.UseVisualStyleBackColor = true;
+            this.HomeZ_button.Click += new System.EventHandler(this.HomeZ_button_Click);
+            // 
+            // HomeY_button
+            // 
+            this.HomeY_button.Location = new System.Drawing.Point(8, 474);
+            this.HomeY_button.Name = "HomeY_button";
+            this.HomeY_button.Size = new System.Drawing.Size(75, 23);
+            this.HomeY_button.TabIndex = 32;
+            this.HomeY_button.Text = "Home Y";
+            this.toolTip1.SetToolTip(this.HomeY_button, "Homes Y axis, using limit switch only.");
+            this.HomeY_button.UseVisualStyleBackColor = true;
+            this.HomeY_button.Click += new System.EventHandler(this.HomeY_button_Click);
+            // 
+            // HomeXY_button
+            // 
+            this.HomeXY_button.Location = new System.Drawing.Point(89, 460);
+            this.HomeXY_button.Name = "HomeXY_button";
+            this.HomeXY_button.Size = new System.Drawing.Size(75, 23);
+            this.HomeXY_button.TabIndex = 31;
+            this.HomeXY_button.Text = "Home XY";
+            this.toolTip1.SetToolTip(this.HomeXY_button, "Homes X and Y axis, using limit switch only.");
+            this.HomeXY_button.UseVisualStyleBackColor = true;
+            this.HomeXY_button.Click += new System.EventHandler(this.HomeXY_button_Click);
+            // 
+            // HomeX_button
+            // 
+            this.HomeX_button.Location = new System.Drawing.Point(8, 447);
+            this.HomeX_button.Name = "HomeX_button";
+            this.HomeX_button.Size = new System.Drawing.Size(75, 23);
+            this.HomeX_button.TabIndex = 30;
+            this.HomeX_button.Text = "Home X";
+            this.toolTip1.SetToolTip(this.HomeX_button, "Homes X axis, using limit switch only.");
+            this.HomeX_button.UseVisualStyleBackColor = true;
+            this.HomeX_button.Click += new System.EventHandler(this.HomeX_button_Click);
+            // 
+            // BuiltInSettings_button
+            // 
+            this.BuiltInSettings_button.Location = new System.Drawing.Point(283, 12);
+            this.BuiltInSettings_button.Name = "BuiltInSettings_button";
+            this.BuiltInSettings_button.Size = new System.Drawing.Size(210, 23);
+            this.BuiltInSettings_button.TabIndex = 29;
+            this.BuiltInSettings_button.Text = "Reset all to Built-In Defaults";
+            this.toolTip1.SetToolTip(this.BuiltInSettings_button, "Resets all settings to conservative defualt settings.\r\nALL YOUR SETTINGS MODIFICA" +
+        "TIONS WILL BE LOST!");
+            this.BuiltInSettings_button.UseVisualStyleBackColor = true;
+            this.BuiltInSettings_button.Click += new System.EventHandler(this.BuiltInSettings_button_Click);
+            // 
+            // SaveSettings_button
+            // 
+            this.SaveSettings_button.Location = new System.Drawing.Point(283, 68);
+            this.SaveSettings_button.Name = "SaveSettings_button";
+            this.SaveSettings_button.Size = new System.Drawing.Size(210, 23);
+            this.SaveSettings_button.TabIndex = 28;
+            this.SaveSettings_button.Text = "Save Current Settings to User Defaults";
+            this.toolTip1.SetToolTip(this.SaveSettings_button, "Saves these settings, so they can be retrieved by\r\nthe above button.");
+            this.SaveSettings_button.UseVisualStyleBackColor = true;
+            this.SaveSettings_button.Click += new System.EventHandler(this.SaveSettings_button_Click);
+            // 
+            // DefaultSettings_button
+            // 
+            this.DefaultSettings_button.Location = new System.Drawing.Point(283, 41);
+            this.DefaultSettings_button.Name = "DefaultSettings_button";
+            this.DefaultSettings_button.Size = new System.Drawing.Size(210, 21);
+            this.DefaultSettings_button.TabIndex = 27;
+            this.DefaultSettings_button.Text = "Load User Defaults to TinyG";
+            this.toolTip1.SetToolTip(this.DefaultSettings_button, "Loads your saved settings back to system.");
+            this.DefaultSettings_button.UseVisualStyleBackColor = true;
+            this.DefaultSettings_button.Click += new System.EventHandler(this.DefaultSettings_button_Click);
             // 
             // buttonRefreshPortList
             // 
-            this.buttonRefreshPortList.Location = new System.Drawing.Point(156, 13);
+            this.buttonRefreshPortList.Location = new System.Drawing.Point(420, 415);
             this.buttonRefreshPortList.Name = "buttonRefreshPortList";
-            this.buttonRefreshPortList.Size = new System.Drawing.Size(75, 23);
+            this.buttonRefreshPortList.Size = new System.Drawing.Size(58, 23);
             this.buttonRefreshPortList.TabIndex = 4;
-            this.buttonRefreshPortList.Text = "Refresh List";
+            this.buttonRefreshPortList.Text = "Refresh";
             this.toolTip1.SetToolTip(this.buttonRefreshPortList, "Re-scans the serial ports on this computer");
             this.buttonRefreshPortList.UseVisualStyleBackColor = true;
             this.buttonRefreshPortList.Click += new System.EventHandler(this.buttonRefreshPortList_Click);
             // 
-            // labelSerialPortStatus
-            // 
-            this.labelSerialPortStatus.AutoSize = true;
-            this.labelSerialPortStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSerialPortStatus.Location = new System.Drawing.Point(72, 69);
-            this.labelSerialPortStatus.Name = "labelSerialPortStatus";
-            this.labelSerialPortStatus.Size = new System.Drawing.Size(105, 18);
-            this.labelSerialPortStatus.TabIndex = 3;
-            this.labelSerialPortStatus.Text = "Not connected";
-            this.toolTip1.SetToolTip(this.labelSerialPortStatus, "Connection status");
-            // 
-            // buttonConnectSerial
-            // 
-            this.buttonConnectSerial.Location = new System.Drawing.Point(75, 41);
-            this.buttonConnectSerial.Name = "buttonConnectSerial";
-            this.buttonConnectSerial.Size = new System.Drawing.Size(75, 23);
-            this.buttonConnectSerial.TabIndex = 2;
-            this.buttonConnectSerial.Text = "Connect";
-            this.toolTip1.SetToolTip(this.buttonConnectSerial, "Try to connect to TinyG at port shown above");
-            this.buttonConnectSerial.UseVisualStyleBackColor = true;
-            this.buttonConnectSerial.Click += new System.EventHandler(this.buttonConnectSerial_Click);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 17);
+            this.label2.Location = new System.Drawing.Point(277, 418);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 1;
@@ -5835,16 +3358,97 @@
             // 
             this.comboBoxSerialPorts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSerialPorts.FormattingEnabled = true;
-            this.comboBoxSerialPorts.Location = new System.Drawing.Point(75, 14);
+            this.comboBoxSerialPorts.Location = new System.Drawing.Point(339, 415);
             this.comboBoxSerialPorts.Name = "comboBoxSerialPorts";
             this.comboBoxSerialPorts.Size = new System.Drawing.Size(75, 21);
             this.comboBoxSerialPorts.TabIndex = 0;
             this.toolTip1.SetToolTip(this.comboBoxSerialPorts, "Serial port used by TinyG");
             // 
+            // labelSerialPortStatus
+            // 
+            this.labelSerialPortStatus.AutoSize = true;
+            this.labelSerialPortStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSerialPortStatus.Location = new System.Drawing.Point(352, 730);
+            this.labelSerialPortStatus.Name = "labelSerialPortStatus";
+            this.labelSerialPortStatus.Size = new System.Drawing.Size(105, 18);
+            this.labelSerialPortStatus.TabIndex = 3;
+            this.labelSerialPortStatus.Text = "Not connected";
+            this.toolTip1.SetToolTip(this.labelSerialPortStatus, "Connection status");
+            // 
+            // Z_Backoff_label
+            // 
+            this.Z_Backoff_label.AutoSize = true;
+            this.Z_Backoff_label.Location = new System.Drawing.Point(76, 100);
+            this.Z_Backoff_label.Name = "Z_Backoff_label";
+            this.Z_Backoff_label.Size = new System.Drawing.Size(47, 13);
+            this.Z_Backoff_label.TabIndex = 77;
+            this.Z_Backoff_label.Text = "3.00 mm";
+            // 
+            // label117
+            // 
+            this.label117.AutoSize = true;
+            this.label117.Location = new System.Drawing.Point(11, 99);
+            this.label117.Name = "label117";
+            this.label117.Size = new System.Drawing.Size(47, 13);
+            this.label117.TabIndex = 76;
+            this.label117.Text = "Backoff:";
+            // 
+            // Z0toPCB_BasicTab_label
+            // 
+            this.Z0toPCB_BasicTab_label.AutoSize = true;
+            this.Z0toPCB_BasicTab_label.Location = new System.Drawing.Point(76, 83);
+            this.Z0toPCB_BasicTab_label.Name = "Z0toPCB_BasicTab_label";
+            this.Z0toPCB_BasicTab_label.Size = new System.Drawing.Size(53, 13);
+            this.Z0toPCB_BasicTab_label.TabIndex = 53;
+            this.Z0toPCB_BasicTab_label.Text = "37.00 mm";
+            // 
+            // label111
+            // 
+            this.label111.AutoSize = true;
+            this.label111.Location = new System.Drawing.Point(11, 83);
+            this.label111.Name = "label111";
+            this.label111.Size = new System.Drawing.Size(59, 13);
+            this.label111.TabIndex = 52;
+            this.label111.Text = "Z0 to PCB:";
+            // 
+            // Zlb_label
+            // 
+            this.Zlb_label.AutoSize = true;
+            this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Zlb_label.Location = new System.Drawing.Point(3, 388);
+            this.Zlb_label.Name = "Zlb_label";
+            this.Zlb_label.Size = new System.Drawing.Size(153, 38);
+            this.Zlb_label.TabIndex = 51;
+            this.Zlb_label.Text = "Probing instructions...\r\nLine 2";
+            this.Zlb_label.Visible = false;
+            // 
+            // SetProbing_button
+            // 
+            this.SetProbing_button.Location = new System.Drawing.Point(9, 52);
+            this.SetProbing_button.Name = "SetProbing_button";
+            this.SetProbing_button.Size = new System.Drawing.Size(108, 23);
+            this.SetProbing_button.TabIndex = 50;
+            this.SetProbing_button.Text = "Height";
+            this.toolTip1.SetToolTip(this.SetProbing_button, "Runs needle height calibration routine");
+            this.SetProbing_button.UseVisualStyleBackColor = true;
+            this.SetProbing_button.Click += new System.EventHandler(this.SetProbing_button_Click);
+            // 
+            // buttonConnectSerial
+            // 
+            this.buttonConnectSerial.Location = new System.Drawing.Point(461, 728);
+            this.buttonConnectSerial.Name = "buttonConnectSerial";
+            this.buttonConnectSerial.Size = new System.Drawing.Size(84, 23);
+            this.buttonConnectSerial.TabIndex = 2;
+            this.buttonConnectSerial.Text = "Connect";
+            this.toolTip1.SetToolTip(this.buttonConnectSerial, "Try to connect to TinyG at port shown above");
+            this.buttonConnectSerial.UseVisualStyleBackColor = true;
+            this.buttonConnectSerial.Click += new System.EventHandler(this.buttonConnectSerial_Click);
+            // 
             // MotorPower_checkBox
             // 
             this.MotorPower_checkBox.AutoSize = true;
-            this.MotorPower_checkBox.Location = new System.Drawing.Point(1011, 868);
+            this.MotorPower_checkBox.Location = new System.Drawing.Point(418, 842);
             this.MotorPower_checkBox.Name = "MotorPower_checkBox";
             this.MotorPower_checkBox.Size = new System.Drawing.Size(86, 17);
             this.MotorPower_checkBox.TabIndex = 54;
@@ -5856,7 +3460,7 @@
             // Vacuum_checkBox
             // 
             this.Vacuum_checkBox.AutoSize = true;
-            this.Vacuum_checkBox.Location = new System.Drawing.Point(1011, 903);
+            this.Vacuum_checkBox.Location = new System.Drawing.Point(418, 877);
             this.Vacuum_checkBox.Name = "Vacuum_checkBox";
             this.Vacuum_checkBox.Size = new System.Drawing.Size(82, 17);
             this.Vacuum_checkBox.TabIndex = 26;
@@ -5868,7 +3472,7 @@
             // Pump_checkBox
             // 
             this.Pump_checkBox.AutoSize = true;
-            this.Pump_checkBox.Location = new System.Drawing.Point(1011, 886);
+            this.Pump_checkBox.Location = new System.Drawing.Point(418, 860);
             this.Pump_checkBox.Name = "Pump_checkBox";
             this.Pump_checkBox.Size = new System.Drawing.Size(70, 17);
             this.Pump_checkBox.TabIndex = 25;
@@ -5879,41 +3483,29 @@
             // 
             // RunJob_tabPage
             // 
+            this.RunJob_tabPage.Controls.Add(this.AbortPlacement_button);
             this.RunJob_tabPage.Controls.Add(this.needle_calibration_test_button);
-            this.RunJob_tabPage.Controls.Add(this.MultiCalibrate_button);
-            this.RunJob_tabPage.Controls.Add(this.StopDemo_button);
-            this.RunJob_tabPage.Controls.Add(this.Demo_button);
+            this.RunJob_tabPage.Controls.Add(this.PausePlacement_button);
             this.RunJob_tabPage.Controls.Add(this.ChangeNeedle_button);
             this.RunJob_tabPage.Controls.Add(this.ValidMeasurement_checkBox);
-            this.RunJob_tabPage.Controls.Add(this.NextGroup_label);
-            this.RunJob_tabPage.Controls.Add(this.label125);
-            this.RunJob_tabPage.Controls.Add(this.PreviousGroup_label);
             this.RunJob_tabPage.Controls.Add(this.ReMeasure_button);
-            this.RunJob_tabPage.Controls.Add(this.label122);
-            this.RunJob_tabPage.Controls.Add(this.CurrentGroup_label);
-            this.RunJob_tabPage.Controls.Add(this.label57);
             this.RunJob_tabPage.Controls.Add(this.JobFilePath_label);
             this.RunJob_tabPage.Controls.Add(this.label91);
+            this.RunJob_tabPage.Controls.Add(this.groupBox2);
             this.RunJob_tabPage.Controls.Add(this.JobFileName_label);
             this.RunJob_tabPage.Controls.Add(this.label121);
             this.RunJob_tabPage.Controls.Add(this.JobDataSave_button);
             this.RunJob_tabPage.Controls.Add(this.JobDataLoad_button);
             this.RunJob_tabPage.Controls.Add(this.LoadCadData_button);
             this.RunJob_tabPage.Controls.Add(this.groupBox3);
-            this.RunJob_tabPage.Controls.Add(this.JobCounterCW_checkBox);
-            this.RunJob_tabPage.Controls.Add(this.RotationOffset_textBox);
             this.RunJob_tabPage.Controls.Add(this.JobOffsetY_textBox);
             this.RunJob_tabPage.Controls.Add(this.JobOffsetX_textBox);
-            this.RunJob_tabPage.Controls.Add(this.label60);
-            this.RunJob_tabPage.Controls.Add(this.groupBox2);
             this.RunJob_tabPage.Controls.Add(this.groupBox1);
             this.RunJob_tabPage.Controls.Add(this.label89);
             this.RunJob_tabPage.Controls.Add(this.label88);
             this.RunJob_tabPage.Controls.Add(this.TestNeedleRecognition_button);
             this.RunJob_tabPage.Controls.Add(this.label86);
             this.RunJob_tabPage.Controls.Add(this.label85);
-            this.RunJob_tabPage.Controls.Add(this.label59);
-            this.RunJob_tabPage.Controls.Add(this.Placement_pictureBox);
             this.RunJob_tabPage.Controls.Add(this.JobData_GridView);
             this.RunJob_tabPage.Controls.Add(this.Bottom_checkBox);
             this.RunJob_tabPage.Controls.Add(this.CadData_GridView);
@@ -5924,14 +3516,25 @@
             this.RunJob_tabPage.Location = new System.Drawing.Point(4, 22);
             this.RunJob_tabPage.Name = "RunJob_tabPage";
             this.RunJob_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RunJob_tabPage.Size = new System.Drawing.Size(1249, 695);
+            this.RunJob_tabPage.Size = new System.Drawing.Size(821, 690);
             this.RunJob_tabPage.TabIndex = 2;
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
             // 
+            // AbortPlacement_button
+            // 
+            this.AbortPlacement_button.Location = new System.Drawing.Point(15, 5);
+            this.AbortPlacement_button.Name = "AbortPlacement_button";
+            this.AbortPlacement_button.Size = new System.Drawing.Size(109, 23);
+            this.AbortPlacement_button.TabIndex = 36;
+            this.AbortPlacement_button.Text = "Stop";
+            this.toolTip1.SetToolTip(this.AbortPlacement_button, "Aborts the whole operation.");
+            this.AbortPlacement_button.UseVisualStyleBackColor = true;
+            this.AbortPlacement_button.Click += new System.EventHandler(this.AbortPlacement_button_Click);
+            // 
             // needle_calibration_test_button
             // 
-            this.needle_calibration_test_button.Location = new System.Drawing.Point(352, 627);
+            this.needle_calibration_test_button.Location = new System.Drawing.Point(16, 123);
             this.needle_calibration_test_button.Name = "needle_calibration_test_button";
             this.needle_calibration_test_button.Size = new System.Drawing.Size(110, 23);
             this.needle_calibration_test_button.TabIndex = 76;
@@ -5940,44 +3543,20 @@
             this.needle_calibration_test_button.UseVisualStyleBackColor = true;
             this.needle_calibration_test_button.Click += new System.EventHandler(this.needle_calibration_test_button_Click);
             // 
-            // MultiCalibrate_button
+            // PausePlacement_button
             // 
-            this.MultiCalibrate_button.BackColor = System.Drawing.Color.Crimson;
-            this.MultiCalibrate_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MultiCalibrate_button.Location = new System.Drawing.Point(496, 600);
-            this.MultiCalibrate_button.Name = "MultiCalibrate_button";
-            this.MultiCalibrate_button.Size = new System.Drawing.Size(129, 49);
-            this.MultiCalibrate_button.TabIndex = 75;
-            this.MultiCalibrate_button.Text = " Multi Calibration";
-            this.toolTip1.SetToolTip(this.MultiCalibrate_button, "This will home, calibrate needle, and calibrate pcb (remeasure).");
-            this.MultiCalibrate_button.UseVisualStyleBackColor = false;
-            this.MultiCalibrate_button.Click += new System.EventHandler(this.MultiCalibrate_button_Click);
-            // 
-            // StopDemo_button
-            // 
-            this.StopDemo_button.Location = new System.Drawing.Point(87, 666);
-            this.StopDemo_button.Name = "StopDemo_button";
-            this.StopDemo_button.Size = new System.Drawing.Size(75, 23);
-            this.StopDemo_button.TabIndex = 74;
-            this.StopDemo_button.Text = "Stop Demo";
-            this.StopDemo_button.UseVisualStyleBackColor = true;
-            this.StopDemo_button.Visible = false;
-            this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
-            // 
-            // Demo_button
-            // 
-            this.Demo_button.Location = new System.Drawing.Point(6, 666);
-            this.Demo_button.Name = "Demo_button";
-            this.Demo_button.Size = new System.Drawing.Size(75, 23);
-            this.Demo_button.TabIndex = 73;
-            this.Demo_button.Text = "Start Demo";
-            this.Demo_button.UseVisualStyleBackColor = true;
-            this.Demo_button.Visible = false;
-            this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
+            this.PausePlacement_button.Location = new System.Drawing.Point(15, 34);
+            this.PausePlacement_button.Name = "PausePlacement_button";
+            this.PausePlacement_button.Size = new System.Drawing.Size(109, 23);
+            this.PausePlacement_button.TabIndex = 35;
+            this.PausePlacement_button.Text = "Pause";
+            this.toolTip1.SetToolTip(this.PausePlacement_button, "Temporary pause");
+            this.PausePlacement_button.UseVisualStyleBackColor = true;
+            this.PausePlacement_button.Click += new System.EventHandler(this.PausePlacement_button_Click);
             // 
             // ChangeNeedle_button
             // 
-            this.ChangeNeedle_button.Location = new System.Drawing.Point(352, 656);
+            this.ChangeNeedle_button.Location = new System.Drawing.Point(16, 152);
             this.ChangeNeedle_button.Name = "ChangeNeedle_button";
             this.ChangeNeedle_button.Size = new System.Drawing.Size(110, 23);
             this.ChangeNeedle_button.TabIndex = 72;
@@ -5988,46 +3567,16 @@
             // ValidMeasurement_checkBox
             // 
             this.ValidMeasurement_checkBox.AutoSize = true;
-            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(468, 576);
+            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(395, 268);
             this.ValidMeasurement_checkBox.Name = "ValidMeasurement_checkBox";
             this.ValidMeasurement_checkBox.Size = new System.Drawing.Size(138, 17);
             this.ValidMeasurement_checkBox.TabIndex = 71;
             this.ValidMeasurement_checkBox.Text = "Measurements are valid";
             this.ValidMeasurement_checkBox.UseVisualStyleBackColor = true;
             // 
-            // NextGroup_label
-            // 
-            this.NextGroup_label.AutoSize = true;
-            this.NextGroup_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NextGroup_label.Location = new System.Drawing.Point(443, 553);
-            this.NextGroup_label.Name = "NextGroup_label";
-            this.NextGroup_label.Size = new System.Drawing.Size(16, 16);
-            this.NextGroup_label.TabIndex = 70;
-            this.NextGroup_label.Text = "--";
-            // 
-            // label125
-            // 
-            this.label125.AutoSize = true;
-            this.label125.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label125.Location = new System.Drawing.Point(352, 553);
-            this.label125.Name = "label125";
-            this.label125.Size = new System.Drawing.Size(38, 16);
-            this.label125.TabIndex = 69;
-            this.label125.Text = "Next:";
-            // 
-            // PreviousGroup_label
-            // 
-            this.PreviousGroup_label.AutoSize = true;
-            this.PreviousGroup_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PreviousGroup_label.Location = new System.Drawing.Point(443, 505);
-            this.PreviousGroup_label.Name = "PreviousGroup_label";
-            this.PreviousGroup_label.Size = new System.Drawing.Size(16, 16);
-            this.PreviousGroup_label.TabIndex = 68;
-            this.PreviousGroup_label.Text = "--";
-            // 
             // ReMeasure_button
             // 
-            this.ReMeasure_button.Location = new System.Drawing.Point(352, 572);
+            this.ReMeasure_button.Location = new System.Drawing.Point(16, 68);
             this.ReMeasure_button.Name = "ReMeasure_button";
             this.ReMeasure_button.Size = new System.Drawing.Size(110, 23);
             this.ReMeasure_button.TabIndex = 48;
@@ -6037,41 +3586,11 @@
             this.ReMeasure_button.UseVisualStyleBackColor = true;
             this.ReMeasure_button.Click += new System.EventHandler(this.ReMeasure_button_Click);
             // 
-            // label122
-            // 
-            this.label122.AutoSize = true;
-            this.label122.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label122.Location = new System.Drawing.Point(352, 505);
-            this.label122.Name = "label122";
-            this.label122.Size = new System.Drawing.Size(64, 16);
-            this.label122.TabIndex = 67;
-            this.label122.Text = "Previous:";
-            // 
-            // CurrentGroup_label
-            // 
-            this.CurrentGroup_label.AutoSize = true;
-            this.CurrentGroup_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CurrentGroup_label.Location = new System.Drawing.Point(443, 529);
-            this.CurrentGroup_label.Name = "CurrentGroup_label";
-            this.CurrentGroup_label.Size = new System.Drawing.Size(16, 16);
-            this.CurrentGroup_label.TabIndex = 66;
-            this.CurrentGroup_label.Text = "--";
-            // 
-            // label57
-            // 
-            this.label57.AutoSize = true;
-            this.label57.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label57.Location = new System.Drawing.Point(352, 529);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(85, 16);
-            this.label57.TabIndex = 65;
-            this.label57.Text = "Now placing:";
-            // 
             // JobFilePath_label
             // 
             this.JobFilePath_label.AutoSize = true;
             this.JobFilePath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JobFilePath_label.Location = new System.Drawing.Point(904, 352);
+            this.JobFilePath_label.Location = new System.Drawing.Point(342, 307);
             this.JobFilePath_label.Name = "JobFilePath_label";
             this.JobFilePath_label.Size = new System.Drawing.Size(19, 13);
             this.JobFilePath_label.TabIndex = 64;
@@ -6081,188 +3600,43 @@
             // 
             this.label91.AutoSize = true;
             this.label91.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label91.Location = new System.Drawing.Point(866, 352);
+            this.label91.Location = new System.Drawing.Point(304, 307);
             this.label91.Name = "label91";
             this.label91.Size = new System.Drawing.Size(32, 13);
             this.label91.TabIndex = 63;
             this.label91.Text = "Path:";
             // 
-            // JobFileName_label
-            // 
-            this.JobFileName_label.AutoSize = true;
-            this.JobFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JobFileName_label.Location = new System.Drawing.Point(903, 322);
-            this.JobFileName_label.Name = "JobFileName_label";
-            this.JobFileName_label.Size = new System.Drawing.Size(29, 20);
-            this.JobFileName_label.TabIndex = 62;
-            this.JobFileName_label.Text = "----";
-            // 
-            // label121
-            // 
-            this.label121.AutoSize = true;
-            this.label121.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label121.Location = new System.Drawing.Point(865, 322);
-            this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(38, 20);
-            this.label121.TabIndex = 61;
-            this.label121.Text = "File:";
-            // 
-            // JobDataSave_button
-            // 
-            this.JobDataSave_button.Location = new System.Drawing.Point(784, 347);
-            this.JobDataSave_button.Name = "JobDataSave_button";
-            this.JobDataSave_button.Size = new System.Drawing.Size(75, 23);
-            this.JobDataSave_button.TabIndex = 60;
-            this.JobDataSave_button.Text = "Save";
-            this.toolTip1.SetToolTip(this.JobDataSave_button, "Saves a Job Data file. If saved with the same name \r\nand same directory as a CAD " +
-        "Data file, it will be loaded \r\nautomatically when the CAD data file is loaded.");
-            this.JobDataSave_button.UseVisualStyleBackColor = true;
-            this.JobDataSave_button.Click += new System.EventHandler(this.JobDataSave_button_Click);
-            // 
-            // JobDataLoad_button
-            // 
-            this.JobDataLoad_button.Location = new System.Drawing.Point(784, 322);
-            this.JobDataLoad_button.Name = "JobDataLoad_button";
-            this.JobDataLoad_button.Size = new System.Drawing.Size(75, 23);
-            this.JobDataLoad_button.TabIndex = 59;
-            this.JobDataLoad_button.Text = "Load";
-            this.toolTip1.SetToolTip(this.JobDataLoad_button, "Loads a Job Data file");
-            this.JobDataLoad_button.UseVisualStyleBackColor = true;
-            this.JobDataLoad_button.Click += new System.EventHandler(this.JobDataLoad_button_Click);
-            // 
-            // LoadCadData_button
-            // 
-            this.LoadCadData_button.Location = new System.Drawing.Point(785, 10);
-            this.LoadCadData_button.Name = "LoadCadData_button";
-            this.LoadCadData_button.Size = new System.Drawing.Size(75, 23);
-            this.LoadCadData_button.TabIndex = 57;
-            this.LoadCadData_button.Text = "Load";
-            this.toolTip1.SetToolTip(this.LoadCadData_button, "Loads CSV format file. This file should \r\noriginate from your PCB design program." +
-        "\r\nIf a Job Data file with the same name is found at\r\nthe same directory, it is l" +
-        "oaded, too.");
-            this.LoadCadData_button.UseVisualStyleBackColor = true;
-            this.LoadCadData_button.Click += new System.EventHandler(this.LoadCadData_button_Click);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.PlaceOne_button);
-            this.groupBox3.Controls.Add(this.ShowMachine_button);
-            this.groupBox3.Controls.Add(this.ShowNominal_button);
-            this.groupBox3.Location = new System.Drawing.Point(656, 62);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(122, 118);
-            this.groupBox3.TabIndex = 56;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Component Operations";
-            // 
-            // PlaceOne_button
-            // 
-            this.PlaceOne_button.Location = new System.Drawing.Point(5, 87);
-            this.PlaceOne_button.Name = "PlaceOne_button";
-            this.PlaceOne_button.Size = new System.Drawing.Size(110, 23);
-            this.PlaceOne_button.TabIndex = 49;
-            this.PlaceOne_button.Text = "Place";
-            this.PlaceOne_button.UseVisualStyleBackColor = true;
-            this.PlaceOne_button.Click += new System.EventHandler(this.PlaceOne_button_Click);
-            // 
-            // ShowMachine_button
-            // 
-            this.ShowMachine_button.Location = new System.Drawing.Point(5, 29);
-            this.ShowMachine_button.Name = "ShowMachine_button";
-            this.ShowMachine_button.Size = new System.Drawing.Size(110, 23);
-            this.ShowMachine_button.TabIndex = 46;
-            this.ShowMachine_button.Text = "Measured location";
-            this.toolTip1.SetToolTip(this.ShowMachine_button, "Shows selected component measured location");
-            this.ShowMachine_button.UseVisualStyleBackColor = true;
-            this.ShowMachine_button.Click += new System.EventHandler(this.ShowMachine_button_Click);
-            // 
-            // ShowNominal_button
-            // 
-            this.ShowNominal_button.Location = new System.Drawing.Point(5, 58);
-            this.ShowNominal_button.Name = "ShowNominal_button";
-            this.ShowNominal_button.Size = new System.Drawing.Size(110, 23);
-            this.ShowNominal_button.TabIndex = 45;
-            this.ShowNominal_button.Text = "Nominal location";
-            this.toolTip1.SetToolTip(this.ShowNominal_button, "Shows selected component location based on PCB zero and \r\nCAD data coordinates on" +
-        "ly (no optical measurements).");
-            this.ShowNominal_button.UseVisualStyleBackColor = true;
-            this.ShowNominal_button.Click += new System.EventHandler(this.ShowNominal_button_Click);
-            // 
-            // JobCounterCW_checkBox
-            // 
-            this.JobCounterCW_checkBox.AutoSize = true;
-            this.JobCounterCW_checkBox.Enabled = false;
-            this.JobCounterCW_checkBox.ForeColor = System.Drawing.Color.DarkRed;
-            this.JobCounterCW_checkBox.Location = new System.Drawing.Point(916, 280);
-            this.JobCounterCW_checkBox.Name = "JobCounterCW_checkBox";
-            this.JobCounterCW_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.JobCounterCW_checkBox.Size = new System.Drawing.Size(120, 17);
-            this.JobCounterCW_checkBox.TabIndex = 55;
-            this.JobCounterCW_checkBox.Text = "Data is Counter-CW";
-            this.JobCounterCW_checkBox.UseVisualStyleBackColor = true;
-            this.JobCounterCW_checkBox.Visible = false;
-            // 
-            // RotationOffset_textBox
-            // 
-            this.RotationOffset_textBox.Location = new System.Drawing.Point(862, 276);
-            this.RotationOffset_textBox.Name = "RotationOffset_textBox";
-            this.RotationOffset_textBox.Size = new System.Drawing.Size(43, 20);
-            this.RotationOffset_textBox.TabIndex = 54;
-            this.RotationOffset_textBox.Text = "0.0";
-            this.RotationOffset_textBox.Visible = false;
-            // 
-            // JobOffsetY_textBox
-            // 
-            this.JobOffsetY_textBox.Location = new System.Drawing.Point(737, 255);
-            this.JobOffsetY_textBox.Name = "JobOffsetY_textBox";
-            this.JobOffsetY_textBox.Size = new System.Drawing.Size(43, 20);
-            this.JobOffsetY_textBox.TabIndex = 39;
-            this.JobOffsetY_textBox.Text = "0.0";
-            this.JobOffsetY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JobOffsetY_textBox_KeyPress);
-            this.JobOffsetY_textBox.Leave += new System.EventHandler(this.JobOffsetY_textBox_Leave);
-            // 
-            // JobOffsetX_textBox
-            // 
-            this.JobOffsetX_textBox.Location = new System.Drawing.Point(737, 229);
-            this.JobOffsetX_textBox.Name = "JobOffsetX_textBox";
-            this.JobOffsetX_textBox.Size = new System.Drawing.Size(43, 20);
-            this.JobOffsetX_textBox.TabIndex = 37;
-            this.JobOffsetX_textBox.Text = "0.0";
-            this.JobOffsetX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JobOffsetX_textBox_KeyPress);
-            this.JobOffsetX_textBox.Leave += new System.EventHandler(this.JobOffsetX_textBox_Leave);
-            // 
-            // label60
-            // 
-            this.label60.AutoSize = true;
-            this.label60.Enabled = false;
-            this.label60.ForeColor = System.Drawing.Color.DarkRed;
-            this.label60.Location = new System.Drawing.Point(780, 280);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(78, 13);
-            this.label60.TabIndex = 53;
-            this.label60.Text = "Job Offset Rot:";
-            this.label60.Visible = false;
-            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.ResetAllTapes_button);
             this.groupBox2.Controls.Add(this.ResetOneTape_button);
-            this.groupBox2.Controls.Add(this.PasteRow_button);
-            this.groupBox2.Controls.Add(this.CopyRow_button);
             this.groupBox2.Controls.Add(this.NewRow_button);
             this.groupBox2.Controls.Add(this.PlaceThese_button);
             this.groupBox2.Controls.Add(this.DeleteComponentGroup_button);
             this.groupBox2.Controls.Add(this.Down_button);
             this.groupBox2.Controls.Add(this.Up_button);
-            this.groupBox2.Location = new System.Drawing.Point(656, 371);
+            this.groupBox2.Controls.Add(this.PlaceAll_button);
+            this.groupBox2.Location = new System.Drawing.Point(10, 329);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(122, 318);
+            this.groupBox2.Size = new System.Drawing.Size(122, 353);
             this.groupBox2.TabIndex = 51;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Row Operations";
             // 
+            // ResetAllTapes_button
+            // 
+            this.ResetAllTapes_button.Location = new System.Drawing.Point(6, 266);
+            this.ResetAllTapes_button.Name = "ResetAllTapes_button";
+            this.ResetAllTapes_button.Size = new System.Drawing.Size(109, 23);
+            this.ResetAllTapes_button.TabIndex = 37;
+            this.ResetAllTapes_button.Text = "Reset All Tapes";
+            this.toolTip1.SetToolTip(this.ResetAllTapes_button, "Reset all tape loacations to 1");
+            this.ResetAllTapes_button.UseVisualStyleBackColor = true;
+            this.ResetAllTapes_button.Click += new System.EventHandler(this.ResetAllTapes_button_Click);
+            // 
             // ResetOneTape_button
             // 
-            this.ResetOneTape_button.Location = new System.Drawing.Point(7, 207);
+            this.ResetOneTape_button.Location = new System.Drawing.Point(5, 148);
             this.ResetOneTape_button.Name = "ResetOneTape_button";
             this.ResetOneTape_button.Size = new System.Drawing.Size(109, 23);
             this.ResetOneTape_button.TabIndex = 25;
@@ -6270,26 +3644,6 @@
             this.toolTip1.SetToolTip(this.ResetOneTape_button, "Resets the  tape pickup locations for \r\nthe components on selected rows to 1.");
             this.ResetOneTape_button.UseVisualStyleBackColor = true;
             this.ResetOneTape_button.Click += new System.EventHandler(this.ResetOneTape_button_Click);
-            // 
-            // PasteRow_button
-            // 
-            this.PasteRow_button.Location = new System.Drawing.Point(6, 177);
-            this.PasteRow_button.Name = "PasteRow_button";
-            this.PasteRow_button.Size = new System.Drawing.Size(110, 23);
-            this.PasteRow_button.TabIndex = 24;
-            this.PasteRow_button.Text = "Paste Row";
-            this.PasteRow_button.UseVisualStyleBackColor = true;
-            this.PasteRow_button.Click += new System.EventHandler(this.PasteRow_button_Click);
-            // 
-            // CopyRow_button
-            // 
-            this.CopyRow_button.Location = new System.Drawing.Point(6, 148);
-            this.CopyRow_button.Name = "CopyRow_button";
-            this.CopyRow_button.Size = new System.Drawing.Size(110, 23);
-            this.CopyRow_button.TabIndex = 23;
-            this.CopyRow_button.Text = "Copy Row";
-            this.CopyRow_button.UseVisualStyleBackColor = true;
-            this.CopyRow_button.Click += new System.EventHandler(this.CopyRow_button_Click);
             // 
             // NewRow_button
             // 
@@ -6304,7 +3658,7 @@
             // 
             // PlaceThese_button
             // 
-            this.PlaceThese_button.Location = new System.Drawing.Point(6, 285);
+            this.PlaceThese_button.Location = new System.Drawing.Point(7, 324);
             this.PlaceThese_button.Name = "PlaceThese_button";
             this.PlaceThese_button.Size = new System.Drawing.Size(110, 23);
             this.PlaceThese_button.TabIndex = 17;
@@ -6346,11 +3700,140 @@
             this.Up_button.UseVisualStyleBackColor = true;
             this.Up_button.Click += new System.EventHandler(this.Up_button_Click);
             // 
+            // PlaceAll_button
+            // 
+            this.PlaceAll_button.Location = new System.Drawing.Point(8, 295);
+            this.PlaceAll_button.Name = "PlaceAll_button";
+            this.PlaceAll_button.Size = new System.Drawing.Size(109, 23);
+            this.PlaceAll_button.TabIndex = 20;
+            this.PlaceAll_button.Text = "Place All";
+            this.toolTip1.SetToolTip(this.PlaceAll_button, "Places all components on the Job Data table.");
+            this.PlaceAll_button.UseVisualStyleBackColor = true;
+            this.PlaceAll_button.Click += new System.EventHandler(this.PlaceAll_button_Click);
+            // 
+            // JobFileName_label
+            // 
+            this.JobFileName_label.AutoSize = true;
+            this.JobFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.JobFileName_label.Location = new System.Drawing.Point(341, 277);
+            this.JobFileName_label.Name = "JobFileName_label";
+            this.JobFileName_label.Size = new System.Drawing.Size(29, 20);
+            this.JobFileName_label.TabIndex = 62;
+            this.JobFileName_label.Text = "----";
+            // 
+            // label121
+            // 
+            this.label121.AutoSize = true;
+            this.label121.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label121.Location = new System.Drawing.Point(303, 277);
+            this.label121.Name = "label121";
+            this.label121.Size = new System.Drawing.Size(38, 20);
+            this.label121.TabIndex = 61;
+            this.label121.Text = "File:";
+            // 
+            // JobDataSave_button
+            // 
+            this.JobDataSave_button.Location = new System.Drawing.Point(222, 298);
+            this.JobDataSave_button.Name = "JobDataSave_button";
+            this.JobDataSave_button.Size = new System.Drawing.Size(75, 27);
+            this.JobDataSave_button.TabIndex = 60;
+            this.JobDataSave_button.Text = "Save";
+            this.toolTip1.SetToolTip(this.JobDataSave_button, "Saves a Job Data file. If saved with the same name \r\nand same directory as a CAD " +
+        "Data file, it will be loaded \r\nautomatically when the CAD data file is loaded.");
+            this.JobDataSave_button.UseVisualStyleBackColor = true;
+            this.JobDataSave_button.Click += new System.EventHandler(this.JobDataSave_button_Click);
+            // 
+            // JobDataLoad_button
+            // 
+            this.JobDataLoad_button.Location = new System.Drawing.Point(222, 273);
+            this.JobDataLoad_button.Name = "JobDataLoad_button";
+            this.JobDataLoad_button.Size = new System.Drawing.Size(75, 27);
+            this.JobDataLoad_button.TabIndex = 59;
+            this.JobDataLoad_button.Text = "Load";
+            this.toolTip1.SetToolTip(this.JobDataLoad_button, "Loads a Job Data file");
+            this.JobDataLoad_button.UseVisualStyleBackColor = true;
+            this.JobDataLoad_button.Click += new System.EventHandler(this.JobDataLoad_button_Click);
+            // 
+            // LoadCadData_button
+            // 
+            this.LoadCadData_button.Location = new System.Drawing.Point(239, 0);
+            this.LoadCadData_button.Name = "LoadCadData_button";
+            this.LoadCadData_button.Size = new System.Drawing.Size(75, 23);
+            this.LoadCadData_button.TabIndex = 57;
+            this.LoadCadData_button.Text = "Load";
+            this.toolTip1.SetToolTip(this.LoadCadData_button, "Loads CSV format file. This file should \r\noriginate from your PCB design program." +
+        "\r\nIf a Job Data file with the same name is found at\r\nthe same directory, it is l" +
+        "oaded, too.");
+            this.LoadCadData_button.UseVisualStyleBackColor = true;
+            this.LoadCadData_button.Click += new System.EventHandler(this.LoadCadData_button_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.PlaceOne_button);
+            this.groupBox3.Controls.Add(this.ShowMachine_button);
+            this.groupBox3.Controls.Add(this.ShowNominal_button);
+            this.groupBox3.Location = new System.Drawing.Point(10, 191);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(122, 118);
+            this.groupBox3.TabIndex = 56;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Component Operations";
+            // 
+            // PlaceOne_button
+            // 
+            this.PlaceOne_button.Location = new System.Drawing.Point(5, 87);
+            this.PlaceOne_button.Name = "PlaceOne_button";
+            this.PlaceOne_button.Size = new System.Drawing.Size(110, 23);
+            this.PlaceOne_button.TabIndex = 49;
+            this.PlaceOne_button.Text = "Place";
+            this.PlaceOne_button.UseVisualStyleBackColor = true;
+            this.PlaceOne_button.Click += new System.EventHandler(this.PlaceOne_button_Click);
+            // 
+            // ShowMachine_button
+            // 
+            this.ShowMachine_button.Location = new System.Drawing.Point(5, 29);
+            this.ShowMachine_button.Name = "ShowMachine_button";
+            this.ShowMachine_button.Size = new System.Drawing.Size(110, 23);
+            this.ShowMachine_button.TabIndex = 46;
+            this.ShowMachine_button.Text = "Measured location";
+            this.toolTip1.SetToolTip(this.ShowMachine_button, "Shows selected component measured location");
+            this.ShowMachine_button.UseVisualStyleBackColor = true;
+            this.ShowMachine_button.Click += new System.EventHandler(this.ShowMachine_button_Click);
+            // 
+            // ShowNominal_button
+            // 
+            this.ShowNominal_button.Location = new System.Drawing.Point(5, 58);
+            this.ShowNominal_button.Name = "ShowNominal_button";
+            this.ShowNominal_button.Size = new System.Drawing.Size(110, 23);
+            this.ShowNominal_button.TabIndex = 45;
+            this.ShowNominal_button.Text = "Nominal location";
+            this.toolTip1.SetToolTip(this.ShowNominal_button, "Shows selected component location based on PCB zero and \r\nCAD data coordinates on" +
+        "ly (no optical measurements).");
+            this.ShowNominal_button.UseVisualStyleBackColor = true;
+            this.ShowNominal_button.Click += new System.EventHandler(this.ShowNominal_button_Click);
+            // 
+            // JobOffsetY_textBox
+            // 
+            this.JobOffsetY_textBox.Location = new System.Drawing.Point(490, 25);
+            this.JobOffsetY_textBox.Name = "JobOffsetY_textBox";
+            this.JobOffsetY_textBox.Size = new System.Drawing.Size(43, 20);
+            this.JobOffsetY_textBox.TabIndex = 39;
+            this.JobOffsetY_textBox.Text = "0.0";
+            this.JobOffsetY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JobOffsetY_textBox_KeyPress);
+            this.JobOffsetY_textBox.Leave += new System.EventHandler(this.JobOffsetY_textBox_Leave);
+            // 
+            // JobOffsetX_textBox
+            // 
+            this.JobOffsetX_textBox.Location = new System.Drawing.Point(490, -1);
+            this.JobOffsetX_textBox.Name = "JobOffsetX_textBox";
+            this.JobOffsetX_textBox.Size = new System.Drawing.Size(43, 20);
+            this.JobOffsetX_textBox.TabIndex = 37;
+            this.JobOffsetX_textBox.Text = "0.0";
+            this.JobOffsetX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JobOffsetX_textBox_KeyPress);
+            this.JobOffsetX_textBox.Leave += new System.EventHandler(this.JobOffsetX_textBox_Leave);
+            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.ResetAllTapes_button);
-            this.groupBox1.Controls.Add(this.AbortPlacement_button);
-            this.groupBox1.Controls.Add(this.PausePlacement_button);
             this.groupBox1.Controls.Add(this.MachineCoords_label);
             this.groupBox1.Controls.Add(this.PlacedValue_label);
             this.groupBox1.Controls.Add(this.PlacedRotation_label);
@@ -6362,51 +3845,17 @@
             this.groupBox1.Controls.Add(this.label64);
             this.groupBox1.Controls.Add(this.label63);
             this.groupBox1.Controls.Add(this.label58);
-            this.groupBox1.Controls.Add(this.PlaceAll_button);
-            this.groupBox1.Location = new System.Drawing.Point(6, 505);
+            this.groupBox1.Location = new System.Drawing.Point(625, 329);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(340, 144);
+            this.groupBox1.Size = new System.Drawing.Size(182, 144);
             this.groupBox1.TabIndex = 50;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Placement Operations";
             // 
-            // ResetAllTapes_button
-            // 
-            this.ResetAllTapes_button.Location = new System.Drawing.Point(6, 48);
-            this.ResetAllTapes_button.Name = "ResetAllTapes_button";
-            this.ResetAllTapes_button.Size = new System.Drawing.Size(109, 23);
-            this.ResetAllTapes_button.TabIndex = 37;
-            this.ResetAllTapes_button.Text = "Reset All Tapes";
-            this.toolTip1.SetToolTip(this.ResetAllTapes_button, "Reset all tape loacations to 1");
-            this.ResetAllTapes_button.UseVisualStyleBackColor = true;
-            this.ResetAllTapes_button.Click += new System.EventHandler(this.ResetAllTapes_button_Click);
-            // 
-            // AbortPlacement_button
-            // 
-            this.AbortPlacement_button.Location = new System.Drawing.Point(6, 106);
-            this.AbortPlacement_button.Name = "AbortPlacement_button";
-            this.AbortPlacement_button.Size = new System.Drawing.Size(109, 23);
-            this.AbortPlacement_button.TabIndex = 36;
-            this.AbortPlacement_button.Text = "Stop";
-            this.toolTip1.SetToolTip(this.AbortPlacement_button, "Aborts the whole operation.");
-            this.AbortPlacement_button.UseVisualStyleBackColor = true;
-            this.AbortPlacement_button.Click += new System.EventHandler(this.AbortPlacement_button_Click);
-            // 
-            // PausePlacement_button
-            // 
-            this.PausePlacement_button.Location = new System.Drawing.Point(6, 77);
-            this.PausePlacement_button.Name = "PausePlacement_button";
-            this.PausePlacement_button.Size = new System.Drawing.Size(109, 23);
-            this.PausePlacement_button.TabIndex = 35;
-            this.PausePlacement_button.Text = "Pause";
-            this.toolTip1.SetToolTip(this.PausePlacement_button, "Temporary pause");
-            this.PausePlacement_button.UseVisualStyleBackColor = true;
-            this.PausePlacement_button.Click += new System.EventHandler(this.PausePlacement_button_Click);
-            // 
             // MachineCoords_label
             // 
             this.MachineCoords_label.AutoSize = true;
-            this.MachineCoords_label.Location = new System.Drawing.Point(121, 124);
+            this.MachineCoords_label.Location = new System.Drawing.Point(6, 121);
             this.MachineCoords_label.Name = "MachineCoords_label";
             this.MachineCoords_label.Size = new System.Drawing.Size(13, 13);
             this.MachineCoords_label.TabIndex = 34;
@@ -6415,7 +3864,7 @@
             // PlacedValue_label
             // 
             this.PlacedValue_label.AutoSize = true;
-            this.PlacedValue_label.Location = new System.Drawing.Point(210, 40);
+            this.PlacedValue_label.Location = new System.Drawing.Point(95, 37);
             this.PlacedValue_label.Name = "PlacedValue_label";
             this.PlacedValue_label.Size = new System.Drawing.Size(13, 13);
             this.PlacedValue_label.TabIndex = 33;
@@ -6424,7 +3873,7 @@
             // PlacedRotation_label
             // 
             this.PlacedRotation_label.AutoSize = true;
-            this.PlacedRotation_label.Location = new System.Drawing.Point(210, 103);
+            this.PlacedRotation_label.Location = new System.Drawing.Point(95, 100);
             this.PlacedRotation_label.Name = "PlacedRotation_label";
             this.PlacedRotation_label.Size = new System.Drawing.Size(13, 13);
             this.PlacedRotation_label.TabIndex = 32;
@@ -6433,7 +3882,7 @@
             // PlacedY_label
             // 
             this.PlacedY_label.AutoSize = true;
-            this.PlacedY_label.Location = new System.Drawing.Point(210, 82);
+            this.PlacedY_label.Location = new System.Drawing.Point(95, 79);
             this.PlacedY_label.Name = "PlacedY_label";
             this.PlacedY_label.Size = new System.Drawing.Size(13, 13);
             this.PlacedY_label.TabIndex = 31;
@@ -6442,7 +3891,7 @@
             // PlacedX_label
             // 
             this.PlacedX_label.AutoSize = true;
-            this.PlacedX_label.Location = new System.Drawing.Point(210, 61);
+            this.PlacedX_label.Location = new System.Drawing.Point(95, 58);
             this.PlacedX_label.Name = "PlacedX_label";
             this.PlacedX_label.Size = new System.Drawing.Size(13, 13);
             this.PlacedX_label.TabIndex = 30;
@@ -6451,7 +3900,7 @@
             // PlacedComponent_label
             // 
             this.PlacedComponent_label.AutoSize = true;
-            this.PlacedComponent_label.Location = new System.Drawing.Point(210, 19);
+            this.PlacedComponent_label.Location = new System.Drawing.Point(95, 16);
             this.PlacedComponent_label.Name = "PlacedComponent_label";
             this.PlacedComponent_label.Size = new System.Drawing.Size(13, 13);
             this.PlacedComponent_label.TabIndex = 29;
@@ -6460,7 +3909,7 @@
             // label66
             // 
             this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(121, 40);
+            this.label66.Location = new System.Drawing.Point(6, 37);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(86, 13);
             this.label66.TabIndex = 28;
@@ -6469,7 +3918,7 @@
             // label65
             // 
             this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(121, 103);
+            this.label65.Location = new System.Drawing.Point(6, 100);
             this.label65.Name = "label65";
             this.label65.Size = new System.Drawing.Size(50, 13);
             this.label65.TabIndex = 27;
@@ -6478,7 +3927,7 @@
             // label64
             // 
             this.label64.AutoSize = true;
-            this.label64.Location = new System.Drawing.Point(121, 82);
+            this.label64.Location = new System.Drawing.Point(6, 79);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(62, 13);
             this.label64.TabIndex = 26;
@@ -6487,7 +3936,7 @@
             // label63
             // 
             this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(121, 61);
+            this.label63.Location = new System.Drawing.Point(6, 58);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(62, 13);
             this.label63.TabIndex = 25;
@@ -6496,28 +3945,17 @@
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(121, 19);
+            this.label58.Location = new System.Drawing.Point(6, 16);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(69, 13);
             this.label58.TabIndex = 23;
             this.label58.Text = "Now placing:";
             // 
-            // PlaceAll_button
-            // 
-            this.PlaceAll_button.Location = new System.Drawing.Point(6, 19);
-            this.PlaceAll_button.Name = "PlaceAll_button";
-            this.PlaceAll_button.Size = new System.Drawing.Size(109, 23);
-            this.PlaceAll_button.TabIndex = 20;
-            this.PlaceAll_button.Text = "Place All";
-            this.toolTip1.SetToolTip(this.PlaceAll_button, "Places all components on the Job Data table.");
-            this.PlaceAll_button.UseVisualStyleBackColor = true;
-            this.PlaceAll_button.Click += new System.EventHandler(this.PlaceAll_button_Click);
-            // 
             // label89
             // 
             this.label89.AutoSize = true;
             this.label89.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label89.Location = new System.Drawing.Point(700, 322);
+            this.label89.Location = new System.Drawing.Point(138, 277);
             this.label89.Name = "label89";
             this.label89.Size = new System.Drawing.Size(78, 20);
             this.label89.TabIndex = 44;
@@ -6528,7 +3966,7 @@
             // 
             this.label88.AutoSize = true;
             this.label88.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label88.Location = new System.Drawing.Point(693, 13);
+            this.label88.Location = new System.Drawing.Point(147, 0);
             this.label88.Name = "label88";
             this.label88.Size = new System.Drawing.Size(86, 20);
             this.label88.TabIndex = 43;
@@ -6537,7 +3975,7 @@
             // label86
             // 
             this.label86.AutoSize = true;
-            this.label86.Location = new System.Drawing.Point(655, 261);
+            this.label86.Location = new System.Drawing.Point(408, 31);
             this.label86.Name = "label86";
             this.label86.Size = new System.Drawing.Size(68, 13);
             this.label86.TabIndex = 40;
@@ -6546,36 +3984,16 @@
             // label85
             // 
             this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(655, 235);
+            this.label85.Location = new System.Drawing.Point(408, 5);
             this.label85.Name = "label85";
             this.label85.Size = new System.Drawing.Size(68, 13);
             this.label85.TabIndex = 38;
             this.label85.Text = "Job Offset X:";
             // 
-            // label59
-            // 
-            this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(3, 3);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(100, 13);
-            this.label59.TabIndex = 13;
-            this.label59.Text = "Down Camera View";
-            // 
-            // Placement_pictureBox
-            // 
-            this.Placement_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Placement_pictureBox.Location = new System.Drawing.Point(6, 19);
-            this.Placement_pictureBox.Name = "Placement_pictureBox";
-            this.Placement_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Placement_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.Placement_pictureBox.TabIndex = 12;
-            this.Placement_pictureBox.TabStop = false;
-            this.Placement_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Placement_pictureBox_MouseClick);
-            // 
             // JobData_GridView
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
-            this.JobData_GridView.AllowUserToResizeRows = false;
+            this.JobData_GridView.AutoGenerateColumns = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -6587,56 +4005,65 @@
             this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ComponentCount,
-            this.ComponentType,
-            this.GroupMethod,
-            this.MethodParamAllComponents,
-            this.ComponentList});
+            this.countDataGridViewTextBoxColumn,
+            this.componentListDataGridViewTextBoxColumn,
+            this.componentTypeDataGridViewTextBoxColumn,
+            this.methodDataGridViewTextBoxColumn1,
+            this.methodParametersDataGridViewTextBoxColumn});
+            this.JobData_GridView.DataSource = this.jobDataBindingSource;
             this.JobData_GridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.JobData_GridView.Location = new System.Drawing.Point(784, 376);
+            this.JobData_GridView.Location = new System.Drawing.Point(138, 329);
             this.JobData_GridView.Name = "JobData_GridView";
             this.JobData_GridView.RowHeadersVisible = false;
             this.JobData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.JobData_GridView.Size = new System.Drawing.Size(458, 314);
+            this.JobData_GridView.Size = new System.Drawing.Size(481, 353);
             this.JobData_GridView.TabIndex = 11;
             this.JobData_GridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellClick);
-            this.JobData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellEndEdit);
             // 
-            // ComponentCount
+            // countDataGridViewTextBoxColumn
             // 
-            this.ComponentCount.HeaderText = "Count";
-            this.ComponentCount.Name = "ComponentCount";
-            this.ComponentCount.Width = 40;
+            this.countDataGridViewTextBoxColumn.DataPropertyName = "Count";
+            this.countDataGridViewTextBoxColumn.HeaderText = "Count";
+            this.countDataGridViewTextBoxColumn.Name = "countDataGridViewTextBoxColumn";
+            this.countDataGridViewTextBoxColumn.ReadOnly = true;
+            this.countDataGridViewTextBoxColumn.Width = 45;
             // 
-            // ComponentType
+            // componentListDataGridViewTextBoxColumn
             // 
-            this.ComponentType.HeaderText = "Component Type";
-            this.ComponentType.Name = "ComponentType";
-            this.ComponentType.Width = 130;
+            this.componentListDataGridViewTextBoxColumn.DataPropertyName = "ComponentList";
+            this.componentListDataGridViewTextBoxColumn.HeaderText = "ComponentList";
+            this.componentListDataGridViewTextBoxColumn.Name = "componentListDataGridViewTextBoxColumn";
+            this.componentListDataGridViewTextBoxColumn.ReadOnly = true;
+            this.componentListDataGridViewTextBoxColumn.Width = 150;
             // 
-            // GroupMethod
+            // componentTypeDataGridViewTextBoxColumn
             // 
-            this.GroupMethod.HeaderText = "Method";
-            this.GroupMethod.Name = "GroupMethod";
-            this.GroupMethod.ReadOnly = true;
-            this.GroupMethod.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.GroupMethod.Width = 80;
+            this.componentTypeDataGridViewTextBoxColumn.DataPropertyName = "ComponentType";
+            this.componentTypeDataGridViewTextBoxColumn.HeaderText = "ComponentType";
+            this.componentTypeDataGridViewTextBoxColumn.Name = "componentTypeDataGridViewTextBoxColumn";
+            this.componentTypeDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // MethodParamAllComponents
+            // methodDataGridViewTextBoxColumn1
             // 
-            this.MethodParamAllComponents.HeaderText = "Method Parameters";
-            this.MethodParamAllComponents.Name = "MethodParamAllComponents";
+            this.methodDataGridViewTextBoxColumn1.DataPropertyName = "Method";
+            this.methodDataGridViewTextBoxColumn1.HeaderText = "Method";
+            this.methodDataGridViewTextBoxColumn1.Name = "methodDataGridViewTextBoxColumn1";
+            this.methodDataGridViewTextBoxColumn1.Width = 75;
             // 
-            // ComponentList
+            // methodParametersDataGridViewTextBoxColumn
             // 
-            this.ComponentList.HeaderText = "Components";
-            this.ComponentList.Name = "ComponentList";
-            this.ComponentList.Width = 130;
+            this.methodParametersDataGridViewTextBoxColumn.DataPropertyName = "MethodParameters";
+            this.methodParametersDataGridViewTextBoxColumn.HeaderText = "MethodParameters";
+            this.methodParametersDataGridViewTextBoxColumn.Name = "methodParametersDataGridViewTextBoxColumn";
+            // 
+            // jobDataBindingSource
+            // 
+            this.jobDataBindingSource.DataSource = typeof(LitePlacer.JobData);
             // 
             // Bottom_checkBox
             // 
             this.Bottom_checkBox.AutoSize = true;
-            this.Bottom_checkBox.Location = new System.Drawing.Point(785, 39);
+            this.Bottom_checkBox.Location = new System.Drawing.Point(239, 29);
             this.Bottom_checkBox.Name = "Bottom_checkBox";
             this.Bottom_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Bottom_checkBox.Size = new System.Drawing.Size(59, 17);
@@ -6649,6 +4076,7 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.AllowUserToDeleteRows = false;
             this.CadData_GridView.AllowUserToResizeRows = false;
+            this.CadData_GridView.AutoGenerateColumns = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -6661,73 +4089,97 @@
             this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Component,
-            this.Value_Footprint,
-            this.X_nominal,
-            this.Y_nominal,
-            this.Rotation,
-            this.X_Machine,
-            this.Y_machine,
-            this.Rotation_machine});
-            this.CadData_GridView.Location = new System.Drawing.Point(788, 58);
+            this.designatorDataGridViewTextBoxColumn,
+            this.footprintDataGridViewTextBoxColumn,
+            this.xnominalDataGridViewTextBoxColumn,
+            this.ynominalDataGridViewTextBoxColumn,
+            this.rotationDataGridViewTextBoxColumn,
+            this.xmachineDataGridViewTextBoxColumn,
+            this.ymachineDataGridViewTextBoxColumn,
+            this.rotationmachineDataGridViewTextBoxColumn,
+            this.methodDataGridViewTextBoxColumn,
+            this.isFiducialDataGridViewCheckBoxColumn});
+            this.CadData_GridView.DataSource = this.physicalComponentBindingSource;
+            this.CadData_GridView.Location = new System.Drawing.Point(138, 50);
             this.CadData_GridView.Name = "CadData_GridView";
             this.CadData_GridView.RowHeadersVisible = false;
             this.CadData_GridView.RowHeadersWidth = 16;
             this.CadData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.CadData_GridView.Size = new System.Drawing.Size(457, 212);
+            this.CadData_GridView.Size = new System.Drawing.Size(677, 212);
             this.CadData_GridView.TabIndex = 5;
             // 
-            // Component
+            // designatorDataGridViewTextBoxColumn
             // 
-            this.Component.HeaderText = "Component";
-            this.Component.Name = "Component";
+            this.designatorDataGridViewTextBoxColumn.DataPropertyName = "Designator";
+            this.designatorDataGridViewTextBoxColumn.HeaderText = "Designator";
+            this.designatorDataGridViewTextBoxColumn.Name = "designatorDataGridViewTextBoxColumn";
             // 
-            // Value_Footprint
+            // footprintDataGridViewTextBoxColumn
             // 
-            this.Value_Footprint.HeaderText = "Component Type";
-            this.Value_Footprint.Name = "Value_Footprint";
-            this.Value_Footprint.Width = 130;
+            this.footprintDataGridViewTextBoxColumn.DataPropertyName = "Footprint";
+            this.footprintDataGridViewTextBoxColumn.HeaderText = "Footprint";
+            this.footprintDataGridViewTextBoxColumn.Name = "footprintDataGridViewTextBoxColumn";
             // 
-            // X_nominal
+            // xnominalDataGridViewTextBoxColumn
             // 
-            this.X_nominal.HeaderText = "X, nom.";
-            this.X_nominal.Name = "X_nominal";
-            this.X_nominal.Width = 80;
+            this.xnominalDataGridViewTextBoxColumn.DataPropertyName = "X_nominal";
+            this.xnominalDataGridViewTextBoxColumn.HeaderText = "X_nominal";
+            this.xnominalDataGridViewTextBoxColumn.Name = "xnominalDataGridViewTextBoxColumn";
             // 
-            // Y_nominal
+            // ynominalDataGridViewTextBoxColumn
             // 
-            this.Y_nominal.HeaderText = "Y, nom.";
-            this.Y_nominal.Name = "Y_nominal";
-            this.Y_nominal.Width = 80;
+            this.ynominalDataGridViewTextBoxColumn.DataPropertyName = "Y_nominal";
+            this.ynominalDataGridViewTextBoxColumn.HeaderText = "Y_nominal";
+            this.ynominalDataGridViewTextBoxColumn.Name = "ynominalDataGridViewTextBoxColumn";
             // 
-            // Rotation
+            // rotationDataGridViewTextBoxColumn
             // 
-            this.Rotation.HeaderText = "Rotation";
-            this.Rotation.Name = "Rotation";
-            this.Rotation.Width = 70;
+            this.rotationDataGridViewTextBoxColumn.DataPropertyName = "Rotation";
+            this.rotationDataGridViewTextBoxColumn.HeaderText = "Rotation";
+            this.rotationDataGridViewTextBoxColumn.Name = "rotationDataGridViewTextBoxColumn";
             // 
-            // X_Machine
+            // xmachineDataGridViewTextBoxColumn
             // 
-            this.X_Machine.HeaderText = "X, machine";
-            this.X_Machine.Name = "X_Machine";
-            this.X_Machine.Width = 80;
+            this.xmachineDataGridViewTextBoxColumn.DataPropertyName = "X_machine";
+            this.xmachineDataGridViewTextBoxColumn.HeaderText = "X_machine";
+            this.xmachineDataGridViewTextBoxColumn.Name = "xmachineDataGridViewTextBoxColumn";
             // 
-            // Y_machine
+            // ymachineDataGridViewTextBoxColumn
             // 
-            this.Y_machine.HeaderText = "Y, machine";
-            this.Y_machine.Name = "Y_machine";
-            this.Y_machine.Width = 80;
+            this.ymachineDataGridViewTextBoxColumn.DataPropertyName = "Y_machine";
+            this.ymachineDataGridViewTextBoxColumn.HeaderText = "Y_machine";
+            this.ymachineDataGridViewTextBoxColumn.Name = "ymachineDataGridViewTextBoxColumn";
             // 
-            // Rotation_machine
+            // rotationmachineDataGridViewTextBoxColumn
             // 
-            this.Rotation_machine.HeaderText = "Rotation, machine";
-            this.Rotation_machine.Name = "Rotation_machine";
+            this.rotationmachineDataGridViewTextBoxColumn.DataPropertyName = "Rotation_machine";
+            this.rotationmachineDataGridViewTextBoxColumn.HeaderText = "Rotation_machine";
+            this.rotationmachineDataGridViewTextBoxColumn.Name = "rotationmachineDataGridViewTextBoxColumn";
+            // 
+            // methodDataGridViewTextBoxColumn
+            // 
+            this.methodDataGridViewTextBoxColumn.DataPropertyName = "Method";
+            this.methodDataGridViewTextBoxColumn.HeaderText = "Method";
+            this.methodDataGridViewTextBoxColumn.Name = "methodDataGridViewTextBoxColumn";
+            this.methodDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // isFiducialDataGridViewCheckBoxColumn
+            // 
+            this.isFiducialDataGridViewCheckBoxColumn.DataPropertyName = "IsFiducial";
+            this.isFiducialDataGridViewCheckBoxColumn.HeaderText = "IsFiducial";
+            this.isFiducialDataGridViewCheckBoxColumn.Name = "isFiducialDataGridViewCheckBoxColumn";
+            this.isFiducialDataGridViewCheckBoxColumn.ReadOnly = true;
+            this.isFiducialDataGridViewCheckBoxColumn.Visible = false;
+            // 
+            // physicalComponentBindingSource
+            // 
+            this.physicalComponentBindingSource.DataSource = typeof(LitePlacer.PhysicalComponent);
             // 
             // CadFilePath_label
             // 
             this.CadFilePath_label.AutoSize = true;
             this.CadFilePath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CadFilePath_label.Location = new System.Drawing.Point(904, 41);
+            this.CadFilePath_label.Location = new System.Drawing.Point(358, 31);
             this.CadFilePath_label.Name = "CadFilePath_label";
             this.CadFilePath_label.Size = new System.Drawing.Size(19, 13);
             this.CadFilePath_label.TabIndex = 3;
@@ -6737,7 +4189,7 @@
             // 
             this.label56.AutoSize = true;
             this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label56.Location = new System.Drawing.Point(866, 41);
+            this.label56.Location = new System.Drawing.Point(320, 31);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(32, 13);
             this.label56.TabIndex = 2;
@@ -6747,7 +4199,7 @@
             // 
             this.CadFileName_label.AutoSize = true;
             this.CadFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CadFileName_label.Location = new System.Drawing.Point(903, 10);
+            this.CadFileName_label.Location = new System.Drawing.Point(357, 0);
             this.CadFileName_label.Name = "CadFileName_label";
             this.CadFileName_label.Size = new System.Drawing.Size(29, 20);
             this.CadFileName_label.TabIndex = 1;
@@ -6757,26 +4209,156 @@
             // 
             this.label54.AutoSize = true;
             this.label54.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label54.Location = new System.Drawing.Point(865, 10);
+            this.label54.Location = new System.Drawing.Point(319, 0);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(38, 20);
             this.label54.TabIndex = 0;
             this.label54.Text = "File:";
             // 
+            // MultiCalibrate_button
+            // 
+            this.MultiCalibrate_button.BackColor = System.Drawing.Color.Crimson;
+            this.MultiCalibrate_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MultiCalibrate_button.Location = new System.Drawing.Point(685, 840);
+            this.MultiCalibrate_button.Name = "MultiCalibrate_button";
+            this.MultiCalibrate_button.Size = new System.Drawing.Size(129, 49);
+            this.MultiCalibrate_button.TabIndex = 75;
+            this.MultiCalibrate_button.Text = " Multi Calibration";
+            this.toolTip1.SetToolTip(this.MultiCalibrate_button, "This will home, calibrate needle, and calibrate pcb (remeasure).");
+            this.MultiCalibrate_button.UseVisualStyleBackColor = false;
+            this.MultiCalibrate_button.Click += new System.EventHandler(this.MultiCalibrate_button_Click);
+            // 
+            // StopDemo_button
+            // 
+            this.StopDemo_button.Location = new System.Drawing.Point(665, 782);
+            this.StopDemo_button.Name = "StopDemo_button";
+            this.StopDemo_button.Size = new System.Drawing.Size(75, 23);
+            this.StopDemo_button.TabIndex = 74;
+            this.StopDemo_button.Text = "Stop Demo";
+            this.StopDemo_button.UseVisualStyleBackColor = true;
+            this.StopDemo_button.Visible = false;
+            // 
+            // Demo_button
+            // 
+            this.Demo_button.Location = new System.Drawing.Point(665, 748);
+            this.Demo_button.Name = "Demo_button";
+            this.Demo_button.Size = new System.Drawing.Size(75, 23);
+            this.Demo_button.TabIndex = 73;
+            this.Demo_button.Text = "Start Demo";
+            this.Demo_button.UseVisualStyleBackColor = true;
+            this.Demo_button.Visible = false;
+            // 
             // tabControlPages
             // 
             this.tabControlPages.Controls.Add(this.RunJob_tabPage);
             this.tabControlPages.Controls.Add(this.tabPageBasicSetup);
-            this.tabControlPages.Controls.Add(this.tabPageSetupCameras);
-            this.tabControlPages.Controls.Add(this.Components_tabPage);
             this.tabControlPages.Controls.Add(this.Tapes_tabPage);
+            this.tabControlPages.Controls.Add(this.tabPage5);
             this.tabControlPages.Location = new System.Drawing.Point(3, 3);
             this.tabControlPages.Name = "tabControlPages";
             this.tabControlPages.SelectedIndex = 0;
-            this.tabControlPages.Size = new System.Drawing.Size(1257, 721);
+            this.tabControlPages.Size = new System.Drawing.Size(829, 716);
             this.tabControlPages.TabIndex = 3;
-            this.tabControlPages.SelectedIndexChanged += new System.EventHandler(this.tabControlPages_SelectedIndexChanged);
-            this.tabControlPages.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControlPages_Selecting);
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.groupBox7);
+            this.tabPage5.Controls.Add(this.groupBox12);
+            this.tabPage5.Controls.Add(this.groupBox4);
+            this.tabPage5.Controls.Add(this.button2);
+            this.tabPage5.Controls.Add(this.Zlb_label);
+            this.tabPage5.Controls.Add(this.button1);
+            this.tabPage5.Controls.Add(this.label115);
+            this.tabPage5.Controls.Add(this.NeedleOffset_label);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(821, 690);
+            this.tabPage5.TabIndex = 7;
+            this.tabPage5.Text = "Calibrations";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.label3);
+            this.groupBox7.Controls.Add(this.label1);
+            this.groupBox7.Controls.Add(this.UpCameraBoxX_textBox);
+            this.groupBox7.Controls.Add(this.label129);
+            this.groupBox7.Controls.Add(this.label105);
+            this.groupBox7.Controls.Add(this.DownCamera_Calibration_button);
+            this.groupBox7.Controls.Add(this.SlackMeasurement_label);
+            this.groupBox7.Controls.Add(this.calibMoveDistance_textBox);
+            this.groupBox7.Controls.Add(this.label106);
+            this.groupBox7.Controls.Add(this.UpCameraBoxY_textBox);
+            this.groupBox7.Controls.Add(this.UpCameraBoxXmmPerPixel_label);
+            this.groupBox7.Controls.Add(this.UpCameraBoxYmmPerPixel_label);
+            this.groupBox7.Controls.Add(this.button_camera_calibrate);
+            this.groupBox7.Controls.Add(this.DownCameraBoxX_textBox);
+            this.groupBox7.Controls.Add(this.label70);
+            this.groupBox7.Controls.Add(this.label71);
+            this.groupBox7.Controls.Add(this.DownCameraBoxY_textBox);
+            this.groupBox7.Controls.Add(this.DownCameraBoxXmmPerPixel_label);
+            this.groupBox7.Controls.Add(this.DownCameraBoxYmmPerPixel_label);
+            this.groupBox7.Location = new System.Drawing.Point(165, 14);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(240, 241);
+            this.groupBox7.TabIndex = 148;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Camera mmPerPixel";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(115, 23);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.TabIndex = 143;
+            this.label3.Text = "DownCamera";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(42, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 13);
+            this.label1.TabIndex = 142;
+            this.label1.Text = "UpCamera";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.button4);
+            this.groupBox4.Controls.Add(this.SetProbing_button);
+            this.groupBox4.Controls.Add(this.label117);
+            this.groupBox4.Controls.Add(this.Z0toPCB_BasicTab_label);
+            this.groupBox4.Controls.Add(this.label111);
+            this.groupBox4.Controls.Add(this.Z_Backoff_label);
+            this.groupBox4.Controls.Add(this.Offset2Method_button);
+            this.groupBox4.Controls.Add(this.label143);
+            this.groupBox4.Controls.Add(this.zoffset_textbox);
+            this.groupBox4.Controls.Add(this.NeedleOffsetY_textBox);
+            this.groupBox4.Controls.Add(this.NeedleOffsetX_textBox);
+            this.groupBox4.Controls.Add(this.label130);
+            this.groupBox4.Controls.Add(this.label149);
+            this.groupBox4.Controls.Add(this.label148);
+            this.groupBox4.Controls.Add(this.label146);
+            this.groupBox4.Controls.Add(this.label131);
+            this.groupBox4.Location = new System.Drawing.Point(5, 14);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(154, 241);
+            this.groupBox4.TabIndex = 147;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Needle";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(9, 23);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(108, 23);
+            this.button4.TabIndex = 78;
+            this.button4.Text = "Rotational Offset";
+            this.toolTip1.SetToolTip(this.button4, "Re-runs needle calibration routine.");
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.TestNeedleRecognition_button_Click);
             // 
             // CAD_openFileDialog
             // 
@@ -6795,7 +4377,7 @@
             // 
             this.TrueX_label.AutoSize = true;
             this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrueX_label.Location = new System.Drawing.Point(760, 735);
+            this.TrueX_label.Location = new System.Drawing.Point(163, 733);
             this.TrueX_label.Name = "TrueX_label";
             this.TrueX_label.Size = new System.Drawing.Size(31, 9);
             this.TrueX_label.TabIndex = 77;
@@ -6804,7 +4386,7 @@
             // 
             // mechHome_button
             // 
-            this.mechHome_button.Location = new System.Drawing.Point(614, 830);
+            this.mechHome_button.Location = new System.Drawing.Point(17, 840);
             this.mechHome_button.Name = "mechHome_button";
             this.mechHome_button.Size = new System.Drawing.Size(93, 23);
             this.mechHome_button.TabIndex = 87;
@@ -6814,7 +4396,7 @@
             // 
             // OptHome_button
             // 
-            this.OptHome_button.Location = new System.Drawing.Point(613, 852);
+            this.OptHome_button.Location = new System.Drawing.Point(16, 862);
             this.OptHome_button.Name = "OptHome_button";
             this.OptHome_button.Size = new System.Drawing.Size(94, 23);
             this.OptHome_button.TabIndex = 88;
@@ -6822,57 +4404,51 @@
             this.OptHome_button.UseVisualStyleBackColor = true;
             this.OptHome_button.Click += new System.EventHandler(this.OptHome_button_Click);
             // 
-            // physicalComponentBindingSource
-            // 
-            this.physicalComponentBindingSource.DataSource = typeof(LitePlacer.PhysicalComponent);
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1264, 921);
+            this.ClientSize = new System.Drawing.Size(836, 926);
+            this.Controls.Add(this.CameraSetupTest_button);
+            this.Controls.Add(this.Snapshot_button);
+            this.Controls.Add(this.ImageTest_checkBox);
+            this.Controls.Add(this.MultiCalibrate_button);
             this.Controls.Add(this.OptHome_button);
+            this.Controls.Add(this.StopDemo_button);
             this.Controls.Add(this.mechHome_button);
+            this.Controls.Add(this.Demo_button);
             this.Controls.Add(this.TrueX_label);
             this.Controls.Add(this.label145);
-            this.Controls.Add(this.Bookmark5_button);
-            this.Controls.Add(this.Bookmark4_button);
-            this.Controls.Add(this.Bookmark3_button);
-            this.Controls.Add(this.Bookmark2_button);
-            this.Controls.Add(this.Bookmark1_button);
+            this.Controls.Add(this.GotoUpCamPosition_button);
             this.Controls.Add(this.Test6_button);
             this.Controls.Add(this.label124);
             this.Controls.Add(this.label97);
             this.Controls.Add(this.Test5_button);
             this.Controls.Add(this.ZDown_button);
+            this.Controls.Add(this.labelSerialPortStatus);
             this.Controls.Add(this.ZUp_button);
-            this.Controls.Add(this.UpCamZoomFactor_textBox);
-            this.Controls.Add(this.UpCamZoom_checkBox);
+            this.Controls.Add(this.GotoPickupCenter_button);
+            this.Controls.Add(this.GotoPCB0_button);
             this.Controls.Add(this.Test4_button);
-            this.Controls.Add(this.DownCamZoomFactor_textBox);
             this.Controls.Add(this.Park_button);
-            this.Controls.Add(this.DownCamZoom_checkBox);
             this.Controls.Add(this.Test3_button);
             this.Controls.Add(this.OpticalHome_button);
-            this.Controls.Add(this.SerialMonitor_richTextBox);
             this.Controls.Add(this.apos_textBox);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.zpos_textBox);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.ypos_textBox);
             this.Controls.Add(this.Test2_button);
-            this.Controls.Add(this.reset_button);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.MotorPower_checkBox);
             this.Controls.Add(this.Test1_button);
-            this.Controls.Add(this.textBoxSendtoTinyG);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.xpos_textBox);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.tabControlPages);
             this.Controls.Add(this.Pump_checkBox);
             this.Controls.Add(this.Vacuum_checkBox);
+            this.Controls.Add(this.buttonConnectSerial);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -6884,70 +4460,53 @@
             this.Tapes_tabPage.ResumeLayout(false);
             this.Tapes_tabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).EndInit();
-            this.Components_tabPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
-            this.tabPageSetupCameras.ResumeLayout(false);
-            this.tabPageSetupCameras.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tapeObjBindingSource)).EndInit();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
-            this.CamerasSetUp_tabControl.ResumeLayout(false);
-            this.DownCamera_tabPage.ResumeLayout(false);
-            this.DownCamera_tabPage.PerformLayout();
-            this.components_gb.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Components_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.G_numericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).EndInit();
-            this.clear_gb.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ClearTape_dataGridView)).EndInit();
-            this.black_gb.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BlackTape_dataGridView)).EndInit();
-            this.white_gb.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PaperTape_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Parameter_Int_numericUpDown)).EndInit();
-            this.fiducials_gb.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Fiducials_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Display_dataGridView)).EndInit();
-            this.homing_gb.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Homing_dataGridView)).EndInit();
-            this.UpCamera_tabPage.ResumeLayout(false);
-            this.UpCamera_tabPage.PerformLayout();
-            this.groupBox10.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.UpCamComponents_dataGridView)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Needle_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
             this.tabPageBasicSetup.ResumeLayout(false);
             this.tabPageBasicSetup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SmallMovement_numericUpDown)).EndInit();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
-            this.panel8.ResumeLayout(false);
-            this.panel8.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabpage1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SmallMovement_numericUpDown)).EndInit();
             this.RunJob_tabPage.ResumeLayout(false);
             this.RunJob_tabPage.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Placement_pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.JobData_GridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.jobDataBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CadData_GridView)).EndInit();
-            this.tabControlPages.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.physicalComponentBindingSource)).EndInit();
+            this.tabControlPages.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -6955,565 +4514,373 @@
 
         #endregion
 
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.TextBox textBoxSendtoTinyG;
-		private System.Windows.Forms.Button reset_button;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox xpos_textBox;
-        private System.Windows.Forms.TextBox ypos_textBox;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox zpos_textBox;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox apos_textBox;
-		private System.Windows.Forms.Label label19;
-		private System.Windows.Forms.RichTextBox SerialMonitor_richTextBox;
-        private System.Windows.Forms.Button Test1_button;
-		private System.Windows.Forms.Button Test2_button;
-		private System.Windows.Forms.OpenFileDialog Job_openFileDialog;
-		private System.Windows.Forms.SaveFileDialog Job_saveFileDialog;
-		private System.Windows.Forms.Button OpticalHome_button;
-		private System.Windows.Forms.Button Park_button;
-        private System.Windows.Forms.TextBox DownCamZoomFactor_textBox;
-		private System.Windows.Forms.CheckBox DownCamZoom_checkBox;
-        private System.Windows.Forms.TextBox UpCamZoomFactor_textBox;
-		private System.Windows.Forms.CheckBox UpCamZoom_checkBox;
-		private System.Windows.Forms.Button TestNeedleRecognition_button;
-		private System.Windows.Forms.Label label97;
-        private System.Windows.Forms.Button Test3_button;
-		private System.Windows.Forms.Button Test4_button;
-		private System.Windows.Forms.Label label124;
-        private System.Windows.Forms.Button Test5_button;
-		private System.Windows.Forms.Button Test6_button;
-        private System.Windows.Forms.Button Bookmark1_button;
-        private System.Windows.Forms.Button Bookmark2_button;
-        private System.Windows.Forms.Button Bookmark3_button;
-        private System.Windows.Forms.Button Bookmark4_button;
-        private System.Windows.Forms.Button Bookmark5_button;
-		private System.Windows.Forms.Label label145;
-		private System.Windows.Forms.TabPage Tapes_tabPage;
-		private System.Windows.Forms.Button AddTape_button;
-		private System.Windows.Forms.Label label109;
-		private System.Windows.Forms.DataGridView Tapes_dataGridView;
-		private System.Windows.Forms.Label label108;
-		private System.Windows.Forms.PictureBox Tapes_pictureBox;
-		private System.Windows.Forms.TabPage Components_tabPage;
-		private System.Windows.Forms.DataGridView ComponentData_dataGridView;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PartialName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SizeX;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SizeY;
-		private System.Windows.Forms.TabPage tabPageSetupCameras;
-		private System.Windows.Forms.Label label101;
-		private System.Windows.Forms.Label label100;
-		private System.Windows.Forms.Label label55;
-		private System.Windows.Forms.Button CameraSetupTest_button;
-		private System.Windows.Forms.Button ZUp_button;
-		private System.Windows.Forms.Button ZDown_button;
-		private System.Windows.Forms.Label UpCameraBoxYmmPerPixel_label;
-		private System.Windows.Forms.ComboBox UpCam_comboBox;
-		private System.Windows.Forms.Label label110;
-		private System.Windows.Forms.Label UpCameraBoxXmmPerPixel_label;
-		private System.Windows.Forms.Button RefreshUpCameraList_button;
-		private System.Windows.Forms.Button ConnectUpCamera_button;
-		private System.Windows.Forms.Label label103;
-		private System.Windows.Forms.CheckBox UpCameraDrawDashedCross_checkBox;
-		private System.Windows.Forms.CheckBox UpCameraDrawBox_checkBox;
-		private System.Windows.Forms.Label UpCamStatus_label;
-		private System.Windows.Forms.Label label105;
-		private System.Windows.Forms.Label label104;
-		private System.Windows.Forms.Label label106;
-		private System.Windows.Forms.TextBox UpCameraBoxX_textBox;
-		private System.Windows.Forms.TextBox UpCameraBoxY_textBox;
-		private System.Windows.Forms.CheckBox UpCameraDrawCross_checkBox;
-		private System.Windows.Forms.ComboBox DownCam_comboBox;
-		private System.Windows.Forms.Button ConnectDownCamera_button;
-		private System.Windows.Forms.Label DownCamStatus_label;
-		private System.Windows.Forms.Button RefreshDownCameraList_button;
-		private System.Windows.Forms.Label label53;
-		private System.Windows.Forms.Label label68;
-		private System.Windows.Forms.Label label69;
-		private System.Windows.Forms.TextBox DownCameraBoxX_textBox;
-		private System.Windows.Forms.TextBox DownCameraBoxY_textBox;
-		private System.Windows.Forms.Label label70;
-		private System.Windows.Forms.Label label71;
-		private System.Windows.Forms.Label DownCameraBoxXmmPerPixel_label;
-		private System.Windows.Forms.Label DownCameraBoxYmmPerPixel_label;
-		private System.Windows.Forms.CheckBox DownCameraDrawDashedCross_checkBox;
-		private System.Windows.Forms.CheckBox DownCameraDrawCross_checkBox;
-		private System.Windows.Forms.CheckBox DownCameraDrawBox_checkBox;
-		private System.Windows.Forms.CheckBox Overlay_checkBox;
-		private System.Windows.Forms.Button GotoUpCamPosition_button;
-		private System.Windows.Forms.Button SetUpCamPosition_button;
-		private System.Windows.Forms.Label label99;
-		private System.Windows.Forms.Label label98;
-		private System.Windows.Forms.TextBox UpcamPositionY_textBox;
-		private System.Windows.Forms.TextBox UpcamPositionX_textBox;
-		private System.Windows.Forms.TextBox NeedleOffsetY_textBox;
-		private System.Windows.Forms.TextBox NeedleOffsetX_textBox;
-		private System.Windows.Forms.TextBox PickupCenterY_textBox;
-		private System.Windows.Forms.TextBox PickupCenterX_textBox;
-		private System.Windows.Forms.TextBox JigY_textBox;
-		private System.Windows.Forms.TextBox JigX_textBox;
-		private System.Windows.Forms.Button HomingToHere_button;
-		private System.Windows.Forms.Label label149;
-		private System.Windows.Forms.Label label148;
-		private System.Windows.Forms.Label label146;
-		private System.Windows.Forms.Label label143;
-		private System.Windows.Forms.Label Z0toPCB_CamerasTab_label;
-		private System.Windows.Forms.Label label120;
-		private System.Windows.Forms.Button Offset2Method_button;
-		private System.Windows.Forms.Label NeedleOffset_label;
-		private System.Windows.Forms.Label label115;
-		private System.Windows.Forms.Label label114;
-		private System.Windows.Forms.Button SetPickupCenter_button;
-		private System.Windows.Forms.Button SetPCB0_button;
-		private System.Windows.Forms.Button GotoPickupCenter_button;
-		private System.Windows.Forms.Button GotoPCB0_button;
-		private System.Windows.Forms.Label label95;
-		private System.Windows.Forms.Label label96;
-		private System.Windows.Forms.Label label93;
-		private System.Windows.Forms.Label label94;
-		private System.Windows.Forms.Button Snapshot_button;
-		private System.Windows.Forms.CheckBox ImageTest_checkBox;
-		private System.Windows.Forms.PictureBox Cam_pictureBox;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TabPage tabPageBasicSetup;
-		private System.Windows.Forms.Label label152;
-		private System.Windows.Forms.CheckBox SlackCompensation_checkBox;
-		private System.Windows.Forms.Button SetMark6_button;
-		private System.Windows.Forms.Button TestXYA_button;
-		private System.Windows.Forms.TextBox Mark6_textBox;
-		private System.Windows.Forms.TextBox Mark5_textBox;
-		private System.Windows.Forms.TextBox Mark4_textBox;
-		private System.Windows.Forms.TextBox Mark3_textBox;
-		private System.Windows.Forms.TextBox Mark2_textBox;
-		private System.Windows.Forms.TextBox SizeYMax_textBox;
-		private System.Windows.Forms.TextBox Mark1_textBox;
-		private System.Windows.Forms.TextBox SizeXMax_textBox;
-		private System.Windows.Forms.TextBox ParkLocationY_textBox;
-		private System.Windows.Forms.TextBox ParkLocationX_textBox;
-		private System.Windows.Forms.Button TestYX_button;
-		private System.Windows.Forms.Button SetMark5_button;
-		private System.Windows.Forms.CheckBox MotorPower_checkBox;
-		private System.Windows.Forms.Label Z0toPCB_BasicTab_label;
-		private System.Windows.Forms.Button SetMark4_button;
-		private System.Windows.Forms.Label label111;
-		private System.Windows.Forms.Label Zlb_label;
-		private System.Windows.Forms.Button SetMark3_button;
-		private System.Windows.Forms.Button SetProbing_button;
-		private System.Windows.Forms.Label label116;
-		private System.Windows.Forms.Button SetMark2_button;
-		private System.Windows.Forms.Label label113;
-		private System.Windows.Forms.Label label102;
-		private System.Windows.Forms.Button SetMark1_button;
-		private System.Windows.Forms.Label label107;
-		private System.Windows.Forms.Label label92;
-		private System.Windows.Forms.Label label61;
-		private System.Windows.Forms.Label label72;
-		private System.Windows.Forms.Button TestA_button;
-		private System.Windows.Forms.Button Homebutton;
-		private System.Windows.Forms.Button TestZ_button;
-		private System.Windows.Forms.Button HomeZ_button;
-		private System.Windows.Forms.Button HomeY_button;
-		private System.Windows.Forms.Button HomeXY_button;
-		private System.Windows.Forms.Button HomeX_button;
-		private System.Windows.Forms.Button BuiltInSettings_button;
-		private System.Windows.Forms.Button SaveSettings_button;
-		private System.Windows.Forms.Button DefaultSettings_button;
-		private System.Windows.Forms.CheckBox Vacuum_checkBox;
-		private System.Windows.Forms.CheckBox Pump_checkBox;
-		private System.Windows.Forms.Button TestXY_button;
-		private System.Windows.Forms.Button TestY_button;
-		private System.Windows.Forms.Button TestX_button;
-		private System.Windows.Forms.Panel panel7;
-		private System.Windows.Forms.Panel panel8;
-		private System.Windows.Forms.TextBox tr4_textBox;
-		private System.Windows.Forms.RadioButton m4deg18_radioButton;
-		private System.Windows.Forms.RadioButton m4deg09_radioButton;
-		private System.Windows.Forms.Label label42;
-		private System.Windows.Forms.Label label43;
-		private System.Windows.Forms.Label label44;
-		private System.Windows.Forms.MaskedTextBox mi4_maskedTextBox;
-		private System.Windows.Forms.Label label45;
-		private System.Windows.Forms.Label label46;
-		private System.Windows.Forms.Label label47;
-		private System.Windows.Forms.Label label48;
-		private System.Windows.Forms.MaskedTextBox avm_maskedTextBox;
-		private System.Windows.Forms.Label label49;
-		private System.Windows.Forms.Label label50;
-		private System.Windows.Forms.Label label51;
-		private System.Windows.Forms.MaskedTextBox ajm_maskedTextBox;
-		private System.Windows.Forms.Label label52;
-		private System.Windows.Forms.Panel panel3;
-		private System.Windows.Forms.Label label73;
-		private System.Windows.Forms.MaskedTextBox xsv_maskedTextBox;
-		private System.Windows.Forms.Label label74;
-		private System.Windows.Forms.Label label75;
-		private System.Windows.Forms.MaskedTextBox xjh_maskedTextBox;
-		private System.Windows.Forms.Label label76;
-		private System.Windows.Forms.CheckBox Xmax_checkBox;
-		private System.Windows.Forms.CheckBox Xlim_checkBox;
-		private System.Windows.Forms.CheckBox Xhome_checkBox;
-		private System.Windows.Forms.Panel panel4;
-		private System.Windows.Forms.TextBox tr1_textBox;
-		private System.Windows.Forms.RadioButton m1deg18_radioButton;
-		private System.Windows.Forms.RadioButton m1deg09_radioButton;
-		private System.Windows.Forms.Label label20;
-		private System.Windows.Forms.Label label21;
-		private System.Windows.Forms.Label label22;
-		private System.Windows.Forms.Label label23;
-		private System.Windows.Forms.MaskedTextBox mi1_maskedTextBox;
-		private System.Windows.Forms.Label label24;
-		private System.Windows.Forms.Label label25;
-		private System.Windows.Forms.Label label26;
-		private System.Windows.Forms.MaskedTextBox xvm_maskedTextBox;
-		private System.Windows.Forms.Label label27;
-		private System.Windows.Forms.Label label28;
-		private System.Windows.Forms.Label label29;
-		private System.Windows.Forms.MaskedTextBox xjm_maskedTextBox;
-		private System.Windows.Forms.Label label30;
-		private System.Windows.Forms.Panel panel5;
-		private System.Windows.Forms.Label label81;
-		private System.Windows.Forms.MaskedTextBox zsv_maskedTextBox;
-		private System.Windows.Forms.Label label82;
-		private System.Windows.Forms.Label label83;
-		private System.Windows.Forms.MaskedTextBox zjh_maskedTextBox;
-		private System.Windows.Forms.Label label84;
-		private System.Windows.Forms.CheckBox Zmax_checkBox;
-		private System.Windows.Forms.CheckBox Zlim_checkBox;
-		private System.Windows.Forms.CheckBox Zhome_checkBox;
-		private System.Windows.Forms.Panel panel6;
-		private System.Windows.Forms.TextBox tr3_textBox;
-		private System.Windows.Forms.RadioButton m3deg18_radioButton;
-		private System.Windows.Forms.RadioButton m3deg09_radioButton;
-		private System.Windows.Forms.Label label31;
-		private System.Windows.Forms.Label label32;
-		private System.Windows.Forms.Label label33;
-		private System.Windows.Forms.MaskedTextBox mi3_maskedTextBox;
-		private System.Windows.Forms.Label label34;
-		private System.Windows.Forms.Label label35;
-		private System.Windows.Forms.Label label36;
-		private System.Windows.Forms.Label label37;
-		private System.Windows.Forms.MaskedTextBox zvm_maskedTextBox;
-		private System.Windows.Forms.Label label38;
-		private System.Windows.Forms.Label label39;
-		private System.Windows.Forms.Label label40;
-		private System.Windows.Forms.MaskedTextBox zjm_maskedTextBox;
-		private System.Windows.Forms.Label label41;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Label label77;
-		private System.Windows.Forms.MaskedTextBox ysv_maskedTextBox;
-		private System.Windows.Forms.Label label78;
-		private System.Windows.Forms.Label label79;
-		private System.Windows.Forms.MaskedTextBox yjh_maskedTextBox;
-		private System.Windows.Forms.Label label80;
-		private System.Windows.Forms.CheckBox Ymax_checkBox;
-		private System.Windows.Forms.CheckBox Ylim_checkBox;
-		private System.Windows.Forms.CheckBox Yhome_checkBox;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.TextBox tr2_textBox;
-		private System.Windows.Forms.RadioButton m2deg18_radioButton;
-		private System.Windows.Forms.RadioButton m2deg09_radioButton;
-		private System.Windows.Forms.Label label15;
-		private System.Windows.Forms.Label label16;
-		private System.Windows.Forms.Label label13;
-		private System.Windows.Forms.Label label11;
-		private System.Windows.Forms.MaskedTextBox mi2_maskedTextBox;
-		private System.Windows.Forms.Label label12;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.MaskedTextBox yvm_maskedTextBox;
-		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.MaskedTextBox yjm_maskedTextBox;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Button buttonRefreshPortList;
-		private System.Windows.Forms.Label labelSerialPortStatus;
-		private System.Windows.Forms.Button buttonConnectSerial;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.ComboBox comboBoxSerialPorts;
-		private System.Windows.Forms.TabPage RunJob_tabPage;
-		private System.Windows.Forms.CheckBox JobCounterCW_checkBox;
-		private System.Windows.Forms.Button ReMeasure_button;
-		private System.Windows.Forms.TextBox RotationOffset_textBox;
-		private System.Windows.Forms.TextBox JobOffsetY_textBox;
-		private System.Windows.Forms.TextBox JobOffsetX_textBox;
-		private System.Windows.Forms.Button ShowNominal_button;
-		private System.Windows.Forms.Button ShowMachine_button;
-		private System.Windows.Forms.Label label60;
-		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.Button NewRow_button;
-		private System.Windows.Forms.Button PlaceThese_button;
-		private System.Windows.Forms.Button DeleteComponentGroup_button;
-		private System.Windows.Forms.Button Down_button;
-		private System.Windows.Forms.Button Up_button;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Button AbortPlacement_button;
-		private System.Windows.Forms.Button PausePlacement_button;
-		private System.Windows.Forms.Label MachineCoords_label;
-		private System.Windows.Forms.Label PlacedValue_label;
-		private System.Windows.Forms.Label PlacedRotation_label;
-		private System.Windows.Forms.Label PlacedY_label;
-		private System.Windows.Forms.Label PlacedX_label;
-		private System.Windows.Forms.Label PlacedComponent_label;
-		private System.Windows.Forms.Label label66;
-		private System.Windows.Forms.Label label65;
-		private System.Windows.Forms.Label label64;
-		private System.Windows.Forms.Label label63;
-		private System.Windows.Forms.Label label58;
-		private System.Windows.Forms.Button PlaceAll_button;
-		private System.Windows.Forms.Label label89;
-		private System.Windows.Forms.Label label88;
-		private System.Windows.Forms.Label label86;
-		private System.Windows.Forms.Label label85;
-		private System.Windows.Forms.Label label59;
-		private System.Windows.Forms.PictureBox Placement_pictureBox;
-		private System.Windows.Forms.DataGridView JobData_GridView;
-		public System.Windows.Forms.CheckBox Bottom_checkBox;
-		private System.Windows.Forms.DataGridView CadData_GridView;
-		private System.Windows.Forms.Label CadFilePath_label;
-		private System.Windows.Forms.Label label56;
-		private System.Windows.Forms.Label CadFileName_label;
-		private System.Windows.Forms.Label label54;
-		private System.Windows.Forms.TabControl tabControlPages;
-		private System.Windows.Forms.Label label87;
-		private System.Windows.Forms.NumericUpDown SmallMovement_numericUpDown;
-		private System.Windows.Forms.GroupBox groupBox3;
-		private System.Windows.Forms.Button LoadCadData_button;
-		private System.Windows.Forms.Button JobDataSave_button;
-		private System.Windows.Forms.Button JobDataLoad_button;
-		private System.Windows.Forms.Label JobFilePath_label;
-		private System.Windows.Forms.Label label91;
-		private System.Windows.Forms.Label JobFileName_label;
-		private System.Windows.Forms.Label label121;
-		private System.Windows.Forms.Button PasteRow_button;
-		private System.Windows.Forms.Button CopyRow_button;
-        private System.Windows.Forms.OpenFileDialog CAD_openFileDialog;
-		private System.Windows.Forms.Label NextGroup_label;
-		private System.Windows.Forms.Label label125;
-		private System.Windows.Forms.Label PreviousGroup_label;
-		private System.Windows.Forms.Label label122;
-		private System.Windows.Forms.Label CurrentGroup_label;
-		private System.Windows.Forms.Label label57;
-		private System.Windows.Forms.Button DeleteTape_button;
-		private System.Windows.Forms.Button TapeDown_button;
-		private System.Windows.Forms.Button TapeUp_button;
-		private System.Windows.Forms.Button TapeGoTo_button;
-		private System.Windows.Forms.DataGridView Display_dataGridView;
-		private System.Windows.Forms.Button CamFunctionDown_button;
-		private System.Windows.Forms.Button CamFunctionUp_button;
-		private System.Windows.Forms.Button DeleteCamFunction_button;
-		private System.Windows.Forms.Button AddCamFunction_button;
-		private System.Windows.Forms.NumericUpDown Parameter_Int_numericUpDown;
-		private System.Windows.Forms.Label Parameter_int_label;
-		private System.Windows.Forms.Label Parameter_double_label;
-		private System.Windows.Forms.TextBox Parameter_double_textBox;
-		private System.Windows.Forms.CheckBox DownCamFindCircles_checkBox;
-		private System.Windows.Forms.CheckBox UpCamFindCircles_checkBox;
-		private System.Windows.Forms.CheckBox DownCamFindRectangles_checkBox;
-		private System.Windows.Forms.CheckBox DownCam_FindComponents_checkBox;
-		private System.Windows.Forms.GroupBox homing_gb;
-		private System.Windows.Forms.Button HomingToDisplay_button;
-		private System.Windows.Forms.DataGridView Homing_dataGridView;
-		private System.Windows.Forms.Button HomingMeasure_button;
-		private System.Windows.Forms.GroupBox groupBox5;
-		private System.Windows.Forms.Button NeedleMeasure_button;
-		private System.Windows.Forms.Button NeedleToDisplay_button;
-		private System.Windows.Forms.Button NeedleToHere_button;
-		private System.Windows.Forms.GroupBox fiducials_gb;
-		private System.Windows.Forms.Button FiducialsMeasure_button;
-		private System.Windows.Forms.Button FiducialsToDisplay_button;
-		private System.Windows.Forms.Button FiducialsToHere_button;
-		private System.Windows.Forms.DataGridView Needle_dataGridView;
-		private System.Windows.Forms.TabControl CamerasSetUp_tabControl;
-		private System.Windows.Forms.TabPage DownCamera_tabPage;
-		private System.Windows.Forms.TabPage UpCamera_tabPage;
-		private System.Windows.Forms.GroupBox white_gb;
-		private System.Windows.Forms.Button PaperTapeMeasure_button;
-		private System.Windows.Forms.Button PaperTapeToDisplay_button;
-		private System.Windows.Forms.Button PaperTapeToHere_button;
-		private System.Windows.Forms.DataGridView Fiducials_dataGridView;
-		private System.Windows.Forms.GroupBox clear_gb;
-		private System.Windows.Forms.Button ClearTapeMeasure_button;
-		private System.Windows.Forms.Button ClearTapeToDisplay_button;
-		private System.Windows.Forms.Button ClearTapeToHere_button;
-		private System.Windows.Forms.GroupBox black_gb;
-		private System.Windows.Forms.Button BlackTapeMeasure_button;
-		private System.Windows.Forms.Button BlackTapeToDisplay_button;
-		private System.Windows.Forms.Button BlackTapeToHere_button;
-		private System.Windows.Forms.CheckBox UpCam_FindComponents_checkBox;
-		private System.Windows.Forms.CheckBox checkBox2;
-		private System.Windows.Forms.DataGridView ClearTape_dataGridView;
-		private System.Windows.Forms.DataGridView BlackTape_dataGridView;
-		private System.Windows.Forms.DataGridView PaperTape_dataGridView;
-		private System.Windows.Forms.Button CamFunctionsClear_button;
-		private System.Windows.Forms.NumericUpDown B_numericUpDown;
-		private System.Windows.Forms.Label B_label;
-		private System.Windows.Forms.NumericUpDown G_numericUpDown;
-		private System.Windows.Forms.Label G_label;
-		private System.Windows.Forms.NumericUpDown R_numericUpDown;
-		private System.Windows.Forms.Label R_label;
-		private System.Windows.Forms.Label Color_label;
-		private System.Windows.Forms.TextBox Color_Box;
-		private System.Windows.Forms.Label ColorHelp_label;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn6;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn6;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn26;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn27;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn28;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn29;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn30;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn7;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn7;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn31;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn32;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn33;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn34;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn35;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn1;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn13;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn4;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn4;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn16;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn19;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn20;
-		private System.Windows.Forms.DataGridViewComboBoxColumn Function;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn Active;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Parameter_int;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Parameter_double;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Parameter_R;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Parameter_G;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Parameter_B;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn2;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn2;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn3;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn3;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
-		private System.Windows.Forms.GroupBox components_gb;
-		private System.Windows.Forms.DataGridView Components_dataGridView;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn5;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn5;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn21;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn22;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn23;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn24;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn25;
-		private System.Windows.Forms.Button ComponentsMeasure_button;
-		private System.Windows.Forms.Button ComponentsToDisplay_button;
-        private System.Windows.Forms.Button ComponentsToHere_button;
-		private System.Windows.Forms.ToolTip toolTip1;
-		private System.Windows.Forms.Button ResetOneTape_button;
-		private System.Windows.Forms.Button ResetAllTapes_button;
-		private System.Windows.Forms.GroupBox groupBox10;
-		private System.Windows.Forms.DataGridView UpCamComponents_dataGridView;
-		private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn8;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn8;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn36;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn37;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn38;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn39;
-		private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn40;
-		private System.Windows.Forms.Button UpCamComponentsMeasure_button;
-		private System.Windows.Forms.Button UpCamComponentsToDisplay_button;
-        private System.Windows.Forms.Button UpCamComponentsToHere_button;
-		private System.Windows.Forms.Label label67;
-		private System.Windows.Forms.Label label62;
-		private System.Windows.Forms.Button SetPartNo_button;
-		private System.Windows.Forms.MaskedTextBox NextPart_TextBox;
-		private System.Windows.Forms.CheckBox DownCameraDrawTicks_checkBox;
-		private System.Windows.Forms.Label TrueX_label;
-		private System.Windows.Forms.Label label90;
-		private System.Windows.Forms.TextBox SquareCorrection_textBox;
-        private System.Windows.Forms.Label Z_Backoff_label;
-        private System.Windows.Forms.Label label117;
-        private System.Windows.Forms.Label label112;
-        private System.Windows.Forms.Button Tape_GoToNext_button;
-        private System.Windows.Forms.Button Tape_resetZs_button;
-        private System.Windows.Forms.Label label118;
-        private System.Windows.Forms.TextBox VacuumTime_textBox;
-        private System.Windows.Forms.TextBox VacuumRelease_textBox;
-        private System.Windows.Forms.Label label119;
-        private System.Windows.Forms.Button PlaceOne_button;
-        private System.Windows.Forms.Button TapeSet1_button;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GroupMethod;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MethodParamAllComponents;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentList;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Component;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Value_Footprint;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_nominal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_nominal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_Machine;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_machine;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation_machine;
-        private System.Windows.Forms.CheckBox ValidMeasurement_checkBox;
-        private System.Windows.Forms.Button ChangeNeedle_button;
-        private System.Windows.Forms.Label label123;
-        private System.Windows.Forms.TextBox ZTestTravel_textBox;
-        private System.Windows.Forms.Button Demo_button;
-        private System.Windows.Forms.Button StopDemo_button;
-        private System.Windows.Forms.Button button_camera_calibrate;
-        private System.Windows.Forms.Button button_saveSettings;
-        private System.Windows.Forms.Label SlackMeasurement_label;
-        private System.Windows.Forms.CheckBox cb_useTemplate;
-        private System.Windows.Forms.GroupBox groupBox12;
-        private System.Windows.Forms.Button button_setTemplate;
-        private System.Windows.Forms.Label label126;
-        private System.Windows.Forms.TextBox fiducialTemlateMatch_textBox;
-        private System.Windows.Forms.CheckBox FindFiducials_cb;
-        private System.Windows.Forms.Label label127;
-        private System.Windows.Forms.TextBox fiducial_designator_regexp_textBox;
-        private System.Windows.Forms.CheckBox drawGrid_checkBox;
-        private System.Windows.Forms.Button tape_ViewComponents_button;
-        private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn RotationColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn WidthColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PickupZ_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn HolePitch_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Slope_column;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsCalibrated_Column;
-        private System.Windows.Forms.Label label128;
-        private System.Windows.Forms.Button pickup_next_button;
-        private System.Windows.Forms.Button DownCamera_Calibration_button;
-        private System.Windows.Forms.Label label129;
-        private System.Windows.Forms.TextBox calibMoveDistance_textBox;
-        private System.Windows.Forms.TextBox zoffset_textbox;
-        private System.Windows.Forms.Label label130;
-        private System.Windows.Forms.Label label131;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button MultiCalibrate_button;
-        private System.Windows.Forms.Button view_nextParts_button;
-        private System.Windows.Forms.Button needle_calibration_test_button;
-        private System.Windows.Forms.Button mechHome_button;
-        private System.Windows.Forms.Button OptHome_button;
-        private System.Windows.Forms.BindingSource physicalComponentBindingSource;
+		private Label label4;
+        private TextBox textBoxSendtoTinyG;
+        private Label label14;
+        private TextBox xpos_textBox;
+        private TextBox ypos_textBox;
+        private Label label17;
+        private TextBox zpos_textBox;
+        private Label label18;
+        private TextBox apos_textBox;
+		private Label label19;
+		private RichTextBox SerialMonitor_richTextBox;
+        private Button Test1_button;
+		private Button Test2_button;
+		private OpenFileDialog Job_openFileDialog;
+		private SaveFileDialog Job_saveFileDialog;
+		private Button OpticalHome_button;
+        private Button Park_button;
+		private Button TestNeedleRecognition_button;
+		private Label label97;
+        private Button Test3_button;
+		private Button Test4_button;
+		private Label label124;
+        private Button Test5_button;
+        private Button Test6_button;
+		private Label label145;
+		private TabPage Tapes_tabPage;
+		private Button AddTape_button;
+		private Label label109;
+        private DataGridView Tapes_dataGridView;
+		private Label label101;
+		private Label label100;
+		private Label label55;
+		private Button CameraSetupTest_button;
+		private Button ZUp_button;
+		private Button ZDown_button;
+        private Label UpCameraBoxYmmPerPixel_label;
+        private Label UpCameraBoxXmmPerPixel_label;
+        private Label label105;
+		private Label label106;
+		private TextBox UpCameraBoxX_textBox;
+        private TextBox UpCameraBoxY_textBox;
+		private TextBox DownCameraBoxX_textBox;
+		private TextBox DownCameraBoxY_textBox;
+		private Label label70;
+		private Label label71;
+		private Label DownCameraBoxXmmPerPixel_label;
+        private Label DownCameraBoxYmmPerPixel_label;
+		private Button GotoUpCamPosition_button;
+		private Button SetUpCamPosition_button;
+		private Label label99;
+		private Label label98;
+		private TextBox UpcamPositionY_textBox;
+		private TextBox UpcamPositionX_textBox;
+		private TextBox NeedleOffsetY_textBox;
+		private TextBox NeedleOffsetX_textBox;
+		private TextBox PickupCenterY_textBox;
+		private TextBox PickupCenterX_textBox;
+		private TextBox JigY_textBox;
+        private TextBox JigX_textBox;
+		private Label label149;
+		private Label label148;
+		private Label label146;
+        private Label label143;
+		private Button Offset2Method_button;
+		private Label NeedleOffset_label;
+        private Label label115;
+		private Button SetPickupCenter_button;
+		private Button SetPCB0_button;
+		private Button GotoPickupCenter_button;
+		private Button GotoPCB0_button;
+		private Label label95;
+		private Label label96;
+		private Label label93;
+		private Label label94;
+		private Button Snapshot_button;
+        private CheckBox ImageTest_checkBox;
+        private TabPage tabPageBasicSetup;
+        private CheckBox SlackCompensation_checkBox;
+        private TextBox SizeYMax_textBox;
+		private TextBox SizeXMax_textBox;
+		private TextBox ParkLocationY_textBox;
+		private TextBox ParkLocationX_textBox;
+        private Button TestYX_button;
+		private CheckBox MotorPower_checkBox;
+        private Label Z0toPCB_BasicTab_label;
+		private Label label111;
+        private Label Zlb_label;
+        private Button SetProbing_button;
+		private Label label113;
+        private Label label102;
+		private Label label107;
+		private Label label92;
+        private Label label61;
+		private Button TestA_button;
+		private Button Homebutton;
+		private Button TestZ_button;
+		private Button HomeZ_button;
+		private Button HomeY_button;
+		private Button HomeXY_button;
+		private Button HomeX_button;
+		private Button BuiltInSettings_button;
+		private Button SaveSettings_button;
+		private Button DefaultSettings_button;
+		private CheckBox Vacuum_checkBox;
+		private CheckBox Pump_checkBox;
+		private Button TestXY_button;
+		private Button TestY_button;
+		private Button TestX_button;
+		private Panel panel7;
+		private Panel panel8;
+		private TextBox tr4_textBox;
+		private RadioButton m4deg18_radioButton;
+		private RadioButton m4deg09_radioButton;
+		private Label label42;
+		private Label label43;
+		private Label label44;
+		private MaskedTextBox mi4_maskedTextBox;
+		private Label label45;
+		private Label label46;
+		private Label label47;
+		private Label label48;
+		private MaskedTextBox avm_maskedTextBox;
+		private Label label49;
+		private Label label50;
+		private Label label51;
+		private MaskedTextBox ajm_maskedTextBox;
+		private Label label52;
+		private Panel panel3;
+		private Label label73;
+		private MaskedTextBox xsv_maskedTextBox;
+		private Label label74;
+		private Label label75;
+		private MaskedTextBox xjh_maskedTextBox;
+		private Label label76;
+		private CheckBox Xmax_checkBox;
+		private CheckBox Xlim_checkBox;
+		private CheckBox Xhome_checkBox;
+		private Panel panel4;
+		private TextBox tr1_textBox;
+		private RadioButton m1deg18_radioButton;
+		private RadioButton m1deg09_radioButton;
+		private Label label20;
+		private Label label21;
+		private Label label22;
+		private Label label23;
+		private MaskedTextBox mi1_maskedTextBox;
+		private Label label24;
+		private Label label25;
+		private Label label26;
+		private MaskedTextBox xvm_maskedTextBox;
+		private Label label27;
+		private Label label28;
+		private Label label29;
+		private MaskedTextBox xjm_maskedTextBox;
+		private Label label30;
+		private Panel panel5;
+		private Label label81;
+		private MaskedTextBox zsv_maskedTextBox;
+		private Label label82;
+		private Label label83;
+		private MaskedTextBox zjh_maskedTextBox;
+		private Label label84;
+		private CheckBox Zmax_checkBox;
+		private CheckBox Zlim_checkBox;
+		private CheckBox Zhome_checkBox;
+		private Panel panel6;
+		private TextBox tr3_textBox;
+		private RadioButton m3deg18_radioButton;
+		private RadioButton m3deg09_radioButton;
+		private Label label31;
+		private Label label32;
+		private Label label33;
+		private MaskedTextBox mi3_maskedTextBox;
+		private Label label34;
+		private Label label35;
+		private Label label36;
+		private Label label37;
+		private MaskedTextBox zvm_maskedTextBox;
+		private Label label38;
+		private Label label39;
+		private Label label40;
+		private MaskedTextBox zjm_maskedTextBox;
+		private Label label41;
+		private Panel panel1;
+		private Label label77;
+		private MaskedTextBox ysv_maskedTextBox;
+		private Label label78;
+		private Label label79;
+		private MaskedTextBox yjh_maskedTextBox;
+		private Label label80;
+		private CheckBox Ymax_checkBox;
+		private CheckBox Ylim_checkBox;
+		private CheckBox Yhome_checkBox;
+		private Panel panel2;
+		private TextBox tr2_textBox;
+		private RadioButton m2deg18_radioButton;
+		private RadioButton m2deg09_radioButton;
+		private Label label15;
+		private Label label16;
+		private Label label13;
+		private Label label11;
+		private MaskedTextBox mi2_maskedTextBox;
+		private Label label12;
+		private Label label10;
+		private Label label8;
+		private MaskedTextBox yvm_maskedTextBox;
+		private Label label9;
+		private Label label7;
+		private Label label6;
+		private MaskedTextBox yjm_maskedTextBox;
+        private Label label5;
+		private Button buttonRefreshPortList;
+		private Label labelSerialPortStatus;
+		private Button buttonConnectSerial;
+		private Label label2;
+		private ComboBox comboBoxSerialPorts;
+        private TabPage RunJob_tabPage;
+        private Button ReMeasure_button;
+		private TextBox JobOffsetY_textBox;
+		private TextBox JobOffsetX_textBox;
+		private Button ShowNominal_button;
+        private Button ShowMachine_button;
+		private GroupBox groupBox2;
+		private Button NewRow_button;
+		private Button PlaceThese_button;
+		private Button DeleteComponentGroup_button;
+		private Button Down_button;
+		private Button Up_button;
+		private GroupBox groupBox1;
+		private Button AbortPlacement_button;
+		private Button PausePlacement_button;
+		private Label MachineCoords_label;
+		private Label PlacedValue_label;
+		private Label PlacedRotation_label;
+		private Label PlacedY_label;
+		private Label PlacedX_label;
+		private Label PlacedComponent_label;
+		private Label label66;
+		private Label label65;
+		private Label label64;
+		private Label label63;
+		private Label label58;
+		private Button PlaceAll_button;
+		private Label label89;
+		private Label label88;
+		private Label label86;
+        private Label label85;
+		private DataGridView JobData_GridView;
+		public CheckBox Bottom_checkBox;
+		private DataGridView CadData_GridView;
+		private Label CadFilePath_label;
+		private Label label56;
+		private Label CadFileName_label;
+		private Label label54;
+		private TabControl tabControlPages;
+		private Label label87;
+		private NumericUpDown SmallMovement_numericUpDown;
+		private GroupBox groupBox3;
+		private Button LoadCadData_button;
+		private Button JobDataSave_button;
+		private Button JobDataLoad_button;
+		private Label JobFilePath_label;
+		private Label label91;
+		private Label JobFileName_label;
+        private Label label121;
+        private OpenFileDialog CAD_openFileDialog;
+		private Button DeleteTape_button;
+		private Button TapeDown_button;
+		private Button TapeUp_button;
+        private Button TapeGoTo_button;
+		private ToolTip toolTip1;
+		private Button ResetOneTape_button;
+        private Button ResetAllTapes_button;
+		private Label label67;
+		private Label label62;
+		private Button SetPartNo_button;
+        private MaskedTextBox NextPart_TextBox;
+		private Label TrueX_label;
+		private Label label90;
+		private TextBox SquareCorrection_textBox;
+        private Label Z_Backoff_label;
+        private Label label117;
+        private Button Tape_GoToNext_button;
+        private Button Tape_resetZs_button;
+        private Label label118;
+        private TextBox VacuumTime_textBox;
+        private TextBox VacuumRelease_textBox;
+        private Label label119;
+        private Button PlaceOne_button;
+        private Button TapeSet1_button;
+        private CheckBox ValidMeasurement_checkBox;
+        private Button ChangeNeedle_button;
+        private Label label123;
+        private TextBox ZTestTravel_textBox;
+        private Button Demo_button;
+        private Button StopDemo_button;
+        private Button button_camera_calibrate;
+        private Label SlackMeasurement_label;
+        private CheckBox cb_useTemplate;
+        private GroupBox groupBox12;
+        private Button button_setTemplate;
+        private Label label126;
+        private TextBox fiducialTemlateMatch_textBox;
+        private Label label127;
+        private TextBox fiducial_designator_regexp_textBox;
+        private Button tape_ViewComponents_button;
+        private Label label128;
+        private Button pickup_next_button;
+        private Button DownCamera_Calibration_button;
+        private Label label129;
+        private TextBox calibMoveDistance_textBox;
+        private TextBox zoffset_textbox;
+        private Label label130;
+        private Label label131;
+        private Button button1;
+        private Button button2;
+        private Button MultiCalibrate_button;
+        private Button view_nextParts_button;
+        private Button needle_calibration_test_button;
+        private Button mechHome_button;
+        private Button OptHome_button;
+        private BindingSource physicalComponentBindingSource;
+        private DataGridViewTextBoxColumn designatorDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn footprintDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn xnominalDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn ynominalDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn rotationDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn xmachineDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn ymachineDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn rotationmachineDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn methodDataGridViewTextBoxColumn;
+        //private System.Windows.Forms.DataGridViewTextBoxColumn methodParameterDataGridViewTextBoxColumn;
+        private DataGridViewCheckBoxColumn isFiducialDataGridViewCheckBoxColumn;
+        private BindingSource jobDataBindingSource;
+        private TabControl tabControl1;
+        private TabPage tabpage1;
+        private TabPage tabPage2;
+        private TabPage tabPage3;
+        private TabPage tabPage4;
+        private TabPage tabPage5;
+        private Button button3;
+        private Button button4;
+        private GroupBox groupBox6;
+        private GroupBox groupBox7;
+        private Label label3;
+        private Label label1;
+        private GroupBox groupBox4;
+        private DataGridViewTextBoxColumn countDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn componentListDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn componentTypeDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn methodDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn methodParametersDataGridViewTextBoxColumn;
+
+        private BindingSource tapeObjBindingSource;
+        private DataGridViewButtonColumn SelectButtonColumn;
+        private DataGridViewTextBoxColumn ID;
+        private DataGridViewComboBoxColumn OriginalTapeOrientation;
+        private DataGridViewComboBoxColumn OriginalPartOrientation;
+        private DataGridViewComboBoxColumn Type;
+        private DataGridViewComboBoxColumn PartType;
+        private DataGridViewTextBoxColumn HolePitch;
+        private DataGridViewTextBoxColumn PartPitch;
+        private DataGridViewTextBoxColumn HoleToPartSpacingX;
+        private DataGridViewTextBoxColumn holeToPartSpacingYDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn pickupZDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn placeZDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn bDataGridViewTextBoxColumn;
     }
 }
 

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using AForge;
+using System.Linq;
 using Emgu.CV;
-using Emgu.CV.Structure;
-using Emgu.Util;
-using Emgu;
+using MathNet.Numerics.LinearRegression;
 
 namespace LitePlacer {
     public class PartLocation {
@@ -15,7 +11,7 @@ namespace LitePlacer {
         public double Y;
         private double _A;
         public double A { get { return (_A % 360); } set { _A = (value % 360); } }
-        private bool _isPixel = false;
+        private bool _isPixel;
         public PhysicalComponent physicalComponent; //link back
         public bool IsPixel { get { return _isPixel; } set { _isPixel=value;}}
         public bool IsPhysical { get { return !_isPixel; } set { _isPixel = (!value); } }
@@ -28,6 +24,14 @@ namespace LitePlacer {
         public PartLocation(PointF p) {X = p.X; Y = p.Y;}
         public PartLocation(double x, double y) {X = x; Y = y; A = 0;}
         public PartLocation(double x, double y, double a) {X = x; Y = y; A = a;}
+        public PartLocation(Matrix<double> matrix) {
+            if (matrix.Height == 2 && matrix.Width == 1)
+                Y = matrix[1, 0];
+            else if (matrix.Height == 1 && matrix.Width == 2)
+                Y = matrix[0, 1];
+            else throw new Exception("Cannot convert " + matrix.Height + "X" + matrix.Width + " matrix to PartLocation");
+            X = matrix[0, 0];
+        }
 
         public static PartLocation UnitVector() {
             return new PartLocation(1, 1);
@@ -42,7 +46,7 @@ namespace LitePlacer {
 
 
         public double ToRadians() {return Math.Atan2(Y, X);  }
-        public double ToDegrees() {return this.ToRadians() * 180 / Math.PI;   }
+        public double ToDegrees() {return ToRadians() * 180 / Math.PI;   }
         public Matrix<double> ToMatrix() { var m = new Matrix<double>(2, 1); m[0, 0] = X; m[1, 0] = Y; return m; }
 
         public double DistanceTo(PartLocation p) {  return Math.Sqrt(Math.Pow(X - p.X, 2) + Math.Pow(Y - p.Y, 2));   }
@@ -109,7 +113,7 @@ namespace LitePlacer {
             // Fit  to linear regression // y:x->a+b*x
             Double[] Xs = list.Select(xx => xx.X).ToArray();
             Double[] Ys = list.Select(xx => xx.Y).ToArray();
-            Tuple<double, double> result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
+            Tuple<double, double> result = SimpleRegression.Fit(Xs, Ys);
             //x.a = result.Item1; //this should be as close to zero as possible if things worked correctly
             return result.Item2; //this represents the slope of the tape            
         }
@@ -117,8 +121,8 @@ namespace LitePlacer {
         public PointF ToPointF() {
             return new PointF((float)X, (float)Y);
         }
-        public System.Drawing.Point ToPoint() {
-            return new System.Drawing.Point((int)X, (int)Y);
+        public Point ToPoint() {
+            return new Point((int)X, (int)Y);
         }
 
         /// <summary>

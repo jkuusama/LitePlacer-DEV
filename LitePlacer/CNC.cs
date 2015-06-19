@@ -1,26 +1,85 @@
 ﻿using System;
-using System.IO.Ports;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Threading;
+using System.Drawing;
 using System.Globalization;
+using System.Threading;
 using System.Web.Script.Serialization;
-
+using System.Windows.Forms;
 
 namespace LitePlacer{
+
+    [Serializable]
+    public class StatusReport {
+        public Sr sr { get; set; }
+    }
+
+    [Serializable]
+    public class Sr {
+        // mpox, posy, ...: Position
+        // NOTE: Some firmware versions use mpox, mpoy,... some use posx, posy, ... 
+        // This should be reflected in the public variable names
+        private double _posx;
+        public double posx // <======================== here
+        {
+            get { return _posx; }
+            set {
+                _posx = value;
+                CNC.setCurrX(_posx);
+                Global.Instance.mainForm.ValueUpdater("posx", _posx.ToString("0.000", CultureInfo.InvariantCulture));
+            }
+        }
+
+        private double _posy;
+        public double posy // <======================== and here
+        {
+            get { return _posy; }
+            set {
+                _posy = value;
+                CNC.setCurrY(_posy);
+                Global.Instance.mainForm.ValueUpdater("posy", _posy.ToString("0.000", CultureInfo.InvariantCulture));
+            }
+        }
+
+        private double _posz;
+        public double posz // <======================== and here
+        {
+            get { return _posz; }
+            set {
+                _posz = value;
+                CNC.setCurrZ(_posz);
+                Global.Instance.mainForm.ValueUpdater("posz", _posz.ToString("0.000", CultureInfo.InvariantCulture));
+            }
+        }
+
+        private double _posa;
+        public double posa // <======================== and here
+        {
+            get { return _posa; }
+            set {
+                _posa = value;
+                CNC.setCurrA(_posa);
+                Global.Instance.mainForm.ValueUpdater("posa", _posa.ToString("0.000", CultureInfo.InvariantCulture));
+            }
+        }
+
+    }
 
     public class CNC    {
         private static FormMain MainForm;
         private SerialComm Com;
+        public bool JoggingBusy;
+        public bool AbortPlacement;
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
 
-        public CNC(FormMain MainF)        {
-            MainForm = MainF;
-            Com = new SerialComm(this, MainF);
-            Connect(Properties.Settings.Default.CNC_SerialPort);
+        public void ShowSimpleMessageBox(string msg) {
+            Global.Instance.mainForm.ShowSimpleMessageBox(msg);
+        }
+
+        public CNC(FormMain mf) {
+            MainForm = mf;
+            Com = new SerialComm {serialDelegate = InterpretLine};
+            Connect(Properties.Settings.Default.CNC_SerialPort);            
         }
 
         public ManualResetEventSlim ReadyEvent
@@ -103,7 +162,6 @@ namespace LitePlacer{
 		// TrueX/Y is what the TinyG actually uses.
 
 		public static double SquareCorrection { get; set; }
-
 		private static double CurrX;
 		private static double _trueX;
 
@@ -117,70 +175,40 @@ namespace LitePlacer{
             set { CurrentX = value.X; CurrentY = value.Y; CurrentA = value.A; }
         }
 
-        public double TrueX
-        {
-            get
-            {
-                return (_trueX);
-            }
-            set
-            {
-                _trueX = value;
-            }
+        public double TrueX        {
+            get            {                return (_trueX);            }
+            set            {                _trueX = value;            }
         }
 
-		public double CurrentX
-        {
-            get
-            {
-                return (CurrX);
-            }
-            set
-            {
-                CurrX = value;
-            }
+		public double CurrentX       {
+            get            {                return (CurrX);            }
+            set            {                CurrX = value;            }
         }
 
-        public static void setCurrX(double x)
-        {
+        public static void setCurrX(double x)        {
 			_trueX = x;
 			CurrX = x - CurrY * SquareCorrection;
 			// MainForm.DisplayText("CNC.setCurrX: x= " + x.ToString() + ", CurrX= " + CurrX.ToString());
         }
 
         private static double CurrY;
-        public double CurrentY
-        {
-            get
-            {
-                return (CurrY);
-            }
-            set
-            {
-                CurrY = value;
-			}
+        public double CurrentY        {
+            get            {                return (CurrY);            }
+            set            {                CurrY = value;			}
         }
-        public static void setCurrY(double y)
-        {
+
+        public static void setCurrY(double y)        {
             CurrY = y;
 			CurrX = _trueX - CurrY * SquareCorrection;
 			// MainForm.DisplayText("CNC.setCurrY: TrueX= " + TrueX.ToString() + ", CurrX= " + CurrX.ToString());
 		}
 
         private static double CurrZ;
-        public double CurrentZ
-        {
-            get
-            {
-                return (CurrZ);
-            }
-            set
-            {
-                CurrZ = value;
-            }
+        public double CurrentZ        {
+            get            {                return (CurrZ);            }
+            set            {                CurrZ = value;            }
         }
-        public static void setCurrZ(double z)
-        {
+        public static void setCurrZ(double z)        {
             CurrZ = z;
         }
 
@@ -200,6 +228,8 @@ namespace LitePlacer{
         {
             CurrA = a;
         }
+
+
 
         public bool SlackCompensation { get; set; }
 		private double SlackCompensationDistance = 0.4;
@@ -354,7 +384,7 @@ namespace LitePlacer{
             }
             _readyEvent.Reset();
             //Com.Write(command);
-            MainForm.DisplayText(command,System.Drawing.Color.Red);
+            MainForm.DisplayText(command,Color.Red);
             Com.Write("{\"gc\":\"" + command + "\"}");
             _readyEvent.Wait();
         }
@@ -365,7 +395,7 @@ namespace LitePlacer{
         public void InterpretLine(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
-            MainForm.DisplayText(line,System.Drawing.Color.Gray);
+            MainForm.DisplayText(line,Color.Gray);
 
             if (line.Contains("SYSTEM READY"))
             {
@@ -397,7 +427,7 @@ namespace LitePlacer{
                 {
                     MainForm.DisplayText("### Igored file not open error ###");
                     return;
-                };
+                }
                 // Close();
                 MainForm.UpdateCncConnectionStatus();
                 MainForm.ShowMessageBox(
@@ -598,8 +628,7 @@ namespace LitePlacer{
                 line = line.Replace("{\"4", "{\"motor4");
                 NewSetting(line);
                 _readyEvent.Set();
-                MainForm.DisplayText("<== r",System.Drawing.Color.Green);
-                return;
+                MainForm.DisplayText("<== r",Color.Green);
             }
 
         }  // end InterpretLine()
@@ -619,84 +648,8 @@ namespace LitePlacer{
             
         }
 
-        [Serializable]
-        public class Sr
-        {
-            // mpox, posy, ...: Position
-            // NOTE: Some firmware versions use mpox, mpoy,... some use posx, posy, ... 
-            // This should be reflected in the public variable names
-            private double _posx = 0;
-            public double posx // <======================== here
-            {
-                get { return _posx; }
-                set
-                {
-                    _posx = value;
-                    CNC.setCurrX(_posx);
-                    CNC.MainForm.ValueUpdater("posx", _posx.ToString("0.000", CultureInfo.InvariantCulture));
-                }
-            }
+        
 
-            private double _posy = 0;
-            public double posy // <======================== and here
-            {
-                get { return _posy; }
-                set
-                {
-                    _posy = value;
-                    CNC.setCurrY(_posy);
-                    CNC.MainForm.ValueUpdater("posy", _posy.ToString("0.000", CultureInfo.InvariantCulture));
-                }
-            }
-
-            private double _posz = 0;
-            public double posz // <======================== and here
-            {
-                get { return _posz; }
-                set
-                {
-                    _posz = value;
-                    CNC.setCurrZ(_posz);
-                    CNC.MainForm.ValueUpdater("posz", _posz.ToString("0.000", CultureInfo.InvariantCulture));
-                }
-            }
-
-            private double _posa = 0;
-            public double posa // <======================== and here
-            {
-                get { return _posa; }
-                set
-                {
-                    _posa = value;
-                    CNC.setCurrA(_posa);
-                    CNC.MainForm.ValueUpdater("posa", _posa.ToString("0.000", CultureInfo.InvariantCulture));
-                }
-            }
-
-            /*
-            public double ofsx { get; set; }
-            public double ofsy { get; set; }
-            public double ofsz { get; set; }
-            public double ofsa { get; set; }
-            public int unit { get; set; }
-            public int stat { get; set; }
-            public int coor { get; set; }
-            public int momo { get; set; }
-            public int dist { get; set; }
-            public int home { get; set; }
-            public int hold { get; set; }
-            public int macs { get; set; }
-            public int cycs { get; set; }
-            public int mots { get; set; }
-            public int plan { get; set; }
-             * */
-        }
-
-        [Serializable]
-        public class StatusReport
-        {
-            public Sr sr { get; set; }
-        }
 
 
         // =================================================================================
@@ -709,8 +662,7 @@ namespace LitePlacer{
             Settings = serializer.Deserialize<Response>(line);
         }
 
-        public class Resp
-        {
+        public class Resp        {
 
             // =========================================================
             // The individual settings we care about and do something
@@ -724,7 +676,7 @@ namespace LitePlacer{
                 set
                 {
                     _xjm = value;
-                    CNC.MainForm.ValueUpdater("xjm", _xjm);
+                    MainForm.ValueUpdater("xjm", _xjm);
                 }
             }
 
@@ -735,7 +687,7 @@ namespace LitePlacer{
                 set
                 {
                     _yjm = value;
-                    CNC.MainForm.ValueUpdater("yjm", _yjm);
+                    MainForm.ValueUpdater("yjm", _yjm);
                 }
             }
 
@@ -746,7 +698,7 @@ namespace LitePlacer{
                 set
                 {
                     _zjm = value;
-                    CNC.MainForm.ValueUpdater("zjm", _zjm);
+                    MainForm.ValueUpdater("zjm", _zjm);
                 }
             }
 
@@ -757,7 +709,7 @@ namespace LitePlacer{
                 set
                 {
                     _ajm = value;
-                    CNC.MainForm.ValueUpdater("ajm", _ajm);
+                    MainForm.ValueUpdater("ajm", _ajm);
                 }
             }
 
@@ -769,7 +721,7 @@ namespace LitePlacer{
                 set
                 {
                     _xvm = value;
-                    CNC.MainForm.ValueUpdater("xvm", _xvm);
+                    MainForm.ValueUpdater("xvm", _xvm);
                 }
             }
 
@@ -780,7 +732,7 @@ namespace LitePlacer{
                 set
                 {
                     _yvm = value;
-                    CNC.MainForm.ValueUpdater("yvm", _yvm);
+                    MainForm.ValueUpdater("yvm", _yvm);
                 }
             }
 
@@ -791,7 +743,7 @@ namespace LitePlacer{
                 set
                 {
                     _zvm = value;
-                    CNC.MainForm.ValueUpdater("zvm", _zvm);
+                    MainForm.ValueUpdater("zvm", _zvm);
                 }
             }
 
@@ -802,7 +754,7 @@ namespace LitePlacer{
                 set
                 {
                     _avm = value;
-                    CNC.MainForm.ValueUpdater("avm", _avm);
+                    MainForm.ValueUpdater("avm", _avm);
                 }
             }
 
@@ -815,7 +767,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor1mi = value;
-                    CNC.MainForm.ValueUpdater("1mi", _motor1mi);
+                    MainForm.ValueUpdater("1mi", _motor1mi);
                 }
             }
 
@@ -826,7 +778,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor2mi = value;
-                    CNC.MainForm.ValueUpdater("2mi", _motor2mi);
+                    MainForm.ValueUpdater("2mi", _motor2mi);
                 }
             }
 
@@ -837,7 +789,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor3mi = value;
-                    CNC.MainForm.ValueUpdater("3mi", _motor3mi);
+                    MainForm.ValueUpdater("3mi", _motor3mi);
                 }
             }
 
@@ -848,7 +800,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor4mi = value;
-                    CNC.MainForm.ValueUpdater("4mi", _motor4mi);
+                    MainForm.ValueUpdater("4mi", _motor4mi);
                 }
             }
 
@@ -860,7 +812,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor1tr = value;
-                    CNC.MainForm.ValueUpdater("1tr", _motor1tr);
+                    MainForm.ValueUpdater("1tr", _motor1tr);
                 }
             }
 
@@ -871,7 +823,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor2tr = value;
-                    CNC.MainForm.ValueUpdater("2tr", _motor2tr);
+                    MainForm.ValueUpdater("2tr", _motor2tr);
                 }
             }
 
@@ -882,7 +834,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor3tr = value;
-                    CNC.MainForm.ValueUpdater("3tr", _motor3tr);
+                    MainForm.ValueUpdater("3tr", _motor3tr);
                 }
             }
 
@@ -893,7 +845,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor4tr = value;
-                    CNC.MainForm.ValueUpdater("4tr", _motor4tr);
+                    MainForm.ValueUpdater("4tr", _motor4tr);
                 }
             }
 
@@ -905,7 +857,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor1sa = value;
-                    CNC.MainForm.ValueUpdater("1sa", _motor1sa);
+                    MainForm.ValueUpdater("1sa", _motor1sa);
                 }
             }
 
@@ -916,7 +868,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor2sa = value;
-                    CNC.MainForm.ValueUpdater("2sa", _motor2sa);
+                    MainForm.ValueUpdater("2sa", _motor2sa);
                 }
             }
 
@@ -927,7 +879,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor3sa = value;
-                    CNC.MainForm.ValueUpdater("3sa", _motor3sa);
+                    MainForm.ValueUpdater("3sa", _motor3sa);
                 }
             }
 
@@ -938,7 +890,7 @@ namespace LitePlacer{
                 set
                 {
                     _motor4sa = value;
-                    CNC.MainForm.ValueUpdater("4sa", _motor4sa);
+                    MainForm.ValueUpdater("4sa", _motor4sa);
                 }
             }
 
@@ -949,7 +901,7 @@ namespace LitePlacer{
                 set
                 {
                     _xjh = value;
-                    CNC.MainForm.ValueUpdater("xjh", _xjh);
+                    MainForm.ValueUpdater("xjh", _xjh);
                 }
             }
 
@@ -960,7 +912,7 @@ namespace LitePlacer{
                 set
                 {
                     _yjh = value;
-                    CNC.MainForm.ValueUpdater("yjh", _yjh);
+                    MainForm.ValueUpdater("yjh", _yjh);
                 }
             }
 
@@ -971,7 +923,7 @@ namespace LitePlacer{
                 set
                 {
                     _zjh = value;
-                    CNC.MainForm.ValueUpdater("zjh", _zjh);
+                    MainForm.ValueUpdater("zjh", _zjh);
                 }
             }
 
@@ -982,7 +934,7 @@ namespace LitePlacer{
                 set
                 {
                     _xsv = value;
-                    CNC.MainForm.ValueUpdater("xsv", _xsv);
+                    MainForm.ValueUpdater("xsv", _xsv);
                 }
             }
 
@@ -993,7 +945,7 @@ namespace LitePlacer{
                 set
                 {
                     _ysv = value;
-                    CNC.MainForm.ValueUpdater("ysv", _ysv);
+                    MainForm.ValueUpdater("ysv", _ysv);
                 }
             }
 
@@ -1004,7 +956,7 @@ namespace LitePlacer{
                 set
                 {
                     _zsv = value;
-                    CNC.MainForm.ValueUpdater("zsv", _zsv);
+                    MainForm.ValueUpdater("zsv", _zsv);
                 }
             }
 
@@ -1015,7 +967,7 @@ namespace LitePlacer{
                 set
                 {
                     _xsn = value;
-                    CNC.MainForm.ValueUpdater("xsn", _xsn);
+                    MainForm.ValueUpdater("xsn", _xsn);
                 }
             }
 
@@ -1026,7 +978,7 @@ namespace LitePlacer{
                 set
                 {
                     _ysn = value;
-                    CNC.MainForm.ValueUpdater("ysn", _ysn);
+                    MainForm.ValueUpdater("ysn", _ysn);
                 }
             }
 
@@ -1037,7 +989,7 @@ namespace LitePlacer{
                 set
                 {
                     _zsn = value;
-                    CNC.MainForm.ValueUpdater("zsn", _zsn);
+                    MainForm.ValueUpdater("zsn", _zsn);
                 }
             }
 
@@ -1048,7 +1000,7 @@ namespace LitePlacer{
                 set
                 {
                     _xsx = value;
-                    CNC.MainForm.ValueUpdater("xsx", _xsx);
+                    MainForm.ValueUpdater("xsx", _xsx);
                 }
             }
 
@@ -1059,7 +1011,7 @@ namespace LitePlacer{
                 set
                 {
                     _ysx = value;
-                    CNC.MainForm.ValueUpdater("ysx", _ysx);
+                    MainForm.ValueUpdater("ysx", _ysx);
                 }
             }
 
@@ -1070,19 +1022,311 @@ namespace LitePlacer{
                 set
                 {
                     _zsx = value;
-                    CNC.MainForm.ValueUpdater("zsx", _zsx);
+                    MainForm.ValueUpdater("zsx", _zsx);
                 }
             }
 
         }   // end class Resp
 
-        public class Response
-        {
+        public class Response        {
             public Resp r { get; set; }
             public List<int> f { get; set; }
         }
+        
+
+        // ADDITIONAL COMMANDS 
+        public bool Zdown() {
+            ZGuardOff();
+            return CNC_Z_m(Properties.Settings.Default.General_ZtoPCB);
+        }
+
+
+        public bool Zup() {            
+            ZGuardOn();
+            return CNC_Z_m(0);
+        }
+
+  
+
+        public double _z_offset;  // this is how far from zero the z-head should be to speed-up movements
+        public double z_offset {
+            get { return _z_offset; }
+            set {
+                if (value < 0) value = 0;
+                if (value > 20) {
+                    ShowSimpleMessageBox("Attempted to set z_offset > 20mm - too dangerous, setting to 20mm");
+                    value = 20;
+                }
+                // adjust where we are if a new value was entered and we were at the old position
+                if (_z_offset != value && CurrentZ == _z_offset) CNC_Z_m(value);
+                _z_offset = value;
+            }
+        }
+
+
+
+        public void CNC_Park() {
+            Zup();
+            CNC_XY_m(Global.GeneralParkLocation);
+        }
+
+        public bool CNC_Home_m(string axis) {
+            Homing = true; //one shot
+            if (!CNC_Write_m("{\"gc\":\"G28.2 " + axis + "0\"}")) {
+                ShowSimpleMessageBox("Homing operation mechanical step failed, CNC issue");
+                return false;
+            }
+            Global.Instance.DisplayText("Homing " + axis + " done.", Color.DarkSeaGreen);
+            return true;
+        }
+
+        // =================================================================================
+        // CNC_Write_m
+        // Sends a command to CNC, doesn't return until the response is handled
+        // by the CNC class. (See _readyEvent )
+        // =================================================================================
+        private const int CNC_MoveTimeout = 3000; // timeout for X,Y,Z,A movements; 2x ms. (3000= 6s timeout)
+
+        public void CNC_RawWrite(string s) {
+            // This for operations that cause conflicts with event firings. Caller does waiting, if needed.
+            RawWrite(s);
+        }
+
+        bool CNC_BlockingWriteDone;
+        bool CNC_WriteOk = true;
+        private static ManualResetEventSlim Cnc_ReadyEvent = new ManualResetEventSlim(false);
+
+        private void CNC_BlockingWrite_thread(string cmd) {
+            Cnc_ReadyEvent.Reset();
+            CNC_WriteOk = Write(cmd);
+            Cnc_ReadyEvent.Wait();
+            CNC_BlockingWriteDone = true;
+        }
+
+        public bool CNC_Write_m(string s, int Timeout = 250) {
+            CNC_BlockingWriteDone = false;
+            Thread t = new Thread(() => CNC_BlockingWrite_thread(s));
+            t.IsBackground = true;
+            t.Start();
+            int i = 0;
+            if (Homing) {
+                Timeout = 10000;
+                Homing = false;
+            };
+            while (!CNC_BlockingWriteDone) {
+                Thread.Sleep(2);
+                Application.DoEvents();
+                i++;
+                if (i > Timeout) {
+                    Cnc_ReadyEvent.Set();  // terminates the CNC_BlockingWrite_thread
+                    Global.Instance.mainForm.ShowMessageBox(
+                        "Debug: CNC_BlockingWrite: Timeout on command " + s,
+                        "Timeout",
+                        MessageBoxButtons.OK);
+                    CNC_BlockingWriteDone = true;
+                    JoggingBusy = false;
+
+                    return false;
+                }
+            }
+            return (CNC_WriteOk);
+        }
+
+        private bool CNC_MoveIsSafe_m(PartLocation p) {
+            if ((p.X < -3.0) || (p.X > Properties.Settings.Default.General_MachineSizeX) || (p.Y < -3.0) || (p.Y > Properties.Settings.Default.General_MachineSizeY)) {
+                ShowSimpleMessageBox("Attempt to move outside safe limits " + p);
+                return false;
+            }
+            if (CNC_NeedleIsDown_m()) {
+                ZGuardOn();
+                CNC_Z_m(0);
+            }
+            return true;
+        }
+
+
+
+        private bool _Zguard = true;
+        public void ZGuardOn() {
+            _Zguard = true;
+        }
+        public void ZGuardOff() {
+            _Zguard = false;
+        }
+
+        private bool CNC_NeedleIsDown_m() {
+            if ((CurrentZ > z_offset + 1) && _Zguard) {
+                Global.Instance.DisplayText("Needle down error.");
+                /* ShowMessageBox(
+                    "Attempt to move while needle is down.",
+                    "Danger to Needle",
+                    MessageBoxButtons.OK);*/
+                return true;
+            }
+            return false;
+        }
+
+        private void CNC_BlockingXY_thread(double X, double Y) {
+            Cnc_ReadyEvent.Reset();
+            XY(X, Y);
+            Cnc_ReadyEvent.Wait();
+            CNC_BlockingWriteDone = true;
+        }
+
+        private void CNC_BlockingXYA_thread(double X, double Y, double A) {
+            Cnc_ReadyEvent.Reset();
+            XYA(X, Y, A);
+            Cnc_ReadyEvent.Wait();
+            CNC_BlockingWriteDone = true;
+        }
+
+        public bool CNC_XYA_m(double X, double Y, double A) { return CNC_XY_m(new PartLocation(X, Y, A), true); }
+        public bool CNC_XY_m(double X, double Y) { return CNC_XY_m(new PartLocation(X, Y), false); }
+        public bool CNC_XY_m(PartLocation loc) { return CNC_XY_m(loc, false); }
+        public bool CNC_XYA_m(PartLocation loc) { return CNC_XY_m(loc, true); }
+
+        public bool CNC_XY_m(PartLocation loc, bool MoveAngle) {
+            if (MoveAngle) Global.Instance.DisplayText("CNC_XYA_m, x: " + loc);
+            else Global.Instance.DisplayText("CNC_XY_m, x: " + loc);
+
+            if (AbortPlacement) {
+                AbortPlacement = false;  // one shot
+                ShowSimpleMessageBox("Operation aborted");
+                return false;
+            }
+
+            if (!CNC_MoveIsSafe_m(loc)) return false;
+
+            if (!Connected) {
+                ShowSimpleMessageBox("CNC_XY: Cnc not connected");
+                return false;
+            }
+
+            CNC_BlockingWriteDone = false;
+            Thread t;
+            if (MoveAngle) {
+                t = new Thread(() => CNC_BlockingXYA_thread(loc.X, loc.Y, loc.A));
+            } else {
+                t = new Thread(() => CNC_BlockingXY_thread(loc.X, loc.Y));
+            }
+            t.IsBackground = true;
+            t.Start();
+            int i = 0;
+
+            while (!CNC_BlockingWriteDone) {
+                Thread.Sleep(2);
+                Application.DoEvents();
+                i++;
+                if (i > CNC_MoveTimeout) {
+                    Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
+                }
+            }
+
+            CNC_BlockingWriteDone = true;
+            if ((i > CNC_MoveTimeout) && Connected) {
+                Global.Instance.mainForm.ShowMessageBox(
+                           "CNC_XY: Timeout / Cnc connection cut!",
+                           "Timeout",
+                           MessageBoxButtons.OK);
+                Close();
+                Global.Instance.mainForm.UpdateCncConnectionStatus();
+            }
+            Global.Instance.DisplayText("CNC_XY_m ok");
+            return (Connected);
+        }
+
+
+        private void CNC_BlockingZ_thread(double z) {
+            Cnc_ReadyEvent.Reset();
+            Z(z);
+            Cnc_ReadyEvent.Wait();
+            CNC_BlockingWriteDone = true;
+        }
+
+        public bool CNC_Z_m(double Z) {
+            if (Z == 0) Z = z_offset; //consider this height = zero
+
+            if (AbortPlacement) {
+                AbortPlacement = false;  // one shot
+                ShowSimpleMessageBox("Operation aborted");
+                return false;
+            }
+
+            if (!Connected) {
+                ShowSimpleMessageBox("CNC_XY: Cnc not connected");
+                return false;
+            }
+
+            CNC_BlockingWriteDone = false;
+            Thread t = new Thread(() => CNC_BlockingZ_thread(Z));
+            t.IsBackground = true;
+            t.Start();
+            int i = 0;
+            while (!CNC_BlockingWriteDone) {
+                Thread.Sleep(2);
+                Application.DoEvents();
+                i++;
+                if (i > CNC_MoveTimeout) {
+                    Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
+                }
+            }
+            if ((i > CNC_MoveTimeout) || !Connected) {
+                ShowSimpleMessageBox("CNC_Z: Timeout / Cnc connection cut!");
+                Close();
+            }
+            return (Connected);
+        }
+
+        private void CNC_BlockingA_thread(double a) {
+            if (Properties.Settings.Default.CNC_SlackCompensation) {
+                Cnc_ReadyEvent.Reset();
+                A(a - 10); //this is slack compensation for the angle
+                Cnc_ReadyEvent.Wait();
+            }
+            Cnc_ReadyEvent.Reset();
+            A(a);
+            Cnc_ReadyEvent.Wait();
+            CNC_BlockingWriteDone = true;
+        }
+
+        public bool CNC_A_m(double A) {
+            CNC_BlockingWriteDone = false;
+            Thread t = new Thread(() => CNC_BlockingA_thread(A));
+            t.IsBackground = true;
+            t.Start();
+            int i = 0;
+            if (!Connected) {
+                Global.Instance.mainForm.ShowMessageBox(
+                    "CNC_A: Cnc not connected",
+                    "Cnc not connected",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            while (!CNC_BlockingWriteDone) {
+                Thread.Sleep(2);
+                Application.DoEvents();
+                i++;
+                if (i > CNC_MoveTimeout) {
+                    Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
+                }
+            }
+
+            CNC_BlockingWriteDone = true;
+            if ((i > CNC_MoveTimeout) && Connected) {
+                Global.Instance.mainForm.ShowMessageBox(
+                           "CNC_A: Timeout / Cnc connection cut!",
+                           "Timeout",
+                           MessageBoxButtons.OK);
+                Close();
+                Global.Instance.mainForm.UpdateCncConnectionStatus();
+            }
+            return (Connected);
+        }
+
 
     }  // end Class CNC
+
+
 }
 
 

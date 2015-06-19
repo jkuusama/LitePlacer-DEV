@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Emgu.CV;
-using Emgu.CV.Structure;
-using Emgu.Util;
-using Emgu;
+using Emgu.CV.CvEnum;
 
 namespace LitePlacer {
     // back computes a rigid transformation 
@@ -14,11 +10,11 @@ namespace LitePlacer {
     public class LeastSquaresMapping {
         List<PartLocation> source;
         List<PartLocation> dest;
-        private Matrix<double> R;
-        private Matrix<double> Transpose;
+        private Matrix<double> Rotation;
+        private Matrix<double> Offset;
         Matrix<double> source_centroid, dest_centroid;
 
-        public double Angle { get { return Math.Acos(R[0, 0]) * 180d / Math.PI; } }
+        public double Angle { get { return Math.Acos(Rotation[0, 0]) * 180d / Math.PI; } }
 
         public LeastSquaresMapping(List<PartLocation> from, List<PartLocation> to) { 
             source = from;
@@ -54,16 +50,16 @@ namespace LitePlacer {
             Matrix<double> U = new Matrix<double>(2, 2); 
             Matrix<double> W = new Matrix<double>(2, 2);            
             Matrix<double> V = new Matrix<double>(2, 2);
-            Emgu.CV.CvInvoke.cvSVD(H.Ptr, W.Ptr, U.Ptr, V.Ptr, Emgu.CV.CvEnum.SVD_TYPE.CV_SVD_DEFAULT);
+            CvInvoke.cvSVD(H.Ptr, W.Ptr, U.Ptr, V.Ptr, SVD_TYPE.CV_SVD_DEFAULT);
 
             // compute rotational matrix R=V*UT
-            R = V * U.Transpose();
+            Rotation = V * U.Transpose();
 
             // find translation
-            Transpose = dest_centroid - R.Transpose() * source_centroid;
+            Offset = dest_centroid - ( Rotation * source_centroid);
 
-            Console.WriteLine("Transpose:\n" + Transpose.Data);
-            Console.WriteLine("Rotation:\n" + R.Data);
+            Console.WriteLine("Transpose:\n" + Offset.Data);
+            Console.WriteLine("Rotation:\n" + Rotation.Data);
         }
 
         /// <summary>
@@ -71,10 +67,14 @@ namespace LitePlacer {
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public PartLocation Map(PartLocation source) {
-            if (R == null || Transpose == null) throw new Exception("LeastSquareMapping not intialized");
-            var x = R * source.ToMatrix() + Transpose;
-            return new PartLocation(x[0, 0], x[1, 0], source.A + Angle);
+        public PartLocation Map(PartLocation from) {
+            if (Rotation == null || Offset == null) throw new Exception("LeastSquareMapping not intialized");
+
+            var x = from.ToMatrix();
+            var y = Rotation * (x-source_centroid) + Offset; //shift point to center, apply rotation, then shift to the destination
+            var p = new PartLocation(y);
+            p.A = from.A + Angle;
+            return p;
         }
 
         /// <summary>

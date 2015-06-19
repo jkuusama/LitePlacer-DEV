@@ -1,118 +1,148 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO.Ports;
-using System.IO;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Drawing;
-using System.Reflection;
-//using System.Web.Script.Serialization;
-using System.Configuration;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using AForge.Imaging;
-using System.Windows.Media;
-using MathNet.Numerics;
-using HomographyEstimation;
-
-using System.Text.RegularExpressions;
-
-using Emgu.CV;
-using Emgu.CV.Structure;
-using Emgu.Util;
-using Emgu;
+using System.Linq;
+using System.Threading;
+using System.Windows.Forms;
+using LitePlacer.Properties;
+using MathNet.Numerics.LinearRegression;
 
 namespace LitePlacer {
-    public partial class FormMain : Form {
+    public class AutoCalibration {
 
-        /// <summary>
-        /// Calibrate Optical / pixel ratio for UP CAMERA
-        /// </summary>
-        private void UpCamera_Calibration_button_Click(object sender, EventArgs e) {
-            if (!SelectCamera(UpCamera)) return;
+        public static void DoNeedleErrorMeasurement(VideoProcessing vp) {
+            var cnc = Global.Instance.cnc;
+            var originalLocation = cnc.XYALocation;
+            PartLocation testLocation = new PartLocation(Settings.Default.UpCam_PositionX, Settings.Default.UpCam_PositionY);
+            cnc.Zup();
+            cnc.CNC_XY_m(testLocation);
 
-            //setup camera
-            CamFunctionsClear_button_Click(null, null);
-            SetNeedleMeasurement();
-            NeedleToDisplay_button_Click(null, null);
+            cnc.ZGuardOff();
+            cnc.Zdown();
 
-            // temp turn off zoom
-            var savedZoom = UpCamera.Zoom;
-            UpCamera.Zoom = false;
+            // setup camera
+            vp.SetFunctionsList("needle");
+            vp.FindCircles = true;
+            vp.Draw1mmGrid = true;
+            var Needle = Global.Instance.needle;
 
+            List<PartLocation> offsetError = new List<PartLocation>();
+            for (int i = 0; i <= 360; i += 90) {
+                testLocation.A = i;
+                var pp = testLocation - Needle.NeedleOffset;
+
+                Needle.Move_m(pp); // move to target
+                // mark erro
+                var circle = VideoDetection.GetClosestCircle(vp, 10);
+                if (circle != null) {
+                    vp.MarkA.Add(circle.ToScreenResolution().ToPartLocation().ToPointF());
+
+                    circle.ToMMResolution();
+                    offsetError.Add(circle.ToPartLocation());
+                }
+                Thread.Sleep(500); //wait 1 second
+            }
+
+            Global.Instance.mainForm.ShowSimpleMessageBox("Upcamera offset Error is " + PartLocation.Average(offsetError) + "\nMax Error is " + PartLocation.MaxValues(offsetError));
+
+            cnc.ZGuardOn(); //Needle up, move back
+            cnc.Zup();
+            cnc.CNC_XYA_m(originalLocation);
+
+            //revert to previous state
+            vp.Reset();
+        }
+
+
+        public static PointF DownCamera_Calibration(CameraView cv, double moveDistance) {
+            var cnc = Global.Instance.cnc;
+
+            cv.SetDownCameraFunctionSet("Homing");
+            // move to upcamera position
+            cnc.Zup();
+            Global.Instance.mainForm.GotoUpCamPosition_button_Click(null, null);
+            cnc.Zdown();
+            // do calibration
+            var ret = DoCameraCalibration(cv.downVideoProcessing, new PartLocation(moveDistance, moveDistance));
+            cnc.Zup();
+            cv.SetDownCameraFunctionSet("");
+            return ret;
+        }
+
+        public static PointF UpCamera_Calibration(CameraView cv, double moveDistance) {
+            var cnc = Global.Instance.cnc;
+
+            cv.SetUpCameraFunctionSet("Needle");
+            // move to upcamera position
+            cnc.Zup();
+            Global.Instance.mainForm.GotoUpCamPosition_button_Click(null, null);
+            cnc.Zdown();
+            // do calibration
+            var ret = DoCameraCalibration(cv.upVideoProcessing, new PartLocation(moveDistance, moveDistance));
+            cnc.Zup();
+            cv.SetUpCameraFunctionSet("");
+            return ret;
+        }
+
+
+        private static PointF DoCameraCalibration(VideoProcessing vp, PartLocation movement) {
+            var cnc = Global.Instance.cnc;
             List<PartLocation> distance = new List<PartLocation>();
             List<PartLocation> pixels = new List<PartLocation>();
 
             // turn on slack compensation
-            bool slackSetting = Cnc.SlackCompensation;
-            Cnc.SlackCompensation = true;
+            var savedSlackCompensation = cnc.SlackCompensation;
+            cnc.SlackCompensation = true;
+            cnc.Zup();
 
-            // move to upcamera position
-            ZUp_button_Click(null, null); // move needle up
-            GotoUpCamPosition_button_Click(null, null);
-            ZDown_button_Click(null, null);
-
-            var movement = new PartLocation(.1, .1);
-            var startingPos = Cnc.XYLocation;
+            var startingPos = cnc.XYLocation;
             startingPos.A = 0;
 
-            var zoom = UpCamera.GetMeasurementZoom();
-            UpCamera.MarkA.Clear();
+            var zoom = vp.GetZoom();
+            vp.MarkA.Clear();
+
             for (int i = -4; i < 5; i++) {
                 //move
                 var newLocation = startingPos + (i * movement);
-                CNC_XYA_m(newLocation);
+                cnc.CNC_XYA_m(newLocation);
 
                 //try 5 times to find a circle
                 List<Shapes.Circle> circles = new List<Shapes.Circle>();
                 for (int tries = 5; tries > 0 && circles.Count == 0; tries--)
-                    circles = UpCamera.videoDetection.FindCircles();
+                    circles = VideoDetection.FindCircles(vp);
                 if (circles.Count == 0) continue; //not found, move and try again
 
                 //find largest circle of the bunch
                 var circle = circles.Aggregate((c, d) => c.Radius > d.Radius ? c : d); //find largest circle if we have multiple 
-              //  var circlePL = (1 / zoom) * circle.ToPartLocation(); //compensate for zoom
+                //  var circlePL = (1 / zoom) * circle.ToPartLocation(); //compensate for zoom
                 circle.ToScreenUnzoomedResolution();
                 distance.Add(newLocation);
                 pixels.Add(circle.ToPartLocation());
 
-                UpCamera.MarkA.Add(circle.Clone().ToScreenResolution().ToPartLocation() .ToPointF());
+                vp.MarkA.Add(circle.Clone().ToScreenResolution().ToPartLocation().ToPointF());
                 //DisplayText(String.Format("Actual Loc = {0}\t Measured Loc = {1}", newLocation, UpCamera.PixelsToActualLocation(circlePL)), Color.Blue);
             }
 
 
+            double XmmPerPixel = 0, YmmPerPixel = 0;
             if (pixels.Count < 2) {
-                ShowMessageBox("Unable To Detect Circles",
+                Global.Instance.mainForm.ShowMessageBox("Unable To Detect Circles",
                     "Try to adjust upcamera processing to see circles, and ensure upcamera needle position is correctly configured",
                     MessageBoxButtons.OK);
             } else {
                 // Do regression on X and Y 
                 var Xs = pixels.Select(xx => xx.X).ToArray();
                 var Ys = distance.Select(xx => xx.X).ToArray();
-                var result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
-                double XmmPerPixel = result.Item2;
+                var result = SimpleRegression.Fit(Xs, Ys);
+                XmmPerPixel = result.Item2;
 
                 Xs = pixels.Select(xx => xx.Y).ToArray();
                 Ys = distance.Select(xx => xx.Y).ToArray();
-                result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
-                double YmmPerPixel = result.Item2;
+                result = SimpleRegression.Fit(Xs, Ys);
+                YmmPerPixel = result.Item2;
 
 
-                DisplayText(String.Format("{0} Xmm/pixel   {1} Ymm/pixel", XmmPerPixel, YmmPerPixel), Color.Purple);
-
-                // update values
-                Properties.Settings.Default.UpCam_XmmPerPixel = Math.Abs(XmmPerPixel);
-                Properties.Settings.Default.UpCam_YmmPerPixel = Math.Abs(YmmPerPixel);
-                UpCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-                UpCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-                UpCameraBoxX_textBox.Text = (Math.Abs(XmmPerPixel) * UpCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
-                UpCameraBoxY_textBox.Text = (Math.Abs(YmmPerPixel) * UpCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
+                Global.Instance.DisplayText(String.Format("{0} Xmm/pixel   {1} Ymm/pixel", XmmPerPixel, YmmPerPixel), Color.Purple);
 
                 // Now move to the center
                 /* need to get gotolocation upcamera working still
@@ -132,101 +162,13 @@ namespace LitePlacer {
             }
 
             //restore settings
-            UpCamera.Zoom = savedZoom;
-            Cnc.SlackCompensation = slackSetting;
-            ZUp_button_Click(null, null); //move up
-            CamFunctionsClear_button_Click(null, null); //clear viewport
+            cnc.SlackCompensation = savedSlackCompensation;
+            //return value
+            return new PointF((float)Math.Abs(XmmPerPixel), (float)Math.Abs(YmmPerPixel));
         }
 
-          
-        // DOWN CAMERA CALIBRATE
-        private void button_camera_calibrate_Click(object sender, EventArgs e) {
-            if (!SelectCamera(DownCamera)) return;
 
-            //setup camera
-            CamFunctionsClear_button_Click(null, null);
-            SetHomingMeasurement();
-
-            // temp turn off zoom
-            var savedZoom = DownCamera.Zoom;
-            DownCamera.Zoom = false;
-
-            List<PartLocation> distance = new List<PartLocation>();
-            List<PartLocation> pixels = new List<PartLocation>();
-
-            // turn on slack compensation
-            bool slackSetting = Cnc.SlackCompensation;
-            Cnc.SlackCompensation = true;
-
-            // move to upcamera position
-            ZUp_button_Click(null, null); // move needle up
-
-            double movedistance = .25;
-            double.TryParse(calibMoveDistance_textBox.Text, out movedistance);
-
-            var movement = new PartLocation(movedistance,movedistance);
-            var startingPos = Cnc.XYLocation;
-            DownCamera.MarkA.Clear();
-
-            for (int i = 0; i < 5; i++) {
-                //move
-                var newLocation = startingPos + (i * movement);
-                CNC_XY_m(newLocation);
-
-                //try 5 times to find a circle
-                VideoDetection vd = DownCamera.videoDetection;
-                Shapes.Circle circle = null;
-                for (int tries = 5; tries > 0 && circle == null; tries--)
-                    circle = vd.GetClosest( vd.FindCircles() );
-                if (circle == null) continue; //couldn't find one
-
-                circle.ToScreenUnzoomedResolution(); //centered and unzoomed
-                distance.Add(newLocation);
-                pixels.Add(circle.ToPartLocation());
-
-                // work with clone so we don't modify the entry in the previous list
-                DownCamera.MarkA.Add(circle.Clone().ToScreenResolution().ToPartLocation().ToPointF());
-                  
-            }
-
-            if (pixels.Count < 2) {
-                ShowMessageBox("Unable To Detect Circles",
-                    "Try to adjust upcamera processing to see circles, and ensure upcamera needle position is correctly configured",
-                    MessageBoxButtons.OK);
-            } else {
-                // Do regression on X and Y 
-                var Xs = pixels.Select(xx => xx.X).ToArray();
-                var Ys = distance.Select(xx => xx.X).ToArray();
-                var result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
-                double XmmPerPixel = result.Item2;
-
-                Xs = pixels.Select(xx => xx.Y).ToArray();
-                Ys = distance.Select(xx => xx.Y).ToArray();
-                result = MathNet.Numerics.LinearRegression.SimpleRegression.Fit(Xs, Ys);
-                double YmmPerPixel = result.Item2;
-
-
-                DisplayText(String.Format("{0} Xmm/pixel   {1} Ymm/pixel", XmmPerPixel, YmmPerPixel), Color.Purple);
-
-                // update values
-                Properties.Settings.Default.UpCam_XmmPerPixel = Math.Abs(XmmPerPixel);
-                Properties.Settings.Default.UpCam_YmmPerPixel = Math.Abs(YmmPerPixel);
-                DownCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-                DownCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-                DownCameraBoxX_textBox.Text = (Math.Abs(XmmPerPixel) * DownCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
-                DownCameraBoxY_textBox.Text = (Math.Abs(YmmPerPixel) * DownCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
-
-
-            }
-
-            //restore settings
-            CNC_XY_m(startingPos);
-            DownCamera.Zoom = savedZoom;
-            Cnc.SlackCompensation = slackSetting;
-            CamFunctionsClear_button_Click(null, null); //clear viewport
-
-        }
-    
+        /*
 
         public void MeasureSlack() {
             //move in one direction, measure circle, move in opposite direction, measure where we
@@ -258,7 +200,7 @@ namespace LitePlacer {
 
         }
 
-
+    
         
         private float MeasureSlack(PartLocation delta) {
             Thread.Sleep(150);
@@ -277,17 +219,8 @@ namespace LitePlacer {
 
             return (float)(delta.VectorLength() - circleMove.VectorLength());
         }
+    */
 
-
-        /// <summary>
-        /// Will return the center of the average of several circle detections
-        /// </summary>
-        /// <returns></returns>
-        private PartLocation MeasureCircle() {
-            var circle = DownCamera.videoDetection.GetClosestAverageCircle(300, 5); //averages 5 circles
-            circle.ToScreenResolution();
-            return circle.ToPartLocation();
-        }
 
 
     }

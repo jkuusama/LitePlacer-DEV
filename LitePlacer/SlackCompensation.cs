@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace LitePlacer {
     class SlackCompensation {
-        float slack_xltor = 0, slack_xrtol = 0, slack_yttob = 0, slack_ybtot = 0;
-        float slack_x = 0, slack_y = 0;
-        double _x=0,_y=0;
+        float slack_xltor, slack_xrtol, slack_yttob, slack_ybtot;
+        float slack_x, slack_y;
+        double _x,_y;
 
         public SlackCompensation(float xltor, float xrtol, float yttob, float ybtot) {
             slack_xltor = xltor;

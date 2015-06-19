@@ -1,52 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO.Ports;
-using System.IO;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Drawing;
-using System.Reflection;
-//using System.Web.Script.Serialization;
-using System.Configuration;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using AForge.Imaging;
-using System.Windows.Media;
-using MathNet.Numerics;
-using HomographyEstimation;
-
 using System.Text.RegularExpressions;
-
-using Emgu.CV;
-using Emgu.CV.Structure;
-using Emgu.Util;
-using Emgu;
+using System.Windows.Forms;
+using Be.Timvw.Framework.ComponentModel;
+//using System.Web.Script.Serialization;
 
 namespace LitePlacer {
     public class CAD {
-        public BindingList<PhysicalComponent> CAD_DATA = new BindingList<PhysicalComponent>();
+        public SortableBindingList<PhysicalComponent> ComponentData = new SortableBindingList<PhysicalComponent>();
+        public SortableBindingList<JobData> JobData = new SortableBindingList<JobData>();
+
         FormMain MainForm;
 
         public CAD(FormMain f) {
             MainForm = f;
         }
 
+        public static void MoveItem<T>(BindingList<T> list, int index, int offset) {
+            if (index + offset < 0 || index + offset >= list.Count) return;
+            var item = list[index];
+            list.RemoveAt(index);
+            list.Insert((index + offset), item);
+        }
+
         public bool CADdataToMMs_m() {
-            foreach (var x in CAD_DATA) {
+            foreach (var x in ComponentData) {
                 x.nominal.X /= 2.54;
                 x.nominal.Y /= 2.54;
             }
             return true;
         }
 
+        public void AutoFillJobEntry() {
+            JobData.Clear();
+            var partTypes = ComponentData.Select(x => x.Footprint).Distinct().ToArray();
+            foreach (var part in partTypes) {
+                var job = new JobData();
+                job.AddComponent(ComponentData.Where(x => x.Footprint.Equals(part)).ToArray());
+                JobData.Add(job);
+            }
+        }
 
+        public PhysicalComponent GetComponentByDesignator(string designator) {
+            return ComponentData.Where(x => x.Designator.Equals(designator.Trim())).First();
+        }
 
+        
         // =================================================================================
         // ParseKiCadData_m()
         // =================================================================================
@@ -57,7 +58,7 @@ namespace LitePlacer {
             // Skip headers until find one starting with "## "
             while (!(AllLines[i].StartsWith("## "))) {
                 i++;
-            };
+            }
 
             // inches vs mms
             if (AllLines[i++].Contains("inches")) {
@@ -69,18 +70,17 @@ namespace LitePlacer {
             // add rest of the lines
             while (!(AllLines[i]).StartsWith("## End")) {
                 KiCadLines.Add(AllLines[i++]);
-            };
+            }
             // parse the data
             string[] KicadArr = KiCadLines.ToArray();
             if (!ParseCadData_m(KicadArr, true)) {
                 return false;
-            };
+            }
             // convert to mm'f if needed
             if (inches) {
                 return (CADdataToMMs_m());
-            } else {
-                return true;
             }
+            return true;
         }
 
         // =================================================================================
@@ -95,21 +95,21 @@ namespace LitePlacer {
                 if (c == ',') {
                     commas++;
                 }
-            };
+            }
             int semicolons = 0;
             foreach (char c in Line) {
                 if (c == ';') {
                     semicolons++;
                 }
-            };
+            }
             if ((commas == 0) && (semicolons > 4)) {
                 delimiter = ';';
                 return true;
-            };
+            }
             if ((semicolons == 0) && (commas > 4)) {
                 delimiter = ',';
                 return true;
-            };
+            }
 
             MainForm.ShowMessageBox(
                 "File header parse fail",
@@ -121,33 +121,23 @@ namespace LitePlacer {
         }
 
         public bool ParseCadData_m(String[] AllLines, bool KiCad) {
-            int ComponentIndex;
-            int ValueIndex;
-            int FootPrintIndex;
-            int X_Nominal_Index;
-            int Y_Nominal_Index;
-            int RotationIndex;
+            int ComponentIndex=-1;
+            int ValueIndex=-1;
+            int FootPrintIndex=-1;
+            int X_Nominal_Index=-1;
+            int Y_Nominal_Index=-1;
+            int RotationIndex=-1;
             int LayerIndex = -1;
             bool LayerDataPresent = false;
             int i;
             int LineIndex = 0;
 
             // Parse header. Skip empty lines and comment lines (starting with # or "//")
+            Regex skip_header = new Regex(@"^$|^#.*|//.*");
             foreach (string s in AllLines) {
-                if (s == "") {
-                    LineIndex++;
-                    continue;
-                }
-                if (s[0] == '#') {
-                    LineIndex++;
-                    continue;
-                };
-                if ((s.Length > 1) && (s[0] == '/') && (s[1] == '/')) {
-                    LineIndex++;
-                    continue;
-                };
+                if (skip_header.IsMatch(s)) { LineIndex++; continue; }
                 break;
-            };
+            }
 
             char delimiter;
             if (KiCad) {
@@ -157,181 +147,50 @@ namespace LitePlacer {
                     return false;
                 };
             }
+            
+            // Determien which column is what 
+            string[] h = SplitCSV(AllLines[LineIndex++], delimiter).ToArray();
+            Regex header_regexp = new Regex(@"^(designator|part|refdes|ref|component)$", RegexOptions.IgnoreCase);
+            Regex value_regexp = new Regex(@"^(value|val|comment)$", RegexOptions.IgnoreCase);
+            Regex footprint_regexp = new Regex(@"^(footprint|package|pattern)$", RegexOptions.IgnoreCase);
+            Regex x_regexp = new Regex(@"^(x|x \(mm\)|posx|ref x)$", RegexOptions.IgnoreCase);
+            Regex y_regexp = new Regex(@"^(y|y \(mm\)|posy|ref y)$", RegexOptions.IgnoreCase);
+            Regex rotate_regexp = new Regex(@"^(rotation|rot|rotate)$", RegexOptions.IgnoreCase);
+            Regex layer_regexp = new Regex(@"^(layer|side|tb)$", RegexOptions.IgnoreCase);
 
-            List<String> Headers = SplitCSV(AllLines[LineIndex++], delimiter);
 
-            for (i = 0; i < Headers.Count; i++) {
-                if ((Headers[i] == "Designator") ||
-                    (Headers[i] == "designator") ||
-                    (Headers[i] == "Part") ||
-                    (Headers[i] == "part") ||
-                    (Headers[i] == "RefDes") ||
-                    (Headers[i] == "Ref") ||
-                    (Headers[i] == "Component") ||
-                    (Headers[i] == "component")
-                  ) {
-                    break;
-                }
+            for (int j=0; j<h.Length; j++) {
+                if (header_regexp.IsMatch(h[j])) ComponentIndex = j;
+                if (value_regexp.IsMatch(h[j]))  ValueIndex = j;
+                if (footprint_regexp.IsMatch(h[j])) FootPrintIndex = j;
+                if (x_regexp.IsMatch(h[j])) X_Nominal_Index = j;
+                if (y_regexp.IsMatch(h[j])) Y_Nominal_Index = j;
+                if (rotate_regexp.IsMatch(h[j])) RotationIndex = j;
+                if (layer_regexp.IsMatch(h[j])) {LayerIndex = j; LayerDataPresent=true;}
             }
-            if (i >= Headers.Count) {
-                MainForm.ShowMessageBox("Component/Designator/Name not found in header line", "Syntax error", MessageBoxButtons.OK);
+
+            if (ComponentIndex == -1 || ValueIndex == -1 || FootPrintIndex == -1 || X_Nominal_Index == -1 ||
+                Y_Nominal_Index == -1 || RotationIndex == -1) {
+                MainForm.ShowSimpleMessageBox("Headers not set correctly - unable to parse cad file");
                 return false;
             }
-            ComponentIndex = i;
 
-            for (i = 0; i < Headers.Count; i++) {
-                if ((Headers[i] == "Value") ||
-                    (Headers[i] == "value") ||
-                    (Headers[i] == "Val") ||
-                    (Headers[i] == "val") ||
-                    (Headers[i] == "Comment") ||
-                    (Headers[i] == "comment")
-                  ) {
-                    break;
-                }
-            }
-            if (i >= Headers.Count) {
-                MainForm.ShowMessageBox("Component value/comment not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            ValueIndex = i;
-
-            for (i = 0; i < Headers.Count; i++) {
-                if ((Headers[i] == "Footprint") ||
-                    (Headers[i] == "footprint") ||
-                    (Headers[i] == "Package") ||
-                    (Headers[i] == "package") ||
-                    (Headers[i] == "Pattern") ||
-                    (Headers[i] == "pattern")
-                  ) {
-                    break;
-                }
-            }
-            if (i >= Headers.Count) {
-                MainForm.ShowMessageBox("Component footprint/pattern not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            FootPrintIndex = i;
-
-            for (i = 0; i < Headers.Count; i++) {
-                if ((Headers[i] == "X") ||
-                    (Headers[i] == "x") ||
-                    (Headers[i] == "X (mm)") ||
-                    (Headers[i] == "x (mm)") ||
-                    (Headers[i] == "PosX") ||
-                    (Headers[i] == "Ref X") ||
-                    (Headers[i] == "ref x")
-                  ) {
-                    break;
-                }
-            }
-            if (i >= Headers.Count) {
-                MainForm.ShowMessageBox("Component X not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            X_Nominal_Index = i;
-
-            for (i = 0; i < Headers.Count; i++) {
-                if ((Headers[i] == "Y") ||
-                    (Headers[i] == "y") ||
-                    (Headers[i] == "Y (mm)") ||
-                    (Headers[i] == "y (mm)") ||
-                    (Headers[i] == "PosY") ||
-                    (Headers[i] == "Ref Y") ||
-                    (Headers[i] == "ref y")
-                  ) {
-                    break;
-                }
-            }
-            if (i >= Headers.Count) {
-                MainForm.ShowMessageBox("Component Y not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            Y_Nominal_Index = i;
-
-            for (i = 0; i < Headers.Count; i++) {
-                if ((Headers[i] == "Rotation") ||
-                    (Headers[i] == "rotation") ||
-                    (Headers[i] == "Rot") ||
-                    (Headers[i] == "rot") ||
-                    (Headers[i] == "Rotate")
-                  ) {
-                    break;
-                }
-            }
-            if (i >= Headers.Count) {
-                MainForm.ShowMessageBox("Component rotation not found in header line", "Syntax error", MessageBoxButtons.OK);
-                return false;
-            }
-            RotationIndex = i;
-
-
-            for (i = 0; i < Headers.Count; i++) {
-                if ((Headers[i] == "Layer") ||
-                    (Headers[i] == "layer") ||
-                    (Headers[i] == "Side") ||
-                    (Headers[i] == "side") ||
-                    (Headers[i] == "TB") ||
-                    (Headers[i] == "tb")
-                  ) {
-                    LayerIndex = i;
-                    LayerDataPresent = true;
-                    break;
-                }
-            }
-
-
-            /*        // clear and rebuild the data tables
-                    CadData_GridView.Rows.Clear();
-                    JobData_GridView.Rows.Clear();
-                    // not sure why this is the case
-                    foreach (DataGridViewColumn column in JobData_GridView.Columns) {
-                        column.SortMode = DataGridViewColumnSortMode.NotSortable;   // disable manual sort
-                    }
-        */
             // Parse data
-            List<String> Line;
             string peek;
-
-            for (i = LineIndex; i < AllLines.Count(); i++)   // for each component
-            {
+            Regex skip_lines_regex = new Regex("^$|^\"\"|^#.*|^//.*");
+            Regex top_regex = new Regex(@"top|f\.cu|t", RegexOptions.IgnoreCase);
+            Regex bot_regex = new Regex(@"bottom|b\.cu|b|bot", RegexOptions.IgnoreCase);
+            for (i = LineIndex; i < AllLines.Count(); i++) {  // for each component
+            
                 peek = AllLines[i];
                 // Skip: empty lines and comment lines (starting with # or "//")
-                if (
-                        (AllLines[i] == "")  // empty lines
-                        ||
-                        (AllLines[i] == "\"\"")  // empty lines ("")
-                        ||
-                        (AllLines[i][0] == '#')  // comment lines starting with #
-                        ||
-                        ((AllLines[i].Length > 1) && (AllLines[i][0] == '/') && (AllLines[i][1] == '/'))  // // comment lines starting with //
-                    ) {
-                    continue;
-                }
+                if (skip_lines_regex.IsMatch(AllLines[i])) continue;
 
-                Line = SplitCSV(AllLines[i], delimiter);
+                List<String> Line = SplitCSV(AllLines[i], delimiter);
                 // If layer is indicated and the component is not on this layer, skip it
-                if (LayerDataPresent) {
-                    if (MainForm.Bottom_checkBox.Checked) {
-                        if ((Line[LayerIndex] == "Top") ||
-                            (Line[LayerIndex] == "top") ||
-                            (Line[LayerIndex] == "F.Cu") ||
-                            (Line[LayerIndex] == "T") ||
-                            (Line[LayerIndex] == "t")) {
-                            continue;
-                        }
-                    } else {
-                        if ((Line[LayerIndex] == "Bottom") ||
-                            (Line[LayerIndex] == "bottom") ||
-                            (Line[LayerIndex] == "B") ||
-                            (Line[LayerIndex] == "b") ||
-                            (Line[LayerIndex] == "B.Cu") ||
-                            (Line[LayerIndex] == "Bot") ||
-                            (Line[LayerIndex] == "bot")) {
-                            continue;
-                        }
-                    }
-                }
+                if (LayerDataPresent &  MainForm.Bottom_checkBox.Checked & top_regex.IsMatch(Line[LayerIndex])) continue;
+                if (LayerDataPresent & !MainForm.Bottom_checkBox.Checked & bot_regex.IsMatch(Line[LayerIndex])) continue;
+
 
                 PhysicalComponent p = new PhysicalComponent();
                 p.Designator = Line[ComponentIndex];
@@ -342,41 +201,11 @@ namespace LitePlacer {
                 }
                 p.nominal.Y = double.Parse(Line[Y_Nominal_Index].Replace("mm", "").Replace(",", "."));
                 p.Rotation = double.Parse(Line[RotationIndex]);
-                CAD_DATA.Add(p);
+                ComponentData.Add(p);
                 
-                /*
-                CadData_GridView.Rows.Add();
-                int Last = CadData_GridView.RowCount - 1;
-                CadData_GridView.Rows[Last].Cells["Component"].Value = Line[ComponentIndex];
-                CadData_GridView.Rows[Last].Cells["Value_Footprint"].Value = Line[ValueIndex] + "  |  " + Line[FootPrintIndex];
-                if (LayerDataPresent) {
-                    if (Bottom_checkBox.Checked) {
-                        CadData_GridView.Rows[Last].Cells["X_nominal"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
-                    } else {
-                        CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
-                    }
-                } else {
-                    CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
-                }
-                CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = Line[Y_Nominal_Index].Replace("mm", "");
-                CadData_GridView.Rows[Last].Cells["X_nominal"].Value = CadData_GridView.Rows[Last].Cells["X_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = CadData_GridView.Rows[Last].Cells["Y_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["Rotation"].Value = Line[RotationIndex];
-                CadData_GridView.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
-                CadData_GridView.Rows[Last].Cells["Y_Machine"].Value = "Nan";
-                CadData_GridView.Rows[Last].Cells["Rotation_machine"].Value = "Nan";
-                 */
-            }   // end "for each component..."
+      
+            }   
 
-            // Disable manual sorting
-            /*      foreach (DataGridViewColumn column in CadData_GridView.Columns) {
-                      column.SortMode = DataGridViewColumnSortMode.NotSortable;
-                  }
-                  CadData_GridView.ClearSelection();
-                  // Check, that our data is good:
-                  if (!ValidateCADdata_m())
-                      return false;
-                  */
             return true;
         }   // end ParseCadData
 
@@ -384,7 +213,12 @@ namespace LitePlacer {
 
         // =================================================================================
         // Helper function for ParseCadData() (and some others, hence public static)
+        // from http://stackoverflow.com/questions/3147836/c-sharp-regex-split-commas-outside-quotes
+        public static List<string> SplitCSV(string Line, char delimiter) {
+            return Regex.Split(Line, delimiter + "(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Select(x=>x.Replace("\"","")).ToList();
+        }
 
+        /*
         public static List<String> SplitCSV(string Line, char delimiter) {
             // input lines can be "xxx","xxxx","xx"; output is array: xxx  xxxxx  xx
             // or xxx,xxxx,xx; output is array: xxx  xxxx  xx
@@ -416,7 +250,7 @@ namespace LitePlacer {
             }
             return (Tokens);
         }
-
+        */
 
     }
 }

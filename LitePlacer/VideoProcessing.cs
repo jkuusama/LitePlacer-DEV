@@ -1,58 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-
+using System.ComponentModel;
 using System.Drawing;
-using System.Threading;
-using System.Drawing.Imaging;
-
+using System.Linq;
 using AForge;
-using AForge.Video;
-using AForge.Video.DirectShow;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
-
 using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.Util;
-using Emgu;
+using LitePlacer.Properties;
+using Point = System.Drawing.Point;
 
 namespace LitePlacer {
-
-    public delegate void AForge_op(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B);
-    class AForgeFunction {
-            public AForge_op func { get; set; }
-            public int parameter_int { get; set; }				// general parameters. Some functions take one int,
-            public double parameter_double { get; set; }		// some take a float,
-            public int R { get; set; }				// and some need R, B, G values.
-            public int G { get; set; }
-            public int B { get; set; }
-        }
-
-
-
     public class VideoProcessing {
+        private BindingList<AForgeFunction> FunctionList = new BindingList<AForgeFunction>();
+        private BindingList<AForgeFunction> NewFunctionList;
+        public List<PointF> MarkA = new List<PointF>();
+        public List<PointF> MarkB = new List<PointF>();
+        public List<VideoTextMarkup> MarkupText = new List<VideoTextMarkup>();
+        private VideoCapture videoCapture;
 
-        private List<AForgeFunction> FunctionList = new List<AForgeFunction>();
-        private List<AForgeFunction> NewFunctionList = null;
-        private VideoDetection videoDetection;
-        private Camera cam;
         public bool ApplyVideoMarkup = true;
 
-        public VideoProcessing(Camera camera) {
-            this.cam = camera;
-            this.videoDetection = camera.videoDetection;
+        public VideoProcessing(VideoCapture vc) {
+            videoCapture = vc; 
         }
 
+        // transitional helper functions - while code is in flux
+        public bool IsUpCamera() { return videoCapture.IsUp(); }
+        public PartLocation FrameCenter { get { return videoCapture.FrameCenter; } }
+        public double XmmPerPixel {
+            get { return (IsUpCamera()) ? Settings.Default.UpCam_XmmPerPixel : Settings.Default.DownCam_XmmPerPixel; }
+        }
+        public double YmmPerPixel {
+            get { return (IsUpCamera()) ? Settings.Default.UpCam_YmmPerPixel : Settings.Default.DownCam_YmmPerPixel; }
+        }
+
+        public bool Zoom { get; set; }          // If image is zoomed or not
+        private double _ZoomFactor = 1.0;
+        public double ZoomFactor { get { return (Zoom) ? _ZoomFactor : 1; } set { _ZoomFactor = value; } }
+        public double SnapshotRotation = 0.0;  // rotation when snapshot was taken
+
+        public int Threshold { get; set; }          // Threshold for all the "draw" functions
+        public bool GrayScale { get; set; }         // If image is converted to grayscale 
+        public bool Invert { get; set; }            // If image is inverted (makes most sense on grayscale, looking for black stuff on light background)
+        public bool DrawCross { get; set; }         // If crosshair cursor is drawn
+        public bool DrawSidemarks { get; set; }     // If marks on the side of the image are drawn
+        public double SideMarksX { get; set; }		// How many marks on top and bottom (X) and sides (Y)
+        public double SideMarksY { get; set; }		// (double, so you can do "SidemarksX= workarea_in_mm / 100;" to get mark every 10cm
+        public bool DrawDashedCross { get; set; }   // If a dashed crosshaircursor is drawn (so that the center remains visible)
+        public bool FindCircles { get; set; }       // Find and highlight circles in the image
+        public bool FindRectangles { get; set; }    // Find and draw regtangles in the image
+        public bool FindFiducial { get; set; }      // Find and marks location of template based fiducials in image
+        public bool Draw1mmGrid { get; set; }       // overlay image with a 1mm grid pattern based on optical mapping
+        public bool FindComponent { get; set; }     // Finds a component and identifies its center
+        public bool TakeSnapshot { get; set; }      // Takes a b&w snapshot (of a component, most likely)     
+        public bool Draw_Snapshot { get; set; }     // Draws the snapshot on the image 
+        public bool PauseProcessing { get { return !ApplyVideoMarkup; } set { ApplyVideoMarkup = !value; } }   // Drawing the video slows everything down. This can pause it for measurements.
+        public bool TestAlgorithm { get; set; }
+        public bool DrawBox { get; set; }           // Draws a box on the image that is used for scale setting
+        public Shapes.Rectangle box;
 
         // And calls xx_measure() funtion. (Any function doing measurement from video frames.)
         // The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame form the stream, 
         // processes it with the MeasurementFunctions list and returns the processed frame:
 
-        public void ProcessFrame(ref Bitmap displayFrame, ref Bitmap measurementFrame) {
+        public Bitmap ProcessFrame(Bitmap measurementFrame) {
             // if we have an updated list, then apply it the next itteration
             if (NewFunctionList != null) {
                 FunctionList = NewFunctionList;
@@ -62,45 +76,88 @@ namespace LitePlacer {
             // apply video processing functions
             if (FunctionList != null) {
                 foreach (AForgeFunction f in FunctionList) {
-                    f.func(ref displayFrame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
+                    if (!f.Enabled) continue;
+                    switch (f.Method) {
+                        case AForgeMethod.Grayscale:
+                            GrayscaleFunc(ref measurementFrame);
+                            break;
+                        case AForgeMethod.ContrastStretch:
+                            Contrast_scretchFunc(ref measurementFrame);
+                            break;
+                        case AForgeMethod.KillColor:
+                            KillColor_Func(ref measurementFrame, f.parameter_double, f.R, f.G, f.B);
+                            break;
+                        case AForgeMethod.KeepColor:
+                            KeepColor_Func(ref measurementFrame, f.parameter_double, f.R, f.G, f.B);
+                            break;
+                        case AForgeMethod.Invert:
+                            InvertFunct(ref measurementFrame);
+                            break;
+                        case AForgeMethod.Zoom:
+                            Meas_ZoomFunc(ref measurementFrame, f.parameter_double);
+                            break;
+                        case AForgeMethod.EdgeDetect1:
+                            Edge_detectFunc(ref measurementFrame, 1); 
+                            break;
+                        case AForgeMethod.EdgeDetect2:
+                            Edge_detectFunc(ref measurementFrame, 2); 
+                            break;
+                        case AForgeMethod.EdgeDetect3:
+                            Edge_detectFunc(ref measurementFrame, 3); 
+                            break;
+                        case AForgeMethod.EdgeDetect4:
+                            Edge_detectFunc(ref measurementFrame, 4); 
+                            break;
+                        case AForgeMethod.NoiseReduction1:
+                            NoiseReduction_Funct(ref measurementFrame, 1);
+                            break;
+                        case AForgeMethod.NoiseReduciton2:
+                            NoiseReduction_Funct(ref measurementFrame, 2);
+                            break;
+                        case AForgeMethod.NoiseReduction3:
+                            NoiseReduction_Funct(ref measurementFrame, 3);
+                            break;
+                         case AForgeMethod.Threshold:
+                            ThresholdFunct(ref measurementFrame, f.parameter_double);
+                            break;
+                        case AForgeMethod.Histogram:
+                            HistogramFunct(ref measurementFrame);
+                            break;
+                    }
                 }
             }
 
+
             // flip the measurement displayFrame so it looks the same as the display displayFrame XXX not sure why this is (?)
-            if (cam.IsUpCamera()) new Mirror(false, true).ApplyInPlace(displayFrame);
+            if (videoCapture.IsUp()) new Mirror(false, true).ApplyInPlace(measurementFrame);
+            return measurementFrame;
+        }
 
-            if (cam.CopyFrame) {
-                // this frame is wher we measure, pre-markup and pre-extra-zoom
-                measurementFrame = (Bitmap)displayFrame.Clone();
-                cam.CopyFrame = false;
-            }
 
+        public Bitmap ApplyMarkup(Bitmap displayFrame) {
             //further modify the image
             if (ApplyVideoMarkup) {
-                if (cam.FindCircles) DrawCirclesFunct(displayFrame);
-                if (cam.FindRectangles) displayFrame = DrawRectanglesFunct(displayFrame);
-                if (cam.FindFiducial) DrawFiducialFunct(ref displayFrame);
-                if (cam.FindComponent) displayFrame = DrawComponentsFunct(displayFrame);
-                if (cam.Draw_Snapshot) displayFrame = Draw_SnapshotFunct(displayFrame);
-              //  if (cam.IsUpCamera()) displayFrame = MirrorFunct(displayFrame);
-                if (cam.DrawBox) DrawBoxFunct(displayFrame);
-                if (cam.MarkA.Count > 0) DrawMarks(ref displayFrame, cam.MarkA, Color.Blue, 20);
-                if (cam.MarkB.Count > 0) DrawMarks(ref displayFrame, cam.MarkB, Color.Red, 20);
+                if (FindCircles) DrawCirclesFunct(displayFrame, this);
+                if (FindRectangles) displayFrame = DrawRectanglesFunct(displayFrame, this);
+                if (FindFiducial) DrawFiducialFunct(ref displayFrame, this);
+                if (FindComponent) displayFrame = DrawComponentsFunct(displayFrame, this);
+              //  if (Draw_Snapshot) displayFrame = Draw_SnapshotFunct(displayFrame);
+                if (DrawBox) DrawBoxFunct(displayFrame);
+                if (MarkA.Count > 0) DrawMarks(ref displayFrame, MarkA, Color.Blue, 20);
+                if (MarkB.Count > 0) DrawMarks(ref displayFrame, MarkB, Color.Red, 20);
+
                 // Thing after this point are affected by the zoom
-                if (cam.Zoom) ZoomFunct(ref displayFrame, cam.ZoomFactor);
-                if (cam.Draw1mmGrid) DrawGridFunct(ref displayFrame);
-                if (cam.DrawCross) DrawCrossFunct(ref displayFrame);
-                if (cam.DrawSidemarks) DrawSidemarksFunct(ref displayFrame);
-                if (cam.DrawDashedCross) DrawDashedCrossFunct(displayFrame);
-                if (cam.MarkupText.Count > 0) DrawMarkupText(ref displayFrame, cam.MarkupText);
+                if (Zoom) ZoomFunct(ref displayFrame, ZoomFactor);
+                if (Draw1mmGrid) DrawGridFunct(ref displayFrame);
+                if (DrawCross) DrawCrossFunct(ref displayFrame);
+                if (DrawDashedCross) DrawDashedCrossFunct(displayFrame);
+                if (MarkupText.Count > 0) DrawMarkupText(ref displayFrame, MarkupText);
             }
 
-            if (cam.TakeSnapshot) {
-                TakeSnapshot_funct(displayFrame);
-                cam.TakeSnapshot = false;
-            };
-
+            return displayFrame;
         } 
+
+
 
 
         // =========================================================
@@ -146,178 +203,32 @@ namespace LitePlacer {
         }
 
 
-        // =========================================================
-        public bool rotating = false;
-        private bool overlaying = false;
-
-        private Bitmap Draw_SnapshotFunct(Bitmap image) {
-            if (rotating) {
-                return (image);
-            }
-            overlaying = true;
-            Graphics g = Graphics.FromImage(image);
-            g.DrawImage(SnapshotImage, new System.Drawing.Point(0, 0));
-            g.Dispose();
-            overlaying = false;
-            return (image);
-        }
-
-        // =========================================================
-        public void RotateSnapshot(double deg) {
-            while (overlaying) {
-                Thread.Sleep(10);
-            }
-            rotating = true;
-            // Convert to 24 bpp RGB Image
-            Rectangle dimensions = new Rectangle(0, 0, SnapshotOriginalImage.Width, SnapshotOriginalImage.Height);
-            Bitmap Snapshot24b = new Bitmap(SnapshotOriginalImage.Width, SnapshotOriginalImage.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            using (Graphics gr = Graphics.FromImage(Snapshot24b)) {
-                gr.DrawImage(SnapshotOriginalImage, dimensions);
-            }
-
-            RotateNearestNeighbor filter = new RotateNearestNeighbor(deg - cam.SnapshotRotation, true);
-            Snapshot24b = filter.Apply(Snapshot24b);
-            // convert back to 32b, to have transparency
-            Snapshot24b.MakeTransparent(Color.Black);
-            SnapshotImage = Snapshot24b;
-            rotating = false;
-        }
-
 
 
         // Since the measured image might be zoomed in, we need the value, so that we can convert to real measurements (public for debug)
         public double GetZoom() {
             double zoom = 1.0;
-            foreach (var x in FunctionList.Where(x => x.func == Meas_ZoomFunc).Select(x => x.parameter_double).ToList()) {
+            foreach (var x in FunctionList.Where(x => x.Method == AForgeMethod.Zoom).Select(x => x.parameter_double).ToList()) {
                 zoom *= x;
             }
-            return zoom;
+            return zoom; 
         }
-
-        enum DataGridViewColumns { Function, Active, Int, Double, R, G, B };
-        public void UpdateFunctionList(DataGridView Grid) {
-            List<AForgeFunction> NewList = new List<AForgeFunction>();
-            int temp_i;
-            double temp_d;
-            int FunctionCol = (int)DataGridViewColumns.Function;
-            int ActiveCol = (int)DataGridViewColumns.Active;
-            int IntCol = (int)DataGridViewColumns.Int;
-            int DoubleCol = (int)DataGridViewColumns.Double;
-            int R_col = (int)DataGridViewColumns.R;
-            int G_col = (int)DataGridViewColumns.G;
-            int B_col = (int)DataGridViewColumns.B;
-
-            NewList.Clear();
-            cam.MainForm.DisplayText("BuildFunctionsList:");
-
-            foreach (DataGridViewRow Row in Grid.Rows) {
-                AForgeFunction f = new AForgeFunction();
-                // newly created rows are not complete yet
-                if (Row.Cells[FunctionCol].Value == null) {
-                    continue;
-                }
-                if (Row.Cells[ActiveCol].Value == null) {
-                    continue;
-                }
-                // skip inactive rows
-                if (Row.Cells[ActiveCol].Value.ToString() == "False") {
-                    continue;
-                }
-
-                if (Row.Cells[ActiveCol].Value.ToString() == "false") {
-                    continue;
-                }
-
-                switch (Row.Cells[FunctionCol].Value.ToString()) {
-                    case "Grayscale":
-                        f.func = GrayscaleFunc;
-                        break;
-
-                    case "Contrast scretch":
-                        f.func = Contrast_scretchFunc;
-                        break;
-
-                    case "Kill color":
-                        f.func = KillColor_Func;
-                        break;
-
-                    case "Keep color":
-                        f.func = KeepColor_Func;
-                        break;
-
-                    case "Invert":
-                        f.func = InvertFunct;
-                        break;
-
-                    case "Meas. zoom":
-                        f.func = Meas_ZoomFunc;
-                        break;
-
-                    case "Edge detect":
-                        f.func = Edge_detectFunc;
-                        break;
-
-                    case "Noise reduction":
-                        f.func = NoiseReduction_Funct;
-                        break;
-
-                    case "Threshold":
-                        f.func = ThresholdFunct;
-                        break;
-
-                    case "Histogram":
-                        f.func = HistogramFunct;
-                        break;
-
-                    default:
-                        continue;
-                    // break; 
-                }
-                string msg = Row.Cells[FunctionCol].Value.ToString();
-                msg += " / ";
-                if (Row.Cells[IntCol].Value != null) {
-                    int.TryParse(Row.Cells[IntCol].Value.ToString(), out temp_i);
-                    f.parameter_int = temp_i;
-                    msg += temp_i.ToString();
-                }
-                msg += " / ";
-                if (Row.Cells[DoubleCol].Value != null) {
-                    double.TryParse(Row.Cells[DoubleCol].Value.ToString(), out temp_d);
-                    f.parameter_double = temp_d;
-                    msg += temp_d.ToString();
-                }
-                msg += " / ";
-                if (Row.Cells[R_col].Value != null) {
-                    int.TryParse(Row.Cells[R_col].Value.ToString(), out temp_i);
-                    f.R = temp_i;
-                    msg += temp_i.ToString();
-                }
-                msg += " / ";
-                if (Row.Cells[G_col].Value != null) {
-                    int.TryParse(Row.Cells[G_col].Value.ToString(), out temp_i);
-                    f.G = temp_i;
-                    msg += temp_i.ToString();
-                }
-                msg += " / ";
-                if (Row.Cells[B_col].Value != null) {
-                    int.TryParse(Row.Cells[B_col].Value.ToString(), out temp_i);
-                    f.B = temp_i;
-                    msg += temp_i.ToString();
-                }
-                msg += " / ";
-                NewList.Add(f);
-                cam.MainForm.DisplayText(msg);
-            };
-            // update list when video is not being processed
-            NewFunctionList = NewList;
-        }
-
 
         public void ClearFunctionsList() {
-            NewFunctionList = new List<AForgeFunction>();
+            NewFunctionList = new BindingList<AForgeFunction>();
+        }
+
+        public void SetFunctionsList(string name) {
+            if (name == null) NewFunctionList = new BindingList<AForgeFunction>();
+            else              NewFunctionList = AForgeFunctionSet.GetFunctionsFromDisk(name);
         }
 
 
+        public void SetFunctionsList(BindingList<AForgeFunction> list) {
+            if (list == null) NewFunctionList = new BindingList<AForgeFunction>();
+            else              NewFunctionList = list;
+        }
+        
 
         // ==========================================================================================================
         // Functions compatible with lists:
@@ -326,7 +237,7 @@ namespace LitePlacer {
 
         // ========================================================= 
 
-        private void NoiseReduction_Funct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void NoiseReduction_Funct(ref Bitmap frame, int par_int) {
             frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);	// Make gray
             switch (par_int) {
                 case 1:
@@ -359,7 +270,7 @@ namespace LitePlacer {
         }
 
         // =========================================================
-        private void Edge_detectFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void Edge_detectFunc(ref Bitmap frame, int par_int) {
             frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);	// Make gray
             switch (par_int) {
                 case 1:
@@ -394,13 +305,13 @@ namespace LitePlacer {
         }
 
         // =========================================================
-        private void InvertFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void InvertFunct(ref Bitmap frame) {
             Invert filter = new Invert();
             filter.ApplyInPlace(frame);
         }
 
         // =========================================================
-        private void HistogramFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void HistogramFunct(ref Bitmap frame) {
             // create filter
             HistogramEqualization filter = new HistogramEqualization();
             // process image
@@ -409,33 +320,33 @@ namespace LitePlacer {
 
 
         // =========================================================
-        private void KillColor_Func(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void KillColor_Func(ref Bitmap frame, double par_d, int par_R, int par_G, int par_B) {
             // create filter
             EuclideanColorFiltering filter = new EuclideanColorFiltering();
             // set center colol and radius
             filter.CenterColor = new RGB((byte)par_R, (byte)par_G, (byte)par_B);
-            filter.Radius = (short)par_int;
+            filter.Radius = (short)par_d;
             filter.FillOutside = false;
             // apply the filter
             filter.ApplyInPlace(frame);
         }
 
         // =========================================================
-        private void KeepColor_Func(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void KeepColor_Func(ref Bitmap frame, double par_d, int par_R, int par_G, int par_B) {
             // create filter
             EuclideanColorFiltering filter = new EuclideanColorFiltering();
             // set center colol and radius
             filter.CenterColor = new RGB((byte)par_R, (byte)par_G, (byte)par_B);
-            filter.Radius = (short)par_int;
+            filter.Radius = (short)par_d;
             filter.FillOutside = true;
             // apply the filter
             filter.ApplyInPlace(frame);
         }
 
         // =========================================================
-        private void ThresholdFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void ThresholdFunct(ref Bitmap frame,  double par_d) {
             frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);
-            Threshold filter = new Threshold(par_int);
+            Threshold filter = new Threshold((int)par_d);
             filter.ApplyInPlace(frame);
             GrayscaleToRGB toColFilter = new GrayscaleToRGB();
             frame = toColFilter.Apply(frame);
@@ -443,34 +354,34 @@ namespace LitePlacer {
 
 
         // ========================================================= Contrast_scretchFunc
-        private void GrayscaleFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void GrayscaleFunc(ref Bitmap frame) {
             Grayscale toGrFilter = new Grayscale(0.2125, 0.7154, 0.0721);       // create grayscale filter (BT709)
             Bitmap fr = toGrFilter.Apply(frame);
             GrayscaleToRGB toColFilter = new GrayscaleToRGB();
             frame = toColFilter.Apply(fr);
         }
 
-        private void Contrast_scretchFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void Contrast_scretchFunc(ref Bitmap frame) {
             ContrastStretch filter = new ContrastStretch();
             // process image
             filter.ApplyInPlace(frame);
         }
 
         // =========================================================
-        private void Meas_ZoomFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B) {
+        private void Meas_ZoomFunc(ref Bitmap frame,double par_d) {
             ZoomFunct(ref frame, par_d);
         }
 
-        private Bitmap DrawComponentsFunct(Bitmap bitmap) {
-            List<Shapes.Component> Components = videoDetection.FindComponents(bitmap);
+        private Bitmap DrawComponentsFunct(Bitmap bitmap, VideoProcessing vp) {
+            List<Shapes.Component> Components = VideoDetection.FindComponents(vp,bitmap);
 
             Graphics g = Graphics.FromImage(bitmap);
             Pen OrangePen = new Pen(Color.DarkOrange, 1);
             Pen RedPen = new Pen(Color.DarkRed, 2);
             Pen BluePen = new Pen(Color.Blue, 2);
             Shapes.Component Component;
-            System.Drawing.Point p1 = new System.Drawing.Point();
-            System.Drawing.Point p2 = new System.Drawing.Point();
+            Point p1 = new Point();
+            Point p2 = new Point();
 
             for (int i = 0, n = Components.Count; i < n; i++) {
                 Component = Components[i];
@@ -527,8 +438,8 @@ namespace LitePlacer {
 
 
         // =========================================================
-        private void DrawCirclesFunct(Bitmap bitmap) {
-            List<Shapes.Circle> Circles = videoDetection.FindCircles(bitmap);
+        private void DrawCirclesFunct(Bitmap bitmap, VideoProcessing vp) {
+            List<Shapes.Circle> Circles = VideoDetection.FindCircles(vp, bitmap);
 
             Graphics g = Graphics.FromImage(bitmap);
             Pen pen = new Pen(Color.DarkOrange, 2);
@@ -596,7 +507,7 @@ namespace LitePlacer {
             try {
                 using (Image<Bgr, Byte> img = new Image<Bgr, byte>(image)) {
                     foreach (var pt in points) {
-                        PointF p = new PointF(pt.X + cam.FrameCenterX, cam.FrameCenterY-pt.Y);
+                        PointF p = new PointF(pt.X + videoCapture.FrameCenterX, videoCapture.FrameCenterY-pt.Y);
                         var cross = new Cross2DF(p, size, size);
                         img.Draw(cross, new Bgr(color), 2);
                     }
@@ -608,20 +519,17 @@ namespace LitePlacer {
         }
 
         // =========================================================
-        private void DrawFiducialFunct(ref Bitmap image) {
-            cam.MarkA.Clear();
-            var fids = videoDetection.FindTemplates(image);
+        private void DrawFiducialFunct(ref Bitmap image, VideoProcessing vp) {
+            MarkA.Clear();
+            var fids = VideoDetection.FindTemplates(vp, image);
             foreach (var f in fids) f.ToScreenResolution();
-            cam.MarkA.AddRange(fids.Select(x => x.ToPartLocation().ToPointF()).ToArray());
+            MarkA.AddRange(fids.Select(x => x.ToPartLocation().ToPointF()).ToArray());
         }
 
 
-
-
-
-        public System.Drawing.PointF[] ToRotatedRectangle(Shapes.Rectangle s) {
+        public static PointF[] ToRotatedRectangle(Shapes.Rectangle s) {
             s.ToRawResolution();
-            System.Drawing.PointF[] p = new System.Drawing.PointF[5];
+            PointF[] p = new PointF[5];
             p[0].X = (float)s.Left; p[0].Y = (float)s.Top;
             p[1].X = (float)s.Right; p[1].Y = (float)s.Top;
             p[2].X = (float)s.Right; p[2].Y = (float)s.Bottom;
@@ -640,9 +548,14 @@ namespace LitePlacer {
             return p;
         }
 
+        private static void DrawRectangle(ref Bitmap image, Shapes.Rectangle rectangle) {
+            using (Graphics g = Graphics.FromImage(image)) {
+                g.DrawLines(new Pen(Color.Red), ToRotatedRectangle(rectangle));
+            }
+        }
 
-        private Bitmap DrawRectanglesFunct(Bitmap image) {
-            var rects = cam.videoDetection.FindRectangles(image);
+        private Bitmap DrawRectanglesFunct(Bitmap image, VideoProcessing vp ) {
+            var rects = VideoDetection.FindRectangles(vp, image);
             if (rects.Count == 0) return image;
             Graphics g = Graphics.FromImage(image);
            
@@ -652,7 +565,7 @@ namespace LitePlacer {
                 g.DrawLines(new Pen(Color.Red), ToRotatedRectangle(rect));
             }
             
-            var rect2 = cam.videoDetection.GetSmallestCenteredRectangle(rects);
+            var rect2 = VideoDetection.GetSmallestCenteredRectangle(rects);
             //g.DrawRectangle(new Pen(Color.Green, 5f), rect2.ToDrawingRectangle());
             if (rect2 != null) {
                 g.DrawLines(new Pen(Color.Green, 5f), ToRotatedRectangle(rect2));
@@ -706,16 +619,17 @@ namespace LitePlacer {
         private void DrawDashedCrossFunct(Bitmap img) {
             Pen pen = new Pen(Color.SlateGray, 1);
             Graphics g = Graphics.FromImage(img);
-            int step = cam.FrameSizeY / 40;
+            int step = videoCapture.FrameSizeY / 40;
             int i = step / 2;
-            while (i < cam.FrameSizeY) {
-                g.DrawLine(pen, cam.FrameCenterX, i, cam.FrameCenterX, i + step);
+            while (i < videoCapture.FrameSizeY)
+            {
+                g.DrawLine(pen, videoCapture.FrameCenterX, i, videoCapture.FrameCenterX, i + step);
                 i = i + 2 * step;
             }
-            step = cam.FrameSizeX / 40;
+            step = videoCapture.FrameSizeX / 40;
             i = step / 2;
-            while (i < cam.FrameSizeX) {
-                g.DrawLine(pen, i, cam.FrameCenterY, i + step, cam.FrameCenterY);
+            while (i < videoCapture.FrameSizeX) {
+                g.DrawLine(pen, i, videoCapture.FrameCenterY, i + step, videoCapture.FrameCenterY);
                 i = i + 2 * step;
             }
         }
@@ -728,18 +642,19 @@ namespace LitePlacer {
                 Pen pen = new Pen(Color.Green, 1);
                 Graphics g = Graphics.FromImage(img);
 
-                var xscale = Properties.Settings.Default.DownCam_XmmPerPixel / cam.GetMeasurementZoom();
-                var yscale = Properties.Settings.Default.DownCam_YmmPerPixel / cam.GetMeasurementZoom();
-                var xlines = cam.FrameSizeX / 2 * xscale;
-                var ylines = cam.FrameSizeY / 2 * yscale;
+                var xscale = Settings.Default.DownCam_XmmPerPixel / GetZoom();
+
+                var yscale = Settings.Default.DownCam_YmmPerPixel / GetZoom();
+                var xlines = videoCapture.FrameSizeX / 2 * xscale;
+                var ylines = videoCapture.FrameSizeY / 2 * yscale;
 
                 for (int i = 0; i < xlines; i++) {
-                    g.DrawLine(pen, cam.FrameCenterX + (int)(i / xscale), cam.FrameSizeY, cam.FrameCenterX + (int)(i / xscale), 0);
-                    g.DrawLine(pen, cam.FrameCenterX + (int)(-i / xscale), cam.FrameSizeY, cam.FrameCenterX + (int)(-i / xscale), 0);
+                    g.DrawLine(pen, videoCapture.FrameCenterX + (int)(i / xscale), videoCapture.FrameSizeY, videoCapture.FrameCenterX + (int)(i / xscale), 0);
+                    g.DrawLine(pen, videoCapture.FrameCenterX + (int)(-i / xscale), videoCapture.FrameSizeY, videoCapture.FrameCenterX + (int)(-i / xscale), 0);
                 }
                 for (int i = 0; i < ylines; i++) {
-                    g.DrawLine(pen, 0, cam.FrameCenterY + (int)(i / yscale), cam.FrameSizeX, cam.FrameCenterY + (int)(i / yscale));
-                    g.DrawLine(pen, 0, cam.FrameCenterY + (int)(-i / yscale), cam.FrameSizeX, cam.FrameCenterY + (int)(-i / yscale));
+                    g.DrawLine(pen, 0, videoCapture.FrameCenterY + (int)(i / yscale), videoCapture.FrameSizeX, videoCapture.FrameCenterY + (int)(i / yscale));
+                    g.DrawLine(pen, 0, videoCapture.FrameCenterY + (int)(-i / yscale), videoCapture.FrameSizeX, videoCapture.FrameCenterY + (int)(-i / yscale));
                 }
             } catch (Exception e) {
                 Console.WriteLine("DrawGridFunct Error: " + e);
@@ -752,8 +667,9 @@ namespace LitePlacer {
             try {
                 Pen pen = new Pen(Color.Red, 1);
                 Graphics g = Graphics.FromImage(img);
-                g.DrawLine(pen, cam.FrameCenterX, 0, cam.FrameCenterX, cam.FrameSizeY);
-                g.DrawLine(pen, 0, cam.FrameCenterY, cam.FrameSizeX, cam.FrameCenterY);
+
+                g.DrawLine(pen, videoCapture.FrameCenterX , 0, videoCapture.FrameCenterX, videoCapture.FrameSizeY);
+                g.DrawLine(pen, 0, videoCapture.FrameCenterY, videoCapture.FrameSizeX, videoCapture.FrameCenterY);
             } catch (Exception e) {
                 Console.WriteLine("DrawCrossFunct Error: " + e);
             }
@@ -761,46 +677,75 @@ namespace LitePlacer {
 
         // =========================================================
 
-        private void DrawSidemarksFunct(ref Bitmap img) {
-            Pen pen = new Pen(Color.Red, 2);
-            Graphics g = Graphics.FromImage(img);
-            int Xinc = Convert.ToInt32(cam.FrameSizeX / cam.SideMarksX);
-            int X = Xinc;
-            int tick = 6;
-            while (X < cam.FrameSizeX) {
-                g.DrawLine(pen, X, cam.FrameSizeY, X, cam.FrameSizeY - tick);
-                g.DrawLine(pen, X, 0, X, tick);
-                X += Xinc;
-            }
-            int Yinc = Convert.ToInt32(cam.FrameSizeY / cam.SideMarksY);
-            int Y = Yinc;
-            while (Y < cam.FrameSizeY) {
-                g.DrawLine(pen, cam.FrameSizeX, Y, cam.FrameSizeX - tick, Y);
-                g.DrawLine(pen, 0, Y, tick, Y);
-                Y += Yinc;
-            }
-        }
-
-   
+ 
 
 
         // =========================================================
         private void DrawBoxFunct(Bitmap img) {
-
-            Pen pen = new Pen(Color.Red, 1);
-            Graphics g = Graphics.FromImage(img);
-
-            g.DrawLine(pen, cam.BoxPoints[0].X + cam.FrameCenterX, cam.BoxPoints[0].Y + cam.FrameCenterY, cam.BoxPoints[1].X + cam.FrameCenterX, cam.BoxPoints[1].Y + cam.FrameCenterY);
-            g.DrawLine(pen, cam.BoxPoints[1].X + cam.FrameCenterX, cam.BoxPoints[1].Y + cam.FrameCenterY, cam.BoxPoints[2].X + cam.FrameCenterX, cam.BoxPoints[2].Y + cam.FrameCenterY);
-            g.DrawLine(pen, cam.BoxPoints[2].X + cam.FrameCenterX, cam.BoxPoints[2].Y + cam.FrameCenterY, cam.BoxPoints[3].X + cam.FrameCenterX, cam.BoxPoints[3].Y + cam.FrameCenterY);
-            g.DrawLine(pen, cam.BoxPoints[3].X + cam.FrameCenterX, cam.BoxPoints[3].Y + cam.FrameCenterY, cam.BoxPoints[0].X + cam.FrameCenterX, cam.BoxPoints[0].Y + cam.FrameCenterY);
+            if (box != null) {
+                box.videoProcessing = this;
+            }
         }
 
         // =========================================================
         // Convert list of AForge.NET's points to array of .NET points
-        private System.Drawing.Point[] ToPointsArray(List<IntPoint> points) {
-            return points.Select(x => new System.Drawing.Point(x.X, x.Y)).ToArray();
+        private Point[] ToPointsArray(List<IntPoint> points) {
+            return points.Select(x => new Point(x.X, x.Y)).ToArray();
         }
 
+        public Bitmap GetMeasurementFrame() {
+            var frame = videoCapture.GetFrame();
+            frame = ProcessFrame(frame);
+            return frame;
+        }
+
+
+        public void Reset() {            
+            ClearFunctionsList(); //wipe functions
+            //default box size
+            box = new Shapes.Rectangle(0, 0, 0) { 
+                Width = 200, Height = 200, 
+                videoProcessing=this, 
+                pointMode = Shapes.PointMode.ScreenUnzoomed
+            };
+            // Draws
+            DrawCross = (IsUpCamera()) ? false : true;
+            DrawDashedCross = false;
+            // Finds:
+            FindCircles = false;
+            FindRectangles = false;
+            FindComponent = false;
+            TakeSnapshot = false;
+            TestAlgorithm = false;
+            Draw_Snapshot = false;
+            DrawBox = false;
+            FindFiducial = false;
+            Draw1mmGrid = false;
+            MarkA.Clear();
+            MarkB.Clear();
+        }
+
+        /*
+        // moved functions
+        public List<Shapes.Circle> FindAndDrawCircles(Bitmap frame) {
+            //camera.MainForm.DisplayText("FindCircles()", System.Drawing.Color.Orange);
+
+            var circles = VideoDetection.FindCircles(frame);
+            List<PointF> t = new List<PointF>();
+            foreach (var circle in circles) {;
+                circle.ToScreenResolution();
+                t.Add(circle.ToPartLocation().ToPointF());
+            }
+            DrawMarks(ref frame, t, Color.Green, 30);
+            DrawCrossFunct(ref frame);
+            frame.Save(@"c:\findCircles.bmp");
+            return circles;
+        }
+        */
+
+
     }
+
+
+
 }
