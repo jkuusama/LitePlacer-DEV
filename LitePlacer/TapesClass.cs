@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using Be.Timvw.Framework.ComponentModel;
 using MathNet.Numerics.LinearRegression;
 
 namespace LitePlacer {
@@ -67,9 +66,6 @@ namespace LitePlacer {
             tapeObjs.Insert(row, new TapeObj());
         }
 
-        public void DeleteTapeObject(int row) {
-            tapeObjs.RemoveAt(row);
-        }
 
 
 
@@ -100,7 +96,7 @@ namespace LitePlacer {
             TapeObj tapeObj = GetTapeObjByID(Id);
             if (tapeObj == null) return false;
 
-            if (tapeObj.isFullyCalibrated) {
+            if (tapeObj.IsFullyCalibrated) {
 
                 // if the tape is calibrated, we can skip the hole detection BS
                 var OriginalLocationPrediction = tapeObj.GetCurrentPartLocation();
@@ -204,7 +200,7 @@ namespace LitePlacer {
             //1 - ensure first hole is correct
             MainForm.DisplayText("Moving to first hole @ " + x.FirstHole, Color.Purple);
             if (!MainForm.Cnc.CNC_XY_m(x.FirstHole)) return false;
-            var holepos = MainForm.FindPositionOfClosest(Shapes.ShapeTypes.Circle, 1.8, 0.2); //find this hole with high precision
+            var holepos = MainForm.FindPositionOfClosest(Shapes.ShapeTypes.Circle, 1.8, 0.1); //find this hole with high precision
             if (holepos == null) return false;
             x.FirstHole = holepos;
             MainForm.DisplayText("Found new hole locaiton @ " + x.FirstHole, Color.Purple);
@@ -221,7 +217,7 @@ namespace LitePlacer {
             for (int i = 2; i < 8; i += 2) {
                 if (!MainForm.Cnc.CNC_XY_m(x.GetHoleLocation(i))) break;
                 Thread.Sleep(1000);
-                var loc = MainForm.FindPositionOfClosest(Shapes.ShapeTypes.Circle, 1.8, 0.5);
+                var loc = MainForm.FindPositionOfClosest(Shapes.ShapeTypes.Circle, 1.8, 0.2);
                 if (loc == null) break;
                 holes.Add(loc);
                 holeIndex.Add(i);
@@ -246,7 +242,7 @@ namespace LitePlacer {
             x.HolePitch = spacing / (holes.Count - 1); //compute average for holes
 
             //5 - Done, specify that this is fully calibrated
-            x.isFullyCalibrated = true;
+            x.IsFullyCalibrated = true;
             
             MainForm.DisplayText("Tape " + x.ID + " Calibrated", Color.Brown);
             //MainForm.DisplayText(String.Format("\tEquation = {3} + (0,{0}) + {1} * ({2} * holeNumber)", x.a, x.b, x.HolePitch), System.Drawing.Color.Brown);
@@ -261,7 +257,7 @@ namespace LitePlacer {
 
         public void CalibrateTapes() {
             foreach (TapeObj x in tapeObjs) {
-                if (x.isFullyCalibrated) continue; //skip if calibrated already
+                if (x.IsFullyCalibrated) continue; //skip if calibrated already
                 CalibrateTape(x);
             }
         }

@@ -49,6 +49,14 @@ namespace LitePlacer {
 			VideoSource.Stop();
 		}
 
+        public void NoWaitClose() {
+            if (VideoSource == null || !VideoSource.IsRunning) return;
+            VideoSource.SignalToStop();
+            VideoSource.NewFrame -= NewFrame;
+            VideoSource = null;
+            MonikerString = "";
+        }
+
 		public void Close(){
 			if (VideoSource == null ||  !VideoSource.IsRunning)  return;				
 			VideoSource.SignalToStop();

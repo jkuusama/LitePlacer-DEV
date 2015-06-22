@@ -7,18 +7,15 @@ using MathNet.Numerics.LinearRegression;
 
 namespace LitePlacer {
     public class PartLocation {
-        public double X;
-        public double Y;
+        public double X { get; set; }
+        public double Y { get; set; }
         private double _A;
         public double A { get { return (_A % 360); } set { _A = (value % 360); } }
-        private bool _isPixel;
+
         public PhysicalComponent physicalComponent; //link back
-        public bool IsPixel { get { return _isPixel; } set { _isPixel=value;}}
-        public bool IsPhysical { get { return !_isPixel; } set { _isPixel = (!value); } }
-        public bool IsZoomCompensated = false;
+
 
         public PartLocation() { }
-
         public PartLocation(Shapes.Thing thing) {X = thing.X; Y = thing.Y; A = thing.A;}
         public PartLocation(PartLocation p) {X = p.X; Y = p.Y; A = p.A;}
         public PartLocation(PointF p) {X = p.X; Y = p.Y;}
@@ -33,17 +30,14 @@ namespace LitePlacer {
             X = matrix[0, 0];
         }
 
-        public static PartLocation UnitVector() {
-            return new PartLocation(1, 1);
-        }
-
+        /* modification methods */
         public PartLocation FlipX() { X = -1 * X; return this; }
         public PartLocation FlipY() { Y = -1 * Y; return this; }
-
         public PartLocation OffsetBy(double x, double y, double a) { X += x; Y += y; A += a; return this; }
         public PartLocation OffsetBy(double x, double y) { X += x; Y += y; return this; }
         public PartLocation OffsetBy(PartLocation p) { X += p.X; Y += p.Y; A += p.A; return this;}
 
+        
 
         public double ToRadians() {return Math.Atan2(Y, X);  }
         public double ToDegrees() {return ToRadians() * 180 / Math.PI;   }

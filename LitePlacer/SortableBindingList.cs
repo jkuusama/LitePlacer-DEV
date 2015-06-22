@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Be.Timvw.Framework.Collections.Generic;
 
-namespace Be.Timvw.Framework.ComponentModel {
+namespace LitePlacer {
     public class SortableBindingList<T> : BindingList<T> {
         private readonly Dictionary<Type, PropertyComparer<T>> comparers;
         private bool isSorted;
@@ -18,6 +17,12 @@ namespace Be.Timvw.Framework.ComponentModel {
         public SortableBindingList(IEnumerable<T> enumeration)
             : base(new List<T>(enumeration)) {
             comparers = new Dictionary<Type, PropertyComparer<T>>();
+        }
+
+        public void AddRange(SortableBindingList<T> data) {
+            foreach (var x in data) {
+                this.Add(x);
+            }
         }
 
         protected override bool SupportsSortingCore {

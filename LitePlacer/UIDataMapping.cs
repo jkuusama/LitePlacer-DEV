@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using LitePlacer.Properties;
-//using System.Web.Script.Serialization;
 
 
 namespace LitePlacer {

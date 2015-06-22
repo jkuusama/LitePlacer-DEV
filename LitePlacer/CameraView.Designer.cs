@@ -125,6 +125,7 @@ namespace LitePlacer {
             this.UpCam_ComboBox.Name = "UpCam_ComboBox";
             this.UpCam_ComboBox.Size = new System.Drawing.Size(166, 21);
             this.UpCam_ComboBox.TabIndex = 2;
+          //  this.UpCam_ComboBox.SelectedIndexChanged += new System.EventHandler(this.UpCam_ComboBox_SelectedIndexChanged);
             // 
             // DownCam_ComboBox
             // 
@@ -133,6 +134,7 @@ namespace LitePlacer {
             this.DownCam_ComboBox.Name = "DownCam_ComboBox";
             this.DownCam_ComboBox.Size = new System.Drawing.Size(166, 21);
             this.DownCam_ComboBox.TabIndex = 3;
+           // this.DownCam_ComboBox.SelectedIndexChanged += new System.EventHandler(this.DownCam_ComboBox_SelectedIndexChanged);
             // 
             // Restart_Button
             // 

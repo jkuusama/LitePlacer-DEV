@@ -172,7 +172,6 @@
       <DependentUpon>CameraView.cs</DependentUpon>
     </Compile>
     <Compile Include="CNC.cs" />
-    <Compile Include="Configuration.cs" />
     <Compile Include="ImageFinder.cs" />
     <Compile Include="JobData.cs" />
     <Compile Include="LeastSquaresMapping.cs" />
@@ -275,13 +274,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="liteplacer icon.ico" />
-    <Content Include="opencv_core2410.dll">
+    <Content Include="DLLs\opencv_core2410.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_highgui2410.dll">
+    <Content Include="DLLs\opencv_highgui2410.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_imgproc2410.dll">
+    <Content Include="DLLs\opencv_imgproc2410.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

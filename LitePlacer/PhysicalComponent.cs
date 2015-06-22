@@ -1,13 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 using LitePlacer.Properties;
 
 namespace LitePlacer {
     [Serializable]
     public class PhysicalComponent : INotifyPropertyChanged {
+        [XmlIgnore]
         public PartLocation nominal = new PartLocation();
+        [XmlIgnore]
         public PartLocation machine = new PartLocation();
+        [XmlIgnore]
         public JobData JobData = null;
 
         public bool IsFiducial {
@@ -23,49 +27,49 @@ namespace LitePlacer {
 
         public string Designator {
             get { return _designator; } 
-            set {_designator=value; notify("Designator");} 
+            set {_designator=value; Notify("Designator");} 
         }
         public string Footprint {
             get { return _footprint; }
-            set { _footprint = value; notify("Footprint"); }
+            set { _footprint = value; Notify("Footprint"); }
         }
         public double X_nominal { 
             get { return nominal.X; }
-            set { nominal.X = value; notify("X_nominal"); } 
+            set { nominal.X = value; Notify("X_nominal"); } 
         }
         public double Y_nominal { 
             get { return nominal.Y; }
-            set { nominal.Y = value; notify("Y_nominal"); } 
+            set { nominal.Y = value; Notify("Y_nominal"); } 
         }
         public double Rotation { 
             get { return nominal.A; }
-            set { nominal.A = value; notify("Rotation"); } 
+            set { nominal.A = value; Notify("Rotation"); } 
         }
         public double Rotation_machine { 
             get { return machine.A; }
-            set { machine.A = value; notify("Rotation_machine"); } 
+            set { machine.A = value; Notify("Rotation_machine"); } 
         }
         public double X_machine { 
             get { return machine.X; }
-            set { machine.X = value; notify("X_machine"); } 
+            set { machine.X = value; Notify("X_machine"); } 
         }
         public double Y_machine { 
             get { return machine.Y; }
-            set { machine.Y = value; notify("Y_machine"); } 
+            set { machine.Y = value; Notify("Y_machine"); } 
         }
 
         public string Method {
             get { return (JobData != null) ? JobData.Method : _method; }
             set { if (JobData != null) JobData.Method = value; 
                   else _method = value;
-                  notify("Method");
+                  Notify("Method");
             }
         }
         public string MethodParameters {
             get { return (JobData != null) ? JobData.MethodParameters : _methodParams; }
             set { if (JobData != null) JobData.MethodParameters = value; 
                   else _methodParams = value;
-                  notify("MethodParameters");
+                  Notify("MethodParameters");
             }
         }
 
@@ -79,14 +83,15 @@ namespace LitePlacer {
                 return true;
             }
         }
+       
                
         public PhysicalComponent() {
-            nominal.physicalComponent = this;
-            machine.physicalComponent = this;
+           nominal.physicalComponent = this;
+           machine.physicalComponent = this;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void notify(string name) {
+        private void Notify(string name) {
             if (PropertyChanged != null) {
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
             }

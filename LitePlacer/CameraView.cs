@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Documents;
 using System.Windows.Forms;
 
 namespace LitePlacer {
@@ -18,8 +19,19 @@ namespace LitePlacer {
         private BindingList<AForgeFunction> currentDownBinding = new BindingList<AForgeFunction>();
         public PictureBoxClickDelegate upClickDelegate, downClickDelegate;
 
+        public void Cleanup(object sender, System.ComponentModel.CancelEventArgs e) {
+            // stop forwarding frames
+            downVideoCapture.FrameCaptureDelegates.Clear();
+            upVideoCapture.FrameCaptureDelegates.Clear();
+            Thread.Sleep(100);
+            // shut down cameras
+            if (downVideoCapture.IsRunning()) downVideoCapture.NoWaitClose();
+            if (upVideoCapture.IsRunning()) upVideoCapture.NoWaitClose();
+        }
+
         public CameraView() {
             InitializeComponent();
+            this.Closing +=new CancelEventHandler(Cleanup);
 
             //setup video processing
             // load the different filter blocks
@@ -42,8 +54,22 @@ namespace LitePlacer {
             //fill combobox // todo - restore from defaults 
             UpCamera_FilterSet.DataSource = new BindingSource { DataSource = upSet.GetNames() };
             DownCamera_FilterSet.DataSource = new BindingSource { DataSource = downSet.GetNames() };
-            UpCam_ComboBox.DataSource = new BindingSource { DataSource = VideoCapture.GetVideoDeviceList() };
-            DownCam_ComboBox.DataSource = new BindingSource { DataSource = VideoCapture.GetVideoDeviceList() };
+            var videoSources = VideoCapture.GetVideoDeviceList();
+            UpCam_ComboBox.DataSource = new BindingSource { DataSource =  videoSources};
+            DownCam_ComboBox.DataSource = new BindingSource { DataSource = videoSources};
+
+            //load saved values
+            var s = Properties.Settings.Default;
+            if (s.DownCam_index > 0 && s.DownCam_index <= videoSources.Count+1) {
+                DownCam_ComboBox.SelectedIndex = s.DownCam_index-1;
+                downVideoCapture.Start(DownCam_ComboBox.SelectedIndex);
+            }
+
+            if (s.UpCam_index > 0 && s.UpCam_index <= videoSources.Count+1 && s.UpCam_index != s.DownCam_index ) {
+                UpCam_ComboBox.SelectedIndex = s.UpCam_index-1;
+                upVideoCapture.Start(UpCam_ComboBox.SelectedIndex);
+            }
+
 
             //bind editor values
             uFilter_dataGridView.DataSource = currentUpBinding;
@@ -89,10 +115,20 @@ namespace LitePlacer {
 
 
         private void Restart_Button_Click(object sender, EventArgs e) {
-            if (upVideoCapture.IsRunning()) upVideoCapture.Close();
+            if (DownCam_ComboBox.SelectedIndex == UpCam_ComboBox.SelectedIndex) {
+                Global.Instance.DisplayText("Up cam can't be the same as downcam");
+                return;
+            }
+
             if (downVideoCapture.IsRunning()) downVideoCapture.Close();
+            if (upVideoCapture.IsRunning()) upVideoCapture.Close();
+            
             upVideoCapture.Start(UpCam_ComboBox.SelectedIndex);
             downVideoCapture.Start(DownCam_ComboBox.SelectedIndex);
+            //save
+            Properties.Settings.Default.DownCam_index = DownCam_ComboBox.SelectedIndex + 1;
+            Properties.Settings.Default.UpCam_index = UpCam_ComboBox.SelectedIndex + 1;
+            Properties.Settings.Default.Save();
         }
 
         //forward mouse clicks
@@ -112,6 +148,7 @@ namespace LitePlacer {
         //delegates to handle updating the pictureframes
         public delegate void PassBitmapDelegate(Bitmap frame, string cam);
         public void SetFrame(Bitmap frame, string cam) {
+            if (this.IsDisposed) return;
             if (InvokeRequired) {
                 Invoke(new PassBitmapDelegate(SetFrame), frame, cam);
                 return;
@@ -334,13 +371,20 @@ namespace LitePlacer {
         }
 
 
-        private void DataGridCellValueChanged(Object sender, DataGridViewCellEventArgs e) {
-
-        }
 
         private void dFilter_dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e) {
             e.Cancel = true;
         }
+
+     /*   private void DownCam_ComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.DownCam_index = DownCam_ComboBox.SelectedIndex+1;
+            Properties.Settings.Default.Save();
+        }
+
+        private void UpCam_ComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+            Properties.Settings.Default.UpCam_index = UpCam_ComboBox.SelectedIndex+1;
+            Properties.Settings.Default.Save();
+        }*/
 
 
 

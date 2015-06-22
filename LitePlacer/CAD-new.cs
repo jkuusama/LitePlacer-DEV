@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Be.Timvw.Framework.ComponentModel;
 //using System.Web.Script.Serialization;
 
 namespace LitePlacer {
@@ -16,6 +15,18 @@ namespace LitePlacer {
 
         public CAD(FormMain f) {
             MainForm = f;
+        }
+
+        /// <summary>
+        /// Copy the list of compoents found in the job data into the list of components
+        /// </summary>
+        public void CopyComponentsFromJob() {
+            ComponentData.Clear();
+            foreach (var p in JobData) {
+                foreach (var c in p.Components) {
+                    ComponentData.Add(c);
+                }
+            }
         }
 
         public static void MoveItem<T>(BindingList<T> list, int index, int offset) {

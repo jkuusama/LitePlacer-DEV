@@ -2,39 +2,18 @@
 // Some firmvare versions use units in millions, some don't. If not, comment out the above line.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.IO;
 using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Reflection;
-//using System.Web.Script.Serialization;
 using System.Configuration;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
-using AForge.Imaging;
 using System.Timers;
-using System.Windows.Media;
-using MathNet.Numerics;
-using Be.Timvw.Framework.ComponentModel;
-
-using System.Xml;
-using System.Xml.Serialization;
-
-using System.Text.RegularExpressions;
-
-using Emgu.CV;
-using Emgu.CV.Structure;
-using Emgu.Util;
-using Emgu;
 
 
 namespace LitePlacer {
@@ -188,7 +167,6 @@ namespace LitePlacer {
 
             //--------------------------------------------
             NeedleOffset_label.Visible = false;
-         //   ClearEditTargets();
 
             double f;
             f = Properties.Settings.Default.DownCam_XmmPerPixel * cameraView.downVideoProcessing.box.Width;
@@ -616,14 +594,11 @@ namespace LitePlacer {
 
         private bool Needle_ProbeDown_m() {
             Needle.ProbingMode(true, JSON);
-            Cnc.Homing = true;
             //CNC_Write_m("G28.4 Z0", 4000);
-            if (!Cnc.CNC_Write_m("{\"gc\":\"G28.4 Z0\"}", 4000)) {
-                Cnc.Homing = false;
+            if (!Cnc.CNC_Write_m("{\"gc\":\"G28.4 Z0\"}", 10000)) {
                 Needle.ProbingMode(false, JSON);
                 return false;
             }
-            Cnc.Homing = false;
             Needle.ProbingMode(false, JSON);
             return true;
         }
@@ -1018,7 +993,7 @@ namespace LitePlacer {
         // TinyG communication monitor textbox  
         public void DisplayText(string txt, Color color) {
             // XXX need to add robust mechanism to only show desired debugging messages
-            if (color.Equals(Color.Gray)) return;
+            //if (color.Equals(Color.Gray)) return;
             try {
                 if (InvokeRequired) { Invoke(new Action<string, Color>(DisplayText), txt, color); return; }
                 txt = txt.Replace("\n", "");
@@ -1047,114 +1022,14 @@ namespace LitePlacer {
         }
 
         // Sends the calls that will result to messages that update the values shown
+        string[] tinyg_commands = new string[] {"sr","xjm","xvm","xsv","xsn","xjh","xsx","1mi","1sa","1tr","yjm",
+                "yvm","ysn","ysx","yjh","ysv","2mi","2sa","2tr","zjm","zvm","zsn","zsx","zjh","zsv","3mi","3sa",
+                "3tr","ajm","avm","4mi","4sa","4tr"};
+
         private bool UpdateWindowValues_m() {
-            if (!Cnc.CNC_Write_m("{\"sr\":\"\"}")) {
-                return false;
-            };
-
-            if (!Cnc.CNC_Write_m("{\"xjm\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"xvm\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"xsv\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"xsn\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"xjh\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"xsx\":\"\"}")) {
-                return false;
-            };
-
-            if (!Cnc.CNC_Write_m("{\"1mi\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"1sa\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"1tr\":\"\"}")) {
-                return false;
-            };
-
-            if (!Cnc.CNC_Write_m("{\"yjm\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"yvm\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"ysn\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"ysx\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"yjh\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"ysv\":\"\"}")) {
-                return false;
-            };
-
-            if (!Cnc.CNC_Write_m("{\"2mi\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"2sa\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"2tr\":\"\"}")) {
-                return false;
-            };
-
-            if (!Cnc.CNC_Write_m("{\"zjm\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"zvm\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"zsn\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"zsx\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"zjh\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"zsv\":\"\"}")) {
-                return false;
-            };
-
-            if (!Cnc.CNC_Write_m("{\"3mi\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"3sa\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"3tr\":\"\"}")) {
-                return false;
-            };
-
-            if (!Cnc.CNC_Write_m("{\"ajm\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"avm\":\"\"}")) {
-                return false;
-            };
-
-            if (!Cnc.CNC_Write_m("{\"4mi\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"4sa\":\"\"}")) {
-                return false;
-            };
-            if (!Cnc.CNC_Write_m("{\"4tr\":\"\"}")) {
-                return false;
-            };
+            foreach (var c in tinyg_commands) {
+                if (!Cnc.CNC_Write_m("{\"" + c + "\":\"\"}")) return false;
+            }
             //RN - needed to change angle of rotation of needle to match stuff
             if (!Cnc.CNC_Write_m("{\"4po\":1}")) return false;
 
@@ -1166,8 +1041,10 @@ namespace LitePlacer {
             //Thread.Sleep(100);
             //Vacuum_checkBox.Checked = true;
             //Cnc.IgnoreError = false;
-            Cnc.CNC_Write_m("{\"me\":\"\"}");  // motor power on
-            MotorPower_checkBox.Checked = true;
+
+            // RN
+            //Cnc.CNC_Write_m("{\"me\":\"\"}");  // motor power on -  wait till we actually send a command it should power itself on
+            //MotorPower_checkBox.Checked = true;
             return true;
         }
 
@@ -1180,9 +1057,9 @@ namespace LitePlacer {
                     break;
                 case "posy": Update_ypos(value);
                     break;
-                case "posz": Update_zpos(value);
+                case "posz": update_field("zpos",value);
                     break;
-                case "posa": Update_apos(value);
+                case "posa": update_field("apos",value);
                     break;
 
                 case "xjm": Update_xjm(value);
@@ -1240,13 +1117,13 @@ namespace LitePlacer {
                 case "4mi": Update_4mi(value);
                     break;
 
-                case "1tr": Update_1tr(value);
+                case "1tr": update_field("tr1",value);
                     break;
-                case "2tr": Update_2tr(value);
+                case "2tr": update_field("tr2",value);
                     break;
-                case "3tr": Update_3tr(value);
+                case "3tr": update_field("tr3",value);
                     break;
-                case "4tr": Update_4tr(value);
+                case "4tr": update_field("tr4",value);
                     break;
 
                 case "1sa": Update_1sa(value);
@@ -1907,25 +1784,8 @@ namespace LitePlacer {
 
         // =========================================================================
         #region tr
-        // *tr: Travel per revolution
-        // *tr update
 
-        private void Update_1tr(string value) {
-            tr1_textBox.Text = value;
-        }
 
-        private void Update_2tr(string value) {
-            tr2_textBox.Text = value;
-        }
-
-        private void Update_3tr(string value) {
-            tr3_textBox.Text = value;
-
-        }
-
-        private void Update_4tr(string value) {
-            tr4_textBox.Text = value;
-        }
 
         // =========================================================================
         // *tr setting
@@ -2114,6 +1974,16 @@ namespace LitePlacer {
         #region mpo
         // mpo*: Position
         // * update
+
+        private void update_field(string field, string value) {
+            if (InvokeRequired) { Invoke(new Action<string,string>(update_field), value, field); return; }
+            var x = this.GetType().GetField(field + "_textBox", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (x == null) throw new Exception("bad map for field " + field);
+            var textbox = (TextBox)x.GetValue(this);
+            if (textbox == null) throw new Exception("texbox is null");
+            textbox.Text = value;
+        }
+
         private void Update_xpos(string value) {
             if (InvokeRequired) { Invoke(new Action<string>(Update_xpos), value); return; }
             TrueX_label.Text = value;
@@ -2126,15 +1996,6 @@ namespace LitePlacer {
             xpos_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
         }
 
-        private void Update_zpos(string value) {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_zpos), value); return; }
-            zpos_textBox.Text = value;
-        }
-
-        private void Update_apos(string value) {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_apos), value); return; }
-            apos_textBox.Text = value;
-        }
 
         #endregion
 
@@ -2703,8 +2564,6 @@ namespace LitePlacer {
                 try {
                     bool result;
                     CadDataFileName = CAD_openFileDialog.FileName;
-                    CadFileName_label.Text = Path.GetFileName(CadDataFileName);
-                    CadFilePath_label.Text = Path.GetDirectoryName(CadDataFileName);
                     AllLines = File.ReadAllLines(CadDataFileName);
                     if (Path.GetExtension(CAD_openFileDialog.FileName) == ".pos") {
                         result = Cad.ParseKiCadData_m(AllLines);
@@ -2719,8 +2578,6 @@ namespace LitePlacer {
                         "Can't read CAD file",
                         MessageBoxButtons.OK);
                     CadData_GridView.Rows.Clear();
-                    CadFileName_label.Text = "--";
-                    CadFilePath_label.Text = "--";
                     CadDataFileName = "--";
                     return false;
                 };
@@ -2729,108 +2586,20 @@ namespace LitePlacer {
         }
 
         // =================================================================================
-        private bool LoadJobData_m(string JobFileName) {
-            String[] AllLines;
+        private bool LoadJobData_m(string filename) {
             try {
-                AllLines = File.ReadAllLines(JobFileName);
-                JobFileName_label.Text = Path.GetFileName(JobFileName);
-                JobFilePath_label.Text = Path.GetDirectoryName(JobFileName);
-                ParseJobData(AllLines);
+                Cad.JobData.Clear();
+                Cad.JobData.AddRange(Global.DeSerialization<SortableBindingList<JobData>>(filename));
+                JobData_GridView.DataSource = Cad.JobData;
             } catch (Exception ex) {
-                ShowMessageBox(
-                    "Error in file, Msg: " + ex.Message,
-                    "Can't read job file (" + JobFileName + ")",
-                    MessageBoxButtons.OK);
+                ShowSimpleMessageBox("Can't Load Job File "+Path.GetFileName(filename)+" : "+ex);
                 JobData_GridView.Rows.Clear();
-                JobFileName_label.Text = "--";
-                JobFilePath_label.Text = "--";
                 CadDataFileName = "--";
                 return false;
             };
             return true;
         }
 
-        // =================================================================================
-        private void LoadCadData_button_Click(object sender, EventArgs e) {
-            ValidMeasurement_checkBox.Checked = false;
-            if (LoadCadData_m()) {
-                // Read in job data (.lpj file), if exists
-                string ext = Path.GetExtension(CadDataFileName);
-                JobFileName = CadDataFileName.Replace(ext, ".lpj");
-                if (File.Exists(JobFileName)) {
-                    if (!LoadJobData_m(JobFileName)) {
-                        ShowMessageBox(
-                            "Attempt to read in existing Job Data file failed. Job data automatically created, review situation!",
-                            "Job Data load error",
-                            MessageBoxButtons.OK);
-                        FillJobData_GridView();
-                    }
-                } else {
-                    // If not, build job data ourselves.
-                    FillJobData_GridView();
-                    JobFileName_label.Text = "--";
-                    JobFilePath_label.Text = "--";
-                }
-            } else {
-                // CAD data load failed, clear to false data
-                CadData_GridView.Rows.Clear();
-                CadFileName_label.Text = "--";
-                CadFilePath_label.Text = "--";
-                CadDataFileName = "--";
-            }
-        }
-
-        // =================================================================================
-        private void JobDataLoad_button_Click(object sender, EventArgs e) {
-            if (Job_openFileDialog.ShowDialog() == DialogResult.OK) {
-                JobFileName = Job_openFileDialog.FileName;
-                LoadJobData_m(JobFileName);
-                ValidMeasurement_checkBox.Checked = false;
-            }
-        }
-
-
-
-        private void JobDataSave_button_Click(object sender, EventArgs e) {
-            Stream SaveStream;
-
-            Job_saveFileDialog.Filter = "LitePlacer Job files (*.lpj)|*.lpj|All files (*.*)|*.*";
-            if (Job_saveFileDialog.ShowDialog() == DialogResult.OK) {
-                if ((SaveStream = Job_saveFileDialog.OpenFile()) != null) {
-                    using (StreamWriter f = new StreamWriter(SaveStream)) {
-                        foreach (var j in Cad.JobData) {
-                            f.WriteLine(j.ToString());
-                        }
-                    }
-                    SaveStream.Close();
-                }
-                JobFileName = Job_saveFileDialog.FileName;
-                JobFileName_label.Text = Path.GetFileName(JobFileName);
-                JobFilePath_label.Text = Path.GetDirectoryName(JobFileName);
-            }
-        }
-
-
-        // =================================================================================
-        private void ParseJobData(String[] AllLines) {
-            Cad.JobData.Clear();
-            // ComponentCount ComponentType GroupMethod MethodParamAllComponents ComponentList
-            foreach (string s in AllLines) {
-                List<String> Line = CAD.SplitCSV(s, ',');
-                JobData job = new JobData();
-                foreach (string designator in Line[4].Split(',')) {
-                    job.AddComponent(Cad.GetComponentByDesignator(designator));
-                }
-                job.Method = Line[2];
-                job.MethodParameters = Line[3];
-                Cad.JobData.Add(job);
-            }
-        }
-
-
-        private void FillJobData_GridView() {
-            Cad.AutoFillJobEntry();
-        }
 
 
         public int GetGridRow(DataGridView grid) {
@@ -3929,15 +3698,6 @@ namespace LitePlacer {
             Tapes.AddTapeObject(0);
         }
 
-        /*     private void Tapes_tabPage_Begin() {
-                 foreach (DataGridViewRow row in Tapes_dataGridView.Rows) {
-                     row.HeaderCell.Value = row.Index.ToString();
-                     row.Cells["SelectButtonColumn"].Value = "Reset";
-                 }
-                 SetDownCameraDefaults();
-                 SelectCamera(DownCamera);
-                 //gooz  DownCamera.ImageBox = Tapes_pictureBox;
-             }*/
 
         private void SmallMovement_numericUpDown_ValueChanged(object sender, EventArgs e) {
             Properties.Settings.Default.CNC_SmallMovementSpeed = SmallMovement_numericUpDown.Value;
@@ -3959,7 +3719,6 @@ namespace LitePlacer {
             if (Tapes_dataGridView.SelectedCells.Count != 1) return;
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
             Tapes_dataGridView.Rows.RemoveAt(row);
-            Tapes.DeleteTapeObject(row);
         }
 
         private void TapeGoTo_button_Click(object sender, EventArgs e) {
@@ -3971,9 +3730,6 @@ namespace LitePlacer {
         private void TapeSet1_button_Click(object sender, EventArgs e) {
             if (Tapes_dataGridView.SelectedCells.Count != 1) return;
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
-            Tapes_dataGridView.Rows[row].Cells["X_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            Tapes_dataGridView.Rows[row].Cells["Y_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
-
             // Calibrate the selected tape
             Tapes.CalibrateTape(Tapes.GetTapeObjByIndex(row));
         }
@@ -4027,7 +3783,7 @@ namespace LitePlacer {
             Point loc = Tapes_dataGridView.Location;
             Size size = Tapes_dataGridView.Size;
             DataGridView Grid = Tapes_dataGridView;
-            TapeSelectionForm TapeDialog = new TapeSelectionForm(Grid);
+            TapeSelectionForm TapeDialog = new TapeSelectionForm(Tapes);
             TapeDialog.HeaderString = header;
             Tapes_dataGridView.CellClick -= Tapes_dataGridView_CellClick;
             Controls.Remove(Tapes_dataGridView);
@@ -4263,6 +4019,48 @@ namespace LitePlacer {
             var dgv = (DataGridView)sender;
              if (dgv.CurrentCell.GetType() == typeof(DataGridViewComboBoxCell) && (dgv.IsCurrentCellDirty))
                  dgv.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+
+        private void loadCADFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            ValidMeasurement_checkBox.Checked = false;
+            if (LoadCadData_m()) {
+                // Read in job data (.lpj file), if exists
+                string ext = Path.GetExtension(CadDataFileName);
+                JobFileName = CadDataFileName.Replace(ext, ".lpj");
+                if (File.Exists(JobFileName)) {
+                    if (!LoadJobData_m(JobFileName)) {
+                        ShowMessageBox(
+                            "Attempt to read in existing Job Data file failed. Job data automatically created, review situation!",
+                            "Job Data load error",
+                            MessageBoxButtons.OK);
+                        Cad.AutoFillJobEntry();
+                    }
+                } else {
+                    // If not, build job data ourselves.
+                    Cad.AutoFillJobEntry();
+                }
+            } else {
+                // CAD data load failed, clear to false data
+                CadData_GridView.Rows.Clear();
+                CadDataFileName = "--";
+            }
+        }
+
+        private void loadJobFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (Job_openFileDialog.ShowDialog() == DialogResult.OK) {
+                JobFileName = Job_openFileDialog.FileName;
+                LoadJobData_m(JobFileName);
+                Cad.CopyComponentsFromJob(); // repopulate component data based on saved file
+                ValidMeasurement_checkBox.Checked = false;
+            }
+        }
+
+        private void saveJobFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            Job_saveFileDialog.Filter = "LitePlacer Job files (*.lpj)|*.lpj|All files (*.*)|*.*";
+            if (Job_saveFileDialog.ShowDialog() == DialogResult.OK) {
+                Global.Serialization(Cad.JobData, Job_saveFileDialog.FileName);
+                JobFileName = Job_saveFileDialog.FileName;
+            }
         }
 
   

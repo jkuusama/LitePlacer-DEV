@@ -323,8 +323,6 @@ namespace LitePlacer
             this.ChangeNeedle_button = new System.Windows.Forms.Button();
             this.ValidMeasurement_checkBox = new System.Windows.Forms.CheckBox();
             this.ReMeasure_button = new System.Windows.Forms.Button();
-            this.JobFilePath_label = new System.Windows.Forms.Label();
-            this.label91 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.ResetAllTapes_button = new System.Windows.Forms.Button();
             this.ResetOneTape_button = new System.Windows.Forms.Button();
@@ -334,11 +332,6 @@ namespace LitePlacer
             this.Down_button = new System.Windows.Forms.Button();
             this.Up_button = new System.Windows.Forms.Button();
             this.PlaceAll_button = new System.Windows.Forms.Button();
-            this.JobFileName_label = new System.Windows.Forms.Label();
-            this.label121 = new System.Windows.Forms.Label();
-            this.JobDataSave_button = new System.Windows.Forms.Button();
-            this.JobDataLoad_button = new System.Windows.Forms.Button();
-            this.LoadCadData_button = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.PlaceOne_button = new System.Windows.Forms.Button();
             this.ShowMachine_button = new System.Windows.Forms.Button();
@@ -381,10 +374,6 @@ namespace LitePlacer
             this.methodDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isFiducialDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.physicalComponentBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.CadFilePath_label = new System.Windows.Forms.Label();
-            this.label56 = new System.Windows.Forms.Label();
-            this.CadFileName_label = new System.Windows.Forms.Label();
-            this.label54 = new System.Windows.Forms.Label();
             this.MultiCalibrate_button = new System.Windows.Forms.Button();
             this.StopDemo_button = new System.Windows.Forms.Button();
             this.Demo_button = new System.Windows.Forms.Button();
@@ -400,6 +389,15 @@ namespace LitePlacer
             this.TrueX_label = new System.Windows.Forms.Label();
             this.mechHome_button = new System.Windows.Forms.Button();
             this.OptHome_button = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadCADFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadJobFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveJobFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tapeObjBindingSource)).BeginInit();
@@ -432,11 +430,12 @@ namespace LitePlacer
             this.tabPage5.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Park_button
             // 
-            this.Park_button.Location = new System.Drawing.Point(551, 887);
+            this.Park_button.Location = new System.Drawing.Point(543, 923);
             this.Park_button.Name = "Park_button";
             this.Park_button.Size = new System.Drawing.Size(75, 23);
             this.Park_button.TabIndex = 41;
@@ -478,7 +477,7 @@ namespace LitePlacer
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(11, 726);
+            this.label14.Location = new System.Drawing.Point(3, 762);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(24, 18);
             this.label14.TabIndex = 7;
@@ -488,7 +487,7 @@ namespace LitePlacer
             // 
             this.xpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.xpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xpos_textBox.Location = new System.Drawing.Point(46, 725);
+            this.xpos_textBox.Location = new System.Drawing.Point(38, 761);
             this.xpos_textBox.Name = "xpos_textBox";
             this.xpos_textBox.ReadOnly = true;
             this.xpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -502,7 +501,7 @@ namespace LitePlacer
             // 
             this.ypos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ypos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ypos_textBox.Location = new System.Drawing.Point(46, 752);
+            this.ypos_textBox.Location = new System.Drawing.Point(38, 788);
             this.ypos_textBox.Name = "ypos_textBox";
             this.ypos_textBox.ReadOnly = true;
             this.ypos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -516,7 +515,7 @@ namespace LitePlacer
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(11, 753);
+            this.label17.Location = new System.Drawing.Point(3, 789);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(23, 18);
             this.label17.TabIndex = 10;
@@ -526,7 +525,7 @@ namespace LitePlacer
             // 
             this.zpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.zpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.zpos_textBox.Location = new System.Drawing.Point(46, 779);
+            this.zpos_textBox.Location = new System.Drawing.Point(38, 815);
             this.zpos_textBox.Name = "zpos_textBox";
             this.zpos_textBox.ReadOnly = true;
             this.zpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -540,7 +539,7 @@ namespace LitePlacer
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(11, 780);
+            this.label18.Location = new System.Drawing.Point(3, 816);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(23, 18);
             this.label18.TabIndex = 12;
@@ -550,7 +549,7 @@ namespace LitePlacer
             // 
             this.apos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.apos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.apos_textBox.Location = new System.Drawing.Point(46, 806);
+            this.apos_textBox.Location = new System.Drawing.Point(38, 842);
             this.apos_textBox.Name = "apos_textBox";
             this.apos_textBox.ReadOnly = true;
             this.apos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -564,7 +563,7 @@ namespace LitePlacer
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(11, 807);
+            this.label19.Location = new System.Drawing.Point(3, 843);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(23, 18);
             this.label19.TabIndex = 14;
@@ -586,7 +585,7 @@ namespace LitePlacer
             // 
             // Test1_button
             // 
-            this.Test1_button.Location = new System.Drawing.Point(551, 725);
+            this.Test1_button.Location = new System.Drawing.Point(543, 761);
             this.Test1_button.Name = "Test1_button";
             this.Test1_button.Size = new System.Drawing.Size(108, 23);
             this.Test1_button.TabIndex = 18;
@@ -596,7 +595,7 @@ namespace LitePlacer
             // 
             // Test2_button
             // 
-            this.Test2_button.Location = new System.Drawing.Point(551, 752);
+            this.Test2_button.Location = new System.Drawing.Point(543, 788);
             this.Test2_button.Name = "Test2_button";
             this.Test2_button.Size = new System.Drawing.Size(108, 23);
             this.Test2_button.TabIndex = 19;
@@ -618,7 +617,7 @@ namespace LitePlacer
             // OpticalHome_button
             // 
             this.OpticalHome_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OpticalHome_button.Location = new System.Drawing.Point(112, 840);
+            this.OpticalHome_button.Location = new System.Drawing.Point(104, 876);
             this.OpticalHome_button.Name = "OpticalHome_button";
             this.OpticalHome_button.Size = new System.Drawing.Size(75, 45);
             this.OpticalHome_button.TabIndex = 37;
@@ -631,7 +630,7 @@ namespace LitePlacer
             // label97
             // 
             this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(350, 758);
+            this.label97.Location = new System.Drawing.Point(342, 794);
             this.label97.Name = "label97";
             this.label97.Size = new System.Drawing.Size(53, 117);
             this.label97.TabIndex = 61;
@@ -641,7 +640,7 @@ namespace LitePlacer
             // 
             // Test3_button
             // 
-            this.Test3_button.Location = new System.Drawing.Point(551, 779);
+            this.Test3_button.Location = new System.Drawing.Point(543, 815);
             this.Test3_button.Name = "Test3_button";
             this.Test3_button.Size = new System.Drawing.Size(108, 23);
             this.Test3_button.TabIndex = 66;
@@ -651,7 +650,7 @@ namespace LitePlacer
             // 
             // Test4_button
             // 
-            this.Test4_button.Location = new System.Drawing.Point(551, 806);
+            this.Test4_button.Location = new System.Drawing.Point(543, 842);
             this.Test4_button.Name = "Test4_button";
             this.Test4_button.Size = new System.Drawing.Size(108, 23);
             this.Test4_button.TabIndex = 52;
@@ -662,7 +661,7 @@ namespace LitePlacer
             // label124
             // 
             this.label124.AutoSize = true;
-            this.label124.Location = new System.Drawing.Point(409, 748);
+            this.label124.Location = new System.Drawing.Point(401, 784);
             this.label124.Name = "label124";
             this.label124.Size = new System.Drawing.Size(52, 91);
             this.label124.TabIndex = 67;
@@ -671,7 +670,7 @@ namespace LitePlacer
             // 
             // Test5_button
             // 
-            this.Test5_button.Location = new System.Drawing.Point(551, 833);
+            this.Test5_button.Location = new System.Drawing.Point(543, 869);
             this.Test5_button.Name = "Test5_button";
             this.Test5_button.Size = new System.Drawing.Size(108, 23);
             this.Test5_button.TabIndex = 68;
@@ -681,7 +680,7 @@ namespace LitePlacer
             // 
             // Test6_button
             // 
-            this.Test6_button.Location = new System.Drawing.Point(551, 859);
+            this.Test6_button.Location = new System.Drawing.Point(543, 895);
             this.Test6_button.Name = "Test6_button";
             this.Test6_button.Size = new System.Drawing.Size(108, 23);
             this.Test6_button.TabIndex = 69;
@@ -692,7 +691,7 @@ namespace LitePlacer
             // label145
             // 
             this.label145.AutoSize = true;
-            this.label145.Location = new System.Drawing.Point(458, 748);
+            this.label145.Location = new System.Drawing.Point(450, 784);
             this.label145.Name = "label145";
             this.label145.Size = new System.Drawing.Size(91, 91);
             this.label145.TabIndex = 76;
@@ -1073,7 +1072,7 @@ namespace LitePlacer
             // 
             // CameraSetupTest_button
             // 
-            this.CameraSetupTest_button.Location = new System.Drawing.Point(747, 800);
+            this.CameraSetupTest_button.Location = new System.Drawing.Point(739, 836);
             this.CameraSetupTest_button.Name = "CameraSetupTest_button";
             this.CameraSetupTest_button.Size = new System.Drawing.Size(75, 23);
             this.CameraSetupTest_button.TabIndex = 114;
@@ -1084,7 +1083,7 @@ namespace LitePlacer
             // GotoUpCamPosition_button
             // 
             this.GotoUpCamPosition_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(235, 726);
+            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(227, 762);
             this.GotoUpCamPosition_button.Name = "GotoUpCamPosition_button";
             this.GotoUpCamPosition_button.Size = new System.Drawing.Size(84, 23);
             this.GotoUpCamPosition_button.TabIndex = 79;
@@ -1199,7 +1198,7 @@ namespace LitePlacer
             // 
             // GotoPickupCenter_button
             // 
-            this.GotoPickupCenter_button.Location = new System.Drawing.Point(235, 782);
+            this.GotoPickupCenter_button.Location = new System.Drawing.Point(227, 818);
             this.GotoPickupCenter_button.Name = "GotoPickupCenter_button";
             this.GotoPickupCenter_button.Size = new System.Drawing.Size(84, 23);
             this.GotoPickupCenter_button.TabIndex = 41;
@@ -1209,7 +1208,7 @@ namespace LitePlacer
             // 
             // GotoPCB0_button
             // 
-            this.GotoPCB0_button.Location = new System.Drawing.Point(235, 754);
+            this.GotoPCB0_button.Location = new System.Drawing.Point(227, 790);
             this.GotoPCB0_button.Name = "GotoPCB0_button";
             this.GotoPCB0_button.Size = new System.Drawing.Size(84, 23);
             this.GotoPCB0_button.TabIndex = 40;
@@ -1255,7 +1254,7 @@ namespace LitePlacer
             // 
             // Snapshot_button
             // 
-            this.Snapshot_button.Location = new System.Drawing.Point(747, 748);
+            this.Snapshot_button.Location = new System.Drawing.Point(739, 784);
             this.Snapshot_button.Name = "Snapshot_button";
             this.Snapshot_button.Size = new System.Drawing.Size(75, 23);
             this.Snapshot_button.TabIndex = 30;
@@ -1266,7 +1265,7 @@ namespace LitePlacer
             // ImageTest_checkBox
             // 
             this.ImageTest_checkBox.AutoSize = true;
-            this.ImageTest_checkBox.Location = new System.Drawing.Point(747, 777);
+            this.ImageTest_checkBox.Location = new System.Drawing.Point(739, 813);
             this.ImageTest_checkBox.Name = "ImageTest_checkBox";
             this.ImageTest_checkBox.Size = new System.Drawing.Size(75, 17);
             this.ImageTest_checkBox.TabIndex = 29;
@@ -1679,7 +1678,7 @@ namespace LitePlacer
             // 
             // ZUp_button
             // 
-            this.ZUp_button.Location = new System.Drawing.Point(235, 838);
+            this.ZUp_button.Location = new System.Drawing.Point(227, 874);
             this.ZUp_button.Name = "ZUp_button";
             this.ZUp_button.Size = new System.Drawing.Size(84, 23);
             this.ZUp_button.TabIndex = 86;
@@ -1690,7 +1689,7 @@ namespace LitePlacer
             // 
             // ZDown_button
             // 
-            this.ZDown_button.Location = new System.Drawing.Point(235, 866);
+            this.ZDown_button.Location = new System.Drawing.Point(227, 902);
             this.ZDown_button.Name = "ZDown_button";
             this.ZDown_button.Size = new System.Drawing.Size(84, 23);
             this.ZDown_button.TabIndex = 85;
@@ -3368,7 +3367,7 @@ namespace LitePlacer
             // 
             this.labelSerialPortStatus.AutoSize = true;
             this.labelSerialPortStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSerialPortStatus.Location = new System.Drawing.Point(352, 730);
+            this.labelSerialPortStatus.Location = new System.Drawing.Point(344, 766);
             this.labelSerialPortStatus.Name = "labelSerialPortStatus";
             this.labelSerialPortStatus.Size = new System.Drawing.Size(105, 18);
             this.labelSerialPortStatus.TabIndex = 3;
@@ -3436,7 +3435,7 @@ namespace LitePlacer
             // 
             // buttonConnectSerial
             // 
-            this.buttonConnectSerial.Location = new System.Drawing.Point(461, 728);
+            this.buttonConnectSerial.Location = new System.Drawing.Point(453, 764);
             this.buttonConnectSerial.Name = "buttonConnectSerial";
             this.buttonConnectSerial.Size = new System.Drawing.Size(84, 23);
             this.buttonConnectSerial.TabIndex = 2;
@@ -3448,7 +3447,7 @@ namespace LitePlacer
             // MotorPower_checkBox
             // 
             this.MotorPower_checkBox.AutoSize = true;
-            this.MotorPower_checkBox.Location = new System.Drawing.Point(418, 842);
+            this.MotorPower_checkBox.Location = new System.Drawing.Point(410, 878);
             this.MotorPower_checkBox.Name = "MotorPower_checkBox";
             this.MotorPower_checkBox.Size = new System.Drawing.Size(86, 17);
             this.MotorPower_checkBox.TabIndex = 54;
@@ -3460,7 +3459,7 @@ namespace LitePlacer
             // Vacuum_checkBox
             // 
             this.Vacuum_checkBox.AutoSize = true;
-            this.Vacuum_checkBox.Location = new System.Drawing.Point(418, 877);
+            this.Vacuum_checkBox.Location = new System.Drawing.Point(410, 913);
             this.Vacuum_checkBox.Name = "Vacuum_checkBox";
             this.Vacuum_checkBox.Size = new System.Drawing.Size(82, 17);
             this.Vacuum_checkBox.TabIndex = 26;
@@ -3472,7 +3471,7 @@ namespace LitePlacer
             // Pump_checkBox
             // 
             this.Pump_checkBox.AutoSize = true;
-            this.Pump_checkBox.Location = new System.Drawing.Point(418, 860);
+            this.Pump_checkBox.Location = new System.Drawing.Point(410, 896);
             this.Pump_checkBox.Name = "Pump_checkBox";
             this.Pump_checkBox.Size = new System.Drawing.Size(70, 17);
             this.Pump_checkBox.TabIndex = 25;
@@ -3489,14 +3488,7 @@ namespace LitePlacer
             this.RunJob_tabPage.Controls.Add(this.ChangeNeedle_button);
             this.RunJob_tabPage.Controls.Add(this.ValidMeasurement_checkBox);
             this.RunJob_tabPage.Controls.Add(this.ReMeasure_button);
-            this.RunJob_tabPage.Controls.Add(this.JobFilePath_label);
-            this.RunJob_tabPage.Controls.Add(this.label91);
             this.RunJob_tabPage.Controls.Add(this.groupBox2);
-            this.RunJob_tabPage.Controls.Add(this.JobFileName_label);
-            this.RunJob_tabPage.Controls.Add(this.label121);
-            this.RunJob_tabPage.Controls.Add(this.JobDataSave_button);
-            this.RunJob_tabPage.Controls.Add(this.JobDataLoad_button);
-            this.RunJob_tabPage.Controls.Add(this.LoadCadData_button);
             this.RunJob_tabPage.Controls.Add(this.groupBox3);
             this.RunJob_tabPage.Controls.Add(this.JobOffsetY_textBox);
             this.RunJob_tabPage.Controls.Add(this.JobOffsetX_textBox);
@@ -3509,10 +3501,6 @@ namespace LitePlacer
             this.RunJob_tabPage.Controls.Add(this.JobData_GridView);
             this.RunJob_tabPage.Controls.Add(this.Bottom_checkBox);
             this.RunJob_tabPage.Controls.Add(this.CadData_GridView);
-            this.RunJob_tabPage.Controls.Add(this.CadFilePath_label);
-            this.RunJob_tabPage.Controls.Add(this.label56);
-            this.RunJob_tabPage.Controls.Add(this.CadFileName_label);
-            this.RunJob_tabPage.Controls.Add(this.label54);
             this.RunJob_tabPage.Location = new System.Drawing.Point(4, 22);
             this.RunJob_tabPage.Name = "RunJob_tabPage";
             this.RunJob_tabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -3567,7 +3555,7 @@ namespace LitePlacer
             // ValidMeasurement_checkBox
             // 
             this.ValidMeasurement_checkBox.AutoSize = true;
-            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(395, 268);
+            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(677, 268);
             this.ValidMeasurement_checkBox.Name = "ValidMeasurement_checkBox";
             this.ValidMeasurement_checkBox.Size = new System.Drawing.Size(138, 17);
             this.ValidMeasurement_checkBox.TabIndex = 71;
@@ -3585,26 +3573,6 @@ namespace LitePlacer
         "on PCB fiducials.");
             this.ReMeasure_button.UseVisualStyleBackColor = true;
             this.ReMeasure_button.Click += new System.EventHandler(this.ReMeasure_button_Click);
-            // 
-            // JobFilePath_label
-            // 
-            this.JobFilePath_label.AutoSize = true;
-            this.JobFilePath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JobFilePath_label.Location = new System.Drawing.Point(342, 307);
-            this.JobFilePath_label.Name = "JobFilePath_label";
-            this.JobFilePath_label.Size = new System.Drawing.Size(19, 13);
-            this.JobFilePath_label.TabIndex = 64;
-            this.JobFilePath_label.Text = "----";
-            // 
-            // label91
-            // 
-            this.label91.AutoSize = true;
-            this.label91.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label91.Location = new System.Drawing.Point(304, 307);
-            this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(32, 13);
-            this.label91.TabIndex = 63;
-            this.label91.Text = "Path:";
             // 
             // groupBox2
             // 
@@ -3711,62 +3679,6 @@ namespace LitePlacer
             this.PlaceAll_button.UseVisualStyleBackColor = true;
             this.PlaceAll_button.Click += new System.EventHandler(this.PlaceAll_button_Click);
             // 
-            // JobFileName_label
-            // 
-            this.JobFileName_label.AutoSize = true;
-            this.JobFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JobFileName_label.Location = new System.Drawing.Point(341, 277);
-            this.JobFileName_label.Name = "JobFileName_label";
-            this.JobFileName_label.Size = new System.Drawing.Size(29, 20);
-            this.JobFileName_label.TabIndex = 62;
-            this.JobFileName_label.Text = "----";
-            // 
-            // label121
-            // 
-            this.label121.AutoSize = true;
-            this.label121.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label121.Location = new System.Drawing.Point(303, 277);
-            this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(38, 20);
-            this.label121.TabIndex = 61;
-            this.label121.Text = "File:";
-            // 
-            // JobDataSave_button
-            // 
-            this.JobDataSave_button.Location = new System.Drawing.Point(222, 298);
-            this.JobDataSave_button.Name = "JobDataSave_button";
-            this.JobDataSave_button.Size = new System.Drawing.Size(75, 27);
-            this.JobDataSave_button.TabIndex = 60;
-            this.JobDataSave_button.Text = "Save";
-            this.toolTip1.SetToolTip(this.JobDataSave_button, "Saves a Job Data file. If saved with the same name \r\nand same directory as a CAD " +
-        "Data file, it will be loaded \r\nautomatically when the CAD data file is loaded.");
-            this.JobDataSave_button.UseVisualStyleBackColor = true;
-            this.JobDataSave_button.Click += new System.EventHandler(this.JobDataSave_button_Click);
-            // 
-            // JobDataLoad_button
-            // 
-            this.JobDataLoad_button.Location = new System.Drawing.Point(222, 273);
-            this.JobDataLoad_button.Name = "JobDataLoad_button";
-            this.JobDataLoad_button.Size = new System.Drawing.Size(75, 27);
-            this.JobDataLoad_button.TabIndex = 59;
-            this.JobDataLoad_button.Text = "Load";
-            this.toolTip1.SetToolTip(this.JobDataLoad_button, "Loads a Job Data file");
-            this.JobDataLoad_button.UseVisualStyleBackColor = true;
-            this.JobDataLoad_button.Click += new System.EventHandler(this.JobDataLoad_button_Click);
-            // 
-            // LoadCadData_button
-            // 
-            this.LoadCadData_button.Location = new System.Drawing.Point(239, 0);
-            this.LoadCadData_button.Name = "LoadCadData_button";
-            this.LoadCadData_button.Size = new System.Drawing.Size(75, 23);
-            this.LoadCadData_button.TabIndex = 57;
-            this.LoadCadData_button.Text = "Load";
-            this.toolTip1.SetToolTip(this.LoadCadData_button, "Loads CSV format file. This file should \r\noriginate from your PCB design program." +
-        "\r\nIf a Job Data file with the same name is found at\r\nthe same directory, it is l" +
-        "oaded, too.");
-            this.LoadCadData_button.UseVisualStyleBackColor = true;
-            this.LoadCadData_button.Click += new System.EventHandler(this.LoadCadData_button_Click);
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.PlaceOne_button);
@@ -3814,7 +3726,7 @@ namespace LitePlacer
             // 
             // JobOffsetY_textBox
             // 
-            this.JobOffsetY_textBox.Location = new System.Drawing.Point(490, 25);
+            this.JobOffsetY_textBox.Location = new System.Drawing.Point(769, 6);
             this.JobOffsetY_textBox.Name = "JobOffsetY_textBox";
             this.JobOffsetY_textBox.Size = new System.Drawing.Size(43, 20);
             this.JobOffsetY_textBox.TabIndex = 39;
@@ -3824,7 +3736,7 @@ namespace LitePlacer
             // 
             // JobOffsetX_textBox
             // 
-            this.JobOffsetX_textBox.Location = new System.Drawing.Point(490, -1);
+            this.JobOffsetX_textBox.Location = new System.Drawing.Point(633, 4);
             this.JobOffsetX_textBox.Name = "JobOffsetX_textBox";
             this.JobOffsetX_textBox.Size = new System.Drawing.Size(43, 20);
             this.JobOffsetX_textBox.TabIndex = 37;
@@ -3845,7 +3757,7 @@ namespace LitePlacer
             this.groupBox1.Controls.Add(this.label64);
             this.groupBox1.Controls.Add(this.label63);
             this.groupBox1.Controls.Add(this.label58);
-            this.groupBox1.Location = new System.Drawing.Point(625, 329);
+            this.groupBox1.Location = new System.Drawing.Point(625, 300);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(182, 144);
             this.groupBox1.TabIndex = 50;
@@ -3966,7 +3878,7 @@ namespace LitePlacer
             // 
             this.label88.AutoSize = true;
             this.label88.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label88.Location = new System.Drawing.Point(147, 0);
+            this.label88.Location = new System.Drawing.Point(138, 11);
             this.label88.Name = "label88";
             this.label88.Size = new System.Drawing.Size(86, 20);
             this.label88.TabIndex = 43;
@@ -3975,7 +3887,7 @@ namespace LitePlacer
             // label86
             // 
             this.label86.AutoSize = true;
-            this.label86.Location = new System.Drawing.Point(408, 31);
+            this.label86.Location = new System.Drawing.Point(687, 12);
             this.label86.Name = "label86";
             this.label86.Size = new System.Drawing.Size(68, 13);
             this.label86.TabIndex = 40;
@@ -3984,7 +3896,7 @@ namespace LitePlacer
             // label85
             // 
             this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(408, 5);
+            this.label85.Location = new System.Drawing.Point(551, 10);
             this.label85.Name = "label85";
             this.label85.Size = new System.Drawing.Size(68, 13);
             this.label85.TabIndex = 38;
@@ -4012,11 +3924,11 @@ namespace LitePlacer
             this.methodParametersDataGridViewTextBoxColumn});
             this.JobData_GridView.DataSource = this.jobDataBindingSource;
             this.JobData_GridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.JobData_GridView.Location = new System.Drawing.Point(138, 329);
+            this.JobData_GridView.Location = new System.Drawing.Point(138, 300);
             this.JobData_GridView.Name = "JobData_GridView";
             this.JobData_GridView.RowHeadersVisible = false;
             this.JobData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.JobData_GridView.Size = new System.Drawing.Size(481, 353);
+            this.JobData_GridView.Size = new System.Drawing.Size(481, 382);
             this.JobData_GridView.TabIndex = 11;
             this.JobData_GridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellClick);
             // 
@@ -4063,7 +3975,7 @@ namespace LitePlacer
             // Bottom_checkBox
             // 
             this.Bottom_checkBox.AutoSize = true;
-            this.Bottom_checkBox.Location = new System.Drawing.Point(239, 29);
+            this.Bottom_checkBox.Location = new System.Drawing.Point(612, 268);
             this.Bottom_checkBox.Name = "Bottom_checkBox";
             this.Bottom_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Bottom_checkBox.Size = new System.Drawing.Size(59, 17);
@@ -4100,12 +4012,12 @@ namespace LitePlacer
             this.methodDataGridViewTextBoxColumn,
             this.isFiducialDataGridViewCheckBoxColumn});
             this.CadData_GridView.DataSource = this.physicalComponentBindingSource;
-            this.CadData_GridView.Location = new System.Drawing.Point(138, 50);
+            this.CadData_GridView.Location = new System.Drawing.Point(138, 34);
             this.CadData_GridView.Name = "CadData_GridView";
             this.CadData_GridView.RowHeadersVisible = false;
             this.CadData_GridView.RowHeadersWidth = 16;
             this.CadData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.CadData_GridView.Size = new System.Drawing.Size(677, 212);
+            this.CadData_GridView.Size = new System.Drawing.Size(677, 228);
             this.CadData_GridView.TabIndex = 5;
             // 
             // designatorDataGridViewTextBoxColumn
@@ -4175,51 +4087,11 @@ namespace LitePlacer
             // 
             this.physicalComponentBindingSource.DataSource = typeof(LitePlacer.PhysicalComponent);
             // 
-            // CadFilePath_label
-            // 
-            this.CadFilePath_label.AutoSize = true;
-            this.CadFilePath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CadFilePath_label.Location = new System.Drawing.Point(358, 31);
-            this.CadFilePath_label.Name = "CadFilePath_label";
-            this.CadFilePath_label.Size = new System.Drawing.Size(19, 13);
-            this.CadFilePath_label.TabIndex = 3;
-            this.CadFilePath_label.Text = "----";
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label56.Location = new System.Drawing.Point(320, 31);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(32, 13);
-            this.label56.TabIndex = 2;
-            this.label56.Text = "Path:";
-            // 
-            // CadFileName_label
-            // 
-            this.CadFileName_label.AutoSize = true;
-            this.CadFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CadFileName_label.Location = new System.Drawing.Point(357, 0);
-            this.CadFileName_label.Name = "CadFileName_label";
-            this.CadFileName_label.Size = new System.Drawing.Size(29, 20);
-            this.CadFileName_label.TabIndex = 1;
-            this.CadFileName_label.Text = "----";
-            // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label54.Location = new System.Drawing.Point(319, 0);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(38, 20);
-            this.label54.TabIndex = 0;
-            this.label54.Text = "File:";
-            // 
             // MultiCalibrate_button
             // 
             this.MultiCalibrate_button.BackColor = System.Drawing.Color.Crimson;
             this.MultiCalibrate_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MultiCalibrate_button.Location = new System.Drawing.Point(685, 840);
+            this.MultiCalibrate_button.Location = new System.Drawing.Point(677, 876);
             this.MultiCalibrate_button.Name = "MultiCalibrate_button";
             this.MultiCalibrate_button.Size = new System.Drawing.Size(129, 49);
             this.MultiCalibrate_button.TabIndex = 75;
@@ -4230,7 +4102,7 @@ namespace LitePlacer
             // 
             // StopDemo_button
             // 
-            this.StopDemo_button.Location = new System.Drawing.Point(665, 782);
+            this.StopDemo_button.Location = new System.Drawing.Point(657, 818);
             this.StopDemo_button.Name = "StopDemo_button";
             this.StopDemo_button.Size = new System.Drawing.Size(75, 23);
             this.StopDemo_button.TabIndex = 74;
@@ -4240,7 +4112,7 @@ namespace LitePlacer
             // 
             // Demo_button
             // 
-            this.Demo_button.Location = new System.Drawing.Point(665, 748);
+            this.Demo_button.Location = new System.Drawing.Point(657, 784);
             this.Demo_button.Name = "Demo_button";
             this.Demo_button.Size = new System.Drawing.Size(75, 23);
             this.Demo_button.TabIndex = 73;
@@ -4254,7 +4126,7 @@ namespace LitePlacer
             this.tabControlPages.Controls.Add(this.tabPageBasicSetup);
             this.tabControlPages.Controls.Add(this.Tapes_tabPage);
             this.tabControlPages.Controls.Add(this.tabPage5);
-            this.tabControlPages.Location = new System.Drawing.Point(3, 3);
+            this.tabControlPages.Location = new System.Drawing.Point(6, 27);
             this.tabControlPages.Name = "tabControlPages";
             this.tabControlPages.SelectedIndex = 0;
             this.tabControlPages.Size = new System.Drawing.Size(829, 716);
@@ -4377,7 +4249,7 @@ namespace LitePlacer
             // 
             this.TrueX_label.AutoSize = true;
             this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrueX_label.Location = new System.Drawing.Point(163, 733);
+            this.TrueX_label.Location = new System.Drawing.Point(155, 769);
             this.TrueX_label.Name = "TrueX_label";
             this.TrueX_label.Size = new System.Drawing.Size(31, 9);
             this.TrueX_label.TabIndex = 77;
@@ -4386,7 +4258,7 @@ namespace LitePlacer
             // 
             // mechHome_button
             // 
-            this.mechHome_button.Location = new System.Drawing.Point(17, 840);
+            this.mechHome_button.Location = new System.Drawing.Point(9, 876);
             this.mechHome_button.Name = "mechHome_button";
             this.mechHome_button.Size = new System.Drawing.Size(93, 23);
             this.mechHome_button.TabIndex = 87;
@@ -4396,7 +4268,7 @@ namespace LitePlacer
             // 
             // OptHome_button
             // 
-            this.OptHome_button.Location = new System.Drawing.Point(16, 862);
+            this.OptHome_button.Location = new System.Drawing.Point(8, 898);
             this.OptHome_button.Name = "OptHome_button";
             this.OptHome_button.Size = new System.Drawing.Size(94, 23);
             this.OptHome_button.TabIndex = 88;
@@ -4404,12 +4276,82 @@ namespace LitePlacer
             this.OptHome_button.UseVisualStyleBackColor = true;
             this.OptHome_button.Click += new System.EventHandler(this.OptHome_button_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Location = new System.Drawing.Point(0, 949);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(839, 22);
+            this.statusStrip1.TabIndex = 115;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(839, 24);
+            this.menuStrip1.TabIndex = 116;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadCADFileToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.loadJobFileToolStripMenuItem,
+            this.saveJobFileToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.quitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // loadCADFileToolStripMenuItem
+            // 
+            this.loadCADFileToolStripMenuItem.Name = "loadCADFileToolStripMenuItem";
+            this.loadCADFileToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.loadCADFileToolStripMenuItem.Text = "Load Pick-n-Place File";
+            this.loadCADFileToolStripMenuItem.Click += new System.EventHandler(this.loadCADFileToolStripMenuItem_Click);
+            // 
+            // loadJobFileToolStripMenuItem
+            // 
+            this.loadJobFileToolStripMenuItem.Name = "loadJobFileToolStripMenuItem";
+            this.loadJobFileToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.loadJobFileToolStripMenuItem.Text = "Load Job File";
+            this.loadJobFileToolStripMenuItem.Click += new System.EventHandler(this.loadJobFileToolStripMenuItem_Click);
+            // 
+            // saveJobFileToolStripMenuItem
+            // 
+            this.saveJobFileToolStripMenuItem.Name = "saveJobFileToolStripMenuItem";
+            this.saveJobFileToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.saveJobFileToolStripMenuItem.Text = "Save Job File";
+            this.saveJobFileToolStripMenuItem.Click += new System.EventHandler(this.saveJobFileToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(188, 6);
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(188, 6);
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(836, 926);
+            this.ClientSize = new System.Drawing.Size(839, 971);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.CameraSetupTest_button);
             this.Controls.Add(this.Snapshot_button);
             this.Controls.Add(this.ImageTest_checkBox);
@@ -4452,6 +4394,7 @@ namespace LitePlacer
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormMain";
             this.Text = "LitePlacer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
@@ -4507,6 +4450,8 @@ namespace LitePlacer
             this.groupBox7.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4763,22 +4708,11 @@ namespace LitePlacer
         private Label label85;
 		private DataGridView JobData_GridView;
 		public CheckBox Bottom_checkBox;
-		private DataGridView CadData_GridView;
-		private Label CadFilePath_label;
-		private Label label56;
-		private Label CadFileName_label;
-		private Label label54;
+        private DataGridView CadData_GridView;
 		private TabControl tabControlPages;
 		private Label label87;
 		private NumericUpDown SmallMovement_numericUpDown;
-		private GroupBox groupBox3;
-		private Button LoadCadData_button;
-		private Button JobDataSave_button;
-		private Button JobDataLoad_button;
-		private Label JobFilePath_label;
-		private Label label91;
-		private Label JobFileName_label;
-        private Label label121;
+        private GroupBox groupBox3;
         private OpenFileDialog CAD_openFileDialog;
 		private Button DeleteTape_button;
 		private Button TapeDown_button;
@@ -4881,6 +4815,15 @@ namespace LitePlacer
         private DataGridViewTextBoxColumn pickupZDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn placeZDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn bDataGridViewTextBoxColumn;
+        private StatusStrip statusStrip1;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem loadCADFileToolStripMenuItem;
+        private ToolStripMenuItem loadJobFileToolStripMenuItem;
+        private ToolStripMenuItem saveJobFileToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem quitToolStripMenuItem;
     }
 }
 

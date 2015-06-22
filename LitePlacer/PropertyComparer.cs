@@ -4,43 +4,36 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Be.Timvw.Framework.Collections.Generic
-{
-    public class PropertyComparer<T> : IComparer<T>
-    {
-        private readonly IComparer comparer;
-        private PropertyDescriptor propertyDescriptor;
-        private int reverse;
+namespace LitePlacer {
+    public class PropertyComparer<T> : IComparer<T> {
+        private readonly IComparer _comparer;
+        private PropertyDescriptor _propertyDescriptor;
+        private int _reverse;
 
-        public PropertyComparer(PropertyDescriptor property, ListSortDirection direction)
-        {
-            propertyDescriptor = property;
+        public PropertyComparer(PropertyDescriptor property, ListSortDirection direction) {
+            _propertyDescriptor = property;
             Type comparerForPropertyType = typeof(Comparer<>).MakeGenericType(property.PropertyType);
-            comparer = (IComparer)comparerForPropertyType.InvokeMember("Default", BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.Public, null, null, null);
+            _comparer = (IComparer)comparerForPropertyType.InvokeMember("Default", BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.Public, null, null, null);
             SetListSortDirection(direction);
         }
 
         #region IComparer<T> Members
 
-        public int Compare(T x, T y)
-        {
-            return reverse * comparer.Compare(propertyDescriptor.GetValue(x), propertyDescriptor.GetValue(y));
+        public int Compare(T x, T y) {
+            return _reverse * _comparer.Compare(_propertyDescriptor.GetValue(x), _propertyDescriptor.GetValue(y));
         }
 
         #endregion
 
-        private void SetPropertyDescriptor(PropertyDescriptor descriptor)
-        {
-            propertyDescriptor = descriptor;
+        private void SetPropertyDescriptor(PropertyDescriptor descriptor) {
+            _propertyDescriptor = descriptor;
         }
 
-        private void SetListSortDirection(ListSortDirection direction)
-        {
-            reverse = direction == ListSortDirection.Ascending ? 1 : -1;
+        private void SetListSortDirection(ListSortDirection direction) {
+            _reverse = direction == ListSortDirection.Ascending ? 1 : -1;
         }
 
-        public void SetPropertyAndDirection(PropertyDescriptor descriptor, ListSortDirection direction)
-        {
+        public void SetPropertyAndDirection(PropertyDescriptor descriptor, ListSortDirection direction) {
             SetPropertyDescriptor(descriptor);
             SetListSortDirection(direction);
         }
