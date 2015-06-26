@@ -5070,12 +5070,16 @@ namespace LitePlacer
                             "Job Data load error",
                             MessageBoxButtons.OK);
                         FillJobData_GridView();
+                        int dummy;
+                        FindFiducials_m(out dummy);  // don't care of the result, just trying to find fids
                     }
                 }
                 else
                 {
                     // If not, build job data ourselves.
                     FillJobData_GridView();
+                    int dummy;
+                    FindFiducials_m(out dummy);  // don't care of the result, just trying to find fids
                     JobFileName_label.Text = "--";
                     JobFilePath_label.Text = "--";
                 }
@@ -5091,6 +5095,55 @@ namespace LitePlacer
         }
 
         // =================================================================================
+        private void SaveCadData_button_Click(object sender, EventArgs e)
+        {
+            Stream SaveStream;
+            string OutLine;
+
+            if (CadData_GridView.RowCount < 1)
+            {
+                ShowMessageBox(
+                    "No Data",
+                    "No Data",
+                    MessageBoxButtons.OK
+                );
+                return;
+            }
+
+            Job_saveFileDialog.Filter = "CSV placement files (*.csv)|*.csv|All files (*.*)|*.*";
+
+            if (Job_saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if ((SaveStream = Job_saveFileDialog.OpenFile()) != null)
+                {
+                    // "Component","Component Type","X, nom.","Y, nom.","Rotation","X, machine","Y, machine","Rotation, machine"
+                    using (StreamWriter f = new StreamWriter(SaveStream))
+                    {
+                        // Write header
+                        OutLine="\"Component\",\"Value\",\"Footprint\",\"X\",\"Y\",\"Rotation\"";
+                        f.WriteLine(OutLine);
+                        // write data
+                        foreach (DataGridViewRow Row in CadData_GridView.Rows)
+                        {
+                            OutLine = "\"" + Row.Cells["Component"].Value.ToString() + "\"";
+                            string temp = Row.Cells["Value_Footprint"].Value.ToString();
+                            int i = temp.IndexOf('|');
+                            OutLine += ",\"" + temp.Substring(0, i - 2) + "\"";
+                            OutLine += ",\"" + temp.Substring(i + 3, temp.Length - i - 3) + "\"";
+                            OutLine += ",\"" + Row.Cells["X_nominal"].Value.ToString() + "\"";
+                            OutLine += ",\"" + Row.Cells["Y_nominal"].Value.ToString() + "\"";
+                            OutLine += ",\"" + Row.Cells["Rotation"].Value.ToString() + "\"";
+                            f.WriteLine(OutLine);
+                        }
+                    }
+                    SaveStream.Close();
+                }
+                CadDataFileName = Job_saveFileDialog.FileName;
+                CadFileName_label.Text = Path.GetFileName(CadDataFileName);
+                CadFilePath_label.Text = Path.GetDirectoryName(CadDataFileName);
+            }
+        }
+
         private void JobDataLoad_button_Click(object sender, EventArgs e)
         {
             if (Job_openFileDialog.ShowDialog() == DialogResult.OK)
@@ -5166,11 +5219,11 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // JobData_GridView handling
-        //
-        // This table has the components of same type grouped to one component type per line.
+        // JobData_GridView and CadData_GridView handling
+        // JobData_GridView has the components of same type grouped to one component type per line.
+        // Public, as it is called from panelize process, too.
         // =================================================================================
-        private void FillJobData_GridView()
+        public void FillJobData_GridView()  
         {
             string CurrentComponentType = "";
             int ComponentCount = 0;
@@ -5213,8 +5266,6 @@ namespace LitePlacer
                     JobData_GridView.Rows[TypeRow].Cells["ComponentList"].Value = CurrentComponentList;
                 }
             }
-            int dummy;
-            FindFiducials_m(out dummy);  // don't care of the result, jus try to find fids
         }
 
 
@@ -5262,6 +5313,45 @@ namespace LitePlacer
             JobData_GridView.Rows[index].Cells["GroupMethod"].Value = "?";
             JobData_GridView.Rows[index].Cells["MethodParamAllComponents"].Value = "--";
             JobData_GridView.Rows[index].Cells["ComponentList"].Value = "--";
+        }
+
+        private void AddCadDataRow_button_Click(object sender, EventArgs e)
+        {
+            int index = CadData_GridView.CurrentRow.Index;
+            CadData_GridView.Rows.Insert(index);
+        }
+
+        private void RebuildJobData_button_Click(object sender, EventArgs e)
+        {
+            // TO DO: Error checking here
+            FillJobData_GridView();
+            int dummy;
+            FindFiducials_m(out dummy);  // don't care of the result, just trying to find fids
+            JobFileName_label.Text = "--";
+            JobFilePath_label.Text = "--";
+
+        }
+
+        private void DeleteCadDataRow_button_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewCell oneCell in CadData_GridView.SelectedCells)
+            {
+                if (oneCell.Selected)
+                    CadData_GridView.Rows.RemoveAt(oneCell.RowIndex);
+            }
+        }
+
+        private void CopyCadDataRow_button_Click(object sender, EventArgs e)
+        {
+            ClipBoardRow = CadData_GridView.CurrentRow;
+        }
+
+        private void PasteCadDataRow_button_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < CadData_GridView.ColumnCount; i++)
+            {
+                CadData_GridView.CurrentRow.Cells[i].Value = ClipBoardRow.Cells[i].Value;
+            }
         }
 
         // =================================================================================
@@ -7491,6 +7581,24 @@ namespace LitePlacer
             }
         }
 
+        // =================================================================================
+        // Panelizing
+        // =================================================================================
+        private void Panelize_button_Click(object sender, EventArgs e)
+        {
+            PanelizeForm PanelizeDialog = new PanelizeForm(this);
+            PanelizeDialog.CadData = CadData_GridView;
+            PanelizeDialog.JobData = JobData_GridView;
+            PanelizeDialog.ShowDialog(this);
+            if (PanelizeDialog.OK==true)
+            {
+                DisplayText("Panelize ok.");
+                Update_GridView(CadData_GridView);
+                Update_GridView(JobData_GridView);
+            }
+        }
+
+
         #endregion Job page functions
 
         // =================================================================================
@@ -8506,7 +8614,7 @@ namespace LitePlacer
         // ==========================================================================================================
         // Some helpers:
 
-        private void DataGridViewCopy(DataGridView FromGr, ref DataGridView ToGr)
+        public void DataGridViewCopy(DataGridView FromGr, ref DataGridView ToGr, bool print= true)
         {
             DataGridViewRow NewRow;
             ToGr.Rows.Clear();
@@ -8520,35 +8628,38 @@ namespace LitePlacer
                 }
                 ToGr.Rows.Add(NewRow);
             }
-            // Print results:
-            string DebugStr = FromGr.Name + " => " + ToGr.Name + ":";
-            DebugStr = DebugStr.Replace("_dataGridView", "");
-            if (ToGr.Rows.Count == 0)
+            if(print)
             {
-                DisplayText(DebugStr + "( )");
-            }
-            else
-            {
-                foreach (DataGridViewRow Row in ToGr.Rows)
+                // Print results:
+                string DebugStr = FromGr.Name + " => " + ToGr.Name + ":";
+                DebugStr = DebugStr.Replace("_dataGridView", "");
+                if (ToGr.Rows.Count == 0)
                 {
-                    DebugStr += Row.Cells[0].Value.ToString() + "( ";
-                    for (int i = 1; i < Row.Cells.Count; i++)
-                    {
-                        if (Row.Cells[i].Value == null)
-                        {
-                            DebugStr += "--, ";
-                        }
-                        else
-                        {
-                            DebugStr += Row.Cells[i].Value.ToString() + ", ";
-                        }
-                    }
-                    DebugStr += ")\n";
-                    DebugStr = DebugStr.Replace(", )\n", " )");
-                    DisplayText(DebugStr);
+                    DisplayText(DebugStr + "( )");
                 }
-            }
+                else
+                {
+                    foreach (DataGridViewRow Row in ToGr.Rows)
+                    {
+                        DebugStr += Row.Cells[0].Value.ToString() + "( ";
+                        for (int i = 1; i < Row.Cells.Count; i++)
+                        {
+                            if (Row.Cells[i].Value == null)
+                            {
+                                DebugStr += "--, ";
+                            }
+                            else
+                            {
+                                DebugStr += Row.Cells[i].Value.ToString() + ", ";
+                            }
+                        }
+                        DebugStr += ")\n";
+                        DebugStr = DebugStr.Replace(", )\n", " )");
+                        DisplayText(DebugStr);
+                    }
+                }
             ClearEditTargets();
+            }
         }
 
         // ==========================================================================================================
@@ -9490,6 +9601,7 @@ namespace LitePlacer
 
         }
         #endregion
+
 
     }	// end of: 	public partial class FormMain : Form
 

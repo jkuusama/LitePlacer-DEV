@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -69,6 +69,7 @@
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.label145 = new System.Windows.Forms.Label();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.ReloadTray_button = new System.Windows.Forms.Button();
             this.ReplaceTray_button = new System.Windows.Forms.Button();
             this.LoadTray_button = new System.Windows.Forms.Button();
             this.SaveTray_button = new System.Windows.Forms.Button();
@@ -88,6 +89,22 @@
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
+            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label108 = new System.Windows.Forms.Label();
             this.Tapes_pictureBox = new System.Windows.Forms.PictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
@@ -474,6 +491,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
+            this.SaveCadData_button = new System.Windows.Forms.Button();
+            this.Panelize_button = new System.Windows.Forms.Button();
             this.StopDemo_button = new System.Windows.Forms.Button();
             this.Demo_button = new System.Windows.Forms.Button();
             this.ChangeNeedle_button = new System.Windows.Forms.Button();
@@ -558,23 +577,12 @@
             this.TrueX_label = new System.Windows.Forms.Label();
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReloadTray_button = new System.Windows.Forms.Button();
+            this.RebuildJobData_button = new System.Windows.Forms.Button();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.AddCadDataRow_button = new System.Windows.Forms.Button();
+            this.DeleteCadDataRow_button = new System.Windows.Forms.Button();
+            this.CopyCadDataRow_button = new System.Windows.Forms.Button();
+            this.PasteCadDataRow_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -624,6 +632,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.JobData_GridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CadData_GridView)).BeginInit();
             this.tabControlPages.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // Park_button
@@ -1050,6 +1059,16 @@
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
             // 
+            // ReloadTray_button
+            // 
+            this.ReloadTray_button.Location = new System.Drawing.Point(894, 505);
+            this.ReloadTray_button.Name = "ReloadTray_button";
+            this.ReloadTray_button.Size = new System.Drawing.Size(75, 23);
+            this.ReloadTray_button.TabIndex = 47;
+            this.ReloadTray_button.Text = "Reload Tray";
+            this.ReloadTray_button.UseVisualStyleBackColor = true;
+            this.ReloadTray_button.Click += new System.EventHandler(this.ReloadTray_button_Click);
+            // 
             // ReplaceTray_button
             // 
             this.ReplaceTray_button.Location = new System.Drawing.Point(813, 505);
@@ -1270,6 +1289,136 @@
             this.Tapes_dataGridView.Size = new System.Drawing.Size(494, 480);
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
+            // 
+            // SelectButtonColumn
+            // 
+            this.SelectButtonColumn.HeaderText = "Select";
+            this.SelectButtonColumn.Name = "SelectButtonColumn";
+            this.SelectButtonColumn.Text = "Reset";
+            this.SelectButtonColumn.Width = 43;
+            // 
+            // IdColumn
+            // 
+            this.IdColumn.HeaderText = "ID";
+            this.IdColumn.Name = "IdColumn";
+            this.IdColumn.Width = 43;
+            // 
+            // OrientationColumn
+            // 
+            this.OrientationColumn.HeaderText = "Dir.";
+            this.OrientationColumn.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.OrientationColumn.Name = "OrientationColumn";
+            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.OrientationColumn.Width = 48;
+            // 
+            // RotationColumn
+            // 
+            this.RotationColumn.HeaderText = "Rot.";
+            this.RotationColumn.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.RotationColumn.Name = "RotationColumn";
+            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.RotationColumn.Width = 52;
+            // 
+            // WidthColumn
+            // 
+            this.WidthColumn.HeaderText = "Width";
+            this.WidthColumn.Items.AddRange(new object[] {
+            "8/2mm",
+            "8/4mm",
+            "12/4mm",
+            "12/8mm",
+            "16/4mm",
+            "16/8mm",
+            "16/12mm",
+            "24/4mm",
+            "24/8mm",
+            "24/12mm",
+            "24/16mm",
+            "24/20mm"});
+            this.WidthColumn.Name = "WidthColumn";
+            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.WidthColumn.Width = 60;
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.TypeColumn.Name = "TypeColumn";
+            this.TypeColumn.Width = 37;
+            // 
+            // Next_Column
+            // 
+            this.Next_Column.HeaderText = "Next";
+            this.Next_Column.Name = "Next_Column";
+            this.Next_Column.Width = 54;
+            // 
+            // Tray_Column
+            // 
+            this.Tray_Column.HeaderText = "Tray";
+            this.Tray_Column.Name = "Tray_Column";
+            this.Tray_Column.Width = 53;
+            // 
+            // X_Column
+            // 
+            this.X_Column.HeaderText = "X";
+            this.X_Column.Name = "X_Column";
+            this.X_Column.Width = 39;
+            // 
+            // Y_Column
+            // 
+            this.Y_Column.HeaderText = "Y";
+            this.Y_Column.Name = "Y_Column";
+            this.Y_Column.Width = 39;
+            // 
+            // PickupZ_Column
+            // 
+            this.PickupZ_Column.HeaderText = "Pickup Z";
+            this.PickupZ_Column.Name = "PickupZ_Column";
+            this.PickupZ_Column.Width = 75;
+            // 
+            // PlaceZ_Column
+            // 
+            this.PlaceZ_Column.HeaderText = "PlaceZ";
+            this.PlaceZ_Column.Name = "PlaceZ_Column";
+            this.PlaceZ_Column.Width = 66;
+            // 
+            // NextX_Column
+            // 
+            this.NextX_Column.HeaderText = "Next X";
+            this.NextX_Column.Name = "NextX_Column";
+            this.NextX_Column.Width = 64;
+            // 
+            // NextY_column
+            // 
+            this.NextY_column.HeaderText = "Next Y";
+            this.NextY_column.Name = "NextY_column";
+            this.NextY_column.Width = 64;
+            // 
+            // LastX
+            // 
+            this.LastX.HeaderText = "Last X";
+            this.LastX.Name = "LastX";
+            this.LastX.Width = 62;
+            // 
+            // LastY
+            // 
+            this.LastY.HeaderText = "Last Y";
+            this.LastY.Name = "LastY";
+            this.LastY.Width = 62;
             // 
             // label108
             // 
@@ -5566,6 +5715,10 @@
             // 
             // RunJob_tabPage
             // 
+            this.RunJob_tabPage.Controls.Add(this.groupBox12);
+            this.RunJob_tabPage.Controls.Add(this.RebuildJobData_button);
+            this.RunJob_tabPage.Controls.Add(this.SaveCadData_button);
+            this.RunJob_tabPage.Controls.Add(this.Panelize_button);
             this.RunJob_tabPage.Controls.Add(this.StopDemo_button);
             this.RunJob_tabPage.Controls.Add(this.Demo_button);
             this.RunJob_tabPage.Controls.Add(this.ChangeNeedle_button);
@@ -5613,6 +5766,29 @@
             this.RunJob_tabPage.TabIndex = 2;
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // SaveCadData_button
+            // 
+            this.SaveCadData_button.Location = new System.Drawing.Point(785, 33);
+            this.SaveCadData_button.Name = "SaveCadData_button";
+            this.SaveCadData_button.Size = new System.Drawing.Size(75, 23);
+            this.SaveCadData_button.TabIndex = 76;
+            this.SaveCadData_button.Text = "Save";
+            this.toolTip1.SetToolTip(this.SaveCadData_button, "Loads CSV format file. This file should \r\noriginate from your PCB design program." +
+        "\r\nIf a Job Data file with the same name is found at\r\nthe same directory, it is l" +
+        "oaded, too.");
+            this.SaveCadData_button.UseVisualStyleBackColor = true;
+            this.SaveCadData_button.Click += new System.EventHandler(this.SaveCadData_button_Click);
+            // 
+            // Panelize_button
+            // 
+            this.Panelize_button.Location = new System.Drawing.Point(664, 376);
+            this.Panelize_button.Name = "Panelize_button";
+            this.Panelize_button.Size = new System.Drawing.Size(108, 23);
+            this.Panelize_button.TabIndex = 75;
+            this.Panelize_button.Text = "Panelize";
+            this.Panelize_button.UseVisualStyleBackColor = true;
+            this.Panelize_button.Click += new System.EventHandler(this.Panelize_button_Click);
             // 
             // StopDemo_button
             // 
@@ -5793,7 +5969,7 @@
             // 
             // LoadCadData_button
             // 
-            this.LoadCadData_button.Location = new System.Drawing.Point(785, 10);
+            this.LoadCadData_button.Location = new System.Drawing.Point(784, 6);
             this.LoadCadData_button.Name = "LoadCadData_button";
             this.LoadCadData_button.Size = new System.Drawing.Size(75, 23);
             this.LoadCadData_button.TabIndex = 57;
@@ -5854,7 +6030,7 @@
             this.JobCounterCW_checkBox.AutoSize = true;
             this.JobCounterCW_checkBox.Enabled = false;
             this.JobCounterCW_checkBox.ForeColor = System.Drawing.Color.DarkRed;
-            this.JobCounterCW_checkBox.Location = new System.Drawing.Point(916, 280);
+            this.JobCounterCW_checkBox.Location = new System.Drawing.Point(1122, 41);
             this.JobCounterCW_checkBox.Name = "JobCounterCW_checkBox";
             this.JobCounterCW_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.JobCounterCW_checkBox.Size = new System.Drawing.Size(120, 17);
@@ -5865,7 +6041,7 @@
             // 
             // RotationOffset_textBox
             // 
-            this.RotationOffset_textBox.Location = new System.Drawing.Point(862, 276);
+            this.RotationOffset_textBox.Location = new System.Drawing.Point(1189, 16);
             this.RotationOffset_textBox.Name = "RotationOffset_textBox";
             this.RotationOffset_textBox.Size = new System.Drawing.Size(43, 20);
             this.RotationOffset_textBox.TabIndex = 54;
@@ -5874,7 +6050,7 @@
             // 
             // JobOffsetY_textBox
             // 
-            this.JobOffsetY_textBox.Location = new System.Drawing.Point(737, 255);
+            this.JobOffsetY_textBox.Location = new System.Drawing.Point(1007, 280);
             this.JobOffsetY_textBox.Name = "JobOffsetY_textBox";
             this.JobOffsetY_textBox.Size = new System.Drawing.Size(43, 20);
             this.JobOffsetY_textBox.TabIndex = 39;
@@ -5884,7 +6060,7 @@
             // 
             // JobOffsetX_textBox
             // 
-            this.JobOffsetX_textBox.Location = new System.Drawing.Point(737, 229);
+            this.JobOffsetX_textBox.Location = new System.Drawing.Point(864, 280);
             this.JobOffsetX_textBox.Name = "JobOffsetX_textBox";
             this.JobOffsetX_textBox.Size = new System.Drawing.Size(43, 20);
             this.JobOffsetX_textBox.TabIndex = 37;
@@ -5897,7 +6073,7 @@
             this.label60.AutoSize = true;
             this.label60.Enabled = false;
             this.label60.ForeColor = System.Drawing.Color.DarkRed;
-            this.label60.Location = new System.Drawing.Point(780, 280);
+            this.label60.Location = new System.Drawing.Point(1107, 20);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(78, 13);
             this.label60.TabIndex = 53;
@@ -5914,16 +6090,16 @@
             this.groupBox2.Controls.Add(this.DeleteComponentGroup_button);
             this.groupBox2.Controls.Add(this.Down_button);
             this.groupBox2.Controls.Add(this.Up_button);
-            this.groupBox2.Location = new System.Drawing.Point(656, 371);
+            this.groupBox2.Location = new System.Drawing.Point(657, 426);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(122, 318);
+            this.groupBox2.Size = new System.Drawing.Size(122, 263);
             this.groupBox2.TabIndex = 51;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Row Operations";
             // 
             // ResetOneTape_button
             // 
-            this.ResetOneTape_button.Location = new System.Drawing.Point(7, 207);
+            this.ResetOneTape_button.Location = new System.Drawing.Point(7, 194);
             this.ResetOneTape_button.Name = "ResetOneTape_button";
             this.ResetOneTape_button.Size = new System.Drawing.Size(109, 23);
             this.ResetOneTape_button.TabIndex = 25;
@@ -5934,7 +6110,7 @@
             // 
             // PasteRow_button
             // 
-            this.PasteRow_button.Location = new System.Drawing.Point(6, 177);
+            this.PasteRow_button.Location = new System.Drawing.Point(6, 164);
             this.PasteRow_button.Name = "PasteRow_button";
             this.PasteRow_button.Size = new System.Drawing.Size(110, 23);
             this.PasteRow_button.TabIndex = 24;
@@ -5944,7 +6120,7 @@
             // 
             // CopyRow_button
             // 
-            this.CopyRow_button.Location = new System.Drawing.Point(6, 148);
+            this.CopyRow_button.Location = new System.Drawing.Point(6, 135);
             this.CopyRow_button.Name = "CopyRow_button";
             this.CopyRow_button.Size = new System.Drawing.Size(110, 23);
             this.CopyRow_button.TabIndex = 23;
@@ -5954,7 +6130,7 @@
             // 
             // NewRow_button
             // 
-            this.NewRow_button.Location = new System.Drawing.Point(6, 90);
+            this.NewRow_button.Location = new System.Drawing.Point(6, 77);
             this.NewRow_button.Name = "NewRow_button";
             this.NewRow_button.Size = new System.Drawing.Size(110, 23);
             this.NewRow_button.TabIndex = 22;
@@ -5965,7 +6141,7 @@
             // 
             // PlaceThese_button
             // 
-            this.PlaceThese_button.Location = new System.Drawing.Point(6, 285);
+            this.PlaceThese_button.Location = new System.Drawing.Point(7, 232);
             this.PlaceThese_button.Name = "PlaceThese_button";
             this.PlaceThese_button.Size = new System.Drawing.Size(110, 23);
             this.PlaceThese_button.TabIndex = 17;
@@ -5976,7 +6152,7 @@
             // 
             // DeleteComponentGroup_button
             // 
-            this.DeleteComponentGroup_button.Location = new System.Drawing.Point(6, 119);
+            this.DeleteComponentGroup_button.Location = new System.Drawing.Point(6, 106);
             this.DeleteComponentGroup_button.Name = "DeleteComponentGroup_button";
             this.DeleteComponentGroup_button.Size = new System.Drawing.Size(110, 23);
             this.DeleteComponentGroup_button.TabIndex = 16;
@@ -5987,7 +6163,7 @@
             // 
             // Down_button
             // 
-            this.Down_button.Location = new System.Drawing.Point(6, 61);
+            this.Down_button.Location = new System.Drawing.Point(6, 48);
             this.Down_button.Name = "Down_button";
             this.Down_button.Size = new System.Drawing.Size(110, 23);
             this.Down_button.TabIndex = 15;
@@ -5998,7 +6174,7 @@
             // 
             // Up_button
             // 
-            this.Up_button.Location = new System.Drawing.Point(6, 32);
+            this.Up_button.Location = new System.Drawing.Point(6, 19);
             this.Up_button.Name = "Up_button";
             this.Up_button.Size = new System.Drawing.Size(110, 23);
             this.Up_button.TabIndex = 14;
@@ -6198,7 +6374,7 @@
             // label86
             // 
             this.label86.AutoSize = true;
-            this.label86.Location = new System.Drawing.Point(655, 261);
+            this.label86.Location = new System.Drawing.Point(925, 286);
             this.label86.Name = "label86";
             this.label86.Size = new System.Drawing.Size(68, 13);
             this.label86.TabIndex = 40;
@@ -6207,7 +6383,7 @@
             // label85
             // 
             this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(655, 235);
+            this.label85.Location = new System.Drawing.Point(782, 286);
             this.label85.Name = "label85";
             this.label85.Size = new System.Drawing.Size(68, 13);
             this.label85.TabIndex = 38;
@@ -6238,14 +6414,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6297,7 +6473,7 @@
             // Bottom_checkBox
             // 
             this.Bottom_checkBox.AutoSize = true;
-            this.Bottom_checkBox.Location = new System.Drawing.Point(785, 39);
+            this.Bottom_checkBox.Location = new System.Drawing.Point(697, 37);
             this.Bottom_checkBox.Name = "Bottom_checkBox";
             this.Bottom_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Bottom_checkBox.Size = new System.Drawing.Size(59, 17);
@@ -6312,14 +6488,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -6388,7 +6564,7 @@
             // 
             this.CadFilePath_label.AutoSize = true;
             this.CadFilePath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CadFilePath_label.Location = new System.Drawing.Point(904, 41);
+            this.CadFilePath_label.Location = new System.Drawing.Point(904, 38);
             this.CadFilePath_label.Name = "CadFilePath_label";
             this.CadFilePath_label.Size = new System.Drawing.Size(19, 13);
             this.CadFilePath_label.TabIndex = 3;
@@ -6398,7 +6574,7 @@
             // 
             this.label56.AutoSize = true;
             this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label56.Location = new System.Drawing.Point(866, 41);
+            this.label56.Location = new System.Drawing.Point(866, 38);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(32, 13);
             this.label56.TabIndex = 2;
@@ -6467,145 +6643,69 @@
             // 
             this.TapesAll_saveFileDialog.DefaultExt = "tapes";
             // 
-            // SelectButtonColumn
+            // RebuildJobData_button
             // 
-            this.SelectButtonColumn.HeaderText = "Select";
-            this.SelectButtonColumn.Name = "SelectButtonColumn";
-            this.SelectButtonColumn.Text = "Reset";
-            this.SelectButtonColumn.Width = 43;
+            this.RebuildJobData_button.Location = new System.Drawing.Point(665, 347);
+            this.RebuildJobData_button.Name = "RebuildJobData_button";
+            this.RebuildJobData_button.Size = new System.Drawing.Size(108, 23);
+            this.RebuildJobData_button.TabIndex = 77;
+            this.RebuildJobData_button.Text = "Rebuild";
+            this.RebuildJobData_button.UseVisualStyleBackColor = true;
+            this.RebuildJobData_button.Click += new System.EventHandler(this.RebuildJobData_button_Click);
             // 
-            // IdColumn
+            // groupBox12
             // 
-            this.IdColumn.HeaderText = "ID";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
+            this.groupBox12.Controls.Add(this.PasteCadDataRow_button);
+            this.groupBox12.Controls.Add(this.CopyCadDataRow_button);
+            this.groupBox12.Controls.Add(this.DeleteCadDataRow_button);
+            this.groupBox12.Controls.Add(this.AddCadDataRow_button);
+            this.groupBox12.Location = new System.Drawing.Point(656, 186);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(120, 88);
+            this.groupBox12.TabIndex = 78;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Row Operations";
             // 
-            // OrientationColumn
+            // AddCadDataRow_button
             // 
-            this.OrientationColumn.HeaderText = "Dir.";
-            this.OrientationColumn.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.OrientationColumn.Name = "OrientationColumn";
-            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 48;
+            this.AddCadDataRow_button.Location = new System.Drawing.Point(5, 19);
+            this.AddCadDataRow_button.Name = "AddCadDataRow_button";
+            this.AddCadDataRow_button.Size = new System.Drawing.Size(50, 23);
+            this.AddCadDataRow_button.TabIndex = 23;
+            this.AddCadDataRow_button.Text = "Add";
+            this.toolTip1.SetToolTip(this.AddCadDataRow_button, "Adds a new row");
+            this.AddCadDataRow_button.UseVisualStyleBackColor = true;
+            this.AddCadDataRow_button.Click += new System.EventHandler(this.AddCadDataRow_button_Click);
             // 
-            // RotationColumn
+            // DeleteCadDataRow_button
             // 
-            this.RotationColumn.HeaderText = "Rot.";
-            this.RotationColumn.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.RotationColumn.Name = "RotationColumn";
-            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 52;
+            this.DeleteCadDataRow_button.Location = new System.Drawing.Point(64, 19);
+            this.DeleteCadDataRow_button.Name = "DeleteCadDataRow_button";
+            this.DeleteCadDataRow_button.Size = new System.Drawing.Size(50, 23);
+            this.DeleteCadDataRow_button.TabIndex = 24;
+            this.DeleteCadDataRow_button.Text = "Delete";
+            this.DeleteCadDataRow_button.UseVisualStyleBackColor = true;
+            this.DeleteCadDataRow_button.Click += new System.EventHandler(this.DeleteCadDataRow_button_Click);
             // 
-            // WidthColumn
+            // CopyCadDataRow_button
             // 
-            this.WidthColumn.HeaderText = "Width";
-            this.WidthColumn.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm"});
-            this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.WidthColumn.Width = 60;
+            this.CopyCadDataRow_button.Location = new System.Drawing.Point(5, 48);
+            this.CopyCadDataRow_button.Name = "CopyCadDataRow_button";
+            this.CopyCadDataRow_button.Size = new System.Drawing.Size(50, 23);
+            this.CopyCadDataRow_button.TabIndex = 25;
+            this.CopyCadDataRow_button.Text = "Copy";
+            this.CopyCadDataRow_button.UseVisualStyleBackColor = true;
+            this.CopyCadDataRow_button.Click += new System.EventHandler(this.CopyCadDataRow_button_Click);
             // 
-            // TypeColumn
+            // PasteCadDataRow_button
             // 
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.Width = 37;
-            // 
-            // Next_Column
-            // 
-            this.Next_Column.HeaderText = "Next";
-            this.Next_Column.Name = "Next_Column";
-            this.Next_Column.Width = 54;
-            // 
-            // Tray_Column
-            // 
-            this.Tray_Column.HeaderText = "Tray";
-            this.Tray_Column.Name = "Tray_Column";
-            this.Tray_Column.Width = 53;
-            // 
-            // X_Column
-            // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.Width = 39;
-            // 
-            // Y_Column
-            // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.Width = 39;
-            // 
-            // PickupZ_Column
-            // 
-            this.PickupZ_Column.HeaderText = "Pickup Z";
-            this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
-            // 
-            // PlaceZ_Column
-            // 
-            this.PlaceZ_Column.HeaderText = "PlaceZ";
-            this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
-            // 
-            // NextX_Column
-            // 
-            this.NextX_Column.HeaderText = "Next X";
-            this.NextX_Column.Name = "NextX_Column";
-            this.NextX_Column.Width = 64;
-            // 
-            // NextY_column
-            // 
-            this.NextY_column.HeaderText = "Next Y";
-            this.NextY_column.Name = "NextY_column";
-            this.NextY_column.Width = 64;
-            // 
-            // LastX
-            // 
-            this.LastX.HeaderText = "Last X";
-            this.LastX.Name = "LastX";
-            this.LastX.Width = 62;
-            // 
-            // LastY
-            // 
-            this.LastY.HeaderText = "Last Y";
-            this.LastY.Name = "LastY";
-            this.LastY.Width = 62;
-            // 
-            // ReloadTray_button
-            // 
-            this.ReloadTray_button.Location = new System.Drawing.Point(894, 505);
-            this.ReloadTray_button.Name = "ReloadTray_button";
-            this.ReloadTray_button.Size = new System.Drawing.Size(75, 23);
-            this.ReloadTray_button.TabIndex = 47;
-            this.ReloadTray_button.Text = "Reload Tray";
-            this.ReloadTray_button.UseVisualStyleBackColor = true;
-            this.ReloadTray_button.Click += new System.EventHandler(this.ReloadTray_button_Click);
+            this.PasteCadDataRow_button.Location = new System.Drawing.Point(64, 48);
+            this.PasteCadDataRow_button.Name = "PasteCadDataRow_button";
+            this.PasteCadDataRow_button.Size = new System.Drawing.Size(50, 23);
+            this.PasteCadDataRow_button.TabIndex = 26;
+            this.PasteCadDataRow_button.Text = "Paste";
+            this.PasteCadDataRow_button.UseVisualStyleBackColor = true;
+            this.PasteCadDataRow_button.Click += new System.EventHandler(this.PasteCadDataRow_button_Click);
             // 
             // FormMain
             // 
@@ -6720,6 +6820,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.JobData_GridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CadData_GridView)).EndInit();
             this.tabControlPages.ResumeLayout(false);
+            this.groupBox12.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -7270,6 +7371,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastX;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastY;
         private System.Windows.Forms.Button ReloadTray_button;
+        private System.Windows.Forms.Button Panelize_button;
+        private System.Windows.Forms.Button SaveCadData_button;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.Button PasteCadDataRow_button;
+        private System.Windows.Forms.Button CopyCadDataRow_button;
+        private System.Windows.Forms.Button DeleteCadDataRow_button;
+        private System.Windows.Forms.Button AddCadDataRow_button;
+        private System.Windows.Forms.Button RebuildJobData_button;
     }
 }
 
