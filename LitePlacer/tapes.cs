@@ -73,6 +73,81 @@ namespace LitePlacer
 			return false;
 		}
 
+        // ========================================================================================
+        // GetTapeParameters_m(): 
+        // Get from the indicated tape the dW, part center pos from hole and Pitch, distance from one part to another
+        // Pitch is integer, but in mm's.
+        private bool GetTapeParameters_m(int Tape, out double dW, out int Pitch)
+        {
+            dW = 0.0;
+            Pitch = 0;
+            string Width = Grid.Rows[Tape].Cells["WidthColumn"].Value.ToString();
+            // Tape measurements: 
+            switch (Width)
+            {
+                case "8/2mm":
+                    dW = 3.50;
+                    Pitch = 2;
+                    break;
+                case "8/4mm":
+                    dW = 3.50;
+                    Pitch = 4;
+                    break;
+
+                case "12/4mm":
+                    dW = 5.50;
+                    Pitch = 4;
+                    break;
+                case "12/8mm":
+                    dW = 5.50;
+                    Pitch = 8;
+                    break;
+
+                case "16/4mm":
+                    dW = 7.50;
+                    Pitch = 4;
+                    break;
+                case "16/8mm":
+                    dW = 7.50;
+                    Pitch = 8;
+                    break;
+                case "16/12mm":
+                    dW = 7.50;
+                    Pitch = 12;
+                    break;
+
+                case "24/4mm":
+                    dW = 11.50;
+                    Pitch = 4;
+                    break;
+                case "24/8mm":
+                    dW = 11.50;
+                    Pitch = 8;
+                    break;
+                case "24/12mm":
+                    dW = 11.50;
+                    Pitch = 12;
+                    break;
+                case "24/16mm":
+                    dW = 11.50;
+                    Pitch = 16;
+                    break;
+                case "24/20mm":
+                    dW = 11.50;
+                    Pitch = 20;
+                    break;
+
+                default:
+                    MainForm.ShowMessageBox(
+                        "Bad data at Tape #" + Tape.ToString() + ", Width",
+                        "Tape data error",
+                        MessageBoxButtons.OK
+                    );
+                    return false;
+                // break;
+            }
+            return true;
+        }
 		// ========================================================================================
 		// Get/Set CurrentPickupZ/CurrentPlaceZ:
 		// At the start of the job, we don't know the height of the component. Therefore, Main() probes 
@@ -137,6 +212,106 @@ namespace LitePlacer
 			return true;
 		}
 
+        // ========================================================================================
+        // GetPartHole_m(): Measures X,Y location of the hole corresponding to part number
+        public bool GetPartHole_m(string Id, int PartNo, out double ResultX, out double ResultY)
+        {
+            ResultX = 0.0;
+            ResultY = 0.0;
+            int Tape = 0;
+            MainForm.DisplayText("GetPartHole_m(), tape id: " + Id+", part no: "+PartNo.ToString());
+            if (!IdValidates_m(Id, out Tape))
+            {
+                return false;
+            }
+
+            // Get start points
+            double X = 0.0;
+            double Y = 0.0;
+            if (!double.TryParse(Grid.Rows[Tape].Cells["X_Column"].Value.ToString(), out X))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data at Tape " + Tape.ToString() + ", X",
+                    "Tape data error",
+                    MessageBoxButtons.OK
+                );
+                return false;
+            }
+            if (!double.TryParse(Grid.Rows[Tape].Cells["Y_Column"].Value.ToString(), out Y))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data at Tape " + Tape.ToString() + ", X",
+                    "Tape data error",
+                    MessageBoxButtons.OK
+                );
+                return false;
+            }
+
+            // Get the hole location guess
+            double dW;	
+            int Pitch; 
+            if (!GetTapeParameters_m(Tape, out dW, out Pitch))
+            {
+                return false;
+            }
+            if(Pitch==2)
+            {
+                Pitch = 4;
+                PartNo = PartNo % 2;
+            }
+            int incr = (PartNo - 1);  // this many holes from start
+            double dist = (double)incr * 4.0; // This many mm's
+            switch (Grid.Rows[Tape].Cells["OrientationColumn"].Value.ToString())
+            {
+                case "+Y":
+                    Y = Y + dist;
+                    break;
+
+                case "+X":
+                    X = X + dist;
+                    break;
+
+                case "-Y":
+                    Y = Y - dist;
+                    break;
+
+                case "-X":
+                    X = X - dist;
+                    break;
+
+                default:
+                    MainForm.ShowMessageBox(
+                        "Bad data at Tape #" + Tape.ToString() + ", Orientation",
+                        "Tape data error",
+                        MessageBoxButtons.OK
+                    );
+                    return false;
+            }
+            // X, Y now hold the first guess
+            if (!SetCurrentTapeMeasurement_m(Tape))  // having the measurement setup here helps with the automatic gain lag
+            {
+                return false;
+            }
+            // Go there:
+            if (!MainForm.CNC_XY_m(X, Y))
+            {
+                return false;
+            };
+
+            // get hole exact location:
+            if (!MainForm.GoToCircleLocation_m(1.8, 0.5, out X, out Y))
+            {
+                MainForm.ShowMessageBox(
+                    "Can't find tape hole",
+                    "Tape error",
+                    MessageBoxButtons.OK
+                );
+                return false;
+            }
+            ResultX = Cnc.CurrentX + X;
+            ResultY = Cnc.CurrentY + Y;
+            return true;
+        }
 
 		// ========================================================================================
 		// GotoNextPart_m(): Takes needle to exact location of the part, tape rotation taken in to account.
@@ -206,76 +381,15 @@ namespace LitePlacer
 
 			// ==================================================
 			// find the part location and go there:
-
-			string Width = Grid.Rows[Tape].Cells["WidthColumn"].Value.ToString();
-			// Tape measurements: 
+			double dW;	// Part center pos from hole, tape width direction. Varies.
+			int Pitch;  // Distance from one part to another
 			double dL = 2.0;	// Part center pos from hole, tape lenght direction; 2.0mm in all tape types,
                                 // except when 2mm part pitch. See below.
-			double dW;			// Part center pos from hole, tape width direction. Varies.
-			int Pitch;  // Distance from one part to another
-			switch (Width)
-			{
-				case "8/2mm":
-					dW = 3.50;
-					Pitch = 2;
-					break;
-				case "8/4mm":
-					dW = 3.50;
-					Pitch = 4;
-					break;
 
-				case "12/4mm":
-					dW = 5.50;
-					Pitch = 4;
-					break;
-				case "12/8mm":
-					dW = 5.50;
-					Pitch = 8;
-					break;
-
-				case "16/4mm":
-					dW = 7.50;
-					Pitch = 4;
-					break;
-				case "16/8mm":
-					dW = 7.50;
-					Pitch = 8;
-					break;
-				case "16/12mm":
-					dW = 7.50;
-					Pitch = 12;
-					break;
-
-				case "24/4mm":
-					dW = 11.50;
-					Pitch = 4;
-					break;
-				case "24/8mm":
-					dW = 11.50;
-					Pitch = 8;
-					break;
-				case "24/12mm":
-					dW = 11.50;
-					Pitch = 12;
-					break;
-				case "24/16mm":
-					dW = 11.50;
-					Pitch = 16;
-					break;
-				case "24/20mm":
-					dW = 11.50;
-					Pitch = 20;
-					break;
-
-				default:
-					MainForm.ShowMessageBox(
-						"Bad data at Tape #" + Tape.ToString() + ", Width",
-						"Tape data error",
-						MessageBoxButtons.OK
-					);
-					return false;
-				// break;
-			}
+            if (!GetTapeParameters_m(Tape, out dW, out Pitch))
+	        {
+		        return false;
+	        }
 			// Tape orientation: 
 			// +Y: Holeside of tape is right, part is dW(mm) to left, dL(mm) down from hole, A= 0
 			// +X: Holeside of tape is down, part is dW(mm) up, dL(mm) to left from hole, A= -90

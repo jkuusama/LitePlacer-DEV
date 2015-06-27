@@ -6015,12 +6015,12 @@ namespace LitePlacer
                             MessageBoxButtons.OK);
                         return false;
                     }
-                    if (!PlacePart_m(true, CADdataRow, Component, JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(),
-                            X_machine, Y_machine, A_machine, FirstInRow))
+                    if (!PlacePart_m(true, CADdataRow, GroupRow, X_machine, Y_machine, A_machine, FirstInRow))
                         return false;
                     break;
                 //break;
 
+                case "Place Fast":
                 case "Place":
                     if (Component == "--")
                     {
@@ -6030,22 +6030,7 @@ namespace LitePlacer
                             MessageBoxButtons.OK);
                         return false;
                     }
-                    if (!PlacePart_m(false, CADdataRow, Component, JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(),
-                            X_machine, Y_machine, A_machine, FirstInRow))
-                        return false;
-                    break;
-
-                case "Place Fast":
-                    if (Component == "--")
-                    {
-                        ShowMessageBox(
-                            "Attempt to \"place\" non-existing component(\"--\")",
-                            "Data error",
-                            MessageBoxButtons.OK);
-                        return false;
-                    }
-                    if (!PlacePart_m(false, CADdataRow, Component, JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(),
-                            X_machine, Y_machine, A_machine, FirstInRow))
+                    if (!PlacePart_m(false, CADdataRow, GroupRow, X_machine, Y_machine, A_machine, FirstInRow))
                         return false;
                     break;
 
@@ -6530,7 +6515,7 @@ namespace LitePlacer
         }
 
         // PlacePart_m(): Simple placement
-        private bool PlacePart_m(bool LoosePart, int CADdataRow, string Component, string TapeID, double X, double Y, double A, bool FirstInRow)
+        private bool PlacePart_m(bool LoosePart, int CADdataRow, int JobDataRow, double X, double Y, double A, bool FirstInRow)
         {
             if (AbortPlacement)
             {
@@ -6541,6 +6526,8 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             };
+            string TapeID = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString();
+            string Component = CadData_GridView.Rows[CADdataRow].Cells["Component"].Value.ToString();
             DisplayText("PlacePart_m, Component: " + Component + ", CAD data row: " + CADdataRow.ToString());
             // This routine places a single component.
             // LoosePart tells if pickup is from the loose part pickup spot. If not, use tape.
@@ -6557,6 +6544,13 @@ namespace LitePlacer
                 {
                     return false;
                 }
+            };
+
+            if (FirstInRow && (JobData_GridView.Rows[JobDataRow].Cells["GroupMethod"].Value.ToString() == "Place Fast"))
+            {
+                // Find last hole
+                // Find first hole
+                // calculate X,Y hole increments 
             };
 
             // Pickup:
@@ -8319,6 +8313,23 @@ namespace LitePlacer
             }
         }
 
+        private void HoleTest_button_Click(object sender, EventArgs e)
+        {
+            int no = 0;
+            if (!int.TryParse(HoleTest_maskedTextBox.Text, out no))
+            {
+                return;
+            }
+            DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
+            string Id = Row.Cells["IdColumn"].Value.ToString();
+            double X = 0.0;
+            double Y = 0.0;
+            if (Tapes.GetPartHole_m(Id, no, out X, out Y))
+            {
+                CNC_XY_m(X, Y);               
+            }
+        }
+
         // =================================================================================
         // Trays:
 
@@ -8471,8 +8482,6 @@ namespace LitePlacer
             }
 
         }
-
-
 
         #endregion  Tape Positions page functions
 

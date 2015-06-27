@@ -151,9 +151,9 @@
             this.UseBoardFids_checkBox.AutoSize = true;
             this.UseBoardFids_checkBox.Location = new System.Drawing.Point(6, 19);
             this.UseBoardFids_checkBox.Name = "UseBoardFids_checkBox";
-            this.UseBoardFids_checkBox.Size = new System.Drawing.Size(183, 17);
+            this.UseBoardFids_checkBox.Size = new System.Drawing.Size(230, 17);
             this.UseBoardFids_checkBox.TabIndex = 7;
-            this.UseBoardFids_checkBox.Text = "Use fiducials on individual boards";
+            this.UseBoardFids_checkBox.Text = "Use fiducials on CAD data, ignore this table";
             this.UseBoardFids_checkBox.UseVisualStyleBackColor = true;
             // 
             // Cancel_button

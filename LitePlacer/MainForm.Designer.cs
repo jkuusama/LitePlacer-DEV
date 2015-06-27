@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -584,6 +584,10 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.label127 = new System.Windows.Forms.Label();
+            this.label128 = new System.Windows.Forms.Label();
+            this.HoleTest_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.HoleTest_button = new System.Windows.Forms.Button();
+            this.label129 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -1030,6 +1034,10 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.label129);
+            this.Tapes_tabPage.Controls.Add(this.HoleTest_button);
+            this.Tapes_tabPage.Controls.Add(this.label128);
+            this.Tapes_tabPage.Controls.Add(this.HoleTest_maskedTextBox);
             this.Tapes_tabPage.Controls.Add(this.ReloadTray_button);
             this.Tapes_tabPage.Controls.Add(this.ReplaceTray_button);
             this.Tapes_tabPage.Controls.Add(this.LoadTray_button);
@@ -6480,14 +6488,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6554,14 +6562,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -6717,6 +6725,47 @@
             this.label127.Size = new System.Drawing.Size(71, 13);
             this.label127.TabIndex = 79;
             this.label127.Text = "(Use Rebuild)";
+            // 
+            // label128
+            // 
+            this.label128.AutoSize = true;
+            this.label128.Location = new System.Drawing.Point(1155, 401);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(39, 13);
+            this.label128.TabIndex = 49;
+            this.label128.Text = "Part #:";
+            // 
+            // HoleTest_maskedTextBox
+            // 
+            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(1198, 398);
+            this.HoleTest_maskedTextBox.Mask = "999";
+            this.HoleTest_maskedTextBox.Name = "HoleTest_maskedTextBox";
+            this.HoleTest_maskedTextBox.PromptChar = ' ';
+            this.HoleTest_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.HoleTest_maskedTextBox.Size = new System.Drawing.Size(32, 20);
+            this.HoleTest_maskedTextBox.TabIndex = 48;
+            this.HoleTest_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.HoleTest_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            // 
+            // HoleTest_button
+            // 
+            this.HoleTest_button.Location = new System.Drawing.Point(1155, 424);
+            this.HoleTest_button.Name = "HoleTest_button";
+            this.HoleTest_button.Size = new System.Drawing.Size(75, 23);
+            this.HoleTest_button.TabIndex = 50;
+            this.HoleTest_button.Text = "Show hole";
+            this.toolTip1.SetToolTip(this.HoleTest_button, "Takes machine over the hole for the part no");
+            this.HoleTest_button.UseVisualStyleBackColor = true;
+            this.HoleTest_button.Click += new System.EventHandler(this.HoleTest_button_Click);
+            // 
+            // label129
+            // 
+            this.label129.AutoSize = true;
+            this.label129.Location = new System.Drawing.Point(1154, 382);
+            this.label129.Name = "label129";
+            this.label129.Size = new System.Drawing.Size(76, 13);
+            this.label129.TabIndex = 51;
+            this.label129.Text = "Alignment test:";
             // 
             // FormMain
             // 
@@ -7392,6 +7441,10 @@
         private System.Windows.Forms.Button AddCadDataRow_button;
         private System.Windows.Forms.Button RebuildJobData_button;
         private System.Windows.Forms.Label label127;
+        private System.Windows.Forms.Label label129;
+        private System.Windows.Forms.Button HoleTest_button;
+        private System.Windows.Forms.Label label128;
+        private System.Windows.Forms.MaskedTextBox HoleTest_maskedTextBox;
     }
 }
 
