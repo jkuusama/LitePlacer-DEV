@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Configuration;
+using System.Globalization;
 
 namespace LitePlacer
 {
@@ -15,10 +17,42 @@ namespace LitePlacer
         public DataGridView CadData;
         public DataGridView JobData;
 
+        // =================================================================================
+        private double XFirstOffset = double.NaN;
+        private double YFirstOffset = double.NaN;
+
+        private int XRepeats = 0;
+        private int YRepeats = 0;
+
+        private double XIncrement = double.NaN;
+        private double YIncrement = double.NaN;
+        // =================================================================================
+        
         public PanelizeForm(FormMain MainF)
         {
             MainForm = MainF;
             InitializeComponent();
+        }
+
+        private void PanelizeForm_Load(object sender, EventArgs e)
+        {
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+            MainForm.LoadDataGrid(path + "LitePlacer.PanelFids", PanelFiducials_dataGridView);
+            XFirstOffset = Properties.Settings.Default.Panel_XFirstOffset;
+            XFirstOffset_textBox.Text = XFirstOffset.ToString("0.00", CultureInfo.InvariantCulture);
+            YFirstOffset = Properties.Settings.Default.Panel_YFirstOffset;
+            YFirstOffset_textBox.Text = YFirstOffset.ToString("0.00", CultureInfo.InvariantCulture);
+            XRepeats = Properties.Settings.Default.Panel_XRepeats;
+            XRepeats_textBox.Text = XRepeats.ToString();
+            YRepeats = Properties.Settings.Default.Panel_YRepeats;
+            YRepeats_textBox.Text = YRepeats.ToString();
+            XIncrement = Properties.Settings.Default.Panel_XIncrement;
+            XIncrement_textBox.Text = XIncrement.ToString("0.00", CultureInfo.InvariantCulture);
+            YIncrement = Properties.Settings.Default.Panel_YIncrement;
+            YIncrement_textBox.Text = YIncrement.ToString("0.00", CultureInfo.InvariantCulture);
+            UseBoardFids_checkBox.Checked = Properties.Settings.Default.Panel_UseBoardFids;
         }
 
         public bool OK = false;
@@ -35,19 +69,19 @@ namespace LitePlacer
                 return;
             }
             OK = true;
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+            MainForm.SaveDataGrid(path + "LitePlacer.PanelFids", PanelFiducials_dataGridView);
+            Properties.Settings.Default.Panel_XFirstOffset = XFirstOffset;
+            Properties.Settings.Default.Panel_YFirstOffset = YFirstOffset;
+            Properties.Settings.Default.Panel_XRepeats = XRepeats;
+            Properties.Settings.Default.Panel_YRepeats = YRepeats;
+            Properties.Settings.Default.Panel_XIncrement = XIncrement;
+            Properties.Settings.Default.Panel_YIncrement = YIncrement;
+            Properties.Settings.Default.Panel_UseBoardFids = UseBoardFids_checkBox.Checked;
             this.Close();
         }
-
-        // =================================================================================
-        private double XFirstOffset = double.NaN;
-        private double YFirstOffset = double.NaN;
-
-        private int XRepeats = 0;
-        private int YRepeats = 0;
-
-        private double XIncrement = double.NaN;
-        private double YIncrement = double.NaN;
-
 
         // =================================================================================
         // ValidateData: Check, that the Panelize process has all the data and the data is good
@@ -198,14 +232,20 @@ namespace LitePlacer
                     }
                 }
                 // more than three is ok
-                // X and Y columns need to have good data, too (Label_column just some data):
+                // X and Y columns need to have good data, too; others if empty, fill:
                 bool OK = true;
-                foreach (DataGridViewRow Row in PanelFiducials_dataGridView.Rows)
+                DataGridViewRow Row;
+                int i=0;
+                for (i = 0; i < PanelFiducials_dataGridView.RowCount-1; i++)
                 {
-                    if (Row.Cells["Label_column"].Value == null)
+                    Row = PanelFiducials_dataGridView.Rows[i];
+                    if (Row.Cells["Designator_column"].Value == null)
                     {
-                        OK = false;
-                        break;
+                        Row.Cells["Designator_column"].Value = "Fid" + i.ToString();
+                    }
+                    if (Row.Cells["Footprint_Column"].Value == null)
+                    {
+                        Row.Cells["Footprint_Column"].Value = "fiducial";
                     }
                     if (Row.Cells["X_column"].Value == null)
                     {
@@ -227,11 +267,15 @@ namespace LitePlacer
                         OK = false;
                         break;
                     }
+                    if (Row.Cells["Rotation_Column"].Value == null)
+                    {
+                        Row.Cells["Rotation_Column"].Value = "0.0";
+                    }
                 }
                 if (!OK)
                 {
                     MainForm.ShowMessageBox(
-                        "Error data in fiducials table",
+                        "Bad data in fiducials table, line " + i.ToString(),
                         "No fiducials",
                         MessageBoxButtons.OK);
                     return false;
@@ -242,6 +286,25 @@ namespace LitePlacer
 
         // =================================================================================
         // Panelize: Builds multiple copies to CAD data table. 
+        // =================================================================================
+
+        // =================================================================================
+        // Helper: FindExistingFiducials: 
+        // Returns the row number from job data that has the fiducials, -1 if there are none
+        private int FindExistingFiducials()
+        {
+            int FiducialIndex = -1;
+            foreach (DataGridViewRow Row in JobData.Rows)
+            {
+                if (Row.Cells["GroupMethod"].Value.ToString() == "Fiducials")
+                {
+                    FiducialIndex = Row.Index;
+                    break;
+                }
+            }
+            return FiducialIndex;
+        }
+
         // =================================================================================
         private bool Panelize()
         {
@@ -317,16 +380,124 @@ namespace LitePlacer
                 MainForm.DataGridViewCopy(CadData_copy, ref CadData, false);
                 MainForm.ShowMessageBox(
                     "Error in " + Component + " data.",
-                    "No fiducials",
+                    "Fiducial data error",
                     MessageBoxButtons.OK);
                 return false;
 
             }
-            // Build Job data
-            MainForm.FillJobData_GridView();
-            // Fix fiducials
 
+            // Find existing fiducials, we'll need them
+            int FiducialIndex = FindExistingFiducials();
+            string[] OriginalFiducials = JobData.Rows[FiducialIndex].Cells["ComponentList"].Value.ToString().Split(',');
+
+            // Build Job data:
+            if (!UseBoardFids_checkBox.Checked)  // if using user defined fiducials:
+            {
+                // Remove existing:
+              
+                if (FiducialIndex>=0)
+                {
+                    foreach (string CurrentFiducial in OriginalFiducials)
+                    {
+                        // loop from bottom, so we can modify the collection we are looping through:
+                        for (int i =  CadData.RowCount - 1; i >= 0; i--)
+			            {
+                            if (CadData.Rows[i].Cells["Component"].Value.ToString().Contains(CurrentFiducial))
+                            {
+                                CadData.Rows.RemoveAt(i);
+                            }
+			 
+			            }
+                    }
+                }
+                // Add user defined fiducials to Cad data
+                for (int i = 0; i < PanelFiducials_dataGridView.RowCount-1; i++)
+                {
+                    CadData.Rows.Add();
+                    int Last = CadData.RowCount - 1;
+                    DataGridViewRow Row = PanelFiducials_dataGridView.Rows[i];
+                    CadData.Rows[Last].Cells["Component"].Value = Row.Cells["Designator_column"].Value.ToString();
+                    CadData.Rows[Last].Cells["Value_Footprint"].Value = Row.Cells["Footprint_Column"].Value.ToString();
+                    CadData.Rows[Last].Cells["X_nominal"].Value = Row.Cells["X_column"].Value.ToString();
+                    CadData.Rows[Last].Cells["Y_nominal"].Value = Row.Cells["Y_column"].Value.ToString();
+                    CadData.Rows[Last].Cells["Rotation"].Value = Row.Cells["Rotation_column"].Value.ToString();
+                    CadData.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
+                    CadData.Rows[Last].Cells["Y_Machine"].Value = "Nan";
+                    CadData.Rows[Last].Cells["Rotation_machine"].Value = "Nan";                    
+                }
+                // Build Job data
+                MainForm.FillJobData_GridView();
+                int dummy;
+                MainForm.FindFiducials_m(out dummy);  // don't care of the result, just trying to find fids
+
+                return true;  // and we're done.
+            }
+
+            // Here, we are using the fiducials data from the individual subboards.
+            // (We know they are indicated already)
+            // Build the job:
+            MainForm.FillJobData_GridView();
+            // Our job now has multiples of each board fiducials, we only want to use four that are furthest apart
+            string LowLeft = OriginalFiducials[1];
+            double LowLeft_val = 10000000.0;
+            string HighLeft = OriginalFiducials[1];
+            double HighLeft_val = 0.0;
+            string LowRight = OriginalFiducials[1];
+            double LowRight_val = 0.0;
+            string HighRight = OriginalFiducials[1];
+            double HighRight_val = 0.0;
+            double X = 0.0;
+            double Y = 0.0;
+            // For each fiducial in the list,
+            foreach (string CurrentFiducial in OriginalFiducials)
+            {
+                // Find its nominal coordinates:
+                // find the fiducial in CAD data.
+                foreach (DataGridViewRow Row in CadData.Rows)
+                {
+                    if (Row.Cells["Component"].Value.ToString().Contains(CurrentFiducial))
+                    {
+                        // Get its nominal position (value already checked).
+                        double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out X);
+                        double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out Y);
+                        break;
+                    }
+                    if((X+Y)<LowLeft_val)
+                    {
+                        LowLeft = Row.Cells["Component"].Value.ToString();
+                        LowLeft_val = X + Y;
+                    }
+                    if ((Y-X) > HighLeft_val)
+                    {
+                        HighLeft = Row.Cells["Component"].Value.ToString();
+                        HighLeft_val = Y - X;
+                    }
+                    if ((X - Y) > LowRight_val)
+                    {
+                        LowRight = Row.Cells["Component"].Value.ToString();
+                        LowRight_val = X - Y;
+                    }
+                    if ((X + Y) > HighRight_val)
+                    {
+                        HighRight = Row.Cells["Component"].Value.ToString();
+                        HighRight_val = X + Y;
+                    }
+                }
+            }
+            if ((LowLeft_val > 1000000.0) || (HighLeft_val < 0.1) || (LowRight_val < 0.1) || (HighRight_val < 0.1))
+            {
+                // At leaset one of them did not get updated, placement is not going to work
+                // Likely, one fiducial on board, one dimensional panel
+                MainForm.ShowMessageBox(
+                    "Current fiducials don't spread out.",
+                    "Fiducials data error",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            JobData.Rows[FiducialIndex].Cells["ComponentList"].Value = LowLeft + "," + HighLeft + "," + LowRight + "," + HighRight;
+            JobData.Rows[FiducialIndex].Cells["ComponentCount"].Value = "4";
             return true;
         }
+
     }
 }

@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -491,6 +491,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.PasteCadDataRow_button = new System.Windows.Forms.Button();
+            this.CopyCadDataRow_button = new System.Windows.Forms.Button();
+            this.DeleteCadDataRow_button = new System.Windows.Forms.Button();
+            this.AddCadDataRow_button = new System.Windows.Forms.Button();
+            this.RebuildJobData_button = new System.Windows.Forms.Button();
             this.SaveCadData_button = new System.Windows.Forms.Button();
             this.Panelize_button = new System.Windows.Forms.Button();
             this.StopDemo_button = new System.Windows.Forms.Button();
@@ -577,12 +583,7 @@
             this.TrueX_label = new System.Windows.Forms.Label();
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.RebuildJobData_button = new System.Windows.Forms.Button();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.AddCadDataRow_button = new System.Windows.Forms.Button();
-            this.DeleteCadDataRow_button = new System.Windows.Forms.Button();
-            this.CopyCadDataRow_button = new System.Windows.Forms.Button();
-            this.PasteCadDataRow_button = new System.Windows.Forms.Button();
+            this.label127 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -625,6 +626,7 @@
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.RunJob_tabPage.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -632,7 +634,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.JobData_GridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CadData_GridView)).BeginInit();
             this.tabControlPages.SuspendLayout();
-            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // Park_button
@@ -5767,6 +5768,71 @@
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
             // 
+            // groupBox12
+            // 
+            this.groupBox12.Controls.Add(this.label127);
+            this.groupBox12.Controls.Add(this.PasteCadDataRow_button);
+            this.groupBox12.Controls.Add(this.CopyCadDataRow_button);
+            this.groupBox12.Controls.Add(this.DeleteCadDataRow_button);
+            this.groupBox12.Controls.Add(this.AddCadDataRow_button);
+            this.groupBox12.Location = new System.Drawing.Point(656, 186);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(120, 88);
+            this.groupBox12.TabIndex = 78;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Row Operations";
+            // 
+            // PasteCadDataRow_button
+            // 
+            this.PasteCadDataRow_button.Location = new System.Drawing.Point(64, 48);
+            this.PasteCadDataRow_button.Name = "PasteCadDataRow_button";
+            this.PasteCadDataRow_button.Size = new System.Drawing.Size(50, 23);
+            this.PasteCadDataRow_button.TabIndex = 26;
+            this.PasteCadDataRow_button.Text = "Paste";
+            this.PasteCadDataRow_button.UseVisualStyleBackColor = true;
+            this.PasteCadDataRow_button.Click += new System.EventHandler(this.PasteCadDataRow_button_Click);
+            // 
+            // CopyCadDataRow_button
+            // 
+            this.CopyCadDataRow_button.Location = new System.Drawing.Point(5, 48);
+            this.CopyCadDataRow_button.Name = "CopyCadDataRow_button";
+            this.CopyCadDataRow_button.Size = new System.Drawing.Size(50, 23);
+            this.CopyCadDataRow_button.TabIndex = 25;
+            this.CopyCadDataRow_button.Text = "Copy";
+            this.CopyCadDataRow_button.UseVisualStyleBackColor = true;
+            this.CopyCadDataRow_button.Click += new System.EventHandler(this.CopyCadDataRow_button_Click);
+            // 
+            // DeleteCadDataRow_button
+            // 
+            this.DeleteCadDataRow_button.Location = new System.Drawing.Point(64, 19);
+            this.DeleteCadDataRow_button.Name = "DeleteCadDataRow_button";
+            this.DeleteCadDataRow_button.Size = new System.Drawing.Size(50, 23);
+            this.DeleteCadDataRow_button.TabIndex = 24;
+            this.DeleteCadDataRow_button.Text = "Delete";
+            this.DeleteCadDataRow_button.UseVisualStyleBackColor = true;
+            this.DeleteCadDataRow_button.Click += new System.EventHandler(this.DeleteCadDataRow_button_Click);
+            // 
+            // AddCadDataRow_button
+            // 
+            this.AddCadDataRow_button.Location = new System.Drawing.Point(5, 19);
+            this.AddCadDataRow_button.Name = "AddCadDataRow_button";
+            this.AddCadDataRow_button.Size = new System.Drawing.Size(50, 23);
+            this.AddCadDataRow_button.TabIndex = 23;
+            this.AddCadDataRow_button.Text = "Add";
+            this.toolTip1.SetToolTip(this.AddCadDataRow_button, "Adds a new row");
+            this.AddCadDataRow_button.UseVisualStyleBackColor = true;
+            this.AddCadDataRow_button.Click += new System.EventHandler(this.AddCadDataRow_button_Click);
+            // 
+            // RebuildJobData_button
+            // 
+            this.RebuildJobData_button.Location = new System.Drawing.Point(665, 347);
+            this.RebuildJobData_button.Name = "RebuildJobData_button";
+            this.RebuildJobData_button.Size = new System.Drawing.Size(108, 23);
+            this.RebuildJobData_button.TabIndex = 77;
+            this.RebuildJobData_button.Text = "Rebuild";
+            this.RebuildJobData_button.UseVisualStyleBackColor = true;
+            this.RebuildJobData_button.Click += new System.EventHandler(this.RebuildJobData_button_Click);
+            // 
             // SaveCadData_button
             // 
             this.SaveCadData_button.Location = new System.Drawing.Point(785, 33);
@@ -6414,14 +6480,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6488,14 +6554,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -6643,69 +6709,14 @@
             // 
             this.TapesAll_saveFileDialog.DefaultExt = "tapes";
             // 
-            // RebuildJobData_button
+            // label127
             // 
-            this.RebuildJobData_button.Location = new System.Drawing.Point(665, 347);
-            this.RebuildJobData_button.Name = "RebuildJobData_button";
-            this.RebuildJobData_button.Size = new System.Drawing.Size(108, 23);
-            this.RebuildJobData_button.TabIndex = 77;
-            this.RebuildJobData_button.Text = "Rebuild";
-            this.RebuildJobData_button.UseVisualStyleBackColor = true;
-            this.RebuildJobData_button.Click += new System.EventHandler(this.RebuildJobData_button_Click);
-            // 
-            // groupBox12
-            // 
-            this.groupBox12.Controls.Add(this.PasteCadDataRow_button);
-            this.groupBox12.Controls.Add(this.CopyCadDataRow_button);
-            this.groupBox12.Controls.Add(this.DeleteCadDataRow_button);
-            this.groupBox12.Controls.Add(this.AddCadDataRow_button);
-            this.groupBox12.Location = new System.Drawing.Point(656, 186);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(120, 88);
-            this.groupBox12.TabIndex = 78;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "Row Operations";
-            // 
-            // AddCadDataRow_button
-            // 
-            this.AddCadDataRow_button.Location = new System.Drawing.Point(5, 19);
-            this.AddCadDataRow_button.Name = "AddCadDataRow_button";
-            this.AddCadDataRow_button.Size = new System.Drawing.Size(50, 23);
-            this.AddCadDataRow_button.TabIndex = 23;
-            this.AddCadDataRow_button.Text = "Add";
-            this.toolTip1.SetToolTip(this.AddCadDataRow_button, "Adds a new row");
-            this.AddCadDataRow_button.UseVisualStyleBackColor = true;
-            this.AddCadDataRow_button.Click += new System.EventHandler(this.AddCadDataRow_button_Click);
-            // 
-            // DeleteCadDataRow_button
-            // 
-            this.DeleteCadDataRow_button.Location = new System.Drawing.Point(64, 19);
-            this.DeleteCadDataRow_button.Name = "DeleteCadDataRow_button";
-            this.DeleteCadDataRow_button.Size = new System.Drawing.Size(50, 23);
-            this.DeleteCadDataRow_button.TabIndex = 24;
-            this.DeleteCadDataRow_button.Text = "Delete";
-            this.DeleteCadDataRow_button.UseVisualStyleBackColor = true;
-            this.DeleteCadDataRow_button.Click += new System.EventHandler(this.DeleteCadDataRow_button_Click);
-            // 
-            // CopyCadDataRow_button
-            // 
-            this.CopyCadDataRow_button.Location = new System.Drawing.Point(5, 48);
-            this.CopyCadDataRow_button.Name = "CopyCadDataRow_button";
-            this.CopyCadDataRow_button.Size = new System.Drawing.Size(50, 23);
-            this.CopyCadDataRow_button.TabIndex = 25;
-            this.CopyCadDataRow_button.Text = "Copy";
-            this.CopyCadDataRow_button.UseVisualStyleBackColor = true;
-            this.CopyCadDataRow_button.Click += new System.EventHandler(this.CopyCadDataRow_button_Click);
-            // 
-            // PasteCadDataRow_button
-            // 
-            this.PasteCadDataRow_button.Location = new System.Drawing.Point(64, 48);
-            this.PasteCadDataRow_button.Name = "PasteCadDataRow_button";
-            this.PasteCadDataRow_button.Size = new System.Drawing.Size(50, 23);
-            this.PasteCadDataRow_button.TabIndex = 26;
-            this.PasteCadDataRow_button.Text = "Paste";
-            this.PasteCadDataRow_button.UseVisualStyleBackColor = true;
-            this.PasteCadDataRow_button.Click += new System.EventHandler(this.PasteCadDataRow_button_Click);
+            this.label127.AutoSize = true;
+            this.label127.Location = new System.Drawing.Point(25, 72);
+            this.label127.Name = "label127";
+            this.label127.Size = new System.Drawing.Size(71, 13);
+            this.label127.TabIndex = 79;
+            this.label127.Text = "(Use Rebuild)";
             // 
             // FormMain
             // 
@@ -6812,6 +6823,8 @@
             this.panel2.PerformLayout();
             this.RunJob_tabPage.ResumeLayout(false);
             this.RunJob_tabPage.PerformLayout();
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -6820,7 +6833,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.JobData_GridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CadData_GridView)).EndInit();
             this.tabControlPages.ResumeLayout(false);
-            this.groupBox12.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -7379,6 +7391,7 @@
         private System.Windows.Forms.Button DeleteCadDataRow_button;
         private System.Windows.Forms.Button AddCadDataRow_button;
         private System.Windows.Forms.Button RebuildJobData_button;
+        private System.Windows.Forms.Label label127;
     }
 }
 

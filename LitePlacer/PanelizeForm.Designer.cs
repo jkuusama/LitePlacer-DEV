@@ -37,32 +37,34 @@
             this.label4 = new System.Windows.Forms.Label();
             this.YIncrement_textBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.UseBoardFids_checkBox = new System.Windows.Forms.CheckBox();
             this.PanelFiducials_dataGridView = new System.Windows.Forms.DataGridView();
-            this.Label_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UseBoardFids_checkBox = new System.Windows.Forms.CheckBox();
             this.Cancel_button = new System.Windows.Forms.Button();
             this.OK_button = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.XFirstOffset_textBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.YFirstOffset_textBox = new System.Windows.Forms.TextBox();
+            this.Designator_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Footprint_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Rotation_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PanelFiducials_dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // XRepeats_textBox
             // 
-            this.XRepeats_textBox.Location = new System.Drawing.Point(73, 98);
+            this.XRepeats_textBox.Location = new System.Drawing.Point(280, 18);
             this.XRepeats_textBox.Name = "XRepeats_textBox";
             this.XRepeats_textBox.Size = new System.Drawing.Size(38, 20);
-            this.XRepeats_textBox.TabIndex = 0;
+            this.XRepeats_textBox.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 101);
+            this.label1.Location = new System.Drawing.Point(219, 21);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 1;
@@ -71,7 +73,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 127);
+            this.label2.Location = new System.Drawing.Point(219, 47);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 3;
@@ -79,15 +81,15 @@
             // 
             // YRepeats_textBox
             // 
-            this.YRepeats_textBox.Location = new System.Drawing.Point(73, 124);
+            this.YRepeats_textBox.Location = new System.Drawing.Point(280, 44);
             this.YRepeats_textBox.Name = "YRepeats_textBox";
             this.YRepeats_textBox.Size = new System.Drawing.Size(38, 20);
-            this.YRepeats_textBox.TabIndex = 2;
+            this.YRepeats_textBox.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(117, 101);
+            this.label3.Location = new System.Drawing.Point(324, 21);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(66, 13);
             this.label3.TabIndex = 5;
@@ -95,15 +97,15 @@
             // 
             // XIncrement_textBox
             // 
-            this.XIncrement_textBox.Location = new System.Drawing.Point(189, 98);
+            this.XIncrement_textBox.Location = new System.Drawing.Point(396, 18);
             this.XIncrement_textBox.Name = "XIncrement_textBox";
             this.XIncrement_textBox.Size = new System.Drawing.Size(38, 20);
-            this.XIncrement_textBox.TabIndex = 4;
+            this.XIncrement_textBox.TabIndex = 5;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(117, 127);
+            this.label4.Location = new System.Drawing.Point(324, 47);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(66, 13);
             this.label4.TabIndex = 7;
@@ -111,7 +113,7 @@
             // 
             // YIncrement_textBox
             // 
-            this.YIncrement_textBox.Location = new System.Drawing.Point(189, 124);
+            this.YIncrement_textBox.Location = new System.Drawing.Point(396, 44);
             this.YIncrement_textBox.Name = "YIncrement_textBox";
             this.YIncrement_textBox.Size = new System.Drawing.Size(38, 20);
             this.YIncrement_textBox.TabIndex = 6;
@@ -120,59 +122,43 @@
             // 
             this.groupBox1.Controls.Add(this.PanelFiducials_dataGridView);
             this.groupBox1.Controls.Add(this.UseBoardFids_checkBox);
-            this.groupBox1.Location = new System.Drawing.Point(15, 164);
+            this.groupBox1.Location = new System.Drawing.Point(15, 70);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(225, 180);
+            this.groupBox1.Size = new System.Drawing.Size(419, 234);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Fiducials:";
-            // 
-            // UseBoardFids_checkBox
-            // 
-            this.UseBoardFids_checkBox.AutoSize = true;
-            this.UseBoardFids_checkBox.Location = new System.Drawing.Point(6, 19);
-            this.UseBoardFids_checkBox.Name = "UseBoardFids_checkBox";
-            this.UseBoardFids_checkBox.Size = new System.Drawing.Size(83, 17);
-            this.UseBoardFids_checkBox.TabIndex = 9;
-            this.UseBoardFids_checkBox.Text = "Use existing";
-            this.UseBoardFids_checkBox.UseVisualStyleBackColor = true;
             // 
             // PanelFiducials_dataGridView
             // 
             this.PanelFiducials_dataGridView.AllowUserToOrderColumns = true;
             this.PanelFiducials_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.PanelFiducials_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Label_column,
+            this.Designator_Column,
+            this.Footprint_Column,
             this.X_Column,
-            this.Y_Column});
+            this.Y_Column,
+            this.Rotation_Column});
             this.PanelFiducials_dataGridView.Location = new System.Drawing.Point(6, 42);
             this.PanelFiducials_dataGridView.Name = "PanelFiducials_dataGridView";
             this.PanelFiducials_dataGridView.RowHeadersVisible = false;
             this.PanelFiducials_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.PanelFiducials_dataGridView.Size = new System.Drawing.Size(213, 131);
+            this.PanelFiducials_dataGridView.Size = new System.Drawing.Size(407, 186);
             this.PanelFiducials_dataGridView.TabIndex = 9;
             // 
-            // Label_column
+            // UseBoardFids_checkBox
             // 
-            this.Label_column.HeaderText = "Label";
-            this.Label_column.Name = "Label_column";
-            this.Label_column.Width = 70;
-            // 
-            // X_Column
-            // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.Width = 70;
-            // 
-            // Y_Column
-            // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.Width = 70;
+            this.UseBoardFids_checkBox.AutoSize = true;
+            this.UseBoardFids_checkBox.Location = new System.Drawing.Point(6, 19);
+            this.UseBoardFids_checkBox.Name = "UseBoardFids_checkBox";
+            this.UseBoardFids_checkBox.Size = new System.Drawing.Size(183, 17);
+            this.UseBoardFids_checkBox.TabIndex = 7;
+            this.UseBoardFids_checkBox.Text = "Use fiducials on individual boards";
+            this.UseBoardFids_checkBox.UseVisualStyleBackColor = true;
             // 
             // Cancel_button
             // 
-            this.Cancel_button.Location = new System.Drawing.Point(21, 350);
+            this.Cancel_button.Location = new System.Drawing.Point(260, 311);
             this.Cancel_button.Name = "Cancel_button";
             this.Cancel_button.Size = new System.Drawing.Size(75, 23);
             this.Cancel_button.TabIndex = 9;
@@ -182,10 +168,10 @@
             // 
             // OK_button
             // 
-            this.OK_button.Location = new System.Drawing.Point(159, 350);
+            this.OK_button.Location = new System.Drawing.Point(359, 311);
             this.OK_button.Name = "OK_button";
             this.OK_button.Size = new System.Drawing.Size(75, 23);
-            this.OK_button.TabIndex = 10;
+            this.OK_button.TabIndex = 8;
             this.OK_button.Text = "OK";
             this.OK_button.UseVisualStyleBackColor = true;
             this.OK_button.Click += new System.EventHandler(this.OK_button_Click);
@@ -204,7 +190,7 @@
             this.XFirstOffset_textBox.Location = new System.Drawing.Point(156, 18);
             this.XFirstOffset_textBox.Name = "XFirstOffset_textBox";
             this.XFirstOffset_textBox.Size = new System.Drawing.Size(38, 20);
-            this.XFirstOffset_textBox.TabIndex = 11;
+            this.XFirstOffset_textBox.TabIndex = 1;
             // 
             // label6
             // 
@@ -220,13 +206,41 @@
             this.YFirstOffset_textBox.Location = new System.Drawing.Point(156, 44);
             this.YFirstOffset_textBox.Name = "YFirstOffset_textBox";
             this.YFirstOffset_textBox.Size = new System.Drawing.Size(38, 20);
-            this.YFirstOffset_textBox.TabIndex = 13;
+            this.YFirstOffset_textBox.TabIndex = 2;
+            // 
+            // Designator_Column
+            // 
+            this.Designator_Column.HeaderText = "Label";
+            this.Designator_Column.Name = "Designator_Column";
+            this.Designator_Column.Width = 70;
+            // 
+            // Footprint_Column
+            // 
+            this.Footprint_Column.HeaderText = "Footprint";
+            this.Footprint_Column.Name = "Footprint_Column";
+            // 
+            // X_Column
+            // 
+            this.X_Column.HeaderText = "X";
+            this.X_Column.Name = "X_Column";
+            this.X_Column.Width = 70;
+            // 
+            // Y_Column
+            // 
+            this.Y_Column.HeaderText = "Y";
+            this.Y_Column.Name = "Y_Column";
+            this.Y_Column.Width = 70;
+            // 
+            // Rotation_Column
+            // 
+            this.Rotation_Column.HeaderText = "Rotation";
+            this.Rotation_Column.Name = "Rotation_Column";
             // 
             // PanelizeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(253, 385);
+            this.ClientSize = new System.Drawing.Size(446, 346);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.YFirstOffset_textBox);
             this.Controls.Add(this.label5);
@@ -245,6 +259,7 @@
             this.Name = "PanelizeForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "PanelizeForm";
+            this.Load += new System.EventHandler(this.PanelizeForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PanelFiducials_dataGridView)).EndInit();
@@ -266,14 +281,16 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox UseBoardFids_checkBox;
         private System.Windows.Forms.DataGridView PanelFiducials_dataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Label_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
         private System.Windows.Forms.Button Cancel_button;
         private System.Windows.Forms.Button OK_button;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox XFirstOffset_textBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox YFirstOffset_textBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Designator_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Footprint_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation_Column;
     }
 }

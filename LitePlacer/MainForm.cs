@@ -321,7 +321,7 @@ namespace LitePlacer
         // =================================================================================
         // Saving and restoring data tables (Note: Not job files)
         // =================================================================================
-        private void SaveDataGrid(string FileName, DataGridView dgv)
+        public void SaveDataGrid(string FileName, DataGridView dgv)
         {
             try
             {
@@ -354,7 +354,7 @@ namespace LitePlacer
             }
         }
 
-        private void LoadDataGrid(string FileName, DataGridView dgv)
+        public void LoadDataGrid(string FileName, DataGridView dgv)
         {
             try
             {
@@ -6781,7 +6781,7 @@ namespace LitePlacer
         // Finds the fiducials from job data (which by now, exists).
         // Sets FiducialsRow to indicate the row in JobData_GridView
 
-        private bool FindFiducials_m(out int FiducialsRow)
+        public bool FindFiducials_m(out int FiducialsRow)
         {
             // I) Find fiducials nominal placement data
             // Ia) Are fiducials indicated and only once?
@@ -6809,8 +6809,8 @@ namespace LitePlacer
             }
             if (!FiducialsFound)
             {
-                // Ib) Fiducials not pointed out yet. Find them automatically.
-                // Fiducials designators are FI*** or FID*** where *** is a number.
+                // Ib) OriginalFiducials not pointed out yet. Find them automatically.
+                // OriginalFiducials designators are FI*** or FID*** where *** is a number.
                 string Fids;
                 bool FidsOnThisRow = false;
                 for (int i = 0; i < JobData_GridView.RowCount; i++)
@@ -6953,7 +6953,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            // Fiducials are at JobData_GridView.Rows[FiducialsRow]
+            // OriginalFiducials are at JobData_GridView.Rows[FiducialsRow]
             string[] FiducialDesignators = JobData_GridView.Rows[FiducialsRow].Cells["ComponentList"].Value.ToString().Split(',');
             // Are there at least two?
             if (FiducialDesignators.Length < 2)
@@ -6971,7 +6971,7 @@ namespace LitePlacer
             PhysicalComponent[] Fiducials = new PhysicalComponent[FiducialDesignators.Length];  // store the data here
             double X_nom = 0;
             double Y_nom = 0;
-            for (int i = 0; i < FiducialDesignators.Length; i++)  // for each fiducial in our Fiducials array,
+            for (int i = 0; i < FiducialDesignators.Length; i++)  // for each fiducial in our OriginalFiducials array,
             {
                 Fiducials[i] = new PhysicalComponent();
                 Fiducials[i].Designator = FiducialDesignators[i];
@@ -8607,7 +8607,7 @@ namespace LitePlacer
         #endregion test functions
 
         // ==========================================================================================================
-        // Measurement boxes (Homing, Needle, Fiducials, Tapes etc)
+        // Measurement boxes (Homing, Needle, OriginalFiducials, Tapes etc)
         // ==========================================================================================================
         #region Measurementboxes
 
@@ -8714,7 +8714,7 @@ namespace LitePlacer
         }
 
         // ==========================================================================================================
-        // Fiducials:
+        // OriginalFiducials:
         private void FiducialsToHere_button_Click(object sender, EventArgs e)
         {
             DataGridViewCopy(Display_dataGridView, ref Fiducials_dataGridView);

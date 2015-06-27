@@ -850,5 +850,89 @@ namespace LitePlacer.Properties {
                 this["General_ShadeGuard_mm"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double Panel_XFirstOffset {
+            get {
+                return ((double)(this["Panel_XFirstOffset"]));
+            }
+            set {
+                this["Panel_XFirstOffset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double Panel_YFirstOffset {
+            get {
+                return ((double)(this["Panel_YFirstOffset"]));
+            }
+            set {
+                this["Panel_YFirstOffset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Panel_XRepeats {
+            get {
+                return ((int)(this["Panel_XRepeats"]));
+            }
+            set {
+                this["Panel_XRepeats"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Panel_YRepeats {
+            get {
+                return ((int)(this["Panel_YRepeats"]));
+            }
+            set {
+                this["Panel_YRepeats"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double Panel_XIncrement {
+            get {
+                return ((double)(this["Panel_XIncrement"]));
+            }
+            set {
+                this["Panel_XIncrement"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double Panel_YIncrement {
+            get {
+                return ((double)(this["Panel_YIncrement"]));
+            }
+            set {
+                this["Panel_YIncrement"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Panel_UseBoardFids {
+            get {
+                return ((bool)(this["Panel_UseBoardFids"]));
+            }
+            set {
+                this["Panel_UseBoardFids"] = value;
+            }
+        }
     }
 }
