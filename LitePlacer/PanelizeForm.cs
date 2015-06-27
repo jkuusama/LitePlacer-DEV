@@ -460,7 +460,6 @@ namespace LitePlacer
                         // Get its nominal position (value already checked).
                         double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out X);
                         double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out Y);
-                        break;
                     }
                     if((X+Y)<LowLeft_val)
                     {
