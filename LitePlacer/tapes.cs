@@ -27,7 +27,7 @@ namespace LitePlacer
 		}
 
 		// ========================================================================================
-		// ClearAll(): Resets Tape positions and pickup/place Z's.
+		// ClearAll(): Resets TapeNumber positions and pickup/place Z's.
 		public void ClearAll()
 		{
 			for (int tape = 0; tape < Grid.Rows.Count; tape++)
@@ -53,7 +53,7 @@ namespace LitePlacer
 
 		// ========================================================================================
 		// IdValidates_m(): Checks that tape with description of "Id" exists.
-		// Tape is set to the corresponding row of the Grid.
+		// TapeNumber is set to the corresponding row of the Grid.
 		public bool IdValidates_m(string Id, out int Tape)
 		{
 			Tape = -1;
@@ -74,6 +74,102 @@ namespace LitePlacer
 		}
 
         // ========================================================================================
+        // Fast placement:
+        // ========================================================================================
+        // The process measures last and first hole positions for a row in job data. It keeps track about
+        // the hole location in next columns, and in this process, these are measured, not approximated.
+        // The part numbers are found with the GetPartLocationFromHolePosition_m() routine.
+
+        public bool FastParametersOk { get; set; }  // if we should use fast placement in the first place
+        public double FastXstep { get; set; }       // steps for hole positions
+        public double FastYstep { get; set; }
+        public double FastXpos { get; set; }       // we don't want to mess with tape definitions
+        public double FastYpos { get; set; }
+
+        // ========================================================================================
+        // PrepareForFastPlacement_m: Called before starting fast placement
+
+        public bool PrepareForFastPlacement_m(string TapeID, int ComponentCount)
+        {
+            int TapeNum;
+            if (!IdValidates_m(TapeID, out TapeNum))
+            {
+                FastParametersOk = false;
+                return false;
+            }
+            int first;
+            if (!int.TryParse(Grid.Rows[TapeNum].Cells["Next_Column"].Value.ToString(), out first))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data at next column",
+                    "Sloppy programmer error",
+                    MessageBoxButtons.OK);
+                FastParametersOk = false;
+                return false;
+            }
+            int last = first + ComponentCount-1;
+            // measure holes
+            double LastX = 0.0;
+            double LastY = 0.0;
+            double FirstX = 0.0;
+            double FirstY = 0.0;
+            if (!GetPartHole_m(TapeNum, last, out LastX, out LastY))
+            {
+                FastParametersOk = false;
+                return false;
+            }
+            if (!GetPartHole_m(TapeNum, first, out FirstX, out FirstY))
+            {
+                FastParametersOk = false;
+                return false;
+            }
+            FastXpos = FirstX;
+            FastYpos = FirstY;
+
+            if (ComponentCount>1)
+            {
+                FastXstep = (LastX - FirstX) / (double)(ComponentCount-1);
+                FastYstep = (LastY - FirstY) / (double)(ComponentCount-1);
+            }
+            else
+            {
+                FastXstep = 0.0;
+                FastYstep = 0.0;
+            }
+
+            MainForm.DisplayText("Fast parameters:");
+            MainForm.DisplayText("First X: " + FirstX.ToString() + ", Y: " + FirstY.ToString());
+            MainForm.DisplayText("Last X: " + LastX.ToString() + ", Y: " + LastY.ToString());
+            MainForm.DisplayText("Step X: " + FastXstep.ToString() + ", Y: " + FastYstep.ToString());
+
+            return true;
+        }
+
+        // ========================================================================================
+        // IncrementTape_Fast(): Updates count and next hole locations for a tape
+        // Like IncrementTape(), but just using the fast parameters
+        public bool IncrementTape_Fast(int TapeNum)
+        {
+            FastXpos += FastXstep;
+            FastYpos += FastYstep;
+            Grid.Rows[TapeNum].Cells["NextX_Column"].Value = FastXpos.ToString("0.000", CultureInfo.InvariantCulture);
+            Grid.Rows[TapeNum].Cells["NextY_Column"].Value = FastYpos.ToString("0.000", CultureInfo.InvariantCulture);
+
+            int pos;
+            if (!int.TryParse(Grid.Rows[TapeNum].Cells["Next_Column"].Value.ToString(), out pos))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data at next column",
+                    "Sloppy programmer error",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            pos += 1;
+            Grid.Rows[TapeNum].Cells["Next_Column"].Value = pos.ToString();
+            return true;
+        }
+
+        // ========================================================================================
         // GetTapeParameters_m(): 
         // Get from the indicated tape the dW, part center pos from hole and Pitch, distance from one part to another
         // Pitch is integer, but in mm's.
@@ -82,7 +178,7 @@ namespace LitePlacer
             dW = 0.0;
             Pitch = 0;
             string Width = Grid.Rows[Tape].Cells["WidthColumn"].Value.ToString();
-            // Tape measurements: 
+            // TapeNumber measurements: 
             switch (Width)
             {
                 case "8/2mm":
@@ -149,98 +245,29 @@ namespace LitePlacer
             return true;
         }
 		// ========================================================================================
-		// Get/Set CurrentPickupZ/CurrentPlaceZ:
-		// At the start of the job, we don't know the height of the component. Therefore, Main() probes 
-		// the pickup and placement heights on the first part and sets them to the resulting values.
-		// For speed, these results are used on the next parts.
-
-        public bool ClearHeights_m(string Id)
-        {
-            int tape;
-            if (!IdValidates_m(Id, out tape))
-            {
-                return false;
-            }
-            Grid.Rows[tape].Cells["PickupZ_Column"].Value = "--";
-            Grid.Rows[tape].Cells["PlaceZ_Column"].Value = "--";
-            return true;
-        }
-
-		public bool GetCurrentPickupZ_m(string Id, out string Z)
-		{
-			int tape;
-			Z = "";
-			if (!IdValidates_m(Id, out tape))
-			{
-				return false;
-			}
-			Z = Grid.Rows[tape].Cells["PickupZ_Column"].Value.ToString();
-			return true;
-		}
-
-        public bool SetCurrentPickupZ_m(string Id, string Z)
-        {
-            int tape;
-            if (!IdValidates_m(Id, out tape))
-            {
-                return false;
-            }
-            Grid.Rows[tape].Cells["PickupZ_Column"].Value = Z;
-            return true;
-        }
-
-        public bool GetCurrentPlaceZ_m(string Id, out string Z)
-		{
-			int tape;
-			Z = "";
-			if (!IdValidates_m(Id, out tape))
-			{
-				return false;
-			}
-			Z = Grid.Rows[tape].Cells["PlaceZ_Column"].Value.ToString();
-			return true;
-		}
-
-		public bool SetCurrentPlaceZ_m(string Id, string Z)
-		{
-			int tape;
-			if (!IdValidates_m(Id, out tape))
-			{
-				return false;
-			}
-			Grid.Rows[tape].Cells["PlaceZ_Column"].Value = Z;
-			return true;
-		}
 
         // ========================================================================================
         // GetPartHole_m(): Measures X,Y location of the hole corresponding to part number
-        public bool GetPartHole_m(string Id, int PartNo, out double ResultX, out double ResultY)
+        public bool GetPartHole_m(int TapeNum, int PartNum, out double ResultX, out double ResultY)
         {
             ResultX = 0.0;
             ResultY = 0.0;
-            int Tape = 0;
-            MainForm.DisplayText("GetPartHole_m(), tape id: " + Id+", part no: "+PartNo.ToString());
-            if (!IdValidates_m(Id, out Tape))
-            {
-                return false;
-            }
-
             // Get start points
             double X = 0.0;
             double Y = 0.0;
-            if (!double.TryParse(Grid.Rows[Tape].Cells["X_Column"].Value.ToString(), out X))
+            if (!double.TryParse(Grid.Rows[TapeNum].Cells["X_Column"].Value.ToString(), out X))
             {
                 MainForm.ShowMessageBox(
-                    "Bad data at Tape " + Tape.ToString() + ", X",
+                    "Bad data at Tape " + TapeNum.ToString() + ", X",
                     "Tape data error",
                     MessageBoxButtons.OK
                 );
                 return false;
             }
-            if (!double.TryParse(Grid.Rows[Tape].Cells["Y_Column"].Value.ToString(), out Y))
+            if (!double.TryParse(Grid.Rows[TapeNum].Cells["Y_Column"].Value.ToString(), out Y))
             {
                 MainForm.ShowMessageBox(
-                    "Bad data at Tape " + Tape.ToString() + ", X",
+                    "Bad data at Tape " + TapeNum.ToString() + ", Y",
                     "Tape data error",
                     MessageBoxButtons.OK
                 );
@@ -249,19 +276,19 @@ namespace LitePlacer
 
             // Get the hole location guess
             double dW;	
-            int Pitch; 
-            if (!GetTapeParameters_m(Tape, out dW, out Pitch))
+            int Pitch;
+            if (!GetTapeParameters_m(TapeNum, out dW, out Pitch))
             {
                 return false;
             }
             if(Pitch==2)
             {
                 Pitch = 4;
-                PartNo = PartNo % 2;
+                PartNum = PartNum % 2;
             }
-            int incr = (PartNo - 1);  // this many holes from start
+            int incr = (PartNum - 1);  // this many holes from start
             double dist = (double)incr * 4.0; // This many mm's
-            switch (Grid.Rows[Tape].Cells["OrientationColumn"].Value.ToString())
+            switch (Grid.Rows[TapeNum].Cells["OrientationColumn"].Value.ToString())
             {
                 case "+Y":
                     Y = Y + dist;
@@ -281,14 +308,14 @@ namespace LitePlacer
 
                 default:
                     MainForm.ShowMessageBox(
-                        "Bad data at Tape #" + Tape.ToString() + ", Orientation",
+                        "Bad data at Tape #" + TapeNum.ToString() + ", Orientation",
                         "Tape data error",
                         MessageBoxButtons.OK
                     );
                     return false;
             }
             // X, Y now hold the first guess
-            if (!SetCurrentTapeMeasurement_m(Tape))  // having the measurement setup here helps with the automatic gain lag
+            if (!SetCurrentTapeMeasurement_m(TapeNum))  // having the measurement setup here helps with the automatic gain lag
             {
                 return false;
             }
@@ -299,7 +326,7 @@ namespace LitePlacer
             };
 
             // get hole exact location:
-            if (!MainForm.GoToCircleLocation_m(1.8, 0.5, out X, out Y))
+            if (!MainForm.GoToCircleLocation_m(1.8, 0.1, out X, out Y))
             {
                 MainForm.ShowMessageBox(
                     "Can't find tape hole",
@@ -314,73 +341,15 @@ namespace LitePlacer
         }
 
 		// ========================================================================================
-		// GotoNextPart_m(): Takes needle to exact location of the part, tape rotation taken in to account.
-		// The position is measured using tape holes and knowledge about tape width and pitch (see EIA-481 standard).
-		// Id tells the tape name. 
-		public bool GotoNextPart_m(string Id)
-		{
-			int Tape= 0;
-            MainForm.DisplayText("GotoNextPart_m(), tape id: " + Id);
-			if(!IdValidates_m(Id, out Tape))
-			{
-				return false;
-			}
-			// goto next hole approximate location:
-			if (!SetCurrentTapeMeasurement_m(Tape))  // having the measurement setup here helps with the automatic gain lag
-				return false;
+		// GetPartLocationFromHolePosition_m(): Returns the location and rotation of the part
+        // Input is the exact (measured) location of the hole
 
-			double X= 0;
-			double Y= 0;
-			if (!double.TryParse(Grid.Rows[Tape].Cells["NextX_Column"].Value.ToString(), out X))
-			{
-				MainForm.ShowMessageBox(
-					"Bad data at Tape " + Tape.ToString() + ", Next X",
-					"Tape data error",
-					MessageBoxButtons.OK
-				);
-				return false;
-			}
+        public bool GetPartLocationFromHolePosition_m(int Tape, double X, double Y, out double PartX, out double PartY, out double A)
+        {
+            PartX = 0.0;
+            PartY = 0.0;
+            A = 0.0;
 
-			if (!double.TryParse(Grid.Rows[Tape].Cells["NextY_Column"].Value.ToString(), out Y))
-			{
-				MainForm.ShowMessageBox(
-					"Bad data at Tape " + Tape.ToString() + ", Next Y",
-					"Tape data error",
-					MessageBoxButtons.OK
-				);
-				return false;
-			}
-			// Go:
-			if (!MainForm.CNC_XY_m(X, Y))
-			{
-				return false;
-			};
-
-			// goto hole exact location:
-			// We want to find the hole less than 2mm from where we think it should be. (Otherwise there is a risk
-			// of picking a wrong hole.)
-			if (!MainForm.GoToCircleLocation_m(1.8, 0.5, out X, out Y))
-			{
-				MainForm.ShowMessageBox(
-					"Can't find tape hole",
-					"Tape error",
-					MessageBoxButtons.OK
-				);
-				return false;
-			}
-
-			// Get the hole location, we'll need it later:
-			X = Cnc.CurrentX + X;
-			Y = Cnc.CurrentY + Y;
-
-			//MainForm.ShowMessageBox(
-			//    "exactly over the hole",
-			//    "test",
-			//    MessageBoxButtons.OK
-			//);
-
-			// ==================================================
-			// find the part location and go there:
 			double dW;	// Part center pos from hole, tape width direction. Varies.
 			int Pitch;  // Distance from one part to another
 			double dL = 2.0;	// Part center pos from hole, tape lenght direction; 2.0mm in all tape types,
@@ -390,13 +359,12 @@ namespace LitePlacer
 	        {
 		        return false;
 	        }
-			// Tape orientation: 
+			// TapeNumber orientation: 
 			// +Y: Holeside of tape is right, part is dW(mm) to left, dL(mm) down from hole, A= 0
 			// +X: Holeside of tape is down, part is dW(mm) up, dL(mm) to left from hole, A= -90
 			// -Y: Holeside of tape is left, part is dW(mm) to right, dL(mm) up from hole, A= -180
 			// -X: Holeside of tape is up, part is dW(mm) down, dL(mm) to right from hole, A=-270
-			double A= 0.0;
-			int pos = 0;
+            int pos;
 			if (!int.TryParse(Grid.Rows[Tape].Cells["Next_Column"].Value.ToString(), out pos))
 			{
 				MainForm.ShowMessageBox(
@@ -411,31 +379,29 @@ namespace LitePlacer
 				dL = 0.0;
 			};
 
-			double partX= 0;
-			double partY= 0;
 			switch (Grid.Rows[Tape].Cells["OrientationColumn"].Value.ToString())
 			{
 				case "+Y":
-					partX = X - dW;
-					partY = Y - dL;
+					PartX = X - dW;
+					PartY = Y - dL;
 					A = 0.0;
 					break;
 
 				case "+X":
-					partX = X - dL;
-					partY = Y + dW;
+					PartX = X - dL;
+					PartY = Y + dW;
 					A = -90.0;
 					break;
 
 				case "-Y":
-					partX = X + dW;
-					partY = Y + dL;
+					PartX = X + dW;
+					PartY = Y + dL;
 					A = -180.0;
 					break;
 
 				case "-X":
-					partX = X + dL;
-					partY = Y - dW;
+					PartX = X + dL;
+					PartY = Y - dW;
 					A = -270.0;
 					break;
 
@@ -451,7 +417,7 @@ namespace LitePlacer
 			if (Grid.Rows[Tape].Cells["RotationColumn"].Value == null)
 			{
 				MainForm.ShowMessageBox(
-					"Bad data at tape " + Id +" rotation" ,
+					"Bad data at tape " + Grid.Rows[Tape].Cells["IdColumn"].Value.ToString() +" rotation",
 					"Assertion error",
 					MessageBoxButtons.OK
 				);
@@ -476,7 +442,7 @@ namespace LitePlacer
 
 				default:
 					MainForm.ShowMessageBox(
-						"Bad data at Tape " + Id + " rotation",
+						"Bad data at Tape " + Grid.Rows[Tape].Cells["IdColumn"].Value.ToString() + " rotation",
 						"Tape data error",
 						MessageBoxButtons.OK
 					);
@@ -491,19 +457,37 @@ namespace LitePlacer
 			{
 				A += 360.0;
 			};
+            return true;
+        }
 
-			// Now, partX, partY, A tell the position of the part. Take needle there:
-			if (!Needle.Move_m(partX, partY, A))
+        // ========================================================================================
+        // IncrementTape(): Updates count and next hole locations for a tape
+        // The caller knows the hole location, so we don't need to re-measure them
+        public bool IncrementTape(int Tape, double HoleX, double HoleY)
+        {
+            double dW;	// Part center pos from hole, tape width direction. Varies.
+            int Pitch;  // Distance from one part to another
+
+            if (!GetTapeParameters_m(Tape, out dW, out Pitch))
+            {
+                return false;
+            }
+
+            int pos;
+            if (!int.TryParse(Grid.Rows[Tape].Cells["IdColumn"].Value.ToString(), out pos))
 			{
+				MainForm.ShowMessageBox(
+                    "Bad data at Tape " + Grid.Rows[Tape].Cells["IdColumn"].Value.ToString() + ", next",
+					"S´loppy programmer error",
+					MessageBoxButtons.OK
+				);
 				return false;
 			}
 
-			// ==================================================
-			// X, Y still are the current hole location, Pitch is the part size increment and pos the current part count
-			// Set next hole approximate location. On 2mm part pitch, increment only at even part count.
-            if (Pitch == 2) 
+            // Set next hole approximate location. On 2mm part pitch, increment only at even part count.
+            if (Pitch == 2)
             {
-                if((pos % 2) != 0)
+                if ((pos % 2) != 0)
                 {
                     Pitch = 0;
                 }
@@ -512,30 +496,112 @@ namespace LitePlacer
                     Pitch = 4;
                 }
             };
-			switch (Grid.Rows[Tape].Cells["OrientationColumn"].Value.ToString())
-			{
-				case "+Y":
-					Y = Y + Pitch;
-					break;
+            switch (Grid.Rows[Tape].Cells["OrientationColumn"].Value.ToString())
+            {
+                case "+Y":
+                    HoleY = HoleY + (double)Pitch;
+                    break;
 
-				case "+X":
-					X = X + Pitch;
-					break;
+                case "+X":
+                    HoleX = HoleX + (double)Pitch;
+                    break;
 
-				case "-Y": Y = Y - Pitch;
-					break;
+                case "-Y":
+                    HoleY = HoleY - (double)Pitch;
+                    break;
 
-				case "-X":
-					X = X - Pitch;
-					break;
-			};
-            Grid.Rows[Tape].Cells["NextX_Column"].Value = X.ToString();
-			Grid.Rows[Tape].Cells["NextY_Column"].Value = Y.ToString();
+                case "-X":
+                    HoleX = HoleX - (double)Pitch;
+                    break;
+            };
+            Grid.Rows[Tape].Cells["NextX_Column"].Value = HoleX.ToString();
+            Grid.Rows[Tape].Cells["NextY_Column"].Value = HoleY.ToString();
             // increment next count
             pos++;
-			Grid.Rows[Tape].Cells["Next_Column"].Value = pos.ToString();
+            Grid.Rows[Tape].Cells["Next_Column"].Value = pos.ToString();
+            return true;
+        }
+
+		// ========================================================================================
+		// GotoNextPartByMeasurement_m(): Takes needle to exact location of the part, tape and part rotation taken in to account.
+		// The hole position is measured on each call using tape holes and knowledge about tape width and pitch (see EIA-481 standard).
+		// Id tells the tape name. 
+        // The caller needs the hole coordinates and tape number later in the process, but they are measured and returned here.
+        public bool GotoNextPartByMeasurement_m(int TapeNumber, out double HoleX, out double HoleY)
+		{
+            HoleX = 0;
+            HoleY = 0;
+			// Go to next hole approximate location:
+			if (!SetCurrentTapeMeasurement_m(TapeNumber))  // having the measurement setup here helps with the automatic gain lag
+				return false;
+
+			double NextX= 0;
+            double NextY = 0;
+            if (!double.TryParse(Grid.Rows[TapeNumber].Cells["NextX_Column"].Value.ToString(), out NextX))
+			{
+				MainForm.ShowMessageBox(
+                    "Bad data at Tape " + Grid.Rows[TapeNumber].Cells["IdColumn"].Value.ToString() + ", Next X",
+					"Tape data error",
+					MessageBoxButtons.OK
+				);
+				return false;
+			}
+
+            if (!double.TryParse(Grid.Rows[TapeNumber].Cells["NextY_Column"].Value.ToString(), out NextY))
+			{
+				MainForm.ShowMessageBox(
+                    "Bad data at Tape " + Grid.Rows[TapeNumber].Cells["IdColumn"].Value.ToString() + ", Next Y",
+					"Tape data error",
+					MessageBoxButtons.OK
+				);
+				return false;
+			}
+			// Go there:
+            if (!MainForm.CNC_XY_m(NextX, NextY))
+			{
+				return false;
+			};
+
+			// Get hole exact location:
+            // We want to find the hole less than 2mm from where we think it should be. (Otherwise there is a risk
+			// of picking a wrong hole.)
+            if (!MainForm.GoToCircleLocation_m(1.8, 0.5, out HoleX, out HoleY))
+			{
+				MainForm.ShowMessageBox(
+					"Can't find tape hole",
+					"Tape error",
+					MessageBoxButtons.OK
+				);
+				return false;
+			}
+			// The hole locations are:
+            HoleX = Cnc.CurrentX + HoleX;
+            HoleY = Cnc.CurrentY + HoleY;
+
+			// ==================================================
+			// find the part location and go there:
+            double PartX = 0.0;
+            double PartY = 0.0;
+			double A= 0.0;
+
+            if (!GetPartLocationFromHolePosition_m(TapeNumber, HoleX, HoleY, out PartX, out PartY, out A))
+            {
+                MainForm.ShowMessageBox(
+                    "Can't find tape hole",
+                    "Tape error",
+                    MessageBoxButtons.OK
+                );
+            }
+
+			// Now, PartX, PartY, A tell the position of the part. Take needle there:
+			if (!Needle.Move_m(PartX, PartY, A))
+			{
+				return false;
+			}
+
 			return true;
-		}	// end GotoNextPart_m
+		}	// end GotoNextPartByMeasurement_m
+
 
 		// ========================================================================================
 		// SetCurrentTapeMeasurement_m(): sets the camera measurement parameters according to the tape type.

@@ -34,20 +34,12 @@ namespace LitePlacer
             }
         }
 
-        public bool Connected
-        {
-            get
-            {
-                return Com.IsOpen;
-            }
-        }
+        public bool Connected { get; set; }
 
         public void Close()
         {
-            if (Com.IsOpen)
-            {
-                Com.Close();
-            }
+            Com.Close();
+            Connected = false;
             Homing = false;
             _readyEvent.Set();
             MainForm.UpdateCncConnectionStatus();
@@ -66,6 +58,7 @@ namespace LitePlacer
             Com.Open(name);
             Homing = false;
             _readyEvent.Set();
+            Connected = Com.IsOpen;
             return Com.IsOpen;
         }
 
@@ -75,6 +68,7 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("###" + command + " discarded, com not open (readyevent set)");
                 _readyEvent.Set();
+                Connected = false;
                 return false;
             }
             _readyEvent.Reset();
@@ -88,6 +82,7 @@ namespace LitePlacer
             if (!Com.IsOpen)
             {
                 MainForm.DisplayText("###" + command + " discarded, com not open");
+                Connected = false;
                 return false;
             }
             Com.Write(command);
@@ -275,7 +270,6 @@ namespace LitePlacer
                                   " Y" + Y.ToString(CultureInfo.InvariantCulture) +
                                   " A" + Am.ToString(CultureInfo.InvariantCulture);
                 _readyEvent.Reset();
-                //Com.Write(command);
                 MainForm.DisplayText(command);
                 Com.Write("{\"gc\":\"" + command + "\"}");
                 _readyEvent.Wait();
@@ -322,7 +316,6 @@ namespace LitePlacer
                 command = "G0 Z" + Z.ToString(CultureInfo.InvariantCulture);
             }
             _readyEvent.Reset();
-            //Com.Write(command);
             MainForm.DisplayText(command);
             Com.Write("{\"gc\":\"" + command + "\"}");
             _readyEvent.Wait();
@@ -391,8 +384,7 @@ namespace LitePlacer
                     MainForm.DisplayText("### Igored file not open error ###");
                     return;
                 };
-                // Close();
-                MainForm.UpdateCncConnectionStatus();
+                Close();
                 MainForm.ShowMessageBox(
                     "TinyG error. Review situation and restart if needed.",
                     "TinyG Error",

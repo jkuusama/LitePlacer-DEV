@@ -934,5 +934,17 @@ namespace LitePlacer.Properties {
                 this["Panel_UseBoardFids"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Cameras_RobustSwitch {
+            get {
+                return ((bool)(this["Cameras_RobustSwitch"]));
+            }
+            set {
+                this["Cameras_RobustSwitch"] = value;
+            }
+        }
     }
 }

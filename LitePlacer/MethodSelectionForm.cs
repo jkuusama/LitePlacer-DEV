@@ -91,5 +91,11 @@ namespace LitePlacer
             this.Close();
         }
 
+        private void PlaceFast_button_Click(object sender, EventArgs e)
+        {
+            SelectedMethod = "Place Fast";
+            this.Close();
+        }
+
 	}
 }

@@ -989,7 +989,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     CNC_BlockingWriteDone = true;
                     JoggingBusy = false;
-
+                    Cnc.Close();
                     return false;
                 }
             }
@@ -1122,7 +1122,6 @@ namespace LitePlacer
                            "Timeout",
                            MessageBoxButtons.OK);
                 Cnc.Close();
-                UpdateCncConnectionStatus();
             }
             DisplayText("CNC_XY_m ok");
             return (Cnc.Connected);
@@ -1189,7 +1188,6 @@ namespace LitePlacer
                            "Timeout",
                            MessageBoxButtons.OK);
                 Cnc.Close();
-                UpdateCncConnectionStatus();
             }
             return (Cnc.Connected);
         }
@@ -1291,7 +1289,6 @@ namespace LitePlacer
                            "Timeout",
                            MessageBoxButtons.OK);
                 Cnc.Close();
-                UpdateCncConnectionStatus();
             }
             return (Cnc.Connected);
         }
@@ -1335,7 +1332,7 @@ namespace LitePlacer
                     {
                         break;
                     }
-                    Thread.Sleep(20); // next frame
+                    Thread.Sleep(80); // next frame + vibration damping
                     if (tries >= 7)
                     {
                         DisplayText("Failed in 8 tries.");
@@ -1466,16 +1463,26 @@ namespace LitePlacer
         // =================================================================================
         // Common
         // =================================================================================
+
+        private void RobustFast_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Cameras_RobustSwitch = RobustFast_checkBox.Checked;
+        }
+
+
         private void SelectCamera(Camera cam)
         {
-            if (UpCamera.IsRunning())
+            if (Properties.Settings.Default.Cameras_RobustSwitch)
             {
-                UpCamera.Close();
-            };
-            if (DownCamera.IsRunning())
-            {
-                DownCamera.Close();
-            };
+                if (UpCamera.IsRunning())
+                {
+                    UpCamera.Close();
+                };
+                if (DownCamera.IsRunning())
+                {
+                    DownCamera.Close();
+                };
+            }
             if (cam == DownCamera)
             {
                 StartDownCamera_m();
@@ -1690,6 +1697,7 @@ namespace LitePlacer
             DownCamera.SideMarksY = Properties.Settings.Default.General_MachineSizeY / 100;
             DownCameraDrawTicks_checkBox.Checked = Properties.Settings.Default.DownCam_DrawTicks;
 
+            RobustFast_checkBox.Checked = Properties.Settings.Default.Cameras_RobustSwitch;
 
             Display_dataGridView.Rows.Clear();
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
@@ -5667,7 +5675,7 @@ namespace LitePlacer
 
                         if (NewID == "none")
                         {
-                            UserHasNotDecided = true; // User did select "Place", but didn't select Tape, we'll ask again.
+                            UserHasNotDecided = true; // User did select "Place", but didn't select TapeNumber, we'll ask again.
                         }
                         else if (NewID == "Ignore")
                         {
@@ -5712,18 +5720,39 @@ namespace LitePlacer
             };
             bool ReturnValue = true;
 
-            // Place them:
+            // Prepare for placement
             bool FirstInRow = true;
+            if (JobData_GridView.Rows[RowNo].Cells["GroupMethod"].Value.ToString()=="Place Fast")
+            {
+                string TapeID = JobData_GridView.Rows[RowNo].Cells["MethodParamAllComponents"].Value.ToString();
+                int count;
+                if (!int.TryParse(JobData_GridView.Rows[RowNo].Cells["ComponentCount"].Value.ToString(), out count))
+                {
+                    ShowMessageBox(
+                        "Bad data at component count",
+                        "Sloppy programmer error",
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+                if (!Tapes.PrepareForFastPlacement_m(TapeID, count))
+                {
+                    return false;
+                }
+                Tapes.FastParametersOk = true;
+            }
+            // Place parts:
             foreach (string Component in Components)
             {
                 if (!PlaceComponent_m(Component, RowNo, FirstInRow))
                 {
                     JobData_GridView.Rows[RowNo].Selected = false;
                     ReturnValue = false;
+                    Tapes.FastParametersOk = false;
                     break;
                 };
                 FirstInRow = false;
             };
+            Tapes.FastParametersOk = false;
 
             // restore the row if needed
             if (RestoreRow)
@@ -6223,22 +6252,10 @@ namespace LitePlacer
 
 
         // =================================================================================
-        // PickUpPart_m(): Picks next part from the tape
-        private bool PickUpPart_m(string TapeID)
+        // PickUpThis_m(): Actual pickup, assumes needle is on top of the part
+        private bool PickUpThis_m(int TapeNumber)
         {
-            DisplayText("PickUpPart_m(), tape id: " + TapeID);
-            // Go to part location:
-            VacuumOff();
-            if (!Tapes.GotoNextPart_m(TapeID))
-            {
-                return false;
-            }
-            // Pick it up:
-            string Z_str;
-            if (!Tapes.GetCurrentPickupZ_m(TapeID, out Z_str))
-            {
-                return false;
-            }
+            string Z_str = Tapes_dataGridView.Rows[TapeNumber].Cells["PickupZ_Column"].Value.ToString();
             if (Z_str == "--")
             {
                 DisplayText("PickUpPart_m(): Probing pickup Z");
@@ -6246,10 +6263,7 @@ namespace LitePlacer
                 {
                     return false;
                 }
-                if (!Tapes.SetCurrentPickupZ_m(TapeID, Cnc.CurrentZ.ToString()))
-                {
-                    return false;
-                }
+                Tapes_dataGridView.Rows[TapeNumber].Cells["PickupZ_Column"].Value = Cnc.CurrentZ.ToString();
                 DisplayText("PickUpPart_m(): Probing Z= " + Cnc.CurrentZ.ToString());
             }
             else
@@ -6258,7 +6272,7 @@ namespace LitePlacer
                 if (!double.TryParse(Z_str, out Z))
                 {
                     ShowMessageBox(
-                        "Bad pickup Z data at Tape " + TapeID,
+                        "Bad pickup Z data at Tape #" + TapeNumber.ToString(),
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
                     return false;
@@ -6270,45 +6284,97 @@ namespace LitePlacer
                     return false;
                 }
             }
-            //ShowMessageBox(
-            //    "Debug: Needle down.",
-            //    "Debug",
-            //    MessageBoxButtons.OK);
             VacuumOn();
             DisplayText("PickUpPart_m(): needle up");
             if (!CNC_Z_m(0))
             {
                 return false;
             }
+            return true;
+        }
 
-            //ShowMessageBox(
-            //    "Debug: Needle up.",
-            //    "Debug",
-            //    MessageBoxButtons.OK);
+        // ========================================================================================
+        public bool PickUpPartFast_m(int TapeNum)
+        {
+            if (!Tapes.FastParametersOk)
+            {
+                ShowMessageBox(
+                    "FastParameters not ok",
+                    "Sloppy programmer error",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+
+            // find the part location and go there:
+            double PartX = 0.0;
+            double PartY = 0.0;
+            double A = 0.0;
+
+            if (!Tapes.GetPartLocationFromHolePosition_m(TapeNum, Tapes.FastXpos, Tapes.FastYpos, out PartX, out PartY, out A))
+            {
+                ShowMessageBox(
+                    "Can't find tape hole",
+                    "Tape error",
+                    MessageBoxButtons.OK
+                );
+            }
+
+            // Now, PartX, PartY, A tell the position of the part. For test: get camera there:  instead of Needle.Move_m(PartX, PartY, A
+            if (!Needle.Move_m(PartX, PartY, A))
+            {
+                return false;
+            }
+            if (!PickUpThis_m(TapeNum))
+            {
+                return false;
+            }
+
+            Tapes.IncrementTape_Fast(TapeNum);
+            return true;
+        }
+
+        // =================================================================================
+        // PickUpPartWithHoleMeasurement_m(): Picks next part from the tape, measuring the hole
+        private bool PickUpPartWithHoleMeasurement_m(int TapeNumber)
+        {
+            // If this succeeds, we update next hole location at the end, but these values are measured eat start
+            double HoleX = 0; 
+            double HoleY = 0;
+            DisplayText("PickUpPart_m(), tape no: " + TapeNumber.ToString());
+            // Go to part location:
+            VacuumOff();
+            if (!Tapes.GotoNextPartByMeasurement_m(TapeNumber, out HoleX, out HoleY))
+            {
+                return false;
+            }
+            // Pick it up:
+            if (!PickUpThis_m(TapeNumber))
+            {
+                return false;
+            }
+
+            if (!Tapes.IncrementTape(TapeNumber, HoleX, HoleY))
+            {
+                return false;
+            }
+
             return true;
         }
 
         // =================================================================================
         // PutPartDown_m(): Puts part down at this position. 
         // If placement Z isn't known already, updates the tape info.
-        private bool PutPartDown_m(string TapeID)
+        private bool PutPartDown_m(int TapeNum)
         {
-            string Z_str;
-            if (!Tapes.GetCurrentPlaceZ_m(TapeID, out Z_str))
-            {
-                return false;
-            }
+            string Z_str = Tapes_dataGridView.Rows[TapeNum].Cells["PlaceZ_Column"].Value.ToString();
             if (Z_str == "--")
             {
                 DisplayText("PutPartDown_m(): Probing placement Z");
                 if (!Needle_ProbeDown_m())
                 {
                     return false;
-                }
-                if (!Tapes.SetCurrentPlaceZ_m(TapeID, Cnc.CurrentZ.ToString()))
-                {
-                    return false;
-                }
+                };
+                Tapes_dataGridView.Rows[TapeNum].Cells["PlaceZ_Column"].Value = Cnc.CurrentZ.ToString();
                 DisplayText("PutPartDown_m(): placement Z= " + Cnc.CurrentZ.ToString());
             }
             else
@@ -6317,7 +6383,7 @@ namespace LitePlacer
                 if (!double.TryParse(Z_str, out Z))
                 {
                     ShowMessageBox(
-                        "Bad place Z data at Tape " + TapeID,
+                        "Bad place Z data at Tape #" + TapeNum,
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
                     return false;
@@ -6514,7 +6580,14 @@ namespace LitePlacer
             return true;
         }
 
-        // PlacePart_m(): Simple placement
+        // ========================================================================================
+        // PlacePart_m(): This routine places a single component.
+        // LoosePart tells if pickup is from the loose part pickup spot. If not, use tape.
+        // Component is at CadData_GridView.Rows[CADdataRow]. 
+        // Tape ID and method are at JobDataRow.Rows[JobDataRow]. 
+        // It should go to X, Y, A
+        // Data is validated already.
+
         private bool PlacePart_m(bool LoosePart, int CADdataRow, int JobDataRow, double X, double Y, double A, bool FirstInRow)
         {
             if (AbortPlacement)
@@ -6526,31 +6599,21 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             };
-            string TapeID = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString();
+            string id = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString();
+            int TapeNum;
+            if (!Tapes.IdValidates_m(id, out TapeNum))
+            {
+                return false;
+            }
             string Component = CadData_GridView.Rows[CADdataRow].Cells["Component"].Value.ToString();
             DisplayText("PlacePart_m, Component: " + Component + ", CAD data row: " + CADdataRow.ToString());
-            // This routine places a single component.
-            // LoosePart tells if pickup is from the loose part pickup spot. If not, use tape.
-            // Component is at CadData_GridView.Rows[CADdataRow]. 
-            // Where it is, is at TapeID
-            // It should go to X, Y, A
-            // Data is validated already.
-
             // First component in a row: We don't necessarily know the correct pickup and placement height, even though there
             // might be values from previous runs. (PCB and needle might have changed.)
             if (FirstInRow && !LoosePart)
             {
-                if (!Tapes.ClearHeights_m(TapeID))
-                {
-                    return false;
-                }
-            };
-
-            if (FirstInRow && (JobData_GridView.Rows[JobDataRow].Cells["GroupMethod"].Value.ToString() == "Place Fast"))
-            {
-                // Find last hole
-                // Find first hole
-                // calculate X,Y hole increments 
+                // Clear heights
+                Tapes_dataGridView.Rows[TapeNum].Cells["PickupZ_Column"].Value = "--";
+                Tapes_dataGridView.Rows[TapeNum].Cells["PlaceZ_Column"].Value = "--";
             };
 
             // Pickup:
@@ -6561,9 +6624,16 @@ namespace LitePlacer
                     return false;
                 }
             }
+            else if (JobData_GridView.Rows[JobDataRow].Cells["GroupMethod"].Value.ToString() == "Place Fast")
+            {
+                if (!PickUpPartFast_m(TapeNum))
+                {
+                    return false;
+                }
+            }
             else
             {
-                if (!PickUpPart_m(TapeID))
+                if (!PickUpPartWithHoleMeasurement_m(TapeNum))
                 {
                     return false;
                 }
@@ -6588,7 +6658,7 @@ namespace LitePlacer
             }
             else
             {
-                if (!PutPartDown_m(TapeID))
+                if (!PutPartDown_m(TapeNum))
                 {
                     // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
                     return false;
@@ -6609,10 +6679,10 @@ namespace LitePlacer
         // =================================================================================
         // PlacePartWithUpCamHelp_m(): Like basic PlacePart_m(),
         // but shows the part to upcam for additional correction values
-        private bool PlacePartWithUpCamHelp_m(int CADdataRow, string Component, string TapeID, double X, double Y, double A)
+        private bool PlacePartWithUpCamHelp_m(int CADdataRow, string Component, int TapeNum, double X, double Y, double A)
         {
             // Pick the part
-            if (!PickUpPart_m(TapeID))
+            if (!PickUpPartWithHoleMeasurement_m(TapeNum))
             {
                 return false;
             }
@@ -6625,12 +6695,8 @@ namespace LitePlacer
                 return false;
             }
             // Get placement Z
-            string Z_str;
+            string Z_str = Tapes_dataGridView.Rows[TapeNum].Cells["PlaceZ_Column"].Value.ToString();
             double Z;
-            if (!Tapes.GetCurrentPlaceZ_m(TapeID, out Z_str))
-            {
-                return false;
-            }
             if (Z_str == "--")
             {
                 // Don't know it yet, use PCB height -1mm
@@ -6641,7 +6707,7 @@ namespace LitePlacer
                 if (!double.TryParse(Z_str, out Z))
                 {
                     ShowMessageBox(
-                        "Bad place Z data at Tape " + TapeID,
+                        "Bad place Z data at Tape #" + TapeNum.ToString(),
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
                     return false;
@@ -6670,7 +6736,7 @@ namespace LitePlacer
                 return false;
             }
             // Place it:
-            if (!PutPartDown_m(TapeID))
+            if (!PutPartDown_m(TapeNum))
             {
                 // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
                 return false;
@@ -8053,9 +8119,9 @@ namespace LitePlacer
         #endregion  CAD data reading functions
 
         // =================================================================================
-        // Tape Positions page functions
+        // TapeNumber Positions page functions
         // =================================================================================
-        #region Tape Positions page functions
+        #region TapeNumber Positions page functions
 
         private void Tapes_tabPage_Begin()
         {
@@ -8315,8 +8381,9 @@ namespace LitePlacer
 
         private void HoleTest_button_Click(object sender, EventArgs e)
         {
-            int no = 0;
-            if (!int.TryParse(HoleTest_maskedTextBox.Text, out no))
+            int PartNum = 0;
+            int TapeNum = 0;
+            if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
                 return;
             }
@@ -8324,11 +8391,45 @@ namespace LitePlacer
             string Id = Row.Cells["IdColumn"].Value.ToString();
             double X = 0.0;
             double Y = 0.0;
-            if (Tapes.GetPartHole_m(Id, no, out X, out Y))
+            if (!Tapes.IdValidates_m(Id, out TapeNum))
+            {
+                return;
+            }
+            if (Tapes.GetPartHole_m(TapeNum, PartNum, out X, out Y))
             {
                 CNC_XY_m(X, Y);               
             }
         }
+
+        private void ShowPart_button_Click(object sender, EventArgs e)
+        {
+            int PartNum = 0;
+            int TapeNum = 0;
+            if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
+            {
+                return;
+            }
+            DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
+            string Id = Row.Cells["IdColumn"].Value.ToString();
+            double X = 0.0;
+            double Y = 0.0;
+            if (!Tapes.IdValidates_m(Id, out TapeNum))
+            {
+                return;
+            }
+            if (!Tapes.GetPartHole_m(TapeNum, PartNum, out X, out Y))
+            {
+                return;
+            }
+            double pX = 0.0;
+            double pY = 0.0;
+            double A = 0.0;
+            if (Tapes.GetPartLocationFromHolePosition_m(TapeNum, X, Y, out pX, out pY, out A))
+            {
+                CNC_XY_m(pX, pY);
+            }
+        }
+
 
         // =================================================================================
         // Trays:
@@ -8483,7 +8584,7 @@ namespace LitePlacer
 
         }
 
-        #endregion  Tape Positions page functions
+        #endregion  TapeNumber Positions page functions
 
         // =================================================================================
         // Test functions
@@ -8812,7 +8913,7 @@ namespace LitePlacer
 
 
         // ==========================================================================================================
-        // Paper Tape:
+        // Paper TapeNumber:
         private void PaperTapeToHere_button_Click(object sender, EventArgs e)
         {
             DataGridViewCopy(Display_dataGridView, ref PaperTape_dataGridView);
@@ -8843,7 +8944,7 @@ namespace LitePlacer
         }
 
         // ==========================================================================================================
-        // Clear Plastic Tape:
+        // Clear Plastic TapeNumber:
         private void ClearTapeToHere_button_Click(object sender, EventArgs e)
         {
             DataGridViewCopy(Display_dataGridView, ref ClearTape_dataGridView);
@@ -8874,7 +8975,7 @@ namespace LitePlacer
         }
 
         // ==========================================================================================================
-        // Black Plastic Tape:
+        // Black Plastic TapeNumber:
         private void BlackTapeToHere_button_Click(object sender, EventArgs e)
         {
             DataGridViewCopy(Display_dataGridView, ref BlackTape_dataGridView);
@@ -9142,7 +9243,7 @@ namespace LitePlacer
             B_label.Parent = Page;
             B_numericUpDown.Parent = Page;
             ColorHelp_label.Parent = Page;
-
+            RobustFast_checkBox.Parent = Page;
         }
 
         private void ClearEditTargets()

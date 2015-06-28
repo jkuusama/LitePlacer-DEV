@@ -417,7 +417,7 @@ namespace LitePlacer
                     int Last = CadData.RowCount - 1;
                     DataGridViewRow Row = PanelFiducials_dataGridView.Rows[i];
                     CadData.Rows[Last].Cells["Component"].Value = Row.Cells["Designator_column"].Value.ToString();
-                    CadData.Rows[Last].Cells["Value_Footprint"].Value = Row.Cells["Footprint_Column"].Value.ToString();
+                    CadData.Rows[Last].Cells["Value_Footprint"].Value = "Fid mark | " + Row.Cells["Footprint_Column"].Value.ToString();
                     CadData.Rows[Last].Cells["X_nominal"].Value = Row.Cells["X_column"].Value.ToString();
                     CadData.Rows[Last].Cells["Y_nominal"].Value = Row.Cells["Y_column"].Value.ToString();
                     CadData.Rows[Last].Cells["Rotation"].Value = Row.Cells["Rotation_column"].Value.ToString();
