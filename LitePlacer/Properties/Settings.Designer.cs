@@ -946,5 +946,17 @@ namespace LitePlacer.Properties {
                 this["Cameras_RobustSwitch"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color DownCam_SnapshotColor {
+            get {
+                return ((global::System.Drawing.Color)(this["DownCam_SnapshotColor"]));
+            }
+            set {
+                this["DownCam_SnapshotColor"] = value;
+            }
+        }
     }
 }

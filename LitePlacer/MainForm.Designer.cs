@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -69,6 +69,11 @@
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.label145 = new System.Windows.Forms.Label();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.ShowPart_button = new System.Windows.Forms.Button();
+            this.label129 = new System.Windows.Forms.Label();
+            this.HoleTest_button = new System.Windows.Forms.Button();
+            this.label128 = new System.Windows.Forms.Label();
+            this.HoleTest_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.ReloadTray_button = new System.Windows.Forms.Button();
             this.ReplaceTray_button = new System.Windows.Forms.Button();
             this.LoadTray_button = new System.Windows.Forms.Button();
@@ -89,6 +94,22 @@
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
+            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label108 = new System.Windows.Forms.Label();
             this.Tapes_pictureBox = new System.Windows.Forms.PictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
@@ -99,6 +120,20 @@
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
+            this.DowncamSnapshot_ColorBox = new System.Windows.Forms.TextBox();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.Snapshot_dataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewComboBoxColumn9 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewCheckBoxColumn9 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewTextBoxColumn41 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn42 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn43 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn44 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn45 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SnapshotToDisplay_button = new System.Windows.Forms.Button();
+            this.SnapshotToHere_button = new System.Windows.Forms.Button();
+            this.TakeSnapshot_button = new System.Windows.Forms.Button();
+            this.RobustFast_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCameraDrawTicks_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.Components_dataGridView = new System.Windows.Forms.DataGridView();
@@ -298,7 +333,6 @@
             this.label96 = new System.Windows.Forms.Label();
             this.label93 = new System.Windows.Forms.Label();
             this.label94 = new System.Windows.Forms.Label();
-            this.Snapshot_button = new System.Windows.Forms.Button();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.Cam_pictureBox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -476,6 +510,7 @@
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.label127 = new System.Windows.Forms.Label();
             this.PasteCadDataRow_button = new System.Windows.Forms.Button();
             this.CopyCadDataRow_button = new System.Windows.Forms.Button();
             this.DeleteCadDataRow_button = new System.Windows.Forms.Button();
@@ -567,29 +602,7 @@
             this.TrueX_label = new System.Windows.Forms.Label();
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label127 = new System.Windows.Forms.Label();
-            this.label128 = new System.Windows.Forms.Label();
-            this.HoleTest_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.HoleTest_button = new System.Windows.Forms.Button();
-            this.label129 = new System.Windows.Forms.Label();
-            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ShowPart_button = new System.Windows.Forms.Button();
-            this.RobustFast_checkBox = new System.Windows.Forms.CheckBox();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
@@ -598,6 +611,8 @@
             this.tabPageSetupCameras.SuspendLayout();
             this.CamerasSetUp_tabControl.SuspendLayout();
             this.DownCamera_tabPage.SuspendLayout();
+            this.groupBox13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Snapshot_dataGridView)).BeginInit();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Components_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).BeginInit();
@@ -1070,6 +1085,58 @@
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
             // 
+            // ShowPart_button
+            // 
+            this.ShowPart_button.Location = new System.Drawing.Point(1155, 453);
+            this.ShowPart_button.Name = "ShowPart_button";
+            this.ShowPart_button.Size = new System.Drawing.Size(75, 23);
+            this.ShowPart_button.TabIndex = 52;
+            this.ShowPart_button.Text = "Show part";
+            this.toolTip1.SetToolTip(this.ShowPart_button, "Resets pickup and placement heights.");
+            this.ShowPart_button.UseVisualStyleBackColor = true;
+            this.ShowPart_button.Click += new System.EventHandler(this.ShowPart_button_Click);
+            // 
+            // label129
+            // 
+            this.label129.AutoSize = true;
+            this.label129.Location = new System.Drawing.Point(1154, 382);
+            this.label129.Name = "label129";
+            this.label129.Size = new System.Drawing.Size(76, 13);
+            this.label129.TabIndex = 51;
+            this.label129.Text = "Alignment test:";
+            // 
+            // HoleTest_button
+            // 
+            this.HoleTest_button.Location = new System.Drawing.Point(1155, 424);
+            this.HoleTest_button.Name = "HoleTest_button";
+            this.HoleTest_button.Size = new System.Drawing.Size(75, 23);
+            this.HoleTest_button.TabIndex = 50;
+            this.HoleTest_button.Text = "Show hole";
+            this.toolTip1.SetToolTip(this.HoleTest_button, "Resets pickup and placement heights.");
+            this.HoleTest_button.UseVisualStyleBackColor = true;
+            this.HoleTest_button.Click += new System.EventHandler(this.HoleTest_button_Click);
+            // 
+            // label128
+            // 
+            this.label128.AutoSize = true;
+            this.label128.Location = new System.Drawing.Point(1155, 401);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(39, 13);
+            this.label128.TabIndex = 49;
+            this.label128.Text = "Part #:";
+            // 
+            // HoleTest_maskedTextBox
+            // 
+            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(1198, 398);
+            this.HoleTest_maskedTextBox.Mask = "999";
+            this.HoleTest_maskedTextBox.Name = "HoleTest_maskedTextBox";
+            this.HoleTest_maskedTextBox.PromptChar = ' ';
+            this.HoleTest_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.HoleTest_maskedTextBox.Size = new System.Drawing.Size(32, 20);
+            this.HoleTest_maskedTextBox.TabIndex = 48;
+            this.HoleTest_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.HoleTest_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            // 
             // ReloadTray_button
             // 
             this.ReloadTray_button.Location = new System.Drawing.Point(894, 505);
@@ -1301,6 +1368,138 @@
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
             // 
+            // SelectButtonColumn
+            // 
+            this.SelectButtonColumn.HeaderText = "Select";
+            this.SelectButtonColumn.Name = "SelectButtonColumn";
+            this.SelectButtonColumn.Text = "Reset";
+            this.SelectButtonColumn.Width = 43;
+            // 
+            // IdColumn
+            // 
+            this.IdColumn.HeaderText = "ID";
+            this.IdColumn.Name = "IdColumn";
+            this.IdColumn.Width = 43;
+            // 
+            // OrientationColumn
+            // 
+            this.OrientationColumn.HeaderText = "Dir.";
+            this.OrientationColumn.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.OrientationColumn.Name = "OrientationColumn";
+            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.OrientationColumn.Width = 48;
+            // 
+            // RotationColumn
+            // 
+            this.RotationColumn.HeaderText = "Rot.";
+            this.RotationColumn.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.RotationColumn.Name = "RotationColumn";
+            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.RotationColumn.Width = 52;
+            // 
+            // WidthColumn
+            // 
+            this.WidthColumn.HeaderText = "Width";
+            this.WidthColumn.Items.AddRange(new object[] {
+            "8/2mm",
+            "8/4mm",
+            "12/4mm",
+            "12/8mm",
+            "16/4mm",
+            "16/8mm",
+            "16/12mm",
+            "24/4mm",
+            "24/8mm",
+            "24/12mm",
+            "24/16mm",
+            "24/20mm"});
+            this.WidthColumn.Name = "WidthColumn";
+            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.WidthColumn.Width = 60;
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.TypeColumn.Name = "TypeColumn";
+            this.TypeColumn.Width = 37;
+            // 
+            // Next_Column
+            // 
+            this.Next_Column.HeaderText = "Next";
+            this.Next_Column.Name = "Next_Column";
+            this.Next_Column.Width = 54;
+            // 
+            // Tray_Column
+            // 
+            this.Tray_Column.HeaderText = "Tray";
+            this.Tray_Column.Name = "Tray_Column";
+            this.Tray_Column.Width = 53;
+            // 
+            // X_Column
+            // 
+            this.X_Column.HeaderText = "X";
+            this.X_Column.Name = "X_Column";
+            this.X_Column.Width = 39;
+            // 
+            // Y_Column
+            // 
+            this.Y_Column.HeaderText = "Y";
+            this.Y_Column.Name = "Y_Column";
+            this.Y_Column.Width = 39;
+            // 
+            // PickupZ_Column
+            // 
+            this.PickupZ_Column.HeaderText = "Pickup Z";
+            this.PickupZ_Column.Name = "PickupZ_Column";
+            this.PickupZ_Column.Width = 75;
+            // 
+            // PlaceZ_Column
+            // 
+            this.PlaceZ_Column.HeaderText = "PlaceZ";
+            this.PlaceZ_Column.Name = "PlaceZ_Column";
+            this.PlaceZ_Column.Width = 66;
+            // 
+            // NextX_Column
+            // 
+            this.NextX_Column.HeaderText = "Next X";
+            this.NextX_Column.Name = "NextX_Column";
+            this.NextX_Column.Width = 64;
+            // 
+            // NextY_column
+            // 
+            this.NextY_column.HeaderText = "Next Y";
+            this.NextY_column.Name = "NextY_column";
+            this.NextY_column.Width = 64;
+            // 
+            // LastX
+            // 
+            this.LastX.HeaderText = "Last X";
+            this.LastX.Name = "LastX";
+            this.LastX.Visible = false;
+            this.LastX.Width = 62;
+            // 
+            // LastY
+            // 
+            this.LastY.HeaderText = "Last Y";
+            this.LastY.Name = "LastY";
+            this.LastY.Visible = false;
+            this.LastY.Width = 62;
+            // 
             // label108
             // 
             this.label108.AutoSize = true;
@@ -1399,7 +1598,6 @@
             this.tabPageSetupCameras.Controls.Add(this.label96);
             this.tabPageSetupCameras.Controls.Add(this.label93);
             this.tabPageSetupCameras.Controls.Add(this.label94);
-            this.tabPageSetupCameras.Controls.Add(this.Snapshot_button);
             this.tabPageSetupCameras.Controls.Add(this.ImageTest_checkBox);
             this.tabPageSetupCameras.Controls.Add(this.Cam_pictureBox);
             this.tabPageSetupCameras.Controls.Add(this.label1);
@@ -1418,12 +1616,14 @@
             this.CamerasSetUp_tabControl.Location = new System.Drawing.Point(656, 8);
             this.CamerasSetUp_tabControl.Name = "CamerasSetUp_tabControl";
             this.CamerasSetUp_tabControl.SelectedIndex = 0;
-            this.CamerasSetUp_tabControl.Size = new System.Drawing.Size(587, 630);
+            this.CamerasSetUp_tabControl.Size = new System.Drawing.Size(587, 681);
             this.CamerasSetUp_tabControl.TabIndex = 126;
             this.CamerasSetUp_tabControl.SelectedIndexChanged += new System.EventHandler(this.CamerasSetUp_tabControl_SelectedIndexChanged);
             // 
             // DownCamera_tabPage
             // 
+            this.DownCamera_tabPage.Controls.Add(this.DowncamSnapshot_ColorBox);
+            this.DownCamera_tabPage.Controls.Add(this.groupBox13);
             this.DownCamera_tabPage.Controls.Add(this.RobustFast_checkBox);
             this.DownCamera_tabPage.Controls.Add(this.DownCameraDrawTicks_checkBox);
             this.DownCamera_tabPage.Controls.Add(this.groupBox9);
@@ -1473,16 +1673,159 @@
             this.DownCamera_tabPage.Controls.Add(this.groupBox4);
             this.DownCamera_tabPage.Location = new System.Drawing.Point(4, 22);
             this.DownCamera_tabPage.Name = "DownCamera_tabPage";
-            this.DownCamera_tabPage.Size = new System.Drawing.Size(579, 604);
+            this.DownCamera_tabPage.Size = new System.Drawing.Size(579, 655);
             this.DownCamera_tabPage.TabIndex = 3;
             this.DownCamera_tabPage.Text = "Down Looking Camera";
             this.DownCamera_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // DowncamSnapshot_ColorBox
+            // 
+            this.DowncamSnapshot_ColorBox.Location = new System.Drawing.Point(141, 128);
+            this.DowncamSnapshot_ColorBox.Name = "DowncamSnapshot_ColorBox";
+            this.DowncamSnapshot_ColorBox.ReadOnly = true;
+            this.DowncamSnapshot_ColorBox.Size = new System.Drawing.Size(21, 20);
+            this.DowncamSnapshot_ColorBox.TabIndex = 141;
+            this.toolTip1.SetToolTip(this.DowncamSnapshot_ColorBox, "Set parameters for the selected algorithm");
+            this.DowncamSnapshot_ColorBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DowncamSnapshot_ColorBox_MouseClick);
+            // 
+            // groupBox13
+            // 
+            this.groupBox13.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox13.Controls.Add(this.Snapshot_dataGridView);
+            this.groupBox13.Controls.Add(this.SnapshotToDisplay_button);
+            this.groupBox13.Controls.Add(this.SnapshotToHere_button);
+            this.groupBox13.Controls.Add(this.TakeSnapshot_button);
+            this.groupBox13.Location = new System.Drawing.Point(6, 579);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(255, 59);
+            this.groupBox13.TabIndex = 139;
+            this.groupBox13.TabStop = false;
+            this.groupBox13.Text = "Snapshot";
+            // 
+            // Snapshot_dataGridView
+            // 
+            this.Snapshot_dataGridView.AllowUserToAddRows = false;
+            this.Snapshot_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Snapshot_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewComboBoxColumn9,
+            this.dataGridViewCheckBoxColumn9,
+            this.dataGridViewTextBoxColumn41,
+            this.dataGridViewTextBoxColumn42,
+            this.dataGridViewTextBoxColumn43,
+            this.dataGridViewTextBoxColumn44,
+            this.dataGridViewTextBoxColumn45});
+            this.Snapshot_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.Snapshot_dataGridView.Location = new System.Drawing.Point(168, 47);
+            this.Snapshot_dataGridView.Name = "Snapshot_dataGridView";
+            this.Snapshot_dataGridView.RowHeadersVisible = false;
+            this.Snapshot_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.Snapshot_dataGridView.Size = new System.Drawing.Size(157, 137);
+            this.Snapshot_dataGridView.TabIndex = 126;
+            this.Snapshot_dataGridView.Visible = false;
+            // 
+            // dataGridViewComboBoxColumn9
+            // 
+            this.dataGridViewComboBoxColumn9.HeaderText = "Function";
+            this.dataGridViewComboBoxColumn9.Items.AddRange(new object[] {
+            "Threshold",
+            "Histogram",
+            "Grayscale",
+            "Contrast scretch",
+            "Kill color",
+            "Keep color",
+            "Invert",
+            "Meas. zoom"});
+            this.dataGridViewComboBoxColumn9.Name = "dataGridViewComboBoxColumn9";
+            this.dataGridViewComboBoxColumn9.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewComboBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dataGridViewCheckBoxColumn9
+            // 
+            this.dataGridViewCheckBoxColumn9.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn9.Name = "dataGridViewCheckBoxColumn9";
+            this.dataGridViewCheckBoxColumn9.Width = 50;
+            // 
+            // dataGridViewTextBoxColumn41
+            // 
+            this.dataGridViewTextBoxColumn41.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn41.Name = "dataGridViewTextBoxColumn41";
+            this.dataGridViewTextBoxColumn41.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn42
+            // 
+            this.dataGridViewTextBoxColumn42.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn42.Name = "dataGridViewTextBoxColumn42";
+            this.dataGridViewTextBoxColumn42.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn43
+            // 
+            this.dataGridViewTextBoxColumn43.HeaderText = "R";
+            this.dataGridViewTextBoxColumn43.Name = "dataGridViewTextBoxColumn43";
+            this.dataGridViewTextBoxColumn43.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn44
+            // 
+            this.dataGridViewTextBoxColumn44.HeaderText = "G";
+            this.dataGridViewTextBoxColumn44.Name = "dataGridViewTextBoxColumn44";
+            this.dataGridViewTextBoxColumn44.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn45
+            // 
+            this.dataGridViewTextBoxColumn45.HeaderText = "B";
+            this.dataGridViewTextBoxColumn45.Name = "dataGridViewTextBoxColumn45";
+            this.dataGridViewTextBoxColumn45.ReadOnly = true;
+            // 
+            // SnapshotToDisplay_button
+            // 
+            this.SnapshotToDisplay_button.Location = new System.Drawing.Point(87, 19);
+            this.SnapshotToDisplay_button.Name = "SnapshotToDisplay_button";
+            this.SnapshotToDisplay_button.Size = new System.Drawing.Size(75, 23);
+            this.SnapshotToDisplay_button.TabIndex = 23;
+            this.SnapshotToDisplay_button.Text = "To Display";
+            this.toolTip1.SetToolTip(this.SnapshotToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
+        "ing.");
+            this.SnapshotToDisplay_button.UseVisualStyleBackColor = true;
+            this.SnapshotToDisplay_button.Click += new System.EventHandler(this.SnapshotToDisplay_button_Click);
+            // 
+            // SnapshotToHere_button
+            // 
+            this.SnapshotToHere_button.Location = new System.Drawing.Point(6, 19);
+            this.SnapshotToHere_button.Name = "SnapshotToHere_button";
+            this.SnapshotToHere_button.Size = new System.Drawing.Size(75, 23);
+            this.SnapshotToHere_button.TabIndex = 22;
+            this.SnapshotToHere_button.Text = "Copy Here";
+            this.toolTip1.SetToolTip(this.SnapshotToHere_button, "Copies the algorithms from the table to be used\r\nin drawins snapshot in manually " +
+        "assisted placement.\r\n");
+            this.SnapshotToHere_button.UseVisualStyleBackColor = true;
+            this.SnapshotToHere_button.Click += new System.EventHandler(this.SnapshotToHere_button_Click);
+            // 
+            // TakeSnapshot_button
+            // 
+            this.TakeSnapshot_button.Location = new System.Drawing.Point(168, 19);
+            this.TakeSnapshot_button.Name = "TakeSnapshot_button";
+            this.TakeSnapshot_button.Size = new System.Drawing.Size(75, 23);
+            this.TakeSnapshot_button.TabIndex = 30;
+            this.TakeSnapshot_button.Text = "Take";
+            this.TakeSnapshot_button.UseVisualStyleBackColor = true;
+            this.TakeSnapshot_button.Click += new System.EventHandler(this.TakeSnapshot_button_Click);
+            // 
+            // RobustFast_checkBox
+            // 
+            this.RobustFast_checkBox.AutoSize = true;
+            this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RobustFast_checkBox.Location = new System.Drawing.Point(144, 37);
+            this.RobustFast_checkBox.Name = "RobustFast_checkBox";
+            this.RobustFast_checkBox.Size = new System.Drawing.Size(205, 17);
+            this.RobustFast_checkBox.TabIndex = 140;
+            this.RobustFast_checkBox.Text = "Robust camera switch (uncheck: fast)";
+            this.RobustFast_checkBox.UseVisualStyleBackColor = true;
+            this.RobustFast_checkBox.CheckedChanged += new System.EventHandler(this.RobustFast_checkBox_CheckedChanged);
             // 
             // DownCameraDrawTicks_checkBox
             // 
             this.DownCameraDrawTicks_checkBox.AutoSize = true;
             this.DownCameraDrawTicks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawTicks_checkBox.Location = new System.Drawing.Point(6, 127);
+            this.DownCameraDrawTicks_checkBox.Location = new System.Drawing.Point(6, 107);
             this.DownCameraDrawTicks_checkBox.Name = "DownCameraDrawTicks_checkBox";
             this.DownCameraDrawTicks_checkBox.Size = new System.Drawing.Size(103, 17);
             this.DownCameraDrawTicks_checkBox.TabIndex = 139;
@@ -1499,7 +1842,7 @@
             this.groupBox9.Controls.Add(this.ComponentsMeasure_button);
             this.groupBox9.Controls.Add(this.ComponentsToDisplay_button);
             this.groupBox9.Controls.Add(this.ComponentsToHere_button);
-            this.groupBox9.Location = new System.Drawing.Point(6, 533);
+            this.groupBox9.Location = new System.Drawing.Point(6, 514);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(255, 59);
             this.groupBox9.TabIndex = 138;
@@ -1619,9 +1962,9 @@
             this.ColorHelp_label.AutoSize = true;
             this.ColorHelp_label.Location = new System.Drawing.Point(266, 353);
             this.ColorHelp_label.Name = "ColorHelp_label";
-            this.ColorHelp_label.Size = new System.Drawing.Size(122, 13);
+            this.ColorHelp_label.Size = new System.Drawing.Size(176, 13);
             this.ColorHelp_label.TabIndex = 137;
-            this.ColorHelp_label.Text = "(Alt+click to select color)";
+            this.ColorHelp_label.Text = "(Alt+click to select color from image)";
             this.toolTip1.SetToolTip(this.ColorHelp_label, "Set parameters for the selected algorithm");
             // 
             // B_numericUpDown
@@ -1749,7 +2092,7 @@
             this.groupBox8.Controls.Add(this.ClearTapeMeasure_button);
             this.groupBox8.Controls.Add(this.ClearTapeToDisplay_button);
             this.groupBox8.Controls.Add(this.ClearTapeToHere_button);
-            this.groupBox8.Location = new System.Drawing.Point(279, 458);
+            this.groupBox8.Location = new System.Drawing.Point(279, 449);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(255, 59);
             this.groupBox8.TabIndex = 127;
@@ -1877,7 +2220,7 @@
             this.groupBox7.Controls.Add(this.BlackTapeMeasure_button);
             this.groupBox7.Controls.Add(this.BlackTapeToDisplay_button);
             this.groupBox7.Controls.Add(this.BlackTapeToHere_button);
-            this.groupBox7.Location = new System.Drawing.Point(279, 533);
+            this.groupBox7.Location = new System.Drawing.Point(279, 514);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(255, 59);
             this.groupBox7.TabIndex = 126;
@@ -2012,7 +2355,7 @@
             // 
             this.DownCam_FindComponents_checkBox.AutoSize = true;
             this.DownCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(144, 127);
+            this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(219, 127);
             this.DownCam_FindComponents_checkBox.Name = "DownCam_FindComponents_checkBox";
             this.DownCam_FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
             this.DownCam_FindComponents_checkBox.TabIndex = 54;
@@ -2207,7 +2550,7 @@
             // 
             this.DownCamFindRectangles_checkBox.AutoSize = true;
             this.DownCamFindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(144, 104);
+            this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(219, 104);
             this.DownCamFindRectangles_checkBox.Name = "DownCamFindRectangles_checkBox";
             this.DownCamFindRectangles_checkBox.Size = new System.Drawing.Size(103, 17);
             this.DownCamFindRectangles_checkBox.TabIndex = 53;
@@ -2224,7 +2567,7 @@
             this.groupBox11.Controls.Add(this.FiducialsMeasure_button);
             this.groupBox11.Controls.Add(this.FiducialsToDisplay_button);
             this.groupBox11.Controls.Add(this.FiducialsToHere_button);
-            this.groupBox11.Location = new System.Drawing.Point(6, 458);
+            this.groupBox11.Location = new System.Drawing.Point(6, 449);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(255, 59);
             this.groupBox11.TabIndex = 124;
@@ -2355,7 +2698,7 @@
             // 
             this.DownCamFindCircles_checkBox.AutoSize = true;
             this.DownCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(144, 81);
+            this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(219, 81);
             this.DownCamFindCircles_checkBox.Name = "DownCamFindCircles_checkBox";
             this.DownCamFindCircles_checkBox.Size = new System.Drawing.Size(80, 17);
             this.DownCamFindCircles_checkBox.TabIndex = 43;
@@ -2417,7 +2760,7 @@
             // 
             this.DownCameraDrawCross_checkBox.AutoSize = true;
             this.DownCameraDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawCross_checkBox.Location = new System.Drawing.Point(6, 81);
+            this.DownCameraDrawCross_checkBox.Location = new System.Drawing.Point(6, 61);
             this.DownCameraDrawCross_checkBox.Name = "DownCameraDrawCross_checkBox";
             this.DownCameraDrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
             this.DownCameraDrawCross_checkBox.TabIndex = 11;
@@ -2430,7 +2773,7 @@
             // 
             this.DownCameraDrawBox_checkBox.AutoSize = true;
             this.DownCameraDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawBox_checkBox.Location = new System.Drawing.Point(6, 104);
+            this.DownCameraDrawBox_checkBox.Location = new System.Drawing.Point(6, 84);
             this.DownCameraDrawBox_checkBox.Name = "DownCameraDrawBox_checkBox";
             this.DownCameraDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
             this.DownCameraDrawBox_checkBox.TabIndex = 25;
@@ -2465,13 +2808,12 @@
             // 
             this.Overlay_checkBox.AutoSize = true;
             this.Overlay_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Overlay_checkBox.Location = new System.Drawing.Point(12, 342);
+            this.Overlay_checkBox.Location = new System.Drawing.Point(6, 130);
             this.Overlay_checkBox.Name = "Overlay_checkBox";
-            this.Overlay_checkBox.Size = new System.Drawing.Size(99, 17);
+            this.Overlay_checkBox.Size = new System.Drawing.Size(131, 17);
             this.Overlay_checkBox.TabIndex = 31;
-            this.Overlay_checkBox.Text = "Draw Snapshot";
+            this.Overlay_checkBox.Text = "Draw Snapshot, color:";
             this.Overlay_checkBox.UseVisualStyleBackColor = true;
-            this.Overlay_checkBox.Visible = false;
             this.Overlay_checkBox.CheckedChanged += new System.EventHandler(this.Overlay_checkBox_CheckedChanged);
             // 
             // DeleteCamFunction_button
@@ -2813,7 +3155,7 @@
             this.UpCamera_tabPage.Controls.Add(this.label105);
             this.UpCamera_tabPage.Location = new System.Drawing.Point(4, 22);
             this.UpCamera_tabPage.Name = "UpCamera_tabPage";
-            this.UpCamera_tabPage.Size = new System.Drawing.Size(579, 604);
+            this.UpCamera_tabPage.Size = new System.Drawing.Size(579, 655);
             this.UpCamera_tabPage.TabIndex = 4;
             this.UpCamera_tabPage.Text = "Up Looking Camera";
             this.UpCamera_tabPage.UseVisualStyleBackColor = true;
@@ -3635,17 +3977,6 @@
             this.label94.Size = new System.Drawing.Size(17, 13);
             this.label94.TabIndex = 32;
             this.label94.Text = "X:";
-            // 
-            // Snapshot_button
-            // 
-            this.Snapshot_button.Location = new System.Drawing.Point(191, 611);
-            this.Snapshot_button.Name = "Snapshot_button";
-            this.Snapshot_button.Size = new System.Drawing.Size(75, 23);
-            this.Snapshot_button.TabIndex = 30;
-            this.Snapshot_button.Text = "Snapshot";
-            this.Snapshot_button.UseVisualStyleBackColor = true;
-            this.Snapshot_button.Visible = false;
-            this.Snapshot_button.Click += new System.EventHandler(this.Snapshot_button_Click);
             // 
             // ImageTest_checkBox
             // 
@@ -5663,6 +5994,15 @@
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Row Operations";
             // 
+            // label127
+            // 
+            this.label127.AutoSize = true;
+            this.label127.Location = new System.Drawing.Point(25, 72);
+            this.label127.Name = "label127";
+            this.label127.Size = new System.Drawing.Size(71, 13);
+            this.label127.TabIndex = 79;
+            this.label127.Text = "(Use Rebuild)";
+            // 
             // PasteCadDataRow_button
             // 
             this.PasteCadDataRow_button.Location = new System.Drawing.Point(64, 48);
@@ -6361,14 +6701,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6435,14 +6775,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -6590,210 +6930,9 @@
             // 
             this.TapesAll_saveFileDialog.DefaultExt = "tapes";
             // 
-            // label127
+            // colorDialog1
             // 
-            this.label127.AutoSize = true;
-            this.label127.Location = new System.Drawing.Point(25, 72);
-            this.label127.Name = "label127";
-            this.label127.Size = new System.Drawing.Size(71, 13);
-            this.label127.TabIndex = 79;
-            this.label127.Text = "(Use Rebuild)";
-            // 
-            // label128
-            // 
-            this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(1155, 401);
-            this.label128.Name = "label128";
-            this.label128.Size = new System.Drawing.Size(39, 13);
-            this.label128.TabIndex = 49;
-            this.label128.Text = "Part #:";
-            // 
-            // HoleTest_maskedTextBox
-            // 
-            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(1198, 398);
-            this.HoleTest_maskedTextBox.Mask = "999";
-            this.HoleTest_maskedTextBox.Name = "HoleTest_maskedTextBox";
-            this.HoleTest_maskedTextBox.PromptChar = ' ';
-            this.HoleTest_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.HoleTest_maskedTextBox.Size = new System.Drawing.Size(32, 20);
-            this.HoleTest_maskedTextBox.TabIndex = 48;
-            this.HoleTest_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.HoleTest_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            // 
-            // HoleTest_button
-            // 
-            this.HoleTest_button.Location = new System.Drawing.Point(1155, 424);
-            this.HoleTest_button.Name = "HoleTest_button";
-            this.HoleTest_button.Size = new System.Drawing.Size(75, 23);
-            this.HoleTest_button.TabIndex = 50;
-            this.HoleTest_button.Text = "Show hole";
-            this.toolTip1.SetToolTip(this.HoleTest_button, "Resets pickup and placement heights.");
-            this.HoleTest_button.UseVisualStyleBackColor = true;
-            this.HoleTest_button.Click += new System.EventHandler(this.HoleTest_button_Click);
-            // 
-            // label129
-            // 
-            this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(1154, 382);
-            this.label129.Name = "label129";
-            this.label129.Size = new System.Drawing.Size(76, 13);
-            this.label129.TabIndex = 51;
-            this.label129.Text = "Alignment test:";
-            // 
-            // SelectButtonColumn
-            // 
-            this.SelectButtonColumn.HeaderText = "Select";
-            this.SelectButtonColumn.Name = "SelectButtonColumn";
-            this.SelectButtonColumn.Text = "Reset";
-            this.SelectButtonColumn.Width = 43;
-            // 
-            // IdColumn
-            // 
-            this.IdColumn.HeaderText = "ID";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
-            // 
-            // OrientationColumn
-            // 
-            this.OrientationColumn.HeaderText = "Dir.";
-            this.OrientationColumn.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.OrientationColumn.Name = "OrientationColumn";
-            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 48;
-            // 
-            // RotationColumn
-            // 
-            this.RotationColumn.HeaderText = "Rot.";
-            this.RotationColumn.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.RotationColumn.Name = "RotationColumn";
-            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 52;
-            // 
-            // WidthColumn
-            // 
-            this.WidthColumn.HeaderText = "Width";
-            this.WidthColumn.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm"});
-            this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.WidthColumn.Width = 60;
-            // 
-            // TypeColumn
-            // 
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.Width = 37;
-            // 
-            // Next_Column
-            // 
-            this.Next_Column.HeaderText = "Next";
-            this.Next_Column.Name = "Next_Column";
-            this.Next_Column.Width = 54;
-            // 
-            // Tray_Column
-            // 
-            this.Tray_Column.HeaderText = "Tray";
-            this.Tray_Column.Name = "Tray_Column";
-            this.Tray_Column.Width = 53;
-            // 
-            // X_Column
-            // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.Width = 39;
-            // 
-            // Y_Column
-            // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.Width = 39;
-            // 
-            // PickupZ_Column
-            // 
-            this.PickupZ_Column.HeaderText = "Pickup Z";
-            this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
-            // 
-            // PlaceZ_Column
-            // 
-            this.PlaceZ_Column.HeaderText = "PlaceZ";
-            this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
-            // 
-            // NextX_Column
-            // 
-            this.NextX_Column.HeaderText = "Next X";
-            this.NextX_Column.Name = "NextX_Column";
-            this.NextX_Column.Width = 64;
-            // 
-            // NextY_column
-            // 
-            this.NextY_column.HeaderText = "Next Y";
-            this.NextY_column.Name = "NextY_column";
-            this.NextY_column.Width = 64;
-            // 
-            // LastX
-            // 
-            this.LastX.HeaderText = "Last X";
-            this.LastX.Name = "LastX";
-            this.LastX.Visible = false;
-            this.LastX.Width = 62;
-            // 
-            // LastY
-            // 
-            this.LastY.HeaderText = "Last Y";
-            this.LastY.Name = "LastY";
-            this.LastY.Visible = false;
-            this.LastY.Width = 62;
-            // 
-            // ShowPart_button
-            // 
-            this.ShowPart_button.Location = new System.Drawing.Point(1155, 453);
-            this.ShowPart_button.Name = "ShowPart_button";
-            this.ShowPart_button.Size = new System.Drawing.Size(75, 23);
-            this.ShowPart_button.TabIndex = 52;
-            this.ShowPart_button.Text = "Show part";
-            this.toolTip1.SetToolTip(this.ShowPart_button, "Resets pickup and placement heights.");
-            this.ShowPart_button.UseVisualStyleBackColor = true;
-            this.ShowPart_button.Click += new System.EventHandler(this.ShowPart_button_Click);
-            // 
-            // RobustFast_checkBox
-            // 
-            this.RobustFast_checkBox.AutoSize = true;
-            this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RobustFast_checkBox.Location = new System.Drawing.Point(153, 35);
-            this.RobustFast_checkBox.Name = "RobustFast_checkBox";
-            this.RobustFast_checkBox.Size = new System.Drawing.Size(205, 17);
-            this.RobustFast_checkBox.TabIndex = 140;
-            this.RobustFast_checkBox.Text = "Robust camera switch (uncheck: fast)";
-            this.RobustFast_checkBox.UseVisualStyleBackColor = true;
-            this.RobustFast_checkBox.CheckedChanged += new System.EventHandler(this.RobustFast_checkBox_CheckedChanged);
+            this.colorDialog1.SolidColorOnly = true;
             // 
             // FormMain
             // 
@@ -6855,6 +6994,8 @@
             this.CamerasSetUp_tabControl.ResumeLayout(false);
             this.DownCamera_tabPage.ResumeLayout(false);
             this.DownCamera_tabPage.PerformLayout();
+            this.groupBox13.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Snapshot_dataGridView)).EndInit();
             this.groupBox9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Components_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).EndInit();
@@ -7035,7 +7176,7 @@
 		private System.Windows.Forms.Label label96;
 		private System.Windows.Forms.Label label93;
 		private System.Windows.Forms.Label label94;
-		private System.Windows.Forms.Button Snapshot_button;
+		private System.Windows.Forms.Button TakeSnapshot_button;
 		private System.Windows.Forms.CheckBox ImageTest_checkBox;
 		private System.Windows.Forms.PictureBox Cam_pictureBox;
 		private System.Windows.Forms.Label label1;
@@ -7475,6 +7616,19 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastY;
         private System.Windows.Forms.Button ShowPart_button;
         private System.Windows.Forms.CheckBox RobustFast_checkBox;
+        private System.Windows.Forms.TextBox DowncamSnapshot_ColorBox;
+        private System.Windows.Forms.GroupBox groupBox13;
+        private System.Windows.Forms.DataGridView Snapshot_dataGridView;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn9;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn41;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn42;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn43;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn44;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn45;
+        private System.Windows.Forms.Button SnapshotToDisplay_button;
+        private System.Windows.Forms.Button SnapshotToHere_button;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 

@@ -97,5 +97,11 @@ namespace LitePlacer
             this.Close();
         }
 
+        private void ManualDownCam_button_Click(object sender, EventArgs e)
+        {
+            SelectedMethod = "DownCam Snapshot";
+            this.Close();
+        }
+
 	}
 }

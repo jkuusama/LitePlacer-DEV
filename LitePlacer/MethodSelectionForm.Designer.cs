@@ -49,11 +49,13 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.PlaceFast_button = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.ManualDownCam_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Question_button
             // 
-            this.Question_button.Location = new System.Drawing.Point(199, 14);
+            this.Question_button.Location = new System.Drawing.Point(239, 12);
             this.Question_button.Name = "Question_button";
             this.Question_button.Size = new System.Drawing.Size(109, 23);
             this.Question_button.TabIndex = 0;
@@ -63,7 +65,7 @@
             // 
             // Place_button
             // 
-            this.Place_button.Location = new System.Drawing.Point(198, 72);
+            this.Place_button.Location = new System.Drawing.Point(238, 70);
             this.Place_button.Name = "Place_button";
             this.Place_button.Size = new System.Drawing.Size(109, 23);
             this.Place_button.TabIndex = 1;
@@ -74,7 +76,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(103, 19);
+            this.label1.Location = new System.Drawing.Point(143, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(90, 13);
             this.label1.TabIndex = 2;
@@ -83,7 +85,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(100, 77);
+            this.label2.Location = new System.Drawing.Point(140, 75);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 13);
             this.label2.TabIndex = 3;
@@ -91,7 +93,7 @@
             // 
             // ChangeNeedle_button
             // 
-            this.ChangeNeedle_button.Location = new System.Drawing.Point(198, 130);
+            this.ChangeNeedle_button.Location = new System.Drawing.Point(241, 157);
             this.ChangeNeedle_button.Name = "ChangeNeedle_button";
             this.ChangeNeedle_button.Size = new System.Drawing.Size(109, 23);
             this.ChangeNeedle_button.TabIndex = 4;
@@ -102,7 +104,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(66, 135);
+            this.label3.Location = new System.Drawing.Point(109, 162);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(126, 13);
             this.label3.TabIndex = 5;
@@ -111,7 +113,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(20, 164);
+            this.label4.Location = new System.Drawing.Point(63, 191);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(172, 13);
             this.label4.TabIndex = 7;
@@ -119,7 +121,7 @@
             // 
             // Recalibrate_button
             // 
-            this.Recalibrate_button.Location = new System.Drawing.Point(198, 159);
+            this.Recalibrate_button.Location = new System.Drawing.Point(241, 186);
             this.Recalibrate_button.Name = "Recalibrate_button";
             this.Recalibrate_button.Size = new System.Drawing.Size(109, 23);
             this.Recalibrate_button.TabIndex = 6;
@@ -130,7 +132,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(125, 193);
+            this.label5.Location = new System.Drawing.Point(168, 220);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(67, 13);
             this.label5.TabIndex = 9;
@@ -138,7 +140,7 @@
             // 
             // Ignore_button
             // 
-            this.Ignore_button.Location = new System.Drawing.Point(198, 188);
+            this.Ignore_button.Location = new System.Drawing.Point(241, 215);
             this.Ignore_button.Name = "Ignore_button";
             this.Ignore_button.Size = new System.Drawing.Size(109, 23);
             this.Ignore_button.TabIndex = 8;
@@ -149,7 +151,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(72, 251);
+            this.label6.Location = new System.Drawing.Point(115, 278);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(120, 13);
             this.label6.TabIndex = 11;
@@ -157,7 +159,7 @@
             // 
             // Fiducials_button
             // 
-            this.Fiducials_button.Location = new System.Drawing.Point(198, 246);
+            this.Fiducials_button.Location = new System.Drawing.Point(241, 273);
             this.Fiducials_button.Name = "Fiducials_button";
             this.Fiducials_button.Size = new System.Drawing.Size(109, 23);
             this.Fiducials_button.TabIndex = 10;
@@ -168,7 +170,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(120, 222);
+            this.label7.Location = new System.Drawing.Point(163, 249);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(72, 13);
             this.label7.TabIndex = 13;
@@ -176,7 +178,7 @@
             // 
             // Pause_button
             // 
-            this.Pause_button.Location = new System.Drawing.Point(198, 217);
+            this.Pause_button.Location = new System.Drawing.Point(241, 244);
             this.Pause_button.Name = "Pause_button";
             this.Pause_button.Size = new System.Drawing.Size(109, 23);
             this.Pause_button.TabIndex = 12;
@@ -187,7 +189,7 @@
             // UpdateJobGrid_checkBox
             // 
             this.UpdateJobGrid_checkBox.AutoSize = true;
-            this.UpdateJobGrid_checkBox.Location = new System.Drawing.Point(23, 285);
+            this.UpdateJobGrid_checkBox.Location = new System.Drawing.Point(66, 312);
             this.UpdateJobGrid_checkBox.Name = "UpdateJobGrid_checkBox";
             this.UpdateJobGrid_checkBox.Size = new System.Drawing.Size(107, 17);
             this.UpdateJobGrid_checkBox.TabIndex = 14;
@@ -197,7 +199,7 @@
             // 
             // PlaceWithCam_button
             // 
-            this.PlaceWithCam_button.Location = new System.Drawing.Point(198, 285);
+            this.PlaceWithCam_button.Location = new System.Drawing.Point(241, 312);
             this.PlaceWithCam_button.Name = "PlaceWithCam_button";
             this.PlaceWithCam_button.Size = new System.Drawing.Size(109, 23);
             this.PlaceWithCam_button.TabIndex = 15;
@@ -209,7 +211,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(136, 285);
+            this.label8.Location = new System.Drawing.Point(179, 312);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(170, 13);
             this.label8.TabIndex = 16;
@@ -218,7 +220,7 @@
             // 
             // LoosePart_button
             // 
-            this.LoosePart_button.Location = new System.Drawing.Point(198, 101);
+            this.LoosePart_button.Location = new System.Drawing.Point(241, 128);
             this.LoosePart_button.Name = "LoosePart_button";
             this.LoosePart_button.Size = new System.Drawing.Size(109, 23);
             this.LoosePart_button.TabIndex = 17;
@@ -229,7 +231,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 106);
+            this.label9.Location = new System.Drawing.Point(49, 133);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(186, 13);
             this.label9.TabIndex = 18;
@@ -238,7 +240,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(113, 48);
+            this.label10.Location = new System.Drawing.Point(153, 46);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(79, 13);
             this.label10.TabIndex = 20;
@@ -246,7 +248,7 @@
             // 
             // PlaceFast_button
             // 
-            this.PlaceFast_button.Location = new System.Drawing.Point(198, 43);
+            this.PlaceFast_button.Location = new System.Drawing.Point(238, 41);
             this.PlaceFast_button.Name = "PlaceFast_button";
             this.PlaceFast_button.Size = new System.Drawing.Size(109, 23);
             this.PlaceFast_button.TabIndex = 19;
@@ -254,11 +256,32 @@
             this.PlaceFast_button.UseVisualStyleBackColor = true;
             this.PlaceFast_button.Click += new System.EventHandler(this.PlaceFast_button_Click);
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(20, 104);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(213, 13);
+            this.label11.TabIndex = 22;
+            this.label11.Text = "Manually assisted, with down camera image";
+            // 
+            // ManualDownCam_button
+            // 
+            this.ManualDownCam_button.Location = new System.Drawing.Point(238, 99);
+            this.ManualDownCam_button.Name = "ManualDownCam_button";
+            this.ManualDownCam_button.Size = new System.Drawing.Size(109, 23);
+            this.ManualDownCam_button.TabIndex = 21;
+            this.ManualDownCam_button.Text = "Manual, down cam.";
+            this.ManualDownCam_button.UseVisualStyleBackColor = true;
+            this.ManualDownCam_button.Click += new System.EventHandler(this.ManualDownCam_button_Click);
+            // 
             // MethodSelectionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(322, 315);
+            this.ClientSize = new System.Drawing.Size(359, 341);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.ManualDownCam_button);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.PlaceFast_button);
             this.Controls.Add(this.label9);
@@ -312,5 +335,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button PlaceFast_button;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button ManualDownCam_button;
 	}
 }

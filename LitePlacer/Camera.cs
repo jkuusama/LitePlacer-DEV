@@ -456,7 +456,6 @@ namespace LitePlacer
 		public bool FindCircles { get; set; }       // Find and highlight circles in the image
 		public bool FindRectangles { get; set; }    // Find and draw regtangles in the image
 		public bool FindComponent { get; set; }     // Finds a component and identifies its center
-		public bool TakeSnapshot { get; set; }      // Takes a b&w snapshot (of a component, most likely)     
 		public bool Draw_Snapshot { get; set; }     // Draws the snapshot on the image 
 		public bool PauseProcessing { get; set; }   // Drawing the video slows everything down. This can pause it for measurements.
 		private bool paused = true;					// set in video processing indicating it is safe to change processing function list
@@ -580,12 +579,6 @@ namespace LitePlacer
 			if (FindRectangles)
 			{
 				frame = DrawRectanglesFunct(frame);
-			};
-
-			if (TakeSnapshot)
-			{
-				TakeSnapshot_funct(frame);
-				TakeSnapshot = false;
 			};
 
 			if (FindComponent)
@@ -1343,27 +1336,13 @@ namespace LitePlacer
 		Bitmap SnapshotOriginalImage = new Bitmap(640, 480);
 
 		Bitmap SnapshotImage = new Bitmap(640, 480);
-
 		public double SnapshotRotation = 0.0;  // rotation when snapshot was taken
 
-		private void TakeSnapshot_funct(Bitmap img)
-		{
-			Bitmap image = Grayscale.CommonAlgorithms.RMY.Apply(img);
+        public Color SnapshotColor { get; set; }
 
-			// find edges
-			SobelEdgeDetector EdgeFilter = new SobelEdgeDetector();
-			EdgeFilter.ApplyInPlace(image);
-			// back to color format
-			GrayscaleToRGB RGBfilter = new GrayscaleToRGB();
-			image = RGBfilter.Apply(image);
-			// get rid of grays
-			EuclideanColorFiltering filter = new EuclideanColorFiltering();
-			filter.CenterColor.Red = 20;
-			filter.CenterColor.Green = 20;
-			filter.CenterColor.Blue = 20;
-			filter.FillOutside = false;
-			filter.Radius = 200;
-			filter.ApplyInPlace(image);
+		public void TakeSnapshot()
+		{
+            Bitmap image = GetMeasurementFrame();
 
 			Color peek;
 			for (int y = 0; y < image.Height; y++)
@@ -1373,7 +1352,7 @@ namespace LitePlacer
 					peek = image.GetPixel(x, y);
 					if (peek.R != 0)
 					{
-						image.SetPixel(x, y, Color.Blue);
+                        image.SetPixel(x, y, SnapshotColor);
 					}
 				}
 			}
@@ -1382,6 +1361,7 @@ namespace LitePlacer
 			SnapshotImage = image;
 			SnapshotOriginalImage = image;
 		}
+
 
 
 		// =========================================================

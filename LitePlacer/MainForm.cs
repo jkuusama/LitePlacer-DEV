@@ -43,6 +43,7 @@ namespace LitePlacer
         // =================================================================================
         #region General
 
+        // =================================================================================
         // Note about thread guards: The prologue "if(InvokeRequired) {something long}" at a start of a function, 
         // makes the function safe to call from another thread.
         // See http://stackoverflow.com/questions/661561/how-to-update-the-gui-from-another-thread-in-c, 
@@ -77,7 +78,11 @@ namespace LitePlacer
         public FormMain()
         {
             InitializeComponent();
+            this.MouseWheel += new MouseEventHandler(MouseWheel_event);
         }
+
+
+        // =================================================================================
 
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -94,6 +99,7 @@ namespace LitePlacer
             SaveDataGrid(path + "LitePlacer.PaperTapeFunctions", PaperTape_dataGridView);
             SaveDataGrid(path + "LitePlacer.BlackTapeFunctions", BlackTape_dataGridView);
             SaveDataGrid(path + "LitePlacer.ClearTapeFunctions", ClearTape_dataGridView);
+            SaveDataGrid(path + "LitePlacer.SnapshotFunctions", Snapshot_dataGridView);
             SaveDataGrid(path + "LitePlacer.NeedleFunctions", Needle_dataGridView);
             SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView);
 
@@ -179,6 +185,7 @@ namespace LitePlacer
             LoadDataGrid(path + "LitePlacer.PaperTapeFunctions", PaperTape_dataGridView);
             LoadDataGrid(path + "LitePlacer.BlackTapeFunctions", BlackTape_dataGridView);
             LoadDataGrid(path + "LitePlacer.ClearTapeFunctions", ClearTape_dataGridView);
+            LoadDataGrid(path + "LitePlacer.SnapshotFunctions", Snapshot_dataGridView);
             LoadDataGrid(path + "LitePlacer.NeedleFunctions", Needle_dataGridView);
             LoadDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView);
             SetProcessingFunctions(Display_dataGridView);
@@ -188,6 +195,7 @@ namespace LitePlacer
             SetProcessingFunctions(PaperTape_dataGridView);
             SetProcessingFunctions(BlackTape_dataGridView);
             SetProcessingFunctions(ClearTape_dataGridView);
+            SetProcessingFunctions(Snapshot_dataGridView);
             SetProcessingFunctions(Needle_dataGridView);
             SetProcessingFunctions(UpCamComponents_dataGridView);
 
@@ -514,6 +522,47 @@ namespace LitePlacer
 
         // see https://github.com/synthetos/TinyG/wiki/TinyG-Feedhold-and-Resume
 
+        // =================================================================================
+        private void MouseWheel_event(object sender, MouseEventArgs e)
+        {
+            DisplayText("Wheel: " + e.Delta.ToString());
+
+            double Mag = 0.0;
+            if(e.Delta<0)
+            {
+                Mag = -1.0;
+            }
+            else if (e.Delta > 0)
+            {
+                Mag = 1.0;
+            }
+            else
+            {
+                return;
+            }
+            if (System.Windows.Forms.Control.ModifierKeys == Keys.Shift) 
+            {
+                Mag = Mag * 10.0;
+            }
+            if (System.Windows.Forms.Control.ModifierKeys == Keys.Control)
+            {
+                Mag = Mag / 10.0;
+            }
+
+            JoggingBusy = true;
+            CNC_A_m(Cnc.CurrentA + Mag);
+            if (DownCamera.Draw_Snapshot)
+            {
+                DownCamera.RotateSnapshot(Cnc.CurrentA);
+                while (DownCamera.rotating)
+                {
+                    Thread.Sleep(10);
+                }
+            }
+            JoggingBusy = false;
+        }
+
+        
         public bool JoggingBusy = false;
         List<Keys> JoggingKeys = new List<Keys>()
 	    {
@@ -532,6 +581,7 @@ namespace LitePlacer
 	    };
 
         // To make sure we get to see all keydown events:
+        // TODO: we don't; datagrids steal arrow keys
         private void RemoveCursorNavigation(System.Windows.Forms.Control.ControlCollection controls)
         {
             foreach (System.Windows.Forms.Control ctrl in controls)
@@ -554,13 +604,22 @@ namespace LitePlacer
             }
         }
 
+        static bool EnterKeyHit= true;
         public void My_KeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             //DisplayText("My_KeyDown: " + e.KeyCode.ToString());
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                EnterKeyHit = true;
+                return;
+            }
+
             if (!JoggingKeys.Contains(e.KeyCode))
             {
                 return;
             }
+
 
             e.IsInputKey = true;
             string Movestr = "{\"gc\":\"G1 F2000 ";
@@ -612,6 +671,7 @@ namespace LitePlacer
 
         private void Jog(object sender, PreviewKeyDownEventArgs e)
         {
+
             if (JoggingBusy)
             {
                 return;
@@ -1485,10 +1545,18 @@ namespace LitePlacer
             }
             if (cam == DownCamera)
             {
+                if (UpCamera.IsRunning())
+                {
+                    UpCamera.Close();
+                };
                 StartDownCamera_m();
             }
             else
             {
+                if (DownCamera.IsRunning())
+                {
+                    DownCamera.Close();
+                };
                 StartUpCamera_m();
             }
         }
@@ -1553,6 +1621,9 @@ namespace LitePlacer
         }
 
         // =================================================================================
+
+        // =================================================================================
+
         private void Cam_pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Control)
@@ -1616,11 +1687,13 @@ namespace LitePlacer
             DownCamera.ImageBox = this.Cam_pictureBox;
             DownCamera.Mirror = false;
             DownCamera.ClearDisplayFunctionsList();
+            DownCamera.SnapshotColor = Properties.Settings.Default.DownCam_SnapshotColor;
             // Draws
             DownCamera.DrawCross = true;
             DownCameraDrawCross_checkBox.Checked = true;
             DownCamera.DrawDashedCross = false;
             DownCameraDrawDashedCross_checkBox.Checked = false;
+            DownCamera.Draw_Snapshot = false;
             // Finds:
             DownCamera.FindCircles = false;
             DownCamFindCircles_checkBox.Checked = false;
@@ -1628,10 +1701,8 @@ namespace LitePlacer
             DownCamFindRectangles_checkBox.Checked = false;
             DownCamera.FindComponent = false;
             DownCam_FindComponents_checkBox.Checked = false;
-            DownCamera.TakeSnapshot = false;
             DownCamera.TestAlgorithm = false;
             ImageTest_checkBox.Checked = false;
-            DownCamera.Draw_Snapshot = false;
             Overlay_checkBox.Checked = false;
             DownCamera.DrawBox = false;
             DownCameraDrawBox_checkBox.Checked = false;
@@ -1651,7 +1722,6 @@ namespace LitePlacer
             UpCamera.FindCircles = false;
             UpCamera.FindRectangles = false;
             UpCamera.FindComponent = false;
-            UpCamera.TakeSnapshot = false;
             UpCamera.TestAlgorithm = false;
             UpCamera.Draw_Snapshot = false;
             UpCamera.DrawBox = false;
@@ -1681,7 +1751,6 @@ namespace LitePlacer
             UpCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
             UpCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_YmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture) + "mm/pixel)";
 
-            // Threshold_numericUpDown.Value = Properties.Settings.Default.Downcam_OpticalHomingThreshold;
             JigX_textBox.Text = Properties.Settings.Default.General_JigOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
             JigY_textBox.Text = Properties.Settings.Default.General_JigOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
             PickupCenterX_textBox.Text = Properties.Settings.Default.General_PickupCenterX.ToString("0.00", CultureInfo.InvariantCulture);
@@ -1698,6 +1767,7 @@ namespace LitePlacer
             DownCameraDrawTicks_checkBox.Checked = Properties.Settings.Default.DownCam_DrawTicks;
 
             RobustFast_checkBox.Checked = Properties.Settings.Default.Cameras_RobustSwitch;
+            DowncamSnapshot_ColorBox.BackColor = Properties.Settings.Default.DownCam_SnapshotColor;
 
             Display_dataGridView.Rows.Clear();
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
@@ -2225,13 +2295,6 @@ namespace LitePlacer
             {
                 DownCamera.Draw_Snapshot = false;
             }
-        }
-
-        // =================================================================================
-        private void Snapshot_button_Click(object sender, EventArgs e)
-        {
-            DownCamera.SnapshotRotation = Cnc.CurrentA;
-            DownCamera.TakeSnapshot = true;
         }
 
         // =================================================================================
@@ -5419,6 +5482,7 @@ namespace LitePlacer
 
         private void PlaceThese_button_Click(object sender, EventArgs e)
         {
+            this.ActiveControl = null; // User might need press enter during the process, which would run this again...
             if (!PrepareToPlace_m())
             {
                 ShowMessageBox(
@@ -6035,20 +6099,8 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return true;
 
+                case "DownCam Snapshot":
                 case "LoosePart":
-                    if (Component == "--")
-                    {
-                        ShowMessageBox(
-                            "Attempt to \"place\" non-existing component(\"--\")",
-                            "Data error",
-                            MessageBoxButtons.OK);
-                        return false;
-                    }
-                    if (!PlacePart_m(true, CADdataRow, GroupRow, X_machine, Y_machine, A_machine, FirstInRow))
-                        return false;
-                    break;
-                //break;
-
                 case "Place Fast":
                 case "Place":
                     if (Component == "--")
@@ -6059,7 +6111,7 @@ namespace LitePlacer
                             MessageBoxButtons.OK);
                         return false;
                     }
-                    if (!PlacePart_m(false, CADdataRow, GroupRow, X_machine, Y_machine, A_machine, FirstInRow))
+                    if (!PlacePart_m(CADdataRow, GroupRow, X_machine, Y_machine, A_machine, FirstInRow))
                         return false;
                     break;
 
@@ -6491,14 +6543,14 @@ namespace LitePlacer
             return count;
         }
 
-        private bool PickUpLoosePart_m(bool Probe, int CADdataRow, string Component)
+        private bool PickUpLoosePart_m(bool Probe, bool Snapshot, int CADdataRow, string Component)
         {
             if (!CNC_XY_m(Properties.Settings.Default.General_PickupCenterX, Properties.Settings.Default.General_PickupCenterY))
             {
                 return false;
             }
 
-            // ask for it
+            // ask for it 
             string ComponentType = CadData_GridView.Rows[CADdataRow].Cells["Value_Footprint"].Value.ToString();
             DialogResult dialogResult = ShowMessageBox(
                 "Put one " + ComponentType + " to the pickup location.",
@@ -6542,6 +6594,14 @@ namespace LitePlacer
                     }
                 }
             }
+            if (Snapshot)
+            {
+                DownCamera.SnapshotRotation = A;
+                DownCamera.BuildMeasurementFunctionsList(Snapshot_dataGridView);
+                DownCamera.TakeSnapshot();
+                DownCamera.Draw_Snapshot = true;
+            };
+
             Needle.Move_m(Cnc.CurrentX + X, Cnc.CurrentY + Y, A);
             // pick it up
             if (Probe)
@@ -6549,6 +6609,7 @@ namespace LitePlacer
                 DisplayText("PickUpLoosePart_m(): Probing pickup Z");
                 if (!Needle_ProbeDown_m())
                 {
+                    DownCamera.Draw_Snapshot = true;
                     return false;
                 }
                 LoosePartPickupZ = Cnc.CurrentZ;
@@ -6559,6 +6620,7 @@ namespace LitePlacer
                 DisplayText("PickUpLoosePart_m(): Part pickup, Z" + LoosePartPickupZ.ToString());
                 if (!CNC_Z_m(LoosePartPickupZ))
                 {
+                    DownCamera.Draw_Snapshot = true;
                     return false;
                 }
             }
@@ -6566,6 +6628,7 @@ namespace LitePlacer
             DisplayText("PickUpLoosePart_m(): needle up");
             if (!CNC_Z_m(0))
             {
+                DownCamera.Draw_Snapshot = true;
                 return false;
             }
             if (AbortPlacement)
@@ -6588,7 +6651,7 @@ namespace LitePlacer
         // It should go to X, Y, A
         // Data is validated already.
 
-        private bool PlacePart_m(bool LoosePart, int CADdataRow, int JobDataRow, double X, double Y, double A, bool FirstInRow)
+        private bool PlacePart_m(int CADdataRow, int JobDataRow, double X, double Y, double A, bool FirstInRow)
         {
             if (AbortPlacement)
             {
@@ -6600,43 +6663,101 @@ namespace LitePlacer
                 return false;
             };
             string id = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString();
-            int TapeNum;
-            if (!Tapes.IdValidates_m(id, out TapeNum))
-            {
-                return false;
-            }
+            string Method = JobData_GridView.Rows[JobDataRow].Cells["GroupMethod"].Value.ToString();
+
+            int TapeNum= 0;
             string Component = CadData_GridView.Rows[CADdataRow].Cells["Component"].Value.ToString();
             DisplayText("PlacePart_m, Component: " + Component + ", CAD data row: " + CADdataRow.ToString());
-            // First component in a row: We don't necessarily know the correct pickup and placement height, even though there
-            // might be values from previous runs. (PCB and needle might have changed.)
-            if (FirstInRow && !LoosePart)
+
+            // Preparing:
+            switch (Method)
             {
-                // Clear heights
-                Tapes_dataGridView.Rows[TapeNum].Cells["PickupZ_Column"].Value = "--";
-                Tapes_dataGridView.Rows[TapeNum].Cells["PlaceZ_Column"].Value = "--";
+                case "Place":
+                case "Place Fast":
+                    if (!Tapes.IdValidates_m(id, out TapeNum))
+                    {
+                        return false;
+                    }
+                    // First component in a row: We don't necessarily know the correct pickup and placement height, even though there
+                    // might be values from previous runs. (PCB and needle might have changed.)
+                    if (FirstInRow)
+                    {
+                        // Clear heights
+                        Tapes_dataGridView.Rows[TapeNum].Cells["PickupZ_Column"].Value = "--";
+                        Tapes_dataGridView.Rows[TapeNum].Cells["PlaceZ_Column"].Value = "--";
+                    };
+                    break;
+
+                default:
+                    // Other methods don't use tapes, nothing to do here.
+                    break;
             };
 
             // Pickup:
-            if (LoosePart)
+            switch (Method)
             {
-                if (!PickUpLoosePart_m(FirstInRow, CADdataRow, Component))
-                {
+                case "Place":
+                    if (!PickUpPartWithHoleMeasurement_m(TapeNum))
+                    {
+                        return false;
+                    }
+                    break;
+
+                case "Place Fast":
+                    if (!PickUpPartFast_m(TapeNum))
+                    {
+                        return false;
+                    }
+                    break;
+
+                case "LoosePart":
+                    if (!PickUpLoosePart_m(FirstInRow, false, CADdataRow, Component))
+                    {
+                        return false;
+                    }
+                    break;
+
+                case "DownCam Snapshot":
+                    if (!PickUpLoosePart_m(FirstInRow, true, CADdataRow, Component))
+                    {
+                        return false;
+                    }
+                    break;
+
+                default:
+                    ShowMessageBox(
+                        "Unknown method at placement time: ",
+                        "Operation aborted.",
+                        MessageBoxButtons.OK);
                     return false;
-                }
-            }
-            else if (JobData_GridView.Rows[JobDataRow].Cells["GroupMethod"].Value.ToString() == "Place Fast")
+                    // break;
+            };
+
+            // Take the part to position. With snapshot, we want to fine tune it here:
+            if (JobData_GridView.Rows[JobDataRow].Cells["GroupMethod"].Value.ToString() == "DownCam Snapshot")
             {
-                if (!PickUpPartFast_m(TapeNum))
+                DisplayText("PlacePart_m: DownCam Snapshot place");
+                // Take cam to where we think part is going. This might not be exactly right.
+                DownCamera.RotateSnapshot(A);
+                if (!CNC_XYA_m(X, Y, A))
                 {
+                    // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                    DownCamera.Draw_Snapshot = false;
+                    UpCamera.Draw_Snapshot = false;
                     return false;
-                }
-            }
-            else
-            {
-                if (!PickUpPartWithHoleMeasurement_m(TapeNum))
+                };
+                // Wait for enter key press. Before enter, user jogs the part and the image to right place
+                EnterKeyHit = false;
+                do
                 {
-                    return false;
-                }
+                    Application.DoEvents();
+                    Thread.Sleep(10);
+                } while (!EnterKeyHit);
+                DownCamera.Draw_Snapshot = false;
+                UpCamera.Draw_Snapshot = false;
+                X = Cnc.CurrentX;
+                Y = Cnc.CurrentY;
+                A = Cnc.CurrentA;
             };
 
             // Take the part to position:
@@ -6644,33 +6765,56 @@ namespace LitePlacer
             if (!Needle.Move_m(X, Y, A))
             {
                 // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                DownCamera.Draw_Snapshot = false;
+                UpCamera.Draw_Snapshot = false;
                 return false;
             }
 
             // Place it:
-            if (LoosePart)
-            {
-                if (!PutLoosePartDown_m(FirstInRow))
-                {
-                    // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
-                    return false;
-                }
-            }
-            else
-            {
-                if (!PutPartDown_m(TapeNum))
-                {
-                    // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
-                    return false;
-                }
-            }
             if (AbortPlacement)
             {
                 AbortPlacement = false;
                 ShowMessageBox(
                     "Operation aborted.",
                     "Operation aborted.",
-                    MessageBoxButtons.OK);
+                MessageBoxButtons.OK);
+                DownCamera.Draw_Snapshot = false;
+                UpCamera.Draw_Snapshot = false;
+                return false;
+            }
+ 
+            switch (Method)
+            {
+                case "LoosePart":
+                case "DownCam Snapshot":
+                    DownCamera.Draw_Snapshot = false;
+                    UpCamera.Draw_Snapshot = false;
+                    if (!PutLoosePartDown_m(FirstInRow))
+                    {
+                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                        return false;
+                    }
+                    break;
+
+                default:
+                    if (!PutPartDown_m(TapeNum))
+                    {
+                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                        DownCamera.Draw_Snapshot = false;
+                        UpCamera.Draw_Snapshot = false;
+                        return false;
+                    }
+                    break;
+            };
+            if (AbortPlacement)
+            {
+                AbortPlacement = false;
+                ShowMessageBox(
+                    "Operation aborted.",
+                    "Operation aborted.",
+                MessageBoxButtons.OK);
+                DownCamera.Draw_Snapshot = false;
+                UpCamera.Draw_Snapshot = false;
                 return false;
             }
             return true;
@@ -8775,6 +8919,9 @@ namespace LitePlacer
         // ==========================================================================================================
         // DownCam:
 
+
+        // ==========================================================================================================
+        
         private void DebugCirclesDownCamera(double Tolerance)
         {
             double X, Y;
@@ -8791,7 +8938,45 @@ namespace LitePlacer
             }
         }
 
+        // ==========================================================================================================
+        // Snapshot:
 
+        private void SnapshotToHere_button_Click(object sender, EventArgs e)
+        {
+            DataGridViewCopy(Display_dataGridView, ref Snapshot_dataGridView);
+        }
+
+        private void SnapshotToDisplay_button_Click(object sender, EventArgs e)
+        {
+            DataGridViewCopy(Snapshot_dataGridView, ref Display_dataGridView);
+            DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
+        }
+
+        private void TakeSnapshot_button_Click(object sender, EventArgs e)
+        {
+            DownCamera.SnapshotRotation = Cnc.CurrentA;
+            DownCamera.BuildMeasurementFunctionsList(Snapshot_dataGridView);
+            DownCamera.TakeSnapshot();
+        }
+
+        private void DowncamSnapshot_ColorBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            // Show the color dialog.
+            DialogResult result = colorDialog1.ShowDialog();
+            // See if user pressed ok.
+            if (result == DialogResult.OK)
+            {
+                // Set form background to the selected color.
+                DowncamSnapshot_ColorBox.BackColor = colorDialog1.Color;
+                Properties.Settings.Default.DownCam_SnapshotColor = colorDialog1.Color;
+                DownCamera.SnapshotColor = colorDialog1.Color;
+            }
+
+
+        }
+
+
+        // ==========================================================================================================
         // Homing:
         private void HomingToHere_button_Click(object sender, EventArgs e)
         {
