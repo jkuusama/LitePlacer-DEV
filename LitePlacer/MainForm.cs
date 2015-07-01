@@ -93,6 +93,7 @@ namespace LitePlacer
             path = path.Remove(i + 1);
             SaveDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
             SaveDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
+            SaveDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
             SaveDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
             SaveDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
             SaveDataGrid(path + "LitePlacer.ComponentsFunctions", Components_dataGridView);
@@ -101,7 +102,7 @@ namespace LitePlacer
             SaveDataGrid(path + "LitePlacer.ClearTapeFunctions", ClearTape_dataGridView);
             SaveDataGrid(path + "LitePlacer.SnapshotFunctions", Snapshot_dataGridView);
             SaveDataGrid(path + "LitePlacer.NeedleFunctions", Needle_dataGridView);
-            SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView);
+            SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView); 
 
             if (Cnc.Connected)
             {
@@ -165,7 +166,7 @@ namespace LitePlacer
             DownCamera = new Camera(this);
             UpCamera = new Camera(this);
             Needle = new NeedleClass(UpCamera, Cnc, this);
-            Tapes = new TapesClass(Tapes_dataGridView, Needle, DownCamera, Cnc, this);
+            Tapes = new TapesClass(Tapes_dataGridView, CustomTapes_dataGridView, Needle, DownCamera, Cnc, this);
 
 
             this.KeyPreview = true;
@@ -178,6 +179,8 @@ namespace LitePlacer
             path = path.Remove(i + 1);
             LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
             LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
+            LoadDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
+            // Tapes.AddCustomTapesToTapes();
 
             LoadDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
             LoadDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
@@ -8263,9 +8266,9 @@ namespace LitePlacer
         #endregion  CAD data reading functions
 
         // =================================================================================
-        // TapeNumber Positions page functions
+        // Tape Positions page functions
         // =================================================================================
-        #region TapeNumber Positions page functions
+        #region Tape Positions page functions
 
         private void Tapes_tabPage_Begin()
         {
@@ -9896,6 +9899,55 @@ namespace LitePlacer
 
         }
         #endregion
+
+        private void SaveCustomTapes_button_Click(object sender, EventArgs e)
+        {
+            TapesAll_saveFileDialog.Filter = "LitePlacer Custom Tapes files (*.customtapes)|*.customtapes|All files (*.*)|*.*";
+
+            if (TapesAll_saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                SaveDataGrid(TapesAll_saveFileDialog.FileName, CustomTapes_dataGridView);
+            }
+        }
+
+        private void LoadCustomTapes_button_Click(object sender, EventArgs e)
+        {
+            TapesAll_openFileDialog.Filter = "LitePlacer Custom Tapes files (*.customtapes)|*.customtapes|All files (*.*)|*.*";
+
+            if (TapesAll_openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                LoadDataGrid(TapesAll_openFileDialog.FileName, CustomTapes_dataGridView);
+            }
+        }
+
+        private void DeleteCustomTape_button_Click(object sender, EventArgs e)
+        {
+            if (CustomTapes_dataGridView.RowCount > 1)
+            {
+                CustomTapes_dataGridView.Rows.RemoveAt(CustomTapes_dataGridView.CurrentCell.RowIndex);
+            }
+            // ReloadTapes();
+            Tapes.AddCustomTapesToTapes();
+        }
+
+        private void CustomTapeUp_button_Click(object sender, EventArgs e)
+        {
+            DataGrid_Up_button(CustomTapes_dataGridView);
+            Tapes.AddCustomTapesToTapes();
+        }
+
+        private void CustomTapeDown_button_Click(object sender, EventArgs e)
+        {
+            DataGrid_Down_button(CustomTapes_dataGridView);
+            Tapes.AddCustomTapesToTapes();
+        }
+
+        private void UseCustomTapes_button_Click(object sender, EventArgs e)
+        {
+            Tapes.AddCustomTapesToTapes();
+        }
+
+
 
 
     }	// end of: 	public partial class FormMain : Form

@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -69,6 +69,18 @@
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.label145 = new System.Windows.Forms.Label();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.LoadCustomTapes_button = new System.Windows.Forms.Button();
+            this.SaveCustomTapes_button = new System.Windows.Forms.Button();
+            this.CustomTapeDown_button = new System.Windows.Forms.Button();
+            this.CustomTapeUp_button = new System.Windows.Forms.Button();
+            this.DeleteCustomTape_button = new System.Windows.Forms.Button();
+            this.label130 = new System.Windows.Forms.Label();
+            this.CustomTapes_dataGridView = new System.Windows.Forms.DataGridView();
+            this.Name_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PitchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UsesLocationMarks_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.PartOffsetX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PartOffsetY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ShowPart_button = new System.Windows.Forms.Button();
             this.label129 = new System.Windows.Forms.Label();
             this.HoleTest_button = new System.Windows.Forms.Button();
@@ -603,7 +615,9 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.UseCustomTapes_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
             this.Components_tabPage.SuspendLayout();
@@ -1050,6 +1064,14 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.UseCustomTapes_button);
+            this.Tapes_tabPage.Controls.Add(this.LoadCustomTapes_button);
+            this.Tapes_tabPage.Controls.Add(this.SaveCustomTapes_button);
+            this.Tapes_tabPage.Controls.Add(this.CustomTapeDown_button);
+            this.Tapes_tabPage.Controls.Add(this.CustomTapeUp_button);
+            this.Tapes_tabPage.Controls.Add(this.DeleteCustomTape_button);
+            this.Tapes_tabPage.Controls.Add(this.label130);
+            this.Tapes_tabPage.Controls.Add(this.CustomTapes_dataGridView);
             this.Tapes_tabPage.Controls.Add(this.ShowPart_button);
             this.Tapes_tabPage.Controls.Add(this.label129);
             this.Tapes_tabPage.Controls.Add(this.HoleTest_button);
@@ -1084,6 +1106,120 @@
             this.Tapes_tabPage.TabIndex = 6;
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // LoadCustomTapes_button
+            // 
+            this.LoadCustomTapes_button.Location = new System.Drawing.Point(509, 550);
+            this.LoadCustomTapes_button.Name = "LoadCustomTapes_button";
+            this.LoadCustomTapes_button.Size = new System.Drawing.Size(75, 23);
+            this.LoadCustomTapes_button.TabIndex = 60;
+            this.LoadCustomTapes_button.Text = "Load";
+            this.LoadCustomTapes_button.UseVisualStyleBackColor = true;
+            this.LoadCustomTapes_button.Click += new System.EventHandler(this.LoadCustomTapes_button_Click);
+            // 
+            // SaveCustomTapes_button
+            // 
+            this.SaveCustomTapes_button.Location = new System.Drawing.Point(509, 521);
+            this.SaveCustomTapes_button.Name = "SaveCustomTapes_button";
+            this.SaveCustomTapes_button.Size = new System.Drawing.Size(75, 23);
+            this.SaveCustomTapes_button.TabIndex = 59;
+            this.SaveCustomTapes_button.Text = "Save";
+            this.SaveCustomTapes_button.UseVisualStyleBackColor = true;
+            this.SaveCustomTapes_button.Click += new System.EventHandler(this.SaveCustomTapes_button_Click);
+            // 
+            // CustomTapeDown_button
+            // 
+            this.CustomTapeDown_button.Location = new System.Drawing.Point(509, 666);
+            this.CustomTapeDown_button.Name = "CustomTapeDown_button";
+            this.CustomTapeDown_button.Size = new System.Drawing.Size(75, 23);
+            this.CustomTapeDown_button.TabIndex = 58;
+            this.CustomTapeDown_button.Text = "Move Down";
+            this.toolTip1.SetToolTip(this.CustomTapeDown_button, "Moves the selected tape definition down on the table.");
+            this.CustomTapeDown_button.UseVisualStyleBackColor = true;
+            this.CustomTapeDown_button.Click += new System.EventHandler(this.CustomTapeDown_button_Click);
+            // 
+            // CustomTapeUp_button
+            // 
+            this.CustomTapeUp_button.Location = new System.Drawing.Point(509, 637);
+            this.CustomTapeUp_button.Name = "CustomTapeUp_button";
+            this.CustomTapeUp_button.Size = new System.Drawing.Size(75, 23);
+            this.CustomTapeUp_button.TabIndex = 57;
+            this.CustomTapeUp_button.Text = "Move Up";
+            this.toolTip1.SetToolTip(this.CustomTapeUp_button, "Moves the selected tape definition up on the table.");
+            this.CustomTapeUp_button.UseVisualStyleBackColor = true;
+            this.CustomTapeUp_button.Click += new System.EventHandler(this.CustomTapeUp_button_Click);
+            // 
+            // DeleteCustomTape_button
+            // 
+            this.DeleteCustomTape_button.Location = new System.Drawing.Point(509, 608);
+            this.DeleteCustomTape_button.Name = "DeleteCustomTape_button";
+            this.DeleteCustomTape_button.Size = new System.Drawing.Size(75, 23);
+            this.DeleteCustomTape_button.TabIndex = 56;
+            this.DeleteCustomTape_button.Text = "Delete";
+            this.toolTip1.SetToolTip(this.DeleteCustomTape_button, "Deletes the selected tape definition");
+            this.DeleteCustomTape_button.UseVisualStyleBackColor = true;
+            this.DeleteCustomTape_button.Click += new System.EventHandler(this.DeleteCustomTape_button_Click);
+            // 
+            // label130
+            // 
+            this.label130.AutoSize = true;
+            this.label130.Location = new System.Drawing.Point(5, 505);
+            this.label130.Name = "label130";
+            this.label130.Size = new System.Drawing.Size(122, 13);
+            this.label130.TabIndex = 54;
+            this.label130.Text = "Custom Tape Definitions";
+            // 
+            // CustomTapes_dataGridView
+            // 
+            this.CustomTapes_dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.CustomTapes_dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.CustomTapes_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.CustomTapes_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Name_Column,
+            this.PitchColumn,
+            this.UsesLocationMarks_Column,
+            this.PartOffsetX_Column,
+            this.PartOffsetY_Column});
+            this.CustomTapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.CustomTapes_dataGridView.Location = new System.Drawing.Point(8, 521);
+            this.CustomTapes_dataGridView.MultiSelect = false;
+            this.CustomTapes_dataGridView.Name = "CustomTapes_dataGridView";
+            this.CustomTapes_dataGridView.RowHeadersWidth = 50;
+            this.CustomTapes_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.CustomTapes_dataGridView.Size = new System.Drawing.Size(494, 168);
+            this.CustomTapes_dataGridView.TabIndex = 53;
+            // 
+            // Name_Column
+            // 
+            this.Name_Column.HeaderText = "Name";
+            this.Name_Column.Name = "Name_Column";
+            this.Name_Column.Width = 60;
+            // 
+            // PitchColumn
+            // 
+            this.PitchColumn.HeaderText = "Part Pitch";
+            this.PitchColumn.Name = "PitchColumn";
+            this.PitchColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.PitchColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.PitchColumn.Width = 53;
+            // 
+            // UsesLocationMarks_Column
+            // 
+            this.UsesLocationMarks_Column.HeaderText = "Location Marks Used";
+            this.UsesLocationMarks_Column.Name = "UsesLocationMarks_Column";
+            this.UsesLocationMarks_Column.Width = 80;
+            // 
+            // PartOffsetX_Column
+            // 
+            this.PartOffsetX_Column.HeaderText = "Part Offset X";
+            this.PartOffsetX_Column.Name = "PartOffsetX_Column";
+            this.PartOffsetX_Column.Width = 78;
+            // 
+            // PartOffsetY_Column
+            // 
+            this.PartOffsetY_Column.HeaderText = "Part Offset Y";
+            this.PartOffsetY_Column.Name = "PartOffsetY_Column";
+            this.PartOffsetY_Column.Width = 78;
             // 
             // ShowPart_button
             // 
@@ -6701,14 +6837,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6775,14 +6911,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -6934,6 +7070,17 @@
             // 
             this.colorDialog1.SolidColorOnly = true;
             // 
+            // UseCustomTapes_button
+            // 
+            this.UseCustomTapes_button.Location = new System.Drawing.Point(509, 579);
+            this.UseCustomTapes_button.Name = "UseCustomTapes_button";
+            this.UseCustomTapes_button.Size = new System.Drawing.Size(75, 23);
+            this.UseCustomTapes_button.TabIndex = 61;
+            this.UseCustomTapes_button.Text = "Use";
+            this.toolTip1.SetToolTip(this.UseCustomTapes_button, "Deletes the selected tape definition");
+            this.UseCustomTapes_button.UseVisualStyleBackColor = true;
+            this.UseCustomTapes_button.Click += new System.EventHandler(this.UseCustomTapes_button_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -6985,6 +7132,7 @@
             this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.Tapes_tabPage.ResumeLayout(false);
             this.Tapes_tabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).EndInit();
             this.Components_tabPage.ResumeLayout(false);
@@ -7598,6 +7746,28 @@
         private System.Windows.Forms.Button HoleTest_button;
         private System.Windows.Forms.Label label128;
         private System.Windows.Forms.MaskedTextBox HoleTest_maskedTextBox;
+        private System.Windows.Forms.Button ShowPart_button;
+        private System.Windows.Forms.CheckBox RobustFast_checkBox;
+        private System.Windows.Forms.TextBox DowncamSnapshot_ColorBox;
+        private System.Windows.Forms.GroupBox groupBox13;
+        private System.Windows.Forms.DataGridView Snapshot_dataGridView;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn9;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn41;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn42;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn43;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn44;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn45;
+        private System.Windows.Forms.Button SnapshotToDisplay_button;
+        private System.Windows.Forms.Button SnapshotToHere_button;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Label label130;
+        private System.Windows.Forms.DataGridView CustomTapes_dataGridView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Name_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PitchColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn UsesLocationMarks_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PartOffsetX_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PartOffsetY_Column;
         private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
@@ -7614,21 +7784,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastX;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastY;
-        private System.Windows.Forms.Button ShowPart_button;
-        private System.Windows.Forms.CheckBox RobustFast_checkBox;
-        private System.Windows.Forms.TextBox DowncamSnapshot_ColorBox;
-        private System.Windows.Forms.GroupBox groupBox13;
-        private System.Windows.Forms.DataGridView Snapshot_dataGridView;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn9;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn41;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn42;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn43;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn44;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn45;
-        private System.Windows.Forms.Button SnapshotToDisplay_button;
-        private System.Windows.Forms.Button SnapshotToHere_button;
-        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Button LoadCustomTapes_button;
+        private System.Windows.Forms.Button SaveCustomTapes_button;
+        private System.Windows.Forms.Button CustomTapeDown_button;
+        private System.Windows.Forms.Button CustomTapeUp_button;
+        private System.Windows.Forms.Button DeleteCustomTape_button;
+        private System.Windows.Forms.Button UseCustomTapes_button;
     }
 }
 

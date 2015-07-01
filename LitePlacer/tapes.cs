@@ -11,15 +11,17 @@ namespace LitePlacer
 {
 	class TapesClass
 	{
-		private DataGridView Grid;
-		private NeedleClass Needle;
+        private DataGridView Grid;
+        private DataGridView CustomGrid;
+        private NeedleClass Needle;
 		private FormMain MainForm;
 		private Camera DownCamera;
 		private CNC Cnc;
 
-		public TapesClass(DataGridView gr, NeedleClass ndl, Camera cam, CNC c, FormMain MainF)
+        public TapesClass(DataGridView gr, DataGridView custom, NeedleClass ndl, Camera cam, CNC c, FormMain MainF)
 		{
-			Grid = gr;
+            CustomGrid = custom;
+            Grid = gr;
 			Needle = ndl;
 			DownCamera = cam;
 			MainForm = MainF;
@@ -172,75 +174,79 @@ namespace LitePlacer
         // ========================================================================================
         // GetTapeParameters_m(): 
         // Get from the indicated tape the dW, part center pos from hole and Pitch, distance from one part to another
-        // Pitch is integer, but in mm's.
-        private bool GetTapeParameters_m(int Tape, out double dW, out int Pitch)
+        private bool GetTapeParameters_m(int Tape, out int CustomTapeNum, out double dW, out double FromHole, out double Pitch)
         {
+            CustomTapeNum= -1;      // not custom
             dW = 0.0;
-            Pitch = 0;
+            Pitch = 0.0;
+            FromHole = -2.0;
             string Width = Grid.Rows[Tape].Cells["WidthColumn"].Value.ToString();
             // TapeNumber measurements: 
             switch (Width)
             {
                 case "8/2mm":
                     dW = 3.50;
-                    Pitch = 2;
+                    Pitch = 2.0;
                     break;
                 case "8/4mm":
                     dW = 3.50;
-                    Pitch = 4;
+                    Pitch = 4.0;
                     break;
 
                 case "12/4mm":
                     dW = 5.50;
-                    Pitch = 4;
+                    Pitch = 4.0;
                     break;
                 case "12/8mm":
                     dW = 5.50;
-                    Pitch = 8;
+                    Pitch = 8.0;
                     break;
 
                 case "16/4mm":
                     dW = 7.50;
-                    Pitch = 4;
+                    Pitch = 4.0;
                     break;
                 case "16/8mm":
                     dW = 7.50;
-                    Pitch = 8;
+                    Pitch = 8.0;
                     break;
                 case "16/12mm":
                     dW = 7.50;
-                    Pitch = 12;
+                    Pitch = 12.0;
                     break;
 
                 case "24/4mm":
                     dW = 11.50;
-                    Pitch = 4;
+                    Pitch = 4.0;
                     break;
                 case "24/8mm":
                     dW = 11.50;
-                    Pitch = 8;
+                    Pitch = 8.0;
                     break;
                 case "24/12mm":
                     dW = 11.50;
-                    Pitch = 12;
+                    Pitch = 12.0;
                     break;
                 case "24/16mm":
                     dW = 11.50;
-                    Pitch = 16;
+                    Pitch = 16.0;
                     break;
                 case "24/20mm":
                     dW = 11.50;
-                    Pitch = 20;
+                    Pitch = 20.0;
                     break;
 
                 default:
-                    MainForm.ShowMessageBox(
-                        "Bad data at Tape #" + Tape.ToString() + ", Width",
-                        "Tape data error",
-                        MessageBoxButtons.OK
-                    );
-                    return false;
-                // break;
+                    if (!FindCustomTapeParameters(Width, out CustomTapeNum, out dW, out FromHole, out Pitch))
+                    {
+                        MainForm.ShowMessageBox(
+                            "Bad data at Tape #" + Tape.ToString() + ", Width",
+                            "Tape data error",
+                            MessageBoxButtons.OK
+                        );
+                        return false;
+                    }
+                    break;
             }
             return true;
         }
@@ -252,6 +258,7 @@ namespace LitePlacer
         {
             ResultX = 0.0;
             ResultY = 0.0;
+
             // Get start points
             double X = 0.0;
             double Y = 0.0;
@@ -275,15 +282,17 @@ namespace LitePlacer
             }
 
             // Get the hole location guess
-            double dW;	
-            int Pitch;
-            if (!GetTapeParameters_m(TapeNum, out dW, out Pitch))
+            double dW;
+            double Pitch;
+            double FromHole;
+            int CustomTapeNum = -1;
+            if (!GetTapeParameters_m(TapeNum, out CustomTapeNum, out dW, out FromHole, out Pitch))
             {
                 return false;
             }
-            if(Pitch==2)
+            if (Math.Abs(Pitch - 2) < 0.000001)
             {
-                Pitch = 4;
+                Pitch = 4.0;
                 PartNum = PartNum % 2;
             }
             int incr = (PartNum - 1);  // this many holes from start
@@ -315,6 +324,18 @@ namespace LitePlacer
                     return false;
             }
             // X, Y now hold the first guess
+            // For custom tapes, we might not need to move at all:
+
+            if (CustomTapeNum != -1)  // tape is custom
+            {
+                if (!GetCustomPartHole_m(CustomTapeNum, PartNum, X, Y, out ResultX, out ResultY))
+                {
+                    return false;
+                }
+                return true;
+            }
+
+            // Measuring standard tapes
             if (!SetCurrentTapeMeasurement_m(TapeNum))  // having the measurement setup here helps with the automatic gain lag
             {
                 return false;
@@ -351,11 +372,11 @@ namespace LitePlacer
             A = 0.0;
 
 			double dW;	// Part center pos from hole, tape width direction. Varies.
-			int Pitch;  // Distance from one part to another
-			double dL = 2.0;	// Part center pos from hole, tape lenght direction; 2.0mm in all tape types,
-                                // except when 2mm part pitch. See below.
+            double dL;   // Part center pos from hole, tape lenght direction. -2mm on all standard tapes
+			double Pitch;  // Distance from one part to another
 
-            if (!GetTapeParameters_m(Tape, out dW, out Pitch))
+            int CustomTapeNum = -1;
+            if (!GetTapeParameters_m(Tape, out CustomTapeNum, out dW, out dL, out Pitch))
 	        {
 		        return false;
 	        }
@@ -374,7 +395,7 @@ namespace LitePlacer
 				);
 				return false;
 			}
-            if ((Pitch == 2) && ((pos % 2) == 0))
+            if ((Math.Abs(Pitch - 2) < 0.000001) && ((pos % 2) == 0))
 			{
 				dL = 0.0;
 			};
@@ -383,24 +404,24 @@ namespace LitePlacer
 			{
 				case "+Y":
 					PartX = X - dW;
-					PartY = Y - dL;
+					PartY = Y + dL;
 					A = 0.0;
 					break;
 
 				case "+X":
-					PartX = X - dL;
+					PartX = X + dL;
 					PartY = Y + dW;
 					A = -90.0;
 					break;
 
 				case "-Y":
 					PartX = X + dW;
-					PartY = Y + dL;
+					PartY = Y - dL;
 					A = -180.0;
 					break;
 
 				case "-X":
-					PartX = X + dL;
+					PartX = X - dL;
 					PartY = Y - dW;
 					A = -270.0;
 					break;
@@ -466,9 +487,10 @@ namespace LitePlacer
         public bool IncrementTape(int Tape, double HoleX, double HoleY)
         {
             double dW;	// Part center pos from hole, tape width direction. Varies.
-            int Pitch;  // Distance from one part to another
-
-            if (!GetTapeParameters_m(Tape, out dW, out Pitch))
+            double dL;   // Part center pos from hole, tape lenght direction. -2mm on all standard tapes
+            double Pitch;  // Distance from one part to another
+            int CustomTapeNum = -1;
+            if (!GetTapeParameters_m(Tape, out CustomTapeNum, out dW, out dL, out Pitch))
             {
                 return false;
             }
@@ -485,15 +507,15 @@ namespace LitePlacer
 			}
 
             // Set next hole approximate location. On 2mm part pitch, increment only at even part count.
-            if (Pitch == 2)
+            if (Math.Abs(Pitch - 2) < 0.000001)
             {
                 if ((pos % 2) != 0)
                 {
-                    Pitch = 0;
+                    Pitch = 0.0;
                 }
                 else
                 {
-                    Pitch = 4;
+                    Pitch = 4.0;
                 }
             };
             switch (Grid.Rows[Tape].Cells["OrientationColumn"].Value.ToString())
@@ -633,6 +655,99 @@ namespace LitePlacer
 					return false;
 			}
 		}
+
+	// ========================================================================================
+	// Custom Tapes (or trays, feeders etc.):
+
+        private bool GetCustomPartHole_m(int CustomTapeNum, int PartNum, double X, double Y, out double ResultX, out double ResultY)
+        {
+            ResultX = 0.0;
+            ResultY = 0.0;
+            return false;
+        }
+
+        // ========================================================================================
+        // FindCustomTapeParameters(): We did not find the tape width from standard tapes, so the tape must be a custom tape.
+        // This routine finds the tape number and the parameters from the custom tape name:
+        private bool FindCustomTapeParameters(string Name, out int CustomTapeNum, out double OffsetY, out double OffsetX, out double Pitch)
+        {
+            OffsetY = 0.0;
+            OffsetX = 0.0;
+            Pitch = 0.0;
+            CustomTapeNum = -1;
+            foreach (DataGridViewRow GridRow in Grid.Rows)
+            {
+                if (GridRow.Cells["NameColumn"].Value.ToString() == Name)
+                {
+                    // Found it!
+                    CustomTapeNum= GridRow.Index;
+                    DataGridViewRow Row = CustomGrid.Rows[CustomTapeNum];
+                    if (!double.TryParse(Row.Cells["PitchColumn"].Value.ToString(), out Pitch))
+                    {
+                        MainForm.ShowMessageBox(
+                            "Bad data at custom tape " + Name +", Pitch column",
+                            "Data error",
+                            MessageBoxButtons.OK
+                        );
+                        return false;
+                    }
+
+                    if ((bool)Row.Cells["UsesLocationMarks_Column"].Value)
+                    {
+                        if (!double.TryParse(Row.Cells["PartOffsetX_Column"].Value.ToString(), out OffsetX))
+                        {
+                            MainForm.ShowMessageBox(
+                                "Bad data at custom tape " + Name + ", Part Offset X column",
+                                "Data error",
+                                MessageBoxButtons.OK
+                            );
+                            return false;
+                        }
+                        if (!double.TryParse(Row.Cells["PartOffsetY_Column"].Value.ToString(), out OffsetY))
+                        {
+                            MainForm.ShowMessageBox(
+                                "Bad data at custom tape " + Name + ", Part Offset Y column",
+                                "Data error",
+                                MessageBoxButtons.OK
+                            );
+                            return false;
+                        }
+                        return true;
+                    }
+                    return true;
+                }  // end "found it"
+            }
+            MainForm.ShowMessageBox(
+                "Did not find custom tape " + Name,
+                "Data error",
+                MessageBoxButtons.OK
+            );
+            return false;
+        }
+
+        // ========================================================================================
+        // Custom tapes are recognized by their name, which should be placed in the Width column
+
+        public void AddCustomTapesToTapes()
+        {
+            if (Grid.RowCount==0)
+            {
+                return;
+            }
+
+            // There must be a cleaner way to do this! However, I didn't find it. :-(
+            for (int i = 0; i < Grid.RowCount; i++)
+            {
+                DataGridViewComboBoxCell box = (DataGridViewComboBoxCell)Grid.Rows[i].Cells["WidthColumn"];
+
+                // Add custom tape names
+                for (int j = 0; j < CustomGrid.RowCount-1; j++)
+                {
+                    box.Items.Add(CustomGrid.Rows[j].Cells["Name_Column"].Value.ToString());
+                }
+            }
+
+        }
 	}
 
 }
