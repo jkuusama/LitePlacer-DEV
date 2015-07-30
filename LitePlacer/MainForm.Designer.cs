@@ -69,6 +69,7 @@
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.label145 = new System.Windows.Forms.Label();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.UseCustomTapes_button = new System.Windows.Forms.Button();
             this.LoadCustomTapes_button = new System.Windows.Forms.Button();
             this.SaveCustomTapes_button = new System.Windows.Forms.Button();
             this.CustomTapeDown_button = new System.Windows.Forms.Button();
@@ -615,7 +616,6 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.UseCustomTapes_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1106,6 +1106,17 @@
             this.Tapes_tabPage.TabIndex = 6;
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // UseCustomTapes_button
+            // 
+            this.UseCustomTapes_button.Location = new System.Drawing.Point(509, 579);
+            this.UseCustomTapes_button.Name = "UseCustomTapes_button";
+            this.UseCustomTapes_button.Size = new System.Drawing.Size(75, 23);
+            this.UseCustomTapes_button.TabIndex = 61;
+            this.UseCustomTapes_button.Text = "Use";
+            this.toolTip1.SetToolTip(this.UseCustomTapes_button, "Deletes the selected tape definition");
+            this.UseCustomTapes_button.UseVisualStyleBackColor = true;
+            this.UseCustomTapes_button.Click += new System.EventHandler(this.UseCustomTapes_button_Click);
             // 
             // LoadCustomTapes_button
             // 
@@ -7069,17 +7080,6 @@
             // colorDialog1
             // 
             this.colorDialog1.SolidColorOnly = true;
-            // 
-            // UseCustomTapes_button
-            // 
-            this.UseCustomTapes_button.Location = new System.Drawing.Point(509, 579);
-            this.UseCustomTapes_button.Name = "UseCustomTapes_button";
-            this.UseCustomTapes_button.Size = new System.Drawing.Size(75, 23);
-            this.UseCustomTapes_button.TabIndex = 61;
-            this.UseCustomTapes_button.Text = "Use";
-            this.toolTip1.SetToolTip(this.UseCustomTapes_button, "Deletes the selected tape definition");
-            this.UseCustomTapes_button.UseVisualStyleBackColor = true;
-            this.UseCustomTapes_button.Click += new System.EventHandler(this.UseCustomTapes_button_Click);
             // 
             // FormMain
             // 

@@ -989,7 +989,6 @@ namespace LitePlacer
         private bool CNC_Home_m(string axis)
         {
             Cnc.Homing = true;
-            //if (!CNC_Write_m("G28.2 " + axis + "0"))
             if (!CNC_Write_m("{\"gc\":\"G28.2 " + axis + "0\"}"))
             {
                 ShowMessageBox(
@@ -1010,6 +1009,7 @@ namespace LitePlacer
         // by the CNC class. (See _readyEvent )
         // =================================================================================
         private const int CNC_MoveTimeout = 3000; // timeout for X,Y,Z,A movements; 2x ms. (3000= 6s timeout)
+        public int CNC_HomingTimeout = 16;  // in seconds
 
         private void CNC_RawWrite(string s)
         {
@@ -1036,7 +1036,7 @@ namespace LitePlacer
             int i = 0;
             if (Cnc.Homing)
             {
-                Timeout = 8000;
+                Timeout = CNC_HomingTimeout*1000 / 2;
             };
             while (!CNC_BlockingWriteDone)
             {
@@ -4266,6 +4266,20 @@ namespace LitePlacer
 
         private void HomeX_button_Click(object sender, EventArgs e)
         {
+            double MaxTime;
+            if (!double.TryParse(xsv_maskedTextBox.Text, out MaxTime))
+            {
+                ShowMessageBox(
+                    "Bad data in X homing speed",
+                    "Data error",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            MaxTime = MaxTime / 60;  // Now in seconds/mm
+            MaxTime = (Properties.Settings.Default.General_MachineSizeX / MaxTime) * 1.1; // in seconds for the machine size and some 
+            CNC_HomingTimeout = (int)MaxTime;
+            DisplayText("X homing timeout value: " + CNC_HomingTimeout.ToString());
+
             CNC_Home_m("X");
         }
 
@@ -4278,12 +4292,27 @@ namespace LitePlacer
 
         private void HomeY_button_Click(object sender, EventArgs e)
         {
+            double MaxTime;
+            if (!double.TryParse(ysv_maskedTextBox.Text, out MaxTime))
+            {
+                ShowMessageBox(
+                    "Bad data in Y homing speed",
+                    "Data error",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            MaxTime = MaxTime / 60;  // Now in seconds/mm
+            MaxTime = (Properties.Settings.Default.General_MachineSizeY / MaxTime) * 1.1; // in seconds for the machine size and some 
+            CNC_HomingTimeout = (int)MaxTime;
+            DisplayText("Y homing timeout value: " + CNC_HomingTimeout.ToString());
+            
             CNC_Home_m("Y");
         }
 
         private void HomeZ_button_Click(object sender, EventArgs e)
         {
             Needle.ProbingMode(false, JSON);
+            CNC_HomingTimeout = 8;
             CNC_Home_m("Z");
         }
 
