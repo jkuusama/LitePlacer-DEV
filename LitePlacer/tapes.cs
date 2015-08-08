@@ -496,11 +496,13 @@ namespace LitePlacer
             }
 
             int pos;
-            if (!int.TryParse(Grid.Rows[Tape].Cells["IdColumn"].Value.ToString(), out pos))
+            string val = Grid.Rows[Tape].Cells["Next_Column"].Value.ToString();
+
+            if (!int.TryParse(val, out pos))
 			{
 				MainForm.ShowMessageBox(
-                    "Bad data at Tape " + Grid.Rows[Tape].Cells["IdColumn"].Value.ToString() + ", next",
-					"S´loppy programmer error",
+                    "Bad data at Tape " + Grid.Rows[Tape].Cells["Next_Column"].Value.ToString() + ", next",
+					"Sloppy programmer error",
 					MessageBoxButtons.OK
 				);
 				return false;
