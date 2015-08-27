@@ -6232,7 +6232,6 @@
             this.StopDemo_button.TabIndex = 74;
             this.StopDemo_button.Text = "Stop Demo";
             this.StopDemo_button.UseVisualStyleBackColor = true;
-            this.StopDemo_button.Visible = false;
             this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
             // 
             // Demo_button
@@ -6243,7 +6242,6 @@
             this.Demo_button.TabIndex = 73;
             this.Demo_button.Text = "Start Demo";
             this.Demo_button.UseVisualStyleBackColor = true;
-            this.Demo_button.Visible = false;
             this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
             // 
             // ChangeNeedle_button
