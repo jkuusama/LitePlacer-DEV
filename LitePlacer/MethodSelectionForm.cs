@@ -79,10 +79,10 @@ namespace LitePlacer
 			this.Close();
 		}
 
-		private void PlaceWithCam_button_Click(object sender, EventArgs e)
+		private void ManualUpCam_button_Click(object sender, EventArgs e)
 		{
-            //SelectedMethod = "Place with UpCam";
-            //this.Close();
+            SelectedMethod = "UpCam Snapshot";
+            this.Close();
 		}
 
         private void LoosePart_button_Click(object sender, EventArgs e)

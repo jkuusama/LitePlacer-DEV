@@ -97,62 +97,77 @@ namespace LitePlacer
         {
             if (!Calibrated)
             {
-                MainForm.ShowMessageBox(
-					"CorrectedPosition() call, needle not calibrated.",
-					"Sloppy programmer error",
-					MessageBoxButtons.OK);
-				X = 0;
-				Y = 0;
-				return false;
-			}
-            else
-            {
-                while (angle < 0)
+                DialogResult dialogResult = MainForm.ShowMessageBox(
+                    "Needle not calibrated. Calibrate now?",
+                    "Needle not calibrated", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No)
                 {
-                    angle = angle + 360.0;
+                    X = 0.0;
+                    Y = 0.0;
+                    return false;
                 };
-                while (angle > 360.0)
+                double CurrX = Cnc.CurrentX;
+                double CurrY = Cnc.CurrentY;
+                double CurrA = Cnc.CurrentA;
+                if(!MainForm.CalibrateNeedle_m())
                 {
-                    angle = angle - 360.0;
+                    X = 0;
+                    Y = 0;
+                    return false;
                 }
-                // since we are not going to check the last point (which is the cal. value for 360)
-                // in the for loop,we check that now
-                if (angle > 359.98)
+                if (!MainForm.CNC_XYA_m(CurrX, CurrY, CurrA))
                 {
-                    X = CalibrationPoints[0].X;
-                    Y = CalibrationPoints[0].Y;
-                    return true;
-                };
+                    X = 0;
+                    Y = 0;
+                    return false;
+                }
+            };
 
-                for (int i = 0; i < CalibrationPoints.Count; i++)
-                {
-                    if (Math.Abs(angle - CalibrationPoints[i].Angle) < 1.0)
-                    {
-                        X = CalibrationPoints[i].X;
-                        Y = CalibrationPoints[i].Y;
-						return true;
-                    }
-                    if ((angle > CalibrationPoints[i].Angle)
-                        &&
-                        (angle < CalibrationPoints[i + 1].Angle)
-                        &&
-                        (Math.Abs(angle - CalibrationPoints[i + 1].Angle) > 1.0))
-                    {
-                        // angle is between CalibrationPoints[i] and CalibrationPoints[i+1], and is not == CalibrationPoints[i+1]
-                        double fract = (angle - CalibrationPoints[i+1].Angle) / (CalibrationPoints[i+1].Angle - CalibrationPoints[i].Angle);
-                        X = CalibrationPoints[i].X + fract * (CalibrationPoints[i + 1].X - CalibrationPoints[i].X);
-                        Y = CalibrationPoints[i].Y + fract * (CalibrationPoints[i + 1].Y - CalibrationPoints[i].Y);
-						return true;
-                    }
-                }
-                MainForm.ShowMessageBox(
-                    "Needle Calibration value read: value not found",
-                    "Sloppy programmer error",
-                    MessageBoxButtons.OK);
-                X = 0;
-                Y = 0;
-				return false;
+            while (angle < 0)
+            {
+                angle = angle + 360.0;
+            };
+            while (angle > 360.0)
+            {
+                angle = angle - 360.0;
             }
+            // since we are not going to check the last point (which is the cal. value for 360)
+            // in the for loop,we check that now
+            if (angle > 359.98)
+            {
+                X = CalibrationPoints[0].X;
+                Y = CalibrationPoints[0].Y;
+                return true;
+            };
+
+            for (int i = 0; i < CalibrationPoints.Count; i++)
+            {
+                if (Math.Abs(angle - CalibrationPoints[i].Angle) < 1.0)
+                {
+                    X = CalibrationPoints[i].X;
+                    Y = CalibrationPoints[i].Y;
+					return true;
+                }
+                if ((angle > CalibrationPoints[i].Angle)
+                    &&
+                    (angle < CalibrationPoints[i + 1].Angle)
+                    &&
+                    (Math.Abs(angle - CalibrationPoints[i + 1].Angle) > 1.0))
+                {
+                    // angle is between CalibrationPoints[i] and CalibrationPoints[i+1], and is not == CalibrationPoints[i+1]
+                    double fract = (angle - CalibrationPoints[i+1].Angle) / (CalibrationPoints[i+1].Angle - CalibrationPoints[i].Angle);
+                    X = CalibrationPoints[i].X + fract * (CalibrationPoints[i + 1].X - CalibrationPoints[i].X);
+                    Y = CalibrationPoints[i].Y + fract * (CalibrationPoints[i + 1].Y - CalibrationPoints[i].Y);
+					return true;
+                }
+            }
+            MainForm.ShowMessageBox(
+                "Needle Calibration value read: value not found",
+                "Sloppy programmer error",
+                MessageBoxButtons.OK);
+            X = 0;
+            Y = 0;
+			return false;
         }
 
 

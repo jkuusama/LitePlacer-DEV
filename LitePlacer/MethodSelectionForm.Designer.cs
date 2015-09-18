@@ -43,7 +43,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.Pause_button = new System.Windows.Forms.Button();
             this.UpdateJobGrid_checkBox = new System.Windows.Forms.CheckBox();
-            this.PlaceWithCam_button = new System.Windows.Forms.Button();
+            this.ManualUpCam_button = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.LoosePart_button = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
@@ -55,9 +55,9 @@
             // 
             // Question_button
             // 
-            this.Question_button.Location = new System.Drawing.Point(239, 12);
+            this.Question_button.Location = new System.Drawing.Point(238, 12);
             this.Question_button.Name = "Question_button";
-            this.Question_button.Size = new System.Drawing.Size(109, 23);
+            this.Question_button.Size = new System.Drawing.Size(119, 23);
             this.Question_button.TabIndex = 0;
             this.Question_button.Text = "?";
             this.Question_button.UseVisualStyleBackColor = true;
@@ -67,7 +67,7 @@
             // 
             this.Place_button.Location = new System.Drawing.Point(238, 70);
             this.Place_button.Name = "Place_button";
-            this.Place_button.Size = new System.Drawing.Size(109, 23);
+            this.Place_button.Size = new System.Drawing.Size(119, 23);
             this.Place_button.TabIndex = 1;
             this.Place_button.Text = "Place";
             this.Place_button.UseVisualStyleBackColor = true;
@@ -76,7 +76,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(143, 17);
+            this.label1.Location = new System.Drawing.Point(142, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(90, 13);
             this.label1.TabIndex = 2;
@@ -93,9 +93,9 @@
             // 
             // ChangeNeedle_button
             // 
-            this.ChangeNeedle_button.Location = new System.Drawing.Point(241, 157);
+            this.ChangeNeedle_button.Location = new System.Drawing.Point(238, 128);
             this.ChangeNeedle_button.Name = "ChangeNeedle_button";
-            this.ChangeNeedle_button.Size = new System.Drawing.Size(109, 23);
+            this.ChangeNeedle_button.Size = new System.Drawing.Size(119, 23);
             this.ChangeNeedle_button.TabIndex = 4;
             this.ChangeNeedle_button.Text = "Change needle";
             this.ChangeNeedle_button.UseVisualStyleBackColor = true;
@@ -104,7 +104,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(109, 162);
+            this.label3.Location = new System.Drawing.Point(106, 133);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(126, 13);
             this.label3.TabIndex = 5;
@@ -113,7 +113,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(63, 191);
+            this.label4.Location = new System.Drawing.Point(60, 162);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(172, 13);
             this.label4.TabIndex = 7;
@@ -121,9 +121,9 @@
             // 
             // Recalibrate_button
             // 
-            this.Recalibrate_button.Location = new System.Drawing.Point(241, 186);
+            this.Recalibrate_button.Location = new System.Drawing.Point(238, 157);
             this.Recalibrate_button.Name = "Recalibrate_button";
-            this.Recalibrate_button.Size = new System.Drawing.Size(109, 23);
+            this.Recalibrate_button.Size = new System.Drawing.Size(119, 23);
             this.Recalibrate_button.TabIndex = 6;
             this.Recalibrate_button.Text = "Recalibrate";
             this.Recalibrate_button.UseVisualStyleBackColor = true;
@@ -132,7 +132,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(168, 220);
+            this.label5.Location = new System.Drawing.Point(165, 191);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(67, 13);
             this.label5.TabIndex = 9;
@@ -140,9 +140,9 @@
             // 
             // Ignore_button
             // 
-            this.Ignore_button.Location = new System.Drawing.Point(241, 215);
+            this.Ignore_button.Location = new System.Drawing.Point(238, 186);
             this.Ignore_button.Name = "Ignore_button";
-            this.Ignore_button.Size = new System.Drawing.Size(109, 23);
+            this.Ignore_button.Size = new System.Drawing.Size(119, 23);
             this.Ignore_button.TabIndex = 8;
             this.Ignore_button.Text = "Ignore";
             this.Ignore_button.UseVisualStyleBackColor = true;
@@ -151,7 +151,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(115, 278);
+            this.label6.Location = new System.Drawing.Point(112, 249);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(120, 13);
             this.label6.TabIndex = 11;
@@ -159,9 +159,9 @@
             // 
             // Fiducials_button
             // 
-            this.Fiducials_button.Location = new System.Drawing.Point(241, 273);
+            this.Fiducials_button.Location = new System.Drawing.Point(238, 244);
             this.Fiducials_button.Name = "Fiducials_button";
-            this.Fiducials_button.Size = new System.Drawing.Size(109, 23);
+            this.Fiducials_button.Size = new System.Drawing.Size(119, 23);
             this.Fiducials_button.TabIndex = 10;
             this.Fiducials_button.Text = "Fiducials";
             this.Fiducials_button.UseVisualStyleBackColor = true;
@@ -170,7 +170,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(163, 249);
+            this.label7.Location = new System.Drawing.Point(160, 220);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(72, 13);
             this.label7.TabIndex = 13;
@@ -178,9 +178,9 @@
             // 
             // Pause_button
             // 
-            this.Pause_button.Location = new System.Drawing.Point(241, 244);
+            this.Pause_button.Location = new System.Drawing.Point(238, 215);
             this.Pause_button.Name = "Pause_button";
-            this.Pause_button.Size = new System.Drawing.Size(109, 23);
+            this.Pause_button.Size = new System.Drawing.Size(119, 23);
             this.Pause_button.TabIndex = 12;
             this.Pause_button.Text = "Pause";
             this.Pause_button.UseVisualStyleBackColor = true;
@@ -189,7 +189,7 @@
             // UpdateJobGrid_checkBox
             // 
             this.UpdateJobGrid_checkBox.AutoSize = true;
-            this.UpdateJobGrid_checkBox.Location = new System.Drawing.Point(66, 312);
+            this.UpdateJobGrid_checkBox.Location = new System.Drawing.Point(250, 297);
             this.UpdateJobGrid_checkBox.Name = "UpdateJobGrid_checkBox";
             this.UpdateJobGrid_checkBox.Size = new System.Drawing.Size(107, 17);
             this.UpdateJobGrid_checkBox.TabIndex = 14;
@@ -197,32 +197,32 @@
             this.UpdateJobGrid_checkBox.UseVisualStyleBackColor = true;
             this.UpdateJobGrid_checkBox.CheckedChanged += new System.EventHandler(this.UpdateJobGrid_checkBox_CheckedChanged);
             // 
-            // PlaceWithCam_button
+            // ManualUpCam_button
             // 
-            this.PlaceWithCam_button.Location = new System.Drawing.Point(241, 312);
-            this.PlaceWithCam_button.Name = "PlaceWithCam_button";
-            this.PlaceWithCam_button.Size = new System.Drawing.Size(109, 23);
-            this.PlaceWithCam_button.TabIndex = 15;
-            this.PlaceWithCam_button.Text = "Place with UpCam";
-            this.PlaceWithCam_button.UseVisualStyleBackColor = true;
-            this.PlaceWithCam_button.Visible = false;
-            this.PlaceWithCam_button.Click += new System.EventHandler(this.PlaceWithCam_button_Click);
+            this.ManualUpCam_button.Location = new System.Drawing.Point(7, 272);
+            this.ManualUpCam_button.Name = "ManualUpCam_button";
+            this.ManualUpCam_button.Size = new System.Drawing.Size(119, 23);
+            this.ManualUpCam_button.TabIndex = 15;
+            this.ManualUpCam_button.Text = "Place with UpCam";
+            this.ManualUpCam_button.UseVisualStyleBackColor = true;
+            this.ManualUpCam_button.Visible = false;
+            this.ManualUpCam_button.Click += new System.EventHandler(this.ManualUpCam_button_Click);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(179, 312);
+            this.label8.Location = new System.Drawing.Point(4, 311);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(170, 13);
+            this.label8.Size = new System.Drawing.Size(214, 13);
             this.label8.TabIndex = 16;
-            this.label8.Text = "Place, with correction from UpCam";
+            this.label8.Text = "Manually assisted, with up camera snapshot";
             this.label8.Visible = false;
             // 
             // LoosePart_button
             // 
-            this.LoosePart_button.Location = new System.Drawing.Point(241, 128);
+            this.LoosePart_button.Location = new System.Drawing.Point(238, 99);
             this.LoosePart_button.Name = "LoosePart_button";
-            this.LoosePart_button.Size = new System.Drawing.Size(109, 23);
+            this.LoosePart_button.Size = new System.Drawing.Size(119, 23);
             this.LoosePart_button.TabIndex = 17;
             this.LoosePart_button.Text = "Loose Part Pickup";
             this.LoosePart_button.UseVisualStyleBackColor = true;
@@ -231,7 +231,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(49, 133);
+            this.label9.Location = new System.Drawing.Point(46, 104);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(186, 13);
             this.label9.TabIndex = 18;
@@ -250,7 +250,7 @@
             // 
             this.PlaceFast_button.Location = new System.Drawing.Point(238, 41);
             this.PlaceFast_button.Name = "PlaceFast_button";
-            this.PlaceFast_button.Size = new System.Drawing.Size(109, 23);
+            this.PlaceFast_button.Size = new System.Drawing.Size(119, 23);
             this.PlaceFast_button.TabIndex = 19;
             this.PlaceFast_button.Text = "Place Fast";
             this.PlaceFast_button.UseVisualStyleBackColor = true;
@@ -259,27 +259,29 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(20, 104);
+            this.label11.Location = new System.Drawing.Point(4, 298);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(213, 13);
+            this.label11.Size = new System.Drawing.Size(228, 13);
             this.label11.TabIndex = 22;
-            this.label11.Text = "Manually assisted, with down camera image";
+            this.label11.Text = "Manually assisted, with down camera snapshot";
+            this.label11.Visible = false;
             // 
             // ManualDownCam_button
             // 
-            this.ManualDownCam_button.Location = new System.Drawing.Point(238, 99);
+            this.ManualDownCam_button.Location = new System.Drawing.Point(132, 272);
             this.ManualDownCam_button.Name = "ManualDownCam_button";
-            this.ManualDownCam_button.Size = new System.Drawing.Size(109, 23);
+            this.ManualDownCam_button.Size = new System.Drawing.Size(119, 23);
             this.ManualDownCam_button.TabIndex = 21;
-            this.ManualDownCam_button.Text = "Manual, down cam.";
+            this.ManualDownCam_button.Text = "Place with DownCam";
             this.ManualDownCam_button.UseVisualStyleBackColor = true;
+            this.ManualDownCam_button.Visible = false;
             this.ManualDownCam_button.Click += new System.EventHandler(this.ManualDownCam_button_Click);
             // 
             // MethodSelectionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(359, 341);
+            this.ClientSize = new System.Drawing.Size(371, 328);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.ManualDownCam_button);
             this.Controls.Add(this.label10);
@@ -287,7 +289,7 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.LoosePart_button);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.PlaceWithCam_button);
+            this.Controls.Add(this.ManualUpCam_button);
             this.Controls.Add(this.UpdateJobGrid_checkBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.Pause_button);
@@ -329,7 +331,7 @@
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Button Pause_button;
 		private System.Windows.Forms.CheckBox UpdateJobGrid_checkBox;
-		private System.Windows.Forms.Button PlaceWithCam_button;
+		private System.Windows.Forms.Button ManualUpCam_button;
 		private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button LoosePart_button;
         private System.Windows.Forms.Label label9;

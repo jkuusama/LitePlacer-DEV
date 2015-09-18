@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -135,7 +135,7 @@
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
             this.DowncamSnapshot_ColorBox = new System.Windows.Forms.TextBox();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
-            this.Snapshot_dataGridView = new System.Windows.Forms.DataGridView();
+            this.DowncamSnapshot_dataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewComboBoxColumn9 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewCheckBoxColumn9 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dataGridViewTextBoxColumn41 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -143,9 +143,9 @@
             this.dataGridViewTextBoxColumn43 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn44 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn45 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SnapshotToDisplay_button = new System.Windows.Forms.Button();
-            this.SnapshotToHere_button = new System.Windows.Forms.Button();
-            this.TakeSnapshot_button = new System.Windows.Forms.Button();
+            this.DownCam_SnapshotToDisplay_button = new System.Windows.Forms.Button();
+            this.DownCam_SnapshotToHere_button = new System.Windows.Forms.Button();
+            this.DownCam_TakeSnapshot_button = new System.Windows.Forms.Button();
             this.RobustFast_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCameraDrawTicks_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
@@ -267,6 +267,20 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HomingToHere_button = new System.Windows.Forms.Button();
             this.UpCamera_tabPage = new System.Windows.Forms.TabPage();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.UpcamSnapshot_dataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewComboBoxColumn10 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewCheckBoxColumn10 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewTextBoxColumn46 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn47 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn48 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn49 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UpCam_SnapshotToDisplay_button = new System.Windows.Forms.Button();
+            this.UpCam_SnapshotToHere_button = new System.Windows.Forms.Button();
+            this.UpCam_TakeSnapshot_button = new System.Windows.Forms.Button();
+            this.UpcamSnapshot_ColorBox = new System.Windows.Forms.TextBox();
+            this.UpCamOverlay_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.UpCamComponents_dataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewComboBoxColumn8 = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -350,6 +364,13 @@
             this.Cam_pictureBox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.AltJogSpeed_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.NormalJogSpeed_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.CtlrJogSpeed_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label134 = new System.Windows.Forms.Label();
+            this.label133 = new System.Windows.Forms.Label();
+            this.label132 = new System.Windows.Forms.Label();
+            this.label131 = new System.Windows.Forms.Label();
             this.ShadeGuard_textBox = new System.Windows.Forms.TextBox();
             this.label126 = new System.Windows.Forms.Label();
             this.label123 = new System.Windows.Forms.Label();
@@ -626,7 +647,7 @@
             this.CamerasSetUp_tabControl.SuspendLayout();
             this.DownCamera_tabPage.SuspendLayout();
             this.groupBox13.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Snapshot_dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DowncamSnapshot_dataGridView)).BeginInit();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Components_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).BeginInit();
@@ -645,12 +666,17 @@
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Homing_dataGridView)).BeginInit();
             this.UpCamera_tabPage.SuspendLayout();
+            this.groupBox14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.UpcamSnapshot_dataGridView)).BeginInit();
             this.groupBox10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UpCamComponents_dataGridView)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Needle_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
             this.tabPageBasicSetup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AltJogSpeed_numericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NormalJogSpeed_numericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CtlrJogSpeed_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SmallMovement_numericUpDown)).BeginInit();
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
@@ -1665,7 +1691,7 @@
             this.Tapes_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.Tapes_pictureBox.TabIndex = 13;
             this.Tapes_pictureBox.TabStop = false;
-            this.Tapes_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
+            this.Tapes_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Tapes_pictureBox_MouseClick);
             // 
             // Components_tabPage
             // 
@@ -1838,10 +1864,10 @@
             // groupBox13
             // 
             this.groupBox13.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox13.Controls.Add(this.Snapshot_dataGridView);
-            this.groupBox13.Controls.Add(this.SnapshotToDisplay_button);
-            this.groupBox13.Controls.Add(this.SnapshotToHere_button);
-            this.groupBox13.Controls.Add(this.TakeSnapshot_button);
+            this.groupBox13.Controls.Add(this.DowncamSnapshot_dataGridView);
+            this.groupBox13.Controls.Add(this.DownCam_SnapshotToDisplay_button);
+            this.groupBox13.Controls.Add(this.DownCam_SnapshotToHere_button);
+            this.groupBox13.Controls.Add(this.DownCam_TakeSnapshot_button);
             this.groupBox13.Location = new System.Drawing.Point(6, 579);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(255, 59);
@@ -1849,11 +1875,11 @@
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Snapshot";
             // 
-            // Snapshot_dataGridView
+            // DowncamSnapshot_dataGridView
             // 
-            this.Snapshot_dataGridView.AllowUserToAddRows = false;
-            this.Snapshot_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Snapshot_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DowncamSnapshot_dataGridView.AllowUserToAddRows = false;
+            this.DowncamSnapshot_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DowncamSnapshot_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewComboBoxColumn9,
             this.dataGridViewCheckBoxColumn9,
             this.dataGridViewTextBoxColumn41,
@@ -1861,14 +1887,14 @@
             this.dataGridViewTextBoxColumn43,
             this.dataGridViewTextBoxColumn44,
             this.dataGridViewTextBoxColumn45});
-            this.Snapshot_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Snapshot_dataGridView.Location = new System.Drawing.Point(168, 47);
-            this.Snapshot_dataGridView.Name = "Snapshot_dataGridView";
-            this.Snapshot_dataGridView.RowHeadersVisible = false;
-            this.Snapshot_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Snapshot_dataGridView.Size = new System.Drawing.Size(157, 137);
-            this.Snapshot_dataGridView.TabIndex = 126;
-            this.Snapshot_dataGridView.Visible = false;
+            this.DowncamSnapshot_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.DowncamSnapshot_dataGridView.Location = new System.Drawing.Point(168, 47);
+            this.DowncamSnapshot_dataGridView.Name = "DowncamSnapshot_dataGridView";
+            this.DowncamSnapshot_dataGridView.RowHeadersVisible = false;
+            this.DowncamSnapshot_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.DowncamSnapshot_dataGridView.Size = new System.Drawing.Size(157, 137);
+            this.DowncamSnapshot_dataGridView.TabIndex = 126;
+            this.DowncamSnapshot_dataGridView.Visible = false;
             // 
             // dataGridViewComboBoxColumn9
             // 
@@ -1922,39 +1948,39 @@
             this.dataGridViewTextBoxColumn45.Name = "dataGridViewTextBoxColumn45";
             this.dataGridViewTextBoxColumn45.ReadOnly = true;
             // 
-            // SnapshotToDisplay_button
+            // DownCam_SnapshotToDisplay_button
             // 
-            this.SnapshotToDisplay_button.Location = new System.Drawing.Point(87, 19);
-            this.SnapshotToDisplay_button.Name = "SnapshotToDisplay_button";
-            this.SnapshotToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.SnapshotToDisplay_button.TabIndex = 23;
-            this.SnapshotToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.SnapshotToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
+            this.DownCam_SnapshotToDisplay_button.Location = new System.Drawing.Point(87, 19);
+            this.DownCam_SnapshotToDisplay_button.Name = "DownCam_SnapshotToDisplay_button";
+            this.DownCam_SnapshotToDisplay_button.Size = new System.Drawing.Size(75, 23);
+            this.DownCam_SnapshotToDisplay_button.TabIndex = 23;
+            this.DownCam_SnapshotToDisplay_button.Text = "To Display";
+            this.toolTip1.SetToolTip(this.DownCam_SnapshotToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
         "ing.");
-            this.SnapshotToDisplay_button.UseVisualStyleBackColor = true;
-            this.SnapshotToDisplay_button.Click += new System.EventHandler(this.SnapshotToDisplay_button_Click);
+            this.DownCam_SnapshotToDisplay_button.UseVisualStyleBackColor = true;
+            this.DownCam_SnapshotToDisplay_button.Click += new System.EventHandler(this.DownCam_SnapshotToDisplay_button_Click);
             // 
-            // SnapshotToHere_button
+            // DownCam_SnapshotToHere_button
             // 
-            this.SnapshotToHere_button.Location = new System.Drawing.Point(6, 19);
-            this.SnapshotToHere_button.Name = "SnapshotToHere_button";
-            this.SnapshotToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.SnapshotToHere_button.TabIndex = 22;
-            this.SnapshotToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.SnapshotToHere_button, "Copies the algorithms from the table to be used\r\nin drawins snapshot in manually " +
+            this.DownCam_SnapshotToHere_button.Location = new System.Drawing.Point(6, 19);
+            this.DownCam_SnapshotToHere_button.Name = "DownCam_SnapshotToHere_button";
+            this.DownCam_SnapshotToHere_button.Size = new System.Drawing.Size(75, 23);
+            this.DownCam_SnapshotToHere_button.TabIndex = 22;
+            this.DownCam_SnapshotToHere_button.Text = "Copy Here";
+            this.toolTip1.SetToolTip(this.DownCam_SnapshotToHere_button, "Copies the algorithms from the table to be used\r\nin drawins snapshot in manually " +
         "assisted placement.\r\n");
-            this.SnapshotToHere_button.UseVisualStyleBackColor = true;
-            this.SnapshotToHere_button.Click += new System.EventHandler(this.SnapshotToHere_button_Click);
+            this.DownCam_SnapshotToHere_button.UseVisualStyleBackColor = true;
+            this.DownCam_SnapshotToHere_button.Click += new System.EventHandler(this.DownCam_SnapshotToHere_button_Click);
             // 
-            // TakeSnapshot_button
+            // DownCam_TakeSnapshot_button
             // 
-            this.TakeSnapshot_button.Location = new System.Drawing.Point(168, 19);
-            this.TakeSnapshot_button.Name = "TakeSnapshot_button";
-            this.TakeSnapshot_button.Size = new System.Drawing.Size(75, 23);
-            this.TakeSnapshot_button.TabIndex = 30;
-            this.TakeSnapshot_button.Text = "Take";
-            this.TakeSnapshot_button.UseVisualStyleBackColor = true;
-            this.TakeSnapshot_button.Click += new System.EventHandler(this.TakeSnapshot_button_Click);
+            this.DownCam_TakeSnapshot_button.Location = new System.Drawing.Point(168, 19);
+            this.DownCam_TakeSnapshot_button.Name = "DownCam_TakeSnapshot_button";
+            this.DownCam_TakeSnapshot_button.Size = new System.Drawing.Size(75, 23);
+            this.DownCam_TakeSnapshot_button.TabIndex = 30;
+            this.DownCam_TakeSnapshot_button.Text = "Take";
+            this.DownCam_TakeSnapshot_button.UseVisualStyleBackColor = true;
+            this.DownCam_TakeSnapshot_button.Click += new System.EventHandler(this.DownCam_TakeSnapshot_button_Click);
             // 
             // RobustFast_checkBox
             // 
@@ -3279,6 +3305,9 @@
             // 
             // UpCamera_tabPage
             // 
+            this.UpCamera_tabPage.Controls.Add(this.groupBox14);
+            this.UpCamera_tabPage.Controls.Add(this.UpcamSnapshot_ColorBox);
+            this.UpCamera_tabPage.Controls.Add(this.UpCamOverlay_checkBox);
             this.UpCamera_tabPage.Controls.Add(this.groupBox10);
             this.UpCamera_tabPage.Controls.Add(this.UpCam_FindComponents_checkBox);
             this.UpCamera_tabPage.Controls.Add(this.checkBox2);
@@ -3306,6 +3335,149 @@
             this.UpCamera_tabPage.TabIndex = 4;
             this.UpCamera_tabPage.Text = "Up Looking Camera";
             this.UpCamera_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox14.Controls.Add(this.UpcamSnapshot_dataGridView);
+            this.groupBox14.Controls.Add(this.UpCam_SnapshotToDisplay_button);
+            this.groupBox14.Controls.Add(this.UpCam_SnapshotToHere_button);
+            this.groupBox14.Controls.Add(this.UpCam_TakeSnapshot_button);
+            this.groupBox14.Location = new System.Drawing.Point(6, 539);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(255, 59);
+            this.groupBox14.TabIndex = 144;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "Snapshot";
+            // 
+            // UpcamSnapshot_dataGridView
+            // 
+            this.UpcamSnapshot_dataGridView.AllowUserToAddRows = false;
+            this.UpcamSnapshot_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.UpcamSnapshot_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewComboBoxColumn10,
+            this.dataGridViewCheckBoxColumn10,
+            this.dataGridViewTextBoxColumn46,
+            this.dataGridViewTextBoxColumn47,
+            this.dataGridViewTextBoxColumn48,
+            this.dataGridViewTextBoxColumn49,
+            this.dataGridViewTextBoxColumn50});
+            this.UpcamSnapshot_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.UpcamSnapshot_dataGridView.Location = new System.Drawing.Point(168, 47);
+            this.UpcamSnapshot_dataGridView.Name = "UpcamSnapshot_dataGridView";
+            this.UpcamSnapshot_dataGridView.RowHeadersVisible = false;
+            this.UpcamSnapshot_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.UpcamSnapshot_dataGridView.Size = new System.Drawing.Size(157, 137);
+            this.UpcamSnapshot_dataGridView.TabIndex = 126;
+            this.UpcamSnapshot_dataGridView.Visible = false;
+            // 
+            // dataGridViewComboBoxColumn10
+            // 
+            this.dataGridViewComboBoxColumn10.HeaderText = "Function";
+            this.dataGridViewComboBoxColumn10.Items.AddRange(new object[] {
+            "Threshold",
+            "Histogram",
+            "Grayscale",
+            "Contrast scretch",
+            "Kill color",
+            "Keep color",
+            "Invert",
+            "Meas. zoom"});
+            this.dataGridViewComboBoxColumn10.Name = "dataGridViewComboBoxColumn10";
+            this.dataGridViewComboBoxColumn10.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewComboBoxColumn10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dataGridViewCheckBoxColumn10
+            // 
+            this.dataGridViewCheckBoxColumn10.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn10.Name = "dataGridViewCheckBoxColumn10";
+            this.dataGridViewCheckBoxColumn10.Width = 50;
+            // 
+            // dataGridViewTextBoxColumn46
+            // 
+            this.dataGridViewTextBoxColumn46.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn46.Name = "dataGridViewTextBoxColumn46";
+            this.dataGridViewTextBoxColumn46.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn47
+            // 
+            this.dataGridViewTextBoxColumn47.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn47.Name = "dataGridViewTextBoxColumn47";
+            this.dataGridViewTextBoxColumn47.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn48
+            // 
+            this.dataGridViewTextBoxColumn48.HeaderText = "R";
+            this.dataGridViewTextBoxColumn48.Name = "dataGridViewTextBoxColumn48";
+            this.dataGridViewTextBoxColumn48.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn49
+            // 
+            this.dataGridViewTextBoxColumn49.HeaderText = "G";
+            this.dataGridViewTextBoxColumn49.Name = "dataGridViewTextBoxColumn49";
+            this.dataGridViewTextBoxColumn49.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn50
+            // 
+            this.dataGridViewTextBoxColumn50.HeaderText = "B";
+            this.dataGridViewTextBoxColumn50.Name = "dataGridViewTextBoxColumn50";
+            this.dataGridViewTextBoxColumn50.ReadOnly = true;
+            // 
+            // UpCam_SnapshotToDisplay_button
+            // 
+            this.UpCam_SnapshotToDisplay_button.Location = new System.Drawing.Point(87, 19);
+            this.UpCam_SnapshotToDisplay_button.Name = "UpCam_SnapshotToDisplay_button";
+            this.UpCam_SnapshotToDisplay_button.Size = new System.Drawing.Size(75, 23);
+            this.UpCam_SnapshotToDisplay_button.TabIndex = 23;
+            this.UpCam_SnapshotToDisplay_button.Text = "To Display";
+            this.toolTip1.SetToolTip(this.UpCam_SnapshotToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
+        "ing.");
+            this.UpCam_SnapshotToDisplay_button.UseVisualStyleBackColor = true;
+            this.UpCam_SnapshotToDisplay_button.Click += new System.EventHandler(this.UpCam_SnapshotToDisplay_button_Click);
+            // 
+            // UpCam_SnapshotToHere_button
+            // 
+            this.UpCam_SnapshotToHere_button.Location = new System.Drawing.Point(6, 19);
+            this.UpCam_SnapshotToHere_button.Name = "UpCam_SnapshotToHere_button";
+            this.UpCam_SnapshotToHere_button.Size = new System.Drawing.Size(75, 23);
+            this.UpCam_SnapshotToHere_button.TabIndex = 22;
+            this.UpCam_SnapshotToHere_button.Text = "Copy Here";
+            this.toolTip1.SetToolTip(this.UpCam_SnapshotToHere_button, "Copies the algorithms from the table to be used\r\nin drawins snapshot in manually " +
+        "assisted placement.\r\n");
+            this.UpCam_SnapshotToHere_button.UseVisualStyleBackColor = true;
+            this.UpCam_SnapshotToHere_button.Click += new System.EventHandler(this.UpCam_SnapshotToHere_button_Click);
+            // 
+            // UpCam_TakeSnapshot_button
+            // 
+            this.UpCam_TakeSnapshot_button.Location = new System.Drawing.Point(168, 19);
+            this.UpCam_TakeSnapshot_button.Name = "UpCam_TakeSnapshot_button";
+            this.UpCam_TakeSnapshot_button.Size = new System.Drawing.Size(75, 23);
+            this.UpCam_TakeSnapshot_button.TabIndex = 30;
+            this.UpCam_TakeSnapshot_button.Text = "Take";
+            this.UpCam_TakeSnapshot_button.UseVisualStyleBackColor = true;
+            this.UpCam_TakeSnapshot_button.Click += new System.EventHandler(this.UpCam_TakeSnapshot_button_Click);
+            // 
+            // UpcamSnapshot_ColorBox
+            // 
+            this.UpcamSnapshot_ColorBox.Location = new System.Drawing.Point(138, 125);
+            this.UpcamSnapshot_ColorBox.Name = "UpcamSnapshot_ColorBox";
+            this.UpcamSnapshot_ColorBox.ReadOnly = true;
+            this.UpcamSnapshot_ColorBox.Size = new System.Drawing.Size(21, 20);
+            this.UpcamSnapshot_ColorBox.TabIndex = 143;
+            this.toolTip1.SetToolTip(this.UpcamSnapshot_ColorBox, "Set parameters for the selected algorithm");
+            this.UpcamSnapshot_ColorBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.UpcamSnapshot_ColorBox_MouseClick);
+            // 
+            // UpCamOverlay_checkBox
+            // 
+            this.UpCamOverlay_checkBox.AutoSize = true;
+            this.UpCamOverlay_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamOverlay_checkBox.Location = new System.Drawing.Point(3, 127);
+            this.UpCamOverlay_checkBox.Name = "UpCamOverlay_checkBox";
+            this.UpCamOverlay_checkBox.Size = new System.Drawing.Size(131, 17);
+            this.UpCamOverlay_checkBox.TabIndex = 142;
+            this.UpCamOverlay_checkBox.Text = "Draw Snapshot, color:";
+            this.UpCamOverlay_checkBox.UseVisualStyleBackColor = true;
+            this.UpCamOverlay_checkBox.CheckedChanged += new System.EventHandler(this.UpCamOverlay_checkBox_CheckedChanged);
             // 
             // groupBox10
             // 
@@ -3433,7 +3605,7 @@
             // 
             this.UpCam_FindComponents_checkBox.AutoSize = true;
             this.UpCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCam_FindComponents_checkBox.Location = new System.Drawing.Point(141, 81);
+            this.UpCam_FindComponents_checkBox.Location = new System.Drawing.Point(204, 104);
             this.UpCam_FindComponents_checkBox.Name = "UpCam_FindComponents_checkBox";
             this.UpCam_FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
             this.UpCam_FindComponents_checkBox.TabIndex = 70;
@@ -3445,7 +3617,7 @@
             // 
             this.checkBox2.AutoSize = true;
             this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox2.Location = new System.Drawing.Point(3, 127);
+            this.checkBox2.Location = new System.Drawing.Point(204, 127);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(103, 17);
             this.checkBox2.TabIndex = 69;
@@ -3581,7 +3753,7 @@
             // 
             this.UpCamFindCircles_checkBox.AutoSize = true;
             this.UpCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamFindCircles_checkBox.Location = new System.Drawing.Point(141, 58);
+            this.UpCamFindCircles_checkBox.Location = new System.Drawing.Point(204, 81);
             this.UpCamFindCircles_checkBox.Name = "UpCamFindCircles_checkBox";
             this.UpCamFindCircles_checkBox.Size = new System.Drawing.Size(80, 17);
             this.UpCamFindCircles_checkBox.TabIndex = 68;
@@ -3620,7 +3792,7 @@
             // 
             this.UpCameraBoxYmmPerPixel_label.AutoSize = true;
             this.UpCameraBoxYmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(428, 85);
+            this.UpCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(491, 108);
             this.UpCameraBoxYmmPerPixel_label.Name = "UpCameraBoxYmmPerPixel_label";
             this.UpCameraBoxYmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.UpCameraBoxYmmPerPixel_label.TabIndex = 66;
@@ -3679,7 +3851,7 @@
             // 
             this.UpCameraBoxXmmPerPixel_label.AutoSize = true;
             this.UpCameraBoxXmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(428, 59);
+            this.UpCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(491, 82);
             this.UpCameraBoxXmmPerPixel_label.Name = "UpCameraBoxXmmPerPixel_label";
             this.UpCameraBoxXmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.UpCameraBoxXmmPerPixel_label.TabIndex = 65;
@@ -3702,7 +3874,7 @@
             // 
             this.label103.AutoSize = true;
             this.label103.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label103.Location = new System.Drawing.Point(399, 85);
+            this.label103.Location = new System.Drawing.Point(462, 108);
             this.label103.Name = "label103";
             this.label103.Size = new System.Drawing.Size(23, 13);
             this.label103.TabIndex = 62;
@@ -3712,7 +3884,7 @@
             // UpCameraBoxY_textBox
             // 
             this.UpCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraBoxY_textBox.Location = new System.Drawing.Point(347, 82);
+            this.UpCameraBoxY_textBox.Location = new System.Drawing.Point(410, 105);
             this.UpCameraBoxY_textBox.Name = "UpCameraBoxY_textBox";
             this.UpCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraBoxY_textBox.TabIndex = 60;
@@ -3723,7 +3895,7 @@
             // UpCameraBoxX_textBox
             // 
             this.UpCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraBoxX_textBox.Location = new System.Drawing.Point(347, 56);
+            this.UpCameraBoxX_textBox.Location = new System.Drawing.Point(410, 79);
             this.UpCameraBoxX_textBox.Name = "UpCameraBoxX_textBox";
             this.UpCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraBoxX_textBox.TabIndex = 59;
@@ -3735,7 +3907,7 @@
             // 
             this.label106.AutoSize = true;
             this.label106.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label106.Location = new System.Drawing.Point(303, 59);
+            this.label106.Location = new System.Drawing.Point(366, 82);
             this.label106.Name = "label106";
             this.label106.Size = new System.Drawing.Size(38, 13);
             this.label106.TabIndex = 57;
@@ -3757,7 +3929,7 @@
             // 
             this.label104.AutoSize = true;
             this.label104.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label104.Location = new System.Drawing.Point(399, 59);
+            this.label104.Location = new System.Drawing.Point(462, 82);
             this.label104.Name = "label104";
             this.label104.Size = new System.Drawing.Size(23, 13);
             this.label104.TabIndex = 61;
@@ -3768,7 +3940,7 @@
             // 
             this.label105.AutoSize = true;
             this.label105.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label105.Location = new System.Drawing.Point(303, 85);
+            this.label105.Location = new System.Drawing.Point(366, 108);
             this.label105.Name = "label105";
             this.label105.Size = new System.Drawing.Size(38, 13);
             this.label105.TabIndex = 58;
@@ -4159,6 +4331,13 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.AltJogSpeed_numericUpDown);
+            this.tabPageBasicSetup.Controls.Add(this.NormalJogSpeed_numericUpDown);
+            this.tabPageBasicSetup.Controls.Add(this.CtlrJogSpeed_numericUpDown);
+            this.tabPageBasicSetup.Controls.Add(this.label134);
+            this.tabPageBasicSetup.Controls.Add(this.label133);
+            this.tabPageBasicSetup.Controls.Add(this.label132);
+            this.tabPageBasicSetup.Controls.Add(this.label131);
             this.tabPageBasicSetup.Controls.Add(this.ShadeGuard_textBox);
             this.tabPageBasicSetup.Controls.Add(this.label126);
             this.tabPageBasicSetup.Controls.Add(this.label123);
@@ -4239,6 +4418,102 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
+            // AltJogSpeed_numericUpDown
+            // 
+            this.AltJogSpeed_numericUpDown.Location = new System.Drawing.Point(1158, 431);
+            this.AltJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.AltJogSpeed_numericUpDown.Name = "AltJogSpeed_numericUpDown";
+            this.AltJogSpeed_numericUpDown.Size = new System.Drawing.Size(58, 20);
+            this.AltJogSpeed_numericUpDown.TabIndex = 95;
+            this.toolTip1.SetToolTip(this.AltJogSpeed_numericUpDown, "To avoid jerkiness, small movements are done\r\nwith smaller speed. That speed is s" +
+        "et here.");
+            this.AltJogSpeed_numericUpDown.Value = new decimal(new int[] {
+            250,
+            0,
+            0,
+            0});
+            this.AltJogSpeed_numericUpDown.ValueChanged += new System.EventHandler(this.AltJogSpeed_numericUpDown_ValueChanged);
+            // 
+            // NormalJogSpeed_numericUpDown
+            // 
+            this.NormalJogSpeed_numericUpDown.Location = new System.Drawing.Point(1158, 405);
+            this.NormalJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.NormalJogSpeed_numericUpDown.Name = "NormalJogSpeed_numericUpDown";
+            this.NormalJogSpeed_numericUpDown.Size = new System.Drawing.Size(58, 20);
+            this.NormalJogSpeed_numericUpDown.TabIndex = 94;
+            this.toolTip1.SetToolTip(this.NormalJogSpeed_numericUpDown, "To avoid jerkiness, small movements are done\r\nwith smaller speed. That speed is s" +
+        "et here.");
+            this.NormalJogSpeed_numericUpDown.Value = new decimal(new int[] {
+            250,
+            0,
+            0,
+            0});
+            this.NormalJogSpeed_numericUpDown.ValueChanged += new System.EventHandler(this.NormalJogSpeed_numericUpDown_ValueChanged);
+            // 
+            // CtlrJogSpeed_numericUpDown
+            // 
+            this.CtlrJogSpeed_numericUpDown.Location = new System.Drawing.Point(1158, 379);
+            this.CtlrJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.CtlrJogSpeed_numericUpDown.Name = "CtlrJogSpeed_numericUpDown";
+            this.CtlrJogSpeed_numericUpDown.Size = new System.Drawing.Size(58, 20);
+            this.CtlrJogSpeed_numericUpDown.TabIndex = 93;
+            this.toolTip1.SetToolTip(this.CtlrJogSpeed_numericUpDown, "To avoid jerkiness, small movements are done\r\nwith smaller speed. That speed is s" +
+        "et here.");
+            this.CtlrJogSpeed_numericUpDown.Value = new decimal(new int[] {
+            250,
+            0,
+            0,
+            0});
+            this.CtlrJogSpeed_numericUpDown.ValueChanged += new System.EventHandler(this.CtlrJogSpeed_numericUpDown_ValueChanged);
+            // 
+            // label134
+            // 
+            this.label134.AutoSize = true;
+            this.label134.Location = new System.Drawing.Point(1079, 433);
+            this.label134.Name = "label134";
+            this.label134.Size = new System.Drawing.Size(73, 13);
+            this.label134.TabIndex = 91;
+            this.label134.Text = "With Alt (fast):";
+            // 
+            // label133
+            // 
+            this.label133.AutoSize = true;
+            this.label133.Location = new System.Drawing.Point(1109, 407);
+            this.label133.Name = "label133";
+            this.label133.Size = new System.Drawing.Size(43, 13);
+            this.label133.TabIndex = 89;
+            this.label133.Text = "Normal:";
+            // 
+            // label132
+            // 
+            this.label132.AutoSize = true;
+            this.label132.Location = new System.Drawing.Point(1018, 359);
+            this.label132.Name = "label132";
+            this.label132.Size = new System.Drawing.Size(158, 13);
+            this.label132.TabIndex = 88;
+            this.label132.Text = "Speed with numpad arrow keys:";
+            // 
+            // label131
+            // 
+            this.label131.AutoSize = true;
+            this.label131.Location = new System.Drawing.Point(1072, 381);
+            this.label131.Name = "label131";
+            this.label131.Size = new System.Drawing.Size(80, 13);
+            this.label131.TabIndex = 86;
+            this.label131.Text = "With Ctrl (slow):";
+            // 
             // ShadeGuard_textBox
             // 
             this.ShadeGuard_textBox.Location = new System.Drawing.Point(593, 549);
@@ -4275,7 +4550,7 @@
             // 
             // VacuumRelease_textBox
             // 
-            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1158, 382);
+            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1158, 74);
             this.VacuumRelease_textBox.Name = "VacuumRelease_textBox";
             this.VacuumRelease_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumRelease_textBox.TabIndex = 81;
@@ -4287,7 +4562,7 @@
             // label119
             // 
             this.label119.AutoSize = true;
-            this.label119.Location = new System.Drawing.Point(1018, 385);
+            this.label119.Location = new System.Drawing.Point(1018, 77);
             this.label119.Name = "label119";
             this.label119.Size = new System.Drawing.Size(130, 13);
             this.label119.TabIndex = 80;
@@ -4295,7 +4570,7 @@
             // 
             // VacuumTime_textBox
             // 
-            this.VacuumTime_textBox.Location = new System.Drawing.Point(1158, 356);
+            this.VacuumTime_textBox.Location = new System.Drawing.Point(1158, 48);
             this.VacuumTime_textBox.Name = "VacuumTime_textBox";
             this.VacuumTime_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumTime_textBox.TabIndex = 79;
@@ -4307,7 +4582,7 @@
             // label118
             // 
             this.label118.AutoSize = true;
-            this.label118.Location = new System.Drawing.Point(1018, 359);
+            this.label118.Location = new System.Drawing.Point(1018, 51);
             this.label118.Name = "label118";
             this.label118.Size = new System.Drawing.Size(128, 13);
             this.label118.TabIndex = 78;
@@ -6840,20 +7115,21 @@
             this.Placement_pictureBox.TabIndex = 12;
             this.Placement_pictureBox.TabStop = false;
             this.Placement_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Placement_pictureBox_MouseClick);
+            this.Placement_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Placement_pictureBox_MouseMove);
             // 
             // JobData_GridView
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6920,14 +7196,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -7141,7 +7417,7 @@
             this.DownCamera_tabPage.ResumeLayout(false);
             this.DownCamera_tabPage.PerformLayout();
             this.groupBox13.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Snapshot_dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DowncamSnapshot_dataGridView)).EndInit();
             this.groupBox9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Components_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).EndInit();
@@ -7161,6 +7437,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Homing_dataGridView)).EndInit();
             this.UpCamera_tabPage.ResumeLayout(false);
             this.UpCamera_tabPage.PerformLayout();
+            this.groupBox14.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.UpcamSnapshot_dataGridView)).EndInit();
             this.groupBox10.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.UpCamComponents_dataGridView)).EndInit();
             this.groupBox5.ResumeLayout(false);
@@ -7168,6 +7446,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
             this.tabPageBasicSetup.ResumeLayout(false);
             this.tabPageBasicSetup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AltJogSpeed_numericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NormalJogSpeed_numericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CtlrJogSpeed_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SmallMovement_numericUpDown)).EndInit();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
@@ -7322,7 +7603,7 @@
 		private System.Windows.Forms.Label label96;
 		private System.Windows.Forms.Label label93;
 		private System.Windows.Forms.Label label94;
-		private System.Windows.Forms.Button TakeSnapshot_button;
+		private System.Windows.Forms.Button DownCam_TakeSnapshot_button;
 		private System.Windows.Forms.CheckBox ImageTest_checkBox;
 		private System.Windows.Forms.PictureBox Cam_pictureBox;
 		private System.Windows.Forms.Label label1;
@@ -7748,7 +8029,7 @@
         private System.Windows.Forms.CheckBox RobustFast_checkBox;
         private System.Windows.Forms.TextBox DowncamSnapshot_ColorBox;
         private System.Windows.Forms.GroupBox groupBox13;
-        private System.Windows.Forms.DataGridView Snapshot_dataGridView;
+        private System.Windows.Forms.DataGridView DowncamSnapshot_dataGridView;
         private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn9;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn9;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn41;
@@ -7756,8 +8037,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn43;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn44;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn45;
-        private System.Windows.Forms.Button SnapshotToDisplay_button;
-        private System.Windows.Forms.Button SnapshotToHere_button;
+        private System.Windows.Forms.Button DownCam_SnapshotToDisplay_button;
+        private System.Windows.Forms.Button DownCam_SnapshotToHere_button;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Label label130;
         private System.Windows.Forms.DataGridView CustomTapes_dataGridView;
@@ -7788,6 +8069,27 @@
         private System.Windows.Forms.Button CustomTapeUp_button;
         private System.Windows.Forms.Button DeleteCustomTape_button;
         private System.Windows.Forms.Button UseCustomTapes_button;
+        private System.Windows.Forms.TextBox UpcamSnapshot_ColorBox;
+        private System.Windows.Forms.CheckBox UpCamOverlay_checkBox;
+        private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.DataGridView UpcamSnapshot_dataGridView;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn10;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn46;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn47;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn48;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn49;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn50;
+        private System.Windows.Forms.Button UpCam_SnapshotToDisplay_button;
+        private System.Windows.Forms.Button UpCam_SnapshotToHere_button;
+        private System.Windows.Forms.Button UpCam_TakeSnapshot_button;
+        private System.Windows.Forms.NumericUpDown AltJogSpeed_numericUpDown;
+        private System.Windows.Forms.NumericUpDown NormalJogSpeed_numericUpDown;
+        private System.Windows.Forms.NumericUpDown CtlrJogSpeed_numericUpDown;
+        private System.Windows.Forms.Label label134;
+        private System.Windows.Forms.Label label133;
+        private System.Windows.Forms.Label label132;
+        private System.Windows.Forms.Label label131;
     }
 }
 

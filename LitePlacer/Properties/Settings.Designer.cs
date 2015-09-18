@@ -958,5 +958,53 @@ namespace LitePlacer.Properties {
                 this["DownCam_SnapshotColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color UpCam_SnapshotColor {
+            get {
+                return ((global::System.Drawing.Color)(this["UpCam_SnapshotColor"]));
+            }
+            set {
+                this["UpCam_SnapshotColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int CNC_CtlrJogSpeed {
+            get {
+                return ((int)(this["CNC_CtlrJogSpeed"]));
+            }
+            set {
+                this["CNC_CtlrJogSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int CNC_NormalJogSpeed {
+            get {
+                return ((int)(this["CNC_NormalJogSpeed"]));
+            }
+            set {
+                this["CNC_NormalJogSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4000")]
+        public int CNC_AltJogSpeed {
+            get {
+                return ((int)(this["CNC_AltJogSpeed"]));
+            }
+            set {
+                this["CNC_AltJogSpeed"] = value;
+            }
+        }
     }
 }

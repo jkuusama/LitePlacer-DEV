@@ -405,7 +405,7 @@ namespace LitePlacer
 			{
 				if (f.func == Meas_ZoomFunc)
 				{
-					zoom = zoom * f.parameter_double;
+					zoom = f.parameter_double;
 				}
 			}
 			return zoom;
@@ -653,7 +653,7 @@ namespace LitePlacer
 
 				case 3:
 					Mean Meanfilter = new Mean();
-					// apply the filter
+					// apply the MirrFilter
 					Meanfilter.ApplyInPlace(frame); 
 					break;
 
@@ -689,7 +689,7 @@ namespace LitePlacer
 
                 case 4:
                     CannyEdgeDetector Cannyfilter = new CannyEdgeDetector();
-                    // apply the filter
+                    // apply the MirrFilter
                     Cannyfilter.ApplyInPlace(frame);
                     break;
 
@@ -712,7 +712,7 @@ namespace LitePlacer
 		// =========================================================
 		private void HistogramFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
 		{
-			// create filter
+			// create MirrFilter
 			HistogramEqualization filter = new HistogramEqualization();
 			// process image
 			filter.ApplyInPlace(frame);
@@ -722,26 +722,26 @@ namespace LitePlacer
 		// =========================================================
 		private void KillColor_Func(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
 		{
-			// create filter
+			// create MirrFilter
 			EuclideanColorFiltering filter = new EuclideanColorFiltering();
 			// set center colol and radius
 			filter.CenterColor = new RGB((byte)par_R, (byte)par_G, (byte)par_B);
 			filter.Radius = (short)par_int;
 			filter.FillOutside = false;
-			// apply the filter
+			// apply the MirrFilter
 			filter.ApplyInPlace(frame);
 		}
 
 		// =========================================================
 		private void KeepColor_Func(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
 		{
-			// create filter
+			// create MirrFilter
 			EuclideanColorFiltering filter = new EuclideanColorFiltering();
 			// set center colol and radius
 			filter.CenterColor = new RGB((byte)par_R, (byte)par_G, (byte)par_B);
 			filter.Radius = (short)par_int;
 			filter.FillOutside = true;
-			// apply the filter
+			// apply the MirrFilter
 			filter.ApplyInPlace(frame);
 		}
 
@@ -759,7 +759,7 @@ namespace LitePlacer
 		// ========================================================= Contrast_scretchFunc
 		private void GrayscaleFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
 		{
-			Grayscale toGrFilter = new Grayscale(0.2125, 0.7154, 0.0721);       // create grayscale filter (BT709)
+			Grayscale toGrFilter = new Grayscale(0.2125, 0.7154, 0.0721);       // create grayscale MirrFilter (BT709)
 			Bitmap fr = toGrFilter.Apply(frame);
 			GrayscaleToRGB toColFilter = new GrayscaleToRGB();
 			frame = toColFilter.Apply(fr);
@@ -1092,7 +1092,7 @@ namespace LitePlacer
 				// is circle ?
 				if (shapeChecker.IsCircle(edgePoints, out center, out radius))
 				{
-					if (radius > 3)  // filter out some noise
+					if (radius > 3)  // MirrFilter out some noise
 					{
 						Circles.Add(new Shapes.Circle(center.X, center.Y, radius));
 					}
@@ -1172,7 +1172,7 @@ namespace LitePlacer
 		private Bitmap MirrorFunct(Bitmap frame)
 		{
 			Mirror Mfilter = new Mirror(false, true);
-			// apply the filter
+			// apply the MirrFilter
 			Mfilter.ApplyInPlace(frame);
 			return (frame);
 		}
@@ -1333,9 +1333,11 @@ namespace LitePlacer
 		// =========================================================
 
 		// repeated rotations destroy the image. We'll store the original here and rotate only once.
-		Bitmap SnapshotOriginalImage = new Bitmap(640, 480);
+		public Bitmap SnapshotOriginalImage = new Bitmap(640, 480);
 
-		Bitmap SnapshotImage = new Bitmap(640, 480);
+        // This is the image drawn by draw snapshot function (both public so they can be set externally).
+		public Bitmap SnapshotImage = new Bitmap(640, 480);
+
 		public double SnapshotRotation = 0.0;  // rotation when snapshot was taken
 
         public Color SnapshotColor { get; set; }
@@ -1350,7 +1352,7 @@ namespace LitePlacer
 				for (int x = 0; x < image.Width; x++)
 				{
 					peek = image.GetPixel(x, y);
-					if (peek.R != 0)
+					if (peek.R != 0)  // i.e. background
 					{
                         image.SetPixel(x, y, SnapshotColor);
 					}
@@ -1358,8 +1360,9 @@ namespace LitePlacer
 			}
 
 			image.MakeTransparent(Color.Black);
-			SnapshotImage = image;
-			SnapshotOriginalImage = image;
+			SnapshotImage = new Bitmap(image);
+			SnapshotOriginalImage = new Bitmap(image);
+            image.Dispose();
 		}
 
 
