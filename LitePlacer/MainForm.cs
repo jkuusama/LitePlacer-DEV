@@ -6834,7 +6834,7 @@ namespace LitePlacer
                     }
                     // First component in a row: We don't necessarily know the correct pickup and placement height, even though there
                     // might be values from previous runs. (PCB and needle might have changed.)
-                    if (FirstInRow)
+                    if (FirstInRow && MeasureZs_checkBox.Checked)
                     {
                         // Clear heights
                         Tapes_dataGridView.Rows[TapeNum].Cells["PickupZ_Column"].Value = "--";

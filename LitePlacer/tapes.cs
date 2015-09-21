@@ -120,14 +120,22 @@ namespace LitePlacer
                 FastParametersOk = false;
                 return false;
             }
-            if (!GetPartHole_m(TapeNum, first, out FirstX, out FirstY))
+            if (last!= first)
             {
-                FastParametersOk = false;
-                return false;
+                if (!GetPartHole_m(TapeNum, first, out FirstX, out FirstY))
+                {
+                    FastParametersOk = false;
+                    return false;
+                }
             }
+            else
+            {
+                FirstX = LastX;
+                FirstY = LastY;
+            }
+
             FastXpos = FirstX;
             FastYpos = FirstY;
-
             if (ComponentCount>1)
             {
                 FastXstep = (LastX - FirstX) / (double)(ComponentCount-1);

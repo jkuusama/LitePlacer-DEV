@@ -637,6 +637,7 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.MeasureZs_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1388,7 +1389,7 @@
             this.Tape_resetZs_button.Size = new System.Drawing.Size(75, 23);
             this.Tape_resetZs_button.TabIndex = 39;
             this.Tape_resetZs_button.Text = "Reset Z\'s";
-            this.toolTip1.SetToolTip(this.Tape_resetZs_button, "Resets pickup and placement heights.");
+            this.toolTip1.SetToolTip(this.Tape_resetZs_button, "Resets pickup and placement heights for the selected row.");
             this.Tape_resetZs_button.UseVisualStyleBackColor = true;
             this.Tape_resetZs_button.Click += new System.EventHandler(this.Tape_resetZs_button_Click);
             // 
@@ -6350,6 +6351,7 @@
             // 
             // RunJob_tabPage
             // 
+            this.RunJob_tabPage.Controls.Add(this.MeasureZs_checkBox);
             this.RunJob_tabPage.Controls.Add(this.groupBox12);
             this.RunJob_tabPage.Controls.Add(this.RebuildJobData_button);
             this.RunJob_tabPage.Controls.Add(this.SaveCadData_button);
@@ -6501,7 +6503,7 @@
             // 
             // StopDemo_button
             // 
-            this.StopDemo_button.Location = new System.Drawing.Point(87, 666);
+            this.StopDemo_button.Location = new System.Drawing.Point(271, 658);
             this.StopDemo_button.Name = "StopDemo_button";
             this.StopDemo_button.Size = new System.Drawing.Size(75, 23);
             this.StopDemo_button.TabIndex = 74;
@@ -6511,7 +6513,7 @@
             // 
             // Demo_button
             // 
-            this.Demo_button.Location = new System.Drawing.Point(6, 666);
+            this.Demo_button.Location = new System.Drawing.Point(190, 658);
             this.Demo_button.Name = "Demo_button";
             this.Demo_button.Size = new System.Drawing.Size(75, 23);
             this.Demo_button.TabIndex = 73;
@@ -7355,6 +7357,17 @@
             // 
             this.colorDialog1.SolidColorOnly = true;
             // 
+            // MeasureZs_checkBox
+            // 
+            this.MeasureZs_checkBox.AutoSize = true;
+            this.MeasureZs_checkBox.Location = new System.Drawing.Point(468, 658);
+            this.MeasureZs_checkBox.Name = "MeasureZs_checkBox";
+            this.MeasureZs_checkBox.Size = new System.Drawing.Size(104, 17);
+            this.MeasureZs_checkBox.TabIndex = 79;
+            this.MeasureZs_checkBox.Text = "Measure heights";
+            this.toolTip1.SetToolTip(this.MeasureZs_checkBox, "If checked, pickup/place heights are measured. If not, existing values are used.");
+            this.MeasureZs_checkBox.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -8090,6 +8103,7 @@
         private System.Windows.Forms.Label label133;
         private System.Windows.Forms.Label label132;
         private System.Windows.Forms.Label label131;
+        private System.Windows.Forms.CheckBox MeasureZs_checkBox;
     }
 }
 
