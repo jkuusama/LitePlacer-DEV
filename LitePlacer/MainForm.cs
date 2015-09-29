@@ -1062,6 +1062,10 @@ namespace LitePlacer
             }
             Cnc.Homing = false;
             Needle.ProbingMode(false, JSON);
+            if (!CNC_Z_m(Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff+0.2))
+            {
+                return false;
+            }
             return true;
         }
 
@@ -6439,11 +6443,11 @@ namespace LitePlacer
             NextGroup_label.Text = "--";
             JobData_GridView.ReadOnly = false;
             PumpDefaultSetting();
-            VacuumDefaultSetting();
             if (success)
             {
                 CNC_Park();  // if fail, it helps debugging if machine stays still
             }
+            VacuumDefaultSetting();
         }
 
 
@@ -8177,6 +8181,7 @@ err:
                     (Headers[i] == "x") ||
                     (Headers[i] == "X (mm)") ||
                     (Headers[i] == "x (mm)") ||
+                    (Headers[i] == "Center-X(mm)") ||
                     (Headers[i] == "PosX") ||
                     (Headers[i] == "Ref X") ||
                     (Headers[i] == "ref x")
@@ -8198,6 +8203,7 @@ err:
                     (Headers[i] == "y") ||
                     (Headers[i] == "Y (mm)") ||
                     (Headers[i] == "y (mm)") ||
+                    (Headers[i] == "Center-Y(mm)") ||
                     (Headers[i] == "PosY") ||
                     (Headers[i] == "Ref Y") ||
                     (Headers[i] == "ref y")
@@ -8263,7 +8269,10 @@ err:
 
             for (i = LineIndex; i < AllLines.Count(); i++)   // for each component
             {
-                peek = AllLines[i];
+                if (i==239)
+                {
+                    peek = AllLines[i];
+                }
                 // Skip: empty lines and comment lines (starting with # or "//")
                 if (
                         (AllLines[i] == "")  // empty lines
