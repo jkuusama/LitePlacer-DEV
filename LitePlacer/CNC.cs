@@ -190,19 +190,25 @@ namespace LitePlacer
         }
 
         public bool SlackCompensation { get; set; }
-		private double SlackCompensationDistance = 0.4;
+        private double SlackCompensationDistance = 0.4;
 
-		public string SmallMovementString = "G1 F200 ";
+        public bool SlackCompensationA { get; set; }
+        private double SlackCompensationDistanceA = 10;
+
+        public string SmallMovementString = "G1 F200 ";
 
         public void XY(double X, double Y)
         {
-            if (!SlackCompensation)
+            if ((!SlackCompensation)
+                ||
+                ((CurrentX < X) && (CurrentY < Y))
+                )
             {
                 XY_move(X, Y);
             }
             else
             {
-				XY_move(X - SlackCompensationDistance, Y - SlackCompensationDistance);
+                XY_move(X - SlackCompensationDistance, Y - SlackCompensationDistance);
                 XY_move(X, Y);
             }
         }
@@ -238,14 +244,38 @@ namespace LitePlacer
 
         public void XYA(double X, double Y, double Am)
         {
-            if (!SlackCompensation)
+            bool CompensateXY = false;
+            bool CompensateA = false;
+
+            if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
+            {
+                CompensateXY = true;
+            }
+
+            if ((SlackCompensationA) && (CurrentA > (Am - SlackCompensationDistanceA)))
+            {
+                CompensateA = true;
+            }
+
+
+            if ((!CompensateXY) && (!CompensateA))
             {
                 XYA_move(X, Y, Am);
             }
+            else if ((CompensateXY) && (!CompensateA))
+            {
+                XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, Am);
+                XY_move(X, Y);
+            }
+            else if ((!CompensateXY) && (CompensateA))
+            {
+                XYA_move(X, Y, Am-SlackCompensationDistanceA);
+                A_move(Am);
+            }
             else
             {
-				XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, Am);
-                XY_move(X, Y);
+                XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, Am - SlackCompensationDistanceA);
+                XYA_move(X, Y, Am);
             }
         }
 
@@ -329,6 +359,18 @@ namespace LitePlacer
                 _readyEvent.Set();
                 return;   // already there
             }
+            if ((SlackCompensationA) && (CurrentA > (A - SlackCompensationDistanceA)))
+            {
+                A_move(A - SlackCompensationDistanceA);
+                A_move(A);
+            }
+            else
+            {
+                A_move(A);
+            }
+        }
+        private void A_move(double A)
+        {
             string command;
             if (Math.Abs(A - CurrentA) < 5)
             {
@@ -339,7 +381,6 @@ namespace LitePlacer
                 command = "G0 A" + A.ToString(CultureInfo.InvariantCulture);
             }
             _readyEvent.Reset();
-            //Com.Write(command);
             MainForm.DisplayText(command);
             Com.Write("{\"gc\":\"" + command + "\"}");
             _readyEvent.Wait();

@@ -1006,5 +1006,17 @@ namespace LitePlacer.Properties {
                 this["CNC_AltJogSpeed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CNC_SlackCompensationA {
+            get {
+                return ((bool)(this["CNC_SlackCompensationA"]));
+            }
+            set {
+                this["CNC_SlackCompensationA"] = value;
+            }
+        }
     }
 }

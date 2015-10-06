@@ -278,6 +278,8 @@ namespace LitePlacer
 
             Cnc.SlackCompensation = Properties.Settings.Default.CNC_SlackCompensation;
             SlackCompensation_checkBox.Checked = Properties.Settings.Default.CNC_SlackCompensation;
+            Cnc.SlackCompensationA = Properties.Settings.Default.CNC_SlackCompensationA;
+            SlackCompensationA_checkBox.Checked = Properties.Settings.Default.CNC_SlackCompensationA;
             Cnc.SmallMovementString = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed + " ";
 
             ZTestTravel_textBox.Text = Properties.Settings.Default.General_ZTestTravel.ToString();
@@ -10189,6 +10191,20 @@ err:
         private void Placement_pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             General_pictureBox_MouseMove(Tapes_pictureBox, e.X, e.Y);
+        }
+
+        private void SlackCompensationA_checkBox_Click(object sender, EventArgs e)
+        {
+            if (SlackCompensationA_checkBox.Checked)
+            {
+                Cnc.SlackCompensationA = true;
+                Properties.Settings.Default.CNC_SlackCompensationA = true;
+            }
+            else
+            {
+                Cnc.SlackCompensationA = false;
+                Properties.Settings.Default.CNC_SlackCompensationA = false;
+            }
         }
 
 
