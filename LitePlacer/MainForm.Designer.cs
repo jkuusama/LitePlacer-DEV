@@ -364,6 +364,7 @@
             this.Cam_pictureBox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.Zlb_label = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
             this.PlacementDepth_textBox = new System.Windows.Forms.TextBox();
             this.label112 = new System.Windows.Forms.Label();
@@ -372,7 +373,6 @@
             this.CancelProbing_button = new System.Windows.Forms.Button();
             this.label116 = new System.Windows.Forms.Label();
             this.SetProbing_button = new System.Windows.Forms.Button();
-            this.Zlb_label = new System.Windows.Forms.Label();
             this.label111 = new System.Windows.Forms.Label();
             this.label117 = new System.Windows.Forms.Label();
             this.SlackCompensationA_checkBox = new System.Windows.Forms.CheckBox();
@@ -4419,6 +4419,18 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
+            // Zlb_label
+            // 
+            this.Zlb_label.AutoSize = true;
+            this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Zlb_label.Location = new System.Drawing.Point(311, 630);
+            this.Zlb_label.Name = "Zlb_label";
+            this.Zlb_label.Size = new System.Drawing.Size(365, 38);
+            this.Zlb_label.TabIndex = 51;
+            this.Zlb_label.Text = "Jog Z axis until the needle just barely touches the PCB\r\nthen click \"next\"";
+            this.Zlb_label.Visible = false;
+            // 
             // panel9
             // 
             this.panel9.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -4501,18 +4513,6 @@
             this.toolTip1.SetToolTip(this.SetProbing_button, "Runs needle height calibration routine");
             this.SetProbing_button.UseVisualStyleBackColor = true;
             this.SetProbing_button.Click += new System.EventHandler(this.SetProbing_button_Click);
-            // 
-            // Zlb_label
-            // 
-            this.Zlb_label.AutoSize = true;
-            this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Zlb_label.Location = new System.Drawing.Point(311, 630);
-            this.Zlb_label.Name = "Zlb_label";
-            this.Zlb_label.Size = new System.Drawing.Size(365, 38);
-            this.Zlb_label.TabIndex = 51;
-            this.Zlb_label.Text = "Jog Z axis until the needle just barely touches the PCB\r\nthen click \"next\"";
-            this.Zlb_label.Visible = false;
             // 
             // label111
             // 
@@ -6571,6 +6571,7 @@
             this.StopDemo_button.TabIndex = 74;
             this.StopDemo_button.Text = "Stop Demo";
             this.StopDemo_button.UseVisualStyleBackColor = true;
+            this.StopDemo_button.Visible = false;
             this.StopDemo_button.Click += new System.EventHandler(this.StopDemo_button_Click);
             // 
             // Demo_button
@@ -6581,6 +6582,7 @@
             this.Demo_button.TabIndex = 73;
             this.Demo_button.Text = "Start Demo";
             this.Demo_button.UseVisualStyleBackColor = true;
+            this.Demo_button.Visible = false;
             this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
             // 
             // ChangeNeedle_button

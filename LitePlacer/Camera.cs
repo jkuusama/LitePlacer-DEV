@@ -405,7 +405,7 @@ namespace LitePlacer
 			{
 				if (f.func == Meas_ZoomFunc)
 				{
-					zoom = f.parameter_double;
+                    zoom = zoom * f.parameter_double;
 				}
 			}
 			return zoom;
