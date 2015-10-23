@@ -1018,5 +1018,17 @@ namespace LitePlacer.Properties {
                 this["CNC_SlackCompensationA"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double Placement_Depth {
+            get {
+                return ((double)(this["Placement_Depth"]));
+            }
+            set {
+                this["Placement_Depth"] = value;
+            }
+        }
     }
 }

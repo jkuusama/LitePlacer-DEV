@@ -504,7 +504,7 @@ namespace LitePlacer
             }
 
             int pos;
-            if (!int.TryParse(Grid.Rows[Tape].Cells["IdColumn"].Value.ToString(), out pos))
+            if (!int.TryParse(Grid.Rows[Tape].Cells["Next_Column"].Value.ToString(), out pos))
 			{
 				MainForm.ShowMessageBox(
                     "Bad data at Tape " + Grid.Rows[Tape].Cells["IdColumn"].Value.ToString() + ", next",
