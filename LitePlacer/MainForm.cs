@@ -5628,7 +5628,8 @@ namespace LitePlacer
             {
                 // For method parameter, show the tape selection form if method is "place" 
                 int row = JobData_GridView.CurrentCell.RowIndex;
-                if (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place")
+                if ( (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place") ||
+                     (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place Fast"))
                 {
                     JobData_GridView.Rows[row].Cells["MethodParamAllComponents"].Value = SelectTape("Select tape for "
                         + JobData_GridView.Rows[row].Cells["ComponentType"].Value.ToString());
