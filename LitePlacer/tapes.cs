@@ -160,11 +160,6 @@ namespace LitePlacer
         // Like IncrementTape(), but just using the fast parameters
         public bool IncrementTape_Fast(int TapeNum)
         {
-            FastXpos += FastXstep;
-            FastYpos += FastYstep;
-            Grid.Rows[TapeNum].Cells["NextX_Column"].Value = FastXpos.ToString("0.000", CultureInfo.InvariantCulture);
-            Grid.Rows[TapeNum].Cells["NextY_Column"].Value = FastYpos.ToString("0.000", CultureInfo.InvariantCulture);
-
             int pos;
             if (!int.TryParse(Grid.Rows[TapeNum].Cells["Next_Column"].Value.ToString(), out pos))
             {
@@ -174,9 +169,27 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             }
+            if (Grid.Rows[TapeNum].Cells["WidthColumn"].Value.ToString() == "8/2mm" )
+	        {
+		        if ((pos%2)==0)      // increment hole location only on every other "next" value on 2mm parts
+	            {
+                    FastXpos += FastXstep*2;
+                    FastYpos += FastYstep*2;
+                    Grid.Rows[TapeNum].Cells["NextX_Column"].Value = FastXpos.ToString("0.000", CultureInfo.InvariantCulture);
+                    Grid.Rows[TapeNum].Cells["NextY_Column"].Value = FastYpos.ToString("0.000", CultureInfo.InvariantCulture);
+                }
+	        }
+            else
+            {
+                FastXpos += FastXstep;
+                FastYpos += FastYstep;
+                Grid.Rows[TapeNum].Cells["NextX_Column"].Value = FastXpos.ToString("0.000", CultureInfo.InvariantCulture);
+                Grid.Rows[TapeNum].Cells["NextY_Column"].Value = FastYpos.ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            
             pos += 1;
             Grid.Rows[TapeNum].Cells["Next_Column"].Value = pos.ToString();
-            return true;
+           return true;
         }
 
         // ========================================================================================
@@ -298,13 +311,12 @@ namespace LitePlacer
             {
                 return false;
             }
-            if (Math.Abs(Pitch - 2) < 0.000001)
+            if (Math.Abs(Pitch-2.0)<0.01) // if pitch ==2
             {
+                PartNum = (PartNum +1)/ 2;
                 Pitch = 4.0;
-                PartNum = PartNum % 2;
             }
-            int incr = (PartNum - 1);  // this many holes from start
-            double dist = (double)incr * 4.0; // This many mm's
+            double dist = (double)(PartNum-1) * Pitch; // This many mm's from start
             switch (Grid.Rows[TapeNum].Cells["OrientationColumn"].Value.ToString())
             {
                 case "+Y":
@@ -388,6 +400,7 @@ namespace LitePlacer
 	        {
 		        return false;
 	        }
+            dL = -dL; // so up is + etc.
 			// TapeNumber orientation: 
 			// +Y: Holeside of tape is right, part is dW(mm) to left, dL(mm) down from hole, A= 0
 			// +X: Holeside of tape is down, part is dW(mm) up, dL(mm) to left from hole, A= -90
@@ -402,29 +415,37 @@ namespace LitePlacer
 					MessageBoxButtons.OK
 				);
 				return false;
-			}
-            if ((Math.Abs(Pitch - 2) < 0.000001) && ((pos % 2) == 0))
-			{
-				dL = 0.0;
-			};
+			}     
+            // if pitch == 2 and part# is odd, DL=2, other
+            if (Math.Abs(Pitch - 2) < 0.01)
+            {
+                if ((pos % 2) == 1)
+                {
+                    dL = 2.0;
+                }
+                else
+                {
+                    dL = 0.0;
+                }
+            }
 
 			switch (Grid.Rows[Tape].Cells["OrientationColumn"].Value.ToString())
 			{
 				case "+Y":
 					PartX = X - dW;
-					PartY = Y + dL;
+					PartY = Y - dL;
 					A = 0.0;
 					break;
 
 				case "+X":
-					PartX = X + dL;
+					PartX = X - dL;
 					PartY = Y + dW;
 					A = -90.0;
 					break;
 
 				case "-Y":
 					PartX = X + dW;
-					PartY = Y - dL;
+					PartY = Y + dL;
 					A = -180.0;
 					break;
 
@@ -491,7 +512,7 @@ namespace LitePlacer
 
         // ========================================================================================
         // IncrementTape(): Updates count and next hole locations for a tape
-        // The caller knows the hole location, so we don't need to re-measure them
+        // The caller knows the current hole location, so we don't need to re-measure them
         public bool IncrementTape(int Tape, double HoleX, double HoleY)
         {
             double dW;	// Part center pos from hole, tape width direction. Varies.

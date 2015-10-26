@@ -8742,10 +8742,15 @@ err:
             double pX = 0.0;
             double pY = 0.0;
             double A = 0.0;
+            // Tapes.GetPartLocationFromHolePosition_m uses the next column from Tapes_dataGridView.
+            // Set it temporarily, but remember what was there:
+            string temp= Row.Cells["Next_Column"].Value.ToString();
+            Row.Cells["Next_Column"].Value = PartNum.ToString();
             if (Tapes.GetPartLocationFromHolePosition_m(TapeNum, X, Y, out pX, out pY, out A))
             {
                 CNC_XY_m(pX, pY);
             }
+            Row.Cells["Next_Column"].Value = temp.ToString();
         }
 
 
