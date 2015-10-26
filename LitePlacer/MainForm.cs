@@ -1057,9 +1057,15 @@ namespace LitePlacer
 
         private bool Needle_ProbeDown_m()
         {
+            if (!HomingTimeout_m(out CNC_HomingTimeout, "Z"))
+            {
+                return false;
+            }
+
+            DisplayText("Probing Z, timeout value: " + CNC_HomingTimeout.ToString());
+
             Needle.ProbingMode(true, JSON);
             Cnc.Homing = true;
-            //CNC_Write_m("G28.4 Z0", 4000);
             if (!CNC_Write_m("{\"gc\":\"G28.4 Z0\"}", 4000))
             {
                 Cnc.Homing = false;
@@ -1068,10 +1074,6 @@ namespace LitePlacer
             }
             Cnc.Homing = false;
             Needle.ProbingMode(false, JSON);
-            //if (!CNC_Z_m(Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff+0.2))
-            //{
-            //    return false;
-            //}
             return true;
         }
 
@@ -1147,10 +1149,11 @@ namespace LitePlacer
             CNC_XY_m(Properties.Settings.Default.General_ParkX, Properties.Settings.Default.General_ParkY);
         }
 
-        private bool CNC_Home_m(string axis)
+        private bool HomingTimeout_m(out int TimeOut, string axis  )
         {
-            string speed= "0";
+            string speed = "0";
             double size;
+            TimeOut = 0;
             switch (axis)
             {
                 case "X":
@@ -1169,15 +1172,10 @@ namespace LitePlacer
                     break;
 
                 default:
-                ShowMessageBox(
-                    "CNC_Home_m called with axis " + axis,
-                    "Sloppy programmer error",
-                    MessageBoxButtons.OK);
                     return false;
             }
 
-
-             double MaxTime;
+            double MaxTime;
             if (!double.TryParse(speed, out MaxTime))
             {
                 ShowMessageBox(
@@ -1189,7 +1187,16 @@ namespace LitePlacer
 
             MaxTime = MaxTime / 60;  // Now in seconds/mm
             MaxTime = (size / MaxTime) * 1.2; // in seconds for the machine size and some 
-            CNC_HomingTimeout = (int)MaxTime;
+            TimeOut = (int)MaxTime;
+            return true;
+        }
+
+        private bool CNC_Home_m(string axis)
+        {
+            if (!HomingTimeout_m(out CNC_HomingTimeout, axis))
+            {
+                return false;
+            }
             DisplayText("Homing axis " + axis + ", timeout value: " + CNC_HomingTimeout.ToString());
 
             Cnc.Homing = true;
@@ -4975,9 +4982,14 @@ namespace LitePlacer
                     break;
 
                 case 1:
-                    Needle.ProbingMode(true, JSON);
-                    //CNC_Write_m("G28.4 Z0", 2000);
-                    CNC_Write_m("{\"gc\":\"G28.4 Z0\"}", 2000);
+                    if (!Needle_ProbeDown_m())
+                    {
+                        Zlb_label.Text = "";
+                        Zlb_label.Visible = false;
+                        SetProbing_stage = 0;
+                        CancelProbing_button.Visible = false;
+                        return;
+                    }
                     Properties.Settings.Default.General_ZtoPCB = Cnc.CurrentZ;
                     Zlb_label.Text = "Jog Z axis until the needle just barely touches the PCB\nThen click \"Next\"";
                     SetProbing_stage = 2;
@@ -9007,7 +9019,6 @@ err:
         {
             Xmark = Cnc.CurrentX;
             Ymark = Cnc.CurrentY;
-            Needle.ProbingMode(true, JSON);
             CNC_XY_m((Cnc.CurrentX + Properties.Settings.Default.DownCam_NeedleOffsetX), (Cnc.CurrentY + Properties.Settings.Default.DownCam_NeedleOffsetY));
             Needle_ProbeDown_m();
         }
@@ -9047,7 +9058,6 @@ err:
         private void Test6_button_Click(object sender, EventArgs e)
         {
             DisplayText("test 6: Needle up");
-            Needle.ProbingMode(false, JSON);
             CNC_Z_m(0);  // go up
             CNC_XY_m(Xmark, Ymark);
 
