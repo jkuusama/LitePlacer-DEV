@@ -8406,7 +8406,7 @@ err:
                 // skip the delimiter(s)
                 while (Line[0] == delimiter)
                 {
-                    if (Line.Length < 1)
+                    if (Line.Length < 2)
                     {
                         ShowMessageBox(
                            "Unexpected end of line on " + InputLine,
@@ -8419,7 +8419,7 @@ err:
                 // add token
                 if (Line[0] == '"')
                 {
-                    if (Line.Length < 1)
+                    if (Line.Length < 2)
                     {
                         ShowMessageBox(
                            "Unexpected end of line on " + InputLine,

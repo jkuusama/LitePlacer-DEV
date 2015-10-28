@@ -720,7 +720,7 @@
             this.TestNeedleRecognition_button.Name = "TestNeedleRecognition_button";
             this.TestNeedleRecognition_button.Size = new System.Drawing.Size(110, 23);
             this.TestNeedleRecognition_button.TabIndex = 63;
-            this.TestNeedleRecognition_button.Text = "Calibrate Needle";
+            this.TestNeedleRecognition_button.Text = "Measure Needle";
             this.toolTip1.SetToolTip(this.TestNeedleRecognition_button, "Re-runs needle calibration routine.");
             this.TestNeedleRecognition_button.UseVisualStyleBackColor = true;
             this.TestNeedleRecognition_button.Click += new System.EventHandler(this.TestNeedleRecognition_button_Click);
@@ -4212,9 +4212,9 @@
             this.label115.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label115.Location = new System.Drawing.Point(9, 502);
             this.label115.Name = "label115";
-            this.label115.Size = new System.Drawing.Size(128, 18);
+            this.label115.Size = new System.Drawing.Size(96, 18);
             this.label115.TabIndex = 49;
-            this.label115.Text = "Needle Calibration";
+            this.label115.Text = "Needle Setup";
             // 
             // label114
             // 
