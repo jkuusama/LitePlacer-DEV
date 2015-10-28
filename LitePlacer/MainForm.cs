@@ -1094,7 +1094,7 @@ namespace LitePlacer
             {
                 ShowMessageBox(
                     "Up camera not running, can't calibrate needle.",
-                    "Nedle calibration failed.",
+                    "Needle calibration failed.",
                     MessageBoxButtons.OK);
                 return false;
             }
@@ -1136,8 +1136,8 @@ namespace LitePlacer
             else
             {
                 ShowMessageBox(
-                    "Nedle calibration failed.",
-                    "Nedle calibration failed.",
+                    "Needle calibration failed.",
+                    "Needle calibration failed.",
                     MessageBoxButtons.OK);
             }
             return (result);
@@ -5657,7 +5657,7 @@ namespace LitePlacer
             if (JobData_GridView.CurrentCell.ColumnIndex == 4)
             {
                 // components
-                List<String> Line = FormMain.SplitCSV(JobData_GridView.CurrentCell.Value.ToString(), ',');
+                List<String> Line = SplitCSV(JobData_GridView.CurrentCell.Value.ToString(), ',');
                 int row = JobData_GridView.CurrentCell.RowIndex;
                 JobData_GridView.Rows[row].Cells["ComponentCount"].Value = Line.Count.ToString();
                 Update_GridView(JobData_GridView);
@@ -8302,7 +8302,7 @@ err:
 
             for (i = LineIndex; i < AllLines.Count(); i++)   // for each component
             {
-                if (i==239)
+                if (i==5)
                 {
                     peek = AllLines[i];
                 }
@@ -8391,26 +8391,42 @@ err:
         }   // end ParseCadData
 
         // =================================================================================
-        // Helper function for ParseCadData() (and some others, hence public static)
+        // Helper function for ParseCadData() (and some others, hence public)
 
-        public static List<String> SplitCSV(string Line, char delimiter)
+        public List<String> SplitCSV(string InputLine, char delimiter)
         {
             // input lines can be "xxx","xxxx","xx"; output is array: xxx  xxxxx  xx
             // or xxx,xxxx,xx; output is array: xxx  xxxx  xx
             // or xxx,"xx,xx",xxxx; output is array: xxx  xx,xx  xxxx
 
             List<String> Tokens = new List<string>();
-
+            string Line = InputLine;
             while (Line != "")
             {
                 // skip the delimiter(s)
                 while (Line[0] == delimiter)
                 {
+                    if (Line.Length < 1)
+                    {
+                        ShowMessageBox(
+                           "Unexpected end of line on " + InputLine,
+                           "Line parsing failed",
+                           MessageBoxButtons.OK);
+                        return (Tokens);
+                    }
                     Line = Line.Substring(1);
                 };
                 // add token
                 if (Line[0] == '"')
                 {
+                    if (Line.Length < 1)
+                    {
+                        ShowMessageBox(
+                           "Unexpected end of line on " + InputLine,
+                           "Line parsing failed",
+                           MessageBoxButtons.OK);
+                        return (Tokens);
+                    }
                     // token is "xxx"
                     Line = Line.Substring(1);   // skip the first "
                     Tokens.Add(Line.Substring(0, Line.IndexOf('"')));
