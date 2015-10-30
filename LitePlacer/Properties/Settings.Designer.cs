@@ -1030,5 +1030,29 @@ namespace LitePlacer.Properties {
                 this["Placement_Depth"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Placement_OmitNeedleCalibration {
+            get {
+                return ((bool)(this["Placement_OmitNeedleCalibration"]));
+            }
+            set {
+                this["Placement_OmitNeedleCalibration"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Placement_SkipMeasurements {
+            get {
+                return ((bool)(this["Placement_SkipMeasurements"]));
+            }
+            set {
+                this["Placement_SkipMeasurements"] = value;
+            }
+        }
     }
 }

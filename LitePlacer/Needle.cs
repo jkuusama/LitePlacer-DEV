@@ -37,28 +37,29 @@ namespace LitePlacer
         // private bool probingMode;
         public void ProbingMode(bool set, bool JSON)
         {
+            int wait= 150;
             if(set)
             {
                 if(JSON)
                 {
                     // set in JSON mode
-                    CNC_Write("{\"zsn\",0}"); 
-                    Thread.Sleep(150);
-                    CNC_Write("{\"zsx\",1}"); 
-                    Thread.Sleep(150);
-                    CNC_Write("{\"zzb\",0}"); 
-                    Thread.Sleep(150);
+                    CNC_Write("{\"zsn\",0}");
+                    Thread.Sleep(wait);
+                    CNC_Write("{\"zsx\",1}");
+                    Thread.Sleep(wait);
+                    CNC_Write("{\"zzb\",0}");
+                    Thread.Sleep(wait);
                     // probingMode = true;
                 }
                 else
                 {
                     // set in text mode
                     CNC_Write("$zsn=0");
-                    Thread.Sleep(50);
+                    Thread.Sleep(wait);
                     CNC_Write("$zsx=1");
-                    Thread.Sleep(50);
+                    Thread.Sleep(wait);
                     CNC_Write("$zzb=0");
-                    Thread.Sleep(50);
+                    Thread.Sleep(wait);
                     // probingMode = true;
                 }
             }            
@@ -68,22 +69,22 @@ namespace LitePlacer
                 {
                     // clear in JSON mode
                     CNC_Write("{\"zsn\",3}");
-                    Thread.Sleep(50);
+                    Thread.Sleep(wait);
                     CNC_Write("{\"zsx\",2}");
-                    Thread.Sleep(50);
+                    Thread.Sleep(wait);
                     CNC_Write("{\"zzb\",2}");
-                    Thread.Sleep(50);
+                    Thread.Sleep(wait);
                     // probingMode = false;
                 }
                 else
                 {
                     // clear in text mode
                     CNC_Write("$zsn=3");
-                    Thread.Sleep(50);
+                    Thread.Sleep(wait);
                     CNC_Write("$zsx=2");
-                    Thread.Sleep(50);
+                    Thread.Sleep(wait);
                     CNC_Write("$zzb=2");
-                    Thread.Sleep(50);
+                    Thread.Sleep(wait);
                     // probingMode = false;
                 }
             }
@@ -95,6 +96,13 @@ namespace LitePlacer
 
         public bool CorrectedPosition_m(double angle, out double X, out double Y)
         {
+            if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
+            {
+                X = 0.0;
+                Y = 0.0;
+                return true;
+            };
+
             if (!Calibrated)
             {
                 DialogResult dialogResult = MainForm.ShowMessageBox(
@@ -173,6 +181,11 @@ namespace LitePlacer
 
         public bool Calibrate(double Tolerance)
         {
+            if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
+            {
+                return true;
+            };
+
             CalibrationPoints.Clear();   // Presumably user changed the needle, and calibration is void no matter if we succeed here
             Calibrated = false;
             if (!Cam.IsRunning())

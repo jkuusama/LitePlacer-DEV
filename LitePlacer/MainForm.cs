@@ -117,7 +117,8 @@ namespace LitePlacer
 
             if (Cnc.Connected)
             {
-                PumpDefaultSetting();
+                PumpIsOn = true;        // so it will be turned off, no matter what we think the status
+                PumpOff_NoWorkaround();
                 VacuumDefaultSetting();
                 CNC_Write_m("{\"md\":\"\"}");  // motor power off
             }
@@ -179,6 +180,9 @@ namespace LitePlacer
             Needle = new NeedleClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, CustomTapes_dataGridView, Needle, DownCamera, Cnc, this);
 
+            // Setup error handling for Tapes_dataGridView
+            // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
+            Tapes_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
 
             this.KeyPreview = true;
             RemoveCursorNavigation(this.Controls);
@@ -191,7 +195,7 @@ namespace LitePlacer
             LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
             LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
             LoadDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
-            // Tapes.AddCustomTapesToTapes();
+            Tapes.AddCustomTapesToTapes();
 
             LoadDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
             LoadDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
@@ -262,6 +266,9 @@ namespace LitePlacer
             LabelTestButtons();
 
             ShowBuildNumber();
+
+            OmitNeedleCalibration_checkBox.Checked = Properties.Settings.Default.Placement_OmitNeedleCalibration;
+            SkipMeasurements_checkBox.Checked = Properties.Settings.Default.Placement_SkipMeasurements;
 
             DownCamZoom_checkBox.Checked = Properties.Settings.Default.DownCam_Zoom;
             DownCamera.Zoom = Properties.Settings.Default.DownCam_Zoom;
@@ -1079,6 +1086,11 @@ namespace LitePlacer
 
         public bool CalibrateNeedle_m()
         {
+            if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
+            {
+                return true;
+            };
+
             double MarkX = Cnc.CurrentX;
             double MarkY = Cnc.CurrentY;
             double MarkZ = Cnc.CurrentZ;
@@ -7298,6 +7310,27 @@ namespace LitePlacer
         // BuildMachineCoordinateData_m():
         private bool BuildMachineCoordinateData_m()
         {
+            double X_nom = 0;
+            double Y_nom = 0;
+            if (Properties.Settings.Default.Placement_SkipMeasurements)
+            {
+                foreach (DataGridViewRow Row in CadData_GridView.Rows)
+                {
+                    // Cad data is validated.
+                    double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out X_nom);
+                    double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out Y_nom);
+                    X_nom += Properties.Settings.Default.General_JigOffsetX;
+                    Y_nom += Properties.Settings.Default.General_JigOffsetY;
+                    Row.Cells["X_machine"].Value = X_nom.ToString("0.000", CultureInfo.InvariantCulture);
+                    Row.Cells["Y_machine"].Value = Y_nom.ToString("0.000", CultureInfo.InvariantCulture);
+
+                    Row.Cells["Rotation_machine"].Value = Row.Cells["Rotation"].Value;
+                }
+                // Refresh UI:
+                Update_GridView(CadData_GridView);
+                return true;
+            };
+
             if (ValidMeasurement_checkBox.Checked)
             {
                 return true;
@@ -7328,8 +7361,8 @@ namespace LitePlacer
             SetFiducialsMeasurement();
             // Move them to our array, checking the data:
             PhysicalComponent[] Fiducials = new PhysicalComponent[FiducialDesignators.Length];  // store the data here
-            double X_nom = 0;
-            double Y_nom = 0;
+            // double X_nom = 0;
+            // double Y_nom = 0;
             for (int i = 0; i < FiducialDesignators.Length; i++)  // for each fiducial in our OriginalFiducials array,
             {
                 Fiducials[i] = new PhysicalComponent();
@@ -8456,6 +8489,13 @@ err:
         // Tape Positions page functions
         // =================================================================================
         #region Tape Positions page functions
+
+        // This is set up at Form1_Load()
+        void Tapes_dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Ugly, but MS raises this error when programmatically changing a combobox cell value
+            // or when it is not one set at design time (and we will put custom tape names in)
+        }
 
         private void Tapes_tabPage_Begin()
         {
@@ -10297,6 +10337,17 @@ err:
                     PlacementDepth_textBox.ForeColor = Color.Black;
                 }
             }
+        }
+
+        private void OmitNeedleCalibration_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Placement_OmitNeedleCalibration = OmitNeedleCalibration_checkBox.Checked;
+
+        }
+
+        private void SkipMeasurements_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Placement_SkipMeasurements = SkipMeasurements_checkBox.Checked;
         }
 
 

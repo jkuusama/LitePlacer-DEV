@@ -582,6 +582,39 @@ namespace LitePlacer
 		{
             HoleX = 0;
             HoleY = 0;
+            int CustomTapeNumber;
+            // If this is a custom tape that doesn't use location marks, we'll return the set position:
+            if (IsCustomTape(TapeNumber, out CustomTapeNumber))
+            {
+                if (!(CustomGrid.Rows[CustomTapeNumber].Cells["UsesLocationMarks_Column"].Value.ToString() == "true"))
+                {
+                    if (!double.TryParse(CustomGrid.Rows[CustomTapeNumber].Cells["PartOffsetX_Column"].Value.ToString(), out HoleX))
+                    {
+                        MainForm.ShowMessageBox(
+                            "Bad data at custom tape " + CustomGrid.Rows[CustomTapeNumber].Cells["Name_Column"].Value.ToString() + ", X offset",
+                            "Custom tape data error",
+                            MessageBoxButtons.OK
+                        );
+                        return false;
+                    }
+                    if (!double.TryParse(CustomGrid.Rows[CustomTapeNumber].Cells["PartOffsetY_Column"].Value.ToString(), out HoleY))
+                    {
+                        MainForm.ShowMessageBox(
+                            "Bad data at custom tape " + CustomGrid.Rows[CustomTapeNumber].Cells["Name_Column"].Value.ToString() + ", Y offset",
+                            "Custom tape data error",
+                            MessageBoxButtons.OK
+                        );
+                        return false;
+                    }
+                    // Go there:
+                    if (!MainForm.CNC_XY_m(HoleX, HoleY))
+                    {
+                        return false;
+                    };
+                }
+            }
+
+            // Normal case:
 			// Go to next hole approximate location:
 			if (!SetCurrentTapeMeasurement_m(TapeNumber))  // having the measurement setup here helps with the automatic gain lag
 				return false;
@@ -688,6 +721,24 @@ namespace LitePlacer
 	// ========================================================================================
 	// Custom Tapes (or trays, feeders etc.):
 
+        private bool IsCustomTape(int TapeNumber, out int CustomTapeNumber)
+        {
+            // Tells if TapeNumber is custom tape, sets CustomTapeNumber
+            string TapeName = Grid.Rows[TapeNumber].Cells["IdColumn"].Value.ToString();
+            for (int i = 0; i < CustomGrid.RowCount-1; i++)
+            {
+                if (CustomGrid.Rows[i].Cells["Name_Column"].Value.ToString() == TapeName)
+                {
+                    CustomTapeNumber = i;
+                    return true;
+                }
+            }
+            CustomTapeNumber = -1;
+            return false;
+
+
+        }
+
         private bool GetCustomPartHole_m(int CustomTapeNum, int PartNum, double X, double Y, out double ResultX, out double ResultY)
         {
             ResultX = 0.0;
@@ -704,9 +755,9 @@ namespace LitePlacer
             OffsetX = 0.0;
             Pitch = 0.0;
             CustomTapeNum = -1;
-            foreach (DataGridViewRow GridRow in Grid.Rows)
+            foreach (DataGridViewRow GridRow in CustomGrid.Rows)
             {
-                if (GridRow.Cells["NameColumn"].Value.ToString() == Name)
+                if (GridRow.Cells["Name_Column"].Value.ToString() == Name)
                 {
                     // Found it!
                     CustomTapeNum= GridRow.Index;
@@ -721,7 +772,7 @@ namespace LitePlacer
                         return false;
                     }
 
-                    if ((bool)Row.Cells["UsesLocationMarks_Column"].Value)
+                    if (Convert.ToBoolean(Row.Cells["UsesLocationMarks_Column"].Value) == true)
                     {
                         if (!double.TryParse(Row.Cells["PartOffsetX_Column"].Value.ToString(), out OffsetX))
                         {
@@ -757,6 +808,23 @@ namespace LitePlacer
         // ========================================================================================
         // Custom tapes are recognized by their name, which should be placed in the Width column
 
+        private void ResetTapeWidths(DataGridViewComboBoxCell box)
+        {
+            box.Items.Clear();
+            box.Items.Add("8/2mm");
+            box.Items.Add("8/4mm");
+            box.Items.Add("12/4mm");
+            box.Items.Add("12/8mm");
+            box.Items.Add("16/4mm");
+            box.Items.Add("16/8mm");
+            box.Items.Add("16/12mm");
+            box.Items.Add("24/4mm");
+            box.Items.Add("24/8mm");
+            box.Items.Add("24/12mm");
+            box.Items.Add("24/16mm");
+            box.Items.Add("24/20mm");
+        }
+
         public void AddCustomTapesToTapes()
         {
             if (Grid.RowCount==0)
@@ -768,7 +836,8 @@ namespace LitePlacer
             for (int i = 0; i < Grid.RowCount; i++)
             {
                 DataGridViewComboBoxCell box = (DataGridViewComboBoxCell)Grid.Rows[i].Cells["WidthColumn"];
-
+                // Clear and put in standard tape types
+                ResetTapeWidths(box);
                 // Add custom tape names
                 for (int j = 0; j < CustomGrid.RowCount-1; j++)
                 {
