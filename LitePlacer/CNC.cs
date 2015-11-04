@@ -310,18 +310,20 @@ namespace LitePlacer
 				X = X + SquareCorrection * Y;
 				if ((dX < 1.1) && (dY < 1.1))
                 {
-					command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                    command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) + 
+                                                    " Y" + Y.ToString(CultureInfo.InvariantCulture) + " A" + Am.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
-                    command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                    command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) + 
+                                     " Y" + Y.ToString(CultureInfo.InvariantCulture) + " A" + Am.ToString(CultureInfo.InvariantCulture);
                 }
                 _readyEvent.Reset();
                 //Com.Write(command);
                 MainForm.DisplayText(command);
                 Com.Write("{\"gc\":\"" + command + "\"}");
                 _readyEvent.Wait();
-                A(Am);
+                // A(Am);
             }
         }
 
