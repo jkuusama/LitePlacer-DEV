@@ -91,77 +91,6 @@ namespace LitePlacer
             this.MouseWheel += new MouseEventHandler(MouseWheel_event);
         }
 
-
-        // =================================================================================
-
-
-        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Properties.Settings.Default.Save();
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-            SaveDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
-            SaveDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
-            SaveDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
-            SaveDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
-            SaveDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
-            SaveDataGrid(path + "LitePlacer.ComponentsFunctions", Components_dataGridView);
-            SaveDataGrid(path + "LitePlacer.PaperTapeFunctions", PaperTape_dataGridView);
-            SaveDataGrid(path + "LitePlacer.BlackTapeFunctions", BlackTape_dataGridView);
-            SaveDataGrid(path + "LitePlacer.ClearTapeFunctions", ClearTape_dataGridView);
-            SaveDataGrid(path + "LitePlacer.SnapshotFunctions", DowncamSnapshot_dataGridView);
-            SaveDataGrid(path + "LitePlacer.NeedleFunctions", Needle_dataGridView);
-            SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView);
-            SaveDataGrid(path + "LitePlacer.UpCamSnapshotFunctions", UpcamSnapshot_dataGridView);
-
-            if (Cnc.Connected)
-            {
-                PumpIsOn = true;        // so it will be turned off, no matter what we think the status
-                PumpOff_NoWorkaround();
-                VacuumDefaultSetting();
-                CNC_Write_m("{\"md\":\"\"}");  // motor power off
-            }
-            Cnc.Close();
-
-            if (DownCamera.IsRunning())
-            {
-                DownCamera.Close();
-                Thread.Sleep(200);   // camera feed needs a frame to close.
-            }
-            if (UpCamera.IsRunning())
-            {
-                UpCamera.Close();
-                Thread.Sleep(200);   // camera feed needs a frame to close.
-            }
-            Thread.Sleep(200);
-        }
-
-        // =================================================================================
-        // Get and save settings from old version if necessary
-        // http://blog.johnsworkshop.net/automatically-upgrading-user-settings-after-an-application-version-change/
-
-        private void Do_Upgrade()
-        {
-            try
-            {
-                if (Properties.Settings.Default.General_UpgradeRequired)
-                {
-                    DisplayText("Updating from previous version");
-                    Properties.Settings.Default.Upgrade();
-                    Properties.Settings.Default.General_UpgradeRequired = false;
-                    Properties.Settings.Default.Save();
-                }
-            }
-            catch (SettingsPropertyNotFoundException)
-            {
-                DisplayText("Updating from previous version (through ex)");
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.General_UpgradeRequired = false;
-                Properties.Settings.Default.Save();
-            }
-
-        }
         // =================================================================================
 
         private void Form1_Load(object sender, EventArgs e)
@@ -237,10 +166,6 @@ namespace LitePlacer
             // To add data, comment out the next line.
             tabControlPages.TabPages.Remove(Components_tabPage);
 
-            SetDownCameraDefaults();
-            SetUpCameraDefaults();
-            SelectCamera(DownCamera);
-
             Zlb_label.Text = "";
             Zlb_label.Visible = false;
 
@@ -280,6 +205,18 @@ namespace LitePlacer
             UpCamZoomFactor_textBox.Text = Properties.Settings.Default.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             UpCamera.ZoomFactor = Properties.Settings.Default.UpCam_Zoomfactor;
 
+            RobustFast_checkBox.Checked = Properties.Settings.Default.Cameras_RobustSwitch;
+            KeepActive_checkBox.Checked = Properties.Settings.Default.Cameras_KeepActive;
+            if (KeepActive_checkBox.Checked)
+            {
+                RobustFast_checkBox.Enabled = false;
+            }
+            else
+            {
+                RobustFast_checkBox.Enabled = true;
+            }
+            RobustFast_checkBox.Checked = Properties.Settings.Default.Cameras_RobustSwitch;
+
             tabControlPages.SelectedTab = tabPageBasicSetup;
             LastTabPage = "tabPageBasicSetup";
 
@@ -304,9 +241,78 @@ namespace LitePlacer
                 Thread.Sleep(50);
                 UpdateWindowValues_m();
             }
-
+            StartCameras();
         }
 
+        // =================================================================================
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+            SaveDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
+            SaveDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
+            SaveDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
+            SaveDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
+            SaveDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
+            SaveDataGrid(path + "LitePlacer.ComponentsFunctions", Components_dataGridView);
+            SaveDataGrid(path + "LitePlacer.PaperTapeFunctions", PaperTape_dataGridView);
+            SaveDataGrid(path + "LitePlacer.BlackTapeFunctions", BlackTape_dataGridView);
+            SaveDataGrid(path + "LitePlacer.ClearTapeFunctions", ClearTape_dataGridView);
+            SaveDataGrid(path + "LitePlacer.SnapshotFunctions", DowncamSnapshot_dataGridView);
+            SaveDataGrid(path + "LitePlacer.NeedleFunctions", Needle_dataGridView);
+            SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions", UpCamComponents_dataGridView);
+            SaveDataGrid(path + "LitePlacer.UpCamSnapshotFunctions", UpcamSnapshot_dataGridView);
+
+            if (Cnc.Connected)
+            {
+                PumpIsOn = true;        // so it will be turned off, no matter what we think the status
+                PumpOff_NoWorkaround();
+                VacuumDefaultSetting();
+                CNC_Write_m("{\"md\":\"\"}");  // motor power off
+            }
+            Cnc.Close();
+
+            if (DownCamera.IsRunning())
+            {
+                DownCamera.Close();
+                Thread.Sleep(200);   // camera feed needs a frame to close.
+            }
+            if (UpCamera.IsRunning())
+            {
+                UpCamera.Close();
+                Thread.Sleep(200);   // camera feed needs a frame to close.
+            }
+            Thread.Sleep(200);
+        }
+
+        // =================================================================================
+        // Get and save settings from old version if necessary
+        // http://blog.johnsworkshop.net/automatically-upgrading-user-settings-after-an-application-version-change/
+
+        private void Do_Upgrade()
+        {
+            try
+            {
+                if (Properties.Settings.Default.General_UpgradeRequired)
+                {
+                    DisplayText("Updating from previous version");
+                    Properties.Settings.Default.Upgrade();
+                    Properties.Settings.Default.General_UpgradeRequired = false;
+                    Properties.Settings.Default.Save();
+                }
+            }
+            catch (SettingsPropertyNotFoundException)
+            {
+                DisplayText("Updating from previous version (through ex)");
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.General_UpgradeRequired = false;
+                Properties.Settings.Default.Save();
+            }
+
+        }
 
         // =================================================================================
         public bool SetupCamerasPageVisible = false;
@@ -1747,6 +1753,24 @@ namespace LitePlacer
         // Common
         // =================================================================================
 
+        private void StartCameras()
+        {
+            // Called at startup. 
+            DownCamera.Close();
+            UpCamera.Close();
+            SetDownCameraDefaults();
+            SetUpCameraDefaults();
+            if (KeepActive_checkBox.Checked)
+            {
+                StartUpCamera_m();
+                UpCamera.Active = false;
+                StartDownCamera_m();
+            }
+            SelectCamera(DownCamera);
+
+        }
+
+
         private void RobustFast_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.Cameras_RobustSwitch = RobustFast_checkBox.Checked;
@@ -1755,6 +1779,22 @@ namespace LitePlacer
 
         private void SelectCamera(Camera cam)
         {
+            if (KeepActive_checkBox.Checked)
+            {
+                DownCamera.Active = false;
+                UpCamera.Active = false;
+                cam.Active = true;
+                if (cam == DownCamera)
+                {
+                    DisplayText("DownCamera activated");
+                }
+                else
+                {
+                    DisplayText("UpCamera activated");
+                }
+                return;
+            };
+
             if (Properties.Settings.Default.Cameras_RobustSwitch)
             {
                 if (UpCamera.IsRunning())
@@ -1788,6 +1828,8 @@ namespace LitePlacer
         // =================================================================================
         private bool StartDownCamera_m()
         {
+            UpCamera.Active = false;
+            DownCamera.Active = true;
             if (DownCamera.IsRunning())
             {
                 DisplayText("DownCamera already running");
@@ -1817,6 +1859,8 @@ namespace LitePlacer
         // ====
         private bool StartUpCamera_m()
         {
+            DownCamera.Active = false;
+            UpCamera.Active = true;
             if (UpCamera.IsRunning())
             {
                 DisplayText("UpCamera already running");
@@ -1838,6 +1882,7 @@ namespace LitePlacer
                 UpCamStatus_label.Text = "Not Connected";
                 return false;
             };
+            UpCamera.Active = true;
             UpCamStatus_label.Text = "Active";
             DownCamStatus_label.Text = "Not Active";
             return true;
@@ -1951,8 +1996,6 @@ namespace LitePlacer
             DownCamera.SideMarksX = Properties.Settings.Default.General_MachineSizeX / 100;
             DownCamera.SideMarksY = Properties.Settings.Default.General_MachineSizeY / 100;
             DownCameraDrawTicks_checkBox.Checked = Properties.Settings.Default.DownCam_DrawTicks;
-
-            RobustFast_checkBox.Checked = Properties.Settings.Default.Cameras_RobustSwitch;
 
             DowncamSnapshot_ColorBox.BackColor = Properties.Settings.Default.DownCam_SnapshotColor;
             UpcamSnapshot_ColorBox.BackColor = Properties.Settings.Default.UpCam_SnapshotColor;
@@ -9793,6 +9836,7 @@ err:
             B_numericUpDown.Parent = Page;
             ColorHelp_label.Parent = Page;
             RobustFast_checkBox.Parent = Page;
+            KeepActive_checkBox.Parent = Page;
         }
 
         private void ClearEditTargets()
@@ -10348,6 +10392,25 @@ err:
         private void SkipMeasurements_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.Placement_SkipMeasurements = SkipMeasurements_checkBox.Checked;
+        }
+
+        private void KeepActive_checkBox_Click(object sender, EventArgs e)
+        {
+            // We handle checked state ourselves to avoid automatic call to StartCameras at startup
+            // (Changing Checked activatges CheckedChanged event
+            if (!KeepActive_checkBox.Checked)
+            {
+                // Change to true, start cameras
+                KeepActive_checkBox.Checked = true;
+                RobustFast_checkBox.Enabled = false;
+                StartCameras();
+            }
+            else
+            {
+                KeepActive_checkBox.Checked = false;
+                RobustFast_checkBox.Enabled = true;
+            }
+            Properties.Settings.Default.Cameras_KeepActive=KeepActive_checkBox.Checked;
         }
 
 

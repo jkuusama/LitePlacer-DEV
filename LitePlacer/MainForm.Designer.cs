@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -107,6 +107,22 @@
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
+            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label108 = new System.Windows.Forms.Label();
             this.Tapes_pictureBox = new System.Windows.Forms.PictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
@@ -531,6 +547,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
+            this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
+            this.OmitNeedleCalibration_checkBox = new System.Windows.Forms.CheckBox();
             this.MeasureZs_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.label127 = new System.Windows.Forms.Label();
@@ -626,24 +644,8 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OmitNeedleCalibration_checkBox = new System.Windows.Forms.CheckBox();
-            this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
+            this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
+            this.label135 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1557,6 +1559,145 @@
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
             // 
+            // SelectButtonColumn
+            // 
+            this.SelectButtonColumn.HeaderText = "Select";
+            this.SelectButtonColumn.Name = "SelectButtonColumn";
+            this.SelectButtonColumn.Text = "Reset";
+            this.SelectButtonColumn.Width = 43;
+            // 
+            // IdColumn
+            // 
+            this.IdColumn.HeaderText = "ID";
+            this.IdColumn.Name = "IdColumn";
+            this.IdColumn.Width = 43;
+            // 
+            // OrientationColumn
+            // 
+            this.OrientationColumn.HeaderText = "Dir.";
+            this.OrientationColumn.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.OrientationColumn.Name = "OrientationColumn";
+            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.OrientationColumn.Width = 48;
+            // 
+            // RotationColumn
+            // 
+            this.RotationColumn.HeaderText = "Rot.";
+            this.RotationColumn.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.RotationColumn.Name = "RotationColumn";
+            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.RotationColumn.Width = 52;
+            // 
+            // WidthColumn
+            // 
+            this.WidthColumn.HeaderText = "Width";
+            this.WidthColumn.Items.AddRange(new object[] {
+            "8/2mm",
+            "8/4mm",
+            "12/4mm",
+            "12/8mm",
+            "16/4mm",
+            "16/8mm",
+            "16/12mm",
+            "24/4mm",
+            "24/8mm",
+            "24/12mm",
+            "24/16mm",
+            "24/20mm"});
+            this.WidthColumn.Name = "WidthColumn";
+            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.WidthColumn.Width = 60;
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.TypeColumn.Name = "TypeColumn";
+            this.TypeColumn.Width = 37;
+            // 
+            // Next_Column
+            // 
+            this.Next_Column.HeaderText = "Next";
+            this.Next_Column.Name = "Next_Column";
+            this.Next_Column.ReadOnly = true;
+            this.Next_Column.Width = 54;
+            // 
+            // Tray_Column
+            // 
+            this.Tray_Column.HeaderText = "Tray";
+            this.Tray_Column.Name = "Tray_Column";
+            this.Tray_Column.Width = 53;
+            // 
+            // X_Column
+            // 
+            this.X_Column.HeaderText = "X";
+            this.X_Column.Name = "X_Column";
+            this.X_Column.ReadOnly = true;
+            this.X_Column.Width = 39;
+            // 
+            // Y_Column
+            // 
+            this.Y_Column.HeaderText = "Y";
+            this.Y_Column.Name = "Y_Column";
+            this.Y_Column.ReadOnly = true;
+            this.Y_Column.Width = 39;
+            // 
+            // PickupZ_Column
+            // 
+            this.PickupZ_Column.HeaderText = "Pickup Z";
+            this.PickupZ_Column.Name = "PickupZ_Column";
+            this.PickupZ_Column.Width = 75;
+            // 
+            // PlaceZ_Column
+            // 
+            this.PlaceZ_Column.HeaderText = "PlaceZ";
+            this.PlaceZ_Column.Name = "PlaceZ_Column";
+            this.PlaceZ_Column.Width = 66;
+            // 
+            // NextX_Column
+            // 
+            this.NextX_Column.HeaderText = "Next X";
+            this.NextX_Column.Name = "NextX_Column";
+            this.NextX_Column.ReadOnly = true;
+            this.NextX_Column.Width = 64;
+            // 
+            // NextY_column
+            // 
+            this.NextY_column.HeaderText = "Next Y";
+            this.NextY_column.Name = "NextY_column";
+            this.NextY_column.ReadOnly = true;
+            this.NextY_column.Width = 64;
+            // 
+            // LastX
+            // 
+            this.LastX.HeaderText = "Last X";
+            this.LastX.Name = "LastX";
+            this.LastX.ReadOnly = true;
+            this.LastX.Visible = false;
+            this.LastX.Width = 62;
+            // 
+            // LastY
+            // 
+            this.LastY.HeaderText = "Last Y";
+            this.LastY.Name = "LastY";
+            this.LastY.ReadOnly = true;
+            this.LastY.Visible = false;
+            this.LastY.Width = 62;
+            // 
             // label108
             // 
             this.label108.AutoSize = true;
@@ -1679,6 +1820,8 @@
             // 
             // DownCamera_tabPage
             // 
+            this.DownCamera_tabPage.Controls.Add(this.label135);
+            this.DownCamera_tabPage.Controls.Add(this.KeepActive_checkBox);
             this.DownCamera_tabPage.Controls.Add(this.DowncamSnapshot_ColorBox);
             this.DownCamera_tabPage.Controls.Add(this.groupBox13);
             this.DownCamera_tabPage.Controls.Add(this.RobustFast_checkBox);
@@ -1870,11 +2013,12 @@
             // 
             this.RobustFast_checkBox.AutoSize = true;
             this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RobustFast_checkBox.Location = new System.Drawing.Point(144, 37);
+            this.RobustFast_checkBox.Location = new System.Drawing.Point(223, 42);
             this.RobustFast_checkBox.Name = "RobustFast_checkBox";
-            this.RobustFast_checkBox.Size = new System.Drawing.Size(205, 17);
+            this.RobustFast_checkBox.Size = new System.Drawing.Size(134, 17);
             this.RobustFast_checkBox.TabIndex = 140;
-            this.RobustFast_checkBox.Text = "Robust camera switch (uncheck: fast)";
+            this.RobustFast_checkBox.Text = "Robust (uncheck: fast)";
+            this.toolTip1.SetToolTip(this.RobustFast_checkBox, resources.GetString("RobustFast_checkBox.ToolTip"));
             this.RobustFast_checkBox.UseVisualStyleBackColor = true;
             this.RobustFast_checkBox.CheckedChanged += new System.EventHandler(this.RobustFast_checkBox_CheckedChanged);
             // 
@@ -6335,6 +6479,29 @@
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
             // 
+            // SkipMeasurements_checkBox
+            // 
+            this.SkipMeasurements_checkBox.AutoSize = true;
+            this.SkipMeasurements_checkBox.Location = new System.Drawing.Point(468, 596);
+            this.SkipMeasurements_checkBox.Name = "SkipMeasurements_checkBox";
+            this.SkipMeasurements_checkBox.Size = new System.Drawing.Size(175, 17);
+            this.SkipMeasurements_checkBox.TabIndex = 81;
+            this.SkipMeasurements_checkBox.Text = "Skip measurement, use nominal";
+            this.SkipMeasurements_checkBox.UseVisualStyleBackColor = true;
+            this.SkipMeasurements_checkBox.CheckedChanged += new System.EventHandler(this.SkipMeasurements_checkBox_CheckedChanged);
+            // 
+            // OmitNeedleCalibration_checkBox
+            // 
+            this.OmitNeedleCalibration_checkBox.AutoSize = true;
+            this.OmitNeedleCalibration_checkBox.Location = new System.Drawing.Point(469, 647);
+            this.OmitNeedleCalibration_checkBox.Name = "OmitNeedleCalibration_checkBox";
+            this.OmitNeedleCalibration_checkBox.Size = new System.Drawing.Size(156, 17);
+            this.OmitNeedleCalibration_checkBox.TabIndex = 80;
+            this.OmitNeedleCalibration_checkBox.Text = "Don\'t use needle correction";
+            this.toolTip1.SetToolTip(this.OmitNeedleCalibration_checkBox, "Skips needle correction phase.");
+            this.OmitNeedleCalibration_checkBox.UseVisualStyleBackColor = true;
+            this.OmitNeedleCalibration_checkBox.CheckedChanged += new System.EventHandler(this.OmitNeedleCalibration_checkBox_CheckedChanged);
+            // 
             // MeasureZs_checkBox
             // 
             this.MeasureZs_checkBox.AutoSize = true;
@@ -7068,14 +7235,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7142,14 +7309,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -7301,167 +7468,27 @@
             // 
             this.colorDialog1.SolidColorOnly = true;
             // 
-            // SelectButtonColumn
+            // KeepActive_checkBox
             // 
-            this.SelectButtonColumn.HeaderText = "Select";
-            this.SelectButtonColumn.Name = "SelectButtonColumn";
-            this.SelectButtonColumn.Text = "Reset";
-            this.SelectButtonColumn.Width = 43;
+            this.KeepActive_checkBox.AutoSize = true;
+            this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeepActive_checkBox.Location = new System.Drawing.Point(358, 42);
+            this.KeepActive_checkBox.Name = "KeepActive_checkBox";
+            this.KeepActive_checkBox.Size = new System.Drawing.Size(84, 17);
+            this.KeepActive_checkBox.TabIndex = 142;
+            this.KeepActive_checkBox.Text = "Keep Active";
+            this.KeepActive_checkBox.UseVisualStyleBackColor = true;
+            this.KeepActive_checkBox.Click += new System.EventHandler(this.KeepActive_checkBox_Click);
             // 
-            // IdColumn
+            // label135
             // 
-            this.IdColumn.HeaderText = "ID";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
-            // 
-            // OrientationColumn
-            // 
-            this.OrientationColumn.HeaderText = "Dir.";
-            this.OrientationColumn.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.OrientationColumn.Name = "OrientationColumn";
-            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 48;
-            // 
-            // RotationColumn
-            // 
-            this.RotationColumn.HeaderText = "Rot.";
-            this.RotationColumn.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.RotationColumn.Name = "RotationColumn";
-            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 52;
-            // 
-            // WidthColumn
-            // 
-            this.WidthColumn.HeaderText = "Width";
-            this.WidthColumn.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm"});
-            this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.WidthColumn.Width = 60;
-            // 
-            // TypeColumn
-            // 
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.Width = 37;
-            // 
-            // Next_Column
-            // 
-            this.Next_Column.HeaderText = "Next";
-            this.Next_Column.Name = "Next_Column";
-            this.Next_Column.ReadOnly = true;
-            this.Next_Column.Width = 54;
-            // 
-            // Tray_Column
-            // 
-            this.Tray_Column.HeaderText = "Tray";
-            this.Tray_Column.Name = "Tray_Column";
-            this.Tray_Column.Width = 53;
-            // 
-            // X_Column
-            // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.ReadOnly = true;
-            this.X_Column.Width = 39;
-            // 
-            // Y_Column
-            // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.ReadOnly = true;
-            this.Y_Column.Width = 39;
-            // 
-            // PickupZ_Column
-            // 
-            this.PickupZ_Column.HeaderText = "Pickup Z";
-            this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
-            // 
-            // PlaceZ_Column
-            // 
-            this.PlaceZ_Column.HeaderText = "PlaceZ";
-            this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
-            // 
-            // NextX_Column
-            // 
-            this.NextX_Column.HeaderText = "Next X";
-            this.NextX_Column.Name = "NextX_Column";
-            this.NextX_Column.ReadOnly = true;
-            this.NextX_Column.Width = 64;
-            // 
-            // NextY_column
-            // 
-            this.NextY_column.HeaderText = "Next Y";
-            this.NextY_column.Name = "NextY_column";
-            this.NextY_column.ReadOnly = true;
-            this.NextY_column.Width = 64;
-            // 
-            // LastX
-            // 
-            this.LastX.HeaderText = "Last X";
-            this.LastX.Name = "LastX";
-            this.LastX.ReadOnly = true;
-            this.LastX.Visible = false;
-            this.LastX.Width = 62;
-            // 
-            // LastY
-            // 
-            this.LastY.HeaderText = "Last Y";
-            this.LastY.Name = "LastY";
-            this.LastY.ReadOnly = true;
-            this.LastY.Visible = false;
-            this.LastY.Width = 62;
-            // 
-            // OmitNeedleCalibration_checkBox
-            // 
-            this.OmitNeedleCalibration_checkBox.AutoSize = true;
-            this.OmitNeedleCalibration_checkBox.Location = new System.Drawing.Point(469, 647);
-            this.OmitNeedleCalibration_checkBox.Name = "OmitNeedleCalibration_checkBox";
-            this.OmitNeedleCalibration_checkBox.Size = new System.Drawing.Size(156, 17);
-            this.OmitNeedleCalibration_checkBox.TabIndex = 80;
-            this.OmitNeedleCalibration_checkBox.Text = "Don\'t use needle correction";
-            this.toolTip1.SetToolTip(this.OmitNeedleCalibration_checkBox, "Skips needle correction phase.");
-            this.OmitNeedleCalibration_checkBox.UseVisualStyleBackColor = true;
-            this.OmitNeedleCalibration_checkBox.CheckedChanged += new System.EventHandler(this.OmitNeedleCalibration_checkBox_CheckedChanged);
-            // 
-            // SkipMeasurements_checkBox
-            // 
-            this.SkipMeasurements_checkBox.AutoSize = true;
-            this.SkipMeasurements_checkBox.Location = new System.Drawing.Point(468, 596);
-            this.SkipMeasurements_checkBox.Name = "SkipMeasurements_checkBox";
-            this.SkipMeasurements_checkBox.Size = new System.Drawing.Size(175, 17);
-            this.SkipMeasurements_checkBox.TabIndex = 81;
-            this.SkipMeasurements_checkBox.Text = "Skip measurement, use nominal";
-            this.SkipMeasurements_checkBox.UseVisualStyleBackColor = true;
-            this.SkipMeasurements_checkBox.CheckedChanged += new System.EventHandler(this.SkipMeasurements_checkBox_CheckedChanged);
+            this.label135.AutoSize = true;
+            this.label135.Location = new System.Drawing.Point(138, 43);
+            this.label135.Name = "label135";
+            this.label135.Size = new System.Drawing.Size(79, 13);
+            this.label135.TabIndex = 143;
+            this.label135.Text = "Camera switch:";
+            this.toolTip1.SetToolTip(this.label135, "Set parameters for the selected algorithm");
             // 
             // FormMain
             // 
@@ -8207,6 +8234,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastY;
         private System.Windows.Forms.CheckBox OmitNeedleCalibration_checkBox;
         private System.Windows.Forms.CheckBox SkipMeasurements_checkBox;
+        private System.Windows.Forms.Label label135;
+        private System.Windows.Forms.CheckBox KeepActive_checkBox;
     }
 }
 

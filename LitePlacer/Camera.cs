@@ -29,8 +29,9 @@ namespace LitePlacer
 			MainForm = MainF;
 		}
 
+        public bool Active { get; set; }
 
-		public bool IsRunning()
+        public bool IsRunning()
 		{
 			if (VideoSource != null)
 			{
@@ -562,6 +563,10 @@ namespace LitePlacer
 				paused = true;
 				return;
 			};
+            if (!Active)
+            {
+                return;
+            }
 
 			if (DisplayFunctions != null)
 			{
@@ -1009,8 +1014,11 @@ namespace LitePlacer
 				p2.X = (int)Math.Round(Component.Longest.End.X);
 				p2.Y = (int)Math.Round(Component.Longest.End.Y);
 				g.DrawLine(BluePen, p1, p2);
-
 			}
+            g.Dispose();
+            OrangePen.Dispose();
+            RedPen.Dispose();
+            BluePen.Dispose();
 			return (bitmap);
 		}
 
@@ -1115,6 +1123,8 @@ namespace LitePlacer
 					(float)(Circles[i].X - Circles[i].Radius), (float)(Circles[i].Y - Circles[i].Radius),
 					(float)(Circles[i].Radius * 2), (float)(Circles[i].Radius * 2));
 			}
+            g.Dispose();
+            pen.Dispose();
 		}
 
 
@@ -1250,6 +1260,8 @@ namespace LitePlacer
 					}
 				}
 			}
+            g.Dispose();
+            pen.Dispose();
 			return (image);
 		}
 
@@ -1273,6 +1285,8 @@ namespace LitePlacer
 				g.DrawLine(pen, i, FrameCenterY, i + step, FrameCenterY);
 				i = i + 2 * step;
 			}
+            pen.Dispose();
+            g.Dispose();
 		}
 		// =========================================================
 
@@ -1282,6 +1296,8 @@ namespace LitePlacer
 			Graphics g = Graphics.FromImage(img);
 			g.DrawLine(pen, FrameCenterX, 0, FrameCenterX, FrameSizeY);
 			g.DrawLine(pen, 0, FrameCenterY, FrameSizeX, FrameCenterY);
+            pen.Dispose();
+            g.Dispose();
 		}
 
 		// =========================================================
@@ -1307,7 +1323,9 @@ namespace LitePlacer
 				g.DrawLine(pen, 0, Y, tick, Y);
 				Y += Yinc;
 			}
-		}
+            pen.Dispose();
+            g.Dispose();
+        }
 
 		// =========================================================
 		private void DrawBoxFunct(Bitmap img)
@@ -1325,7 +1343,9 @@ namespace LitePlacer
 
 			g.DrawLine(pen, BoxPoints[3].X + FrameCenterX, BoxPoints[3].Y + FrameCenterY,
 				BoxPoints[0].X + FrameCenterX, BoxPoints[0].Y + FrameCenterY);
-		}
+            pen.Dispose();
+            g.Dispose();
+        }
 
 
 		// =========================================================
@@ -1399,6 +1419,7 @@ namespace LitePlacer
 			using (Graphics gr = Graphics.FromImage(Snapshot24b))
 			{
 				gr.DrawImage(SnapshotOriginalImage, dimensions);
+                gr.Dispose();
 			}
 
 			RotateNearestNeighbor filter = new RotateNearestNeighbor(deg - SnapshotRotation, true);

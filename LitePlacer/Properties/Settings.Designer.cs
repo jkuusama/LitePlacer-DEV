@@ -1054,5 +1054,17 @@ namespace LitePlacer.Properties {
                 this["Placement_SkipMeasurements"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Cameras_KeepActive {
+            get {
+                return ((bool)(this["Cameras_KeepActive"]));
+            }
+            set {
+                this["Cameras_KeepActive"] = value;
+            }
+        }
     }
 }
