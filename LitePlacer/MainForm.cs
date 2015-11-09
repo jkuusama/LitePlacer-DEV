@@ -10398,16 +10398,15 @@ err:
         {
             // We handle checked state ourselves to avoid automatic call to StartCameras at startup
             // (Changing Checked activatges CheckedChanged event
-            if (!KeepActive_checkBox.Checked)
+            if (KeepActive_checkBox.Checked)
             {
-                // Change to true, start cameras
-                KeepActive_checkBox.Checked = true;
+                // KeepActive_checkBox.Checked = true;
                 RobustFast_checkBox.Enabled = false;
                 StartCameras();
             }
             else
             {
-                KeepActive_checkBox.Checked = false;
+                // KeepActive_checkBox.Checked = false;
                 RobustFast_checkBox.Enabled = true;
             }
             Properties.Settings.Default.Cameras_KeepActive=KeepActive_checkBox.Checked;
