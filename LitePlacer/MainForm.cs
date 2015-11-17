@@ -10412,6 +10412,73 @@ err:
             Properties.Settings.Default.Cameras_KeepActive=KeepActive_checkBox.Checked;
         }
 
+        private void toolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
+
+        private void Goto_button_Click(object sender, EventArgs e)
+        {
+            double X;
+            double Y;
+            double Z;
+            double A;
+            if (!double.TryParse(GotoX_textBox.Text, out X))
+            {
+                return;
+            }
+            if (!double.TryParse(GotoY_textBox.Text, out Y))
+            {
+                return;
+            }
+            if (!double.TryParse(GotoZ_textBox.Text, out Z))
+            {
+                return;
+            }
+            if (!double.TryParse(GotoA_textBox.Text, out A))
+            {
+                return;
+            }
+            if (Math.Abs(Z)<0.01)  // allow raising Z and move at one go
+            {
+                if (!CNC_Z_m(Z))
+                {
+                    return;
+                }
+            };
+            // Move X, Y, A if needed
+            if ( !((Math.Abs(X - Cnc.CurrentX) < 0.01) && (Math.Abs(Y - Cnc.CurrentY) < 0.01) && (Math.Abs(A - Cnc.CurrentA) < 0.01)) )
+            {
+                // Allow raise Z, goto and low Z:
+                if (!(Math.Abs(Z) < 0.01) )
+                {
+                    if (!CNC_Z_m(0))
+                    {
+                        return;
+                    }
+                }
+                if (!CNC_XYA_m(X, Y, A))
+                {
+                    return;
+                }
+                if (!(Math.Abs(Z - Cnc.CurrentZ) < 0.01))
+                {
+                    if (!CNC_Z_m(Z))
+                    {
+                        return;
+                    }
+                };
+            }
+            // Move Z if needed
+            if (!(Math.Abs(Z - Cnc.CurrentZ) < 0.01))
+            {
+                if (!CNC_Z_m(Z))
+                {
+                    return;
+                }
+            }
+        }
+
 
     }	// end of: 	public partial class FormMain : Form
 

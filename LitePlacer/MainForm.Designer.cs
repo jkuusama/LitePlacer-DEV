@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -55,10 +55,8 @@
             this.OpticalHome_button = new System.Windows.Forms.Button();
             this.UpCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
             this.UpCamZoom_checkBox = new System.Windows.Forms.CheckBox();
-            this.label97 = new System.Windows.Forms.Label();
             this.Test3_button = new System.Windows.Forms.Button();
             this.Test4_button = new System.Windows.Forms.Button();
-            this.label124 = new System.Windows.Forms.Label();
             this.Test5_button = new System.Windows.Forms.Button();
             this.Test6_button = new System.Windows.Forms.Button();
             this.Bookmark1_button = new System.Windows.Forms.Button();
@@ -67,7 +65,6 @@
             this.Bookmark4_button = new System.Windows.Forms.Button();
             this.Bookmark5_button = new System.Windows.Forms.Button();
             this.Bookmark6_button = new System.Windows.Forms.Button();
-            this.label145 = new System.Windows.Forms.Label();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
             this.UseCustomTapes_button = new System.Windows.Forms.Button();
             this.LoadCustomTapes_button = new System.Windows.Forms.Button();
@@ -133,6 +130,8 @@
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
+            this.label135 = new System.Windows.Forms.Label();
+            this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
             this.DowncamSnapshot_ColorBox = new System.Windows.Forms.TextBox();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.DowncamSnapshot_dataGridView = new System.Windows.Forms.DataGridView();
@@ -644,8 +643,15 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
-            this.label135 = new System.Windows.Forms.Label();
+            this.GotoX_textBox = new System.Windows.Forms.TextBox();
+            this.label136 = new System.Windows.Forms.Label();
+            this.label137 = new System.Windows.Forms.Label();
+            this.GotoY_textBox = new System.Windows.Forms.TextBox();
+            this.GotoZ_textBox = new System.Windows.Forms.TextBox();
+            this.GotoA_textBox = new System.Windows.Forms.TextBox();
+            this.Goto_button = new System.Windows.Forms.Button();
+            this.label138 = new System.Windows.Forms.Label();
+            this.label139 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -757,7 +763,7 @@
             // 
             this.reset_button.BackColor = System.Drawing.Color.OrangeRed;
             this.reset_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.reset_button.Location = new System.Drawing.Point(923, 808);
+            this.reset_button.Location = new System.Drawing.Point(537, 608);
             this.reset_button.Name = "reset_button";
             this.reset_button.Size = new System.Drawing.Size(75, 23);
             this.reset_button.TabIndex = 15;
@@ -962,17 +968,6 @@
             this.UpCamZoom_checkBox.UseVisualStyleBackColor = true;
             this.UpCamZoom_checkBox.Click += new System.EventHandler(this.UpCamZoom_checkBox_Click);
             // 
-            // label97
-            // 
-            this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(943, 784);
-            this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(53, 117);
-            this.label97.TabIndex = 61;
-            this.label97.Text = "Jogging: \r\nF5: <  \r\nF6: >\r\nF7: ^  \r\nF8: v\r\nF9: CCW \r\nF10: CW\r\nF11: Z^  \r\nF12: Z v" +
-    "";
-            this.toolTip1.SetToolTip(this.label97, resources.GetString("label97.ToolTip"));
-            // 
             // Test3_button
             // 
             this.Test3_button.Location = new System.Drawing.Point(1148, 781);
@@ -992,16 +987,6 @@
             this.Test4_button.Text = "Test 4";
             this.Test4_button.UseVisualStyleBackColor = true;
             this.Test4_button.Click += new System.EventHandler(this.Test4_button_Click);
-            // 
-            // label124
-            // 
-            this.label124.AutoSize = true;
-            this.label124.Location = new System.Drawing.Point(1002, 784);
-            this.label124.Name = "label124";
-            this.label124.Size = new System.Drawing.Size(52, 91);
-            this.label124.TabIndex = 67;
-            this.label124.Text = "\r\nAlt+Shift: \r\nAlt: \r\nAlt+Ctrl: \r\nShift: \r\nnone:\r\nCtrl:";
-            this.label124.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // Test5_button
             // 
@@ -1088,15 +1073,6 @@
             this.toolTip1.SetToolTip(this.Bookmark6_button, "Goes to location 6\r\n(Named and set on the Basic Setup tab.)");
             this.Bookmark6_button.UseVisualStyleBackColor = true;
             this.Bookmark6_button.Click += new System.EventHandler(this.Bookmark6_button_Click);
-            // 
-            // label145
-            // 
-            this.label145.AutoSize = true;
-            this.label145.Location = new System.Drawing.Point(1051, 784);
-            this.label145.Name = "label145";
-            this.label145.Size = new System.Drawing.Size(91, 91);
-            this.label145.TabIndex = 76;
-            this.label145.Text = "\r\n100 mm / 90 deg.\r\n10 mm\r\n4 mm\r\n1 mm\r\n0.1 mm\r\n0.01 mm";
             // 
             // Tapes_tabPage
             // 
@@ -1877,6 +1853,28 @@
             this.DownCamera_tabPage.TabIndex = 3;
             this.DownCamera_tabPage.Text = "Down Looking Camera";
             this.DownCamera_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // label135
+            // 
+            this.label135.AutoSize = true;
+            this.label135.Location = new System.Drawing.Point(138, 43);
+            this.label135.Name = "label135";
+            this.label135.Size = new System.Drawing.Size(79, 13);
+            this.label135.TabIndex = 143;
+            this.label135.Text = "Camera switch:";
+            this.toolTip1.SetToolTip(this.label135, "Set parameters for the selected algorithm");
+            // 
+            // KeepActive_checkBox
+            // 
+            this.KeepActive_checkBox.AutoSize = true;
+            this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeepActive_checkBox.Location = new System.Drawing.Point(358, 42);
+            this.KeepActive_checkBox.Name = "KeepActive_checkBox";
+            this.KeepActive_checkBox.Size = new System.Drawing.Size(84, 17);
+            this.KeepActive_checkBox.TabIndex = 142;
+            this.KeepActive_checkBox.Text = "Keep Active";
+            this.KeepActive_checkBox.UseVisualStyleBackColor = true;
+            this.KeepActive_checkBox.Click += new System.EventHandler(this.KeepActive_checkBox_Click);
             // 
             // DowncamSnapshot_ColorBox
             // 
@@ -6445,6 +6443,7 @@
             this.RunJob_tabPage.Controls.Add(this.JobFilePath_label);
             this.RunJob_tabPage.Controls.Add(this.label91);
             this.RunJob_tabPage.Controls.Add(this.JobFileName_label);
+            this.RunJob_tabPage.Controls.Add(this.reset_button);
             this.RunJob_tabPage.Controls.Add(this.label121);
             this.RunJob_tabPage.Controls.Add(this.JobDataSave_button);
             this.RunJob_tabPage.Controls.Add(this.JobDataLoad_button);
@@ -7235,14 +7234,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7309,14 +7308,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -7445,9 +7444,10 @@
             // toolTip1
             // 
             this.toolTip1.AutomaticDelay = 800;
-            this.toolTip1.AutoPopDelay = 16000;
-            this.toolTip1.InitialDelay = 800;
+            this.toolTip1.AutoPopDelay = 30000;
+            this.toolTip1.InitialDelay = 600;
             this.toolTip1.ReshowDelay = 160;
+            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
             // TrueX_label
             // 
@@ -7468,27 +7468,105 @@
             // 
             this.colorDialog1.SolidColorOnly = true;
             // 
-            // KeepActive_checkBox
+            // GotoX_textBox
             // 
-            this.KeepActive_checkBox.AutoSize = true;
-            this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KeepActive_checkBox.Location = new System.Drawing.Point(358, 42);
-            this.KeepActive_checkBox.Name = "KeepActive_checkBox";
-            this.KeepActive_checkBox.Size = new System.Drawing.Size(84, 17);
-            this.KeepActive_checkBox.TabIndex = 142;
-            this.KeepActive_checkBox.Text = "Keep Active";
-            this.KeepActive_checkBox.UseVisualStyleBackColor = true;
-            this.KeepActive_checkBox.Click += new System.EventHandler(this.KeepActive_checkBox_Click);
+            this.GotoX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.GotoX_textBox.Location = new System.Drawing.Point(1092, 811);
+            this.GotoX_textBox.Name = "GotoX_textBox";
+            this.GotoX_textBox.Size = new System.Drawing.Size(38, 20);
+            this.GotoX_textBox.TabIndex = 78;
+            this.GotoX_textBox.Text = "0.0";
+            this.GotoX_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.GotoX_textBox, resources.GetString("GotoX_textBox.ToolTip"));
             // 
-            // label135
+            // label136
             // 
-            this.label135.AutoSize = true;
-            this.label135.Location = new System.Drawing.Point(138, 43);
-            this.label135.Name = "label135";
-            this.label135.Size = new System.Drawing.Size(79, 13);
-            this.label135.TabIndex = 143;
-            this.label135.Text = "Camera switch:";
-            this.toolTip1.SetToolTip(this.label135, "Set parameters for the selected algorithm");
+            this.label136.AutoSize = true;
+            this.label136.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label136.Location = new System.Drawing.Point(1067, 814);
+            this.label136.Name = "label136";
+            this.label136.Size = new System.Drawing.Size(19, 13);
+            this.label136.TabIndex = 82;
+            this.label136.Text = "X:";
+            this.toolTip1.SetToolTip(this.label136, resources.GetString("label136.ToolTip"));
+            // 
+            // label137
+            // 
+            this.label137.AutoSize = true;
+            this.label137.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label137.Location = new System.Drawing.Point(1067, 840);
+            this.label137.Name = "label137";
+            this.label137.Size = new System.Drawing.Size(19, 13);
+            this.label137.TabIndex = 84;
+            this.label137.Text = "Y:";
+            this.toolTip1.SetToolTip(this.label137, resources.GetString("label137.ToolTip"));
+            // 
+            // GotoY_textBox
+            // 
+            this.GotoY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.GotoY_textBox.Location = new System.Drawing.Point(1092, 837);
+            this.GotoY_textBox.Name = "GotoY_textBox";
+            this.GotoY_textBox.Size = new System.Drawing.Size(38, 20);
+            this.GotoY_textBox.TabIndex = 83;
+            this.GotoY_textBox.Text = "0.0";
+            this.GotoY_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.GotoY_textBox, resources.GetString("GotoY_textBox.ToolTip"));
+            // 
+            // GotoZ_textBox
+            // 
+            this.GotoZ_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.GotoZ_textBox.Location = new System.Drawing.Point(1092, 863);
+            this.GotoZ_textBox.Name = "GotoZ_textBox";
+            this.GotoZ_textBox.Size = new System.Drawing.Size(38, 20);
+            this.GotoZ_textBox.TabIndex = 85;
+            this.GotoZ_textBox.Text = "0.0";
+            this.GotoZ_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.GotoZ_textBox, resources.GetString("GotoZ_textBox.ToolTip"));
+            // 
+            // GotoA_textBox
+            // 
+            this.GotoA_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.GotoA_textBox.Location = new System.Drawing.Point(1092, 889);
+            this.GotoA_textBox.Name = "GotoA_textBox";
+            this.GotoA_textBox.Size = new System.Drawing.Size(38, 20);
+            this.GotoA_textBox.TabIndex = 87;
+            this.GotoA_textBox.Text = "0.0";
+            this.GotoA_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.GotoA_textBox, resources.GetString("GotoA_textBox.ToolTip"));
+            // 
+            // Goto_button
+            // 
+            this.Goto_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Goto_button.Location = new System.Drawing.Point(1004, 839);
+            this.Goto_button.Name = "Goto_button";
+            this.Goto_button.Size = new System.Drawing.Size(53, 40);
+            this.Goto_button.TabIndex = 89;
+            this.Goto_button.Text = "GO:";
+            this.toolTip1.SetToolTip(this.Goto_button, resources.GetString("Goto_button.ToolTip"));
+            this.Goto_button.UseVisualStyleBackColor = true;
+            this.Goto_button.Click += new System.EventHandler(this.Goto_button_Click);
+            // 
+            // label138
+            // 
+            this.label138.AutoSize = true;
+            this.label138.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label138.Location = new System.Drawing.Point(1067, 892);
+            this.label138.Name = "label138";
+            this.label138.Size = new System.Drawing.Size(19, 13);
+            this.label138.TabIndex = 91;
+            this.label138.Text = "A:";
+            this.toolTip1.SetToolTip(this.label138, resources.GetString("label138.ToolTip"));
+            // 
+            // label139
+            // 
+            this.label139.AutoSize = true;
+            this.label139.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label139.Location = new System.Drawing.Point(1067, 866);
+            this.label139.Name = "label139";
+            this.label139.Size = new System.Drawing.Size(19, 13);
+            this.label139.TabIndex = 90;
+            this.label139.Text = "Z:";
+            this.toolTip1.SetToolTip(this.label139, resources.GetString("label139.ToolTip"));
             // 
             // FormMain
             // 
@@ -7496,8 +7574,16 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1264, 921);
+            this.Controls.Add(this.label138);
+            this.Controls.Add(this.label139);
+            this.Controls.Add(this.Goto_button);
+            this.Controls.Add(this.GotoA_textBox);
+            this.Controls.Add(this.GotoZ_textBox);
+            this.Controls.Add(this.label137);
+            this.Controls.Add(this.GotoY_textBox);
+            this.Controls.Add(this.label136);
+            this.Controls.Add(this.GotoX_textBox);
             this.Controls.Add(this.TrueX_label);
-            this.Controls.Add(this.label145);
             this.Controls.Add(this.Bookmark6_button);
             this.Controls.Add(this.Bookmark5_button);
             this.Controls.Add(this.Bookmark4_button);
@@ -7505,8 +7591,6 @@
             this.Controls.Add(this.Bookmark2_button);
             this.Controls.Add(this.Bookmark1_button);
             this.Controls.Add(this.Test6_button);
-            this.Controls.Add(this.label124);
-            this.Controls.Add(this.label97);
             this.Controls.Add(this.Test5_button);
             this.Controls.Add(this.UpCamZoomFactor_textBox);
             this.Controls.Add(this.UpCamZoom_checkBox);
@@ -7523,7 +7607,6 @@
             this.Controls.Add(this.label18);
             this.Controls.Add(this.ypos_textBox);
             this.Controls.Add(this.Test2_button);
-            this.Controls.Add(this.reset_button);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Test1_button);
             this.Controls.Add(this.textBoxSendtoTinyG);
@@ -7644,11 +7727,9 @@
 		private System.Windows.Forms.CheckBox DownCamZoom_checkBox;
         private System.Windows.Forms.TextBox UpCamZoomFactor_textBox;
 		private System.Windows.Forms.CheckBox UpCamZoom_checkBox;
-		private System.Windows.Forms.Button TestNeedleRecognition_button;
-		private System.Windows.Forms.Label label97;
+        private System.Windows.Forms.Button TestNeedleRecognition_button;
         private System.Windows.Forms.Button Test3_button;
-		private System.Windows.Forms.Button Test4_button;
-		private System.Windows.Forms.Label label124;
+        private System.Windows.Forms.Button Test4_button;
         private System.Windows.Forms.Button Test5_button;
 		private System.Windows.Forms.Button Test6_button;
         private System.Windows.Forms.Button Bookmark1_button;
@@ -7656,8 +7737,7 @@
         private System.Windows.Forms.Button Bookmark3_button;
         private System.Windows.Forms.Button Bookmark4_button;
         private System.Windows.Forms.Button Bookmark5_button;
-		private System.Windows.Forms.Button Bookmark6_button;
-		private System.Windows.Forms.Label label145;
+        private System.Windows.Forms.Button Bookmark6_button;
 		private System.Windows.Forms.TabPage Tapes_tabPage;
 		private System.Windows.Forms.Button AddTape_button;
 		private System.Windows.Forms.Label label109;
@@ -8236,6 +8316,15 @@
         private System.Windows.Forms.CheckBox SkipMeasurements_checkBox;
         private System.Windows.Forms.Label label135;
         private System.Windows.Forms.CheckBox KeepActive_checkBox;
+        private System.Windows.Forms.TextBox GotoX_textBox;
+        private System.Windows.Forms.Label label136;
+        private System.Windows.Forms.Label label137;
+        private System.Windows.Forms.TextBox GotoY_textBox;
+        private System.Windows.Forms.TextBox GotoZ_textBox;
+        private System.Windows.Forms.TextBox GotoA_textBox;
+        private System.Windows.Forms.Button Goto_button;
+        private System.Windows.Forms.Label label138;
+        private System.Windows.Forms.Label label139;
     }
 }
 
