@@ -703,7 +703,7 @@ namespace LitePlacer
                 JoggingBusy = true;
                 //DisplayText("up");
                 //return;
-                Cnc.RawWrite(Movestr + Movestr + "X0 Y0\"}");
+                Cnc.RawWrite(Movestr + "X0 Y0\"}");
             }
             else if (e.KeyCode == Keys.NumPad2)
             {
