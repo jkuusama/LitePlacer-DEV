@@ -22,6 +22,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Input;
+using System.Net;
 
 using MathNet.Numerics;
 using HomographyEstimation;
@@ -173,7 +174,7 @@ namespace LitePlacer
                 DataGridViewDataErrorEventHandler(Display_dataGridView_DataError);
         }
 
-        private void ShowBuildNumber()
+        private void CheckBuildNumber()
         {
             // see http://stackoverflow.com/questions/1600962/displaying-the-build-date
 
@@ -182,6 +183,28 @@ namespace LitePlacer
             TimeSpan.TicksPerDay * version.Build + // days since 1 January 2000
             TimeSpan.TicksPerSecond * 2 * version.Revision)); // seconds since midnight, (multiply by 2 to get original)
             DisplayText("Version: " + version.ToString() + ", build date: " + buildDateTime.ToString());
+            CheckForUpdate_checkBox.Checked = Properties.Settings.Default.General_CheckForUpdates;
+            if (CheckForUpdate_checkBox.Checked)
+            {
+                try
+                {
+                    var url = "http://www.liteplacer.com/Downloads/release.txt";
+                    string UpdateText = (new WebClient()).DownloadString(url);
+                    string UpdateDate = UpdateText.Substring(11, 10);
+                    string BuildDate = buildDateTime.ToString().Substring(0, 10);
+                    if (UpdateDate != BuildDate)
+                    {
+                        ShowMessageBox(
+                            "There is software update available:\n\r\n\r" + UpdateText,
+                            "Update available",
+                            MessageBoxButtons.OK);
+                    }
+                }
+                catch
+                {
+                    DisplayText("Could not read http://www.liteplacer.com/Downloads/release.txt, update info not available.");
+                }
+            }
         }
 
         private string LastTabPage = "";
@@ -190,7 +213,7 @@ namespace LitePlacer
         {
             LabelTestButtons();
 
-            ShowBuildNumber();
+            CheckBuildNumber();
 
             OmitNeedleCalibration_checkBox.Checked = Properties.Settings.Default.Placement_OmitNeedleCalibration;
             SkipMeasurements_checkBox.Checked = Properties.Settings.Default.Placement_SkipMeasurements;
@@ -257,6 +280,7 @@ namespace LitePlacer
         {
             Properties.Settings.Default.CNC_EnableMouseWheelJog = MouseScroll_checkBox.Checked;
             Properties.Settings.Default.CNC_EnableNumPadJog = NumPadJog_checkBox.Checked;
+            Properties.Settings.Default.General_CheckForUpdates = CheckForUpdate_checkBox.Checked;
 
             Properties.Settings.Default.Save();
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
