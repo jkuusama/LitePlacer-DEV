@@ -226,6 +226,9 @@ namespace LitePlacer
             SlackCompensationA_checkBox.Checked = Properties.Settings.Default.CNC_SlackCompensationA;
             Cnc.SmallMovementString = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed + " ";
 
+            MouseScroll_checkBox.Checked = Properties.Settings.Default.CNC_EnableMouseWheelJog;
+            NumPadJog_checkBox.Checked = Properties.Settings.Default.CNC_EnableNumPadJog;
+
             ZTestTravel_textBox.Text = Properties.Settings.Default.General_ZTestTravel.ToString();
             ShadeGuard_textBox.Text = Properties.Settings.Default.General_ShadeGuard_mm.ToString();
 
@@ -248,6 +251,9 @@ namespace LitePlacer
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Properties.Settings.Default.CNC_EnableMouseWheelJog = MouseScroll_checkBox.Checked;
+            Properties.Settings.Default.CNC_EnableNumPadJog = NumPadJog_checkBox.Checked;
+
             Properties.Settings.Default.Save();
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int i = path.LastIndexOf('\\');
@@ -561,7 +567,11 @@ namespace LitePlacer
         // =================================================================================
         private void MouseWheel_event(object sender, MouseEventArgs e)
         {
-            DisplayText("Wheel: " + e.Delta.ToString());
+            // DisplayText("Wheel: " + e.Delta.ToString());
+            if (!MouseScroll_checkBox.Checked)
+            {
+                return;
+            }
 
             double Mag = 0.0;
             if (e.Delta < 0)
@@ -670,6 +680,20 @@ namespace LitePlacer
             if (!JoggingKeys.Contains(e.KeyCode))
             {
                 return;
+            }
+
+            if ((e.KeyCode == Keys.NumPad1) || (e.KeyCode == Keys.NumPad2) || (e.KeyCode == Keys.NumPad3) ||
+                (e.KeyCode == Keys.NumPad4) || (e.KeyCode == Keys.NumPad6) ||
+                (e.KeyCode == Keys.NumPad7) || (e.KeyCode == Keys.NumPad8) || (e.KeyCode == Keys.NumPad9))
+            {
+                if (!NumPadJog_checkBox.Checked)
+                {
+                    return;
+                }
+                if ( (ActiveControl is TextBox)||(ActiveControl is NumericUpDown)||(ActiveControl is MaskedTextBox))
+                {
+                    return;
+                }
             }
 
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)

@@ -1066,5 +1066,29 @@ namespace LitePlacer.Properties {
                 this["Cameras_KeepActive"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CNC_EnableNumPadJog {
+            get {
+                return ((bool)(this["CNC_EnableNumPadJog"]));
+            }
+            set {
+                this["CNC_EnableNumPadJog"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CNC_EnableMouseWheelJog {
+            get {
+                return ((bool)(this["CNC_EnableMouseWheelJog"]));
+            }
+            set {
+                this["CNC_EnableMouseWheelJog"] = value;
+            }
+        }
     }
 }

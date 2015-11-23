@@ -200,7 +200,7 @@ namespace LitePlacer
             CustomTapeNum= -1;      // not custom
             dW = 0.0;
             Pitch = 0.0;
-            FromHole = -2.0;
+            FromHole = 2.0;
             string Width = Grid.Rows[Tape].Cells["WidthColumn"].Value.ToString();
             // TapeNumber measurements: 
             switch (Width)
@@ -344,18 +344,8 @@ namespace LitePlacer
                     return false;
             }
             // X, Y now hold the first guess
-            // For custom tapes, we might not need to move at all:
 
-            if (CustomTapeNum != -1)  // tape is custom
-            {
-                if (!GetCustomPartHole_m(CustomTapeNum, PartNum, X, Y, out ResultX, out ResultY))
-                {
-                    return false;
-                }
-                return true;
-            }
-
-            // Measuring standard tapes
+            // Measuring 
             if (!SetCurrentTapeMeasurement_m(TapeNum))  // having the measurement setup here helps with the automatic gain lag
             {
                 return false;
@@ -400,7 +390,7 @@ namespace LitePlacer
 	        {
 		        return false;
 	        }
-            dL = -dL; // so up is + etc.
+            // dL = -dL; // so up is + etc.
 			// TapeNumber orientation: 
 			// +Y: Holeside of tape is right, part is dW(mm) to left, dL(mm) down from hole, A= 0
 			// +X: Holeside of tape is down, part is dW(mm) up, dL(mm) to left from hole, A= -90
@@ -749,7 +739,7 @@ namespace LitePlacer
         // ========================================================================================
         // FindCustomTapeParameters(): We did not find the tape width from standard tapes, so the tape must be a custom tape.
         // This routine finds the tape number and the parameters from the custom tape name:
-        private bool FindCustomTapeParameters(string Name, out int CustomTapeNum, out double OffsetY, out double OffsetX, out double Pitch)
+        private bool FindCustomTapeParameters(string Name, out int CustomTapeNum, out double OffsetX, out double OffsetY, out double Pitch)
         {
             OffsetY = 0.0;
             OffsetX = 0.0;

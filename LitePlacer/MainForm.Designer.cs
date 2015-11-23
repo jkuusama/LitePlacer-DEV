@@ -639,10 +639,6 @@
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.TrueX_label = new System.Windows.Forms.Label();
-            this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.GotoX_textBox = new System.Windows.Forms.TextBox();
             this.label136 = new System.Windows.Forms.Label();
             this.label137 = new System.Windows.Forms.Label();
@@ -652,6 +648,12 @@
             this.Goto_button = new System.Windows.Forms.Button();
             this.label138 = new System.Windows.Forms.Label();
             this.label139 = new System.Windows.Forms.Label();
+            this.TrueX_label = new System.Windows.Forms.Label();
+            this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.NumPadJog_checkBox = new System.Windows.Forms.CheckBox();
+            this.MouseScroll_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -4357,6 +4359,8 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.MouseScroll_checkBox);
+            this.tabPageBasicSetup.Controls.Add(this.NumPadJog_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.Zlb_label);
             this.tabPageBasicSetup.Controls.Add(this.panel9);
             this.tabPageBasicSetup.Controls.Add(this.SlackCompensationA_checkBox);
@@ -4789,7 +4793,7 @@
             // label152
             // 
             this.label152.AutoSize = true;
-            this.label152.Location = new System.Drawing.Point(1090, 500);
+            this.label152.Location = new System.Drawing.Point(1094, 512);
             this.label152.Name = "label152";
             this.label152.Size = new System.Drawing.Size(35, 13);
             this.label152.TabIndex = 70;
@@ -4811,7 +4815,7 @@
             // 
             // SetMark6_button
             // 
-            this.SetMark6_button.Location = new System.Drawing.Point(1004, 645);
+            this.SetMark6_button.Location = new System.Drawing.Point(1008, 657);
             this.SetMark6_button.Name = "SetMark6_button";
             this.SetMark6_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark6_button.TabIndex = 69;
@@ -4833,7 +4837,7 @@
             // 
             // Mark6_textBox
             // 
-            this.Mark6_textBox.Location = new System.Drawing.Point(1093, 647);
+            this.Mark6_textBox.Location = new System.Drawing.Point(1097, 659);
             this.Mark6_textBox.Name = "Mark6_textBox";
             this.Mark6_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark6_textBox.TabIndex = 68;
@@ -4841,7 +4845,7 @@
             // 
             // Mark5_textBox
             // 
-            this.Mark5_textBox.Location = new System.Drawing.Point(1093, 621);
+            this.Mark5_textBox.Location = new System.Drawing.Point(1097, 633);
             this.Mark5_textBox.Name = "Mark5_textBox";
             this.Mark5_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark5_textBox.TabIndex = 66;
@@ -4849,7 +4853,7 @@
             // 
             // Mark4_textBox
             // 
-            this.Mark4_textBox.Location = new System.Drawing.Point(1093, 595);
+            this.Mark4_textBox.Location = new System.Drawing.Point(1097, 607);
             this.Mark4_textBox.Name = "Mark4_textBox";
             this.Mark4_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark4_textBox.TabIndex = 64;
@@ -4857,7 +4861,7 @@
             // 
             // Mark3_textBox
             // 
-            this.Mark3_textBox.Location = new System.Drawing.Point(1093, 569);
+            this.Mark3_textBox.Location = new System.Drawing.Point(1097, 581);
             this.Mark3_textBox.Name = "Mark3_textBox";
             this.Mark3_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark3_textBox.TabIndex = 62;
@@ -4865,7 +4869,7 @@
             // 
             // Mark2_textBox
             // 
-            this.Mark2_textBox.Location = new System.Drawing.Point(1093, 543);
+            this.Mark2_textBox.Location = new System.Drawing.Point(1097, 555);
             this.Mark2_textBox.Name = "Mark2_textBox";
             this.Mark2_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark2_textBox.TabIndex = 60;
@@ -4883,7 +4887,7 @@
             // 
             // Mark1_textBox
             // 
-            this.Mark1_textBox.Location = new System.Drawing.Point(1093, 517);
+            this.Mark1_textBox.Location = new System.Drawing.Point(1097, 529);
             this.Mark1_textBox.Name = "Mark1_textBox";
             this.Mark1_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark1_textBox.TabIndex = 58;
@@ -4932,7 +4936,7 @@
             // 
             // SetMark5_button
             // 
-            this.SetMark5_button.Location = new System.Drawing.Point(1004, 619);
+            this.SetMark5_button.Location = new System.Drawing.Point(1008, 631);
             this.SetMark5_button.Name = "SetMark5_button";
             this.SetMark5_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark5_button.TabIndex = 67;
@@ -4955,7 +4959,7 @@
             // 
             // SetMark4_button
             // 
-            this.SetMark4_button.Location = new System.Drawing.Point(1004, 593);
+            this.SetMark4_button.Location = new System.Drawing.Point(1008, 605);
             this.SetMark4_button.Name = "SetMark4_button";
             this.SetMark4_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark4_button.TabIndex = 65;
@@ -4966,7 +4970,7 @@
             // 
             // SetMark3_button
             // 
-            this.SetMark3_button.Location = new System.Drawing.Point(1004, 567);
+            this.SetMark3_button.Location = new System.Drawing.Point(1008, 579);
             this.SetMark3_button.Name = "SetMark3_button";
             this.SetMark3_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark3_button.TabIndex = 63;
@@ -4977,7 +4981,7 @@
             // 
             // SetMark2_button
             // 
-            this.SetMark2_button.Location = new System.Drawing.Point(1004, 541);
+            this.SetMark2_button.Location = new System.Drawing.Point(1008, 553);
             this.SetMark2_button.Name = "SetMark2_button";
             this.SetMark2_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark2_button.TabIndex = 61;
@@ -5006,7 +5010,7 @@
             // 
             // SetMark1_button
             // 
-            this.SetMark1_button.Location = new System.Drawing.Point(1004, 515);
+            this.SetMark1_button.Location = new System.Drawing.Point(1008, 527);
             this.SetMark1_button.Name = "SetMark1_button";
             this.SetMark1_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark1_button.TabIndex = 59;
@@ -7449,25 +7453,6 @@
             this.toolTip1.ReshowDelay = 160;
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
-            // TrueX_label
-            // 
-            this.TrueX_label.AutoSize = true;
-            this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrueX_label.Location = new System.Drawing.Point(760, 735);
-            this.TrueX_label.Name = "TrueX_label";
-            this.TrueX_label.Size = new System.Drawing.Size(31, 9);
-            this.TrueX_label.TabIndex = 77;
-            this.TrueX_label.Text = "000.000";
-            this.TrueX_label.Visible = false;
-            // 
-            // TapesAll_saveFileDialog
-            // 
-            this.TapesAll_saveFileDialog.DefaultExt = "tapes";
-            // 
-            // colorDialog1
-            // 
-            this.colorDialog1.SolidColorOnly = true;
-            // 
             // GotoX_textBox
             // 
             this.GotoX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -7567,6 +7552,49 @@
             this.label139.TabIndex = 90;
             this.label139.Text = "Z:";
             this.toolTip1.SetToolTip(this.label139, resources.GetString("label139.ToolTip"));
+            // 
+            // TrueX_label
+            // 
+            this.TrueX_label.AutoSize = true;
+            this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TrueX_label.Location = new System.Drawing.Point(760, 735);
+            this.TrueX_label.Name = "TrueX_label";
+            this.TrueX_label.Size = new System.Drawing.Size(31, 9);
+            this.TrueX_label.TabIndex = 77;
+            this.TrueX_label.Text = "000.000";
+            this.TrueX_label.Visible = false;
+            // 
+            // TapesAll_saveFileDialog
+            // 
+            this.TapesAll_saveFileDialog.DefaultExt = "tapes";
+            // 
+            // colorDialog1
+            // 
+            this.colorDialog1.SolidColorOnly = true;
+            // 
+            // NumPadJog_checkBox
+            // 
+            this.NumPadJog_checkBox.AutoSize = true;
+            this.NumPadJog_checkBox.Location = new System.Drawing.Point(1032, 457);
+            this.NumPadJog_checkBox.Name = "NumPadJog_checkBox";
+            this.NumPadJog_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.NumPadJog_checkBox.Size = new System.Drawing.Size(184, 17);
+            this.NumPadJog_checkBox.TabIndex = 98;
+            this.NumPadJog_checkBox.Text = "Enable jogging with numpad keys";
+            this.toolTip1.SetToolTip(this.NumPadJog_checkBox, "If enabled, numpad keys moe the machine");
+            this.NumPadJog_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // MouseScroll_checkBox
+            // 
+            this.MouseScroll_checkBox.AutoSize = true;
+            this.MouseScroll_checkBox.Location = new System.Drawing.Point(1037, 480);
+            this.MouseScroll_checkBox.Name = "MouseScroll_checkBox";
+            this.MouseScroll_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.MouseScroll_checkBox.Size = new System.Drawing.Size(179, 17);
+            this.MouseScroll_checkBox.TabIndex = 99;
+            this.MouseScroll_checkBox.Text = "Enable mouse whell jogging of A";
+            this.toolTip1.SetToolTip(this.MouseScroll_checkBox, "If enabled, mouse wheel rotates needle");
+            this.MouseScroll_checkBox.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
@@ -8325,6 +8353,8 @@
         private System.Windows.Forms.Button Goto_button;
         private System.Windows.Forms.Label label138;
         private System.Windows.Forms.Label label139;
+        private System.Windows.Forms.CheckBox MouseScroll_checkBox;
+        private System.Windows.Forms.CheckBox NumPadJog_checkBox;
     }
 }
 
