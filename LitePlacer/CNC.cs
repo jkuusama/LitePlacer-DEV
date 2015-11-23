@@ -35,10 +35,20 @@ namespace LitePlacer
         }
 
         public bool Connected { get; set; }
+        public bool ErrorState { get; set; }
+
+        public void Error()
+        {
+            ErrorState = true;
+            Homing = false;
+            _readyEvent.Set();
+            MainForm.UpdateCncConnectionStatus();
+        }
 
         public void Close()
         {
             Com.Close();
+            ErrorState = false;
             Connected = false;
             Homing = false;
             _readyEvent.Set();
@@ -53,9 +63,10 @@ namespace LitePlacer
 
             if (Com.IsOpen)
             {
-                Com.Close();
+                return true;
             }
             Com.Open(name);
+            ErrorState = false;
             Homing = false;
             _readyEvent.Set();
             Connected = Com.IsOpen;
@@ -69,6 +80,12 @@ namespace LitePlacer
                 MainForm.DisplayText("###" + command + " discarded, com not open (readyevent set)");
                 _readyEvent.Set();
                 Connected = false;
+                return false;
+            }
+            if (ErrorState)
+            {
+                MainForm.DisplayText("###" + command + " discarded, error state on (readyevent set)");
+                _readyEvent.Set();
                 return false;
             }
             _readyEvent.Reset();
@@ -85,8 +102,18 @@ namespace LitePlacer
                 Connected = false;
                 return false;
             }
+            if (ErrorState)
+            {
+                MainForm.DisplayText("###" + command + " discarded, error state on");
+                return false;
+            }
             Com.Write(command);
             return true;
+        }
+
+        public void ForceWrite(string command)
+        {
+            Com.Write(command);
         }
 
 		// Square compensation:
@@ -398,7 +425,7 @@ namespace LitePlacer
 
             if (line.Contains("SYSTEM READY"))
             {
-                Close();
+                Error();
                 MainForm.ShowMessageBox(
                     "TinyG Reset.",
                     "System Reset",
@@ -427,7 +454,7 @@ namespace LitePlacer
                     MainForm.DisplayText("### Igored file not open error ###");
                     return;
                 };
-                Close();
+                Error();
                 MainForm.ShowMessageBox(
                     "TinyG error. Review situation and restart if needed.",
                     "TinyG Error",
@@ -462,7 +489,7 @@ namespace LitePlacer
 
             if (line.StartsWith("tinyg [mm] ok>"))
             {
-                MainForm.DisplayText("ReadyEvent ok");
+                // MainForm.DisplayText("ReadyEvent ok");
                 _readyEvent.Set();
                 return;
             }

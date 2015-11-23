@@ -89,8 +89,9 @@ namespace LitePlacer
         {
             if (Port.IsOpen)
             {
-                Port.Write(TxText + "\r\n");
-                 MainForm.DisplayText("==> " + TxText); 
+                // Port.Write(TxText + "\r\n");
+                Port.Write(TxText + "\r");
+                MainForm.DisplayText("==> " + TxText); 
            }
         }
 

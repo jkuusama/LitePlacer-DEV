@@ -242,6 +242,10 @@ namespace LitePlacer
                 Thread.Sleep(200); // Give TinyG time to wake up
                 CNC_RawWrite("\x11");  // Xon
                 Thread.Sleep(50);
+                //CNC_RawWrite("{\"js\":1}");  // strict JSON syntax
+                //Thread.Sleep(150);
+                //CNC_RawWrite("{\"ec\":0}");  // send LF only
+                //Thread.Sleep(150);
                 UpdateWindowValues_m();
             }
             StartCameras();
@@ -648,6 +652,14 @@ namespace LitePlacer
                 (e.KeyCode == Keys.NumPad4) || (e.KeyCode == Keys.NumPad6) || 
                 (e.KeyCode == Keys.NumPad7) || (e.KeyCode == Keys.NumPad8) || (e.KeyCode == Keys.NumPad9))
             {
+                if (!NumPadJog_checkBox.Checked)
+                {
+                    return;
+                }
+                if ((ActiveControl is TextBox) || (ActiveControl is NumericUpDown) || (ActiveControl is MaskedTextBox))
+                {
+                    return;
+                };
                 JoggingBusy = false;
                 //DisplayText("arrow key up");
                 e.Handled = true;
@@ -1316,6 +1328,12 @@ namespace LitePlacer
 
         public bool CNC_Write_m(string s, int Timeout = 250)
         {
+            if (Cnc.ErrorState)
+            {
+                DisplayText("### " + s + " igneored, cnc is in error state");
+                return false;
+            };
+
             CNC_BlockingWriteDone = false;
             Thread t = new Thread(() => CNC_BlockingWrite_thread(s));
             t.IsBackground = true;
@@ -1339,7 +1357,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     CNC_BlockingWriteDone = true;
                     JoggingBusy = false;
-                    Cnc.Close();
+                    Cnc.Error();
                     return false;
                 }
             }
@@ -1419,6 +1437,11 @@ namespace LitePlacer
             {
                 return false;
             }
+            if (Cnc.ErrorState)
+            {
+                DisplayText("### Cnc in error state, ignored");
+                return false;
+            }
             if (AbortPlacement)
             {
                 AbortPlacement = false;  // one shot
@@ -1471,14 +1494,24 @@ namespace LitePlacer
                            "CNC_XY: Timeout / Cnc connection cut!",
                            "Timeout",
                            MessageBoxButtons.OK);
-                Cnc.Close();
+                CncError();
             }
             DisplayText("CNC_XY_m ok");
-            return (Cnc.Connected);
+            return (Cnc.ErrorState);
         }
 
         public bool CNC_XYA_m(double X, double Y, double A)
         {
+            DisplayText("CNC_XYA_m, x: " + X.ToString() + ", y: " + Y.ToString() + ", a: " + A.ToString());
+            if (CNC_NeedleIsDown_m())
+            {
+                return false;
+            }
+            if (Cnc.ErrorState)
+            {
+                DisplayText("### Cnc in error state, ignored");
+                return false;
+            }
             if (AbortPlacement)
             {
                 AbortPlacement = false;  // one shot
@@ -1486,11 +1519,6 @@ namespace LitePlacer
                     "Operation aborted.",
                     "Operation aborted.",
                     MessageBoxButtons.OK);
-                return false;
-            }
-
-            if (CNC_NeedleIsDown_m())
-            {
                 return false;
             }
 
@@ -1537,7 +1565,7 @@ namespace LitePlacer
                            "CNC_XYA: Timeout / Cnc connection cut!",
                            "Timeout",
                            MessageBoxButtons.OK);
-                Cnc.Close();
+                CncError();
             }
             return (Cnc.Connected);
         }
@@ -1571,6 +1599,15 @@ namespace LitePlacer
                 return false;
             }
 
+            if (Cnc.ErrorState)
+            {
+                ShowMessageBox(
+                    "CNC_Z: Cnc in error state",
+                    "Cncin error state",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+
             CNC_BlockingWriteDone = false;
             Thread t = new Thread(() => CNC_BlockingZ_thread(Z));
             t.IsBackground = true;
@@ -1592,7 +1629,7 @@ namespace LitePlacer
                            "CNC_Z: Timeout / Cnc connection cut!",
                            "Timeout",
                            MessageBoxButtons.OK);
-                Cnc.Close();
+                CncError();
             }
             return (Cnc.Connected);
         }
@@ -1607,11 +1644,12 @@ namespace LitePlacer
 
         public bool CNC_A_m(double A)
         {
-            CNC_BlockingWriteDone = false;
-            Thread t = new Thread(() => CNC_BlockingA_thread(A));
-            t.IsBackground = true;
-            t.Start();
-            int i = 0;
+            DisplayText("CNC_A_m, a: " + A.ToString());
+            if (Cnc.ErrorState)
+            {
+                DisplayText("### Cnc in error state, ignored");
+                return false;
+            }
             if (!Cnc.Connected)
             {
                 ShowMessageBox(
@@ -1620,6 +1658,11 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             }
+            CNC_BlockingWriteDone = false;
+            Thread t = new Thread(() => CNC_BlockingA_thread(A));
+            t.IsBackground = true;
+            t.Start();
+            int i = 0;
             while (!CNC_BlockingWriteDone)
             {
                 Thread.Sleep(2);
@@ -1638,7 +1681,7 @@ namespace LitePlacer
                            "CNC_A: Timeout / Cnc connection cut!",
                            "Timeout",
                            MessageBoxButtons.OK);
-                Cnc.Close();
+                CncError();
             }
             return (Cnc.Connected);
         }
@@ -2972,6 +3015,11 @@ namespace LitePlacer
             }
         }
 
+        public void CncError()
+        {
+            Cnc.ErrorState = true;
+            UpdateCncConnectionStatus();
+        }
 
         public void UpdateCncConnectionStatus()
         {
@@ -2979,9 +3027,18 @@ namespace LitePlacer
 
             if (Cnc.Connected)
             {
-                buttonConnectSerial.Text = "Reset Conn.";
-                labelSerialPortStatus.Text = "Connected";
-                labelSerialPortStatus.ForeColor = Color.Black;
+                if (Cnc.ErrorState)
+                {
+                    buttonConnectSerial.Text = "Clear Err.";
+                    labelSerialPortStatus.Text = "ERROR";
+                    labelSerialPortStatus.ForeColor = Color.Red;
+                }
+                else
+                {
+                    buttonConnectSerial.Text = "Close";
+                    labelSerialPortStatus.Text = "Connected";
+                    labelSerialPortStatus.ForeColor = Color.Black;
+                }
             }
             else
             {
@@ -2998,18 +3055,32 @@ namespace LitePlacer
                 return;
             };
 
-            if (Cnc.Connected)
+            if (!Cnc.Connected)
             {
-                Cnc.Close();
-                Thread.Sleep(250);
-            }
-            else
-            {
+                // reconnect
                 if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
                 {
                     Properties.Settings.Default.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
-                    UpdateWindowValues_m();
+                    if (!UpdateWindowValues_m())
+                    {
+                        CncError();
+                    }
                 }
+            }
+            else  if (Cnc.ErrorState)
+            {
+                // Attempt to clear the error
+                Cnc.ErrorState = false;
+                if (!UpdateWindowValues_m())
+                {
+                    CncError();
+                }
+            }
+            else
+            {
+                // Close connection
+                Cnc.Close();
+                Thread.Sleep(250);
             }
             UpdateCncConnectionStatus();
         }
@@ -3042,7 +3113,7 @@ namespace LitePlacer
         {
             if (e.KeyChar == '\r')
             {
-                Cnc.RawWrite(textBoxSendtoTinyG.Text);
+                Cnc.ForceWrite(textBoxSendtoTinyG.Text);
                 textBoxSendtoTinyG.Clear();
             }
         }
