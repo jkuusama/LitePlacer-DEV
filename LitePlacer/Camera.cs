@@ -449,7 +449,9 @@ namespace LitePlacer
 		public int Threshold { get; set; }                  // Threshold for all the "draw" functions
 		public bool GrayScale { get; set; }                 // If image is converted to grayscale 
 		public bool Invert { get; set; }                    // If image is inverted (makes most sense on grayscale, looking for black stuff on light background)
-		public bool DrawCross { get; set; }         // If crosshair cursor is drawn
+        public bool DrawCross { get; set; }         // If crosshair cursor is drawn
+        public bool DrawArrow { get; set; }         // If arrow is drawn
+        public double ArrowAngle { get; set; }      // to which angle
 		public bool DrawSidemarks { get; set; }     // If marks on the side of the image are drawn
 		public double SideMarksX { get; set; }		// How many marks on top and bottom (X) and sides (Y)
 		public double SideMarksY { get; set; }		// (double, so you can do "SidemarksX= workarea_in_mm / 100;" to get mark every 10cm
@@ -601,12 +603,12 @@ namespace LitePlacer
 				frame = MirrorFunct(frame);
 			};
 
-			if (DrawBox)
-			{
-				DrawBoxFunct(frame);
-			};
+            if (DrawBox)
+            {
+                DrawBoxFunct(frame);
+            };
 
-			if (Zoom)
+            if (Zoom)
 			{
 				ZoomFunct(ref frame, ZoomFactor);
 			};
@@ -625,6 +627,11 @@ namespace LitePlacer
 			{
 				DrawDashedCrossFunct(frame);
 			};
+
+            if (DrawArrow)
+            {
+                DrawArrowFunct(frame);
+            };
 
 			ImageBox.Image = frame;
 			// frame.Dispose();
@@ -1343,6 +1350,23 @@ namespace LitePlacer
 
 			g.DrawLine(pen, BoxPoints[3].X + FrameCenterX, BoxPoints[3].Y + FrameCenterY,
 				BoxPoints[0].X + FrameCenterX, BoxPoints[0].Y + FrameCenterY);
+            pen.Dispose();
+            g.Dispose();
+        }
+
+		private void DrawArrowFunct(Bitmap img)
+		{
+			Pen pen = new Pen(Color.Blue, 3);
+			Graphics g = Graphics.FromImage(img);
+            double length= 60;
+            double angle1 = (Math.PI / -180.0) * (ArrowAngle + 90); // to radians, -180 to get ccw, +90 to start from up
+            double angle2 = (Math.PI / -180.0) * (ArrowAngle - 90); // to radians, -180 to get ccw, -90 to draw from center away
+            //Draw end
+            g.DrawLine(pen, FrameCenterX, FrameCenterY, (int)(FrameCenterX + Math.Cos(angle2) * length), (int)(FrameCenterY + Math.Sin(angle2) * length));
+            // draw head
+            System.Drawing.Drawing2D.AdjustableArrowCap bigArrow = new System.Drawing.Drawing2D.AdjustableArrowCap(6, 6);
+            pen.CustomEndCap = bigArrow;
+            g.DrawLine(pen, FrameCenterX, FrameCenterY, (int)(FrameCenterX + Math.Cos(angle1) * length), (int)(FrameCenterY + Math.Sin(angle1) * length));
             pen.Dispose();
             g.Dispose();
         }

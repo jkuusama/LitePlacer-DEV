@@ -1497,7 +1497,7 @@ namespace LitePlacer
                 CncError();
             }
             DisplayText("CNC_XY_m ok");
-            return (Cnc.ErrorState);
+            return (!Cnc.ErrorState);
         }
 
         public bool CNC_XYA_m(double X, double Y, double A)
@@ -2033,6 +2033,7 @@ namespace LitePlacer
             ImageTest_checkBox.Checked = false;
             Overlay_checkBox.Checked = false;
             DownCamera.DrawBox = false;
+            DownCamera.DrawArrow = false;
             DownCameraDrawBox_checkBox.Checked = false;
         }
         // ====
@@ -2057,6 +2058,7 @@ namespace LitePlacer
             UpCamera.FindComponent = false;
             UpCamera.TestAlgorithm = false;
             UpCamera.DrawBox = false;
+            UpCamera.DrawArrow = false;
             UpCameraDrawBox_checkBox.Checked = false;
         }
 
@@ -7769,6 +7771,7 @@ namespace LitePlacer
         {
             double X;
             double Y;
+            double A;
 
             DataGridViewCell cell = CadData_GridView.CurrentCell;
             if (cell == null)
@@ -7797,13 +7800,31 @@ namespace LitePlacer
                 return;
             }
 
+            if (!double.TryParse(cell.OwningRow.Cells["Rotation"].Value.ToString(), out A))
+            {
+                DialogResult dialogResult = ShowMessageBox(
+                    "Bad data at Rotation",
+                    "Bad data",
+                    MessageBoxButtons.OK);
+                return;
+            }
+
             CNC_XY_m(X + JobOffsetX + Properties.Settings.Default.General_JigOffsetX,
                 Y + JobOffsetY + Properties.Settings.Default.General_JigOffsetY);
-            ShowMessageBox(
-                "This is " + cell.OwningRow.Cells["Component"].Value.ToString() + " approximate (nominal) location",
-                "Locate Component",
-                MessageBoxButtons.OK);
+            DownCamera.ArrowAngle = A;
+            DownCamera.DrawArrow = true;
+
+            //ShowMessageBox(
+            //    "This is " + cell.OwningRow.Cells["Component"].Value.ToString() + " approximate (nominal) location",
+            //    "Locate Component",
+            //    MessageBoxButtons.OK);
         }
+
+        private void ShowNominal_button_Leave(object sender, EventArgs e)
+        {
+            DownCamera.DrawArrow = false;
+        }
+
 
         // =================================================================================
         // Checks what is needed to check before doing something for a single component selected at "CAD data" table. 
@@ -7862,14 +7883,24 @@ namespace LitePlacer
         {
             double X;
             double Y;
+            double A;
 
             if (!PrepareSingleComponentOperation(out X, out Y))
             {
                 return;
             }
-
-            DataGridViewCell cell = CadData_GridView.CurrentCell;
             CNC_XY_m(X, Y);
+            if (!double.TryParse(CadData_GridView.CurrentCell.OwningRow.Cells["Rotation_machine"].Value.ToString(), out A))
+            {
+                ShowMessageBox(
+                    "Bad data at Rotation_machine",
+                    "Sloppy programmer error",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            DownCamera.ArrowAngle = A;
+            DownCamera.DrawArrow = true;
+
             //bool KnownComponent = ShowFootPrint_m(cell.OwningRow.Index);
             //ShowMessageBox(
             //    "This is " + cell.OwningRow.Cells["Component"].Value.ToString() + " location",
@@ -7880,6 +7911,12 @@ namespace LitePlacer
             //    DownCamera.DrawBox = false;
             //}
         }
+
+        private void ShowMachine_button_Leave(object sender, EventArgs e)
+        {
+            DownCamera.DrawArrow = false;
+        }
+
 
         // =================================================================================
         private bool MeasurePositionErrorByFiducial_m(double X, double Y, out double errX, out double errY)
@@ -8978,8 +9015,17 @@ namespace LitePlacer
             {
                 CNC_XY_m(pX, pY);
             }
+            DownCamera.ArrowAngle = A;
+            DownCamera.DrawArrow = true;
+
             Row.Cells["Next_Column"].Value = temp.ToString();
         }
+
+        private void ShowPart_button_Leave(object sender, EventArgs e)
+        {
+            DownCamera.DrawArrow = false;
+        }
+
 
 
         // =================================================================================
@@ -10607,7 +10653,6 @@ namespace LitePlacer
                 }
             }
         }
-
 
     }	// end of: 	public partial class FormMain : Form
 

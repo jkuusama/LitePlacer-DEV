@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -363,6 +363,8 @@
             this.Cam_pictureBox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.MouseScroll_checkBox = new System.Windows.Forms.CheckBox();
+            this.NumPadJog_checkBox = new System.Windows.Forms.CheckBox();
             this.Zlb_label = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
             this.PlacementDepth_textBox = new System.Windows.Forms.TextBox();
@@ -652,8 +654,6 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.NumPadJog_checkBox = new System.Windows.Forms.CheckBox();
-            this.MouseScroll_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1264,6 +1264,7 @@
             this.toolTip1.SetToolTip(this.ShowPart_button, "Resets pickup and placement heights.");
             this.ShowPart_button.UseVisualStyleBackColor = true;
             this.ShowPart_button.Click += new System.EventHandler(this.ShowPart_button_Click);
+            this.ShowPart_button.Leave += new System.EventHandler(this.ShowPart_button_Leave);
             // 
             // label129
             // 
@@ -4443,6 +4444,30 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
+            // MouseScroll_checkBox
+            // 
+            this.MouseScroll_checkBox.AutoSize = true;
+            this.MouseScroll_checkBox.Location = new System.Drawing.Point(1037, 480);
+            this.MouseScroll_checkBox.Name = "MouseScroll_checkBox";
+            this.MouseScroll_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.MouseScroll_checkBox.Size = new System.Drawing.Size(179, 17);
+            this.MouseScroll_checkBox.TabIndex = 99;
+            this.MouseScroll_checkBox.Text = "Enable mouse whell jogging of A";
+            this.toolTip1.SetToolTip(this.MouseScroll_checkBox, "If enabled, mouse wheel rotates needle");
+            this.MouseScroll_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // NumPadJog_checkBox
+            // 
+            this.NumPadJog_checkBox.AutoSize = true;
+            this.NumPadJog_checkBox.Location = new System.Drawing.Point(1032, 457);
+            this.NumPadJog_checkBox.Name = "NumPadJog_checkBox";
+            this.NumPadJog_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.NumPadJog_checkBox.Size = new System.Drawing.Size(184, 17);
+            this.NumPadJog_checkBox.TabIndex = 98;
+            this.NumPadJog_checkBox.Text = "Enable jogging with numpad keys";
+            this.toolTip1.SetToolTip(this.NumPadJog_checkBox, "If enabled, numpad keys moe the machine");
+            this.NumPadJog_checkBox.UseVisualStyleBackColor = true;
+            // 
             // Zlb_label
             // 
             this.Zlb_label.AutoSize = true;
@@ -6835,6 +6860,7 @@
             this.toolTip1.SetToolTip(this.ShowMachine_button, "Shows selected component measured location");
             this.ShowMachine_button.UseVisualStyleBackColor = true;
             this.ShowMachine_button.Click += new System.EventHandler(this.ShowMachine_button_Click);
+            this.ShowMachine_button.Leave += new System.EventHandler(this.ShowMachine_button_Leave);
             // 
             // ShowNominal_button
             // 
@@ -6847,6 +6873,7 @@
         "ly (no optical measurements).");
             this.ShowNominal_button.UseVisualStyleBackColor = true;
             this.ShowNominal_button.Click += new System.EventHandler(this.ShowNominal_button_Click);
+            this.ShowNominal_button.Leave += new System.EventHandler(this.ShowNominal_button_Leave);
             // 
             // JobCounterCW_checkBox
             // 
@@ -7238,14 +7265,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7312,14 +7339,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -7571,30 +7598,6 @@
             // colorDialog1
             // 
             this.colorDialog1.SolidColorOnly = true;
-            // 
-            // NumPadJog_checkBox
-            // 
-            this.NumPadJog_checkBox.AutoSize = true;
-            this.NumPadJog_checkBox.Location = new System.Drawing.Point(1032, 457);
-            this.NumPadJog_checkBox.Name = "NumPadJog_checkBox";
-            this.NumPadJog_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.NumPadJog_checkBox.Size = new System.Drawing.Size(184, 17);
-            this.NumPadJog_checkBox.TabIndex = 98;
-            this.NumPadJog_checkBox.Text = "Enable jogging with numpad keys";
-            this.toolTip1.SetToolTip(this.NumPadJog_checkBox, "If enabled, numpad keys moe the machine");
-            this.NumPadJog_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // MouseScroll_checkBox
-            // 
-            this.MouseScroll_checkBox.AutoSize = true;
-            this.MouseScroll_checkBox.Location = new System.Drawing.Point(1037, 480);
-            this.MouseScroll_checkBox.Name = "MouseScroll_checkBox";
-            this.MouseScroll_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.MouseScroll_checkBox.Size = new System.Drawing.Size(179, 17);
-            this.MouseScroll_checkBox.TabIndex = 99;
-            this.MouseScroll_checkBox.Text = "Enable mouse whell jogging of A";
-            this.toolTip1.SetToolTip(this.MouseScroll_checkBox, "If enabled, mouse wheel rotates needle");
-            this.MouseScroll_checkBox.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
