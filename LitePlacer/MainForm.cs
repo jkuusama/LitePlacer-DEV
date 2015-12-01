@@ -8842,6 +8842,11 @@ namespace LitePlacer
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
             Tapes_dataGridView.Rows[row].Cells["X_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[row].Cells["Y_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            // fix #22 update next coordinates when setting hole 1
+            Tapes_dataGridView.Rows[row].Cells["Next_Column"].Value = "1";
+            Tapes_dataGridView.Rows[row].Cells["NextX_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[row].Cells["NextY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+
         }
 
 
@@ -8915,7 +8920,8 @@ namespace LitePlacer
                 int TapeNo = 0;
                 if (Tapes.IdValidates_m(ID, out TapeNo))
                 {
-                    Tapes_dataGridView.Rows[TapeNo].Cells["Next_Column"].Value = 1;
+                    // fix #22 reset next coordinates
+                    Tapes.Reset(TapeNo);
                 }
             }
         }
@@ -10678,6 +10684,32 @@ namespace LitePlacer
             }
         }
 
+        // fix #22 calculate new next coordinates if column was changed
+        private void Tapes_dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            // only update next coordinates if corresponding column has been changed and rowIndex > 0
+            if (e.ColumnIndex != 6 || e.RowIndex < 0)
+            {
+                return;
+            }
+
+            int NextNo = 1;
+            
+            if(!int.TryParse(Tapes_dataGridView.Rows[e.RowIndex].Cells["Next_Column"].Value.ToString(), out NextNo))
+            {
+                ShowMessageBox(
+                    "Bad data in Next",
+                    "Data error",
+                    MessageBoxButtons.OK);
+                return;
+            }
+
+            if (Tapes != null)
+            {
+                Tapes.UpdateNextCoordinates(e.RowIndex, NextNo);
+            }
+
+        }
     }	// end of: 	public partial class FormMain : Form
 
 

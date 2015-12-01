@@ -49,7 +49,8 @@ namespace LitePlacer
 			Grid.Rows[tape].Cells["Next_Column"].Value = "1";
 			Grid.Rows[tape].Cells["PickupZ_Column"].Value = "--";
 			Grid.Rows[tape].Cells["PlaceZ_Column"].Value = "--";
-			Grid.Rows[tape].Cells["NextX_Column"].Value = Grid.Rows[tape].Cells["X_Column"].Value;
+            // fix #22 reset next coordinates
+            Grid.Rows[tape].Cells["NextX_Column"].Value = Grid.Rows[tape].Cells["X_Column"].Value;
 			Grid.Rows[tape].Cells["NextY_Column"].Value = Grid.Rows[tape].Cells["Y_Column"].Value;
 		}
 
@@ -563,10 +564,82 @@ namespace LitePlacer
             return true;
         }
 
-		// ========================================================================================
-		// GotoNextPartByMeasurement_m(): Takes needle to exact location of the part, tape and part rotation taken in to account.
-		// The hole position is measured on each call using tape holes and knowledge about tape width and pitch (see EIA-481 standard).
-		// Id tells the tape name. 
+        // ========================================================================================
+        // UpdateNextCoordinates(): Updates next coordinates for a given tape based on new next coordinate number
+        public bool UpdateNextCoordinates(int Tape, int NextNo)
+        {
+            double dW;	// Part center pos from hole, tape width direction. Varies.
+            double dL;   // Part center pos from hole, tape lenght direction. -2mm on all standard tapes
+            double Pitch;  // Distance from one part to another
+            int CustomTapeNum = -1;
+            if (!GetTapeParameters_m(Tape, out CustomTapeNum, out dW, out dL, out Pitch))
+            {
+                return false;
+            }
+
+            int pos = NextNo - 1;
+
+            double offset = pos * Pitch;
+
+            // correct offset for 2mm part pitch
+            if (Math.Abs(Pitch - 2) < 0.000001)
+            {
+                if ((pos % 2) != 0)
+                {
+                    offset -= Pitch;
+                }
+            }
+
+            // determin first hole coordinates
+            double Hole1X;
+            double Hole1Y;
+
+            NumberStyles style = NumberStyles.AllowDecimalPoint;
+            CultureInfo culture = CultureInfo.InvariantCulture;
+            string s = Grid.Rows[Tape].Cells["X_Column"].Value.ToString();
+            if (!double.TryParse(s, style, culture, out Hole1X))
+            {
+                return false;
+            }
+            s = Grid.Rows[Tape].Cells["Y_Column"].Value.ToString();
+            if (!double.TryParse(s, style, culture, out Hole1Y))
+            {
+                return false;
+            }
+
+            double NextX = Hole1X;
+            double NextY = Hole1Y;
+
+            // calculate next coordinates based on tape orientation, 1st hole position and offset from above
+            switch (Grid.Rows[Tape].Cells["OrientationColumn"].Value.ToString())
+            {
+                case "+Y":
+                    NextY = Hole1Y + offset;
+                    break;
+
+                case "+X":
+                    NextX = Hole1X + offset;
+                    break;
+
+                case "-Y":
+                    NextY = Hole1Y - offset;
+                    break;
+
+                case "-X":
+                    NextX = Hole1X - offset;
+                    break;
+            };
+
+            Grid.Rows[Tape].Cells["NextX_Column"].Value = NextX.ToString("0.000", CultureInfo.InvariantCulture);
+            Grid.Rows[Tape].Cells["NextY_Column"].Value = NextY.ToString("0.000", CultureInfo.InvariantCulture);
+
+            return true;
+        }
+
+        // ========================================================================================
+        // GotoNextPartByMeasurement_m(): Takes needle to exact location of the part, tape and part rotation taken in to account.
+        // The hole position is measured on each call using tape holes and knowledge about tape width and pitch (see EIA-481 standard).
+        // Id tells the tape name. 
         // The caller needs the hole coordinates and tape number later in the process, but they are measured and returned here.
         public bool GotoNextPartByMeasurement_m(int TapeNumber, out double HoleX, out double HoleY)
 		{
