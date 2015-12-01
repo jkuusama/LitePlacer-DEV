@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -69,8 +69,6 @@
             this.UseCustomTapes_button = new System.Windows.Forms.Button();
             this.LoadCustomTapes_button = new System.Windows.Forms.Button();
             this.SaveCustomTapes_button = new System.Windows.Forms.Button();
-            this.CustomTapeDown_button = new System.Windows.Forms.Button();
-            this.CustomTapeUp_button = new System.Windows.Forms.Button();
             this.DeleteCustomTape_button = new System.Windows.Forms.Button();
             this.label130 = new System.Windows.Forms.Label();
             this.CustomTapes_dataGridView = new System.Windows.Forms.DataGridView();
@@ -104,7 +102,22 @@
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
-            this.label108 = new System.Windows.Forms.Label();
+            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_pictureBox = new System.Windows.Forms.PictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
             this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
@@ -345,7 +358,6 @@
             this.label94 = new System.Windows.Forms.Label();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.Cam_pictureBox = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
             this.CheckForUpdate_checkBox = new System.Windows.Forms.CheckBox();
             this.MouseScroll_checkBox = new System.Windows.Forms.CheckBox();
@@ -601,7 +613,6 @@
             this.label88 = new System.Windows.Forms.Label();
             this.label86 = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
-            this.label59 = new System.Windows.Forms.Label();
             this.Placement_pictureBox = new System.Windows.Forms.PictureBox();
             this.JobData_GridView = new System.Windows.Forms.DataGridView();
             this.ComponentCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -639,22 +650,6 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastX = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -718,9 +713,9 @@
             // 
             // Park_button
             // 
-            this.Park_button.Location = new System.Drawing.Point(1148, 889);
+            this.Park_button.Location = new System.Drawing.Point(1148, 829);
             this.Park_button.Name = "Park_button";
-            this.Park_button.Size = new System.Drawing.Size(75, 23);
+            this.Park_button.Size = new System.Drawing.Size(108, 23);
             this.Park_button.TabIndex = 41;
             this.Park_button.Text = "Park";
             this.toolTip1.SetToolTip(this.Park_button, "Moves the machine to \"Park\" location,\r\ndefined at Basic Setup tab.");
@@ -729,7 +724,7 @@
             // 
             // TestNeedleRecognition_button
             // 
-            this.TestNeedleRecognition_button.Location = new System.Drawing.Point(352, 614);
+            this.TestNeedleRecognition_button.Location = new System.Drawing.Point(352, 571);
             this.TestNeedleRecognition_button.Name = "TestNeedleRecognition_button";
             this.TestNeedleRecognition_button.Size = new System.Drawing.Size(110, 23);
             this.TestNeedleRecognition_button.TabIndex = 63;
@@ -740,7 +735,7 @@
             // 
             // DownCamZoomFactor_textBox
             // 
-            this.DownCamZoomFactor_textBox.Location = new System.Drawing.Point(1092, 729);
+            this.DownCamZoomFactor_textBox.Location = new System.Drawing.Point(1092, 669);
             this.DownCamZoomFactor_textBox.Name = "DownCamZoomFactor_textBox";
             this.DownCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 20);
             this.DownCamZoomFactor_textBox.TabIndex = 57;
@@ -753,7 +748,7 @@
             // DownCamZoom_checkBox
             // 
             this.DownCamZoom_checkBox.AutoSize = true;
-            this.DownCamZoom_checkBox.Location = new System.Drawing.Point(946, 733);
+            this.DownCamZoom_checkBox.Location = new System.Drawing.Point(946, 673);
             this.DownCamZoom_checkBox.Name = "DownCamZoom_checkBox";
             this.DownCamZoom_checkBox.Size = new System.Drawing.Size(140, 17);
             this.DownCamZoom_checkBox.TabIndex = 56;
@@ -766,7 +761,7 @@
             // 
             this.reset_button.BackColor = System.Drawing.Color.OrangeRed;
             this.reset_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.reset_button.Location = new System.Drawing.Point(537, 608);
+            this.reset_button.Location = new System.Drawing.Point(520, 625);
             this.reset_button.Name = "reset_button";
             this.reset_button.Size = new System.Drawing.Size(75, 23);
             this.reset_button.TabIndex = 15;
@@ -778,7 +773,7 @@
             // 
             // textBoxSendtoTinyG
             // 
-            this.textBoxSendtoTinyG.Location = new System.Drawing.Point(612, 892);
+            this.textBoxSendtoTinyG.Location = new System.Drawing.Point(612, 832);
             this.textBoxSendtoTinyG.Name = "textBoxSendtoTinyG";
             this.textBoxSendtoTinyG.Size = new System.Drawing.Size(313, 20);
             this.textBoxSendtoTinyG.TabIndex = 8;
@@ -788,7 +783,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(613, 876);
+            this.label4.Location = new System.Drawing.Point(613, 818);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 13);
             this.label4.TabIndex = 7;
@@ -798,7 +793,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(608, 728);
+            this.label14.Location = new System.Drawing.Point(608, 668);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(24, 18);
             this.label14.TabIndex = 7;
@@ -808,7 +803,7 @@
             // 
             this.xpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.xpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xpos_textBox.Location = new System.Drawing.Point(643, 727);
+            this.xpos_textBox.Location = new System.Drawing.Point(643, 667);
             this.xpos_textBox.Name = "xpos_textBox";
             this.xpos_textBox.ReadOnly = true;
             this.xpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -822,7 +817,7 @@
             // 
             this.ypos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ypos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ypos_textBox.Location = new System.Drawing.Point(643, 754);
+            this.ypos_textBox.Location = new System.Drawing.Point(643, 694);
             this.ypos_textBox.Name = "ypos_textBox";
             this.ypos_textBox.ReadOnly = true;
             this.ypos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -836,7 +831,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(608, 755);
+            this.label17.Location = new System.Drawing.Point(608, 695);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(23, 18);
             this.label17.TabIndex = 10;
@@ -846,7 +841,7 @@
             // 
             this.zpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.zpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.zpos_textBox.Location = new System.Drawing.Point(643, 781);
+            this.zpos_textBox.Location = new System.Drawing.Point(643, 721);
             this.zpos_textBox.Name = "zpos_textBox";
             this.zpos_textBox.ReadOnly = true;
             this.zpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -860,7 +855,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(608, 782);
+            this.label18.Location = new System.Drawing.Point(608, 722);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(23, 18);
             this.label18.TabIndex = 12;
@@ -870,7 +865,7 @@
             // 
             this.apos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.apos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.apos_textBox.Location = new System.Drawing.Point(643, 808);
+            this.apos_textBox.Location = new System.Drawing.Point(643, 748);
             this.apos_textBox.Name = "apos_textBox";
             this.apos_textBox.ReadOnly = true;
             this.apos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -884,7 +879,7 @@
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(608, 809);
+            this.label19.Location = new System.Drawing.Point(608, 749);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(23, 18);
             this.label19.TabIndex = 14;
@@ -894,10 +889,10 @@
             // 
             this.SerialMonitor_richTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SerialMonitor_richTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SerialMonitor_richTextBox.Location = new System.Drawing.Point(3, 729);
+            this.SerialMonitor_richTextBox.Location = new System.Drawing.Point(8, 665);
             this.SerialMonitor_richTextBox.Name = "SerialMonitor_richTextBox";
             this.SerialMonitor_richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(599, 189);
+            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(599, 168);
             this.SerialMonitor_richTextBox.TabIndex = 16;
             this.SerialMonitor_richTextBox.TabStop = false;
             this.SerialMonitor_richTextBox.Text = "";
@@ -905,7 +900,7 @@
             // 
             // Test1_button
             // 
-            this.Test1_button.Location = new System.Drawing.Point(1148, 727);
+            this.Test1_button.Location = new System.Drawing.Point(1148, 667);
             this.Test1_button.Name = "Test1_button";
             this.Test1_button.Size = new System.Drawing.Size(108, 23);
             this.Test1_button.TabIndex = 18;
@@ -915,7 +910,7 @@
             // 
             // Test2_button
             // 
-            this.Test2_button.Location = new System.Drawing.Point(1148, 754);
+            this.Test2_button.Location = new System.Drawing.Point(1148, 694);
             this.Test2_button.Name = "Test2_button";
             this.Test2_button.Size = new System.Drawing.Size(108, 23);
             this.Test2_button.TabIndex = 19;
@@ -937,7 +932,7 @@
             // OpticalHome_button
             // 
             this.OpticalHome_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OpticalHome_button.Location = new System.Drawing.Point(608, 835);
+            this.OpticalHome_button.Location = new System.Drawing.Point(608, 776);
             this.OpticalHome_button.Name = "OpticalHome_button";
             this.OpticalHome_button.Size = new System.Drawing.Size(178, 40);
             this.OpticalHome_button.TabIndex = 37;
@@ -949,7 +944,7 @@
             // 
             // UpCamZoomFactor_textBox
             // 
-            this.UpCamZoomFactor_textBox.Location = new System.Drawing.Point(1092, 755);
+            this.UpCamZoomFactor_textBox.Location = new System.Drawing.Point(1092, 695);
             this.UpCamZoomFactor_textBox.Name = "UpCamZoomFactor_textBox";
             this.UpCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 20);
             this.UpCamZoomFactor_textBox.TabIndex = 59;
@@ -962,7 +957,7 @@
             // UpCamZoom_checkBox
             // 
             this.UpCamZoom_checkBox.AutoSize = true;
-            this.UpCamZoom_checkBox.Location = new System.Drawing.Point(946, 757);
+            this.UpCamZoom_checkBox.Location = new System.Drawing.Point(946, 697);
             this.UpCamZoom_checkBox.Name = "UpCamZoom_checkBox";
             this.UpCamZoom_checkBox.Size = new System.Drawing.Size(126, 17);
             this.UpCamZoom_checkBox.TabIndex = 58;
@@ -973,7 +968,7 @@
             // 
             // Test3_button
             // 
-            this.Test3_button.Location = new System.Drawing.Point(1148, 781);
+            this.Test3_button.Location = new System.Drawing.Point(1148, 721);
             this.Test3_button.Name = "Test3_button";
             this.Test3_button.Size = new System.Drawing.Size(108, 23);
             this.Test3_button.TabIndex = 66;
@@ -983,7 +978,7 @@
             // 
             // Test4_button
             // 
-            this.Test4_button.Location = new System.Drawing.Point(1148, 808);
+            this.Test4_button.Location = new System.Drawing.Point(1148, 748);
             this.Test4_button.Name = "Test4_button";
             this.Test4_button.Size = new System.Drawing.Size(108, 23);
             this.Test4_button.TabIndex = 52;
@@ -993,7 +988,7 @@
             // 
             // Test5_button
             // 
-            this.Test5_button.Location = new System.Drawing.Point(1148, 835);
+            this.Test5_button.Location = new System.Drawing.Point(1148, 775);
             this.Test5_button.Name = "Test5_button";
             this.Test5_button.Size = new System.Drawing.Size(108, 23);
             this.Test5_button.TabIndex = 68;
@@ -1003,7 +998,7 @@
             // 
             // Test6_button
             // 
-            this.Test6_button.Location = new System.Drawing.Point(1148, 861);
+            this.Test6_button.Location = new System.Drawing.Point(1148, 801);
             this.Test6_button.Name = "Test6_button";
             this.Test6_button.Size = new System.Drawing.Size(108, 23);
             this.Test6_button.TabIndex = 69;
@@ -1013,7 +1008,7 @@
             // 
             // Bookmark1_button
             // 
-            this.Bookmark1_button.Location = new System.Drawing.Point(792, 727);
+            this.Bookmark1_button.Location = new System.Drawing.Point(792, 667);
             this.Bookmark1_button.Name = "Bookmark1_button";
             this.Bookmark1_button.Size = new System.Drawing.Size(133, 23);
             this.Bookmark1_button.TabIndex = 70;
@@ -1024,7 +1019,7 @@
             // 
             // Bookmark2_button
             // 
-            this.Bookmark2_button.Location = new System.Drawing.Point(792, 754);
+            this.Bookmark2_button.Location = new System.Drawing.Point(792, 694);
             this.Bookmark2_button.Name = "Bookmark2_button";
             this.Bookmark2_button.Size = new System.Drawing.Size(133, 23);
             this.Bookmark2_button.TabIndex = 71;
@@ -1035,7 +1030,7 @@
             // 
             // Bookmark3_button
             // 
-            this.Bookmark3_button.Location = new System.Drawing.Point(792, 781);
+            this.Bookmark3_button.Location = new System.Drawing.Point(792, 721);
             this.Bookmark3_button.Name = "Bookmark3_button";
             this.Bookmark3_button.Size = new System.Drawing.Size(133, 23);
             this.Bookmark3_button.TabIndex = 72;
@@ -1046,7 +1041,7 @@
             // 
             // Bookmark4_button
             // 
-            this.Bookmark4_button.Location = new System.Drawing.Point(792, 808);
+            this.Bookmark4_button.Location = new System.Drawing.Point(792, 748);
             this.Bookmark4_button.Name = "Bookmark4_button";
             this.Bookmark4_button.Size = new System.Drawing.Size(133, 23);
             this.Bookmark4_button.TabIndex = 73;
@@ -1057,7 +1052,7 @@
             // 
             // Bookmark5_button
             // 
-            this.Bookmark5_button.Location = new System.Drawing.Point(792, 835);
+            this.Bookmark5_button.Location = new System.Drawing.Point(792, 775);
             this.Bookmark5_button.Name = "Bookmark5_button";
             this.Bookmark5_button.Size = new System.Drawing.Size(133, 23);
             this.Bookmark5_button.TabIndex = 74;
@@ -1068,7 +1063,7 @@
             // 
             // Bookmark6_button
             // 
-            this.Bookmark6_button.Location = new System.Drawing.Point(792, 862);
+            this.Bookmark6_button.Location = new System.Drawing.Point(792, 802);
             this.Bookmark6_button.Name = "Bookmark6_button";
             this.Bookmark6_button.Size = new System.Drawing.Size(133, 23);
             this.Bookmark6_button.TabIndex = 75;
@@ -1082,8 +1077,6 @@
             this.Tapes_tabPage.Controls.Add(this.UseCustomTapes_button);
             this.Tapes_tabPage.Controls.Add(this.LoadCustomTapes_button);
             this.Tapes_tabPage.Controls.Add(this.SaveCustomTapes_button);
-            this.Tapes_tabPage.Controls.Add(this.CustomTapeDown_button);
-            this.Tapes_tabPage.Controls.Add(this.CustomTapeUp_button);
             this.Tapes_tabPage.Controls.Add(this.DeleteCustomTape_button);
             this.Tapes_tabPage.Controls.Add(this.label130);
             this.Tapes_tabPage.Controls.Add(this.CustomTapes_dataGridView);
@@ -1112,19 +1105,18 @@
             this.Tapes_tabPage.Controls.Add(this.AddTape_button);
             this.Tapes_tabPage.Controls.Add(this.label109);
             this.Tapes_tabPage.Controls.Add(this.Tapes_dataGridView);
-            this.Tapes_tabPage.Controls.Add(this.label108);
             this.Tapes_tabPage.Controls.Add(this.Tapes_pictureBox);
             this.Tapes_tabPage.Location = new System.Drawing.Point(4, 22);
             this.Tapes_tabPage.Name = "Tapes_tabPage";
             this.Tapes_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Tapes_tabPage.Size = new System.Drawing.Size(1249, 695);
+            this.Tapes_tabPage.Size = new System.Drawing.Size(1249, 634);
             this.Tapes_tabPage.TabIndex = 6;
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
             // 
             // UseCustomTapes_button
             // 
-            this.UseCustomTapes_button.Location = new System.Drawing.Point(509, 579);
+            this.UseCustomTapes_button.Location = new System.Drawing.Point(509, 569);
             this.UseCustomTapes_button.Name = "UseCustomTapes_button";
             this.UseCustomTapes_button.Size = new System.Drawing.Size(75, 23);
             this.UseCustomTapes_button.TabIndex = 61;
@@ -1136,7 +1128,7 @@
             // 
             // LoadCustomTapes_button
             // 
-            this.LoadCustomTapes_button.Location = new System.Drawing.Point(509, 550);
+            this.LoadCustomTapes_button.Location = new System.Drawing.Point(509, 540);
             this.LoadCustomTapes_button.Name = "LoadCustomTapes_button";
             this.LoadCustomTapes_button.Size = new System.Drawing.Size(75, 23);
             this.LoadCustomTapes_button.TabIndex = 60;
@@ -1147,7 +1139,7 @@
             // 
             // SaveCustomTapes_button
             // 
-            this.SaveCustomTapes_button.Location = new System.Drawing.Point(509, 521);
+            this.SaveCustomTapes_button.Location = new System.Drawing.Point(509, 511);
             this.SaveCustomTapes_button.Name = "SaveCustomTapes_button";
             this.SaveCustomTapes_button.Size = new System.Drawing.Size(75, 23);
             this.SaveCustomTapes_button.TabIndex = 59;
@@ -1156,33 +1148,9 @@
             this.SaveCustomTapes_button.Visible = false;
             this.SaveCustomTapes_button.Click += new System.EventHandler(this.SaveCustomTapes_button_Click);
             // 
-            // CustomTapeDown_button
-            // 
-            this.CustomTapeDown_button.Location = new System.Drawing.Point(509, 666);
-            this.CustomTapeDown_button.Name = "CustomTapeDown_button";
-            this.CustomTapeDown_button.Size = new System.Drawing.Size(75, 23);
-            this.CustomTapeDown_button.TabIndex = 58;
-            this.CustomTapeDown_button.Text = "Move Down";
-            this.toolTip1.SetToolTip(this.CustomTapeDown_button, "Moves the selected tape definition down on the table.");
-            this.CustomTapeDown_button.UseVisualStyleBackColor = true;
-            this.CustomTapeDown_button.Visible = false;
-            this.CustomTapeDown_button.Click += new System.EventHandler(this.CustomTapeDown_button_Click);
-            // 
-            // CustomTapeUp_button
-            // 
-            this.CustomTapeUp_button.Location = new System.Drawing.Point(509, 637);
-            this.CustomTapeUp_button.Name = "CustomTapeUp_button";
-            this.CustomTapeUp_button.Size = new System.Drawing.Size(75, 23);
-            this.CustomTapeUp_button.TabIndex = 57;
-            this.CustomTapeUp_button.Text = "Move Up";
-            this.toolTip1.SetToolTip(this.CustomTapeUp_button, "Moves the selected tape definition up on the table.");
-            this.CustomTapeUp_button.UseVisualStyleBackColor = true;
-            this.CustomTapeUp_button.Visible = false;
-            this.CustomTapeUp_button.Click += new System.EventHandler(this.CustomTapeUp_button_Click);
-            // 
             // DeleteCustomTape_button
             // 
-            this.DeleteCustomTape_button.Location = new System.Drawing.Point(509, 608);
+            this.DeleteCustomTape_button.Location = new System.Drawing.Point(509, 598);
             this.DeleteCustomTape_button.Name = "DeleteCustomTape_button";
             this.DeleteCustomTape_button.Size = new System.Drawing.Size(75, 23);
             this.DeleteCustomTape_button.TabIndex = 56;
@@ -1195,7 +1163,7 @@
             // label130
             // 
             this.label130.AutoSize = true;
-            this.label130.Location = new System.Drawing.Point(5, 505);
+            this.label130.Location = new System.Drawing.Point(5, 495);
             this.label130.Name = "label130";
             this.label130.Size = new System.Drawing.Size(122, 13);
             this.label130.TabIndex = 54;
@@ -1214,12 +1182,12 @@
             this.PartOffsetX_Column,
             this.PartOffsetY_Column});
             this.CustomTapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.CustomTapes_dataGridView.Location = new System.Drawing.Point(8, 521);
+            this.CustomTapes_dataGridView.Location = new System.Drawing.Point(8, 511);
             this.CustomTapes_dataGridView.MultiSelect = false;
             this.CustomTapes_dataGridView.Name = "CustomTapes_dataGridView";
             this.CustomTapes_dataGridView.RowHeadersWidth = 50;
             this.CustomTapes_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.CustomTapes_dataGridView.Size = new System.Drawing.Size(494, 168);
+            this.CustomTapes_dataGridView.Size = new System.Drawing.Size(494, 110);
             this.CustomTapes_dataGridView.TabIndex = 53;
             this.CustomTapes_dataGridView.Visible = false;
             // 
@@ -1540,19 +1508,148 @@
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
             this.Tapes_dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellValueChanged);
             // 
-            // label108
+            // SelectButtonColumn
             // 
-            this.label108.AutoSize = true;
-            this.label108.Location = new System.Drawing.Point(6, 3);
-            this.label108.Name = "label108";
-            this.label108.Size = new System.Drawing.Size(106, 13);
-            this.label108.TabIndex = 14;
-            this.label108.Text = "Down Camera Image";
+            this.SelectButtonColumn.HeaderText = "Select";
+            this.SelectButtonColumn.Name = "SelectButtonColumn";
+            this.SelectButtonColumn.Text = "Reset";
+            this.SelectButtonColumn.Width = 43;
+            // 
+            // IdColumn
+            // 
+            this.IdColumn.HeaderText = "ID";
+            this.IdColumn.Name = "IdColumn";
+            this.IdColumn.Width = 43;
+            // 
+            // OrientationColumn
+            // 
+            this.OrientationColumn.HeaderText = "Dir.";
+            this.OrientationColumn.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.OrientationColumn.Name = "OrientationColumn";
+            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.OrientationColumn.Width = 48;
+            // 
+            // RotationColumn
+            // 
+            this.RotationColumn.HeaderText = "Rot.";
+            this.RotationColumn.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.RotationColumn.Name = "RotationColumn";
+            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.RotationColumn.Width = 52;
+            // 
+            // WidthColumn
+            // 
+            this.WidthColumn.HeaderText = "Width";
+            this.WidthColumn.Items.AddRange(new object[] {
+            "8/2mm",
+            "8/4mm",
+            "12/4mm",
+            "12/8mm",
+            "16/4mm",
+            "16/8mm",
+            "16/12mm",
+            "24/4mm",
+            "24/8mm",
+            "24/12mm",
+            "24/16mm",
+            "24/20mm"});
+            this.WidthColumn.Name = "WidthColumn";
+            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.WidthColumn.Width = 60;
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.TypeColumn.Name = "TypeColumn";
+            this.TypeColumn.Width = 37;
+            // 
+            // Next_Column
+            // 
+            this.Next_Column.HeaderText = "Next";
+            this.Next_Column.Name = "Next_Column";
+            this.Next_Column.Width = 54;
+            // 
+            // Tray_Column
+            // 
+            this.Tray_Column.HeaderText = "Tray";
+            this.Tray_Column.Name = "Tray_Column";
+            this.Tray_Column.Width = 53;
+            // 
+            // X_Column
+            // 
+            this.X_Column.HeaderText = "X";
+            this.X_Column.Name = "X_Column";
+            this.X_Column.ReadOnly = true;
+            this.X_Column.Width = 39;
+            // 
+            // Y_Column
+            // 
+            this.Y_Column.HeaderText = "Y";
+            this.Y_Column.Name = "Y_Column";
+            this.Y_Column.ReadOnly = true;
+            this.Y_Column.Width = 39;
+            // 
+            // PickupZ_Column
+            // 
+            this.PickupZ_Column.HeaderText = "Pickup Z";
+            this.PickupZ_Column.Name = "PickupZ_Column";
+            this.PickupZ_Column.Width = 75;
+            // 
+            // PlaceZ_Column
+            // 
+            this.PlaceZ_Column.HeaderText = "PlaceZ";
+            this.PlaceZ_Column.Name = "PlaceZ_Column";
+            this.PlaceZ_Column.Width = 66;
+            // 
+            // NextX_Column
+            // 
+            this.NextX_Column.HeaderText = "Next X";
+            this.NextX_Column.Name = "NextX_Column";
+            this.NextX_Column.ReadOnly = true;
+            this.NextX_Column.Width = 64;
+            // 
+            // NextY_column
+            // 
+            this.NextY_column.HeaderText = "Next Y";
+            this.NextY_column.Name = "NextY_column";
+            this.NextY_column.ReadOnly = true;
+            this.NextY_column.Width = 64;
+            // 
+            // LastX
+            // 
+            this.LastX.HeaderText = "Last X";
+            this.LastX.Name = "LastX";
+            this.LastX.ReadOnly = true;
+            this.LastX.Visible = false;
+            this.LastX.Width = 62;
+            // 
+            // LastY
+            // 
+            this.LastY.HeaderText = "Last Y";
+            this.LastY.Name = "LastY";
+            this.LastY.ReadOnly = true;
+            this.LastY.Visible = false;
+            this.LastY.Width = 62;
             // 
             // Tapes_pictureBox
             // 
             this.Tapes_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tapes_pictureBox.Location = new System.Drawing.Point(6, 19);
+            this.Tapes_pictureBox.Location = new System.Drawing.Point(6, 6);
             this.Tapes_pictureBox.Name = "Tapes_pictureBox";
             this.Tapes_pictureBox.Size = new System.Drawing.Size(640, 480);
             this.Tapes_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -1566,7 +1663,7 @@
             this.Components_tabPage.Location = new System.Drawing.Point(4, 22);
             this.Components_tabPage.Name = "Components_tabPage";
             this.Components_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Components_tabPage.Size = new System.Drawing.Size(1249, 695);
+            this.Components_tabPage.Size = new System.Drawing.Size(1249, 634);
             this.Components_tabPage.TabIndex = 3;
             this.Components_tabPage.Text = "Component Data";
             this.Components_tabPage.UseVisualStyleBackColor = true;
@@ -1580,7 +1677,7 @@
             this.SizeY});
             this.ComponentData_dataGridView.Location = new System.Drawing.Point(24, 31);
             this.ComponentData_dataGridView.Name = "ComponentData_dataGridView";
-            this.ComponentData_dataGridView.Size = new System.Drawing.Size(495, 598);
+            this.ComponentData_dataGridView.Size = new System.Drawing.Size(495, 583);
             this.ComponentData_dataGridView.TabIndex = 0;
             // 
             // PartialName
@@ -1640,11 +1737,10 @@
             this.tabPageSetupCameras.Controls.Add(this.label94);
             this.tabPageSetupCameras.Controls.Add(this.ImageTest_checkBox);
             this.tabPageSetupCameras.Controls.Add(this.Cam_pictureBox);
-            this.tabPageSetupCameras.Controls.Add(this.label1);
             this.tabPageSetupCameras.Location = new System.Drawing.Point(4, 22);
             this.tabPageSetupCameras.Name = "tabPageSetupCameras";
             this.tabPageSetupCameras.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSetupCameras.Size = new System.Drawing.Size(1249, 695);
+            this.tabPageSetupCameras.Size = new System.Drawing.Size(1249, 634);
             this.tabPageSetupCameras.TabIndex = 0;
             this.tabPageSetupCameras.Text = "Setup Cameras";
             this.tabPageSetupCameras.UseVisualStyleBackColor = true;
@@ -1656,7 +1752,7 @@
             this.CamerasSetUp_tabControl.Location = new System.Drawing.Point(656, 8);
             this.CamerasSetUp_tabControl.Name = "CamerasSetUp_tabControl";
             this.CamerasSetUp_tabControl.SelectedIndex = 0;
-            this.CamerasSetUp_tabControl.Size = new System.Drawing.Size(587, 681);
+            this.CamerasSetUp_tabControl.Size = new System.Drawing.Size(587, 620);
             this.CamerasSetUp_tabControl.TabIndex = 126;
             this.CamerasSetUp_tabControl.SelectedIndexChanged += new System.EventHandler(this.CamerasSetUp_tabControl_SelectedIndexChanged);
             // 
@@ -1715,7 +1811,7 @@
             this.DownCamera_tabPage.Controls.Add(this.groupBox4);
             this.DownCamera_tabPage.Location = new System.Drawing.Point(4, 22);
             this.DownCamera_tabPage.Name = "DownCamera_tabPage";
-            this.DownCamera_tabPage.Size = new System.Drawing.Size(579, 655);
+            this.DownCamera_tabPage.Size = new System.Drawing.Size(579, 594);
             this.DownCamera_tabPage.TabIndex = 3;
             this.DownCamera_tabPage.Text = "Down Looking Camera";
             this.DownCamera_tabPage.UseVisualStyleBackColor = true;
@@ -1744,7 +1840,7 @@
             // 
             // DowncamSnapshot_ColorBox
             // 
-            this.DowncamSnapshot_ColorBox.Location = new System.Drawing.Point(141, 128);
+            this.DowncamSnapshot_ColorBox.Location = new System.Drawing.Point(145, 109);
             this.DowncamSnapshot_ColorBox.Name = "DowncamSnapshot_ColorBox";
             this.DowncamSnapshot_ColorBox.ReadOnly = true;
             this.DowncamSnapshot_ColorBox.Size = new System.Drawing.Size(21, 20);
@@ -1759,9 +1855,9 @@
             this.groupBox13.Controls.Add(this.DownCam_SnapshotToDisplay_button);
             this.groupBox13.Controls.Add(this.DownCam_SnapshotToHere_button);
             this.groupBox13.Controls.Add(this.DownCam_TakeSnapshot_button);
-            this.groupBox13.Location = new System.Drawing.Point(6, 579);
+            this.groupBox13.Location = new System.Drawing.Point(6, 521);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(255, 59);
+            this.groupBox13.Size = new System.Drawing.Size(255, 56);
             this.groupBox13.TabIndex = 139;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Snapshot";
@@ -1890,7 +1986,7 @@
             // 
             this.DownCameraDrawTicks_checkBox.AutoSize = true;
             this.DownCameraDrawTicks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawTicks_checkBox.Location = new System.Drawing.Point(6, 107);
+            this.DownCameraDrawTicks_checkBox.Location = new System.Drawing.Point(10, 88);
             this.DownCameraDrawTicks_checkBox.Name = "DownCameraDrawTicks_checkBox";
             this.DownCameraDrawTicks_checkBox.Size = new System.Drawing.Size(103, 17);
             this.DownCameraDrawTicks_checkBox.TabIndex = 139;
@@ -1907,9 +2003,9 @@
             this.groupBox9.Controls.Add(this.ComponentsMeasure_button);
             this.groupBox9.Controls.Add(this.ComponentsToDisplay_button);
             this.groupBox9.Controls.Add(this.ComponentsToHere_button);
-            this.groupBox9.Location = new System.Drawing.Point(6, 514);
+            this.groupBox9.Location = new System.Drawing.Point(6, 464);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(255, 59);
+            this.groupBox9.Size = new System.Drawing.Size(255, 56);
             this.groupBox9.TabIndex = 138;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Components";
@@ -2025,7 +2121,7 @@
             // ColorHelp_label
             // 
             this.ColorHelp_label.AutoSize = true;
-            this.ColorHelp_label.Location = new System.Drawing.Point(266, 353);
+            this.ColorHelp_label.Location = new System.Drawing.Point(266, 327);
             this.ColorHelp_label.Name = "ColorHelp_label";
             this.ColorHelp_label.Size = new System.Drawing.Size(176, 13);
             this.ColorHelp_label.TabIndex = 137;
@@ -2034,7 +2130,7 @@
             // 
             // B_numericUpDown
             // 
-            this.B_numericUpDown.Location = new System.Drawing.Point(442, 330);
+            this.B_numericUpDown.Location = new System.Drawing.Point(442, 304);
             this.B_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -2054,7 +2150,7 @@
             // B_label
             // 
             this.B_label.AutoSize = true;
-            this.B_label.Location = new System.Drawing.Point(439, 314);
+            this.B_label.Location = new System.Drawing.Point(439, 288);
             this.B_label.Name = "B_label";
             this.B_label.Size = new System.Drawing.Size(14, 13);
             this.B_label.TabIndex = 135;
@@ -2063,7 +2159,7 @@
             // 
             // G_numericUpDown
             // 
-            this.G_numericUpDown.Location = new System.Drawing.Point(390, 329);
+            this.G_numericUpDown.Location = new System.Drawing.Point(390, 303);
             this.G_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -2083,7 +2179,7 @@
             // G_label
             // 
             this.G_label.AutoSize = true;
-            this.G_label.Location = new System.Drawing.Point(387, 313);
+            this.G_label.Location = new System.Drawing.Point(387, 287);
             this.G_label.Name = "G_label";
             this.G_label.Size = new System.Drawing.Size(15, 13);
             this.G_label.TabIndex = 133;
@@ -2092,7 +2188,7 @@
             // 
             // R_numericUpDown
             // 
-            this.R_numericUpDown.Location = new System.Drawing.Point(338, 330);
+            this.R_numericUpDown.Location = new System.Drawing.Point(338, 304);
             this.R_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -2112,7 +2208,7 @@
             // R_label
             // 
             this.R_label.AutoSize = true;
-            this.R_label.Location = new System.Drawing.Point(335, 314);
+            this.R_label.Location = new System.Drawing.Point(335, 288);
             this.R_label.Name = "R_label";
             this.R_label.Size = new System.Drawing.Size(15, 13);
             this.R_label.TabIndex = 131;
@@ -2122,7 +2218,7 @@
             // Color_label
             // 
             this.Color_label.AutoSize = true;
-            this.Color_label.Location = new System.Drawing.Point(266, 315);
+            this.Color_label.Location = new System.Drawing.Point(266, 289);
             this.Color_label.Name = "Color_label";
             this.Color_label.Size = new System.Drawing.Size(61, 13);
             this.Color_label.TabIndex = 130;
@@ -2131,7 +2227,7 @@
             // 
             // Color_Box
             // 
-            this.Color_Box.Location = new System.Drawing.Point(269, 330);
+            this.Color_Box.Location = new System.Drawing.Point(269, 304);
             this.Color_Box.Name = "Color_Box";
             this.Color_Box.ReadOnly = true;
             this.Color_Box.Size = new System.Drawing.Size(21, 20);
@@ -2141,7 +2237,7 @@
             // CamFunctionsClear_button
             // 
             this.CamFunctionsClear_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CamFunctionsClear_button.Location = new System.Drawing.Point(6, 279);
+            this.CamFunctionsClear_button.Location = new System.Drawing.Point(3, 260);
             this.CamFunctionsClear_button.Name = "CamFunctionsClear_button";
             this.CamFunctionsClear_button.Size = new System.Drawing.Size(75, 23);
             this.CamFunctionsClear_button.TabIndex = 128;
@@ -2157,9 +2253,9 @@
             this.groupBox8.Controls.Add(this.ClearTapeMeasure_button);
             this.groupBox8.Controls.Add(this.ClearTapeToDisplay_button);
             this.groupBox8.Controls.Add(this.ClearTapeToHere_button);
-            this.groupBox8.Location = new System.Drawing.Point(279, 449);
+            this.groupBox8.Location = new System.Drawing.Point(279, 407);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(255, 59);
+            this.groupBox8.Size = new System.Drawing.Size(255, 56);
             this.groupBox8.TabIndex = 127;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Clear Plastic Tape";
@@ -2285,9 +2381,9 @@
             this.groupBox7.Controls.Add(this.BlackTapeMeasure_button);
             this.groupBox7.Controls.Add(this.BlackTapeToDisplay_button);
             this.groupBox7.Controls.Add(this.BlackTapeToHere_button);
-            this.groupBox7.Location = new System.Drawing.Point(279, 514);
+            this.groupBox7.Location = new System.Drawing.Point(279, 464);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(255, 59);
+            this.groupBox7.Size = new System.Drawing.Size(255, 56);
             this.groupBox7.TabIndex = 126;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Black Plastic Tape";
@@ -2409,7 +2505,7 @@
             // Parameter_double_label
             // 
             this.Parameter_double_label.AutoSize = true;
-            this.Parameter_double_label.Location = new System.Drawing.Point(203, 315);
+            this.Parameter_double_label.Location = new System.Drawing.Point(203, 289);
             this.Parameter_double_label.Name = "Parameter_double_label";
             this.Parameter_double_label.Size = new System.Drawing.Size(41, 13);
             this.Parameter_double_label.TabIndex = 122;
@@ -2420,7 +2516,7 @@
             // 
             this.DownCam_FindComponents_checkBox.AutoSize = true;
             this.DownCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(219, 127);
+            this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(223, 108);
             this.DownCam_FindComponents_checkBox.Name = "DownCam_FindComponents_checkBox";
             this.DownCam_FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
             this.DownCam_FindComponents_checkBox.TabIndex = 54;
@@ -2432,7 +2528,7 @@
             // 
             // Parameter_double_textBox
             // 
-            this.Parameter_double_textBox.Location = new System.Drawing.Point(206, 331);
+            this.Parameter_double_textBox.Location = new System.Drawing.Point(206, 305);
             this.Parameter_double_textBox.Name = "Parameter_double_textBox";
             this.Parameter_double_textBox.Size = new System.Drawing.Size(38, 20);
             this.Parameter_double_textBox.TabIndex = 121;
@@ -2449,9 +2545,9 @@
             this.groupBox6.Controls.Add(this.PaperTapeMeasure_button);
             this.groupBox6.Controls.Add(this.PaperTapeToDisplay_button);
             this.groupBox6.Controls.Add(this.PaperTapeToHere_button);
-            this.groupBox6.Location = new System.Drawing.Point(279, 384);
+            this.groupBox6.Location = new System.Drawing.Point(279, 350);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(255, 59);
+            this.groupBox6.Size = new System.Drawing.Size(255, 56);
             this.groupBox6.TabIndex = 125;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Paper Tape";
@@ -2572,7 +2668,7 @@
             // 
             // Parameter_Int_numericUpDown
             // 
-            this.Parameter_Int_numericUpDown.Location = new System.Drawing.Point(141, 331);
+            this.Parameter_Int_numericUpDown.Location = new System.Drawing.Point(141, 305);
             this.Parameter_Int_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -2604,7 +2700,7 @@
             // Parameter_int_label
             // 
             this.Parameter_int_label.AutoSize = true;
-            this.Parameter_int_label.Location = new System.Drawing.Point(138, 315);
+            this.Parameter_int_label.Location = new System.Drawing.Point(138, 289);
             this.Parameter_int_label.Name = "Parameter_int_label";
             this.Parameter_int_label.Size = new System.Drawing.Size(35, 13);
             this.Parameter_int_label.TabIndex = 119;
@@ -2615,7 +2711,7 @@
             // 
             this.DownCamFindRectangles_checkBox.AutoSize = true;
             this.DownCamFindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(219, 104);
+            this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(223, 85);
             this.DownCamFindRectangles_checkBox.Name = "DownCamFindRectangles_checkBox";
             this.DownCamFindRectangles_checkBox.Size = new System.Drawing.Size(103, 17);
             this.DownCamFindRectangles_checkBox.TabIndex = 53;
@@ -2632,9 +2728,9 @@
             this.groupBox11.Controls.Add(this.FiducialsMeasure_button);
             this.groupBox11.Controls.Add(this.FiducialsToDisplay_button);
             this.groupBox11.Controls.Add(this.FiducialsToHere_button);
-            this.groupBox11.Location = new System.Drawing.Point(6, 449);
+            this.groupBox11.Location = new System.Drawing.Point(6, 407);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(255, 59);
+            this.groupBox11.Size = new System.Drawing.Size(255, 56);
             this.groupBox11.TabIndex = 124;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Fiducials";
@@ -2763,7 +2859,7 @@
             // 
             this.DownCamFindCircles_checkBox.AutoSize = true;
             this.DownCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(219, 81);
+            this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(223, 62);
             this.DownCamFindCircles_checkBox.Name = "DownCamFindCircles_checkBox";
             this.DownCamFindCircles_checkBox.Size = new System.Drawing.Size(80, 17);
             this.DownCamFindCircles_checkBox.TabIndex = 43;
@@ -2789,7 +2885,7 @@
             // 
             this.DownCameraDrawDashedCross_checkBox.AutoSize = true;
             this.DownCameraDrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(12, 329);
+            this.DownCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(12, 303);
             this.DownCameraDrawDashedCross_checkBox.Name = "DownCameraDrawDashedCross_checkBox";
             this.DownCameraDrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
             this.DownCameraDrawDashedCross_checkBox.TabIndex = 42;
@@ -2812,7 +2908,7 @@
             // CamFunctionDown_button
             // 
             this.CamFunctionDown_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CamFunctionDown_button.Location = new System.Drawing.Point(6, 250);
+            this.CamFunctionDown_button.Location = new System.Drawing.Point(3, 231);
             this.CamFunctionDown_button.Name = "CamFunctionDown_button";
             this.CamFunctionDown_button.Size = new System.Drawing.Size(75, 23);
             this.CamFunctionDown_button.TabIndex = 47;
@@ -2825,7 +2921,7 @@
             // 
             this.DownCameraDrawCross_checkBox.AutoSize = true;
             this.DownCameraDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawCross_checkBox.Location = new System.Drawing.Point(6, 61);
+            this.DownCameraDrawCross_checkBox.Location = new System.Drawing.Point(10, 42);
             this.DownCameraDrawCross_checkBox.Name = "DownCameraDrawCross_checkBox";
             this.DownCameraDrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
             this.DownCameraDrawCross_checkBox.TabIndex = 11;
@@ -2838,7 +2934,7 @@
             // 
             this.DownCameraDrawBox_checkBox.AutoSize = true;
             this.DownCameraDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawBox_checkBox.Location = new System.Drawing.Point(6, 84);
+            this.DownCameraDrawBox_checkBox.Location = new System.Drawing.Point(10, 65);
             this.DownCameraDrawBox_checkBox.Name = "DownCameraDrawBox_checkBox";
             this.DownCameraDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
             this.DownCameraDrawBox_checkBox.TabIndex = 25;
@@ -2850,7 +2946,7 @@
             // CamFunctionUp_button
             // 
             this.CamFunctionUp_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CamFunctionUp_button.Location = new System.Drawing.Point(6, 221);
+            this.CamFunctionUp_button.Location = new System.Drawing.Point(3, 202);
             this.CamFunctionUp_button.Name = "CamFunctionUp_button";
             this.CamFunctionUp_button.Size = new System.Drawing.Size(75, 23);
             this.CamFunctionUp_button.TabIndex = 46;
@@ -2873,7 +2969,7 @@
             // 
             this.Overlay_checkBox.AutoSize = true;
             this.Overlay_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Overlay_checkBox.Location = new System.Drawing.Point(6, 130);
+            this.Overlay_checkBox.Location = new System.Drawing.Point(10, 111);
             this.Overlay_checkBox.Name = "Overlay_checkBox";
             this.Overlay_checkBox.Size = new System.Drawing.Size(131, 17);
             this.Overlay_checkBox.TabIndex = 31;
@@ -2884,7 +2980,7 @@
             // DeleteCamFunction_button
             // 
             this.DeleteCamFunction_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DeleteCamFunction_button.Location = new System.Drawing.Point(6, 192);
+            this.DeleteCamFunction_button.Location = new System.Drawing.Point(3, 173);
             this.DeleteCamFunction_button.Name = "DeleteCamFunction_button";
             this.DeleteCamFunction_button.Size = new System.Drawing.Size(75, 23);
             this.DeleteCamFunction_button.TabIndex = 45;
@@ -2897,7 +2993,7 @@
             // 
             this.DownCameraBoxYmmPerPixel_label.AutoSize = true;
             this.DownCameraBoxYmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(528, 108);
+            this.DownCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(532, 89);
             this.DownCameraBoxYmmPerPixel_label.Name = "DownCameraBoxYmmPerPixel_label";
             this.DownCameraBoxYmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.DownCameraBoxYmmPerPixel_label.TabIndex = 27;
@@ -2908,7 +3004,7 @@
             // 
             this.label68.AutoSize = true;
             this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label68.Location = new System.Drawing.Point(403, 82);
+            this.label68.Location = new System.Drawing.Point(407, 63);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(38, 13);
             this.label68.TabIndex = 18;
@@ -2918,7 +3014,7 @@
             // AddCamFunction_button
             // 
             this.AddCamFunction_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddCamFunction_button.Location = new System.Drawing.Point(6, 163);
+            this.AddCamFunction_button.Location = new System.Drawing.Point(3, 144);
             this.AddCamFunction_button.Name = "AddCamFunction_button";
             this.AddCamFunction_button.Size = new System.Drawing.Size(75, 23);
             this.AddCamFunction_button.TabIndex = 44;
@@ -2931,7 +3027,7 @@
             // 
             this.DownCameraBoxXmmPerPixel_label.AutoSize = true;
             this.DownCameraBoxXmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(528, 82);
+            this.DownCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(532, 63);
             this.DownCameraBoxXmmPerPixel_label.Name = "DownCameraBoxXmmPerPixel_label";
             this.DownCameraBoxXmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.DownCameraBoxXmmPerPixel_label.TabIndex = 26;
@@ -2942,7 +3038,7 @@
             // 
             this.label69.AutoSize = true;
             this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label69.Location = new System.Drawing.Point(403, 108);
+            this.label69.Location = new System.Drawing.Point(407, 89);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(38, 13);
             this.label69.TabIndex = 19;
@@ -2962,7 +3058,7 @@
             this.Parameter_G,
             this.Parameter_B});
             this.Display_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Display_dataGridView.Location = new System.Drawing.Point(87, 163);
+            this.Display_dataGridView.Location = new System.Drawing.Point(84, 144);
             this.Display_dataGridView.Name = "Display_dataGridView";
             this.Display_dataGridView.RowHeadersVisible = false;
             this.Display_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -3034,7 +3130,7 @@
             // 
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(499, 108);
+            this.label71.Location = new System.Drawing.Point(503, 89);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(23, 13);
             this.label71.TabIndex = 23;
@@ -3044,7 +3140,7 @@
             // DownCameraBoxX_textBox
             // 
             this.DownCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(447, 79);
+            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(451, 60);
             this.DownCameraBoxX_textBox.Name = "DownCameraBoxX_textBox";
             this.DownCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxX_textBox.TabIndex = 20;
@@ -3056,7 +3152,7 @@
             // 
             this.label70.AutoSize = true;
             this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.Location = new System.Drawing.Point(499, 82);
+            this.label70.Location = new System.Drawing.Point(503, 63);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(23, 13);
             this.label70.TabIndex = 22;
@@ -3066,7 +3162,7 @@
             // DownCameraBoxY_textBox
             // 
             this.DownCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(447, 105);
+            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(451, 86);
             this.DownCameraBoxY_textBox.Name = "DownCameraBoxY_textBox";
             this.DownCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxY_textBox.TabIndex = 21;
@@ -3081,9 +3177,9 @@
             this.groupBox4.Controls.Add(this.HomingToDisplay_button);
             this.groupBox4.Controls.Add(this.Homing_dataGridView);
             this.groupBox4.Controls.Add(this.HomingToHere_button);
-            this.groupBox4.Location = new System.Drawing.Point(6, 384);
+            this.groupBox4.Location = new System.Drawing.Point(6, 350);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(255, 59);
+            this.groupBox4.Size = new System.Drawing.Size(255, 56);
             this.groupBox4.TabIndex = 101;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Homing";
@@ -3223,7 +3319,7 @@
             this.UpCamera_tabPage.Controls.Add(this.label105);
             this.UpCamera_tabPage.Location = new System.Drawing.Point(4, 22);
             this.UpCamera_tabPage.Name = "UpCamera_tabPage";
-            this.UpCamera_tabPage.Size = new System.Drawing.Size(579, 655);
+            this.UpCamera_tabPage.Size = new System.Drawing.Size(579, 594);
             this.UpCamera_tabPage.TabIndex = 4;
             this.UpCamera_tabPage.Text = "Up Looking Camera";
             this.UpCamera_tabPage.UseVisualStyleBackColor = true;
@@ -3235,7 +3331,7 @@
             this.groupBox14.Controls.Add(this.UpCam_SnapshotToDisplay_button);
             this.groupBox14.Controls.Add(this.UpCam_SnapshotToHere_button);
             this.groupBox14.Controls.Add(this.UpCam_TakeSnapshot_button);
-            this.groupBox14.Location = new System.Drawing.Point(6, 539);
+            this.groupBox14.Location = new System.Drawing.Point(6, 470);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Size = new System.Drawing.Size(255, 59);
             this.groupBox14.TabIndex = 144;
@@ -3378,7 +3474,7 @@
             this.groupBox10.Controls.Add(this.UpCamComponentsMeasure_button);
             this.groupBox10.Controls.Add(this.UpCamComponentsToDisplay_button);
             this.groupBox10.Controls.Add(this.UpCamComponentsToHere_button);
-            this.groupBox10.Location = new System.Drawing.Point(6, 458);
+            this.groupBox10.Location = new System.Drawing.Point(6, 410);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(255, 59);
             this.groupBox10.TabIndex = 126;
@@ -3526,7 +3622,7 @@
             this.groupBox5.Controls.Add(this.NeedleMeasure_button);
             this.groupBox5.Controls.Add(this.NeedleToDisplay_button);
             this.groupBox5.Controls.Add(this.NeedleToHere_button);
-            this.groupBox5.Location = new System.Drawing.Point(6, 384);
+            this.groupBox5.Location = new System.Drawing.Point(6, 350);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(255, 59);
             this.groupBox5.TabIndex = 102;
@@ -3871,9 +3967,9 @@
             // 
             // CameraSetupTest_button
             // 
-            this.CameraSetupTest_button.Location = new System.Drawing.Point(191, 663);
+            this.CameraSetupTest_button.Location = new System.Drawing.Point(283, 553);
             this.CameraSetupTest_button.Name = "CameraSetupTest_button";
-            this.CameraSetupTest_button.Size = new System.Drawing.Size(75, 23);
+            this.CameraSetupTest_button.Size = new System.Drawing.Size(84, 23);
             this.CameraSetupTest_button.TabIndex = 114;
             this.CameraSetupTest_button.Text = "Test";
             this.CameraSetupTest_button.UseVisualStyleBackColor = true;
@@ -3881,7 +3977,7 @@
             // 
             // ZUp_button
             // 
-            this.ZUp_button.Location = new System.Drawing.Point(11, 663);
+            this.ZUp_button.Location = new System.Drawing.Point(192, 523);
             this.ZUp_button.Name = "ZUp_button";
             this.ZUp_button.Size = new System.Drawing.Size(84, 23);
             this.ZUp_button.TabIndex = 86;
@@ -3892,7 +3988,7 @@
             // 
             // ZDown_button
             // 
-            this.ZDown_button.Location = new System.Drawing.Point(101, 663);
+            this.ZDown_button.Location = new System.Drawing.Point(283, 523);
             this.ZDown_button.Name = "ZDown_button";
             this.ZDown_button.Size = new System.Drawing.Size(84, 23);
             this.ZDown_button.TabIndex = 85;
@@ -3960,7 +4056,7 @@
             // 
             // NeedleOffsetY_textBox
             // 
-            this.NeedleOffsetY_textBox.Location = new System.Drawing.Point(32, 622);
+            this.NeedleOffsetY_textBox.Location = new System.Drawing.Point(120, 597);
             this.NeedleOffsetY_textBox.Name = "NeedleOffsetY_textBox";
             this.NeedleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
             this.NeedleOffsetY_textBox.TabIndex = 86;
@@ -3971,7 +4067,7 @@
             // 
             // NeedleOffsetX_textBox
             // 
-            this.NeedleOffsetX_textBox.Location = new System.Drawing.Point(31, 599);
+            this.NeedleOffsetX_textBox.Location = new System.Drawing.Point(31, 597);
             this.NeedleOffsetX_textBox.Name = "NeedleOffsetX_textBox";
             this.NeedleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
             this.NeedleOffsetX_textBox.TabIndex = 85;
@@ -4019,7 +4115,7 @@
             // label149
             // 
             this.label149.AutoSize = true;
-            this.label149.Location = new System.Drawing.Point(74, 625);
+            this.label149.Location = new System.Drawing.Point(162, 601);
             this.label149.Name = "label149";
             this.label149.Size = new System.Drawing.Size(23, 13);
             this.label149.TabIndex = 90;
@@ -4028,7 +4124,7 @@
             // label148
             // 
             this.label148.AutoSize = true;
-            this.label148.Location = new System.Drawing.Point(72, 602);
+            this.label148.Location = new System.Drawing.Point(72, 601);
             this.label148.Name = "label148";
             this.label148.Size = new System.Drawing.Size(23, 13);
             this.label148.TabIndex = 89;
@@ -4037,7 +4133,7 @@
             // label146
             // 
             this.label146.AutoSize = true;
-            this.label146.Location = new System.Drawing.Point(9, 625);
+            this.label146.Location = new System.Drawing.Point(97, 601);
             this.label146.Name = "label146";
             this.label146.Size = new System.Drawing.Size(17, 13);
             this.label146.TabIndex = 88;
@@ -4055,7 +4151,7 @@
             // Z0toPCB_CamerasTab_label
             // 
             this.Z0toPCB_CamerasTab_label.AutoSize = true;
-            this.Z0toPCB_CamerasTab_label.Location = new System.Drawing.Point(74, 647);
+            this.Z0toPCB_CamerasTab_label.Location = new System.Drawing.Point(267, 601);
             this.Z0toPCB_CamerasTab_label.Name = "Z0toPCB_CamerasTab_label";
             this.Z0toPCB_CamerasTab_label.Size = new System.Drawing.Size(53, 13);
             this.Z0toPCB_CamerasTab_label.TabIndex = 84;
@@ -4064,7 +4160,7 @@
             // label120
             // 
             this.label120.AutoSize = true;
-            this.label120.Location = new System.Drawing.Point(9, 647);
+            this.label120.Location = new System.Drawing.Point(205, 601);
             this.label120.Name = "label120";
             this.label120.Size = new System.Drawing.Size(59, 13);
             this.label120.TabIndex = 83;
@@ -4192,11 +4288,11 @@
             // ImageTest_checkBox
             // 
             this.ImageTest_checkBox.AutoSize = true;
-            this.ImageTest_checkBox.Location = new System.Drawing.Point(191, 640);
+            this.ImageTest_checkBox.Location = new System.Drawing.Point(283, 579);
             this.ImageTest_checkBox.Name = "ImageTest_checkBox";
-            this.ImageTest_checkBox.Size = new System.Drawing.Size(75, 17);
+            this.ImageTest_checkBox.Size = new System.Drawing.Size(61, 17);
             this.ImageTest_checkBox.TabIndex = 29;
-            this.ImageTest_checkBox.Text = "For testing";
+            this.ImageTest_checkBox.Text = "Testing";
             this.ImageTest_checkBox.UseVisualStyleBackColor = true;
             this.ImageTest_checkBox.Visible = false;
             this.ImageTest_checkBox.CheckedChanged += new System.EventHandler(this.ImageTest_checkBox_CheckedChanged);
@@ -4204,22 +4300,13 @@
             // Cam_pictureBox
             // 
             this.Cam_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Cam_pictureBox.Location = new System.Drawing.Point(6, 19);
+            this.Cam_pictureBox.Location = new System.Drawing.Point(6, 6);
             this.Cam_pictureBox.Name = "Cam_pictureBox";
             this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
             this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.Cam_pictureBox.TabIndex = 10;
             this.Cam_pictureBox.TabStop = false;
             this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Camera image";
             // 
             // tabPageBasicSetup
             // 
@@ -4303,7 +4390,7 @@
             this.tabPageBasicSetup.Location = new System.Drawing.Point(4, 22);
             this.tabPageBasicSetup.Name = "tabPageBasicSetup";
             this.tabPageBasicSetup.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageBasicSetup.Size = new System.Drawing.Size(1249, 695);
+            this.tabPageBasicSetup.Size = new System.Drawing.Size(1249, 634);
             this.tabPageBasicSetup.TabIndex = 1;
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
@@ -4323,19 +4410,19 @@
             // MouseScroll_checkBox
             // 
             this.MouseScroll_checkBox.AutoSize = true;
-            this.MouseScroll_checkBox.Location = new System.Drawing.Point(1037, 480);
+            this.MouseScroll_checkBox.Location = new System.Drawing.Point(1034, 376);
             this.MouseScroll_checkBox.Name = "MouseScroll_checkBox";
             this.MouseScroll_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.MouseScroll_checkBox.Size = new System.Drawing.Size(179, 17);
+            this.MouseScroll_checkBox.Size = new System.Drawing.Size(183, 17);
             this.MouseScroll_checkBox.TabIndex = 99;
-            this.MouseScroll_checkBox.Text = "Enable mouse whell jogging of A";
+            this.MouseScroll_checkBox.Text = "Enable mouse wheel jogging of A";
             this.toolTip1.SetToolTip(this.MouseScroll_checkBox, "If enabled, mouse wheel rotates needle");
             this.MouseScroll_checkBox.UseVisualStyleBackColor = true;
             // 
             // NumPadJog_checkBox
             // 
             this.NumPadJog_checkBox.AutoSize = true;
-            this.NumPadJog_checkBox.Location = new System.Drawing.Point(1032, 457);
+            this.NumPadJog_checkBox.Location = new System.Drawing.Point(1033, 353);
             this.NumPadJog_checkBox.Name = "NumPadJog_checkBox";
             this.NumPadJog_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.NumPadJog_checkBox.Size = new System.Drawing.Size(184, 17);
@@ -4349,7 +4436,7 @@
             this.Zlb_label.AutoSize = true;
             this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Zlb_label.Location = new System.Drawing.Point(311, 630);
+            this.Zlb_label.Location = new System.Drawing.Point(143, 544);
             this.Zlb_label.Name = "Zlb_label";
             this.Zlb_label.Size = new System.Drawing.Size(365, 38);
             this.Zlb_label.TabIndex = 51;
@@ -4369,14 +4456,14 @@
             this.panel9.Controls.Add(this.SetProbing_button);
             this.panel9.Controls.Add(this.label111);
             this.panel9.Controls.Add(this.label117);
-            this.panel9.Location = new System.Drawing.Point(514, 575);
+            this.panel9.Location = new System.Drawing.Point(514, 541);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(328, 112);
+            this.panel9.Size = new System.Drawing.Size(472, 83);
             this.panel9.TabIndex = 97;
             // 
             // PlacementDepth_textBox
             // 
-            this.PlacementDepth_textBox.Location = new System.Drawing.Point(262, 73);
+            this.PlacementDepth_textBox.Location = new System.Drawing.Point(384, 47);
             this.PlacementDepth_textBox.Name = "PlacementDepth_textBox";
             this.PlacementDepth_textBox.Size = new System.Drawing.Size(55, 20);
             this.PlacementDepth_textBox.TabIndex = 101;
@@ -4385,7 +4472,7 @@
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(166, 76);
+            this.label112.Location = new System.Drawing.Point(288, 50);
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(90, 13);
             this.label112.TabIndex = 100;
@@ -4393,7 +4480,7 @@
             // 
             // BackOff_textBox
             // 
-            this.BackOff_textBox.Location = new System.Drawing.Point(262, 47);
+            this.BackOff_textBox.Location = new System.Drawing.Point(384, 21);
             this.BackOff_textBox.Name = "BackOff_textBox";
             this.BackOff_textBox.Size = new System.Drawing.Size(55, 20);
             this.BackOff_textBox.TabIndex = 99;
@@ -4451,7 +4538,7 @@
             // label117
             // 
             this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(209, 50);
+            this.label117.Location = new System.Drawing.Point(331, 24);
             this.label117.Name = "label117";
             this.label117.Size = new System.Drawing.Size(47, 13);
             this.label117.TabIndex = 76;
@@ -4460,7 +4547,7 @@
             // SlackCompensationA_checkBox
             // 
             this.SlackCompensationA_checkBox.AutoSize = true;
-            this.SlackCompensationA_checkBox.Location = new System.Drawing.Point(1075, 249);
+            this.SlackCompensationA_checkBox.Location = new System.Drawing.Point(1076, 145);
             this.SlackCompensationA_checkBox.Name = "SlackCompensationA_checkBox";
             this.SlackCompensationA_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.SlackCompensationA_checkBox.Size = new System.Drawing.Size(141, 17);
@@ -4474,7 +4561,7 @@
             // 
             // AltJogSpeed_numericUpDown
             // 
-            this.AltJogSpeed_numericUpDown.Location = new System.Drawing.Point(1158, 431);
+            this.AltJogSpeed_numericUpDown.Location = new System.Drawing.Point(1159, 327);
             this.AltJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -4494,7 +4581,7 @@
             // 
             // NormalJogSpeed_numericUpDown
             // 
-            this.NormalJogSpeed_numericUpDown.Location = new System.Drawing.Point(1158, 405);
+            this.NormalJogSpeed_numericUpDown.Location = new System.Drawing.Point(1159, 301);
             this.NormalJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -4514,7 +4601,7 @@
             // 
             // CtlrJogSpeed_numericUpDown
             // 
-            this.CtlrJogSpeed_numericUpDown.Location = new System.Drawing.Point(1158, 379);
+            this.CtlrJogSpeed_numericUpDown.Location = new System.Drawing.Point(1159, 275);
             this.CtlrJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -4535,7 +4622,7 @@
             // label134
             // 
             this.label134.AutoSize = true;
-            this.label134.Location = new System.Drawing.Point(1079, 433);
+            this.label134.Location = new System.Drawing.Point(1080, 329);
             this.label134.Name = "label134";
             this.label134.Size = new System.Drawing.Size(73, 13);
             this.label134.TabIndex = 91;
@@ -4544,7 +4631,7 @@
             // label133
             // 
             this.label133.AutoSize = true;
-            this.label133.Location = new System.Drawing.Point(1109, 407);
+            this.label133.Location = new System.Drawing.Point(1110, 303);
             this.label133.Name = "label133";
             this.label133.Size = new System.Drawing.Size(43, 13);
             this.label133.TabIndex = 89;
@@ -4553,7 +4640,7 @@
             // label132
             // 
             this.label132.AutoSize = true;
-            this.label132.Location = new System.Drawing.Point(1018, 359);
+            this.label132.Location = new System.Drawing.Point(1019, 255);
             this.label132.Name = "label132";
             this.label132.Size = new System.Drawing.Size(158, 13);
             this.label132.TabIndex = 88;
@@ -4562,7 +4649,7 @@
             // label131
             // 
             this.label131.AutoSize = true;
-            this.label131.Location = new System.Drawing.Point(1072, 381);
+            this.label131.Location = new System.Drawing.Point(1073, 277);
             this.label131.Name = "label131";
             this.label131.Size = new System.Drawing.Size(80, 13);
             this.label131.TabIndex = 86;
@@ -4570,7 +4657,7 @@
             // 
             // ShadeGuard_textBox
             // 
-            this.ShadeGuard_textBox.Location = new System.Drawing.Point(593, 549);
+            this.ShadeGuard_textBox.Location = new System.Drawing.Point(593, 513);
             this.ShadeGuard_textBox.Name = "ShadeGuard_textBox";
             this.ShadeGuard_textBox.Size = new System.Drawing.Size(75, 20);
             this.ShadeGuard_textBox.TabIndex = 85;
@@ -4579,7 +4666,7 @@
             // label126
             // 
             this.label126.AutoSize = true;
-            this.label126.Location = new System.Drawing.Point(508, 552);
+            this.label126.Location = new System.Drawing.Point(508, 516);
             this.label126.Name = "label126";
             this.label126.Size = new System.Drawing.Size(79, 13);
             this.label126.TabIndex = 84;
@@ -4588,7 +4675,7 @@
             // label123
             // 
             this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(517, 526);
+            this.label123.Location = new System.Drawing.Point(517, 491);
             this.label123.Name = "label123";
             this.label123.Size = new System.Drawing.Size(70, 13);
             this.label123.TabIndex = 83;
@@ -4596,7 +4683,7 @@
             // 
             // ZTestTravel_textBox
             // 
-            this.ZTestTravel_textBox.Location = new System.Drawing.Point(593, 523);
+            this.ZTestTravel_textBox.Location = new System.Drawing.Point(593, 488);
             this.ZTestTravel_textBox.Name = "ZTestTravel_textBox";
             this.ZTestTravel_textBox.Size = new System.Drawing.Size(75, 20);
             this.ZTestTravel_textBox.TabIndex = 82;
@@ -4604,7 +4691,7 @@
             // 
             // VacuumRelease_textBox
             // 
-            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1158, 74);
+            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1158, 37);
             this.VacuumRelease_textBox.Name = "VacuumRelease_textBox";
             this.VacuumRelease_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumRelease_textBox.TabIndex = 81;
@@ -4616,7 +4703,7 @@
             // label119
             // 
             this.label119.AutoSize = true;
-            this.label119.Location = new System.Drawing.Point(1018, 77);
+            this.label119.Location = new System.Drawing.Point(1018, 40);
             this.label119.Name = "label119";
             this.label119.Size = new System.Drawing.Size(130, 13);
             this.label119.TabIndex = 80;
@@ -4624,7 +4711,7 @@
             // 
             // VacuumTime_textBox
             // 
-            this.VacuumTime_textBox.Location = new System.Drawing.Point(1158, 48);
+            this.VacuumTime_textBox.Location = new System.Drawing.Point(1158, 13);
             this.VacuumTime_textBox.Name = "VacuumTime_textBox";
             this.VacuumTime_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumTime_textBox.TabIndex = 79;
@@ -4636,7 +4723,7 @@
             // label118
             // 
             this.label118.AutoSize = true;
-            this.label118.Location = new System.Drawing.Point(1018, 51);
+            this.label118.Location = new System.Drawing.Point(1018, 17);
             this.label118.Name = "label118";
             this.label118.Size = new System.Drawing.Size(128, 13);
             this.label118.TabIndex = 78;
@@ -4645,7 +4732,7 @@
             // label90
             // 
             this.label90.AutoSize = true;
-            this.label90.Location = new System.Drawing.Point(1018, 324);
+            this.label90.Location = new System.Drawing.Point(1019, 220);
             this.label90.Name = "label90";
             this.label90.Size = new System.Drawing.Size(116, 13);
             this.label90.TabIndex = 74;
@@ -4653,7 +4740,7 @@
             // 
             // SquareCorrection_textBox
             // 
-            this.SquareCorrection_textBox.Location = new System.Drawing.Point(1140, 321);
+            this.SquareCorrection_textBox.Location = new System.Drawing.Point(1141, 217);
             this.SquareCorrection_textBox.Name = "SquareCorrection_textBox";
             this.SquareCorrection_textBox.Size = new System.Drawing.Size(76, 20);
             this.SquareCorrection_textBox.TabIndex = 73;
@@ -4664,7 +4751,7 @@
             // 
             // SmallMovement_numericUpDown
             // 
-            this.SmallMovement_numericUpDown.Location = new System.Drawing.Point(1168, 295);
+            this.SmallMovement_numericUpDown.Location = new System.Drawing.Point(1169, 191);
             this.SmallMovement_numericUpDown.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -4685,7 +4772,7 @@
             // label87
             // 
             this.label87.AutoSize = true;
-            this.label87.Location = new System.Drawing.Point(1061, 300);
+            this.label87.Location = new System.Drawing.Point(1062, 196);
             this.label87.Name = "label87";
             this.label87.Size = new System.Drawing.Size(101, 13);
             this.label87.TabIndex = 71;
@@ -4694,7 +4781,7 @@
             // label152
             // 
             this.label152.AutoSize = true;
-            this.label152.Location = new System.Drawing.Point(1094, 512);
+            this.label152.Location = new System.Drawing.Point(1094, 460);
             this.label152.Name = "label152";
             this.label152.Size = new System.Drawing.Size(35, 13);
             this.label152.TabIndex = 70;
@@ -4703,7 +4790,7 @@
             // SlackCompensation_checkBox
             // 
             this.SlackCompensation_checkBox.AutoSize = true;
-            this.SlackCompensation_checkBox.Location = new System.Drawing.Point(1068, 272);
+            this.SlackCompensation_checkBox.Location = new System.Drawing.Point(1069, 168);
             this.SlackCompensation_checkBox.Name = "SlackCompensation_checkBox";
             this.SlackCompensation_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.SlackCompensation_checkBox.Size = new System.Drawing.Size(148, 17);
@@ -4716,7 +4803,7 @@
             // 
             // SetMark6_button
             // 
-            this.SetMark6_button.Location = new System.Drawing.Point(1008, 657);
+            this.SetMark6_button.Location = new System.Drawing.Point(1008, 605);
             this.SetMark6_button.Name = "SetMark6_button";
             this.SetMark6_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark6_button.TabIndex = 69;
@@ -4727,7 +4814,7 @@
             // 
             // TestXYA_button
             // 
-            this.TestXYA_button.Location = new System.Drawing.Point(735, 495);
+            this.TestXYA_button.Location = new System.Drawing.Point(735, 459);
             this.TestXYA_button.Name = "TestXYA_button";
             this.TestXYA_button.Size = new System.Drawing.Size(75, 23);
             this.TestXYA_button.TabIndex = 56;
@@ -4738,7 +4825,7 @@
             // 
             // Mark6_textBox
             // 
-            this.Mark6_textBox.Location = new System.Drawing.Point(1097, 659);
+            this.Mark6_textBox.Location = new System.Drawing.Point(1097, 607);
             this.Mark6_textBox.Name = "Mark6_textBox";
             this.Mark6_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark6_textBox.TabIndex = 68;
@@ -4746,7 +4833,7 @@
             // 
             // Mark5_textBox
             // 
-            this.Mark5_textBox.Location = new System.Drawing.Point(1097, 633);
+            this.Mark5_textBox.Location = new System.Drawing.Point(1097, 581);
             this.Mark5_textBox.Name = "Mark5_textBox";
             this.Mark5_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark5_textBox.TabIndex = 66;
@@ -4754,7 +4841,7 @@
             // 
             // Mark4_textBox
             // 
-            this.Mark4_textBox.Location = new System.Drawing.Point(1097, 607);
+            this.Mark4_textBox.Location = new System.Drawing.Point(1097, 555);
             this.Mark4_textBox.Name = "Mark4_textBox";
             this.Mark4_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark4_textBox.TabIndex = 64;
@@ -4762,7 +4849,7 @@
             // 
             // Mark3_textBox
             // 
-            this.Mark3_textBox.Location = new System.Drawing.Point(1097, 581);
+            this.Mark3_textBox.Location = new System.Drawing.Point(1097, 529);
             this.Mark3_textBox.Name = "Mark3_textBox";
             this.Mark3_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark3_textBox.TabIndex = 62;
@@ -4770,7 +4857,7 @@
             // 
             // Mark2_textBox
             // 
-            this.Mark2_textBox.Location = new System.Drawing.Point(1097, 555);
+            this.Mark2_textBox.Location = new System.Drawing.Point(1097, 503);
             this.Mark2_textBox.Name = "Mark2_textBox";
             this.Mark2_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark2_textBox.TabIndex = 60;
@@ -4778,7 +4865,7 @@
             // 
             // SizeYMax_textBox
             // 
-            this.SizeYMax_textBox.Location = new System.Drawing.Point(1140, 212);
+            this.SizeYMax_textBox.Location = new System.Drawing.Point(1141, 108);
             this.SizeYMax_textBox.Name = "SizeYMax_textBox";
             this.SizeYMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeYMax_textBox.TabIndex = 44;
@@ -4788,7 +4875,7 @@
             // 
             // Mark1_textBox
             // 
-            this.Mark1_textBox.Location = new System.Drawing.Point(1097, 529);
+            this.Mark1_textBox.Location = new System.Drawing.Point(1097, 477);
             this.Mark1_textBox.Name = "Mark1_textBox";
             this.Mark1_textBox.Size = new System.Drawing.Size(133, 20);
             this.Mark1_textBox.TabIndex = 58;
@@ -4796,7 +4883,7 @@
             // 
             // SizeXMax_textBox
             // 
-            this.SizeXMax_textBox.Location = new System.Drawing.Point(1140, 186);
+            this.SizeXMax_textBox.Location = new System.Drawing.Point(1141, 82);
             this.SizeXMax_textBox.Name = "SizeXMax_textBox";
             this.SizeXMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeXMax_textBox.TabIndex = 42;
@@ -4806,7 +4893,7 @@
             // 
             // ParkLocationY_textBox
             // 
-            this.ParkLocationY_textBox.Location = new System.Drawing.Point(1140, 141);
+            this.ParkLocationY_textBox.Location = new System.Drawing.Point(1141, 429);
             this.ParkLocationY_textBox.Name = "ParkLocationY_textBox";
             this.ParkLocationY_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationY_textBox.TabIndex = 39;
@@ -4816,7 +4903,7 @@
             // 
             // ParkLocationX_textBox
             // 
-            this.ParkLocationX_textBox.Location = new System.Drawing.Point(1140, 115);
+            this.ParkLocationX_textBox.Location = new System.Drawing.Point(1141, 403);
             this.ParkLocationX_textBox.Name = "ParkLocationX_textBox";
             this.ParkLocationX_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationX_textBox.TabIndex = 37;
@@ -4826,7 +4913,7 @@
             // 
             // TestYX_button
             // 
-            this.TestYX_button.Location = new System.Drawing.Point(230, 526);
+            this.TestYX_button.Location = new System.Drawing.Point(230, 486);
             this.TestYX_button.Name = "TestYX_button";
             this.TestYX_button.Size = new System.Drawing.Size(75, 23);
             this.TestYX_button.TabIndex = 55;
@@ -4837,7 +4924,7 @@
             // 
             // SetMark5_button
             // 
-            this.SetMark5_button.Location = new System.Drawing.Point(1008, 631);
+            this.SetMark5_button.Location = new System.Drawing.Point(1008, 579);
             this.SetMark5_button.Name = "SetMark5_button";
             this.SetMark5_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark5_button.TabIndex = 67;
@@ -4849,7 +4936,7 @@
             // MotorPower_checkBox
             // 
             this.MotorPower_checkBox.AutoSize = true;
-            this.MotorPower_checkBox.Location = new System.Drawing.Point(740, 70);
+            this.MotorPower_checkBox.Location = new System.Drawing.Point(740, 55);
             this.MotorPower_checkBox.Name = "MotorPower_checkBox";
             this.MotorPower_checkBox.Size = new System.Drawing.Size(86, 17);
             this.MotorPower_checkBox.TabIndex = 54;
@@ -4860,7 +4947,7 @@
             // 
             // SetMark4_button
             // 
-            this.SetMark4_button.Location = new System.Drawing.Point(1008, 605);
+            this.SetMark4_button.Location = new System.Drawing.Point(1008, 553);
             this.SetMark4_button.Name = "SetMark4_button";
             this.SetMark4_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark4_button.TabIndex = 65;
@@ -4871,7 +4958,7 @@
             // 
             // SetMark3_button
             // 
-            this.SetMark3_button.Location = new System.Drawing.Point(1008, 579);
+            this.SetMark3_button.Location = new System.Drawing.Point(1008, 527);
             this.SetMark3_button.Name = "SetMark3_button";
             this.SetMark3_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark3_button.TabIndex = 63;
@@ -4882,7 +4969,7 @@
             // 
             // SetMark2_button
             // 
-            this.SetMark2_button.Location = new System.Drawing.Point(1008, 553);
+            this.SetMark2_button.Location = new System.Drawing.Point(1008, 501);
             this.SetMark2_button.Name = "SetMark2_button";
             this.SetMark2_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark2_button.TabIndex = 61;
@@ -4894,7 +4981,7 @@
             // label113
             // 
             this.label113.AutoSize = true;
-            this.label113.Location = new System.Drawing.Point(1060, 172);
+            this.label113.Location = new System.Drawing.Point(1061, 68);
             this.label113.Name = "label113";
             this.label113.Size = new System.Drawing.Size(74, 13);
             this.label113.TabIndex = 48;
@@ -4903,7 +4990,7 @@
             // label102
             // 
             this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(1094, 215);
+            this.label102.Location = new System.Drawing.Point(1095, 111);
             this.label102.Name = "label102";
             this.label102.Size = new System.Drawing.Size(40, 13);
             this.label102.TabIndex = 45;
@@ -4911,7 +4998,7 @@
             // 
             // SetMark1_button
             // 
-            this.SetMark1_button.Location = new System.Drawing.Point(1008, 527);
+            this.SetMark1_button.Location = new System.Drawing.Point(1008, 475);
             this.SetMark1_button.Name = "SetMark1_button";
             this.SetMark1_button.Size = new System.Drawing.Size(75, 23);
             this.SetMark1_button.TabIndex = 59;
@@ -4923,7 +5010,7 @@
             // label107
             // 
             this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(1094, 189);
+            this.label107.Location = new System.Drawing.Point(1095, 85);
             this.label107.Name = "label107";
             this.label107.Size = new System.Drawing.Size(40, 13);
             this.label107.TabIndex = 43;
@@ -4932,7 +5019,7 @@
             // label92
             // 
             this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(1048, 144);
+            this.label92.Location = new System.Drawing.Point(1049, 432);
             this.label92.Name = "label92";
             this.label92.Size = new System.Drawing.Size(86, 13);
             this.label92.TabIndex = 40;
@@ -4941,7 +5028,7 @@
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(1048, 118);
+            this.label61.Location = new System.Drawing.Point(1049, 406);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(86, 13);
             this.label61.TabIndex = 38;
@@ -4950,7 +5037,7 @@
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(857, 473);
+            this.label72.Location = new System.Drawing.Point(857, 440);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(89, 13);
             this.label72.TabIndex = 36;
@@ -4958,7 +5045,7 @@
             // 
             // TestA_button
             // 
-            this.TestA_button.Location = new System.Drawing.Point(860, 497);
+            this.TestA_button.Location = new System.Drawing.Point(860, 461);
             this.TestA_button.Name = "TestA_button";
             this.TestA_button.Size = new System.Drawing.Size(75, 23);
             this.TestA_button.TabIndex = 35;
@@ -4969,7 +5056,7 @@
             // 
             // Homebutton
             // 
-            this.Homebutton.Location = new System.Drawing.Point(477, 468);
+            this.Homebutton.Location = new System.Drawing.Point(477, 435);
             this.Homebutton.Name = "Homebutton";
             this.Homebutton.Size = new System.Drawing.Size(75, 23);
             this.Homebutton.TabIndex = 17;
@@ -4980,7 +5067,7 @@
             // 
             // TestZ_button
             // 
-            this.TestZ_button.Location = new System.Drawing.Point(593, 497);
+            this.TestZ_button.Location = new System.Drawing.Point(593, 461);
             this.TestZ_button.Name = "TestZ_button";
             this.TestZ_button.Size = new System.Drawing.Size(75, 23);
             this.TestZ_button.TabIndex = 34;
@@ -4991,7 +5078,7 @@
             // 
             // HomeZ_button
             // 
-            this.HomeZ_button.Location = new System.Drawing.Point(593, 468);
+            this.HomeZ_button.Location = new System.Drawing.Point(593, 435);
             this.HomeZ_button.Name = "HomeZ_button";
             this.HomeZ_button.Size = new System.Drawing.Size(75, 23);
             this.HomeZ_button.TabIndex = 33;
@@ -5002,7 +5089,7 @@
             // 
             // HomeY_button
             // 
-            this.HomeY_button.Location = new System.Drawing.Point(341, 468);
+            this.HomeY_button.Location = new System.Drawing.Point(341, 435);
             this.HomeY_button.Name = "HomeY_button";
             this.HomeY_button.Size = new System.Drawing.Size(75, 23);
             this.HomeY_button.TabIndex = 32;
@@ -5013,7 +5100,7 @@
             // 
             // HomeXY_button
             // 
-            this.HomeXY_button.Location = new System.Drawing.Point(230, 468);
+            this.HomeXY_button.Location = new System.Drawing.Point(230, 435);
             this.HomeXY_button.Name = "HomeXY_button";
             this.HomeXY_button.Size = new System.Drawing.Size(75, 23);
             this.HomeXY_button.TabIndex = 31;
@@ -5024,7 +5111,7 @@
             // 
             // HomeX_button
             // 
-            this.HomeX_button.Location = new System.Drawing.Point(88, 468);
+            this.HomeX_button.Location = new System.Drawing.Point(88, 435);
             this.HomeX_button.Name = "HomeX_button";
             this.HomeX_button.Size = new System.Drawing.Size(75, 23);
             this.HomeX_button.TabIndex = 30;
@@ -5070,7 +5157,7 @@
             // Vacuum_checkBox
             // 
             this.Vacuum_checkBox.AutoSize = true;
-            this.Vacuum_checkBox.Location = new System.Drawing.Point(740, 43);
+            this.Vacuum_checkBox.Location = new System.Drawing.Point(740, 35);
             this.Vacuum_checkBox.Name = "Vacuum_checkBox";
             this.Vacuum_checkBox.Size = new System.Drawing.Size(82, 17);
             this.Vacuum_checkBox.TabIndex = 26;
@@ -5093,7 +5180,7 @@
             // 
             // TestXY_button
             // 
-            this.TestXY_button.Location = new System.Drawing.Point(230, 497);
+            this.TestXY_button.Location = new System.Drawing.Point(230, 461);
             this.TestXY_button.Name = "TestXY_button";
             this.TestXY_button.Size = new System.Drawing.Size(75, 23);
             this.TestXY_button.TabIndex = 24;
@@ -5104,7 +5191,7 @@
             // 
             // TestY_button
             // 
-            this.TestY_button.Location = new System.Drawing.Point(341, 497);
+            this.TestY_button.Location = new System.Drawing.Point(341, 461);
             this.TestY_button.Name = "TestY_button";
             this.TestY_button.Size = new System.Drawing.Size(75, 23);
             this.TestY_button.TabIndex = 23;
@@ -5115,7 +5202,7 @@
             // 
             // TestX_button
             // 
-            this.TestX_button.Location = new System.Drawing.Point(88, 497);
+            this.TestX_button.Location = new System.Drawing.Point(88, 461);
             this.TestX_button.Name = "TestX_button";
             this.TestX_button.Size = new System.Drawing.Size(75, 23);
             this.TestX_button.TabIndex = 22;
@@ -5136,9 +5223,9 @@
             this.panel7.Controls.Add(this.label51);
             this.panel7.Controls.Add(this.ajm_maskedTextBox);
             this.panel7.Controls.Add(this.label52);
-            this.panel7.Location = new System.Drawing.Point(764, 112);
+            this.panel7.Location = new System.Drawing.Point(764, 101);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(244, 350);
+            this.panel7.Size = new System.Drawing.Size(244, 331);
             this.panel7.TabIndex = 21;
             // 
             // panel8
@@ -5154,7 +5241,7 @@
             this.panel8.Controls.Add(this.label45);
             this.panel8.Controls.Add(this.label46);
             this.panel8.Controls.Add(this.label47);
-            this.panel8.Location = new System.Drawing.Point(3, 246);
+            this.panel8.Location = new System.Drawing.Point(3, 222);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(236, 99);
             this.panel8.TabIndex = 18;
@@ -5352,9 +5439,9 @@
             this.panel3.Controls.Add(this.label29);
             this.panel3.Controls.Add(this.xjm_maskedTextBox);
             this.panel3.Controls.Add(this.label30);
-            this.panel3.Location = new System.Drawing.Point(14, 112);
+            this.panel3.Location = new System.Drawing.Point(14, 101);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(244, 350);
+            this.panel3.Size = new System.Drawing.Size(244, 331);
             this.panel3.TabIndex = 19;
             // 
             // label73
@@ -5465,7 +5552,7 @@
             this.panel4.Controls.Add(this.mi1_maskedTextBox);
             this.panel4.Controls.Add(this.label24);
             this.panel4.Controls.Add(this.label25);
-            this.panel4.Location = new System.Drawing.Point(3, 246);
+            this.panel4.Location = new System.Drawing.Point(3, 222);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(236, 99);
             this.panel4.TabIndex = 18;
@@ -5663,9 +5750,9 @@
             this.panel5.Controls.Add(this.label40);
             this.panel5.Controls.Add(this.zjm_maskedTextBox);
             this.panel5.Controls.Add(this.label41);
-            this.panel5.Location = new System.Drawing.Point(514, 112);
+            this.panel5.Location = new System.Drawing.Point(514, 101);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(244, 350);
+            this.panel5.Size = new System.Drawing.Size(244, 331);
             this.panel5.TabIndex = 20;
             // 
             // label81
@@ -5776,7 +5863,7 @@
             this.panel6.Controls.Add(this.label34);
             this.panel6.Controls.Add(this.label35);
             this.panel6.Controls.Add(this.label36);
-            this.panel6.Location = new System.Drawing.Point(3, 246);
+            this.panel6.Location = new System.Drawing.Point(3, 222);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(236, 99);
             this.panel6.TabIndex = 18;
@@ -5974,9 +6061,9 @@
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.yjm_maskedTextBox);
             this.panel1.Controls.Add(this.label5);
-            this.panel1.Location = new System.Drawing.Point(264, 112);
+            this.panel1.Location = new System.Drawing.Point(264, 101);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(244, 350);
+            this.panel1.Size = new System.Drawing.Size(244, 331);
             this.panel1.TabIndex = 14;
             // 
             // label77
@@ -6087,7 +6174,7 @@
             this.panel2.Controls.Add(this.mi2_maskedTextBox);
             this.panel2.Controls.Add(this.label12);
             this.panel2.Controls.Add(this.label10);
-            this.panel2.Location = new System.Drawing.Point(3, 246);
+            this.panel2.Location = new System.Drawing.Point(3, 222);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(236, 99);
             this.panel2.TabIndex = 18;
@@ -6366,7 +6453,6 @@
             this.RunJob_tabPage.Controls.Add(this.TestNeedleRecognition_button);
             this.RunJob_tabPage.Controls.Add(this.label86);
             this.RunJob_tabPage.Controls.Add(this.label85);
-            this.RunJob_tabPage.Controls.Add(this.label59);
             this.RunJob_tabPage.Controls.Add(this.Placement_pictureBox);
             this.RunJob_tabPage.Controls.Add(this.JobData_GridView);
             this.RunJob_tabPage.Controls.Add(this.Bottom_checkBox);
@@ -6378,7 +6464,7 @@
             this.RunJob_tabPage.Location = new System.Drawing.Point(4, 22);
             this.RunJob_tabPage.Name = "RunJob_tabPage";
             this.RunJob_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RunJob_tabPage.Size = new System.Drawing.Size(1249, 695);
+            this.RunJob_tabPage.Size = new System.Drawing.Size(1249, 634);
             this.RunJob_tabPage.TabIndex = 2;
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
@@ -6386,7 +6472,7 @@
             // SkipMeasurements_checkBox
             // 
             this.SkipMeasurements_checkBox.AutoSize = true;
-            this.SkipMeasurements_checkBox.Location = new System.Drawing.Point(468, 596);
+            this.SkipMeasurements_checkBox.Location = new System.Drawing.Point(477, 565);
             this.SkipMeasurements_checkBox.Name = "SkipMeasurements_checkBox";
             this.SkipMeasurements_checkBox.Size = new System.Drawing.Size(175, 17);
             this.SkipMeasurements_checkBox.TabIndex = 81;
@@ -6397,7 +6483,7 @@
             // OmitNeedleCalibration_checkBox
             // 
             this.OmitNeedleCalibration_checkBox.AutoSize = true;
-            this.OmitNeedleCalibration_checkBox.Location = new System.Drawing.Point(469, 647);
+            this.OmitNeedleCalibration_checkBox.Location = new System.Drawing.Point(477, 584);
             this.OmitNeedleCalibration_checkBox.Name = "OmitNeedleCalibration_checkBox";
             this.OmitNeedleCalibration_checkBox.Size = new System.Drawing.Size(156, 17);
             this.OmitNeedleCalibration_checkBox.TabIndex = 80;
@@ -6409,7 +6495,7 @@
             // MeasureZs_checkBox
             // 
             this.MeasureZs_checkBox.AutoSize = true;
-            this.MeasureZs_checkBox.Location = new System.Drawing.Point(468, 672);
+            this.MeasureZs_checkBox.Location = new System.Drawing.Point(477, 603);
             this.MeasureZs_checkBox.Name = "MeasureZs_checkBox";
             this.MeasureZs_checkBox.Size = new System.Drawing.Size(104, 17);
             this.MeasureZs_checkBox.TabIndex = 79;
@@ -6483,7 +6569,7 @@
             // 
             // RebuildJobData_button
             // 
-            this.RebuildJobData_button.Location = new System.Drawing.Point(665, 347);
+            this.RebuildJobData_button.Location = new System.Drawing.Point(665, 310);
             this.RebuildJobData_button.Name = "RebuildJobData_button";
             this.RebuildJobData_button.Size = new System.Drawing.Size(108, 23);
             this.RebuildJobData_button.TabIndex = 77;
@@ -6506,7 +6592,7 @@
             // 
             // Panelize_button
             // 
-            this.Panelize_button.Location = new System.Drawing.Point(664, 376);
+            this.Panelize_button.Location = new System.Drawing.Point(665, 340);
             this.Panelize_button.Name = "Panelize_button";
             this.Panelize_button.Size = new System.Drawing.Size(108, 23);
             this.Panelize_button.TabIndex = 75;
@@ -6516,7 +6602,7 @@
             // 
             // StopDemo_button
             // 
-            this.StopDemo_button.Location = new System.Drawing.Point(271, 658);
+            this.StopDemo_button.Location = new System.Drawing.Point(434, 625);
             this.StopDemo_button.Name = "StopDemo_button";
             this.StopDemo_button.Size = new System.Drawing.Size(75, 23);
             this.StopDemo_button.TabIndex = 74;
@@ -6527,7 +6613,7 @@
             // 
             // Demo_button
             // 
-            this.Demo_button.Location = new System.Drawing.Point(190, 658);
+            this.Demo_button.Location = new System.Drawing.Point(353, 625);
             this.Demo_button.Name = "Demo_button";
             this.Demo_button.Size = new System.Drawing.Size(75, 23);
             this.Demo_button.TabIndex = 73;
@@ -6538,7 +6624,7 @@
             // 
             // ChangeNeedle_button
             // 
-            this.ChangeNeedle_button.Location = new System.Drawing.Point(352, 643);
+            this.ChangeNeedle_button.Location = new System.Drawing.Point(352, 596);
             this.ChangeNeedle_button.Name = "ChangeNeedle_button";
             this.ChangeNeedle_button.Size = new System.Drawing.Size(110, 23);
             this.ChangeNeedle_button.TabIndex = 72;
@@ -6549,7 +6635,7 @@
             // ValidMeasurement_checkBox
             // 
             this.ValidMeasurement_checkBox.AutoSize = true;
-            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(468, 573);
+            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(477, 546);
             this.ValidMeasurement_checkBox.Name = "ValidMeasurement_checkBox";
             this.ValidMeasurement_checkBox.Size = new System.Drawing.Size(138, 17);
             this.ValidMeasurement_checkBox.TabIndex = 71;
@@ -6560,7 +6646,7 @@
             // 
             this.NextGroup_label.AutoSize = true;
             this.NextGroup_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NextGroup_label.Location = new System.Drawing.Point(443, 553);
+            this.NextGroup_label.Location = new System.Drawing.Point(443, 524);
             this.NextGroup_label.Name = "NextGroup_label";
             this.NextGroup_label.Size = new System.Drawing.Size(16, 16);
             this.NextGroup_label.TabIndex = 70;
@@ -6570,7 +6656,7 @@
             // 
             this.label125.AutoSize = true;
             this.label125.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label125.Location = new System.Drawing.Point(352, 553);
+            this.label125.Location = new System.Drawing.Point(352, 524);
             this.label125.Name = "label125";
             this.label125.Size = new System.Drawing.Size(38, 16);
             this.label125.TabIndex = 69;
@@ -6580,7 +6666,7 @@
             // 
             this.PreviousGroup_label.AutoSize = true;
             this.PreviousGroup_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PreviousGroup_label.Location = new System.Drawing.Point(443, 505);
+            this.PreviousGroup_label.Location = new System.Drawing.Point(443, 491);
             this.PreviousGroup_label.Name = "PreviousGroup_label";
             this.PreviousGroup_label.Size = new System.Drawing.Size(16, 16);
             this.PreviousGroup_label.TabIndex = 68;
@@ -6588,7 +6674,7 @@
             // 
             // ReMeasure_button
             // 
-            this.ReMeasure_button.Location = new System.Drawing.Point(352, 587);
+            this.ReMeasure_button.Location = new System.Drawing.Point(352, 546);
             this.ReMeasure_button.Name = "ReMeasure_button";
             this.ReMeasure_button.Size = new System.Drawing.Size(110, 23);
             this.ReMeasure_button.TabIndex = 48;
@@ -6602,7 +6688,7 @@
             // 
             this.label122.AutoSize = true;
             this.label122.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label122.Location = new System.Drawing.Point(352, 505);
+            this.label122.Location = new System.Drawing.Point(352, 491);
             this.label122.Name = "label122";
             this.label122.Size = new System.Drawing.Size(64, 16);
             this.label122.TabIndex = 67;
@@ -6612,7 +6698,7 @@
             // 
             this.CurrentGroup_label.AutoSize = true;
             this.CurrentGroup_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CurrentGroup_label.Location = new System.Drawing.Point(443, 529);
+            this.CurrentGroup_label.Location = new System.Drawing.Point(443, 508);
             this.CurrentGroup_label.Name = "CurrentGroup_label";
             this.CurrentGroup_label.Size = new System.Drawing.Size(16, 16);
             this.CurrentGroup_label.TabIndex = 66;
@@ -6622,7 +6708,7 @@
             // 
             this.label57.AutoSize = true;
             this.label57.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label57.Location = new System.Drawing.Point(352, 529);
+            this.label57.Location = new System.Drawing.Point(352, 508);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(85, 16);
             this.label57.TabIndex = 65;
@@ -6632,7 +6718,7 @@
             // 
             this.JobFilePath_label.AutoSize = true;
             this.JobFilePath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JobFilePath_label.Location = new System.Drawing.Point(904, 352);
+            this.JobFilePath_label.Location = new System.Drawing.Point(904, 340);
             this.JobFilePath_label.Name = "JobFilePath_label";
             this.JobFilePath_label.Size = new System.Drawing.Size(19, 13);
             this.JobFilePath_label.TabIndex = 64;
@@ -6642,7 +6728,7 @@
             // 
             this.label91.AutoSize = true;
             this.label91.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label91.Location = new System.Drawing.Point(866, 352);
+            this.label91.Location = new System.Drawing.Point(866, 340);
             this.label91.Name = "label91";
             this.label91.Size = new System.Drawing.Size(32, 13);
             this.label91.TabIndex = 63;
@@ -6652,7 +6738,7 @@
             // 
             this.JobFileName_label.AutoSize = true;
             this.JobFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JobFileName_label.Location = new System.Drawing.Point(903, 322);
+            this.JobFileName_label.Location = new System.Drawing.Point(903, 310);
             this.JobFileName_label.Name = "JobFileName_label";
             this.JobFileName_label.Size = new System.Drawing.Size(29, 20);
             this.JobFileName_label.TabIndex = 62;
@@ -6662,7 +6748,7 @@
             // 
             this.label121.AutoSize = true;
             this.label121.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label121.Location = new System.Drawing.Point(865, 322);
+            this.label121.Location = new System.Drawing.Point(865, 310);
             this.label121.Name = "label121";
             this.label121.Size = new System.Drawing.Size(38, 20);
             this.label121.TabIndex = 61;
@@ -6670,7 +6756,7 @@
             // 
             // JobDataSave_button
             // 
-            this.JobDataSave_button.Location = new System.Drawing.Point(784, 347);
+            this.JobDataSave_button.Location = new System.Drawing.Point(784, 335);
             this.JobDataSave_button.Name = "JobDataSave_button";
             this.JobDataSave_button.Size = new System.Drawing.Size(75, 23);
             this.JobDataSave_button.TabIndex = 60;
@@ -6682,7 +6768,7 @@
             // 
             // JobDataLoad_button
             // 
-            this.JobDataLoad_button.Location = new System.Drawing.Point(784, 322);
+            this.JobDataLoad_button.Location = new System.Drawing.Point(784, 310);
             this.JobDataLoad_button.Name = "JobDataLoad_button";
             this.JobDataLoad_button.Size = new System.Drawing.Size(75, 23);
             this.JobDataLoad_button.TabIndex = 59;
@@ -6816,7 +6902,7 @@
             this.groupBox2.Controls.Add(this.DeleteComponentGroup_button);
             this.groupBox2.Controls.Add(this.Down_button);
             this.groupBox2.Controls.Add(this.Up_button);
-            this.groupBox2.Location = new System.Drawing.Point(657, 426);
+            this.groupBox2.Location = new System.Drawing.Point(657, 368);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(122, 263);
             this.groupBox2.TabIndex = 51;
@@ -6926,7 +7012,7 @@
             this.groupBox1.Controls.Add(this.label63);
             this.groupBox1.Controls.Add(this.label58);
             this.groupBox1.Controls.Add(this.PlaceAll_button);
-            this.groupBox1.Location = new System.Drawing.Point(6, 505);
+            this.groupBox1.Location = new System.Drawing.Point(6, 491);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(340, 144);
             this.groupBox1.TabIndex = 50;
@@ -7080,7 +7166,7 @@
             // 
             this.label89.AutoSize = true;
             this.label89.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label89.Location = new System.Drawing.Point(700, 322);
+            this.label89.Location = new System.Drawing.Point(657, 286);
             this.label89.Name = "label89";
             this.label89.Size = new System.Drawing.Size(78, 20);
             this.label89.TabIndex = 44;
@@ -7091,7 +7177,7 @@
             // 
             this.label88.AutoSize = true;
             this.label88.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label88.Location = new System.Drawing.Point(693, 13);
+            this.label88.Location = new System.Drawing.Point(659, 13);
             this.label88.Name = "label88";
             this.label88.Size = new System.Drawing.Size(86, 20);
             this.label88.TabIndex = 43;
@@ -7115,19 +7201,10 @@
             this.label85.TabIndex = 38;
             this.label85.Text = "Job Offset X:";
             // 
-            // label59
-            // 
-            this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(3, 3);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(100, 13);
-            this.label59.TabIndex = 13;
-            this.label59.Text = "Down Camera View";
-            // 
             // Placement_pictureBox
             // 
             this.Placement_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Placement_pictureBox.Location = new System.Drawing.Point(6, 19);
+            this.Placement_pictureBox.Location = new System.Drawing.Point(6, 6);
             this.Placement_pictureBox.Name = "Placement_pictureBox";
             this.Placement_pictureBox.Size = new System.Drawing.Size(640, 480);
             this.Placement_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -7141,14 +7218,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7157,11 +7234,11 @@
             this.MethodParamAllComponents,
             this.ComponentList});
             this.JobData_GridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.JobData_GridView.Location = new System.Drawing.Point(784, 376);
+            this.JobData_GridView.Location = new System.Drawing.Point(784, 364);
             this.JobData_GridView.Name = "JobData_GridView";
             this.JobData_GridView.RowHeadersVisible = false;
             this.JobData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.JobData_GridView.Size = new System.Drawing.Size(458, 314);
+            this.JobData_GridView.Size = new System.Drawing.Size(458, 267);
             this.JobData_GridView.TabIndex = 11;
             this.JobData_GridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellClick);
             this.JobData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellEndEdit);
@@ -7200,7 +7277,7 @@
             // Bottom_checkBox
             // 
             this.Bottom_checkBox.AutoSize = true;
-            this.Bottom_checkBox.Location = new System.Drawing.Point(697, 37);
+            this.Bottom_checkBox.Location = new System.Drawing.Point(663, 37);
             this.Bottom_checkBox.Name = "Bottom_checkBox";
             this.Bottom_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Bottom_checkBox.Size = new System.Drawing.Size(59, 17);
@@ -7215,14 +7292,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -7337,7 +7414,7 @@
             this.tabControlPages.Location = new System.Drawing.Point(3, 3);
             this.tabControlPages.Name = "tabControlPages";
             this.tabControlPages.SelectedIndex = 0;
-            this.tabControlPages.Size = new System.Drawing.Size(1257, 721);
+            this.tabControlPages.Size = new System.Drawing.Size(1257, 660);
             this.tabControlPages.TabIndex = 3;
             this.tabControlPages.SelectedIndexChanged += new System.EventHandler(this.tabControlPages_SelectedIndexChanged);
             this.tabControlPages.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControlPages_Selecting);
@@ -7359,7 +7436,7 @@
             // GotoX_textBox
             // 
             this.GotoX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoX_textBox.Location = new System.Drawing.Point(1092, 811);
+            this.GotoX_textBox.Location = new System.Drawing.Point(1092, 751);
             this.GotoX_textBox.Name = "GotoX_textBox";
             this.GotoX_textBox.Size = new System.Drawing.Size(38, 20);
             this.GotoX_textBox.TabIndex = 78;
@@ -7371,7 +7448,7 @@
             // 
             this.label136.AutoSize = true;
             this.label136.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label136.Location = new System.Drawing.Point(1067, 814);
+            this.label136.Location = new System.Drawing.Point(1067, 754);
             this.label136.Name = "label136";
             this.label136.Size = new System.Drawing.Size(19, 13);
             this.label136.TabIndex = 82;
@@ -7382,7 +7459,7 @@
             // 
             this.label137.AutoSize = true;
             this.label137.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label137.Location = new System.Drawing.Point(1067, 840);
+            this.label137.Location = new System.Drawing.Point(1067, 780);
             this.label137.Name = "label137";
             this.label137.Size = new System.Drawing.Size(19, 13);
             this.label137.TabIndex = 84;
@@ -7392,7 +7469,7 @@
             // GotoY_textBox
             // 
             this.GotoY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoY_textBox.Location = new System.Drawing.Point(1092, 837);
+            this.GotoY_textBox.Location = new System.Drawing.Point(1092, 777);
             this.GotoY_textBox.Name = "GotoY_textBox";
             this.GotoY_textBox.Size = new System.Drawing.Size(38, 20);
             this.GotoY_textBox.TabIndex = 83;
@@ -7403,7 +7480,7 @@
             // GotoZ_textBox
             // 
             this.GotoZ_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoZ_textBox.Location = new System.Drawing.Point(1092, 863);
+            this.GotoZ_textBox.Location = new System.Drawing.Point(1092, 803);
             this.GotoZ_textBox.Name = "GotoZ_textBox";
             this.GotoZ_textBox.Size = new System.Drawing.Size(38, 20);
             this.GotoZ_textBox.TabIndex = 85;
@@ -7414,7 +7491,7 @@
             // GotoA_textBox
             // 
             this.GotoA_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoA_textBox.Location = new System.Drawing.Point(1092, 889);
+            this.GotoA_textBox.Location = new System.Drawing.Point(1092, 829);
             this.GotoA_textBox.Name = "GotoA_textBox";
             this.GotoA_textBox.Size = new System.Drawing.Size(38, 20);
             this.GotoA_textBox.TabIndex = 87;
@@ -7425,7 +7502,7 @@
             // Goto_button
             // 
             this.Goto_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Goto_button.Location = new System.Drawing.Point(1004, 839);
+            this.Goto_button.Location = new System.Drawing.Point(1004, 776);
             this.Goto_button.Name = "Goto_button";
             this.Goto_button.Size = new System.Drawing.Size(53, 40);
             this.Goto_button.TabIndex = 89;
@@ -7438,7 +7515,7 @@
             // 
             this.label138.AutoSize = true;
             this.label138.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label138.Location = new System.Drawing.Point(1067, 892);
+            this.label138.Location = new System.Drawing.Point(1067, 832);
             this.label138.Name = "label138";
             this.label138.Size = new System.Drawing.Size(19, 13);
             this.label138.TabIndex = 91;
@@ -7449,7 +7526,7 @@
             // 
             this.label139.AutoSize = true;
             this.label139.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label139.Location = new System.Drawing.Point(1067, 866);
+            this.label139.Location = new System.Drawing.Point(1067, 806);
             this.label139.Name = "label139";
             this.label139.Size = new System.Drawing.Size(19, 13);
             this.label139.TabIndex = 90;
@@ -7460,7 +7537,7 @@
             // 
             this.TrueX_label.AutoSize = true;
             this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrueX_label.Location = new System.Drawing.Point(760, 735);
+            this.TrueX_label.Location = new System.Drawing.Point(760, 675);
             this.TrueX_label.Name = "TrueX_label";
             this.TrueX_label.Size = new System.Drawing.Size(31, 9);
             this.TrueX_label.TabIndex = 77;
@@ -7475,150 +7552,12 @@
             // 
             this.colorDialog1.SolidColorOnly = true;
             // 
-            // SelectButtonColumn
-            // 
-            this.SelectButtonColumn.HeaderText = "Select";
-            this.SelectButtonColumn.Name = "SelectButtonColumn";
-            this.SelectButtonColumn.Text = "Reset";
-            this.SelectButtonColumn.Width = 43;
-            // 
-            // IdColumn
-            // 
-            this.IdColumn.HeaderText = "ID";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
-            // 
-            // OrientationColumn
-            // 
-            this.OrientationColumn.HeaderText = "Dir.";
-            this.OrientationColumn.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.OrientationColumn.Name = "OrientationColumn";
-            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 48;
-            // 
-            // RotationColumn
-            // 
-            this.RotationColumn.HeaderText = "Rot.";
-            this.RotationColumn.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.RotationColumn.Name = "RotationColumn";
-            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 52;
-            // 
-            // WidthColumn
-            // 
-            this.WidthColumn.HeaderText = "Width";
-            this.WidthColumn.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm"});
-            this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.WidthColumn.Width = 60;
-            // 
-            // TypeColumn
-            // 
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.Width = 37;
-            // 
-            // Next_Column
-            // 
-            this.Next_Column.HeaderText = "Next";
-            this.Next_Column.Name = "Next_Column";
-            this.Next_Column.Width = 54;
-            // 
-            // Tray_Column
-            // 
-            this.Tray_Column.HeaderText = "Tray";
-            this.Tray_Column.Name = "Tray_Column";
-            this.Tray_Column.Width = 53;
-            // 
-            // X_Column
-            // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.ReadOnly = true;
-            this.X_Column.Width = 39;
-            // 
-            // Y_Column
-            // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.ReadOnly = true;
-            this.Y_Column.Width = 39;
-            // 
-            // PickupZ_Column
-            // 
-            this.PickupZ_Column.HeaderText = "Pickup Z";
-            this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
-            // 
-            // PlaceZ_Column
-            // 
-            this.PlaceZ_Column.HeaderText = "PlaceZ";
-            this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
-            // 
-            // NextX_Column
-            // 
-            this.NextX_Column.HeaderText = "Next X";
-            this.NextX_Column.Name = "NextX_Column";
-            this.NextX_Column.ReadOnly = true;
-            this.NextX_Column.Width = 64;
-            // 
-            // NextY_column
-            // 
-            this.NextY_column.HeaderText = "Next Y";
-            this.NextY_column.Name = "NextY_column";
-            this.NextY_column.ReadOnly = true;
-            this.NextY_column.Width = 64;
-            // 
-            // LastX
-            // 
-            this.LastX.HeaderText = "Last X";
-            this.LastX.Name = "LastX";
-            this.LastX.ReadOnly = true;
-            this.LastX.Visible = false;
-            this.LastX.Width = 62;
-            // 
-            // LastY
-            // 
-            this.LastY.HeaderText = "Last Y";
-            this.LastY.Name = "LastY";
-            this.LastY.ReadOnly = true;
-            this.LastY.Visible = false;
-            this.LastY.Width = 62;
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1264, 921);
+            this.ClientSize = new System.Drawing.Size(1264, 861);
             this.Controls.Add(this.label138);
             this.Controls.Add(this.label139);
             this.Controls.Add(this.Goto_button);
@@ -7787,7 +7726,6 @@
 		private System.Windows.Forms.Button AddTape_button;
 		private System.Windows.Forms.Label label109;
 		private System.Windows.Forms.DataGridView Tapes_dataGridView;
-		private System.Windows.Forms.Label label108;
 		private System.Windows.Forms.PictureBox Tapes_pictureBox;
 		private System.Windows.Forms.TabPage Components_tabPage;
 		private System.Windows.Forms.DataGridView ComponentData_dataGridView;
@@ -7868,7 +7806,6 @@
 		private System.Windows.Forms.Button DownCam_TakeSnapshot_button;
 		private System.Windows.Forms.CheckBox ImageTest_checkBox;
 		private System.Windows.Forms.PictureBox Cam_pictureBox;
-		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TabPage tabPageBasicSetup;
 		private System.Windows.Forms.Label label152;
 		private System.Windows.Forms.CheckBox SlackCompensation_checkBox;
@@ -8059,7 +7996,6 @@
 		private System.Windows.Forms.Label label88;
 		private System.Windows.Forms.Label label86;
 		private System.Windows.Forms.Label label85;
-		private System.Windows.Forms.Label label59;
 		private System.Windows.Forms.PictureBox Placement_pictureBox;
 		private System.Windows.Forms.DataGridView JobData_GridView;
 		private System.Windows.Forms.CheckBox Bottom_checkBox;
@@ -8308,8 +8244,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn PartOffsetY_Column;
         private System.Windows.Forms.Button LoadCustomTapes_button;
         private System.Windows.Forms.Button SaveCustomTapes_button;
-        private System.Windows.Forms.Button CustomTapeDown_button;
-        private System.Windows.Forms.Button CustomTapeUp_button;
         private System.Windows.Forms.Button DeleteCustomTape_button;
         private System.Windows.Forms.Button UseCustomTapes_button;
         private System.Windows.Forms.TextBox UpcamSnapshot_ColorBox;

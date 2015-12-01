@@ -96,7 +96,7 @@ namespace LitePlacer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Size = new Size(1280, 960);
+            this.Size = new Size(1280, 900);
             DisplayText("Application Start");
 
             Do_Upgrade();
