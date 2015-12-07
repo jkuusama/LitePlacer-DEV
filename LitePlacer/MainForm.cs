@@ -8713,6 +8713,11 @@ namespace LitePlacer
                     }
                 }
             }
+            // remove leading spaces
+            for (int i = 0; i < Tokens.Count; i++)
+            {
+                Tokens[i]= Tokens[i].Trim();
+            }
             return (Tokens);
         }
 
