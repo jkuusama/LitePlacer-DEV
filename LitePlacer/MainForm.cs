@@ -190,8 +190,17 @@ namespace LitePlacer
                 {
                     var url = "http://www.liteplacer.com/Downloads/release.txt";
                     string UpdateText = (new WebClient()).DownloadString(url);
-                    string UpdateDate = UpdateText.Substring(11, 10);
-                    string BuildDate = buildDateTime.ToString().Substring(0, 10);
+                    string UpdateDate="";
+                    for (int i = 0; i < UpdateText.Length; i++)
+                    {
+                        if (UpdateText[i]=='\n')
+                        {
+                            break;
+                        }
+                        UpdateDate += UpdateText[i];
+                    }
+                    string BuildDate = "Build date " + buildDateTime.ToString().Substring(0, 10);
+                    BuildDate = BuildDate.Trim();
                     if (UpdateDate != BuildDate)
                     {
                         ShowMessageBox(
