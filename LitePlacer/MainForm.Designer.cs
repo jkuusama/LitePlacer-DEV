@@ -889,10 +889,10 @@
             // 
             this.SerialMonitor_richTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SerialMonitor_richTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SerialMonitor_richTextBox.Location = new System.Drawing.Point(8, 665);
+            this.SerialMonitor_richTextBox.Location = new System.Drawing.Point(3, 665);
             this.SerialMonitor_richTextBox.Name = "SerialMonitor_richTextBox";
             this.SerialMonitor_richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(599, 168);
+            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(604, 187);
             this.SerialMonitor_richTextBox.TabIndex = 16;
             this.SerialMonitor_richTextBox.TabStop = false;
             this.SerialMonitor_richTextBox.Text = "";
@@ -1663,7 +1663,7 @@
             this.Components_tabPage.Location = new System.Drawing.Point(4, 22);
             this.Components_tabPage.Name = "Components_tabPage";
             this.Components_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Components_tabPage.Size = new System.Drawing.Size(1249, 634);
+            this.Components_tabPage.Size = new System.Drawing.Size(1244, 634);
             this.Components_tabPage.TabIndex = 3;
             this.Components_tabPage.Text = "Component Data";
             this.Components_tabPage.UseVisualStyleBackColor = true;
@@ -1740,7 +1740,7 @@
             this.tabPageSetupCameras.Location = new System.Drawing.Point(4, 22);
             this.tabPageSetupCameras.Name = "tabPageSetupCameras";
             this.tabPageSetupCameras.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSetupCameras.Size = new System.Drawing.Size(1249, 634);
+            this.tabPageSetupCameras.Size = new System.Drawing.Size(1244, 634);
             this.tabPageSetupCameras.TabIndex = 0;
             this.tabPageSetupCameras.Text = "Setup Cameras";
             this.tabPageSetupCameras.UseVisualStyleBackColor = true;
@@ -4398,7 +4398,7 @@
             // CheckForUpdate_checkBox
             // 
             this.CheckForUpdate_checkBox.AutoSize = true;
-            this.CheckForUpdate_checkBox.Location = new System.Drawing.Point(6, 672);
+            this.CheckForUpdate_checkBox.Location = new System.Drawing.Point(6, 611);
             this.CheckForUpdate_checkBox.Name = "CheckForUpdate_checkBox";
             this.CheckForUpdate_checkBox.Size = new System.Drawing.Size(163, 17);
             this.CheckForUpdate_checkBox.TabIndex = 100;
@@ -6414,6 +6414,7 @@
             // 
             // RunJob_tabPage
             // 
+            this.RunJob_tabPage.Controls.Add(this.Placement_pictureBox);
             this.RunJob_tabPage.Controls.Add(this.SkipMeasurements_checkBox);
             this.RunJob_tabPage.Controls.Add(this.OmitNeedleCalibration_checkBox);
             this.RunJob_tabPage.Controls.Add(this.MeasureZs_checkBox);
@@ -6453,7 +6454,6 @@
             this.RunJob_tabPage.Controls.Add(this.TestNeedleRecognition_button);
             this.RunJob_tabPage.Controls.Add(this.label86);
             this.RunJob_tabPage.Controls.Add(this.label85);
-            this.RunJob_tabPage.Controls.Add(this.Placement_pictureBox);
             this.RunJob_tabPage.Controls.Add(this.JobData_GridView);
             this.RunJob_tabPage.Controls.Add(this.Bottom_checkBox);
             this.RunJob_tabPage.Controls.Add(this.CadData_GridView);
@@ -6464,7 +6464,7 @@
             this.RunJob_tabPage.Location = new System.Drawing.Point(4, 22);
             this.RunJob_tabPage.Name = "RunJob_tabPage";
             this.RunJob_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RunJob_tabPage.Size = new System.Drawing.Size(1249, 634);
+            this.RunJob_tabPage.Size = new System.Drawing.Size(1245, 635);
             this.RunJob_tabPage.TabIndex = 2;
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
@@ -6613,7 +6613,7 @@
             // 
             // Demo_button
             // 
-            this.Demo_button.Location = new System.Drawing.Point(353, 625);
+            this.Demo_button.Location = new System.Drawing.Point(352, 625);
             this.Demo_button.Name = "Demo_button";
             this.Demo_button.Size = new System.Drawing.Size(75, 23);
             this.Demo_button.TabIndex = 73;
@@ -7411,10 +7411,10 @@
             this.tabControlPages.Controls.Add(this.tabPageSetupCameras);
             this.tabControlPages.Controls.Add(this.Components_tabPage);
             this.tabControlPages.Controls.Add(this.Tapes_tabPage);
-            this.tabControlPages.Location = new System.Drawing.Point(3, 3);
+            this.tabControlPages.Location = new System.Drawing.Point(3, 2);
             this.tabControlPages.Name = "tabControlPages";
             this.tabControlPages.SelectedIndex = 0;
-            this.tabControlPages.Size = new System.Drawing.Size(1257, 660);
+            this.tabControlPages.Size = new System.Drawing.Size(1253, 661);
             this.tabControlPages.TabIndex = 3;
             this.tabControlPages.SelectedIndexChanged += new System.EventHandler(this.tabControlPages_SelectedIndexChanged);
             this.tabControlPages.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControlPages_Selecting);
@@ -7557,7 +7557,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1264, 861);
+            this.ClientSize = new System.Drawing.Size(1258, 856);
+            this.Controls.Add(this.tabControlPages);
             this.Controls.Add(this.label138);
             this.Controls.Add(this.label139);
             this.Controls.Add(this.Goto_button);
@@ -7597,7 +7598,6 @@
             this.Controls.Add(this.label17);
             this.Controls.Add(this.xpos_textBox);
             this.Controls.Add(this.label14);
-            this.Controls.Add(this.tabControlPages);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
