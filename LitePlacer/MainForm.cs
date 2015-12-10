@@ -83,6 +83,7 @@ namespace LitePlacer
         public const bool TextMode = false;
 
 
+
         private static ManualResetEventSlim Cnc_ReadyEvent = new ManualResetEventSlim(false);
         // This event is raised in the CNC class, and we'll wait for it when we want to continue only after TinyG has stabilized
 
@@ -93,9 +94,11 @@ namespace LitePlacer
         }
 
         // =================================================================================
+        public bool StartingUp = false; // we want to react to some changes, but not during startup data load (which is counts as a change)
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            StartingUp = true;
             this.Size = new Size(1280, 900);
             DisplayText("Application Start");
 
@@ -281,6 +284,7 @@ namespace LitePlacer
                 UpdateWindowValues_m();
             }
             StartCameras();
+            StartingUp = false;
         }
 
         // =================================================================================
@@ -10701,6 +10705,11 @@ namespace LitePlacer
         // fix #22 calculate new next coordinates if column was changed
         private void Tapes_dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (StartingUp)
+            {
+                return;
+            }
+
             // only update next coordinates if corresponding column has been changed and rowIndex > 0
             if (e.ColumnIndex != 6 || e.RowIndex < 0)
             {
@@ -10708,8 +10717,8 @@ namespace LitePlacer
             }
 
             int NextNo = 1;
-            
-            if(!int.TryParse(Tapes_dataGridView.Rows[e.RowIndex].Cells["Next_Column"].Value.ToString(), out NextNo))
+
+            if (!int.TryParse(Tapes_dataGridView.Rows[e.RowIndex].Cells["Next_Column"].Value.ToString(), out NextNo))
             {
                 ShowMessageBox(
                     "Bad data in Next",
