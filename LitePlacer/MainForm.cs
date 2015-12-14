@@ -24,7 +24,6 @@ using System.Windows.Media;
 using System.Windows.Input;
 using System.Net;
 
-using MathNet.Numerics;
 using HomographyEstimation;
 
 using AForge;
