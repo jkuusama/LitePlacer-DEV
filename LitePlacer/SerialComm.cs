@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
@@ -91,8 +92,8 @@ namespace LitePlacer
             {
                 // Port.Write(TxText + "\r\n");
                 Port.Write(TxText + "\r");
-                MainForm.DisplayText("==> " + TxText); 
-           }
+                MainForm.DisplayText("==> " + TxText, KnownColor.Blue);
+            }
         }
 
 

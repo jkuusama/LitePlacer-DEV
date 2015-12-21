@@ -3,6 +3,7 @@ using System.IO.Ports;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using System.Globalization;
@@ -230,8 +231,8 @@ namespace LitePlacer
             double dY = Math.Abs(Y - CurrentY);
             if ((dX < 0.004) && (dY < 0.004))
             {
-                MainForm.DisplayText(" -- zero XY movement command --");
-                MainForm.DisplayText("ReadyEvent: zero movement command");
+                MainForm.DisplayText(" -- zero XY movement command --", KnownColor.Gray);
+                MainForm.DisplayText("ReadyEvent: zero movement command", KnownColor.Gray);
                 _readyEvent.Set();
                 return;   // already there
             }
@@ -256,8 +257,8 @@ namespace LitePlacer
             double dY = Math.Abs(Y - CurrentY);
             if ((dX < 0.004) && (dY < 0.004))
             {
-                MainForm.DisplayText(" -- zero XY movement command --");
-                MainForm.DisplayText("ReadyEvent: zero movement command");
+                MainForm.DisplayText(" -- zero XY movement command --", KnownColor.Gray);
+                MainForm.DisplayText("ReadyEvent: zero movement command", KnownColor.Gray);
                 _readyEvent.Set();
                 return;   // already there
             }
@@ -323,8 +324,8 @@ namespace LitePlacer
             double dA = Math.Abs(Am - CurrentA);
             if ((dX < 0.004) && (dY < 0.004) && (dA < 0.01))
             {
-                MainForm.DisplayText(" -- zero XYA movement command --");
-                MainForm.DisplayText("ReadyEvent: zero movement command");
+                MainForm.DisplayText(" -- zero XYA movement command --", KnownColor.Gray);
+                MainForm.DisplayText("ReadyEvent: zero movement command", KnownColor.Gray);
                 _readyEvent.Set();
                 return;   // already there
             }
