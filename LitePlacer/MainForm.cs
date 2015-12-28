@@ -247,12 +247,41 @@ namespace LitePlacer
         }
 
         // ==============================================================================================
+        // For diagnostics, log button presses. (Customers tend to send log window contents,
+        // but the window does not log user actions without this.)
+        // http://stackoverflow.com/questions/17949390/log-all-button-clicks-in-win-forms-app
+
+        public void AttachButtonLogging(System.Windows.Forms.Control.ControlCollection controls)
+        {
+            foreach (var control in controls.Cast<System.Windows.Forms.Control>())
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    button.MouseDown += LogButtonClick; // MoseDown comes before mouse click, we want this to fire first)
+                }
+                else
+                {
+                    AttachButtonLogging(control.Controls);
+                }
+            }
+        }
+
+        private void LogButtonClick(object sender, EventArgs eventArgs)
+        {
+
+            Button button = sender as Button;
+            DisplayText(button.Text.ToString(), KnownColor.DarkGreen);
+        }
+        // ==============================================================================================
 
         private string LastTabPage = "";
 
+        // ==============================================================================================
         private void FormMain_Shown(object sender, EventArgs e)
         {
             LabelTestButtons();
+            AttachButtonLogging(this.Controls);
 
             DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
             CheckForUpdate_checkBox.Checked = Properties.Settings.Default.General_CheckForUpdates;
@@ -330,6 +359,7 @@ namespace LitePlacer
             Properties.Settings.Default.CNC_EnableMouseWheelJog = MouseScroll_checkBox.Checked;
             Properties.Settings.Default.CNC_EnableNumPadJog = NumPadJog_checkBox.Checked;
             Properties.Settings.Default.General_CheckForUpdates = CheckForUpdate_checkBox.Checked;
+            Properties.Settings.Default.General_MuteLogging = DisableLog_checkBox.Checked;
 
             Properties.Settings.Default.Save();
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
@@ -3139,8 +3169,12 @@ namespace LitePlacer
         // Logging textbox
 
         Color AppCol = Color.Black;
-        public void DisplayText(string txt, KnownColor col = KnownColor.Black)
+        public void DisplayText(string txt, KnownColor col = KnownColor.Black, bool force= false)
         {
+            if (DisableLog_checkBox.Checked && !force)
+            {
+                return;
+            }
             // intermediate step to get the invoke... work with calls with one or two parameters
             AppCol = Color.FromName(col.ToString());
             DisplayTxt(txt);
@@ -10752,6 +10786,14 @@ namespace LitePlacer
                 Tapes.UpdateNextCoordinates(e.RowIndex, NextNo);
             }
 
+        }
+
+        private void DisableLog_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DisableLog_checkBox.Checked)
+            {
+                DisplayText("** Logging disabled **", KnownColor.Black, true);
+            }
         }
 
     }	// end of: 	public partial class FormMain : Form

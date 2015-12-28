@@ -357,6 +357,8 @@
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.Cam_pictureBox = new System.Windows.Forms.PictureBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.DisableLog_checkBox = new System.Windows.Forms.CheckBox();
+            this.CheckNow_button = new System.Windows.Forms.Button();
             this.CheckForUpdate_checkBox = new System.Windows.Forms.CheckBox();
             this.MouseScroll_checkBox = new System.Windows.Forms.CheckBox();
             this.NumPadJog_checkBox = new System.Windows.Forms.CheckBox();
@@ -648,8 +650,6 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.CheckNow_button = new System.Windows.Forms.Button();
-            this.DisableLog_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -4379,6 +4379,31 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
+            // DisableLog_checkBox
+            // 
+            this.DisableLog_checkBox.AutoSize = true;
+            this.DisableLog_checkBox.Location = new System.Drawing.Point(290, 612);
+            this.DisableLog_checkBox.Name = "DisableLog_checkBox";
+            this.DisableLog_checkBox.Size = new System.Drawing.Size(87, 17);
+            this.DisableLog_checkBox.TabIndex = 102;
+            this.DisableLog_checkBox.Text = "Mute logging";
+            this.toolTip1.SetToolTip(this.DisableLog_checkBox, "If checked, reduces the amout of information logged.\r\n(Faster operation on some s" +
+        "ystems)");
+            this.DisableLog_checkBox.UseVisualStyleBackColor = true;
+            this.DisableLog_checkBox.CheckedChanged += new System.EventHandler(this.DisableLog_checkBox_CheckedChanged);
+            // 
+            // CheckNow_button
+            // 
+            this.CheckNow_button.Location = new System.Drawing.Point(164, 608);
+            this.CheckNow_button.Name = "CheckNow_button";
+            this.CheckNow_button.Size = new System.Drawing.Size(75, 23);
+            this.CheckNow_button.TabIndex = 101;
+            this.CheckNow_button.Text = "Check Now";
+            this.toolTip1.SetToolTip(this.CheckNow_button, "Reads file http://www.liteplacer.com/Downloads/release.txt\r\nand reports, if a new" +
+        "er revision of the software is available.");
+            this.CheckNow_button.UseVisualStyleBackColor = true;
+            this.CheckNow_button.Click += new System.EventHandler(this.CheckNow_button_Click);
+            // 
             // CheckForUpdate_checkBox
             // 
             this.CheckForUpdate_checkBox.AutoSize = true;
@@ -7535,30 +7560,6 @@
             // colorDialog1
             // 
             this.colorDialog1.SolidColorOnly = true;
-            // 
-            // CheckNow_button
-            // 
-            this.CheckNow_button.Location = new System.Drawing.Point(164, 608);
-            this.CheckNow_button.Name = "CheckNow_button";
-            this.CheckNow_button.Size = new System.Drawing.Size(75, 23);
-            this.CheckNow_button.TabIndex = 101;
-            this.CheckNow_button.Text = "Check Now";
-            this.toolTip1.SetToolTip(this.CheckNow_button, "Reads file http://www.liteplacer.com/Downloads/release.txt\r\nand reports, if a new" +
-        "er revision of the software is available.");
-            this.CheckNow_button.UseVisualStyleBackColor = true;
-            this.CheckNow_button.Click += new System.EventHandler(this.CheckNow_button_Click);
-            // 
-            // DisableLog_checkBox
-            // 
-            this.DisableLog_checkBox.AutoSize = true;
-            this.DisableLog_checkBox.Location = new System.Drawing.Point(290, 612);
-            this.DisableLog_checkBox.Name = "DisableLog_checkBox";
-            this.DisableLog_checkBox.Size = new System.Drawing.Size(87, 17);
-            this.DisableLog_checkBox.TabIndex = 102;
-            this.DisableLog_checkBox.Text = "Mute logging";
-            this.toolTip1.SetToolTip(this.DisableLog_checkBox, "If checked, reduces the amout of information logged.\r\n(Faster operation on some s" +
-        "ystems)");
-            this.DisableLog_checkBox.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
