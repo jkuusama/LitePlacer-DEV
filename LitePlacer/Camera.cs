@@ -403,10 +403,27 @@ namespace LitePlacer
 		{
 			// Take a snapshot:
 			CopyFrame = true;
-			do
-			{
+            int tries = 100;
+            while (tries>0)
+	        {
+	            tries--;
+                if (!CopyFrame)
+	            {
+		             break;
+	            }
 				Thread.Sleep(10);
-			} while (CopyFrame);
+                Application.DoEvents();
+	        }
+            if (CopyFrame)
+            {
+                // failed!
+                Graphics g = Graphics.FromImage(TemporaryFrame);
+                g.Clear(Color.Black);
+                g.Dispose();
+                MainForm.DisplayText("*** GetMeasurementFrame() failed!", KnownColor.Purple);
+                return TemporaryFrame;
+            }
+
 			if (MeasurementFunctions != null)
 			{
 				foreach (AForgeFunction f in MeasurementFunctions)
@@ -1054,7 +1071,9 @@ namespace LitePlacer
         // A to rotation in degrees, 
         // return value is number of components found
 		{
-			List<Shapes.Component> RawComponents = FindComponentsFunct(GetMeasurementFrame());
+            Bitmap image = GetMeasurementFrame();
+            List<Shapes.Component> RawComponents = FindComponentsFunct(image);
+            image.Dispose();
 			List<Shapes.Component> GoodComponents = new List<Shapes.Component>();
 
 			X = 0.0;
@@ -1160,7 +1179,10 @@ namespace LitePlacer
 		// Sets X, Y position of the closest circle to the frame center in pixels, return value is number of circles found
 		{
 			List<Shapes.Circle> GoodCircles = new List<Shapes.Circle>();
-			List<Shapes.Circle> RawCircles = FindCirclesFunct(GetMeasurementFrame());
+            Bitmap image = GetMeasurementFrame();
+			List<Shapes.Circle> RawCircles = FindCirclesFunct(image);
+            image.Dispose();
+
 			X = 0.0;
 			Y = 0.0;
 			if (RawCircles.Count == 0)
