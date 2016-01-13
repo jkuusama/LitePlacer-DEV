@@ -329,22 +329,11 @@ namespace LitePlacer
                 _readyEvent.Set();
                 return;   // already there
             }
-            if ((dX > 1) && (dY > 1))
+
+            if ((dX < 1.0) && (dY < 1.0))
             {
-                // normal case
-				X = X + SquareCorrection * Y;
-				command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) +
-                                  " Y" + Y.ToString(CultureInfo.InvariantCulture) +
-                                  " A" + Am.ToString(CultureInfo.InvariantCulture);
-                _readyEvent.Reset();
-                MainForm.DisplayText(command);
-                Com.Write("{\"gc\":\"" + command + "\"}");
-                _readyEvent.Wait();
-            }
-            else
-            {
-                // either XY is a small movement
-				X = X + SquareCorrection * Y;
+                // small movement
+                X = X + SquareCorrection * Y;
                 command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
                                                     " Y" + Y.ToString(CultureInfo.InvariantCulture);
                 _readyEvent.Reset();
@@ -354,6 +343,18 @@ namespace LitePlacer
                 command = "G0 " + " A" + Am.ToString(CultureInfo.InvariantCulture);
                 Com.Write("{\"gc\":\"" + command + "\"}");
 
+                _readyEvent.Wait();
+            }
+            else
+            {
+                // normal case
+                X = X + SquareCorrection * Y;
+                command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) +
+                                  " Y" + Y.ToString(CultureInfo.InvariantCulture) +
+                                  " A" + Am.ToString(CultureInfo.InvariantCulture);
+                _readyEvent.Reset();
+                MainForm.DisplayText(command);
+                Com.Write("{\"gc\":\"" + command + "\"}");
                 _readyEvent.Wait();
             }
         }

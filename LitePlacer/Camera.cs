@@ -104,6 +104,8 @@ namespace LitePlacer
 		private string MonikerString = "unconnected";
 		private string Id = "unconnected";
 
+        public bool ReceivingFrames { get; set; }
+
 		public bool Start(string cam, int DeviceNo)
 		{
             try
@@ -125,15 +127,32 @@ namespace LitePlacer
 			    PauseProcessing = false;
 
 			    VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
-			    VideoSource.Start();
-			    if (VideoSource.IsRunning)
-			    {
-				    return true;
-			    }
-			    else
-			    {
-				    return false;
-			    }
+                ReceivingFrames = false;
+
+                // try ten times to start
+                int tries = 30;  // 1.5 s maximum to a camera to start
+
+                while (tries>0)
+                {
+                    // VideoSource.Start() checks running status, is safe to call multiple times
+                    tries--;
+			        VideoSource.Start();
+                    if (!ReceivingFrames)
+                    {
+                        // 50 ms pause, processing events so that videosource has a chance
+                        for (int i = 0; i < 10; i++)
+                        {
+                            Thread.Sleep(5);
+                            Application.DoEvents();     
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                MainForm.DisplayText("*** Camera start: " + tries.ToString() + ", " + ReceivingFrames.ToString(), KnownColor.Purple);
+                return (ReceivingFrames);
             }
             catch
             {
@@ -554,6 +573,7 @@ namespace LitePlacer
 		// Each frame goes through Video_NewFrame
 		private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
+            ReceivingFrames = true;
 			Bitmap frame = (Bitmap)eventArgs.Frame.Clone();
 			if (CopyFrame)
 			{
