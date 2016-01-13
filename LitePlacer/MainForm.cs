@@ -1435,8 +1435,13 @@ namespace LitePlacer
                     CNC_BlockingWriteDone = true;
                     JoggingBusy = false;
                     Cnc.Error();
+                    ValidMeasurement_checkBox.Checked = false;
                     return false;
                 }
+            }
+            if (!CNC_WriteOk)
+            {
+                ValidMeasurement_checkBox.Checked = false;
             }
             return (CNC_WriteOk);
         }
@@ -1913,6 +1918,7 @@ namespace LitePlacer
 
         private void OpticalHome_button_Click(object sender, EventArgs e)
         {
+            ValidMeasurement_checkBox.Checked = false;
             if (!MechanicalHoming_m())
             {
                 return;
@@ -3111,6 +3117,7 @@ namespace LitePlacer
                     buttonConnectSerial.Text = "Clear Err.";
                     labelSerialPortStatus.Text = "ERROR";
                     labelSerialPortStatus.ForeColor = Color.Red;
+                    ValidMeasurement_checkBox.Checked = false;
                 }
                 else
                 {
@@ -3124,6 +3131,7 @@ namespace LitePlacer
                 buttonConnectSerial.Text = "Connect";
                 labelSerialPortStatus.Text = "Not connected";
                 labelSerialPortStatus.ForeColor = Color.Red;
+                ValidMeasurement_checkBox.Checked = false;
             }
         }
 
@@ -6589,6 +6597,7 @@ namespace LitePlacer
                     break;
 
                 case "Recalibrate":
+                    ValidMeasurement_checkBox.Checked = false;
                     if (!PrepareToPlace_m())
                         return false;
                     break;
@@ -6717,12 +6726,14 @@ namespace LitePlacer
                     return false;
                 }
             }
-
-            CurrentGroup_label.Text = "Measuring PCB";
-            if (!BuildMachineCoordinateData_m())
+            if(!ValidMeasurement_checkBox.Checked)
             {
-                CurrentGroup_label.Text = "--";
-                return false;
+                CurrentGroup_label.Text = "Measuring PCB";
+                if (!BuildMachineCoordinateData_m())
+                {
+                    CurrentGroup_label.Text = "--";
+                    return false;
+                }
             }
 
             AbortPlacement = false;
