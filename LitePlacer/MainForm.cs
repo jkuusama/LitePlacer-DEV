@@ -2095,7 +2095,7 @@ namespace LitePlacer
             DownCamera.BoxSizeX = 200;
             DownCamera.BoxSizeY = 200;
             DownCamera.BoxRotationDeg = 0;
-            DownCamera.ImageBox = this.Cam_pictureBox;
+            DownCamera.ImageBox = Cam_pictureBox;
             DownCamera.Mirror = false;
             DownCamera.ClearDisplayFunctionsList();
             DownCamera.SnapshotColor = Properties.Settings.Default.DownCam_SnapshotColor;
@@ -2125,7 +2125,7 @@ namespace LitePlacer
             UpCamera.BoxSizeX = 200;
             UpCamera.BoxSizeY = 200;
             UpCamera.BoxRotationDeg = 0;
-            UpCamera.ImageBox = this.Cam_pictureBox;
+            UpCamera.ImageBox = Cam_pictureBox;
             UpCamera.Mirror = true;
             UpCamera.ClearDisplayFunctionsList();
             UpCamera.SnapshotColor = Properties.Settings.Default.UpCam_SnapshotColor;
@@ -3023,6 +3023,10 @@ namespace LitePlacer
         private void BasicSetupTab_Begin()
         {
             SetDownCameraDefaults();
+
+            UpCamera.Active = false;
+            DownCamera.Active = false;
+
             UpdateCncConnectionStatus();
             SizeXMax_textBox.Text = Properties.Settings.Default.General_MachineSizeX.ToString();
             SizeYMax_textBox.Text = Properties.Settings.Default.General_MachineSizeY.ToString();
@@ -10551,6 +10555,7 @@ namespace LitePlacer
             G_numericUpDown.Value = G;
             B_numericUpDown.Value = B;
             Color_Box.BackColor = Color.FromArgb(R, G, B);
+            img.Dispose();
         }
 
         private void Display_dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs anError)

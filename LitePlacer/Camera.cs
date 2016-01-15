@@ -588,91 +588,103 @@ namespace LitePlacer
 		// Eventhandler if new frame is ready
 		// ==========================================================================================================
 		// Each frame goes through Video_NewFrame
+        Bitmap frame;
 		private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
             ReceivingFrames = true;
-			Bitmap frame = (Bitmap)eventArgs.Frame.Clone();
-			if (CopyFrame)
-			{
-				TemporaryFrame = (Bitmap)frame.Clone();
-				CopyFrame = false;
-			};
-			if (PauseProcessing)
-			{
-				paused = true;
-				return;
-			};
-            if (!Active)
+			using (frame = (Bitmap)eventArgs.Frame.Clone())
             {
-                return;
+                if (CopyFrame)
+                {
+                    TemporaryFrame = (Bitmap)frame.Clone();
+                    CopyFrame = false;
+                };
+                if (PauseProcessing)
+                {
+                    paused = true;
+                    return;
+                };
+                if (!Active)
+                {
+                    if (ImageBox.Image != null)
+                    {
+                        ImageBox.Image.Dispose();
+                    }
+                    ImageBox.Image = frame;
+                    // frame.Dispose();
+                    return;
+                }
+
+                if (DisplayFunctions != null)
+                {
+                    foreach (AForgeFunction f in DisplayFunctions)
+                    {
+                        f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
+                    }
+                }
+
+                if (FindCircles)
+                {
+                    DrawCirclesFunct(frame);
+                };
+
+                if (FindRectangles)
+                {
+                    frame = DrawRectanglesFunct(frame);
+                };
+
+                if (FindComponent)
+                {
+                    frame = DrawComponentsFunct(frame);
+                };
+
+                if (Draw_Snapshot)
+                {
+                    frame = Draw_SnapshotFunct(frame);
+                };
+
+                if (Mirror)
+                {
+                    frame = MirrorFunct(frame);
+                };
+
+                if (DrawBox)
+                {
+                    DrawBoxFunct(frame);
+                };
+
+                if (Zoom)
+                {
+                    ZoomFunct(ref frame, ZoomFactor);
+                };
+
+                if (DrawCross)
+                {
+                    DrawCrossFunct(ref frame);
+                };
+
+                if (DrawSidemarks)
+                {
+                    DrawSidemarksFunct(ref frame);
+                };
+
+                if (DrawDashedCross)
+                {
+                    DrawDashedCrossFunct(frame);
+                };
+
+                if (DrawArrow)
+                {
+                    DrawArrowFunct(frame);
+                };
+
+                if (ImageBox.Image != null)
+                {
+                    ImageBox.Image.Dispose();
+                }
+                ImageBox.Image = frame;
             }
-
-			if (DisplayFunctions != null)
-			{
-				foreach (AForgeFunction f in DisplayFunctions)
-				{
-					f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
-				}
-			}
-
-			if (FindCircles)
-			{
-				DrawCirclesFunct(frame);
-			};
-
-			if (FindRectangles)
-			{
-				frame = DrawRectanglesFunct(frame);
-			};
-
-			if (FindComponent)
-			{
-				frame = DrawComponentsFunct(frame);
-			};
-
-			if (Draw_Snapshot)
-			{
-				frame = Draw_SnapshotFunct(frame);
-			};
-
-			if (Mirror)
-			{
-				frame = MirrorFunct(frame);
-			};
-
-            if (DrawBox)
-            {
-                DrawBoxFunct(frame);
-            };
-
-            if (Zoom)
-			{
-				ZoomFunct(ref frame, ZoomFactor);
-			};
-
-			if (DrawCross) 
-			{
-				DrawCrossFunct(ref frame);
-			};
-
-			if (DrawSidemarks) 
-			{
-				DrawSidemarksFunct(ref frame);
-			};
-
-			if (DrawDashedCross)
-			{
-				DrawDashedCrossFunct(frame);
-			};
-
-            if (DrawArrow)
-            {
-                DrawArrowFunct(frame);
-            };
-
-			ImageBox.Image = frame;
-			// frame.Dispose();
-		} // end Video_NewFrame
+        } // end Video_NewFrame
 
 		// ==========================================================================================================
 		// Functions compatible with lists:
