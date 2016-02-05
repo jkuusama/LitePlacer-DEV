@@ -8701,11 +8701,24 @@ namespace LitePlacer
                 int Last = CadData_GridView.RowCount - 1;
                 CadData_GridView.Rows[Last].Cells["Component"].Value = Line[ComponentIndex];
                 CadData_GridView.Rows[Last].Cells["Value_Footprint"].Value = Line[ValueIndex] + "  |  " + Line[FootPrintIndex];
+                CadData_GridView.Rows[Last].Cells["Rotation"].Value = Line[RotationIndex];
+
                 if (LayerDataPresent)
                 {
                     if (Bottom_checkBox.Checked)
                     {
                         CadData_GridView.Rows[Last].Cells["X_nominal"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
+                        double rot;
+                        if (!double.TryParse(CadData_GridView.Rows[Last].Cells["Rotation"].Value.ToString(), out rot))
+                        {
+                            DialogResult dialogResult = ShowMessageBox(
+                                "Bad data at Rotation",
+                                "Bad data",
+                                MessageBoxButtons.OK);
+                            return false;
+                        }
+                        rot = -rot + 180;
+                        CadData_GridView.Rows[Last].Cells["Rotation"].Value= rot.ToString();
                     }
                     else
                     {
@@ -8719,7 +8732,6 @@ namespace LitePlacer
                 CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = Line[Y_Nominal_Index].Replace("mm", "");
                 CadData_GridView.Rows[Last].Cells["X_nominal"].Value = CadData_GridView.Rows[Last].Cells["X_nominal"].Value.ToString().Replace(",", ".");
                 CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = CadData_GridView.Rows[Last].Cells["Y_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["Rotation"].Value = Line[RotationIndex];
                 CadData_GridView.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
                 CadData_GridView.Rows[Last].Cells["Y_Machine"].Value = "Nan";
                 CadData_GridView.Rows[Last].Cells["Rotation_machine"].Value = "Nan";
