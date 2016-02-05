@@ -199,13 +199,22 @@ namespace LitePlacer
                 string UpdateDate = "";
                 for (int i = 0; i < UpdateDescription.Length; i++)
                 {
-                    if (UpdateDescription[i] == '\n')
+                    if ((UpdateDescription[i] == '\n') || (UpdateDescription[i] == '\r'))
                     {
                         break;
                     }
                     UpdateDate += UpdateDescription[i];
                 }
-                string BuildDateText = "Build date " + BuildDate().Substring(0, 10);
+                string BuildDateText = "Build date ";
+                string BuildD = BuildDate();
+                for (int i = 0; i < BuildD.Length; i++)
+                {
+                    if (BuildD[i] == ' ')
+                    {
+                        break;
+                    }
+                    BuildDateText += BuildD[i];
+                }
                 BuildDateText = BuildDateText.Trim();
                 if (UpdateDate != BuildDateText)
                 {
