@@ -324,6 +324,7 @@ namespace LitePlacer
             }
             RobustFast_checkBox.Checked = Properties.Settings.Default.Cameras_RobustSwitch;
 
+            StartCameras();
             tabControlPages.SelectedTab = tabPageBasicSetup;
             LastTabPage = "tabPageBasicSetup";
 
@@ -355,8 +356,7 @@ namespace LitePlacer
                 //Thread.Sleep(150);
                 UpdateWindowValues_m();
             }
-            StartCameras();
-
+ 
             DisableLog_checkBox.Checked = Properties.Settings.Default.General_MuteLogging;
             StartingUp = false;
         }
@@ -2236,6 +2236,7 @@ namespace LitePlacer
         {
             List<string> Devices = UpCamera.GetDeviceList();
             UpCam_comboBox.Items.Clear();
+            int d = Properties.Settings.Default.UpCam_index;
             if (Devices.Count != 0)
             {
                 for (int i = 0; i < Devices.Count; i++)
@@ -2250,13 +2251,14 @@ namespace LitePlacer
             }
             if ((Devices.Count >= Properties.Settings.Default.UpCam_index) && (Properties.Settings.Default.UpCam_index > 0))
             {
+                DisplayText("UpCam_comboBox.SelectedIndex= " + Properties.Settings.Default.UpCam_index.ToString());
                 UpCam_comboBox.SelectedIndex = Properties.Settings.Default.UpCam_index;
             }
             else
             {
+                DisplayText("UpCam_comboBox.SelectedIndex= 0");
                 UpCam_comboBox.SelectedIndex = 0;  // default to first
             }
-            DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString());
 
         }
 
@@ -2322,6 +2324,7 @@ namespace LitePlacer
             DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString());
             Properties.Settings.Default.DownCam_index = DownCam_comboBox.SelectedIndex;
             SelectCamera(DownCamera);
+            Properties.Settings.Default.DowncamMoniker = DownCamera.MonikerString;
             if (DownCamera.IsRunning())
             {
                 SetCurrentCameraParameters();
@@ -2341,6 +2344,7 @@ namespace LitePlacer
             DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString());
             Properties.Settings.Default.UpCam_index = UpCam_comboBox.SelectedIndex;
             SelectCamera(UpCamera);
+            Properties.Settings.Default.UpcamMoniker = UpCamera.MonikerString;
             if (UpCamera.IsRunning())
             {
                 SetCurrentCameraParameters();

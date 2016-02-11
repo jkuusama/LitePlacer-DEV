@@ -1114,5 +1114,29 @@ namespace LitePlacer.Properties {
                 this["General_MuteLogging"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UpcamMoniker {
+            get {
+                return ((string)(this["UpcamMoniker"]));
+            }
+            set {
+                this["UpcamMoniker"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DowncamMoniker {
+            get {
+                return ((string)(this["DowncamMoniker"]));
+            }
+            set {
+                this["DowncamMoniker"] = value;
+            }
+        }
     }
 }

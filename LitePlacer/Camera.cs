@@ -101,7 +101,7 @@ namespace LitePlacer
 		public int FrameSizeX { get; set; }
 		public int FrameSizeY { get; set; }
 
-		private string MonikerString = "unconnected";
+		public string MonikerString = "unconnected";
 		private string Id = "unconnected";
 
         public bool ReceivingFrames { get; set; }
@@ -130,12 +130,12 @@ namespace LitePlacer
                 ReceivingFrames = false;
 
                 // try ten times to start
-                int tries = 30;  // 1.5 s maximum to a camera to start
+                int tries = 0;
 
-                while (tries>0)
+                while (tries < 60)  // 3 s maximum to a camera to start
                 {
                     // VideoSource.Start() checks running status, is safe to call multiple times
-                    tries--;
+                    tries++;
 			        VideoSource.Start();
                     if (!ReceivingFrames)
                     {
@@ -152,6 +152,13 @@ namespace LitePlacer
                     }
                 }
                 MainForm.DisplayText("*** Camera start: " + tries.ToString() + ", " + ReceivingFrames.ToString(), KnownColor.Purple);
+                // another pause so that if we are receiveing frames, we have time to notice it
+                for (int i = 0; i < 10; i++)
+                {
+                    Thread.Sleep(5);
+                    Application.DoEvents();
+                }
+
                 return (ReceivingFrames);
             }
             catch
@@ -598,21 +605,27 @@ namespace LitePlacer
                 TemporaryFrame = (Bitmap)frame.Clone();
                 CopyFrame = false;
             };
-            if (PauseProcessing)
-            {
-                paused = true;
-                return;
-            };
             if (!Active)
             {
                 if (ImageBox.Image != null)
                 {
                     ImageBox.Image.Dispose();
                 }
-                ImageBox.Image = frame;
-                // frame.Dispose();
+                ImageBox.Image = (Bitmap)frame.Clone();
+                frame.Dispose();
                 return;
             }
+
+            if (PauseProcessing)
+            {
+                if (ImageBox.Image != null)
+                {
+                    ImageBox.Image.Dispose();
+                }
+                frame.Dispose();
+                paused = true;
+                return;
+            };
 
             if (DisplayFunctions != null)
             {
