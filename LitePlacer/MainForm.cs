@@ -1705,7 +1705,7 @@ namespace LitePlacer
                     "Z below table", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                 {
-                    return false; 
+                    return false;
                 };
 
             }
