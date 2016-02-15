@@ -199,22 +199,13 @@ namespace LitePlacer
                 string UpdateDate = "";
                 for (int i = 0; i < UpdateDescription.Length; i++)
                 {
-                    if ((UpdateDescription[i] == '\n') || (UpdateDescription[i] == '\r'))
+                    if (UpdateDescription[i] == '\n')
                     {
                         break;
                     }
                     UpdateDate += UpdateDescription[i];
                 }
-                string BuildDateText = "Build date ";
-                string BuildD = BuildDate();
-                for (int i = 0; i < BuildD.Length; i++)
-                {
-                    if (BuildD[i] == ' ')
-                    {
-                        break;
-                    }
-                    BuildDateText += BuildD[i];
-                }
+                string BuildDateText = "Build date " + BuildDate().Substring(0, 10);
                 BuildDateText = BuildDateText.Trim();
                 if (UpdateDate != BuildDateText)
                 {
@@ -8577,8 +8568,8 @@ namespace LitePlacer
                     (Headers[i] == "x (mm)") ||
                     (Headers[i] == "Center-X(mm)") ||
                     (Headers[i] == "PosX") ||
-                    (Headers[i] == "Ref X") ||
-                    (Headers[i] == "ref x")
+                    (Headers[i] == "Mid X") ||
+                    (Headers[i] == "mid x")
                   )
                 {
                     break;
@@ -8599,8 +8590,8 @@ namespace LitePlacer
                     (Headers[i] == "y (mm)") ||
                     (Headers[i] == "Center-Y(mm)") ||
                     (Headers[i] == "PosY") ||
-                    (Headers[i] == "Ref Y") ||
-                    (Headers[i] == "ref y")
+                    (Headers[i] == "Mid Y") ||
+                    (Headers[i] == "mid y")
                   )
                 {
                     break;
@@ -8839,7 +8830,7 @@ namespace LitePlacer
         void Tapes_dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             // Ugly, but MS raises this error when programmatically changing a combobox cell value
-            // or when it is not one set at design time (and we will put custom tape names in)
+            // or when it is not set at design time (and we will put custom tape names in)
         }
 
         private void Tapes_tabPage_Begin()
@@ -10006,7 +9997,7 @@ namespace LitePlacer
         #endregion  Measurementboxes
 
         // ==========================================================================================================
-        // Video processign functions lists control
+        // Video processing functions lists control
         // ==========================================================================================================
         #region VideoProcessingFunctionsLists
 
