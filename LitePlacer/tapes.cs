@@ -596,8 +596,16 @@ namespace LitePlacer
 
             NumberStyles style = NumberStyles.AllowDecimalPoint;
             CultureInfo culture = CultureInfo.InvariantCulture;
-            string s = Grid.Rows[Tape].Cells["X_Column"].Value.ToString();
+            if (Grid.Rows[Tape].Cells["X_Column"].Value == null)
+            {
+                return false;
+            }
+            string s = Grid.Rows[Tape].Cells["X_Column"].Value.ToString();           
             if (!double.TryParse(s, style, culture, out Hole1X))
+            {
+                return false;
+            }
+            if (Grid.Rows[Tape].Cells["Y_Column"].Value == null)
             {
                 return false;
             }
@@ -820,6 +828,10 @@ namespace LitePlacer
             CustomTapeNum = -1;
             foreach (DataGridViewRow GridRow in CustomGrid.Rows)
             {
+                if (GridRow.Cells["Name_Column"].Value == null)
+                {
+                    break;
+                }
                 if (GridRow.Cells["Name_Column"].Value.ToString() == Name)
                 {
                     // Found it!
@@ -909,6 +921,24 @@ namespace LitePlacer
             }
 
         }
+
+        // AddWidthValues():
+        // Loading a saved tape might have custom tape name in the width column. We need to add this manually to the available
+        // selections for it to be visble. This function does that and is called after loading tapes grid.
+        public void AddWidthValues()
+        {
+            for (int i = 0; i < Grid.RowCount; i++)
+            {
+                string value = Grid.Rows[i].Cells["WidthColumn"].Value.ToString();
+                DataGridViewComboBoxCell box = (DataGridViewComboBoxCell)Grid.Rows[i].Cells["WidthColumn"];
+                if (!box.Items.Contains(value))
+                {
+                    box.Items.Add(value);
+                }
+            }
+
+        }
+
 	}
 
 }

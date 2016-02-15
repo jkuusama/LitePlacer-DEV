@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -1123,7 +1123,6 @@
             this.UseCustomTapes_button.Text = "Use";
             this.toolTip1.SetToolTip(this.UseCustomTapes_button, "Moves custom tapes to main tape selections");
             this.UseCustomTapes_button.UseVisualStyleBackColor = true;
-            this.UseCustomTapes_button.Visible = false;
             this.UseCustomTapes_button.Click += new System.EventHandler(this.UseCustomTapes_button_Click);
             // 
             // LoadCustomTapes_button
@@ -1134,7 +1133,6 @@
             this.LoadCustomTapes_button.TabIndex = 60;
             this.LoadCustomTapes_button.Text = "Load";
             this.LoadCustomTapes_button.UseVisualStyleBackColor = true;
-            this.LoadCustomTapes_button.Visible = false;
             this.LoadCustomTapes_button.Click += new System.EventHandler(this.LoadCustomTapes_button_Click);
             // 
             // SaveCustomTapes_button
@@ -1145,7 +1143,6 @@
             this.SaveCustomTapes_button.TabIndex = 59;
             this.SaveCustomTapes_button.Text = "Save";
             this.SaveCustomTapes_button.UseVisualStyleBackColor = true;
-            this.SaveCustomTapes_button.Visible = false;
             this.SaveCustomTapes_button.Click += new System.EventHandler(this.SaveCustomTapes_button_Click);
             // 
             // DeleteCustomTape_button
@@ -1157,7 +1154,6 @@
             this.DeleteCustomTape_button.Text = "Delete";
             this.toolTip1.SetToolTip(this.DeleteCustomTape_button, "Deletes the selected tape definition");
             this.DeleteCustomTape_button.UseVisualStyleBackColor = true;
-            this.DeleteCustomTape_button.Visible = false;
             this.DeleteCustomTape_button.Click += new System.EventHandler(this.DeleteCustomTape_button_Click);
             // 
             // label130
@@ -1165,10 +1161,9 @@
             this.label130.AutoSize = true;
             this.label130.Location = new System.Drawing.Point(5, 495);
             this.label130.Name = "label130";
-            this.label130.Size = new System.Drawing.Size(122, 13);
+            this.label130.Size = new System.Drawing.Size(149, 13);
             this.label130.TabIndex = 54;
-            this.label130.Text = "Custom Tape Definitions";
-            this.label130.Visible = false;
+            this.label130.Text = "Custom Tape Type Definitions";
             // 
             // CustomTapes_dataGridView
             // 
@@ -1189,7 +1184,6 @@
             this.CustomTapes_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.CustomTapes_dataGridView.Size = new System.Drawing.Size(494, 110);
             this.CustomTapes_dataGridView.TabIndex = 53;
-            this.CustomTapes_dataGridView.Visible = false;
             // 
             // Name_Column
             // 
@@ -7225,14 +7219,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7299,14 +7293,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,

@@ -125,10 +125,11 @@ namespace LitePlacer
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
-            LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
+            // LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
             LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
             LoadDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
             Tapes.AddCustomTapesToTapes();
+            Tapes.AddWidthValues();
 
             LoadDataGrid(path + "LitePlacer.HomingFunctions", Homing_dataGridView);
             LoadDataGrid(path + "LitePlacer.FiducialsFunctions", Fiducials_dataGridView);
@@ -477,14 +478,130 @@ namespace LitePlacer
         // =================================================================================
         // Saving and restoring data tables (Note: Not job files)
         // =================================================================================
+
+        // Reading ver2 format allows changing the data grid itself at a software update, 
+        // adding and removing columns, and still read in a saved file from previous software version.
+
+        private int Ver2FormatID = 20000001;
+        public bool LoadingDataGrid = false;  // to avoid problems with cell value changed event and unfilled grids
+
+
+        public void LoadDataGrid(string FileName, DataGridView dgv)
+        {
+            try
+            {
+                if (!File.Exists(FileName))
+                {
+                    return;
+                }
+                LoadingDataGrid = true;
+                using (BinaryReader bw = new BinaryReader(File.Open(FileName, FileMode.Open)))
+                {
+                    int first = bw.ReadInt32();
+                    if (first != Ver2FormatID)
+                    {
+                        bw.Close();
+                        // Old format. Rename the file to xxx_v1 and read in that.
+                        if (File.Exists(FileName+"_v1"))
+                        {
+                            File.Delete(FileName+"_v1");
+                        }
+                        File.Move(FileName, FileName + "_v1");
+                        LoadDataGrid_V1(FileName + "_v1", dgv);
+                        LoadingDataGrid = false;
+                        return;
+                    }
+                    dgv.Rows.Clear();
+                    int rows = bw.ReadInt32();
+                    int cols = bw.ReadInt32();
+
+                    if (dgv.AllowUserToAddRows)
+                    {
+                        // There is an empty row in the bottom that is visible for manual add.
+                        // It is saved in the file. It is automatically added, so we don't want to add it again.
+                        rows = rows - 1;
+                    }
+                    // read headers;
+                    List<string> Headers = new List<string>();
+
+                    for (int j = 0; j < cols; ++j)
+                    {
+                        Headers.Add(bw.ReadString());
+                    }
+
+                    // read data
+                    int i_out;
+                    for (int i = 0; i < rows; ++i)
+                    {
+                        dgv.Rows.Add();
+                        for (int j = 0; j < cols; ++j)
+                        {
+                            if (MapHeaders(dgv, Headers, j, out i_out))
+                            {
+                                if (bw.ReadBoolean())
+                                {
+                                    dgv.Rows[i].Cells[i_out].Value = bw.ReadString();
+                                }
+                                else bw.ReadBoolean();
+                            }
+                            else
+                            {
+                                // column is removed: dummy read, discard the data
+                                if (bw.ReadBoolean())
+                                {
+                                    bw.ReadString();
+                                }
+                                else bw.ReadBoolean();
+                            }
+                        }
+                    }
+                }
+                LoadingDataGrid = false;
+            }
+            catch (System.Exception excep)
+            {
+                MessageBox.Show(excep.Message);
+                LoadingDataGrid = false;
+            }
+        }
+
+        private bool MapHeaders(DataGridView Grid, List<string> Headers, int i_in, out int i_out)
+        {
+            // i_in= column index of the read-in data
+            // sets i_out to the column index of the currect header in Grid
+            // returns if match was found
+            i_out = -1;
+            string label = Headers[i_in];
+            for (int i = 0; i < Grid.Columns.Count; i++)
+            {
+                if (Grid.Columns[i].Name == label)
+                {
+                    i_out = i;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+
         public void SaveDataGrid(string FileName, DataGridView dgv)
         {
             try
             {
                 using (BinaryWriter bw = new BinaryWriter(File.Open(FileName, FileMode.Create)))
                 {
-                    bw.Write(dgv.Columns.Count);
+                    bw.Write(Ver2FormatID);
                     bw.Write(dgv.Rows.Count);
+                    bw.Write(dgv.Columns.Count);
+                    LoadingDataGrid = false;
+
+                    // write headers
+                    foreach (DataGridViewColumn column in dgv.Columns)
+                    {
+                        bw.Write(column.Name);
+                    }
+
                     foreach (DataGridViewRow dgvR in dgv.Rows)
                     {
                         for (int j = 0; j < dgv.Columns.Count; ++j)
@@ -510,9 +627,9 @@ namespace LitePlacer
             }
         }
 
-        public bool LoadindDataGrid = false;  // to avoid problems with cell value changed event and unfilled grids
-
-        public void LoadDataGrid(string FileName, DataGridView dgv)
+        // =================================================================================
+        // This routine reads in old format file
+        public void LoadDataGrid_V1(string FileName, DataGridView dgv)
         {
             try
             {
@@ -520,7 +637,7 @@ namespace LitePlacer
                 {
                     return;
                 }
-                LoadindDataGrid = true;
+                LoadingDataGrid = true;
                 dgv.Rows.Clear();
                 using (BinaryReader bw = new BinaryReader(File.Open(FileName, FileMode.Open)))
                 {
@@ -549,12 +666,12 @@ namespace LitePlacer
                         }
                     }
                 }
-                LoadindDataGrid = false;
+                LoadingDataGrid = false;
             }
             catch (System.Exception excep)
             {
                 MessageBox.Show(excep.Message);
-                LoadindDataGrid = false;
+                LoadingDataGrid = false;
             }
         }
 
@@ -9112,6 +9229,7 @@ namespace LitePlacer
             if (TapesAll_openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 LoadDataGrid(TapesAll_openFileDialog.FileName, Tapes_dataGridView);
+                Tapes.AddWidthValues();
             }
         }
 
@@ -10811,7 +10929,7 @@ namespace LitePlacer
         // fix #22 calculate new next coordinates if column was changed
         private void Tapes_dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (StartingUp || LoadindDataGrid)
+            if (StartingUp || LoadingDataGrid)
             {
                 return;
             }
