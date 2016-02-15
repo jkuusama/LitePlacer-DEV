@@ -374,7 +374,7 @@ namespace LitePlacer
 			bool pause = PauseProcessing;
 			if (VideoSource != null)
 			{
-				if (VideoSource.IsRunning)
+                if (ReceivingFrames)
 				{
 					// stop video
 					PauseProcessing = true;  // ask for stop
@@ -591,10 +591,14 @@ namespace LitePlacer
 		}
 
 
-		// ==========================================================================================================
-		// Eventhandler if new frame is ready
-		// ==========================================================================================================
-		// Each frame goes through Video_NewFrame
+        // ==========================================================================================================
+        // ==========================================================================================================
+
+        // Each frame goes through Video_NewFrame()
+
+        // ==========================================================================================================
+        // ==========================================================================================================
+
         Bitmap frame;
 		private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
@@ -605,27 +609,29 @@ namespace LitePlacer
                 TemporaryFrame = (Bitmap)frame.Clone();
                 CopyFrame = false;
             };
-            if (!Active)
-            {
-                if (ImageBox.Image != null)
-                {
-                    ImageBox.Image.Dispose();
-                }
-                ImageBox.Image = (Bitmap)frame.Clone();
-                frame.Dispose();
-                return;
-            }
 
             if (PauseProcessing)
             {
-                if (ImageBox.Image != null)
-                {
-                    ImageBox.Image.Dispose();
-                }
+                //if (ImageBox.Image != null)
+                //{
+                //    ImageBox.Image.Dispose();
+                //}
                 frame.Dispose();
                 paused = true;
                 return;
             };
+
+            if (!Active)
+            {
+                //if (ImageBox.Image != null)
+                //{
+                //    ImageBox.Image.Dispose();
+                //}
+                //ImageBox.Image = (Bitmap)frame.Clone();
+                frame.Dispose();
+                return;
+            }
+
 
             if (DisplayFunctions != null)
             {

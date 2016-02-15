@@ -510,6 +510,8 @@ namespace LitePlacer
             }
         }
 
+        public bool LoadindDataGrid = false;  // to avoid problems with cell value changed event and unfilled grids
+
         public void LoadDataGrid(string FileName, DataGridView dgv)
         {
             try
@@ -518,35 +520,41 @@ namespace LitePlacer
                 {
                     return;
                 }
+                LoadindDataGrid = true;
                 dgv.Rows.Clear();
                 using (BinaryReader bw = new BinaryReader(File.Open(FileName, FileMode.Open)))
                 {
-                    int n = bw.ReadInt32();
-                    int m = bw.ReadInt32();
+                    int Cols = bw.ReadInt32();
+                    int Rows = bw.ReadInt32();
+                    string debug = "foo";
                     if (dgv.AllowUserToAddRows)
                     {
                         // There is an empty row in the bottom that is visible for manual add.
                         // It is saved in the file. It is automatically added, so we don't want to add it also.
                         // It is not there when rows are added only programmatically, so we need to do it here.
-                        m = m - 1;
+                        Rows = Rows - 1;
                     }
-                    for (int i = 0; i < m; ++i)
+                    for (int i = 0; i < Rows; ++i)
                     {
                         dgv.Rows.Add();
-                        for (int j = 0; j < n; ++j)
+                        for (int j = 0; j < Cols; ++j)
                         {
                             if (bw.ReadBoolean())
                             {
-                                dgv.Rows[i].Cells[j].Value = bw.ReadString();
+                                debug = bw.ReadString();
+                                dgv.Rows[i].Cells[j].Value = "";
+                                dgv.Rows[i].Cells[j].Value = debug;
                             }
                             else bw.ReadBoolean();
                         }
                     }
                 }
+                LoadindDataGrid = false;
             }
             catch (System.Exception excep)
             {
                 MessageBox.Show(excep.Message);
+                LoadindDataGrid = false;
             }
         }
 
@@ -1688,6 +1696,18 @@ namespace LitePlacer
                     "Cncin error state",
                     MessageBoxButtons.OK);
                 return false;
+            }
+
+            if (Z>(Properties.Settings.Default.General_ZtoPCB + 1.6))
+            {
+                DialogResult dialogResult = ShowMessageBox(
+                    "The operation seems to take needle below table surface. Continue?",
+                    "Z below table", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No)
+                {
+                    return false;
+                };
+
             }
 
             CNC_BlockingWriteDone = false;
@@ -10791,7 +10811,7 @@ namespace LitePlacer
         // fix #22 calculate new next coordinates if column was changed
         private void Tapes_dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (StartingUp)
+            if (StartingUp || LoadindDataGrid)
             {
                 return;
             }
