@@ -1520,7 +1520,7 @@ namespace LitePlacer
             double MarkA = Cnc.CurrentA;
 
             bool UpCamWasRunning = false;
-            if (UpCamera.IsRunning())
+            if (UpCamera.Active)
             {
                 UpCamWasRunning = true;
             }
@@ -9382,11 +9382,14 @@ namespace LitePlacer
         {
             int PartNum = 0;
             int TapeNum = 0;
+            DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
-                return;
+                if (!int.TryParse(Row.Cells["Next_Column"].Value.ToString(), out PartNum))
+                {
+                    return;
+                }
             }
-            DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             string Id = Row.Cells["IdColumn"].Value.ToString();
             double X = 0.0;
             double Y = 0.0;
@@ -9404,11 +9407,14 @@ namespace LitePlacer
         {
             int PartNum = 0;
             int TapeNum = 0;
+            DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
-                return;
+                if (!int.TryParse(Row.Cells["Next_Column"].Value.ToString(), out PartNum))
+                {
+                    return;
+                }
             }
-            DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             string Id = Row.Cells["IdColumn"].Value.ToString();
             double X = 0.0;
             double Y = 0.0;
