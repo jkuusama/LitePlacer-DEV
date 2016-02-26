@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -108,6 +108,7 @@
             this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Capacity_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -123,6 +124,14 @@
             this.SizeX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SizeY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
+            this.Temp_dataGridView = new System.Windows.Forms.DataGridView();
+            this.Funct_column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Enabled_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Int1_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Double1_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.R_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.G_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.B_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
             this.label135 = new System.Windows.Forms.Label();
@@ -657,6 +666,7 @@
             this.Components_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
             this.tabPageSetupCameras.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Temp_dataGridView)).BeginInit();
             this.CamerasSetUp_tabControl.SuspendLayout();
             this.DownCamera_tabPage.SuspendLayout();
             this.groupBox13.SuspendLayout();
@@ -1480,6 +1490,7 @@
             this.RotationColumn,
             this.WidthColumn,
             this.TypeColumn,
+            this.Capacity_column,
             this.Next_Column,
             this.Tray_Column,
             this.X_Column,
@@ -1569,6 +1580,12 @@
             "Clear Plastic"});
             this.TypeColumn.Name = "TypeColumn";
             this.TypeColumn.Width = 37;
+            // 
+            // Capacity_column
+            // 
+            this.Capacity_column.HeaderText = "Capacity";
+            this.Capacity_column.Name = "Capacity_column";
+            this.Capacity_column.Width = 73;
             // 
             // Next_Column
             // 
@@ -1674,6 +1691,7 @@
             // 
             // tabPageSetupCameras
             // 
+            this.tabPageSetupCameras.Controls.Add(this.Temp_dataGridView);
             this.tabPageSetupCameras.Controls.Add(this.CamerasSetUp_tabControl);
             this.tabPageSetupCameras.Controls.Add(this.label101);
             this.tabPageSetupCameras.Controls.Add(this.label100);
@@ -1720,6 +1738,79 @@
             this.tabPageSetupCameras.TabIndex = 0;
             this.tabPageSetupCameras.Text = "Setup Cameras";
             this.tabPageSetupCameras.UseVisualStyleBackColor = true;
+            // 
+            // Temp_dataGridView
+            // 
+            this.Temp_dataGridView.AllowUserToAddRows = false;
+            this.Temp_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Temp_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Funct_column,
+            this.Enabled_column,
+            this.Int1_column,
+            this.Double1_column,
+            this.R_column,
+            this.G_column,
+            this.B_column});
+            this.Temp_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.Temp_dataGridView.Location = new System.Drawing.Point(154, 290);
+            this.Temp_dataGridView.Name = "Temp_dataGridView";
+            this.Temp_dataGridView.RowHeadersVisible = false;
+            this.Temp_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.Temp_dataGridView.Size = new System.Drawing.Size(213, 162);
+            this.Temp_dataGridView.TabIndex = 144;
+            this.Temp_dataGridView.Visible = false;
+            // 
+            // Funct_column
+            // 
+            this.Funct_column.HeaderText = "Funct";
+            this.Funct_column.Items.AddRange(new object[] {
+            "Threshold",
+            "Histogram",
+            "Grayscale",
+            "Contrast scretch",
+            "Kill color",
+            "Keep color",
+            "Invert",
+            "Meas. zoom"});
+            this.Funct_column.Name = "Funct_column";
+            this.Funct_column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Funct_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Enabled_column
+            // 
+            this.Enabled_column.HeaderText = "Enabled";
+            this.Enabled_column.Name = "Enabled_column";
+            this.Enabled_column.Width = 50;
+            // 
+            // Int1_column
+            // 
+            this.Int1_column.HeaderText = "Int1";
+            this.Int1_column.Name = "Int1_column";
+            this.Int1_column.ReadOnly = true;
+            // 
+            // Double1_column
+            // 
+            this.Double1_column.HeaderText = "Double1";
+            this.Double1_column.Name = "Double1_column";
+            this.Double1_column.ReadOnly = true;
+            // 
+            // R_column
+            // 
+            this.R_column.HeaderText = "R";
+            this.R_column.Name = "R_column";
+            this.R_column.ReadOnly = true;
+            // 
+            // G_column
+            // 
+            this.G_column.HeaderText = "G";
+            this.G_column.Name = "G_column";
+            this.G_column.ReadOnly = true;
+            // 
+            // B_column
+            // 
+            this.B_column.HeaderText = "B";
+            this.B_column.Name = "B_column";
+            this.B_column.ReadOnly = true;
             // 
             // CamerasSetUp_tabControl
             // 
@@ -7219,14 +7310,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7293,14 +7384,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -7616,6 +7707,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
             this.tabPageSetupCameras.ResumeLayout(false);
             this.tabPageSetupCameras.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Temp_dataGridView)).EndInit();
             this.CamerasSetUp_tabControl.ResumeLayout(false);
             this.DownCamera_tabPage.ResumeLayout(false);
             this.DownCamera_tabPage.PerformLayout();
@@ -8292,12 +8384,15 @@
         private System.Windows.Forms.CheckBox MouseScroll_checkBox;
         private System.Windows.Forms.CheckBox NumPadJog_checkBox;
         private System.Windows.Forms.CheckBox CheckForUpdate_checkBox;
+        private System.Windows.Forms.Button CheckNow_button;
+        private System.Windows.Forms.CheckBox DisableLog_checkBox;
         private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn RotationColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn WidthColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Capacity_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tray_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
@@ -8306,8 +8401,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
-        private System.Windows.Forms.Button CheckNow_button;
-        private System.Windows.Forms.CheckBox DisableLog_checkBox;
+        private System.Windows.Forms.DataGridView Temp_dataGridView;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Funct_column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Enabled_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Int1_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Double1_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn R_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn G_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn B_column;
     }
 }
 
