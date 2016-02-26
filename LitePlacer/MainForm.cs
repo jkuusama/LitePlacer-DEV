@@ -1535,7 +1535,7 @@ namespace LitePlacer
             }
             UpCamera.PauseProcessing = true;
 
-            // take needle up
+            // take needle up  
             bool result = true;
             result &= CNC_Z_m(0.0);
 
