@@ -1963,7 +1963,7 @@ namespace LitePlacer
             if (Z>(Properties.Settings.Default.General_ZtoPCB + 1.6))
             {
                 DialogResult dialogResult = ShowMessageBox(
-                    "The operation seems to take needle below table surface. Continue?",
+                    "The operation seems to take the needle below table surface. Continue?",
                     "Z below table", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                 {
@@ -5951,7 +5951,6 @@ namespace LitePlacer
             {
                 if ((SaveStream = Job_saveFileDialog.OpenFile()) != null)
                 {
-                    // "Component","Component Type","X, nom.","Y, nom.","Rotation","X, machine","Y, machine","Rotation, machine"
                     using (StreamWriter f = new StreamWriter(SaveStream))
                     {
                         // Write header
