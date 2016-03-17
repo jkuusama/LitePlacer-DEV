@@ -1388,6 +1388,68 @@ namespace LitePlacer
             }
         }
 
+        // =================================================================================
+        private void Goto_button_Click(object sender, EventArgs e)
+        {
+            double X;
+            double Y;
+            double Z;
+            double A;
+            if (!double.TryParse(GotoX_textBox.Text, out X))
+            {
+                return;
+            }
+            if (!double.TryParse(GotoY_textBox.Text, out Y))
+            {
+                return;
+            }
+            if (!double.TryParse(GotoZ_textBox.Text, out Z))
+            {
+                return;
+            }
+            if (!double.TryParse(GotoA_textBox.Text, out A))
+            {
+                return;
+            }
+            if (Math.Abs(Z) < 0.01)  // allow raising Z and move at one go
+            {
+                if (!CNC_Z_m(Z))
+                {
+                    return;
+                }
+            };
+            // Move X, Y, A if needed
+            if (!((Math.Abs(X - Cnc.CurrentX) < 0.01) && (Math.Abs(Y - Cnc.CurrentY) < 0.01) && (Math.Abs(A - Cnc.CurrentA) < 0.01)))
+            {
+                // Allow raise Z, goto and low Z:
+                if (!(Math.Abs(Z) < 0.01))
+                {
+                    if (!CNC_Z_m(0))
+                    {
+                        return;
+                    }
+                }
+                if (!CNC_XYA_m(X, Y, A))
+                {
+                    return;
+                }
+                if (!(Math.Abs(Z - Cnc.CurrentZ) < 0.01))
+                {
+                    if (!CNC_Z_m(Z))
+                    {
+                        return;
+                    }
+                };
+            }
+            // Move Z if needed
+            if (!(Math.Abs(Z - Cnc.CurrentZ) < 0.01))
+            {
+                if (!CNC_Z_m(Z))
+                {
+                    return;
+                }
+            }
+        }
 
 
         #endregion Jogging
@@ -2219,6 +2281,25 @@ namespace LitePlacer
         // Common
         // =================================================================================
 
+        private void KeepActive_checkBox_Click(object sender, EventArgs e)
+        {
+            // We handle checked state ourselves to avoid automatic call to StartCameras at startup
+            // (Changing Checked activatges CheckedChanged event
+            if (KeepActive_checkBox.Checked)
+            {
+                // KeepActive_checkBox.Checked = true;
+                RobustFast_checkBox.Enabled = false;
+                StartCameras();
+            }
+            else
+            {
+                // KeepActive_checkBox.Checked = false;
+                RobustFast_checkBox.Enabled = true;
+            }
+            Properties.Settings.Default.Cameras_KeepActive = KeepActive_checkBox.Checked;
+        }
+
+
         private void StartCameras()
         {
             // Called at startup. 
@@ -2932,6 +3013,7 @@ namespace LitePlacer
             }
         }
 
+        // =================================================================================
         private void DownCamFindRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             if (DownCamFindRectangles_checkBox.Checked)
@@ -2945,6 +3027,7 @@ namespace LitePlacer
 
         }
 
+        // =================================================================================
         private void DownCam_FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             if (DownCam_FindComponents_checkBox.Checked)
@@ -2969,6 +3052,31 @@ namespace LitePlacer
             }
         }
 
+        // =================================================================================
+        private void Overlay_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Overlay_checkBox.Checked)
+            {
+                DownCamera.Draw_Snapshot = true;
+            }
+            else
+            {
+                DownCamera.Draw_Snapshot = false;
+            }
+        }
+
+        private void UpCamOverlay_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (UpCamOverlay_checkBox.Checked)
+            {
+                UpCamera.Draw_Snapshot = true;
+            }
+            else
+            {
+                UpCamera.Draw_Snapshot = false;
+            }
+        }
+
 
         // =================================================================================
         // DownCam specific functions
@@ -2984,19 +3092,6 @@ namespace LitePlacer
             else
             {
                 DownCamera.TestAlgorithm = false;
-            }
-        }
-
-        // =================================================================================
-        private void Overlay_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Overlay_checkBox.Checked)
-            {
-                DownCamera.Draw_Snapshot = true;
-            }
-            else
-            {
-                DownCamera.Draw_Snapshot = false;
             }
         }
 
@@ -5754,6 +5849,70 @@ namespace LitePlacer
             Properties.Settings.Default.CNC_AltJogSpeed = (int)AltJogSpeed_numericUpDown.Value;
         }
 
+        private void DisableLog_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DisableLog_checkBox.Checked)
+            {
+                DisplayText("** Logging disabled **", KnownColor.Black, true);
+            }
+        }
+
+        private void SlackCompensationA_checkBox_Click(object sender, EventArgs e)
+        {
+            if (SlackCompensationA_checkBox.Checked)
+            {
+                Cnc.SlackCompensationA = true;
+                Properties.Settings.Default.CNC_SlackCompensationA = true;
+            }
+            else
+            {
+                Cnc.SlackCompensationA = false;
+                Properties.Settings.Default.CNC_SlackCompensationA = false;
+            }
+        }
+
+        private void Z0_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            double val;
+            Z0_textBox.ForeColor = Color.Red;
+            if (e.KeyChar == '\r')
+            {
+                if (double.TryParse(Z0_textBox.Text, out val))
+                {
+                    Properties.Settings.Default.General_ZtoPCB = val;
+                    Z0_textBox.ForeColor = Color.Black;
+                }
+            }
+        }
+
+        private void BackOff_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            double val;
+            BackOff_textBox.ForeColor = Color.Red;
+            if (e.KeyChar == '\r')
+            {
+                if (double.TryParse(BackOff_textBox.Text, out val))
+                {
+                    Properties.Settings.Default.General_ProbingBackOff = val;
+                    BackOff_textBox.ForeColor = Color.Black;
+                }
+            }
+        }
+
+        private void PlacementDepth_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            double val;
+            PlacementDepth_textBox.ForeColor = Color.Red;
+            if (e.KeyChar == '\r')
+            {
+                if (double.TryParse(PlacementDepth_textBox.Text, out val))
+                {
+                    Properties.Settings.Default.Placement_Depth = val;
+                    PlacementDepth_textBox.ForeColor = Color.Black;
+                }
+            }
+        }
+
 
         #endregion Basic setup page functions
 
@@ -5781,6 +5940,12 @@ namespace LitePlacer
         private void Placement_pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             General_pictureBox_MouseClick(Placement_pictureBox, e.X, e.Y);
+        }
+
+
+        private void Placement_pictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            General_pictureBox_MouseMove(Tapes_pictureBox, e.X, e.Y);
         }
 
 
@@ -8604,6 +8769,19 @@ namespace LitePlacer
             }
         }
 
+        // =================================================================================
+
+        private void OmitNeedleCalibration_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Placement_OmitNeedleCalibration = OmitNeedleCalibration_checkBox.Checked;
+
+        }
+
+        private void SkipMeasurements_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Placement_SkipMeasurements = SkipMeasurements_checkBox.Checked;
+        }
+
 
         #endregion Job page functions
 
@@ -9248,6 +9426,12 @@ namespace LitePlacer
             Update_GridView(Tapes_dataGridView);
         }
 
+        // ==========================================================================================================
+        private void Tapes_pictureBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            General_pictureBox_MouseClick(Tapes_pictureBox, e.X, e.Y);
+        }
+
 
         // ==========================================================================================================
         // SelectTape(): 
@@ -9447,7 +9631,37 @@ namespace LitePlacer
             DownCamera.DrawArrow = false;
         }
 
+        // fix #22 calculate new next coordinates if column was changed
+        private void Tapes_dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (StartingUp || LoadingDataGrid)
+            {
+                return;
+            }
 
+            // only update next coordinates if corresponding column has been changed and rowIndex > 0
+            if (e.ColumnIndex != 6 || e.RowIndex < 0)
+            {
+                return;
+            }
+
+            int NextNo = 1;
+
+            if (!int.TryParse(Tapes_dataGridView.Rows[e.RowIndex].Cells["Next_Column"].Value.ToString(), out NextNo))
+            {
+                ShowMessageBox(
+                    "Bad data in Next",
+                    "Data error",
+                    MessageBoxButtons.OK);
+                return;
+            }
+
+            if (Tapes != null)
+            {
+                Tapes.UpdateNextCoordinates(e.RowIndex, NextNo);
+            }
+
+        }
 
         // =================================================================================
         // Trays:
@@ -10901,220 +11115,6 @@ namespace LitePlacer
 
         }
         #endregion
-
-        private void UpCamOverlay_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCamOverlay_checkBox.Checked)
-            {
-                UpCamera.Draw_Snapshot = true;
-            }
-            else
-            {
-                UpCamera.Draw_Snapshot = false;
-            }
-        }
-
-        private void Tapes_pictureBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            General_pictureBox_MouseClick(Tapes_pictureBox, e.X, e.Y);
-        }
-
-        private void Placement_pictureBox_MouseMove(object sender, MouseEventArgs e)
-        {
-            General_pictureBox_MouseMove(Tapes_pictureBox, e.X, e.Y);
-        }
-
-        private void SlackCompensationA_checkBox_Click(object sender, EventArgs e)
-        {
-            if (SlackCompensationA_checkBox.Checked)
-            {
-                Cnc.SlackCompensationA = true;
-                Properties.Settings.Default.CNC_SlackCompensationA = true;
-            }
-            else
-            {
-                Cnc.SlackCompensationA = false;
-                Properties.Settings.Default.CNC_SlackCompensationA = false;
-            }
-        }
-
-        private void Z0_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            Z0_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(Z0_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_ZtoPCB = val;
-                    Z0_textBox.ForeColor = Color.Black;
-                }
-            }
-        }
-
-        private void BackOff_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            BackOff_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(BackOff_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.General_ProbingBackOff = val;
-                    BackOff_textBox.ForeColor = Color.Black;
-                }
-            }
-        }
-
-        private void PlacementDepth_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            PlacementDepth_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(PlacementDepth_textBox.Text, out val))
-                {
-                    Properties.Settings.Default.Placement_Depth = val;
-                    PlacementDepth_textBox.ForeColor = Color.Black;
-                }
-            }
-        }
-
-        private void OmitNeedleCalibration_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.Placement_OmitNeedleCalibration = OmitNeedleCalibration_checkBox.Checked;
-
-        }
-
-        private void SkipMeasurements_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.Placement_SkipMeasurements = SkipMeasurements_checkBox.Checked;
-        }
-
-        private void KeepActive_checkBox_Click(object sender, EventArgs e)
-        {
-            // We handle checked state ourselves to avoid automatic call to StartCameras at startup
-            // (Changing Checked activatges CheckedChanged event
-            if (KeepActive_checkBox.Checked)
-            {
-                // KeepActive_checkBox.Checked = true;
-                RobustFast_checkBox.Enabled = false;
-                StartCameras();
-            }
-            else
-            {
-                // KeepActive_checkBox.Checked = false;
-                RobustFast_checkBox.Enabled = true;
-            }
-            Properties.Settings.Default.Cameras_KeepActive = KeepActive_checkBox.Checked;
-        }
-
-        private void toolTip1_Popup(object sender, PopupEventArgs e)
-        {
-
-        }
-
-        private void Goto_button_Click(object sender, EventArgs e)
-        {
-            double X;
-            double Y;
-            double Z;
-            double A;
-            if (!double.TryParse(GotoX_textBox.Text, out X))
-            {
-                return;
-            }
-            if (!double.TryParse(GotoY_textBox.Text, out Y))
-            {
-                return;
-            }
-            if (!double.TryParse(GotoZ_textBox.Text, out Z))
-            {
-                return;
-            }
-            if (!double.TryParse(GotoA_textBox.Text, out A))
-            {
-                return;
-            }
-            if (Math.Abs(Z) < 0.01)  // allow raising Z and move at one go
-            {
-                if (!CNC_Z_m(Z))
-                {
-                    return;
-                }
-            };
-            // Move X, Y, A if needed
-            if (!((Math.Abs(X - Cnc.CurrentX) < 0.01) && (Math.Abs(Y - Cnc.CurrentY) < 0.01) && (Math.Abs(A - Cnc.CurrentA) < 0.01)))
-            {
-                // Allow raise Z, goto and low Z:
-                if (!(Math.Abs(Z) < 0.01))
-                {
-                    if (!CNC_Z_m(0))
-                    {
-                        return;
-                    }
-                }
-                if (!CNC_XYA_m(X, Y, A))
-                {
-                    return;
-                }
-                if (!(Math.Abs(Z - Cnc.CurrentZ) < 0.01))
-                {
-                    if (!CNC_Z_m(Z))
-                    {
-                        return;
-                    }
-                };
-            }
-            // Move Z if needed
-            if (!(Math.Abs(Z - Cnc.CurrentZ) < 0.01))
-            {
-                if (!CNC_Z_m(Z))
-                {
-                    return;
-                }
-            }
-        }
-
-        // fix #22 calculate new next coordinates if column was changed
-        private void Tapes_dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (StartingUp || LoadingDataGrid)
-            {
-                return;
-            }
-
-            // only update next coordinates if corresponding column has been changed and rowIndex > 0
-            if (e.ColumnIndex != 6 || e.RowIndex < 0)
-            {
-                return;
-            }
-
-            int NextNo = 1;
-
-            if (!int.TryParse(Tapes_dataGridView.Rows[e.RowIndex].Cells["Next_Column"].Value.ToString(), out NextNo))
-            {
-                ShowMessageBox(
-                    "Bad data in Next",
-                    "Data error",
-                    MessageBoxButtons.OK);
-                return;
-            }
-
-            if (Tapes != null)
-            {
-                Tapes.UpdateNextCoordinates(e.RowIndex, NextNo);
-            }
-
-        }
-
-        private void DisableLog_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DisableLog_checkBox.Checked)
-            {
-                DisplayText("** Logging disabled **", KnownColor.Black, true);
-            }
-        }
 
     }	// end of: 	public partial class FormMain : Form
 
