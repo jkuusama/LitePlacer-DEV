@@ -196,6 +196,7 @@ namespace LitePlacer
         // ========================================================================================
         // GetTapeParameters_m(): 
         // Get from the indicated tape the dW, part center pos from hole and Pitch, distance from one part to another
+        // Measures from: http://ww1.microchip.com/downloads/en/DeviceDoc/00000151J.pdf 
         private bool GetTapeParameters_m(int Tape, out int CustomTapeNum, out double dW, out double FromHole, out double Pitch)
         {
             CustomTapeNum= -1;      // not custom
@@ -256,6 +257,38 @@ namespace LitePlacer
                 case "24/20mm":
                     dW = 11.50;
                     Pitch = 20.0;
+                    break;
+                case "32/4mm":
+                    dW = 14.20;
+                    Pitch = 4.0;
+                    break;
+                case "32/8mm":
+                    dW = 14.20;
+                    Pitch = 8.0;
+                    break;
+                case "32/12mm":
+                    dW = 14.20;
+                    Pitch = 12.0;
+                    break;
+                case "32/16mm":
+                    dW = 14.20;
+                    Pitch = 16.0;
+                    break;
+                case "32/20mm":
+                    dW = 14.20;
+                    Pitch = 20.0;
+                    break;
+                case "32/24mm":
+                    dW = 14.20;
+                    Pitch = 24.0;
+                    break;
+                case "32/28mm":
+                    dW = 14.20;
+                    Pitch = 28.0;
+                    break;
+                case "32/32mm":
+                    dW = 14.20;
+                    Pitch = 32.0;
                     break;
 
                 default:
@@ -898,6 +931,14 @@ namespace LitePlacer
             box.Items.Add("24/12mm");
             box.Items.Add("24/16mm");
             box.Items.Add("24/20mm");
+            box.Items.Add("32/4mm");
+            box.Items.Add("32/8mm");
+            box.Items.Add("32/12mm");
+            box.Items.Add("32/16mm");
+            box.Items.Add("32/20mm");
+            box.Items.Add("32/24mm");
+            box.Items.Add("32/28mm");
+            box.Items.Add("32/32mm");
         }
 
         public void AddCustomTapesToTapes()
