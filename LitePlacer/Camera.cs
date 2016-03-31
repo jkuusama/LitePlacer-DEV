@@ -102,29 +102,20 @@ namespace LitePlacer
 		public int FrameSizeY { get; set; }
 
 		public string MonikerString = "unconnected";
-		private string Id = "unconnected";
+        public string Id = "unconnected";
 
         public bool ReceivingFrames { get; set; }
 
-		public bool Start(string cam, int DeviceNo)
+		public bool Start(string cam, string MonikerStr)
 		{
             try
             {
-			    FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-			    MonikerString = videoDevices[DeviceNo].MonikerString;
-			    Id = cam;
-			    MainForm.DisplayText(cam + " start: Id= "+ Id.ToString() +  "moniker= " + MonikerString);
-			    VideoSource = new VideoCaptureDevice(MonikerString);
+                MainForm.DisplayText(cam + " start, moniker= " + MonikerStr);
 
-			    VideoCapabilities Capability = VideoSource.VideoCapabilities[0];  // using default settings, retrieve them
-
-			    FrameSizeX = Capability.FrameSize.Width;
-			    FrameSizeY = Capability.FrameSize.Height;
-			    FrameCenterX = FrameSizeX / 2;
-			    FrameCenterY = FrameSizeY / 2;
-			    ImageCenterX = ImageBox.Width / 2;
-			    ImageCenterY = ImageBox.Height / 2;
-			    PauseProcessing = false;
+                // enumerate video devices
+                FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+                // create the video source (check that the camera exists is already done
+                VideoSource = new VideoCaptureDevice(MonikerStr);
 
 			    VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
                 ReceivingFrames = false;
@@ -151,7 +142,7 @@ namespace LitePlacer
                         break;
                     }
                 }
-                MainForm.DisplayText("*** Camera start: " + tries.ToString() + ", " + ReceivingFrames.ToString(), KnownColor.Purple);
+                MainForm.DisplayText("*** Camera started: " + tries.ToString() + ", " + ReceivingFrames.ToString(), KnownColor.Purple);
                 // another pause so that if we are receiveing frames, we have time to notice it
                 for (int i = 0; i < 10; i++)
                 {
@@ -159,7 +150,20 @@ namespace LitePlacer
                     Application.DoEvents();
                 }
 
-                return (ReceivingFrames);
+                if (!ReceivingFrames)
+                {
+                    return false;
+                }
+
+                VideoCapabilities Capability = VideoSource.VideoCapabilities[0];
+                FrameSizeX = Capability.FrameSize.Width;
+                FrameSizeY = Capability.FrameSize.Height;
+                FrameCenterX = FrameSizeX / 2;
+                FrameCenterY = FrameSizeY / 2;
+                ImageCenterX = ImageBox.Width / 2;
+                ImageCenterY = ImageBox.Height / 2;
+                PauseProcessing = false;
+                return true;
             }
             catch
             {

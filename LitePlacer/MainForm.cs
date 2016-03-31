@@ -2303,8 +2303,8 @@ namespace LitePlacer
         private void StartCameras()
         {
             // Called at startup. 
-            DownCamera.Close();
-            UpCamera.Close();
+            DownCamera.Active = false;
+            UpCamera.Active = false;
             SetDownCameraDefaults();
             SetUpCameraDefaults();
             if (KeepActive_checkBox.Checked)
@@ -2376,19 +2376,39 @@ namespace LitePlacer
         private bool StartDownCamera_m()
         {
             UpCamera.Active = false;
-            DownCamera.Active = true;
             if (DownCamera.IsRunning())
             {
                 DisplayText("DownCamera already running");
+                DownCamera.Active = true;
                 return true;
             };
-            if (Properties.Settings.Default.DownCam_index == -1)
+
+            DownCamera.Active = false;
+            if (Properties.Settings.Default.DowncamMoniker == "")
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
                 return true;
             };
+            // Check that the device exists
+            List<string> monikers = DownCamera.GetMonikerStrings();
+            if (!monikers.Contains(Properties.Settings.Default.DowncamMoniker))
+            {
+                DisplayText("Downcamera moniker not found. Moniker: " + Properties.Settings.Default.DowncamMoniker);
+                return false;
+            }
 
-            if (!DownCamera.Start("DownCamera", Properties.Settings.Default.DownCam_index))
+            if (Properties.Settings.Default.UpcamMoniker == Properties.Settings.Default.DowncamMoniker)
+            {
+                ShowMessageBox(
+                    "Up camera and Down camera point to same physical device.",
+                    "Camera selection isse",
+                    MessageBoxButtons.OK
+                );
+                UpCamStatus_label.Text = "Not Connected";
+                return false;
+            }
+
+            if (!DownCamera.Start("DownCamera", Properties.Settings.Default.DowncamMoniker))
             {
                 ShowMessageBox(
                     "Problem Starting down camera.",
@@ -2400,38 +2420,60 @@ namespace LitePlacer
             };
             DownCamStatus_label.Text = "Active";
             UpCamStatus_label.Text = "Not Active";
+            DownCamera.Active = true;
             return true;
         }
 
         // ====
         private bool StartUpCamera_m()
         {
+
             DownCamera.Active = false;
-            UpCamera.Active = true;
             if (UpCamera.IsRunning())
             {
                 DisplayText("UpCamera already running");
+                UpCamera.Active = true;
                 return true;
             };
-            if (Properties.Settings.Default.UpCam_index == -1)
+
+            UpCamera.Active = false;
+            if (Properties.Settings.Default.UpcamMoniker == "")
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
                 return true;
             };
+            // Check that the device exists
+            List<string> monikers = UpCamera.GetMonikerStrings();
+            if (!monikers.Contains(Properties.Settings.Default.UpcamMoniker))
+            {
+                DisplayText("Upcamera moniker not found. Moniker: " + Properties.Settings.Default.UpcamMoniker);
+                return false;
+            }
 
-            if (!UpCamera.Start("UpCamera", Properties.Settings.Default.UpCam_index))
+            if (Properties.Settings.Default.UpcamMoniker == Properties.Settings.Default.DowncamMoniker)
+            {
+                ShowMessageBox(
+                    "Up camera and Down camera point to same physical device.",
+                    "Camera selection isse",
+                    MessageBoxButtons.OK
+                );
+                UpCamStatus_label.Text = "Not Connected";
+                return false;
+            }
+
+            if (!UpCamera.Start("UpCamera", Properties.Settings.Default.UpcamMoniker))
             {
                 ShowMessageBox(
                     "Problem Starting up camera.",
-                    "Up Camera problem",
+                    "Up camera problem",
                     MessageBoxButtons.OK
                 );
                 UpCamStatus_label.Text = "Not Connected";
                 return false;
             };
-            UpCamera.Active = true;
             UpCamStatus_label.Text = "Active";
             DownCamStatus_label.Text = "Not Active";
+            UpCamera.Active = true;
             return true;
         }
 
@@ -2455,6 +2497,13 @@ namespace LitePlacer
 
         private void SetDownCameraDefaults()
         {
+            DownCamera.Id = "Downcamera";
+            DownCamera.FrameSizeX = 640;
+            DownCamera.FrameSizeY = 480;
+            DownCamera.FrameCenterX = 640 / 2;
+            DownCamera.FrameCenterY = 480 / 2;
+            DownCamera.ImageCenterX = 640 / 2;
+            DownCamera.ImageCenterY = 480 / 2;
             DownCamera.BoxSizeX = 200;
             DownCamera.BoxSizeY = 200;
             DownCamera.BoxRotationDeg = 0;
@@ -2485,6 +2534,14 @@ namespace LitePlacer
         // ====
         private void SetUpCameraDefaults()
         {
+            UpCamera.Id = "Upcamera";
+            UpCamera.FrameSizeX = 640;
+            UpCamera.FrameSizeY = 480;
+            UpCamera.FrameCenterX = 640 / 2;
+            UpCamera.FrameCenterY = 480 / 2;
+            UpCamera.ImageCenterX = 640 / 2;
+            UpCamera.ImageCenterY = 480 / 2;
+
             UpCamera.BoxSizeX = 200;
             UpCamera.BoxSizeY = 200;
             UpCamera.BoxRotationDeg = 0;
@@ -2677,8 +2734,13 @@ namespace LitePlacer
         {
             DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString());
             Properties.Settings.Default.DownCam_index = DownCam_comboBox.SelectedIndex;
+            List<string> Monikers = DownCamera.GetMonikerStrings();
+            Properties.Settings.Default.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
+            DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
             SelectCamera(DownCamera);
-            Properties.Settings.Default.DowncamMoniker = DownCamera.MonikerString;
+            // DisplayText("Downcam moniker by list: " + Monikers[DownCam_comboBox.SelectedIndex]);
+            // DisplayText("Downcam moniker by cam: " + DownCamera.MonikerString);
+
             if (DownCamera.IsRunning())
             {
                 SetCurrentCameraParameters();
@@ -2697,8 +2759,10 @@ namespace LitePlacer
         {
             DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString());
             Properties.Settings.Default.UpCam_index = UpCam_comboBox.SelectedIndex;
+            List<string> Monikers = UpCamera.GetMonikerStrings();
+            Properties.Settings.Default.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
+            UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
             SelectCamera(UpCamera);
-            Properties.Settings.Default.UpcamMoniker = UpCamera.MonikerString;
             if (UpCamera.IsRunning())
             {
                 SetCurrentCameraParameters();
