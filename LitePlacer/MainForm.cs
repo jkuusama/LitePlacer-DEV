@@ -101,6 +101,7 @@ namespace LitePlacer
             StartingUp = true;
             this.Size = new Size(1280, 900);
             DisplayText("Application Start");
+            DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
 
             Do_Upgrade();
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
@@ -226,9 +227,9 @@ namespace LitePlacer
                     }
                     UpdateDate += UpdateDescription[i];
                 }
-                string BuildDateText = "Build date " + BuildDate().Substring(0, 10);
-                BuildDateText = BuildDateText.Trim();
                 UpdateDate = UpdateDate.Trim();
+                string BuildDateText = BuildDate();
+                BuildDateText = "Build date " + BuildDate().Substring(0, BuildDateText.IndexOf(' '));
                 if (UpdateDate != BuildDateText)
                 {
                     return true;
@@ -305,7 +306,6 @@ namespace LitePlacer
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
-            DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
             CheckForUpdate_checkBox.Checked = Properties.Settings.Default.General_CheckForUpdates;
             if (CheckForUpdate_checkBox.Checked)
             {
