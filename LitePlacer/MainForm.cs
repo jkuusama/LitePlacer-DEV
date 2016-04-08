@@ -228,6 +228,7 @@ namespace LitePlacer
                 }
                 string BuildDateText = "Build date " + BuildDate().Substring(0, 10);
                 BuildDateText = BuildDateText.Trim();
+                UpdateDate = UpdateDate.Trim();
                 if (UpdateDate != BuildDateText)
                 {
                     return true;
