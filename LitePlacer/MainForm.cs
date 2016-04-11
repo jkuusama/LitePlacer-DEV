@@ -753,6 +753,15 @@ namespace LitePlacer
                     Headers.Add("B_column");
                 break;
 
+                case ".PanelFids":
+                    Headers.Add("Designator_Column");
+                    Headers.Add("Footprint_Column");
+                    Headers.Add("X_Column");
+                    Headers.Add("Y_Column");
+                    Headers.Add("Rotation_Column");
+                break;
+
+
 
                 default:
                     ShowMessageBox(
