@@ -281,5 +281,8 @@
     <Setting Name="DowncamMoniker" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="General_BelowPCB_Allowance" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

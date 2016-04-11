@@ -352,6 +352,7 @@ namespace LitePlacer
 
             ZTestTravel_textBox.Text = Properties.Settings.Default.General_ZTestTravel.ToString();
             ShadeGuard_textBox.Text = Properties.Settings.Default.General_ShadeGuard_mm.ToString();
+            NeedleBelowPCB_textBox.Text = Properties.Settings.Default.General_BelowPCB_Allowance.ToString();
 
             Z0_textBox.Text = Properties.Settings.Default.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
             BackOff_textBox.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
@@ -2032,10 +2033,10 @@ namespace LitePlacer
                 return false;
             }
 
-            if (Z>(Properties.Settings.Default.General_ZtoPCB + 1.6))
+            if (Z > (Properties.Settings.Default.General_ZtoPCB + Properties.Settings.Default.General_BelowPCB_Allowance))
             {
                 DialogResult dialogResult = ShowMessageBox(
-                    "The operation seems to take the needle below table surface. Continue?",
+                    "The operation seems to take the needle below safe level. Continue?",
                     "Z below table", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                 {
@@ -5220,6 +5221,15 @@ namespace LitePlacer
             Thread t = new Thread(() => TestZ_thread());
             t.IsBackground = true;
             t.Start();
+        }
+
+        private void NeedleBelowPCB_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(NeedleBelowPCB_textBox.Text, out val))
+            {
+                Properties.Settings.Default.General_BelowPCB_Allowance = val;
+            }
         }
 
         private void ZTestTravel_textBox_TextChanged(object sender, EventArgs e)
