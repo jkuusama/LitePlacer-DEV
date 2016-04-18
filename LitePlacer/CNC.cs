@@ -457,7 +457,7 @@ namespace LitePlacer
             {
                 if (line.Contains("File not open") && IgnoreError)
                 {
-                    MainForm.DisplayText("### Igored file not open error ###");
+                    MainForm.DisplayText("### Ignored file not open error ###");
                     return;
                 };
                 Error();

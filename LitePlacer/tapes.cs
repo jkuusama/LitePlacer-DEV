@@ -158,7 +158,7 @@ namespace LitePlacer
 
         // ========================================================================================
         // IncrementTape_Fast(): Updates count and next hole locations for a tape
-        // Like IncrementTape(), but just using the fast parameters
+        // Like IncrementTape(), but just using the fast parametersheader description
         public bool IncrementTape_Fast(int TapeNum)
         {
             int pos;

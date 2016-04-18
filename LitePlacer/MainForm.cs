@@ -126,11 +126,19 @@ namespace LitePlacer
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
+
+            // The components tab is more a distraction than useful.
+            // To add data, comment out the next line.
+            tabControlPages.TabPages.Remove(Components_tabPage);
+            // and uncomment this:
             // LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
+
             LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
-            LoadDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
-            Tapes.AddCustomTapesToTapes();
-            Tapes.AddWidthValues();
+
+            // To enable custom tapes, uncomment these:
+            // LoadDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
+            // Tapes.AddCustomTapesToTapes();
+            // Tapes.AddWidthValues();
 
             // 
             LoadDataGrid(path + "LitePlacer.HomingFunctions", Temp_dataGridView);
