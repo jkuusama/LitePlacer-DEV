@@ -7673,7 +7673,13 @@
             // 
             // TapesAll_saveFileDialog
             // 
-            this.TapesAll_saveFileDialog.DefaultExt = "tapes";
+            this.TapesAll_saveFileDialog.DefaultExt = "tapes_v2";
+            this.TapesAll_saveFileDialog.Filter = "V2 tape files|*.tapes_v2|All files|*.*";
+            // 
+            // TapesAll_openFileDialog
+            // 
+            this.TapesAll_openFileDialog.DefaultExt = "tapes_v2";
+            this.TapesAll_openFileDialog.Filter = "Tape files|*.tapes_v2; *.tapes|All files|*.*";
             // 
             // colorDialog1
             // 

@@ -133,7 +133,7 @@ namespace LitePlacer
             // and uncomment this:
             // LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
 
-            LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
+            LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
 
             // To enable custom tapes, uncomment these:
             // LoadDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
@@ -141,34 +141,34 @@ namespace LitePlacer
             // Tapes.AddWidthValues();
 
             // 
-            LoadDataGrid(path + "LitePlacer.HomingFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.HomingFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref Homing_dataGridView, false);
 
-            LoadDataGrid(path + "LitePlacer.FiducialsFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.FiducialsFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref Fiducials_dataGridView, false);
 
-            LoadDataGrid(path + "LitePlacer.ComponentsFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.ComponentsFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref Components_dataGridView, false);
 
-            LoadDataGrid(path + "LitePlacer.PaperTapeFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.PaperTapeFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref PaperTape_dataGridView, false);
 
-            LoadDataGrid(path + "LitePlacer.BlackTapeFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.BlackTapeFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref BlackTape_dataGridView, false);
 
-            LoadDataGrid(path + "LitePlacer.ClearTapeFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.ClearTapeFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref ClearTape_dataGridView, false);
 
-            LoadDataGrid(path + "LitePlacer.SnapshotFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.SnapshotFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref DowncamSnapshot_dataGridView, false);
 
-            LoadDataGrid(path + "LitePlacer.NeedleFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.NeedleFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref Needle_dataGridView, false);
 
-            LoadDataGrid(path + "LitePlacer.UpCamComponentsFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.UpCamComponentsFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref UpCamComponents_dataGridView, false);
 
-            LoadDataGrid(path + "LitePlacer.UpCamSnapshotFunctions", Temp_dataGridView);
+            LoadDataGrid(path + "LitePlacer.UpCamSnapshotFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref UpcamSnapshot_dataGridView, false);
 
             SetProcessingFunctions(Display_dataGridView);
@@ -396,39 +396,39 @@ namespace LitePlacer
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
-            SaveDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
-            SaveDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView);
-            SaveDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
+            SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
+            SaveDataGrid(path + "LitePlacer.TapesData_v2", Tapes_dataGridView);
+            SaveDataGrid(path + "LitePlacer.CustomTapes_v2", CustomTapes_dataGridView);
 
             DataGridViewCopy(Homing_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.HomingFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.HomingFunctions_v2", Temp_dataGridView);
 
             DataGridViewCopy(Fiducials_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.FiducialsFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.FiducialsFunctions_v2", Temp_dataGridView);
 
             DataGridViewCopy(Components_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.ComponentsFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.ComponentsFunctions_v2", Temp_dataGridView);
 
             DataGridViewCopy(PaperTape_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.PaperTapeFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.PaperTapeFunctions_v2", Temp_dataGridView);
 
             DataGridViewCopy(BlackTape_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.BlackTapeFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.BlackTapeFunctions_v2", Temp_dataGridView);
 
             DataGridViewCopy(ClearTape_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.ClearTapeFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.ClearTapeFunctions_v2", Temp_dataGridView);
 
             DataGridViewCopy(DowncamSnapshot_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.SnapshotFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.SnapshotFunctions_v2", Temp_dataGridView);
 
             DataGridViewCopy(Needle_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.NeedleFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.NeedleFunctions_v2", Temp_dataGridView);
 
             DataGridViewCopy(UpCamComponents_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions_v2", Temp_dataGridView);
 
             DataGridViewCopy(UpcamSnapshot_dataGridView, ref Temp_dataGridView, false);
-            SaveDataGrid(path + "LitePlacer.UpCamSnapshotFunctions", Temp_dataGridView);
+            SaveDataGrid(path + "LitePlacer.UpCamSnapshotFunctions_v2", Temp_dataGridView);
 
             if (Cnc.Connected)
             {
@@ -532,11 +532,13 @@ namespace LitePlacer
         // Reading ver2 format allows changing the data grid itself at a software update, 
         // adding and removing columns, and still read in a saved file from previous software version.
 
-        private int Ver2FormatID = 20000001;
+        public enum DataTableType { Tapes, CustomTapes, ComponentData, VideoProcessing, PanelFiducials};
+
+        private int Ver2FormatID = 20000001;  // Just in case we need to identify the format we are using. 
         public bool LoadingDataGrid = false;  // to avoid problems with cell value changed event and unfilled grids
 
 
-        public void LoadDataGrid(string FileName, DataGridView dgv)
+        public void LoadDataGrid(string FileName, DataGridView dgv, DataTableType TableType)
         {
             try
             {
@@ -544,17 +546,30 @@ namespace LitePlacer
                 LoadingDataGrid = true;
                 int first;
 
-                // Does version 2 files exist?
-                Ver2 = (File.Exists(FileName+"_v2"));
-                if(Ver2)
+
+                if (File.Exists(FileName + "_v2"))
                 {
                     FileName = FileName + "_v2";
                 }
-
-                if (!File.Exists(FileName))
+                else
                 {
-                    return;
+                    if (!File.Exists(FileName))
+                    {
+                        DisplayText("Didn't find file " + FileName);
+                        return;   // Didint find the specified file name nor filename+v2 (these would be the default files)
+                    }
                 }
+
+                // Find out the version
+                using (BinaryReader br1 = new BinaryReader(File.Open(FileName, FileMode.Open)))
+                {
+                    first = br1.ReadInt32();
+                    if (first == Ver2FormatID)
+                    {
+                        Ver2 = true;
+                    }
+                }
+
                 
                 using (BinaryReader br = new BinaryReader(File.Open(FileName, FileMode.Open)))
                 {
@@ -590,7 +605,7 @@ namespace LitePlacer
 	                }
                     else
                     {
-                        Headers = Addv1Headers(FileName);
+                        Headers = Addv1Headers(FileName, TableType);
                     }
 
                     // read data
@@ -661,7 +676,7 @@ namespace LitePlacer
         {
             try
             {
-                using (BinaryWriter bw = new BinaryWriter(File.Open(FileName+"_v2", FileMode.Create)))
+                using (BinaryWriter bw = new BinaryWriter(File.Open(FileName, FileMode.Create)))
                 {
                     bw.Write(Ver2FormatID);
                     bw.Write(dgv.Columns.Count);
@@ -701,24 +716,23 @@ namespace LitePlacer
 
         // =================================================================================
         // To be able to change columns and read in old format data file, we need to manually set the old
-        // format headers, since I didn't have the insight to write them to the file forom beginning.
+        // format headers, since I didn't have the insight to write them to the file from beginning.
         // this routine does it, called from LoadDataGrid()
 
-        public List<string> Addv1Headers(string filename)
+        public List<string> Addv1Headers(string filename, DataTableType TableType )
         {
             List<string> Headers = new List<string>();
-            int dot = filename.LastIndexOf('.');
-            string filetype = filename.Substring(dot);
 
-            switch (filetype)
+            switch (TableType)
             {
-                case ".TapesData":
+                case DataTableType.Tapes:
                     Headers.Add("SelectButtonColumn");
                     Headers.Add("IdColumn");
                     Headers.Add("OrientationColumn");
                     Headers.Add("RotationColumn");
                     Headers.Add("WidthColumn");
                     Headers.Add("TypeColumn");
+                    // Headers.Add("CapacityColumn");   // not in v1 files
                     Headers.Add("Next_Column");
                     Headers.Add("Tray_Column");
                     Headers.Add("X_Column");
@@ -729,7 +743,7 @@ namespace LitePlacer
                     Headers.Add("NextY_column");
                 break;
 
-                case ".CustomTapes":
+                case DataTableType.CustomTapes:
                     Headers.Add("Name_Column");
                     Headers.Add("PitchColumn");
                     Headers.Add("UsesLocationMarks_Column");
@@ -737,22 +751,13 @@ namespace LitePlacer
                     Headers.Add("PartOffsetY_Column");
                 break;
 
-                case ".ComponentData":
+                case DataTableType.ComponentData:
                     Headers.Add("PartialName_column");
                     Headers.Add("SizeX_column");
                     Headers.Add("SizeY_column");
                 break;
 
-                case ".HomingFunctions":
-                case ".FiducialsFunctions":
-                case ".ComponentsFunctions":
-                case ".PaperTapeFunctions":
-                case ".BlackTapeFunctions":
-                case ".ClearTapeFunctions":
-                case ".SnapshotFunctions":
-                case ".NeedleFunctions":
-                case ".UpCamComponentsFunctions":
-                case ".UpCamSnapshotFunctions":
+                case DataTableType.VideoProcessing:
                     Headers.Add("Funct_column");
                     Headers.Add("Enabled_column");
                     Headers.Add("Int1_column");
@@ -762,7 +767,7 @@ namespace LitePlacer
                     Headers.Add("B_column");
                 break;
 
-                case ".PanelFids":
+                case DataTableType.PanelFiducials:
                     Headers.Add("Designator_Column");
                     Headers.Add("Footprint_Column");
                     Headers.Add("X_Column");
@@ -774,7 +779,7 @@ namespace LitePlacer
 
                 default:
                     ShowMessageBox(
-                        "*** Header description for " + filetype + " file missing. Programmer's error. ***",
+                        "*** Header description for " + TableType.ToString() + " missing. Programmer's error. ***",
                         "Sloppy programmer",
                         MessageBoxButtons.OK);
                 break;
@@ -9634,8 +9639,6 @@ namespace LitePlacer
 
         private void SaveAllTapes_button_Click(object sender, EventArgs e)
         {
-            TapesAll_saveFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
-
             if (TapesAll_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 SaveDataGrid(TapesAll_saveFileDialog.FileName, Tapes_dataGridView);
@@ -9644,11 +9647,9 @@ namespace LitePlacer
 
         private void LoadAllTapes_button_Click(object sender, EventArgs e)
         {
-            TapesAll_openFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
-
             if (TapesAll_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                LoadDataGrid(TapesAll_openFileDialog.FileName, Tapes_dataGridView);
+                LoadDataGrid(TapesAll_openFileDialog.FileName, Tapes_dataGridView, DataTableType.Tapes);
                 Tapes.AddWidthValues();
             }
         }
@@ -9760,8 +9761,6 @@ namespace LitePlacer
 
         private void SaveTray_button_Click(object sender, EventArgs e)
         {
-            TapesAll_saveFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
-
             if (TapesAll_saveFileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -9799,13 +9798,14 @@ namespace LitePlacer
 
         private void LoadTrayFromFile(string FileName)
         {
+            // from: http://stackoverflow.com/questions/6336239/copy-datagridviews-rows-into-another-datagridview 
             DataGridView ClipBoard_dgw = new DataGridView();
             ClipBoard_dgw.AllowUserToAddRows = false;  // this prevents an empty row in the end
             foreach (DataGridViewColumn col in Tapes_dataGridView.Columns)
             {
-                ClipBoard_dgw.Columns.Add(new DataGridViewColumn(col.CellTemplate));
+                ClipBoard_dgw.Columns.Add(col.Clone() as DataGridViewColumn);
             }
-            LoadDataGrid(FileName, ClipBoard_dgw);
+            LoadDataGrid(FileName, ClipBoard_dgw, DataTableType.Tapes);
             DataGridViewRow NewRow = new DataGridViewRow();
             foreach (DataGridViewRow row in ClipBoard_dgw.Rows)
             {
@@ -9823,8 +9823,6 @@ namespace LitePlacer
 
         private void LoadTray_button_Click(object sender, EventArgs e)
         {
-            TapesAll_openFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
-
             if (TapesAll_openFileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -9926,7 +9924,7 @@ namespace LitePlacer
 
             if (TapesAll_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                LoadDataGrid(TapesAll_openFileDialog.FileName, CustomTapes_dataGridView);
+                LoadDataGrid(TapesAll_openFileDialog.FileName, CustomTapes_dataGridView, DataTableType.CustomTapes);
             }
         }
 
@@ -11207,6 +11205,7 @@ namespace LitePlacer
 
         }
         #endregion
+
 
     }	// end of: 	public partial class FormMain : Form
 

@@ -39,7 +39,8 @@ namespace LitePlacer
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
-            MainForm.LoadDataGrid(path + "LitePlacer.PanelFids", PanelFiducials_dataGridView);
+            MainForm.LoadDataGrid(path + "LitePlacer.PanelFids", PanelFiducials_dataGridView, FormMain.DataTableType.PanelFiducials);
+
             XFirstOffset = Properties.Settings.Default.Panel_XFirstOffset;
             XFirstOffset_textBox.Text = XFirstOffset.ToString("0.00", CultureInfo.InvariantCulture);
             YFirstOffset = Properties.Settings.Default.Panel_YFirstOffset;
