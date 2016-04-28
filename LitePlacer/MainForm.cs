@@ -9798,7 +9798,7 @@ namespace LitePlacer
 
         private void LoadTrayFromFile(string FileName)
         {
-            // from: http://stackoverflow.com/questions/6336239/copy-datagridviews-rows-into-another-datagridview 
+            // from: http://stackoverflow.com/questions/6336239/copy-datagridviews-rows-into-another-datagridview  
             DataGridView ClipBoard_dgw = new DataGridView();
             ClipBoard_dgw.AllowUserToAddRows = false;  // this prevents an empty row in the end
             foreach (DataGridViewColumn col in Tapes_dataGridView.Columns)
