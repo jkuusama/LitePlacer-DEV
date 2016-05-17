@@ -6415,6 +6415,12 @@ namespace LitePlacer
         {
             int index = CadData_GridView.CurrentRow.Index;
             CadData_GridView.Rows.Insert(index);
+            CadData_GridView.Rows[index].Cells["Component"].Value = "new_component";
+            CadData_GridView.Rows[index].Cells["Value_Footprint"].Value = "value "+" | "+" footprint";
+            CadData_GridView.Rows[index].Cells["X_nominal"].Value = "0.0";
+            CadData_GridView.Rows[index].Cells["Y_nominal"].Value = "0.0";
+            CadData_GridView.Rows[index].Cells["Rotation"].Value = "0.0";
+            CadData_GridView.CurrentCell = CadData_GridView.Rows[index].Cells[0];
         }
 
         private void RebuildJobData_button_Click(object sender, EventArgs e)
