@@ -6668,16 +6668,11 @@ namespace LitePlacer
                 };
                 // Found something to do. Find the row from Job data
                 string component = CadRow.Cells["Component"].Value.ToString();
-                string componentlist;
                 int JobRowNo;
                 for (JobRowNo = 0; JobRowNo < JobData_GridView.RowCount; JobRowNo++)
                 {
-                    componentlist = JobData_GridView.Rows[JobRowNo].Cells["ComponentList"].Value.ToString();
-
-                    if ((componentlist.StartsWith(component))
-                        || (componentlist.Contains("," + component + ","))
-                        || (componentlist.EndsWith(component))
-                        )
+                    List<String> componentlist = SplitCSV(JobData_GridView.Rows[JobRowNo].Cells["ComponentList"].Value.ToString(), ',');
+                    if (componentlist.Contains(component))
                     {
                         break;
                     }
