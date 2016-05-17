@@ -7057,6 +7057,13 @@ namespace LitePlacer
 
             if (Component != "--") // if component exists:
             {
+                if (SkipMeasurements_checkBox.Checked)
+                {
+                    // User wants to use the nominal coordinates. Copy the nominal to machine for this to happen:
+                    CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value = CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value;
+                    CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value = CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value;
+                    CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value = CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value;
+                }
                 // check data consistency
                 if (!ComponentDataValidates_m(Component, CADdataRow, GroupRow))
                 {
