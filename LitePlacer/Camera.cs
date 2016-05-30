@@ -1194,18 +1194,79 @@ namespace LitePlacer
 		{
 			List<Shapes.Circle> Circles = FindCirclesFunct(bitmap);
 
-			Graphics g = Graphics.FromImage(bitmap);
-			Pen pen = new Pen(Color.DarkOrange, 2);
+            if (Circles.Count == 0)
+	        {
+		        return;
+	        }
+            // Find smallest
+            int Smallest = 0;
+            double SmallRadius = Circles[0].Radius;
+            for (int i = 0, n = Circles.Count; i < n; i++)
+            {
+                if (Circles[i].Radius < SmallRadius)
+                {
+                    Smallest = i;
+                    SmallRadius = Circles[i].Radius;
+                }
+            }
+
+            // find closest to center
+            int Closest = 0;
+            double Distance = (Circles[0].X - FrameCenterX) * (Circles[0].X - FrameCenterX) + (Circles[0].Y - FrameCenterY) * (Circles[0].Y - FrameCenterY);
+            for (int i = 0, n = Circles.Count; i < n; i++)
+            {
+                {
+                    double d1 = Circles[i].X - FrameCenterX;
+                    d1 = d1 * d1;
+                    double d2 = Circles[i].Y - FrameCenterY;
+                    d2 = d2 * d2;
+                    double d3 = d1 + d2;
+                    if(d3<Distance)
+                    {
+                        Closest = i;
+                        Distance = d3;
+                    }
+                }
+            }
+
+            Graphics g = Graphics.FromImage(bitmap);
+            Pen OrangePen = new Pen(Color.DarkOrange, 2);
+            Pen AquaPen = new Pen(Color.Aqua, 2);
+            Pen LimePen = new Pen(Color.Lime, 2);
+            Pen MagentaPen = new Pen(Color.Magenta, 2);
+
+            if (Closest==Smallest)
+            {
+                g.DrawEllipse(MagentaPen,
+                    (float)(Circles[Closest].X - Circles[Closest].Radius), (float)(Circles[Closest].Y - Circles[Closest].Radius),
+                    (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
+            }
+            else
+            {
+                g.DrawEllipse(LimePen,
+                    (float)(Circles[Closest].X - Circles[Closest].Radius), (float)(Circles[Closest].Y - Circles[Closest].Radius),
+                    (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
+                g.DrawEllipse(AquaPen,
+                    (float)(Circles[Smallest].X - Circles[Smallest].Radius), (float)(Circles[Smallest].Y - Circles[Smallest].Radius),
+                    (float)(Circles[Smallest].Radius * 2), (float)(Circles[Smallest].Radius * 2));
+            }
+
 
 			for (int i = 0, n = Circles.Count; i < n; i++)
 			{
-				g.DrawEllipse(pen,
+                if ((i!=Closest)&&(i!=Smallest))
+                {
+                 g.DrawEllipse(OrangePen,
 					(float)(Circles[i].X - Circles[i].Radius), (float)(Circles[i].Y - Circles[i].Radius),
 					(float)(Circles[i].Radius * 2), (float)(Circles[i].Radius * 2));
+                }
 			}
             g.Dispose();
-            pen.Dispose();
-		}
+            OrangePen.Dispose();
+            AquaPen.Dispose();
+            LimePen.Dispose();
+            MagentaPen.Dispose();
+        }
 
 
 		// =========================================================
