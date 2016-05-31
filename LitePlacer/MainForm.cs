@@ -5782,6 +5782,38 @@ namespace LitePlacer
 
                     ZGuardOn();
                     CancelProbing_button.Visible = false;
+                    // If tapes have z heights set, offer to zero out those:
+                    bool ZisSet = false;
+                    foreach (DataGridViewRow Row in Tapes_dataGridView.Rows)
+                    {
+                        if (Row.Cells["PickupZ_Column"].Value.ToString() != "--")
+                        {
+                            ZisSet = true;
+                            break;
+                        }
+                        if (Row.Cells["PlaceZ_Column"].Value.ToString() != "--")
+                        {
+                            ZisSet = true;
+                            break;
+                        }
+                    }
+                    if (ZisSet)
+                    {
+                        DialogResult dialogResult = ShowMessageBox(
+                            "Reset pickup and placement heights on tapes?",
+                            "Reset Z's?",
+                            MessageBoxButtons.OKCancel);
+                        if (dialogResult == DialogResult.Cancel)
+                        {
+                            break;
+                        }
+                        foreach (DataGridViewRow Row in Tapes_dataGridView.Rows)
+                        {
+                            Row.Cells["PickupZ_Column"].Value = "--";
+                            Row.Cells["PlaceZ_Column"].Value = "--";
+                        }
+                    }
+
                     break;
             }
         }
