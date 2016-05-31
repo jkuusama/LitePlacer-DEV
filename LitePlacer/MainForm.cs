@@ -10562,7 +10562,7 @@ namespace LitePlacer
             {
                 SetNeedleMeasurement();
                 // Manual debug, big tolerance
-                DebugCirclesUpCamera(20.0 / Properties.Settings.Default.UpCam_XmmPerPixel);
+                DebugNeedle(20.0 / Properties.Settings.Default.UpCam_XmmPerPixel);
             }
             else
             {
@@ -10575,6 +10575,26 @@ namespace LitePlacer
             double X, Y;
             double Xpx, Ypx;
             if (UpCamera.GetClosestCircle(out X, out Y, Tolerance) > 0)
+            {
+                Xpx = X * UpCamera.GetMeasurementZoom();
+                Ypx = Y * UpCamera.GetMeasurementZoom();
+                DisplayText("X: " + Xpx.ToString() + "pixels, Y: " + Ypx.ToString() + "pixels");
+                X = X * Properties.Settings.Default.UpCam_XmmPerPixel;
+                Y = -Y * Properties.Settings.Default.UpCam_YmmPerPixel;
+                DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
+                DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                DisplayText("No results.");
+            }
+        }
+
+        private void DebugNeedle(double Tolerance)
+        {
+            double X, Y;
+            double Xpx, Ypx;
+            if (UpCamera.GetSmallestCircle(out X, out Y, Tolerance) > 0)
             {
                 Xpx = X * UpCamera.GetMeasurementZoom();
                 Ypx = Y * UpCamera.GetMeasurementZoom();

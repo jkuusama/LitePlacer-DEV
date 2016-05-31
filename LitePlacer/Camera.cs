@@ -1199,35 +1199,10 @@ namespace LitePlacer
 		        return;
 	        }
             // Find smallest
-            int Smallest = 0;
-            double SmallRadius = Circles[0].Radius;
-            for (int i = 0, n = Circles.Count; i < n; i++)
-            {
-                if (Circles[i].Radius < SmallRadius)
-                {
-                    Smallest = i;
-                    SmallRadius = Circles[i].Radius;
-                }
-            }
+            int Smallest = FindSmallestCircle(Circles);
 
             // find closest to center
-            int Closest = 0;
-            double Distance = (Circles[0].X - FrameCenterX) * (Circles[0].X - FrameCenterX) + (Circles[0].Y - FrameCenterY) * (Circles[0].Y - FrameCenterY);
-            for (int i = 0, n = Circles.Count; i < n; i++)
-            {
-                {
-                    double d1 = Circles[i].X - FrameCenterX;
-                    d1 = d1 * d1;
-                    double d2 = Circles[i].Y - FrameCenterY;
-                    d2 = d2 * d2;
-                    double d3 = d1 + d2;
-                    if(d3<Distance)
-                    {
-                        Closest = i;
-                        Distance = d3;
-                    }
-                }
-            }
+            int Closest = FindClosestCircle(Circles);
 
             Graphics g = Graphics.FromImage(bitmap);
             Pen OrangePen = new Pen(Color.DarkOrange, 2);
@@ -1268,60 +1243,125 @@ namespace LitePlacer
             MagentaPen.Dispose();
         }
 
+        // =========================================================
+        private int FindSmallestCircle(List<Shapes.Circle> Circles)
+        {
+            int Smallest = 0;
+            double SmallRadius = Circles[0].Radius;
+            for (int i = 0, n = Circles.Count; i < n; i++)
+            {
+                if (Circles[i].Radius < SmallRadius)
+                {
+                    Smallest = i;
+                    SmallRadius = Circles[i].Radius;
+                }
+            }
 
-		// =========================================================
-		public int GetClosestCircle(out double X, out double Y, double MaxDistance)
-		// Sets X, Y position of the closest circle to the frame center in pixels, return value is number of circles found
-		{
-			List<Shapes.Circle> GoodCircles = new List<Shapes.Circle>();
+            return Smallest;
+        }
+
+        // =========================================================
+        private int FindClosestCircle(List<Shapes.Circle> Circles)
+        {
+            int closest = 0;
+            double X = (Circles[0].X - FrameCenterX);
+            double Y = (Circles[0].Y - FrameCenterY);
+            double dist = X * X + Y * Y;  // we are interested only which one is closest, don't neet to take square roots to get distance right
+            double dX, dY;
+            for (int i = 0; i < Circles.Count; i++)
+            {
+                dX = Circles[i].X - FrameCenterX;
+                dY = Circles[i].Y - FrameCenterY;
+                if ((dX * dX + dY * dY) < dist)
+                {
+                    dist = dX * dX + dY * dY;
+                    closest = i;
+                }
+            }
+            return closest;
+        }
+
+        // =========================================================
+        public int GetClosestCircle(out double X, out double Y, double MaxDistance)
+        // Sets X, Y position of the closest circle to the frame center in pixels, return value is number of circles found
+        {
+            List<Shapes.Circle> GoodCircles = new List<Shapes.Circle>();
             Bitmap image = GetMeasurementFrame();
-			List<Shapes.Circle> RawCircles = FindCirclesFunct(image);
+            List<Shapes.Circle> RawCircles = FindCirclesFunct(image);
             image.Dispose();
 
-			X = 0.0;
-			Y = 0.0;
-			if (RawCircles.Count == 0)
-			{
-				return (0);
-			}
-			MaxDistance = MaxDistance * GetMeasurementZoom();
-			// Remove those that are more than MaxDistance away from frame center
-			foreach (Shapes.Circle Circle in RawCircles)
-			{
-				X = (Circle.X - FrameCenterX);
-				Y = (Circle.Y - FrameCenterY);
-				if ((X * X + Y * Y) < (MaxDistance * MaxDistance))
-				{
-					GoodCircles.Add(Circle);
-				}
-			}
-			if (GoodCircles.Count == 0)
-			{
-				return (0);
-			}
-			// Find the closest
-			X = (GoodCircles[0].X - FrameCenterX);
-			Y = (GoodCircles[0].Y - FrameCenterY);
-			double dist = X * X + Y * Y;  // we return X and Y, so we don't neet to take square roots to use right distance value
-			double dX, dY;
-			for (int i = 0; i < GoodCircles.Count; i++)
-			{
-				dX = GoodCircles[i].X - FrameCenterX;
-				dY = GoodCircles[i].Y - FrameCenterY;
-				if ((dX * dX + dY * dY) < dist)
-				{
-					dist = dX * dX + dY * dY;
-					X = dX;
-					Y = dY;
-				}
-			}
-			double zoom = GetMeasurementZoom();
-			X = X / zoom;
-			Y = Y / zoom;
-			return (GoodCircles.Count);
-		}
+            X = 0.0;
+            Y = 0.0;
+            if (RawCircles.Count == 0)
+            {
+                return (0);
+            }
+            MaxDistance = MaxDistance * GetMeasurementZoom();
+            // Remove those that are more than MaxDistance away from frame center
+            foreach (Shapes.Circle Circle in RawCircles)
+            {
+                X = (Circle.X - FrameCenterX);
+                Y = (Circle.Y - FrameCenterY);
+                if ((X * X + Y * Y) < (MaxDistance * MaxDistance))
+                {
+                    GoodCircles.Add(Circle);
+                }
+            }
+            if (GoodCircles.Count == 0)
+            {
+                return (0);
+            }
+            // Find the closest
+            int closest = FindClosestCircle(GoodCircles);
+            double zoom = GetMeasurementZoom();
+            X = (GoodCircles[closest].X - FrameCenterX);
+            Y = (GoodCircles[closest].Y - FrameCenterY);
+            X = X / zoom;
+            Y = Y / zoom;
+            return (GoodCircles.Count);
+        }
 
-		// ==========================================================================================================
+        // =========================================================
+        public int GetSmallestCircle(out double X, out double Y, double MaxDistance)
+        // Sets X, Y position of the smallest circle to the frame center in pixels, return value is number of circles found
+        {
+            List<Shapes.Circle> GoodCircles = new List<Shapes.Circle>();
+            Bitmap image = GetMeasurementFrame();
+            List<Shapes.Circle> RawCircles = FindCirclesFunct(image);
+            image.Dispose();
+
+            X = 0.0;
+            Y = 0.0;
+            if (RawCircles.Count == 0)
+            {
+                return (0);
+            }
+            MaxDistance = MaxDistance * GetMeasurementZoom();
+            // Remove those that are more than MaxDistance away from frame center
+            foreach (Shapes.Circle Circle in RawCircles)
+            {
+                X = (Circle.X - FrameCenterX);
+                Y = (Circle.Y - FrameCenterY);
+                if ((X * X + Y * Y) < (MaxDistance * MaxDistance))
+                {
+                    GoodCircles.Add(Circle);
+                }
+            }
+            if (GoodCircles.Count == 0)
+            {
+                return (0);
+            }
+            // Find the smallest
+            int smallest = FindSmallestCircle(GoodCircles);
+            double zoom = GetMeasurementZoom();
+            X = (GoodCircles[smallest].X - FrameCenterX);
+            Y = (GoodCircles[smallest].Y - FrameCenterY);
+            X = X / zoom;
+            Y = Y / zoom;
+            return (GoodCircles.Count);
+        }
+
+        // ==========================================================================================================
 
 		private Bitmap MirrorFunct(Bitmap frame)
 		{
