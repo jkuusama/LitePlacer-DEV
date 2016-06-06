@@ -8943,7 +8943,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Row.Cells["X_nominal"].Value = Math.Round((val / 2.54), 3).ToString();
+                Row.Cells["X_nominal"].Value = Math.Round((val * 25.4), 3).ToString();
                 if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out val))
                 {
                     ShowMessageBox(
@@ -8952,7 +8952,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Row.Cells["Y_nominal"].Value = Math.Round((val / 2.54), 3).ToString();
+                Row.Cells["Y_nominal"].Value = Math.Round((val * 25.4), 3).ToString();
             }
             return true;
         }
