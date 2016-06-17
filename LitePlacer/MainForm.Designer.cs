@@ -2205,7 +2205,7 @@
             // ColorHelp_label
             // 
             this.ColorHelp_label.AutoSize = true;
-            this.ColorHelp_label.Location = new System.Drawing.Point(266, 327);
+            this.ColorHelp_label.Location = new System.Drawing.Point(282, 327);
             this.ColorHelp_label.Name = "ColorHelp_label";
             this.ColorHelp_label.Size = new System.Drawing.Size(176, 13);
             this.ColorHelp_label.TabIndex = 137;
@@ -2214,7 +2214,7 @@
             // 
             // B_numericUpDown
             // 
-            this.B_numericUpDown.Location = new System.Drawing.Point(442, 304);
+            this.B_numericUpDown.Location = new System.Drawing.Point(523, 303);
             this.B_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -2234,7 +2234,7 @@
             // B_label
             // 
             this.B_label.AutoSize = true;
-            this.B_label.Location = new System.Drawing.Point(439, 288);
+            this.B_label.Location = new System.Drawing.Point(520, 287);
             this.B_label.Name = "B_label";
             this.B_label.Size = new System.Drawing.Size(14, 13);
             this.B_label.TabIndex = 135;
@@ -2243,7 +2243,7 @@
             // 
             // G_numericUpDown
             // 
-            this.G_numericUpDown.Location = new System.Drawing.Point(390, 303);
+            this.G_numericUpDown.Location = new System.Drawing.Point(451, 305);
             this.G_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -2263,7 +2263,7 @@
             // G_label
             // 
             this.G_label.AutoSize = true;
-            this.G_label.Location = new System.Drawing.Point(387, 287);
+            this.G_label.Location = new System.Drawing.Point(448, 289);
             this.G_label.Name = "G_label";
             this.G_label.Size = new System.Drawing.Size(15, 13);
             this.G_label.TabIndex = 133;
@@ -2272,7 +2272,7 @@
             // 
             // R_numericUpDown
             // 
-            this.R_numericUpDown.Location = new System.Drawing.Point(338, 304);
+            this.R_numericUpDown.Location = new System.Drawing.Point(373, 304);
             this.R_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -2292,7 +2292,7 @@
             // R_label
             // 
             this.R_label.AutoSize = true;
-            this.R_label.Location = new System.Drawing.Point(335, 288);
+            this.R_label.Location = new System.Drawing.Point(370, 288);
             this.R_label.Name = "R_label";
             this.R_label.Size = new System.Drawing.Size(15, 13);
             this.R_label.TabIndex = 131;
@@ -2302,7 +2302,7 @@
             // Color_label
             // 
             this.Color_label.AutoSize = true;
-            this.Color_label.Location = new System.Drawing.Point(266, 289);
+            this.Color_label.Location = new System.Drawing.Point(282, 289);
             this.Color_label.Name = "Color_label";
             this.Color_label.Size = new System.Drawing.Size(61, 13);
             this.Color_label.TabIndex = 130;
@@ -2311,7 +2311,7 @@
             // 
             // Color_Box
             // 
-            this.Color_Box.Location = new System.Drawing.Point(269, 304);
+            this.Color_Box.Location = new System.Drawing.Point(285, 304);
             this.Color_Box.Name = "Color_Box";
             this.Color_Box.ReadOnly = true;
             this.Color_Box.Size = new System.Drawing.Size(21, 20);
@@ -2589,7 +2589,7 @@
             // Parameter_double_label
             // 
             this.Parameter_double_label.AutoSize = true;
-            this.Parameter_double_label.Location = new System.Drawing.Point(203, 289);
+            this.Parameter_double_label.Location = new System.Drawing.Point(171, 288);
             this.Parameter_double_label.Name = "Parameter_double_label";
             this.Parameter_double_label.Size = new System.Drawing.Size(41, 13);
             this.Parameter_double_label.TabIndex = 122;
@@ -2612,7 +2612,7 @@
             // 
             // Parameter_double_textBox
             // 
-            this.Parameter_double_textBox.Location = new System.Drawing.Point(206, 305);
+            this.Parameter_double_textBox.Location = new System.Drawing.Point(174, 304);
             this.Parameter_double_textBox.Name = "Parameter_double_textBox";
             this.Parameter_double_textBox.Size = new System.Drawing.Size(38, 20);
             this.Parameter_double_textBox.TabIndex = 121;
@@ -2752,7 +2752,7 @@
             // 
             // Parameter_Int_numericUpDown
             // 
-            this.Parameter_Int_numericUpDown.Location = new System.Drawing.Point(141, 305);
+            this.Parameter_Int_numericUpDown.Location = new System.Drawing.Point(89, 303);
             this.Parameter_Int_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -2784,7 +2784,7 @@
             // Parameter_int_label
             // 
             this.Parameter_int_label.AutoSize = true;
-            this.Parameter_int_label.Location = new System.Drawing.Point(138, 289);
+            this.Parameter_int_label.Location = new System.Drawing.Point(86, 287);
             this.Parameter_int_label.Name = "Parameter_int_label";
             this.Parameter_int_label.Size = new System.Drawing.Size(35, 13);
             this.Parameter_int_label.TabIndex = 119;
@@ -2969,7 +2969,7 @@
             // 
             this.DownCameraDrawDashedCross_checkBox.AutoSize = true;
             this.DownCameraDrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(12, 303);
+            this.DownCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(428, 552);
             this.DownCameraDrawDashedCross_checkBox.Name = "DownCameraDrawDashedCross_checkBox";
             this.DownCameraDrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
             this.DownCameraDrawDashedCross_checkBox.TabIndex = 42;

@@ -297,11 +297,19 @@ namespace LitePlacer
 						f.func = ThresholdFunct;
 						break;
 
-					case "Histogram":
-						f.func = HistogramFunct;
-						break;
+                    case "Histogram":
+                        f.func = HistogramFunct;
+                        break;
 
-					default: 
+                    case "Blur":
+                        f.func = BlurFunct; 
+                        break;
+
+                    case "Gaussian blur":
+                        f.func = GaussianBlurFunct; 
+                        break;
+
+                    default: 
 						continue;
 					// break; 
 				}
@@ -792,17 +800,37 @@ namespace LitePlacer
 			filter.ApplyInPlace(frame);
 		}
 
-		// =========================================================
-		private void HistogramFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
-		{
-			// create MirrFilter
-			HistogramEqualization filter = new HistogramEqualization();
-			// process image
-			filter.ApplyInPlace(frame);
-		}
+        // =========================================================
+        private void HistogramFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        {
+            // create MirrFilter
+            HistogramEqualization filter = new HistogramEqualization();
+            // process image
+            filter.ApplyInPlace(frame);
+        }
 
 
-		// =========================================================
+        // =========================================================
+        private void BlurFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        {
+            // create filter
+            Blur filter = new Blur();
+            // apply the filter
+            filter.ApplyInPlace(frame);
+        }
+
+
+        // =========================================================
+        private void GaussianBlurFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        {
+            // create filter with kernel size equal to 11
+            GaussianBlur filter = new GaussianBlur(par_d, 11);
+            // apply the filter
+            filter.ApplyInPlace(frame);
+        }
+
+
+        // =========================================================
 		private void KillColor_Func(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
 		{
 			// create MirrFilter

@@ -10954,13 +10954,14 @@ namespace LitePlacer
             // To add a video processing fuction:
             // Add the name to here.
             // Add the name to Camera.cs, BuildFunctionsList()
+            // Add the parameter handling to SetEditTargets() below
             // Add the actual function (take example of any function already referred from BuildFunctionsList()
 
             DataGridViewComboBoxColumn comboboxColumn =
                 (DataGridViewComboBoxColumn)Grid.Columns[(int)Display_dataGridViewColumns.Function];
             comboboxColumn.Items.Clear();
             comboboxColumn.Items.AddRange("Threshold", "Histogram", "Grayscale", "Invert", "Edge detect",
-                "Noise reduction", "Kill color", "Keep color", "Meas. zoom");
+                "Noise reduction", "Kill color", "Keep color", "Blur", "Gaussian blur", "Meas. zoom");
         }
 
         private void SetEditTargets()
@@ -10989,7 +10990,11 @@ namespace LitePlacer
             };
             switch (Display_dataGridView.Rows[row].Cells[FunctCol].Value.ToString())
             {
-                // switch by the selected algorithm: 
+                // switch by the selected algorithm:  
+                case "Blur":
+                    ClearParameterValuesExcept(row, -1);
+                    return;		// no parameters
+
                 case "Histogram":
                     ClearParameterValuesExcept(row, -1);
                     return;		// no parameters
@@ -11075,6 +11080,28 @@ namespace LitePlacer
                     }
                     Parameter_double_textBox.Enabled = true;
                     Parameter_double_label.Text = "Zoom factor";
+                    UpdateDisplayFunctions();
+                    break;
+
+                case "Gaussian blur":
+                    // one double parameter
+                    ClearParameterValuesExcept(row, 3);
+                    if (Display_dataGridView.Rows[row].Cells[DoubleCol].Value == null)
+                    {
+                        Parameter_double_textBox.Text = "2.0";
+                        Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
+                    }
+                    else if (!double.TryParse(Display_dataGridView.Rows[row].Cells[3].Value.ToString(), out par_d))
+                    {
+                        Parameter_double_textBox.Text = "2.0";
+                        Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
+                    }
+                    else
+                    {
+                        Parameter_double_textBox.Text = par_d.ToString("0.00");
+                    }
+                    Parameter_double_textBox.Enabled = true;
+                    Parameter_double_label.Text = "Sigma, 0.01 to 5.0";
                     UpdateDisplayFunctions();
                     break;
 
