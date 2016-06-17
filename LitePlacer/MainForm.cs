@@ -8971,7 +8971,7 @@ namespace LitePlacer
             };
 
             // inches vs mms
-            if (AllLines[i++].Contains("inches"))
+            if (AllLines[i++].Contains("inches"))  
             {
                 inches = true;
             }
