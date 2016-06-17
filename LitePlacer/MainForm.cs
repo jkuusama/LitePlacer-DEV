@@ -9394,7 +9394,14 @@ namespace LitePlacer
                     // token is "xxx"
                     Line = Line.Substring(1);   // skip the first "
                     Tokens.Add(Line.Substring(0, Line.IndexOf('"')));
-                    Line = Line.Substring(Line.IndexOf('"') + 2);  // skip the " and the delimiter
+                    if (Line.IndexOf(delimiter) < 0)
+                    {
+                        Line = "";
+                    }
+                    else
+                    {
+                        Line = Line.Substring(Line.IndexOf('"') + 2);  // skip the " and the delimiter
+                    }
                 }
                 else
                 {
