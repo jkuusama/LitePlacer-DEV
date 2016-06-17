@@ -9249,7 +9249,7 @@ namespace LitePlacer
 
             for (i = LineIndex; i < AllLines.Count(); i++)   // for each component
             {
-                if (i == 5)
+                if (i == 113)
                 {
                     peek = AllLines[i];
                 }
@@ -9373,6 +9373,11 @@ namespace LitePlacer
                            MessageBoxButtons.OK);
                         return (Tokens);
                     }
+                    ShowMessageBox(
+                       "Warning: empty field on line " + InputLine,
+                       "Empty field",
+                       MessageBoxButtons.OK);
+                    Tokens.Add("");
                     Line = Line.Substring(1);
                 };
                 // add token
@@ -9389,7 +9394,7 @@ namespace LitePlacer
                     // token is "xxx"
                     Line = Line.Substring(1);   // skip the first "
                     Tokens.Add(Line.Substring(0, Line.IndexOf('"')));
-                    Line = Line.Substring(Line.IndexOf('"') + 1);
+                    Line = Line.Substring(Line.IndexOf('"') + 2);  // skip the " and the delimiter
                 }
                 else
                 {
@@ -9402,7 +9407,7 @@ namespace LitePlacer
                     else
                     {
                         Tokens.Add(Line.Substring(0, Line.IndexOf(delimiter)));
-                        Line = Line.Substring(Line.IndexOf(delimiter));
+                        Line = Line.Substring(Line.IndexOf(delimiter)+1);
                     }
                 }
             }
