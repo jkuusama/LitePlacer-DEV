@@ -2655,7 +2655,8 @@ namespace LitePlacer
                 DownCam_comboBox.Items.Add("----");
                 DownCamStatus_label.Text = "No Cam";
             }
-            if ((Devices.Count >= Properties.Settings.Default.DownCam_index) && (Properties.Settings.Default.DownCam_index > 0))
+            if (
+                (Devices.Count > Properties.Settings.Default.DownCam_index) && (Properties.Settings.Default.DownCam_index > 0))
             {
                 DownCam_comboBox.SelectedIndex = Properties.Settings.Default.DownCam_index;
             }
@@ -2684,7 +2685,7 @@ namespace LitePlacer
                 UpCam_comboBox.Items.Add("----");
                 UpCamStatus_label.Text = "No Cam";
             }
-            if ((Devices.Count >= Properties.Settings.Default.UpCam_index) && (Properties.Settings.Default.UpCam_index > 0))
+            if ((Devices.Count > Properties.Settings.Default.UpCam_index) && (Properties.Settings.Default.UpCam_index > 0))
             {
                 DisplayText("UpCam_comboBox.SelectedIndex= " + Properties.Settings.Default.UpCam_index.ToString());
                 UpCam_comboBox.SelectedIndex = Properties.Settings.Default.UpCam_index;
@@ -2762,8 +2763,6 @@ namespace LitePlacer
             Properties.Settings.Default.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
             SelectCamera(DownCamera);
-            // DisplayText("Downcam moniker by list: " + Monikers[DownCam_comboBox.SelectedIndex]);
-            // DisplayText("Downcam moniker by cam: " + DownCamera.MonikerString);
 
             if (DownCamera.IsRunning())
             {
