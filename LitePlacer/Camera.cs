@@ -708,13 +708,21 @@ namespace LitePlacer
                 DrawArrowFunct(frame);
             };
 
-            if (ImageBox.Image != null)
+            lock (_locker)
             {
-                ImageBox.Image.Dispose();
+                if (ImageBox.Image != null)
+                {
+                    ImageBox.Image.Dispose();
+                }
+                ImageBox.Image = (Bitmap)frame.Clone();
             }
-            ImageBox.Image = (Bitmap)frame.Clone();
+
             frame.Dispose();
         } // end Video_NewFrame
+
+        // see http://www.codeproject.com/Questions/689320/object-is-currently-in-use-elsewhere about the locker
+
+        private object _locker = new object();
 
 		// ==========================================================================================================
 		// Functions compatible with lists:
