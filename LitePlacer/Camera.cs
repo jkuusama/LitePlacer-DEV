@@ -160,8 +160,11 @@ namespace LitePlacer
                 FrameSizeY = Capability.FrameSize.Height;
                 FrameCenterX = FrameSizeX / 2;
                 FrameCenterY = FrameSizeY / 2;
-                ImageCenterX = ImageBox.Width / 2;
-                ImageCenterY = ImageBox.Height / 2;
+                lock (_locker)
+                {
+                    ImageCenterX = ImageBox.Width / 2;
+                    ImageCenterY = ImageBox.Height / 2;
+                }
                 PauseProcessing = false;
                 return true;
             }

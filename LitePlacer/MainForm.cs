@@ -2519,6 +2519,7 @@ namespace LitePlacer
 
         // =================================================================================
 
+
         private void SetDownCameraDefaults()
         {
             DownCamera.Id = "Downcamera";
