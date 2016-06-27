@@ -9092,7 +9092,16 @@ namespace LitePlacer
                 };
             }
 
-            List<String> Headers = SplitCSV(AllLines[LineIndex++], delimiter);
+            List<String> Headers;
+
+            if (KiCad)
+            {
+                Headers = SplitKiCadLine(AllLines[LineIndex++]);
+            }
+            else
+            {
+                 Headers = SplitCSV(AllLines[LineIndex++], delimiter);
+           }
 
             for (i = 0; i < Headers.Count; i++)
             {
@@ -9268,7 +9277,16 @@ namespace LitePlacer
                     continue;
                 }
 
-                Line = SplitCSV(AllLines[i], delimiter);
+                if (KiCad)
+                {
+                    Line = SplitKiCadLine(AllLines[i]);
+                }
+                else
+                {
+                    Line = SplitCSV(AllLines[i], delimiter);
+                }
+
+                // Line = SplitCSV(AllLines[i], delimiter);
                 // If layer is indicated and the component is not on this layer, skip it
                 if (LayerDataPresent)
                 {
@@ -9424,6 +9442,61 @@ namespace LitePlacer
             {
                 Tokens[i] = Tokens[i].Trim();
             }
+            return (Tokens);
+        }
+
+        private List<String> SplitKiCadLine(string InputLine)
+        {
+            // input line is space formatted:
+            // C123     0,1uF/50V        SM0603              1.6025     2.0964     180.0    top
+            // tokens may have "" around them
+
+            List<String> Tokens = new List<string>();
+            string Line = InputLine;
+            while (Line != "")
+            {
+                // skip leading spaces
+                Line = Line.Trim(' ');       
+
+                // add token
+                if (Line[0] == '"')
+                {
+                    if (Line.Length < 2)
+                    {
+                        ShowMessageBox(
+                           "Unexpected end of line on " + InputLine,
+                           "Line parsing failed",
+                           MessageBoxButtons.OK);
+                        return (Tokens);
+                    }
+                    // token is "xxx"
+                    Line = Line.Substring(1);   // skip the first "
+                    Tokens.Add(Line.Substring(0, Line.IndexOf('"')));
+                    if ((Line.IndexOf('"') + 1) == Line.Length)
+                    {
+                        Line = "";
+                    }
+                    else
+                    {
+                        Line = Line.Substring(Line.IndexOf('"') + 2);  // skip the " and the delimiter
+                    }
+                }
+                else
+                {
+                    // token does not have "" 's
+                    if (Line.IndexOf(' ') < 0)
+                    {
+                        Tokens.Add(Line);   // last element
+                        Line = "";
+                    }
+                    else
+                    {
+                        Tokens.Add(Line.Substring(0, Line.IndexOf(' ')));
+                        Line = Line.Substring(Line.IndexOf(' ') + 1);
+                    }
+                }
+            }
+            // remove leading spaces
             return (Tokens);
         }
 
