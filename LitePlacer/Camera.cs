@@ -621,6 +621,10 @@ namespace LitePlacer
             frame = (Bitmap)eventArgs.Frame.Clone();
             if (CopyFrame)
             {
+                if (TemporaryFrame != null)
+                {
+                    TemporaryFrame.Dispose();
+                }
                 TemporaryFrame = (Bitmap)frame.Clone();
                 CopyFrame = false;
             };
