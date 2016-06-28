@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -134,6 +134,7 @@
             this.B_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
+            this.MeasureDownCam_button = new System.Windows.Forms.Button();
             this.label135 = new System.Windows.Forms.Label();
             this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
             this.DowncamSnapshot_ColorBox = new System.Windows.Forms.TextBox();
@@ -635,6 +636,7 @@
             this.CadData_GridView = new System.Windows.Forms.DataGridView();
             this.Component = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value_Footprint = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Placed_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.X_nominal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Y_nominal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Rotation = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -935,7 +937,7 @@
             this.Job_openFileDialog.Filter = "LitePlacer Job files (*.lpj)|*.lpj|All files (*.*)|*.*";
             this.Job_openFileDialog.ReadOnlyChecked = true;
             this.Job_openFileDialog.SupportMultiDottedExtensions = true;
-            this.Job_openFileDialog.Title = "Job File to Load";
+            this.Job_openFileDialog.Title = "Job FileName to Load";
             // 
             // Job_saveFileDialog
             // 
@@ -1842,6 +1844,7 @@
             // 
             // DownCamera_tabPage
             // 
+            this.DownCamera_tabPage.Controls.Add(this.MeasureDownCam_button);
             this.DownCamera_tabPage.Controls.Add(this.label135);
             this.DownCamera_tabPage.Controls.Add(this.KeepActive_checkBox);
             this.DownCamera_tabPage.Controls.Add(this.DowncamSnapshot_ColorBox);
@@ -1899,6 +1902,17 @@
             this.DownCamera_tabPage.TabIndex = 3;
             this.DownCamera_tabPage.Text = "Down Looking Camera";
             this.DownCamera_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // MeasureDownCam_button
+            // 
+            this.MeasureDownCam_button.Location = new System.Drawing.Point(403, 114);
+            this.MeasureDownCam_button.Name = "MeasureDownCam_button";
+            this.MeasureDownCam_button.Size = new System.Drawing.Size(75, 23);
+            this.MeasureDownCam_button.TabIndex = 144;
+            this.MeasureDownCam_button.Text = "Measure";
+            this.MeasureDownCam_button.UseVisualStyleBackColor = true;
+            this.MeasureDownCam_button.Visible = false;
+            this.MeasureDownCam_button.Click += new System.EventHandler(this.MeasureDownCam_button_Click);
             // 
             // label135
             // 
@@ -2600,7 +2614,7 @@
             // 
             this.DownCam_FindComponents_checkBox.AutoSize = true;
             this.DownCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(223, 108);
+            this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(223, 111);
             this.DownCam_FindComponents_checkBox.Name = "DownCam_FindComponents_checkBox";
             this.DownCam_FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
             this.DownCam_FindComponents_checkBox.TabIndex = 54;
@@ -2795,7 +2809,7 @@
             // 
             this.DownCamFindRectangles_checkBox.AutoSize = true;
             this.DownCamFindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(223, 85);
+            this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(223, 88);
             this.DownCamFindRectangles_checkBox.Name = "DownCamFindRectangles_checkBox";
             this.DownCamFindRectangles_checkBox.Size = new System.Drawing.Size(103, 17);
             this.DownCamFindRectangles_checkBox.TabIndex = 53;
@@ -2943,7 +2957,7 @@
             // 
             this.DownCamFindCircles_checkBox.AutoSize = true;
             this.DownCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(223, 62);
+            this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(223, 65);
             this.DownCamFindCircles_checkBox.Name = "DownCamFindCircles_checkBox";
             this.DownCamFindCircles_checkBox.Size = new System.Drawing.Size(80, 17);
             this.DownCamFindCircles_checkBox.TabIndex = 43;
@@ -3077,7 +3091,7 @@
             // 
             this.DownCameraBoxYmmPerPixel_label.AutoSize = true;
             this.DownCameraBoxYmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(532, 89);
+            this.DownCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(484, 91);
             this.DownCameraBoxYmmPerPixel_label.Name = "DownCameraBoxYmmPerPixel_label";
             this.DownCameraBoxYmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.DownCameraBoxYmmPerPixel_label.TabIndex = 27;
@@ -3088,7 +3102,7 @@
             // 
             this.label68.AutoSize = true;
             this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label68.Location = new System.Drawing.Point(407, 63);
+            this.label68.Location = new System.Drawing.Point(359, 65);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(38, 13);
             this.label68.TabIndex = 18;
@@ -3111,7 +3125,7 @@
             // 
             this.DownCameraBoxXmmPerPixel_label.AutoSize = true;
             this.DownCameraBoxXmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(532, 63);
+            this.DownCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(484, 65);
             this.DownCameraBoxXmmPerPixel_label.Name = "DownCameraBoxXmmPerPixel_label";
             this.DownCameraBoxXmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
             this.DownCameraBoxXmmPerPixel_label.TabIndex = 26;
@@ -3122,7 +3136,7 @@
             // 
             this.label69.AutoSize = true;
             this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label69.Location = new System.Drawing.Point(407, 89);
+            this.label69.Location = new System.Drawing.Point(359, 91);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(38, 13);
             this.label69.TabIndex = 19;
@@ -3214,7 +3228,7 @@
             // 
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(503, 89);
+            this.label71.Location = new System.Drawing.Point(455, 91);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(23, 13);
             this.label71.TabIndex = 23;
@@ -3224,7 +3238,7 @@
             // DownCameraBoxX_textBox
             // 
             this.DownCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(451, 60);
+            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(403, 62);
             this.DownCameraBoxX_textBox.Name = "DownCameraBoxX_textBox";
             this.DownCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxX_textBox.TabIndex = 20;
@@ -3236,7 +3250,7 @@
             // 
             this.label70.AutoSize = true;
             this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.Location = new System.Drawing.Point(503, 63);
+            this.label70.Location = new System.Drawing.Point(455, 65);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(23, 13);
             this.label70.TabIndex = 22;
@@ -3246,7 +3260,7 @@
             // DownCameraBoxY_textBox
             // 
             this.DownCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(451, 86);
+            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(403, 88);
             this.DownCameraBoxY_textBox.Name = "DownCameraBoxY_textBox";
             this.DownCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxY_textBox.TabIndex = 21;
@@ -6662,11 +6676,11 @@
             // label127
             // 
             this.label127.AutoSize = true;
-            this.label127.Location = new System.Drawing.Point(25, 72);
+            this.label127.Location = new System.Drawing.Point(6, 72);
             this.label127.Name = "label127";
-            this.label127.Size = new System.Drawing.Size(71, 13);
+            this.label127.Size = new System.Drawing.Size(93, 13);
             this.label127.TabIndex = 79;
-            this.label127.Text = "(Use Rebuild)";
+            this.label127.Text = "(Rebuild Job data)";
             // 
             // PasteCadDataRow_button
             // 
@@ -6878,7 +6892,7 @@
             // 
             this.JobFileName_label.AutoSize = true;
             this.JobFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JobFileName_label.Location = new System.Drawing.Point(903, 310);
+            this.JobFileName_label.Location = new System.Drawing.Point(951, 310);
             this.JobFileName_label.Name = "JobFileName_label";
             this.JobFileName_label.Size = new System.Drawing.Size(29, 20);
             this.JobFileName_label.TabIndex = 62;
@@ -6890,9 +6904,9 @@
             this.label121.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label121.Location = new System.Drawing.Point(865, 310);
             this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(38, 20);
+            this.label121.Size = new System.Drawing.Size(80, 20);
             this.label121.TabIndex = 61;
-            this.label121.Text = "File:";
+            this.label121.Text = "FileName:";
             // 
             // JobDataSave_button
             // 
@@ -7346,14 +7360,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7420,18 +7434,19 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
             this.Value_Footprint,
+            this.Placed_column,
             this.X_nominal,
             this.Y_nominal,
             this.Rotation,
@@ -7456,6 +7471,14 @@
             this.Value_Footprint.HeaderText = "Component Type";
             this.Value_Footprint.Name = "Value_Footprint";
             this.Value_Footprint.Width = 130;
+            // 
+            // Placed_column
+            // 
+            this.Placed_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Placed_column.HeaderText = "Placed";
+            this.Placed_column.Name = "Placed_column";
+            this.Placed_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Placed_column.Width = 65;
             // 
             // X_nominal
             // 
@@ -7516,7 +7539,7 @@
             // 
             this.CadFileName_label.AutoSize = true;
             this.CadFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CadFileName_label.Location = new System.Drawing.Point(903, 10);
+            this.CadFileName_label.Location = new System.Drawing.Point(951, 10);
             this.CadFileName_label.Name = "CadFileName_label";
             this.CadFileName_label.Size = new System.Drawing.Size(29, 20);
             this.CadFileName_label.TabIndex = 1;
@@ -7528,9 +7551,9 @@
             this.label54.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label54.Location = new System.Drawing.Point(865, 10);
             this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(38, 20);
+            this.label54.Size = new System.Drawing.Size(80, 20);
             this.label54.TabIndex = 0;
-            this.label54.Text = "File:";
+            this.label54.Text = "FileName:";
             // 
             // tabControlPages
             // 
@@ -8317,14 +8340,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn GroupMethod;
         private System.Windows.Forms.DataGridViewTextBoxColumn MethodParamAllComponents;
         private System.Windows.Forms.DataGridViewTextBoxColumn ComponentList;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Component;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Value_Footprint;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_nominal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_nominal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_Machine;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_machine;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation_machine;
         private System.Windows.Forms.CheckBox ValidMeasurement_checkBox;
         private System.Windows.Forms.Button ChangeNeedle_button;
         private System.Windows.Forms.Label label123;
@@ -8435,6 +8450,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn R_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn G_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn B_column;
+        private System.Windows.Forms.TextBox NeedleBelowPCB_textBox;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
@@ -8450,8 +8467,16 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
-        private System.Windows.Forms.TextBox NeedleBelowPCB_textBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button MeasureDownCam_button;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Component;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Value_Footprint;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Placed_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn X_nominal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Y_nominal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn X_Machine;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Y_machine;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation_machine;
     }
 }
 

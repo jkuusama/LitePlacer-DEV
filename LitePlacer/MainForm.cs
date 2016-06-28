@@ -140,7 +140,6 @@ namespace LitePlacer
             // Tapes.AddCustomTapesToTapes();
             // Tapes.AddWidthValues();
 
-            // 
             LoadDataGrid(path + "LitePlacer.HomingFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref Homing_dataGridView, false);
 
@@ -314,6 +313,8 @@ namespace LitePlacer
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
+            LoadTempCADdata();
+
             CheckForUpdate_checkBox.Checked = Properties.Settings.Default.General_CheckForUpdates;
             if (CheckForUpdate_checkBox.Checked)
             {
@@ -393,6 +394,7 @@ namespace LitePlacer
             Properties.Settings.Default.General_MuteLogging = DisableLog_checkBox.Checked;
 
             Properties.Settings.Default.Save();
+            SaveTempCADdata();
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
@@ -6187,6 +6189,7 @@ namespace LitePlacer
             ValidMeasurement_checkBox.Checked = false;
             if (LoadCadData_m())
             {
+                SaveTempCADdata();
                 // Read in job data (.lpj file), if exists
                 string ext = Path.GetExtension(CadDataFileName);
                 JobFileName = CadDataFileName.Replace(ext, ".lpj");
@@ -6226,9 +6229,6 @@ namespace LitePlacer
         // =================================================================================
         private void SaveCadData_button_Click(object sender, EventArgs e)
         {
-            Stream SaveStream;
-            string OutLine;
-
             if (CadData_GridView.RowCount < 1)
             {
                 ShowMessageBox(
@@ -6243,35 +6243,86 @@ namespace LitePlacer
 
             if (Job_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if ((SaveStream = Job_saveFileDialog.OpenFile()) != null)
-                {
-                    using (StreamWriter f = new StreamWriter(SaveStream))
-                    {
-                        // Write header
-                        OutLine = "\"Component\",\"Value\",\"Footprint\",\"X\",\"Y\",\"Rotation\"";
-                        f.WriteLine(OutLine);
-                        // write data
-                        foreach (DataGridViewRow Row in CadData_GridView.Rows)
-                        {
-                            OutLine = "\"" + Row.Cells["Component"].Value.ToString() + "\"";
-                            string temp = Row.Cells["Value_Footprint"].Value.ToString();
-                            int i = temp.IndexOf('|');
-                            OutLine += ",\"" + temp.Substring(0, i - 2) + "\"";
-                            OutLine += ",\"" + temp.Substring(i + 3, temp.Length - i - 3) + "\"";
-                            OutLine += ",\"" + Row.Cells["X_nominal"].Value.ToString() + "\"";
-                            OutLine += ",\"" + Row.Cells["Y_nominal"].Value.ToString() + "\"";
-                            OutLine += ",\"" + Row.Cells["Rotation"].Value.ToString() + "\"";
-                            f.WriteLine(OutLine);
-                        }
-                    }
-                    SaveStream.Close();
-                }
+                SaveCADdata(Job_saveFileDialog.FileName);
                 CadDataFileName = Job_saveFileDialog.FileName;
                 CadFileName_label.Text = Path.GetFileName(CadDataFileName);
                 CadFilePath_label.Text = Path.GetDirectoryName(CadDataFileName);
             }
         }
 
+        private void SaveCADdata(string filename)
+        {
+            string OutLine;
+            using (StreamWriter f = new StreamWriter(filename))
+            {
+                // Write header
+                OutLine = "\"Component\",\"Value\",\"Footprint\",\"Placed\",\"X\",\"Y\",\"Rotation\"";
+                f.WriteLine(OutLine);
+                // write data
+                foreach (DataGridViewRow Row in CadData_GridView.Rows)
+                {
+                    OutLine = "\"" + Row.Cells["Component"].Value.ToString() + "\"";
+                    string temp = Row.Cells["Value_Footprint"].Value.ToString();
+                    int i = temp.IndexOf('|');
+                    OutLine += ",\"" + temp.Substring(0, i - 2) + "\"";
+                    OutLine += ",\"" + temp.Substring(i + 3, temp.Length - i - 3) + "\"";
+                    if (Row.Cells["Placed_column"].Value == null)
+                    {
+                        OutLine += ",\"false\"";
+                    }
+                    else
+                    {
+                        OutLine += ",\"" + Row.Cells["Placed_column"].Value.ToString() + "\"";
+                    }
+                    OutLine += ",\"" + Row.Cells["X_nominal"].Value.ToString() + "\"";
+                    OutLine += ",\"" + Row.Cells["Y_nominal"].Value.ToString() + "\"";
+                    OutLine += ",\"" + Row.Cells["Rotation"].Value.ToString() + "\"";
+                    f.WriteLine(OutLine);
+                }
+            }
+        }
+
+
+        private void LoadTempCADdata()
+        {
+            String[] AllLines;
+            string FileName = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = FileName.LastIndexOf('\\');
+            FileName = FileName.Remove(i + 1);
+            FileName = FileName + "CadDataSave.csv";
+            if (!File.Exists(FileName))
+            {
+                DisplayText("No saved temp CAD data file");
+                return;
+            }
+
+            try
+            {
+                DisplayText("Loading temp CAD data file");
+                AllLines = File.ReadAllLines(FileName);
+                ParseCadData_m(AllLines, false);
+                return;
+            }
+            catch (Exception ex)
+            {
+                DisplayText("Could not read temp CAD data file", KnownColor.DarkRed, true);
+                DisplayText("Msg: " + ex.Message, KnownColor.DarkRed, true);
+                CadData_GridView.Rows.Clear();
+                return;
+            };
+
+        }
+
+        private void SaveTempCADdata()
+        {
+            string FileName = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = FileName.LastIndexOf('\\');
+            FileName = FileName.Remove(i + 1);
+            FileName = FileName + "CadDataSave.csv";
+            SaveCADdata(FileName);
+        }
+
+        // =================================================================================
         private void JobDataLoad_button_Click(object sender, EventArgs e)
         {
             if (Job_openFileDialog.ShowDialog() == DialogResult.OK)
@@ -6453,6 +6504,7 @@ namespace LitePlacer
             CadData_GridView.Rows[index].Cells["Y_nominal"].Value = "0.0";
             CadData_GridView.Rows[index].Cells["Rotation"].Value = "0.0";
             CadData_GridView.CurrentCell = CadData_GridView.Rows[index].Cells[0];
+            SaveTempCADdata();
         }
 
         private void RebuildJobData_button_Click(object sender, EventArgs e)
@@ -6473,11 +6525,13 @@ namespace LitePlacer
                 if (oneCell.Selected)
                     CadData_GridView.Rows.RemoveAt(oneCell.RowIndex);
             }
+            SaveTempCADdata();
         }
 
         private void CopyCadDataRow_button_Click(object sender, EventArgs e)
         {
             ClipBoardRow = CadData_GridView.CurrentRow;
+            SaveTempCADdata();
         }
 
         private void PasteCadDataRow_button_Click(object sender, EventArgs e)
@@ -6486,6 +6540,7 @@ namespace LitePlacer
             {
                 CadData_GridView.CurrentRow.Cells[i].Value = ClipBoardRow.Cells[i].Value;
             }
+            SaveTempCADdata();
         }
 
         // =================================================================================
@@ -6744,6 +6799,7 @@ namespace LitePlacer
             }
             CleanupPlacement(ok);
             Update_GridView(JobData_GridView);
+            SaveTempCADdata();
         }
 
         // =================================================================================
@@ -9037,7 +9093,7 @@ namespace LitePlacer
             };
 
             ShowMessageBox(
-                "File header parse fail",
+                "FileName header parse fail",
                 "Data format error",
                 MessageBoxButtons.OK
             );
@@ -9047,6 +9103,8 @@ namespace LitePlacer
 
         private bool ParseCadData_m(String[] AllLines, bool KiCad)
         {
+            int PlacedIndex;
+            bool PlacedDataPresent;
             int ComponentIndex;
             int ValueIndex;
             int FootPrintIndex;
@@ -9102,6 +9160,23 @@ namespace LitePlacer
             {
                  Headers = SplitCSV(AllLines[LineIndex++], delimiter);
            }
+
+            for (i = 0; i < Headers.Count; i++)
+            {
+                if (Headers[i] == "Placed")
+                {
+                    break;
+                }
+            }
+            if (i >= Headers.Count)
+            {
+                PlacedDataPresent= false;
+            }
+            else
+            {
+                PlacedDataPresent= true;
+            }
+            PlacedIndex = i; 
 
             for (i = 0; i < Headers.Count; i++)
             {
@@ -9320,6 +9395,22 @@ namespace LitePlacer
                 CadData_GridView.Rows[Last].Cells["Component"].Value = Line[ComponentIndex];
                 CadData_GridView.Rows[Last].Cells["Value_Footprint"].Value = Line[ValueIndex] + "  |  " + Line[FootPrintIndex];
                 CadData_GridView.Rows[Last].Cells["Rotation"].Value = Line[RotationIndex];
+
+                if (PlacedDataPresent)
+	            {
+                    if ((Line[PlacedIndex]=="True")||(Line[PlacedIndex]=="true"))
+                    {
+                        CadData_GridView.Rows[Last].Cells["Placed_column"].Value = true;
+                    }
+		            else
+	                {
+                        CadData_GridView.Rows[Last].Cells["Placed_column"].Value = false;
+	                }
+	            }
+		        else
+	            {
+                    CadData_GridView.Rows[Last].Cells["Placed_column"].Value = false;
+	            }
 
                 if (LayerDataPresent)
                 {
@@ -11377,6 +11468,75 @@ namespace LitePlacer
 
         }
         #endregion
+
+        // ==========================================================================================================
+        // I tried automatic measurement of mm/pixel, but results were not great: repeatable, but not accurate. ??
+        // I'll hide the button, but keep the code, just in case.
+
+        private void MeasureDownCam_button_Click(object sender, EventArgs e)
+        {
+            if (!DownCamera.IsRunning())
+            {
+                ShowMessageBox(
+                    "Downcamera not running.",
+                    "Measurement failed.",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            SetHomingMeasurement();
+            const double dist = 1.0;
+            double X1, Y1;
+            if (DownCamera.GetClosestCircle(out X1, out Y1, 50.0) <= 0)
+            {
+                ShowMessageBox(
+                    "To use: Set homing parameters, then place a single homing mark close to camera center.",
+                    "Measurement failed.",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            CNC_XY_m(Cnc.CurrentX - (dist / 2.0), Cnc.CurrentY - (dist / 2.0));
+            Thread.Sleep(500);
+            if (DownCamera.GetClosestCircle(out X1, out Y1, 250.0) <= 0)
+            {
+                ShowMessageBox(
+                    "Measurement failed.",
+                    "Measurement failed.",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            double X2, Y2;
+            CNC_XY_m(Cnc.CurrentX + dist, Cnc.CurrentY + dist);
+            Thread.Sleep(500);
+            if (DownCamera.GetClosestCircle(out X2, out Y2, 250.0) <= 0)
+            {
+                ShowMessageBox(
+                    "Measurement failed.",
+                    "Measurement failed.",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            // sanity check
+            double X3, Y3;
+            CNC_XY_m(Cnc.CurrentX - (dist / 2.0), Cnc.CurrentY - (dist / 2.0));
+            Thread.Sleep(500);
+            if (DownCamera.GetClosestCircle(out X3, out Y3, 10.0) <= 0)
+            {
+                ShowMessageBox(
+                    "Measurement failed.",
+                    "Measurement failed.",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            Properties.Settings.Default.DownCam_XmmPerPixel = dist / (X1 - X2);
+            DownCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            double BoxX = Properties.Settings.Default.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
+            DownCameraBoxX_textBox.Text = BoxX.ToString("0.000", CultureInfo.InvariantCulture);
+
+            Properties.Settings.Default.DownCam_YmmPerPixel = dist / (Y2 - Y1);
+            DownCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            double BoxY = Properties.Settings.Default.DownCam_YmmPerPixel * DownCamera.BoxSizeY;
+            DownCameraBoxY_textBox.Text = BoxY.ToString("0.000", CultureInfo.InvariantCulture);
+        }
 
 
     }	// end of: 	public partial class FormMain : Form
