@@ -19,7 +19,8 @@ namespace LitePlacer
             public double Y;
         }
 
-		public List<NeedlePoint> CalibrationPoints = new List<NeedlePoint>();
+        public List<NeedlePoint> CalibrationPoints = new List<NeedlePoint>();
+        public NeedlePoint CalibrationPointsCenter = new NeedlePoint();
 
         private Camera Cam;
         private CNC Cnc;
@@ -98,8 +99,8 @@ namespace LitePlacer
         {
             if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
             {
-                X = 0.0;
-                Y = 0.0;
+                X = Properties.Settings.Default.DownCam_NeedleOffsetX;
+                Y = Properties.Settings.Default.DownCam_NeedleOffsetY;
                 return true;
             };
 
@@ -110,8 +111,8 @@ namespace LitePlacer
                     "Needle not calibrated", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                 {
-                    X = 0.0;
-                    Y = 0.0;
+                    X = Properties.Settings.Default.DownCam_NeedleOffsetX;
+                    Y = Properties.Settings.Default.DownCam_NeedleOffsetY;
                     return false;
                 };
                 double CurrX = Cnc.CurrentX;
@@ -119,17 +120,19 @@ namespace LitePlacer
                 double CurrA = Cnc.CurrentA;
                 if(!MainForm.CalibrateNeedle_m())
                 {
-                    X = 0;
-                    Y = 0;
+                    X = Properties.Settings.Default.DownCam_NeedleOffsetX;
+                    Y = Properties.Settings.Default.DownCam_NeedleOffsetY;
                     return false;
                 }
                 if (!MainForm.CNC_XYA_m(CurrX, CurrY, CurrA))
                 {
-                    X = 0;
-                    Y = 0;
+                    X = Properties.Settings.Default.DownCam_NeedleOffsetX;
+                    Y = Properties.Settings.Default.DownCam_NeedleOffsetY;
                     return false;
                 }
             };
+            double VirtualUpCamCncX = Properties.Settings.Default.UpCam_PositionX - Properties.Settings.Default.DownCam_NeedleOffsetX;
+            double VirtualUpCamCncY = Properties.Settings.Default.UpCam_PositionY - Properties.Settings.Default.DownCam_NeedleOffsetY;
 
             while (angle < 0)
             {
@@ -143,8 +146,8 @@ namespace LitePlacer
             // in the for loop,we check that now
             if (angle > 359.98)
             {
-                X = CalibrationPoints[0].X;
-                Y = CalibrationPoints[0].Y;
+                X = CalibrationPoints[0].X - VirtualUpCamCncX;
+                Y = CalibrationPoints[0].Y - VirtualUpCamCncY;
                 return true;
             };
 
@@ -152,8 +155,8 @@ namespace LitePlacer
             {
                 if (Math.Abs(angle - CalibrationPoints[i].Angle) < 1.0)
                 {
-                    X = CalibrationPoints[i].X;
-                    Y = CalibrationPoints[i].Y;
+                    X = CalibrationPoints[i].X - VirtualUpCamCncX;
+                    Y = CalibrationPoints[i].Y - VirtualUpCamCncY;
 					return true;
                 }
                 if ((angle > CalibrationPoints[i].Angle)
@@ -164,8 +167,8 @@ namespace LitePlacer
                 {
                     // angle is between CalibrationPoints[i] and CalibrationPoints[i+1], and is not == CalibrationPoints[i+1]
                     double fract = (angle - CalibrationPoints[i+1].Angle) / (CalibrationPoints[i+1].Angle - CalibrationPoints[i].Angle);
-                    X = CalibrationPoints[i].X + fract * (CalibrationPoints[i + 1].X - CalibrationPoints[i].X);
-                    Y = CalibrationPoints[i].Y + fract * (CalibrationPoints[i + 1].Y - CalibrationPoints[i].Y);
+                    X = CalibrationPoints[i].X + fract * (CalibrationPoints[i + 1].X - CalibrationPoints[i].X) - VirtualUpCamCncX;
+                    Y = CalibrationPoints[i].Y + fract * (CalibrationPoints[i + 1].Y - CalibrationPoints[i].Y) - VirtualUpCamCncY;
 					return true;
                 }
             }
@@ -199,6 +202,7 @@ namespace LitePlacer
 
 			double X = 0;
 			double Y = 0;
+            double Dist;
 			int res = 0; ;
             for (int i = 0; i <= 3600; i = i + 225)
             {
@@ -210,21 +214,19 @@ namespace LitePlacer
 				}
 				for (int tries = 0; tries < 10; tries++)
 				{
-    				Thread.Sleep(100);
-					res = Cam.GetClosestCircle(out X, out Y, Tolerance);
+    				Thread.Sleep(10);
+                    Application.DoEvents(); // Give video processing a chance to catch a new frame
+                    res = Cam.GetClosestCircle(out X, out Y, Tolerance);
 					if (res != 0)
 					{
-						break;
+                        X *= Properties.Settings.Default.UpCam_XmmPerPixel;
+                        Y *= Properties.Settings.Default.UpCam_YmmPerPixel;
+                        Dist = Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
+                        if (Dist < 0.01) break;
+                        //Not close enough yet, move closer
+                        CNC_XY_m(Cnc.CurrentX + X, Cnc.CurrentY + Y);
 					}
 
-					if (tries >= 9)
-					{
-                        MainForm.ShowMessageBox(
-							"Needle calibration: Can't see Needle",
-							"No Circle found",
-							MessageBoxButtons.OK);
-						return false;
-					}
 				}
                 if (res == 0)
                 {
@@ -243,11 +245,44 @@ namespace LitePlacer
                 //    return false;
                 //}
 
-                Point.X = X * Properties.Settings.Default.UpCam_XmmPerPixel;
-                Point.Y = Y * Properties.Settings.Default.UpCam_YmmPerPixel;
+                // Big Change!! Now recording camera location in CNC domain when needle is centered
+                // The difference between this and the virtual camera position gives the true offset
+                Point.X = Cnc.CurrentX + X;
+                Point.Y = Cnc.CurrentY + Y;
 				// MainForm.DisplayText("A: " + Point.Angle.ToString("0.000") + ", X: " + Point.X.ToString("0.000") + ", Y: " + Point.Y.ToString("0.000"));
                 CalibrationPoints.Add(Point);
             }
+            /*********************************************************************************
+             * Here we are going to calculate the center of the calibration points.  It will
+             * be the center of the line connecting each two points that are 180 degrees apart.
+             * We are assuming that the points are on even spacing, cover 360 degrees and that
+             * there are an even number of points.  For example, 16 points with 22.5 degree
+             * spacing will work.  In the ideal world all of the centers will be at the same
+             * point.  But to account for some variation we will take the average of all the
+             * centers.  To do that we will sum all of the points in the following loop and
+             * divide the sum by the loop count.
+             * 
+             * This point will be used for following calibration cycles to center the wobble
+             * on the up camera.
+             *
+             ********************************************************************************/
+            // There are half as many lines as there are points
+            int HalfCount = CalibrationPoints.Count / 2;
+            CalibrationPointsCenter.X = 0;
+            CalibrationPointsCenter.Y = 0;
+            for (int i = 0; i < HalfCount; i++)
+            {
+                //The following block could be used if one is anal about validating the situation
+                //if(CalibrationPoints[i + HalfCount].Angle - CalibrationPoints[i ].Angle != 180)
+                //{
+                //    Calibrated = false;
+                //    return false;
+                //}
+                CalibrationPointsCenter.X += (CalibrationPoints[i].X + CalibrationPoints[i + HalfCount].X) / 2;
+                CalibrationPointsCenter.Y += (CalibrationPoints[i].Y + CalibrationPoints[i + HalfCount].Y) / 2;
+            }
+            CalibrationPointsCenter.X /= HalfCount;
+            CalibrationPointsCenter.Y /= HalfCount;
             Calibrated = true;
             return true;
         }
@@ -261,9 +296,7 @@ namespace LitePlacer
 			{
 				return false;
 			};
-            double Xoff = Properties.Settings.Default.DownCam_NeedleOffsetX;
-            double Yoff = Properties.Settings.Default.DownCam_NeedleOffsetY;
-            return CNC_XYA(X + Xoff + dX, Y + Yoff + dY, A);
+            return CNC_XYA(X + dX, Y + dY, A);
         }
 
 

@@ -335,7 +335,6 @@
             this.ZUp_button = new System.Windows.Forms.Button();
             this.ZDown_button = new System.Windows.Forms.Button();
             this.GotoUpCamPosition_button = new System.Windows.Forms.Button();
-            this.SetUpCamPosition_button = new System.Windows.Forms.Button();
             this.label99 = new System.Windows.Forms.Label();
             this.label98 = new System.Windows.Forms.Label();
             this.UpcamPositionY_textBox = new System.Windows.Forms.TextBox();
@@ -1719,7 +1718,6 @@
             this.tabPageSetupCameras.Controls.Add(this.ZUp_button);
             this.tabPageSetupCameras.Controls.Add(this.ZDown_button);
             this.tabPageSetupCameras.Controls.Add(this.GotoUpCamPosition_button);
-            this.tabPageSetupCameras.Controls.Add(this.SetUpCamPosition_button);
             this.tabPageSetupCameras.Controls.Add(this.label99);
             this.tabPageSetupCameras.Controls.Add(this.label98);
             this.tabPageSetupCameras.Controls.Add(this.UpcamPositionY_textBox);
@@ -4105,17 +4103,6 @@
             this.GotoUpCamPosition_button.UseVisualStyleBackColor = true;
             this.GotoUpCamPosition_button.Click += new System.EventHandler(this.GotoUpCamPosition_button_Click);
             // 
-            // SetUpCamPosition_button
-            // 
-            this.SetUpCamPosition_button.Location = new System.Drawing.Point(419, 524);
-            this.SetUpCamPosition_button.Name = "SetUpCamPosition_button";
-            this.SetUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
-            this.SetUpCamPosition_button.TabIndex = 72;
-            this.SetUpCamPosition_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetUpCamPosition_button, "Sets Up camera location");
-            this.SetUpCamPosition_button.UseVisualStyleBackColor = true;
-            this.SetUpCamPosition_button.Click += new System.EventHandler(this.SetUpCamPosition_button_Click);
-            // 
             // label99
             // 
             this.label99.AutoSize = true;
@@ -4142,6 +4129,7 @@
             this.UpcamPositionY_textBox.TabIndex = 69;
             this.UpcamPositionY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionY_textBox_KeyPress);
             this.UpcamPositionY_textBox.Leave += new System.EventHandler(this.UpcamPositionY_textBox_Leave);
+            this.toolTip1.SetToolTip(this.UpcamPositionY_textBox, "This value is set during Needle Setup.\r\nWhile allowed, editing is not advised.");
             // 
             // UpcamPositionX_textBox
             // 
@@ -4151,6 +4139,7 @@
             this.UpcamPositionX_textBox.TabIndex = 68;
             this.UpcamPositionX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionX_textBox_KeyPress);
             this.UpcamPositionX_textBox.Leave += new System.EventHandler(this.UpcamPositionX_textBox_Leave);
+            this.toolTip1.SetToolTip(this.UpcamPositionX_textBox, "This value is set during Needle Setup.\r\nWhile allowed, editing is not advised.");
             // 
             // NeedleOffsetY_textBox
             // 
@@ -7930,7 +7919,6 @@
 		private System.Windows.Forms.CheckBox DownCameraDrawBox_checkBox;
 		private System.Windows.Forms.CheckBox Overlay_checkBox;
 		private System.Windows.Forms.Button GotoUpCamPosition_button;
-		private System.Windows.Forms.Button SetUpCamPosition_button;
 		private System.Windows.Forms.Label label99;
 		private System.Windows.Forms.Label label98;
 		private System.Windows.Forms.TextBox UpcamPositionY_textBox;

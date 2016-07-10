@@ -1621,20 +1621,31 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             }
-            UpCamera.PauseProcessing = true;
+            // We want to see the camera, so comment this out
+            //UpCamera.PauseProcessing = true;
 
             // take needle up
             bool result = true;
             result &= CNC_Z_m(0.0);
 
             // take needle to camera
-            result &= CNC_XY_m(Properties.Settings.Default.UpCam_PositionX, Properties.Settings.Default.UpCam_PositionY);
+            if (Needle.Calibrated)
+            {
+                //Needle is calibrated we can move to the center of wobble
+                result &= CNC_XY_m(Needle.CalibrationPointsCenter.X, Needle.CalibrationPointsCenter.Y);
+            }
+            else
+            {
+                result &= CNC_XY_m(Properties.Settings.Default.UpCam_PositionX, Properties.Settings.Default.UpCam_PositionY);
+            }
             result &= CNC_Z_m(Properties.Settings.Default.General_ZtoPCB - 1.0); // Average small component height 1mm (?)
 
 
             // measure the values
             SetNeedleMeasurement();
+            ZGuardOff();
             result &= Needle.Calibrate(4.0 / Properties.Settings.Default.UpCam_XmmPerPixel);  // have to find the tip within 4mm of center
+            ZGuardOn();
 
             // take needle up
             result &= CNC_Z_m(0.0);
@@ -1642,7 +1653,7 @@ namespace LitePlacer
             // restore position
             // result &= CNC_XYA_m(MarkX, MarkY, MarkA);
 
-            UpCamera.PauseProcessing = false;
+            //UpCamera.PauseProcessing = false;
             if (!UpCamWasRunning)
             {
                 SelectCamera(DownCamera);
@@ -3375,11 +3386,70 @@ namespace LitePlacer
         }
 
 
+        /******************************************************************************************
+         * These changes were triggered by a discussion on the forum in thread.
+         * http://liteplacer.com/phpBB/viewtopic.php?f=10&t=336  
+         * Are we doing needle calibration right?
+         * 
+         * In that thread it was purposed that the offset needs to be recalculated every time the
+         * machine was power cycled when the needle was rotated to a new angle due to the machine
+         * calling the new angle 0.  There is also discussion about the remapping that occurs with
+         * reading the fiducials and the angle corrections that come from that.  After studying the
+         * code, IMO that is an independent issue. There could be a problem there but it is not
+         * caused by the wobble correction.
+         * 
+         * I would like to first discuss how the code works now and purpose some changes.  My goals
+         * are in order.
+         * 
+         * - keep the calibration operations to a minimum (i.e. only calibrate offset once)
+         * - to improve the accuracy of wobble correction
+         * - to keep to the existing process as close as possible so the instructions change little if any
+         * - to make the code easier to understand. For future developers to better get a handle on
+         *   what is happening.
+         * 
+         * Before these changes, this function would have the user put the needle on a spot, the
+         * CNC coordinates for that spot were recorded.  Then the camera was placed on that spot and
+         * an offset was calculated from the two CNC coords.  This offset represents the distance for 
+         * the camera from the needle for that particular needle and that particular rotation of the
+         * needle.  Then the needle is moved to the center of the up camera and the CNC coords for that
+         * position are recorded when the user hits the "Set" up camera button as directed.  This system
+         * actually works as expected.  If the needle is correctly aligned to the center then we have a
+         * reference where we know precisely where the camera is in relation to the center of the up
+         * camera.  All correction factors are made relative to that point.  If for any given needle at a
+         * given angle of rotation the distance from the center of the camera is recorded, then one
+         * will have an accurate correction factor.
+         * 
+         * So the present algorithm works, why change it?
+         * 
+         * One, the present algorithm is not as accurate as it could be. Because the offset was 
+         * established at a point on a wobble path which is roughly circular, the error corrections 
+         * will be in an arbitrary direction with the furtherest correction being a wobble diameter away 
+         * from the center of the camera.  The further away from the center the more the camera location 
+         * estimation depends on the camera setup.  In particular, the UpCam_XmmPerPixel and 
+         * UpCam_YmmPerPixel setup accuracy has greater importance.  I purpose to change the way the 
+         * corrections are calculated so that the needle positions can be found by moving the camera so that
+         * the center of the camera aligns with the center of the wobble.  Or better the needle can be moved
+         * to be centered over the camera for each position.  We can do this by moving the calculations into 
+         * the CNC coordinate system and not use the center of the camera as the reference point.
+         * 
+         * Two, the last step has the human center the needle over the up camera.  We will use an algorithm
+         * where the needle is programmatically centered over the up camera.  This should reduce any question
+         * about where the camera "thinks" the center is.
+         * 
+         * Three, we will also set the up camera in the last step and remove the "Set" button since it 
+         * should only be set using the needle offset calibration.  It was possible for the user to
+         * "Set" the up camera at a point when it was not in the right position.
+         * 
+         * Four, from the needle offset and the up camera position we can calculate the CNC position where 
+         * the down camera is directly above the up camera.  For most configurations this point is unreachable, 
+         * but can be used in math to calculate a highly accurate needle offset for any given needle position.
+         * 
+         *****************************************************************************************/
         private void Offset2Method_button_Click(object sender, EventArgs e)
         {
             ZGuardOff();
-            SelectCamera(DownCamera);
-            SetCurrentCameraParameters();
+//            SelectCamera(DownCamera);
+//            SetCurrentCameraParameters();
             switch (SetNeedleOffset_stage)
             {
                 case 0:
@@ -3396,25 +3466,70 @@ namespace LitePlacer
                     NeedleOffsetMarkY = Cnc.CurrentY;
                     CNC_Z_m(0);
                     CNC_XY_m(Cnc.CurrentX - 75.0, Cnc.CurrentY - 29.0);
-                    DownCamera.DrawCross = true;
+                    DownCamera.DrawCross = true;  //Note restore this state
                     NeedleOffset_label.Text = "Jog camera above the same point, \n\rthen click \"Next\"";
                     break;
 
                 case 2:
-                    SetNeedleOffset_stage = 0;
+                    SetNeedleOffset_stage = 3;
                     Properties.Settings.Default.DownCam_NeedleOffsetX = NeedleOffsetMarkX - Cnc.CurrentX;
                     Properties.Settings.Default.DownCam_NeedleOffsetY = NeedleOffsetMarkY - Cnc.CurrentY;
                     NeedleOffsetX_textBox.Text = Properties.Settings.Default.DownCam_NeedleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
                     NeedleOffsetY_textBox.Text = Properties.Settings.Default.DownCam_NeedleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
-                    NeedleOffset_label.Visible = false;
-                    NeedleOffset_label.Text = "   ";
                     ShowMessageBox(
-                        "Now, jog the needle above the up camera,\n\rtake needle down, jog it to the image center\n\rand set Up Camera location",
+                        "Now, jog the needle above the up camera,\n\rtake needle down, jog it to the image center",
                         "Done here",
                         MessageBoxButtons.OK);
+                    NeedleOffset_label.Text = "Click \"Next\" when needle is near center.";
                     SelectCamera(UpCamera);
+                    SetCurrentCameraParameters();
                     SetNeedleMeasurement();
+                    break;
+
+                case 3:
+                    SetNeedleOffset_stage = 0;
+                    NeedleOffset_label.Visible = false;
+                    NeedleOffset_label.Text = "   ";
+                    double X;
+                    double Y;
+                    double Dist;
+                    double Tries = 0;
+                    int res;
+                    //Using this technique allows an exit in the middle of the loop.
+                    //We can exit right away if the distance is good.  If not, we can move and take another reading.
+                    while (true)
+                    {
+                        SetNeedleMeasurement();
+                        Thread.Sleep(10);
+                        Application.DoEvents(); // Give video processing a chance to catch a new frame
+                        res = UpCamera.GetClosestCircle(out X, out Y, 4.0 / Properties.Settings.Default.UpCam_XmmPerPixel);
+                        if (res != 0)
+                        {
+                            X *= Properties.Settings.Default.UpCam_XmmPerPixel;
+                            Y *= Properties.Settings.Default.UpCam_YmmPerPixel;
+                            Dist = Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
+                            if (Dist < 0.01) break;
+                            //Not close enough yet, move closer
+                            CNC_XY_m(Cnc.CurrentX + X, Cnc.CurrentY + Y);
+                        }
+                        Tries++;
+                        if (Tries >= 10) break; //Safe exit.  If res is good, chances are we are dithering just outside our limit
+                    }
+                    //The button has been removed and we are calling the function here instead.  
+                    if (res != 0)
+                    {
+                        SetUpCamPosition_button_Click(X, Y);
+                    }
+                    else
+                    {
+                        ShowMessageBox(
+                            "Needle Offset: Can't find needle",
+                            "No Circle found",
+                            MessageBoxButtons.OK);
+                    }
                     Offset2Method_button.Text = "Start";
+                    SelectCamera(DownCamera);
+                    SetCurrentCameraParameters();
                     CNC_Z_m(0.0);
                     ZGuardOn();
                     break;
@@ -3468,15 +3583,17 @@ namespace LitePlacer
             }
         }
 
-        private void SetUpCamPosition_button_Click(object sender, EventArgs e)
+        // The button has been removed and the parameters changed to accept a small correction factor
+        // See comments at Offset2Method for more discussion
+        private void SetUpCamPosition_button_Click(double X, double Y)
         {
-            UpcamPositionX_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            Properties.Settings.Default.UpCam_PositionX = Cnc.CurrentX;
-            UpcamPositionY_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
-            Properties.Settings.Default.UpCam_PositionY = Cnc.CurrentY;
+            UpcamPositionX_textBox.Text = (Cnc.CurrentX + X).ToString("0.000", CultureInfo.InvariantCulture);
+            Properties.Settings.Default.UpCam_PositionX = Cnc.CurrentX + X;
+            UpcamPositionY_textBox.Text = (Cnc.CurrentY + Y).ToString("0.000", CultureInfo.InvariantCulture);
+            Properties.Settings.Default.UpCam_PositionY = Cnc.CurrentY + Y;
             DisplayText("True position (with needle offset):");
-            DisplayText("X: " + (Cnc.CurrentX - Properties.Settings.Default.DownCam_NeedleOffsetX).ToString());
-            DisplayText("Y: " + (Cnc.CurrentY - Properties.Settings.Default.DownCam_NeedleOffsetY).ToString());
+            DisplayText("X: " + (Cnc.CurrentX + X - Properties.Settings.Default.DownCam_NeedleOffsetX).ToString());
+            DisplayText("Y: " + (Cnc.CurrentY + Y - Properties.Settings.Default.DownCam_NeedleOffsetY).ToString());
         }
 
         private void GotoUpCamPosition_button_Click(object sender, EventArgs e)
@@ -6084,6 +6201,7 @@ namespace LitePlacer
         {
             SetDownCameraDefaults();
             DownCamera.ImageBox = Placement_pictureBox;
+            UpCamera.ImageBox = Placement_pictureBox;
             SelectCamera(DownCamera);
             if (!DownCamera.IsRunning())
             {
