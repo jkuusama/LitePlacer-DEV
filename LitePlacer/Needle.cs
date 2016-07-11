@@ -204,6 +204,11 @@ namespace LitePlacer
 			double Y = 0;
             double Dist;
 			int res = 0; ;
+            // We don't want slack compensation on save the present state to restore
+            bool SaveSlackCompState = Cnc.SlackCompensation;
+            bool SaveSlackCompAState = Cnc.SlackCompensationA;
+            Cnc.SlackCompensation = false;
+            Cnc.SlackCompensationA = false;
             for (int i = 0; i <= 3600; i = i + 225)
             {
                 NeedlePoint Point = new NeedlePoint();
@@ -252,6 +257,9 @@ namespace LitePlacer
 				// MainForm.DisplayText("A: " + Point.Angle.ToString("0.000") + ", X: " + Point.X.ToString("0.000") + ", Y: " + Point.Y.ToString("0.000"));
                 CalibrationPoints.Add(Point);
             }
+            //Restore Slack Compensation states
+            Cnc.SlackCompensation = SaveSlackCompState;
+            Cnc.SlackCompensationA = SaveSlackCompAState;
             /*********************************************************************************
              * Here we are going to calculate the center of the calibration points.  It will
              * be the center of the line connecting each two points that are 180 degrees apart.

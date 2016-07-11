@@ -3495,6 +3495,11 @@ namespace LitePlacer
                     double Dist;
                     double Tries = 0;
                     int res;
+                    // We don't want slack compensation on save the present state to restore
+                    bool SaveSlackCompState = Cnc.SlackCompensation;
+                    bool SaveSlackCompAState = Cnc.SlackCompensationA;
+                    Cnc.SlackCompensation = false;
+                    Cnc.SlackCompensationA = false;
                     //Using this technique allows an exit in the middle of the loop.
                     //We can exit right away if the distance is good.  If not, we can move and take another reading.
                     while (true)
@@ -3527,6 +3532,9 @@ namespace LitePlacer
                             "No Circle found",
                             MessageBoxButtons.OK);
                     }
+                    //Restore Slack Compensation states
+                    Cnc.SlackCompensation = SaveSlackCompState;
+                    Cnc.SlackCompensationA = SaveSlackCompAState;
                     Offset2Method_button.Text = "Start";
                     SelectCamera(DownCamera);
                     SetCurrentCameraParameters();
