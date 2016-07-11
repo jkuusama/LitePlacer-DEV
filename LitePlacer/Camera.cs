@@ -106,9 +106,12 @@ namespace LitePlacer
 			}
 			set
 			{
-				_imageBox = value;
-				ImageCenterX = value.Width / 2;
-				ImageCenterY = value.Height / 2;
+                lock (_locker)
+                {
+                    _imageBox = value;
+                    ImageCenterX = value.Width / 2;
+                    ImageCenterY = value.Height / 2;
+                }
 			}
 		}
 
