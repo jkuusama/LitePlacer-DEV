@@ -117,7 +117,7 @@
             this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tapes_pictureBox = new System.Windows.Forms.PictureBox();
+            this.Tapes_pictureBox = new Camera.ProtectedPictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
             this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
             this.PartialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -365,7 +365,7 @@
             this.label93 = new System.Windows.Forms.Label();
             this.label94 = new System.Windows.Forms.Label();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
-            this.Cam_pictureBox = new System.Windows.Forms.PictureBox();
+            this.Cam_pictureBox = new Camera.ProtectedPictureBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
             this.NeedleBelowPCB_textBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -557,7 +557,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
-            this.Placement_pictureBox = new System.Windows.Forms.PictureBox();
+            this.Placement_pictureBox = new Camera.ProtectedPictureBox();
             this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
             this.OmitNeedleCalibration_checkBox = new System.Windows.Forms.CheckBox();
             this.MeasureZs_checkBox = new System.Windows.Forms.CheckBox();
@@ -7883,7 +7883,7 @@
 		private System.Windows.Forms.Button AddTape_button;
 		private System.Windows.Forms.Label label109;
 		private System.Windows.Forms.DataGridView Tapes_dataGridView;
-		private System.Windows.Forms.PictureBox Tapes_pictureBox;
+		private Camera.ProtectedPictureBox Tapes_pictureBox;
 		private System.Windows.Forms.TabPage Components_tabPage;
 		private System.Windows.Forms.DataGridView ComponentData_dataGridView;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PartialName;
@@ -7962,7 +7962,7 @@
 		private System.Windows.Forms.Label label94;
 		private System.Windows.Forms.Button DownCam_TakeSnapshot_button;
 		private System.Windows.Forms.CheckBox ImageTest_checkBox;
-		private System.Windows.Forms.PictureBox Cam_pictureBox;
+		private Camera.ProtectedPictureBox Cam_pictureBox;
 		private System.Windows.Forms.TabPage tabPageBasicSetup;
 		private System.Windows.Forms.Label label152;
 		private System.Windows.Forms.CheckBox SlackCompensation_checkBox;
@@ -8153,7 +8153,7 @@
 		private System.Windows.Forms.Label label88;
 		private System.Windows.Forms.Label label86;
 		private System.Windows.Forms.Label label85;
-		private System.Windows.Forms.PictureBox Placement_pictureBox;
+		private Camera.ProtectedPictureBox Placement_pictureBox;
 		private System.Windows.Forms.DataGridView JobData_GridView;
 		private System.Windows.Forms.CheckBox Bottom_checkBox;
 		private System.Windows.Forms.DataGridView CadData_GridView;

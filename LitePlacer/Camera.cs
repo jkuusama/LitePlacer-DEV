@@ -73,12 +73,32 @@ namespace LitePlacer
 
 		}
 
-		// Image= PictureBox in UI, the final shown image
-		// Frame= picture from camera
+        // Program has been crashing due to access of ImageBox.  As a shared resource it needs
+        // to be accessed in protected regions.  The lock _locker is to be used for this purpose.
+        // The OnPaint method in PictureBox runs in a second task.  By extending the PictureBox
+        // class, overriding the OnPaint method and putting the call into a region protected
+        // by _locker we can stop the crashing.
+        public class ProtectedPictureBox : System.Windows.Forms.PictureBox
+        {
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                lock (_locker)
+                {
+                    base.OnPaint(e);
+                }
+            }
+        }
 
-		// All processing and returned values are in Frame content
-		System.Windows.Forms.PictureBox _imageBox;
-		public System.Windows.Forms.PictureBox ImageBox
+        // _locker must be a static Camera class variable to be available to the overridden OnPaint method
+        private static object _locker = new object();
+
+        // Image= PictureBox in UI, the final shown image
+        // Frame= picture from camera
+
+        // All processing and returned values are in Frame content
+        // All references to PictureBox must be replace with ProtectedPictureBox
+        ProtectedPictureBox _imageBox;
+		public ProtectedPictureBox ImageBox
 		{
 			get
 			{
@@ -86,9 +106,12 @@ namespace LitePlacer
 			}
 			set
 			{
-				_imageBox = value;
-				ImageCenterX = value.Width / 2;
-				ImageCenterY = value.Height / 2;
+                lock (_locker)
+                {
+                    _imageBox = value;
+                    ImageCenterX = value.Width / 2;
+                    ImageCenterY = value.Height / 2;
+                }
 			}
 		}
 
@@ -618,7 +641,11 @@ namespace LitePlacer
 		private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
             ReceivingFrames = true;
-            frame = (Bitmap)eventArgs.Frame.Clone();
+            // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
+            lock (_locker)
+            {
+                frame = (Bitmap)eventArgs.Frame.Clone();
+            }
             if (CopyFrame)
             {
                 if (TemporaryFrame != null)
@@ -728,8 +755,6 @@ namespace LitePlacer
         } // end Video_NewFrame
 
         // see http://www.codeproject.com/Questions/689320/object-is-currently-in-use-elsewhere about the locker
-
-        private object _locker = new object();
 
 		// ==========================================================================================================
 		// Functions compatible with lists:
