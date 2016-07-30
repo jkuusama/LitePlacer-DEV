@@ -7283,8 +7283,23 @@ namespace LitePlacer
                             MessageBoxButtons.OK);
                         return false;
                     }
+                    DataGridViewCheckBoxCell cell = CadData_GridView.Rows[CADdataRow].Cells["Placed_column"] as DataGridViewCheckBoxCell;
+                    if (cell.Value != null)
+                    {
+                        if (cell == cell.TrueValue)
+                        {
+                            DisplayText(Component + " already placed");
+                        }
+                    }
                     if (!PlacePart_m(CADdataRow, GroupRow, X_machine, Y_machine, A_machine, FirstInRow))
+                    {
                         return false;
+                    }
+                    else
+                    {
+                        CadData_GridView.Rows[CADdataRow].Cells["Placed_column"].Value = true;
+                        SaveTempCADdata();
+                    }
                     break;
 
                 case "Change needle":
@@ -11588,7 +11603,7 @@ namespace LitePlacer
         }
 
 
-        int foo = 0;
+        //int foo = 0;
         private void CadData_GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if ( CadData_GridView.CurrentCell.ColumnIndex == CADdata_PlacedColumn)
