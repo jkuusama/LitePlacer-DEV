@@ -7286,9 +7286,10 @@ namespace LitePlacer
                     DataGridViewCheckBoxCell cell = CadData_GridView.Rows[CADdataRow].Cells["Placed_column"] as DataGridViewCheckBoxCell;
                     if (cell.Value != null)
                     {
-                        if (cell == cell.TrueValue)
+                        if (cell.Value.ToString() == "True")
                         {
                             DisplayText(Component + " already placed");
+                            break;
                         }
                     }
                     if (!PlacePart_m(CADdataRow, GroupRow, X_machine, Y_machine, A_machine, FirstInRow))
