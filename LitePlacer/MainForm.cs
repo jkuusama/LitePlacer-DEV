@@ -6250,11 +6250,16 @@ namespace LitePlacer
             }
         }
 
-        private void SaveCADdata(string filename)
+        private void SaveCADdata(string filename, bool tempfile = false)
         {
             string OutLine;
             using (StreamWriter f = new StreamWriter(filename))
             {
+                if (tempfile)
+                {
+                    f.WriteLine(CadFileName_label.Text);
+                    f.WriteLine(CadFilePath_label.Text);
+                }
                 // Write header
                 OutLine = "\"Component\",\"Value\",\"Footprint\",\"Placed\",\"X\",\"Y\",\"Rotation\"";
                 f.WriteLine(OutLine);
@@ -6300,6 +6305,9 @@ namespace LitePlacer
             {
                 DisplayText("Loading temp CAD data file");
                 AllLines = File.ReadAllLines(FileName);
+                CadFileName_label.Text = AllLines[0];
+                CadFilePath_label.Text = AllLines[1];
+                AllLines = AllLines.Skip(2).ToArray();
                 ParseCadData_m(AllLines, false);
                 return;
             }
@@ -6315,11 +6323,14 @@ namespace LitePlacer
 
         private void SaveTempCADdata()
         {
-            string FileName = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = FileName.LastIndexOf('\\');
-            FileName = FileName.Remove(i + 1);
-            FileName = FileName + "CadDataSave.csv";
-            SaveCADdata(FileName);
+            if ( CadFileName_label.Text!="----")
+            {
+                string FileName = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+                int i = FileName.LastIndexOf('\\');
+                FileName = FileName.Remove(i + 1);
+                FileName = FileName + "CadDataSave.csv";
+                SaveCADdata(FileName, true);
+            }
         }
 
         // =================================================================================
