@@ -117,7 +117,7 @@
             this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tapes_pictureBox = new Camera.ProtectedPictureBox();
+            this.Tapes_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
             this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
             this.PartialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -365,7 +365,7 @@
             this.label93 = new System.Windows.Forms.Label();
             this.label94 = new System.Windows.Forms.Label();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
-            this.Cam_pictureBox = new Camera.ProtectedPictureBox();
+            this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
             this.NeedleBelowPCB_textBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -557,7 +557,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
-            this.Placement_pictureBox = new Camera.ProtectedPictureBox();
+            this.Placement_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
             this.OmitNeedleCalibration_checkBox = new System.Windows.Forms.CheckBox();
             this.MeasureZs_checkBox = new System.Windows.Forms.CheckBox();
@@ -646,7 +646,7 @@
             this.CadFilePath_label = new System.Windows.Forms.Label();
             this.label56 = new System.Windows.Forms.Label();
             this.CadFileName_label = new System.Windows.Forms.Label();
-            this.label54 = new System.Windows.Forms.Label();
+            this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -6604,7 +6604,7 @@
             this.RunJob_tabPage.Controls.Add(this.CadFilePath_label);
             this.RunJob_tabPage.Controls.Add(this.label56);
             this.RunJob_tabPage.Controls.Add(this.CadFileName_label);
-            this.RunJob_tabPage.Controls.Add(this.label54);
+            this.RunJob_tabPage.Controls.Add(this.CAD_label);
             this.RunJob_tabPage.Location = new System.Drawing.Point(4, 22);
             this.RunJob_tabPage.Name = "RunJob_tabPage";
             this.RunJob_tabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -7460,6 +7460,8 @@
             this.CadData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.CadData_GridView.Size = new System.Drawing.Size(457, 212);
             this.CadData_GridView.TabIndex = 5;
+            this.CadData_GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CadData_GridView_CellContentClick);
+            this.CadData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.CadData_GridView_CellEndEdit);
             // 
             // Component
             // 
@@ -7545,15 +7547,15 @@
             this.CadFileName_label.TabIndex = 1;
             this.CadFileName_label.Text = "----";
             // 
-            // label54
+            // CAD_label
             // 
-            this.label54.AutoSize = true;
-            this.label54.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label54.Location = new System.Drawing.Point(865, 10);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(80, 20);
-            this.label54.TabIndex = 0;
-            this.label54.Text = "FileName:";
+            this.CAD_label.AutoSize = true;
+            this.CAD_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CAD_label.Location = new System.Drawing.Point(865, 10);
+            this.CAD_label.Name = "CAD_label";
+            this.CAD_label.Size = new System.Drawing.Size(80, 20);
+            this.CAD_label.TabIndex = 0;
+            this.CAD_label.Text = "FileName:";
             // 
             // tabControlPages
             // 
@@ -8160,7 +8162,7 @@
 		private System.Windows.Forms.Label CadFilePath_label;
 		private System.Windows.Forms.Label label56;
 		private System.Windows.Forms.Label CadFileName_label;
-		private System.Windows.Forms.Label label54;
+		private System.Windows.Forms.Label CAD_label;
 		private System.Windows.Forms.TabControl tabControlPages;
 		private System.Windows.Forms.Label label87;
 		private System.Windows.Forms.NumericUpDown SmallMovement_numericUpDown;

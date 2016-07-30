@@ -195,10 +195,6 @@ namespace LitePlacer
             Mark5_textBox.Text = Properties.Settings.Default.General_Mark5Name;
             Mark6_textBox.Text = Properties.Settings.Default.General_Mark6Name;
 
-            // The components tab is more a distraction than useful.
-            // To add data, comment out the next line.
-            tabControlPages.TabPages.Remove(Components_tabPage);
-
             Zlb_label.Text = "";
             Zlb_label.Visible = false;
 
@@ -6108,6 +6104,26 @@ namespace LitePlacer
         }
 
         // =================================================================================
+        // CAD data and Job datagrid colum definitions
+
+        const int CADdata_ComponentColumn = 0;
+        const int CADdata_ComponentTypeColumn = 1;
+        const int CADdata_PlacedColumn = 2;
+        const int CADdata_XNomColumn = 3;
+        const int CADdata_YNomColumn = 4;
+        const int CADdata_RotNomColumn = 5;
+        const int CADdata_XMachColumn = 6;
+        const int CADdata_YMachColumn = 7;
+        const int CADdata_RotMachColumn = 8;
+
+        const int Jobdata_CountColumn = 0;
+        const int Jobdata_ComponentTypColumn = 1;
+        const int Jobdata_MethodColumn = 2;
+        const int Jobdata_MethodParametersColumn = 3;
+        const int Jobdata_ComponentsColumn = 4;
+
+
+        // =================================================================================
         // CAD data and Job data load and save functions
         // =================================================================================
         private string CadDataFileName = "";
@@ -6224,6 +6240,7 @@ namespace LitePlacer
                 CadFilePath_label.Text = "--";
                 CadDataFileName = "--";
             }
+            MakeCADdataClean();
         }
 
         // =================================================================================
@@ -6259,6 +6276,11 @@ namespace LitePlacer
                 {
                     f.WriteLine(CadFileName_label.Text);
                     f.WriteLine(CadFilePath_label.Text);
+                    MakeCADdataDirty();  // it is dirty, since it didn't came from the original file
+                }
+                else 
+                {
+                    MakeCADdataClean();
                 }
                 // Write header
                 OutLine = "\"Component\",\"Value\",\"Footprint\",\"Placed\",\"X\",\"Y\",\"Rotation\"";
@@ -6298,9 +6320,13 @@ namespace LitePlacer
             if (!File.Exists(FileName))
             {
                 DisplayText("No saved temp CAD data file");
+                MakeCADdataClean();
                 return;
             }
-
+            else
+            {
+                MakeCADdataDirty();
+            }
             try
             {
                 DisplayText("Loading temp CAD data file");
@@ -6332,6 +6358,18 @@ namespace LitePlacer
                 SaveCADdata(FileName, true);
             }
         }
+
+        private void MakeCADdataDirty()
+        {
+            CAD_label.Text = "FileName*:";
+        }
+
+        private void MakeCADdataClean()
+        {
+            CAD_label.Text = "FileName:";
+        }
+
+
 
         // =================================================================================
         private void JobDataLoad_button_Click(object sender, EventArgs e)
@@ -6515,7 +6553,7 @@ namespace LitePlacer
             CadData_GridView.Rows[index].Cells["Y_nominal"].Value = "0.0";
             CadData_GridView.Rows[index].Cells["Rotation"].Value = "0.0";
             CadData_GridView.CurrentCell = CadData_GridView.Rows[index].Cells[0];
-            SaveTempCADdata();
+            SaveTempCADdata();  // makes data dirty
         }
 
         private void RebuildJobData_button_Click(object sender, EventArgs e)
@@ -6536,13 +6574,13 @@ namespace LitePlacer
                 if (oneCell.Selected)
                     CadData_GridView.Rows.RemoveAt(oneCell.RowIndex);
             }
-            SaveTempCADdata();
+            SaveTempCADdata();  // makes data dirty
         }
 
         private void CopyCadDataRow_button_Click(object sender, EventArgs e)
         {
             ClipBoardRow = CadData_GridView.CurrentRow;
-            SaveTempCADdata();
+            SaveTempCADdata();  // makes data dirty
         }
 
         private void PasteCadDataRow_button_Click(object sender, EventArgs e)
@@ -6551,7 +6589,7 @@ namespace LitePlacer
             {
                 CadData_GridView.CurrentRow.Cells[i].Value = ClipBoardRow.Cells[i].Value;
             }
-            SaveTempCADdata();
+            SaveTempCADdata();  // makes data dirty
         }
 
         // =================================================================================
@@ -6559,7 +6597,7 @@ namespace LitePlacer
         // =================================================================================
         private void JobData_GridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (JobData_GridView.CurrentCell.ColumnIndex == 2)
+            if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_MethodColumn)
             {
                 // For method, show a form with explanation texts
                 MethodSelectionForm MethodDialog = new MethodSelectionForm();
@@ -6576,7 +6614,7 @@ namespace LitePlacer
                 return;
             };
 
-            if (JobData_GridView.CurrentCell.ColumnIndex == 3)
+            if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_MethodParametersColumn)
             {
                 // For method parameter, show the tape selection form if method is "place" 
                 int row = JobData_GridView.CurrentCell.RowIndex;
@@ -6594,7 +6632,7 @@ namespace LitePlacer
         // If components are edited, update count automatically
         private void JobData_GridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (JobData_GridView.CurrentCell.ColumnIndex == 4)
+            if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_ComponentsColumn)
             {
                 // components
                 List<String> Line = SplitCSV(JobData_GridView.CurrentCell.Value.ToString(), ',');
@@ -9960,7 +9998,7 @@ namespace LitePlacer
             }
 
             // only update next coordinates if corresponding column has been changed and rowIndex > 0
-            if (e.ColumnIndex != 6 || e.RowIndex < 0)
+            if (e.ColumnIndex != 6 || e.RowIndex < 0)  //TODO: add descriptive column index constants to tape columns, too (like cad and job data)
             {
                 return;
             }
@@ -11547,6 +11585,34 @@ namespace LitePlacer
             DownCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
             double BoxY = Properties.Settings.Default.DownCam_YmmPerPixel * DownCamera.BoxSizeY;
             DownCameraBoxY_textBox.Text = BoxY.ToString("0.000", CultureInfo.InvariantCulture);
+        }
+
+
+        int foo = 0;
+        private void CadData_GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if ( CadData_GridView.CurrentCell.ColumnIndex == CADdata_PlacedColumn)
+            {
+                //DisplayText("*" + foo.ToString());
+                //foo++;
+                MakeCADdataDirty();
+
+            }
+        }
+
+        private void CadData_GridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Machine coordinates can be manually edited (but I don't know why you would want to do that),
+            // but they are not saved, therefore the edit does not make data dirty
+            if ((CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentColumn) ||
+                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentTypeColumn) ||
+                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_XNomColumn) ||
+                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_YNomColumn) ||
+                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_RotNomColumn)
+                )
+            {
+                MakeCADdataDirty();
+            }
         }
 
 
