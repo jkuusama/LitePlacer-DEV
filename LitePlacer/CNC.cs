@@ -455,7 +455,7 @@ namespace LitePlacer
 
             if (line.StartsWith("{\"er\":"))
             {
-                if (line.Contains("FileName not open") && IgnoreError)
+                if (line.Contains("File not open") && IgnoreError)
                 {
                     MainForm.DisplayText("### Ignored file not open error ###");
                     return;

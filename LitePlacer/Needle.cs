@@ -37,7 +37,7 @@ namespace LitePlacer
         // private bool probingMode;
         public void ProbingMode(bool set, bool JSON)
         {
-            int wait= 150;
+            int wait= 250;
             if(set)
             {
                 if(JSON)

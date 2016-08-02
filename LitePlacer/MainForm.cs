@@ -195,6 +195,8 @@ namespace LitePlacer
             Mark5_textBox.Text = Properties.Settings.Default.General_Mark5Name;
             Mark6_textBox.Text = Properties.Settings.Default.General_Mark6Name;
 
+            Relative_Button.Checked = true;
+
             Zlb_label.Text = "";
             Zlb_label.Visible = false;
 
@@ -375,7 +377,10 @@ namespace LitePlacer
                 //Thread.Sleep(150);
                 UpdateWindowValues_m();
             }
- 
+
+            tabControlPages.TabPages.Remove(Nozzles_tabPage);
+            //Nozzles_initialize();
+
             DisableLog_checkBox.Checked = Properties.Settings.Default.General_MuteLogging;
             StartingUp = false;
         }
@@ -397,6 +402,7 @@ namespace LitePlacer
             SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
             SaveDataGrid(path + "LitePlacer.TapesData_v2", Tapes_dataGridView);
             SaveDataGrid(path + "LitePlacer.CustomTapes_v2", CustomTapes_dataGridView);
+            SaveDataGrid(path + "LitePlacer.NozzlesData", NozzlesLoad_dataGridView);
 
             DataGridViewCopy(Homing_dataGridView, ref Temp_dataGridView, false);
             SaveDataGrid(path + "LitePlacer.HomingFunctions_v2", Temp_dataGridView);
@@ -501,6 +507,10 @@ namespace LitePlacer
                     Tapes_tabPage_Begin();
                     LastTabPage = "Tapes_tabPage";
                     break;
+                case "Nozzles_tabPage":
+                    Nozzles_tabPage_Begin();
+                    LastTabPage = "Nozzles_tabPage";
+                    break;
             }
         }
 
@@ -519,6 +529,9 @@ namespace LitePlacer
                     break;
                 case "Tapes_tabPage":
                     Tapes_tabPage_End();
+                    break;
+                case "Nozzles_tabPage":
+                    Nozzles_tabPage_End();
                     break;
             }
         }
@@ -1413,7 +1426,7 @@ namespace LitePlacer
         // =================================================================================
         private void Goto_button_Click(object sender, EventArgs e)
         {
-            double X;
+            double X;  // target coordinates
             double Y;
             double Z;
             double A;
@@ -1432,6 +1445,14 @@ namespace LitePlacer
             if (!double.TryParse(GotoA_textBox.Text, out A))
             {
                 return;
+            }
+
+            if (Relative_Button.Checked)
+            {
+                X += Cnc.CurrentX;
+                Y += Cnc.CurrentY;
+                Z += Cnc.CurrentZ;
+                A += Cnc.CurrentA;
             }
             if (Math.Abs(Z) < 0.01)  // allow raising Z and move at one go
             {
@@ -6367,6 +6388,31 @@ namespace LitePlacer
         private void MakeCADdataClean()
         {
             CAD_label.Text = "FileName:";
+        }
+
+
+        private void CadData_GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (CadData_GridView.CurrentCell.ColumnIndex == CADdata_PlacedColumn)
+            {
+                MakeCADdataDirty();
+
+            }
+        }
+
+        private void CadData_GridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Machine coordinates can be manually edited (but I don't know why you would want to do that),
+            // but they are not saved, therefore the edit of those does not make data dirty, but edit of other cells do
+            if ((CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentColumn) ||
+                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentTypeColumn) ||
+                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_XNomColumn) ||
+                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_YNomColumn) ||
+                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_RotNomColumn)
+                )
+            {
+                MakeCADdataDirty();
+            }
         }
 
 
@@ -11604,35 +11650,152 @@ namespace LitePlacer
         }
 
 
-        //int foo = 0;
-        private void CadData_GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if ( CadData_GridView.CurrentCell.ColumnIndex == CADdata_PlacedColumn)
-            {
-                //DisplayText("*" + foo.ToString());
-                //foo++;
-                MakeCADdataDirty();
+        // ==========================================================================================================
+        // Nozzles
+        // ==========================================================================================================
+        #region Nozzles
 
+        const int Nozzledata_NozzleNoColumn = 0;
+        const int Nozzledata_StartXColumn = 1;
+        const int Nozzledata_StartYColumn = 2;
+        const int Nozzledata_StartZColumn = 3;
+        // Rest are move 1 axis, move 1 amount, move 2 axis, ...
+        // == 3+moveno/2 for axis, 3+moveno/2+1 for amount.
+
+        private void BuildNozzleTable(DataGridView Grid)
+        {
+            for (int i = 1; i < 6; i++)
+            {
+                DataGridViewComboBoxColumn ComboCol = new DataGridViewComboBoxColumn();
+                ComboCol.Items.Add("X");
+                ComboCol.Items.Add("Y");
+                ComboCol.Items.Add("Z");
+                ComboCol.HeaderText = "Move " + i.ToString() + " axis";
+                ComboCol.Width = 40;
+                Grid.Columns.Add(ComboCol);
+                DataGridViewTextBoxColumn TextCol = new DataGridViewTextBoxColumn();
+                TextCol.HeaderText="Move" + i.ToString() + " amount";
+                TextCol.Width = 64;
+                Grid.Columns.Add(TextCol);
             }
         }
 
-        private void CadData_GridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void Nozzles_initialize()
         {
-            // Machine coordinates can be manually edited (but I don't know why you would want to do that),
-            // but they are not saved, therefore the edit does not make data dirty
-            if ((CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentColumn) ||
-                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentTypeColumn) ||
-                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_XNomColumn) ||
-                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_YNomColumn) ||
-                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_RotNomColumn)
-                )
+            DisplayText("Loading nozzles data");
+            // build tables
+            BuildNozzleTable(NozzlesLoad_dataGridView);
+            BuildNozzleTable(NozzlesUnload_dataGridView);
+            for (int i = 0; i < Properties.Settings.Default.Nozzles_count; i++)
             {
-                MakeCADdataDirty();
+                AddNozzle();
             }
+            NoOfNozzles_UpDown.Value = Properties.Settings.Default.Nozzles_count;
+
+            ResizeNozzleTables();
+        }
+
+        // ==========================================================================================================
+        private void ResizeNozzleTables()
+        {
+            int height = 0;
+            System.Drawing.Size size= NozzlesLoad_dataGridView.Size;
+
+            foreach (DataGridViewRow row in NozzlesLoad_dataGridView.Rows)
+            {
+                height += row.Height;
+            }
+            height += 32; // Header row height. NozzlesLoad_dataGridView.ColumnHeadersHeight doesn't work the first time(??).
+            size.Height=height+2;
+            NozzlesLoad_dataGridView.Size = size;
+
+            height = 0;
+            size = NozzlesUnload_dataGridView.Size;
+            foreach (DataGridViewRow row in NozzlesUnload_dataGridView.Rows)
+            {
+                height += row.Height;
+            }
+            height += 32;
+            size.Height = height + 2;
+            NozzlesUnload_dataGridView.Size = size;
+        }
+
+        // ==========================================================================================================
+        private void Nozzles_tabPage_Begin()
+        {
+
+        }
+
+        private void Nozzles_tabPage_End()
+        {
+
+        }
+
+        private void AddNozzle()
+        {
+            int RowNo = NozzlesLoad_dataGridView.Rows.Count;
+            NozzlesLoad_dataGridView.Rows.Insert(RowNo);
+            NozzlesUnload_dataGridView.Rows.Insert(RowNo);
+            RowNo++;
+            NozzlesLoad_dataGridView.Rows[RowNo-1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString();
+            NozzlesUnload_dataGridView.Rows[RowNo-1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString();
+            ResizeNozzleTables();
+        }
+
+        private void RemoveNozzle()
+        {
+            NozzlesLoad_dataGridView.Rows.RemoveAt(NozzlesLoad_dataGridView.Rows.Count-1);
+            NozzlesUnload_dataGridView.Rows.RemoveAt(NozzlesUnload_dataGridView.Rows.Count-1);
+            ResizeNozzleTables();
+        }
+
+        private void NoOfNozzles_UpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (StartingUp)
+            {
+                return;
+            }
+            if (NoOfNozzles_UpDown.Value > NozzlesLoad_dataGridView.RowCount)
+            {
+                AddNozzle();
+            }
+            else
+            {
+                if (NozzlesLoad_dataGridView.RowCount > 0)
+                {
+                    RemoveNozzle();
+                }
+            }
+            Properties.Settings.Default.Nozzles_count = (int)NoOfNozzles_UpDown.Value;
         }
 
 
+        #endregion
+
+        private void GetLoadCoordinates_button_Click(object sender, EventArgs e)
+        {
+            int row =  NozzlesLoad_dataGridView.CurrentCell.RowIndex;
+            int col=NozzlesLoad_dataGridView.CurrentCell.ColumnIndex;
+            DisplayText("Current Cell: " + row.ToString() + ", " + col.ToString());
+
+            if ((col >= Nozzledata_StartXColumn) && (col <= Nozzledata_StartZColumn))
+            {
+                NozzlesLoad_dataGridView.Rows[row].Cells[Nozzledata_StartXColumn].Value = Cnc.CurrentX.ToString();
+                NozzlesLoad_dataGridView.Rows[row].Cells[Nozzledata_StartYColumn].Value = Cnc.CurrentY.ToString();
+                NozzlesLoad_dataGridView.Rows[row].Cells[Nozzledata_StartZColumn].Value = Cnc.CurrentZ.ToString();
+            }
+            else
+            {
+                int MoveNo= (col-3)/2;
+                DisplayText("Move no " + MoveNo.ToString());
+            }
+        }
+
+    
     }	// end of: 	public partial class FormMain : Form
+
+
+
 
     // allows additionl of color info to displayText 
     public static class RichTextBoxExtensions

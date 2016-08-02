@@ -1150,5 +1150,17 @@ namespace LitePlacer.Properties {
                 this["General_BelowPCB_Allowance"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Nozzles_count {
+            get {
+                return ((int)(this["Nozzles_count"]));
+            }
+            set {
+                this["Nozzles_count"] = value;
+            }
+        }
     }
 }

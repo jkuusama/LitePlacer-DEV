@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -648,6 +648,10 @@
             this.CadFileName_label = new System.Windows.Forms.Label();
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
+            this.Nozzles_tabPage = new System.Windows.Forms.TabPage();
+            this.NoOfNozzles_UpDown = new System.Windows.Forms.NumericUpDown();
+            this.label54 = new System.Windows.Forms.Label();
+            this.NozzlesLoad_dataGridView = new System.Windows.Forms.DataGridView();
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.GotoX_textBox = new System.Windows.Forms.TextBox();
@@ -663,6 +667,20 @@
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.label59 = new System.Windows.Forms.Label();
+            this.label97 = new System.Windows.Forms.Label();
+            this.NozzlesUnload_dataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn51 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn52 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn53 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn54 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NozzleNo_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GetLoadCoordinates_button = new System.Windows.Forms.Button();
+            this.Abs_radioButton = new System.Windows.Forms.RadioButton();
+            this.Relative_Button = new System.Windows.Forms.RadioButton();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -723,6 +741,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.JobData_GridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CadData_GridView)).BeginInit();
             this.tabControlPages.SuspendLayout();
+            this.Nozzles_tabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NozzlesUnload_dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // Park_button
@@ -7360,14 +7382,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7434,14 +7456,14 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
@@ -7564,6 +7586,7 @@
             this.tabControlPages.Controls.Add(this.tabPageSetupCameras);
             this.tabControlPages.Controls.Add(this.Components_tabPage);
             this.tabControlPages.Controls.Add(this.Tapes_tabPage);
+            this.tabControlPages.Controls.Add(this.Nozzles_tabPage);
             this.tabControlPages.Location = new System.Drawing.Point(3, 2);
             this.tabControlPages.Name = "tabControlPages";
             this.tabControlPages.SelectedIndex = 0;
@@ -7571,6 +7594,74 @@
             this.tabControlPages.TabIndex = 3;
             this.tabControlPages.SelectedIndexChanged += new System.EventHandler(this.tabControlPages_SelectedIndexChanged);
             this.tabControlPages.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControlPages_Selecting);
+            // 
+            // Nozzles_tabPage
+            // 
+            this.Nozzles_tabPage.Controls.Add(this.GetLoadCoordinates_button);
+            this.Nozzles_tabPage.Controls.Add(this.label97);
+            this.Nozzles_tabPage.Controls.Add(this.NozzlesUnload_dataGridView);
+            this.Nozzles_tabPage.Controls.Add(this.label59);
+            this.Nozzles_tabPage.Controls.Add(this.NoOfNozzles_UpDown);
+            this.Nozzles_tabPage.Controls.Add(this.label54);
+            this.Nozzles_tabPage.Controls.Add(this.NozzlesLoad_dataGridView);
+            this.Nozzles_tabPage.Location = new System.Drawing.Point(4, 22);
+            this.Nozzles_tabPage.Name = "Nozzles_tabPage";
+            this.Nozzles_tabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.Nozzles_tabPage.Size = new System.Drawing.Size(1245, 635);
+            this.Nozzles_tabPage.TabIndex = 7;
+            this.Nozzles_tabPage.Text = "Nozzles setup";
+            this.Nozzles_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // NoOfNozzles_UpDown
+            // 
+            this.NoOfNozzles_UpDown.Location = new System.Drawing.Point(172, 13);
+            this.NoOfNozzles_UpDown.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.NoOfNozzles_UpDown.Name = "NoOfNozzles_UpDown";
+            this.NoOfNozzles_UpDown.Size = new System.Drawing.Size(34, 20);
+            this.NoOfNozzles_UpDown.TabIndex = 2;
+            this.NoOfNozzles_UpDown.Value = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+            this.NoOfNozzles_UpDown.ValueChanged += new System.EventHandler(this.NoOfNozzles_UpDown_ValueChanged);
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(6, 15);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(160, 13);
+            this.label54.TabIndex = 1;
+            this.label54.Text = "Number of nozzles in your setup:";
+            // 
+            // NozzlesLoad_dataGridView
+            // 
+            this.NozzlesLoad_dataGridView.AllowUserToAddRows = false;
+            this.NozzlesLoad_dataGridView.AllowUserToDeleteRows = false;
+            this.NozzlesLoad_dataGridView.AllowUserToResizeColumns = false;
+            this.NozzlesLoad_dataGridView.AllowUserToResizeRows = false;
+            this.NozzlesLoad_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.NozzlesLoad_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NozzleNo_Column,
+            this.StartX_Column,
+            this.StartY_Column,
+            this.StartZ_Column});
+            this.NozzlesLoad_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.NozzlesLoad_dataGridView.Location = new System.Drawing.Point(9, 50);
+            this.NozzlesLoad_dataGridView.Name = "NozzlesLoad_dataGridView";
+            this.NozzlesLoad_dataGridView.RowHeadersVisible = false;
+            this.NozzlesLoad_dataGridView.RowHeadersWidth = 40;
+            this.NozzlesLoad_dataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.NozzlesLoad_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.NozzlesLoad_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.NozzlesLoad_dataGridView.ShowEditingIcon = false;
+            this.NozzlesLoad_dataGridView.Size = new System.Drawing.Size(761, 150);
+            this.NozzlesLoad_dataGridView.TabIndex = 0;
             // 
             // CAD_openFileDialog
             // 
@@ -7710,12 +7801,154 @@
             // 
             this.colorDialog1.SolidColorOnly = true;
             // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(6, 34);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(34, 13);
+            this.label59.TabIndex = 3;
+            this.label59.Text = "Load:";
+            // 
+            // label97
+            // 
+            this.label97.AutoSize = true;
+            this.label97.Location = new System.Drawing.Point(6, 322);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(44, 13);
+            this.label97.TabIndex = 5;
+            this.label97.Text = "Unload:";
+            // 
+            // NozzlesUnload_dataGridView
+            // 
+            this.NozzlesUnload_dataGridView.AllowUserToAddRows = false;
+            this.NozzlesUnload_dataGridView.AllowUserToDeleteRows = false;
+            this.NozzlesUnload_dataGridView.AllowUserToResizeColumns = false;
+            this.NozzlesUnload_dataGridView.AllowUserToResizeRows = false;
+            this.NozzlesUnload_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.NozzlesUnload_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn51,
+            this.dataGridViewTextBoxColumn52,
+            this.dataGridViewTextBoxColumn53,
+            this.dataGridViewTextBoxColumn54});
+            this.NozzlesUnload_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.NozzlesUnload_dataGridView.Location = new System.Drawing.Point(9, 338);
+            this.NozzlesUnload_dataGridView.Name = "NozzlesUnload_dataGridView";
+            this.NozzlesUnload_dataGridView.RowHeadersVisible = false;
+            this.NozzlesUnload_dataGridView.RowHeadersWidth = 40;
+            this.NozzlesUnload_dataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.NozzlesUnload_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.NozzlesUnload_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.NozzlesUnload_dataGridView.ShowEditingIcon = false;
+            this.NozzlesUnload_dataGridView.Size = new System.Drawing.Size(761, 150);
+            this.NozzlesUnload_dataGridView.TabIndex = 4;
+            // 
+            // dataGridViewTextBoxColumn51
+            // 
+            this.dataGridViewTextBoxColumn51.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewTextBoxColumn51.HeaderText = "Nozzle";
+            this.dataGridViewTextBoxColumn51.Name = "dataGridViewTextBoxColumn51";
+            this.dataGridViewTextBoxColumn51.ReadOnly = true;
+            this.dataGridViewTextBoxColumn51.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn51.Width = 50;
+            // 
+            // dataGridViewTextBoxColumn52
+            // 
+            this.dataGridViewTextBoxColumn52.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewTextBoxColumn52.HeaderText = "Start X";
+            this.dataGridViewTextBoxColumn52.Name = "dataGridViewTextBoxColumn52";
+            this.dataGridViewTextBoxColumn52.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn52.Width = 64;
+            // 
+            // dataGridViewTextBoxColumn53
+            // 
+            this.dataGridViewTextBoxColumn53.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewTextBoxColumn53.HeaderText = "Start Y";
+            this.dataGridViewTextBoxColumn53.Name = "dataGridViewTextBoxColumn53";
+            this.dataGridViewTextBoxColumn53.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn53.Width = 64;
+            // 
+            // dataGridViewTextBoxColumn54
+            // 
+            this.dataGridViewTextBoxColumn54.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewTextBoxColumn54.HeaderText = "Start Z";
+            this.dataGridViewTextBoxColumn54.Name = "dataGridViewTextBoxColumn54";
+            this.dataGridViewTextBoxColumn54.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn54.Width = 64;
+            // 
+            // NozzleNo_Column
+            // 
+            this.NozzleNo_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NozzleNo_Column.HeaderText = "Nozzle";
+            this.NozzleNo_Column.Name = "NozzleNo_Column";
+            this.NozzleNo_Column.ReadOnly = true;
+            this.NozzleNo_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NozzleNo_Column.Width = 50;
+            // 
+            // StartX_Column
+            // 
+            this.StartX_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.StartX_Column.HeaderText = "Start X";
+            this.StartX_Column.Name = "StartX_Column";
+            this.StartX_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.StartX_Column.Width = 64;
+            // 
+            // StartY_Column
+            // 
+            this.StartY_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.StartY_Column.HeaderText = "Start Y";
+            this.StartY_Column.Name = "StartY_Column";
+            this.StartY_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.StartY_Column.Width = 64;
+            // 
+            // StartZ_Column
+            // 
+            this.StartZ_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.StartZ_Column.HeaderText = "Start Z";
+            this.StartZ_Column.Name = "StartZ_Column";
+            this.StartZ_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.StartZ_Column.Width = 64;
+            // 
+            // GetLoadCoordinates_button
+            // 
+            this.GetLoadCoordinates_button.Location = new System.Drawing.Point(785, 50);
+            this.GetLoadCoordinates_button.Name = "GetLoadCoordinates_button";
+            this.GetLoadCoordinates_button.Size = new System.Drawing.Size(108, 23);
+            this.GetLoadCoordinates_button.TabIndex = 6;
+            this.GetLoadCoordinates_button.Text = "Get coordinates";
+            this.GetLoadCoordinates_button.UseVisualStyleBackColor = true;
+            this.GetLoadCoordinates_button.Click += new System.EventHandler(this.GetLoadCoordinates_button_Click);
+            // 
+            // Abs_radioButton
+            // 
+            this.Abs_radioButton.AutoSize = true;
+            this.Abs_radioButton.Location = new System.Drawing.Point(991, 730);
+            this.Abs_radioButton.Name = "Abs_radioButton";
+            this.Abs_radioButton.Size = new System.Drawing.Size(66, 17);
+            this.Abs_radioButton.TabIndex = 92;
+            this.Abs_radioButton.TabStop = true;
+            this.Abs_radioButton.Text = "Absolute";
+            this.Abs_radioButton.UseVisualStyleBackColor = true;
+            // 
+            // Relative_Button
+            // 
+            this.Relative_Button.AutoSize = true;
+            this.Relative_Button.Location = new System.Drawing.Point(991, 752);
+            this.Relative_Button.Name = "Relative_Button";
+            this.Relative_Button.Size = new System.Drawing.Size(64, 17);
+            this.Relative_Button.TabIndex = 93;
+            this.Relative_Button.TabStop = true;
+            this.Relative_Button.Text = "Relative";
+            this.Relative_Button.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1258, 856);
+            this.Controls.Add(this.Relative_Button);
+            this.Controls.Add(this.Abs_radioButton);
             this.Controls.Add(this.tabControlPages);
             this.Controls.Add(this.label138);
             this.Controls.Add(this.label139);
@@ -7841,6 +8074,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.JobData_GridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CadData_GridView)).EndInit();
             this.tabControlPages.ResumeLayout(false);
+            this.Nozzles_tabPage.ResumeLayout(false);
+            this.Nozzles_tabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NozzlesUnload_dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -8479,6 +8717,24 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn X_Machine;
         private System.Windows.Forms.DataGridViewTextBoxColumn Y_machine;
         private System.Windows.Forms.DataGridViewTextBoxColumn Rotation_machine;
+        private System.Windows.Forms.TabPage Nozzles_tabPage;
+        private System.Windows.Forms.DataGridView NozzlesLoad_dataGridView;
+        private System.Windows.Forms.NumericUpDown NoOfNozzles_UpDown;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.Label label97;
+        private System.Windows.Forms.DataGridView NozzlesUnload_dataGridView;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn51;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn52;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn53;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn54;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleNo_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StartX_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StartY_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StartZ_Column;
+        private System.Windows.Forms.Button GetLoadCoordinates_button;
+        private System.Windows.Forms.RadioButton Abs_radioButton;
+        private System.Windows.Forms.RadioButton Relative_Button;
     }
 }
 
