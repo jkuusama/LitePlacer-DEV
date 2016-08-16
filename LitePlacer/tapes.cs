@@ -56,7 +56,7 @@ namespace LitePlacer
 
 		// ========================================================================================
 		// IdValidates_m(): Checks that tape with description of "Id" exists.
-		// TapeNumber is set to the corresponding row of the Grid.
+		// TapeNumber is set to the corresponding row of the grid.
 		public bool IdValidates_m(string Id, out int Tape)
 		{
 			Tape = -1;

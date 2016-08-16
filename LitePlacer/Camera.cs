@@ -1115,7 +1115,7 @@ namespace LitePlacer
 			{
 				Component = Components[i];
 
-				// move Component.Longest start to ComponentCenter, draw it
+				// Move Component.Longest start to ComponentCenter, draw it
 				float dx = Component.Center.X - Component.Longest.Start.X;
 				float dy = Component.Center.Y - Component.Longest.Start.Y;
 				p1.X = (int)Math.Round(Component.Longest.Start.X + dx);
@@ -1124,7 +1124,7 @@ namespace LitePlacer
 				p2.Y = (int)Math.Round(Component.Longest.End.Y + dy);
 				g.DrawLine(RedPen, p1, p2);
 
-				// move Component.Longest end to ComponentCenter, draw Component.Longest
+                // Move Component.Longest end to ComponentCenter, draw Component.Longest
 				dx = Component.Center.X - Component.Longest.End.X;
 				dy = Component.Center.Y - Component.Longest.End.Y;
 				p1.X = (int)Math.Round(Component.Longest.Start.X + dx);
@@ -1133,7 +1133,7 @@ namespace LitePlacer
 				p2.Y = (int)Math.Round(Component.Longest.End.Y + dy);
 				g.DrawLine(RedPen, p1, p2);
 
-				//  move Normal start to ComponentCenter, draw it
+				//  Move Normal start to ComponentCenter, draw it
 				dx = Component.Center.X - Component.NormalStart.X;
 				dy = Component.Center.Y - Component.NormalStart.Y;
 				p1.X = (int)Math.Round(Component.NormalStart.X + dx);
@@ -1142,7 +1142,7 @@ namespace LitePlacer
 				p2.Y = (int)Math.Round(Component.NormalEnd.Y + dy);
 				g.DrawLine(RedPen, p1, p2);
 
-				//  move Component.Normal end to ComponentCenter, draw it
+                //  Move Component.Normal end to ComponentCenter, draw it
 				dx = Component.Center.X - Component.NormalEnd.X;
 				dy = Component.Center.Y - Component.NormalEnd.Y;
 				p1.X = (int)Math.Round(Component.NormalStart.X + dx);
