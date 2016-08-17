@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -711,6 +711,11 @@
             this.NozzleXYFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
             this.NozzleZFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
             this.NozzleAFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
+            this.NozzleTimeout_textBox = new System.Windows.Forms.TextBox();
+            this.label145 = new System.Windows.Forms.Label();
+            this.FirstMoveFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
+            this.Nozzle1stMoveSlackComp_checkBox = new System.Windows.Forms.CheckBox();
+            this.LastMoveFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -7417,14 +7422,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -8182,6 +8187,11 @@
             // panel10
             // 
             this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel10.Controls.Add(this.LastMoveFullSpeed_checkBox);
+            this.panel10.Controls.Add(this.Nozzle1stMoveSlackComp_checkBox);
+            this.panel10.Controls.Add(this.FirstMoveFullSpeed_checkBox);
+            this.panel10.Controls.Add(this.label145);
+            this.panel10.Controls.Add(this.NozzleTimeout_textBox);
             this.panel10.Controls.Add(this.NozzleAFullSpeed_checkBox);
             this.panel10.Controls.Add(this.NozzleZFullSpeed_checkBox);
             this.panel10.Controls.Add(this.NozzleXYFullSpeed_checkBox);
@@ -8194,7 +8204,7 @@
             this.panel10.Controls.Add(this.label140);
             this.panel10.Location = new System.Drawing.Point(926, 15);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(287, 127);
+            this.panel10.Size = new System.Drawing.Size(287, 221);
             this.panel10.TabIndex = 16;
             // 
             // label140
@@ -8209,16 +8219,16 @@
             // 
             // NozzleXYspeed_textBox
             // 
-            this.NozzleXYspeed_textBox.Location = new System.Drawing.Point(39, 32);
+            this.NozzleXYspeed_textBox.Location = new System.Drawing.Point(59, 32);
             this.NozzleXYspeed_textBox.Name = "NozzleXYspeed_textBox";
             this.NozzleXYspeed_textBox.Size = new System.Drawing.Size(100, 20);
             this.NozzleXYspeed_textBox.TabIndex = 18;
-            this.NozzleXYspeed_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NozzleXYspeed_textBox_KeyPress);
+            this.NozzleXYspeed_textBox.TextChanged += new System.EventHandler(this.NozzleXYspeed_textBox_TextChanged);
             // 
             // label141
             // 
             this.label141.AutoSize = true;
-            this.label141.Location = new System.Drawing.Point(3, 35);
+            this.label141.Location = new System.Drawing.Point(23, 35);
             this.label141.Name = "label141";
             this.label141.Size = new System.Drawing.Size(30, 13);
             this.label141.TabIndex = 19;
@@ -8226,16 +8236,16 @@
             // 
             // NozzleZspeed_textBox
             // 
-            this.NozzleZspeed_textBox.Location = new System.Drawing.Point(39, 58);
+            this.NozzleZspeed_textBox.Location = new System.Drawing.Point(59, 58);
             this.NozzleZspeed_textBox.Name = "NozzleZspeed_textBox";
             this.NozzleZspeed_textBox.Size = new System.Drawing.Size(100, 20);
             this.NozzleZspeed_textBox.TabIndex = 20;
-            this.NozzleZspeed_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NozzleZspeed_textBox_KeyPress);
+            this.NozzleZspeed_textBox.TextChanged += new System.EventHandler(this.NozzleZspeed_textBox_TextChanged);
             // 
             // label142
             // 
             this.label142.AutoSize = true;
-            this.label142.Location = new System.Drawing.Point(16, 60);
+            this.label142.Location = new System.Drawing.Point(36, 60);
             this.label142.Name = "label142";
             this.label142.Size = new System.Drawing.Size(17, 13);
             this.label142.TabIndex = 21;
@@ -8243,16 +8253,16 @@
             // 
             // NozzleAspeed_textBox
             // 
-            this.NozzleAspeed_textBox.Location = new System.Drawing.Point(39, 84);
+            this.NozzleAspeed_textBox.Location = new System.Drawing.Point(59, 84);
             this.NozzleAspeed_textBox.Name = "NozzleAspeed_textBox";
             this.NozzleAspeed_textBox.Size = new System.Drawing.Size(100, 20);
             this.NozzleAspeed_textBox.TabIndex = 22;
-            this.NozzleAspeed_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NozzleAspeed_textBox_KeyPress);
+            this.NozzleAspeed_textBox.TextChanged += new System.EventHandler(this.NozzleAspeed_textBox_TextChanged);
             // 
             // label144
             // 
             this.label144.AutoSize = true;
-            this.label144.Location = new System.Drawing.Point(16, 87);
+            this.label144.Location = new System.Drawing.Point(36, 87);
             this.label144.Name = "label144";
             this.label144.Size = new System.Drawing.Size(17, 13);
             this.label144.TabIndex = 23;
@@ -8261,7 +8271,7 @@
             // NozzleXYFullSpeed_checkBox
             // 
             this.NozzleXYFullSpeed_checkBox.AutoSize = true;
-            this.NozzleXYFullSpeed_checkBox.Location = new System.Drawing.Point(158, 35);
+            this.NozzleXYFullSpeed_checkBox.Location = new System.Drawing.Point(178, 35);
             this.NozzleXYFullSpeed_checkBox.Name = "NozzleXYFullSpeed_checkBox";
             this.NozzleXYFullSpeed_checkBox.Size = new System.Drawing.Size(74, 17);
             this.NozzleXYFullSpeed_checkBox.TabIndex = 24;
@@ -8272,7 +8282,7 @@
             // NozzleZFullSpeed_checkBox
             // 
             this.NozzleZFullSpeed_checkBox.AutoSize = true;
-            this.NozzleZFullSpeed_checkBox.Location = new System.Drawing.Point(158, 59);
+            this.NozzleZFullSpeed_checkBox.Location = new System.Drawing.Point(178, 59);
             this.NozzleZFullSpeed_checkBox.Name = "NozzleZFullSpeed_checkBox";
             this.NozzleZFullSpeed_checkBox.Size = new System.Drawing.Size(74, 17);
             this.NozzleZFullSpeed_checkBox.TabIndex = 25;
@@ -8283,13 +8293,63 @@
             // NozzleAFullSpeed_checkBox
             // 
             this.NozzleAFullSpeed_checkBox.AutoSize = true;
-            this.NozzleAFullSpeed_checkBox.Location = new System.Drawing.Point(158, 86);
+            this.NozzleAFullSpeed_checkBox.Location = new System.Drawing.Point(178, 86);
             this.NozzleAFullSpeed_checkBox.Name = "NozzleAFullSpeed_checkBox";
             this.NozzleAFullSpeed_checkBox.Size = new System.Drawing.Size(74, 17);
             this.NozzleAFullSpeed_checkBox.TabIndex = 26;
             this.NozzleAFullSpeed_checkBox.Text = "Full speed";
             this.NozzleAFullSpeed_checkBox.UseVisualStyleBackColor = true;
             this.NozzleAFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.NozzleAFullSpeed_checkBox_CheckedChanged);
+            // 
+            // NozzleTimeout_textBox
+            // 
+            this.NozzleTimeout_textBox.Location = new System.Drawing.Point(59, 110);
+            this.NozzleTimeout_textBox.Name = "NozzleTimeout_textBox";
+            this.NozzleTimeout_textBox.Size = new System.Drawing.Size(100, 20);
+            this.NozzleTimeout_textBox.TabIndex = 27;
+            this.NozzleTimeout_textBox.TextChanged += new System.EventHandler(this.NozzleTimeout_textBox_TextChanged);
+            // 
+            // label145
+            // 
+            this.label145.AutoSize = true;
+            this.label145.Location = new System.Drawing.Point(5, 113);
+            this.label145.Name = "label145";
+            this.label145.Size = new System.Drawing.Size(48, 13);
+            this.label145.TabIndex = 28;
+            this.label145.Text = "Timeout:";
+            // 
+            // FirstMoveFullSpeed_checkBox
+            // 
+            this.FirstMoveFullSpeed_checkBox.AutoSize = true;
+            this.FirstMoveFullSpeed_checkBox.Location = new System.Drawing.Point(59, 159);
+            this.FirstMoveFullSpeed_checkBox.Name = "FirstMoveFullSpeed_checkBox";
+            this.FirstMoveFullSpeed_checkBox.Size = new System.Drawing.Size(122, 17);
+            this.FirstMoveFullSpeed_checkBox.TabIndex = 29;
+            this.FirstMoveFullSpeed_checkBox.Text = "First move full speed";
+            this.FirstMoveFullSpeed_checkBox.UseVisualStyleBackColor = true;
+            this.FirstMoveFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.FirstMoveFullSpeed_checkBox_CheckedChanged);
+            // 
+            // Nozzle1stMoveSlackComp_checkBox
+            // 
+            this.Nozzle1stMoveSlackComp_checkBox.AutoSize = true;
+            this.Nozzle1stMoveSlackComp_checkBox.Location = new System.Drawing.Point(59, 136);
+            this.Nozzle1stMoveSlackComp_checkBox.Name = "Nozzle1stMoveSlackComp_checkBox";
+            this.Nozzle1stMoveSlackComp_checkBox.Size = new System.Drawing.Size(169, 17);
+            this.Nozzle1stMoveSlackComp_checkBox.TabIndex = 30;
+            this.Nozzle1stMoveSlackComp_checkBox.Text = "First move slack compensated";
+            this.Nozzle1stMoveSlackComp_checkBox.UseVisualStyleBackColor = true;
+            this.Nozzle1stMoveSlackComp_checkBox.CheckedChanged += new System.EventHandler(this.Nozzle1stMoveSlackComp_checkBox_CheckedChanged);
+            // 
+            // LastMoveFullSpeed_checkBox
+            // 
+            this.LastMoveFullSpeed_checkBox.AutoSize = true;
+            this.LastMoveFullSpeed_checkBox.Location = new System.Drawing.Point(59, 182);
+            this.LastMoveFullSpeed_checkBox.Name = "LastMoveFullSpeed_checkBox";
+            this.LastMoveFullSpeed_checkBox.Size = new System.Drawing.Size(123, 17);
+            this.LastMoveFullSpeed_checkBox.TabIndex = 31;
+            this.LastMoveFullSpeed_checkBox.Text = "Last move full speed";
+            this.LastMoveFullSpeed_checkBox.UseVisualStyleBackColor = true;
+            this.LastMoveFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.LastMoveFullSpeed_checkBox_CheckedChanged);
             // 
             // FormMain
             // 
@@ -9125,6 +9185,11 @@
         private System.Windows.Forms.Label label141;
         private System.Windows.Forms.TextBox NozzleXYspeed_textBox;
         private System.Windows.Forms.Label label140;
+        private System.Windows.Forms.Label label145;
+        private System.Windows.Forms.TextBox NozzleTimeout_textBox;
+        private System.Windows.Forms.CheckBox FirstMoveFullSpeed_checkBox;
+        private System.Windows.Forms.CheckBox Nozzle1stMoveSlackComp_checkBox;
+        private System.Windows.Forms.CheckBox LastMoveFullSpeed_checkBox;
     }
 }
 

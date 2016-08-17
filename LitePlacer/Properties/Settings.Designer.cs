@@ -1201,7 +1201,7 @@ namespace LitePlacer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Nozzles_XYfullSpeed {
             get {
                 return ((bool)(this["Nozzles_XYfullSpeed"]));
@@ -1225,7 +1225,7 @@ namespace LitePlacer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Nozzles_ZfullSpeed {
             get {
                 return ((bool)(this["Nozzles_ZfullSpeed"]));
@@ -1249,13 +1249,61 @@ namespace LitePlacer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Nozzles_AfullSpeed {
             get {
                 return ((bool)(this["Nozzles_AfullSpeed"]));
             }
             set {
                 this["Nozzles_AfullSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int Nozzles_Timeout {
+            get {
+                return ((int)(this["Nozzles_Timeout"]));
+            }
+            set {
+                this["Nozzles_Timeout"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Nozzles_FirstMoveFullSpeed {
+            get {
+                return ((bool)(this["Nozzles_FirstMoveFullSpeed"]));
+            }
+            set {
+                this["Nozzles_FirstMoveFullSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Nozzles_FirstMoveSlackCompensation {
+            get {
+                return ((bool)(this["Nozzles_FirstMoveSlackCompensation"]));
+            }
+            set {
+                this["Nozzles_FirstMoveSlackCompensation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Nozzles_LastMoveFullSpeed {
+            get {
+                return ((bool)(this["Nozzles_LastMoveFullSpeed"]));
+            }
+            set {
+                this["Nozzles_LastMoveFullSpeed"] = value;
             }
         }
     }

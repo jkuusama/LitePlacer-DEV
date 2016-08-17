@@ -1784,7 +1784,18 @@ namespace LitePlacer
         // Sends a command to CNC, doesn't return until the response is handled
         // by the CNC class. (See _readyEvent )
         // =================================================================================
-        private const int CNC_MoveTimeout = 3000; // timeout for X,Y,Z,A movements; 2x ms. (3000= 6s timeout)
+        private int _cnc_Timeout = 3000; // timeout for X,Y,Z,A movements; 2x ms. (3000= 6s timeout)
+        private int CNC_timeout
+        {
+            get
+            {
+                return _cnc_Timeout / 500;
+            }
+            set
+            {
+                _cnc_Timeout = value * 500;
+            }
+        }
         public int CNC_HomingTimeout = 16;  // in seconds
 
         private void CNC_RawWrite(string s)
@@ -1963,14 +1974,14 @@ namespace LitePlacer
                 Thread.Sleep(2);
                 Application.DoEvents();
                 i++;
-                if (i > CNC_MoveTimeout)
+                if (i > _cnc_Timeout)
                 {
                     Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
                 }
             }
 
             CNC_BlockingWriteDone = true;
-            if ((i > CNC_MoveTimeout) && Cnc.Connected)
+            if ((i > _cnc_Timeout) && Cnc.Connected)
             {
                 ShowMessageBox(
                            "CNC_XY: Timeout / Cnc connection cut!",
@@ -2034,14 +2045,14 @@ namespace LitePlacer
                 Thread.Sleep(2);
                 Application.DoEvents();
                 i++;
-                if (i > CNC_MoveTimeout)
+                if (i > _cnc_Timeout)
                 {
                     Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
                 }
             }
 
             CNC_BlockingWriteDone = true;
-            if ((i > CNC_MoveTimeout) && Cnc.Connected)
+            if ((i > _cnc_Timeout) && Cnc.Connected)
             {
                 ShowMessageBox(
                            "CNC_XYA: Timeout / Cnc connection cut!",
@@ -2112,12 +2123,12 @@ namespace LitePlacer
                 Thread.Sleep(2);
                 Application.DoEvents();
                 i++;
-                if (i > CNC_MoveTimeout)
+                if (i > _cnc_Timeout)
                 {
                     Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
                 }
             }
-            if ((i > CNC_MoveTimeout) || !Cnc.Connected)
+            if ((i > _cnc_Timeout) || !Cnc.Connected)
             {
                 ShowMessageBox(
                            "CNC_Z: Timeout / Cnc connection cut!",
@@ -2162,14 +2173,14 @@ namespace LitePlacer
                 Thread.Sleep(2);
                 Application.DoEvents();
                 i++;
-                if (i > CNC_MoveTimeout)
+                if (i > _cnc_Timeout)
                 {
                     Cnc_ReadyEvent.Set();   // causes CNC_Blocking_thread to exit
                 }
             }
 
             CNC_BlockingWriteDone = true;
-            if ((i > CNC_MoveTimeout) && Cnc.Connected)
+            if ((i > _cnc_Timeout) && Cnc.Connected)
             {
                 ShowMessageBox(
                            "CNC_A: Timeout / Cnc connection cut!",
@@ -11966,6 +11977,17 @@ namespace LitePlacer
 
         // ==========================================================================================================
         // tab page enter/leave
+
+        private bool NozzletabStore_slowXY = false;
+        private bool NozzletabStore_slowZ = false;
+        private bool NozzletabStore_slowA = false;
+        private double NozzletabStore_XYspeed = 500.0;
+        private double NozzletabStore_Zspeed = 500.0;
+        private double NozzletabStore_Aspeed = 500.0;
+        private int NozzletabStore_timeout= 10;
+        private bool NozzletabStore_slack = false;
+        private bool NozzletabStore_slackA = false;
+
         private bool AtNozzlesTab = false;
 
         private void Nozzles_tabPage_Begin()
@@ -11985,6 +12007,42 @@ namespace LitePlacer
             CNC_Write_m("{\"zsx\":0}");
             Thread.Sleep(50);
 
+            NozzleXYspeed_textBox.Text = Properties.Settings.Default.Nozzles_XYspeed.ToString();
+            NozzleZspeed_textBox.Text = Properties.Settings.Default.Nozzles_Zspeed.ToString();
+            NozzleAspeed_textBox.Text = Properties.Settings.Default.Nozzles_Aspeed.ToString();
+            NozzleTimeout_textBox.Text = Properties.Settings.Default.Nozzles_Timeout.ToString();
+            NozzleXYFullSpeed_checkBox.Checked = Properties.Settings.Default.Nozzles_XYfullSpeed;
+            NozzleZFullSpeed_checkBox.Checked = Properties.Settings.Default.Nozzles_ZfullSpeed;
+            NozzleAFullSpeed_checkBox.Checked = Properties.Settings.Default.Nozzles_AfullSpeed;
+            FirstMoveFullSpeed_checkBox.Checked = Properties.Settings.Default.Nozzles_FirstMoveFullSpeed;
+            Nozzle1stMoveSlackComp_checkBox.Checked = Properties.Settings.Default.Nozzles_FirstMoveSlackCompensation;
+            LastMoveFullSpeed_checkBox.Checked = Properties.Settings.Default.Nozzles_LastMoveFullSpeed;
+
+
+            // For setup and testing, we want all operations (including jog and go button) to obey speed settings.
+            // We don't want to disturb other operations, so we'll store the current state at page enter and restore at page leave.
+            // store cnc speed settings
+            NozzletabStore_slowXY = Cnc.SlowXY;
+            NozzletabStore_slowZ = Cnc.SlowZ;
+            NozzletabStore_slowA = Cnc.SlowA;
+            NozzletabStore_XYspeed = Cnc.SlowSpeedXY;
+            NozzletabStore_Zspeed = Cnc.SlowSpeedZ;
+            NozzletabStore_Aspeed = Cnc.SlowSpeedA;
+            NozzletabStore_timeout = CNC_timeout;
+            NozzletabStore_slack = Cnc.SlackCompensation;
+            NozzletabStore_slackA = Cnc.SlackCompensationA;
+
+            // replace with nozzle speed settings
+            Cnc.SlowXY = !Properties.Settings.Default.Nozzles_XYfullSpeed;
+            Cnc.SlowZ = !Properties.Settings.Default.Nozzles_ZfullSpeed;
+            Cnc.SlowA = !Properties.Settings.Default.Nozzles_AfullSpeed;
+            Cnc.SlowSpeedXY = Properties.Settings.Default.Nozzles_XYspeed;
+            Cnc.SlowSpeedZ = Properties.Settings.Default.Nozzles_Zspeed;
+            Cnc.SlowSpeedA = Properties.Settings.Default.Nozzles_Aspeed;
+            CNC_timeout = Properties.Settings.Default.Nozzles_Timeout;
+            Cnc.SlackCompensation = false;  // nozzle changes without slack compensation
+            Cnc.SlackCompensationA = false;
+
             AtNozzlesTab = true;
         }
 
@@ -11996,6 +12054,18 @@ namespace LitePlacer
             Thread.Sleep(50);
             CNC_Write_m("{\"zsx\":2}");
             Thread.Sleep(50);
+            // restore settings
+            Cnc.SlowXY = NozzletabStore_slowXY;
+            Cnc.SlowZ = NozzletabStore_slowZ;
+            Cnc.SlowA = NozzletabStore_slowA;
+            Cnc.SlowSpeedXY = NozzletabStore_XYspeed;
+            Cnc.SlowSpeedZ = NozzletabStore_Zspeed;
+            Cnc.SlowSpeedA = NozzletabStore_Aspeed;
+            CNC_timeout = NozzletabStore_timeout;
+            Cnc.SlackCompensation = NozzletabStore_slack;
+            Cnc.SlackCompensationA = NozzletabStore_slackA;
+
+
             AtNozzlesTab = false;
         }
 
@@ -12268,6 +12338,7 @@ namespace LitePlacer
             double XYspeed = Cnc.SlowSpeedXY;
             double Zspeed = Cnc.SlowSpeedZ;
             double Aspeed = Cnc.SlowSpeedA;
+            int timeout = CNC_timeout;
 
             // replace with nozzle speed settings
             Cnc.SlowXY = !Properties.Settings.Default.Nozzles_XYfullSpeed;
@@ -12276,6 +12347,7 @@ namespace LitePlacer
             Cnc.SlowSpeedXY = Properties.Settings.Default.Nozzles_XYspeed;
             Cnc.SlowSpeedZ = Properties.Settings.Default.Nozzles_Zspeed;
             Cnc.SlowSpeedA = Properties.Settings.Default.Nozzles_Aspeed;
+            CNC_timeout = Properties.Settings.Default.Nozzles_Timeout;
 
             bool ok = true;
             if (!AtNozzlesTab)
@@ -12336,6 +12408,7 @@ namespace LitePlacer
             Cnc.SlowSpeedXY = XYspeed;
             Cnc.SlowSpeedZ = Zspeed;
             Cnc.SlowSpeedA = Aspeed;
+            CNC_timeout = timeout;
 
             return ok;
         }
@@ -12359,14 +12432,33 @@ namespace LitePlacer
             {
                 return false;
             }
+            if (Properties.Settings.Default.Nozzles_FirstMoveFullSpeed)
+            {
+                Cnc.SlowXY = false;
+                Cnc.SlowZ = false;
+                Cnc.SlowA = false;
+            }
             CNC_Z_m(0.0);
+            if (Properties.Settings.Default.Nozzles_FirstMoveSlackCompensation)
+            {
+                CNC_XYA_m(X-1, Y-1, -5.0);
+            }
             CNC_XYA_m(X, Y, 0.0);
             CNC_Z_m(Z);
+            Cnc.SlowXY = !Properties.Settings.Default.Nozzles_XYfullSpeed;
+            Cnc.SlowZ = !Properties.Settings.Default.Nozzles_ZfullSpeed;
+            Cnc.SlowA = !Properties.Settings.Default.Nozzles_AfullSpeed;
+
             return true;
         }
 
         private bool m_DoNozzleSequence(DataGridView grid, int Nozzle)
         {
+            bool slack = Cnc.SlackCompensation;
+            bool slackA = Cnc.SlackCompensationA;
+            Cnc.SlackCompensation = false;
+            Cnc.SlackCompensationA = false;
+
             m_NozzleGotoStart(grid, Nozzle);
             int Move = 1;
             bool AllDone = false;
@@ -12374,9 +12466,13 @@ namespace LitePlacer
             {
                 if (!m_DoNozzleMove(grid, Nozzle, Move++, out AllDone))
                 {
+                    Cnc.SlackCompensation = slack;
+                    Cnc.SlackCompensationA = slackA;
                     return false;
                 }
             }
+            Cnc.SlackCompensation = slack;
+            Cnc.SlackCompensationA = slackA;
             return true;
         }
 
@@ -12405,6 +12501,21 @@ namespace LitePlacer
                 AllDone = true;
                 return true;
             }
+
+            bool LastMove = false;
+            if (MoveNumber == 6)
+            {
+                LastMove = true;
+            }
+            else if (grid.Rows[nozzle - 1].Cells[DirCol+2].Value == null)
+            {
+                LastMove = true;
+            }
+            else if(grid.Rows[nozzle - 1].Cells[DirCol + 2].Value.ToString() == "--")
+            {
+                LastMove = true;
+            }
+
             double val;
             if (!NozzleDataCheck(grid, nozzle, DirCol + 1, out val))
             {
@@ -12420,6 +12531,14 @@ namespace LitePlacer
                 DisplayText("Bad data: " + op + "nozzle #" + nozzle + ", move " + MoveNumber.ToString(), KnownColor.DarkRed);
             }
             string axis=grid.Rows[nozzle - 1].Cells[DirCol].Value.ToString();
+
+            if (LastMove && Properties.Settings.Default.Nozzles_LastMoveFullSpeed)
+            {
+                Cnc.SlowXY = false;
+                Cnc.SlowZ = false;
+                Cnc.SlowA = false;
+            }
+
             if (axis=="Z")
             {
                 CNC_Z_m(Cnc.CurrentZ + val);
@@ -12440,11 +12559,17 @@ namespace LitePlacer
 
                     default:
                         DisplayText("m_DoNozzleMove: nozzle #" + nozzle + ", move " + MoveNumber.ToString() + ", axis?", KnownColor.DarkRed);
+                        Cnc.SlowXY = !Properties.Settings.Default.Nozzles_XYfullSpeed;
+                        Cnc.SlowZ = !Properties.Settings.Default.Nozzles_ZfullSpeed;
+                        Cnc.SlowA = !Properties.Settings.Default.Nozzles_AfullSpeed;
                         return false;
                         //break;
                 }
                 CNC_XY_m(X, Y);
             }
+            Cnc.SlowXY = !Properties.Settings.Default.Nozzles_XYfullSpeed;
+            Cnc.SlowZ = !Properties.Settings.Default.Nozzles_ZfullSpeed;
+            Cnc.SlowA = !Properties.Settings.Default.Nozzles_AfullSpeed;
             return true;
         }
 
@@ -12465,12 +12590,13 @@ namespace LitePlacer
         // ==========================================================================================================
         // Speed controls
 
-        private void NozzleXYspeed_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void NozzleXYspeed_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(NozzleXYspeed_textBox.Text, out val))
             {
                 Properties.Settings.Default.Nozzles_XYspeed = val;
+                Cnc.SlowSpeedXY = val;
                 NozzleXYspeed_textBox.ForeColor = Color.Black;
             }
             else
@@ -12479,12 +12605,13 @@ namespace LitePlacer
             }
         }
 
-        private void NozzleZspeed_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void NozzleZspeed_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(NozzleZspeed_textBox.Text, out val))
             {
                 Properties.Settings.Default.Nozzles_Zspeed = val;
+                Cnc.SlowSpeedZ = val;
                 NozzleZspeed_textBox.ForeColor = Color.Black;
             }
             else
@@ -12492,13 +12619,13 @@ namespace LitePlacer
                 NozzleZspeed_textBox.ForeColor = Color.Red;
             }
         }
-
-        private void NozzleAspeed_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void NozzleAspeed_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(NozzleAspeed_textBox.Text, out val))
             {
                 Properties.Settings.Default.Nozzles_Aspeed = val;
+                Cnc.SlowSpeedA = val;
                 NozzleAspeed_textBox.ForeColor = Color.Black;
             }
             else
@@ -12507,43 +12634,57 @@ namespace LitePlacer
             }
         }
 
-        private void NozzleXYFullSpeed_checkBox_CheckedChanged(object sender, EventArgs e)
+        private void NozzleTimeout_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (NozzleXYFullSpeed_checkBox.Checked)
+            int val;
+            if (int.TryParse(NozzleTimeout_textBox.Text, out val))
             {
-                Properties.Settings.Default.Nozzles_XYfullSpeed = true;
+                Properties.Settings.Default.Nozzles_Timeout = val;
+                CNC_timeout = val;
+                NozzleTimeout_textBox.ForeColor = Color.Black;
             }
             else
             {
-                Properties.Settings.Default.Nozzles_XYfullSpeed = false;
+                NozzleTimeout_textBox.ForeColor = Color.Red;
             }
+        }
+
+        private void NozzleXYFullSpeed_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Nozzles_XYfullSpeed = NozzleXYFullSpeed_checkBox.Checked;
+            Cnc.SlowXY = !NozzleXYFullSpeed_checkBox.Checked;
         }
 
         private void NozzleZFullSpeed_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (NozzleZFullSpeed_checkBox.Checked)
-            {
-                Properties.Settings.Default.Nozzles_ZfullSpeed = true;
-            }
-            else
-            {
-                Properties.Settings.Default.Nozzles_ZfullSpeed = false;
-            }
+            Properties.Settings.Default.Nozzles_ZfullSpeed = NozzleZFullSpeed_checkBox.Checked;
+            Cnc.SlowZ = !NozzleZFullSpeed_checkBox.Checked;
         }
 
         private void NozzleAFullSpeed_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (NozzleAFullSpeed_checkBox.Checked)
-            {
-                Properties.Settings.Default.Nozzles_AfullSpeed = true;
-            }
-            else
-            {
-                Properties.Settings.Default.Nozzles_AfullSpeed = false;
-            }
+            Properties.Settings.Default.Nozzles_ZfullSpeed = NozzleAFullSpeed_checkBox.Checked;
+            Cnc.SlowA = !NozzleAFullSpeed_checkBox.Checked;
+        }
+
+        private void Nozzle1stMoveSlackComp_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Nozzles_FirstMoveSlackCompensation = Nozzle1stMoveSlackComp_checkBox.Checked;
+        }
+
+        private void FirstMoveFullSpeed_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Nozzles_FirstMoveFullSpeed = FirstMoveFullSpeed_checkBox.Checked;
+        }
+
+        private void LastMoveFullSpeed_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Nozzles_LastMoveFullSpeed = LastMoveFullSpeed_checkBox.Checked;
         }
 
         #endregion
+
+
     }	// end of: 	public partial class FormMain : Form
 
 

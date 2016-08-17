@@ -279,6 +279,7 @@ namespace LitePlacer
 			X = Math.Round(X, 3);
             if ((dX < 1) && (dY < 1))
             {
+                // Small move
                 if (SlowXY)
                 {
                     if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
@@ -300,7 +301,16 @@ namespace LitePlacer
             }
             else
             {
-                command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                // large move
+                if (SlowXY)
+                {
+                    command = "G1 F" + SlowSpeedXY.ToString()
+                            + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                }
             }
             _readyEvent.Reset();
             Com.Write("{\"gc\":\"" + command + "\"}");
@@ -363,40 +373,55 @@ namespace LitePlacer
             {
                 // small movement
                 // First do XY move, then A. This works always.
-                // Small moves and fast settings can cause problems otherwise
-                if (SlowXY)
+                // (small moves and fast settings can sometimes cause problems)
+                if ((dX < 0.004) && (dY < 0.004) )
                 {
-                    if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed>SlowSpeedXY)
+                    MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
+                }
+                else
+                {
+                    if (SlowXY)
+                    {
+                        if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
+                        {
+                            command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
+                                                           " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                        {
+                            command = "G1 F" + SlowSpeedXY.ToString()
+                                    + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                        }
+                    }
+                    else
                     {
                         command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
                                                        " Y" + Y.ToString(CultureInfo.InvariantCulture);
                     }
+                    _readyEvent.Reset();
+                    Com.Write("{\"gc\":\"" + command + "\"}");
+                    _readyEvent.Wait();
+                }
+
+                // then A:
+                if (dA < 0.01)
+                {
+                    MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
+                }
+                else
+                {
+                    if (SlowA)
+                    {
+                        command = "G1 F" + SlowSpeedA.ToString() + " A" + Am.ToString(CultureInfo.InvariantCulture);
+                    }
                     else
                     {
-                        command = "G1 F"+ SlowSpeedXY.ToString()
-                                + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                        command = "G0 A" + Am.ToString(CultureInfo.InvariantCulture);
                     }
+                    _readyEvent.Reset();
+                    Com.Write("{\"gc\":\"" + command + "\"}");
+                    _readyEvent.Wait();
                 }
-                else
-                {
-                    command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
-                                                   " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                }
-                _readyEvent.Reset();
-                Com.Write("{\"gc\":\"" + command + "\"}");
-                _readyEvent.Wait();
-                // then A:
-                if (SlowA)
-                {
-                    command = "G1 F" + SlowSpeedA.ToString() + " A" + Am.ToString(CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    command = "G0 A" + Am.ToString(CultureInfo.InvariantCulture);
-                }
-                _readyEvent.Reset();
-                Com.Write("{\"gc\":\"" + command + "\"}");
-                _readyEvent.Wait();
             }
             else
             {
@@ -410,18 +435,25 @@ namespace LitePlacer
                 if (SlowA || (!SlowA && SlowXY))
                 {
                     // Do A first, then XY
-                    if (SlowA)
+                    if (dA < 0.01)
                     {
-                        command = "G1 F" + SlowSpeedA.ToString() + " A" + Am.ToString(CultureInfo.InvariantCulture);
+                        MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
                     }
                     else
                     {
-                        command = "G0" + " A" + Am.ToString(CultureInfo.InvariantCulture);
+                        if (SlowA)
+                        {
+                            command = "G1 F" + SlowSpeedA.ToString() + " A" + Am.ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                        {
+                            command = "G0 A" + Am.ToString(CultureInfo.InvariantCulture);
+                        }
+                        _readyEvent.Reset();
+                        Com.Write("{\"gc\":\"" + command + "\"}");
+                        _readyEvent.Wait();
                     }
-                    _readyEvent.Reset();
-                    Com.Write("{\"gc\":\"" + command + "\"}");
-                    _readyEvent.Wait();
-                    // A done, we know XY is slow
+                    // A done, we know XY is slow and large
                     command = "G1 F" + SlowSpeedXY.ToString() +
                                 " X" + X.ToString(CultureInfo.InvariantCulture) +
                                 " Y" + Y.ToString(CultureInfo.InvariantCulture);
@@ -460,11 +492,11 @@ namespace LitePlacer
                 {
                     if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedZ)
                     {
-                        command = "G1 F" + SlowSpeedZ.ToString() + Z.ToString(CultureInfo.InvariantCulture);
+                        command = "G1 F" + SlowSpeedZ.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                     }
                     else
                     {
-                        command = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed.ToString() + Z.ToString(CultureInfo.InvariantCulture);
+                        command = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -472,7 +504,7 @@ namespace LitePlacer
             {
                 if (SlowZ)
                 {
-                    command = "G1 F" + SlowSpeedZ.ToString() + Z.ToString(CultureInfo.InvariantCulture);
+                    command = "G1 F" + SlowSpeedZ.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -505,14 +537,6 @@ namespace LitePlacer
         private void A_move(double A)
         {
             string command;
-            //if (Math.Abs(A - CurrentA) < 5)
-            //{
-            //    command = "G1 F3000 A" + A.ToString(CultureInfo.InvariantCulture);
-            //}
-            //else
-            //{
-            //    command = "G0 A" + A.ToString(CultureInfo.InvariantCulture);
-            //}
             if (SlowA)
             {
                 command = "G1 F" + SlowSpeedA.ToString() + " A" + A.ToString(CultureInfo.InvariantCulture);
