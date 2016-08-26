@@ -112,7 +112,7 @@ namespace LitePlacer
             DownCamera = new Camera(this);
             UpCamera = new Camera(this);
             Needle = new NeedleClass(UpCamera, Cnc, this);
-            Tapes = new TapesClass(Tapes_dataGridView, CustomTapes_dataGridView, Needle, DownCamera, Cnc, this);
+            Tapes = new TapesClass(Tapes_dataGridView, Needle, DownCamera, Cnc, this);
 
             // Setup error handling for Tapes_dataGridView
             // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
@@ -138,12 +138,8 @@ namespace LitePlacer
             // and uncomment this:
             // LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
 
+            // LoadTapesTable(path);
             LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
-
-            // To enable custom tapes, uncomment these:
-            // LoadDataGrid(path + "LitePlacer.CustomTapes", CustomTapes_dataGridView);
-            // Tapes.AddCustomTapesToTapes();
-            // Tapes.AddWidthValues();
 
             LoadDataGrid(path + "LitePlacer.HomingFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref Homing_dataGridView, false);
@@ -406,7 +402,6 @@ namespace LitePlacer
             path = path.Remove(i + 1);
             SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
             SaveDataGrid(path + "LitePlacer.TapesData_v2", Tapes_dataGridView);
-            SaveDataGrid(path + "LitePlacer.CustomTapes_v2", CustomTapes_dataGridView);
             SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
             SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
 
@@ -638,15 +633,10 @@ namespace LitePlacer
                                 {
                                     dgv.Rows[i].Cells[i_out].Value = br.ReadString();
                                 }
-                                else br.ReadBoolean();
-                                //if ((dgv.Rows[i].Cells[i_out].Value == null) && (dgv.Rows[i].Cells[i_out].ValueType == typeof(DataGridViewTextBoxColumn)))
-                                //{
-                                //    dgv.Rows[i].Cells[i_out].Value = "--";
-                                //}
-                                //if (dgv.Rows[i].Cells[i_out].Value.ToString() == "")
-                                //{
-                                //    dgv.Rows[i].Cells[i_out].Value = "--";
-                                //}
+                                else
+                                {
+                                    br.ReadBoolean();
+                                }
                             }
                             else
                             {
@@ -659,6 +649,7 @@ namespace LitePlacer
                             }
                         }
                     }
+                    br.Close();
                 }
                 LoadingDataGrid = false;
             }
@@ -870,6 +861,55 @@ namespace LitePlacer
             {
                 MessageBox.Show(excep.Message);
                 LoadingDataGrid = false;
+            }
+        }
+
+
+        // =================================================================================
+        // I changed the data in tapes table, but cI don't want to make customers to redo their tables
+        // This routine looks if the data format is old and converts it to new if needed
+        private void LoadTapesTable(string path)
+        {
+            // Logic:
+            // Check that file exists.
+            // Read the headers.
+            // If headers have "WidthColumn", read in to dummy datagridview and convert to new format
+            // else read normally
+
+            if (!File.Exists(path+"LitePlacer.TapesData_v2"))
+            {
+                DisplayText("Didn't find LitePlacer.TapesData_v2 file ");
+                return;   // Didint find the specified file name nor filename+v2 (these would be the default files)
+            }
+            try
+            {
+                using (BinaryReader br = new BinaryReader(File.Open(path+"LitePlacer.TapesData_v2", FileMode.Open)))
+                {
+                    int first = br.ReadInt32();
+                    int cols = br.ReadInt32();
+                    int rows = br.ReadInt32();
+                    // read headers;
+                    List<string> Headers = new List<string>();
+                    for (int j = 0; j < cols; ++j)
+                    {
+                        Headers.Add(br.ReadString());
+                    }
+                    br.Close();
+                    if (Headers.Contains("WidthColumn"))
+                    {
+                        // read in to dummy datagridview and convert to new format
+                        LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
+                        // convert to new
+                    }
+                    else
+                    {
+                        DisplayText("would read new tapes data");
+                    }
+                }
+            }
+            catch (System.Exception excep)
+            {
+                MessageBox.Show(excep.Message);
             }
         }
 
@@ -2384,6 +2424,8 @@ namespace LitePlacer
             // Called at startup. 
             DownCamera.Active = false;
             UpCamera.Active = false;
+            DownCamera.Close();
+            UpCamera.Close();
             SetDownCameraDefaults();
             SetUpCameraDefaults();
             if (KeepActive_checkBox.Checked)
@@ -2394,6 +2436,25 @@ namespace LitePlacer
             }
             SelectCamera(DownCamera);
 
+        }
+
+        private void UpCamStop_button_Click(object sender, EventArgs e)
+        {
+            UpCamera.Close();
+        }
+
+        private void UpCamStart_button_Click(object sender, EventArgs e)
+        {
+            StartUpCamera_m();
+        }
+        private void DownCamStop_button_Click(object sender, EventArgs e)
+        {
+            DownCamera.Close();
+        }
+
+        private void DownCamStart_button_Click(object sender, EventArgs e)
+        {
+            StartDownCamera_m();
         }
 
 
@@ -2495,6 +2556,7 @@ namespace LitePlacer
                     MessageBoxButtons.OK
                 );
                 DownCamStatus_label.Text = "Not Connected";
+                DownCamera.Active = false;
                 return false;
             };
             DownCamStatus_label.Text = "Active";
@@ -2703,7 +2765,8 @@ namespace LitePlacer
             {
                 for (int i = 0; i < Devices.Count; i++)
                 {
-                    DownCam_comboBox.Items.Add(Devices[i]);
+                    DownCam_comboBox.Items.Add(i.ToString() + ": " + Devices[i]);
+                    DisplayText("Device " + i.ToString() + ": " + Devices[i]);
                 }
             }
             else
@@ -2733,7 +2796,8 @@ namespace LitePlacer
             {
                 for (int i = 0; i < Devices.Count; i++)
                 {
-                    UpCam_comboBox.Items.Add(Devices[i]);
+                    UpCam_comboBox.Items.Add(i.ToString() + ": " + Devices[i]);
+                    DisplayText("Device " + i.ToString() + ": " + Devices[i]);
                 }
             }
             else
@@ -2818,6 +2882,13 @@ namespace LitePlacer
             List<string> Monikers = DownCamera.GetMonikerStrings();
             Properties.Settings.Default.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
+            //DownCamera.Close();
+            //Thread.Sleep(200);
+            //if (!StartDownCamera_m())
+            //{
+            //    return;
+            //}
+            //Thread.Sleep(200);
             SelectCamera(DownCamera);
 
             if (DownCamera.IsRunning())
@@ -2841,6 +2912,7 @@ namespace LitePlacer
             List<string> Monikers = UpCamera.GetMonikerStrings();
             Properties.Settings.Default.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
+            UpCamera.Close();
             SelectCamera(UpCamera);
             if (UpCamera.IsRunning())
             {
@@ -9787,6 +9859,41 @@ namespace LitePlacer
             ZGuardOn();
         }
 
+        // =================================================================================
+        // tape parameters edit dialog
+
+        private int TapesGridEditRow = 0;
+        private int TapesGridEnterRow = 0;
+
+        private void Tapes_dataGridView_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            TapesGridEnterRow = e.RowIndex;
+        }
+
+        private void Tapes_dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                TapesGridEditRow = TapesGridEnterRow;
+            }
+        }
+
+        private void EditTape_MenuItemClick(object sender, EventArgs e)
+        {
+            TapeEditForm TapeEditDialog = new TapeEditForm();
+            TapeEditDialog.TapeRowNo = TapesGridEditRow;
+            TapeEditDialog.TapesDataGrid = Tapes_dataGridView;
+            TapeEditDialog.Row = Tapes_dataGridView.Rows[TapesGridEditRow];
+
+            TapeEditDialog.ShowDialog(this);
+
+            Update_GridView(Tapes_dataGridView);
+        }
+
+        // end edit dialog stuff
+        // =================================================================================
+
+
         private void AddTape_button_Click(object sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection SelectedRows = Tapes_dataGridView.SelectedRows;
@@ -9816,7 +9923,7 @@ namespace LitePlacer
             // OrientationColumn: Which way the tape is set. It is the direction to go for next part
             Tapes_dataGridView.Rows[index].Cells["OrientationColumn"].Value = "+X";
             // RotationColumn: Which way the parts are rotated on the tape. if 0, parts form +Y oriented tape
-            // correspont to 0deg. on teh PCB, tape.e. the placement operation does not rotate them.
+            // correspont to 0deg. on the PCB, tape.e. the placement operation does not rotate them.
             Tapes_dataGridView.Rows[index].Cells["RotationColumn"].Value = "0deg.";
             // WidthColumn: sets the width of the tape and the distance from one part to next. 
             // From EIA-481, we get the part location from the hole location.
@@ -10031,7 +10138,6 @@ namespace LitePlacer
             if (TapesAll_openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 LoadDataGrid(TapesAll_openFileDialog.FileName, Tapes_dataGridView, DataTableType.Tapes);
-                Tapes.AddWidthValues();
             }
         }
 
@@ -10286,58 +10392,7 @@ namespace LitePlacer
             }
         }
 
-        // =================================================================================
-        // Custom tapes:
-
-        private void SaveCustomTapes_button_Click(object sender, EventArgs e)
-        {
-            TapesAll_saveFileDialog.Filter = "LitePlacer Custom Tapes files (*.customtapes)|*.customtapes|All files (*.*)|*.*";
-
-            if (TapesAll_saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                SaveDataGrid(TapesAll_saveFileDialog.FileName, CustomTapes_dataGridView);
-            }
-        }
-
-        private void LoadCustomTapes_button_Click(object sender, EventArgs e)
-        {
-            TapesAll_openFileDialog.Filter = "LitePlacer Custom Tapes files (*.customtapes)|*.customtapes|All files (*.*)|*.*";
-
-            if (TapesAll_openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                LoadDataGrid(TapesAll_openFileDialog.FileName, CustomTapes_dataGridView, DataTableType.CustomTapes);
-            }
-        }
-
-        private void DeleteCustomTape_button_Click(object sender, EventArgs e)
-        {
-            if (CustomTapes_dataGridView.RowCount > 1)
-            {
-                CustomTapes_dataGridView.Rows.RemoveAt(CustomTapes_dataGridView.CurrentCell.RowIndex);
-            }
-            // ReloadTapes();
-            Tapes.AddCustomTapesToTapes();
-        }
-
-        private void CustomTapeUp_button_Click(object sender, EventArgs e)
-        {
-            DataGrid_Up_button(CustomTapes_dataGridView);
-            Tapes.AddCustomTapesToTapes();
-        }
-
-        private void CustomTapeDown_button_Click(object sender, EventArgs e)
-        {
-            DataGrid_Down_button(CustomTapes_dataGridView);
-            Tapes.AddCustomTapesToTapes();
-        }
-
-        private void UseCustomTapes_button_Click(object sender, EventArgs e)
-        {
-            Tapes.AddCustomTapesToTapes();
-        }
-
-
-
+ 
         #endregion  TapeNumber Positions page functions
 
         // =================================================================================
@@ -12017,7 +12072,7 @@ namespace LitePlacer
             FirstMoveFullSpeed_checkBox.Checked = Properties.Settings.Default.Nozzles_FirstMoveFullSpeed;
             Nozzle1stMoveSlackComp_checkBox.Checked = Properties.Settings.Default.Nozzles_FirstMoveSlackCompensation;
             LastMoveFullSpeed_checkBox.Checked = Properties.Settings.Default.Nozzles_LastMoveFullSpeed;
-
+            ForceNozzle_numericUpDown.Maximum = Properties.Settings.Default.Nozzles_count;
 
             // For setup and testing, we want all operations (including jog and go button) to obey speed settings.
             // We don't want to disturb other operations, so we'll store the current state at page enter and restore at page leave.
@@ -12106,6 +12161,7 @@ namespace LitePlacer
                 }
             }
             Properties.Settings.Default.Nozzles_count = (int)NoOfNozzles_UpDown.Value;
+            ForceNozzle_numericUpDown.Maximum = Properties.Settings.Default.Nozzles_count;
         }
 
         // ==========================================================================================================
@@ -12682,8 +12738,13 @@ namespace LitePlacer
             Properties.Settings.Default.Nozzles_LastMoveFullSpeed = LastMoveFullSpeed_checkBox.Checked;
         }
 
-        #endregion
+        private void NozzleChangeEnable_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Nozzles_Enabled = NozzleChangeEnable_checkBox.Checked;
+        }
 
+
+        #endregion
 
     }	// end of: 	public partial class FormMain : Form
 

@@ -1306,5 +1306,17 @@ namespace LitePlacer.Properties {
                 this["Nozzles_LastMoveFullSpeed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Nozzles_Enabled {
+            get {
+                return ((bool)(this["Nozzles_Enabled"]));
+            }
+            set {
+                this["Nozzles_Enabled"] = value;
+            }
+        }
     }
 }

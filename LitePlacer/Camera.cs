@@ -63,7 +63,7 @@ namespace LitePlacer
 				VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
 				VideoSource = null;
 				MainForm.DisplayText(Id + " stop: " + MonikerString);
-				MonikerString = "unconnected";
+				MonikerString = "Stopped";
 			}
 		}
 
@@ -154,9 +154,9 @@ namespace LitePlacer
                     if (!ReceivingFrames)
                     {
                         // 50 ms pause, processing events so that videosource has a chance
-                        for (int i = 0; i < 10; i++)
+                        for (int i = 0; i < 5; i++)
                         {
-                            Thread.Sleep(5);
+                            Thread.Sleep(10);
                             Application.DoEvents();     
                         }
                     }
@@ -167,11 +167,11 @@ namespace LitePlacer
                 }
                 MainForm.DisplayText("*** Camera started: " + tries.ToString() + ", " + ReceivingFrames.ToString(), KnownColor.Purple);
                 // another pause so that if we are receiveing frames, we have time to notice it
-                for (int i = 0; i < 10; i++)
-                {
-                    Thread.Sleep(5);
-                    Application.DoEvents();
-                }
+                //for (int i = 0; i < 10; i++)
+                //{
+                //    Thread.Sleep(5);
+                //    Application.DoEvents();
+                //}
 
                 if (!ReceivingFrames)
                 {
@@ -389,7 +389,7 @@ namespace LitePlacer
 			bool pause = PauseProcessing;
 			if (VideoSource != null)
 			{
-				if (VideoSource.IsRunning)
+				if (ReceivingFrames)
 				{
 					// stop video
 					PauseProcessing = true;  // ask for stop

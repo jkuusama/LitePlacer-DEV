@@ -65,17 +65,25 @@
             this.Bookmark5_button = new System.Windows.Forms.Button();
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
-            this.UseCustomTapes_button = new System.Windows.Forms.Button();
-            this.LoadCustomTapes_button = new System.Windows.Forms.Button();
-            this.SaveCustomTapes_button = new System.Windows.Forms.Button();
-            this.DeleteCustomTape_button = new System.Windows.Forms.Button();
-            this.label130 = new System.Windows.Forms.Label();
-            this.CustomTapes_dataGridView = new System.Windows.Forms.DataGridView();
-            this.Name_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PitchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UsesLocationMarks_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.PartOffsetX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PartOffsetY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TapesOld_dataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.dataGridViewTextBoxColumn55 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewComboBoxColumn11 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewComboBoxColumn12 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewTextBoxColumn56 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WidthColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn57 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewComboBoxColumn13 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewTextBoxColumn58 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn59 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn62 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn63 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn64 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn65 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn66 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn67 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tapes_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ShowPart_button = new System.Windows.Forms.Button();
             this.label129 = new System.Windows.Forms.Label();
             this.HoleTest_button = new System.Windows.Forms.Button();
@@ -105,11 +113,13 @@
             this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.WidthColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.NozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Capacity_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OffsetXColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OffsetYColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -133,6 +143,8 @@
             this.B_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
+            this.DownCamStart_button = new System.Windows.Forms.Button();
+            this.DownCamStop_button = new System.Windows.Forms.Button();
             this.MeasureDownCam_button = new System.Windows.Forms.Button();
             this.label135 = new System.Windows.Forms.Label();
             this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
@@ -270,6 +282,8 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HomingToHere_button = new System.Windows.Forms.Button();
             this.UpCamera_tabPage = new System.Windows.Forms.TabPage();
+            this.UpCamStart_button = new System.Windows.Forms.Button();
+            this.UpCamStop_button = new System.Windows.Forms.Button();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
             this.UpcamSnapshot_dataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewComboBoxColumn10 = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -650,6 +664,23 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Nozzles_tabPage = new System.Windows.Forms.TabPage();
+            this.NozzleChangeEnable_checkBox = new System.Windows.Forms.CheckBox();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.LastMoveFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
+            this.Nozzle1stMoveSlackComp_checkBox = new System.Windows.Forms.CheckBox();
+            this.FirstMoveFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
+            this.label145 = new System.Windows.Forms.Label();
+            this.NozzleTimeout_textBox = new System.Windows.Forms.TextBox();
+            this.NozzleAFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
+            this.NozzleZFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
+            this.NozzleXYFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
+            this.label144 = new System.Windows.Forms.Label();
+            this.NozzleAspeed_textBox = new System.Windows.Forms.TextBox();
+            this.label142 = new System.Windows.Forms.Label();
+            this.NozzleZspeed_textBox = new System.Windows.Forms.TextBox();
+            this.label141 = new System.Windows.Forms.Label();
+            this.NozzleXYspeed_textBox = new System.Windows.Forms.TextBox();
+            this.label140 = new System.Windows.Forms.Label();
             this.GotoZ0_button = new System.Windows.Forms.Button();
             this.SetDefaultNozzle_button = new System.Windows.Forms.Button();
             this.NozzleZGuard_checkBox = new System.Windows.Forms.CheckBox();
@@ -700,24 +731,9 @@
             this.Abs_radioButton = new System.Windows.Forms.RadioButton();
             this.Relative_Button = new System.Windows.Forms.RadioButton();
             this.label108 = new System.Windows.Forms.Label();
-            this.panel10 = new System.Windows.Forms.Panel();
-            this.label140 = new System.Windows.Forms.Label();
-            this.NozzleXYspeed_textBox = new System.Windows.Forms.TextBox();
-            this.label141 = new System.Windows.Forms.Label();
-            this.NozzleZspeed_textBox = new System.Windows.Forms.TextBox();
-            this.label142 = new System.Windows.Forms.Label();
-            this.NozzleAspeed_textBox = new System.Windows.Forms.TextBox();
-            this.label144 = new System.Windows.Forms.Label();
-            this.NozzleXYFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
-            this.NozzleZFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
-            this.NozzleAFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
-            this.NozzleTimeout_textBox = new System.Windows.Forms.TextBox();
-            this.label145 = new System.Windows.Forms.Label();
-            this.FirstMoveFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
-            this.Nozzle1stMoveSlackComp_checkBox = new System.Windows.Forms.CheckBox();
-            this.LastMoveFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
+            this.Tapes_contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
             this.Components_tabPage.SuspendLayout();
@@ -778,13 +794,13 @@
             this.RunJob_contextMenuStrip.SuspendLayout();
             this.tabControlPages.SuspendLayout();
             this.Nozzles_tabPage.SuspendLayout();
+            this.panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ForceNozzle_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesUnload_dataGridView)).BeginInit();
             this.NozzleUnload_contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).BeginInit();
             this.NozzleLoad_contextMenuStrip.SuspendLayout();
-            this.panel10.SuspendLayout();
             this.SuspendLayout();
             // 
             // Park_button
@@ -1150,12 +1166,7 @@
             // 
             // Tapes_tabPage
             // 
-            this.Tapes_tabPage.Controls.Add(this.UseCustomTapes_button);
-            this.Tapes_tabPage.Controls.Add(this.LoadCustomTapes_button);
-            this.Tapes_tabPage.Controls.Add(this.SaveCustomTapes_button);
-            this.Tapes_tabPage.Controls.Add(this.DeleteCustomTape_button);
-            this.Tapes_tabPage.Controls.Add(this.label130);
-            this.Tapes_tabPage.Controls.Add(this.CustomTapes_dataGridView);
+            this.Tapes_tabPage.Controls.Add(this.TapesOld_dataGridView);
             this.Tapes_tabPage.Controls.Add(this.ShowPart_button);
             this.Tapes_tabPage.Controls.Add(this.label129);
             this.Tapes_tabPage.Controls.Add(this.HoleTest_button);
@@ -1190,114 +1201,173 @@
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
             // 
-            // UseCustomTapes_button
+            // TapesOld_dataGridView
             // 
-            this.UseCustomTapes_button.Location = new System.Drawing.Point(509, 569);
-            this.UseCustomTapes_button.Name = "UseCustomTapes_button";
-            this.UseCustomTapes_button.Size = new System.Drawing.Size(75, 23);
-            this.UseCustomTapes_button.TabIndex = 61;
-            this.UseCustomTapes_button.Text = "Use";
-            this.toolTip1.SetToolTip(this.UseCustomTapes_button, "Moves custom tapes to main tape selections");
-            this.UseCustomTapes_button.UseVisualStyleBackColor = true;
-            this.UseCustomTapes_button.Visible = false;
-            this.UseCustomTapes_button.Click += new System.EventHandler(this.UseCustomTapes_button_Click);
+            this.TapesOld_dataGridView.AllowUserToAddRows = false;
+            this.TapesOld_dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.TapesOld_dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.TapesOld_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TapesOld_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewButtonColumn1,
+            this.dataGridViewTextBoxColumn55,
+            this.dataGridViewComboBoxColumn11,
+            this.dataGridViewComboBoxColumn12,
+            this.dataGridViewTextBoxColumn56,
+            this.WidthColumn,
+            this.dataGridViewTextBoxColumn57,
+            this.dataGridViewComboBoxColumn13,
+            this.dataGridViewTextBoxColumn58,
+            this.dataGridViewTextBoxColumn59,
+            this.dataGridViewTextBoxColumn62,
+            this.dataGridViewTextBoxColumn63,
+            this.dataGridViewTextBoxColumn64,
+            this.dataGridViewTextBoxColumn65,
+            this.dataGridViewTextBoxColumn66,
+            this.dataGridViewTextBoxColumn67});
+            this.TapesOld_dataGridView.ContextMenuStrip = this.Tapes_contextMenuStrip;
+            this.TapesOld_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.TapesOld_dataGridView.Location = new System.Drawing.Point(61, 269);
+            this.TapesOld_dataGridView.MultiSelect = false;
+            this.TapesOld_dataGridView.Name = "TapesOld_dataGridView";
+            this.TapesOld_dataGridView.RowHeadersVisible = false;
+            this.TapesOld_dataGridView.RowHeadersWidth = 50;
+            this.TapesOld_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.TapesOld_dataGridView.Size = new System.Drawing.Size(494, 207);
+            this.TapesOld_dataGridView.TabIndex = 62;
             // 
-            // LoadCustomTapes_button
+            // dataGridViewButtonColumn1
             // 
-            this.LoadCustomTapes_button.Location = new System.Drawing.Point(509, 540);
-            this.LoadCustomTapes_button.Name = "LoadCustomTapes_button";
-            this.LoadCustomTapes_button.Size = new System.Drawing.Size(75, 23);
-            this.LoadCustomTapes_button.TabIndex = 60;
-            this.LoadCustomTapes_button.Text = "Load";
-            this.LoadCustomTapes_button.UseVisualStyleBackColor = true;
-            this.LoadCustomTapes_button.Visible = false;
-            this.LoadCustomTapes_button.Click += new System.EventHandler(this.LoadCustomTapes_button_Click);
+            this.dataGridViewButtonColumn1.HeaderText = "Select";
+            this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
+            this.dataGridViewButtonColumn1.Text = "Reset";
+            this.dataGridViewButtonColumn1.Width = 43;
             // 
-            // SaveCustomTapes_button
+            // dataGridViewTextBoxColumn55
             // 
-            this.SaveCustomTapes_button.Location = new System.Drawing.Point(509, 511);
-            this.SaveCustomTapes_button.Name = "SaveCustomTapes_button";
-            this.SaveCustomTapes_button.Size = new System.Drawing.Size(75, 23);
-            this.SaveCustomTapes_button.TabIndex = 59;
-            this.SaveCustomTapes_button.Text = "Save";
-            this.SaveCustomTapes_button.UseVisualStyleBackColor = true;
-            this.SaveCustomTapes_button.Visible = false;
-            this.SaveCustomTapes_button.Click += new System.EventHandler(this.SaveCustomTapes_button_Click);
+            this.dataGridViewTextBoxColumn55.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn55.Name = "dataGridViewTextBoxColumn55";
+            this.dataGridViewTextBoxColumn55.Width = 43;
             // 
-            // DeleteCustomTape_button
+            // dataGridViewComboBoxColumn11
             // 
-            this.DeleteCustomTape_button.Location = new System.Drawing.Point(509, 598);
-            this.DeleteCustomTape_button.Name = "DeleteCustomTape_button";
-            this.DeleteCustomTape_button.Size = new System.Drawing.Size(75, 23);
-            this.DeleteCustomTape_button.TabIndex = 56;
-            this.DeleteCustomTape_button.Text = "Delete";
-            this.toolTip1.SetToolTip(this.DeleteCustomTape_button, "Deletes the selected tape definition");
-            this.DeleteCustomTape_button.UseVisualStyleBackColor = true;
-            this.DeleteCustomTape_button.Visible = false;
-            this.DeleteCustomTape_button.Click += new System.EventHandler(this.DeleteCustomTape_button_Click);
+            this.dataGridViewComboBoxColumn11.HeaderText = "Dir.";
+            this.dataGridViewComboBoxColumn11.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.dataGridViewComboBoxColumn11.Name = "dataGridViewComboBoxColumn11";
+            this.dataGridViewComboBoxColumn11.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewComboBoxColumn11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn11.Width = 48;
             // 
-            // label130
+            // dataGridViewComboBoxColumn12
             // 
-            this.label130.AutoSize = true;
-            this.label130.Location = new System.Drawing.Point(5, 495);
-            this.label130.Name = "label130";
-            this.label130.Size = new System.Drawing.Size(149, 13);
-            this.label130.TabIndex = 54;
-            this.label130.Text = "Custom Tape Type Definitions";
-            this.label130.Visible = false;
+            this.dataGridViewComboBoxColumn12.HeaderText = "Rot.";
+            this.dataGridViewComboBoxColumn12.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.dataGridViewComboBoxColumn12.Name = "dataGridViewComboBoxColumn12";
+            this.dataGridViewComboBoxColumn12.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewComboBoxColumn12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn12.Width = 52;
             // 
-            // CustomTapes_dataGridView
+            // dataGridViewTextBoxColumn56
             // 
-            this.CustomTapes_dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.CustomTapes_dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.CustomTapes_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.CustomTapes_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Name_Column,
-            this.PitchColumn,
-            this.UsesLocationMarks_Column,
-            this.PartOffsetX_Column,
-            this.PartOffsetY_Column});
-            this.CustomTapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.CustomTapes_dataGridView.Location = new System.Drawing.Point(8, 511);
-            this.CustomTapes_dataGridView.MultiSelect = false;
-            this.CustomTapes_dataGridView.Name = "CustomTapes_dataGridView";
-            this.CustomTapes_dataGridView.RowHeadersWidth = 50;
-            this.CustomTapes_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.CustomTapes_dataGridView.Size = new System.Drawing.Size(494, 110);
-            this.CustomTapes_dataGridView.TabIndex = 53;
-            this.CustomTapes_dataGridView.Visible = false;
+            this.dataGridViewTextBoxColumn56.HeaderText = "Nozzle";
+            this.dataGridViewTextBoxColumn56.Name = "dataGridViewTextBoxColumn56";
+            this.dataGridViewTextBoxColumn56.Width = 64;
             // 
-            // Name_Column
+            // WidthColumn
             // 
-            this.Name_Column.HeaderText = "Name";
-            this.Name_Column.Name = "Name_Column";
-            this.Name_Column.Width = 60;
+            this.WidthColumn.HeaderText = "Width";
+            this.WidthColumn.Name = "WidthColumn";
+            this.WidthColumn.Width = 60;
             // 
-            // PitchColumn
+            // dataGridViewTextBoxColumn57
             // 
-            this.PitchColumn.HeaderText = "Part Pitch";
-            this.PitchColumn.Name = "PitchColumn";
-            this.PitchColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.PitchColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.PitchColumn.Width = 53;
+            this.dataGridViewTextBoxColumn57.HeaderText = "Capacity";
+            this.dataGridViewTextBoxColumn57.Name = "dataGridViewTextBoxColumn57";
+            this.dataGridViewTextBoxColumn57.Visible = false;
+            this.dataGridViewTextBoxColumn57.Width = 73;
             // 
-            // UsesLocationMarks_Column
+            // dataGridViewComboBoxColumn13
             // 
-            this.UsesLocationMarks_Column.HeaderText = "Location Marks Used";
-            this.UsesLocationMarks_Column.Name = "UsesLocationMarks_Column";
-            this.UsesLocationMarks_Column.Width = 80;
+            this.dataGridViewComboBoxColumn13.HeaderText = "Type";
+            this.dataGridViewComboBoxColumn13.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.dataGridViewComboBoxColumn13.Name = "dataGridViewComboBoxColumn13";
+            this.dataGridViewComboBoxColumn13.Width = 37;
             // 
-            // PartOffsetX_Column
+            // dataGridViewTextBoxColumn58
             // 
-            this.PartOffsetX_Column.HeaderText = "Part Offset X";
-            this.PartOffsetX_Column.Name = "PartOffsetX_Column";
-            this.PartOffsetX_Column.Width = 78;
+            this.dataGridViewTextBoxColumn58.HeaderText = "Tray";
+            this.dataGridViewTextBoxColumn58.Name = "dataGridViewTextBoxColumn58";
+            this.dataGridViewTextBoxColumn58.Width = 53;
             // 
-            // PartOffsetY_Column
+            // dataGridViewTextBoxColumn59
             // 
-            this.PartOffsetY_Column.HeaderText = "Part Offset Y";
-            this.PartOffsetY_Column.Name = "PartOffsetY_Column";
-            this.PartOffsetY_Column.Width = 78;
+            this.dataGridViewTextBoxColumn59.HeaderText = "Next";
+            this.dataGridViewTextBoxColumn59.Name = "dataGridViewTextBoxColumn59";
+            this.dataGridViewTextBoxColumn59.Width = 54;
+            // 
+            // dataGridViewTextBoxColumn62
+            // 
+            this.dataGridViewTextBoxColumn62.HeaderText = "X";
+            this.dataGridViewTextBoxColumn62.Name = "dataGridViewTextBoxColumn62";
+            this.dataGridViewTextBoxColumn62.ReadOnly = true;
+            this.dataGridViewTextBoxColumn62.Width = 39;
+            // 
+            // dataGridViewTextBoxColumn63
+            // 
+            this.dataGridViewTextBoxColumn63.HeaderText = "Y";
+            this.dataGridViewTextBoxColumn63.Name = "dataGridViewTextBoxColumn63";
+            this.dataGridViewTextBoxColumn63.ReadOnly = true;
+            this.dataGridViewTextBoxColumn63.Width = 39;
+            // 
+            // dataGridViewTextBoxColumn64
+            // 
+            this.dataGridViewTextBoxColumn64.HeaderText = "Pickup Z";
+            this.dataGridViewTextBoxColumn64.Name = "dataGridViewTextBoxColumn64";
+            this.dataGridViewTextBoxColumn64.Width = 75;
+            // 
+            // dataGridViewTextBoxColumn65
+            // 
+            this.dataGridViewTextBoxColumn65.HeaderText = "PlaceZ";
+            this.dataGridViewTextBoxColumn65.Name = "dataGridViewTextBoxColumn65";
+            this.dataGridViewTextBoxColumn65.Width = 66;
+            // 
+            // dataGridViewTextBoxColumn66
+            // 
+            this.dataGridViewTextBoxColumn66.HeaderText = "Next X";
+            this.dataGridViewTextBoxColumn66.Name = "dataGridViewTextBoxColumn66";
+            this.dataGridViewTextBoxColumn66.ReadOnly = true;
+            this.dataGridViewTextBoxColumn66.Width = 64;
+            // 
+            // dataGridViewTextBoxColumn67
+            // 
+            this.dataGridViewTextBoxColumn67.HeaderText = "Next Y";
+            this.dataGridViewTextBoxColumn67.Name = "dataGridViewTextBoxColumn67";
+            this.dataGridViewTextBoxColumn67.ReadOnly = true;
+            this.dataGridViewTextBoxColumn67.Width = 64;
+            // 
+            // Tapes_contextMenuStrip
+            // 
+            this.Tapes_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem});
+            this.Tapes_contextMenuStrip.Name = "Tapes_contextMenuStrip";
+            this.Tapes_contextMenuStrip.Size = new System.Drawing.Size(95, 26);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.EditTape_MenuItemClick);
             // 
             // ShowPart_button
             // 
@@ -1560,19 +1630,22 @@
             this.IdColumn,
             this.OrientationColumn,
             this.RotationColumn,
-            this.WidthColumn,
-            this.TypeColumn,
+            this.NozzleColumn,
             this.Capacity_column,
-            this.Next_Column,
+            this.TypeColumn,
             this.Tray_Column,
+            this.Next_Column,
+            this.OffsetXColumn,
+            this.OffsetYColumn,
             this.X_Column,
             this.Y_Column,
             this.PickupZ_Column,
             this.PlaceZ_Column,
             this.NextX_Column,
             this.NextY_column});
+            this.Tapes_dataGridView.ContextMenuStrip = this.Tapes_contextMenuStrip;
             this.Tapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Tapes_dataGridView.Location = new System.Drawing.Point(651, 19);
+            this.Tapes_dataGridView.Location = new System.Drawing.Point(655, 19);
             this.Tapes_dataGridView.MultiSelect = false;
             this.Tapes_dataGridView.Name = "Tapes_dataGridView";
             this.Tapes_dataGridView.RowHeadersVisible = false;
@@ -1581,6 +1654,8 @@
             this.Tapes_dataGridView.Size = new System.Drawing.Size(494, 480);
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
+            this.Tapes_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Tapes_dataGridView_CellMouseDown);
+            this.Tapes_dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellMouseEnter);
             this.Tapes_dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellValueChanged);
             // 
             // SelectButtonColumn
@@ -1622,34 +1697,18 @@
             this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.RotationColumn.Width = 52;
             // 
-            // WidthColumn
+            // NozzleColumn
             // 
-            this.WidthColumn.HeaderText = "Width";
-            this.WidthColumn.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm",
-            "32/4mm",
-            "32/8mm",
-            "32/12mm",
-            "32/16mm",
-            "32/20mm",
-            "32/24mm",
-            "32/28mm",
-            "32/32mm"});
-            this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.WidthColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.WidthColumn.Width = 60;
+            this.NozzleColumn.HeaderText = "Nozzle";
+            this.NozzleColumn.Name = "NozzleColumn";
+            this.NozzleColumn.Width = 64;
+            // 
+            // Capacity_column
+            // 
+            this.Capacity_column.HeaderText = "Capacity";
+            this.Capacity_column.Name = "Capacity_column";
+            this.Capacity_column.Visible = false;
+            this.Capacity_column.Width = 73;
             // 
             // TypeColumn
             // 
@@ -1661,12 +1720,11 @@
             this.TypeColumn.Name = "TypeColumn";
             this.TypeColumn.Width = 37;
             // 
-            // Capacity_column
+            // Tray_Column
             // 
-            this.Capacity_column.HeaderText = "Capacity";
-            this.Capacity_column.Name = "Capacity_column";
-            this.Capacity_column.Visible = false;
-            this.Capacity_column.Width = 73;
+            this.Tray_Column.HeaderText = "Tray";
+            this.Tray_Column.Name = "Tray_Column";
+            this.Tray_Column.Width = 53;
             // 
             // Next_Column
             // 
@@ -1674,11 +1732,17 @@
             this.Next_Column.Name = "Next_Column";
             this.Next_Column.Width = 54;
             // 
-            // Tray_Column
+            // OffsetXColumn
             // 
-            this.Tray_Column.HeaderText = "Tray";
-            this.Tray_Column.Name = "Tray_Column";
-            this.Tray_Column.Width = 53;
+            this.OffsetXColumn.HeaderText = "Offset X";
+            this.OffsetXColumn.Name = "OffsetXColumn";
+            this.OffsetXColumn.Width = 70;
+            // 
+            // OffsetYColumn
+            // 
+            this.OffsetYColumn.HeaderText = "Offset Y";
+            this.OffsetYColumn.Name = "OffsetYColumn";
+            this.OffsetYColumn.Width = 70;
             // 
             // X_Column
             // 
@@ -1906,6 +1970,8 @@
             // 
             // DownCamera_tabPage
             // 
+            this.DownCamera_tabPage.Controls.Add(this.DownCamStart_button);
+            this.DownCamera_tabPage.Controls.Add(this.DownCamStop_button);
             this.DownCamera_tabPage.Controls.Add(this.MeasureDownCam_button);
             this.DownCamera_tabPage.Controls.Add(this.label135);
             this.DownCamera_tabPage.Controls.Add(this.KeepActive_checkBox);
@@ -1964,6 +2030,30 @@
             this.DownCamera_tabPage.TabIndex = 3;
             this.DownCamera_tabPage.Text = "Down Looking Camera";
             this.DownCamera_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // DownCamStart_button
+            // 
+            this.DownCamStart_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamStart_button.Location = new System.Drawing.Point(372, 8);
+            this.DownCamStart_button.Name = "DownCamStart_button";
+            this.DownCamStart_button.Size = new System.Drawing.Size(71, 23);
+            this.DownCamStart_button.TabIndex = 146;
+            this.DownCamStart_button.Text = "Start";
+            this.toolTip1.SetToolTip(this.DownCamStart_button, "Connets to selected camera");
+            this.DownCamStart_button.UseVisualStyleBackColor = true;
+            this.DownCamStart_button.Click += new System.EventHandler(this.DownCamStart_button_Click);
+            // 
+            // DownCamStop_button
+            // 
+            this.DownCamStop_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamStop_button.Location = new System.Drawing.Point(295, 8);
+            this.DownCamStop_button.Name = "DownCamStop_button";
+            this.DownCamStop_button.Size = new System.Drawing.Size(71, 23);
+            this.DownCamStop_button.TabIndex = 145;
+            this.DownCamStop_button.Text = "Stop";
+            this.toolTip1.SetToolTip(this.DownCamStop_button, "Connets to selected camera");
+            this.DownCamStop_button.UseVisualStyleBackColor = true;
+            this.DownCamStop_button.Click += new System.EventHandler(this.DownCamStop_button_Click);
             // 
             // MeasureDownCam_button
             // 
@@ -3008,7 +3098,7 @@
             this.RefreshDownCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RefreshDownCameraList_button.Location = new System.Drawing.Point(141, 8);
             this.RefreshDownCameraList_button.Name = "RefreshDownCameraList_button";
-            this.RefreshDownCameraList_button.Size = new System.Drawing.Size(75, 23);
+            this.RefreshDownCameraList_button.Size = new System.Drawing.Size(71, 23);
             this.RefreshDownCameraList_button.TabIndex = 7;
             this.RefreshDownCameraList_button.Text = "Refresh List";
             this.toolTip1.SetToolTip(this.RefreshDownCameraList_button, "Re-scans USB cameras on this computer");
@@ -3032,9 +3122,9 @@
             // ConnectDownCamera_button
             // 
             this.ConnectDownCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConnectDownCamera_button.Location = new System.Drawing.Point(222, 8);
+            this.ConnectDownCamera_button.Location = new System.Drawing.Point(218, 8);
             this.ConnectDownCamera_button.Name = "ConnectDownCamera_button";
-            this.ConnectDownCamera_button.Size = new System.Drawing.Size(75, 23);
+            this.ConnectDownCamera_button.Size = new System.Drawing.Size(71, 23);
             this.ConnectDownCamera_button.TabIndex = 3;
             this.ConnectDownCamera_button.Text = "Select";
             this.toolTip1.SetToolTip(this.ConnectDownCamera_button, "Connets to selected camera");
@@ -3058,7 +3148,7 @@
             // 
             this.DownCamStatus_label.AutoSize = true;
             this.DownCamStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamStatus_label.Location = new System.Drawing.Point(349, 9);
+            this.DownCamStatus_label.Location = new System.Drawing.Point(455, 21);
             this.DownCamStatus_label.Name = "DownCamStatus_label";
             this.DownCamStatus_label.Size = new System.Drawing.Size(105, 18);
             this.DownCamStatus_label.TabIndex = 6;
@@ -3119,7 +3209,7 @@
             // 
             this.label53.AutoSize = true;
             this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label53.Location = new System.Drawing.Point(303, 13);
+            this.label53.Location = new System.Drawing.Point(455, 8);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(40, 13);
             this.label53.TabIndex = 8;
@@ -3453,6 +3543,8 @@
             // 
             // UpCamera_tabPage
             // 
+            this.UpCamera_tabPage.Controls.Add(this.UpCamStart_button);
+            this.UpCamera_tabPage.Controls.Add(this.UpCamStop_button);
             this.UpCamera_tabPage.Controls.Add(this.groupBox14);
             this.UpCamera_tabPage.Controls.Add(this.UpcamSnapshot_ColorBox);
             this.UpCamera_tabPage.Controls.Add(this.UpCamOverlay_checkBox);
@@ -3483,6 +3575,30 @@
             this.UpCamera_tabPage.TabIndex = 4;
             this.UpCamera_tabPage.Text = "Up Looking Camera";
             this.UpCamera_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // UpCamStart_button
+            // 
+            this.UpCamStart_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamStart_button.Location = new System.Drawing.Point(372, 6);
+            this.UpCamStart_button.Name = "UpCamStart_button";
+            this.UpCamStart_button.Size = new System.Drawing.Size(71, 23);
+            this.UpCamStart_button.TabIndex = 148;
+            this.UpCamStart_button.Text = "Start";
+            this.toolTip1.SetToolTip(this.UpCamStart_button, "Connets to selected camera");
+            this.UpCamStart_button.UseVisualStyleBackColor = true;
+            this.UpCamStart_button.Click += new System.EventHandler(this.UpCamStart_button_Click);
+            // 
+            // UpCamStop_button
+            // 
+            this.UpCamStop_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamStop_button.Location = new System.Drawing.Point(295, 6);
+            this.UpCamStop_button.Name = "UpCamStop_button";
+            this.UpCamStop_button.Size = new System.Drawing.Size(71, 23);
+            this.UpCamStop_button.TabIndex = 147;
+            this.UpCamStop_button.Text = "Stop";
+            this.toolTip1.SetToolTip(this.UpCamStop_button, "Connets to selected camera");
+            this.UpCamStop_button.UseVisualStyleBackColor = true;
+            this.UpCamStop_button.Click += new System.EventHandler(this.UpCamStop_button_Click);
             // 
             // groupBox14
             // 
@@ -3963,9 +4079,9 @@
             // ConnectUpCamera_button
             // 
             this.ConnectUpCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConnectUpCamera_button.Location = new System.Drawing.Point(222, 8);
+            this.ConnectUpCamera_button.Location = new System.Drawing.Point(218, 6);
             this.ConnectUpCamera_button.Name = "ConnectUpCamera_button";
-            this.ConnectUpCamera_button.Size = new System.Drawing.Size(75, 23);
+            this.ConnectUpCamera_button.Size = new System.Drawing.Size(71, 23);
             this.ConnectUpCamera_button.TabIndex = 42;
             this.ConnectUpCamera_button.Text = "Select";
             this.toolTip1.SetToolTip(this.ConnectUpCamera_button, "Connets to selected camera");
@@ -3989,7 +4105,7 @@
             // 
             this.label110.AutoSize = true;
             this.label110.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label110.Location = new System.Drawing.Point(303, 13);
+            this.label110.Location = new System.Drawing.Point(449, 6);
             this.label110.Name = "label110";
             this.label110.Size = new System.Drawing.Size(40, 13);
             this.label110.TabIndex = 47;
@@ -4009,9 +4125,9 @@
             // RefreshUpCameraList_button
             // 
             this.RefreshUpCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUpCameraList_button.Location = new System.Drawing.Point(141, 8);
+            this.RefreshUpCameraList_button.Location = new System.Drawing.Point(141, 6);
             this.RefreshUpCameraList_button.Name = "RefreshUpCameraList_button";
-            this.RefreshUpCameraList_button.Size = new System.Drawing.Size(75, 23);
+            this.RefreshUpCameraList_button.Size = new System.Drawing.Size(71, 23);
             this.RefreshUpCameraList_button.TabIndex = 46;
             this.RefreshUpCameraList_button.Text = "Refresh List";
             this.toolTip1.SetToolTip(this.RefreshUpCameraList_button, "Re-scans USB cameras on this computer");
@@ -4066,7 +4182,7 @@
             // 
             this.UpCamStatus_label.AutoSize = true;
             this.UpCamStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamStatus_label.Location = new System.Drawing.Point(349, 9);
+            this.UpCamStatus_label.Location = new System.Drawing.Point(449, 19);
             this.UpCamStatus_label.Name = "UpCamStatus_label";
             this.UpCamStatus_label.Size = new System.Drawing.Size(105, 18);
             this.UpCamStatus_label.TabIndex = 45;
@@ -7645,6 +7761,7 @@
             // 
             // Nozzles_tabPage
             // 
+            this.Nozzles_tabPage.Controls.Add(this.NozzleChangeEnable_checkBox);
             this.Nozzles_tabPage.Controls.Add(this.panel10);
             this.Nozzles_tabPage.Controls.Add(this.GotoZ0_button);
             this.Nozzles_tabPage.Controls.Add(this.SetDefaultNozzle_button);
@@ -7668,6 +7785,185 @@
             this.Nozzles_tabPage.TabIndex = 7;
             this.Nozzles_tabPage.Text = "Nozzles setup";
             this.Nozzles_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // NozzleChangeEnable_checkBox
+            // 
+            this.NozzleChangeEnable_checkBox.AutoSize = true;
+            this.NozzleChangeEnable_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NozzleChangeEnable_checkBox.Location = new System.Drawing.Point(926, 256);
+            this.NozzleChangeEnable_checkBox.Name = "NozzleChangeEnable_checkBox";
+            this.NozzleChangeEnable_checkBox.Size = new System.Drawing.Size(280, 24);
+            this.NozzleChangeEnable_checkBox.TabIndex = 32;
+            this.NozzleChangeEnable_checkBox.Text = "Enable automatic nozle change";
+            this.NozzleChangeEnable_checkBox.UseVisualStyleBackColor = true;
+            this.NozzleChangeEnable_checkBox.CheckedChanged += new System.EventHandler(this.NozzleChangeEnable_checkBox_CheckedChanged);
+            // 
+            // panel10
+            // 
+            this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel10.Controls.Add(this.LastMoveFullSpeed_checkBox);
+            this.panel10.Controls.Add(this.Nozzle1stMoveSlackComp_checkBox);
+            this.panel10.Controls.Add(this.FirstMoveFullSpeed_checkBox);
+            this.panel10.Controls.Add(this.label145);
+            this.panel10.Controls.Add(this.NozzleTimeout_textBox);
+            this.panel10.Controls.Add(this.NozzleAFullSpeed_checkBox);
+            this.panel10.Controls.Add(this.NozzleZFullSpeed_checkBox);
+            this.panel10.Controls.Add(this.NozzleXYFullSpeed_checkBox);
+            this.panel10.Controls.Add(this.label144);
+            this.panel10.Controls.Add(this.NozzleAspeed_textBox);
+            this.panel10.Controls.Add(this.label142);
+            this.panel10.Controls.Add(this.NozzleZspeed_textBox);
+            this.panel10.Controls.Add(this.label141);
+            this.panel10.Controls.Add(this.NozzleXYspeed_textBox);
+            this.panel10.Controls.Add(this.label140);
+            this.panel10.Location = new System.Drawing.Point(926, 15);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(287, 221);
+            this.panel10.TabIndex = 16;
+            // 
+            // LastMoveFullSpeed_checkBox
+            // 
+            this.LastMoveFullSpeed_checkBox.AutoSize = true;
+            this.LastMoveFullSpeed_checkBox.Location = new System.Drawing.Point(59, 182);
+            this.LastMoveFullSpeed_checkBox.Name = "LastMoveFullSpeed_checkBox";
+            this.LastMoveFullSpeed_checkBox.Size = new System.Drawing.Size(123, 17);
+            this.LastMoveFullSpeed_checkBox.TabIndex = 31;
+            this.LastMoveFullSpeed_checkBox.Text = "Last move full speed";
+            this.LastMoveFullSpeed_checkBox.UseVisualStyleBackColor = true;
+            this.LastMoveFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.LastMoveFullSpeed_checkBox_CheckedChanged);
+            // 
+            // Nozzle1stMoveSlackComp_checkBox
+            // 
+            this.Nozzle1stMoveSlackComp_checkBox.AutoSize = true;
+            this.Nozzle1stMoveSlackComp_checkBox.Location = new System.Drawing.Point(59, 136);
+            this.Nozzle1stMoveSlackComp_checkBox.Name = "Nozzle1stMoveSlackComp_checkBox";
+            this.Nozzle1stMoveSlackComp_checkBox.Size = new System.Drawing.Size(169, 17);
+            this.Nozzle1stMoveSlackComp_checkBox.TabIndex = 30;
+            this.Nozzle1stMoveSlackComp_checkBox.Text = "First move slack compensated";
+            this.Nozzle1stMoveSlackComp_checkBox.UseVisualStyleBackColor = true;
+            this.Nozzle1stMoveSlackComp_checkBox.CheckedChanged += new System.EventHandler(this.Nozzle1stMoveSlackComp_checkBox_CheckedChanged);
+            // 
+            // FirstMoveFullSpeed_checkBox
+            // 
+            this.FirstMoveFullSpeed_checkBox.AutoSize = true;
+            this.FirstMoveFullSpeed_checkBox.Location = new System.Drawing.Point(59, 159);
+            this.FirstMoveFullSpeed_checkBox.Name = "FirstMoveFullSpeed_checkBox";
+            this.FirstMoveFullSpeed_checkBox.Size = new System.Drawing.Size(122, 17);
+            this.FirstMoveFullSpeed_checkBox.TabIndex = 29;
+            this.FirstMoveFullSpeed_checkBox.Text = "First move full speed";
+            this.FirstMoveFullSpeed_checkBox.UseVisualStyleBackColor = true;
+            this.FirstMoveFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.FirstMoveFullSpeed_checkBox_CheckedChanged);
+            // 
+            // label145
+            // 
+            this.label145.AutoSize = true;
+            this.label145.Location = new System.Drawing.Point(5, 113);
+            this.label145.Name = "label145";
+            this.label145.Size = new System.Drawing.Size(48, 13);
+            this.label145.TabIndex = 28;
+            this.label145.Text = "Timeout:";
+            // 
+            // NozzleTimeout_textBox
+            // 
+            this.NozzleTimeout_textBox.Location = new System.Drawing.Point(59, 110);
+            this.NozzleTimeout_textBox.Name = "NozzleTimeout_textBox";
+            this.NozzleTimeout_textBox.Size = new System.Drawing.Size(100, 20);
+            this.NozzleTimeout_textBox.TabIndex = 27;
+            this.NozzleTimeout_textBox.TextChanged += new System.EventHandler(this.NozzleTimeout_textBox_TextChanged);
+            // 
+            // NozzleAFullSpeed_checkBox
+            // 
+            this.NozzleAFullSpeed_checkBox.AutoSize = true;
+            this.NozzleAFullSpeed_checkBox.Location = new System.Drawing.Point(178, 86);
+            this.NozzleAFullSpeed_checkBox.Name = "NozzleAFullSpeed_checkBox";
+            this.NozzleAFullSpeed_checkBox.Size = new System.Drawing.Size(74, 17);
+            this.NozzleAFullSpeed_checkBox.TabIndex = 26;
+            this.NozzleAFullSpeed_checkBox.Text = "Full speed";
+            this.NozzleAFullSpeed_checkBox.UseVisualStyleBackColor = true;
+            this.NozzleAFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.NozzleAFullSpeed_checkBox_CheckedChanged);
+            // 
+            // NozzleZFullSpeed_checkBox
+            // 
+            this.NozzleZFullSpeed_checkBox.AutoSize = true;
+            this.NozzleZFullSpeed_checkBox.Location = new System.Drawing.Point(178, 59);
+            this.NozzleZFullSpeed_checkBox.Name = "NozzleZFullSpeed_checkBox";
+            this.NozzleZFullSpeed_checkBox.Size = new System.Drawing.Size(74, 17);
+            this.NozzleZFullSpeed_checkBox.TabIndex = 25;
+            this.NozzleZFullSpeed_checkBox.Text = "Full speed";
+            this.NozzleZFullSpeed_checkBox.UseVisualStyleBackColor = true;
+            this.NozzleZFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.NozzleZFullSpeed_checkBox_CheckedChanged);
+            // 
+            // NozzleXYFullSpeed_checkBox
+            // 
+            this.NozzleXYFullSpeed_checkBox.AutoSize = true;
+            this.NozzleXYFullSpeed_checkBox.Location = new System.Drawing.Point(178, 35);
+            this.NozzleXYFullSpeed_checkBox.Name = "NozzleXYFullSpeed_checkBox";
+            this.NozzleXYFullSpeed_checkBox.Size = new System.Drawing.Size(74, 17);
+            this.NozzleXYFullSpeed_checkBox.TabIndex = 24;
+            this.NozzleXYFullSpeed_checkBox.Text = "Full speed";
+            this.NozzleXYFullSpeed_checkBox.UseVisualStyleBackColor = true;
+            this.NozzleXYFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.NozzleXYFullSpeed_checkBox_CheckedChanged);
+            // 
+            // label144
+            // 
+            this.label144.AutoSize = true;
+            this.label144.Location = new System.Drawing.Point(36, 87);
+            this.label144.Name = "label144";
+            this.label144.Size = new System.Drawing.Size(17, 13);
+            this.label144.TabIndex = 23;
+            this.label144.Text = "A:";
+            // 
+            // NozzleAspeed_textBox
+            // 
+            this.NozzleAspeed_textBox.Location = new System.Drawing.Point(59, 84);
+            this.NozzleAspeed_textBox.Name = "NozzleAspeed_textBox";
+            this.NozzleAspeed_textBox.Size = new System.Drawing.Size(100, 20);
+            this.NozzleAspeed_textBox.TabIndex = 22;
+            this.NozzleAspeed_textBox.TextChanged += new System.EventHandler(this.NozzleAspeed_textBox_TextChanged);
+            // 
+            // label142
+            // 
+            this.label142.AutoSize = true;
+            this.label142.Location = new System.Drawing.Point(36, 60);
+            this.label142.Name = "label142";
+            this.label142.Size = new System.Drawing.Size(17, 13);
+            this.label142.TabIndex = 21;
+            this.label142.Text = "Z:";
+            // 
+            // NozzleZspeed_textBox
+            // 
+            this.NozzleZspeed_textBox.Location = new System.Drawing.Point(59, 58);
+            this.NozzleZspeed_textBox.Name = "NozzleZspeed_textBox";
+            this.NozzleZspeed_textBox.Size = new System.Drawing.Size(100, 20);
+            this.NozzleZspeed_textBox.TabIndex = 20;
+            this.NozzleZspeed_textBox.TextChanged += new System.EventHandler(this.NozzleZspeed_textBox_TextChanged);
+            // 
+            // label141
+            // 
+            this.label141.AutoSize = true;
+            this.label141.Location = new System.Drawing.Point(23, 35);
+            this.label141.Name = "label141";
+            this.label141.Size = new System.Drawing.Size(30, 13);
+            this.label141.TabIndex = 19;
+            this.label141.Text = "X, Y:";
+            // 
+            // NozzleXYspeed_textBox
+            // 
+            this.NozzleXYspeed_textBox.Location = new System.Drawing.Point(59, 32);
+            this.NozzleXYspeed_textBox.Name = "NozzleXYspeed_textBox";
+            this.NozzleXYspeed_textBox.Size = new System.Drawing.Size(100, 20);
+            this.NozzleXYspeed_textBox.TabIndex = 18;
+            this.NozzleXYspeed_textBox.TextChanged += new System.EventHandler(this.NozzleXYspeed_textBox_TextChanged);
+            // 
+            // label140
+            // 
+            this.label140.AutoSize = true;
+            this.label140.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label140.Location = new System.Drawing.Point(3, 9);
+            this.label140.Name = "label140";
+            this.label140.Size = new System.Drawing.Size(66, 16);
+            this.label140.TabIndex = 17;
+            this.label140.Text = "Speeds:";
             // 
             // GotoZ0_button
             // 
@@ -8184,173 +8480,6 @@
             this.label108.TabIndex = 95;
             this.label108.Text = "nozzle:";
             // 
-            // panel10
-            // 
-            this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel10.Controls.Add(this.LastMoveFullSpeed_checkBox);
-            this.panel10.Controls.Add(this.Nozzle1stMoveSlackComp_checkBox);
-            this.panel10.Controls.Add(this.FirstMoveFullSpeed_checkBox);
-            this.panel10.Controls.Add(this.label145);
-            this.panel10.Controls.Add(this.NozzleTimeout_textBox);
-            this.panel10.Controls.Add(this.NozzleAFullSpeed_checkBox);
-            this.panel10.Controls.Add(this.NozzleZFullSpeed_checkBox);
-            this.panel10.Controls.Add(this.NozzleXYFullSpeed_checkBox);
-            this.panel10.Controls.Add(this.label144);
-            this.panel10.Controls.Add(this.NozzleAspeed_textBox);
-            this.panel10.Controls.Add(this.label142);
-            this.panel10.Controls.Add(this.NozzleZspeed_textBox);
-            this.panel10.Controls.Add(this.label141);
-            this.panel10.Controls.Add(this.NozzleXYspeed_textBox);
-            this.panel10.Controls.Add(this.label140);
-            this.panel10.Location = new System.Drawing.Point(926, 15);
-            this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(287, 221);
-            this.panel10.TabIndex = 16;
-            // 
-            // label140
-            // 
-            this.label140.AutoSize = true;
-            this.label140.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label140.Location = new System.Drawing.Point(3, 9);
-            this.label140.Name = "label140";
-            this.label140.Size = new System.Drawing.Size(66, 16);
-            this.label140.TabIndex = 17;
-            this.label140.Text = "Speeds:";
-            // 
-            // NozzleXYspeed_textBox
-            // 
-            this.NozzleXYspeed_textBox.Location = new System.Drawing.Point(59, 32);
-            this.NozzleXYspeed_textBox.Name = "NozzleXYspeed_textBox";
-            this.NozzleXYspeed_textBox.Size = new System.Drawing.Size(100, 20);
-            this.NozzleXYspeed_textBox.TabIndex = 18;
-            this.NozzleXYspeed_textBox.TextChanged += new System.EventHandler(this.NozzleXYspeed_textBox_TextChanged);
-            // 
-            // label141
-            // 
-            this.label141.AutoSize = true;
-            this.label141.Location = new System.Drawing.Point(23, 35);
-            this.label141.Name = "label141";
-            this.label141.Size = new System.Drawing.Size(30, 13);
-            this.label141.TabIndex = 19;
-            this.label141.Text = "X, Y:";
-            // 
-            // NozzleZspeed_textBox
-            // 
-            this.NozzleZspeed_textBox.Location = new System.Drawing.Point(59, 58);
-            this.NozzleZspeed_textBox.Name = "NozzleZspeed_textBox";
-            this.NozzleZspeed_textBox.Size = new System.Drawing.Size(100, 20);
-            this.NozzleZspeed_textBox.TabIndex = 20;
-            this.NozzleZspeed_textBox.TextChanged += new System.EventHandler(this.NozzleZspeed_textBox_TextChanged);
-            // 
-            // label142
-            // 
-            this.label142.AutoSize = true;
-            this.label142.Location = new System.Drawing.Point(36, 60);
-            this.label142.Name = "label142";
-            this.label142.Size = new System.Drawing.Size(17, 13);
-            this.label142.TabIndex = 21;
-            this.label142.Text = "Z:";
-            // 
-            // NozzleAspeed_textBox
-            // 
-            this.NozzleAspeed_textBox.Location = new System.Drawing.Point(59, 84);
-            this.NozzleAspeed_textBox.Name = "NozzleAspeed_textBox";
-            this.NozzleAspeed_textBox.Size = new System.Drawing.Size(100, 20);
-            this.NozzleAspeed_textBox.TabIndex = 22;
-            this.NozzleAspeed_textBox.TextChanged += new System.EventHandler(this.NozzleAspeed_textBox_TextChanged);
-            // 
-            // label144
-            // 
-            this.label144.AutoSize = true;
-            this.label144.Location = new System.Drawing.Point(36, 87);
-            this.label144.Name = "label144";
-            this.label144.Size = new System.Drawing.Size(17, 13);
-            this.label144.TabIndex = 23;
-            this.label144.Text = "A:";
-            // 
-            // NozzleXYFullSpeed_checkBox
-            // 
-            this.NozzleXYFullSpeed_checkBox.AutoSize = true;
-            this.NozzleXYFullSpeed_checkBox.Location = new System.Drawing.Point(178, 35);
-            this.NozzleXYFullSpeed_checkBox.Name = "NozzleXYFullSpeed_checkBox";
-            this.NozzleXYFullSpeed_checkBox.Size = new System.Drawing.Size(74, 17);
-            this.NozzleXYFullSpeed_checkBox.TabIndex = 24;
-            this.NozzleXYFullSpeed_checkBox.Text = "Full speed";
-            this.NozzleXYFullSpeed_checkBox.UseVisualStyleBackColor = true;
-            this.NozzleXYFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.NozzleXYFullSpeed_checkBox_CheckedChanged);
-            // 
-            // NozzleZFullSpeed_checkBox
-            // 
-            this.NozzleZFullSpeed_checkBox.AutoSize = true;
-            this.NozzleZFullSpeed_checkBox.Location = new System.Drawing.Point(178, 59);
-            this.NozzleZFullSpeed_checkBox.Name = "NozzleZFullSpeed_checkBox";
-            this.NozzleZFullSpeed_checkBox.Size = new System.Drawing.Size(74, 17);
-            this.NozzleZFullSpeed_checkBox.TabIndex = 25;
-            this.NozzleZFullSpeed_checkBox.Text = "Full speed";
-            this.NozzleZFullSpeed_checkBox.UseVisualStyleBackColor = true;
-            this.NozzleZFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.NozzleZFullSpeed_checkBox_CheckedChanged);
-            // 
-            // NozzleAFullSpeed_checkBox
-            // 
-            this.NozzleAFullSpeed_checkBox.AutoSize = true;
-            this.NozzleAFullSpeed_checkBox.Location = new System.Drawing.Point(178, 86);
-            this.NozzleAFullSpeed_checkBox.Name = "NozzleAFullSpeed_checkBox";
-            this.NozzleAFullSpeed_checkBox.Size = new System.Drawing.Size(74, 17);
-            this.NozzleAFullSpeed_checkBox.TabIndex = 26;
-            this.NozzleAFullSpeed_checkBox.Text = "Full speed";
-            this.NozzleAFullSpeed_checkBox.UseVisualStyleBackColor = true;
-            this.NozzleAFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.NozzleAFullSpeed_checkBox_CheckedChanged);
-            // 
-            // NozzleTimeout_textBox
-            // 
-            this.NozzleTimeout_textBox.Location = new System.Drawing.Point(59, 110);
-            this.NozzleTimeout_textBox.Name = "NozzleTimeout_textBox";
-            this.NozzleTimeout_textBox.Size = new System.Drawing.Size(100, 20);
-            this.NozzleTimeout_textBox.TabIndex = 27;
-            this.NozzleTimeout_textBox.TextChanged += new System.EventHandler(this.NozzleTimeout_textBox_TextChanged);
-            // 
-            // label145
-            // 
-            this.label145.AutoSize = true;
-            this.label145.Location = new System.Drawing.Point(5, 113);
-            this.label145.Name = "label145";
-            this.label145.Size = new System.Drawing.Size(48, 13);
-            this.label145.TabIndex = 28;
-            this.label145.Text = "Timeout:";
-            // 
-            // FirstMoveFullSpeed_checkBox
-            // 
-            this.FirstMoveFullSpeed_checkBox.AutoSize = true;
-            this.FirstMoveFullSpeed_checkBox.Location = new System.Drawing.Point(59, 159);
-            this.FirstMoveFullSpeed_checkBox.Name = "FirstMoveFullSpeed_checkBox";
-            this.FirstMoveFullSpeed_checkBox.Size = new System.Drawing.Size(122, 17);
-            this.FirstMoveFullSpeed_checkBox.TabIndex = 29;
-            this.FirstMoveFullSpeed_checkBox.Text = "First move full speed";
-            this.FirstMoveFullSpeed_checkBox.UseVisualStyleBackColor = true;
-            this.FirstMoveFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.FirstMoveFullSpeed_checkBox_CheckedChanged);
-            // 
-            // Nozzle1stMoveSlackComp_checkBox
-            // 
-            this.Nozzle1stMoveSlackComp_checkBox.AutoSize = true;
-            this.Nozzle1stMoveSlackComp_checkBox.Location = new System.Drawing.Point(59, 136);
-            this.Nozzle1stMoveSlackComp_checkBox.Name = "Nozzle1stMoveSlackComp_checkBox";
-            this.Nozzle1stMoveSlackComp_checkBox.Size = new System.Drawing.Size(169, 17);
-            this.Nozzle1stMoveSlackComp_checkBox.TabIndex = 30;
-            this.Nozzle1stMoveSlackComp_checkBox.Text = "First move slack compensated";
-            this.Nozzle1stMoveSlackComp_checkBox.UseVisualStyleBackColor = true;
-            this.Nozzle1stMoveSlackComp_checkBox.CheckedChanged += new System.EventHandler(this.Nozzle1stMoveSlackComp_checkBox_CheckedChanged);
-            // 
-            // LastMoveFullSpeed_checkBox
-            // 
-            this.LastMoveFullSpeed_checkBox.AutoSize = true;
-            this.LastMoveFullSpeed_checkBox.Location = new System.Drawing.Point(59, 182);
-            this.LastMoveFullSpeed_checkBox.Name = "LastMoveFullSpeed_checkBox";
-            this.LastMoveFullSpeed_checkBox.Size = new System.Drawing.Size(123, 17);
-            this.LastMoveFullSpeed_checkBox.TabIndex = 31;
-            this.LastMoveFullSpeed_checkBox.Text = "Last move full speed";
-            this.LastMoveFullSpeed_checkBox.UseVisualStyleBackColor = true;
-            this.LastMoveFullSpeed_checkBox.CheckedChanged += new System.EventHandler(this.LastMoveFullSpeed_checkBox_CheckedChanged);
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -8412,7 +8541,8 @@
             this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.Tapes_tabPage.ResumeLayout(false);
             this.Tapes_tabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CustomTapes_dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).EndInit();
+            this.Tapes_contextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).EndInit();
             this.Components_tabPage.ResumeLayout(false);
@@ -8490,14 +8620,14 @@
             this.tabControlPages.ResumeLayout(false);
             this.Nozzles_tabPage.ResumeLayout(false);
             this.Nozzles_tabPage.PerformLayout();
+            this.panel10.ResumeLayout(false);
+            this.panel10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ForceNozzle_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesUnload_dataGridView)).EndInit();
             this.NozzleUnload_contextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).EndInit();
             this.NozzleLoad_contextMenuStrip.ResumeLayout(false);
-            this.panel10.ResumeLayout(false);
-            this.panel10.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -9043,17 +9173,6 @@
         private System.Windows.Forms.Button DownCam_SnapshotToDisplay_button;
         private System.Windows.Forms.Button DownCam_SnapshotToHere_button;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.Label label130;
-        private System.Windows.Forms.DataGridView CustomTapes_dataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Name_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PitchColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn UsesLocationMarks_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PartOffsetX_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PartOffsetY_Column;
-        private System.Windows.Forms.Button LoadCustomTapes_button;
-        private System.Windows.Forms.Button SaveCustomTapes_button;
-        private System.Windows.Forms.Button DeleteCustomTape_button;
-        private System.Windows.Forms.Button UseCustomTapes_button;
         private System.Windows.Forms.TextBox UpcamSnapshot_ColorBox;
         private System.Windows.Forms.CheckBox UpCamOverlay_checkBox;
         private System.Windows.Forms.GroupBox groupBox14;
@@ -9111,21 +9230,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn B_column;
         private System.Windows.Forms.TextBox NeedleBelowPCB_textBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn RotationColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn WidthColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Capacity_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Tray_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PickupZ_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
         private System.Windows.Forms.Button MeasureDownCam_button;
         private System.Windows.Forms.DataGridViewTextBoxColumn Component;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value_Footprint;
@@ -9190,6 +9294,47 @@
         private System.Windows.Forms.CheckBox FirstMoveFullSpeed_checkBox;
         private System.Windows.Forms.CheckBox Nozzle1stMoveSlackComp_checkBox;
         private System.Windows.Forms.CheckBox LastMoveFullSpeed_checkBox;
+        private System.Windows.Forms.CheckBox NozzleChangeEnable_checkBox;
+        private System.Windows.Forms.ContextMenuStrip Tapes_contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.Button DownCamStart_button;
+        private System.Windows.Forms.Button DownCamStop_button;
+        private System.Windows.Forms.Button UpCamStart_button;
+        private System.Windows.Forms.Button UpCamStop_button;
+        private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn RotationColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Capacity_column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Tray_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetXColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetYColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PickupZ_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
+        private System.Windows.Forms.DataGridView TapesOld_dataGridView;
+        private System.Windows.Forms.DataGridViewButtonColumn dataGridViewButtonColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn55;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn11;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn12;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn56;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WidthColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn57;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn13;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn58;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn59;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn62;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn63;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn64;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn65;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn66;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn67;
     }
 }
 
