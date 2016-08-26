@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -66,22 +66,6 @@
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
             this.TapesOld_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.dataGridViewTextBoxColumn55 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewComboBoxColumn11 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewComboBoxColumn12 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewTextBoxColumn56 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WidthColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn57 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewComboBoxColumn13 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewTextBoxColumn58 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn59 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn62 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn63 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn64 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn65 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn66 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn67 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ShowPart_button = new System.Windows.Forms.Button();
@@ -109,23 +93,6 @@
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
-            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.NozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Capacity_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OffsetXColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OffsetYColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
             this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
@@ -731,6 +698,41 @@
             this.Abs_radioButton = new System.Windows.Forms.RadioButton();
             this.Relative_Button = new System.Windows.Forms.RadioButton();
             this.label108 = new System.Windows.Forms.Label();
+            this.SelectButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OrientationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.RotationColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.NozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WidthColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CapacityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Tray_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Next_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PickupZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SelectButton_Column = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Id_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Orientation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Rotation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Nozzle_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Capacity_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.TrayID_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextPart_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Width_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Pitch_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OffsetX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OffsetY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FirstX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FirstY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Z_Pickup_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Z_Place_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Next_X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Next_Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -1208,152 +1210,32 @@
             this.TapesOld_dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.TapesOld_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.TapesOld_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewButtonColumn1,
-            this.dataGridViewTextBoxColumn55,
-            this.dataGridViewComboBoxColumn11,
-            this.dataGridViewComboBoxColumn12,
-            this.dataGridViewTextBoxColumn56,
+            this.SelectButtonColumn,
+            this.IdColumn,
+            this.OrientationColumn,
+            this.RotationColumn,
+            this.NozzleColumn,
             this.WidthColumn,
-            this.dataGridViewTextBoxColumn57,
-            this.dataGridViewComboBoxColumn13,
-            this.dataGridViewTextBoxColumn58,
-            this.dataGridViewTextBoxColumn59,
-            this.dataGridViewTextBoxColumn62,
-            this.dataGridViewTextBoxColumn63,
-            this.dataGridViewTextBoxColumn64,
-            this.dataGridViewTextBoxColumn65,
-            this.dataGridViewTextBoxColumn66,
-            this.dataGridViewTextBoxColumn67});
+            this.CapacityColumn,
+            this.TypeColumn,
+            this.Tray_Column,
+            this.Next_Column,
+            this.X_Column,
+            this.Y_Column,
+            this.PickupZ_Column,
+            this.PlaceZ_Column,
+            this.NextX_Column,
+            this.NextY_column});
             this.TapesOld_dataGridView.ContextMenuStrip = this.Tapes_contextMenuStrip;
             this.TapesOld_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.TapesOld_dataGridView.Location = new System.Drawing.Point(61, 269);
+            this.TapesOld_dataGridView.Location = new System.Drawing.Point(6, 518);
             this.TapesOld_dataGridView.MultiSelect = false;
             this.TapesOld_dataGridView.Name = "TapesOld_dataGridView";
             this.TapesOld_dataGridView.RowHeadersVisible = false;
             this.TapesOld_dataGridView.RowHeadersWidth = 50;
             this.TapesOld_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.TapesOld_dataGridView.Size = new System.Drawing.Size(494, 207);
+            this.TapesOld_dataGridView.Size = new System.Drawing.Size(1084, 99);
             this.TapesOld_dataGridView.TabIndex = 62;
-            // 
-            // dataGridViewButtonColumn1
-            // 
-            this.dataGridViewButtonColumn1.HeaderText = "Select";
-            this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
-            this.dataGridViewButtonColumn1.Text = "Reset";
-            this.dataGridViewButtonColumn1.Width = 43;
-            // 
-            // dataGridViewTextBoxColumn55
-            // 
-            this.dataGridViewTextBoxColumn55.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn55.Name = "dataGridViewTextBoxColumn55";
-            this.dataGridViewTextBoxColumn55.Width = 43;
-            // 
-            // dataGridViewComboBoxColumn11
-            // 
-            this.dataGridViewComboBoxColumn11.HeaderText = "Dir.";
-            this.dataGridViewComboBoxColumn11.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.dataGridViewComboBoxColumn11.Name = "dataGridViewComboBoxColumn11";
-            this.dataGridViewComboBoxColumn11.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewComboBoxColumn11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewComboBoxColumn11.Width = 48;
-            // 
-            // dataGridViewComboBoxColumn12
-            // 
-            this.dataGridViewComboBoxColumn12.HeaderText = "Rot.";
-            this.dataGridViewComboBoxColumn12.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.dataGridViewComboBoxColumn12.Name = "dataGridViewComboBoxColumn12";
-            this.dataGridViewComboBoxColumn12.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewComboBoxColumn12.Width = 52;
-            // 
-            // dataGridViewTextBoxColumn56
-            // 
-            this.dataGridViewTextBoxColumn56.HeaderText = "Nozzle";
-            this.dataGridViewTextBoxColumn56.Name = "dataGridViewTextBoxColumn56";
-            this.dataGridViewTextBoxColumn56.Width = 64;
-            // 
-            // WidthColumn
-            // 
-            this.WidthColumn.HeaderText = "Width";
-            this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Width = 60;
-            // 
-            // dataGridViewTextBoxColumn57
-            // 
-            this.dataGridViewTextBoxColumn57.HeaderText = "Capacity";
-            this.dataGridViewTextBoxColumn57.Name = "dataGridViewTextBoxColumn57";
-            this.dataGridViewTextBoxColumn57.Visible = false;
-            this.dataGridViewTextBoxColumn57.Width = 73;
-            // 
-            // dataGridViewComboBoxColumn13
-            // 
-            this.dataGridViewComboBoxColumn13.HeaderText = "Type";
-            this.dataGridViewComboBoxColumn13.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.dataGridViewComboBoxColumn13.Name = "dataGridViewComboBoxColumn13";
-            this.dataGridViewComboBoxColumn13.Width = 37;
-            // 
-            // dataGridViewTextBoxColumn58
-            // 
-            this.dataGridViewTextBoxColumn58.HeaderText = "Tray";
-            this.dataGridViewTextBoxColumn58.Name = "dataGridViewTextBoxColumn58";
-            this.dataGridViewTextBoxColumn58.Width = 53;
-            // 
-            // dataGridViewTextBoxColumn59
-            // 
-            this.dataGridViewTextBoxColumn59.HeaderText = "Next";
-            this.dataGridViewTextBoxColumn59.Name = "dataGridViewTextBoxColumn59";
-            this.dataGridViewTextBoxColumn59.Width = 54;
-            // 
-            // dataGridViewTextBoxColumn62
-            // 
-            this.dataGridViewTextBoxColumn62.HeaderText = "X";
-            this.dataGridViewTextBoxColumn62.Name = "dataGridViewTextBoxColumn62";
-            this.dataGridViewTextBoxColumn62.ReadOnly = true;
-            this.dataGridViewTextBoxColumn62.Width = 39;
-            // 
-            // dataGridViewTextBoxColumn63
-            // 
-            this.dataGridViewTextBoxColumn63.HeaderText = "Y";
-            this.dataGridViewTextBoxColumn63.Name = "dataGridViewTextBoxColumn63";
-            this.dataGridViewTextBoxColumn63.ReadOnly = true;
-            this.dataGridViewTextBoxColumn63.Width = 39;
-            // 
-            // dataGridViewTextBoxColumn64
-            // 
-            this.dataGridViewTextBoxColumn64.HeaderText = "Pickup Z";
-            this.dataGridViewTextBoxColumn64.Name = "dataGridViewTextBoxColumn64";
-            this.dataGridViewTextBoxColumn64.Width = 75;
-            // 
-            // dataGridViewTextBoxColumn65
-            // 
-            this.dataGridViewTextBoxColumn65.HeaderText = "PlaceZ";
-            this.dataGridViewTextBoxColumn65.Name = "dataGridViewTextBoxColumn65";
-            this.dataGridViewTextBoxColumn65.Width = 66;
-            // 
-            // dataGridViewTextBoxColumn66
-            // 
-            this.dataGridViewTextBoxColumn66.HeaderText = "Next X";
-            this.dataGridViewTextBoxColumn66.Name = "dataGridViewTextBoxColumn66";
-            this.dataGridViewTextBoxColumn66.ReadOnly = true;
-            this.dataGridViewTextBoxColumn66.Width = 64;
-            // 
-            // dataGridViewTextBoxColumn67
-            // 
-            this.dataGridViewTextBoxColumn67.HeaderText = "Next Y";
-            this.dataGridViewTextBoxColumn67.Name = "dataGridViewTextBoxColumn67";
-            this.dataGridViewTextBoxColumn67.ReadOnly = true;
-            this.dataGridViewTextBoxColumn67.Width = 64;
             // 
             // Tapes_contextMenuStrip
             // 
@@ -1424,7 +1306,7 @@
             // 
             // ReloadTray_button
             // 
-            this.ReloadTray_button.Location = new System.Drawing.Point(894, 505);
+            this.ReloadTray_button.Location = new System.Drawing.Point(1155, 592);
             this.ReloadTray_button.Name = "ReloadTray_button";
             this.ReloadTray_button.Size = new System.Drawing.Size(75, 23);
             this.ReloadTray_button.TabIndex = 47;
@@ -1434,7 +1316,7 @@
             // 
             // ReplaceTray_button
             // 
-            this.ReplaceTray_button.Location = new System.Drawing.Point(813, 505);
+            this.ReplaceTray_button.Location = new System.Drawing.Point(1155, 563);
             this.ReplaceTray_button.Name = "ReplaceTray_button";
             this.ReplaceTray_button.Size = new System.Drawing.Size(75, 23);
             this.ReplaceTray_button.TabIndex = 46;
@@ -1444,7 +1326,7 @@
             // 
             // LoadTray_button
             // 
-            this.LoadTray_button.Location = new System.Drawing.Point(732, 505);
+            this.LoadTray_button.Location = new System.Drawing.Point(1155, 534);
             this.LoadTray_button.Name = "LoadTray_button";
             this.LoadTray_button.Size = new System.Drawing.Size(75, 23);
             this.LoadTray_button.TabIndex = 45;
@@ -1454,7 +1336,7 @@
             // 
             // SaveTray_button
             // 
-            this.SaveTray_button.Location = new System.Drawing.Point(651, 505);
+            this.SaveTray_button.Location = new System.Drawing.Point(1155, 505);
             this.SaveTray_button.Name = "SaveTray_button";
             this.SaveTray_button.Size = new System.Drawing.Size(75, 23);
             this.SaveTray_button.TabIndex = 44;
@@ -1615,9 +1497,9 @@
             this.label109.AutoSize = true;
             this.label109.Location = new System.Drawing.Point(649, 3);
             this.label109.Name = "label109";
-            this.label109.Size = new System.Drawing.Size(77, 13);
+            this.label109.Size = new System.Drawing.Size(58, 13);
             this.label109.TabIndex = 16;
-            this.label109.Text = "Tape Positions";
+            this.label109.Text = "Tape Data";
             // 
             // Tapes_dataGridView
             // 
@@ -1626,23 +1508,25 @@
             this.Tapes_dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.Tapes_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Tapes_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.SelectButtonColumn,
-            this.IdColumn,
-            this.OrientationColumn,
-            this.RotationColumn,
-            this.NozzleColumn,
-            this.Capacity_column,
-            this.TypeColumn,
-            this.Tray_Column,
-            this.Next_Column,
-            this.OffsetXColumn,
-            this.OffsetYColumn,
-            this.X_Column,
-            this.Y_Column,
-            this.PickupZ_Column,
-            this.PlaceZ_Column,
-            this.NextX_Column,
-            this.NextY_column});
+            this.SelectButton_Column,
+            this.Id_Column,
+            this.Orientation_Column,
+            this.Rotation_Column,
+            this.Nozzle_Column,
+            this.Capacity_Column,
+            this.Type_Column,
+            this.TrayID_Column,
+            this.NextPart_Column,
+            this.Width_Column,
+            this.Pitch_Column,
+            this.OffsetX_Column,
+            this.OffsetY_Column,
+            this.FirstX_Column,
+            this.FirstY_Column,
+            this.Z_Pickup_Column,
+            this.Z_Place_Column,
+            this.Next_X_Column,
+            this.Next_Y_Column});
             this.Tapes_dataGridView.ContextMenuStrip = this.Tapes_contextMenuStrip;
             this.Tapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.Tapes_dataGridView.Location = new System.Drawing.Point(655, 19);
@@ -1657,132 +1541,6 @@
             this.Tapes_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Tapes_dataGridView_CellMouseDown);
             this.Tapes_dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellMouseEnter);
             this.Tapes_dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellValueChanged);
-            // 
-            // SelectButtonColumn
-            // 
-            this.SelectButtonColumn.HeaderText = "Select";
-            this.SelectButtonColumn.Name = "SelectButtonColumn";
-            this.SelectButtonColumn.Text = "Reset";
-            this.SelectButtonColumn.Width = 43;
-            // 
-            // IdColumn
-            // 
-            this.IdColumn.HeaderText = "ID";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
-            // 
-            // OrientationColumn
-            // 
-            this.OrientationColumn.HeaderText = "Dir.";
-            this.OrientationColumn.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.OrientationColumn.Name = "OrientationColumn";
-            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 48;
-            // 
-            // RotationColumn
-            // 
-            this.RotationColumn.HeaderText = "Rot.";
-            this.RotationColumn.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.RotationColumn.Name = "RotationColumn";
-            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 52;
-            // 
-            // NozzleColumn
-            // 
-            this.NozzleColumn.HeaderText = "Nozzle";
-            this.NozzleColumn.Name = "NozzleColumn";
-            this.NozzleColumn.Width = 64;
-            // 
-            // Capacity_column
-            // 
-            this.Capacity_column.HeaderText = "Capacity";
-            this.Capacity_column.Name = "Capacity_column";
-            this.Capacity_column.Visible = false;
-            this.Capacity_column.Width = 73;
-            // 
-            // TypeColumn
-            // 
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.Width = 37;
-            // 
-            // Tray_Column
-            // 
-            this.Tray_Column.HeaderText = "Tray";
-            this.Tray_Column.Name = "Tray_Column";
-            this.Tray_Column.Width = 53;
-            // 
-            // Next_Column
-            // 
-            this.Next_Column.HeaderText = "Next";
-            this.Next_Column.Name = "Next_Column";
-            this.Next_Column.Width = 54;
-            // 
-            // OffsetXColumn
-            // 
-            this.OffsetXColumn.HeaderText = "Offset X";
-            this.OffsetXColumn.Name = "OffsetXColumn";
-            this.OffsetXColumn.Width = 70;
-            // 
-            // OffsetYColumn
-            // 
-            this.OffsetYColumn.HeaderText = "Offset Y";
-            this.OffsetYColumn.Name = "OffsetYColumn";
-            this.OffsetYColumn.Width = 70;
-            // 
-            // X_Column
-            // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.ReadOnly = true;
-            this.X_Column.Width = 39;
-            // 
-            // Y_Column
-            // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.ReadOnly = true;
-            this.Y_Column.Width = 39;
-            // 
-            // PickupZ_Column
-            // 
-            this.PickupZ_Column.HeaderText = "Pickup Z";
-            this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
-            // 
-            // PlaceZ_Column
-            // 
-            this.PlaceZ_Column.HeaderText = "PlaceZ";
-            this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
-            // 
-            // NextX_Column
-            // 
-            this.NextX_Column.HeaderText = "Next X";
-            this.NextX_Column.Name = "NextX_Column";
-            this.NextX_Column.ReadOnly = true;
-            this.NextX_Column.Width = 64;
-            // 
-            // NextY_column
-            // 
-            this.NextY_column.HeaderText = "Next Y";
-            this.NextY_column.Name = "NextY_column";
-            this.NextY_column.ReadOnly = true;
-            this.NextY_column.Width = 64;
             // 
             // Tapes_pictureBox
             // 
@@ -7538,14 +7296,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -8480,6 +8238,286 @@
             this.label108.TabIndex = 95;
             this.label108.Text = "nozzle:";
             // 
+            // SelectButtonColumn
+            // 
+            this.SelectButtonColumn.HeaderText = "Select";
+            this.SelectButtonColumn.Name = "SelectButtonColumn";
+            this.SelectButtonColumn.Text = "Reset";
+            this.SelectButtonColumn.Width = 43;
+            // 
+            // IdColumn
+            // 
+            this.IdColumn.HeaderText = "ID";
+            this.IdColumn.Name = "IdColumn";
+            this.IdColumn.Width = 43;
+            // 
+            // OrientationColumn
+            // 
+            this.OrientationColumn.HeaderText = "Dir.";
+            this.OrientationColumn.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.OrientationColumn.Name = "OrientationColumn";
+            this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.OrientationColumn.Width = 48;
+            // 
+            // RotationColumn
+            // 
+            this.RotationColumn.HeaderText = "Rot.";
+            this.RotationColumn.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.RotationColumn.Name = "RotationColumn";
+            this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.RotationColumn.Width = 52;
+            // 
+            // NozzleColumn
+            // 
+            this.NozzleColumn.HeaderText = "Nozzle";
+            this.NozzleColumn.Name = "NozzleColumn";
+            this.NozzleColumn.Width = 64;
+            // 
+            // WidthColumn
+            // 
+            this.WidthColumn.HeaderText = "Width";
+            this.WidthColumn.Name = "WidthColumn";
+            this.WidthColumn.Width = 60;
+            // 
+            // CapacityColumn
+            // 
+            this.CapacityColumn.HeaderText = "Capacity";
+            this.CapacityColumn.Name = "CapacityColumn";
+            this.CapacityColumn.Visible = false;
+            this.CapacityColumn.Width = 73;
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.TypeColumn.Name = "TypeColumn";
+            this.TypeColumn.Width = 37;
+            // 
+            // Tray_Column
+            // 
+            this.Tray_Column.HeaderText = "Tray";
+            this.Tray_Column.Name = "Tray_Column";
+            this.Tray_Column.Width = 53;
+            // 
+            // Next_Column
+            // 
+            this.Next_Column.HeaderText = "Next";
+            this.Next_Column.Name = "Next_Column";
+            this.Next_Column.Width = 54;
+            // 
+            // X_Column
+            // 
+            this.X_Column.HeaderText = "X";
+            this.X_Column.Name = "X_Column";
+            this.X_Column.ReadOnly = true;
+            this.X_Column.Width = 39;
+            // 
+            // Y_Column
+            // 
+            this.Y_Column.HeaderText = "Y";
+            this.Y_Column.Name = "Y_Column";
+            this.Y_Column.ReadOnly = true;
+            this.Y_Column.Width = 39;
+            // 
+            // PickupZ_Column
+            // 
+            this.PickupZ_Column.HeaderText = "Pickup Z";
+            this.PickupZ_Column.Name = "PickupZ_Column";
+            this.PickupZ_Column.Width = 75;
+            // 
+            // PlaceZ_Column
+            // 
+            this.PlaceZ_Column.HeaderText = "PlaceZ";
+            this.PlaceZ_Column.Name = "PlaceZ_Column";
+            this.PlaceZ_Column.Width = 66;
+            // 
+            // NextX_Column
+            // 
+            this.NextX_Column.HeaderText = "Next X";
+            this.NextX_Column.Name = "NextX_Column";
+            this.NextX_Column.ReadOnly = true;
+            this.NextX_Column.Width = 64;
+            // 
+            // NextY_column
+            // 
+            this.NextY_column.HeaderText = "Next Y";
+            this.NextY_column.Name = "NextY_column";
+            this.NextY_column.ReadOnly = true;
+            this.NextY_column.Width = 64;
+            // 
+            // SelectButton_Column
+            // 
+            this.SelectButton_Column.HeaderText = "Select";
+            this.SelectButton_Column.Name = "SelectButton_Column";
+            this.SelectButton_Column.Text = "Reset";
+            this.SelectButton_Column.Width = 43;
+            // 
+            // Id_Column
+            // 
+            this.Id_Column.HeaderText = "ID";
+            this.Id_Column.Name = "Id_Column";
+            this.Id_Column.Width = 43;
+            // 
+            // Orientation_Column
+            // 
+            this.Orientation_Column.HeaderText = "Dir.";
+            this.Orientation_Column.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.Orientation_Column.Name = "Orientation_Column";
+            this.Orientation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Orientation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Orientation_Column.Width = 48;
+            // 
+            // Rotation_Column
+            // 
+            this.Rotation_Column.HeaderText = "Rot.";
+            this.Rotation_Column.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.Rotation_Column.Name = "Rotation_Column";
+            this.Rotation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Rotation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Rotation_Column.Width = 52;
+            // 
+            // Nozzle_Column
+            // 
+            this.Nozzle_Column.HeaderText = "Nozzle";
+            this.Nozzle_Column.Name = "Nozzle_Column";
+            this.Nozzle_Column.Width = 64;
+            // 
+            // Capacity_Column
+            // 
+            this.Capacity_Column.HeaderText = "Capacity";
+            this.Capacity_Column.Name = "Capacity_Column";
+            this.Capacity_Column.Visible = false;
+            this.Capacity_Column.Width = 73;
+            // 
+            // Type_Column
+            // 
+            this.Type_Column.HeaderText = "Type";
+            this.Type_Column.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.Type_Column.Name = "Type_Column";
+            this.Type_Column.Width = 37;
+            // 
+            // TrayID_Column
+            // 
+            this.TrayID_Column.HeaderText = "Tray";
+            this.TrayID_Column.Name = "TrayID_Column";
+            this.TrayID_Column.Width = 53;
+            // 
+            // NextPart_Column
+            // 
+            this.NextPart_Column.HeaderText = "Next";
+            this.NextPart_Column.Name = "NextPart_Column";
+            this.NextPart_Column.Width = 54;
+            // 
+            // Width_Column
+            // 
+            this.Width_Column.HeaderText = "Width";
+            this.Width_Column.Items.AddRange(new object[] {
+            "8/2mm",
+            "8/4mm",
+            "12/4mm",
+            "12/8mm",
+            "16/4mm",
+            "16/8mm",
+            "16/12mm",
+            "24/4mm",
+            "24/8mm",
+            "24/12mm",
+            "24/16mm",
+            "24/20mm",
+            "32/4mm",
+            "32/8mm",
+            "32/12mm",
+            "32/16mm",
+            "32/20mm",
+            "32/24mm",
+            "32/28mm",
+            "32/32mm",
+            "custom"});
+            this.Width_Column.Name = "Width_Column";
+            this.Width_Column.Width = 41;
+            // 
+            // Pitch_Column
+            // 
+            this.Pitch_Column.HeaderText = "Pitch";
+            this.Pitch_Column.Name = "Pitch_Column";
+            this.Pitch_Column.Width = 56;
+            // 
+            // OffsetX_Column
+            // 
+            this.OffsetX_Column.HeaderText = "Offset X";
+            this.OffsetX_Column.Name = "OffsetX_Column";
+            this.OffsetX_Column.Width = 70;
+            // 
+            // OffsetY_Column
+            // 
+            this.OffsetY_Column.HeaderText = "Offset Y";
+            this.OffsetY_Column.Name = "OffsetY_Column";
+            this.OffsetY_Column.Width = 70;
+            // 
+            // FirstX_Column
+            // 
+            this.FirstX_Column.HeaderText = "X";
+            this.FirstX_Column.Name = "FirstX_Column";
+            this.FirstX_Column.ReadOnly = true;
+            this.FirstX_Column.Width = 39;
+            // 
+            // FirstY_Column
+            // 
+            this.FirstY_Column.HeaderText = "Y";
+            this.FirstY_Column.Name = "FirstY_Column";
+            this.FirstY_Column.ReadOnly = true;
+            this.FirstY_Column.Width = 39;
+            // 
+            // Z_Pickup_Column
+            // 
+            this.Z_Pickup_Column.HeaderText = "Pickup Z";
+            this.Z_Pickup_Column.Name = "Z_Pickup_Column";
+            this.Z_Pickup_Column.Width = 75;
+            // 
+            // Z_Place_Column
+            // 
+            this.Z_Place_Column.HeaderText = "Place Z";
+            this.Z_Place_Column.Name = "Z_Place_Column";
+            this.Z_Place_Column.Width = 69;
+            // 
+            // Next_X_Column
+            // 
+            this.Next_X_Column.HeaderText = "Next X";
+            this.Next_X_Column.Name = "Next_X_Column";
+            this.Next_X_Column.ReadOnly = true;
+            this.Next_X_Column.Width = 64;
+            // 
+            // Next_Y_Column
+            // 
+            this.Next_Y_Column.HeaderText = "Next Y";
+            this.Next_Y_Column.Name = "Next_Y_Column";
+            this.Next_Y_Column.ReadOnly = true;
+            this.Next_Y_Column.Width = 64;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -9301,40 +9339,42 @@
         private System.Windows.Forms.Button DownCamStop_button;
         private System.Windows.Forms.Button UpCamStart_button;
         private System.Windows.Forms.Button UpCamStop_button;
+        private System.Windows.Forms.DataGridView TapesOld_dataGridView;
         private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn OrientationColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn RotationColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn NozzleColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Capacity_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WidthColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CapacityColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn TypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tray_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn Next_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetXColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetYColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn PickupZ_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn PlaceZ_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
-        private System.Windows.Forms.DataGridView TapesOld_dataGridView;
-        private System.Windows.Forms.DataGridViewButtonColumn dataGridViewButtonColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn55;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn11;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn12;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn56;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WidthColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn57;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn13;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn58;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn59;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn62;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn63;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn64;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn65;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn66;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn67;
+        private System.Windows.Forms.DataGridViewButtonColumn SelectButton_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Orientation_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Rotation_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Nozzle_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Capacity_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Type_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TrayID_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NextPart_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Width_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Pitch_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetX_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetY_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FirstX_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FirstY_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z_Pickup_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z_Place_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Next_X_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Next_Y_Column;
     }
 }
 

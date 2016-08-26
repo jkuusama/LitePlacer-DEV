@@ -14,6 +14,7 @@ namespace LitePlacer
         public DataGridView TapesDataGrid;
         public DataGridViewRow Row;
         public int TapeRowNo;
+        public FormMain MainForm;
 
         // The parameters of tapes, most taken care by this dialog
 
@@ -45,19 +46,29 @@ namespace LitePlacer
             InitializeComponent();
         }
 
+        // =================================================================================
         private void TapeEditForm_Load(object sender, EventArgs e)
         {
             Row = TapesDataGrid.Rows[TapeRowNo];
-            ID_textBox.Text = Row.Cells["IdColumn"].Value.ToString();
-            TapeOrientation_comboBox.SelectedItem = Row.Cells["OrientationColumn"].Value;
-            TapeRotation_comboBox.SelectedItem = Row.Cells["RotationColumn"].Value;
-            Nozzle_numericUpDown.Maximum = Properties.Settings.Default.Nozzles_count;
-            if (Row.Cells["NozzleColumn"].Value!=null)
+            if (Row.Cells["Id_Column"].Value != null)
             {
-                int nzl;
-                if (int.TryParse(Row.Cells["NozzleColumn"].Value.ToString(), out nzl))
+                ID_textBox.Text = Row.Cells["Id_Column"].Value.ToString();
+            }
+            if (Row.Cells["Orientation_Column"].Value != null)
+            {
+                TapeOrientation_comboBox.SelectedItem = Row.Cells["Orientation_Column"].Value;
+            }
+            if (Row.Cells["Rotation_Column"].Value != null)
+            {
+                TapeRotation_comboBox.SelectedItem = Row.Cells["Rotation_Column"].Value;
+            }
+            Nozzle_numericUpDown.Maximum = Properties.Settings.Default.Nozzles_count;
+            if (Row.Cells["Nozzle_Column"].Value!=null)
+            {
+                int nozzle;
+                if (int.TryParse(Row.Cells["Nozzle_Column"].Value.ToString(), out nozzle))
                 {
-                    Nozzle_numericUpDown.Value = nzl;
+                    Nozzle_numericUpDown.Value = nozzle;
                 }
                 else
                 {
@@ -68,143 +79,60 @@ namespace LitePlacer
             {
                 Nozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
             }
+            if (Row.Cells["Capacity_Column"].Value != null)
+            {
+            }
+            if (Row.Cells["Type_Column"].Value != null)
+            {
+            }
+            if (Row.Cells["TrayID_Column"].Value != null)
+            {
+            }
+            if (Row.Cells["Rotation_Column"].Value != null)
+            {
+            }
+            if (Row.Cells["FirstX_Column"].Value != null)
+            {
+            }
+            if (Row.Cells["FirstY_Column"].Value != null)
+            {
+            }
+            if (Row.Cells["Z_Pickup_Column"].Value != null)
+            {
+            }
+            if (Row.Cells["Z_Place_Column"].Value != null)
+            {
+            }
         }
 
+        // =================================================================================
         private void TapeEditOK_button_Click(object sender, EventArgs e)
         {
+            Row.Cells["Id_Column"].Value = ID_textBox.Text;
+            Row.Cells["Rotation_Column"].Value = TapeRotation_comboBox.SelectedItem;
+            Row.Cells["Orientation_Column"].Value = TapeOrientation_comboBox.SelectedItem;
+            Row.Cells["Nozzle_Column"].Value = Nozzle_numericUpDown.Value.ToString();
+            Row.Cells["Pitch_Column"].Value = TapePitch_textBox.Text;
+            Row.Cells["OffsetX_Column"].Value = TapeOffsetX_textBox.Text;
+            Row.Cells["OffsetY_Column"].Value = TapeOffsetY_textBox.Text;
             this.Close();
         }
 
-        private void ID_textBox_TextChanged(object sender, EventArgs e)
-        {
-            Row.Cells["IdColumn"].Value = ID_textBox.Text;
-        }
-
-        private void TapeOrientation_comboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Row.Cells["OrientationColumn"].Value = TapeOrientation_comboBox.SelectedItem;
-        }
-
-        private void TapeRotation_comboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Row.Cells["RotationColumn"].Value = TapeRotation_comboBox.SelectedItem;
-        }
-
-        private void Nozzle_numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            Row.Cells["NozzleColumn"].Value = Nozzle_numericUpDown.Value.ToString();
-        }
 
         private void TapeWidth_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (TapeWidth_comboBox.SelectedItem.ToString())
-            {
-                case "8/2mm":
-                    TapePitch_textBox.Text = "2.0";
-                    TapeOffsetX_textBox.Text = "3.5";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "8/4mm":
-                    TapePitch_textBox.Text = "4.0";
-                    TapeOffsetX_textBox.Text = "3.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "12/4mm":
-                    TapePitch_textBox.Text = "4.0";
-                    TapeOffsetX_textBox.Text = "5.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "12/8mm":
-                    TapePitch_textBox.Text = "8.0";
-                    TapeOffsetX_textBox.Text = "5.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "16/4mm":
-                    TapePitch_textBox.Text = "4.0";
-                    TapeOffsetX_textBox.Text = "7.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "16/8mm":
-                    TapePitch_textBox.Text = "8.0";
-                    TapeOffsetX_textBox.Text = "7.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "16/12mm":
-                    TapePitch_textBox.Text = "12.0";
-                    TapeOffsetX_textBox.Text = "7.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "24/4mm":
-                    TapePitch_textBox.Text = "4.0";
-                    TapeOffsetX_textBox.Text = "11.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "24/8mm":
-                    TapePitch_textBox.Text = "8.0";
-                    TapeOffsetX_textBox.Text = "11.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "24/12mm":
-                    TapePitch_textBox.Text = "12.0";
-                    TapeOffsetX_textBox.Text = "11.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "24/16mm":
-                    TapePitch_textBox.Text = "16.0";
-                    TapeOffsetX_textBox.Text = "11.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "24/20mm":
-                    TapePitch_textBox.Text = "20.0";
-                    TapeOffsetX_textBox.Text = "11.50";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "32/4mm":
-                    TapePitch_textBox.Text = "4.0";
-                    TapeOffsetX_textBox.Text = "14.20";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "32/8mm":
-                    TapePitch_textBox.Text = "8.0";
-                    TapeOffsetX_textBox.Text = "14.20";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "32/12mm":
-                    TapePitch_textBox.Text = "12.0";
-                    TapeOffsetX_textBox.Text = "14.20";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "32/16mm":
-                    TapePitch_textBox.Text = "16.0";
-                    TapeOffsetX_textBox.Text = "14.20";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "32/20mm":
-                    TapePitch_textBox.Text = "20.0";
-                    TapeOffsetX_textBox.Text = "14.20";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "32/24mm":
-                    TapePitch_textBox.Text = "24.0";
-                    TapeOffsetX_textBox.Text = "14.20";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "32/28mm":
-                    TapePitch_textBox.Text = "28.0";
-                    TapeOffsetX_textBox.Text = "14.20";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                case "32/32mm":
-                    TapePitch_textBox.Text = "32.0";
-                    TapeOffsetX_textBox.Text = "14.20";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-                default:
-                    TapePitch_textBox.Text = "0.0";
-                    TapeOffsetX_textBox.Text = "0.0";
-                    TapeOffsetY_textBox.Text = "2.0";
-                    break;
-            }
+            double Xoff;
+            double Yoff;
+            double pitch;
+            MainForm.TapeWidthStringToValues(TapeWidth_comboBox.SelectedItem.ToString(), out Xoff, out Yoff, out pitch);
+            TapeOffsetX_textBox.Text = Xoff.ToString();
+            TapeOffsetY_textBox.Text = Yoff.ToString();
+            TapePitch_textBox.Text = pitch.ToString();
+        }
+
+        private void TapeEditCancel_button_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -47,12 +47,14 @@
             this.TapeWidth_comboBox = new System.Windows.Forms.ComboBox();
             this.TapeOffsetY_textBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.TapeEditCancel_button = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Nozzle_numericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // TapeEditOK_button
             // 
-            this.TapeEditOK_button.Location = new System.Drawing.Point(369, 227);
+            this.TapeEditOK_button.Location = new System.Drawing.Point(315, 227);
             this.TapeEditOK_button.Name = "TapeEditOK_button";
             this.TapeEditOK_button.Size = new System.Drawing.Size(75, 23);
             this.TapeEditOK_button.TabIndex = 0;
@@ -67,7 +69,6 @@
             this.ID_textBox.Size = new System.Drawing.Size(100, 20);
             this.ID_textBox.TabIndex = 1;
             this.toolTip1.SetToolTip(this.ID_textBox, "Name of the tape (ex: 0805, 10k)");
-            this.ID_textBox.TextChanged += new System.EventHandler(this.ID_textBox_TextChanged);
             // 
             // label1
             // 
@@ -93,7 +94,6 @@
             this.TapeOrientation_comboBox.TabIndex = 3;
             this.toolTip1.SetToolTip(this.TapeOrientation_comboBox, "Which way the part count increases.\r\n+Y: Tape holes on right\r\n-Y: Tape holes on l" +
         "eft\r\n+X: Tape holes down\r\n-X: Tape holes up");
-            this.TapeOrientation_comboBox.SelectedIndexChanged += new System.EventHandler(this.TapeOrientation_comboBox_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -121,7 +121,6 @@
             this.toolTip1.SetToolTip(this.TapeRotation_comboBox, "Manufactures put parts on tapes rotated in any which way.\r\nPart on a tape in +Y o" +
         "rientation (holes to right) and with 0 deg.\r\nrotation in the CAD data, is rotate" +
         "d this much when placed.");
-            this.TapeRotation_comboBox.SelectedIndexChanged += new System.EventHandler(this.TapeRotation_comboBox_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -149,7 +148,7 @@
             // 
             // TapeOffsetX_textBox
             // 
-            this.TapeOffsetX_textBox.Location = new System.Drawing.Point(375, 24);
+            this.TapeOffsetX_textBox.Location = new System.Drawing.Point(435, 24);
             this.TapeOffsetX_textBox.Name = "TapeOffsetX_textBox";
             this.TapeOffsetX_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapeOffsetX_textBox.TabIndex = 9;
@@ -158,7 +157,7 @@
             // 
             // TapePitch_textBox
             // 
-            this.TapePitch_textBox.Location = new System.Drawing.Point(298, 24);
+            this.TapePitch_textBox.Location = new System.Drawing.Point(381, 24);
             this.TapePitch_textBox.Name = "TapePitch_textBox";
             this.TapePitch_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapePitch_textBox.TabIndex = 10;
@@ -167,7 +166,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(372, 9);
+            this.label5.Location = new System.Drawing.Point(432, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(45, 13);
             this.label5.TabIndex = 12;
@@ -178,7 +177,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(295, 8);
+            this.label6.Location = new System.Drawing.Point(378, 9);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 13);
             this.label6.TabIndex = 13;
@@ -202,10 +201,10 @@
             0,
             0,
             0});
-            this.Nozzle_numericUpDown.ValueChanged += new System.EventHandler(this.Nozzle_numericUpDown_ValueChanged);
             // 
             // TapeWidth_comboBox
             // 
+            this.TapeWidth_comboBox.DropDownWidth = 170;
             this.TapeWidth_comboBox.FormattingEnabled = true;
             this.TapeWidth_comboBox.Items.AddRange(new object[] {
             "8/2mm",
@@ -227,17 +226,18 @@
             "32/20mm",
             "32/24mm",
             "32/28mm",
-            "32/32mm"});
-            this.TapeWidth_comboBox.Location = new System.Drawing.Point(352, 23);
+            "32/32mm",
+            "custom"});
+            this.TapeWidth_comboBox.Location = new System.Drawing.Point(298, 23);
             this.TapeWidth_comboBox.Name = "TapeWidth_comboBox";
-            this.TapeWidth_comboBox.Size = new System.Drawing.Size(17, 21);
+            this.TapeWidth_comboBox.Size = new System.Drawing.Size(77, 21);
             this.TapeWidth_comboBox.TabIndex = 11;
             this.toolTip1.SetToolTip(this.TapeWidth_comboBox, "Select a standard size");
             this.TapeWidth_comboBox.SelectedIndexChanged += new System.EventHandler(this.TapeWidth_comboBox_SelectedIndexChanged);
             // 
             // TapeOffsetY_textBox
             // 
-            this.TapeOffsetY_textBox.Location = new System.Drawing.Point(429, 24);
+            this.TapeOffsetY_textBox.Location = new System.Drawing.Point(489, 24);
             this.TapeOffsetY_textBox.Name = "TapeOffsetY_textBox";
             this.TapeOffsetY_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapeOffsetY_textBox.TabIndex = 14;
@@ -247,7 +247,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(426, 9);
+            this.label7.Location = new System.Drawing.Point(486, 9);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(45, 13);
             this.label7.TabIndex = 15;
@@ -255,11 +255,33 @@
             this.toolTip1.SetToolTip(this.label7, "Distance to part center from location mark (hole). Y is 2.0mm for\r\nregular tapes." +
         "");
             // 
+            // TapeEditCancel_button
+            // 
+            this.TapeEditCancel_button.Location = new System.Drawing.Point(402, 227);
+            this.TapeEditCancel_button.Name = "TapeEditCancel_button";
+            this.TapeEditCancel_button.Size = new System.Drawing.Size(75, 23);
+            this.TapeEditCancel_button.TabIndex = 16;
+            this.TapeEditCancel_button.Text = "Cancel";
+            this.TapeEditCancel_button.UseVisualStyleBackColor = true;
+            this.TapeEditCancel_button.Click += new System.EventHandler(this.TapeEditCancel_button_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(297, 7);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(63, 13);
+            this.label8.TabIndex = 17;
+            this.label8.Text = "Tape Width";
+            this.toolTip1.SetToolTip(this.label8, "Select a standard size");
+            // 
             // TapeEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(815, 262);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.TapeEditCancel_button);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.TapeOffsetY_textBox);
             this.Controls.Add(this.label6);
@@ -305,5 +327,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox TapeOffsetY_textBox;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button TapeEditCancel_button;
+        private System.Windows.Forms.Label label8;
     }
 }

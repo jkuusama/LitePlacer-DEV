@@ -114,9 +114,10 @@ namespace LitePlacer
             Needle = new NeedleClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Needle, DownCamera, Cnc, this);
 
-            // Setup error handling for Tapes_dataGridView
+            // Setup error handling for Tapes_dataGridViews
             // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
             Tapes_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
+            TapesOld_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
 
             this.KeyPreview = true;
             RemoveCursorNavigation(this.Controls);
@@ -138,8 +139,8 @@ namespace LitePlacer
             // and uncomment this:
             // LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
 
-            // LoadTapesTable(path);
-            LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
+            LoadTapesTable(path);
+            // LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
 
             LoadDataGrid(path + "LitePlacer.HomingFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref Homing_dataGridView, false);
@@ -544,7 +545,7 @@ namespace LitePlacer
         // Reading ver2 format allows changing the data grid itself at a software update, 
         // adding and removing columns, and still read in a saved file from previous software version.
 
-        public enum DataTableType { Tapes, CustomTapes, ComponentData, VideoProcessing, PanelFiducials, Nozzles };
+        public enum DataTableType { Tapes, ComponentData, VideoProcessing, PanelFiducials, Nozzles };
 
         private int Ver2FormatID = 20000001;  // Just in case we need to identify the format we are using. 
         public bool LoadingDataGrid = false;  // to avoid problems with cell value changed event and unfilled grids
@@ -580,6 +581,7 @@ namespace LitePlacer
                     {
                         Ver2 = true;
                     }
+                    br1.Close();
                 }
 
                 
@@ -746,30 +748,22 @@ namespace LitePlacer
                 //    break;
 
                 case DataTableType.Tapes:
-                    Headers.Add("SelectButtonColumn");
-                    Headers.Add("IdColumn");
-                    Headers.Add("OrientationColumn");
-                    Headers.Add("RotationColumn");
+                    Headers.Add("SelectButton_Column");
+                    Headers.Add("Id_Column");
+                    Headers.Add("Orientation_Column");
+                    Headers.Add("Rotation_Column");
                     Headers.Add("WidthColumn");
-                    Headers.Add("TypeColumn");
+                    Headers.Add("Type_Column");
                     // Headers.Add("CapacityColumn");   // not in v1 files
-                    Headers.Add("Next_Column");
-                    Headers.Add("Tray_Column");
-                    Headers.Add("X_Column");
-                    Headers.Add("Y_Column");
-                    Headers.Add("PickupZ_Column");
-                    Headers.Add("PlaceZ_Column");
-                    Headers.Add("NextX_Column");
-                    Headers.Add("NextY_column");
+                    Headers.Add("NextPart_Column");
+                    Headers.Add("TrayID_Column");
+                    Headers.Add("FirstX_Column");
+                    Headers.Add("FirstY_Column");
+                    Headers.Add("Z_Pickup_Column");
+                    Headers.Add("Z_Place_Column");
+                    Headers.Add("Next_X_Column");
+                    Headers.Add("Next_Y_Column");
                     break;
-
-                case DataTableType.CustomTapes:
-                    Headers.Add("Name_Column");
-                    Headers.Add("PitchColumn");
-                    Headers.Add("UsesLocationMarks_Column");
-                    Headers.Add("PartOffsetX_Column");
-                    Headers.Add("PartOffsetY_Column");
-                break;
 
                 case DataTableType.ComponentData:
                     Headers.Add("PartialName_column");
@@ -790,8 +784,8 @@ namespace LitePlacer
                 case DataTableType.PanelFiducials:
                     Headers.Add("Designator_Column");
                     Headers.Add("Footprint_Column");
-                    Headers.Add("X_Column");
-                    Headers.Add("Y_Column");
+                    Headers.Add("FirstX_Column");
+                    Headers.Add("FirstY_Column");
                     Headers.Add("Rotation_Column");
                 break;
 
@@ -866,7 +860,7 @@ namespace LitePlacer
 
 
         // =================================================================================
-        // I changed the data in tapes table, but cI don't want to make customers to redo their tables
+        // I changed the data in tapes table, but I don't want to make customers to redo their tables
         // This routine looks if the data format is old and converts it to new if needed
         private void LoadTapesTable(string path)
         {
@@ -897,13 +891,91 @@ namespace LitePlacer
                     br.Close();
                     if (Headers.Contains("WidthColumn"))
                     {
-                        // read in to dummy datagridview and convert to new format
-                        LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
+                        // read in to old format datagridview and convert to new format
+                        LoadDataGrid(path + "LitePlacer.TapesData", TapesOld_dataGridView, DataTableType.Tapes);
                         // convert to new
+                        double X;
+                        double Y;
+                        double pitch;
+                        for (int i = 0; i < TapesOld_dataGridView.RowCount; i++)
+                        {
+                            Tapes_dataGridView.Rows.Add();
+                            // most values go as is, just column names have changed
+                            if (TapesOld_dataGridView.Rows[i].Cells["SelectButtonColumn"].Value!=null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["SelectButton_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["SelectButtonColumn"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["IdColumn"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Id_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["IdColumn"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["OrientationColumn"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Orientation_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["OrientationColumn"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["RotationColumn"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Rotation_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["RotationColumn"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["NozzleColumn"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Nozzle_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["NozzleColumn"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["CapacityColumn"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Capacity_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["CapacityColumn"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["TypeColumn"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["TypeColumn"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["Tray_Column"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["TrayID_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["Tray_Column"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["Next_Column"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["NextPart_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["Next_Column"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["X_Column"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["FirstX_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["X_Column"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["Y_Column"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["FirstY_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["Y_Column"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["PickupZ_Column"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Z_Pickup_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["PickupZ_Column"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["PlaceZ_Column"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Z_Place_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["PlaceZ_Column"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["NextX_Column"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Next_X_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["NextX_Column"].Value.ToString();
+                            }
+                            if (TapesOld_dataGridView.Rows[i].Cells["NextY_column"].Value != null)
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Next_Y_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["NextY_column"].Value.ToString();
+                            }
+                            // conversion
+                            if (TapesOld_dataGridView.Rows[i].Cells["WidthColumn"].Value != null)
+                            {
+                                TapeWidthStringToValues(TapesOld_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString(), out X, out Y, out pitch);
+                                Tapes_dataGridView.Rows[i].Cells["Pitch_Column"].Value = pitch.ToString();
+                                Tapes_dataGridView.Rows[i].Cells["OffsetX_Column"].Value = X.ToString();
+                                Tapes_dataGridView.Rows[i].Cells["OffsetY_Column"].Value = Y.ToString();
+                            }
+
+                        }
                     }
                     else
                     {
-                        DisplayText("would read new tapes data");
+                        // // read in new format
+                        LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
                     }
                 }
             }
@@ -5915,12 +5987,12 @@ namespace LitePlacer
                     bool ZisSet = false;
                     foreach (DataGridViewRow Row in Tapes_dataGridView.Rows)
                     {
-                        if (Row.Cells["PickupZ_Column"].Value.ToString() != "--")
+                        if (Row.Cells["Z_Pickup_Column"].Value.ToString() != "--")
                         {
                             ZisSet = true;
                             break;
                         }
-                        if (Row.Cells["PlaceZ_Column"].Value.ToString() != "--")
+                        if (Row.Cells["Z_Place_Column"].Value.ToString() != "--")
                         {
                             ZisSet = true;
                             break;
@@ -5938,8 +6010,8 @@ namespace LitePlacer
                         }
                         foreach (DataGridViewRow Row in Tapes_dataGridView.Rows)
                         {
-                            Row.Cells["PickupZ_Column"].Value = "--";
-                            Row.Cells["PlaceZ_Column"].Value = "--";
+                            Row.Cells["Z_Pickup_Column"].Value = "--";
+                            Row.Cells["Z_Place_Column"].Value = "--";
                         }
                     }
 
@@ -6238,7 +6310,7 @@ namespace LitePlacer
         // CAD data and Job datagrid colum definitions
 
         const int CADdata_ComponentColumn = 0;
-        const int CADdata_ComponentTypeColumn = 1;
+        const int CADdata_ComponentType_Column = 1;
         const int CADdata_PlacedColumn = 2;
         const int CADdata_XNomColumn = 3;
         const int CADdata_YNomColumn = 4;
@@ -6528,7 +6600,7 @@ namespace LitePlacer
             // Machine coordinates can be manually edited (but I don't know why you would want to do that),
             // but they are not saved, therefore the edit of those does not make data dirty, but edit of other cells do
             if ((CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentColumn) ||
-                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentTypeColumn) ||
+                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentType_Column) ||
                 (CadData_GridView.CurrentCell.ColumnIndex == CADdata_XNomColumn) ||
                 (CadData_GridView.CurrentCell.ColumnIndex == CADdata_YNomColumn) ||
                 (CadData_GridView.CurrentCell.ColumnIndex == CADdata_RotNomColumn)
@@ -7656,7 +7728,7 @@ namespace LitePlacer
         // PickUpThis_m(): Actual pickup, assumes needle is on top of the part
         private bool PickUpThis_m(int TapeNumber)
         {
-            string Z_str = Tapes_dataGridView.Rows[TapeNumber].Cells["PickupZ_Column"].Value.ToString();
+            string Z_str = Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value.ToString();
             if (Z_str == "--")
             {
                 DisplayText("PickUpPart_m(): Probing pickup Z", KnownColor.Blue);
@@ -7665,7 +7737,7 @@ namespace LitePlacer
                     return false;
                 }
                 double Zpickup = Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff + Properties.Settings.Default.Placement_Depth;
-                Tapes_dataGridView.Rows[TapeNumber].Cells["PickupZ_Column"].Value = Zpickup.ToString();
+                Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value = Zpickup.ToString();
                 DisplayText("PickUpPart_m(): Probed Z= " + Cnc.CurrentZ.ToString());
             }
             else
@@ -7768,7 +7840,7 @@ namespace LitePlacer
         // If placement Z isn't known already, updates the tape info.
         private bool PutPartDown_m(int TapeNum)
         {
-            string Z_str = Tapes_dataGridView.Rows[TapeNum].Cells["PlaceZ_Column"].Value.ToString();
+            string Z_str = Tapes_dataGridView.Rows[TapeNum].Cells["Z_Place_Column"].Value.ToString();
             if (Z_str == "--")
             {
                 DisplayText("PutPartDown_m(): Probing placement Z", KnownColor.Blue);
@@ -7777,7 +7849,7 @@ namespace LitePlacer
                     return false;
                 };
                 double Zplace = Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff + Properties.Settings.Default.Placement_Depth;
-                Tapes_dataGridView.Rows[TapeNum].Cells["PlaceZ_Column"].Value = Zplace.ToString();
+                Tapes_dataGridView.Rows[TapeNum].Cells["Z_Place_Column"].Value = Zplace.ToString();
                 DisplayText("PutPartDown_m(): Probed placement Z= " + Cnc.CurrentZ.ToString());
             }
             else
@@ -8046,8 +8118,8 @@ namespace LitePlacer
                     if (FirstInRow && MeasureZs_checkBox.Checked)
                     {
                         // Clear heights
-                        Tapes_dataGridView.Rows[TapeNum].Cells["PickupZ_Column"].Value = "--";
-                        Tapes_dataGridView.Rows[TapeNum].Cells["PlaceZ_Column"].Value = "--";
+                        Tapes_dataGridView.Rows[TapeNum].Cells["Z_Pickup_Column"].Value = "--";
+                        Tapes_dataGridView.Rows[TapeNum].Cells["Z_Place_Column"].Value = "--";
                     };
                     break;
 
@@ -9122,7 +9194,7 @@ namespace LitePlacer
             int b;
             NumberStyles style = NumberStyles.AllowDecimalPoint;
             CultureInfo culture = CultureInfo.InvariantCulture;
-            string s = Tapes_dataGridView.Rows[0].Cells["X_Column"].Value.ToString();
+            string s = Tapes_dataGridView.Rows[0].Cells["FirstX_Column"].Value.ToString();
             if (!double.TryParse(s, style, culture, out HoleX))
             {
                 ShowMessageBox(
@@ -9132,7 +9204,7 @@ namespace LitePlacer
                 );
                 return;
             }
-            s = Tapes_dataGridView.Rows[0].Cells["Y_Column"].Value.ToString();
+            s = Tapes_dataGridView.Rows[0].Cells["FirstY_Column"].Value.ToString();
             if (!double.TryParse(s, style, culture, out HoleY))
             {
                 ShowMessageBox(
@@ -9839,7 +9911,6 @@ namespace LitePlacer
         void Tapes_dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             // Ugly, but MS raises this error when programmatically changing a combobox cell value
-            // or when it is not set at design time (and we will put custom tape names in)
         }
 
         private void Tapes_tabPage_Begin()
@@ -9847,7 +9918,7 @@ namespace LitePlacer
             foreach (DataGridViewRow row in Tapes_dataGridView.Rows)
             {
                 row.HeaderCell.Value = row.Index.ToString();
-                row.Cells["SelectButtonColumn"].Value = "Reset";
+                row.Cells["SelectButton_Column"].Value = "Reset";
             }
             SetDownCameraDefaults();
             SelectCamera(DownCamera);
@@ -9857,6 +9928,119 @@ namespace LitePlacer
         private void Tapes_tabPage_End()
         {
             ZGuardOn();
+        }
+
+        // =================================================================================
+        public void TapeWidthStringToValues(string WidthStr, out double Xoff, out double Yoff, out double pitch)
+        {
+            switch (WidthStr)
+            {
+                case "8/2mm":
+                    pitch = 2.0;
+                    Xoff = 3.5;
+                    Yoff = 2.0;
+                    break;
+                case "8/4mm":
+                    pitch = 4.0;
+                    Xoff = 3.50;
+                    Yoff = 2.0;
+                    break;
+                case "12/4mm":
+                    pitch = 4.0;
+                    Xoff = 5.50;
+                    Yoff = 2.0;
+                    break;
+                case "12/8mm":
+                    pitch = 8.0;
+                    Xoff = 5.50;
+                    Yoff = 2.0;
+                    break;
+                case "16/4mm":
+                    pitch = 4.0;
+                    Xoff = 7.50;
+                    Yoff = 2.0;
+                    break;
+                case "16/8mm":
+                    pitch = 8.0;
+                    Xoff = 7.50;
+                    Yoff = 2.0;
+                    break;
+                case "16/12mm":
+                    pitch = 12.0;
+                    Xoff = 7.50;
+                    Yoff = 2.0;
+                    break;
+                case "24/4mm":
+                    pitch = 4.0;
+                    Xoff = 11.50;
+                    Yoff = 2.0;
+                    break;
+                case "24/8mm":
+                    pitch = 8.0;
+                    Xoff = 11.50;
+                    Yoff = 2.0;
+                    break;
+                case "24/12mm":
+                    pitch = 12.0;
+                    Xoff = 11.50;
+                    Yoff = 2.0;
+                    break;
+                case "24/16mm":
+                    pitch = 16.0;
+                    Xoff = 11.50;
+                    Yoff = 2.0;
+                    break;
+                case "24/20mm":
+                    pitch = 20.0;
+                    Xoff = 11.50;
+                    Yoff = 2.0;
+                    break;
+                case "32/4mm":
+                    pitch = 4.0;
+                    Xoff = 14.20;
+                    Yoff = 2.0;
+                    break;
+                case "32/8mm":
+                    pitch = 8.0;
+                    Xoff = 14.20;
+                    Yoff = 2.0;
+                    break;
+                case "32/12mm":
+                    pitch = 12.0;
+                    Xoff = 14.20;
+                    Yoff = 2.0;
+                    break;
+                case "32/16mm":
+                    pitch = 16.0;
+                    Xoff = 14.20;
+                    Yoff = 2.0;
+                    break;
+                case "32/20mm":
+                    pitch = 20.0;
+                    Xoff = 14.20;
+                    Yoff = 2.0;
+                    break;
+                case "32/24mm":
+                    pitch = 24.0;
+                    Xoff = 14.20;
+                    Yoff = 2.0;
+                    break;
+                case "32/28mm":
+                    pitch = 28.0;
+                    Xoff = 14.20;
+                    Yoff = 2.0;
+                    break;
+                case "32/32mm":
+                    pitch = 32.0;
+                    Xoff = 14.20;
+                    Yoff = 2.0;
+                    break;
+                default:
+                    pitch = 0.0;
+                    Xoff = 0.0;
+                    Yoff = 2.0;
+                    break;
+            }
         }
 
         // =================================================================================
@@ -9884,6 +10068,7 @@ namespace LitePlacer
             TapeEditDialog.TapeRowNo = TapesGridEditRow;
             TapeEditDialog.TapesDataGrid = Tapes_dataGridView;
             TapeEditDialog.Row = Tapes_dataGridView.Rows[TapesGridEditRow];
+            TapeEditDialog.MainForm = this;
 
             TapeEditDialog.ShowDialog(this);
 
@@ -9912,34 +10097,34 @@ namespace LitePlacer
                 Tapes_dataGridView.Rows.Insert(index);
             };
             // Add data
-            // SelectButtonColumn: On main form, resets tape to position 1.
+            // SelectButton_Column: On main form, resets tape to position 1.
             // The gridView is moved to selection dialog on job run time. There the SelectButton selects that tape.
-            Tapes_dataGridView.Rows[index].Cells["SelectButtonColumn"].Value = "Reset";
-            // IdColumn: User settable name for the tape
-            Tapes_dataGridView.Rows[index].Cells["IdColumn"].Value = index.ToString();
-            // X_Column, Y_Column: Originally set approximate location for the first hole
-            Tapes_dataGridView.Rows[index].Cells["X_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            Tapes_dataGridView.Rows[index].Cells["Y_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
-            // OrientationColumn: Which way the tape is set. It is the direction to go for next part
-            Tapes_dataGridView.Rows[index].Cells["OrientationColumn"].Value = "+X";
-            // RotationColumn: Which way the parts are rotated on the tape. if 0, parts form +Y oriented tape
+            Tapes_dataGridView.Rows[index].Cells["SelectButton_Column"].Value = "Reset";
+            // Id_Column: User settable name for the tape
+            Tapes_dataGridView.Rows[index].Cells["Id_Column"].Value = index.ToString();
+            // FirstX_Column, FirstY_Column: Originally set approximate location for the first hole
+            Tapes_dataGridView.Rows[index].Cells["FirstX_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[index].Cells["FirstY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            // Orientation_Column: Which way the tape is set. It is the direction to go for next part
+            Tapes_dataGridView.Rows[index].Cells["Orientation_Column"].Value = "+X";
+            // Rotation_Column: Which way the parts are rotated on the tape. if 0, parts form +Y oriented tape
             // correspont to 0deg. on the PCB, tape.e. the placement operation does not rotate them.
-            Tapes_dataGridView.Rows[index].Cells["RotationColumn"].Value = "0deg.";
+            Tapes_dataGridView.Rows[index].Cells["Rotation_Column"].Value = "0deg.";
             // WidthColumn: sets the width of the tape and the distance from one part to next. 
             // From EIA-481, we get the part location from the hole location.
             Tapes_dataGridView.Rows[index].Cells["WidthColumn"].Value = "8/4mm";
-            // TypeColumn: used in hole recognition
-            Tapes_dataGridView.Rows[index].Cells["TypeColumn"].Value = "Paper (White)";
-            // Next_Column tells the part number of next part. 
+            // Type_Column: used in hole recognition
+            Tapes_dataGridView.Rows[index].Cells["Type_Column"].Value = "Paper (White)";
+            // NextPart_Column tells the part number of next part. 
             // NextX, NextY tell the approximate hole location for the next part. Incremented when a part is picked up.
-            Tapes_dataGridView.Rows[index].Cells["Next_Column"].Value = "1";
-            Tapes_dataGridView.Rows[index].Cells["NextX_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            Tapes_dataGridView.Rows[index].Cells["NextY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
-            // PickupZ_Column, PlaceZ_Column: The Z values are measured when first part is placed. Picking up and
+            Tapes_dataGridView.Rows[index].Cells["NextPart_Column"].Value = "1";
+            Tapes_dataGridView.Rows[index].Cells["Next_X_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[index].Cells["Next_Y_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            // Z_Pickup_Column, Z_Place_Column: The Z values are measured when first part is placed. Picking up and
             // placing the next parts will then be faster.
-            Tapes_dataGridView.Rows[index].Cells["PickupZ_Column"].Value = "--";
-            Tapes_dataGridView.Rows[index].Cells["PlaceZ_Column"].Value = "--";
-            Tapes_dataGridView.Rows[index].Cells["Tray_Column"].Value = "--";
+            Tapes_dataGridView.Rows[index].Cells["Z_Pickup_Column"].Value = "--";
+            Tapes_dataGridView.Rows[index].Cells["Z_Place_Column"].Value = "--";
+            Tapes_dataGridView.Rows[index].Cells["TrayID_Column"].Value = "--";
         }
 
         private void TapeUp_button_Click(object sender, EventArgs e)
@@ -9969,11 +10154,11 @@ namespace LitePlacer
             double X;
             double Y;
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["X_Column"].Value.ToString(), out X))
+            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["FirstX_Column"].Value.ToString(), out X))
             {
                 return;
             }
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["Y_Column"].Value.ToString(), out Y))
+            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["FirstY_Column"].Value.ToString(), out Y))
             {
                 return;
             }
@@ -9987,12 +10172,12 @@ namespace LitePlacer
                 return;
             };
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
-            Tapes_dataGridView.Rows[row].Cells["X_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            Tapes_dataGridView.Rows[row].Cells["Y_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[row].Cells["FirstX_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[row].Cells["FirstY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             // fix #22 update next coordinates when setting hole 1
-            Tapes_dataGridView.Rows[row].Cells["Next_Column"].Value = "1";
-            Tapes_dataGridView.Rows[row].Cells["NextX_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            Tapes_dataGridView.Rows[row].Cells["NextY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[row].Cells["NextPart_Column"].Value = "1";
+            Tapes_dataGridView.Rows[row].Cells["Next_X_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[row].Cells["Next_Y_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
 
         }
 
@@ -10002,8 +10187,8 @@ namespace LitePlacer
         // If the click is on a button column, resets the tape. 
         private void Tapes_dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Ignore clicks that are not on button cell  IdColumn
-            if ((e.RowIndex < 0) || (e.ColumnIndex != Tapes_dataGridView.Columns["SelectButtonColumn"].Index))
+            // Ignore clicks that are not on button cell  Id_Column
+            if ((e.RowIndex < 0) || (e.ColumnIndex != Tapes_dataGridView.Columns["SelectButton_Column"].Index))
             {
                 return;
             }
@@ -10092,9 +10277,9 @@ namespace LitePlacer
                 return;
             }
             DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
-            Row.Cells["Next_Column"].Value = no.ToString();
-            Row.Cells["NextX_Column"].Value = Cnc.CurrentX.ToString();
-            Row.Cells["NextY_Column"].Value = Cnc.CurrentY.ToString();
+            Row.Cells["NextPart_Column"].Value = no.ToString();
+            Row.Cells["Next_X_Column"].Value = Cnc.CurrentX.ToString();
+            Row.Cells["Next_Y_Column"].Value = Cnc.CurrentY.ToString();
         }
 
         private void Tape_GoToNext_button_Click(object sender, EventArgs e)
@@ -10106,11 +10291,11 @@ namespace LitePlacer
             double X;
             double Y;
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["NextX_Column"].Value.ToString(), out X))
+            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["Next_X_Column"].Value.ToString(), out X))
             {
                 return;
             }
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["NextY_Column"].Value.ToString(), out Y))
+            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["Next_Y_Column"].Value.ToString(), out Y))
             {
                 return;
             }
@@ -10120,8 +10305,8 @@ namespace LitePlacer
         private void Tape_resetZs_button_Click(object sender, EventArgs e)
         {
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
-            Tapes_dataGridView.Rows[row].Cells["PickupZ_Column"].Value = "--";
-            Tapes_dataGridView.Rows[row].Cells["PlaceZ_Column"].Value = "--";
+            Tapes_dataGridView.Rows[row].Cells["Z_Pickup_Column"].Value = "--";
+            Tapes_dataGridView.Rows[row].Cells["Z_Place_Column"].Value = "--";
         }
 
 
@@ -10148,12 +10333,12 @@ namespace LitePlacer
             DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
-                if (!int.TryParse(Row.Cells["Next_Column"].Value.ToString(), out PartNum))
+                if (!int.TryParse(Row.Cells["NextPart_Column"].Value.ToString(), out PartNum))
                 {
                     return;
                 }
             }
-            string Id = Row.Cells["IdColumn"].Value.ToString();
+            string Id = Row.Cells["Id_Column"].Value.ToString();
             double X = 0.0;
             double Y = 0.0;
             if (!Tapes.IdValidates_m(Id, out TapeNum))
@@ -10173,12 +10358,12 @@ namespace LitePlacer
             DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
-                if (!int.TryParse(Row.Cells["Next_Column"].Value.ToString(), out PartNum))
+                if (!int.TryParse(Row.Cells["NextPart_Column"].Value.ToString(), out PartNum))
                 {
                     return;
                 }
             }
-            string Id = Row.Cells["IdColumn"].Value.ToString();
+            string Id = Row.Cells["Id_Column"].Value.ToString();
             double X = 0.0;
             double Y = 0.0;
             if (!Tapes.IdValidates_m(Id, out TapeNum))
@@ -10194,8 +10379,8 @@ namespace LitePlacer
             double A = 0.0;
             // Tapes.GetPartLocationFromHolePosition_m uses the next column from Tapes_dataGridView.
             // Set it temporarily, but remember what was there:
-            string temp = Row.Cells["Next_Column"].Value.ToString();
-            Row.Cells["Next_Column"].Value = PartNum.ToString();
+            string temp = Row.Cells["NextPart_Column"].Value.ToString();
+            Row.Cells["NextPart_Column"].Value = PartNum.ToString();
             if (Tapes.GetPartLocationFromHolePosition_m(TapeNum, X, Y, out pX, out pY, out A))
             {
                 CNC_XY_m(pX, pY);
@@ -10203,7 +10388,7 @@ namespace LitePlacer
             DownCamera.ArrowAngle = A;
             DownCamera.DrawArrow = true;
 
-            Row.Cells["Next_Column"].Value = temp.ToString();
+            Row.Cells["NextPart_Column"].Value = temp.ToString();
         }
 
         private void ShowPart_button_Leave(object sender, EventArgs e)
@@ -10220,14 +10405,18 @@ namespace LitePlacer
             }
 
             // only update next coordinates if corresponding column has been changed and rowIndex > 0
-            if (e.ColumnIndex != 6 || e.RowIndex < 0)  //TODO: add descriptive column index constants to tape columns, too (like cad and job data)
+            if ((e.ColumnIndex< Tapes_dataGridView.Columns.Count) || (e.ColumnIndex > Tapes_dataGridView.Columns.Count))
+            {
+                return;
+            }
+            if ( (Tapes_dataGridView.Columns[e.ColumnIndex].HeaderText != "Next") || e.RowIndex < 0)  //TODO: add descriptive column index constants to tape columns, too (like cad and job data)
             {
                 return;
             }
 
             int NextNo = 1;
 
-            if (!int.TryParse(Tapes_dataGridView.Rows[e.RowIndex].Cells["Next_Column"].Value.ToString(), out NextNo))
+            if (!int.TryParse(Tapes_dataGridView.Rows[e.RowIndex].Cells["NextPart_Column"].Value.ToString(), out NextNo))
             {
                 ShowMessageBox(
                     "Bad data in Next",
@@ -10254,7 +10443,7 @@ namespace LitePlacer
             }
             // Get current tray ID
             int CurrRow = Tapes_dataGridView.CurrentCell.RowIndex;
-            string TrayID = Tapes_dataGridView.Rows[CurrRow].Cells["Tray_Column"].Value.ToString();
+            string TrayID = Tapes_dataGridView.Rows[CurrRow].Cells["TrayID_Column"].Value.ToString();
 
             // Copy the tapes with this ID to Clipboard datagridview:
             DataGridView ClipBoard_dgw = new DataGridView();
@@ -10266,7 +10455,7 @@ namespace LitePlacer
             DataGridViewRow NewRow = new DataGridViewRow();
             foreach (DataGridViewRow row in Tapes_dataGridView.Rows)
             {
-                if (row.Cells["Tray_Column"].Value.ToString() == TrayID)
+                if (row.Cells["TrayID_Column"].Value.ToString() == TrayID)
                 {
                     NewRow = (DataGridViewRow)row.Clone();
                     int intColIndex = 0;
@@ -10372,8 +10561,8 @@ namespace LitePlacer
             }
             // Get current tray ID
             int CurrRow = Tapes_dataGridView.CurrentCell.RowIndex;
-            string TrayID = Tapes_dataGridView.Rows[CurrRow].Cells["Tray_Column"].Value.ToString();
-            int col = Tapes_dataGridView.Rows[CurrRow].Cells["Tray_Column"].ColumnIndex;
+            string TrayID = Tapes_dataGridView.Rows[CurrRow].Cells["TrayID_Column"].Value.ToString();
+            int col = Tapes_dataGridView.Rows[CurrRow].Cells["TrayID_Column"].ColumnIndex;
             DeleteTray(TrayID, col);
             LoadTrayFromFile(TapesAll_openFileDialog.FileName);
         }
@@ -10382,12 +10571,12 @@ namespace LitePlacer
         {
             // Get current tray ID
             int CurrRow = Tapes_dataGridView.CurrentCell.RowIndex;
-            string TrayID = Tapes_dataGridView.Rows[CurrRow].Cells["Tray_Column"].Value.ToString();
+            string TrayID = Tapes_dataGridView.Rows[CurrRow].Cells["TrayID_Column"].Value.ToString();
             foreach (DataGridViewRow row in Tapes_dataGridView.Rows)
             {
-                if (row.Cells["Tray_Column"].Value.ToString() == TrayID)
+                if (row.Cells["TrayID_Column"].Value.ToString() == TrayID)
                 {
-                    row.Cells["Next_Column"].Value = 1;
+                    row.Cells["NextPart_Column"].Value = 1;
                 }
             }
         }

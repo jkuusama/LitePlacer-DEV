@@ -47,8 +47,8 @@
             this.YFirstOffset_textBox = new System.Windows.Forms.TextBox();
             this.Designator_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Footprint_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Xpanelize_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Ypanelize_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Rotation_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PanelFiducials_dataGridView)).BeginInit();
@@ -136,8 +136,8 @@
             this.PanelFiducials_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Designator_Column,
             this.Footprint_Column,
-            this.X_Column,
-            this.Y_Column,
+            this.Xpanelize_Column,
+            this.Ypanelize_Column,
             this.Rotation_Column});
             this.PanelFiducials_dataGridView.Location = new System.Drawing.Point(6, 42);
             this.PanelFiducials_dataGridView.Name = "PanelFiducials_dataGridView";
@@ -219,17 +219,17 @@
             this.Footprint_Column.HeaderText = "Footprint";
             this.Footprint_Column.Name = "Footprint_Column";
             // 
-            // X_Column
+            // Xpanelize_Column
             // 
-            this.X_Column.HeaderText = "X";
-            this.X_Column.Name = "X_Column";
-            this.X_Column.Width = 70;
+            this.Xpanelize_Column.HeaderText = "X";
+            this.Xpanelize_Column.Name = "Xpanelize_Column";
+            this.Xpanelize_Column.Width = 70;
             // 
-            // Y_Column
+            // Ypanelize_Column
             // 
-            this.Y_Column.HeaderText = "Y";
-            this.Y_Column.Name = "Y_Column";
-            this.Y_Column.Width = 70;
+            this.Ypanelize_Column.HeaderText = "Y";
+            this.Ypanelize_Column.Name = "Ypanelize_Column";
+            this.Ypanelize_Column.Width = 70;
             // 
             // Rotation_Column
             // 
@@ -289,8 +289,8 @@
         private System.Windows.Forms.TextBox YFirstOffset_textBox;
         private System.Windows.Forms.DataGridViewTextBoxColumn Designator_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn Footprint_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Xpanelize_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Ypanelize_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn Rotation_Column;
     }
 }
