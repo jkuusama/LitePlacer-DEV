@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -15,6 +16,7 @@ namespace LitePlacer
         public DataGridViewRow Row;
         public int TapeRowNo;
         public FormMain MainForm;
+        CNC Cnc;
 
         // The parameters of tapes, most taken care by this dialog
 
@@ -41,12 +43,15 @@ namespace LitePlacer
         // double PickupZ, PlacementZ: Z values used for pickup/place operation
         // bool PickupZvalid, PlacementZvalid: if the values are valid (if not, they are measured when used)
 
-        public TapeEditForm()
+        public TapeEditForm(CNC _cnc)
         {
             InitializeComponent();
+            Cnc = _cnc;
         }
 
         // =================================================================================
+
+
         private void TapeEditForm_Load(object sender, EventArgs e)
         {
             Row = TapesDataGrid.Rows[TapeRowNo];
@@ -79,29 +84,124 @@ namespace LitePlacer
             {
                 Nozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
             }
+
+            if (Row.Cells["Width_Column"].Value != null)
+            {
+                TapeWidth_comboBox.Text = Row.Cells["Width_Column"].Value.ToString();
+            }
+
+            if (Row.Cells["Pitch_Column"].Value != null)
+            {
+                TapePitch_textBox.Text = Row.Cells["Pitch_Column"].Value.ToString();
+                ValidateDouble(TapePitch_textBox);
+            }
+
+            if (Row.Cells["OffsetX_Column"].Value != null)
+            {
+                TapeOffsetX_textBox.Text = Row.Cells["OffsetX_Column"].Value.ToString();
+                ValidateDouble(TapePitch_textBox);
+            }
+
+            if (Row.Cells["OffsetY_Column"].Value != null)
+            {
+                TapeOffsetY_textBox.Text = Row.Cells["OffsetY_Column"].Value.ToString();
+                ValidateDouble(TapeOffsetY_textBox); 
+            }
+
+            if (Row.Cells["UseOptics_Column"].Value != null)
+            {
+                if (Row.Cells["UseOptics_Column"].Value.ToString()=="True")
+                {
+                    UseOptics_checkBox.Checked = true;
+                }
+                else
+                {
+                    UseOptics_checkBox.Checked = false;
+                }
+            }
+            else
+            {
+                UseOptics_checkBox.Checked = true;
+            }
+
             if (Row.Cells["Capacity_Column"].Value != null)
             {
+                Capacity_textBox.Text = Row.Cells["Capacity_Column"].Value.ToString();
+
             }
+
             if (Row.Cells["Type_Column"].Value != null)
             {
+                Type_comboBox.Text = Row.Cells["Type_Column"].Value.ToString();
             }
-            if (Row.Cells["TrayID_Column"].Value != null)
+
+            if (Row.Cells["NextPart_Column"].Value != null)
             {
+                NextPart_textBox.Text = Row.Cells["NextPart_Column"].Value.ToString();
+
             }
-            if (Row.Cells["Rotation_Column"].Value != null)
-            {
-            }
+
             if (Row.Cells["FirstX_Column"].Value != null)
             {
+                FirstX_textBox.Text = Row.Cells["FirstX_Column"].Value.ToString();
             }
             if (Row.Cells["FirstY_Column"].Value != null)
             {
+                FirstY_textBox.Text = Row.Cells["FirstY_Column"].Value.ToString();
             }
+
+            if (Row.Cells["Interpolate_column"].Value != null)
+            {
+                if (Row.Cells["Interpolate_column"].Value.ToString() == "True")
+                {
+                    Interpolate_checkBox.Checked = true;
+                }
+                else
+                {
+                    Interpolate_checkBox.Checked = false;
+                }
+            }
+            else
+            {
+                Interpolate_checkBox.Checked = false;
+            }
+            Interpolate_checkBox_function();
+
+            if (Row.Cells["LastX_Column"].Value != null)
+            {
+                LastX_textBox.Text = Row.Cells["LastX_Column"].Value.ToString();
+            }
+            if (Row.Cells["LastY_Column"].Value != null)
+            {
+                LastY_textBox.Text = Row.Cells["LastY_Column"].Value.ToString();
+            }
+
             if (Row.Cells["Z_Pickup_Column"].Value != null)
             {
+                PickupZ_textBox.Text = Row.Cells["Z_Pickup_Column"].Value.ToString();
             }
             if (Row.Cells["Z_Place_Column"].Value != null)
             {
+                PlacementZ_textBox.Text = Row.Cells["Z_Place_Column"].Value.ToString();
+            }
+            if (Row.Cells["TrayID_Column"].Value != null)
+            {
+                TrayID_textBox.Text = Row.Cells["TrayID_Column"].Value.ToString();
+            }
+            if (Row.Cells["CoordinatesForParts_Column"].Value != null)
+            {
+                if (Row.Cells["CoordinatesForParts_Column"].Value.ToString() == "True")
+                {
+                    CoordinatesForParts_checkBox.Checked = true;
+                }
+                else
+                {
+                    CoordinatesForParts_checkBox.Checked = false;
+                }
+            }
+            else
+            {
+                CoordinatesForParts_checkBox.Checked = false;
             }
         }
 
@@ -112,27 +212,186 @@ namespace LitePlacer
             Row.Cells["Rotation_Column"].Value = TapeRotation_comboBox.SelectedItem;
             Row.Cells["Orientation_Column"].Value = TapeOrientation_comboBox.SelectedItem;
             Row.Cells["Nozzle_Column"].Value = Nozzle_numericUpDown.Value.ToString();
+            Row.Cells["Width_Column"].Value = TapeWidth_comboBox.Text;
             Row.Cells["Pitch_Column"].Value = TapePitch_textBox.Text;
             Row.Cells["OffsetX_Column"].Value = TapeOffsetX_textBox.Text;
             Row.Cells["OffsetY_Column"].Value = TapeOffsetY_textBox.Text;
-            this.Close();
+            Row.Cells["UseOptics_Column"].Value = UseOptics_checkBox.Checked; 
+            Row.Cells["Capacity_Column"].Value = Capacity_textBox.Text;
+            Row.Cells["Type_Column"].Value = Type_comboBox.Text; 
+            Row.Cells["NextPart_Column"].Value = NextPart_textBox.Text;
+            Row.Cells["FirstX_Column"].Value = FirstX_textBox.Text;
+            Row.Cells["FirstY_Column"].Value = FirstY_textBox.Text;
+            Row.Cells["Interpolate_Column"].Value = Interpolate_checkBox.Checked;
+            Row.Cells["LastX_Column"].Value = LastX_textBox.Text;
+            Row.Cells["LastY_Column"].Value = LastY_textBox.Text;
+            Row.Cells["Z_Pickup_Column"].Value = PickupZ_textBox.Text;
+            Row.Cells["Z_Place_Column"].Value = PlacementZ_textBox.Text;
+            Row.Cells["TrayID_Column"].Value = TrayID_textBox.Text; 
+            Row.Cells["CoordinatesForParts_Column"].Value = CoordinatesForParts_checkBox.Checked;
+            Close();
         }
 
+        private void TapeEditCancel_button_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
 
         private void TapeWidth_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (TapeWidth_comboBox.Text == "custom")
+            {
+                return;
+            }
             double Xoff;
             double Yoff;
             double pitch;
             MainForm.TapeWidthStringToValues(TapeWidth_comboBox.SelectedItem.ToString(), out Xoff, out Yoff, out pitch);
             TapeOffsetX_textBox.Text = Xoff.ToString();
+            TapeOffsetX_textBox.ForeColor = Color.Black;    // in case there are erroneous edits left
             TapeOffsetY_textBox.Text = Yoff.ToString();
+            TapeOffsetY_textBox.ForeColor = Color.Black;
             TapePitch_textBox.Text = pitch.ToString();
+            TapePitch_textBox.ForeColor = Color.Black;
         }
 
-        private void TapeEditCancel_button_Click(object sender, EventArgs e)
+        private void ValidateDouble(TextBox box)
         {
-            this.Close();
+            double val;
+            if (double.TryParse(box.Text, out val))
+            {
+                box.ForeColor = Color.Black;
+            }
+            else
+            {
+                box.ForeColor = Color.Red;
+            }
+        }
+
+        private void ValidateInt(TextBox box)
+        {
+            int val;
+            if (int.TryParse(box.Text, out val))
+            {
+                box.ForeColor = Color.Black;
+            }
+            else
+            {
+                box.ForeColor = Color.Red;
+            }
+        }
+
+        private void TapePitch_textBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!TapePitch_textBox.Focused)
+            {
+                return;
+            }
+            TapeWidth_comboBox.Text = "custom";
+            ValidateDouble(TapePitch_textBox);
+        }
+
+        private void Capacity_textBox_TextChanged(object sender, EventArgs e)
+        {
+            ValidateInt(Capacity_textBox);
+        }
+
+        private void NextPart_textBox_TextChanged(object sender, EventArgs e)
+        {
+            ValidateInt(NextPart_textBox);
+        }
+
+        private void FirstY_textBox_TextChanged(object sender, EventArgs e)
+        {
+            ValidateDouble(FirstY_textBox);
+        }
+
+        private void FirstX_textBox_TextChanged(object sender, EventArgs e)
+        {
+            ValidateDouble(FirstX_textBox);
+        }
+
+        private void Interpolate_checkBox_function()
+        {
+            if (Interpolate_checkBox.Checked)
+            {
+                LastX_textBox.Enabled = true;
+                LastY_textBox.Enabled = true;
+                MeasureLast_button.Enabled = true;
+                GetLastPosition_button.Enabled = true;
+            }
+            else
+            {
+                LastX_textBox.Enabled = false;
+                LastY_textBox.Enabled = false;
+                MeasureLast_button.Enabled = false;
+                GetLastPosition_button.Enabled = false;
+            }
+        }
+        private void Interpolate_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Interpolate_checkBox_function();
+        }
+
+        private void PickupZ_textBox_TextChanged(object sender, EventArgs e)
+        {
+            if (PickupZ_textBox.Text== "--")
+            {
+                PickupZ_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                ValidateDouble(PickupZ_textBox);
+            }
+        }
+
+        private void PlacementZ_textBox_TextChanged(object sender, EventArgs e)
+        {
+            if (PlacementZ_textBox.Text == "--")
+            {
+                PlacementZ_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                ValidateDouble(PlacementZ_textBox);
+            }
+        }
+
+        private void ResetPickupZ_button_Click(object sender, EventArgs e)
+        {
+            PickupZ_textBox.Text = "--";
+        }
+
+        private void ResetPlacementZ_button_Click(object sender, EventArgs e)
+        {
+            PlacementZ_textBox.Text = "--";
+        }
+
+        private void ResetTrayID_button_Click(object sender, EventArgs e)
+        {
+            TrayID_textBox.Text = "--";
+        }
+
+        private void GetFirstPosition_button_Click(object sender, EventArgs e)
+        {
+            FirstX_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+            FirstY_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+        }
+
+        private void GetLastPosition_button_Click(object sender, EventArgs e)
+        {
+            LastX_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+            LastY_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+        }
+
+        private void GetPickupZ_button_Click(object sender, EventArgs e)
+        {
+            PickupZ_textBox.Text = Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture);
+        }
+
+        private void GetPlacementZ_button_Click(object sender, EventArgs e)
+        {
+            PlacementZ_textBox.Text = Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture);
         }
     }
 }

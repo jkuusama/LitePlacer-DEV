@@ -13,9 +13,9 @@ using System.Web.Script.Serialization;
 namespace LitePlacer
 {
 
-    class CNC
+    public class CNC
     {
-        private static FormMain MainForm;
+        static FormMain MainForm;
         private SerialComm Com;
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);

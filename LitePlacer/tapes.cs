@@ -207,14 +207,39 @@ namespace LitePlacer
 
         // ========================================================================================
         // GetTapeParameters_m(): 
-        // Get from the indicated tape the offsetX, OffsetY, part center pos from hole and Pitch, distance from one part to another
-        // Measures from: http://ww1.microchip.com/downloads/en/DeviceDoc/00000151J.pdf 
         private bool GetTapeParameters_m(int Tape, out double OffsetX, out double OffsetY, out double Pitch)
         {
-            OffsetX = 0.0;
+            OffsetX = 0.0; 
             OffsetY = 0.0;
             Pitch = 0.0;
             // Check for values
+            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetX_Column"].Value.ToString(), out Pitch))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data at Tape " + Grid.Rows[Tape].Cells["ID_Column"].Value.ToString() + ", OffsetX",
+                    "Tape data error",
+                    MessageBoxButtons.OK
+                );
+                return false;
+            }
+            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetY_Column"].Value.ToString(), out Pitch))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data at Tape " + Grid.Rows[Tape].Cells["ID_Column"].Value.ToString() + ", OffsetY",
+                    "Tape data error",
+                    MessageBoxButtons.OK
+                );
+                return false;
+            }
+            if (!double.TryParse(Grid.Rows[Tape].Cells["Pitch_Column"].Value.ToString(), out Pitch))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data at Tape " + Grid.Rows[Tape].Cells["ID_Column"].Value.ToString() + ", Pitch",
+                    "Tape data error",
+                    MessageBoxButtons.OK
+                );
+                return false;
+            }
             return true;
         }
 		// ========================================================================================
