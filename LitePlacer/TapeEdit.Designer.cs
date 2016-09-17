@@ -68,16 +68,16 @@
             this.PickupZ_textBox = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
             this.TrayID_textBox = new System.Windows.Forms.TextBox();
-            this.TapeEditCancel_button = new System.Windows.Forms.Button();
             this.UseOptics_checkBox = new System.Windows.Forms.CheckBox();
-            this.Interpolate_checkBox = new System.Windows.Forms.CheckBox();
-            this.MeasureFirst_button = new System.Windows.Forms.Button();
             this.GetFirstPosition_button = new System.Windows.Forms.Button();
-            this.MeasureLast_button = new System.Windows.Forms.Button();
             this.GetLastPosition_button = new System.Windows.Forms.Button();
             this.GetPickupZ_button = new System.Windows.Forms.Button();
-            this.ResetPickupZ_button = new System.Windows.Forms.Button();
             this.GetPlacementZ_button = new System.Windows.Forms.Button();
+            this.TapeEditCancel_button = new System.Windows.Forms.Button();
+            this.Interpolate_checkBox = new System.Windows.Forms.CheckBox();
+            this.MeasureFirst_button = new System.Windows.Forms.Button();
+            this.MeasureLast_button = new System.Windows.Forms.Button();
+            this.ResetPickupZ_button = new System.Windows.Forms.Button();
             this.ResetPlacementZ_button = new System.Windows.Forms.Button();
             this.ResetTrayID_button = new System.Windows.Forms.Button();
             this.CoordinatesForParts_checkBox = new System.Windows.Forms.CheckBox();
@@ -120,7 +120,7 @@
             "-X",
             "+Y",
             "-Y"});
-            this.TapeOrientation_comboBox.Location = new System.Drawing.Point(256, 26);
+            this.TapeOrientation_comboBox.Location = new System.Drawing.Point(122, 25);
             this.TapeOrientation_comboBox.Name = "TapeOrientation_comboBox";
             this.TapeOrientation_comboBox.Size = new System.Drawing.Size(61, 21);
             this.TapeOrientation_comboBox.TabIndex = 3;
@@ -130,7 +130,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(253, 11);
+            this.label2.Location = new System.Drawing.Point(119, 10);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 4;
@@ -146,7 +146,7 @@
             "90deg.",
             "180deg.",
             "270deg."});
-            this.TapeRotation_comboBox.Location = new System.Drawing.Point(323, 27);
+            this.TapeRotation_comboBox.Location = new System.Drawing.Point(189, 26);
             this.TapeRotation_comboBox.Name = "TapeRotation_comboBox";
             this.TapeRotation_comboBox.Size = new System.Drawing.Size(61, 21);
             this.TapeRotation_comboBox.TabIndex = 5;
@@ -157,7 +157,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(320, 11);
+            this.label3.Location = new System.Drawing.Point(186, 10);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 13);
             this.label3.TabIndex = 6;
@@ -169,7 +169,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(389, 11);
+            this.label4.Location = new System.Drawing.Point(255, 10);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(39, 13);
             this.label4.TabIndex = 8;
@@ -180,7 +180,7 @@
             // 
             // TapeOffsetX_textBox
             // 
-            this.TapeOffsetX_textBox.Location = new System.Drawing.Point(313, 117);
+            this.TapeOffsetX_textBox.Location = new System.Drawing.Point(73, 116);
             this.TapeOffsetX_textBox.Name = "TapeOffsetX_textBox";
             this.TapeOffsetX_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapeOffsetX_textBox.TabIndex = 9;
@@ -189,7 +189,7 @@
             // 
             // TapePitch_textBox
             // 
-            this.TapePitch_textBox.Location = new System.Drawing.Point(259, 117);
+            this.TapePitch_textBox.Location = new System.Drawing.Point(19, 116);
             this.TapePitch_textBox.Name = "TapePitch_textBox";
             this.TapePitch_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapePitch_textBox.TabIndex = 10;
@@ -200,7 +200,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(310, 101);
+            this.label5.Location = new System.Drawing.Point(70, 100);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(45, 13);
             this.label5.TabIndex = 12;
@@ -211,7 +211,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(256, 101);
+            this.label6.Location = new System.Drawing.Point(16, 100);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 13);
             this.label6.TabIndex = 13;
@@ -221,7 +221,7 @@
             // 
             // Nozzle_numericUpDown
             // 
-            this.Nozzle_numericUpDown.Location = new System.Drawing.Point(390, 27);
+            this.Nozzle_numericUpDown.Location = new System.Drawing.Point(256, 26);
             this.Nozzle_numericUpDown.Minimum = new decimal(new int[] {
             1,
             0,
@@ -263,7 +263,7 @@
             "32/28mm",
             "32/32mm",
             "custom"});
-            this.TapeWidth_comboBox.Location = new System.Drawing.Point(256, 74);
+            this.TapeWidth_comboBox.Location = new System.Drawing.Point(16, 73);
             this.TapeWidth_comboBox.Name = "TapeWidth_comboBox";
             this.TapeWidth_comboBox.Size = new System.Drawing.Size(77, 21);
             this.TapeWidth_comboBox.TabIndex = 11;
@@ -272,7 +272,7 @@
             // 
             // TapeOffsetY_textBox
             // 
-            this.TapeOffsetY_textBox.Location = new System.Drawing.Point(367, 117);
+            this.TapeOffsetY_textBox.Location = new System.Drawing.Point(127, 116);
             this.TapeOffsetY_textBox.Name = "TapeOffsetY_textBox";
             this.TapeOffsetY_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapeOffsetY_textBox.TabIndex = 14;
@@ -282,7 +282,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(364, 101);
+            this.label7.Location = new System.Drawing.Point(124, 100);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(45, 13);
             this.label7.TabIndex = 15;
@@ -293,7 +293,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(256, 58);
+            this.label8.Location = new System.Drawing.Point(16, 57);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(63, 13);
             this.label8.TabIndex = 17;
@@ -302,24 +302,26 @@
             // 
             // Capacity_textBox
             // 
-            this.Capacity_textBox.Location = new System.Drawing.Point(190, 26);
+            this.Capacity_textBox.Location = new System.Drawing.Point(379, 25);
             this.Capacity_textBox.Name = "Capacity_textBox";
             this.Capacity_textBox.Size = new System.Drawing.Size(48, 20);
             this.Capacity_textBox.TabIndex = 20;
             this.toolTip1.SetToolTip(this.Capacity_textBox, "How many parts on a strip\r\n0: You are prompted to place a part at the location\r\n<" +
         "0: Infinite (feeder)");
+            this.Capacity_textBox.Visible = false;
             this.Capacity_textBox.TextChanged += new System.EventHandler(this.Capacity_textBox_TextChanged);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(187, 10);
+            this.label10.Location = new System.Drawing.Point(376, 9);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(48, 13);
             this.label10.TabIndex = 21;
             this.label10.Text = "Capacity";
             this.toolTip1.SetToolTip(this.label10, "How many parts on a strip\r\n0: You are prompted to place a part at the location\r\n<" +
         "0: Infinite (feeder)");
+            this.label10.Visible = false;
             // 
             // Type_comboBox
             // 
@@ -328,7 +330,7 @@
             "Paper (White)",
             "Black Plastic",
             "Clear Plastic"});
-            this.Type_comboBox.Location = new System.Drawing.Point(124, 73);
+            this.Type_comboBox.Location = new System.Drawing.Point(122, 73);
             this.Type_comboBox.Name = "Type_comboBox";
             this.Type_comboBox.Size = new System.Drawing.Size(114, 21);
             this.Type_comboBox.TabIndex = 22;
@@ -337,7 +339,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(121, 57);
+            this.label11.Location = new System.Drawing.Point(119, 57);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(31, 13);
             this.label11.TabIndex = 23;
@@ -347,7 +349,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(121, 10);
+            this.label12.Location = new System.Drawing.Point(310, 9);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(50, 13);
             this.label12.TabIndex = 25;
@@ -356,7 +358,7 @@
             // 
             // NextPart_textBox
             // 
-            this.NextPart_textBox.Location = new System.Drawing.Point(124, 26);
+            this.NextPart_textBox.Location = new System.Drawing.Point(313, 25);
             this.NextPart_textBox.Name = "NextPart_textBox";
             this.NextPart_textBox.Size = new System.Drawing.Size(48, 20);
             this.NextPart_textBox.TabIndex = 24;
@@ -410,6 +412,7 @@
             this.label15.TabIndex = 33;
             this.label15.Text = "Last Y";
             this.toolTip1.SetToolTip(this.label15, "Location of last hole/alingment mark/part");
+            this.label15.Visible = false;
             // 
             // LastY_textBox
             // 
@@ -418,6 +421,7 @@
             this.LastY_textBox.Size = new System.Drawing.Size(48, 20);
             this.LastY_textBox.TabIndex = 32;
             this.toolTip1.SetToolTip(this.LastY_textBox, "Location of last hole/alingment mark/part");
+            this.LastY_textBox.Visible = false;
             // 
             // label16
             // 
@@ -428,6 +432,7 @@
             this.label16.TabIndex = 31;
             this.label16.Text = "Last X";
             this.toolTip1.SetToolTip(this.label16, "Location of last hole/alingment mark/part");
+            this.label16.Visible = false;
             // 
             // LastX_textBox
             // 
@@ -436,11 +441,12 @@
             this.LastX_textBox.Size = new System.Drawing.Size(48, 20);
             this.LastX_textBox.TabIndex = 30;
             this.toolTip1.SetToolTip(this.LastX_textBox, "Location of last hole/alingment mark/part");
+            this.LastX_textBox.Visible = false;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(310, 154);
+            this.label17.Location = new System.Drawing.Point(364, 154);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(67, 13);
             this.label17.TabIndex = 42;
@@ -450,7 +456,7 @@
             // 
             // PlacementZ_textBox
             // 
-            this.PlacementZ_textBox.Location = new System.Drawing.Point(313, 170);
+            this.PlacementZ_textBox.Location = new System.Drawing.Point(367, 170);
             this.PlacementZ_textBox.Name = "PlacementZ_textBox";
             this.PlacementZ_textBox.Size = new System.Drawing.Size(48, 20);
             this.PlacementZ_textBox.TabIndex = 41;
@@ -461,7 +467,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(256, 154);
+            this.label18.Location = new System.Drawing.Point(310, 154);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(50, 13);
             this.label18.TabIndex = 40;
@@ -471,7 +477,7 @@
             // 
             // PickupZ_textBox
             // 
-            this.PickupZ_textBox.Location = new System.Drawing.Point(259, 170);
+            this.PickupZ_textBox.Location = new System.Drawing.Point(313, 170);
             this.PickupZ_textBox.Name = "PickupZ_textBox";
             this.PickupZ_textBox.Size = new System.Drawing.Size(48, 20);
             this.PickupZ_textBox.TabIndex = 39;
@@ -482,7 +488,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(13, 58);
+            this.label19.Location = new System.Drawing.Point(310, 57);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(42, 13);
             this.label19.TabIndex = 48;
@@ -493,21 +499,11 @@
             // 
             // TrayID_textBox
             // 
-            this.TrayID_textBox.Location = new System.Drawing.Point(16, 74);
+            this.TrayID_textBox.Location = new System.Drawing.Point(313, 73);
             this.TrayID_textBox.Name = "TrayID_textBox";
             this.TrayID_textBox.Size = new System.Drawing.Size(100, 20);
             this.TrayID_textBox.TabIndex = 47;
             this.toolTip1.SetToolTip(this.TrayID_textBox, "Name of the tape (ex: 0805, 10k)");
-            // 
-            // TapeEditCancel_button
-            // 
-            this.TapeEditCancel_button.Location = new System.Drawing.Point(259, 379);
-            this.TapeEditCancel_button.Name = "TapeEditCancel_button";
-            this.TapeEditCancel_button.Size = new System.Drawing.Size(75, 23);
-            this.TapeEditCancel_button.TabIndex = 16;
-            this.TapeEditCancel_button.Text = "Cancel";
-            this.TapeEditCancel_button.UseVisualStyleBackColor = true;
-            this.TapeEditCancel_button.Click += new System.EventHandler(this.TapeEditCancel_button_Click);
             // 
             // UseOptics_checkBox
             // 
@@ -520,26 +516,7 @@
             this.toolTip1.SetToolTip(this.UseOptics_checkBox, "By measuring first and last positions and check interpolate, no measurements are " +
         "done");
             this.UseOptics_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // Interpolate_checkBox
-            // 
-            this.Interpolate_checkBox.AutoSize = true;
-            this.Interpolate_checkBox.Location = new System.Drawing.Point(124, 279);
-            this.Interpolate_checkBox.Name = "Interpolate_checkBox";
-            this.Interpolate_checkBox.Size = new System.Drawing.Size(76, 17);
-            this.Interpolate_checkBox.TabIndex = 34;
-            this.Interpolate_checkBox.Text = "Interpolate";
-            this.Interpolate_checkBox.UseVisualStyleBackColor = true;
-            this.Interpolate_checkBox.CheckedChanged += new System.EventHandler(this.Interpolate_checkBox_CheckedChanged);
-            // 
-            // MeasureFirst_button
-            // 
-            this.MeasureFirst_button.Location = new System.Drawing.Point(16, 196);
-            this.MeasureFirst_button.Name = "MeasureFirst_button";
-            this.MeasureFirst_button.Size = new System.Drawing.Size(102, 23);
-            this.MeasureFirst_button.TabIndex = 35;
-            this.MeasureFirst_button.Text = "Measure now";
-            this.MeasureFirst_button.UseVisualStyleBackColor = true;
+            this.UseOptics_checkBox.Visible = false;
             // 
             // GetFirstPosition_button
             // 
@@ -552,15 +529,6 @@
             this.GetFirstPosition_button.UseVisualStyleBackColor = true;
             this.GetFirstPosition_button.Click += new System.EventHandler(this.GetFirstPosition_button_Click);
             // 
-            // MeasureLast_button
-            // 
-            this.MeasureLast_button.Location = new System.Drawing.Point(16, 303);
-            this.MeasureLast_button.Name = "MeasureLast_button";
-            this.MeasureLast_button.Size = new System.Drawing.Size(102, 23);
-            this.MeasureLast_button.TabIndex = 37;
-            this.MeasureLast_button.Text = "Measure now";
-            this.MeasureLast_button.UseVisualStyleBackColor = true;
-            // 
             // GetLastPosition_button
             // 
             this.GetLastPosition_button.Location = new System.Drawing.Point(16, 332);
@@ -570,11 +538,12 @@
             this.GetLastPosition_button.Text = "Get current ";
             this.toolTip1.SetToolTip(this.GetLastPosition_button, "move current X and Y position to the boxes");
             this.GetLastPosition_button.UseVisualStyleBackColor = true;
+            this.GetLastPosition_button.Visible = false;
             this.GetLastPosition_button.Click += new System.EventHandler(this.GetLastPosition_button_Click);
             // 
             // GetPickupZ_button
             // 
-            this.GetPickupZ_button.Location = new System.Drawing.Point(259, 225);
+            this.GetPickupZ_button.Location = new System.Drawing.Point(313, 225);
             this.GetPickupZ_button.Name = "GetPickupZ_button";
             this.GetPickupZ_button.Size = new System.Drawing.Size(47, 23);
             this.GetPickupZ_button.TabIndex = 44;
@@ -583,19 +552,9 @@
             this.GetPickupZ_button.UseVisualStyleBackColor = true;
             this.GetPickupZ_button.Click += new System.EventHandler(this.GetPickupZ_button_Click);
             // 
-            // ResetPickupZ_button
-            // 
-            this.ResetPickupZ_button.Location = new System.Drawing.Point(259, 196);
-            this.ResetPickupZ_button.Name = "ResetPickupZ_button";
-            this.ResetPickupZ_button.Size = new System.Drawing.Size(48, 23);
-            this.ResetPickupZ_button.TabIndex = 43;
-            this.ResetPickupZ_button.Text = "Reset";
-            this.ResetPickupZ_button.UseVisualStyleBackColor = true;
-            this.ResetPickupZ_button.Click += new System.EventHandler(this.ResetPickupZ_button_Click);
-            // 
             // GetPlacementZ_button
             // 
-            this.GetPlacementZ_button.Location = new System.Drawing.Point(314, 225);
+            this.GetPlacementZ_button.Location = new System.Drawing.Point(368, 225);
             this.GetPlacementZ_button.Name = "GetPlacementZ_button";
             this.GetPlacementZ_button.Size = new System.Drawing.Size(47, 23);
             this.GetPlacementZ_button.TabIndex = 46;
@@ -604,9 +563,61 @@
             this.GetPlacementZ_button.UseVisualStyleBackColor = true;
             this.GetPlacementZ_button.Click += new System.EventHandler(this.GetPlacementZ_button_Click);
             // 
+            // TapeEditCancel_button
+            // 
+            this.TapeEditCancel_button.Location = new System.Drawing.Point(259, 379);
+            this.TapeEditCancel_button.Name = "TapeEditCancel_button";
+            this.TapeEditCancel_button.Size = new System.Drawing.Size(75, 23);
+            this.TapeEditCancel_button.TabIndex = 16;
+            this.TapeEditCancel_button.Text = "Cancel";
+            this.TapeEditCancel_button.UseVisualStyleBackColor = true;
+            this.TapeEditCancel_button.Click += new System.EventHandler(this.TapeEditCancel_button_Click);
+            // 
+            // Interpolate_checkBox
+            // 
+            this.Interpolate_checkBox.AutoSize = true;
+            this.Interpolate_checkBox.Location = new System.Drawing.Point(124, 279);
+            this.Interpolate_checkBox.Name = "Interpolate_checkBox";
+            this.Interpolate_checkBox.Size = new System.Drawing.Size(76, 17);
+            this.Interpolate_checkBox.TabIndex = 34;
+            this.Interpolate_checkBox.Text = "Interpolate";
+            this.Interpolate_checkBox.UseVisualStyleBackColor = true;
+            this.Interpolate_checkBox.Visible = false;
+            this.Interpolate_checkBox.CheckedChanged += new System.EventHandler(this.Interpolate_checkBox_CheckedChanged);
+            // 
+            // MeasureFirst_button
+            // 
+            this.MeasureFirst_button.Location = new System.Drawing.Point(16, 196);
+            this.MeasureFirst_button.Name = "MeasureFirst_button";
+            this.MeasureFirst_button.Size = new System.Drawing.Size(102, 23);
+            this.MeasureFirst_button.TabIndex = 35;
+            this.MeasureFirst_button.Text = "Measure now";
+            this.MeasureFirst_button.UseVisualStyleBackColor = true;
+            this.MeasureFirst_button.Visible = false;
+            // 
+            // MeasureLast_button
+            // 
+            this.MeasureLast_button.Location = new System.Drawing.Point(16, 303);
+            this.MeasureLast_button.Name = "MeasureLast_button";
+            this.MeasureLast_button.Size = new System.Drawing.Size(102, 23);
+            this.MeasureLast_button.TabIndex = 37;
+            this.MeasureLast_button.Text = "Measure now";
+            this.MeasureLast_button.UseVisualStyleBackColor = true;
+            this.MeasureLast_button.Visible = false;
+            // 
+            // ResetPickupZ_button
+            // 
+            this.ResetPickupZ_button.Location = new System.Drawing.Point(313, 196);
+            this.ResetPickupZ_button.Name = "ResetPickupZ_button";
+            this.ResetPickupZ_button.Size = new System.Drawing.Size(48, 23);
+            this.ResetPickupZ_button.TabIndex = 43;
+            this.ResetPickupZ_button.Text = "Reset";
+            this.ResetPickupZ_button.UseVisualStyleBackColor = true;
+            this.ResetPickupZ_button.Click += new System.EventHandler(this.ResetPickupZ_button_Click);
+            // 
             // ResetPlacementZ_button
             // 
-            this.ResetPlacementZ_button.Location = new System.Drawing.Point(314, 196);
+            this.ResetPlacementZ_button.Location = new System.Drawing.Point(368, 196);
             this.ResetPlacementZ_button.Name = "ResetPlacementZ_button";
             this.ResetPlacementZ_button.Size = new System.Drawing.Size(48, 23);
             this.ResetPlacementZ_button.TabIndex = 45;
@@ -616,7 +627,7 @@
             // 
             // ResetTrayID_button
             // 
-            this.ResetTrayID_button.Location = new System.Drawing.Point(16, 100);
+            this.ResetTrayID_button.Location = new System.Drawing.Point(313, 99);
             this.ResetTrayID_button.Name = "ResetTrayID_button";
             this.ResetTrayID_button.Size = new System.Drawing.Size(48, 23);
             this.ResetTrayID_button.TabIndex = 49;
@@ -633,6 +644,7 @@
             this.CoordinatesForParts_checkBox.TabIndex = 50;
             this.CoordinatesForParts_checkBox.Text = "Coordinates are for holes (uncheck for parts directly)";
             this.CoordinatesForParts_checkBox.UseVisualStyleBackColor = true;
+            this.CoordinatesForParts_checkBox.Visible = false;
             // 
             // TapeEditForm
             // 

@@ -229,6 +229,7 @@ namespace LitePlacer
             Row.Cells["Z_Place_Column"].Value = PlacementZ_textBox.Text;
             Row.Cells["TrayID_Column"].Value = TrayID_textBox.Text; 
             Row.Cells["CoordinatesForParts_Column"].Value = CoordinatesForParts_checkBox.Checked;
+            MainForm.Update_GridView(TapesDataGrid);
             Close();
         }
 

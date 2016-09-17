@@ -157,7 +157,7 @@ namespace LitePlacer
         // ========================================================================================
         // IncrementTape_Fast(): Updates count and next hole locations for a tape
         // Like IncrementTape(), but just using the fast parametersheader description
-        public bool IncrementTape_Fast(int TapeNum)
+        public bool IncrementTape_Fast_m(int TapeNum)
         {
             int pos;
             if (!int.TryParse(Grid.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out pos))
@@ -170,8 +170,8 @@ namespace LitePlacer
             }
 
             // increment hole location only on every other "next" value on 2mm pitch
-            double pitch;
-            if (!double.TryParse(Grid.Rows[TapeNum].Cells["PitchColumn"].Value.ToString(), out pitch))
+            double pitch=0;
+            if (double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString(), out pitch))
             {
                 if ((pitch < 2.01) && (pitch > 1.99))      // pitch == 2
                 {
@@ -213,7 +213,7 @@ namespace LitePlacer
             OffsetY = 0.0;
             Pitch = 0.0;
             // Check for values
-            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetX_Column"].Value.ToString(), out Pitch))
+            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetX_Column"].Value.ToString(), out OffsetX))
             {
                 MainForm.ShowMessageBox(
                     "Bad data at Tape " + Grid.Rows[Tape].Cells["ID_Column"].Value.ToString() + ", OffsetX",
@@ -222,7 +222,7 @@ namespace LitePlacer
                 );
                 return false;
             }
-            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetY_Column"].Value.ToString(), out Pitch))
+            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetY_Column"].Value.ToString(), out OffsetY))
             {
                 MainForm.ShowMessageBox(
                     "Bad data at Tape " + Grid.Rows[Tape].Cells["ID_Column"].Value.ToString() + ", OffsetY",

@@ -13,6 +13,7 @@ namespace LitePlacer
 	{
 		public DataGridView Grid;
 		public string ID = "none";
+        public string Nozzle = Properties.Settings.Default.Nozzles_default.ToString();
         public string HeaderString = "";
 
 		const int ButtonWidth = 75;
@@ -78,7 +79,8 @@ namespace LitePlacer
 				return;
 			}
 			ID = Grid.Rows[e.RowIndex].Cells["Id_Column"].Value.ToString();
-			CloseForm();
+            Nozzle= Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value.ToString();
+            CloseForm();
 		}
 
 		private void Ignore_button_Click(object sender, EventArgs e)

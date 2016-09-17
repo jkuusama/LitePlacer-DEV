@@ -313,6 +313,7 @@ namespace LitePlacer
             AttachButtonLogging(this.Controls);
 
             LoadTempCADdata();
+            LoadTempJobData();
 
             CheckForUpdate_checkBox.Checked = Properties.Settings.Default.General_CheckForUpdates;
             if (CheckForUpdate_checkBox.Checked)
@@ -397,6 +398,7 @@ namespace LitePlacer
 
             Properties.Settings.Default.Save();
             SaveTempCADdata();
+            SaveTempJobData();
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
@@ -1090,7 +1092,7 @@ namespace LitePlacer
         // =================================================================================
         // Forcing a DataGridview display update
         // Ugly hack if you ask me, but MS didn't give us any other reliable way...
-        private void Update_GridView(DataGridView Grid)
+        public void Update_GridView(DataGridView Grid)
         {
             Grid.CommitEdit(DataGridViewDataErrorContexts.Commit);
             BindingSource bs = new BindingSource(); // create a BindingSource
@@ -1855,7 +1857,8 @@ namespace LitePlacer
             }
 
             MaxTime = MaxTime / 60;  // Now in seconds/mm
-            MaxTime = (size / MaxTime) * 1.2; // in seconds for the machine size and some 
+            MaxTime = (size / MaxTime) * 1.2 + 3; 
+            // in seconds for the machine size and some (1.2 to allow acceleration, + 3 for the operarations at end stop
             TimeOut = (int)MaxTime;
             return true;
         }
@@ -6391,6 +6394,7 @@ namespace LitePlacer
                 JobFileName_label.Text = Path.GetFileName(JobFileName);
                 JobFilePath_label.Text = Path.GetDirectoryName(JobFileName);
                 ParseJobData(AllLines);
+                ValidMeasurement_checkBox.Checked = false;
             }
             catch (Exception ex)
             {
@@ -6518,6 +6522,43 @@ namespace LitePlacer
         }
 
 
+        // =================================================================================
+        private void LoadTempJobData()
+        {
+            String[] AllLines;
+            string FileName = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = FileName.LastIndexOf('\\');
+            FileName = FileName.Remove(i + 1);
+            FileName = FileName + "JobDataSave.csv";
+            if (!File.Exists(FileName))
+            {
+                DisplayText("No saved temp job data file");
+                MakeJobDataClean();
+                return;
+            }
+            else
+            {
+                MakeJobDataDirty();
+            }
+            try
+            {
+                DisplayText("Loading temp job data file");
+                AllLines = File.ReadAllLines(FileName);
+                JobFileName_label.Text = AllLines[0];
+                JobFilePath_label.Text = AllLines[1];
+                AllLines = AllLines.Skip(2).ToArray();
+                ParseJobData(AllLines);
+                return;
+            }
+            catch (Exception ex)
+            {
+                DisplayText("Could not read temp job data file", KnownColor.DarkRed, true);
+                DisplayText("Msg: " + ex.Message, KnownColor.DarkRed, true);
+                JobData_GridView.Rows.Clear();
+                return;
+            };
+        }
+
         private void LoadTempCADdata()
         {
             String[] AllLines;
@@ -6552,9 +6593,9 @@ namespace LitePlacer
                 CadData_GridView.Rows.Clear();
                 return;
             };
-
         }
 
+        // =================================================================================
         private void SaveTempCADdata()
         {
             if ( CadFileName_label.Text!="----")
@@ -6567,6 +6608,19 @@ namespace LitePlacer
             }
         }
 
+        private void SaveTempJobData()
+        {
+            if (CadFileName_label.Text != "----")
+            {
+                string FileName = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+                int i = FileName.LastIndexOf('\\');
+                FileName = FileName.Remove(i + 1);
+                FileName = FileName + "JobDataSave.csv";
+                SaveJobData(FileName, true);
+            }
+        }
+
+        // =================================================================================
         private void MakeCADdataDirty()
         {
             CAD_label.Text = "FileName*:";
@@ -6577,7 +6631,19 @@ namespace LitePlacer
             CAD_label.Text = "FileName:";
         }
 
+        // =================================================================================
+        private void MakeJobDataDirty()
+        {
+            Job_label.Text = "FileName*:";
+        }
 
+        private void MakeJobDataClean()
+        {
+            Job_label.Text = "FileName:";
+        }
+
+
+        // =================================================================================
         private void CadData_GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (CadData_GridView.CurrentCell.ColumnIndex == CADdata_PlacedColumn)
@@ -6611,16 +6677,12 @@ namespace LitePlacer
             {
                 JobFileName = Job_openFileDialog.FileName;
                 LoadJobData_m(JobFileName);
-                ValidMeasurement_checkBox.Checked = false;
             }
         }
 
         // =================================================================================
         private void JobDataSave_button_Click(object sender, EventArgs e)
         {
-            Stream SaveStream;
-            string OutLine;
-
             if (JobData_GridView.RowCount < 1)
             {
                 ShowMessageBox(
@@ -6635,26 +6697,46 @@ namespace LitePlacer
 
             if (Job_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if ((SaveStream = Job_saveFileDialog.OpenFile()) != null)
-                {
-                    using (StreamWriter f = new StreamWriter(SaveStream))
-                    {
-                        // for each row in job datagrid,
-                        for (int i = 0; i < JobData_GridView.RowCount; i++)
-                        {
-                            OutLine = "\"" + JobData_GridView.Rows[i].Cells["ComponentCount"].Value.ToString() + "\"";
-                            OutLine += ",\"" + JobData_GridView.Rows[i].Cells["ComponentType"].Value.ToString() + "\"";
-                            OutLine += ",\"" + JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() + "\"";
-                            OutLine += ",\"" + JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value.ToString() + "\"";
-                            OutLine += ",\"" + JobData_GridView.Rows[i].Cells["ComponentList"].Value.ToString() + "\"";
-                            f.WriteLine(OutLine);
-                        }
-                    }
-                    SaveStream.Close();
-                }
+                SaveJobData(Job_saveFileDialog.FileName);
                 JobFileName = Job_saveFileDialog.FileName;
                 JobFileName_label.Text = Path.GetFileName(JobFileName);
                 JobFilePath_label.Text = Path.GetDirectoryName(JobFileName);
+            }
+        }
+
+        private void SaveJobData(string filename, bool tempfile = false)
+        {
+            string OutLine;
+            using (StreamWriter f = new StreamWriter(filename))
+            {
+                if (tempfile)
+                {
+                    f.WriteLine(JobFileName_label.Text);
+                    f.WriteLine(JobFilePath_label.Text);
+                    MakeJobDataDirty();  // it is dirty, since it didn't came from the original file
+                }
+                else
+                {
+                    MakeJobDataClean();
+                }
+                // for each row in job datagrid,
+                for (int i = 0; i < JobData_GridView.RowCount; i++)
+                {
+                    OutLine = "\"" + JobData_GridView.Rows[i].Cells["ComponentCount"].Value.ToString() + "\"";
+                    OutLine += ",\"" + JobData_GridView.Rows[i].Cells["ComponentType"].Value.ToString() + "\"";
+                    OutLine += ",\"" + JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() + "\"";
+                    OutLine += ",\"" + JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value.ToString() + "\"";
+                    OutLine += ",\"" + JobData_GridView.Rows[i].Cells["ComponentList"].Value.ToString() + "\"";
+                    if (JobData_GridView.Rows[i].Cells["JobDataNozzle_Column"].Value!=null)
+                    {
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobDataNozzle_Column"].Value.ToString() + "\"";
+                    }
+                    else
+                    {
+                        OutLine += ",\"" + "\"";
+                    }
+                    f.WriteLine(OutLine);
+                }
             }
         }
 
@@ -6675,6 +6757,10 @@ namespace LitePlacer
                 JobData_GridView.Rows[Last].Cells["GroupMethod"].Value = Line[2];
                 JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = Line[3];
                 JobData_GridView.Rows[Last].Cells["ComponentList"].Value = Line[4];
+                if (Line.Count>5)
+                {
+                    JobData_GridView.Rows[Last].Cells["JobDataNozzle_Column"].Value = Line[5];
+                }
             }
             JobData_GridView.ClearSelection();
         }
@@ -6732,16 +6818,19 @@ namespace LitePlacer
 
         private void Up_button_Click(object sender, EventArgs e)
         {
+            MakeJobDataDirty();
             DataGrid_Up_button(JobData_GridView);
         }
 
         private void Down_button_Click(object sender, EventArgs e)
         {
+            MakeJobDataDirty();
             DataGrid_Down_button(JobData_GridView);
         }
 
         private void DeleteComponentGroup_button_Click(object sender, EventArgs e)
         {
+            MakeJobDataDirty();
             foreach (DataGridViewCell oneCell in JobData_GridView.SelectedCells)
             {
                 if (oneCell.Selected)
@@ -6753,11 +6842,13 @@ namespace LitePlacer
 
         private void CopyRow_button_Click(object sender, EventArgs e)
         {
+            MakeJobDataDirty();
             ClipBoardRow = JobData_GridView.CurrentRow;
         }
 
         private void PasteRow_button_Click(object sender, EventArgs e)
         {
+            MakeJobDataDirty();
             for (int i = 0; i < JobData_GridView.ColumnCount; i++)
             {
                 JobData_GridView.CurrentRow.Cells[i].Value = ClipBoardRow.Cells[i].Value;
@@ -6767,6 +6858,7 @@ namespace LitePlacer
 
         private void NewRow_button_Click(object sender, EventArgs e)
         {
+            MakeJobDataDirty();
             int index = JobData_GridView.CurrentRow.Index;
             JobData_GridView.Rows.Insert(index);
             JobData_GridView.Rows[index].Cells["ComponentCount"].Value = "--";
@@ -6828,11 +6920,22 @@ namespace LitePlacer
         // =================================================================================
         // JobData editing
         // =================================================================================
+        private void JobData_GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            MakeJobDataDirty();
+        }
+
         private void JobData_GridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if(e.RowIndex == -1)
+            {
+                // user clicked header, most likely to sor for nozzles
+                return;
+            }
             if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_MethodColumn)
             {
                 // For method, show a form with explanation texts
+                MakeJobDataDirty();
                 MethodSelectionForm MethodDialog = new MethodSelectionForm();
                 MethodDialog.ShowCheckBox = false;
                 MethodDialog.ShowDialog(this);
@@ -6850,12 +6953,25 @@ namespace LitePlacer
             if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_MethodParametersColumn)
             {
                 // For method parameter, show the tape selection form if method is "place" 
+                MakeJobDataDirty();
+                string TapeID;
+                int TapeNo;
                 int row = JobData_GridView.CurrentCell.RowIndex;
                 if ((JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place") ||
                      (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place Fast"))
                 {
-                    JobData_GridView.Rows[row].Cells["MethodParamAllComponents"].Value = SelectTape("Select tape for "
-                        + JobData_GridView.Rows[row].Cells["ComponentType"].Value.ToString());
+                    TapeID = SelectTape("Select tape for " + JobData_GridView.Rows[row].Cells["ComponentType"].Value.ToString());
+                    if (TapeID=="none")
+                    {
+                        // user closed it
+                        return;
+                    }
+                    JobData_GridView.Rows[row].Cells["MethodParamAllComponents"].Value = TapeID;
+                    if (Tapes.IdValidates_m(TapeID, out TapeNo))
+                    {
+                        JobData_GridView.Rows[row].Cells["JobDataNozzle_Column"].Value = 
+                            Tapes_dataGridView.Rows[TapeNo].Cells["Nozzle_Column"].Value.ToString();
+                    }
                     Update_GridView(JobData_GridView);
                     return;
                 }
@@ -6868,6 +6984,7 @@ namespace LitePlacer
             if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_ComponentsColumn)
             {
                 // components
+                MakeJobDataDirty();
                 List<String> Line = SplitCSV(JobData_GridView.CurrentCell.Value.ToString(), ',');
                 int row = JobData_GridView.CurrentCell.RowIndex;
                 JobData_GridView.Rows[row].Cells["ComponentCount"].Value = Line.Count.ToString();
@@ -7795,7 +7912,10 @@ namespace LitePlacer
                 return false;
             }
 
-            Tapes.IncrementTape_Fast(TapeNum);
+            if (!Tapes.IncrementTape_Fast_m(TapeNum))
+            {
+                return false;
+            }
             return true;
         }
 
@@ -9175,6 +9295,7 @@ namespace LitePlacer
 
         private void DemoWork()
         {
+            /*
             double PCB_X = Properties.Settings.Default.General_JigOffsetX + Properties.Settings.Default.DownCam_NeedleOffsetX;
             double PCB_Y = Properties.Settings.Default.General_JigOffsetY + Properties.Settings.Default.DownCam_NeedleOffsetY;
             double HoleX;
@@ -9206,9 +9327,19 @@ namespace LitePlacer
                 );
                 return;
             }
+            */
+            // vacuum off, no UI update because of threading
+            CNC_RawWrite("{\"gc\":\"M09\"}");
+            Thread.Sleep(Properties.Settings.Default.General_PickupReleaseTime);
 
+            // PumpOn, off main thread
+            CNC_RawWrite("{\"gc\":\"M03\"}");
+            Thread.Sleep(500);  // this much to develop vacuum
+
+            // BugWorkaround();
             while (DemoRunning)
             {
+                /*
                 // Simulate fast measurement. Last hole:
                 if (!CNC_XY_m(HoleX + 6 * 4.0, HoleY)) goto err;
                 Thread.Sleep(400);
@@ -9241,9 +9372,44 @@ namespace LitePlacer
                     if (!CNC_Z_m(0.0)) goto err;
                     if (!DemoRunning) return;
                 }
+                */
+                if (!DemoRunning) goto demoend;
+                if (!Demo_Pickup(100, 100, 0, 20)) goto demoend;
+                if (!DemoRunning) goto demoend;
+                if (!Demo_Place(200, 200, 0, 20)) goto demoend;
+                if (!DemoRunning) goto demoend;
             }
-        err:
+        demoend:
             DemoRunning = false;
+            // vacuum off, no UI update because of threading
+            CNC_RawWrite("{\"gc\":\"M09\"}");
+            Thread.Sleep(Properties.Settings.Default.General_PickupReleaseTime);
+            // pump off, off thread
+            CNC_RawWrite("{\"gc\":\"M05\"}");
+            Thread.Sleep(50);
+        }
+
+
+        private bool Demo_Pickup(double X, double Y, double A, double Z)
+        {
+            if (!Needle.Move_m(X, Y, A)) return false;
+            if (!CNC_Z_m(Z)) return false;
+            // vacuum on, no UI update because of threading
+            CNC_RawWrite("{\"gc\":\"M08\"}");
+            Thread.Sleep(Properties.Settings.Default.General_PickupVacuumTime);
+            if (!CNC_Z_m(0)) return false;
+            return true;
+        }
+
+        private bool Demo_Place(double X, double Y, double A, double Z)
+        {
+            if (!Needle.Move_m(X, Y, A)) return false;
+            if (!CNC_Z_m(Z)) return false;
+            // vacuum off, no UI update because of threading
+            CNC_RawWrite("{\"gc\":\"M09\"}");
+            Thread.Sleep(Properties.Settings.Default.General_PickupReleaseTime);
+            if (!CNC_Z_m(0)) return false;
+            return true;
         }
 
         // =================================================================================
@@ -9626,7 +9792,10 @@ namespace LitePlacer
             JobData_GridView.Rows.Clear();
             foreach (DataGridViewColumn column in JobData_GridView.Columns)
             {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;   // disable manual sort
+                if (column.HeaderText!="Nozzle")
+                {
+                    column.SortMode = DataGridViewColumnSortMode.NotSortable;   // disable manual sort
+                }
             }
 
             // Parse data
@@ -10064,11 +10233,7 @@ namespace LitePlacer
             TapeEditDialog.TapesDataGrid = Tapes_dataGridView;
             TapeEditDialog.Row = Tapes_dataGridView.Rows[row];
             AttachButtonLogging(TapeEditDialog.Controls);
-
             TapeEditDialog.Show(this);
-
-            Update_GridView(Tapes_dataGridView);
-            TapeEditDialog.Dispose();
         }
 
         private void EditTape_MenuItemClick(object sender, EventArgs e)
@@ -10130,6 +10295,7 @@ namespace LitePlacer
             Tapes_dataGridView.Rows[index].Cells["Z_Pickup_Column"].Value = "--";
             Tapes_dataGridView.Rows[index].Cells["Z_Place_Column"].Value = "--";
             Tapes_dataGridView.Rows[index].Cells["TrayID_Column"].Value = "--";
+            TapesGridEditRow = index;
             Invoke_TapeEditDialog(index);
         }
 
@@ -10407,6 +10573,11 @@ namespace LitePlacer
         }
 
         private void ShowPart_button_Leave(object sender, EventArgs e)
+        {
+            DownCamera.DrawArrow = false;
+        }
+
+        private void ShowPart_button_MouseLeave(object sender, EventArgs e)
         {
             DownCamera.DrawArrow = false;
         }
