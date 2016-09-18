@@ -57,7 +57,7 @@
             // 
             this.Question_button.Location = new System.Drawing.Point(238, 12);
             this.Question_button.Name = "Question_button";
-            this.Question_button.Size = new System.Drawing.Size(119, 23);
+            this.Question_button.Size = new System.Drawing.Size(136, 23);
             this.Question_button.TabIndex = 0;
             this.Question_button.Text = "?";
             this.Question_button.UseVisualStyleBackColor = true;
@@ -67,7 +67,7 @@
             // 
             this.Place_button.Location = new System.Drawing.Point(238, 70);
             this.Place_button.Name = "Place_button";
-            this.Place_button.Size = new System.Drawing.Size(119, 23);
+            this.Place_button.Size = new System.Drawing.Size(136, 23);
             this.Place_button.TabIndex = 1;
             this.Place_button.Text = "Place";
             this.Place_button.UseVisualStyleBackColor = true;
@@ -95,9 +95,9 @@
             // 
             this.ChangeNeedle_button.Location = new System.Drawing.Point(238, 128);
             this.ChangeNeedle_button.Name = "ChangeNeedle_button";
-            this.ChangeNeedle_button.Size = new System.Drawing.Size(119, 23);
+            this.ChangeNeedle_button.Size = new System.Drawing.Size(136, 23);
             this.ChangeNeedle_button.TabIndex = 4;
-            this.ChangeNeedle_button.Text = "Change needle";
+            this.ChangeNeedle_button.Text = "Manual needle change";
             this.ChangeNeedle_button.UseVisualStyleBackColor = true;
             this.ChangeNeedle_button.Click += new System.EventHandler(this.ChangeNeedle_button_Click);
             // 
@@ -123,7 +123,7 @@
             // 
             this.Recalibrate_button.Location = new System.Drawing.Point(238, 157);
             this.Recalibrate_button.Name = "Recalibrate_button";
-            this.Recalibrate_button.Size = new System.Drawing.Size(119, 23);
+            this.Recalibrate_button.Size = new System.Drawing.Size(136, 23);
             this.Recalibrate_button.TabIndex = 6;
             this.Recalibrate_button.Text = "Recalibrate";
             this.Recalibrate_button.UseVisualStyleBackColor = true;
@@ -142,7 +142,7 @@
             // 
             this.Ignore_button.Location = new System.Drawing.Point(238, 186);
             this.Ignore_button.Name = "Ignore_button";
-            this.Ignore_button.Size = new System.Drawing.Size(119, 23);
+            this.Ignore_button.Size = new System.Drawing.Size(136, 23);
             this.Ignore_button.TabIndex = 8;
             this.Ignore_button.Text = "Ignore";
             this.Ignore_button.UseVisualStyleBackColor = true;
@@ -161,7 +161,7 @@
             // 
             this.Fiducials_button.Location = new System.Drawing.Point(238, 244);
             this.Fiducials_button.Name = "Fiducials_button";
-            this.Fiducials_button.Size = new System.Drawing.Size(119, 23);
+            this.Fiducials_button.Size = new System.Drawing.Size(136, 23);
             this.Fiducials_button.TabIndex = 10;
             this.Fiducials_button.Text = "Fiducials";
             this.Fiducials_button.UseVisualStyleBackColor = true;
@@ -180,7 +180,7 @@
             // 
             this.Pause_button.Location = new System.Drawing.Point(238, 215);
             this.Pause_button.Name = "Pause_button";
-            this.Pause_button.Size = new System.Drawing.Size(119, 23);
+            this.Pause_button.Size = new System.Drawing.Size(136, 23);
             this.Pause_button.TabIndex = 12;
             this.Pause_button.Text = "Pause";
             this.Pause_button.UseVisualStyleBackColor = true;
@@ -222,7 +222,7 @@
             // 
             this.LoosePart_button.Location = new System.Drawing.Point(238, 99);
             this.LoosePart_button.Name = "LoosePart_button";
-            this.LoosePart_button.Size = new System.Drawing.Size(119, 23);
+            this.LoosePart_button.Size = new System.Drawing.Size(136, 23);
             this.LoosePart_button.TabIndex = 17;
             this.LoosePart_button.Text = "Loose Part Pickup";
             this.LoosePart_button.UseVisualStyleBackColor = true;
@@ -250,7 +250,7 @@
             // 
             this.PlaceFast_button.Location = new System.Drawing.Point(238, 41);
             this.PlaceFast_button.Name = "PlaceFast_button";
-            this.PlaceFast_button.Size = new System.Drawing.Size(119, 23);
+            this.PlaceFast_button.Size = new System.Drawing.Size(136, 23);
             this.PlaceFast_button.TabIndex = 19;
             this.PlaceFast_button.Text = "Place Fast";
             this.PlaceFast_button.UseVisualStyleBackColor = true;
@@ -281,7 +281,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 328);
+            this.ClientSize = new System.Drawing.Size(384, 328);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.ManualDownCam_button);
             this.Controls.Add(this.label10);

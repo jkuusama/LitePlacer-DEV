@@ -127,11 +127,6 @@ namespace LitePlacer
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
 
-            //tabControlPages.TabPages.Remove(Nozzles_tabPage); 
-            Nozzles_initialize();
-            LoadDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView, DataTableType.Nozzles);
-            LoadDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView, DataTableType.Nozzles);
-
             // The components tab is more a distraction than useful.
             // To add data, comment out the next line.
             tabControlPages.TabPages.Remove(Components_tabPage);
@@ -170,6 +165,10 @@ namespace LitePlacer
 
             LoadTapesTable(path);
             // LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
+            Needle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData");
+
+            //tabControlPages.TabPages.Remove(Nozzles_tabPage); 
+            Nozzles_initialize();   // must be after Needle.LoadCalibration
 
             SetProcessingFunctions(Display_dataGridView);
             SetProcessingFunctions(Homing_dataGridView);
@@ -367,7 +366,14 @@ namespace LitePlacer
             BackOff_textBox.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
             PlacementDepth_textBox.Text = Properties.Settings.Default.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
 
-            NozzleNo_textBox.Text = Properties.Settings.Default.Nozzles_current.ToString();
+            if (Properties.Settings.Default.Nozzles_current==0)
+            {
+                NozzleNo_textBox.Text = "--";
+            }
+            else
+            {
+                NozzleNo_textBox.Text = Properties.Settings.Default.Nozzles_current.ToString();
+            }
             ForceNozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
 
             UpdateCncConnectionStatus();
@@ -436,6 +442,8 @@ namespace LitePlacer
 
             DataGridViewCopy(UpcamSnapshot_dataGridView, ref Temp_dataGridView, false);
             SaveDataGrid(path + "LitePlacer.UpCamSnapshotFunctions_v2", Temp_dataGridView);
+
+            Needle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
 
             if (Cnc.Connected)
             {
@@ -7299,8 +7307,46 @@ namespace LitePlacer
             bool ReturnValue = true;
 
             // Prepare for placement
+            string method = JobData_GridView.Rows[RowNo].Cells["GroupMethod"].Value.ToString();
+            int nozzle;
+
+            // Check nozzle, change if needed
+            // if we are using a method that potentially needs a nozzle and automatic change is enabled:
+            if (
+                ((method== "Place Fast") || (method == "Place") || (method == "LoosePart"))  
+                && Properties.Settings.Default.Nozzles_Enabled) 
+            {
+                if (JobData_GridView.Rows[RowNo].Cells["JobDataNozzle_Column"].Value == null)
+                {
+                    nozzle = Properties.Settings.Default.Nozzles_default;
+                }
+                else
+                {
+                    if (!int.TryParse(JobData_GridView.Rows[RowNo].Cells["JobDataNozzle_Column"].Value.ToString(), out nozzle))
+                    {
+                        ShowMessageBox(
+                            "Bad data at Nozzle column for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString(),
+                            "Nozzle?",
+                            MessageBoxButtons.OK);
+                        return false;
+                    }
+                    if ((nozzle<1) || (nozzle > Properties.Settings.Default.Nozzles_count))
+                    {
+                        ShowMessageBox(
+                            "Invalid value at Nozzle column for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString(),
+                            "Nozzle?",
+                            MessageBoxButtons.OK);
+                        return false;
+                    }
+                }
+                if (!ChangeNozzle_m(nozzle))
+                {
+                    return false;
+                }
+            }
+
             bool FirstInRow = true;
-            if (JobData_GridView.Rows[RowNo].Cells["GroupMethod"].Value.ToString() == "Place Fast")
+            if (method == "Place Fast")
             {
                 string TapeID = JobData_GridView.Rows[RowNo].Cells["MethodParamAllComponents"].Value.ToString();
                 int count;
@@ -7780,17 +7826,23 @@ namespace LitePlacer
                 return false;
             }
 
-            // Tapes.ClearAll();
-
-            if (!Needle.Calibrated || !ValidMeasurement_checkBox.Checked)
+            if (Properties.Settings.Default.Nozzles_Enabled)
             {
-                CurrentGroup_label.Text = "Calibrating needle";
-                if (!CalibrateNeedle_m())
+                Needle.UseCalibration(Properties.Settings.Default.Nozzles_current);
+            }
+            else
+            {
+                if (!Needle.Calibrated || !ValidMeasurement_checkBox.Checked)
                 {
-                    CurrentGroup_label.Text = "--";
-                    return false;
+                    CurrentGroup_label.Text = "Calibrating needle";
+                    if (!CalibrateNeedle_m())
+                    {
+                        CurrentGroup_label.Text = "--";
+                        return false;
+                    }
                 }
             }
+
             if(!ValidMeasurement_checkBox.Checked)
             {
                 CurrentGroup_label.Text = "Measuring PCB";
@@ -10223,7 +10275,6 @@ namespace LitePlacer
             }
         }
 
-
         private void Invoke_TapeEditDialog(int row)
         {
             DisplayText("Open edit tape dialog", KnownColor.DarkGreen);
@@ -12306,8 +12357,36 @@ namespace LitePlacer
             }
         }
 
-        // ==========================================================================================================
-        private void copyLoadMovesFromNozzle1_ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void getUnloadMovesFromLoadMovesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            double Zval;
+            double Xval;
+            for (int i = 0; i < Properties.Settings.Default.Nozzles_count; i++)
+            {
+                NozzlesUnload_dataGridView.Rows[i].Cells[4].Value = "Z";    // first move axis
+                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[11].Value.ToString(), out Zval))  // move 4 amount
+                {
+                    DisplayText("Bad data: nozzle #" + (i+1).ToString() + ", move 4", KnownColor.DarkRed);
+                    return;
+                }
+                NozzlesUnload_dataGridView.Rows[i].Cells[5].Value = (-Zval).ToString();   // first move amount
+
+                NozzlesUnload_dataGridView.Rows[i ].Cells[6].Value =
+                    NozzlesLoad_dataGridView.Rows[i].Cells[8].Value.ToString();    // second move axis = load 3 axis
+                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[9].Value.ToString(), out Xval))  // move 4 amount
+                {
+                    DisplayText("Bad data: nozzle #" + (i+1).ToString() + ", move 3", KnownColor.DarkRed);
+                    return;
+                }
+                NozzlesUnload_dataGridView.Rows[i].Cells[7].Value = (-Xval).ToString();   // second move amount
+
+                NozzlesUnload_dataGridView.Rows[i].Cells[8].Value = "Z";    // third move axis
+                NozzlesUnload_dataGridView.Rows[i].Cells[9].Value = Zval.ToString();    // third move amount
+            }
+        }
+
+    // ==========================================================================================================
+    private void copyLoadMovesFromNozzle1_ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DisplayText("Copy load moves from nozzle 1", KnownColor.DarkGreen);
             copyMovesFromNozzle1(NozzlesLoad_dataGridView);
@@ -12460,6 +12539,16 @@ namespace LitePlacer
             }
             NoOfNozzles_UpDown.Value = Properties.Settings.Default.Nozzles_count;
             ResizeNozzleTables();
+            // fill values
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int ind = path.LastIndexOf('\\');
+            path = path.Remove(ind + 1);
+            LoadDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView, DataTableType.Nozzles);
+            LoadDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView, DataTableType.Nozzles);
+            if ((Properties.Settings.Default.Nozzles_current != 0) && Properties.Settings.Default.Nozzles_Enabled)
+            {
+                Needle.UseCalibration(Properties.Settings.Default.Nozzles_current);
+            }
         }
 
         // ==========================================================================================================
@@ -12604,6 +12693,11 @@ namespace LitePlacer
         {
             if (StartingUp)
             {
+                return;
+            }
+            if (NoOfNozzles_UpDown.Value > Properties.Settings.Default.Nozzles_maximum)
+            {
+                NoOfNozzles_UpDown.Value = Properties.Settings.Default.Nozzles_maximum;
                 return;
             }
             if (NoOfNozzles_UpDown.Value > NozzlesLoad_dataGridView.RowCount)
@@ -12817,25 +12911,45 @@ namespace LitePlacer
         private bool m_UnloadNozzle(int Nozzle)
         {
             DisplayText("Unload nozzle #" + Nozzle.ToString(), KnownColor.Blue);
-            return (m_DoNozzleSequence(NozzlesUnload_dataGridView, Nozzle));
+            if (m_DoNozzleSequence(NozzlesUnload_dataGridView, Nozzle))
+            {
+                NozzleNo_textBox.Text = "--";
+                Properties.Settings.Default.Nozzles_current = 0;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private bool m_LoadNozzle(int Nozzle)
         {
             DisplayText("Load nozzle #" + Nozzle.ToString(), KnownColor.Blue);
-            return (m_DoNozzleSequence(NozzlesLoad_dataGridView, Nozzle));
+            if (m_DoNozzleSequence(NozzlesLoad_dataGridView, Nozzle))
+            {
+                NozzleNo_textBox.Text = Nozzle.ToString();
+                Properties.Settings.Default.Nozzles_current = Nozzle;
+                Needle.UseCalibration(Nozzle);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void ChangeNozzle_button_Click(object sender, EventArgs e)
         {
-            ChangeNozzle((int)ForceNozzle_numericUpDown.Value);
+            ChangeNozzle_m((int)ForceNozzle_numericUpDown.Value);
         }
 
         // ==========================================================================================================
         // Change nozzle: This routine does the magic
         // ==========================================================================================================
-        public bool ChangeNozzle(int Nozzle)
+        public bool ChangeNozzle_m(int Nozzle)
         {
+            Nozzles_Stop = false;
             if (Nozzle == Properties.Settings.Default.Nozzles_current)
             {
                 DisplayText("Wanted nozzle (#" + Nozzle.ToString() + ") already loaded");
@@ -12863,15 +12977,12 @@ namespace LitePlacer
             CNC_timeout = Properties.Settings.Default.Nozzles_Timeout;
 
             bool ok = true;
-            if (!AtNozzlesTab)
-            {
-                // disable z switches 
-                ZGuardOff();
-                CNC_Write_m("{\"zsn\":0}");
-                Thread.Sleep(50);
-                CNC_Write_m("{\"zsx\":0}");
-                Thread.Sleep(50);
-            }
+            // disable z switches 
+            ZGuardOff();
+            CNC_Write_m("{\"zsn\":0}");
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zsx\":0}");
+            Thread.Sleep(50);
 
             // Unload if needed
             if (Properties.Settings.Default.Nozzles_current != 0)
@@ -12896,12 +13007,6 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     ok = false;
                 }
-            }
-            if (ok)
-            {
-                NozzleNo_textBox.Text = ForceNozzle_numericUpDown.Value.ToString();
-                Properties.Settings.Default.Nozzles_current = (int)ForceNozzle_numericUpDown.Value;
-                Needle.Calibrated = false;
             }
 
             if (!AtNozzlesTab)
@@ -12972,11 +13077,20 @@ namespace LitePlacer
             Cnc.SlackCompensation = false;
             Cnc.SlackCompensationA = false;
 
+            if (Nozzles_Stop)
+            {
+                return false;
+            }
             m_NozzleGotoStart(grid, Nozzle);
+
             int Move = 1;
             bool AllDone = false;
             while (!AllDone)
             {
+                if (Nozzles_Stop)
+                {
+                    return false;
+                }
                 if (!m_DoNozzleMove(grid, Nozzle, Move++, out AllDone))
                 {
                     Cnc.SlackCompensation = slack;
@@ -13200,9 +13314,61 @@ namespace LitePlacer
             Properties.Settings.Default.Nozzles_Enabled = NozzleChangeEnable_checkBox.Checked;
         }
 
+        private void CalibrateNozzles_button_Click(object sender, EventArgs e)
+        {
+            Nozzles_Stop = false;
+            if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
+            {
+                if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
+                {
+                    DialogResult dialogResult = ShowMessageBox(
+                        "Don't use needle correction checked (at run job tab). Uncheck?",
+                        "Needle calibration disabled", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    };
+                    OmitNeedleCalibration_checkBox.Checked = false;
+                    Properties.Settings.Default.Placement_OmitNeedleCalibration = false;
+                }
+            }
+            for (int nozzle = 1; nozzle <= Properties.Settings.Default.Nozzles_count; nozzle++)
+            {
+                if (!ChangeNozzle_m(nozzle))
+                {
+                    return;
+                }
+                if (Nozzles_Stop)
+                {
+                    return;
+                }
+                if (!CalibrateNeedle_m())
+                {
+                    return;
+                }
+                Needle.Store(nozzle);
+            }
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+            Needle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
+        }
+
+        private void NozzlesSave_button_Click(object sender, EventArgs e)
+        {
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+            SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
+            SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
+        }
 
         #endregion
-
+        private bool Nozzles_Stop = false;
+        private void NozzlesStop_button_Click(object sender, EventArgs e)
+        {
+            Nozzles_Stop = true;
+        }
     }	// end of: 	public partial class FormMain : Form
 
 

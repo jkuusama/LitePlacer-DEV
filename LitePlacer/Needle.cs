@@ -1,17 +1,16 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 
 namespace LitePlacer
 {
+    [Serializable()]
     class NeedleClass
     {
+        [Serializable()]
         public struct NeedlePoint
         {
             public double Angle;
@@ -19,7 +18,10 @@ namespace LitePlacer
             public double Y;
         }
 
-		public List<NeedlePoint> CalibrationPoints = new List<NeedlePoint>();
+		public List<NeedlePoint> CalibrationPoints = new List<NeedlePoint>();   // what we use
+        // to calibrate nozzles, we can store and restore calibration points and thier validity here.
+        public List<NeedlePoint>[] CalibrationPointsArr = new List<NeedlePoint>[Properties.Settings.Default.Nozzles_maximum];
+        public bool[] CalibratedArr = new bool[Properties.Settings.Default.Nozzles_maximum];
 
         private Camera Cam;
         private CNC Cnc;
@@ -34,6 +36,65 @@ namespace LitePlacer
             CalibrationPoints.Clear();
         }
 
+        // =================================================================================
+        // store and restore
+
+        private object DeepClone(object obj)
+        {
+            object objResult = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(ms, obj);
+
+                ms.Position = 0;
+                objResult = bf.Deserialize(ms);
+            }
+            return objResult;
+        }
+
+        public void Store(int nozzle)
+        {
+            MainForm.DisplayText("Stored calibration for nozzle " + nozzle.ToString());
+            CalibrationPointsArr[nozzle] = (List<NeedlePoint>)DeepClone(CalibrationPoints);
+            CalibratedArr[nozzle] = Calibrated;
+        }
+
+        public void UseCalibration(int nozzle)
+        {
+            MainForm.DisplayText("Using calibration for nozzle " + nozzle.ToString());
+            CalibrationPoints = (List<NeedlePoint>)DeepClone(CalibrationPointsArr[nozzle]);
+            Calibrated = CalibratedArr[nozzle];
+        }
+
+        // =================================================================================
+        // save and load from disk
+        // =================================================================================
+
+        public void SaveCalibration(string filename)
+        {
+            Stream stream = File.Open(filename, FileMode.Create);
+            BinaryFormatter formatter = new BinaryFormatter();
+            MainForm.DisplayText("Saving nozzle calibration data");
+            formatter.Serialize(stream, CalibrationPointsArr);
+            MainForm.DisplayText("Saving nozzle calibration validity data");
+            formatter.Serialize(stream, CalibratedArr);
+            stream.Close();
+        }
+
+        public void LoadCalibration(string filename)
+        {
+            Stream stream = File.Open(filename, FileMode.Open);
+            BinaryFormatter formatter = new BinaryFormatter();
+            MainForm.DisplayText("Loading nozzle calibration data");
+            CalibrationPointsArr = (List<NeedlePoint>[])formatter.Deserialize(stream);
+            MainForm.DisplayText("Loading nozzle calibration validity data");
+            CalibratedArr = (bool[])formatter.Deserialize(stream);
+            stream.Close();
+        }
+
+
+        // =================================================================================
         // private bool probingMode;
         public void ProbingMode(bool set, bool JSON)
         {
@@ -152,6 +213,7 @@ namespace LitePlacer
             {
                 if (Math.Abs(angle - CalibrationPoints[i].Angle) < 1.0)
                 {
+                    // asked the exact calibrated value
                     X = CalibrationPoints[i].X;
                     Y = CalibrationPoints[i].Y;
 					return true;
@@ -163,6 +225,7 @@ namespace LitePlacer
                     (Math.Abs(angle - CalibrationPoints[i + 1].Angle) > 1.0))
                 {
                     // angle is between CalibrationPoints[i] and CalibrationPoints[i+1], and is not == CalibrationPoints[i+1]
+                    // linear interpolation:
                     double fract = (angle - CalibrationPoints[i+1].Angle) / (CalibrationPoints[i+1].Angle - CalibrationPoints[i].Angle);
                     X = CalibrationPoints[i].X + fract * (CalibrationPoints[i + 1].X - CalibrationPoints[i].X);
                     Y = CalibrationPoints[i].Y + fract * (CalibrationPoints[i + 1].Y - CalibrationPoints[i].Y);
@@ -199,7 +262,8 @@ namespace LitePlacer
 
 			double X = 0;
 			double Y = 0;
-			int res = 0; ;
+			int res = 0;
+            // I goes in .1 of degrees. Makes sense to have the increase so, that multiplies of 45 are hit
             for (int i = 0; i <= 3600; i = i + 225)
             {
                 NeedlePoint Point = new NeedlePoint();

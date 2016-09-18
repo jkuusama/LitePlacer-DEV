@@ -1318,5 +1318,17 @@ namespace LitePlacer.Properties {
                 this["Nozzles_Enabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int Nozzles_maximum {
+            get {
+                return ((int)(this["Nozzles_maximum"]));
+            }
+            set {
+                this["Nozzles_maximum"] = value;
+            }
+        }
     }
 }

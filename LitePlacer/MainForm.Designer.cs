@@ -673,6 +673,7 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Nozzles_tabPage = new System.Windows.Forms.TabPage();
+            this.CalibrateNozzles_button = new System.Windows.Forms.Button();
             this.NozzleChangeEnable_checkBox = new System.Windows.Forms.CheckBox();
             this.panel10 = new System.Windows.Forms.Panel();
             this.LastMoveFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
@@ -708,6 +709,7 @@
             this.NozzleUnload_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.gotoUnloadStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyMovesFromNozzle1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label59 = new System.Windows.Forms.Label();
             this.NoOfNozzles_UpDown = new System.Windows.Forms.NumericUpDown();
@@ -740,6 +742,8 @@
             this.Abs_radioButton = new System.Windows.Forms.RadioButton();
             this.Relative_Button = new System.Windows.Forms.RadioButton();
             this.label108 = new System.Windows.Forms.Label();
+            this.NozzlesSave_button = new System.Windows.Forms.Button();
+            this.NozzlesStop_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -4990,15 +4994,14 @@
             // 
             this.AltJogSpeed_numericUpDown.Location = new System.Drawing.Point(1159, 327);
             this.AltJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
-            5000,
+            20000,
             0,
             0,
             0});
             this.AltJogSpeed_numericUpDown.Name = "AltJogSpeed_numericUpDown";
             this.AltJogSpeed_numericUpDown.Size = new System.Drawing.Size(58, 20);
             this.AltJogSpeed_numericUpDown.TabIndex = 95;
-            this.toolTip1.SetToolTip(this.AltJogSpeed_numericUpDown, "To avoid jerkiness, small movements are done\r\nwith smaller speed. That speed is s" +
-        "et here.");
+            this.toolTip1.SetToolTip(this.AltJogSpeed_numericUpDown, "Set jog speed");
             this.AltJogSpeed_numericUpDown.Value = new decimal(new int[] {
             250,
             0,
@@ -5010,15 +5013,14 @@
             // 
             this.NormalJogSpeed_numericUpDown.Location = new System.Drawing.Point(1159, 301);
             this.NormalJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
-            5000,
+            10000,
             0,
             0,
             0});
             this.NormalJogSpeed_numericUpDown.Name = "NormalJogSpeed_numericUpDown";
             this.NormalJogSpeed_numericUpDown.Size = new System.Drawing.Size(58, 20);
             this.NormalJogSpeed_numericUpDown.TabIndex = 94;
-            this.toolTip1.SetToolTip(this.NormalJogSpeed_numericUpDown, "To avoid jerkiness, small movements are done\r\nwith smaller speed. That speed is s" +
-        "et here.");
+            this.toolTip1.SetToolTip(this.NormalJogSpeed_numericUpDown, "Set jog speed");
             this.NormalJogSpeed_numericUpDown.Value = new decimal(new int[] {
             250,
             0,
@@ -5030,15 +5032,14 @@
             // 
             this.CtlrJogSpeed_numericUpDown.Location = new System.Drawing.Point(1159, 275);
             this.CtlrJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
-            5000,
+            4000,
             0,
             0,
             0});
             this.CtlrJogSpeed_numericUpDown.Name = "CtlrJogSpeed_numericUpDown";
             this.CtlrJogSpeed_numericUpDown.Size = new System.Drawing.Size(58, 20);
             this.CtlrJogSpeed_numericUpDown.TabIndex = 93;
-            this.toolTip1.SetToolTip(this.CtlrJogSpeed_numericUpDown, "To avoid jerkiness, small movements are done\r\nwith smaller speed. That speed is s" +
-        "et here.");
+            this.toolTip1.SetToolTip(this.CtlrJogSpeed_numericUpDown, "Set jog speed");
             this.CtlrJogSpeed_numericUpDown.Value = new decimal(new int[] {
             250,
             0,
@@ -5054,6 +5055,7 @@
             this.label134.Size = new System.Drawing.Size(73, 13);
             this.label134.TabIndex = 91;
             this.label134.Text = "With Alt (fast):";
+            this.toolTip1.SetToolTip(this.label134, "Set jog speed");
             // 
             // label133
             // 
@@ -5063,6 +5065,7 @@
             this.label133.Size = new System.Drawing.Size(43, 13);
             this.label133.TabIndex = 89;
             this.label133.Text = "Normal:";
+            this.toolTip1.SetToolTip(this.label133, "Set jog speed");
             // 
             // label132
             // 
@@ -5072,6 +5075,7 @@
             this.label132.Size = new System.Drawing.Size(158, 13);
             this.label132.TabIndex = 88;
             this.label132.Text = "Speed with numpad arrow keys:";
+            this.toolTip1.SetToolTip(this.label132, "Set jog speed");
             // 
             // label131
             // 
@@ -5081,6 +5085,7 @@
             this.label131.Size = new System.Drawing.Size(80, 13);
             this.label131.TabIndex = 86;
             this.label131.Text = "With Ctrl (slow):";
+            this.toolTip1.SetToolTip(this.label131, "Set jog speed");
             // 
             // ShadeGuard_textBox
             // 
@@ -7875,6 +7880,9 @@
             // 
             // Nozzles_tabPage
             // 
+            this.Nozzles_tabPage.Controls.Add(this.NozzlesStop_button);
+            this.Nozzles_tabPage.Controls.Add(this.NozzlesSave_button);
+            this.Nozzles_tabPage.Controls.Add(this.CalibrateNozzles_button);
             this.Nozzles_tabPage.Controls.Add(this.NozzleChangeEnable_checkBox);
             this.Nozzles_tabPage.Controls.Add(this.panel10);
             this.Nozzles_tabPage.Controls.Add(this.GotoZ0_button);
@@ -7900,11 +7908,21 @@
             this.Nozzles_tabPage.Text = "Nozzles setup";
             this.Nozzles_tabPage.UseVisualStyleBackColor = true;
             // 
+            // CalibrateNozzles_button
+            // 
+            this.CalibrateNozzles_button.Location = new System.Drawing.Point(926, 242);
+            this.CalibrateNozzles_button.Name = "CalibrateNozzles_button";
+            this.CalibrateNozzles_button.Size = new System.Drawing.Size(75, 23);
+            this.CalibrateNozzles_button.TabIndex = 33;
+            this.CalibrateNozzles_button.Text = "Calibrate";
+            this.CalibrateNozzles_button.UseVisualStyleBackColor = true;
+            this.CalibrateNozzles_button.Click += new System.EventHandler(this.CalibrateNozzles_button_Click);
+            // 
             // NozzleChangeEnable_checkBox
             // 
             this.NozzleChangeEnable_checkBox.AutoSize = true;
             this.NozzleChangeEnable_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NozzleChangeEnable_checkBox.Location = new System.Drawing.Point(926, 256);
+            this.NozzleChangeEnable_checkBox.Location = new System.Drawing.Point(933, 345);
             this.NozzleChangeEnable_checkBox.Name = "NozzleChangeEnable_checkBox";
             this.NozzleChangeEnable_checkBox.Size = new System.Drawing.Size(289, 24);
             this.NozzleChangeEnable_checkBox.TabIndex = 32;
@@ -8256,9 +8274,10 @@
             this.NozzleUnload_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gotoUnloadStartToolStripMenuItem,
             this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem,
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem,
             this.copyMovesFromNozzle1ToolStripMenuItem});
             this.NozzleUnload_contextMenuStrip.Name = "NozzleUnload_contextMenuStrip";
-            this.NozzleUnload_contextMenuStrip.Size = new System.Drawing.Size(352, 70);
+            this.NozzleUnload_contextMenuStrip.Size = new System.Drawing.Size(352, 92);
             // 
             // gotoUnloadStartToolStripMenuItem
             // 
@@ -8273,6 +8292,13 @@
             this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
             this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Text = "Copy unload start positions from Load end positions";
             this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Click += new System.EventHandler(this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem_Click);
+            // 
+            // getUnloadMovesFromLoadMovesToolStripMenuItem
+            // 
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Name = "getUnloadMovesFromLoadMovesToolStripMenuItem";
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Text = "get unload moves from load moves";
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Click += new System.EventHandler(this.getUnloadMovesFromLoadMovesToolStripMenuItem_Click);
             // 
             // copyMovesFromNozzle1ToolStripMenuItem
             // 
@@ -8593,6 +8619,26 @@
             this.label108.Size = new System.Drawing.Size(63, 18);
             this.label108.TabIndex = 95;
             this.label108.Text = "nozzle:";
+            // 
+            // NozzlesSave_button
+            // 
+            this.NozzlesSave_button.Location = new System.Drawing.Point(926, 271);
+            this.NozzlesSave_button.Name = "NozzlesSave_button";
+            this.NozzlesSave_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzlesSave_button.TabIndex = 34;
+            this.NozzlesSave_button.Text = "Save values";
+            this.NozzlesSave_button.UseVisualStyleBackColor = true;
+            this.NozzlesSave_button.Click += new System.EventHandler(this.NozzlesSave_button_Click);
+            // 
+            // NozzlesStop_button
+            // 
+            this.NozzlesStop_button.Location = new System.Drawing.Point(926, 300);
+            this.NozzlesStop_button.Name = "NozzlesStop_button";
+            this.NozzlesStop_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzlesStop_button.TabIndex = 35;
+            this.NozzlesStop_button.Text = "Stop";
+            this.NozzlesStop_button.UseVisualStyleBackColor = true;
+            this.NozzlesStop_button.Click += new System.EventHandler(this.NozzlesStop_button_Click);
             // 
             // FormMain
             // 
@@ -9459,6 +9505,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MethodParamAllComponents;
         private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzle_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn ComponentList;
+        private System.Windows.Forms.Button CalibrateNozzles_button;
+        private System.Windows.Forms.ToolStripMenuItem getUnloadMovesFromLoadMovesToolStripMenuItem;
+        private System.Windows.Forms.Button NozzlesSave_button;
+        private System.Windows.Forms.Button NozzlesStop_button;
     }
 }
 

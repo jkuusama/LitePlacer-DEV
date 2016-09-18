@@ -146,7 +146,7 @@ namespace LitePlacer
                 // try ten times to start
                 int tries = 0;
 
-                while (tries < 60)  // 3 s maximum to a camera to start
+                while (tries < 80)  // 4s maximum to a camera to start
                 {
                     // VideoSource.Start() checks running status, is safe to call multiple times
                     tries++;
