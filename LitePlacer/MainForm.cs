@@ -1785,12 +1785,12 @@ namespace LitePlacer
 
             // take needle to camera
             result &= CNC_XY_m(Properties.Settings.Default.UpCam_PositionX, Properties.Settings.Default.UpCam_PositionY);
-            result &= CNC_Z_m(Properties.Settings.Default.General_ZtoPCB - 1.0); // Average small component height 1mm (?)
+            result &= CNC_Z_m(Properties.Settings.Default.General_ZtoPCB - 0.5); // Average small component height 0.5mm (?)
 
 
             // measure the values
             SetNeedleMeasurement();
-            result &= Needle.Calibrate(4.0 / Properties.Settings.Default.UpCam_XmmPerPixel);  // have to find the tip within 4mm of center
+            result &= Needle.Calibrate();  
 
             // take needle up
             result &= CNC_Z_m(0.0);
@@ -2822,6 +2822,11 @@ namespace LitePlacer
 
             DowncamSnapshot_ColorBox.BackColor = Properties.Settings.Default.DownCam_SnapshotColor;
             UpcamSnapshot_ColorBox.BackColor = Properties.Settings.Default.UpCam_SnapshotColor;
+
+            NozzleDistance_textBox.Text = Properties.Settings.Default.Nozzles_CalibrationDistance.ToString();
+            NozzleMaxSize_textBox.Text = Properties.Settings.Default.Nozzles_CalibrationMaxSize.ToString();
+            NozzleMinSize_textBox.Text = Properties.Settings.Default.Nozzles_CalibrationMinSize.ToString();
+
 
             Display_dataGridView.Rows.Clear();
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
@@ -11534,8 +11539,7 @@ namespace LitePlacer
             if (UpCamera.IsRunning())
             {
                 SetNeedleMeasurement();
-                // Manual debug, big tolerance
-                DebugNeedle(20.0 / Properties.Settings.Default.UpCam_XmmPerPixel);
+                DebugNeedle();
             }
             else
             {
@@ -11543,44 +11547,62 @@ namespace LitePlacer
             }
         }
 
-        private void DebugCirclesUpCamera(double Tolerance)
-        {
-            double X, Y;
-            double Xpx, Ypx;
-            if (UpCamera.GetClosestCircle(out X, out Y, Tolerance) > 0)
-            {
-                Xpx = X * UpCamera.GetMeasurementZoom();
-                Ypx = Y * UpCamera.GetMeasurementZoom();
-                DisplayText("X: " + Xpx.ToString() + "pixels, Y: " + Ypx.ToString() + "pixels");
-                X = X * Properties.Settings.Default.UpCam_XmmPerPixel;
-                Y = -Y * Properties.Settings.Default.UpCam_YmmPerPixel;
-                DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
-                DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                DisplayText("No results.");
-            }
-        }
+        //private void DebugCirclesUpCamera(double Tolerance)
+        //{
+        //    double X, Y;
+        //    double Xpx, Ypx;
+        //    if (UpCamera.GetClosestCircle(out X, out Y, Tolerance) > 0)
+        //    {
+        //        Xpx = X * UpCamera.GetMeasurementZoom();
+        //        Ypx = Y * UpCamera.GetMeasurementZoom();
+        //        DisplayText("X: " + Xpx.ToString() + "pixels, Y: " + Ypx.ToString() + "pixels");
+        //        X = X * Properties.Settings.Default.UpCam_XmmPerPixel;
+        //        Y = -Y * Properties.Settings.Default.UpCam_YmmPerPixel;
+        //        DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
+        //        DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
+        //    }
+        //    else
+        //    {
+        //        DisplayText("No results.");
+        //    }
+        //}
 
-        private void DebugNeedle(double Tolerance)
+        private void DebugNeedle()
         {
-            double X, Y;
+            double X = 0;
+            double Y = 0;
+            double radius = 0;
+            double Maxsize = Properties.Settings.Default.Nozzles_CalibrationMaxSize / Properties.Settings.Default.UpCam_XmmPerPixel;
+            double Minsize = Properties.Settings.Default.Nozzles_CalibrationMinSize / Properties.Settings.Default.UpCam_XmmPerPixel;
+            double Maxdistance = Properties.Settings.Default.Nozzles_CalibrationDistance / Properties.Settings.Default.UpCam_XmmPerPixel;
             double Xpx, Ypx;
-            if (UpCamera.GetClosestCircle(out X, out Y, Tolerance) > 0)
+            int res= 0;
+
+            for (int tries = 0; tries < 10; tries++)
             {
-                Xpx = X * UpCamera.GetMeasurementZoom();
-                Ypx = Y * UpCamera.GetMeasurementZoom();
-                DisplayText("X: " + Xpx.ToString() + "pixels, Y: " + Ypx.ToString() + "pixels");
-                X = X * Properties.Settings.Default.UpCam_XmmPerPixel;
-                Y = -Y * Properties.Settings.Default.UpCam_YmmPerPixel;
-                DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
-                DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
+                res = UpCamera.GetSmallestCircle(out X, out Y, out radius, Maxdistance, Minsize, Maxsize);
+                if (res != 0)
+                {
+                    break;
+                }
+                Thread.Sleep(100);
+
+                if (tries >= 9)
+                {
+                    DisplayText("Can't see Nozzle, no results.");
+                    return;
+                }
             }
-            else
-            {
-                DisplayText("No results.");
-            }
+            Xpx = X * UpCamera.GetMeasurementZoom();
+            Ypx = Y * UpCamera.GetMeasurementZoom();
+            DisplayText(res.ToString() + " candidates, smallest: ");
+            DisplayText("radius: " + radius.ToString("0.000", CultureInfo.InvariantCulture) + " pixels, " 
+                + (radius * Properties.Settings.Default.UpCam_XmmPerPixel).ToString("0.000", CultureInfo.InvariantCulture) + "mm");
+            DisplayText("X: " + Xpx.ToString() + " pixels, Y: " + Ypx.ToString() + " pixels");
+            X = X * Properties.Settings.Default.UpCam_XmmPerPixel;
+            Y = -Y * Properties.Settings.Default.UpCam_YmmPerPixel;
+            DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
+            DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
         }
 
 
@@ -12280,7 +12302,9 @@ namespace LitePlacer
         const int Nozzledata_StartYColumn = 2;
         const int Nozzledata_StartZColumn = 3;
         // Rest are move 1 axis, move 1 amount, move 2 axis, ...
-        // == Nozzledata_StartZColumn+moveno*2 for axis, Nozzledata_StartZColumn+moveno*2+1 for amount.
+        // == Nozzledata_StartZColumn+(moveno-1)*2+1 for axis, Nozzledata_StartZColumn+(moveno-1)*2+2 for amount.
+
+        const int NoOfNozzleMoves = 8;
 
         // ==========================================================================================================
         // Context menus:
@@ -12336,9 +12360,8 @@ namespace LitePlacer
             m_NozzleGotoStart(NozzlesUnload_dataGridView, ContextmenuUnloadNozzle);
         }
 
-        private void copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopyUnloadStartPositionsFromLoadEndPositions()
         {
-            DisplayText("Get unload start positions from load end positions", KnownColor.DarkGreen);
             double X;
             double Y;
             double Z;
@@ -12352,36 +12375,113 @@ namespace LitePlacer
                     NozzlesUnload_dataGridView.Rows[nozzle - 1].Cells[Nozzledata_StartXColumn].Value = X.ToString("0.000", CultureInfo.InvariantCulture);
                     NozzlesUnload_dataGridView.Rows[nozzle - 1].Cells[Nozzledata_StartYColumn].Value = Y.ToString("0.000", CultureInfo.InvariantCulture);
                     NozzlesUnload_dataGridView.Rows[nozzle - 1].Cells[Nozzledata_StartZColumn].Value = Z.ToString("0.000", CultureInfo.InvariantCulture);
-                    
+
                 }
             }
         }
 
+        private void copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DisplayText("Get unload start positions from load end positions", KnownColor.DarkGreen);
+            CopyUnloadStartPositionsFromLoadEndPositions();
+        }
+
+
+        // ===============================
+        // Helper functions for getUnloadMovesFromLoadMovesToolStripMenuItem_Click
+        
+        private bool FindLastMove_m(int row, out double Z)
+        {
+            int AxisInd;
+            int ValInd;
+            Z = 0;
+            for (int i = NoOfNozzleMoves; i > 1; i--)
+            {
+                AxisInd = Nozzledata_StartZColumn + (i - 1) * 2 + 1;
+                ValInd= AxisInd+1;
+                if (NozzlesLoad_dataGridView.Rows[row].Cells[AxisInd].Value!=null)
+                {
+                    if (NozzlesLoad_dataGridView.Rows[row].Cells[AxisInd].Value.ToString() != "--")
+                    {
+                        if (NozzlesLoad_dataGridView.Rows[row].Cells[AxisInd].Value.ToString() != "Z")
+                        {
+                            DisplayText("last load move should be Z", KnownColor.DarkRed);
+                            return false;
+                        }
+                        if (NozzlesLoad_dataGridView.Rows[row].Cells[ValInd].Value == null)
+                        {
+                            DisplayText("last load move amount not set", KnownColor.DarkRed);
+                            return false;
+                        }
+                        if (!double.TryParse(NozzlesLoad_dataGridView.Rows[row].Cells[ValInd].Value.ToString(), out Z))
+                        {
+                            DisplayText("Bad data: nozzle #" + (row + 1).ToString() + ", move " + i.ToString(), KnownColor.DarkRed);
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+            }
+            DisplayText("Moves to load nozzle "+(row+1).ToString()+" not set", KnownColor.DarkRed);
+            return false;
+        }
+
+
         private void getUnloadMovesFromLoadMovesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            double Zval;
-            double Xval;
+            DisplayText("Get unload moves from load moves", KnownColor.DarkGreen);
+            CopyUnloadStartPositionsFromLoadEndPositions();
             for (int i = 0; i < Properties.Settings.Default.Nozzles_count; i++)
             {
                 NozzlesUnload_dataGridView.Rows[i].Cells[4].Value = "Z";    // first move axis
-                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[11].Value.ToString(), out Zval))  // move 4 amount
+                double Z;
+                if (!FindLastMove_m(i, out Z))
                 {
-                    DisplayText("Bad data: nozzle #" + (i+1).ToString() + ", move 4", KnownColor.DarkRed);
                     return;
                 }
-                NozzlesUnload_dataGridView.Rows[i].Cells[5].Value = (-Zval).ToString();   // first move amount
+                NozzlesUnload_dataGridView.Rows[i].Cells[5].Value = (-Z).ToString("0.000", CultureInfo.InvariantCulture);
 
-                NozzlesUnload_dataGridView.Rows[i ].Cells[6].Value =
-                    NozzlesLoad_dataGridView.Rows[i].Cells[8].Value.ToString();    // second move axis = load 3 axis
-                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[9].Value.ToString(), out Xval))  // move 4 amount
+                double Yload;
+                double Yunload;
+                double Xload;
+                double Xunload;
+                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[Nozzledata_StartYColumn].Value.ToString(), out Yload))
                 {
-                    DisplayText("Bad data: nozzle #" + (i+1).ToString() + ", move 3", KnownColor.DarkRed);
+                    DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Load start Y", KnownColor.DarkRed);
                     return;
                 }
-                NozzlesUnload_dataGridView.Rows[i].Cells[7].Value = (-Xval).ToString();   // second move amount
-
-                NozzlesUnload_dataGridView.Rows[i].Cells[8].Value = "Z";    // third move axis
-                NozzlesUnload_dataGridView.Rows[i].Cells[9].Value = Zval.ToString();    // third move amount
+                if (!double.TryParse(NozzlesUnload_dataGridView.Rows[i].Cells[Nozzledata_StartYColumn].Value.ToString(), out Yunload))
+                {
+                    DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Unload start Y", KnownColor.DarkRed);
+                    return;
+                }
+                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[Nozzledata_StartXColumn].Value.ToString(), out Xload))
+                {
+                    DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Load start X", KnownColor.DarkRed);
+                    return;
+                }
+                if (!double.TryParse(NozzlesUnload_dataGridView.Rows[i].Cells[Nozzledata_StartXColumn].Value.ToString(), out Xunload))
+                {
+                    DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Unload start X", KnownColor.DarkRed);
+                    return;
+                }
+                if ((Math.Abs(Yload - Yunload)>0.1)&& (Math.Abs(Xload - Xunload) > 0.1))
+                {
+                    DisplayText("Both X and Y changed on load sequence; too complex to figure out unload", KnownColor.DarkRed);
+                    return;
+                }
+                if ((Math.Abs(Yload - Yunload) > 0.1))
+                {
+                    NozzlesUnload_dataGridView.Rows[i].Cells[6].Value = "Y";
+                    NozzlesUnload_dataGridView.Rows[i].Cells[7].Value = (Yload - Yunload).ToString("0.000", CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    NozzlesUnload_dataGridView.Rows[i].Cells[6].Value = "X";
+                    NozzlesUnload_dataGridView.Rows[i].Cells[7].Value = (Xload - Xunload).ToString("0.000", CultureInfo.InvariantCulture);
+                }
+                NozzlesUnload_dataGridView.Rows[i].Cells[8].Value = "Z";
+                NozzlesUnload_dataGridView.Rows[i].Cells[9].Value = Z.ToString("0.000", CultureInfo.InvariantCulture);
             }
         }
 
@@ -12444,10 +12544,10 @@ namespace LitePlacer
             dY = 0.0;
             dZ = 0.0;
             AllDone = false;
-            if (move >= 6)
+            if (move > NoOfNozzleMoves)
             {
                 AllDone = true;
-                return true;
+                return false;
             };
             // is direction set? If not, all done.
             int DirCol = Nozzledata_StartZColumn + (move - 1) * 2 + 1;
@@ -12463,16 +12563,16 @@ namespace LitePlacer
             }
             double val;
             string op= "undefined";
+            if (grid == NozzlesLoad_dataGridView)
+            {
+                op = "load ";
+            }
+            if (grid == NozzlesUnload_dataGridView)
+            {
+                op = "unload ";
+            }
             if (!NozzleDataCheck(grid, nozzle, DirCol + 1, out val))
             {
-                if (grid == NozzlesLoad_dataGridView)
-                {
-                    op = "load ";
-                }
-                if (grid == NozzlesUnload_dataGridView)
-                {
-                    op = "unload ";
-                }
                 DisplayText("Bad data: " + op + "nozzle #" + nozzle + ", move " + (DirCol + 1).ToString(), KnownColor.DarkRed);
             }
             switch (grid.Rows[nozzle - 1].Cells[DirCol].Value.ToString())
@@ -12503,7 +12603,7 @@ namespace LitePlacer
         // ==========================================================================================================
         private void BuildNozzleTable(DataGridView Grid)
         {
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i <= NoOfNozzleMoves; i++)
             {
                 DataGridViewComboBoxColumn ComboCol = new DataGridViewComboBoxColumn();
                 ComboCol.Items.Add("X");
@@ -12516,7 +12616,7 @@ namespace LitePlacer
                 Grid.Columns.Add(ComboCol);
                 DataGridViewTextBoxColumn TextCol = new DataGridViewTextBoxColumn();
                 TextCol.HeaderText="move" + i.ToString() + " amount";
-                TextCol.Width = 64;
+                TextCol.Width = 48;
                 TextCol.Name = "MoveNumber" + i.ToString() + "amount_Column";
                 Grid.Columns.Add(TextCol);
             }
@@ -12608,6 +12708,7 @@ namespace LitePlacer
             CNC_Write_m("{\"zsx\":0}");
             Thread.Sleep(50);
 
+            NozzleChangeEnable_checkBox.Checked = Properties.Settings.Default.Nozzles_Enabled;
             NozzleXYspeed_textBox.Text = Properties.Settings.Default.Nozzles_XYspeed.ToString();
             NozzleZspeed_textBox.Text = Properties.Settings.Default.Nozzles_Zspeed.ToString();
             NozzleAspeed_textBox.Text = Properties.Settings.Default.Nozzles_Aspeed.ToString();
@@ -12773,9 +12874,9 @@ namespace LitePlacer
 
             if (col <= Nozzledata_StartZColumn)
             {
-                grid.Rows[row].Cells[Nozzledata_StartXColumn].Value = Cnc.CurrentX.ToString();
-                grid.Rows[row].Cells[Nozzledata_StartYColumn].Value = Cnc.CurrentY.ToString();
-                grid.Rows[row].Cells[Nozzledata_StartZColumn].Value = Cnc.CurrentZ.ToString();
+                grid.Rows[row].Cells[Nozzledata_StartXColumn].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+                grid.Rows[row].Cells[Nozzledata_StartYColumn].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+                grid.Rows[row].Cells[Nozzledata_StartZColumn].Value = Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture);
                 grid.CurrentCell = grid.Rows[row].Cells[Nozzledata_StartZColumn + 2];
             }
             else
@@ -13105,17 +13206,14 @@ namespace LitePlacer
 
         private bool m_DoNozzleMove(DataGridView grid, int nozzle, int MoveNumber,out bool AllDone)
         {
-            if (MoveNumber>6)
+            if (MoveNumber> NoOfNozzleMoves+1)
             {
                 DisplayText("attempting move #" + MoveNumber.ToString(), KnownColor.DarkRed);
+                AllDone = true;
+                return false;
             }
             AllDone = false;
 
-            if (MoveNumber >= 6)
-            {
-                AllDone = true;
-                return true;
-            };
             // is direction set? If not, all done.
             int DirCol = Nozzledata_StartZColumn + (MoveNumber-1) * 2+1;
             if (grid.Rows[nozzle - 1].Cells[DirCol].Value == null)
@@ -13130,7 +13228,7 @@ namespace LitePlacer
             }
 
             bool LastMove = false;
-            if (MoveNumber == 6)
+            if (MoveNumber == NoOfNozzleMoves)
             {
                 LastMove = true;
             }
@@ -13363,11 +13461,55 @@ namespace LitePlacer
             SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
         }
 
-        #endregion
         private bool Nozzles_Stop = false;
         private void NozzlesStop_button_Click(object sender, EventArgs e)
         {
             Nozzles_Stop = true;
+        }
+
+        private void NozzleDistance_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(NozzleDistance_textBox.Text, out val))
+            {
+                Properties.Settings.Default.Nozzles_CalibrationDistance = val;
+                NozzleDistance_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                NozzleDistance_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void NozzleMinSize_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(NozzleMinSize_textBox.Text, out val))
+            {
+                Properties.Settings.Default.Nozzles_CalibrationMinSize = val;
+                NozzleMinSize_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                NozzleMinSize_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void NozzleMaxSize_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(NozzleMaxSize_textBox.Text, out val))
+            {
+                Properties.Settings.Default.Nozzles_CalibrationMaxSize = val;
+                NozzleMaxSize_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                NozzleMaxSize_textBox.ForeColor = Color.Red;
+            }
+
+
+        #endregion
         }
     }	// end of: 	public partial class FormMain : Form
 

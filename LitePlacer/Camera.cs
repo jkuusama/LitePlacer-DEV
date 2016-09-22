@@ -1390,7 +1390,7 @@ namespace LitePlacer
         }
 
         // =========================================================
-        public int GetSmallestCircle(out double X, out double Y, double MaxDistance)
+        public int GetSmallestCircle(out double X, out double Y, out double radius, double MaxDistance, double MinSize, double MaxSize)
         // Sets X, Y position of the smallest circle to the frame center in pixels, return value is number of circles found
         {
             List<Shapes.Circle> GoodCircles = new List<Shapes.Circle>();
@@ -1400,17 +1400,22 @@ namespace LitePlacer
 
             X = 0.0;
             Y = 0.0;
+            radius = 0.0;
             if (RawCircles.Count == 0)
             {
                 return (0);
             }
-            MaxDistance = MaxDistance * GetMeasurementZoom();
-            // Remove those that are more than MaxDistance away from frame center
+            MaxDistance = MaxDistance / GetMeasurementZoom();
+            MinSize = MinSize / GetMeasurementZoom();
+            MaxSize = MaxSize / GetMeasurementZoom();
+            // Count only those that are less than MaxDistance away from frame center and size between min and max
             foreach (Shapes.Circle Circle in RawCircles)
             {
                 X = (Circle.X - FrameCenterX);
                 Y = (Circle.Y - FrameCenterY);
-                if ((X * X + Y * Y) < (MaxDistance * MaxDistance))
+                if ( ((X * X + Y * Y) <= (MaxDistance * MaxDistance)) &&
+                     (Circle.Radius>= MinSize) && (Circle.Radius <= MaxSize))
+
                 {
                     GoodCircles.Add(Circle);
                 }
@@ -1424,6 +1429,7 @@ namespace LitePlacer
             double zoom = GetMeasurementZoom();
             X = (GoodCircles[smallest].X - FrameCenterX);
             Y = (GoodCircles[smallest].Y - FrameCenterY);
+            radius = GoodCircles[smallest].Radius / zoom;
             X = X / zoom;
             Y = Y / zoom;
             return (GoodCircles.Count);

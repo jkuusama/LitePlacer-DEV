@@ -1330,5 +1330,41 @@ namespace LitePlacer.Properties {
                 this["Nozzles_maximum"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public double Nozzles_CalibrationDistance {
+            get {
+                return ((double)(this["Nozzles_CalibrationDistance"]));
+            }
+            set {
+                this["Nozzles_CalibrationDistance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public double Nozzles_CalibrationMaxSize {
+            get {
+                return ((double)(this["Nozzles_CalibrationMaxSize"]));
+            }
+            set {
+                this["Nozzles_CalibrationMaxSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double Nozzles_CalibrationMinSize {
+            get {
+                return ((double)(this["Nozzles_CalibrationMinSize"]));
+            }
+            set {
+                this["Nozzles_CalibrationMinSize"] = value;
+            }
+        }
     }
 }

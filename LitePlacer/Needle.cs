@@ -242,14 +242,14 @@ namespace LitePlacer
         }
 
 
-        public bool Calibrate(double Tolerance)
+        public bool Calibrate()
         {
             if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
             {
                 return true;
             };
 
-            CalibrationPoints.Clear();   // Presumably user changed the needle, and calibration is void no matter if we succeed here
+            CalibrationPoints.Clear();   // Presumably calibration is void no matter if we succeed here
             Calibrated = false;
             if (!Cam.IsRunning())
             {
@@ -260,36 +260,40 @@ namespace LitePlacer
                 return false;
             }
 
-			double X = 0;
-			double Y = 0;
-			int res = 0;
+            double X = 0;
+            double Y = 0;
+            double radius = 0;
+            int res = 0;
+            double Maxsize = Properties.Settings.Default.Nozzles_CalibrationMaxSize / Properties.Settings.Default.UpCam_XmmPerPixel;
+            double Minsize = Properties.Settings.Default.Nozzles_CalibrationMinSize / Properties.Settings.Default.UpCam_XmmPerPixel;
+            double Maxdistance = Properties.Settings.Default.Nozzles_CalibrationDistance / Properties.Settings.Default.UpCam_XmmPerPixel;
             // I goes in .1 of degrees. Makes sense to have the increase so, that multiplies of 45 are hit
             for (int i = 0; i <= 3600; i = i + 225)
             {
                 NeedlePoint Point = new NeedlePoint();
                 Point.Angle = Convert.ToDouble(i) / 10.0;
-				if (!CNC_A_m(Point.Angle))
-				{
-					return false;
-				}
-				for (int tries = 0; tries < 10; tries++)
-				{
-    				Thread.Sleep(100);
-					res = Cam.GetClosestCircle(out X, out Y, Tolerance);
-					if (res != 0)
-					{
-						break;
-					}
+                if (!CNC_A_m(Point.Angle))
+                {
+                    return false;
+                }
+                for (int tries = 0; tries < 10; tries++)
+                {
+                    res = Cam.GetSmallestCircle(out X, out Y, out radius, Maxdistance, Minsize, Maxsize);
+                    if (res != 0)
+                    {
+                        break;
+                    }
 
-					if (tries >= 9)
-					{
+                    Thread.Sleep(100);
+                    if (tries >= 9)
+                    {
                         MainForm.ShowMessageBox(
-							"Needle calibration: Can't see Needle",
-							"No Circle found",
-							MessageBoxButtons.OK);
-						return false;
-					}
-				}
+                            "Needle calibration: Can't see Needle",
+                            "No Circle found",
+                            MessageBoxButtons.OK);
+                        return false;
+                    }
+                }
                 if (res == 0)
                 {
                     MainForm.ShowMessageBox(
@@ -298,18 +302,9 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 }
-                //if (res > 1)
-                //{
-                //    MessageBox.Show(
-                //        "Needle Calibration: Ambiguous regognition result",
-                //        "Too macy circles in focus",
-                //        MessageBoxButtons.OK);
-                //    return false;
-                //}
-
                 Point.X = X * Properties.Settings.Default.UpCam_XmmPerPixel;
                 Point.Y = Y * Properties.Settings.Default.UpCam_YmmPerPixel;
-				// MainForm.DisplayText("A: " + Point.Angle.ToString("0.000") + ", X: " + Point.X.ToString("0.000") + ", Y: " + Point.Y.ToString("0.000"));
+                // MainForm.DisplayText("A: " + Point.Angle.ToString("0.000") + ", X: " + Point.X.ToString("0.000") + ", Y: " + Point.Y.ToString("0.000"));
                 CalibrationPoints.Add(Point);
             }
             Calibrated = true;
