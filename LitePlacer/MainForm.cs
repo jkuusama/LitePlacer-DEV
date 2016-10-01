@@ -157,6 +157,9 @@ namespace LitePlacer
             LoadDataGrid(path + "LitePlacer.NeedleFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref Needle_dataGridView, false);
 
+            LoadDataGrid(path + "LitePlacer.Needle2Functions", Temp_dataGridView, DataTableType.VideoProcessing);
+            DataGridViewCopy(Temp_dataGridView, ref Needle2_dataGridView, false);
+
             LoadDataGrid(path + "LitePlacer.UpCamComponentsFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref UpCamComponents_dataGridView, false);
 
@@ -179,6 +182,7 @@ namespace LitePlacer
             SetProcessingFunctions(ClearTape_dataGridView);
             SetProcessingFunctions(DowncamSnapshot_dataGridView);
             SetProcessingFunctions(Needle_dataGridView);
+            SetProcessingFunctions(Needle2_dataGridView);
             SetProcessingFunctions(UpCamComponents_dataGridView);
             SetProcessingFunctions(UpcamSnapshot_dataGridView);
 
@@ -412,6 +416,7 @@ namespace LitePlacer
             SaveDataGrid(path + "LitePlacer.TapesData_v2", Tapes_dataGridView);
             SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
             SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
+            SaveDataGrid(path + "LitePlacer.NozzlesParameters_v2", NozzlesParameters_dataGridView);
 
             DataGridViewCopy(Homing_dataGridView, ref Temp_dataGridView, false);
             SaveDataGrid(path + "LitePlacer.HomingFunctions_v2", Temp_dataGridView);
@@ -436,6 +441,9 @@ namespace LitePlacer
 
             DataGridViewCopy(Needle_dataGridView, ref Temp_dataGridView, false);
             SaveDataGrid(path + "LitePlacer.NeedleFunctions_v2", Temp_dataGridView);
+
+            DataGridViewCopy(Needle2_dataGridView, ref Temp_dataGridView, false);
+            SaveDataGrid(path + "LitePlacer.Needle2Functions_v2", Temp_dataGridView);
 
             DataGridViewCopy(UpCamComponents_dataGridView, ref Temp_dataGridView, false);
             SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions_v2", Temp_dataGridView);
@@ -2786,7 +2794,21 @@ namespace LitePlacer
         private void tabPageSetupCameras_Begin()
         {
             SetDownCameraDefaults();
+            DownCamera.DrawBox = DownCameraDrawBox_checkBox.Checked;
+            DownCamera.DrawCross = DownCameraDrawCross_checkBox.Checked;
+            DownCamera.DrawSidemarks = DownCameraDrawTicks_checkBox.Checked;
+            DownCamera.Draw_Snapshot = Overlay_checkBox.Checked;
+            DownCamera.FindCircles = DownCamFindCircles_checkBox.Checked;
+            DownCamera.FindRectangles = DownCamFindRectangles_checkBox.Checked;
+            DownCamera.FindComponent = DownCam_FindComponents_checkBox.Checked;
+
             SetUpCameraDefaults();
+            UpCamera.DrawBox = UpCameraDrawBox_checkBox.Checked;
+            UpCamera.DrawCross = UpCameraDrawCross_checkBox.Checked;
+            UpCamera.Draw_Snapshot = Overlay_checkBox.Checked;
+            UpCamera.FindCircles = UpCamFindCircles_checkBox.Checked;
+            UpCamera.FindComponent = UpCam_FindComponents_checkBox.Checked;
+
             NeedleOffset_label.Visible = false;
             ClearEditTargets();
 
@@ -2830,9 +2852,10 @@ namespace LitePlacer
 
             Display_dataGridView.Rows.Clear();
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
+            UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
             getDownCamList();
             getUpCamList();
-            SelectCamera(DownCamera);
+            // SelectCamera(DownCamera);
         }
 
         // =================================================================================
@@ -3582,6 +3605,7 @@ namespace LitePlacer
 
         private void Offset2Method_button_Click(object sender, EventArgs e)
         {
+            // Needle calibration button
             ZGuardOff();
             SelectCamera(DownCamera);
             SetCurrentCameraParameters();
@@ -3618,7 +3642,7 @@ namespace LitePlacer
                         "Done here",
                         MessageBoxButtons.OK);
                     SelectCamera(UpCamera);
-                    SetNeedleMeasurement();
+                    // SetNeedleMeasurement();
                     Offset2Method_button.Text = "Start";
                     CNC_Z_m(0.0);
                     ZGuardOn();
@@ -11523,18 +11547,24 @@ namespace LitePlacer
             DataGridViewCopy(Display_dataGridView, ref Needle_dataGridView);
         }
 
+        private void NeedleToHere2_button_Click(object sender, EventArgs e)
+        {
+            DataGridViewCopy(Display_dataGridView, ref Needle2_dataGridView);
+        }
+
         private void NeedleToDisplay_button_Click(object sender, EventArgs e)
         {
             DataGridViewCopy(Needle_dataGridView, ref Display_dataGridView);
             UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
         }
 
-        private void SetNeedleMeasurement()
+         private void NeedleToDisplay2_button_Click(object sender, EventArgs e)
         {
-            UpCamera.BuildMeasurementFunctionsList(Needle_dataGridView);
+            DataGridViewCopy(Needle2_dataGridView, ref Display_dataGridView);
+            UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
         }
 
-        private void NeedleMeasure_button_Click(object sender, EventArgs e)
+        private void NeedleMeasure()
         {
             if (UpCamera.IsRunning())
             {
@@ -11544,6 +11574,46 @@ namespace LitePlacer
             else
             {
                 DisplayText("Up camera is not running.");
+            }
+        }
+
+        private void NeedleMeasure_button_Click(object sender, EventArgs e)
+        {
+            if (UpCamera.IsRunning())
+            {
+                UpCamera.BuildMeasurementFunctionsList(Needle_dataGridView);
+                DebugNeedle();
+            }
+            else
+            {
+                DisplayText("Up camera is not running.");
+            }
+        }
+
+        private void NeedleMeasure2_button_Click(object sender, EventArgs e)
+        {
+            if (UpCamera.IsRunning())
+            {
+                UpCamera.BuildMeasurementFunctionsList(Needle2_dataGridView);
+                DebugNeedle();
+            }
+            else
+            {
+                DisplayText("Up camera is not running.");
+            }
+        }
+
+        private void SetNeedleMeasurement()
+        {
+            if (NozzleUseTable2())
+            {
+                DisplayText("Using alternative table");
+                UpCamera.BuildMeasurementFunctionsList(Needle2_dataGridView);
+            }
+            else
+            {
+                DisplayText("Using regular table");
+                UpCamera.BuildMeasurementFunctionsList(Needle_dataGridView);
             }
         }
 
@@ -11572,15 +11642,18 @@ namespace LitePlacer
             double X = 0;
             double Y = 0;
             double radius = 0;
-            double Maxsize = Properties.Settings.Default.Nozzles_CalibrationMaxSize / Properties.Settings.Default.UpCam_XmmPerPixel;
-            double Minsize = Properties.Settings.Default.Nozzles_CalibrationMinSize / Properties.Settings.Default.UpCam_XmmPerPixel;
+            UpCamera.MaxSize = Properties.Settings.Default.Nozzles_CalibrationMaxSize / Properties.Settings.Default.UpCam_XmmPerPixel;
+            UpCamera.MinSize = Properties.Settings.Default.Nozzles_CalibrationMinSize / Properties.Settings.Default.UpCam_XmmPerPixel;
             double Maxdistance = Properties.Settings.Default.Nozzles_CalibrationDistance / Properties.Settings.Default.UpCam_XmmPerPixel;
             double Xpx, Ypx;
-            int res= 0;
-
+            double db1 = Properties.Settings.Default.Nozzles_CalibrationMinSize;
+            double db2 = Properties.Settings.Default.Nozzles_CalibrationMaxSize;
+            double db3 = Properties.Settings.Default.UpCam_XmmPerPixel;
+            int res = 0;
+            UpCamera.SizeLimited = true;
             for (int tries = 0; tries < 10; tries++)
             {
-                res = UpCamera.GetSmallestCircle(out X, out Y, out radius, Maxdistance, Minsize, Maxsize);
+                res = UpCamera.GetSmallestCircle(out X, out Y, out radius, Maxdistance);
                 if (res != 0)
                 {
                     break;
@@ -11590,6 +11663,7 @@ namespace LitePlacer
                 if (tries >= 9)
                 {
                     DisplayText("Can't see Nozzle, no results.");
+                    UpCamera.SizeLimited = false;
                     return;
                 }
             }
@@ -11603,6 +11677,7 @@ namespace LitePlacer
             Y = -Y * Properties.Settings.Default.UpCam_YmmPerPixel;
             DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
             DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
+            UpCamera.SizeLimited = false;
         }
 
 
@@ -12635,16 +12710,16 @@ namespace LitePlacer
             BuildNozzleTable(NozzlesUnload_dataGridView);
             for (int i = 0; i < Properties.Settings.Default.Nozzles_count; i++)
             {
-                AddNozzle();
+                AddNozzle(false);
             }
             NoOfNozzles_UpDown.Value = Properties.Settings.Default.Nozzles_count;
-            ResizeNozzleTables();
             // fill values
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int ind = path.LastIndexOf('\\');
             path = path.Remove(ind + 1);
             LoadDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView, DataTableType.Nozzles);
             LoadDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView, DataTableType.Nozzles);
+            LoadDataGrid(path + "LitePlacer.NozzlesParameters_v2", NozzlesParameters_dataGridView, DataTableType.Nozzles);
             if ((Properties.Settings.Default.Nozzles_current != 0) && Properties.Settings.Default.Nozzles_Enabled)
             {
                 Needle.UseCalibration(Properties.Settings.Default.Nozzles_current);
@@ -12654,26 +12729,23 @@ namespace LitePlacer
         // ==========================================================================================================
         private void ResizeNozzleTables()
         {
-            int height = 0;
-            System.Drawing.Size size= NozzlesLoad_dataGridView.Size;
-
+            int height = 2 * SystemInformation.BorderSize.Height;
             foreach (DataGridViewRow row in NozzlesLoad_dataGridView.Rows)
             {
                 height += row.Height;
             }
-            height += 32; // Header row height. NozzlesLoad_dataGridView.ColumnHeadersHeight doesn't work the first time(??).
-            size.Height=height+4;
+
+            System.Drawing.Size size= NozzlesLoad_dataGridView.Size;
+            size.Height = height + NozzlesLoad_dataGridView.ColumnHeadersHeight;
             NozzlesLoad_dataGridView.Size = size;
 
-            height = 0;
             size = NozzlesUnload_dataGridView.Size;
-            foreach (DataGridViewRow row in NozzlesUnload_dataGridView.Rows)
-            {
-                height += row.Height;
-            }
-            height += 32;
-            size.Height = height + 4;
+            size.Height = height + NozzlesLoad_dataGridView.ColumnHeadersHeight + SystemInformation.VerticalScrollBarWidth;
             NozzlesUnload_dataGridView.Size = size;
+
+            size = NozzlesParameters_dataGridView.Size;
+            size.Height = height + NozzlesParameters_dataGridView.ColumnHeadersHeight;
+            NozzlesParameters_dataGridView.Size = size;
         }
 
         // ==========================================================================================================
@@ -12745,6 +12817,7 @@ namespace LitePlacer
             Cnc.SlackCompensation = false;  // nozzle changes without slack compensation
             Cnc.SlackCompensationA = false;
 
+            ResizeNozzleTables();
             AtNozzlesTab = true;
         }
 
@@ -12772,21 +12845,27 @@ namespace LitePlacer
         }
 
         // ==========================================================================================================
-        private void AddNozzle()
+        private void AddNozzle(bool ResizeNeeded)
         {
             int RowNo = NozzlesLoad_dataGridView.Rows.Count;
             NozzlesLoad_dataGridView.Rows.Insert(RowNo);
             NozzlesUnload_dataGridView.Rows.Insert(RowNo);
+            NozzlesParameters_dataGridView.Rows.Insert(RowNo);
             RowNo++;
             NozzlesLoad_dataGridView.Rows[RowNo-1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString();
-            NozzlesUnload_dataGridView.Rows[RowNo-1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString();
-            ResizeNozzleTables();
+            NozzlesUnload_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString();
+            NozzlesParameters_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString();
+            if (ResizeNeeded)
+            {
+                ResizeNozzleTables();
+            }
         }
 
         private void RemoveNozzle()
         {
             NozzlesLoad_dataGridView.Rows.RemoveAt(NozzlesLoad_dataGridView.Rows.Count-1);
-            NozzlesUnload_dataGridView.Rows.RemoveAt(NozzlesUnload_dataGridView.Rows.Count-1);
+            NozzlesUnload_dataGridView.Rows.RemoveAt(NozzlesUnload_dataGridView.Rows.Count - 1);
+            NozzlesParameters_dataGridView.Rows.RemoveAt(NozzlesParameters_dataGridView.Rows.Count - 1);
             ResizeNozzleTables();
         }
 
@@ -12803,7 +12882,7 @@ namespace LitePlacer
             }
             if (NoOfNozzles_UpDown.Value > NozzlesLoad_dataGridView.RowCount)
             {
-                AddNozzle();
+                AddNozzle(true);
             }
             else
             {
@@ -13050,14 +13129,52 @@ namespace LitePlacer
         // ==========================================================================================================
         public bool ChangeNozzle_m(int Nozzle)
         {
+            double MinSize=0;
+            double MaxSize=10;
+
             Nozzles_Stop = false;
             if (Nozzle == Properties.Settings.Default.Nozzles_current)
             {
                 DisplayText("Wanted nozzle (#" + Nozzle.ToString() + ") already loaded");
                 return true;
             };
+            if (Nozzle>0)
+            {
+                if (NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[1].Value == null)
+                {
+                    ShowMessageBox(
+                        "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", min. size",
+                        "Bad data",
+                        MessageBoxButtons.OK);
+                    return false;
+                }
 
-            // Need to do something:
+                if (NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[2].Value == null)
+                {
+                    ShowMessageBox(
+                        "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", max. size",
+                        "Bad data",
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+
+                if (!double.TryParse(NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[1].Value.ToString(), out MinSize))
+                {
+                    ShowMessageBox(
+                        "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", min. size",
+                        "Bad data",
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+                if (!double.TryParse(NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[2].Value.ToString(), out MaxSize))
+                {
+                    ShowMessageBox(
+                        "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", max. size",
+                        "Bad data",
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+            }
 
             // store cnc speed settings
             bool slowXY = Cnc.SlowXY;
@@ -13129,6 +13246,11 @@ namespace LitePlacer
             Cnc.SlowSpeedA = Aspeed;
             CNC_timeout = timeout;
 
+            if (Nozzle > 0)
+            {
+                UpCamera.MinSize = MinSize;
+                UpCamera.MaxSize = MaxSize;
+            }
             return ok;
         }
 
@@ -13459,6 +13581,7 @@ namespace LitePlacer
             path = path.Remove(i + 1);
             SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
             SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
+            SaveDataGrid(path + "LitePlacer.NozzlesParameters_v2", NozzlesParameters_dataGridView);
         }
 
         private bool Nozzles_Stop = false;
@@ -13467,7 +13590,11 @@ namespace LitePlacer
             Nozzles_Stop = true;
         }
 
-        private void NozzleDistance_textBox_TextChanged(object sender, EventArgs e)
+        private void NozzlesParameters_dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+
+        private void NozzleDistance_textBox_KeyUp(object sender, KeyEventArgs e)
         {
             double val;
             if (double.TryParse(NozzleDistance_textBox.Text, out val))
@@ -13481,7 +13608,7 @@ namespace LitePlacer
             }
         }
 
-        private void NozzleMinSize_textBox_TextChanged(object sender, EventArgs e)
+        private void NozzleMinSize_textBox_KeyUp(object sender, KeyEventArgs e)
         {
             double val;
             if (double.TryParse(NozzleMinSize_textBox.Text, out val))
@@ -13495,7 +13622,7 @@ namespace LitePlacer
             }
         }
 
-        private void NozzleMaxSize_textBox_TextChanged(object sender, EventArgs e)
+        private void NozzleMaxSize_textBox_KeyUp(object sender, KeyEventArgs e)
         {
             double val;
             if (double.TryParse(NozzleMaxSize_textBox.Text, out val))
@@ -13507,10 +13634,26 @@ namespace LitePlacer
             {
                 NozzleMaxSize_textBox.ForeColor = Color.Red;
             }
+        }
+
+        private bool NozzleUseTable2()
+        {
+            if (!Properties.Settings.Default.Nozzles_Enabled)
+            {
+                return false;
+            }
+            DataGridViewCheckBoxCell cell = NozzlesParameters_dataGridView.Rows[Properties.Settings.Default.Nozzles_current-1].Cells["NozzleAlternative_column"] as DataGridViewCheckBoxCell;
+            if (cell.Value==null)
+            {
+                return false;
+            }
+            return (cell.Value.ToString() == "True");
+        }
+
+
 
 
         #endregion
-        }
     }	// end of: 	public partial class FormMain : Form
 
 

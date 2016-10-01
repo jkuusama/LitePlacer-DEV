@@ -262,11 +262,9 @@ namespace LitePlacer
 
             double X = 0;
             double Y = 0;
+            double Maxdistance = Properties.Settings.Default.Nozzles_CalibrationDistance / Properties.Settings.Default.UpCam_XmmPerPixel;
             double radius = 0;
             int res = 0;
-            double Maxsize = Properties.Settings.Default.Nozzles_CalibrationMaxSize / Properties.Settings.Default.UpCam_XmmPerPixel;
-            double Minsize = Properties.Settings.Default.Nozzles_CalibrationMinSize / Properties.Settings.Default.UpCam_XmmPerPixel;
-            double Maxdistance = Properties.Settings.Default.Nozzles_CalibrationDistance / Properties.Settings.Default.UpCam_XmmPerPixel;
             // I goes in .1 of degrees. Makes sense to have the increase so, that multiplies of 45 are hit
             for (int i = 0; i <= 3600; i = i + 225)
             {
@@ -278,13 +276,13 @@ namespace LitePlacer
                 }
                 for (int tries = 0; tries < 10; tries++)
                 {
-                    res = Cam.GetSmallestCircle(out X, out Y, out radius, Maxdistance, Minsize, Maxsize);
+                    res = Cam.GetSmallestCircle(out X, out Y, out radius, Maxdistance);
                     if (res != 0)
                     {
                         break;
                     }
 
-                    Thread.Sleep(100);
+                    Thread.Sleep(50);
                     if (tries >= 9)
                     {
                         MainForm.ShowMessageBox(
