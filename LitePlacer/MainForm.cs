@@ -13088,6 +13088,10 @@ namespace LitePlacer
         {
             NozzleNo_textBox.Text = ForceNozzle_numericUpDown.Value.ToString();
             Properties.Settings.Default.Nozzles_current = (int)ForceNozzle_numericUpDown.Value;
+            if (Properties.Settings.Default.Nozzles_current != 0)
+            {
+                Needle.UseCalibration(Properties.Settings.Default.Nozzles_current);
+            }
         }
 
         private bool m_UnloadNozzle(int Nozzle)
@@ -13574,6 +13578,8 @@ namespace LitePlacer
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
             Needle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
+            Needle.UseCalibration(Properties.Settings.Default.Nozzles_count);
+
         }
 
         private void NozzlesSave_button_Click(object sender, EventArgs e)
@@ -13656,6 +13662,25 @@ namespace LitePlacer
 
 
         #endregion
+
+
+        private void CalData_button_Click(object sender, EventArgs e)
+        {
+            DisplayText("Nozzles calibration data:");
+            for (int i = 1; i <= 6; i++)
+            {
+                DisplayText("Nozzle " + i.ToString() + ":");
+                foreach (NeedleClass.NeedlePoint p in Needle.CalibrationPointsArr[i])
+                {
+                    DisplayText("A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
+                }
+            }
+            DisplayText("Currently used:");
+            foreach (NeedleClass.NeedlePoint p in Needle.CalibrationPoints)
+            {
+                DisplayText("A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
+            }
+        }
     }	// end of: 	public partial class FormMain : Form
 
 

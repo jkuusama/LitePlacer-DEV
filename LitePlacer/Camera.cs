@@ -1360,7 +1360,7 @@ namespace LitePlacer
 
         public List<Shapes.Circle> GetMeasurementCircles(double MaxDistance)
         {
-            // returns a list of circles for measurements, filters for frame distance (which we always do) and size, if needed
+            // returns a list of circles for measurements, filters for distance (which we always do) and size, if needed
 
             Bitmap image = GetMeasurementFrame();
             List<Shapes.Circle> Circles = FindCirclesFunct(image);

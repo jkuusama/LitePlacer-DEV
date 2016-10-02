@@ -19,7 +19,7 @@ namespace LitePlacer
         }
 
 		public List<NeedlePoint> CalibrationPoints = new List<NeedlePoint>();   // what we use
-        // to calibrate nozzles, we can store and restore calibration points and thier validity here.
+        // to calibrate nozzles, we can store and restore calibration points and their validity here.
         public List<NeedlePoint>[] CalibrationPointsArr = new List<NeedlePoint>[Properties.Settings.Default.Nozzles_maximum];
         public bool[] CalibratedArr = new bool[Properties.Settings.Default.Nozzles_maximum];
 
@@ -282,7 +282,7 @@ namespace LitePlacer
                         break;
                     }
 
-                    Thread.Sleep(50);
+                    Thread.Sleep(100);
                     if (tries >= 9)
                     {
                         MainForm.ShowMessageBox(
