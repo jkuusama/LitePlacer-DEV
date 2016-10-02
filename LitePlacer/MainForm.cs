@@ -6340,7 +6340,6 @@ namespace LitePlacer
 
         // =================================================================================
         // CAD data and Job datagrid colum definitions
-
         const int CADdata_ComponentColumn = 0;
         const int CADdata_ComponentType_Column = 1;
         const int CADdata_PlacedColumn = 2;
@@ -6355,7 +6354,8 @@ namespace LitePlacer
         const int Jobdata_ComponentTypColumn = 1;
         const int Jobdata_MethodColumn = 2;
         const int Jobdata_MethodParametersColumn = 3;
-        const int Jobdata_ComponentsColumn = 4;
+        const int Jobdata_NozzleColumn = 4;
+        const int Jobdata_ComponentsColumn = 5;
 
         // =================================================================================
         private void resetPlacedDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7018,7 +7018,9 @@ namespace LitePlacer
         // If components are edited, update count automatically
         private void JobData_GridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_ComponentsColumn)
+            int col = JobData_GridView.CurrentCell.ColumnIndex;
+
+            if (JobData_GridView.Columns[col].Name == "ComponentList" )
             {
                 // components
                 MakeJobDataDirty();
