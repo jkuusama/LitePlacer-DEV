@@ -12442,6 +12442,10 @@ namespace LitePlacer
             double X;
             double Y;
             double Z;
+            if (NozzlesLoad_dataGridView.RowCount==0)
+            {
+                return;
+            }
             NozzlesLoad_dataGridView.CurrentCell = NozzlesLoad_dataGridView[0, 0];   // If cursor is on an editable cell, old value may be used.
             NozzlesUnload_dataGridView.CurrentCell = NozzlesUnload_dataGridView[0, 0];
 
@@ -12577,6 +12581,10 @@ namespace LitePlacer
 
         private void copyMovesFromNozzle1(DataGridView grid)
         {
+            if (grid.RowCount==0)
+            {
+                return;
+            }
             grid.CurrentCell = grid[0, 0];
             for (int nozzle = 1; nozzle < Properties.Settings.Default.Nozzles_count; nozzle++)
             {
@@ -12876,6 +12884,10 @@ namespace LitePlacer
         private bool NozzleDataCheck(DataGridView grid, int nozzle, int col, out double value)
         {
             value = 0.0;
+            if (grid.RowCount==0)
+            {
+                return false;
+            }
             if (grid.Rows[nozzle-1].Cells[col].Value == null)
             {
                 return false;
@@ -12924,6 +12936,10 @@ namespace LitePlacer
             // Use story: The user is setting up the nozles. Jog nozzle holder to start position,
             // click get, start position is automatically filled and the next step box is selected.
             // Jog the next step and click get, the axis and move size are automatically filled
+            if (grid.RowCount==0)
+            {
+                return;
+            }
             int row = grid.CurrentCell.RowIndex;
             int col = grid.CurrentCell.ColumnIndex;
             DisplayText("Current Cell: " + row.ToString() + ", " + col.ToString());
@@ -13318,7 +13334,10 @@ namespace LitePlacer
                 return false;
             }
             AllDone = false;
-
+            if (grid.RowCount==0)
+            {
+                return false;
+            }
             // is direction set? If not, all done.
             int DirCol = Nozzledata_StartZColumn + (MoveNumber-1) * 2+1;
             if (grid.Rows[nozzle - 1].Cells[DirCol].Value == null)
