@@ -13301,9 +13301,9 @@ namespace LitePlacer
 
         private bool m_DoNozzleSequence(DataGridView grid, int Nozzle)
         {
-            bool slack = Cnc.SlackCompensation;
+            bool slack = Cnc.SlackCompensation;  // this routine can be called outside nozzle tab, so we need to store slack values, ...
             bool slackA = Cnc.SlackCompensationA;
-            Cnc.SlackCompensation = false;
+            Cnc.SlackCompensation = false;      // .. but we don't want slack compensation moves on nozzle load/unload
             Cnc.SlackCompensationA = false;
 
             if (Nozzles_Stop)
@@ -13318,6 +13318,8 @@ namespace LitePlacer
             {
                 if (Nozzles_Stop)
                 {
+                    Cnc.SlackCompensation = slack;
+                    Cnc.SlackCompensationA = slackA;
                     return false;
                 }
                 if (!m_DoNozzleMove(grid, Nozzle, Move++, out AllDone))
@@ -13542,6 +13544,10 @@ namespace LitePlacer
 
         private void CalibrateNozzles_button_Click(object sender, EventArgs e)
         {
+            // this is only called from nozzle tab page, so we want to leave with slack compensation off
+            // We want to do moves to camera with slack compensatoin, if he user has it on
+            Cnc.SlackCompensation = Properties.Settings.Default.CNC_SlackCompensation;  
+
             Nozzles_Stop = false;
             if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
             {
@@ -13552,6 +13558,7 @@ namespace LitePlacer
                         "Needle calibration disabled", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.No)
                     {
+                        Cnc.SlackCompensation = false;
                         return;
                     };
                     OmitNeedleCalibration_checkBox.Checked = false;
@@ -13562,14 +13569,17 @@ namespace LitePlacer
             {
                 if (!ChangeNozzle_m(nozzle))
                 {
+                    Cnc.SlackCompensation = false;
                     return;
                 }
                 if (Nozzles_Stop)
                 {
+                    Cnc.SlackCompensation = false;
                     return;
                 }
                 if (!CalibrateNeedle_m())
                 {
+                    Cnc.SlackCompensation = false;
                     return;
                 }
                 Needle.Store(nozzle);
@@ -13579,7 +13589,7 @@ namespace LitePlacer
             path = path.Remove(i + 1);
             Needle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
             Needle.UseCalibration(Properties.Settings.Default.Nozzles_count);
-
+            Cnc.SlackCompensation = false;
         }
 
         private void NozzlesSave_button_Click(object sender, EventArgs e)

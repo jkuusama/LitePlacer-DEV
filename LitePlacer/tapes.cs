@@ -380,7 +380,15 @@ namespace LitePlacer
             {
                 if ((pos % 2) == 1)
                 {
-                    dL = 2.0;
+                    // My logic fails: quick dirty fix.
+                    if (Grid.Rows[Tape].Cells["Orientation_Column"].Value.ToString()=="-X")
+                    {
+                        dL = -2.0;
+                    }
+                    else
+                    {
+                        dL = 2.0;
+                    }
                 }
                 else
                 {
