@@ -12871,31 +12871,6 @@ namespace LitePlacer
             ResizeNozzleTables();
         }
 
-        private void NoOfNozzles_UpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (StartingUp)
-            {
-                return;
-            }
-            if (NoOfNozzles_UpDown.Value > Properties.Settings.Default.Nozzles_maximum)
-            {
-                NoOfNozzles_UpDown.Value = Properties.Settings.Default.Nozzles_maximum;
-                return;
-            }
-            if (NoOfNozzles_UpDown.Value > NozzlesLoad_dataGridView.RowCount)
-            {
-                AddNozzle(true);
-            }
-            else
-            {
-                if (NozzlesLoad_dataGridView.RowCount > 0)
-                {
-                    RemoveNozzle();
-                }
-            }
-            Properties.Settings.Default.Nozzles_count = (int)NoOfNozzles_UpDown.Value;
-            ForceNozzle_numericUpDown.Maximum = Properties.Settings.Default.Nozzles_count;
-        }
 
         // ==========================================================================================================
         private bool NozzleDataCheck(DataGridView grid, int nozzle, int col, out double value)
@@ -13539,7 +13514,41 @@ namespace LitePlacer
 
         private void NozzleChangeEnable_checkBox_CheckedChanged(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.Nozzles_count == 0)
+            {
+                NozzleChangeEnable_checkBox.Checked = false;
+            }
             Properties.Settings.Default.Nozzles_Enabled = NozzleChangeEnable_checkBox.Checked;
+        }
+
+        private void NoOfNozzles_UpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (StartingUp)
+            {
+                return;
+            }
+
+            if (NoOfNozzles_UpDown.Value > Properties.Settings.Default.Nozzles_maximum)
+            {
+                NoOfNozzles_UpDown.Value = Properties.Settings.Default.Nozzles_maximum;
+            }
+            if (NoOfNozzles_UpDown.Value > NozzlesLoad_dataGridView.RowCount)
+            {
+                AddNozzle(true);
+            }
+            else
+            {
+                if (NozzlesLoad_dataGridView.RowCount > 0)
+                {
+                    RemoveNozzle();
+                }
+            }
+            Properties.Settings.Default.Nozzles_count = (int)NoOfNozzles_UpDown.Value;
+            ForceNozzle_numericUpDown.Maximum = Properties.Settings.Default.Nozzles_count;
+            if (Properties.Settings.Default.Nozzles_count == 0)
+            {
+                NozzleChangeEnable_checkBox.Checked = false;
+            }
         }
 
         private void CalibrateNozzles_button_Click(object sender, EventArgs e)
@@ -13705,6 +13714,7 @@ namespace LitePlacer
                 DisplayText("A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
             }
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

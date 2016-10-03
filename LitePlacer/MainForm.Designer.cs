@@ -692,6 +692,8 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Nozzles_tabPage = new System.Windows.Forms.TabPage();
+            this.label155 = new System.Windows.Forms.Label();
+            this.CalData_button = new System.Windows.Forms.Button();
             this.label151 = new System.Windows.Forms.Label();
             this.label150 = new System.Windows.Forms.Label();
             this.NozzlesParameters_dataGridView = new System.Windows.Forms.DataGridView();
@@ -770,8 +772,6 @@
             this.Abs_radioButton = new System.Windows.Forms.RadioButton();
             this.Relative_Button = new System.Windows.Forms.RadioButton();
             this.label108 = new System.Windows.Forms.Label();
-            this.CalData_button = new System.Windows.Forms.Button();
-            this.label155 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -8132,6 +8132,25 @@
             this.Nozzles_tabPage.Text = "Nozzles setup";
             this.Nozzles_tabPage.UseVisualStyleBackColor = true;
             // 
+            // label155
+            // 
+            this.label155.AutoSize = true;
+            this.label155.Location = new System.Drawing.Point(971, 553);
+            this.label155.Name = "label155";
+            this.label155.Size = new System.Drawing.Size(100, 13);
+            this.label155.TabIndex = 40;
+            this.label155.Text = "For troubleshooting:";
+            // 
+            // CalData_button
+            // 
+            this.CalData_button.Location = new System.Drawing.Point(971, 569);
+            this.CalData_button.Name = "CalData_button";
+            this.CalData_button.Size = new System.Drawing.Size(99, 23);
+            this.CalData_button.TabIndex = 39;
+            this.CalData_button.Text = "Dump cal data";
+            this.CalData_button.UseVisualStyleBackColor = true;
+            this.CalData_button.Click += new System.EventHandler(this.CalData_button_Click);
+            // 
             // label151
             // 
             this.label151.AutoSize = true;
@@ -8939,25 +8958,6 @@
             this.label108.Size = new System.Drawing.Size(63, 18);
             this.label108.TabIndex = 95;
             this.label108.Text = "nozzle:";
-            // 
-            // CalData_button
-            // 
-            this.CalData_button.Location = new System.Drawing.Point(971, 569);
-            this.CalData_button.Name = "CalData_button";
-            this.CalData_button.Size = new System.Drawing.Size(99, 23);
-            this.CalData_button.TabIndex = 39;
-            this.CalData_button.Text = "Dump cal data";
-            this.CalData_button.UseVisualStyleBackColor = true;
-            this.CalData_button.Click += new System.EventHandler(this.CalData_button_Click);
-            // 
-            // label155
-            // 
-            this.label155.AutoSize = true;
-            this.label155.Location = new System.Drawing.Point(971, 553);
-            this.label155.Name = "label155";
-            this.label155.Size = new System.Drawing.Size(100, 13);
-            this.label155.TabIndex = 40;
-            this.label155.Text = "For troubleshooting:";
             // 
             // FormMain
             // 
