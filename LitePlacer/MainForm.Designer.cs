@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -7867,14 +7867,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -8129,7 +8129,7 @@
             this.Nozzles_tabPage.Padding = new System.Windows.Forms.Padding(3);
             this.Nozzles_tabPage.Size = new System.Drawing.Size(1245, 635);
             this.Nozzles_tabPage.TabIndex = 7;
-            this.Nozzles_tabPage.Text = "Nozzles setup";
+            this.Nozzles_tabPage.Text = "Nozzles Setup";
             this.Nozzles_tabPage.UseVisualStyleBackColor = true;
             // 
             // label155
@@ -8163,7 +8163,7 @@
             // label150
             // 
             this.label150.AutoSize = true;
-            this.label150.Location = new System.Drawing.Point(631, 301);
+            this.label150.Location = new System.Drawing.Point(679, 304);
             this.label150.Name = "label150";
             this.label150.Size = new System.Drawing.Size(94, 13);
             this.label150.TabIndex = 37;
@@ -8183,7 +8183,7 @@
             this.NozzleAlternative_column});
             this.NozzlesParameters_dataGridView.ContextMenuStrip = this.NozzleUnload_contextMenuStrip;
             this.NozzlesParameters_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.NozzlesParameters_dataGridView.Location = new System.Drawing.Point(634, 320);
+            this.NozzlesParameters_dataGridView.Location = new System.Drawing.Point(682, 320);
             this.NozzlesParameters_dataGridView.Name = "NozzlesParameters_dataGridView";
             this.NozzlesParameters_dataGridView.RowHeadersVisible = false;
             this.NozzlesParameters_dataGridView.RowHeadersWidth = 40;
@@ -8555,7 +8555,7 @@
             // 
             // GetUnloadCoordinates_button
             // 
-            this.GetUnloadCoordinates_button.Location = new System.Drawing.Point(492, 291);
+            this.GetUnloadCoordinates_button.Location = new System.Drawing.Point(545, 294);
             this.GetUnloadCoordinates_button.Name = "GetUnloadCoordinates_button";
             this.GetUnloadCoordinates_button.Size = new System.Drawing.Size(108, 23);
             this.GetUnloadCoordinates_button.TabIndex = 7;
@@ -8604,7 +8604,7 @@
             this.NozzlesUnload_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.NozzlesUnload_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.NozzlesUnload_dataGridView.ShowEditingIcon = false;
-            this.NozzlesUnload_dataGridView.Size = new System.Drawing.Size(594, 249);
+            this.NozzlesUnload_dataGridView.Size = new System.Drawing.Size(647, 249);
             this.NozzlesUnload_dataGridView.TabIndex = 4;
             this.NozzlesUnload_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.NozzlesUnload_dataGridView_CellMouseDown);
             this.NozzlesUnload_dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.NozzlesUnload_dataGridView_CellMouseEnter);
