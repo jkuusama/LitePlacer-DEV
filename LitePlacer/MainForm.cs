@@ -13679,10 +13679,24 @@ namespace LitePlacer
             DisplayText("Nozzles calibration data:");
             for (int i = 1; i <= 6; i++)
             {
-                DisplayText("Nozzle " + i.ToString() + ":");
-                foreach (NeedleClass.NeedlePoint p in Needle.CalibrationPointsArr[i])
+                if (Needle.CalibratedArr[i])
                 {
-                    DisplayText("A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
+                    DisplayText("Nozzle " + i.ToString() + " is calibrated:");
+                }
+                else
+                {
+                    DisplayText("Nozzle " + i.ToString() + " is not calibrated:");
+                }
+                if ( Needle.CalibrationPointsArr[i]==null)
+                {
+                    DisplayText("No calibration data");
+                }
+                else
+                {
+                    foreach (NeedleClass.NeedlePoint p in Needle.CalibrationPointsArr[i])
+                    {
+                        DisplayText("A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
+                    }
                 }
             }
             DisplayText("Currently used:");

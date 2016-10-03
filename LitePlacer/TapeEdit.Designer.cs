@@ -704,8 +704,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TapeEditForm";
             this.Text = "Edit Tape Parameters";
-            this.toolTip1.SetToolTip(this, "If checked, only the first and last part locations \r\nare measured, the rest are i" +
-        "nterpolated from those.");
             this.Load += new System.EventHandler(this.TapeEditForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Nozzle_numericUpDown)).EndInit();
             this.ResumeLayout(false);

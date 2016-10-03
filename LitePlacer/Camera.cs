@@ -1354,9 +1354,12 @@ namespace LitePlacer
         }
 
         // =========================================================
-        public bool SizeLimited { get; set; } = false;
-        public double MaxSize { get; set; } = 1000;
-        public double MinSize { get; set; } = 1000;
+        //public bool SizeLimited { get; set; } = false;
+        //public double MaxSize { get; set; } = 1000;
+        //public double MinSize { get; set; } = 1000;
+        public bool SizeLimited  = false;
+        public double MaxSize = 1000;
+        public double MinSize = 1000;
 
         public List<Shapes.Circle> GetMeasurementCircles(double MaxDistance)
         {
