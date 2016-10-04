@@ -8,26 +8,26 @@ using System.Windows.Forms;
 namespace LitePlacer
 {
     [Serializable()]
-    class NeedleClass
+    class NozzleClass
     {
         [Serializable()]
-        public struct NeedlePoint
+        public struct NozzlePoint
         {
             public double Angle;
             public double X;  // X offset from nominal, in mm's, at angle
             public double Y;
         }
 
-		public List<NeedlePoint> CalibrationPoints = new List<NeedlePoint>();   // what we use
+		public List<NozzlePoint> CalibrationPoints = new List<NozzlePoint>();   // what we use
         // to calibrate nozzles, we can store and restore calibration points and their validity here.
-        public List<NeedlePoint>[] CalibrationPointsArr = new List<NeedlePoint>[Properties.Settings.Default.Nozzles_maximum];
+        public List<NozzlePoint>[] CalibrationPointsArr = new List<NozzlePoint>[Properties.Settings.Default.Nozzles_maximum];
         public bool[] CalibratedArr = new bool[Properties.Settings.Default.Nozzles_maximum];
 
         private Camera Cam;
         private CNC Cnc;
         private static FormMain MainForm;
 
-        public NeedleClass(Camera MyCam, CNC MyCnc, FormMain MainF)
+        public NozzleClass(Camera MyCam, CNC MyCnc, FormMain MainF)
         {
             MainForm = MainF;
             Calibrated = false;
@@ -56,14 +56,14 @@ namespace LitePlacer
         public void Store(int nozzle)
         {
             MainForm.DisplayText("Stored calibration for nozzle " + nozzle.ToString());
-            CalibrationPointsArr[nozzle] = (List<NeedlePoint>)DeepClone(CalibrationPoints);
+            CalibrationPointsArr[nozzle] = (List<NozzlePoint>)DeepClone(CalibrationPoints);
             CalibratedArr[nozzle] = Calibrated;
         }
 
         public void UseCalibration(int nozzle)
         {
             MainForm.DisplayText("Using calibration for nozzle " + nozzle.ToString());
-            CalibrationPoints = (List<NeedlePoint>)DeepClone(CalibrationPointsArr[nozzle]);
+            CalibrationPoints = (List<NozzlePoint>)DeepClone(CalibrationPointsArr[nozzle]);
             Calibrated = CalibratedArr[nozzle];
         }
 
@@ -89,7 +89,7 @@ namespace LitePlacer
                 Stream stream = File.Open(filename, FileMode.Open);
                 BinaryFormatter formatter = new BinaryFormatter();
                 MainForm.DisplayText("Loading nozzle calibration data");
-                CalibrationPointsArr = (List<NeedlePoint>[])formatter.Deserialize(stream);
+                CalibrationPointsArr = (List<NozzlePoint>[])formatter.Deserialize(stream);
                 MainForm.DisplayText("Loading nozzle calibration validity data");
                 CalibratedArr = (bool[])formatter.Deserialize(stream);
                 stream.Close();
@@ -168,7 +168,7 @@ namespace LitePlacer
 
         public bool CorrectedPosition_m(double angle, out double X, out double Y)
         {
-            if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
+            if (Properties.Settings.Default.Placement_OmitNozzleCalibration)
             {
                 X = 0.0;
                 Y = 0.0;
@@ -178,8 +178,8 @@ namespace LitePlacer
             if (!Calibrated)
             {
                 DialogResult dialogResult = MainForm.ShowMessageBox(
-                    "Needle not calibrated. Calibrate now?",
-                    "Needle not calibrated", MessageBoxButtons.YesNo);
+                    "Nozzle not calibrated. Calibrate now?",
+                    "Nozzle not calibrated", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                 {
                     X = 0.0;
@@ -189,7 +189,7 @@ namespace LitePlacer
                 double CurrX = Cnc.CurrentX;
                 double CurrY = Cnc.CurrentY;
                 double CurrA = Cnc.CurrentA;
-                if(!MainForm.CalibrateNeedle_m())
+                if(!MainForm.CalibrateNozzle_m())
                 {
                     X = 0;
                     Y = 0;
@@ -244,7 +244,7 @@ namespace LitePlacer
                 }
             }
             MainForm.ShowMessageBox(
-                "Needle Calibration value read: value not found",
+                "Nozzle Calibration value read: value not found",
                 "Sloppy programmer error",
                 MessageBoxButtons.OK);
             X = 0;
@@ -255,7 +255,7 @@ namespace LitePlacer
 
         public bool Calibrate()
         {
-            if (Properties.Settings.Default.Placement_OmitNeedleCalibration)
+            if (Properties.Settings.Default.Placement_OmitNozzleCalibration)
             {
                 return true;
             };
@@ -265,7 +265,7 @@ namespace LitePlacer
             if (!Cam.IsRunning())
             {
                 MainForm.ShowMessageBox(
-                    "Attempt to calibrate needle, camera is not running.",
+                    "Attempt to calibrate Nozzle, camera is not running.",
                     "Camera not running",
                     MessageBoxButtons.OK);
                 return false;
@@ -279,7 +279,7 @@ namespace LitePlacer
             // I goes in .1 of degrees. Makes sense to have the increase so, that multiplies of 45 are hit
             for (int i = 0; i <= 3600; i = i + 225)
             {
-                NeedlePoint Point = new NeedlePoint();
+                NozzlePoint Point = new NozzlePoint();
                 Point.Angle = Convert.ToDouble(i) / 10.0;
                 if (!CNC_A_m(Point.Angle))
                 {
@@ -297,7 +297,7 @@ namespace LitePlacer
                     if (tries >= 9)
                     {
                         MainForm.ShowMessageBox(
-                            "Needle calibration: Can't see Needle",
+                            "Nozzle calibration: Can't see Nozzle",
                             "No Circle found",
                             MessageBoxButtons.OK);
                         return false;
@@ -306,7 +306,7 @@ namespace LitePlacer
                 if (res == 0)
                 {
                     MainForm.ShowMessageBox(
-                        "Needle Calibration: Can't find needle",
+                        "Nozzle Calibration: Can't find Nozzle",
                         "No Circle found",
                         MessageBoxButtons.OK);
                     return false;
@@ -324,13 +324,13 @@ namespace LitePlacer
         {
             double dX;
             double dY;
-			MainForm.DisplayText("Needle.Move_m(): X= " + X.ToString() + ", Y= " + Y.ToString() + ", A= " + A.ToString());
+			MainForm.DisplayText("Nozzle.Move_m(): X= " + X.ToString() + ", Y= " + Y.ToString() + ", A= " + A.ToString());
 			if (!CorrectedPosition_m(A, out dX, out dY))
 			{
 				return false;
 			};
-            double Xoff = Properties.Settings.Default.DownCam_NeedleOffsetX;
-            double Yoff = Properties.Settings.Default.DownCam_NeedleOffsetY;
+            double Xoff = Properties.Settings.Default.DownCam_NozzleOffsetX;
+            double Yoff = Properties.Settings.Default.DownCam_NozzleOffsetY;
             return CNC_XYA(X + Xoff + dX, Y + Yoff + dY, A);
         }
 

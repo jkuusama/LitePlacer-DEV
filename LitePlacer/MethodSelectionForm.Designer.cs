@@ -32,7 +32,7 @@
             this.Place_button = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.ChangeNeedle_button = new System.Windows.Forms.Button();
+            this.ChangeNozzle_button = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.Recalibrate_button = new System.Windows.Forms.Button();
@@ -91,15 +91,15 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Normal placement";
             // 
-            // ChangeNeedle_button
+            // ChangeNozzle_button
             // 
-            this.ChangeNeedle_button.Location = new System.Drawing.Point(238, 128);
-            this.ChangeNeedle_button.Name = "ChangeNeedle_button";
-            this.ChangeNeedle_button.Size = new System.Drawing.Size(136, 23);
-            this.ChangeNeedle_button.TabIndex = 4;
-            this.ChangeNeedle_button.Text = "Manual needle change";
-            this.ChangeNeedle_button.UseVisualStyleBackColor = true;
-            this.ChangeNeedle_button.Click += new System.EventHandler(this.ChangeNeedle_button_Click);
+            this.ChangeNozzle_button.Location = new System.Drawing.Point(238, 128);
+            this.ChangeNozzle_button.Name = "ChangeNozzle_button";
+            this.ChangeNozzle_button.Size = new System.Drawing.Size(136, 23);
+            this.ChangeNozzle_button.TabIndex = 4;
+            this.ChangeNozzle_button.Text = "Manual Nozzle change";
+            this.ChangeNozzle_button.UseVisualStyleBackColor = true;
+            this.ChangeNozzle_button.Click += new System.EventHandler(this.ChangeNozzle_button_Click);
             // 
             // label3
             // 
@@ -108,7 +108,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(126, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Pause for needle change";
+            this.label3.Text = "Pause for Nozzle change";
             // 
             // label4
             // 
@@ -300,7 +300,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Recalibrate_button);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.ChangeNeedle_button);
+            this.Controls.Add(this.ChangeNozzle_button);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Place_button);
@@ -320,7 +320,7 @@
 		private System.Windows.Forms.Button Place_button;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Button ChangeNeedle_button;
+		private System.Windows.Forms.Button ChangeNozzle_button;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Button Recalibrate_button;

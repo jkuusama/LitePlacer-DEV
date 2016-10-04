@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
-            this.TestNeedleRecognition_button = new System.Windows.Forms.Button();
+            this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
             this.DownCamZoom_checkBox = new System.Windows.Forms.CheckBox();
             this.reset_button = new System.Windows.Forms.Button();
@@ -141,7 +141,7 @@
             this.SizeX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SizeY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
-            this.Needle2_dataGridView = new System.Windows.Forms.DataGridView();
+            this.Nozzle2_dataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewComboBoxColumn11 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewCheckBoxColumn11 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dataGridViewTextBoxColumn56 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -157,7 +157,7 @@
             this.R_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.G_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.B_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Needle_dataGridView = new System.Windows.Forms.DataGridView();
+            this.Nozzle_dataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewComboBoxColumn3 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewCheckBoxColumn3 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -339,17 +339,17 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label154 = new System.Windows.Forms.Label();
             this.label153 = new System.Windows.Forms.Label();
-            this.NeedleMeasure2_button = new System.Windows.Forms.Button();
-            this.NeedleToDisplay2_button = new System.Windows.Forms.Button();
-            this.NeedleToHere2_button = new System.Windows.Forms.Button();
+            this.NozzleMeasure2_button = new System.Windows.Forms.Button();
+            this.NozzleToDisplay2_button = new System.Windows.Forms.Button();
+            this.NozzleToHere2_button = new System.Windows.Forms.Button();
             this.label147 = new System.Windows.Forms.Label();
             this.NozzleDistance_textBox = new System.Windows.Forms.TextBox();
-            this.NeedleMeasure_button = new System.Windows.Forms.Button();
+            this.NozzleMeasure_button = new System.Windows.Forms.Button();
             this.label121 = new System.Windows.Forms.Label();
             this.NozzleMaxSize_textBox = new System.Windows.Forms.TextBox();
-            this.NeedleToDisplay_button = new System.Windows.Forms.Button();
+            this.NozzleToDisplay_button = new System.Windows.Forms.Button();
             this.NozzleMinSize_textBox = new System.Windows.Forms.TextBox();
-            this.NeedleToHere_button = new System.Windows.Forms.Button();
+            this.NozzleToHere_button = new System.Windows.Forms.Button();
             this.label130 = new System.Windows.Forms.Label();
             this.UpCamFindCircles_checkBox = new System.Windows.Forms.CheckBox();
             this.UpCam_comboBox = new System.Windows.Forms.ComboBox();
@@ -380,8 +380,8 @@
             this.label98 = new System.Windows.Forms.Label();
             this.UpcamPositionY_textBox = new System.Windows.Forms.TextBox();
             this.UpcamPositionX_textBox = new System.Windows.Forms.TextBox();
-            this.NeedleOffsetY_textBox = new System.Windows.Forms.TextBox();
-            this.NeedleOffsetX_textBox = new System.Windows.Forms.TextBox();
+            this.NozzleOffsetY_textBox = new System.Windows.Forms.TextBox();
+            this.NozzleOffsetX_textBox = new System.Windows.Forms.TextBox();
             this.PickupCenterY_textBox = new System.Windows.Forms.TextBox();
             this.PickupCenterX_textBox = new System.Windows.Forms.TextBox();
             this.JigY_textBox = new System.Windows.Forms.TextBox();
@@ -393,7 +393,7 @@
             this.Z0toPCB_CamerasTab_label = new System.Windows.Forms.Label();
             this.label120 = new System.Windows.Forms.Label();
             this.Offset2Method_button = new System.Windows.Forms.Button();
-            this.NeedleOffset_label = new System.Windows.Forms.Label();
+            this.NozzleOffset_label = new System.Windows.Forms.Label();
             this.label115 = new System.Windows.Forms.Label();
             this.label114 = new System.Windows.Forms.Label();
             this.SetPickupCenter_button = new System.Windows.Forms.Button();
@@ -407,7 +407,7 @@
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
-            this.NeedleBelowPCB_textBox = new System.Windows.Forms.TextBox();
+            this.NozzleBelowPCB_textBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.DisableLog_checkBox = new System.Windows.Forms.CheckBox();
             this.CheckNow_button = new System.Windows.Forms.Button();
@@ -599,7 +599,7 @@
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
             this.Placement_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
-            this.OmitNeedleCalibration_checkBox = new System.Windows.Forms.CheckBox();
+            this.OmitNozzleCalibration_checkBox = new System.Windows.Forms.CheckBox();
             this.MeasureZs_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.label127 = new System.Windows.Forms.Label();
@@ -612,7 +612,7 @@
             this.Panelize_button = new System.Windows.Forms.Button();
             this.StopDemo_button = new System.Windows.Forms.Button();
             this.Demo_button = new System.Windows.Forms.Button();
-            this.ChangeNeedle_button = new System.Windows.Forms.Button();
+            this.ManualNeedeChange_button = new System.Windows.Forms.Button();
             this.ValidMeasurement_checkBox = new System.Windows.Forms.CheckBox();
             this.NextGroup_label = new System.Windows.Forms.Label();
             this.label125 = new System.Windows.Forms.Label();
@@ -780,9 +780,9 @@
             this.Components_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
             this.tabPageSetupCameras.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Needle2_dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Nozzle2_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Temp_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Needle_dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Nozzle_dataGridView)).BeginInit();
             this.CamerasSetUp_tabControl.SuspendLayout();
             this.DownCamera_tabPage.SuspendLayout();
             this.groupBox13.SuspendLayout();
@@ -857,16 +857,16 @@
             this.Park_button.UseVisualStyleBackColor = true;
             this.Park_button.Click += new System.EventHandler(this.Park_button_Click);
             // 
-            // TestNeedleRecognition_button
+            // TestNozzleRecognition_button
             // 
-            this.TestNeedleRecognition_button.Location = new System.Drawing.Point(352, 571);
-            this.TestNeedleRecognition_button.Name = "TestNeedleRecognition_button";
-            this.TestNeedleRecognition_button.Size = new System.Drawing.Size(110, 23);
-            this.TestNeedleRecognition_button.TabIndex = 63;
-            this.TestNeedleRecognition_button.Text = "Measure Needle";
-            this.toolTip1.SetToolTip(this.TestNeedleRecognition_button, "Re-runs needle calibration routine.");
-            this.TestNeedleRecognition_button.UseVisualStyleBackColor = true;
-            this.TestNeedleRecognition_button.Click += new System.EventHandler(this.TestNeedleRecognition_button_Click);
+            this.TestNozzleRecognition_button.Location = new System.Drawing.Point(352, 571);
+            this.TestNozzleRecognition_button.Name = "TestNozzleRecognition_button";
+            this.TestNozzleRecognition_button.Size = new System.Drawing.Size(124, 23);
+            this.TestNozzleRecognition_button.TabIndex = 63;
+            this.TestNozzleRecognition_button.Text = "Measure Nozzle";
+            this.toolTip1.SetToolTip(this.TestNozzleRecognition_button, "Re-runs Nozzle calibration routine.");
+            this.TestNozzleRecognition_button.UseVisualStyleBackColor = true;
+            this.TestNozzleRecognition_button.Click += new System.EventHandler(this.TestNozzleRecognition_button_Click);
             // 
             // DownCamZoomFactor_textBox
             // 
@@ -1969,9 +1969,9 @@
             // 
             // tabPageSetupCameras
             // 
-            this.tabPageSetupCameras.Controls.Add(this.Needle2_dataGridView);
+            this.tabPageSetupCameras.Controls.Add(this.Nozzle2_dataGridView);
             this.tabPageSetupCameras.Controls.Add(this.Temp_dataGridView);
-            this.tabPageSetupCameras.Controls.Add(this.Needle_dataGridView);
+            this.tabPageSetupCameras.Controls.Add(this.Nozzle_dataGridView);
             this.tabPageSetupCameras.Controls.Add(this.CamerasSetUp_tabControl);
             this.tabPageSetupCameras.Controls.Add(this.label101);
             this.tabPageSetupCameras.Controls.Add(this.label100);
@@ -1985,8 +1985,8 @@
             this.tabPageSetupCameras.Controls.Add(this.label98);
             this.tabPageSetupCameras.Controls.Add(this.UpcamPositionY_textBox);
             this.tabPageSetupCameras.Controls.Add(this.UpcamPositionX_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.NeedleOffsetY_textBox);
-            this.tabPageSetupCameras.Controls.Add(this.NeedleOffsetX_textBox);
+            this.tabPageSetupCameras.Controls.Add(this.NozzleOffsetY_textBox);
+            this.tabPageSetupCameras.Controls.Add(this.NozzleOffsetX_textBox);
             this.tabPageSetupCameras.Controls.Add(this.PickupCenterY_textBox);
             this.tabPageSetupCameras.Controls.Add(this.PickupCenterX_textBox);
             this.tabPageSetupCameras.Controls.Add(this.JigY_textBox);
@@ -1998,7 +1998,7 @@
             this.tabPageSetupCameras.Controls.Add(this.Z0toPCB_CamerasTab_label);
             this.tabPageSetupCameras.Controls.Add(this.label120);
             this.tabPageSetupCameras.Controls.Add(this.Offset2Method_button);
-            this.tabPageSetupCameras.Controls.Add(this.NeedleOffset_label);
+            this.tabPageSetupCameras.Controls.Add(this.NozzleOffset_label);
             this.tabPageSetupCameras.Controls.Add(this.label115);
             this.tabPageSetupCameras.Controls.Add(this.label114);
             this.tabPageSetupCameras.Controls.Add(this.SetPickupCenter_button);
@@ -2019,11 +2019,11 @@
             this.tabPageSetupCameras.Text = "Setup Cameras";
             this.tabPageSetupCameras.UseVisualStyleBackColor = true;
             // 
-            // Needle2_dataGridView
+            // Nozzle2_dataGridView
             // 
-            this.Needle2_dataGridView.AllowUserToAddRows = false;
-            this.Needle2_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Needle2_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Nozzle2_dataGridView.AllowUserToAddRows = false;
+            this.Nozzle2_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Nozzle2_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewComboBoxColumn11,
             this.dataGridViewCheckBoxColumn11,
             this.dataGridViewTextBoxColumn56,
@@ -2031,14 +2031,14 @@
             this.dataGridViewTextBoxColumn58,
             this.dataGridViewTextBoxColumn59,
             this.dataGridViewTextBoxColumn60});
-            this.Needle2_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Needle2_dataGridView.Location = new System.Drawing.Point(460, 305);
-            this.Needle2_dataGridView.Name = "Needle2_dataGridView";
-            this.Needle2_dataGridView.RowHeadersVisible = false;
-            this.Needle2_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Needle2_dataGridView.Size = new System.Drawing.Size(157, 137);
-            this.Needle2_dataGridView.TabIndex = 145;
-            this.Needle2_dataGridView.Visible = false;
+            this.Nozzle2_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.Nozzle2_dataGridView.Location = new System.Drawing.Point(460, 305);
+            this.Nozzle2_dataGridView.Name = "Nozzle2_dataGridView";
+            this.Nozzle2_dataGridView.RowHeadersVisible = false;
+            this.Nozzle2_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.Nozzle2_dataGridView.Size = new System.Drawing.Size(157, 137);
+            this.Nozzle2_dataGridView.TabIndex = 145;
+            this.Nozzle2_dataGridView.Visible = false;
             // 
             // dataGridViewComboBoxColumn11
             // 
@@ -2165,11 +2165,11 @@
             this.B_column.Name = "B_column";
             this.B_column.ReadOnly = true;
             // 
-            // Needle_dataGridView
+            // Nozzle_dataGridView
             // 
-            this.Needle_dataGridView.AllowUserToAddRows = false;
-            this.Needle_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Needle_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Nozzle_dataGridView.AllowUserToAddRows = false;
+            this.Nozzle_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Nozzle_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewComboBoxColumn3,
             this.dataGridViewCheckBoxColumn3,
             this.dataGridViewTextBoxColumn6,
@@ -2177,14 +2177,14 @@
             this.dataGridViewTextBoxColumn8,
             this.dataGridViewTextBoxColumn9,
             this.dataGridViewTextBoxColumn10});
-            this.Needle_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Needle_dataGridView.Location = new System.Drawing.Point(404, 271);
-            this.Needle_dataGridView.Name = "Needle_dataGridView";
-            this.Needle_dataGridView.RowHeadersVisible = false;
-            this.Needle_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Needle_dataGridView.Size = new System.Drawing.Size(157, 137);
-            this.Needle_dataGridView.TabIndex = 125;
-            this.Needle_dataGridView.Visible = false;
+            this.Nozzle_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.Nozzle_dataGridView.Location = new System.Drawing.Point(404, 271);
+            this.Nozzle_dataGridView.Name = "Nozzle_dataGridView";
+            this.Nozzle_dataGridView.RowHeadersVisible = false;
+            this.Nozzle_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.Nozzle_dataGridView.Size = new System.Drawing.Size(157, 137);
+            this.Nozzle_dataGridView.TabIndex = 125;
+            this.Nozzle_dataGridView.Visible = false;
             // 
             // dataGridViewComboBoxColumn3
             // 
@@ -4147,7 +4147,7 @@
             this.UpCamComponentsToHere_button.Size = new System.Drawing.Size(75, 23);
             this.UpCamComponentsToHere_button.TabIndex = 22;
             this.UpCamComponentsToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.UpCamComponentsToHere_button, "Copies the algorithms from the table to be used\r\nin finding needle tip during nee" +
+            this.toolTip1.SetToolTip(this.UpCamComponentsToHere_button, "Copies the algorithms from the table to be used\r\nin finding Nozzle tip during nee" +
         "dle calibration.");
             this.UpCamComponentsToHere_button.UseVisualStyleBackColor = true;
             this.UpCamComponentsToHere_button.Click += new System.EventHandler(this.UpCamComponentsToHere_button_Click);
@@ -4183,24 +4183,24 @@
             this.groupBox5.BackColor = System.Drawing.Color.Transparent;
             this.groupBox5.Controls.Add(this.label154);
             this.groupBox5.Controls.Add(this.label153);
-            this.groupBox5.Controls.Add(this.NeedleMeasure2_button);
-            this.groupBox5.Controls.Add(this.NeedleToDisplay2_button);
-            this.groupBox5.Controls.Add(this.NeedleToHere2_button);
+            this.groupBox5.Controls.Add(this.NozzleMeasure2_button);
+            this.groupBox5.Controls.Add(this.NozzleToDisplay2_button);
+            this.groupBox5.Controls.Add(this.NozzleToHere2_button);
             this.groupBox5.Controls.Add(this.label147);
             this.groupBox5.Controls.Add(this.NozzleDistance_textBox);
-            this.groupBox5.Controls.Add(this.NeedleMeasure_button);
+            this.groupBox5.Controls.Add(this.NozzleMeasure_button);
             this.groupBox5.Controls.Add(this.label121);
             this.groupBox5.Controls.Add(this.NozzleMaxSize_textBox);
-            this.groupBox5.Controls.Add(this.NeedleToDisplay_button);
+            this.groupBox5.Controls.Add(this.NozzleToDisplay_button);
             this.groupBox5.Controls.Add(this.NozzleMinSize_textBox);
-            this.groupBox5.Controls.Add(this.NeedleToHere_button);
+            this.groupBox5.Controls.Add(this.NozzleToHere_button);
             this.groupBox5.Controls.Add(this.label130);
             this.groupBox5.Location = new System.Drawing.Point(6, 327);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(360, 129);
             this.groupBox5.TabIndex = 102;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Needle";
+            this.groupBox5.Text = "Nozzle";
             // 
             // label154
             // 
@@ -4220,40 +4220,40 @@
             this.label153.TabIndex = 158;
             this.label153.Text = "Default functions:";
             // 
-            // NeedleMeasure2_button
+            // NozzleMeasure2_button
             // 
-            this.NeedleMeasure2_button.Location = new System.Drawing.Point(107, 90);
-            this.NeedleMeasure2_button.Name = "NeedleMeasure2_button";
-            this.NeedleMeasure2_button.Size = new System.Drawing.Size(75, 23);
-            this.NeedleMeasure2_button.TabIndex = 157;
-            this.NeedleMeasure2_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.NeedleMeasure2_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.NeedleMeasure2_button.UseVisualStyleBackColor = true;
-            this.NeedleMeasure2_button.Click += new System.EventHandler(this.NeedleMeasure2_button_Click);
+            this.NozzleMeasure2_button.Location = new System.Drawing.Point(107, 90);
+            this.NozzleMeasure2_button.Name = "NozzleMeasure2_button";
+            this.NozzleMeasure2_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzleMeasure2_button.TabIndex = 157;
+            this.NozzleMeasure2_button.Text = "Measure";
+            this.toolTip1.SetToolTip(this.NozzleMeasure2_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
+            this.NozzleMeasure2_button.UseVisualStyleBackColor = true;
+            this.NozzleMeasure2_button.Click += new System.EventHandler(this.NozzleMeasure2_button_Click);
             // 
-            // NeedleToDisplay2_button
+            // NozzleToDisplay2_button
             // 
-            this.NeedleToDisplay2_button.Location = new System.Drawing.Point(107, 61);
-            this.NeedleToDisplay2_button.Name = "NeedleToDisplay2_button";
-            this.NeedleToDisplay2_button.Size = new System.Drawing.Size(75, 23);
-            this.NeedleToDisplay2_button.TabIndex = 156;
-            this.NeedleToDisplay2_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.NeedleToDisplay2_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
+            this.NozzleToDisplay2_button.Location = new System.Drawing.Point(107, 61);
+            this.NozzleToDisplay2_button.Name = "NozzleToDisplay2_button";
+            this.NozzleToDisplay2_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzleToDisplay2_button.TabIndex = 156;
+            this.NozzleToDisplay2_button.Text = "To Display";
+            this.toolTip1.SetToolTip(this.NozzleToDisplay2_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
         "ing.\r\n");
-            this.NeedleToDisplay2_button.UseVisualStyleBackColor = true;
-            this.NeedleToDisplay2_button.Click += new System.EventHandler(this.NeedleToDisplay2_button_Click);
+            this.NozzleToDisplay2_button.UseVisualStyleBackColor = true;
+            this.NozzleToDisplay2_button.Click += new System.EventHandler(this.NozzleToDisplay2_button_Click);
             // 
-            // NeedleToHere2_button
+            // NozzleToHere2_button
             // 
-            this.NeedleToHere2_button.Location = new System.Drawing.Point(107, 32);
-            this.NeedleToHere2_button.Name = "NeedleToHere2_button";
-            this.NeedleToHere2_button.Size = new System.Drawing.Size(75, 23);
-            this.NeedleToHere2_button.TabIndex = 155;
-            this.NeedleToHere2_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.NeedleToHere2_button, "Copies the algorithms from the table to be used\r\nin finding needle tip during nee" +
+            this.NozzleToHere2_button.Location = new System.Drawing.Point(107, 32);
+            this.NozzleToHere2_button.Name = "NozzleToHere2_button";
+            this.NozzleToHere2_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzleToHere2_button.TabIndex = 155;
+            this.NozzleToHere2_button.Text = "Copy Here";
+            this.toolTip1.SetToolTip(this.NozzleToHere2_button, "Copies the algorithms from the table to be used\r\nin finding Nozzle tip during nee" +
         "dle calibration.");
-            this.NeedleToHere2_button.UseVisualStyleBackColor = true;
-            this.NeedleToHere2_button.Click += new System.EventHandler(this.NeedleToHere2_button_Click);
+            this.NozzleToHere2_button.UseVisualStyleBackColor = true;
+            this.NozzleToHere2_button.Click += new System.EventHandler(this.NozzleToHere2_button_Click);
             // 
             // label147
             // 
@@ -4272,16 +4272,16 @@
             this.NozzleDistance_textBox.TabIndex = 149;
             this.NozzleDistance_textBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.NozzleDistance_textBox_KeyUp);
             // 
-            // NeedleMeasure_button
+            // NozzleMeasure_button
             // 
-            this.NeedleMeasure_button.Location = new System.Drawing.Point(6, 90);
-            this.NeedleMeasure_button.Name = "NeedleMeasure_button";
-            this.NeedleMeasure_button.Size = new System.Drawing.Size(75, 23);
-            this.NeedleMeasure_button.TabIndex = 24;
-            this.NeedleMeasure_button.Text = "Measure";
-            this.toolTip1.SetToolTip(this.NeedleMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
-            this.NeedleMeasure_button.UseVisualStyleBackColor = true;
-            this.NeedleMeasure_button.Click += new System.EventHandler(this.NeedleMeasure_button_Click);
+            this.NozzleMeasure_button.Location = new System.Drawing.Point(6, 90);
+            this.NozzleMeasure_button.Name = "NozzleMeasure_button";
+            this.NozzleMeasure_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzleMeasure_button.TabIndex = 24;
+            this.NozzleMeasure_button.Text = "Measure";
+            this.toolTip1.SetToolTip(this.NozzleMeasure_button, "Does one measurement, displays results at\r\nthe low left diagnostic text window.");
+            this.NozzleMeasure_button.UseVisualStyleBackColor = true;
+            this.NozzleMeasure_button.Click += new System.EventHandler(this.NozzleMeasure_button_Click);
             // 
             // label121
             // 
@@ -4300,17 +4300,17 @@
             this.NozzleMaxSize_textBox.TabIndex = 153;
             this.NozzleMaxSize_textBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.NozzleMaxSize_textBox_KeyUp);
             // 
-            // NeedleToDisplay_button
+            // NozzleToDisplay_button
             // 
-            this.NeedleToDisplay_button.Location = new System.Drawing.Point(6, 61);
-            this.NeedleToDisplay_button.Name = "NeedleToDisplay_button";
-            this.NeedleToDisplay_button.Size = new System.Drawing.Size(75, 23);
-            this.NeedleToDisplay_button.TabIndex = 23;
-            this.NeedleToDisplay_button.Text = "To Display";
-            this.toolTip1.SetToolTip(this.NeedleToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
+            this.NozzleToDisplay_button.Location = new System.Drawing.Point(6, 61);
+            this.NozzleToDisplay_button.Name = "NozzleToDisplay_button";
+            this.NozzleToDisplay_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzleToDisplay_button.TabIndex = 23;
+            this.NozzleToDisplay_button.Text = "To Display";
+            this.toolTip1.SetToolTip(this.NozzleToDisplay_button, "Copies the measurement algorithm list to the table\r\nand uses it for video process" +
         "ing.\r\n");
-            this.NeedleToDisplay_button.UseVisualStyleBackColor = true;
-            this.NeedleToDisplay_button.Click += new System.EventHandler(this.NeedleToDisplay_button_Click);
+            this.NozzleToDisplay_button.UseVisualStyleBackColor = true;
+            this.NozzleToDisplay_button.Click += new System.EventHandler(this.NozzleToDisplay_button_Click);
             // 
             // NozzleMinSize_textBox
             // 
@@ -4320,17 +4320,17 @@
             this.NozzleMinSize_textBox.TabIndex = 151;
             this.NozzleMinSize_textBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.NozzleMinSize_textBox_KeyUp);
             // 
-            // NeedleToHere_button
+            // NozzleToHere_button
             // 
-            this.NeedleToHere_button.Location = new System.Drawing.Point(6, 32);
-            this.NeedleToHere_button.Name = "NeedleToHere_button";
-            this.NeedleToHere_button.Size = new System.Drawing.Size(75, 23);
-            this.NeedleToHere_button.TabIndex = 22;
-            this.NeedleToHere_button.Text = "Copy Here";
-            this.toolTip1.SetToolTip(this.NeedleToHere_button, "Copies the algorithms from the table to be used\r\nin finding needle tip during nee" +
+            this.NozzleToHere_button.Location = new System.Drawing.Point(6, 32);
+            this.NozzleToHere_button.Name = "NozzleToHere_button";
+            this.NozzleToHere_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzleToHere_button.TabIndex = 22;
+            this.NozzleToHere_button.Text = "Copy Here";
+            this.toolTip1.SetToolTip(this.NozzleToHere_button, "Copies the algorithms from the table to be used\r\nin finding Nozzle tip during nee" +
         "dle calibration.");
-            this.NeedleToHere_button.UseVisualStyleBackColor = true;
-            this.NeedleToHere_button.Click += new System.EventHandler(this.NeedleToHere_button_Click);
+            this.NozzleToHere_button.UseVisualStyleBackColor = true;
+            this.NozzleToHere_button.Click += new System.EventHandler(this.NozzleToHere_button_Click);
             // 
             // label130
             // 
@@ -4585,8 +4585,8 @@
             this.ZUp_button.Name = "ZUp_button";
             this.ZUp_button.Size = new System.Drawing.Size(84, 23);
             this.ZUp_button.TabIndex = 86;
-            this.ZUp_button.Text = "Needle Up";
-            this.toolTip1.SetToolTip(this.ZUp_button, "Takes needle up to Z0");
+            this.ZUp_button.Text = "Nozzle Up";
+            this.toolTip1.SetToolTip(this.ZUp_button, "Takes Nozzle up to Z0");
             this.ZUp_button.UseVisualStyleBackColor = true;
             this.ZUp_button.Click += new System.EventHandler(this.ZUp_button_Click);
             // 
@@ -4596,8 +4596,8 @@
             this.ZDown_button.Name = "ZDown_button";
             this.ZDown_button.Size = new System.Drawing.Size(84, 23);
             this.ZDown_button.TabIndex = 85;
-            this.ZDown_button.Text = "Needle Down";
-            this.toolTip1.SetToolTip(this.ZDown_button, "Takes needle down to PCB level");
+            this.ZDown_button.Text = "Nozzle Down";
+            this.toolTip1.SetToolTip(this.ZDown_button, "Takes Nozzle down to PCB level");
             this.ZDown_button.UseVisualStyleBackColor = true;
             this.ZDown_button.Click += new System.EventHandler(this.ZDown_button_Click);
             // 
@@ -4658,27 +4658,27 @@
             this.UpcamPositionX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionX_textBox_KeyPress);
             this.UpcamPositionX_textBox.Leave += new System.EventHandler(this.UpcamPositionX_textBox_Leave);
             // 
-            // NeedleOffsetY_textBox
+            // NozzleOffsetY_textBox
             // 
-            this.NeedleOffsetY_textBox.Location = new System.Drawing.Point(120, 597);
-            this.NeedleOffsetY_textBox.Name = "NeedleOffsetY_textBox";
-            this.NeedleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
-            this.NeedleOffsetY_textBox.TabIndex = 86;
-            this.NeedleOffsetY_textBox.Text = "6.99";
-            this.toolTip1.SetToolTip(this.NeedleOffsetY_textBox, "Nominal postion difference between\r\nthe needle tip and down camera image center.");
-            this.NeedleOffsetY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NeedleOffsetY_textBox_KeyPress);
-            this.NeedleOffsetY_textBox.Leave += new System.EventHandler(this.NeedleOffsetY_textBox_Leave);
+            this.NozzleOffsetY_textBox.Location = new System.Drawing.Point(120, 597);
+            this.NozzleOffsetY_textBox.Name = "NozzleOffsetY_textBox";
+            this.NozzleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
+            this.NozzleOffsetY_textBox.TabIndex = 86;
+            this.NozzleOffsetY_textBox.Text = "6.99";
+            this.toolTip1.SetToolTip(this.NozzleOffsetY_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
+            this.NozzleOffsetY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NozzleOffsetY_textBox_KeyPress);
+            this.NozzleOffsetY_textBox.Leave += new System.EventHandler(this.NozzleOffsetY_textBox_Leave);
             // 
-            // NeedleOffsetX_textBox
+            // NozzleOffsetX_textBox
             // 
-            this.NeedleOffsetX_textBox.Location = new System.Drawing.Point(31, 597);
-            this.NeedleOffsetX_textBox.Name = "NeedleOffsetX_textBox";
-            this.NeedleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
-            this.NeedleOffsetX_textBox.TabIndex = 85;
-            this.NeedleOffsetX_textBox.Text = "42.88";
-            this.toolTip1.SetToolTip(this.NeedleOffsetX_textBox, "Nominal postion difference between\r\nthe needle tip and down camera image center.");
-            this.NeedleOffsetX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NeedleOffsetX_textBox_KeyPress);
-            this.NeedleOffsetX_textBox.Leave += new System.EventHandler(this.NeedleOffsetX_textBox_Leave);
+            this.NozzleOffsetX_textBox.Location = new System.Drawing.Point(31, 597);
+            this.NozzleOffsetX_textBox.Name = "NozzleOffsetX_textBox";
+            this.NozzleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
+            this.NozzleOffsetX_textBox.TabIndex = 85;
+            this.NozzleOffsetX_textBox.Text = "42.88";
+            this.toolTip1.SetToolTip(this.NozzleOffsetX_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
+            this.NozzleOffsetX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NozzleOffsetX_textBox_KeyPress);
+            this.NozzleOffsetX_textBox.Leave += new System.EventHandler(this.NozzleOffsetX_textBox_Leave);
             // 
             // PickupCenterY_textBox
             // 
@@ -4776,21 +4776,21 @@
             this.Offset2Method_button.Name = "Offset2Method_button";
             this.Offset2Method_button.Size = new System.Drawing.Size(75, 23);
             this.Offset2Method_button.TabIndex = 53;
-            this.Offset2Method_button.Tag = "Runs the needle calibration routine";
+            this.Offset2Method_button.Tag = "Runs the Nozzle calibration routine";
             this.Offset2Method_button.Text = "Start";
             this.Offset2Method_button.UseVisualStyleBackColor = true;
             this.Offset2Method_button.Click += new System.EventHandler(this.Offset2Method_button_Click);
             // 
-            // NeedleOffset_label
+            // NozzleOffset_label
             // 
-            this.NeedleOffset_label.AutoSize = true;
-            this.NeedleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NeedleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NeedleOffset_label.Location = new System.Drawing.Point(9, 553);
-            this.NeedleOffset_label.Name = "NeedleOffset_label";
-            this.NeedleOffset_label.Size = new System.Drawing.Size(130, 22);
-            this.NeedleOffset_label.TabIndex = 50;
-            this.NeedleOffset_label.Text = "Instructions here";
+            this.NozzleOffset_label.AutoSize = true;
+            this.NozzleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.NozzleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NozzleOffset_label.Location = new System.Drawing.Point(9, 553);
+            this.NozzleOffset_label.Name = "NozzleOffset_label";
+            this.NozzleOffset_label.Size = new System.Drawing.Size(130, 22);
+            this.NozzleOffset_label.TabIndex = 50;
+            this.NozzleOffset_label.Text = "Instructions here";
             // 
             // label115
             // 
@@ -4800,7 +4800,7 @@
             this.label115.Name = "label115";
             this.label115.Size = new System.Drawing.Size(96, 18);
             this.label115.TabIndex = 49;
-            this.label115.Text = "Needle Setup";
+            this.label115.Text = "Nozzle Setup";
             // 
             // label114
             // 
@@ -4809,7 +4809,7 @@
             this.label114.Name = "label114";
             this.label114.Size = new System.Drawing.Size(116, 13);
             this.label114.TabIndex = 45;
-            this.label114.Text = "Needle Nominal Offset:";
+            this.label114.Text = "Nozzle Nominal Offset:";
             // 
             // SetPickupCenter_button
             // 
@@ -4914,7 +4914,7 @@
             // 
             // tabPageBasicSetup
             // 
-            this.tabPageBasicSetup.Controls.Add(this.NeedleBelowPCB_textBox);
+            this.tabPageBasicSetup.Controls.Add(this.NozzleBelowPCB_textBox);
             this.tabPageBasicSetup.Controls.Add(this.label1);
             this.tabPageBasicSetup.Controls.Add(this.DisableLog_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.CheckNow_button);
@@ -5003,13 +5003,13 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
-            // NeedleBelowPCB_textBox
+            // NozzleBelowPCB_textBox
             // 
-            this.NeedleBelowPCB_textBox.Location = new System.Drawing.Point(899, 516);
-            this.NeedleBelowPCB_textBox.Name = "NeedleBelowPCB_textBox";
-            this.NeedleBelowPCB_textBox.Size = new System.Drawing.Size(55, 20);
-            this.NeedleBelowPCB_textBox.TabIndex = 104;
-            this.NeedleBelowPCB_textBox.TextChanged += new System.EventHandler(this.NeedleBelowPCB_textBox_TextChanged);
+            this.NozzleBelowPCB_textBox.Location = new System.Drawing.Point(899, 516);
+            this.NozzleBelowPCB_textBox.Name = "NozzleBelowPCB_textBox";
+            this.NozzleBelowPCB_textBox.Size = new System.Drawing.Size(55, 20);
+            this.NozzleBelowPCB_textBox.TabIndex = 104;
+            this.NozzleBelowPCB_textBox.TextChanged += new System.EventHandler(this.NozzleBelowPCB_textBox_TextChanged);
             // 
             // label1
             // 
@@ -5018,7 +5018,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(137, 13);
             this.label1.TabIndex = 103;
-            this.label1.Text = "Allow needle to below PCB:";
+            this.label1.Text = "Allow Nozzle to below PCB:";
             // 
             // DisableLog_checkBox
             // 
@@ -5066,7 +5066,7 @@
             this.MouseScroll_checkBox.Size = new System.Drawing.Size(183, 17);
             this.MouseScroll_checkBox.TabIndex = 99;
             this.MouseScroll_checkBox.Text = "Enable mouse wheel jogging of A";
-            this.toolTip1.SetToolTip(this.MouseScroll_checkBox, "If enabled, mouse wheel rotates needle");
+            this.toolTip1.SetToolTip(this.MouseScroll_checkBox, "If enabled, mouse wheel rotates Nozzle");
             this.MouseScroll_checkBox.UseVisualStyleBackColor = true;
             // 
             // NumPadJog_checkBox
@@ -5090,7 +5090,7 @@
             this.Zlb_label.Name = "Zlb_label";
             this.Zlb_label.Size = new System.Drawing.Size(365, 38);
             this.Zlb_label.TabIndex = 51;
-            this.Zlb_label.Text = "Jog Z axis until the needle just barely touches the PCB\r\nthen click \"next\"";
+            this.Zlb_label.Text = "Jog Z axis until the Nozzle just barely touches the PCB\r\nthen click \"next\"";
             this.Zlb_label.Visible = false;
             // 
             // panel9
@@ -5150,7 +5150,7 @@
             this.CancelProbing_button.Size = new System.Drawing.Size(75, 23);
             this.CancelProbing_button.TabIndex = 52;
             this.CancelProbing_button.Text = "Cancel";
-            this.toolTip1.SetToolTip(this.CancelProbing_button, "Runs needle height calibration routine");
+            this.toolTip1.SetToolTip(this.CancelProbing_button, "Runs Nozzle height calibration routine");
             this.CancelProbing_button.UseVisualStyleBackColor = true;
             this.CancelProbing_button.Visible = false;
             this.CancelProbing_button.Click += new System.EventHandler(this.CancelProbing_button_Click);
@@ -5163,7 +5163,7 @@
             this.label116.Name = "label116";
             this.label116.Size = new System.Drawing.Size(109, 16);
             this.label116.TabIndex = 49;
-            this.label116.Text = "Needle height:";
+            this.label116.Text = "Nozzle height:";
             // 
             // SetProbing_button
             // 
@@ -5172,7 +5172,7 @@
             this.SetProbing_button.Size = new System.Drawing.Size(75, 23);
             this.SetProbing_button.TabIndex = 50;
             this.SetProbing_button.Text = "Calibrate";
-            this.toolTip1.SetToolTip(this.SetProbing_button, "Runs needle height calibration routine");
+            this.toolTip1.SetToolTip(this.SetProbing_button, "Runs Nozzle height calibration routine");
             this.SetProbing_button.UseVisualStyleBackColor = true;
             this.SetProbing_button.Click += new System.EventHandler(this.SetProbing_button_Click);
             // 
@@ -5813,7 +5813,7 @@
             this.Vacuum_checkBox.Size = new System.Drawing.Size(82, 17);
             this.Vacuum_checkBox.TabIndex = 26;
             this.Vacuum_checkBox.Text = "Vacuum On";
-            this.toolTip1.SetToolTip(this.Vacuum_checkBox, "Valve control, vacuum on needle on/off");
+            this.toolTip1.SetToolTip(this.Vacuum_checkBox, "Valve control, vacuum on Nozzle on/off");
             this.Vacuum_checkBox.UseVisualStyleBackColor = true;
             this.Vacuum_checkBox.Click += new System.EventHandler(this.Vacuum_checkBox_Click);
             // 
@@ -7067,7 +7067,7 @@
             // 
             this.RunJob_tabPage.Controls.Add(this.Placement_pictureBox);
             this.RunJob_tabPage.Controls.Add(this.SkipMeasurements_checkBox);
-            this.RunJob_tabPage.Controls.Add(this.OmitNeedleCalibration_checkBox);
+            this.RunJob_tabPage.Controls.Add(this.OmitNozzleCalibration_checkBox);
             this.RunJob_tabPage.Controls.Add(this.MeasureZs_checkBox);
             this.RunJob_tabPage.Controls.Add(this.groupBox12);
             this.RunJob_tabPage.Controls.Add(this.RebuildJobData_button);
@@ -7075,7 +7075,7 @@
             this.RunJob_tabPage.Controls.Add(this.Panelize_button);
             this.RunJob_tabPage.Controls.Add(this.StopDemo_button);
             this.RunJob_tabPage.Controls.Add(this.Demo_button);
-            this.RunJob_tabPage.Controls.Add(this.ChangeNeedle_button);
+            this.RunJob_tabPage.Controls.Add(this.ManualNeedeChange_button);
             this.RunJob_tabPage.Controls.Add(this.ValidMeasurement_checkBox);
             this.RunJob_tabPage.Controls.Add(this.NextGroup_label);
             this.RunJob_tabPage.Controls.Add(this.label125);
@@ -7102,7 +7102,7 @@
             this.RunJob_tabPage.Controls.Add(this.groupBox1);
             this.RunJob_tabPage.Controls.Add(this.label89);
             this.RunJob_tabPage.Controls.Add(this.label88);
-            this.RunJob_tabPage.Controls.Add(this.TestNeedleRecognition_button);
+            this.RunJob_tabPage.Controls.Add(this.TestNozzleRecognition_button);
             this.RunJob_tabPage.Controls.Add(this.label86);
             this.RunJob_tabPage.Controls.Add(this.label85);
             this.RunJob_tabPage.Controls.Add(this.JobData_GridView);
@@ -7135,7 +7135,7 @@
             // SkipMeasurements_checkBox
             // 
             this.SkipMeasurements_checkBox.AutoSize = true;
-            this.SkipMeasurements_checkBox.Location = new System.Drawing.Point(477, 565);
+            this.SkipMeasurements_checkBox.Location = new System.Drawing.Point(482, 565);
             this.SkipMeasurements_checkBox.Name = "SkipMeasurements_checkBox";
             this.SkipMeasurements_checkBox.Size = new System.Drawing.Size(175, 17);
             this.SkipMeasurements_checkBox.TabIndex = 81;
@@ -7143,22 +7143,22 @@
             this.SkipMeasurements_checkBox.UseVisualStyleBackColor = true;
             this.SkipMeasurements_checkBox.CheckedChanged += new System.EventHandler(this.SkipMeasurements_checkBox_CheckedChanged);
             // 
-            // OmitNeedleCalibration_checkBox
+            // OmitNozzleCalibration_checkBox
             // 
-            this.OmitNeedleCalibration_checkBox.AutoSize = true;
-            this.OmitNeedleCalibration_checkBox.Location = new System.Drawing.Point(477, 584);
-            this.OmitNeedleCalibration_checkBox.Name = "OmitNeedleCalibration_checkBox";
-            this.OmitNeedleCalibration_checkBox.Size = new System.Drawing.Size(156, 17);
-            this.OmitNeedleCalibration_checkBox.TabIndex = 80;
-            this.OmitNeedleCalibration_checkBox.Text = "Don\'t use needle correction";
-            this.toolTip1.SetToolTip(this.OmitNeedleCalibration_checkBox, "Skips needle correction phase.");
-            this.OmitNeedleCalibration_checkBox.UseVisualStyleBackColor = true;
-            this.OmitNeedleCalibration_checkBox.CheckedChanged += new System.EventHandler(this.OmitNeedleCalibration_checkBox_CheckedChanged);
+            this.OmitNozzleCalibration_checkBox.AutoSize = true;
+            this.OmitNozzleCalibration_checkBox.Location = new System.Drawing.Point(482, 584);
+            this.OmitNozzleCalibration_checkBox.Name = "OmitNozzleCalibration_checkBox";
+            this.OmitNozzleCalibration_checkBox.Size = new System.Drawing.Size(156, 17);
+            this.OmitNozzleCalibration_checkBox.TabIndex = 80;
+            this.OmitNozzleCalibration_checkBox.Text = "Don\'t use Nozzle correction";
+            this.toolTip1.SetToolTip(this.OmitNozzleCalibration_checkBox, "Skips Nozzle correction phase.");
+            this.OmitNozzleCalibration_checkBox.UseVisualStyleBackColor = true;
+            this.OmitNozzleCalibration_checkBox.CheckedChanged += new System.EventHandler(this.OmitNozzleCalibration_checkBox_CheckedChanged);
             // 
             // MeasureZs_checkBox
             // 
             this.MeasureZs_checkBox.AutoSize = true;
-            this.MeasureZs_checkBox.Location = new System.Drawing.Point(477, 603);
+            this.MeasureZs_checkBox.Location = new System.Drawing.Point(482, 603);
             this.MeasureZs_checkBox.Name = "MeasureZs_checkBox";
             this.MeasureZs_checkBox.Size = new System.Drawing.Size(104, 17);
             this.MeasureZs_checkBox.TabIndex = 79;
@@ -7283,20 +7283,20 @@
             this.Demo_button.Visible = false;
             this.Demo_button.Click += new System.EventHandler(this.Demo_button_Click);
             // 
-            // ChangeNeedle_button
+            // ManualNeedeChange_button
             // 
-            this.ChangeNeedle_button.Location = new System.Drawing.Point(352, 596);
-            this.ChangeNeedle_button.Name = "ChangeNeedle_button";
-            this.ChangeNeedle_button.Size = new System.Drawing.Size(110, 23);
-            this.ChangeNeedle_button.TabIndex = 72;
-            this.ChangeNeedle_button.Text = "Change Needle";
-            this.ChangeNeedle_button.UseVisualStyleBackColor = true;
-            this.ChangeNeedle_button.Click += new System.EventHandler(this.ChangeNeedle_button_Click);
+            this.ManualNeedeChange_button.Location = new System.Drawing.Point(352, 596);
+            this.ManualNeedeChange_button.Name = "ManualNeedeChange_button";
+            this.ManualNeedeChange_button.Size = new System.Drawing.Size(124, 23);
+            this.ManualNeedeChange_button.TabIndex = 72;
+            this.ManualNeedeChange_button.Text = "Man. Nozzle change";
+            this.ManualNeedeChange_button.UseVisualStyleBackColor = true;
+            this.ManualNeedeChange_button.Click += new System.EventHandler(this.ManualNozzleChange_button_Click);
             // 
             // ValidMeasurement_checkBox
             // 
             this.ValidMeasurement_checkBox.AutoSize = true;
-            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(477, 546);
+            this.ValidMeasurement_checkBox.Location = new System.Drawing.Point(482, 546);
             this.ValidMeasurement_checkBox.Name = "ValidMeasurement_checkBox";
             this.ValidMeasurement_checkBox.Size = new System.Drawing.Size(138, 17);
             this.ValidMeasurement_checkBox.TabIndex = 71;
@@ -7337,7 +7337,7 @@
             // 
             this.ReMeasure_button.Location = new System.Drawing.Point(352, 546);
             this.ReMeasure_button.Name = "ReMeasure_button";
-            this.ReMeasure_button.Size = new System.Drawing.Size(110, 23);
+            this.ReMeasure_button.Size = new System.Drawing.Size(124, 23);
             this.ReMeasure_button.TabIndex = 48;
             this.ReMeasure_button.Text = "Re-measure";
             this.toolTip1.SetToolTip(this.ReMeasure_button, "Re-measures PCB, convertign CAD data coordinates to \r\nmachine coordinates, based " +
@@ -7867,14 +7867,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -8235,7 +8235,7 @@
             this.getUnloadMovesFromLoadMovesToolStripMenuItem,
             this.copyMovesFromNozzle1ToolStripMenuItem});
             this.NozzleUnload_contextMenuStrip.Name = "NozzleUnload_contextMenuStrip";
-            this.NozzleUnload_contextMenuStrip.Size = new System.Drawing.Size(352, 114);
+            this.NozzleUnload_contextMenuStrip.Size = new System.Drawing.Size(352, 92);
             // 
             // gotoUnloadStartToolStripMenuItem
             // 
@@ -9028,9 +9028,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
             this.tabPageSetupCameras.ResumeLayout(false);
             this.tabPageSetupCameras.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Needle2_dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Nozzle2_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Temp_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Needle_dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Nozzle_dataGridView)).EndInit();
             this.CamerasSetUp_tabControl.ResumeLayout(false);
             this.DownCamera_tabPage.ResumeLayout(false);
             this.DownCamera_tabPage.PerformLayout();
@@ -9140,7 +9140,7 @@
 		private System.Windows.Forms.CheckBox DownCamZoom_checkBox;
         private System.Windows.Forms.TextBox UpCamZoomFactor_textBox;
 		private System.Windows.Forms.CheckBox UpCamZoom_checkBox;
-        private System.Windows.Forms.Button TestNeedleRecognition_button;
+        private System.Windows.Forms.Button TestNozzleRecognition_button;
         private System.Windows.Forms.Button Test3_button;
         private System.Windows.Forms.Button Test4_button;
         private System.Windows.Forms.Button Test5_button;
@@ -9207,8 +9207,8 @@
 		private System.Windows.Forms.Label label98;
 		private System.Windows.Forms.TextBox UpcamPositionY_textBox;
 		private System.Windows.Forms.TextBox UpcamPositionX_textBox;
-		private System.Windows.Forms.TextBox NeedleOffsetY_textBox;
-		private System.Windows.Forms.TextBox NeedleOffsetX_textBox;
+		private System.Windows.Forms.TextBox NozzleOffsetY_textBox;
+		private System.Windows.Forms.TextBox NozzleOffsetX_textBox;
 		private System.Windows.Forms.TextBox PickupCenterY_textBox;
 		private System.Windows.Forms.TextBox PickupCenterX_textBox;
 		private System.Windows.Forms.TextBox JigY_textBox;
@@ -9221,7 +9221,7 @@
 		private System.Windows.Forms.Label Z0toPCB_CamerasTab_label;
 		private System.Windows.Forms.Label label120;
 		private System.Windows.Forms.Button Offset2Method_button;
-		private System.Windows.Forms.Label NeedleOffset_label;
+		private System.Windows.Forms.Label NozzleOffset_label;
 		private System.Windows.Forms.Label label115;
 		private System.Windows.Forms.Label label114;
 		private System.Windows.Forms.Button SetPickupCenter_button;
@@ -9475,14 +9475,14 @@
 		private System.Windows.Forms.DataGridView Homing_dataGridView;
 		private System.Windows.Forms.Button HomingMeasure_button;
 		private System.Windows.Forms.GroupBox groupBox5;
-		private System.Windows.Forms.Button NeedleMeasure_button;
-		private System.Windows.Forms.Button NeedleToDisplay_button;
-		private System.Windows.Forms.Button NeedleToHere_button;
+		private System.Windows.Forms.Button NozzleMeasure_button;
+		private System.Windows.Forms.Button NozzleToDisplay_button;
+		private System.Windows.Forms.Button NozzleToHere_button;
 		private System.Windows.Forms.GroupBox groupBox11;
 		private System.Windows.Forms.Button FiducialsMeasure_button;
 		private System.Windows.Forms.Button FiducialsToDisplay_button;
 		private System.Windows.Forms.Button FiducialsToHere_button;
-		private System.Windows.Forms.DataGridView Needle_dataGridView;
+		private System.Windows.Forms.DataGridView Nozzle_dataGridView;
 		private System.Windows.Forms.TabControl CamerasSetUp_tabControl;
 		private System.Windows.Forms.TabPage DownCamera_tabPage;
 		private System.Windows.Forms.TabPage UpCamera_tabPage;
@@ -9608,7 +9608,7 @@
         private System.Windows.Forms.Button PlaceOne_button;
         private System.Windows.Forms.Button TapeSet1_button;
         private System.Windows.Forms.CheckBox ValidMeasurement_checkBox;
-        private System.Windows.Forms.Button ChangeNeedle_button;
+        private System.Windows.Forms.Button ManualNeedeChange_button;
         private System.Windows.Forms.Label label123;
         private System.Windows.Forms.TextBox ZTestTravel_textBox;
         private System.Windows.Forms.Button Demo_button;
@@ -9680,7 +9680,7 @@
         private System.Windows.Forms.TextBox PlacementDepth_textBox;
         private System.Windows.Forms.TextBox BackOff_textBox;
         private System.Windows.Forms.TextBox Z0_textBox;
-        private System.Windows.Forms.CheckBox OmitNeedleCalibration_checkBox;
+        private System.Windows.Forms.CheckBox OmitNozzleCalibration_checkBox;
         private System.Windows.Forms.CheckBox SkipMeasurements_checkBox;
         private System.Windows.Forms.Label label135;
         private System.Windows.Forms.CheckBox KeepActive_checkBox;
@@ -9706,7 +9706,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn R_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn G_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn B_column;
-        private System.Windows.Forms.TextBox NeedleBelowPCB_textBox;
+        private System.Windows.Forms.TextBox NozzleBelowPCB_textBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button MeasureDownCam_button;
         private System.Windows.Forms.DataGridViewTextBoxColumn Component;
@@ -9844,7 +9844,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
         private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleAlternative_column;
-        private System.Windows.Forms.DataGridView Needle2_dataGridView;
+        private System.Windows.Forms.DataGridView Nozzle2_dataGridView;
         private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn11;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn11;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn56;
@@ -9854,9 +9854,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn60;
         private System.Windows.Forms.Label label154;
         private System.Windows.Forms.Label label153;
-        private System.Windows.Forms.Button NeedleMeasure2_button;
-        private System.Windows.Forms.Button NeedleToDisplay2_button;
-        private System.Windows.Forms.Button NeedleToHere2_button;
+        private System.Windows.Forms.Button NozzleMeasure2_button;
+        private System.Windows.Forms.Button NozzleToDisplay2_button;
+        private System.Windows.Forms.Button NozzleToHere2_button;
         private System.Windows.Forms.Button CalData_button;
         private System.Windows.Forms.Label label155;
     }

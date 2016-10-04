@@ -12,7 +12,7 @@ namespace LitePlacer.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -386,24 +386,24 @@ namespace LitePlacer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("75")]
-        public double DownCam_NeedleOffsetX {
+        public double DownCam_NozzleOffsetX {
             get {
-                return ((double)(this["DownCam_NeedleOffsetX"]));
+                return ((double)(this["DownCam_NozzleOffsetX"]));
             }
             set {
-                this["DownCam_NeedleOffsetX"] = value;
+                this["DownCam_NozzleOffsetX"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("29")]
-        public double DownCam_NeedleOffsetY {
+        public double DownCam_NozzleOffsetY {
             get {
-                return ((double)(this["DownCam_NeedleOffsetY"]));
+                return ((double)(this["DownCam_NozzleOffsetY"]));
             }
             set {
-                this["DownCam_NeedleOffsetY"] = value;
+                this["DownCam_NozzleOffsetY"] = value;
             }
         }
         
@@ -1034,12 +1034,12 @@ namespace LitePlacer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Placement_OmitNeedleCalibration {
+        public bool Placement_OmitNozzleCalibration {
             get {
-                return ((bool)(this["Placement_OmitNeedleCalibration"]));
+                return ((bool)(this["Placement_OmitNozzleCalibration"]));
             }
             set {
-                this["Placement_OmitNeedleCalibration"] = value;
+                this["Placement_OmitNozzleCalibration"] = value;
             }
         }
         

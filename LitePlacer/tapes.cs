@@ -12,15 +12,15 @@ namespace LitePlacer
 	class TapesClass
 	{
         private DataGridView Grid;
-        private NeedleClass Needle;
+        private NozzleClass Nozzle;
 		private FormMain MainForm;
 		private Camera DownCamera;
 		private CNC Cnc;
 
-        public TapesClass(DataGridView grd, NeedleClass ndl, Camera cam, CNC c, FormMain MainF)
+        public TapesClass(DataGridView grd, NozzleClass ndl, Camera cam, CNC c, FormMain MainF)
 		{
             Grid = grd;
-			Needle = ndl;
+			Nozzle = ndl;
 			DownCamera = cam;
 			MainForm = MainF;
 			Cnc = c;
@@ -619,7 +619,7 @@ namespace LitePlacer
         }
 
         // ========================================================================================
-        // GotoNextPartByMeasurement_m(): Takes needle to exact location of the part, tape and part rotation taken in to account.
+        // GotoNextPartByMeasurement_m(): Takes Nozzle to exact location of the part, tape and part rotation taken in to account.
         // The hole position is measured on each call using tape holes and knowledge about tape width and pitch (see EIA-481 standard).
         // Id tells the tape name. 
         // The caller needs the hole coordinates and tape number later in the process, but they are measured and returned here.
@@ -689,8 +689,8 @@ namespace LitePlacer
                 );
             }
 
-			// Now, PartX, PartY, A tell the position of the part. Take needle there:
-			if (!Needle.Move_m(PartX, PartY, A))
+			// Now, PartX, PartY, A tell the position of the part. Take Nozzle there:
+			if (!Nozzle.Move_m(PartX, PartY, A))
 			{
 				return false;
 			}

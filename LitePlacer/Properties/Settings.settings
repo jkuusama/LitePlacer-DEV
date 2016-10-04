@@ -92,10 +92,10 @@
     <Setting Name="UpCam_PositionY" Type="System.Double" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
-    <Setting Name="DownCam_NeedleOffsetX" Type="System.Double" Scope="User">
+    <Setting Name="DownCam_NozzleOffsetX" Type="System.Double" Scope="User">
       <Value Profile="(Default)">75</Value>
     </Setting>
-    <Setting Name="DownCam_NeedleOffsetY" Type="System.Double" Scope="User">
+    <Setting Name="DownCam_NozzleOffsetY" Type="System.Double" Scope="User">
       <Value Profile="(Default)">29</Value>
     </Setting>
     <Setting Name="General_MachineSizeX" Type="System.Double" Scope="User">
@@ -254,7 +254,7 @@
     <Setting Name="Placement_Depth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="Placement_OmitNeedleCalibration" Type="System.Boolean" Scope="User">
+    <Setting Name="Placement_OmitNozzleCalibration" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Placement_SkipMeasurements" Type="System.Boolean" Scope="User">
