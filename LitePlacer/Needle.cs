@@ -62,8 +62,11 @@ namespace LitePlacer
 
         public void UseCalibration(int nozzle)
         {
+            if (CalibratedArr[nozzle])
+            {
             MainForm.DisplayText("Using calibration for nozzle " + nozzle.ToString());
             CalibrationPoints = (List<NozzlePoint>)DeepClone(CalibrationPointsArr[nozzle]);
+            }
             Calibrated = CalibratedArr[nozzle];
         }
 

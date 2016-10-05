@@ -370,14 +370,7 @@ namespace LitePlacer
             BackOff_textBox.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
             PlacementDepth_textBox.Text = Properties.Settings.Default.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
 
-            if (Properties.Settings.Default.Nozzles_current==0)
-            {
-                NozzleNo_textBox.Text = "--";
-            }
-            else
-            {
-                NozzleNo_textBox.Text = Properties.Settings.Default.Nozzles_current.ToString();
-            }
+            NozzleNo_textBox.Text = Properties.Settings.Default.Nozzles_current.ToString();
             ForceNozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
 
             UpdateCncConnectionStatus();
@@ -395,6 +388,7 @@ namespace LitePlacer
 
             DisableLog_checkBox.Checked = Properties.Settings.Default.General_MuteLogging;
             StartingUp = false;
+            DisplayText("Startup completed.");
         }
 
         // =================================================================================
@@ -7321,7 +7315,7 @@ namespace LitePlacer
             }
             // Method is now selected, even if it was ?. If user quits the operation, PlaceComponent_m() notices.
 
-            // The place operation does not necessarily have any components for it (such as a Nozzle change).
+            // The place operation does not necessarily have any components for it (such as a manual nozzle change).
             // Make sure there is valid data at ComponentList anyway.
             if (JobData_GridView.Rows[RowNo].Cells["ComponentList"].Value == null)
             {
@@ -7859,7 +7853,10 @@ namespace LitePlacer
 
             if (Properties.Settings.Default.Nozzles_Enabled)
             {
-                Nozzle.UseCalibration(Properties.Settings.Default.Nozzles_current);
+                if (Properties.Settings.Default.Nozzles_current!=0)
+                {
+                    Nozzle.UseCalibration(Properties.Settings.Default.Nozzles_current);
+                }
             }
             else
             {
@@ -13200,6 +13197,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // Unload if needed
+            int dbg = Properties.Settings.Default.Nozzles_current;
             if (Properties.Settings.Default.Nozzles_current != 0)
             {
                 if (!m_UnloadNozzle(Properties.Settings.Default.Nozzles_current))
