@@ -772,6 +772,9 @@
             this.Abs_radioButton = new System.Windows.Forms.RadioButton();
             this.Relative_Button = new System.Windows.Forms.RadioButton();
             this.label108 = new System.Windows.Forms.Label();
+            this.CalibrateThis_button = new System.Windows.Forms.Button();
+            this.label156 = new System.Windows.Forms.Label();
+            this.NozzleWarning_textBox = new System.Windows.Forms.TextBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -4798,7 +4801,7 @@
             this.label115.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label115.Location = new System.Drawing.Point(9, 502);
             this.label115.Name = "label115";
-            this.label115.Size = new System.Drawing.Size(96, 18);
+            this.label115.Size = new System.Drawing.Size(97, 18);
             this.label115.TabIndex = 49;
             this.label115.Text = "Nozzle Setup";
             // 
@@ -4807,7 +4810,7 @@
             this.label114.AutoSize = true;
             this.label114.Location = new System.Drawing.Point(9, 579);
             this.label114.Name = "label114";
-            this.label114.Size = new System.Drawing.Size(116, 13);
+            this.label114.Size = new System.Drawing.Size(114, 13);
             this.label114.TabIndex = 45;
             this.label114.Text = "Nozzle Nominal Offset:";
             // 
@@ -5088,7 +5091,7 @@
             this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Zlb_label.Location = new System.Drawing.Point(143, 544);
             this.Zlb_label.Name = "Zlb_label";
-            this.Zlb_label.Size = new System.Drawing.Size(365, 38);
+            this.Zlb_label.Size = new System.Drawing.Size(369, 38);
             this.Zlb_label.TabIndex = 51;
             this.Zlb_label.Text = "Jog Z axis until the Nozzle just barely touches the PCB\r\nthen click \"next\"";
             this.Zlb_label.Visible = false;
@@ -5161,7 +5164,7 @@
             this.label116.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label116.Location = new System.Drawing.Point(3, 4);
             this.label116.Name = "label116";
-            this.label116.Size = new System.Drawing.Size(109, 16);
+            this.label116.Size = new System.Drawing.Size(105, 16);
             this.label116.TabIndex = 49;
             this.label116.Text = "Nozzle height:";
             // 
@@ -8099,6 +8102,9 @@
             // 
             // Nozzles_tabPage
             // 
+            this.Nozzles_tabPage.Controls.Add(this.NozzleWarning_textBox);
+            this.Nozzles_tabPage.Controls.Add(this.label156);
+            this.Nozzles_tabPage.Controls.Add(this.CalibrateThis_button);
             this.Nozzles_tabPage.Controls.Add(this.label155);
             this.Nozzles_tabPage.Controls.Add(this.CalData_button);
             this.Nozzles_tabPage.Controls.Add(this.label151);
@@ -8135,7 +8141,7 @@
             // label155
             // 
             this.label155.AutoSize = true;
-            this.label155.Location = new System.Drawing.Point(971, 553);
+            this.label155.Location = new System.Drawing.Point(971, 586);
             this.label155.Name = "label155";
             this.label155.Size = new System.Drawing.Size(100, 13);
             this.label155.TabIndex = 40;
@@ -8143,7 +8149,7 @@
             // 
             // CalData_button
             // 
-            this.CalData_button.Location = new System.Drawing.Point(971, 569);
+            this.CalData_button.Location = new System.Drawing.Point(971, 602);
             this.CalData_button.Name = "CalData_button";
             this.CalData_button.Size = new System.Drawing.Size(99, 23);
             this.CalData_button.TabIndex = 39;
@@ -8267,9 +8273,9 @@
             // 
             // NozzlesStop_button
             // 
-            this.NozzlesStop_button.Location = new System.Drawing.Point(971, 472);
+            this.NozzlesStop_button.Location = new System.Drawing.Point(971, 505);
             this.NozzlesStop_button.Name = "NozzlesStop_button";
-            this.NozzlesStop_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzlesStop_button.Size = new System.Drawing.Size(89, 23);
             this.NozzlesStop_button.TabIndex = 35;
             this.NozzlesStop_button.Text = "Stop";
             this.NozzlesStop_button.UseVisualStyleBackColor = true;
@@ -8277,9 +8283,9 @@
             // 
             // NozzlesSave_button
             // 
-            this.NozzlesSave_button.Location = new System.Drawing.Point(971, 443);
+            this.NozzlesSave_button.Location = new System.Drawing.Point(971, 476);
             this.NozzlesSave_button.Name = "NozzlesSave_button";
-            this.NozzlesSave_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzlesSave_button.Size = new System.Drawing.Size(89, 23);
             this.NozzlesSave_button.TabIndex = 34;
             this.NozzlesSave_button.Text = "Save values";
             this.NozzlesSave_button.UseVisualStyleBackColor = true;
@@ -8289,9 +8295,9 @@
             // 
             this.CalibrateNozzles_button.Location = new System.Drawing.Point(971, 414);
             this.CalibrateNozzles_button.Name = "CalibrateNozzles_button";
-            this.CalibrateNozzles_button.Size = new System.Drawing.Size(75, 23);
+            this.CalibrateNozzles_button.Size = new System.Drawing.Size(89, 23);
             this.CalibrateNozzles_button.TabIndex = 33;
-            this.CalibrateNozzles_button.Text = "Calibrate";
+            this.CalibrateNozzles_button.Text = "Calibrate All";
             this.CalibrateNozzles_button.UseVisualStyleBackColor = true;
             this.CalibrateNozzles_button.Click += new System.EventHandler(this.CalibrateNozzles_button_Click);
             // 
@@ -8299,7 +8305,7 @@
             // 
             this.NozzleChangeEnable_checkBox.AutoSize = true;
             this.NozzleChangeEnable_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NozzleChangeEnable_checkBox.Location = new System.Drawing.Point(971, 501);
+            this.NozzleChangeEnable_checkBox.Location = new System.Drawing.Point(971, 534);
             this.NozzleChangeEnable_checkBox.Name = "NozzleChangeEnable_checkBox";
             this.NozzleChangeEnable_checkBox.Size = new System.Drawing.Size(205, 24);
             this.NozzleChangeEnable_checkBox.TabIndex = 32;
@@ -8958,6 +8964,32 @@
             this.label108.Size = new System.Drawing.Size(63, 18);
             this.label108.TabIndex = 95;
             this.label108.Text = "nozzle:";
+            // 
+            // CalibrateThis_button
+            // 
+            this.CalibrateThis_button.Location = new System.Drawing.Point(1066, 414);
+            this.CalibrateThis_button.Name = "CalibrateThis_button";
+            this.CalibrateThis_button.Size = new System.Drawing.Size(87, 23);
+            this.CalibrateThis_button.TabIndex = 41;
+            this.CalibrateThis_button.Text = "Calibrate curr.";
+            this.CalibrateThis_button.UseVisualStyleBackColor = true;
+            this.CalibrateThis_button.Click += new System.EventHandler(this.CalibrateThis_button_Click);
+            // 
+            // label156
+            // 
+            this.label156.AutoSize = true;
+            this.label156.Location = new System.Drawing.Point(970, 446);
+            this.label156.Name = "label156";
+            this.label156.Size = new System.Drawing.Size(90, 13);
+            this.label156.TabIndex = 42;
+            this.label156.Text = "Warning treshold:";
+            // 
+            // NozzleWarning_textBox
+            // 
+            this.NozzleWarning_textBox.Location = new System.Drawing.Point(1066, 443);
+            this.NozzleWarning_textBox.Name = "NozzleWarning_textBox";
+            this.NozzleWarning_textBox.Size = new System.Drawing.Size(88, 20);
+            this.NozzleWarning_textBox.TabIndex = 32;
             // 
             // FormMain
             // 
@@ -9859,6 +9891,9 @@
         private System.Windows.Forms.Button NozzleToHere2_button;
         private System.Windows.Forms.Button CalData_button;
         private System.Windows.Forms.Label label155;
+        private System.Windows.Forms.Button CalibrateThis_button;
+        private System.Windows.Forms.TextBox NozzleWarning_textBox;
+        private System.Windows.Forms.Label label156;
     }
 }
 

@@ -370,7 +370,14 @@ namespace LitePlacer
             BackOff_textBox.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
             PlacementDepth_textBox.Text = Properties.Settings.Default.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
 
-            NozzleNo_textBox.Text = Properties.Settings.Default.Nozzles_current.ToString();
+            if (Properties.Settings.Default.Nozzles_current==0)
+            {
+                NozzleNo_textBox.Text = "--";
+            }
+            else
+            {
+                NozzleNo_textBox.Text = Properties.Settings.Default.Nozzles_current.ToString();
+            }
             ForceNozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
 
             UpdateCncConnectionStatus();
@@ -1757,6 +1764,7 @@ namespace LitePlacer
         {
             if (Properties.Settings.Default.Placement_OmitNozzleCalibration)
             {
+                DisplayText("Nozzle calibration asked, but disabled.");
                 return true;
             };
 
@@ -1792,13 +1800,58 @@ namespace LitePlacer
 
             // measure the values
             SetNozzleMeasurement();
+            if (Properties.Settings.Default.Nozzles_Enabled)
+            {
+                double MinSize = 0.0;
+                double MaxSize = 10.0;
+                int nozzle = Properties.Settings.Default.Nozzles_current;
+                if (nozzle > 0)
+                {
+                    if (NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[1].Value == null)
+                    {
+                        ShowMessageBox(
+                            "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", min. size",
+                            "Bad data",
+                            MessageBoxButtons.OK);
+                        return false;
+                    }
+
+                    if (NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[2].Value == null)
+                    {
+                        ShowMessageBox(
+                            "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", max. size",
+                            "Bad data",
+                            MessageBoxButtons.OK);
+                        return false;
+                    }
+
+                    if (!double.TryParse(NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[1].Value.ToString(), out MinSize))
+                    {
+                        ShowMessageBox(
+                            "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", min. size",
+                            "Bad data",
+                            MessageBoxButtons.OK);
+                        return false;
+                    }
+                    if (!double.TryParse(NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[2].Value.ToString(), out MaxSize))
+                    {
+                        ShowMessageBox(
+                            "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", max. size",
+                            "Bad data",
+                            MessageBoxButtons.OK);
+                        return false;
+                    }
+                }
+                DisplayText("Measuring nozzle, min. size "+ MinSize.ToString() + ", max. size" + MaxSize.ToString());
+                UpCamera.MaxSize = MaxSize / Properties.Settings.Default.UpCam_XmmPerPixel;
+                UpCamera.MinSize = MinSize / Properties.Settings.Default.UpCam_XmmPerPixel;
+                UpCamera.SizeLimited = true;
+            }
+
             result &= Nozzle.Calibrate();  
 
             // take Nozzle up
             result &= CNC_Z_m(0.0);
-
-            // restore position
-            // result &= CNC_XYA_m(MarkX, MarkY, MarkA);
 
             UpCamera.PauseProcessing = false;
             if (!UpCamWasRunning)
@@ -1821,6 +1874,7 @@ namespace LitePlacer
                     "Nozzle calibration failed.",
                     MessageBoxButtons.OK);
             }
+            UpCamera.SizeLimited = false;
             return (result);
         }
 
@@ -11563,18 +11617,18 @@ namespace LitePlacer
             UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
         }
 
-        private void NozzleMeasure()
-        {
-            if (UpCamera.IsRunning())
-            {
-                SetNozzleMeasurement();
-                DebugNozzle();
-            }
-            else
-            {
-                DisplayText("Up camera is not running.");
-            }
-        }
+        //private void NozzleMeasure()
+        //{
+        //    if (UpCamera.IsRunning())
+        //    {
+        //        SetNozzleMeasurement();
+        //        DebugNozzle();
+        //    }
+        //    else
+        //    {
+        //        DisplayText("Up camera is not running.");
+        //    }
+        //}
 
         private void NozzleMeasure_button_Click(object sender, EventArgs e)
         {
@@ -13074,7 +13128,14 @@ namespace LitePlacer
 
         private void ForceNozzleStatus_button_Click(object sender, EventArgs e)
         {
-            NozzleNo_textBox.Text = ForceNozzle_numericUpDown.Value.ToString();
+            if (ForceNozzle_numericUpDown.Value==0)
+            {
+                NozzleNo_textBox.Text = "--";
+            }
+            else
+            {
+                NozzleNo_textBox.Text = ForceNozzle_numericUpDown.Value.ToString();
+            }
             Properties.Settings.Default.Nozzles_current = (int)ForceNozzle_numericUpDown.Value;
             if (Properties.Settings.Default.Nozzles_current != 0)
             {
@@ -13615,6 +13676,10 @@ namespace LitePlacer
             path = path.Remove(i + 1);
             Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
             Nozzle.UseCalibration(Properties.Settings.Default.Nozzles_count);
+            for (int nozzle = 1; nozzle <= Properties.Settings.Default.Nozzles_count; nozzle++)
+            {
+                CheckCalibrationErrors(nozzle);
+            }
             Cnc.SlackCompensation = false;
         }
 
@@ -13729,6 +13794,30 @@ namespace LitePlacer
             foreach (NozzleClass.NozzlePoint p in Nozzle.CalibrationPoints)
             {
                 DisplayText("A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
+            }
+        }
+
+        private void CalibrateThis_button_Click(object sender, EventArgs e)
+        {
+            CalibrateNozzle_m();
+            CheckCalibrationErrors(Properties.Settings.Default.Nozzles_current);
+        }
+
+        private void CheckCalibrationErrors(int nozzle)
+        {
+            double val;
+            if (!double.TryParse(NozzleWarning_textBox.Text, out val))
+            {
+                DisplayText("Bad data in warning treshold");
+                return;
+            }
+            foreach (NozzleClass.NozzlePoint p in Nozzle.CalibrationPoints)
+            {
+                if ((Math.Abs(p.X) > Math.Abs(val)) || (Math.Abs(p.Y) > Math.Abs(val)))
+                {
+                    DisplayText("WARNING: Calibration value over threshold: ");
+                    DisplayText("Nozzle " + nozzle.ToString() + ", A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
+                }
             }
         }
 

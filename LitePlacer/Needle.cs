@@ -320,6 +320,11 @@ namespace LitePlacer
                 CalibrationPoints.Add(Point);
             }
             Calibrated = true;
+            if (Properties.Settings.Default.Nozzles_Enabled)
+            {
+                Store(Properties.Settings.Default.Nozzles_current);
+            };
+
             return true;
         }
 
