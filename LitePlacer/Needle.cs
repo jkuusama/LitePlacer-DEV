@@ -90,12 +90,24 @@ namespace LitePlacer
             if (File.Exists(filename))
             {
                 Stream stream = File.Open(filename, FileMode.Open);
-                BinaryFormatter formatter = new BinaryFormatter();
-                MainForm.DisplayText("Loading nozzle calibration data");
-                CalibrationPointsArr = (List<NozzlePoint>[])formatter.Deserialize(stream);
-                MainForm.DisplayText("Loading nozzle calibration validity data");
-                CalibratedArr = (bool[])formatter.Deserialize(stream);
-                stream.Close();
+                try
+                {
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    MainForm.DisplayText("Loading nozzle calibration data");
+                    CalibrationPointsArr = (List<NozzlePoint>[])formatter.Deserialize(stream);
+                    MainForm.DisplayText("Loading nozzle calibration validity data");
+                    CalibratedArr = (bool[])formatter.Deserialize(stream);
+                    stream.Close();
+                }
+                catch (Exception)
+                {
+                    stream.Close();
+                    MainForm.DisplayText("No nozzle calibration data");
+                    for (int i = 0; i < CalibratedArr.Length; i++)
+                    {
+                        CalibratedArr[i] = false;
+                    }
+                }
             }
             else
             {
