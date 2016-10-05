@@ -352,19 +352,13 @@ namespace LitePlacer
             A = 0.0;
 
 			double dW;	// Part center pos from hole, tape width direction. Varies.
-            double dL;   // Part center pos from hole, tape lenght direction. -2mm on all standard tapes
+            double dL=2.0;   // Part center pos from hole, tape lenght direction. -2mm on all standard tapes
 			double Pitch;  // Distance from one part to another
 
             if (!GetTapeParameters_m(Tape, out dW, out dL, out Pitch))
 	        {
 		        return false;
 	        }
-            // dL = -dL; // so up is + etc.
-			// TapeNumber orientation: 
-			// +Y: Holeside of tape is right, part is dW(mm) to left, dL(mm) down from hole, A= 0
-			// +X: Holeside of tape is down, part is dW(mm) up, dL(mm) to left from hole, A= -90
-			// -Y: Holeside of tape is left, part is dW(mm) to right, dL(mm) up from hole, A= -180
-			// -X: Holeside of tape is up, part is dW(mm) down, dL(mm) to right from hole, A=-270
             int pos;
 			if (!int.TryParse(Grid.Rows[Tape].Cells["NextPart_Column"].Value.ToString(), out pos))
 			{
@@ -374,28 +368,21 @@ namespace LitePlacer
 					MessageBoxButtons.OK
 				);
 				return false;
-			}     
-            // if pitch == 2 and part# is odd, DL=2, other
+			}
+            // if pitch == 2 and part# is even, DL=0
             if (Math.Abs(Pitch - 2) < 0.01)
             {
-                if ((pos % 2) == 1)
-                {
-                    // My logic fails: quick dirty fix.
-                    if (Grid.Rows[Tape].Cells["Orientation_Column"].Value.ToString()=="-X")
-                    {
-                        dL = -2.0;
-                    }
-                    else
-                    {
-                        dL = 2.0;
-                    }
-                }
-                else
+                if ((pos % 2) == 0)
                 {
                     dL = 0.0;
                 }
             }
 
+			// TapeNumber orientation: 
+			// +Y: Holeside of tape is right, part is dW(mm) to left, dL(mm) down from hole, A= 0
+			// +X: Holeside of tape is down, part is dW(mm) up, dL(mm) to left from hole, A= -90
+			// -Y: Holeside of tape is left, part is dW(mm) to right, dL(mm) up from hole, A= -180
+			// -X: Holeside of tape is up, part is dW(mm) down, dL(mm) to right from hole, A=-270
 			switch (Grid.Rows[Tape].Cells["Orientation_Column"].Value.ToString())
 			{
 				case "+Y":
@@ -417,7 +404,7 @@ namespace LitePlacer
 					break;
 
 				case "-X":
-					PartX = X - dL;
+					PartX = X + dL;
 					PartY = Y - dW;
 					A = -270.0;
 					break;
@@ -430,6 +417,8 @@ namespace LitePlacer
 					);
 					return false;
 			}
+            MainForm.DisplayText("Part position: " + Grid.Rows[Tape].Cells["Id_Column"].Value.ToString() + ", part #" + pos.ToString()
+                + ": X= " + PartX.ToString() + ", Y= " + PartY.ToString());
 			// rotation:
 			if (Grid.Rows[Tape].Cells["Rotation_Column"].Value == null)
 			{

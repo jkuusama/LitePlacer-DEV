@@ -8036,7 +8036,7 @@ namespace LitePlacer
                 );
             }
 
-            // Now, PartX, PartY, A tell the position of the part. For test: get camera there:  instead of Nozzle.Move_m(PartX, PartY, A
+            // Now, PartX, PartY, A tell the position of the part.
             if (!Nozzle.Move_m(PartX, PartY, A))
             {
                 return false;
