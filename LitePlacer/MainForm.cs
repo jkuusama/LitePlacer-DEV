@@ -13760,11 +13760,6 @@ namespace LitePlacer
         }
 
 
-
-
-        #endregion
-
-
         private void CalData_button_Click(object sender, EventArgs e)
         {
             DisplayText("Nozzles calibration data:");
@@ -13820,6 +13815,11 @@ namespace LitePlacer
                 }
             }
         }
+
+
+
+
+        #endregion
 
     }	// end of: 	public partial class FormMain : Form
 
