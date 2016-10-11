@@ -395,7 +395,19 @@ namespace LitePlacer
 
             DisableLog_checkBox.Checked = Properties.Settings.Default.General_MuteLogging;
             StartingUp = false;
-            DisplayText("Startup completed.");
+            DialogResult dialogResult = ShowMessageBox(
+                "Home machine now?",
+                "Home Now?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No)
+            {
+                OpticalHome_button.BackColor = Color.Red;
+            }
+            else
+            {
+                DoHoming();
+            }
+
+           DisplayText("Startup completed.");
         }
 
         // =================================================================================
@@ -2509,15 +2521,27 @@ namespace LitePlacer
             return true;
         }
 
-
-        private void OpticalHome_button_Click(object sender, EventArgs e)
+        private bool DoHoming()
         {
             ValidMeasurement_checkBox.Checked = false;
             if (!MechanicalHoming_m())
             {
-                return;
+                OpticalHome_button.BackColor = Color.Red;
+                return false;
             }
-            OpticalHoming_m();
+            if (!OpticalHoming_m())
+            {
+                OpticalHome_button.BackColor = Color.Red;
+                return false;
+            }
+            OpticalHome_button.BackColor = default(Color);
+            OpticalHome_button.UseVisualStyleBackColor = true;
+            return true;
+        }
+
+        private void OpticalHome_button_Click(object sender, EventArgs e)
+        {
+            DoHoming();
         }
 
         #endregion CNC interface functions
