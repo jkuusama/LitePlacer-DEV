@@ -10915,6 +10915,15 @@ namespace LitePlacer
             {
                 int NextNo = 1;
 
+                if (Tapes_dataGridView.Rows[row].Cells["NextPart_Column"].Value == null)
+                {
+                    ShowMessageBox(
+                        "Bad data in Next",
+                        "Data error",
+                        MessageBoxButtons.OK);
+                    return;
+                }
+
                 if (!int.TryParse(Tapes_dataGridView.Rows[row].Cells["NextPart_Column"].Value.ToString(), out NextNo))
                 {
                     ShowMessageBox(
