@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -692,6 +692,9 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Nozzles_tabPage = new System.Windows.Forms.TabPage();
+            this.NozzleWarning_textBox = new System.Windows.Forms.TextBox();
+            this.label156 = new System.Windows.Forms.Label();
+            this.CalibrateThis_button = new System.Windows.Forms.Button();
             this.label155 = new System.Windows.Forms.Label();
             this.CalData_button = new System.Windows.Forms.Button();
             this.label151 = new System.Windows.Forms.Label();
@@ -772,9 +775,7 @@
             this.Abs_radioButton = new System.Windows.Forms.RadioButton();
             this.Relative_Button = new System.Windows.Forms.RadioButton();
             this.label108 = new System.Windows.Forms.Label();
-            this.CalibrateThis_button = new System.Windows.Forms.Button();
-            this.label156 = new System.Windows.Forms.Label();
-            this.NozzleWarning_textBox = new System.Windows.Forms.TextBox();
+            this.MotorPower_timer = new System.Windows.Forms.Timer(this.components);
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -7870,14 +7871,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -8137,6 +8138,32 @@
             this.Nozzles_tabPage.TabIndex = 7;
             this.Nozzles_tabPage.Text = "Nozzles Setup";
             this.Nozzles_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // NozzleWarning_textBox
+            // 
+            this.NozzleWarning_textBox.Location = new System.Drawing.Point(1066, 443);
+            this.NozzleWarning_textBox.Name = "NozzleWarning_textBox";
+            this.NozzleWarning_textBox.Size = new System.Drawing.Size(88, 20);
+            this.NozzleWarning_textBox.TabIndex = 32;
+            // 
+            // label156
+            // 
+            this.label156.AutoSize = true;
+            this.label156.Location = new System.Drawing.Point(970, 446);
+            this.label156.Name = "label156";
+            this.label156.Size = new System.Drawing.Size(90, 13);
+            this.label156.TabIndex = 42;
+            this.label156.Text = "Warning treshold:";
+            // 
+            // CalibrateThis_button
+            // 
+            this.CalibrateThis_button.Location = new System.Drawing.Point(1066, 414);
+            this.CalibrateThis_button.Name = "CalibrateThis_button";
+            this.CalibrateThis_button.Size = new System.Drawing.Size(87, 23);
+            this.CalibrateThis_button.TabIndex = 41;
+            this.CalibrateThis_button.Text = "Calibrate curr.";
+            this.CalibrateThis_button.UseVisualStyleBackColor = true;
+            this.CalibrateThis_button.Click += new System.EventHandler(this.CalibrateThis_button_Click);
             // 
             // label155
             // 
@@ -8965,31 +8992,10 @@
             this.label108.TabIndex = 95;
             this.label108.Text = "nozzle:";
             // 
-            // CalibrateThis_button
+            // MotorPower_timer
             // 
-            this.CalibrateThis_button.Location = new System.Drawing.Point(1066, 414);
-            this.CalibrateThis_button.Name = "CalibrateThis_button";
-            this.CalibrateThis_button.Size = new System.Drawing.Size(87, 23);
-            this.CalibrateThis_button.TabIndex = 41;
-            this.CalibrateThis_button.Text = "Calibrate curr.";
-            this.CalibrateThis_button.UseVisualStyleBackColor = true;
-            this.CalibrateThis_button.Click += new System.EventHandler(this.CalibrateThis_button_Click);
-            // 
-            // label156
-            // 
-            this.label156.AutoSize = true;
-            this.label156.Location = new System.Drawing.Point(970, 446);
-            this.label156.Name = "label156";
-            this.label156.Size = new System.Drawing.Size(90, 13);
-            this.label156.TabIndex = 42;
-            this.label156.Text = "Warning treshold:";
-            // 
-            // NozzleWarning_textBox
-            // 
-            this.NozzleWarning_textBox.Location = new System.Drawing.Point(1066, 443);
-            this.NozzleWarning_textBox.Name = "NozzleWarning_textBox";
-            this.NozzleWarning_textBox.Size = new System.Drawing.Size(88, 20);
-            this.NozzleWarning_textBox.TabIndex = 32;
+            this.MotorPower_timer.Interval = 1000;
+            this.MotorPower_timer.Tick += new System.EventHandler(this.MotorPower_timer_Tick);
             // 
             // FormMain
             // 
@@ -9894,6 +9900,7 @@
         private System.Windows.Forms.Button CalibrateThis_button;
         private System.Windows.Forms.TextBox NozzleWarning_textBox;
         private System.Windows.Forms.Label label156;
+        private System.Windows.Forms.Timer MotorPower_timer;
     }
 }
 

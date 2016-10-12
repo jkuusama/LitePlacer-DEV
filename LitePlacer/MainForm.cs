@@ -394,19 +394,9 @@ namespace LitePlacer
             }
 
             DisableLog_checkBox.Checked = Properties.Settings.Default.General_MuteLogging;
+            MotorPower_timer.Enabled = true;
+            OfferHoming();
             StartingUp = false;
-            DialogResult dialogResult = ShowMessageBox(
-                "Home machine now?",
-                "Home Now?", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.No)
-            {
-                OpticalHome_button.BackColor = Color.Red;
-            }
-            else
-            {
-                DoHoming();
-            }
-
            DisplayText("Startup completed.");
         }
 
@@ -1662,6 +1652,92 @@ namespace LitePlacer
         // =================================================================================
         #region CNC interface functions
 
+        // =================================================================================
+        // Position confidence, motor power timer:
+        // we want to keep track about TinyG motor power state. To do that, we run our own timer, MotorPower_timer.
+        // The timer ticks every second and runs all the time. In normal operation state, we count the ticks and
+        // reset the count every time the machine stops.
+        // The TinyG motor power timeout value is retrieved at startup, like other TinyG values.
+        // If the machine is homed, and either timer get bigger than motor power timeout (motors are powered off by TinyG),
+        // or an error occurs, we've lost position confidence and machine needs to be re-homed.
+
+        private double PowerTimerCount = 0;
+        private double TinyGMotorTimeout = 300.0;
+        private bool PositionConfidence = false;
+
+        private void Update_mt(string ValStr)
+        {
+            if (InvokeRequired) { Invoke(new Action<string>(Update_mt), new[] { ValStr }); return; }
+
+            double val;
+            if (double.TryParse(ValStr, out val))
+            {
+                TinyGMotorTimeout = val;
+                DisplayText("mt value: " + TinyGMotorTimeout.ToString());
+            }
+            else
+            {
+                DisplayText("Bad mt value: " + ValStr, KnownColor.DarkRed);
+            }
+
+        }
+
+        public void ResetMotorTimer()
+        {
+            PowerTimerCount = 0;
+        }
+
+        private void MotorPower_timer_Tick(object sender, EventArgs e)
+        {
+            if (PositionConfidence)         // == if timer should run
+            {
+                // DisplayText("timer: " + PowerTimerCount.ToString());
+                PowerTimerCount = PowerTimerCount + 1.0;
+                if ((PowerTimerCount + 0.1) > TinyGMotorTimeout)
+                {
+                    PositionConfidence = false;
+                    OfferHoming();
+                }
+            }
+        }
+
+         private void OfferHoming()
+        {
+            DialogResult dialogResult = ShowMessageBox(
+                "Home machine now?",
+                "Home Now?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No)
+            {
+                OpticalHome_button.BackColor = Color.Red;
+            }
+            else
+            {
+                DoHoming();
+            }
+        }
+
+        private bool DoHoming()
+        {
+            PositionConfidence = false;
+            ValidMeasurement_checkBox.Checked = false;
+            if (!MechanicalHoming_m())
+            {
+                OpticalHome_button.BackColor = Color.Red;
+                return false;
+            }
+            if (!OpticalHoming_m())
+            {
+                OpticalHome_button.BackColor = Color.Red;
+                return false;
+            }
+            OpticalHome_button.BackColor = default(Color);
+            OpticalHome_button.UseVisualStyleBackColor = true;
+            PositionConfidence = true;
+            return true;
+        }
+
+
+        // =================================================================================
         private bool VacuumIsOn = false;
 
         private void VacuumDefaultSetting()
@@ -2518,24 +2594,6 @@ namespace LitePlacer
                 ZGuardOn();
             };
 
-            return true;
-        }
-
-        private bool DoHoming()
-        {
-            ValidMeasurement_checkBox.Checked = false;
-            if (!MechanicalHoming_m())
-            {
-                OpticalHome_button.BackColor = Color.Red;
-                return false;
-            }
-            if (!OpticalHoming_m())
-            {
-                OpticalHome_button.BackColor = Color.Red;
-                return false;
-            }
-            OpticalHome_button.BackColor = default(Color);
-            OpticalHome_button.UseVisualStyleBackColor = true;
             return true;
         }
 
@@ -3894,16 +3952,22 @@ namespace LitePlacer
                     labelSerialPortStatus.Text = "ERROR";
                     labelSerialPortStatus.ForeColor = Color.Red;
                     ValidMeasurement_checkBox.Checked = false;
+                    PositionConfidence = false;
                 }
                 else
                 {
                     buttonConnectSerial.Text = "Close";
                     labelSerialPortStatus.Text = "Connected";
                     labelSerialPortStatus.ForeColor = Color.Black;
+                    if (!StartingUp)
+                    {
+                        OfferHoming();
+                    }
                 }
             }
             else
             {
+                PositionConfidence = false;
                 buttonConnectSerial.Text = "Connect";
                 labelSerialPortStatus.Text = "Not connected";
                 labelSerialPortStatus.ForeColor = Color.Red;
@@ -4139,6 +4203,11 @@ namespace LitePlacer
                 return false;
             };
 
+            if (!CNC_Write_m("{\"mt\":\"\"}"))
+            {
+                return false;
+            };
+
             // Do settings that need to be done always
             Cnc.IgnoreError = true;
             Nozzle.ProbingMode(false, JSON);
@@ -4239,6 +4308,10 @@ namespace LitePlacer
                 case "3sa": Update_3sa(value);
                     break;
                 case "4sa": Update_4sa(value);
+                    break;
+
+                case "mt":
+                    Update_mt(value);
                     break;
 
                 default:

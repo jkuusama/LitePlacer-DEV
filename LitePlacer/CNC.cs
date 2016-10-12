@@ -637,6 +637,7 @@ namespace LitePlacer
                 if (line.Contains("\"stat\":3"))
                 {
                     MainForm.DisplayText("ReadyEvent stat");
+                    MainForm.ResetMotorTimer();
                     _readyEvent.Set();
                 }
                 return;
@@ -905,6 +906,18 @@ namespace LitePlacer
             // =========================================================
             // The individual settings we care about and do something
             // when they change.
+
+            // mt: motor timeout
+            private string _mt = "";
+            public string mt
+            {
+                get { return _mt; }
+                set
+                {
+                    _mt = value;
+                    CNC.MainForm.ValueUpdater("mt", _mt);
+                }
+            }
 
             // *jm: jerk max
             private string _xjm = "";
