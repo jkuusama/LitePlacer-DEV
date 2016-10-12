@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -700,10 +700,6 @@
             this.label151 = new System.Windows.Forms.Label();
             this.label150 = new System.Windows.Forms.Label();
             this.NozzlesParameters_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn55 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NozzleMinSize_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NozzleMaxSize_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NozzleAlternative_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.NozzleUnload_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.gotoUnloadStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -776,6 +772,10 @@
             this.Relative_Button = new System.Windows.Forms.RadioButton();
             this.label108 = new System.Windows.Forms.Label();
             this.MotorPower_timer = new System.Windows.Forms.Timer(this.components);
+            this.dataGridViewTextBoxColumn55 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NozzleMinSize_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NozzleMaxSize_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NozzleAlternative_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -7871,14 +7871,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -8151,9 +8151,9 @@
             this.label156.AutoSize = true;
             this.label156.Location = new System.Drawing.Point(970, 446);
             this.label156.Name = "label156";
-            this.label156.Size = new System.Drawing.Size(90, 13);
+            this.label156.Size = new System.Drawing.Size(96, 13);
             this.label156.TabIndex = 42;
-            this.label156.Text = "Warning treshold:";
+            this.label156.Text = "Warning threshold:";
             // 
             // CalibrateThis_button
             // 
@@ -8216,7 +8216,7 @@
             this.NozzleAlternative_column});
             this.NozzlesParameters_dataGridView.ContextMenuStrip = this.NozzleUnload_contextMenuStrip;
             this.NozzlesParameters_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.NozzlesParameters_dataGridView.Location = new System.Drawing.Point(682, 320);
+            this.NozzlesParameters_dataGridView.Location = new System.Drawing.Point(665, 320);
             this.NozzlesParameters_dataGridView.Name = "NozzlesParameters_dataGridView";
             this.NozzlesParameters_dataGridView.RowHeadersVisible = false;
             this.NozzlesParameters_dataGridView.RowHeadersWidth = 40;
@@ -8224,41 +8224,8 @@
             this.NozzlesParameters_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.NozzlesParameters_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.NozzlesParameters_dataGridView.ShowEditingIcon = false;
-            this.NozzlesParameters_dataGridView.Size = new System.Drawing.Size(266, 78);
+            this.NozzlesParameters_dataGridView.Size = new System.Drawing.Size(283, 78);
             this.NozzlesParameters_dataGridView.TabIndex = 36;
-            // 
-            // dataGridViewTextBoxColumn55
-            // 
-            this.dataGridViewTextBoxColumn55.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.dataGridViewTextBoxColumn55.HeaderText = "nozzle";
-            this.dataGridViewTextBoxColumn55.Name = "dataGridViewTextBoxColumn55";
-            this.dataGridViewTextBoxColumn55.ReadOnly = true;
-            this.dataGridViewTextBoxColumn55.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn55.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn55.Width = 60;
-            // 
-            // NozzleMinSize_column
-            // 
-            this.NozzleMinSize_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.NozzleMinSize_column.HeaderText = "Min. Size";
-            this.NozzleMinSize_column.Name = "NozzleMinSize_column";
-            this.NozzleMinSize_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NozzleMinSize_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.NozzleMinSize_column.Width = 60;
-            // 
-            // NozzleMaxSize_column
-            // 
-            this.NozzleMaxSize_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.NozzleMaxSize_column.HeaderText = "Max. Size";
-            this.NozzleMaxSize_column.Name = "NozzleMaxSize_column";
-            this.NozzleMaxSize_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NozzleMaxSize_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.NozzleMaxSize_column.Width = 60;
-            // 
-            // NozzleAlternative_column
-            // 
-            this.NozzleAlternative_column.HeaderText = "Use alt. table";
-            this.NozzleAlternative_column.Name = "NozzleAlternative_column";
             // 
             // NozzleUnload_contextMenuStrip
             // 
@@ -8996,6 +8963,39 @@
             // 
             this.MotorPower_timer.Interval = 1000;
             this.MotorPower_timer.Tick += new System.EventHandler(this.MotorPower_timer_Tick);
+            // 
+            // dataGridViewTextBoxColumn55
+            // 
+            this.dataGridViewTextBoxColumn55.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewTextBoxColumn55.HeaderText = "nozzle";
+            this.dataGridViewTextBoxColumn55.Name = "dataGridViewTextBoxColumn55";
+            this.dataGridViewTextBoxColumn55.ReadOnly = true;
+            this.dataGridViewTextBoxColumn55.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn55.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn55.Width = 60;
+            // 
+            // NozzleMinSize_column
+            // 
+            this.NozzleMinSize_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NozzleMinSize_column.HeaderText = "Min. Size";
+            this.NozzleMinSize_column.Name = "NozzleMinSize_column";
+            this.NozzleMinSize_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NozzleMinSize_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.NozzleMinSize_column.Width = 60;
+            // 
+            // NozzleMaxSize_column
+            // 
+            this.NozzleMaxSize_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NozzleMaxSize_column.HeaderText = "Max. Size";
+            this.NozzleMaxSize_column.Name = "NozzleMaxSize_column";
+            this.NozzleMaxSize_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NozzleMaxSize_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.NozzleMaxSize_column.Width = 60;
+            // 
+            // NozzleAlternative_column
+            // 
+            this.NozzleAlternative_column.HeaderText = "Use alt. functions";
+            this.NozzleAlternative_column.Name = "NozzleAlternative_column";
             // 
             // FormMain
             // 
@@ -9878,10 +9878,6 @@
         private System.Windows.Forms.DataGridView NozzlesParameters_dataGridView;
         private System.Windows.Forms.Label label150;
         private System.Windows.Forms.Label label151;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn55;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleAlternative_column;
         private System.Windows.Forms.DataGridView Nozzle2_dataGridView;
         private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn11;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn11;
@@ -9901,6 +9897,10 @@
         private System.Windows.Forms.TextBox NozzleWarning_textBox;
         private System.Windows.Forms.Label label156;
         private System.Windows.Forms.Timer MotorPower_timer;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn55;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleAlternative_column;
     }
 }
 

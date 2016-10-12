@@ -1186,6 +1186,10 @@ namespace LitePlacer
 	        Keys.NumPad7,   // up + left
 	        Keys.NumPad8,   // up
  	        Keys.NumPad9,   // up + right
+            Keys.Add,
+            Keys.Subtract,
+            Keys.Divide,
+            Keys.Multiply,
             Keys.F5,
             Keys.F6,
             Keys.F7,
@@ -1200,7 +1204,8 @@ namespace LitePlacer
         {
             if ((e.KeyCode == Keys.NumPad1) || (e.KeyCode == Keys.NumPad2) || (e.KeyCode == Keys.NumPad3) ||
                 (e.KeyCode == Keys.NumPad4) || (e.KeyCode == Keys.NumPad6) ||
-                (e.KeyCode == Keys.NumPad7) || (e.KeyCode == Keys.NumPad8) || (e.KeyCode == Keys.NumPad9))
+                (e.KeyCode == Keys.NumPad7) || (e.KeyCode == Keys.NumPad8) || (e.KeyCode == Keys.NumPad9) ||
+                (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
             {
                 if (!NumPadJog_checkBox.Checked)
                 {
@@ -1244,7 +1249,8 @@ namespace LitePlacer
 
             if ((e.KeyCode == Keys.NumPad1) || (e.KeyCode == Keys.NumPad2) || (e.KeyCode == Keys.NumPad3) ||
                 (e.KeyCode == Keys.NumPad4) || (e.KeyCode == Keys.NumPad6) ||
-                (e.KeyCode == Keys.NumPad7) || (e.KeyCode == Keys.NumPad8) || (e.KeyCode == Keys.NumPad9))
+                (e.KeyCode == Keys.NumPad7) || (e.KeyCode == Keys.NumPad8) || (e.KeyCode == Keys.NumPad9) ||
+                (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
             {
                 if (!NumPadJog_checkBox.Checked)
                 {
@@ -1325,6 +1331,27 @@ namespace LitePlacer
             {
                 JoggingBusy = true;
                 Cnc.RawWrite(Movestr + "X" + Properties.Settings.Default.General_MachineSizeX.ToString() + "Y" + Properties.Settings.Default.General_MachineSizeY.ToString() + "\"}");
+            }
+           //     (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
+            else if (e.KeyCode == Keys.Add)
+            {
+                JoggingBusy = true;
+                Cnc.RawWrite(Movestr + "Z" + Properties.Settings.Default.General_MachineSizeY.ToString() + "\"}");
+            }
+            else if (e.KeyCode == Keys.Subtract)
+            {
+                JoggingBusy = true;
+                Cnc.RawWrite(Movestr + "Z0\"}");
+            }
+            else if (e.KeyCode == Keys.Divide)
+            {
+                JoggingBusy = true;
+                Cnc.RawWrite(Movestr + "A0\"}");
+            }
+            else if (e.KeyCode == Keys.Multiply)
+            {
+                JoggingBusy = true;
+                Cnc.RawWrite(Movestr + "A" + Properties.Settings.Default.General_MachineSizeY.ToString() + "\"}");
             }
             else
             {
@@ -11198,7 +11225,7 @@ namespace LitePlacer
         {
             DisplayText("test 6: Nozzle up");
             CNC_Z_m(0);  // go up
-            CNC_XY_m(Xmark, Ymark);
+            // CNC_XY_m(Xmark, Ymark);
 
             // ShowMessageBox test
             //    Cnc_ReadyEvent.Reset();
