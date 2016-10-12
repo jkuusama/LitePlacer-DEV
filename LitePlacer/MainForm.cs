@@ -391,11 +391,11 @@ namespace LitePlacer
                 //CNC_RawWrite("{\"ec\":0}");  // send LF only
                 //Thread.Sleep(150);
                 UpdateWindowValues_m();
+                OfferHoming();
             }
 
             DisableLog_checkBox.Checked = Properties.Settings.Default.General_MuteLogging;
             MotorPower_timer.Enabled = true;
-            OfferHoming();
             StartingUp = false;
            DisplayText("Startup completed.");
         }
