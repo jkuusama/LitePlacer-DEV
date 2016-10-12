@@ -46,7 +46,7 @@ namespace LitePlacer
             ErrorState = true;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus();
+            MainForm.UpdateCncConnectionStatus(true);
         }
 
         public void Close()
@@ -56,7 +56,7 @@ namespace LitePlacer
             Connected = false;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus();
+            MainForm.UpdateCncConnectionStatus(true);
         }
 
         public bool Connect(String name)
@@ -565,7 +565,7 @@ namespace LitePlacer
                     "TinyG Reset.",
                     "System Reset",
                     MessageBoxButtons.OK);
-                MainForm.UpdateCncConnectionStatus();
+                MainForm.UpdateCncConnectionStatus(false);
                 return;
             }
 

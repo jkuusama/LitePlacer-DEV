@@ -137,8 +137,39 @@ namespace LitePlacer
             FastYpos = FirstY;
             if (ComponentCount>1)
             {
-                FastXstep = (LastX - FirstX) / (double)(ComponentCount-1);
-                FastYstep = (LastY - FirstY) / (double)(ComponentCount-1);
+                // get pitch
+                double pitch = 0;
+                if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString(), out pitch))
+                {
+                    MainForm.ShowMessageBox(
+                        "Bad data at Pitch column, tape ID: " + Grid.Rows[TapeNum].Cells["Id_Column"].Value.ToString(),
+                        "Data error",
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+                // if pitch == 2
+                if ((pitch < 2.01) && (pitch > 1.99))
+                {
+                    int starthole = (first + 1) / 2;
+                    int lasthole = (last + 1) / 2;
+                    int HoleIncrements = lasthole - starthole;
+                    if (HoleIncrements==0)
+                    {
+                        FastXstep = 0.0;
+                        FastYstep = 0.0;
+                    }
+                    else
+                    {
+                        FastXstep = (LastX - FirstX) / (double)HoleIncrements;
+                        FastYstep = (LastY - FirstY) / (double)HoleIncrements;
+                    }
+                }
+                else
+                {
+                    // normal case
+                    FastXstep = (LastX - FirstX) / (double)(ComponentCount - 1);
+                    FastYstep = (LastY - FirstY) / (double)(ComponentCount - 1);
+                }
             }
             else
             {
@@ -159,6 +190,7 @@ namespace LitePlacer
         // Like IncrementTape(), but just using the fast parametersheader description
         public bool IncrementTape_Fast_m(int TapeNum)
         {
+            // get current part number
             int pos;
             if (!int.TryParse(Grid.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out pos))
             {
@@ -169,29 +201,9 @@ namespace LitePlacer
                 return false;
             }
 
-            // increment hole location only on every other "next" value on 2mm pitch
-            double pitch=0;
-            if (double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString(), out pitch))
-            {
-                if ((pitch < 2.01) && (pitch > 1.99))      // pitch == 2
-                {
-                    if ((pos % 2) == 0)      
-                    {
-                        FastXpos += FastXstep * 2;
-                        FastYpos += FastYstep * 2;
-                        Grid.Rows[TapeNum].Cells["Next_X_Column"].Value = FastXpos.ToString("0.000", CultureInfo.InvariantCulture);
-                        Grid.Rows[TapeNum].Cells["Next_Y_Column"].Value = FastYpos.ToString("0.000", CultureInfo.InvariantCulture);
-                    }
-                }
-                else
-                {
-                    FastXpos += FastXstep;
-                    FastYpos += FastYstep;
-                    Grid.Rows[TapeNum].Cells["Next_X_Column"].Value = FastXpos.ToString("0.000", CultureInfo.InvariantCulture);
-                    Grid.Rows[TapeNum].Cells["Next_Y_Column"].Value = FastYpos.ToString("0.000", CultureInfo.InvariantCulture);
-                }
-            }
-            else
+            // get pitch
+            double pitch = 0;
+            if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString(), out pitch))
             {
                 MainForm.ShowMessageBox(
                     "Bad data at Pitch column, tape ID: " + Grid.Rows[TapeNum].Cells["Id_Column"].Value.ToString(),
@@ -200,10 +212,23 @@ namespace LitePlacer
                 return false;
             }
 
+            // Increment hole location, except if pitch is 2 and part number is odd
+            if (!(
+                ((pitch < 2.01) && (pitch > 1.99)) // pitch=2
+                && 
+                ((pos % 2) == 1)
+                ))
+            {
+                FastXpos += FastXstep;
+                FastYpos += FastYstep;
+                Grid.Rows[TapeNum].Cells["Next_X_Column"].Value = FastXpos.ToString("0.000", CultureInfo.InvariantCulture);
+                Grid.Rows[TapeNum].Cells["Next_Y_Column"].Value = FastYpos.ToString("0.000", CultureInfo.InvariantCulture);
+            }
             pos += 1;
             Grid.Rows[TapeNum].Cells["NextPart_Column"].Value = pos.ToString();
-           return true;
-        }
+            return true;
+
+    }
 
         // ========================================================================================
         // GetTapeParameters_m(): 

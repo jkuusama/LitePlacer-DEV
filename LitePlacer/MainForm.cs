@@ -380,7 +380,7 @@ namespace LitePlacer
             }
             ForceNozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
 
-            UpdateCncConnectionStatus();
+            UpdateCncConnectionStatus(false);
             if (Cnc.Connected)
             {
                 Thread.Sleep(200); // Give TinyG time to wake up
@@ -1695,7 +1695,6 @@ namespace LitePlacer
                 PowerTimerCount = PowerTimerCount + 1.0;
                 if ((PowerTimerCount + 0.1) > TinyGMotorTimeout)
                 {
-                    PositionConfidence = false;
                     OfferHoming();
                 }
             }
@@ -1703,6 +1702,7 @@ namespace LitePlacer
 
          private void OfferHoming()
         {
+            PositionConfidence = false;
             DialogResult dialogResult = ShowMessageBox(
                 "Home machine now?",
                 "Home Now?", MessageBoxButtons.YesNo);
@@ -3857,7 +3857,7 @@ namespace LitePlacer
             UpCamera.Active = false;
             DownCamera.Active = false;
 
-            UpdateCncConnectionStatus();
+            UpdateCncConnectionStatus(false);
             SizeXMax_textBox.Text = Properties.Settings.Default.General_MachineSizeX.ToString();
             SizeYMax_textBox.Text = Properties.Settings.Default.General_MachineSizeY.ToString();
 
@@ -3937,12 +3937,12 @@ namespace LitePlacer
         public void CncError()
         {
             Cnc.ErrorState = true;
-            UpdateCncConnectionStatus();
+            UpdateCncConnectionStatus(true);
         }
 
-        public void UpdateCncConnectionStatus()
+        public void UpdateCncConnectionStatus(bool Offer)
         {
-            if (InvokeRequired) { Invoke(new Action(UpdateCncConnectionStatus)); return; }
+            if (InvokeRequired) { Invoke(new Action<bool>(UpdateCncConnectionStatus), Offer ); return; }
 
             if (Cnc.Connected)
             {
@@ -3959,7 +3959,7 @@ namespace LitePlacer
                     buttonConnectSerial.Text = "Close";
                     labelSerialPortStatus.Text = "Connected";
                     labelSerialPortStatus.ForeColor = Color.Black;
-                    if (!StartingUp)
+                    if (Offer)
                     {
                         OfferHoming();
                     }
@@ -3992,6 +3992,7 @@ namespace LitePlacer
                     {
                         CncError();
                     }
+                    UpdateCncConnectionStatus(true);
                 }
             }
             else if (Cnc.ErrorState)
@@ -4002,14 +4003,15 @@ namespace LitePlacer
                 {
                     CncError();
                 }
+                UpdateCncConnectionStatus(true);
             }
             else
             {
                 // Close connection
                 Cnc.Close();
                 Thread.Sleep(250);
+                UpdateCncConnectionStatus(false);
             }
-            UpdateCncConnectionStatus();
         }
 
 
@@ -8124,6 +8126,7 @@ namespace LitePlacer
             double PartY = 0.0;
             double A = 0.0;
 
+            // GetPartLocationFromHolePosition_m calculates A correctly, but we have already figured out X and Y
             if (!Tapes.GetPartLocationFromHolePosition_m(TapeNum, Tapes.FastXpos, Tapes.FastYpos, out PartX, out PartY, out A))
             {
                 ShowMessageBox(
