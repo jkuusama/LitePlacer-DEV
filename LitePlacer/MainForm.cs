@@ -7402,7 +7402,9 @@ namespace LitePlacer
 
 
         // =================================================================================
-        // This routine places selected component(s) from CAD data grid view:
+        // This routine places selected component(s) from CAD data grid view.
+        // The mechanism is the same as from job data: a temp row is addded to job data
+        // and then that row is processed.
         private void PlaceOne_button_Click(object sender, EventArgs e)
         {
             // is something actually selected?
@@ -8216,6 +8218,11 @@ namespace LitePlacer
         // ========================================================================================
         public bool PickUpPartFast_m(int TapeNum)
         {
+            if (UseCoordinatesDirectly(TapeNum))
+            {
+                return (PickUpPartWithDirectCoordinates_m(TapeNum));
+            }
+
             if (!Tapes.FastParametersOk)
             {
                 ShowMessageBox(
@@ -8261,7 +8268,12 @@ namespace LitePlacer
         // PickUpPartWithHoleMeasurement_m(): Picks next part from the tape, measuring the hole
         private bool PickUpPartWithHoleMeasurement_m(int TapeNumber)
         {
-            // If this succeeds, we update next hole location at the end, but these values are measured eat start
+            if (UseCoordinatesDirectly(TapeNumber))
+            {
+                return (PickUpPartWithDirectCoordinates_m(TapeNumber));
+            }
+
+            // If this succeeds, we update next hole location at the end, but these values are measured at start
             double HoleX = 0;
             double HoleY = 0;
             DisplayText("PickUpPart_m(), tape no: " + TapeNumber.ToString());
@@ -8282,6 +8294,147 @@ namespace LitePlacer
                 return false;
             }
 
+            return true;
+        }
+
+        // =================================================================================
+        // PickUpPartWithDirectCoordinates_m(): Picks next part, using coordinates directly
+        // First, some helper functions:
+
+        private bool UseCoordinatesDirectly(int TapeNum)
+        {
+            DataGridViewCheckBoxCell cell = Tapes_dataGridView.Rows[TapeNum].Cells["CoordinatesForParts_Column"] as DataGridViewCheckBoxCell;
+            if (cell.Value != null)
+            {
+                if (cell.Value.ToString() == "True")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool FindPartWithDirectCoordinates_m(int TapeNum, out double X, out double Y, out double A, out bool increment)
+        {
+            X = 0.0;
+            Y = 0.0;
+            A = 0.0;
+            increment = false;
+
+            double FirstX;
+            double FirstY;
+
+            if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["FirstX_Column"].Value.ToString(), out FirstX))
+            {
+                DisplayText("Bad data, X column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
+                return false;
+            }
+            if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["FirstY_Column"].Value.ToString(), out FirstY))
+            {
+                DisplayText("Bad data, Y column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
+                return false;
+            }
+            double LastX = 0.0;
+            double LastY = 0.0;
+            // Not all values need to be set, but if they are set, they need to be valid
+            if (Tapes_dataGridView.Rows[TapeNum].Cells["LastX_Column"].Value != null)
+            {
+                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["LastX_Column"].Value.ToString(), out LastX))
+                {
+                    DisplayText("Bad data, Last X column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
+                    return false;
+                }
+            }
+            if (Tapes_dataGridView.Rows[TapeNum].Cells["LastY_Column"].Value != null)
+            {
+                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["LastY_Column"].Value.ToString(), out LastY))
+                {
+                    DisplayText("Bad data, Last Y column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
+                    return false;
+                }
+            }
+            double pitch;
+            if (Tapes_dataGridView.Rows[TapeNum].Cells["Pitch_Column"].Value == null)
+            {
+                DisplayText("Bad data, Pitch column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
+                return false;
+            }
+            if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString(), out pitch))
+            {
+                DisplayText("Bad data, Pitch column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
+                return false;
+            }
+            double PartX;
+            double PartY;
+
+            if (
+                (Math.Abs(pitch) < 0.00001) ||
+                ((Math.Abs(LastX) < 0.00001) && (Math.Abs(LastY) < 0.00001))
+               )
+            {
+                // no increment, use first coordinates directly
+                PartX = FirstX;
+                PartY = FirstY;
+            }
+            else
+            {
+                // more than one part defined, need to tell the caller the next column needs to be incremented if operation is succesful
+                increment = true;
+                // calculate location
+                int increments;
+                if (!int.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out increments))
+                {
+                    DisplayText("Bad data, Next column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
+                    return false;
+                }
+                increments = increments - 1;
+                double mag = Math.Sqrt(((LastX - FirstX) * (LastX - FirstX)) + ((LastY - FirstY) * (LastY - FirstY)));
+                double Xincr = (LastX - FirstX) * pitch / mag;
+                double Yincr = (LastY - FirstY) * pitch / mag;
+                PartX = FirstX + Xincr * increments;
+                PartY = FirstY + Yincr * increments;
+            }
+
+            if (Tapes_dataGridView.Rows[TapeNum].Cells["ACorrection_Column"].Value != null)
+            {
+                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["ACorrection_Column"].Value.ToString(), out A))
+                {
+                    DisplayText("Bad data, A correction column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool PickUpPartWithDirectCoordinates_m(int TapeNum)
+        {
+            double X;
+            double Y;
+            double A;
+            bool increment;
+            if (!FindPartWithDirectCoordinates_m(TapeNum, out X, out Y, out A, out increment))
+            {
+                return false;
+            }
+            DisplayText("PickUpPartWithDirectCoordinates_m(), tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString()
+                + ", X: " + X.ToString("0.000") + ", Y: " + Y.ToString("0.000") + ", A: " + A.ToString("0.000"));
+
+            if (!Nozzle.Move_m(X, Y, A))
+            {
+                return false;
+            }
+            if (!PickUpThis_m(TapeNum))
+            {
+                return false;
+            }
+
+            if (increment)
+            {
+                int i;
+                int.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out i);  // we know it parses
+                i++;
+                Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value = i.ToString();
+            }
             return true;
         }
 
@@ -8534,7 +8687,7 @@ namespace LitePlacer
         // Component is at CadData_GridView.Rows[CADdataRow]. 
         // Tape ID and method are at JobDataRow.Rows[JobDataRow]. 
         // It should go to X, Y, A
-        // Data is validated already.
+        // CAD data is validated already.
 
         private bool PlacePart_m(int CADdataRow, int JobDataRow, double X, double Y, double A, bool FirstInRow)
         {
