@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -734,14 +734,10 @@
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.GotoX_textBox = new System.Windows.Forms.TextBox();
-            this.label136 = new System.Windows.Forms.Label();
-            this.label137 = new System.Windows.Forms.Label();
             this.GotoY_textBox = new System.Windows.Forms.TextBox();
             this.GotoZ_textBox = new System.Windows.Forms.TextBox();
             this.GotoA_textBox = new System.Windows.Forms.TextBox();
             this.Goto_button = new System.Windows.Forms.Button();
-            this.label138 = new System.Windows.Forms.Label();
-            this.label139 = new System.Windows.Forms.Label();
             this.NozzleNo_textBox = new System.Windows.Forms.TextBox();
             this.LoadCurrentPosition_button = new System.Windows.Forms.Button();
             this.TrueX_label = new System.Windows.Forms.Label();
@@ -779,6 +775,10 @@
             this.GoY_button = new System.Windows.Forms.Button();
             this.GoA_button = new System.Windows.Forms.Button();
             this.GoZ_button = new System.Windows.Forms.Button();
+            this.ResetSelectedZs_button = new System.Windows.Forms.Button();
+            this.ResetSelectedPlaceZs_button = new System.Windows.Forms.Button();
+            this.label157 = new System.Windows.Forms.Label();
+            this.label158 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -1216,6 +1216,10 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.label158);
+            this.Tapes_tabPage.Controls.Add(this.label157);
+            this.Tapes_tabPage.Controls.Add(this.ResetSelectedPlaceZs_button);
+            this.Tapes_tabPage.Controls.Add(this.ResetSelectedZs_button);
             this.Tapes_tabPage.Controls.Add(this.ResetPlaceZ_button);
             this.Tapes_tabPage.Controls.Add(this.TapesOld_dataGridView);
             this.Tapes_tabPage.Controls.Add(this.ShowPart_button);
@@ -1226,17 +1230,13 @@
             this.Tapes_tabPage.Controls.Add(this.ReloadTray_button);
             this.Tapes_tabPage.Controls.Add(this.ReplaceTray_button);
             this.Tapes_tabPage.Controls.Add(this.LoadTray_button);
-            this.Tapes_tabPage.Controls.Add(this.label138);
             this.Tapes_tabPage.Controls.Add(this.SaveTray_button);
-            this.Tapes_tabPage.Controls.Add(this.label139);
             this.Tapes_tabPage.Controls.Add(this.LoadAllTapes_button);
             this.Tapes_tabPage.Controls.Add(this.SaveAllTapes_button);
             this.Tapes_tabPage.Controls.Add(this.TapeSet1_button);
             this.Tapes_tabPage.Controls.Add(this.Tape_resetZs_button);
-            this.Tapes_tabPage.Controls.Add(this.label137);
             this.Tapes_tabPage.Controls.Add(this.Tape_GoToNext_button);
             this.Tapes_tabPage.Controls.Add(this.label67);
-            this.Tapes_tabPage.Controls.Add(this.label136);
             this.Tapes_tabPage.Controls.Add(this.label62);
             this.Tapes_tabPage.Controls.Add(this.SetPartNo_button);
             this.Tapes_tabPage.Controls.Add(this.NextPart_TextBox);
@@ -1258,12 +1258,12 @@
             // 
             // ResetPlaceZ_button
             // 
-            this.ResetPlaceZ_button.Location = new System.Drawing.Point(1152, 377);
+            this.ResetPlaceZ_button.Location = new System.Drawing.Point(1152, 394);
             this.ResetPlaceZ_button.Name = "ResetPlaceZ_button";
             this.ResetPlaceZ_button.Size = new System.Drawing.Size(75, 23);
             this.ResetPlaceZ_button.TabIndex = 63;
             this.ResetPlaceZ_button.Text = "R. Place Z\'s";
-            this.toolTip1.SetToolTip(this.ResetPlaceZ_button, "Resets placement heights for the selected row.");
+            this.toolTip1.SetToolTip(this.ResetPlaceZ_button, "Resets placement heights for the all rows.");
             this.ResetPlaceZ_button.UseVisualStyleBackColor = true;
             this.ResetPlaceZ_button.Click += new System.EventHandler(this.ResetPlaceZ_button_Click);
             // 
@@ -1438,7 +1438,7 @@
             // 
             // ShowPart_button
             // 
-            this.ShowPart_button.Location = new System.Drawing.Point(653, 581);
+            this.ShowPart_button.Location = new System.Drawing.Point(392, 571);
             this.ShowPart_button.Name = "ShowPart_button";
             this.ShowPart_button.Size = new System.Drawing.Size(75, 23);
             this.ShowPart_button.TabIndex = 52;
@@ -1452,7 +1452,7 @@
             // label129
             // 
             this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(652, 510);
+            this.label129.Location = new System.Drawing.Point(391, 500);
             this.label129.Name = "label129";
             this.label129.Size = new System.Drawing.Size(76, 13);
             this.label129.TabIndex = 51;
@@ -1460,7 +1460,7 @@
             // 
             // HoleTest_button
             // 
-            this.HoleTest_button.Location = new System.Drawing.Point(653, 552);
+            this.HoleTest_button.Location = new System.Drawing.Point(392, 542);
             this.HoleTest_button.Name = "HoleTest_button";
             this.HoleTest_button.Size = new System.Drawing.Size(75, 23);
             this.HoleTest_button.TabIndex = 50;
@@ -1472,7 +1472,7 @@
             // label128
             // 
             this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(653, 529);
+            this.label128.Location = new System.Drawing.Point(392, 519);
             this.label128.Name = "label128";
             this.label128.Size = new System.Drawing.Size(39, 13);
             this.label128.TabIndex = 49;
@@ -1480,7 +1480,7 @@
             // 
             // HoleTest_maskedTextBox
             // 
-            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(696, 526);
+            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(435, 516);
             this.HoleTest_maskedTextBox.Mask = "999";
             this.HoleTest_maskedTextBox.Name = "HoleTest_maskedTextBox";
             this.HoleTest_maskedTextBox.PromptChar = ' ';
@@ -1492,7 +1492,7 @@
             // 
             // ReloadTray_button
             // 
-            this.ReloadTray_button.Location = new System.Drawing.Point(1155, 592);
+            this.ReloadTray_button.Location = new System.Drawing.Point(571, 542);
             this.ReloadTray_button.Name = "ReloadTray_button";
             this.ReloadTray_button.Size = new System.Drawing.Size(75, 23);
             this.ReloadTray_button.TabIndex = 47;
@@ -1502,7 +1502,7 @@
             // 
             // ReplaceTray_button
             // 
-            this.ReplaceTray_button.Location = new System.Drawing.Point(1155, 563);
+            this.ReplaceTray_button.Location = new System.Drawing.Point(490, 542);
             this.ReplaceTray_button.Name = "ReplaceTray_button";
             this.ReplaceTray_button.Size = new System.Drawing.Size(75, 23);
             this.ReplaceTray_button.TabIndex = 46;
@@ -1512,7 +1512,7 @@
             // 
             // LoadTray_button
             // 
-            this.LoadTray_button.Location = new System.Drawing.Point(1155, 534);
+            this.LoadTray_button.Location = new System.Drawing.Point(571, 513);
             this.LoadTray_button.Name = "LoadTray_button";
             this.LoadTray_button.Size = new System.Drawing.Size(75, 23);
             this.LoadTray_button.TabIndex = 45;
@@ -1522,7 +1522,7 @@
             // 
             // SaveTray_button
             // 
-            this.SaveTray_button.Location = new System.Drawing.Point(1155, 505);
+            this.SaveTray_button.Location = new System.Drawing.Point(490, 513);
             this.SaveTray_button.Name = "SaveTray_button";
             this.SaveTray_button.Size = new System.Drawing.Size(75, 23);
             this.SaveTray_button.TabIndex = 44;
@@ -1563,12 +1563,12 @@
             // 
             // Tape_resetZs_button
             // 
-            this.Tape_resetZs_button.Location = new System.Drawing.Point(1152, 348);
+            this.Tape_resetZs_button.Location = new System.Drawing.Point(1152, 365);
             this.Tape_resetZs_button.Name = "Tape_resetZs_button";
             this.Tape_resetZs_button.Size = new System.Drawing.Size(75, 23);
             this.Tape_resetZs_button.TabIndex = 39;
-            this.Tape_resetZs_button.Text = "Reset Z\'s";
-            this.toolTip1.SetToolTip(this.Tape_resetZs_button, "Resets pickup and placement heights for the selected row.");
+            this.Tape_resetZs_button.Text = "Reset all Z\'s";
+            this.toolTip1.SetToolTip(this.Tape_resetZs_button, "Resets pickup and placement heights for all rows.");
             this.Tape_resetZs_button.UseVisualStyleBackColor = true;
             this.Tape_resetZs_button.Click += new System.EventHandler(this.Tape_resetZs_button_Click);
             // 
@@ -1725,7 +1725,7 @@
             this.Tapes_dataGridView.RowHeadersVisible = false;
             this.Tapes_dataGridView.RowHeadersWidth = 50;
             this.Tapes_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Tapes_dataGridView.Size = new System.Drawing.Size(494, 480);
+            this.Tapes_dataGridView.Size = new System.Drawing.Size(494, 610);
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
             this.Tapes_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Tapes_dataGridView_CellMouseDown);
@@ -7684,14 +7684,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -8634,28 +8634,6 @@
             this.GotoX_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.GotoX_textBox, resources.GetString("GotoX_textBox.ToolTip"));
             // 
-            // label136
-            // 
-            this.label136.AutoSize = true;
-            this.label136.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label136.Location = new System.Drawing.Point(932, 526);
-            this.label136.Name = "label136";
-            this.label136.Size = new System.Drawing.Size(19, 13);
-            this.label136.TabIndex = 82;
-            this.label136.Text = "X:";
-            this.toolTip1.SetToolTip(this.label136, resources.GetString("label136.ToolTip"));
-            // 
-            // label137
-            // 
-            this.label137.AutoSize = true;
-            this.label137.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label137.Location = new System.Drawing.Point(932, 552);
-            this.label137.Name = "label137";
-            this.label137.Size = new System.Drawing.Size(19, 13);
-            this.label137.TabIndex = 84;
-            this.label137.Text = "Y:";
-            this.toolTip1.SetToolTip(this.label137, resources.GetString("label137.ToolTip"));
-            // 
             // GotoY_textBox
             // 
             this.GotoY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -8700,28 +8678,6 @@
             this.toolTip1.SetToolTip(this.Goto_button, resources.GetString("Goto_button.ToolTip"));
             this.Goto_button.UseVisualStyleBackColor = true;
             this.Goto_button.Click += new System.EventHandler(this.Goto_button_Click);
-            // 
-            // label138
-            // 
-            this.label138.AutoSize = true;
-            this.label138.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label138.Location = new System.Drawing.Point(932, 604);
-            this.label138.Name = "label138";
-            this.label138.Size = new System.Drawing.Size(19, 13);
-            this.label138.TabIndex = 91;
-            this.label138.Text = "A:";
-            this.toolTip1.SetToolTip(this.label138, resources.GetString("label138.ToolTip"));
-            // 
-            // label139
-            // 
-            this.label139.AutoSize = true;
-            this.label139.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label139.Location = new System.Drawing.Point(932, 578);
-            this.label139.Name = "label139";
-            this.label139.Size = new System.Drawing.Size(19, 13);
-            this.label139.TabIndex = 90;
-            this.label139.Text = "Z:";
-            this.toolTip1.SetToolTip(this.label139, resources.GetString("label139.ToolTip"));
             // 
             // NozzleNo_textBox
             // 
@@ -9037,6 +8993,46 @@
             this.GoZ_button.Text = "Z:";
             this.GoZ_button.UseVisualStyleBackColor = true;
             this.GoZ_button.Click += new System.EventHandler(this.GoZ_button_Click);
+            // 
+            // ResetSelectedZs_button
+            // 
+            this.ResetSelectedZs_button.Location = new System.Drawing.Point(1155, 447);
+            this.ResetSelectedZs_button.Name = "ResetSelectedZs_button";
+            this.ResetSelectedZs_button.Size = new System.Drawing.Size(75, 23);
+            this.ResetSelectedZs_button.TabIndex = 92;
+            this.ResetSelectedZs_button.Text = "R. these Z\'s";
+            this.toolTip1.SetToolTip(this.ResetSelectedZs_button, "Resets pickup and placement heights for selected rows.");
+            this.ResetSelectedZs_button.UseVisualStyleBackColor = true;
+            this.ResetSelectedZs_button.Click += new System.EventHandler(this.ResetSelectedZs_button_Click);
+            // 
+            // ResetSelectedPlaceZs_button
+            // 
+            this.ResetSelectedPlaceZs_button.Location = new System.Drawing.Point(1155, 476);
+            this.ResetSelectedPlaceZs_button.Name = "ResetSelectedPlaceZs_button";
+            this.ResetSelectedPlaceZs_button.Size = new System.Drawing.Size(75, 23);
+            this.ResetSelectedPlaceZs_button.TabIndex = 93;
+            this.ResetSelectedPlaceZs_button.Text = "R. Place Z\'s";
+            this.toolTip1.SetToolTip(this.ResetSelectedPlaceZs_button, "Resets placement heights for selected rows.");
+            this.ResetSelectedPlaceZs_button.UseVisualStyleBackColor = true;
+            this.ResetSelectedPlaceZs_button.Click += new System.EventHandler(this.ResetSelectedPlaceZs_button_Click);
+            // 
+            // label157
+            // 
+            this.label157.AutoSize = true;
+            this.label157.Location = new System.Drawing.Point(1149, 349);
+            this.label157.Name = "label157";
+            this.label157.Size = new System.Drawing.Size(46, 13);
+            this.label157.TabIndex = 94;
+            this.label157.Text = "All rows:";
+            // 
+            // label158
+            // 
+            this.label158.AutoSize = true;
+            this.label158.Location = new System.Drawing.Point(1152, 431);
+            this.label158.Name = "label158";
+            this.label158.Size = new System.Drawing.Size(77, 13);
+            this.label158.TabIndex = 95;
+            this.label158.Text = "Selected rows:";
             // 
             // FormMain
             // 
@@ -9764,14 +9760,10 @@
         private System.Windows.Forms.Label label135;
         private System.Windows.Forms.CheckBox KeepActive_checkBox;
         private System.Windows.Forms.TextBox GotoX_textBox;
-        private System.Windows.Forms.Label label136;
-        private System.Windows.Forms.Label label137;
         private System.Windows.Forms.TextBox GotoY_textBox;
         private System.Windows.Forms.TextBox GotoZ_textBox;
         private System.Windows.Forms.TextBox GotoA_textBox;
         private System.Windows.Forms.Button Goto_button;
-        private System.Windows.Forms.Label label138;
-        private System.Windows.Forms.Label label139;
         private System.Windows.Forms.CheckBox MouseScroll_checkBox;
         private System.Windows.Forms.CheckBox NumPadJog_checkBox;
         private System.Windows.Forms.CheckBox CheckForUpdate_checkBox;
@@ -9945,6 +9937,10 @@
         private System.Windows.Forms.Button GoY_button;
         private System.Windows.Forms.Button GoA_button;
         private System.Windows.Forms.Button GoZ_button;
+        private System.Windows.Forms.Label label158;
+        private System.Windows.Forms.Label label157;
+        private System.Windows.Forms.Button ResetSelectedPlaceZs_button;
+        private System.Windows.Forms.Button ResetSelectedZs_button;
     }
 }
 

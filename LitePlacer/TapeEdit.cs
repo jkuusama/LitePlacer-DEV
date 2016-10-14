@@ -177,6 +177,16 @@ namespace LitePlacer
             {
                 CoordinatesForParts_checkBox.Checked = false;
             }
+            EnableLastItems();
+        }
+
+        private void EnableLastItems()
+        {
+            LastX_textBox.Enabled = CoordinatesForParts_checkBox.Checked;
+            LastY_textBox.Enabled = CoordinatesForParts_checkBox.Checked;
+            GetLastPosition_button.Enabled = CoordinatesForParts_checkBox.Checked;
+            LastX_label.Enabled = CoordinatesForParts_checkBox.Checked;
+            LastY_label.Enabled = CoordinatesForParts_checkBox.Checked;
         }
 
         // =================================================================================
@@ -195,12 +205,13 @@ namespace LitePlacer
             Row.Cells["NextPart_Column"].Value = NextPart_textBox.Text;
             Row.Cells["FirstX_Column"].Value = FirstX_textBox.Text;
             Row.Cells["FirstY_Column"].Value = FirstY_textBox.Text;
-            Row.Cells["LastX_Column"].Value = LastX_textBox.Text;
-            Row.Cells["LastY_Column"].Value = LastY_textBox.Text;
             Row.Cells["Z_Pickup_Column"].Value = PickupZ_textBox.Text;
             Row.Cells["Z_Place_Column"].Value = PlacementZ_textBox.Text;
             Row.Cells["TrayID_Column"].Value = TrayID_textBox.Text; 
             Row.Cells["CoordinatesForParts_Column"].Value = CoordinatesForParts_checkBox.Checked;
+            Row.Cells["ACorrection_Column"].Value = LastX_textBox.Text;
+            Row.Cells["LastX_Column"].Value = LastX_textBox.Text;
+            Row.Cells["LastY_Column"].Value = LastY_textBox.Text;
             MainForm.Update_GridView(TapesDataGrid);
             Close();
         }
@@ -344,6 +355,26 @@ namespace LitePlacer
         private void GetPlacementZ_button_Click(object sender, EventArgs e)
         {
             PlacementZ_textBox.Text = Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture);
+        }
+
+        private void CoordinatesForParts_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableLastItems();
+        }
+
+        private void ACorrection_textBox_TextChanged(object sender, EventArgs e)
+        {
+            ValidateDouble(ACorrection_textBox);
+        }
+
+        private void LastX_textBox_TextChanged(object sender, EventArgs e)
+        {
+            ValidateDouble(LastX_textBox);
+        }
+
+        private void LastY_textBox_TextChanged(object sender, EventArgs e)
+        {
+            ValidateDouble(LastY_textBox);
         }
     }
 }

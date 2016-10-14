@@ -10837,6 +10837,40 @@ namespace LitePlacer
             }
         }
 
+        private void ResetSelectedZs(bool both)
+        {
+            bool DoRow = false;
+            for (int tape = 0; tape < Tapes_dataGridView.Rows.Count; tape++)
+            {
+                foreach (DataGridViewCell oneCell in Tapes_dataGridView.Rows[tape].Cells)
+                {
+                    if (oneCell.Selected)
+                    {
+                        DoRow = true;
+                        break;
+                    }
+                }
+                if (DoRow)
+                {
+                    Tapes_dataGridView.Rows[tape].Cells["Z_Place_Column"].Value = "--";
+                    if (both)
+                    {
+                        Tapes_dataGridView.Rows[tape].Cells["Z_Pickup_Column"].Value = "--";
+                    }
+                }
+            }
+        }
+
+        private void ResetSelectedZs_button_Click(object sender, EventArgs e)
+        {
+            ResetSelectedZs(true);
+        }
+
+        private void ResetSelectedPlaceZs_button_Click(object sender, EventArgs e)
+        {
+            ResetSelectedZs(false);
+        }
+
         private void SaveAllTapes_button_Click(object sender, EventArgs e)
         {
             if (TapesAll_saveFileDialog.ShowDialog() == DialogResult.OK)
