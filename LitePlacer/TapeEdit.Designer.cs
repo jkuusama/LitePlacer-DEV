@@ -68,25 +68,25 @@
             this.PickupZ_textBox = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
             this.TrayID_textBox = new System.Windows.Forms.TextBox();
-            this.UseOptics_checkBox = new System.Windows.Forms.CheckBox();
             this.GetFirstPosition_button = new System.Windows.Forms.Button();
             this.GetLastPosition_button = new System.Windows.Forms.Button();
             this.GetPickupZ_button = new System.Windows.Forms.Button();
             this.GetPlacementZ_button = new System.Windows.Forms.Button();
             this.TapeEditCancel_button = new System.Windows.Forms.Button();
-            this.Interpolate_checkBox = new System.Windows.Forms.CheckBox();
             this.MeasureFirst_button = new System.Windows.Forms.Button();
-            this.MeasureLast_button = new System.Windows.Forms.Button();
             this.ResetPickupZ_button = new System.Windows.Forms.Button();
             this.ResetPlacementZ_button = new System.Windows.Forms.Button();
             this.ResetTrayID_button = new System.Windows.Forms.Button();
             this.CoordinatesForParts_checkBox = new System.Windows.Forms.CheckBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ACorrection_textBox = new System.Windows.Forms.TextBox();
+            this.GetACorrection_button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Nozzle_numericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // TapeEditOK_button
             // 
-            this.TapeEditOK_button.Location = new System.Drawing.Point(124, 379);
+            this.TapeEditOK_button.Location = new System.Drawing.Point(124, 419);
             this.TapeEditOK_button.Name = "TapeEditOK_button";
             this.TapeEditOK_button.Size = new System.Drawing.Size(75, 23);
             this.TapeEditOK_button.TabIndex = 0;
@@ -406,7 +406,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(67, 261);
+            this.label15.Location = new System.Drawing.Point(67, 301);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(37, 13);
             this.label15.TabIndex = 33;
@@ -416,7 +416,7 @@
             // 
             // LastY_textBox
             // 
-            this.LastY_textBox.Location = new System.Drawing.Point(70, 277);
+            this.LastY_textBox.Location = new System.Drawing.Point(70, 317);
             this.LastY_textBox.Name = "LastY_textBox";
             this.LastY_textBox.Size = new System.Drawing.Size(48, 20);
             this.LastY_textBox.TabIndex = 32;
@@ -426,7 +426,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(13, 261);
+            this.label16.Location = new System.Drawing.Point(13, 301);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(37, 13);
             this.label16.TabIndex = 31;
@@ -436,7 +436,7 @@
             // 
             // LastX_textBox
             // 
-            this.LastX_textBox.Location = new System.Drawing.Point(16, 277);
+            this.LastX_textBox.Location = new System.Drawing.Point(16, 317);
             this.LastX_textBox.Name = "LastX_textBox";
             this.LastX_textBox.Size = new System.Drawing.Size(48, 20);
             this.LastX_textBox.TabIndex = 30;
@@ -505,19 +505,6 @@
             this.TrayID_textBox.TabIndex = 47;
             this.toolTip1.SetToolTip(this.TrayID_textBox, "Name of the tape (ex: 0805, 10k)");
             // 
-            // UseOptics_checkBox
-            // 
-            this.UseOptics_checkBox.AutoSize = true;
-            this.UseOptics_checkBox.Location = new System.Drawing.Point(124, 307);
-            this.UseOptics_checkBox.Name = "UseOptics_checkBox";
-            this.UseOptics_checkBox.Size = new System.Drawing.Size(315, 17);
-            this.UseOptics_checkBox.TabIndex = 18;
-            this.UseOptics_checkBox.Text = "Use optical measurement (uncheck: Use coordinates directly)";
-            this.toolTip1.SetToolTip(this.UseOptics_checkBox, "By measuring first and last positions and check interpolate, no measurements are " +
-        "done");
-            this.UseOptics_checkBox.UseVisualStyleBackColor = true;
-            this.UseOptics_checkBox.Visible = false;
-            // 
             // GetFirstPosition_button
             // 
             this.GetFirstPosition_button.Location = new System.Drawing.Point(16, 225);
@@ -531,7 +518,7 @@
             // 
             // GetLastPosition_button
             // 
-            this.GetLastPosition_button.Location = new System.Drawing.Point(16, 332);
+            this.GetLastPosition_button.Location = new System.Drawing.Point(16, 343);
             this.GetLastPosition_button.Name = "GetLastPosition_button";
             this.GetLastPosition_button.Size = new System.Drawing.Size(102, 23);
             this.GetLastPosition_button.TabIndex = 38;
@@ -565,25 +552,13 @@
             // 
             // TapeEditCancel_button
             // 
-            this.TapeEditCancel_button.Location = new System.Drawing.Point(259, 379);
+            this.TapeEditCancel_button.Location = new System.Drawing.Point(259, 419);
             this.TapeEditCancel_button.Name = "TapeEditCancel_button";
             this.TapeEditCancel_button.Size = new System.Drawing.Size(75, 23);
             this.TapeEditCancel_button.TabIndex = 16;
             this.TapeEditCancel_button.Text = "Cancel";
             this.TapeEditCancel_button.UseVisualStyleBackColor = true;
             this.TapeEditCancel_button.Click += new System.EventHandler(this.TapeEditCancel_button_Click);
-            // 
-            // Interpolate_checkBox
-            // 
-            this.Interpolate_checkBox.AutoSize = true;
-            this.Interpolate_checkBox.Location = new System.Drawing.Point(124, 279);
-            this.Interpolate_checkBox.Name = "Interpolate_checkBox";
-            this.Interpolate_checkBox.Size = new System.Drawing.Size(76, 17);
-            this.Interpolate_checkBox.TabIndex = 34;
-            this.Interpolate_checkBox.Text = "Interpolate";
-            this.Interpolate_checkBox.UseVisualStyleBackColor = true;
-            this.Interpolate_checkBox.Visible = false;
-            this.Interpolate_checkBox.CheckedChanged += new System.EventHandler(this.Interpolate_checkBox_CheckedChanged);
             // 
             // MeasureFirst_button
             // 
@@ -594,16 +569,6 @@
             this.MeasureFirst_button.Text = "Measure now";
             this.MeasureFirst_button.UseVisualStyleBackColor = true;
             this.MeasureFirst_button.Visible = false;
-            // 
-            // MeasureLast_button
-            // 
-            this.MeasureLast_button.Location = new System.Drawing.Point(16, 303);
-            this.MeasureLast_button.Name = "MeasureLast_button";
-            this.MeasureLast_button.Size = new System.Drawing.Size(102, 23);
-            this.MeasureLast_button.TabIndex = 37;
-            this.MeasureLast_button.Text = "Measure now";
-            this.MeasureLast_button.UseVisualStyleBackColor = true;
-            this.MeasureLast_button.Visible = false;
             // 
             // ResetPickupZ_button
             // 
@@ -638,19 +603,53 @@
             // CoordinatesForParts_checkBox
             // 
             this.CoordinatesForParts_checkBox.AutoSize = true;
-            this.CoordinatesForParts_checkBox.Location = new System.Drawing.Point(124, 336);
+            this.CoordinatesForParts_checkBox.Location = new System.Drawing.Point(16, 281);
             this.CoordinatesForParts_checkBox.Name = "CoordinatesForParts_checkBox";
-            this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(271, 17);
+            this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(139, 17);
             this.CoordinatesForParts_checkBox.TabIndex = 50;
-            this.CoordinatesForParts_checkBox.Text = "Coordinates are for holes (uncheck for parts directly)";
+            this.CoordinatesForParts_checkBox.Text = "Use coordinates directly";
             this.CoordinatesForParts_checkBox.UseVisualStyleBackColor = true;
             this.CoordinatesForParts_checkBox.Visible = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(160, 301);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(64, 13);
+            this.label9.TabIndex = 52;
+            this.label9.Text = "A correction";
+            this.toolTip1.SetToolTip(this.label9, "Location of last hole/alingment mark/part");
+            this.label9.Visible = false;
+            // 
+            // ACorrection_textBox
+            // 
+            this.ACorrection_textBox.Location = new System.Drawing.Point(163, 317);
+            this.ACorrection_textBox.Name = "ACorrection_textBox";
+            this.ACorrection_textBox.Size = new System.Drawing.Size(48, 20);
+            this.ACorrection_textBox.TabIndex = 51;
+            this.toolTip1.SetToolTip(this.ACorrection_textBox, "Location of last hole/alingment mark/part");
+            this.ACorrection_textBox.Visible = false;
+            // 
+            // GetACorrection_button
+            // 
+            this.GetACorrection_button.Location = new System.Drawing.Point(163, 343);
+            this.GetACorrection_button.Name = "GetACorrection_button";
+            this.GetACorrection_button.Size = new System.Drawing.Size(87, 23);
+            this.GetACorrection_button.TabIndex = 53;
+            this.GetACorrection_button.Text = "Get current ";
+            this.toolTip1.SetToolTip(this.GetACorrection_button, "move current X and Y position to the boxes");
+            this.GetACorrection_button.UseVisualStyleBackColor = true;
+            this.GetACorrection_button.Visible = false;
             // 
             // TapeEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 422);
+            this.ClientSize = new System.Drawing.Size(456, 464);
+            this.Controls.Add(this.GetACorrection_button);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.ACorrection_textBox);
             this.Controls.Add(this.CoordinatesForParts_checkBox);
             this.Controls.Add(this.ResetTrayID_button);
             this.Controls.Add(this.label19);
@@ -664,10 +663,8 @@
             this.Controls.Add(this.label18);
             this.Controls.Add(this.PickupZ_textBox);
             this.Controls.Add(this.GetLastPosition_button);
-            this.Controls.Add(this.MeasureLast_button);
             this.Controls.Add(this.GetFirstPosition_button);
             this.Controls.Add(this.MeasureFirst_button);
-            this.Controls.Add(this.Interpolate_checkBox);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.LastY_textBox);
             this.Controls.Add(this.label16);
@@ -682,7 +679,6 @@
             this.Controls.Add(this.Type_comboBox);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.Capacity_textBox);
-            this.Controls.Add(this.UseOptics_checkBox);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.TapeEditCancel_button);
             this.Controls.Add(this.label7);
@@ -732,7 +728,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button TapeEditCancel_button;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.CheckBox UseOptics_checkBox;
         private System.Windows.Forms.TextBox Capacity_textBox;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox Type_comboBox;
@@ -747,10 +742,8 @@
         private System.Windows.Forms.TextBox LastY_textBox;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox LastX_textBox;
-        private System.Windows.Forms.CheckBox Interpolate_checkBox;
         private System.Windows.Forms.Button MeasureFirst_button;
         private System.Windows.Forms.Button GetFirstPosition_button;
-        private System.Windows.Forms.Button MeasureLast_button;
         private System.Windows.Forms.Button GetLastPosition_button;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox PlacementZ_textBox;
@@ -764,5 +757,8 @@
         private System.Windows.Forms.TextBox TrayID_textBox;
         private System.Windows.Forms.Button ResetTrayID_button;
         private System.Windows.Forms.CheckBox CoordinatesForParts_checkBox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox ACorrection_textBox;
+        private System.Windows.Forms.Button GetACorrection_button;
     }
 }

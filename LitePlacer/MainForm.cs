@@ -994,12 +994,13 @@ namespace LitePlacer
                                     Tapes_dataGridView.Rows[i].Cells["OffsetY_Column"].Value = Y.ToString();
                                 }
                             }
+                            Tapes_dataGridView.Rows[i].Cells["ACorrection_Column"].Value = "0.00";
                             Tapes_dataGridView.Rows[i].Cells["UseOptics_Column"].Value = true;
                         }
                     }
                     else
                     {
-                        // // read in new format
+                        // // read in new format 
                         DisplayText("Loading tapes with nozzles data");
                         LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
                     }
@@ -1336,7 +1337,20 @@ namespace LitePlacer
             else if (e.KeyCode == Keys.Add)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "Z" + Properties.Settings.Default.General_MachineSizeY.ToString() + "\"}");
+                double Ztarget;
+                if (!double.TryParse(Properties.Settings.Default.General_ZtoPCB.ToString(), out Ztarget))
+                {
+                    DisplayText("Z to PCB internal value error!");
+                    return;
+                }
+                double Zadd;
+                if (!double.TryParse(Properties.Settings.Default.General_BelowPCB_Allowance.ToString(), out Zadd))
+                {
+                    DisplayText("Below PCB allowance internal value error!");
+                    return;
+                }
+                Ztarget += Zadd;
+                Cnc.RawWrite(Movestr + "Z" + Ztarget.ToString() + "\"}");
             }
             else if (e.KeyCode == Keys.Subtract)
             {
@@ -1351,7 +1365,7 @@ namespace LitePlacer
             else if (e.KeyCode == Keys.Multiply)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "A" + Properties.Settings.Default.General_MachineSizeY.ToString() + "\"}");
+                Cnc.RawWrite(Movestr + "A10000\"}");  // should be enough
             }
             else
             {
@@ -1594,6 +1608,69 @@ namespace LitePlacer
         }
 
         // =================================================================================
+        private void GoX_button_Click(object sender, EventArgs e)
+        {
+            double X;
+            double Y = Cnc.CurrentY;
+            double A = Cnc.CurrentA;
+
+            if (!double.TryParse(GotoX_textBox.Text, out X))
+            {
+                return;
+            }
+            if (Relative_Button.Checked)
+            {
+                X += Cnc.CurrentX;
+            }
+            CNC_XYA_m(X, Y, A);
+        }
+
+        private void GoY_button_Click(object sender, EventArgs e)
+        {
+            double X = Cnc.CurrentX;
+            double Y;
+            double A = Cnc.CurrentA;
+            if (!double.TryParse(GotoY_textBox.Text, out Y))
+            {
+                return;
+            }
+            if (Relative_Button.Checked)
+            {
+                Y += Cnc.CurrentY;
+            }
+            CNC_XYA_m(X, Y, A);
+        }
+
+        private void GoZ_button_Click(object sender, EventArgs e)
+        {
+            double Z;
+            if (!double.TryParse(GotoZ_textBox.Text, out Z))
+            {
+                return;
+            }
+            if (Relative_Button.Checked)
+            {
+                Z += Cnc.CurrentZ;
+            }
+            CNC_Z_m(Z);
+        }
+
+        private void GoA_button_Click(object sender, EventArgs e)
+        {
+            double X = Cnc.CurrentX;
+            double Y = Cnc.CurrentY;
+            double A;
+            if (!double.TryParse(GotoA_textBox.Text, out A))
+            {
+                return;
+            }
+            if (Relative_Button.Checked)
+            {
+                A += Cnc.CurrentA;
+            }
+            CNC_XYA_m(X, Y, A);
+        }
+
         private void Goto_button_Click(object sender, EventArgs e)
         {
             double X;  // target coordinates
@@ -10555,6 +10632,15 @@ namespace LitePlacer
             Tapes_dataGridView.Rows[index].Cells["Z_Pickup_Column"].Value = "--";
             Tapes_dataGridView.Rows[index].Cells["Z_Place_Column"].Value = "--";
             Tapes_dataGridView.Rows[index].Cells["TrayID_Column"].Value = "--";
+            // Coordinates for parts: If set, optical system is not used, the coordinates are used directly
+            // FirstXY sets the location of the first part. If LastXY is set (!=0, != first; there are more than one part on a tape),
+            // The next part is <pitch> mm to the direction from first to last. If LastXY is not set (individual pickup location,
+            // automatic feeder), orientation does not apply, rotation is used and manually set A correction is also used (it is
+            // almost impossible to mount feeders or part holders exactly perpedicular).
+            Tapes_dataGridView.Rows[index].Cells["CoordnatesForParts_Column"].Value = false;
+            Tapes_dataGridView.Rows[index].Cells["LastX_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[index].Cells["LastY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[index].Cells["ACorrection_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             TapesGridEditRow = index;
             Invoke_TapeEditDialog(index);
         }

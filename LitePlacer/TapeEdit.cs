@@ -115,22 +115,6 @@ namespace LitePlacer
                 ValidateDouble(TapeOffsetY_textBox); 
             }
 
-            if (Row.Cells["UseOptics_Column"].Value != null)
-            {
-                if (Row.Cells["UseOptics_Column"].Value.ToString()=="True")
-                {
-                    UseOptics_checkBox.Checked = true;
-                }
-                else
-                {
-                    UseOptics_checkBox.Checked = false;
-                }
-            }
-            else
-            {
-                UseOptics_checkBox.Checked = true;
-            }
-
             if (Row.Cells["Capacity_Column"].Value != null)
             {
                 Capacity_textBox.Text = Row.Cells["Capacity_Column"].Value.ToString();
@@ -156,23 +140,6 @@ namespace LitePlacer
             {
                 FirstY_textBox.Text = Row.Cells["FirstY_Column"].Value.ToString();
             }
-
-            if (Row.Cells["Interpolate_column"].Value != null)
-            {
-                if (Row.Cells["Interpolate_column"].Value.ToString() == "True")
-                {
-                    Interpolate_checkBox.Checked = true;
-                }
-                else
-                {
-                    Interpolate_checkBox.Checked = false;
-                }
-            }
-            else
-            {
-                Interpolate_checkBox.Checked = false;
-            }
-            Interpolate_checkBox_function();
 
             if (Row.Cells["LastX_Column"].Value != null)
             {
@@ -223,13 +190,11 @@ namespace LitePlacer
             Row.Cells["Pitch_Column"].Value = TapePitch_textBox.Text;
             Row.Cells["OffsetX_Column"].Value = TapeOffsetX_textBox.Text;
             Row.Cells["OffsetY_Column"].Value = TapeOffsetY_textBox.Text;
-            Row.Cells["UseOptics_Column"].Value = UseOptics_checkBox.Checked; 
             Row.Cells["Capacity_Column"].Value = Capacity_textBox.Text;
             Row.Cells["Type_Column"].Value = Type_comboBox.Text; 
             Row.Cells["NextPart_Column"].Value = NextPart_textBox.Text;
             Row.Cells["FirstX_Column"].Value = FirstX_textBox.Text;
             Row.Cells["FirstY_Column"].Value = FirstY_textBox.Text;
-            Row.Cells["Interpolate_Column"].Value = Interpolate_checkBox.Checked;
             Row.Cells["LastX_Column"].Value = LastX_textBox.Text;
             Row.Cells["LastY_Column"].Value = LastY_textBox.Text;
             Row.Cells["Z_Pickup_Column"].Value = PickupZ_textBox.Text;
@@ -319,27 +284,6 @@ namespace LitePlacer
             ValidateDouble(FirstX_textBox);
         }
 
-        private void Interpolate_checkBox_function()
-        {
-            if (Interpolate_checkBox.Checked)
-            {
-                LastX_textBox.Enabled = true;
-                LastY_textBox.Enabled = true;
-                MeasureLast_button.Enabled = true;
-                GetLastPosition_button.Enabled = true;
-            }
-            else
-            {
-                LastX_textBox.Enabled = false;
-                LastY_textBox.Enabled = false;
-                MeasureLast_button.Enabled = false;
-                GetLastPosition_button.Enabled = false;
-            }
-        }
-        private void Interpolate_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Interpolate_checkBox_function();
-        }
 
         private void PickupZ_textBox_TextChanged(object sender, EventArgs e)
         {
