@@ -11552,31 +11552,7 @@ namespace LitePlacer
         {
             DisplayText("test 6: Nozzle up");
             CNC_Z_m(0);  // go up
-            // CNC_XY_m(Xmark, Ymark);
-
-            // ShowMessageBox test
-            //    Cnc_ReadyEvent.Reset();
-            //    Thread t = new Thread(() => test_thread());
-            //    t.IsBackground = true;
-            //    t.Start();
-            //    while (!Cnc_ReadyEvent.IsSet)
-            //    {
-            //        Thread.Sleep(20);
-            //        Application.DoEvents();
-            //    }
-            //    ShowMessageBox(
-            //       "Done",
-            //       "test_6",
-            //       MessageBoxButtons.OK);
-            //}
-
-            //private void test_thread()
-            //{
-            //    ShowMessageBox(
-            //        "err",
-            //        "t1",
-            //        MessageBoxButtons.OK);
-            //    Cnc_ReadyEvent.Set();
+            CNC_XY_m(Xmark, Ymark);
         }
 
 
