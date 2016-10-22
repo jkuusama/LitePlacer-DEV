@@ -7434,12 +7434,35 @@ namespace LitePlacer
         // and then that row is processed.
         private void PlaceOne_button_Click(object sender, EventArgs e)
         {
+            // Do we need to do something in the first place?
             // is something actually selected?
             if (CadData_GridView.SelectedCells.Count == 0)
             {
+                DisplayText("Nothing selected.");
                 return;
             };
+            // Are the components already placed?
+            DataGridViewRow CadRow;
+            bool DoSomething = false;
+            foreach (DataGridViewCell oneCell in CadData_GridView.SelectedCells)
+            {
+                DataGridViewCheckBoxCell cell = CadData_GridView.Rows[oneCell.RowIndex].Cells["Placed_column"] as DataGridViewCheckBoxCell;
+                if (cell.Value != null)
+                {
+                    if (cell.Value.ToString().ToLower() == "false")
+                    {
+                        DoSomething = true;
+                        break;
+                    }
+                }
+            }
+            if (!DoSomething)
+            {
+                DisplayText("Selected component(s) already placed.",KnownColor.DarkRed);
+                return;
+            }
 
+            // OK, we actually need to do something.
             // Preparations:
             if (!PrepareToPlace_m())
             {
@@ -7454,7 +7477,6 @@ namespace LitePlacer
             // if a cell is selected on a row, place that component:
             bool DoRow = false;
             bool ok = true;
-            DataGridViewRow CadRow;
             for (int CadRowNo = 0; CadRowNo < CadData_GridView.RowCount; CadRowNo++)
             {
                 CadRow = CadData_GridView.Rows[CadRowNo];
@@ -7491,6 +7513,18 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return;
                 }
+
+                // is the component already placed?
+                DataGridViewCheckBoxCell cell = CadData_GridView.Rows[CadRowNo].Cells["Placed_column"] as DataGridViewCheckBoxCell;
+                if (cell.Value != null)
+                {
+                    if (cell.Value.ToString() == "True")
+                    {
+                        DisplayText(Component + " already placed");
+                        break;
+                    }
+                }
+
                 // Make a copy of it to the end of the Job data grid view
                 JobData_GridView.Rows.Add();
                 int LastRowNo = JobData_GridView.Rows.Count - 1;
@@ -7518,6 +7552,30 @@ namespace LitePlacer
             CleanupPlacement(ok);
             Update_GridView(JobData_GridView);
             SaveTempCADdata();
+        }
+
+        // =================================================================================
+        // Checks if the component is placed already
+        private bool AlreadyPlaced_m(string component, ref bool placed)
+        {
+            // find the row
+            foreach (DataGridViewRow Row in CadData_GridView.Rows)
+            {
+                if (Row.Cells["Component"].Value.ToString()==component)
+                {
+                    DataGridViewCheckBoxCell cell = Row.Cells["Placed_column"] as DataGridViewCheckBoxCell;
+                    if (cell.Value != null)
+                    {
+                        placed = (cell.Value.ToString().ToLower() == "true");
+                        return true;
+                    }
+                }
+            }
+            ShowMessageBox(
+                "Component " + component + "not found in CAD data. CAD data and job data don't match",
+                "CAD data vs job data mismatch",
+                MessageBoxButtons.OK);
+            return false;
         }
 
         // =================================================================================
@@ -7620,7 +7678,27 @@ namespace LitePlacer
             // Prepare for placement
             string method = JobData_GridView.Rows[RowNo].Cells["GroupMethod"].Value.ToString();
             int nozzle;
-
+            // Check, that the row isn't placed already
+            bool EverythingPlaced = true;
+            if ((method == "Place Fast") || (method == "Place") || (method == "LoosePart"))
+            {
+                foreach (string component in Components)
+                {
+                    if (!AlreadyPlaced_m(component, ref EverythingPlaced))
+                    {
+                        return false;
+                    }
+                    if (!EverythingPlaced)
+                    {
+                        break;
+                    }
+                }
+                if (EverythingPlaced)
+                {
+                    DisplayText("All components on row " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString() + " already placed.", KnownColor.DarkRed);
+                    return true;
+                }
+            }
             // Check nozzle, change if needed
             // if we are using a method that potentially needs a nozzle and automatic change is enabled:
             if (
