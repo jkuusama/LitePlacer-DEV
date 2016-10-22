@@ -994,7 +994,7 @@ namespace LitePlacer
                                     Tapes_dataGridView.Rows[i].Cells["OffsetY_Column"].Value = Y.ToString();
                                 }
                             }
-                            Tapes_dataGridView.Rows[i].Cells["ACorrection_Column"].Value = "0.00";
+                            Tapes_dataGridView.Rows[i].Cells["RotationDirect_Column"].Value = "0.00";
                             Tapes_dataGridView.Rows[i].Cells["UseOptics_Column"].Value = true;
                         }
                     }
@@ -2974,6 +2974,7 @@ namespace LitePlacer
             DownCamera.DrawCross = true;
             DownCameraDrawCross_checkBox.Checked = true;
             DownCamera.DrawDashedCross = false;
+            DownCamera.DrawGrid = false;
             DownCameraDrawDashedCross_checkBox.Checked = false;
             DownCamera.Draw_Snapshot = false;
             // Finds:
@@ -3011,6 +3012,7 @@ namespace LitePlacer
             // Draws
             UpCamera.DrawCross = true;
             UpCameraDrawCross_checkBox.Checked = true;
+            UpCamera.DrawGrid = false;
             UpCamera.DrawDashedCross = false;
             UpCameraDrawDashedCross_checkBox.Checked = false;
             UpCamera.Draw_Snapshot = false;
@@ -3075,6 +3077,7 @@ namespace LitePlacer
             DownCamera.SideMarksX = Properties.Settings.Default.General_MachineSizeX / 100;
             DownCamera.SideMarksY = Properties.Settings.Default.General_MachineSizeY / 100;
             DownCameraDrawTicks_checkBox.Checked = Properties.Settings.Default.DownCam_DrawTicks;
+            DownCameraDrawGrid_checkBox.Checked = false;
 
             DowncamSnapshot_ColorBox.BackColor = Properties.Settings.Default.DownCam_SnapshotColor;
             UpcamSnapshot_ColorBox.BackColor = Properties.Settings.Default.UpCam_SnapshotColor;
@@ -3159,6 +3162,7 @@ namespace LitePlacer
         // =================================================================================
         private void tabPageSetupCameras_End()
         {
+            DownCamera.DrawGrid = false;
             ZGuardOn();
         }
 
@@ -3306,6 +3310,10 @@ namespace LitePlacer
             }
         }
 
+        private void DownCameraDrawGrid_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            DownCamera.DrawGrid = DownCameraDrawGrid_checkBox.Checked;
+        }
         // =================================================================================
         private void DownCameraDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -6726,8 +6734,11 @@ namespace LitePlacer
                 {
                     // If not, build job data ourselves.
                     FillJobData_GridView();
-                    int dummy;
-                    FindFiducials_m(out dummy);  // don't care of the result, just trying to find fids
+                    int dummy;      // don't care of the result, just trying to find fids
+                    if (FindFiducials_m(out dummy))
+                    {
+                        FillDefaultJobValues();
+                    }
                     JobFileName_label.Text = "--";
                     JobFilePath_label.Text = "--";
                 }
@@ -7099,6 +7110,22 @@ namespace LitePlacer
                     string CurrentComponentList = JobData_GridView.Rows[TypeRow].Cells["ComponentList"].Value.ToString();
                     CurrentComponentList = CurrentComponentList + ',' + InRow.Cells["Component"].Value.ToString();
                     JobData_GridView.Rows[TypeRow].Cells["ComponentList"].Value = CurrentComponentList;
+                }
+            }
+        }
+
+        private void FillDefaultJobValues()
+        {
+            foreach (DataGridViewRow JobRow in JobData_GridView.Rows)
+            {
+                if (JobRow.Cells["GroupMethod"].Value.ToString() == "?")
+                {
+                    // it is not fiducials row
+                    JobRow.Cells["GroupMethod"].Value = "Place Fast";
+                    if (Properties.Settings.Default.Nozzles_Enabled)
+                    {
+                        JobRow.Cells["JobDataNozzle_Column"].Value = Properties.Settings.Default.Nozzles_default.ToString();
+                    }
                 }
             }
         }
@@ -8364,8 +8391,6 @@ namespace LitePlacer
                 DisplayText("Bad data, Pitch column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
                 return false;
             }
-            double PartX;
-            double PartY;
 
             if (
                 (Math.Abs(pitch) < 0.00001) ||
@@ -8373,8 +8398,8 @@ namespace LitePlacer
                )
             {
                 // no increment, use first coordinates directly
-                PartX = FirstX;
-                PartY = FirstY;
+                X = FirstX;
+                Y = FirstY;
             }
             else
             {
@@ -8391,13 +8416,13 @@ namespace LitePlacer
                 double mag = Math.Sqrt(((LastX - FirstX) * (LastX - FirstX)) + ((LastY - FirstY) * (LastY - FirstY)));
                 double Xincr = (LastX - FirstX) * pitch / mag;
                 double Yincr = (LastY - FirstY) * pitch / mag;
-                PartX = FirstX + Xincr * increments;
-                PartY = FirstY + Yincr * increments;
+                X = FirstX + Xincr * increments;
+                Y = FirstY + Yincr * increments;
             }
 
-            if (Tapes_dataGridView.Rows[TapeNum].Cells["ACorrection_Column"].Value != null)
+            if (Tapes_dataGridView.Rows[TapeNum].Cells["RotationDirect_Column"].Value != null)
             {
-                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["ACorrection_Column"].Value.ToString(), out A))
+                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["RotationDirect_Column"].Value.ToString(), out A))
                 {
                     DisplayText("Bad data, A correction column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
                     return false;
@@ -10717,7 +10742,7 @@ namespace LitePlacer
         private void Invoke_TapeEditDialog(int row)
         {
             DisplayText("Open edit tape dialog", KnownColor.DarkGreen);
-            TapeEditForm TapeEditDialog = new TapeEditForm(Cnc);
+            TapeEditForm TapeEditDialog = new TapeEditForm(Cnc, DownCamera);
             TapeEditDialog.MainForm = this;
             TapeEditDialog.TapeRowNo = TapesGridEditRow;
             TapeEditDialog.TapesDataGrid = Tapes_dataGridView;
@@ -10790,10 +10815,10 @@ namespace LitePlacer
             // The next part is <pitch> mm to the direction from first to last. If LastXY is not set (individual pickup location,
             // automatic feeder), orientation does not apply, rotation is used and manually set A correction is also used (it is
             // almost impossible to mount feeders or part holders exactly perpedicular).
-            Tapes_dataGridView.Rows[index].Cells["CoordnatesForParts_Column"].Value = false;
+            Tapes_dataGridView.Rows[index].Cells["CoordinatesForParts_Column"].Value = false;
             Tapes_dataGridView.Rows[index].Cells["LastX_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[index].Cells["LastY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
-            Tapes_dataGridView.Rows[index].Cells["ACorrection_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            Tapes_dataGridView.Rows[index].Cells["RotationDirect_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             TapesGridEditRow = index;
             Invoke_TapeEditDialog(index);
         }
@@ -11044,6 +11069,12 @@ namespace LitePlacer
         {
             int PartNum = 0;
             int TapeNum = 0;
+            if (UseCoordinatesDirectly(Tapes_dataGridView.CurrentCell.RowIndex))
+            {
+                DisplayText("\"Coordinates for parts\" is checked, hole location does not apply.");
+                return;
+            }
+
             DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
@@ -11065,36 +11096,59 @@ namespace LitePlacer
             }
         }
 
-        private void ShowPart_button_Click(object sender, EventArgs e)
+        private void ShowPartByCoordinates_m()
+        {
+            double X;
+            double Y;
+            double A;
+            bool increment;
+            if (!FindPartWithDirectCoordinates_m(Tapes_dataGridView.CurrentCell.RowIndex, out X, out Y, out A, out increment))
+            {
+                return;
+            }
+            CNC_XY_m(X, Y);
+            DownCamera.ArrowAngle = A;
+            DownCamera.DrawArrow = true;
+        }
+
+    private void ShowPart_button_Click(object sender, EventArgs e)
         {
             int PartNum = 0;
             int TapeNum = 0;
+
             DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
-                if (!int.TryParse(Row.Cells["NextPart_Column"].Value.ToString(), out PartNum))
-                {
-                    return;
-                }
+                DisplayText("Bad data in part # ");
             }
+            // Tapes.GetPartLocationFromHolePosition_m() and ShowPartByCoordinates_m() use the next column from Tapes_dataGridView.
+            // Set it temporarily, but remember what was there:
+            string temp = Row.Cells["NextPart_Column"].Value.ToString();
+            Row.Cells["NextPart_Column"].Value = PartNum.ToString();
+
+            if (UseCoordinatesDirectly(Tapes_dataGridView.CurrentCell.RowIndex))
+            {
+                ShowPartByCoordinates_m();
+                Row.Cells["NextPart_Column"].Value = temp.ToString();
+                return;
+            }
+
             string Id = Row.Cells["Id_Column"].Value.ToString();
             double X = 0.0;
             double Y = 0.0;
             if (!Tapes.IdValidates_m(Id, out TapeNum))
             {
+                Row.Cells["NextPart_Column"].Value = temp.ToString();
                 return;
             }
             if (!Tapes.GetPartHole_m(TapeNum, PartNum, out X, out Y))
             {
+                Row.Cells["NextPart_Column"].Value = temp.ToString();
                 return;
             }
             double pX = 0.0;
             double pY = 0.0;
             double A = 0.0;
-            // Tapes.GetPartLocationFromHolePosition_m uses the next column from Tapes_dataGridView.
-            // Set it temporarily, but remember what was there:
-            string temp = Row.Cells["NextPart_Column"].Value.ToString();
-            Row.Cells["NextPart_Column"].Value = PartNum.ToString();
             if (Tapes.GetPartLocationFromHolePosition_m(TapeNum, X, Y, out pX, out pY, out A))
             {
                 CNC_XY_m(pX, pY);
@@ -14229,7 +14283,14 @@ namespace LitePlacer
 
 
         #endregion
-
+        public bool DownCameraRotationFollowsA = false;
+        private void apos_textBox_TextChanged(object sender, EventArgs e)
+        {
+            if (DownCameraRotationFollowsA)
+            {
+                DownCamera.BoxRotationDeg = Cnc.CurrentA;
+            }
+        }
     }	// end of: 	public partial class FormMain : Form
 
 

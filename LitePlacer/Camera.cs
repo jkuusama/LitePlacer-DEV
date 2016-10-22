@@ -19,7 +19,7 @@ using AForge.Math.Geometry;
 
 namespace LitePlacer
 {
-    class Camera
+    public class Camera
     {
         private VideoCaptureDevice VideoSource = null;
         private FormMain MainForm;
@@ -537,11 +537,8 @@ namespace LitePlacer
         public double SideMarksX { get; set; }      // How many marks on top and bottom (X) and sides (Y)
         public double SideMarksY { get; set; }      // (double, so you can do "SidemarksX= workarea_in_mm / 100;" to get mark every 10cm
         public bool DrawDashedCross { get; set; }   // If a dashed crosshaircursor is drawn (so that the center remains visible)
-        public bool FindCircles
-        {
-            get;
-            set;
-        }       // Find and highlight circles in the image
+        public bool DrawGrid { get; set; }          // Draws aiming grid for parts alignment
+        public bool FindCircles { get; set; }       // Find and highlight circles in the image
         public bool FindRectangles { get; set; }    // Find and draw regtangles in the image
         public bool FindComponent { get; set; }     // Finds a component and identifies its center
         public bool Draw_Snapshot { get; set; }     // Draws the snapshot on the image 
@@ -549,6 +546,7 @@ namespace LitePlacer
         private bool paused = true;                 // set in video processing indicating it is safe to change processing function list
         public bool TestAlgorithm { get; set; }
         public bool DrawBox { get; set; }           // Draws a box on the image that is used for scale setting
+
         private int boxSizeX;
         public int BoxSizeX                         // The box size
         {
@@ -579,6 +577,7 @@ namespace LitePlacer
         }
 
         private double boxRotation = 0;
+        private double boxRotationRad = 0;
         private System.Drawing.Point[] BoxPoints = new System.Drawing.Point[4];
         public double BoxRotationDeg        // The box is drawn rotated this much
         {
@@ -599,7 +598,7 @@ namespace LitePlacer
                 BoxPoints[3].X = BoxSizeX / 2;
                 BoxPoints[3].Y = -BoxSizeY / 2;
                 // now, rotate them:
-                double Rot = -boxRotation / (180 / Math.PI);  // to radians, and counter-clockwise
+                boxRotationRad = -boxRotation / (180 / Math.PI);  // to radians, and counter-clockwise
                 for (int i = 0; i < 4; i++)
                 {
                     // If you rotate point (px, py) around point (ox, oy) by angle theta you'll get:
@@ -610,8 +609,8 @@ namespace LitePlacer
                     // p'y = sin(theta) * (px) + cos(theta) * (py)
                     double pX = BoxPoints[i].X;
                     double pY = BoxPoints[i].Y;
-                    BoxPoints[i].X = (int)Math.Round(Math.Cos(Rot) * pX - Math.Sin(Rot) * pY);
-                    BoxPoints[i].Y = (int)Math.Round(Math.Sin(Rot) * pX + Math.Cos(Rot) * pY);
+                    BoxPoints[i].X = (int)Math.Round(Math.Cos(boxRotationRad) * pX - Math.Sin(boxRotationRad) * pY);
+                    BoxPoints[i].Y = (int)Math.Round(Math.Sin(boxRotationRad) * pX + Math.Cos(boxRotationRad) * pY);
                 }
             }
         }
@@ -739,6 +738,11 @@ namespace LitePlacer
             if (DrawDashedCross)
             {
                 DrawDashedCrossFunct(frame);
+            };
+
+            if (DrawGrid)
+            {
+                DrawGridFunct(frame);
             };
 
             if (DrawArrow)
@@ -1531,10 +1535,101 @@ namespace LitePlacer
 		}
 
 
-		// =========================================================
-		private void DrawDashedCrossFunct(Bitmap img)
-		{
-			Pen pen = new Pen(Color.SlateGray, 1);
+        // =========================================================
+        private void RotateByFrameCenter(int x, int y, out int px, out int py)
+        {
+            double theta = boxRotationRad; 
+            // If you rotate point (px, py) around point (ox, oy) by angle theta you'll get:
+            // p'x = cos(theta) * (px-ox) - sin(theta) * (py-oy) + ox
+            // p'y = sin(theta) * (px-ox) + cos(theta) * (py-oy) + oy
+            px = (int)(Math.Cos(theta) * (x - FrameCenterX) - Math.Sin(theta) * (y - FrameCenterY) + FrameCenterX);
+            py = (int)(Math.Sin(theta) * (x - FrameCenterX) + Math.Cos(theta) * (y - FrameCenterY) + FrameCenterY);
+        }
+
+        private void DrawGridFunct(Bitmap img)
+        {
+            Pen RedPen = new Pen(Color.Red, 1);
+            Pen GreenPen = new Pen(Color.Green, 1);
+            Pen BluePen = new Pen(Color.Blue, 1);
+            Graphics g = Graphics.FromImage(img);
+            int x1, x2, y1, y2;
+            int step = 15;
+            for (int i = step; i < FrameSizeY; i = i + step)
+            {
+                // right
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(RedPen, x1, y1, x2, y2);
+                // left
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(RedPen, x1, y1, x2, y2);
+                // bottom
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x2, out y2);
+                g.DrawLine(RedPen, x1, y1, x2, y2);
+                // top
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(RedPen, x1, y1, x2, y2);
+                i = i + step;
+                // right
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(GreenPen, x1, y1, x2, y2);
+                // left
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(GreenPen, x1, y1, x2, y2);
+                // bottom
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x2, out y2);
+                g.DrawLine(GreenPen, x1, y1, x2, y2);
+                // top
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(GreenPen, x1, y1, x2, y2);
+                i = i + step;
+                // right
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(BluePen, x1, y1, x2, y2);
+                // left
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(BluePen, x1, y1, x2, y2);
+                // bottom
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x2, out y2);
+                g.DrawLine(BluePen, x1, y1, x2, y2);
+                // top
+                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(BluePen, x1, y1, x2, y2);
+            }
+            // Draw rotated cross
+            RotateByFrameCenter(FrameCenterX, -1000, out x1, out y1);
+            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
+
+            RotateByFrameCenter(FrameCenterX, 1000, out x1, out y1);
+            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
+
+            RotateByFrameCenter(-1000, FrameCenterY, out x1, out y1);
+            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
+
+            RotateByFrameCenter(1000, FrameCenterY, out x1, out y1);
+            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
+
+            RedPen.Dispose();
+            GreenPen.Dispose();
+            BluePen.Dispose();
+            g.Dispose();
+        }
+
+        // =========================================================
+        private void DrawDashedCrossFunct(Bitmap img)
+        {
+            Pen pen = new Pen(Color.SlateGray, 1);
 			Graphics g = Graphics.FromImage(img);
 			int step = FrameSizeY / 40;
 			int i = step / 2;

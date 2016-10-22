@@ -72,14 +72,13 @@
             this.GetLastPosition_button = new System.Windows.Forms.Button();
             this.GetPickupZ_button = new System.Windows.Forms.Button();
             this.GetPlacementZ_button = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.RotationDirect_textBox = new System.Windows.Forms.TextBox();
             this.TapeEditCancel_button = new System.Windows.Forms.Button();
             this.ResetPickupZ_button = new System.Windows.Forms.Button();
             this.ResetPlacementZ_button = new System.Windows.Forms.Button();
             this.ResetTrayID_button = new System.Windows.Forms.Button();
             this.CoordinatesForParts_checkBox = new System.Windows.Forms.CheckBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.ACorrection_textBox = new System.Windows.Forms.TextBox();
-            this.GetACorrection_button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Nozzle_numericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -506,7 +505,7 @@
             // 
             // GetFirstPosition_button
             // 
-            this.GetFirstPosition_button.Location = new System.Drawing.Point(16, 196);
+            this.GetFirstPosition_button.Location = new System.Drawing.Point(48, 196);
             this.GetFirstPosition_button.Name = "GetFirstPosition_button";
             this.GetFirstPosition_button.Size = new System.Drawing.Size(102, 23);
             this.GetFirstPosition_button.TabIndex = 36;
@@ -548,6 +547,25 @@
             this.toolTip1.SetToolTip(this.GetPlacementZ_button, "move current Z position to the boxes");
             this.GetPlacementZ_button.UseVisualStyleBackColor = true;
             this.GetPlacementZ_button.Click += new System.EventHandler(this.GetPlacementZ_button_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(124, 154);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(47, 13);
+            this.label9.TabIndex = 52;
+            this.label9.Text = "Rotation";
+            this.toolTip1.SetToolTip(this.label9, "Location of last hole/alingment mark/part");
+            // 
+            // RotationDirect_textBox
+            // 
+            this.RotationDirect_textBox.Location = new System.Drawing.Point(124, 170);
+            this.RotationDirect_textBox.Name = "RotationDirect_textBox";
+            this.RotationDirect_textBox.Size = new System.Drawing.Size(48, 20);
+            this.RotationDirect_textBox.TabIndex = 51;
+            this.toolTip1.SetToolTip(this.RotationDirect_textBox, "Location of last hole/alingment mark/part");
+            this.RotationDirect_textBox.TextChanged += new System.EventHandler(this.ACorrection_textBox_TextChanged);
             // 
             // TapeEditCancel_button
             // 
@@ -600,43 +618,13 @@
             this.CoordinatesForParts_checkBox.UseVisualStyleBackColor = true;
             this.CoordinatesForParts_checkBox.CheckedChanged += new System.EventHandler(this.CoordinatesForParts_checkBox_CheckedChanged);
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(146, 154);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(64, 13);
-            this.label9.TabIndex = 52;
-            this.label9.Text = "A correction";
-            this.toolTip1.SetToolTip(this.label9, "Location of last hole/alingment mark/part");
-            // 
-            // ACorrection_textBox
-            // 
-            this.ACorrection_textBox.Location = new System.Drawing.Point(149, 170);
-            this.ACorrection_textBox.Name = "ACorrection_textBox";
-            this.ACorrection_textBox.Size = new System.Drawing.Size(48, 20);
-            this.ACorrection_textBox.TabIndex = 51;
-            this.toolTip1.SetToolTip(this.ACorrection_textBox, "Location of last hole/alingment mark/part");
-            this.ACorrection_textBox.TextChanged += new System.EventHandler(this.ACorrection_textBox_TextChanged);
-            // 
-            // GetACorrection_button
-            // 
-            this.GetACorrection_button.Location = new System.Drawing.Point(149, 196);
-            this.GetACorrection_button.Name = "GetACorrection_button";
-            this.GetACorrection_button.Size = new System.Drawing.Size(87, 23);
-            this.GetACorrection_button.TabIndex = 53;
-            this.GetACorrection_button.Text = "Get current ";
-            this.toolTip1.SetToolTip(this.GetACorrection_button, "move current X and Y position to the boxes");
-            this.GetACorrection_button.UseVisualStyleBackColor = true;
-            // 
             // TapeEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(456, 464);
-            this.Controls.Add(this.GetACorrection_button);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.ACorrection_textBox);
+            this.Controls.Add(this.RotationDirect_textBox);
             this.Controls.Add(this.CoordinatesForParts_checkBox);
             this.Controls.Add(this.ResetTrayID_button);
             this.Controls.Add(this.label19);
@@ -743,7 +731,6 @@
         private System.Windows.Forms.Button ResetTrayID_button;
         private System.Windows.Forms.CheckBox CoordinatesForParts_checkBox;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox ACorrection_textBox;
-        private System.Windows.Forms.Button GetACorrection_button;
+        private System.Windows.Forms.TextBox RotationDirect_textBox;
     }
 }

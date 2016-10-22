@@ -16,6 +16,7 @@ namespace LitePlacer
         public DataGridViewRow Row;
         public int TapeRowNo;
         public FormMain MainForm;
+        Camera Cam;
         CNC Cnc;
 
         // The parameters of tapes, most taken care by this dialog
@@ -43,15 +44,16 @@ namespace LitePlacer
         // double PickupZ, PlacementZ: Z values used for pickup/place operation
         // bool PickupZvalid, PlacementZvalid: if the values are valid (if not, they are measured when used)
 
-        public TapeEditForm(CNC _cnc)
+        public TapeEditForm(CNC _cnc, Camera _cam)
         {
             InitializeComponent();
             Cnc = _cnc;
+            Cam = _cam;
         }
 
         // =================================================================================
 
-
+        private bool DrawCross = true;
         private void TapeEditForm_Load(object sender, EventArgs e)
         {
             Row = TapesDataGrid.Rows[TapeRowNo];
@@ -149,6 +151,10 @@ namespace LitePlacer
             {
                 LastY_textBox.Text = Row.Cells["LastY_Column"].Value.ToString();
             }
+            if (Row.Cells["RotationDirect_Column"].Value != null)
+            {
+                RotationDirect_textBox.Text = Row.Cells["RotationDirect_Column"].Value.ToString();
+            }
 
             if (Row.Cells["Z_Pickup_Column"].Value != null)
             {
@@ -162,22 +168,32 @@ namespace LitePlacer
             {
                 TrayID_textBox.Text = Row.Cells["TrayID_Column"].Value.ToString();
             }
+            MainForm.DownCameraRotationFollowsA = true;
+            DrawCross = Cam.DrawCross;
+            Cam.DrawCross = false;
             if (Row.Cells["CoordinatesForParts_Column"].Value != null)
             {
                 if (Row.Cells["CoordinatesForParts_Column"].Value.ToString() == "True")
                 {
                     CoordinatesForParts_checkBox.Checked = true;
+                    double val;
+                    if (double.TryParse(RotationDirect_textBox.Text, out val))
+                    {
+                        MainForm.CNC_A_m(val);
+                    }
+                    EnableLastItems();
                 }
                 else
                 {
                     CoordinatesForParts_checkBox.Checked = false;
+                    EnableLastItems();
                 }
             }
             else
             {
                 CoordinatesForParts_checkBox.Checked = false;
+                EnableLastItems();
             }
-            EnableLastItems();
         }
 
         private void EnableLastItems()
@@ -187,6 +203,7 @@ namespace LitePlacer
             GetLastPosition_button.Enabled = CoordinatesForParts_checkBox.Checked;
             LastX_label.Enabled = CoordinatesForParts_checkBox.Checked;
             LastY_label.Enabled = CoordinatesForParts_checkBox.Checked;
+            Cam.DrawGrid = CoordinatesForParts_checkBox.Checked;
         }
 
         // =================================================================================
@@ -209,15 +226,21 @@ namespace LitePlacer
             Row.Cells["Z_Place_Column"].Value = PlacementZ_textBox.Text;
             Row.Cells["TrayID_Column"].Value = TrayID_textBox.Text; 
             Row.Cells["CoordinatesForParts_Column"].Value = CoordinatesForParts_checkBox.Checked;
-            Row.Cells["ACorrection_Column"].Value = LastX_textBox.Text;
+            Row.Cells["RotationDirect_Column"].Value = RotationDirect_textBox.Text;
             Row.Cells["LastX_Column"].Value = LastX_textBox.Text;
             Row.Cells["LastY_Column"].Value = LastY_textBox.Text;
             MainForm.Update_GridView(TapesDataGrid);
+            MainForm.DownCameraRotationFollowsA = false;
+            Cam.DrawGrid = false;
+            Cam.DrawCross = DrawCross;
             Close();
         }
 
         private void TapeEditCancel_button_Click(object sender, EventArgs e)
         {
+            MainForm.DownCameraRotationFollowsA = false;
+            Cam.DrawGrid = false;
+            Cam.DrawCross = DrawCross;
             Close();
         }
 
@@ -339,6 +362,7 @@ namespace LitePlacer
         {
             FirstX_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
             FirstY_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            RotationDirect_textBox.Text = Cnc.CurrentA.ToString("0.000", CultureInfo.InvariantCulture);
         }
 
         private void GetLastPosition_button_Click(object sender, EventArgs e)
@@ -364,7 +388,7 @@ namespace LitePlacer
 
         private void ACorrection_textBox_TextChanged(object sender, EventArgs e)
         {
-            ValidateDouble(ACorrection_textBox);
+            ValidateDouble(RotationDirect_textBox);
         }
 
         private void LastX_textBox_TextChanged(object sender, EventArgs e)
@@ -375,6 +399,11 @@ namespace LitePlacer
         private void LastY_textBox_TextChanged(object sender, EventArgs e)
         {
             ValidateDouble(LastY_textBox);
+        }
+
+        private void GetACorrection_button_Click(object sender, EventArgs e)
+        {
+            RotationDirect_textBox.Text = Cnc.CurrentA.ToString("0.000", CultureInfo.InvariantCulture);
         }
     }
 }
