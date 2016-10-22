@@ -98,6 +98,12 @@ namespace LitePlacer
                 FastParametersOk = false;
                 return false;
             }
+            if (MainForm.UseCoordinatesDirectly(TapeNum))
+            {
+                return true;
+            }
+
+
             int first;
             if (!int.TryParse(Grid.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out first))
             {

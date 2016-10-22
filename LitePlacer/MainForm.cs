@@ -8406,7 +8406,7 @@ namespace LitePlacer
         // PickUpPartWithDirectCoordinates_m(): Picks next part, using coordinates directly
         // First, some helper functions:
 
-        private bool UseCoordinatesDirectly(int TapeNum)
+        public bool UseCoordinatesDirectly(int TapeNum)
         {
             DataGridViewCheckBoxCell cell = Tapes_dataGridView.Rows[TapeNum].Cells["CoordinatesForParts_Column"] as DataGridViewCheckBoxCell;
             if (cell.Value != null)
