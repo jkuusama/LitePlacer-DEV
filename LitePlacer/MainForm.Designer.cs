@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -170,6 +170,7 @@
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
+            this.DownCameraDrawGrid_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCamStart_button = new System.Windows.Forms.Button();
             this.DownCamStop_button = new System.Windows.Forms.Button();
             this.MeasureDownCam_button = new System.Windows.Forms.Button();
@@ -779,7 +780,6 @@
             this.GoY_button = new System.Windows.Forms.Button();
             this.GoA_button = new System.Windows.Forms.Button();
             this.GoZ_button = new System.Windows.Forms.Button();
-            this.DownCameraDrawGrid_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -2354,6 +2354,20 @@
             this.DownCamera_tabPage.TabIndex = 3;
             this.DownCamera_tabPage.Text = "Down Looking Camera";
             this.DownCamera_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // DownCameraDrawGrid_checkBox
+            // 
+            this.DownCameraDrawGrid_checkBox.AutoSize = true;
+            this.DownCameraDrawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraDrawGrid_checkBox.Location = new System.Drawing.Point(10, 111);
+            this.DownCameraDrawGrid_checkBox.Name = "DownCameraDrawGrid_checkBox";
+            this.DownCameraDrawGrid_checkBox.Size = new System.Drawing.Size(73, 17);
+            this.DownCameraDrawGrid_checkBox.TabIndex = 147;
+            this.DownCameraDrawGrid_checkBox.Text = "Draw Grid";
+            this.toolTip1.SetToolTip(this.DownCameraDrawGrid_checkBox, "Draws a box on the image\r\n(Used to set camera scale)\r\n");
+            this.DownCameraDrawGrid_checkBox.UseVisualStyleBackColor = true;
+            this.DownCameraDrawGrid_checkBox.Visible = false;
+            this.DownCameraDrawGrid_checkBox.CheckedChanged += new System.EventHandler(this.DownCameraDrawGrid_checkBox_CheckedChanged);
             // 
             // DownCamStart_button
             // 
@@ -7911,14 +7925,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9036,20 +9050,6 @@
             this.GoZ_button.Text = "Z:";
             this.GoZ_button.UseVisualStyleBackColor = true;
             this.GoZ_button.Click += new System.EventHandler(this.GoZ_button_Click);
-            // 
-            // DownCameraDrawGrid_checkBox
-            // 
-            this.DownCameraDrawGrid_checkBox.AutoSize = true;
-            this.DownCameraDrawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDrawGrid_checkBox.Location = new System.Drawing.Point(10, 111);
-            this.DownCameraDrawGrid_checkBox.Name = "DownCameraDrawGrid_checkBox";
-            this.DownCameraDrawGrid_checkBox.Size = new System.Drawing.Size(73, 17);
-            this.DownCameraDrawGrid_checkBox.TabIndex = 147;
-            this.DownCameraDrawGrid_checkBox.Text = "Draw Grid";
-            this.toolTip1.SetToolTip(this.DownCameraDrawGrid_checkBox, "Draws a box on the image\r\n(Used to set camera scale)\r\n");
-            this.DownCameraDrawGrid_checkBox.UseVisualStyleBackColor = true;
-            this.DownCameraDrawGrid_checkBox.Visible = false;
-            this.DownCameraDrawGrid_checkBox.CheckedChanged += new System.EventHandler(this.DownCameraDrawGrid_checkBox_CheckedChanged);
             // 
             // FormMain
             // 

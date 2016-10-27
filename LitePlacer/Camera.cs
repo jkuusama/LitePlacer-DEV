@@ -1553,7 +1553,62 @@ namespace LitePlacer
             Pen BluePen = new Pen(Color.Blue, 1);
             Graphics g = Graphics.FromImage(img);
             int x1, x2, y1, y2;
-            int step = 15;
+            int step = 20;
+            // vertical
+            int i = 0;
+            while (i< FrameSizeX)
+            {
+                // FrameCenterX, 0 to FrameCenterX, FrameSizeY
+                RotateByFrameCenter(FrameCenterX + i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameSizeY, out x2, out y2);
+                g.DrawLine(RedPen, x1, y1, x2, y2);
+                RotateByFrameCenter(FrameCenterX - i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX - i, FrameSizeY, out x2, out y2);
+                g.DrawLine(RedPen, x1, y1, x2, y2);
+                i = i + step;
+                RotateByFrameCenter(FrameCenterX + i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameSizeY, out x2, out y2);
+                g.DrawLine(GreenPen, x1, y1, x2, y2);
+                RotateByFrameCenter(FrameCenterX - i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX - i, FrameSizeY, out x2, out y2);
+                g.DrawLine(GreenPen, x1, y1, x2, y2);
+                i = i + step;
+                RotateByFrameCenter(FrameCenterX + i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX + i, FrameSizeY, out x2, out y2);
+                g.DrawLine(BluePen, x1, y1, x2, y2);
+                RotateByFrameCenter(FrameCenterX - i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX - i, FrameSizeY, out x2, out y2);
+                g.DrawLine(BluePen, x1, y1, x2, y2);
+                i = i + step;
+            }
+            // horizontal
+            i = 0;
+            while (i < FrameSizeY)
+            {
+                // 0, FrameCenterY to FrameSizeX, FrameCenterY
+                RotateByFrameCenter(0, FrameCenterY + i, out x1, out y1);
+                RotateByFrameCenter(FrameSizeX, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(RedPen, x1, y1, x2, y2);
+                RotateByFrameCenter(0, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameSizeX, FrameCenterY - i, out x2, out y2);
+                g.DrawLine(RedPen, x1, y1, x2, y2);
+                i = i + step;
+                RotateByFrameCenter(0, FrameCenterY + i, out x1, out y1);
+                RotateByFrameCenter(FrameSizeX, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(GreenPen, x1, y1, x2, y2);
+                RotateByFrameCenter(0, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameSizeX, FrameCenterY - i, out x2, out y2);
+                g.DrawLine(GreenPen, x1, y1, x2, y2);
+                i = i + step;
+                RotateByFrameCenter(0, FrameCenterY + i, out x1, out y1);
+                RotateByFrameCenter(FrameSizeX, FrameCenterY + i, out x2, out y2);
+                g.DrawLine(BluePen, x1, y1, x2, y2);
+                RotateByFrameCenter(0, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameSizeX, FrameCenterY - i, out x2, out y2);
+                g.DrawLine(BluePen, x1, y1, x2, y2);
+                i = i + step;
+            }
+            /*
             for (int i = step; i < FrameSizeY; i = i + step)
             {
                 // right
@@ -1619,6 +1674,7 @@ namespace LitePlacer
 
             RotateByFrameCenter(1000, FrameCenterY, out x1, out y1);
             g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
+            */
 
             RedPen.Dispose();
             GreenPen.Dispose();
