@@ -103,5 +103,11 @@ namespace LitePlacer
             this.Close();
         }
 
+        private void LoosePartAssisted_button_Click(object sender, EventArgs e)
+        {
+            SelectedMethod = "LoosePartAssisted";
+            this.Close();
+        }
+
 	}
 }
