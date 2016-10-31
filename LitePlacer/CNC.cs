@@ -67,6 +67,7 @@ namespace LitePlacer
 
             if (Com.IsOpen)
             {
+                MainForm.DisplayText("Connecting to serial port " + name + ": already open");
                 return true;
             }
             Com.Open(name);
@@ -74,6 +75,7 @@ namespace LitePlacer
             Homing = false;
             _readyEvent.Set();
             Connected = Com.IsOpen;
+            MainForm.DisplayText("Connecting to serial port " + name + ", result:" + Com.IsOpen.ToString());
             return Com.IsOpen;
         }
 
