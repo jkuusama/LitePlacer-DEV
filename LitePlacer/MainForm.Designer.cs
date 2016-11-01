@@ -7098,7 +7098,8 @@
             this.buttonConnectSerial.Size = new System.Drawing.Size(75, 23);
             this.buttonConnectSerial.TabIndex = 2;
             this.buttonConnectSerial.Text = "Connect";
-            this.toolTip1.SetToolTip(this.buttonConnectSerial, "Try to connect to TinyG at port shown above");
+            this.toolTip1.SetToolTip(this.buttonConnectSerial, "Close: Closes current connection.\r\nClear Err or Connect:Tries to connect to TinyG" +
+        " at port shown above.");
             this.buttonConnectSerial.UseVisualStyleBackColor = true;
             this.buttonConnectSerial.Click += new System.EventHandler(this.buttonConnectSerial_Click);
             // 

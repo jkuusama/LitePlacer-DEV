@@ -1044,8 +1044,51 @@ namespace LitePlacer
 
         private void ReadV1TapesFile(string filename)
         {
-            DisplayText("V1 tapes file");
+            // Logic:
+            // Check that file exists.
+            // Read the headers.
+            // If headers have "WidthColumn", read in to dummy datagridview and convert to new format
+            // else read normally
+            try
+            {
+                // read in to old format datagridview and convert to new format
+                DisplayText("Loading v1 tapes data");
+                LoadDataGrid(filename, Tapes_dataGridView, DataTableType.Tapes);
+                // convert to new
+                double X;
+                double Y;
+                double pitch;
+                LoadingDataGrid = true;  // to avoid cell value changed events
 
+                for (int i = 0; i < TapesOld_dataGridView.RowCount; i++)
+                {
+                    if (Tapes_dataGridView.Rows[i].Cells["WidthColumn"].Value != null)
+                    {
+                        if (Tapes_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString() != "custom")
+                        {
+                            TapeWidthStringToValues(Tapes_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString(), out X, out Y, out pitch);
+                            Tapes_dataGridView.Rows[i].Cells["Pitch_Column"].Value = pitch.ToString();
+                            Tapes_dataGridView.Rows[i].Cells["OffsetX_Column"].Value = X.ToString();
+                            Tapes_dataGridView.Rows[i].Cells["OffsetY_Column"].Value = Y.ToString();
+                        }
+                    }
+                    Tapes_dataGridView.Rows[i].Cells["RotationDirect_Column"].Value = "0.00";
+                    Tapes_dataGridView.Rows[i].Cells["CoordinatesForParts_Column"].Value = false;
+                }
+                LoadingDataGrid = false;
+            }
+            catch (System.Exception excep)
+            {
+                // Get stack trace for the exception with source file information
+                var st = new StackTrace(excep, true);
+                // Get the top stack frame
+                var frame = st.GetFrame(0);
+                // Get the line number from the stack frame
+                var line = frame.GetFileLineNumber();
+                LoadingDataGrid = false;
+
+                MessageBox.Show(excep.Message);
+            }
         }
 
         // =================================================================================
@@ -4092,25 +4135,22 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<bool>(UpdateCncConnectionStatus), Offer ); return; }
 
-            if (Cnc.Connected)
+            if (Cnc.ErrorState)
             {
-                if (Cnc.ErrorState)
+                buttonConnectSerial.Text = "Clear Err.";
+                labelSerialPortStatus.Text = "ERROR";
+                labelSerialPortStatus.ForeColor = Color.Red;
+                ValidMeasurement_checkBox.Checked = false;
+                PositionConfidence = false;
+            }
+            else if (Cnc.Connected)
+            {
+                buttonConnectSerial.Text = "Close";
+                labelSerialPortStatus.Text = "Connected";
+                labelSerialPortStatus.ForeColor = Color.Black;
+                if (Offer)
                 {
-                    buttonConnectSerial.Text = "Clear Err.";
-                    labelSerialPortStatus.Text = "ERROR";
-                    labelSerialPortStatus.ForeColor = Color.Red;
-                    ValidMeasurement_checkBox.Checked = false;
-                    PositionConfidence = false;
-                }
-                else
-                {
-                    buttonConnectSerial.Text = "Close";
-                    labelSerialPortStatus.Text = "Connected";
-                    labelSerialPortStatus.ForeColor = Color.Black;
-                    if (Offer)
-                    {
-                        OfferHoming();
-                    }
+                    OfferHoming();
                 }
             }
             else
@@ -4143,6 +4183,7 @@ namespace LitePlacer
                     UpdateCncConnectionStatus(true);
                 }
             }
+            /*
             else if (Cnc.ErrorState)
             {
                 // Attempt to clear the error
@@ -4153,6 +4194,7 @@ namespace LitePlacer
                 }
                 UpdateCncConnectionStatus(true);
             }
+            */
             else
             {
                 // Close connection
