@@ -24,7 +24,6 @@ namespace LitePlacer
         {
             MainForm = MainF;
             Com = new SerialComm(this, MainF);
-            Connect(Properties.Settings.Default.CNC_SerialPort);
             SlowXY = false;
             SlowZ = false;
             SlowA = false;

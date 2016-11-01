@@ -166,7 +166,7 @@ namespace LitePlacer
             LoadDataGrid(path + "LitePlacer.UpCamSnapshotFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
             DataGridViewCopy(Temp_dataGridView, ref UpcamSnapshot_dataGridView, false);
 
-            LoadTapesTable(path);
+            LoadTapesTable(path + "LitePlacer.TapesData_v2");
             // LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
             Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData");
 
@@ -312,6 +312,7 @@ namespace LitePlacer
         // ==============================================================================================
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            Cnc.Connect(Properties.Settings.Default.CNC_SerialPort);  // moved to here, as this can raise error condition, needing the form up
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
@@ -886,21 +887,35 @@ namespace LitePlacer
         // I changed the data in tapes table, but I don't want to make customers to redo their tables
         // This routine looks if the data format is old and converts it to new if needed
         // This is called at startup
-        private void LoadTapesTable(string path)
+        private void LoadTapesTable(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                DisplayText("Did not find file " + filename);
+                return;
+            }
+
+            if (filename.EndsWith("_v2"))
+            {
+                ReadV2TapesFile(filename);
+            }
+            else
+            {
+                ReadV1TapesFile(filename);
+            }
+            return;
+        }
+
+        private void ReadV2TapesFile(string filename)
         {
             // Logic:
             // Check that file exists.
             // Read the headers.
             // If headers have "WidthColumn", read in to dummy datagridview and convert to new format
             // else read normally
-            if (!File.Exists(path+"LitePlacer.TapesData_v2"))
-            {
-                DisplayText("Didn't find LitePlacer.TapesData_v2 file ");
-                return;   // Didint find the specified file name nor filename+v2 (these would be the default files)
-            }
             try
             {
-                using (BinaryReader br = new BinaryReader(File.Open(path+"LitePlacer.TapesData_v2", FileMode.Open)))
+                using (BinaryReader br = new BinaryReader(File.Open(filename, FileMode.Open)))
                 {
                     int first = br.ReadInt32();
                     int cols = br.ReadInt32();
@@ -916,17 +931,20 @@ namespace LitePlacer
                     {
                         // read in to old format datagridview and convert to new format
                         DisplayText("Loading tapes without nozzles data");
-                        LoadDataGrid(path + "LitePlacer.TapesData", TapesOld_dataGridView, DataTableType.Tapes);
+                        LoadDataGrid(filename, TapesOld_dataGridView, DataTableType.Tapes);
                         // convert to new
                         double X;
                         double Y;
                         double pitch;
+                        LoadingDataGrid = true;  // to avoid cell value changed events
+                        Tapes_dataGridView.Rows.Clear();
+
                         for (int i = 0; i < TapesOld_dataGridView.RowCount; i++)
                         {
                             Tapes_dataGridView.Rows.Add();
 
                             // most values go as is, just column names have changed
-                            if (TapesOld_dataGridView.Rows[i].Cells["SelectButtonColumn"].Value!=null)
+                            if (TapesOld_dataGridView.Rows[i].Cells["SelectButtonColumn"].Value != null)
                             {
                                 Tapes_dataGridView.Rows[i].Cells["SelectButton_Column"].Value = TapesOld_dataGridView.Rows[i].Cells["SelectButtonColumn"].Value.ToString();
                             }
@@ -989,7 +1007,7 @@ namespace LitePlacer
                             // conversion
                             if (TapesOld_dataGridView.Rows[i].Cells["WidthColumn"].Value != null)
                             {
-                                if (TapesOld_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString()!="custom")
+                                if (TapesOld_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString() != "custom")
                                 {
                                     TapeWidthStringToValues(TapesOld_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString(), out X, out Y, out pitch);
                                     Tapes_dataGridView.Rows[i].Cells["Pitch_Column"].Value = pitch.ToString();
@@ -998,21 +1016,36 @@ namespace LitePlacer
                                 }
                             }
                             Tapes_dataGridView.Rows[i].Cells["RotationDirect_Column"].Value = "0.00";
-                            Tapes_dataGridView.Rows[i].Cells["UseOptics_Column"].Value = true;
+                            Tapes_dataGridView.Rows[i].Cells["CoordinatesForParts_Column"].Value = false;
                         }
+                        LoadingDataGrid = false;
                     }
                     else
                     {
-                        // // read in new format 
+                        // read in new format 
                         DisplayText("Loading tapes with nozzles data");
-                        LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
+                        LoadDataGrid(filename, Tapes_dataGridView, DataTableType.Tapes);
                     }
                 }
             }
             catch (System.Exception excep)
             {
+                // Get stack trace for the exception with source file information
+                var st = new StackTrace(excep, true);
+                // Get the top stack frame
+                var frame = st.GetFrame(0);
+                // Get the line number from the stack frame
+                var line = frame.GetFileLineNumber();
+                LoadingDataGrid = false;
+
                 MessageBox.Show(excep.Message);
             }
+        }
+
+        private void ReadV1TapesFile(string filename)
+        {
+            DisplayText("V1 tapes file");
+
         }
 
         // =================================================================================
@@ -11142,7 +11175,8 @@ namespace LitePlacer
         {
             if (TapesAll_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                LoadDataGrid(TapesAll_openFileDialog.FileName, Tapes_dataGridView, DataTableType.Tapes);
+                LoadTapesTable(TapesAll_openFileDialog.FileName);
+                // LoadDataGrid(TapesAll_openFileDialog.FileName, Tapes_dataGridView, DataTableType.Tapes);
             }
         }
 
