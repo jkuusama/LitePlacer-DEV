@@ -46,7 +46,7 @@ namespace LitePlacer
             ErrorState = true;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus(true);
+            MainForm.UpdateCncConnectionStatus(false);
         }
 
         public void Close()
@@ -56,7 +56,7 @@ namespace LitePlacer
             Connected = false;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus(true);
+            MainForm.UpdateCncConnectionStatus(false);
         }
 
         public bool Connect(String name)
@@ -75,8 +75,13 @@ namespace LitePlacer
             Homing = false;
             _readyEvent.Set();
             Connected = Com.IsOpen;
+            if (!Connected)
+            {
+                Error();
+            }
             MainForm.DisplayText("Connecting to serial port " + name + ", result:" + Com.IsOpen.ToString());
-            return Com.IsOpen;
+
+            return Connected;
         }
 
         public bool Write(string command)
@@ -95,9 +100,13 @@ namespace LitePlacer
                 return false;
             }
             _readyEvent.Reset();
-            Com.Write(command);
+            bool res = Com.Write(command);
             _readyEvent.Wait();
-            return true;
+            if (!res)
+            {
+                Error();
+            }
+            return res;
         }
 
         public bool RawWrite(string command)
@@ -113,8 +122,12 @@ namespace LitePlacer
                 MainForm.DisplayText("###" + command + " discarded, error state on");
                 return false;
             }
-            Com.Write(command);
-            return true;
+            bool res = Com.Write(command);
+            if (!res)
+            {
+                Error();
+            }
+            return res;
         }
 
         public void ForceWrite(string command)

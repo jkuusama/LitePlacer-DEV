@@ -384,14 +384,17 @@ namespace LitePlacer
             if (Cnc.Connected)
             {
                 Thread.Sleep(200); // Give TinyG time to wake up
-                CNC_RawWrite("\x11");  // Xon
+                bool res = CNC_RawWrite("\x11");  // Xon
                 Thread.Sleep(50);
                 //CNC_RawWrite("{\"js\":1}");  // strict JSON syntax
                 //Thread.Sleep(150);
                 //CNC_RawWrite("{\"ec\":0}");  // send LF only
                 //Thread.Sleep(150);
-                UpdateWindowValues_m();
-                OfferHoming();
+                if (res)
+                {
+                    UpdateWindowValues_m();
+                    OfferHoming();
+                }
             }
 
             DisableLog_checkBox.Checked = Properties.Settings.Default.General_MuteLogging;
@@ -2161,10 +2164,10 @@ namespace LitePlacer
         }
         public int CNC_HomingTimeout = 16;  // in seconds
 
-        private void CNC_RawWrite(string s)
+        private bool CNC_RawWrite(string s)
         {
             // This for operations that cause conflicts with event firings. Caller does waiting, if needed.
-            Cnc.RawWrite(s);
+            return Cnc.RawWrite(s);
         }
 
         bool CNC_BlockingWriteDone = false;
@@ -4049,7 +4052,7 @@ namespace LitePlacer
         public void CncError()
         {
             Cnc.ErrorState = true;
-            UpdateCncConnectionStatus(true);
+            UpdateCncConnectionStatus(false);
         }
 
         public void UpdateCncConnectionStatus(bool Offer)

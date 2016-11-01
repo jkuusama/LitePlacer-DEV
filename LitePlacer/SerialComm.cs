@@ -70,6 +70,7 @@ namespace LitePlacer
                 Port.Handshake = Handshake.RequestToSend;
                 Port.DtrEnable = true;  // prevent hangs on some drivers
                 Port.RtsEnable = true;
+                Port.WriteTimeout = 500;
                 Port.Open();
                 if (Port.IsOpen)
                 {
@@ -85,14 +86,31 @@ namespace LitePlacer
             }
         }
 
+        // ======================================================
+        // Write:
+        // If the PC has more thatn one serial port and one which is not connected to TinyG has hardware handshake
+        // on, the write will hang. Doing write this way catches this situation
 
-        public void Write(string TxText)
+        public bool Write(string TxText)
         {
-            if (Port.IsOpen)
+            try
             {
-                // Port.Write(TxText + "\r\n");
-                Port.Write(TxText + "\r");
-                MainForm.DisplayText("==> " + TxText, KnownColor.Blue);
+                if (Port.IsOpen)
+                {
+                    Port.Write(TxText + "\r");
+                    MainForm.DisplayText("==> " + TxText, KnownColor.Blue);
+                }
+                else
+                {
+                    MainForm.DisplayText("Serial port not open, write discarded: " + TxText, KnownColor.DarkRed);
+                }
+                return true;
+            }
+            catch
+            {
+                MainForm.DisplayText("Serial port write failed.", KnownColor.DarkRed);
+                Close();
+                return false;
             }
         }
 
