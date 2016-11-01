@@ -68,6 +68,7 @@ namespace LitePlacer
             if (Com.IsOpen)
             {
                 MainForm.DisplayText("Connecting to serial port " + name + ": already open");
+                Connected = true;
                 return true;
             }
             Com.Open(name);
