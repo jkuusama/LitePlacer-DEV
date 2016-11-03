@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="CNC_SerialPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM3</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DownCam_XmmPerPixel" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.1</Value>

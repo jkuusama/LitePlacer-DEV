@@ -43,7 +43,7 @@ namespace LitePlacer
         public void Error()
         {
             ErrorState = true;
-            Connected = false;
+            // Connected = false;
             Homing = false;
             _readyEvent.Set();
             MainForm.UpdateCncConnectionStatus(false);

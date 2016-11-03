@@ -22,6 +22,7 @@ namespace LitePlacer
        public SerialComm(CNC caller, FormMain MainF)
         {
             Cnc = caller;
+            Port.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
             MainForm = MainF;
         }
 
@@ -77,7 +78,7 @@ namespace LitePlacer
                     Port.DiscardOutBuffer();
                     Port.DiscardInBuffer();
                 }
-                Port.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
+                // Port.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
                 return Port.IsOpen;
             }
             catch

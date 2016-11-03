@@ -371,7 +371,7 @@ namespace LitePlacer
             BackOff_textBox.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
             PlacementDepth_textBox.Text = Properties.Settings.Default.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
 
-            if (Properties.Settings.Default.Nozzles_current==0)
+            if (Properties.Settings.Default.Nozzles_current == 0)
             {
                 NozzleNo_textBox.Text = "--";
             }
@@ -401,7 +401,7 @@ namespace LitePlacer
             DisableLog_checkBox.Checked = Properties.Settings.Default.General_MuteLogging;
             MotorPower_timer.Enabled = true;
             StartingUp = false;
-           DisplayText("Startup completed.");
+            DisplayText("Startup completed.");
         }
 
         // =================================================================================
@@ -4133,7 +4133,7 @@ namespace LitePlacer
 
         public void UpdateCncConnectionStatus(bool Offer)
         {
-            if (InvokeRequired) { Invoke(new Action<bool>(UpdateCncConnectionStatus), Offer ); return; }
+            if (InvokeRequired) { Invoke(new Action<bool>(UpdateCncConnectionStatus), Offer); return; }
 
             if (Cnc.ErrorState)
             {
@@ -4167,14 +4167,28 @@ namespace LitePlacer
         {
             if (comboBoxSerialPorts.SelectedItem == null)
             {
-                return;
+                return;  // no ports
             };
 
-            if (!Cnc.Connected)
+            if (Cnc.ErrorState || !Cnc.Connected)
             {
-                // reconnect
+                if (Properties.Settings.Default.CNC_SerialPort != comboBoxSerialPorts.SelectedItem.ToString())
+                {
+                    // user changed the selection
+                    buttonConnectSerial.Text = "Closing..";
+                    Cnc.Close();
+                    // 0.5 s delay for the system to clear buffers etc
+                    for (int i = 0; i < 250; i++)
+                    {
+                        Thread.Sleep(2);
+                        Application.DoEvents();
+                    }
+                }
+                // reconnect, attempt to clear the error
                 if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
                 {
+                    buttonConnectSerial.Text = "Connecting..";
+                    Cnc.ErrorState = false;
                     Properties.Settings.Default.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                     if (!UpdateWindowValues_m())
                     {
@@ -4183,23 +4197,16 @@ namespace LitePlacer
                     UpdateCncConnectionStatus(true);
                 }
             }
-            /*
-            else if (Cnc.ErrorState)
-            {
-                // Attempt to clear the error
-                Cnc.ErrorState = false;
-                if (!UpdateWindowValues_m())
-                {
-                    CncError();
-                }
-                UpdateCncConnectionStatus(true);
-            }
-            */
             else
             {
                 // Close connection
+                buttonConnectSerial.Text = "Closing..";
                 Cnc.Close();
-                Thread.Sleep(250);
+                for (int i = 0; i < 250; i++)
+                {
+                    Thread.Sleep(2);
+                    Application.DoEvents();
+                }
                 UpdateCncConnectionStatus(false);
             }
         }
