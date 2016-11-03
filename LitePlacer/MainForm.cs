@@ -1870,6 +1870,7 @@ namespace LitePlacer
             PowerTimerCount = 0;
         }
 
+        [DebuggerStepThrough]
         private void MotorPower_timer_Tick(object sender, EventArgs e)
         {
             if (PositionConfidence)         // == if timer should run
