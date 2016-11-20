@@ -8630,7 +8630,7 @@ namespace LitePlacer
         // ====================================================================================
         private bool PutLoosePartDownAssisted_m(bool Probe)
         {
-            LoosePartPlaceZ = LoosePartPickupZ - 2.0;  // 2.0mm above board
+            LoosePartPlaceZ = LoosePartPickupZ - 2.5;  // 2.0mm above board
 
             if (!CNC_Z_m(LoosePartPlaceZ))
             {
@@ -8786,7 +8786,8 @@ namespace LitePlacer
                 X = X * Properties.Settings.Default.DownCam_XmmPerPixel;
                 Y = -Y * Properties.Settings.Default.DownCam_YmmPerPixel;
                 DisplayText("PickUpLoosePart_m(): measurement " + i.ToString() + ", X: " + X.ToString() + ", Y: " + Y.ToString() + ", A: " + A.ToString());
-                if ((Math.Abs(X) < 2.0) && (Math.Abs(Y) < 2.0))
+//                if ((Math.Abs(X) < 2.0) && (Math.Abs(Y) < 2.0))
+               if ((Math.Abs(X) < 0.05) && (Math.Abs(Y) < 0.05))                
                 {
                     break;
                 }
