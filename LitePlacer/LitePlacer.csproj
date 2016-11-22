@@ -127,8 +127,9 @@
     <Reference Include="HomographyEstimation">
       <HintPath>..\packages\HomographyEstimation\HomographyEstimation.dll</HintPath>
     </Reference>
-    <Reference Include="MathNet.Numerics">
-      <HintPath>..\packages\MathNet.Numerics.3.5.0\lib\net40\MathNet.Numerics.dll</HintPath>
+    <Reference Include="MathNet.Numerics, Version=3.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.3.12.0\lib\net40\MathNet.Numerics.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -144,6 +145,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
@@ -172,6 +174,12 @@
     <Compile Include="SerialComm.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Shapes.cs" />
+    <Compile Include="TapeEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TapeEdit.Designer.cs">
+      <DependentUpon>TapeEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="tapes.cs" />
     <Compile Include="TapeSelectionForm.cs">
       <SubType>Form</SubType>
@@ -199,6 +207,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TapeEdit.resx">
+      <DependentUpon>TapeEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TapeSelectionForm.resx">
       <DependentUpon>TapeSelectionForm.cs</DependentUpon>
     </EmbeddedResource>

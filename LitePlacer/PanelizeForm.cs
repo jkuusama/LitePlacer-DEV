@@ -248,22 +248,22 @@ namespace LitePlacer
                     {
                         Row.Cells["Footprint_Column"].Value = "fiducial";
                     }
-                    if (Row.Cells["X_column"].Value == null)
+                    if (Row.Cells["Xpanelize_Column"].Value == null)
                     {
                         OK = false;
                         break;
                     }
-                    if (!double.TryParse(Row.Cells["X_column"].Value.ToString(), out val))
+                    if (!double.TryParse(Row.Cells["Xpanelize_Column"].Value.ToString(), out val))
                     {
                         OK = false;
                         break;
                     }
-                    if (Row.Cells["Y_column"].Value == null)
+                    if (Row.Cells["Ypanelize_Column"].Value == null)
                     {
                         OK = false;
                         break;
                     }
-                    if (!double.TryParse(Row.Cells["Y_column"].Value.ToString(), out val))
+                    if (!double.TryParse(Row.Cells["Ypanelize_Column"].Value.ToString(), out val))
                     {
                         OK = false;
                         break;
@@ -419,8 +419,8 @@ namespace LitePlacer
                     DataGridViewRow Row = PanelFiducials_dataGridView.Rows[i];
                     CadData.Rows[Last].Cells["Component"].Value = Row.Cells["Designator_column"].Value.ToString();
                     CadData.Rows[Last].Cells["Value_Footprint"].Value = "Fid mark | " + Row.Cells["Footprint_Column"].Value.ToString();
-                    CadData.Rows[Last].Cells["X_nominal"].Value = Row.Cells["X_column"].Value.ToString();
-                    CadData.Rows[Last].Cells["Y_nominal"].Value = Row.Cells["Y_column"].Value.ToString();
+                    CadData.Rows[Last].Cells["X_nominal"].Value = Row.Cells["Xpanelize_Column"].Value.ToString();
+                    CadData.Rows[Last].Cells["Y_nominal"].Value = Row.Cells["Ypanelize_Column"].Value.ToString();
                     CadData.Rows[Last].Cells["Rotation"].Value = Row.Cells["Rotation_column"].Value.ToString();
                     CadData.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
                     CadData.Rows[Last].Cells["Y_Machine"].Value = "Nan";

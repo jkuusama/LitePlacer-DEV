@@ -13,6 +13,7 @@ namespace LitePlacer
 	{
 		public DataGridView Grid;
 		public string ID = "none";
+        public string Nozzle = Properties.Settings.Default.Nozzles_default.ToString();
         public string HeaderString = "";
 
 		const int ButtonWidth = 75;
@@ -32,9 +33,9 @@ namespace LitePlacer
 			this.Controls.Add(Grid);
 			for (int i = 0; i < Grid.RowCount; i++)
 			{
-				Grid.Rows[i].Cells["SelectButtonColumn"].Value="Select";
+				Grid.Rows[i].Cells["SelectButton_Column"].Value="Select";
 			}
-			Grid.Columns["SelectButtonColumn"].Visible = true;
+			Grid.Columns["SelectButton_Column"].Visible = true;
 			Grid.Location = new Point(15, 59);
 			Grid.Size = new Size(800, 480);
 			// Add a CellClick handler to handle clicks in the button column.
@@ -45,7 +46,7 @@ namespace LitePlacer
 		{
             for (int i = 0; i < Grid.RowCount; i++)
             {
-                Grid.Rows[i].Cells["SelectButtonColumn"].Value = "Reset";
+                Grid.Rows[i].Cells["SelectButton_Column"].Value = "Reset";
             }
             Grid.Size = GridSizeSave;
 			Grid.CellClick -= new DataGridViewCellEventHandler(Grid_CellClick);
@@ -72,13 +73,14 @@ namespace LitePlacer
 
 		private void Grid_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
-			// Ignore clicks that are not on button cell  IdColumn
-			if ((e.RowIndex < 0) || (e.ColumnIndex != Grid.Columns["SelectButtonColumn"].Index))
+			// Ignore clicks that are not on button cell  Id_Column
+			if ((e.RowIndex < 0) || (e.ColumnIndex != Grid.Columns["SelectButton_Column"].Index))
 			{
 				return;
 			}
-			ID = Grid.Rows[e.RowIndex].Cells["IdColumn"].Value.ToString();
-			CloseForm();
+			ID = Grid.Rows[e.RowIndex].Cells["Id_Column"].Value.ToString();
+            Nozzle= Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value.ToString();
+            CloseForm();
 		}
 
 		private void Ignore_button_Click(object sender, EventArgs e)

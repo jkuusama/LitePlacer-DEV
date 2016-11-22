@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="CNC_SerialPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM3</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DownCam_XmmPerPixel" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.1</Value>
@@ -92,10 +92,10 @@
     <Setting Name="UpCam_PositionY" Type="System.Double" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
-    <Setting Name="DownCam_NeedleOffsetX" Type="System.Double" Scope="User">
+    <Setting Name="DownCam_NozzleOffsetX" Type="System.Double" Scope="User">
       <Value Profile="(Default)">75</Value>
     </Setting>
-    <Setting Name="DownCam_NeedleOffsetY" Type="System.Double" Scope="User">
+    <Setting Name="DownCam_NozzleOffsetY" Type="System.Double" Scope="User">
       <Value Profile="(Default)">29</Value>
     </Setting>
     <Setting Name="General_MachineSizeX" Type="System.Double" Scope="User">
@@ -254,7 +254,7 @@
     <Setting Name="Placement_Depth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="Placement_OmitNeedleCalibration" Type="System.Boolean" Scope="User">
+    <Setting Name="Placement_OmitNozzleCalibration" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Placement_SkipMeasurements" Type="System.Boolean" Scope="User">
@@ -283,6 +283,60 @@
     </Setting>
     <Setting Name="General_BelowPCB_Allowance" Type="System.Double" Scope="User">
       <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="Nozzles_count" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Nozzles_default" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="Nozzles_current" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="Nozzles_XYspeed" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="Nozzles_XYfullSpeed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Nozzles_Zspeed" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="Nozzles_ZfullSpeed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Nozzles_Aspeed" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="Nozzles_AfullSpeed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Nozzles_Timeout" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5000</Value>
+    </Setting>
+    <Setting Name="Nozzles_FirstMoveFullSpeed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Nozzles_FirstMoveSlackCompensation" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Nozzles_LastMoveFullSpeed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Nozzles_Enabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Nozzles_maximum" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="Nozzles_CalibrationDistance" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="Nozzles_CalibrationMaxSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="Nozzles_CalibrationMinSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

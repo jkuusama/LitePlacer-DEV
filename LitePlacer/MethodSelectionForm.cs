@@ -43,9 +43,9 @@ namespace LitePlacer
 			this.Close();
 		}
 
-		private void ChangeNeedle_button_Click(object sender, EventArgs e)
+		private void ChangeNozzle_button_Click(object sender, EventArgs e)
 		{
-			SelectedMethod = "Change needle";
+			SelectedMethod = "Change Nozzle";
 			this.Close();
 		}
 

@@ -13,9 +13,9 @@ using System.Web.Script.Serialization;
 namespace LitePlacer
 {
 
-    class CNC
+    public class CNC
     {
-        private static FormMain MainForm;
+        static FormMain MainForm;
         private SerialComm Com;
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
@@ -24,7 +24,9 @@ namespace LitePlacer
         {
             MainForm = MainF;
             Com = new SerialComm(this, MainF);
-            Connect(Properties.Settings.Default.CNC_SerialPort);
+            SlowXY = false;
+            SlowZ = false;
+            SlowA = false;
         }
 
         public ManualResetEventSlim ReadyEvent
@@ -41,9 +43,10 @@ namespace LitePlacer
         public void Error()
         {
             ErrorState = true;
+            // Connected = false;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus();
+            MainForm.UpdateCncConnectionStatus(false);
         }
 
         public void Close()
@@ -53,7 +56,7 @@ namespace LitePlacer
             Connected = false;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus();
+            MainForm.UpdateCncConnectionStatus(false);
         }
 
         public bool Connect(String name)
@@ -64,6 +67,8 @@ namespace LitePlacer
 
             if (Com.IsOpen)
             {
+                MainForm.DisplayText("Connecting to serial port " + name + ": already open");
+                Connected = true;
                 return true;
             }
             Com.Open(name);
@@ -71,7 +76,13 @@ namespace LitePlacer
             Homing = false;
             _readyEvent.Set();
             Connected = Com.IsOpen;
-            return Com.IsOpen;
+            if (!Connected)
+            {
+                Error();
+            }
+            MainForm.DisplayText("Connecting to serial port " + name + ", result:" + Com.IsOpen.ToString());
+
+            return Connected;
         }
 
         public bool Write(string command)
@@ -90,9 +101,13 @@ namespace LitePlacer
                 return false;
             }
             _readyEvent.Reset();
-            Com.Write(command);
+            bool res = Com.Write(command);
             _readyEvent.Wait();
-            return true;
+            if (!res)
+            {
+                Error();
+            }
+            return res;
         }
 
         public bool RawWrite(string command)
@@ -108,8 +123,12 @@ namespace LitePlacer
                 MainForm.DisplayText("###" + command + " discarded, error state on");
                 return false;
             }
-            Com.Write(command);
-            return true;
+            bool res = Com.Write(command);
+            if (!res)
+            {
+                Error();
+            }
+            return res;
         }
 
         public void ForceWrite(string command)
@@ -161,7 +180,7 @@ namespace LitePlacer
         {
 			_trueX = x;
 			CurrX = x - CurrY * SquareCorrection;
-			// MainForm.DisplayText("CNC.setCurrX: x= " + x.ToString() + ", CurrX= " + CurrX.ToString());
+            //MainForm.DisplayText("CNC.setCurrX: x= " + x.ToString() + ", CurrX= " + CurrX.ToString() + ", CurrY= " + CurrY.ToString());
         }
 
         private static double CurrY;
@@ -180,7 +199,7 @@ namespace LitePlacer
         {
             CurrY = y;
 			CurrX = _trueX - CurrY * SquareCorrection;
-			// MainForm.DisplayText("CNC.setCurrY: TrueX= " + TrueX.ToString() + ", CurrX= " + CurrX.ToString());
+			//MainForm.DisplayText("CNC.setCurrY: "+ y.ToString()+ " CurrX= " + CurrX.ToString());
 		}
 
         private static double CurrZ;
@@ -225,6 +244,16 @@ namespace LitePlacer
 
         public string SmallMovementString = "G1 F200 ";
 
+        public bool SlowXY { get; set; }
+        public double SlowSpeedXY { get; set; }
+
+        public bool SlowZ { get; set; }
+        public double SlowSpeedZ { get; set; }
+
+        public bool SlowA { get; set; }
+        public double SlowSpeedA { get; set; }
+
+
         public void XY(double X, double Y)
         {
             double dX = Math.Abs(X - CurrentX);
@@ -262,19 +291,44 @@ namespace LitePlacer
                 _readyEvent.Set();
                 return;   // already there
             }
+			X = X + SquareCorrection * Y;
+			X = Math.Round(X, 3);
             if ((dX < 1) && (dY < 1))
             {
-				command = SmallMovementString;
+                // Small move
+                if (SlowXY)
+                {
+                    if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
+                    {
+                        command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
+                                                       " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        command = "G1 F" + SlowSpeedXY.ToString()
+                                + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                    }
+                }
+                else
+                {
+                    command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
+                                                   " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                }
             }
             else
             {
-				command = "G0 ";
-			}
-			X = X + SquareCorrection * Y;
-			X = Math.Round(X, 3);
-			command = command + "X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                // large move
+                if (SlowXY)
+                {
+                    command = "G1 F" + SlowSpeedXY.ToString()
+                            + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                }
+            }
             _readyEvent.Reset();
-            //Com.Write(command);
             Com.Write("{\"gc\":\"" + command + "\"}");
             _readyEvent.Wait();
         }
@@ -330,39 +384,116 @@ namespace LitePlacer
                 return;   // already there
             }
 
+            X = X + SquareCorrection * Y;
             if ((dX < 1.0) && (dY < 1.0))
             {
                 // small movement
-                X = X + SquareCorrection * Y;
-                command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
-                                                    " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                _readyEvent.Reset();
-                MainForm.DisplayText(command);
-                Com.Write("{\"gc\":\"" + command + "\"}");
+                // First do XY move, then A. This works always.
+                // (small moves and fast settings can sometimes cause problems)
+                if ((dX < 0.004) && (dY < 0.004) )
+                {
+                    MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
+                }
+                else
+                {
+                    if (SlowXY)
+                    {
+                        if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
+                        {
+                            command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
+                                                           " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                        {
+                            command = "G1 F" + SlowSpeedXY.ToString()
+                                    + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                        }
+                    }
+                    else
+                    {
+                        command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
+                                                       " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                    }
+                    _readyEvent.Reset();
+                    Com.Write("{\"gc\":\"" + command + "\"}");
+                    _readyEvent.Wait();
+                }
 
-                command = "G0 " + " A" + Am.ToString(CultureInfo.InvariantCulture);
-                Com.Write("{\"gc\":\"" + command + "\"}");
-
-                _readyEvent.Wait();
+                // then A:
+                if (dA < 0.01)
+                {
+                    MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
+                }
+                else
+                {
+                    if (SlowA)
+                    {
+                        command = "G1 F" + SlowSpeedA.ToString() + " A" + Am.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        command = "G0 A" + Am.ToString(CultureInfo.InvariantCulture);
+                    }
+                    _readyEvent.Reset();
+                    Com.Write("{\"gc\":\"" + command + "\"}");
+                    _readyEvent.Wait();
+                }
             }
             else
             {
-                // normal case
-                X = X + SquareCorrection * Y;
-                command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) +
-                                  " Y" + Y.ToString(CultureInfo.InvariantCulture) +
-                                  " A" + Am.ToString(CultureInfo.InvariantCulture);
-                _readyEvent.Reset();
-                MainForm.DisplayText(command);
-                Com.Write("{\"gc\":\"" + command + "\"}");
-                _readyEvent.Wait();
+                // normal case, large move
+                // Possibilities:
+                // SlowA, SlowXY
+                // SlowA, FastXY
+                // FastA, SlowXY
+                // Fast A, Fast XY
+                // To avoid side effects, we'll separate a and xy for first three cases
+                if (SlowA || (!SlowA && SlowXY))
+                {
+                    // Do A first, then XY
+                    if (dA < 0.01)
+                    {
+                        MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
+                    }
+                    else
+                    {
+                        if (SlowA)
+                        {
+                            command = "G1 F" + SlowSpeedA.ToString() + " A" + Am.ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                        {
+                            command = "G0 A" + Am.ToString(CultureInfo.InvariantCulture);
+                        }
+                        _readyEvent.Reset();
+                        Com.Write("{\"gc\":\"" + command + "\"}");
+                        _readyEvent.Wait();
+                    }
+                    // A done, we know XY is slow and large
+                    command = "G1 F" + SlowSpeedXY.ToString() +
+                                " X" + X.ToString(CultureInfo.InvariantCulture) +
+                                " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                    _readyEvent.Reset();
+                    Com.Write("{\"gc\":\"" + command + "\"}");
+                    _readyEvent.Wait();
+                }
+                else
+                {
+                    // Fast A, Fast XY
+                    command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) +
+                                     " Y" + Y.ToString(CultureInfo.InvariantCulture) +
+                                     " A" + Am.ToString(CultureInfo.InvariantCulture);
+                     _readyEvent.Reset();
+                    Com.Write("{\"gc\":\"" + command + "\"}");
+                    _readyEvent.Wait();
+               }
             }
         }
 
 
         public void Z(double Z)
         {
-            string command;
+            string command = "G0 Z" + Z.ToString(CultureInfo.InvariantCulture);
             double dZ = Math.Abs(Z - CurrentZ);
             if (dZ < 0.005)
             {
@@ -373,14 +504,30 @@ namespace LitePlacer
             }
             if (dZ < 1.1)
             {
-                command = "G1 Z" + Z.ToString(CultureInfo.InvariantCulture);
+                if (SlowZ)
+                {
+                    if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedZ)
+                    {
+                        command = "G1 F" + SlowSpeedZ.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        command = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
+                    }
+                }
             }
             else
             {
-                command = "G0 Z" + Z.ToString(CultureInfo.InvariantCulture);
+                if (SlowZ)
+                {
+                    command = "G1 F" + SlowSpeedZ.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    command = "G0 Z" + Z.ToString(CultureInfo.InvariantCulture);
+                }
             }
             _readyEvent.Reset();
-            MainForm.DisplayText(command);
             Com.Write("{\"gc\":\"" + command + "\"}");
             _readyEvent.Wait();
         }
@@ -406,17 +553,15 @@ namespace LitePlacer
         private void A_move(double A)
         {
             string command;
-            //if (Math.Abs(A - CurrentA) < 5)
-            //{
-            //    command = "G1 F3000 A" + A.ToString(CultureInfo.InvariantCulture);
-            //}
-            //else
-            //{
-            //    command = "G0 A" + A.ToString(CultureInfo.InvariantCulture);
-            //}
-            command = "G0 A" + A.ToString(CultureInfo.InvariantCulture);
+            if (SlowA)
+            {
+                command = "G1 F" + SlowSpeedA.ToString() + " A" + A.ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                command = "G0 A" + A.ToString(CultureInfo.InvariantCulture);
+            }
             _readyEvent.Reset();
-            MainForm.DisplayText(command);
             Com.Write("{\"gc\":\"" + command + "\"}");
             _readyEvent.Wait();
         }
@@ -436,7 +581,7 @@ namespace LitePlacer
                     "TinyG Reset.",
                     "System Reset",
                     MessageBoxButtons.OK);
-                MainForm.UpdateCncConnectionStatus();
+                MainForm.UpdateCncConnectionStatus(false);
                 return;
             }
 
@@ -508,6 +653,7 @@ namespace LitePlacer
                 if (line.Contains("\"stat\":3"))
                 {
                     MainForm.DisplayText("ReadyEvent stat");
+                    MainForm.ResetMotorTimer();
                     _readyEvent.Set();
                 }
                 return;
@@ -776,6 +922,18 @@ namespace LitePlacer
             // =========================================================
             // The individual settings we care about and do something
             // when they change.
+
+            // mt: motor timeout
+            private string _mt = "";
+            public string mt
+            {
+                get { return _mt; }
+                set
+                {
+                    _mt = value;
+                    CNC.MainForm.ValueUpdater("mt", _mt);
+                }
+            }
 
             // *jm: jerk max
             private string _xjm = "";

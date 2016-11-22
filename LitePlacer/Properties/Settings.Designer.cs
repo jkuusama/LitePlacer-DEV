@@ -12,7 +12,7 @@ namespace LitePlacer.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,7 +25,7 @@ namespace LitePlacer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string CNC_SerialPort {
             get {
                 return ((string)(this["CNC_SerialPort"]));
@@ -386,24 +386,24 @@ namespace LitePlacer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("75")]
-        public double DownCam_NeedleOffsetX {
+        public double DownCam_NozzleOffsetX {
             get {
-                return ((double)(this["DownCam_NeedleOffsetX"]));
+                return ((double)(this["DownCam_NozzleOffsetX"]));
             }
             set {
-                this["DownCam_NeedleOffsetX"] = value;
+                this["DownCam_NozzleOffsetX"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("29")]
-        public double DownCam_NeedleOffsetY {
+        public double DownCam_NozzleOffsetY {
             get {
-                return ((double)(this["DownCam_NeedleOffsetY"]));
+                return ((double)(this["DownCam_NozzleOffsetY"]));
             }
             set {
-                this["DownCam_NeedleOffsetY"] = value;
+                this["DownCam_NozzleOffsetY"] = value;
             }
         }
         
@@ -1034,12 +1034,12 @@ namespace LitePlacer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Placement_OmitNeedleCalibration {
+        public bool Placement_OmitNozzleCalibration {
             get {
-                return ((bool)(this["Placement_OmitNeedleCalibration"]));
+                return ((bool)(this["Placement_OmitNozzleCalibration"]));
             }
             set {
-                this["Placement_OmitNeedleCalibration"] = value;
+                this["Placement_OmitNozzleCalibration"] = value;
             }
         }
         
@@ -1148,6 +1148,222 @@ namespace LitePlacer.Properties {
             }
             set {
                 this["General_BelowPCB_Allowance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Nozzles_count {
+            get {
+                return ((int)(this["Nozzles_count"]));
+            }
+            set {
+                this["Nozzles_count"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int Nozzles_default {
+            get {
+                return ((int)(this["Nozzles_default"]));
+            }
+            set {
+                this["Nozzles_default"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int Nozzles_current {
+            get {
+                return ((int)(this["Nozzles_current"]));
+            }
+            set {
+                this["Nozzles_current"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public double Nozzles_XYspeed {
+            get {
+                return ((double)(this["Nozzles_XYspeed"]));
+            }
+            set {
+                this["Nozzles_XYspeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Nozzles_XYfullSpeed {
+            get {
+                return ((bool)(this["Nozzles_XYfullSpeed"]));
+            }
+            set {
+                this["Nozzles_XYfullSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public double Nozzles_Zspeed {
+            get {
+                return ((double)(this["Nozzles_Zspeed"]));
+            }
+            set {
+                this["Nozzles_Zspeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Nozzles_ZfullSpeed {
+            get {
+                return ((bool)(this["Nozzles_ZfullSpeed"]));
+            }
+            set {
+                this["Nozzles_ZfullSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public double Nozzles_Aspeed {
+            get {
+                return ((double)(this["Nozzles_Aspeed"]));
+            }
+            set {
+                this["Nozzles_Aspeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Nozzles_AfullSpeed {
+            get {
+                return ((bool)(this["Nozzles_AfullSpeed"]));
+            }
+            set {
+                this["Nozzles_AfullSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int Nozzles_Timeout {
+            get {
+                return ((int)(this["Nozzles_Timeout"]));
+            }
+            set {
+                this["Nozzles_Timeout"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Nozzles_FirstMoveFullSpeed {
+            get {
+                return ((bool)(this["Nozzles_FirstMoveFullSpeed"]));
+            }
+            set {
+                this["Nozzles_FirstMoveFullSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Nozzles_FirstMoveSlackCompensation {
+            get {
+                return ((bool)(this["Nozzles_FirstMoveSlackCompensation"]));
+            }
+            set {
+                this["Nozzles_FirstMoveSlackCompensation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Nozzles_LastMoveFullSpeed {
+            get {
+                return ((bool)(this["Nozzles_LastMoveFullSpeed"]));
+            }
+            set {
+                this["Nozzles_LastMoveFullSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Nozzles_Enabled {
+            get {
+                return ((bool)(this["Nozzles_Enabled"]));
+            }
+            set {
+                this["Nozzles_Enabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int Nozzles_maximum {
+            get {
+                return ((int)(this["Nozzles_maximum"]));
+            }
+            set {
+                this["Nozzles_maximum"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public double Nozzles_CalibrationDistance {
+            get {
+                return ((double)(this["Nozzles_CalibrationDistance"]));
+            }
+            set {
+                this["Nozzles_CalibrationDistance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public double Nozzles_CalibrationMaxSize {
+            get {
+                return ((double)(this["Nozzles_CalibrationMaxSize"]));
+            }
+            set {
+                this["Nozzles_CalibrationMaxSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double Nozzles_CalibrationMinSize {
+            get {
+                return ((double)(this["Nozzles_CalibrationMinSize"]));
+            }
+            set {
+                this["Nozzles_CalibrationMinSize"] = value;
             }
         }
     }
