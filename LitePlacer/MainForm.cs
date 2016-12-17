@@ -9041,6 +9041,9 @@ namespace LitePlacer
 
             switch (Method)
             {
+                // Allows manually correction of part position 
+                case "Place Assisted":
+                case "LoosePartAssisted": 
                     if (!PutLoosePartDownAssisted_m(FirstInRow))
                     {
                         // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
