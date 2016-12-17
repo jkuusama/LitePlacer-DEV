@@ -7680,7 +7680,7 @@ namespace LitePlacer
             int nozzle;
             // Check, that the row isn't placed already
             bool EverythingPlaced = true;
-            if ((method == "Place Fast") || (method == "Place") || (method == "LoosePart"))
+            if ((method == "Place Fast") || (method == "Place") || (method == "LoosePart") || (method == "LoosePartAssisted") || (method == "Place Assisted"))
             {
                 foreach (string component in Components)
                 {
@@ -7702,7 +7702,7 @@ namespace LitePlacer
             // Check nozzle, change if needed
             // if we are using a method that potentially needs a nozzle and automatic change is enabled:
             if (
-                ((method== "Place Fast") || (method == "Place") || (method == "LoosePart"))  
+                ((method == "Place Fast") || (method == "Place") || (method == "LoosePart") || (method == "LoosePartAssisted") || (method == "Place Assisted"))  
                 && Properties.Settings.Default.Nozzles_Enabled) 
             {
                 if (JobData_GridView.Rows[RowNo].Cells["JobDataNozzle_Column"].Value == null)
@@ -8007,7 +8007,7 @@ namespace LitePlacer
 
             // Data is now validated, all variables have values that check out. Place the component.
             // Update "Now placing" labels:
-            if ((Method == "LoosePart") || (Method == "LoosePartAssisted") || (Method == "Place") || (Method == "Place Fast"))
+            if ((Method == "LoosePart") || (Method == "LoosePartAssisted") || (Method == "Place Assisted") || (Method == "Place") || (Method == "Place Fast"))
             {
                 PlacedComponent_label.Text = Component;
                 PlacedComponent_label.Update();
@@ -8059,6 +8059,7 @@ namespace LitePlacer
                 case "UpCam Snapshot":
                 case "LoosePart":
                 case "LoosePartAssisted":
+                case "Place Assisted":
                 case "Place Fast":
                 case "Place":
                     if (Component == "--")
@@ -8888,6 +8889,7 @@ namespace LitePlacer
             switch (Method)
             {
                 case "Place":
+                case "Place Assisted":
                 case "Place Fast":
                     if (!Tapes.IdValidates_m(id, out TapeNum))
                     {
@@ -8912,6 +8914,7 @@ namespace LitePlacer
             switch (Method)
             {
                 case "Place":
+                case "Place Assisted":
                     if (!PickUpPartWithHoleMeasurement_m(TapeNum))
                     {
                         return false;
@@ -9038,7 +9041,6 @@ namespace LitePlacer
 
             switch (Method)
             {
-                case "LoosePartAssisted": // put part down but keep it above board to allow manually positioning
                     if (!PutLoosePartDownAssisted_m(FirstInRow))
                     {
                         // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
