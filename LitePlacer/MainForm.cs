@@ -7273,6 +7273,7 @@ namespace LitePlacer
                 int TapeNo;
                 int row = JobData_GridView.CurrentCell.RowIndex;
                 if ((JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place") ||
+                     (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place Assisted") ||
                      (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place Fast"))
                 {
                     TapeID = SelectTape("Select tape for " + JobData_GridView.Rows[row].Cells["ComponentType"].Value.ToString());
@@ -7619,7 +7620,7 @@ namespace LitePlacer
                         RestoreRow = false;
                     };
                     NewMethod = MethodDialog.SelectedMethod;
-                    if ((NewMethod == "Place") || (NewMethod == "Place Fast"))
+                    if ((NewMethod == "Place") || (NewMethod == "Place Assisted") || (NewMethod == "Place Fast"))
                     {
                         // show the tape selection dialog
                         NewID = SelectTape("Select tape for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString());
@@ -8631,13 +8632,15 @@ namespace LitePlacer
         // ====================================================================================
         private bool PutLoosePartDownAssisted_m(bool Probe)
         {
-            LoosePartPlaceZ = LoosePartPickupZ - 2.5;  // 2.0mm above board
+            double PlaceZ;
+            PlaceZ = Properties.Settings.Default.General_ZtoPCB + Properties.Settings.Default.General_ProbingBackOff - Properties.Settings.Default.Placement_Depth;
 
-            if (!CNC_Z_m(LoosePartPlaceZ))
+            if (!CNC_Z_m(PlaceZ - 2.0)) // 2.0mm above board
             {
                 return false;
             }
 
+            
             DisplayText("Now fine tune part position. If done press ENTER");
 
             // Switch off slack compensation
