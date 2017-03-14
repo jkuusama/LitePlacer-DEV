@@ -1870,6 +1870,7 @@ namespace LitePlacer
             PowerTimerCount = 0;
         }
 
+        [DebuggerStepThrough]
         private void MotorPower_timer_Tick(object sender, EventArgs e)
         {
             if (PositionConfidence)         // == if timer should run
@@ -8062,8 +8063,22 @@ namespace LitePlacer
                 if (SkipMeasurements_checkBox.Checked)
                 {
                     // User wants to use the nominal coordinates. Copy the nominal to machine for this to happen:
-                    CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value = CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value;
-                    CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value = CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value;
+                    double X;
+                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString(), out X))
+                    {
+                        DisplayText("Bad data X nominal at component " + Component);
+                    }
+                    X = X + Properties.Settings.Default.General_JigOffsetX + JobOffsetX;
+                    CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value = X.ToString();
+
+                    double Y;
+                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value.ToString(), out Y))
+                    {
+                        DisplayText("Bad data Y nominal at component " + Component);
+                    }
+                    Y = Y + Properties.Settings.Default.General_JigOffsetY + JobOffsetY;
+                    CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value = Y.ToString();
+
                     CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value = CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value;
                 }
                 // check data consistency
