@@ -10289,12 +10289,23 @@ namespace LitePlacer
             int RotationIndex;
             int LayerIndex = -1;
             bool LayerDataPresent = false;
-            int i;
             int LineIndex = 0;
+            int i;
 
-            // Parse header. Skip empty lines and comment lines (starting with # or "//")
+            // Parse header. 
+            string FirstLine = AllLines[0];
+            if(FirstLine== "Altium Designer Pick and Place Locations")
+            {
+                // Altium17 file
+                for (int ind = 0; ind < 11; ind++)
+                {
+                    AllLines[ind] = "";   // so these will get skipped in next step
+                }
+            }
+
             foreach (string s in AllLines)
             {
+                // Skip empty lines and comment lines(starting with # or "//")
                 if (s == "")
                 {
                     LineIndex++;
@@ -10320,7 +10331,7 @@ namespace LitePlacer
             }
             else
             {
-                if (!FindDelimiter_m(AllLines[0], out delimiter))
+                if (!FindDelimiter_m(AllLines[LineIndex], out delimiter))
                 {
                     return false;
                 };
