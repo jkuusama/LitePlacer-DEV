@@ -371,6 +371,9 @@ namespace LitePlacer
             BackOff_textBox.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
             PlacementDepth_textBox.Text = Properties.Settings.Default.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
 
+            JobOffsetX_textBox.Text = Properties.Settings.Default.Job_Xoffset.ToString("0.000", CultureInfo.InvariantCulture);
+            JobOffsetY_textBox.Text = Properties.Settings.Default.Job_Yoffset.ToString("0.000", CultureInfo.InvariantCulture);
+
             if (Properties.Settings.Default.Nozzles_current == 0)
             {
                 NozzleNo_textBox.Text = "--";
@@ -6643,9 +6646,6 @@ namespace LitePlacer
         // =================================================================================
         #region Job page functions
 
-        private double JobOffsetX;
-        private double JobOffsetY;
-
         private class PhysicalComponent
         {
             public string Designator { get; set; }
@@ -8083,7 +8083,7 @@ namespace LitePlacer
                     {
                         DisplayText("Bad data X nominal at component " + Component);
                     }
-                    X = X + Properties.Settings.Default.General_JigOffsetX + JobOffsetX;
+                    X = X + Properties.Settings.Default.General_JigOffsetX + Properties.Settings.Default.Job_Xoffset;
                     CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value = X.ToString();
 
                     double Y;
@@ -8091,7 +8091,7 @@ namespace LitePlacer
                     {
                         DisplayText("Bad data Y nominal at component " + Component);
                     }
-                    Y = Y + Properties.Settings.Default.General_JigOffsetY + JobOffsetY;
+                    Y = Y + Properties.Settings.Default.General_JigOffsetY + Properties.Settings.Default.Job_Yoffset;
                     CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value = Y.ToString();
 
                     CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value = CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value;
@@ -9296,8 +9296,8 @@ namespace LitePlacer
 
         private bool MeasureFiducial_m(ref PhysicalComponent fid)
         {
-            CNC_XY_m(fid.X_nominal + JobOffsetX + Properties.Settings.Default.General_JigOffsetX,
-                     fid.Y_nominal + JobOffsetY + Properties.Settings.Default.General_JigOffsetY);
+            CNC_XY_m(fid.X_nominal + Properties.Settings.Default.Job_Xoffset + Properties.Settings.Default.General_JigOffsetX,
+                     fid.Y_nominal + Properties.Settings.Default.Job_Yoffset + Properties.Settings.Default.General_JigOffsetY);
             // If more than 3mm off here, not good.
             double X;
             double Y;
@@ -9609,7 +9609,7 @@ namespace LitePlacer
             {
                 if (double.TryParse(JobOffsetX_textBox.Text, out val))
                 {
-                    JobOffsetX = val;
+                    Properties.Settings.Default.Job_Xoffset = val;
                 }
             }
         }
@@ -9619,7 +9619,7 @@ namespace LitePlacer
             double val;
             if (double.TryParse(JobOffsetX_textBox.Text, out val))
             {
-                JobOffsetX = val;
+                Properties.Settings.Default.Job_Xoffset = val;
             }
         }
 
@@ -9631,7 +9631,7 @@ namespace LitePlacer
             {
                 if (double.TryParse(JobOffsetY_textBox.Text, out val))
                 {
-                    JobOffsetY = val;
+                    Properties.Settings.Default.Job_Yoffset = val;
                 }
             }
         }
@@ -9641,7 +9641,7 @@ namespace LitePlacer
             double val;
             if (double.TryParse(JobOffsetY_textBox.Text, out val))
             {
-                JobOffsetY = val;
+                Properties.Settings.Default.Job_Yoffset = val;
             }
         }
 
@@ -9688,8 +9688,8 @@ namespace LitePlacer
                 return;
             }
 
-            CNC_XY_m(X + JobOffsetX + Properties.Settings.Default.General_JigOffsetX,
-                Y + JobOffsetY + Properties.Settings.Default.General_JigOffsetY);
+            CNC_XY_m(X + Properties.Settings.Default.Job_Xoffset + Properties.Settings.Default.General_JigOffsetX,
+                Y + Properties.Settings.Default.Job_Yoffset + Properties.Settings.Default.General_JigOffsetY);
             DownCamera.ArrowAngle = A;
             DownCamera.DrawArrow = true;
 
