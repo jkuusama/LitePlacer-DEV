@@ -10584,7 +10584,14 @@ namespace LitePlacer
                 {
                     if (Bottom_checkBox.Checked)
                     {
-                        CadData_GridView.Rows[Last].Cells["X_nominal"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
+                        if (Line[X_Nominal_Index].StartsWith("-"))
+                        {
+                            CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "").Replace("-", "");
+                        }
+                        else
+                        {
+                            CadData_GridView.Rows[Last].Cells["X_nominal"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
+                        }
                         double rot;
                         if (!double.TryParse(CadData_GridView.Rows[Last].Cells["Rotation"].Value.ToString(), out rot))
                         {
