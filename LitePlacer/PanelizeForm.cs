@@ -244,10 +244,6 @@ namespace LitePlacer
                     {
                         Row.Cells["Designator_column"].Value = "Fid" + i.ToString();
                     }
-                    if (Row.Cells["Footprint_Column"].Value == null)
-                    {
-                        Row.Cells["Footprint_Column"].Value = "fiducial";
-                    }
                     if (Row.Cells["Xpanelize_Column"].Value == null)
                     {
                         OK = false;
@@ -267,10 +263,6 @@ namespace LitePlacer
                     {
                         OK = false;
                         break;
-                    }
-                    if (Row.Cells["Rotation_Column"].Value == null)
-                    {
-                        Row.Cells["Rotation_Column"].Value = "0.0";
                     }
                 }
                 if (!OK)
@@ -387,18 +379,16 @@ namespace LitePlacer
 
             }
 
-            // Find existing fiducials, we'll need them
-            int FiducialIndex = FindExistingFiducials();
-            string[] OriginalFiducials = JobData.Rows[FiducialIndex].Cells["ComponentList"].Value.ToString().Split(',');
 
             // Build Job data:
+            int FiducialIndex = FindExistingFiducials();              
             if (!UseBoardFids_checkBox.Checked)  // if using user defined fiducials:
             {
                 // Remove existing:
-              
                 if (FiducialIndex>=0)
                 {
-                    foreach (string CurrentFiducial in OriginalFiducials)
+                    string[] OriginalFids = JobData.Rows[FiducialIndex].Cells["ComponentList"].Value.ToString().Split(',');
+                    foreach (string CurrentFiducial in OriginalFids)
                     {
                         // loop from bottom, so we can modify the collection we are looping through:
                         for (int i =  CadData.RowCount - 1; i >= 0; i--)
@@ -418,10 +408,10 @@ namespace LitePlacer
                     int Last = CadData.RowCount - 1;
                     DataGridViewRow Row = PanelFiducials_dataGridView.Rows[i];
                     CadData.Rows[Last].Cells["Component"].Value = Row.Cells["Designator_column"].Value.ToString();
-                    CadData.Rows[Last].Cells["Value_Footprint"].Value = "Fid mark | " + Row.Cells["Footprint_Column"].Value.ToString();
+                    CadData.Rows[Last].Cells["Value_Footprint"].Value = "Fiducial | On panel";
                     CadData.Rows[Last].Cells["X_nominal"].Value = Row.Cells["Xpanelize_Column"].Value.ToString();
                     CadData.Rows[Last].Cells["Y_nominal"].Value = Row.Cells["Ypanelize_Column"].Value.ToString();
-                    CadData.Rows[Last].Cells["Rotation"].Value = Row.Cells["Rotation_column"].Value.ToString();
+                    CadData.Rows[Last].Cells["Rotation"].Value = "0.0";
                     CadData.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
                     CadData.Rows[Last].Cells["Y_Machine"].Value = "Nan";
                     CadData.Rows[Last].Cells["Rotation_machine"].Value = "Nan";                    
@@ -429,24 +419,29 @@ namespace LitePlacer
                 // Build Job data
                 MainForm.FillJobData_GridView();
                 int dummy;
-                MainForm.FindFiducials_m(out dummy);  // don't care of the result, just trying to find fids
+                if (!MainForm.FindFiducials_m(out dummy)) // don't care of the result, just trying to find fids
+                {
+                    return false;
+                }
 
                 return true;  // and we're done.
             }
 
             // Here, we are using the fiducials data from the individual subboards.
             // (We know they are indicated already)
+            string[] OriginalFiducials = JobData.Rows[FiducialIndex].Cells["ComponentList"].Value.ToString().Split(',');
             // Build the job:
             MainForm.FillJobData_GridView();
             // Our job now has multiples of each board fiducials, we only want to use four that are furthest apart
+            double fool = -10000000.0;
             string LowLeft = OriginalFiducials[1];
-            double LowLeft_val = 10000000.0;
+            double LowLeft_val = fool;
             string HighLeft = OriginalFiducials[1];
-            double HighLeft_val = 0.0;
+            double HighLeft_val = fool;
             string LowRight = OriginalFiducials[1];
-            double LowRight_val = 0.0;
+            double LowRight_val = fool;
             string HighRight = OriginalFiducials[1];
-            double HighRight_val = 0.0;
+            double HighRight_val = fool;
             double X = 0.0;
             double Y = 0.0;
             // For each fiducial in the list,
@@ -484,9 +479,10 @@ namespace LitePlacer
                     }
                 }
             }
-            if ((LowLeft_val > 1000000.0) || (HighLeft_val < 0.1) || (LowRight_val < 0.1) || (HighRight_val < 0.1))
+            fool = fool / 2;
+            if ((LowLeft_val < fool) || (HighLeft_val < fool) || (LowRight_val < fool) || (HighRight_val < fool))
             {
-                // At leaset one of them did not get updated, placement is not going to work
+                // At least one of them did not get updated, placement is not going to work
                 // Likely, one fiducial on board, one dimensional panel
                 MainForm.ShowMessageBox(
                     "Current fiducials don't spread out.",

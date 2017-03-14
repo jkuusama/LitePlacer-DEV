@@ -10512,6 +10512,10 @@ namespace LitePlacer
 
                 // Line = SplitCSV(AllLines[i], delimiter);
                 // If layer is indicated and the component is not on this layer, skip it
+                // TODO: Notify user if component is not on either layer (unknown data), once only and continue.
+                // TODO: Fix bug: If component is not on either layer, skip it.
+                // TODO: Use list of strings for layers and other fields, add “TopLayer” and “BottomLayer” for AD17.
+
                 if (LayerDataPresent)
                 {
                     if (Bottom_checkBox.Checked)
@@ -14435,7 +14439,7 @@ namespace LitePlacer
 
 
 
-    // allows additionl of color info to displayText 
+    // allows addition of color info to displayText 
     public static class RichTextBoxExtensions
     {
         public static void AppendText(this RichTextBox box, string text, Color color)

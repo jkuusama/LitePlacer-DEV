@@ -46,10 +46,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.YFirstOffset_textBox = new System.Windows.Forms.TextBox();
             this.Designator_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Footprint_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Xpanelize_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Ypanelize_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rotation_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PanelFiducials_dataGridView)).BeginInit();
             this.SuspendLayout();
@@ -124,26 +122,25 @@
             this.groupBox1.Controls.Add(this.UseBoardFids_checkBox);
             this.groupBox1.Location = new System.Drawing.Point(15, 70);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(419, 234);
+            this.groupBox1.Size = new System.Drawing.Size(375, 234);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Fiducials:";
             // 
             // PanelFiducials_dataGridView
             // 
-            this.PanelFiducials_dataGridView.AllowUserToOrderColumns = true;
+            this.PanelFiducials_dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.PanelFiducials_dataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.PanelFiducials_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.PanelFiducials_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Designator_Column,
-            this.Footprint_Column,
             this.Xpanelize_Column,
-            this.Ypanelize_Column,
-            this.Rotation_Column});
+            this.Ypanelize_Column});
             this.PanelFiducials_dataGridView.Location = new System.Drawing.Point(6, 42);
             this.PanelFiducials_dataGridView.Name = "PanelFiducials_dataGridView";
             this.PanelFiducials_dataGridView.RowHeadersVisible = false;
             this.PanelFiducials_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.PanelFiducials_dataGridView.Size = new System.Drawing.Size(407, 186);
+            this.PanelFiducials_dataGridView.Size = new System.Drawing.Size(363, 186);
             this.PanelFiducials_dataGridView.TabIndex = 9;
             // 
             // UseBoardFids_checkBox
@@ -210,31 +207,25 @@
             // 
             // Designator_Column
             // 
-            this.Designator_Column.HeaderText = "Label";
+            this.Designator_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Designator_Column.DividerWidth = 1;
+            this.Designator_Column.HeaderText = "Designator";
             this.Designator_Column.Name = "Designator_Column";
-            this.Designator_Column.Width = 70;
-            // 
-            // Footprint_Column
-            // 
-            this.Footprint_Column.HeaderText = "Footprint";
-            this.Footprint_Column.Name = "Footprint_Column";
+            this.Designator_Column.Width = 200;
             // 
             // Xpanelize_Column
             // 
+            this.Xpanelize_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.Xpanelize_Column.HeaderText = "X";
             this.Xpanelize_Column.Name = "Xpanelize_Column";
-            this.Xpanelize_Column.Width = 70;
+            this.Xpanelize_Column.Width = 80;
             // 
             // Ypanelize_Column
             // 
+            this.Ypanelize_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.Ypanelize_Column.HeaderText = "Y";
             this.Ypanelize_Column.Name = "Ypanelize_Column";
-            this.Ypanelize_Column.Width = 70;
-            // 
-            // Rotation_Column
-            // 
-            this.Rotation_Column.HeaderText = "Rotation";
-            this.Rotation_Column.Name = "Rotation_Column";
+            this.Ypanelize_Column.Width = 80;
             // 
             // PanelizeForm
             // 
@@ -288,9 +279,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox YFirstOffset_textBox;
         private System.Windows.Forms.DataGridViewTextBoxColumn Designator_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Footprint_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn Xpanelize_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn Ypanelize_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation_Column;
     }
 }
