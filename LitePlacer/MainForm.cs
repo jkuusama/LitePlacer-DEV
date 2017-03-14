@@ -1315,10 +1315,25 @@ namespace LitePlacer
                 return;
             }
 
-            if (e.KeyCode == Keys.F4)
+            if ( (e.KeyCode == Keys.F4) &&
+                    !( (e.Alt) || (e.Control) || (e.Shift) ) 
+                )
             {
                 Demo_button.Visible = !Demo_button.Visible;
                 StopDemo_button.Visible = !StopDemo_button.Visible;
+                return;
+            }
+
+            if ((e.KeyCode == Keys.F4) && (e.Alt) )
+            {
+                DialogResult dialogResult = ShowMessageBox(
+                    "Close program; are you sure?",
+                    "Close program?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+                e.Handled = true;
                 return;
             }
 
@@ -10629,7 +10644,9 @@ namespace LitePlacer
             CadData_GridView.ClearSelection();
             // Check, that our data is good:
             if (!ValidateCADdata_m())
+            {
                 return false;
+            }
 
             return true;
         }   // end ParseCadData
