@@ -282,7 +282,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="General_BelowPCB_Allowance" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="Nozzles_count" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
