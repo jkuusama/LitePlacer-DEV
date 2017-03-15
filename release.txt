@@ -1,0 +1,18 @@
+Build date 3/15/2017
+
+New Features, significant changes
+
+* Altium17 pnP file loads without edits (mm's only)
+* Added a button to clear "placed" information
+* Simpler dialog for inputting fiducial coordinates on panelizing
+
+Bug Fixes
+
+* Fixed using placement with nominal coordinates (no measurements)
+* Label for vacuum now mentions valve (helps first time troubleshooting)
+* For developers: Debugger ignores motor power timer interrupts
+* Negative coordinates in CAD data handled correctly on bottom side placement
+* Alt+F4 now asks before closing (too easy to accidentally close everything 
+  when trying to do Alt+F5 jog)
+* Job offset is remembered between runs
+
