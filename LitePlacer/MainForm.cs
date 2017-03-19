@@ -7374,6 +7374,7 @@ namespace LitePlacer
                 int TapeNo;
                 int row = JobData_GridView.CurrentCell.RowIndex;
                 if ((JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place") ||
+                     (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place Assisted") ||
                      (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place Fast"))
                 {
                     TapeID = SelectTape("Select tape for " + JobData_GridView.Rows[row].Cells["ComponentType"].Value.ToString());
@@ -7720,7 +7721,7 @@ namespace LitePlacer
                         RestoreRow = false;
                     };
                     NewMethod = MethodDialog.SelectedMethod;
-                    if ((NewMethod == "Place") || (NewMethod == "Place Fast"))
+                    if ((NewMethod == "Place") || (NewMethod == "Place Assisted") || (NewMethod == "Place Fast"))
                     {
                         // show the tape selection dialog
                         NewID = SelectTape("Select tape for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString());
@@ -7781,7 +7782,7 @@ namespace LitePlacer
             int nozzle;
             // Check, that the row isn't placed already
             bool EverythingPlaced = true;
-            if ((method == "Place Fast") || (method == "Place") || (method == "LoosePart"))
+            if ((method == "Place Fast") || (method == "Place") || (method == "LoosePart") || (method == "LoosePartAssisted") || (method == "Place Assisted"))
             {
                 foreach (string component in Components)
                 {
@@ -7803,7 +7804,7 @@ namespace LitePlacer
             // Check nozzle, change if needed
             // if we are using a method that potentially needs a nozzle and automatic change is enabled:
             if (
-                ((method== "Place Fast") || (method == "Place") || (method == "LoosePart"))  
+                ((method == "Place Fast") || (method == "Place") || (method == "LoosePart") || (method == "LoosePartAssisted") || (method == "Place Assisted"))  
                 && Properties.Settings.Default.Nozzles_Enabled) 
             {
                 if (JobData_GridView.Rows[RowNo].Cells["JobDataNozzle_Column"].Value == null)
@@ -8122,7 +8123,7 @@ namespace LitePlacer
 
             // Data is now validated, all variables have values that check out. Place the component.
             // Update "Now placing" labels:
-            if ((Method == "LoosePart") || (Method == "Place") || (Method == "Place Fast"))
+            if ((Method == "LoosePart") || (Method == "LoosePartAssisted") || (Method == "Place Assisted") || (Method == "Place") || (Method == "Place Fast"))
             {
                 PlacedComponent_label.Text = Component;
                 PlacedComponent_label.Update();
@@ -8173,6 +8174,8 @@ namespace LitePlacer
                 case "DownCam Snapshot":
                 case "UpCam Snapshot":
                 case "LoosePart":
+                case "LoosePartAssisted":
+                case "Place Assisted":
                 case "Place Fast":
                 case "Place":
                     if (Component == "--")
@@ -8737,6 +8740,80 @@ namespace LitePlacer
             }
             return true;
         }
+
+        // ====================================================================================
+        // Moves the part a certain distance above the placement position and allows manually
+        // fine tuning of the position. After done ENTER will trigger the final placement.
+        // ====================================================================================
+        private bool PutLoosePartDownAssisted_m(bool Probe)
+        {
+            double PlaceZ;
+            PlaceZ = Properties.Settings.Default.General_ZtoPCB + Properties.Settings.Default.General_ProbingBackOff - Properties.Settings.Default.Placement_Depth;
+
+            if (!CNC_Z_m(PlaceZ - 2.0)) // 2.0mm above board
+            {
+                return false;
+            }
+
+            
+            DisplayText("Now fine tune part position. If done press ENTER");
+
+            // Switch off slack compensation
+            // save the present state to restore
+            bool SaveSlackCompState = Cnc.SlackCompensation;
+            bool SaveSlackCompAState = Cnc.SlackCompensationA;
+
+            Cnc.SlackCompensation  = false;
+            Cnc.SlackCompensationA = false;
+
+            ZGuardOff(); // Allow nozzle movment while nozzle is down
+
+            // Wait for enter key pressed. 
+            EnterKeyHit = false;
+            do
+            {
+                Application.DoEvents();
+                Thread.Sleep(10);
+                if (AbortPlacement)
+                {
+                    AbortPlacement = false;
+                    ShowMessageBox(
+                        "Operation aborted.",
+                        "Operation aborted.",
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+            } while (!EnterKeyHit);
+
+            // fine tuning part position done, place now part on board
+
+/*          // alternative
+            double PlaceZ;
+            PlaceZ = Properties.Settings.Default.General_ZtoPCB + Properties.Settings.Default.General_ProbingBackOff - Properties.Settings.Default.Placement_Depth;
+            if (!CNC_Z_m(PlaceZ))
+            {
+                return false;
+            }
+*/
+            if (!Nozzle_ProbeDown_m())
+            {
+                return false;
+            }
+
+            VacuumOff();
+            ZGuardOn();
+
+            if (!CNC_Z_m(0))  // move nozzle to zero position
+            {
+                return false;
+            }
+
+            //Restore Slack Compensation states
+            Cnc.SlackCompensation = SaveSlackCompState;
+            Cnc.SlackCompensationA = SaveSlackCompAState;
+
+           return true;
+        }
         // =================================================================================
         // Actual placement 
         // =================================================================================
@@ -8828,7 +8905,8 @@ namespace LitePlacer
                 X = X * Properties.Settings.Default.DownCam_XmmPerPixel;
                 Y = -Y * Properties.Settings.Default.DownCam_YmmPerPixel;
                 DisplayText("PickUpLoosePart_m(): measurement " + i.ToString() + ", X: " + X.ToString() + ", Y: " + Y.ToString() + ", A: " + A.ToString());
-                if ((Math.Abs(X) < 2.0) && (Math.Abs(Y) < 2.0))
+//                if ((Math.Abs(X) < 2.0) && (Math.Abs(Y) < 2.0))
+               if ((Math.Abs(X) < 0.05) && (Math.Abs(Y) < 0.05))                
                 {
                     break;
                 }
@@ -8929,6 +9007,7 @@ namespace LitePlacer
             switch (Method)
             {
                 case "Place":
+                case "Place Assisted":
                 case "Place Fast":
                     if (!Tapes.IdValidates_m(id, out TapeNum))
                     {
@@ -8953,6 +9032,7 @@ namespace LitePlacer
             switch (Method)
             {
                 case "Place":
+                case "Place Assisted":
                     if (!PickUpPartWithHoleMeasurement_m(TapeNum))
                     {
                         return false;
@@ -8972,6 +9052,14 @@ namespace LitePlacer
                         return false;
                     }
                     break;
+
+                case "LoosePartAssisted":
+                    if (!PickUpLoosePart_m(FirstInRow, false, CADdataRow, Component))
+                    {
+                        return false;
+                    }
+                    break;                  
+
                 case "DownCam Snapshot":
                 case "UpCam Snapshot":
                     if (!PickUpLoosePart_m(FirstInRow, true, CADdataRow, Component))
@@ -9071,6 +9159,15 @@ namespace LitePlacer
 
             switch (Method)
             {
+                // Allows manually correction of part position 
+                case "Place Assisted":
+                case "LoosePartAssisted": 
+                    if (!PutLoosePartDownAssisted_m(FirstInRow))
+                    {
+                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                        return false;
+                    } 
+                    break;
                 case "LoosePart":
                 case "DownCam Snapshot":
                 case "UpCam Snapshot":
