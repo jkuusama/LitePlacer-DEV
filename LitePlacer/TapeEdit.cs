@@ -177,7 +177,7 @@ namespace LitePlacer
                 {
                     CoordinatesForParts_checkBox.Checked = true;
                     double val;
-                    if (double.TryParse(RotationDirect_textBox.Text, out val))
+                    if (double.TryParse(RotationDirect_textBox.Text.Replace(',', '.'), out val))
                     {
                         MainForm.CNC_A_m(val);
                     }
@@ -265,7 +265,7 @@ namespace LitePlacer
         private void ValidateDouble(TextBox box)
         {
             double val;
-            if (double.TryParse(box.Text, out val))
+            if (double.TryParse(box.Text.Replace(',', '.'), out val))
             {
                 box.ForeColor = Color.Black;
             }

@@ -1436,13 +1436,13 @@ namespace LitePlacer
             {
                 JoggingBusy = true;
                 double Ztarget;
-                if (!double.TryParse(Properties.Settings.Default.General_ZtoPCB.ToString(), out Ztarget))
+                if (!double.TryParse(Properties.Settings.Default.General_ZtoPCB.ToString().Replace(',', '.'), out Ztarget))
                 {
                     DisplayText("Z to PCB internal value error!");
                     return;
                 }
                 double Zadd;
-                if (!double.TryParse(Properties.Settings.Default.General_BelowPCB_Allowance.ToString(), out Zadd))
+                if (!double.TryParse(Properties.Settings.Default.General_BelowPCB_Allowance.ToString().Replace(',', '.'), out Zadd))
                 {
                     DisplayText("Below PCB allowance internal value error!");
                     return;
@@ -1712,7 +1712,7 @@ namespace LitePlacer
             double Y = Cnc.CurrentY;
             double A = Cnc.CurrentA;
 
-            if (!double.TryParse(GotoX_textBox.Text, out X))
+            if (!double.TryParse(GotoX_textBox.Text.Replace(',', '.'), out X))
             {
                 return;
             }
@@ -1728,7 +1728,7 @@ namespace LitePlacer
             double X = Cnc.CurrentX;
             double Y;
             double A = Cnc.CurrentA;
-            if (!double.TryParse(GotoY_textBox.Text, out Y))
+            if (!double.TryParse(GotoY_textBox.Text.Replace(',', '.'), out Y))
             {
                 return;
             }
@@ -1742,7 +1742,7 @@ namespace LitePlacer
         private void GoZ_button_Click(object sender, EventArgs e)
         {
             double Z;
-            if (!double.TryParse(GotoZ_textBox.Text, out Z))
+            if (!double.TryParse(GotoZ_textBox.Text.Replace(',', '.'), out Z))
             {
                 return;
             }
@@ -1758,7 +1758,7 @@ namespace LitePlacer
             double X = Cnc.CurrentX;
             double Y = Cnc.CurrentY;
             double A;
-            if (!double.TryParse(GotoA_textBox.Text, out A))
+            if (!double.TryParse(GotoA_textBox.Text.Replace(',', '.'), out A))
             {
                 return;
             }
@@ -1775,19 +1775,19 @@ namespace LitePlacer
             double Y;
             double Z;
             double A;
-            if (!double.TryParse(GotoX_textBox.Text, out X))
+            if (!double.TryParse(GotoX_textBox.Text.Replace(',', '.'), out X))
             {
                 return;
             }
-            if (!double.TryParse(GotoY_textBox.Text, out Y))
+            if (!double.TryParse(GotoY_textBox.Text.Replace(',', '.'), out Y))
             {
                 return;
             }
-            if (!double.TryParse(GotoZ_textBox.Text, out Z))
+            if (!double.TryParse(GotoZ_textBox.Text.Replace(',', '.'), out Z))
             {
                 return;
             }
-            if (!double.TryParse(GotoA_textBox.Text, out A))
+            if (!double.TryParse(GotoA_textBox.Text.Replace(',', '.'), out A))
             {
                 return;
             }
@@ -1872,7 +1872,7 @@ namespace LitePlacer
             if (InvokeRequired) { Invoke(new Action<string>(Update_mt), new[] { ValStr }); return; }
 
             double val;
-            if (double.TryParse(ValStr, out val))
+            if (double.TryParse(ValStr.Replace(',', '.'), out val))
             {
                 TinyGMotorTimeout = val;
                 DisplayText("mt value: " + TinyGMotorTimeout.ToString());
@@ -2116,7 +2116,7 @@ namespace LitePlacer
                         return false;
                     }
 
-                    if (!double.TryParse(NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[1].Value.ToString(), out MinSize))
+                    if (!double.TryParse(NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[1].Value.ToString().Replace(',', '.'), out MinSize))
                     {
                         ShowMessageBox(
                             "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", min. size",
@@ -2124,7 +2124,7 @@ namespace LitePlacer
                             MessageBoxButtons.OK);
                         return false;
                     }
-                    if (!double.TryParse(NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[2].Value.ToString(), out MaxSize))
+                    if (!double.TryParse(NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[2].Value.ToString().Replace(',', '.'), out MaxSize))
                     {
                         ShowMessageBox(
                             "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", max. size",
@@ -2202,7 +2202,7 @@ namespace LitePlacer
             }
 
             double MaxTime;
-            if (!double.TryParse(speed, out MaxTime))
+            if (!double.TryParse(speed.Replace(',', '.'), out MaxTime))
             {
                 ShowMessageBox(
                     "Bad data in " + axis + " homing speed",
@@ -3298,7 +3298,7 @@ namespace LitePlacer
             if (UpCamera.IsRunning())
             {
                 CurrentCam.Zoom = UpCamZoom_checkBox.Checked;
-                if (double.TryParse(UpCamZoomFactor_textBox.Text, out val))
+                if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
                     UpCamera.ZoomFactor = val;
                 }
@@ -3306,7 +3306,7 @@ namespace LitePlacer
             else
             {
                 CurrentCam.Zoom = DownCamZoom_checkBox.Checked;
-                if (double.TryParse(DownCamZoomFactor_textBox.Text, out val))
+                if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
                     DownCamera.ZoomFactor = val;
                 }
@@ -3483,7 +3483,7 @@ namespace LitePlacer
         private void DownCameraUpdateXmmPerPixel()
         {
             double val;
-            if (double.TryParse(DownCameraBoxX_textBox.Text, out val))
+            if (double.TryParse(DownCameraBoxX_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.DownCam_XmmPerPixel = val / DownCamera.BoxSizeX;
                 DownCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
@@ -3507,7 +3507,7 @@ namespace LitePlacer
         private void UpCameraUpdateXmmPerPixel()
         {
             double val;
-            if (double.TryParse(UpCameraBoxX_textBox.Text, out val))
+            if (double.TryParse(UpCameraBoxX_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.UpCam_XmmPerPixel = val / UpCamera.BoxSizeX;
                 UpCameraBoxXmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
@@ -3531,7 +3531,7 @@ namespace LitePlacer
         private void DownCameraUpdateYmmPerPixel()
         {
             double val;
-            if (double.TryParse(DownCameraBoxY_textBox.Text, out val))
+            if (double.TryParse(DownCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.DownCam_YmmPerPixel = val / DownCamera.BoxSizeY;
                 DownCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
@@ -3550,7 +3550,7 @@ namespace LitePlacer
         private void UpCameraBoxY_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(UpCameraBoxY_textBox.Text, out val))
+            if (double.TryParse(UpCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
                 UpCameraUpdateYmmPerPixel();
             }
@@ -3559,7 +3559,7 @@ namespace LitePlacer
         private void UpCameraUpdateYmmPerPixel()
         {
             double val;
-            if (double.TryParse(UpCameraBoxY_textBox.Text, out val))
+            if (double.TryParse(UpCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.UpCam_YmmPerPixel = val / UpCamera.BoxSizeY;
                 UpCameraBoxYmmPerPixel_label.Text = "(" + Properties.Settings.Default.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
@@ -3603,7 +3603,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(DownCamZoomFactor_textBox.Text, out val))
+                if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
                     DownCamera.ZoomFactor = val;
                     Properties.Settings.Default.DownCam_Zoomfactor = val;
@@ -3614,7 +3614,7 @@ namespace LitePlacer
         private void DownCamZoomFactor_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(DownCamZoomFactor_textBox.Text, out val))
+            if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
             {
                 DownCamera.ZoomFactor = val;
                 Properties.Settings.Default.DownCam_Zoomfactor = val;
@@ -3627,7 +3627,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(UpCamZoomFactor_textBox.Text, out val))
+                if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
                     UpCamera.ZoomFactor = val;
                     Properties.Settings.Default.UpCam_Zoomfactor = val;
@@ -3638,7 +3638,7 @@ namespace LitePlacer
         private void UpCamZoomFactor_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(UpCamZoomFactor_textBox.Text, out val))
+            if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
             {
                 UpCamera.ZoomFactor = val;
                 Properties.Settings.Default.UpCam_Zoomfactor = val;
@@ -3760,7 +3760,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(JigX_textBox.Text, out val))
+                if (double.TryParse(JigX_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_JigOffsetX = val;
                 }
@@ -3770,7 +3770,7 @@ namespace LitePlacer
         private void JigX_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(JigX_textBox.Text, out val))
+            if (double.TryParse(JigX_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_JigOffsetX = val;
             }
@@ -3782,7 +3782,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(JigY_textBox.Text, out val))
+                if (double.TryParse(JigY_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_JigOffsetY = val;
                 }
@@ -3792,7 +3792,7 @@ namespace LitePlacer
         private void JigY_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(JigY_textBox.Text, out val))
+            if (double.TryParse(JigY_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_JigOffsetY = val;
             }
@@ -3822,7 +3822,7 @@ namespace LitePlacer
             PickupCenterX_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(PickupCenterX_textBox.Text, out val))
+                if (double.TryParse(PickupCenterX_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_PickupCenterX = val;
                     PickupCenterX_textBox.ForeColor = Color.Black;
@@ -3833,7 +3833,7 @@ namespace LitePlacer
         private void PickupCenterX_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(PickupCenterX_textBox.Text, out val))
+            if (double.TryParse(PickupCenterX_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_PickupCenterX = val;
                 PickupCenterX_textBox.ForeColor = Color.Black;
@@ -3847,7 +3847,7 @@ namespace LitePlacer
             PickupCenterY_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(PickupCenterY_textBox.Text, out val))
+                if (double.TryParse(PickupCenterY_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_PickupCenterY = val;
                     PickupCenterY_textBox.ForeColor = Color.Black;
@@ -3858,7 +3858,7 @@ namespace LitePlacer
         private void PickupCenterY_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(PickupCenterY_textBox.Text, out val))
+            if (double.TryParse(PickupCenterY_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_PickupCenterY = val;
                 PickupCenterY_textBox.ForeColor = Color.Black;
@@ -3906,7 +3906,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(NozzleOffsetX_textBox.Text, out val))
+                if (double.TryParse(NozzleOffsetX_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.DownCam_NozzleOffsetX = val;
                 }
@@ -3916,7 +3916,7 @@ namespace LitePlacer
         private void NozzleOffsetX_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(NozzleOffsetX_textBox.Text, out val))
+            if (double.TryParse(NozzleOffsetX_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.DownCam_NozzleOffsetX = val;
             }
@@ -3927,7 +3927,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(NozzleOffsetY_textBox.Text, out val))
+                if (double.TryParse(NozzleOffsetY_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.DownCam_NozzleOffsetY = val;
                 }
@@ -3937,7 +3937,7 @@ namespace LitePlacer
         private void NozzleOffsetY_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(NozzleOffsetY_textBox.Text, out val))
+            if (double.TryParse(NozzleOffsetY_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.DownCam_NozzleOffsetY = val;
             }
@@ -4001,7 +4001,7 @@ namespace LitePlacer
             if (e.KeyChar == '\r')
             {
                 double val;
-                if (double.TryParse(UpcamPositionX_textBox.Text, out val))
+                if (double.TryParse(UpcamPositionX_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.UpCam_PositionX = val;
                 }
@@ -4011,7 +4011,7 @@ namespace LitePlacer
         private void UpcamPositionX_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(UpcamPositionX_textBox.Text, out val))
+            if (double.TryParse(UpcamPositionX_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.UpCam_PositionX = val;
             }
@@ -4022,7 +4022,7 @@ namespace LitePlacer
             if (e.KeyChar == '\r')
             {
                 double val;
-                if (double.TryParse(UpcamPositionY_textBox.Text, out val))
+                if (double.TryParse(UpcamPositionY_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.UpCam_PositionY = val;
                 }
@@ -4032,7 +4032,7 @@ namespace LitePlacer
         private void UpcamPositionY_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(UpcamPositionY_textBox.Text, out val))
+            if (double.TryParse(UpcamPositionY_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.UpCam_PositionY = val;
             }
@@ -5315,7 +5315,7 @@ namespace LitePlacer
             tr1_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(tr1_textBox.Text, out val))
+                if (double.TryParse(tr1_textBox.Text.Replace(',', '.'), out val))
                 {
                     CNC_Write_m("{\"1tr\":" + tr1_textBox.Text + "}");
                     Thread.Sleep(50);
@@ -5330,7 +5330,7 @@ namespace LitePlacer
             tr2_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(tr2_textBox.Text, out val))
+                if (double.TryParse(tr2_textBox.Text.Replace(',', '.'), out val))
                 {
                     CNC_Write_m("{\"2tr\":" + tr2_textBox.Text + "}");
                     Thread.Sleep(50);
@@ -5345,7 +5345,7 @@ namespace LitePlacer
             tr3_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(tr3_textBox.Text, out val))
+                if (double.TryParse(tr3_textBox.Text.Replace(',', '.'), out val))
                 {
                     CNC_Write_m("{\"3tr\":" + tr3_textBox.Text + "}");
                     Thread.Sleep(50);
@@ -5360,7 +5360,7 @@ namespace LitePlacer
             tr4_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(tr1_textBox.Text, out val))
+                if (double.TryParse(tr1_textBox.Text.Replace(',', '.'), out val))
                 {
                     CNC_Write_m("{\"4tr\":" + tr4_textBox.Text + "}");
                     Thread.Sleep(50);
@@ -5593,7 +5593,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(SizeXMax_textBox.Text, out val))
+                if (double.TryParse(SizeXMax_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_MachineSizeX = val;
                     SizeXMax_textBox.ForeColor = Color.Black;
@@ -5605,7 +5605,7 @@ namespace LitePlacer
         private void SizeXMax_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(SizeXMax_textBox.Text, out val))
+            if (double.TryParse(SizeXMax_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_MachineSizeX = val;
                 SizeXMax_textBox.ForeColor = Color.Black;
@@ -5620,7 +5620,7 @@ namespace LitePlacer
             SizeYMax_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(SizeYMax_textBox.Text, out val))
+                if (double.TryParse(SizeYMax_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_MachineSizeY = val;
                     SizeYMax_textBox.ForeColor = Color.Black;
@@ -5632,7 +5632,7 @@ namespace LitePlacer
         private void SizeYMax_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(SizeYMax_textBox.Text, out val))
+            if (double.TryParse(SizeYMax_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_MachineSizeY = val;
                 SizeYMax_textBox.ForeColor = Color.Black;
@@ -5651,7 +5651,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(ParkLocationX_textBox.Text, out val))
+                if (double.TryParse(ParkLocationX_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_ParkX = val;
                 }
@@ -5661,7 +5661,7 @@ namespace LitePlacer
         private void ParkLocationX_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(ParkLocationX_textBox.Text, out val))
+            if (double.TryParse(ParkLocationX_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_ParkX = val;
             }
@@ -5672,7 +5672,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(ParkLocationY_textBox.Text, out val))
+                if (double.TryParse(ParkLocationY_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_ParkY = val;
                 }
@@ -5682,7 +5682,7 @@ namespace LitePlacer
         private void ParkLocationY_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(ParkLocationY_textBox.Text, out val))
+            if (double.TryParse(ParkLocationY_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_ParkY = val;
             }
@@ -5836,7 +5836,7 @@ namespace LitePlacer
         private void NozzleBelowPCB_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(NozzleBelowPCB_textBox.Text, out val))
+            if (double.TryParse(NozzleBelowPCB_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_BelowPCB_Allowance = val;
             }
@@ -5845,7 +5845,7 @@ namespace LitePlacer
         private void ZTestTravel_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(ZTestTravel_textBox.Text, out val))
+            if (double.TryParse(ZTestTravel_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_ZTestTravel = val;
             }
@@ -5854,7 +5854,7 @@ namespace LitePlacer
         private void ShadeGuard_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(ShadeGuard_textBox.Text, out val))
+            if (double.TryParse(ShadeGuard_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.General_ShadeGuard_mm = val;
             }
@@ -6539,7 +6539,7 @@ namespace LitePlacer
         private void SquareCorrection_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(SquareCorrection_textBox.Text, out val))
+            if (double.TryParse(SquareCorrection_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.CNC_SquareCorrection = val;
                 CNC.SquareCorrection = val;
@@ -6551,7 +6551,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(SquareCorrection_textBox.Text, out val))
+                if (double.TryParse(SquareCorrection_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.CNC_SquareCorrection = val;
                     CNC.SquareCorrection = val;
@@ -6603,7 +6603,7 @@ namespace LitePlacer
             Z0_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(Z0_textBox.Text, out val))
+                if (double.TryParse(Z0_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_ZtoPCB = val;
                     Z0_textBox.ForeColor = Color.Black;
@@ -6617,7 +6617,7 @@ namespace LitePlacer
             BackOff_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(BackOff_textBox.Text, out val))
+                if (double.TryParse(BackOff_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_PlacementBackOff = val;
                     BackOff_textBox.ForeColor = Color.Black;
@@ -6631,7 +6631,7 @@ namespace LitePlacer
             Hysteresis_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(Hysteresis_textBox.Text, out val))
+                if (double.TryParse(Hysteresis_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.General_ZprobingHysteresis = val;
                     Hysteresis_textBox.ForeColor = Color.Black;
@@ -7993,7 +7993,7 @@ namespace LitePlacer
             else
             {
                 double Rotation;
-                if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString(), out Rotation))
+                if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString().Replace(',', '.'), out Rotation))
                 {
                     ShowMessageBox(
                         "Component " + Component + ": Bad Rotation data",
@@ -8007,9 +8007,9 @@ namespace LitePlacer
             double X;
             double Y;
             double A;
-            if ((!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString(), out X))
+            if ((!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString().Replace(',', '.'), out X))
                 ||
-                (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString(), out Y)))
+                (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString().Replace(',', '.'), out Y)))
             {
                 ShowMessageBox(
                     "Component " + Component + ", bad machine coordinate",
@@ -8017,7 +8017,7 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             }
-            if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString(), out A))
+            if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out A))
             {
                 ShowMessageBox(
                     "Bad data at Rotation, machine",
@@ -8095,7 +8095,7 @@ namespace LitePlacer
                 {
                     // User wants to use the nominal coordinates. Copy the nominal to machine for this to happen:
                     double X;
-                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString(), out X))
+                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X))
                     {
                         DisplayText("Bad data X nominal at component " + Component);
                     }
@@ -8103,7 +8103,7 @@ namespace LitePlacer
                     CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value = X.ToString();
 
                     double Y;
-                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value.ToString(), out Y))
+                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y))
                     {
                         DisplayText("Bad data Y nominal at component " + Component);
                     }
@@ -8122,10 +8122,10 @@ namespace LitePlacer
                 Xstr = CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString();
                 Ystr = CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value.ToString();
                 RotationStr = CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString();
-                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString(), out Rotation);
-                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString(), out X_machine);
-                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString(), out Y_machine);
-                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString(), out A_machine);
+                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString().Replace(',', '.'), out Rotation);
+                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString().Replace(',', '.'), out X_machine);
+                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString().Replace(',', '.'), out Y_machine);
+                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out A_machine);
             }
 
             Method = JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value.ToString();
@@ -8427,7 +8427,7 @@ namespace LitePlacer
             else
             {
                 double Z;
-                if (!double.TryParse(Z_str, out Z))
+                if (!double.TryParse(Z_str.Replace(',', '.'), out Z))
                 {
                     ShowMessageBox(
                         "Bad pickup Z data at Tape #" + TapeNumber.ToString(),
@@ -8560,12 +8560,12 @@ namespace LitePlacer
             double FirstX;
             double FirstY;
 
-            if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["FirstX_Column"].Value.ToString(), out FirstX))
+            if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["FirstX_Column"].Value.ToString().Replace(',', '.'), out FirstX))
             {
                 DisplayText("Bad data, X column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
                 return false;
             }
-            if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["FirstY_Column"].Value.ToString(), out FirstY))
+            if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["FirstY_Column"].Value.ToString().Replace(',', '.'), out FirstY))
             {
                 DisplayText("Bad data, Y column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
                 return false;
@@ -8575,7 +8575,7 @@ namespace LitePlacer
             // Not all values need to be set, but if they are set, they need to be valid
             if (Tapes_dataGridView.Rows[TapeNum].Cells["LastX_Column"].Value != null)
             {
-                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["LastX_Column"].Value.ToString(), out LastX))
+                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["LastX_Column"].Value.ToString().Replace(',', '.'), out LastX))
                 {
                     DisplayText("Bad data, Last X column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
                     return false;
@@ -8583,7 +8583,7 @@ namespace LitePlacer
             }
             if (Tapes_dataGridView.Rows[TapeNum].Cells["LastY_Column"].Value != null)
             {
-                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["LastY_Column"].Value.ToString(), out LastY))
+                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["LastY_Column"].Value.ToString().Replace(',', '.'), out LastY))
                 {
                     DisplayText("Bad data, Last Y column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
                     return false;
@@ -8595,7 +8595,7 @@ namespace LitePlacer
                 DisplayText("Bad data, Pitch column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
                 return false;
             }
-            if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString(), out pitch))
+            if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString().Replace(',', '.'), out pitch))
             {
                 DisplayText("Bad data, Pitch column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
                 return false;
@@ -8631,7 +8631,7 @@ namespace LitePlacer
 
             if (Tapes_dataGridView.Rows[TapeNum].Cells["RotationDirect_Column"].Value != null)
             {
-                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["RotationDirect_Column"].Value.ToString(), out A))
+                if (!double.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["RotationDirect_Column"].Value.ToString().Replace(',', '.'), out A))
                 {
                     DisplayText("Bad data, A correction column, Tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString());
                     return false;
@@ -8692,7 +8692,7 @@ namespace LitePlacer
             else
             {
                 double Z;
-                if (!double.TryParse(Z_str, out Z))
+                if (!double.TryParse(Z_str.Replace(',', '.'), out Z))
                 {
                     ShowMessageBox(
                         "Bad place Z data at Tape #" + TapeNum,
@@ -9345,7 +9345,7 @@ namespace LitePlacer
             double r;
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
-                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out x))
+                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out x))
                 {
                     ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
@@ -9353,7 +9353,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out y))
+                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out y))
                 {
                     ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
@@ -9361,7 +9361,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                if (!double.TryParse(Row.Cells["Rotation"].Value.ToString(), out r))
+                if (!double.TryParse(Row.Cells["Rotation"].Value.ToString().Replace(',', '.'), out r))
                 {
                     ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " rotation data",
@@ -9386,8 +9386,8 @@ namespace LitePlacer
                 foreach (DataGridViewRow Row in CadData_GridView.Rows)
                 {
                     // Cad data is validated.
-                    double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out X_nom);
-                    double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out Y_nom);
+                    double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X_nom);
+                    double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y_nom);
                     X_nom += Properties.Settings.Default.General_JigOffsetX;
                     Y_nom += Properties.Settings.Default.General_JigOffsetY;
                     Row.Cells["X_machine"].Value = X_nom.ToString("0.000", CultureInfo.InvariantCulture);
@@ -9442,8 +9442,8 @@ namespace LitePlacer
                     if (Row.Cells["Component"].Value.ToString() == FiducialDesignators[i]) // If this is the fiducial we want,
                     {
                         // Get its nominal position (value already checked).
-                        double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out X_nom);
-                        double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out Y_nom);
+                        double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X_nom);
+                        double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y_nom);
                         break;
                     }
                 }
@@ -9510,8 +9510,8 @@ namespace LitePlacer
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
                 // build a point from CAD data values
-                double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out Loc.X);
-                double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out Loc.Y);
+                double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out Loc.X);
+                double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Loc.Y);
                 Loc.W = 1;
                 // transform it
                 Loc = transform.TransformPoint(Loc);
@@ -9521,7 +9521,7 @@ namespace LitePlacer
                 Row.Cells["Y_machine"].Value = Loc.Y.ToString("0.000", CultureInfo.InvariantCulture);
                 // handle rotation
                 double rot;
-                double.TryParse(Row.Cells["Rotation"].Value.ToString(), out rot);
+                double.TryParse(Row.Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot);
                 rot += angle;
                 while (rot > 360.0)
                 {
@@ -9623,7 +9623,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(JobOffsetX_textBox.Text, out val))
+                if (double.TryParse(JobOffsetX_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.Job_Xoffset = val;
                 }
@@ -9633,7 +9633,7 @@ namespace LitePlacer
         private void JobOffsetX_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(JobOffsetX_textBox.Text, out val))
+            if (double.TryParse(JobOffsetX_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.Job_Xoffset = val;
             }
@@ -9645,7 +9645,7 @@ namespace LitePlacer
             double val;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(JobOffsetY_textBox.Text, out val))
+                if (double.TryParse(JobOffsetY_textBox.Text.Replace(',', '.'), out val))
                 {
                     Properties.Settings.Default.Job_Yoffset = val;
                 }
@@ -9655,7 +9655,7 @@ namespace LitePlacer
         private void JobOffsetY_textBox_Leave(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(JobOffsetY_textBox.Text, out val))
+            if (double.TryParse(JobOffsetY_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.Job_Yoffset = val;
             }
@@ -9677,7 +9677,7 @@ namespace LitePlacer
             {
                 return;  // header row
             }
-            if (!double.TryParse(cell.OwningRow.Cells["X_nominal"].Value.ToString(), out X))
+            if (!double.TryParse(cell.OwningRow.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X))
             {
                 DialogResult dialogResult = ShowMessageBox(
                     "Bad data at X_nominal",
@@ -9686,7 +9686,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (!double.TryParse(cell.OwningRow.Cells["Y_nominal"].Value.ToString(), out Y))
+            if (!double.TryParse(cell.OwningRow.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y))
             {
                 DialogResult dialogResult = ShowMessageBox(
                     "Bad data at Y_nominal",
@@ -9695,7 +9695,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (!double.TryParse(cell.OwningRow.Cells["Rotation"].Value.ToString(), out A))
+            if (!double.TryParse(cell.OwningRow.Cells["Rotation"].Value.ToString().Replace(',', '.'), out A))
             {
                 DialogResult dialogResult = ShowMessageBox(
                     "Bad data at Rotation",
@@ -9753,7 +9753,7 @@ namespace LitePlacer
                 }
             }
 
-            if (!double.TryParse(cell.OwningRow.Cells["X_machine"].Value.ToString(), out X))
+            if (!double.TryParse(cell.OwningRow.Cells["X_machine"].Value.ToString().Replace(',', '.'), out X))
             {
                 ShowMessageBox(
                     "Bad data at X_machine",
@@ -9762,7 +9762,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!double.TryParse(cell.OwningRow.Cells["Y_machine"].Value.ToString(), out Y))
+            if (!double.TryParse(cell.OwningRow.Cells["Y_machine"].Value.ToString().Replace(',', '.'), out Y))
             {
                 ShowMessageBox(
                     "Bad data at Y_machine",
@@ -9785,7 +9785,7 @@ namespace LitePlacer
                 return;
             }
             CNC_XY_m(X, Y);
-            if (!double.TryParse(CadData_GridView.CurrentCell.OwningRow.Cells["Rotation_machine"].Value.ToString(), out A))
+            if (!double.TryParse(CadData_GridView.CurrentCell.OwningRow.Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out A))
             {
                 ShowMessageBox(
                     "Bad data at Rotation_machine",
@@ -9850,7 +9850,7 @@ namespace LitePlacer
                 {
                     if (Row.Cells["Component"].Value.ToString() == FiducialDesignators[i])
                     {
-                        if (!double.TryParse(Row.Cells["X_Machine"].Value.ToString(), out X_fid))
+                        if (!double.TryParse(Row.Cells["X_Machine"].Value.ToString().Replace(',', '.'), out X_fid))
                         {
                             ShowMessageBox(
                                 "Problem with " + FiducialDesignators[i] + "X machine coordinate data",
@@ -9858,7 +9858,7 @@ namespace LitePlacer
                                 MessageBoxButtons.OK);
                             return false;
                         };
-                        if (!double.TryParse(Row.Cells["Y_Machine"].Value.ToString(), out Y_fid))
+                        if (!double.TryParse(Row.Cells["Y_Machine"].Value.ToString().Replace(',', '.'), out Y_fid))
                         {
                             ShowMessageBox(
                                 "Problem with " + FiducialDesignators[i] + "Y machine coordinate data",
@@ -9958,7 +9958,7 @@ namespace LitePlacer
                 {
                     if (FootPrint.Contains(SizeRow.Cells["PartialName_column"].Value.ToString()))
                     {
-                        if (!double.TryParse(SizeRow.Cells["SizeX_column"].Value.ToString(), out sizeX))
+                        if (!double.TryParse(SizeRow.Cells["SizeX_column"].Value.ToString().Replace(',', '.'), out sizeX))
                         {
                             ShowMessageBox(
                                 "Bad data at " + SizeRow.Cells["PartialName_column"].Value.ToString() + ", SizeX",
@@ -9966,7 +9966,7 @@ namespace LitePlacer
                                 MessageBoxButtons.OK);
                             return false;
                         }
-                        if (!double.TryParse(SizeRow.Cells["SizeY_column"].Value.ToString(), out sizeY))
+                        if (!double.TryParse(SizeRow.Cells["SizeY_column"].Value.ToString().Replace(',', '.'), out sizeY))
                         {
                             ShowMessageBox(
                                 "Bad data at " + SizeRow.Cells["PartialName_column"].Value.ToString() + ", SizeY",
@@ -9985,7 +9985,7 @@ namespace LitePlacer
             }
 
             double rot;
-            if (!double.TryParse(CadData_GridView.Rows[Row].Cells["Rotation_machine"].Value.ToString(), out rot))
+            if (!double.TryParse(CadData_GridView.Rows[Row].Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out rot))
             {
                 ShowMessageBox(
                     "Bad data at Rotation, machine",
@@ -10183,7 +10183,7 @@ namespace LitePlacer
             double val;
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
-                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out val))
+                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out val))
                 {
                     ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
@@ -10192,7 +10192,7 @@ namespace LitePlacer
                     return false;
                 };
                 Row.Cells["X_nominal"].Value = Math.Round((val * 25.4), 3).ToString();
-                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out val))
+                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out val))
                 {
                     ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
@@ -10635,7 +10635,7 @@ namespace LitePlacer
                             CadData_GridView.Rows[Last].Cells["X_nominal"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
                         }
                         double rot;
-                        if (!double.TryParse(CadData_GridView.Rows[Last].Cells["Rotation"].Value.ToString(), out rot))
+                        if (!double.TryParse(CadData_GridView.Rows[Last].Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot))
                         {
                             DialogResult dialogResult = ShowMessageBox(
                                 "Bad data at Rotation",
@@ -11083,11 +11083,11 @@ namespace LitePlacer
             double X;
             double Y;
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["FirstX_Column"].Value.ToString(), out X))
+            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["FirstX_Column"].Value.ToString().Replace(',', '.'), out X))
             {
                 return;
             }
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["FirstY_Column"].Value.ToString(), out Y))
+            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["FirstY_Column"].Value.ToString().Replace(',', '.'), out Y))
             {
                 return;
             }
@@ -11220,11 +11220,11 @@ namespace LitePlacer
             double X;
             double Y;
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["Next_X_Column"].Value.ToString(), out X))
+            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["Next_X_Column"].Value.ToString().Replace(',', '.'), out X))
             {
                 return;
             }
-            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["Next_Y_Column"].Value.ToString(), out Y))
+            if (!double.TryParse(Tapes_dataGridView.Rows[row].Cells["Next_Y_Column"].Value.ToString().Replace(',', '.'), out Y))
             {
                 return;
             }
@@ -12861,7 +12861,7 @@ namespace LitePlacer
                         Parameter_double_textBox.Text = "2.0";
                         Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
                     }
-                    else if (!double.TryParse(Display_dataGridView.Rows[row].Cells[3].Value.ToString(), out par_d))
+                    else if (!double.TryParse(Display_dataGridView.Rows[row].Cells[3].Value.ToString().Replace(',', '.'), out par_d))
                     {
                         Parameter_double_textBox.Text = "2.0";
                         Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
@@ -12883,7 +12883,7 @@ namespace LitePlacer
                         Parameter_double_textBox.Text = "2.0";
                         Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
                     }
-                    else if (!double.TryParse(Display_dataGridView.Rows[row].Cells[3].Value.ToString(), out par_d))
+                    else if (!double.TryParse(Display_dataGridView.Rows[row].Cells[3].Value.ToString().Replace(',', '.'), out par_d))
                     {
                         Parameter_double_textBox.Text = "2.0";
                         Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
@@ -12946,7 +12946,7 @@ namespace LitePlacer
             int row = Display_dataGridView.CurrentCell.RowIndex;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(Parameter_double_textBox.Text, out val))
+                if (double.TryParse(Parameter_double_textBox.Text.Replace(',', '.'), out val))
                 {
                     Display_dataGridView.Rows[row].Cells[DoubleCol].Value = Parameter_double_textBox.Text;
                     UpdateDisplayFunctions();
@@ -12960,7 +12960,7 @@ namespace LitePlacer
             double val;
             int DoubleCol = (int)Display_dataGridViewColumns.Double;
             int row = Display_dataGridView.CurrentCell.RowIndex;
-            if (double.TryParse(Parameter_double_textBox.Text, out val))
+            if (double.TryParse(Parameter_double_textBox.Text.Replace(',', '.'), out val))
             {
                 Display_dataGridView.Rows[row].Cells[DoubleCol].Value = Parameter_double_textBox.Text;
                 UpdateDisplayFunctions();
@@ -13218,7 +13218,7 @@ namespace LitePlacer
                             DisplayText("last load move amount not set", KnownColor.DarkRed);
                             return false;
                         }
-                        if (!double.TryParse(NozzlesLoad_dataGridView.Rows[row].Cells[ValInd].Value.ToString(), out Z))
+                        if (!double.TryParse(NozzlesLoad_dataGridView.Rows[row].Cells[ValInd].Value.ToString().Replace(',', '.'), out Z))
                         {
                             DisplayText("Bad data: nozzle #" + (row + 1).ToString() + ", move " + i.ToString(), KnownColor.DarkRed);
                             return false;
@@ -13250,22 +13250,22 @@ namespace LitePlacer
                 double Yunload;
                 double Xload;
                 double Xunload;
-                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[Nozzledata_StartYColumn].Value.ToString(), out Yload))
+                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[Nozzledata_StartYColumn].Value.ToString().Replace(',', '.'), out Yload))
                 {
                     DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Load start Y", KnownColor.DarkRed);
                     return;
                 }
-                if (!double.TryParse(NozzlesUnload_dataGridView.Rows[i].Cells[Nozzledata_StartYColumn].Value.ToString(), out Yunload))
+                if (!double.TryParse(NozzlesUnload_dataGridView.Rows[i].Cells[Nozzledata_StartYColumn].Value.ToString().Replace(',', '.'), out Yunload))
                 {
                     DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Unload start Y", KnownColor.DarkRed);
                     return;
                 }
-                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[Nozzledata_StartXColumn].Value.ToString(), out Xload))
+                if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[Nozzledata_StartXColumn].Value.ToString().Replace(',', '.'), out Xload))
                 {
                     DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Load start X", KnownColor.DarkRed);
                     return;
                 }
-                if (!double.TryParse(NozzlesUnload_dataGridView.Rows[i].Cells[Nozzledata_StartXColumn].Value.ToString(), out Xunload))
+                if (!double.TryParse(NozzlesUnload_dataGridView.Rows[i].Cells[Nozzledata_StartXColumn].Value.ToString().Replace(',', '.'), out Xunload))
                 {
                     DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Unload start X", KnownColor.DarkRed);
                     return;
@@ -13616,7 +13616,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            if (double.TryParse(grid.Rows[nozzle - 1].Cells[col].Value.ToString(), out value))
+            if (double.TryParse(grid.Rows[nozzle - 1].Cells[col].Value.ToString().Replace(',', '.'), out value))
             {
                 return true;
             }
@@ -13886,7 +13886,7 @@ namespace LitePlacer
                     return false;
                 }
 
-                if (!double.TryParse(NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[1].Value.ToString(), out MinSize))
+                if (!double.TryParse(NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[1].Value.ToString().Replace(',', '.'), out MinSize))
                 {
                     ShowMessageBox(
                         "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", min. size",
@@ -13894,7 +13894,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 }
-                if (!double.TryParse(NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[2].Value.ToString(), out MaxSize))
+                if (!double.TryParse(NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[2].Value.ToString().Replace(',', '.'), out MaxSize))
                 {
                     ShowMessageBox(
                         "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", max. size",
@@ -14174,7 +14174,7 @@ namespace LitePlacer
         private void NozzleXYspeed_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(NozzleXYspeed_textBox.Text, out val))
+            if (double.TryParse(NozzleXYspeed_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.Nozzles_XYspeed = val;
                 Cnc.SlowSpeedXY = val;
@@ -14189,7 +14189,7 @@ namespace LitePlacer
         private void NozzleZspeed_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(NozzleZspeed_textBox.Text, out val))
+            if (double.TryParse(NozzleZspeed_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.Nozzles_Zspeed = val;
                 Cnc.SlowSpeedZ = val;
@@ -14203,7 +14203,7 @@ namespace LitePlacer
         private void NozzleAspeed_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(NozzleAspeed_textBox.Text, out val))
+            if (double.TryParse(NozzleAspeed_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.Nozzles_Aspeed = val;
                 Cnc.SlowSpeedA = val;
@@ -14379,7 +14379,7 @@ namespace LitePlacer
         private void NozzleDistance_textBox_KeyUp(object sender, KeyEventArgs e)
         {
             double val;
-            if (double.TryParse(NozzleDistance_textBox.Text, out val))
+            if (double.TryParse(NozzleDistance_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.Nozzles_CalibrationDistance = val;
                 NozzleDistance_textBox.ForeColor = Color.Black;
@@ -14393,7 +14393,7 @@ namespace LitePlacer
         private void NozzleMinSize_textBox_KeyUp(object sender, KeyEventArgs e)
         {
             double val;
-            if (double.TryParse(NozzleMinSize_textBox.Text, out val))
+            if (double.TryParse(NozzleMinSize_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.Nozzles_CalibrationMinSize = val;
                 NozzleMinSize_textBox.ForeColor = Color.Black;
@@ -14407,7 +14407,7 @@ namespace LitePlacer
         private void NozzleMaxSize_textBox_KeyUp(object sender, KeyEventArgs e)
         {
             double val;
-            if (double.TryParse(NozzleMaxSize_textBox.Text, out val))
+            if (double.TryParse(NozzleMaxSize_textBox.Text.Replace(',', '.'), out val))
             {
                 Properties.Settings.Default.Nozzles_CalibrationMaxSize = val;
                 NozzleMaxSize_textBox.ForeColor = Color.Black;
@@ -14474,7 +14474,7 @@ namespace LitePlacer
         private void CheckCalibrationErrors(int nozzle)
         {
             double val;
-            if (!double.TryParse(NozzleWarning_textBox.Text, out val))
+            if (!double.TryParse(NozzleWarning_textBox.Text.Replace(',', '.'), out val))
             {
                 DisplayText("Bad data in warning treshold");
                 return;

@@ -350,7 +350,7 @@ namespace LitePlacer
                 msg += " / ";
                 if (Row.Cells[DoubleCol].Value != null)
                 {
-                    double.TryParse(Row.Cells[DoubleCol].Value.ToString(), out temp_d);
+                    double.TryParse(Row.Cells[DoubleCol].Value.ToString().Replace(',', '.'), out temp_d);
                     f.parameter_double = temp_d;
                     msg += temp_d.ToString();
                 }

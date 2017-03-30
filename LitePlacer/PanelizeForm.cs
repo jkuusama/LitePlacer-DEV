@@ -92,7 +92,7 @@ namespace LitePlacer
             double val;
             int intval;
 
-            if (double.TryParse(XFirstOffset_textBox.Text, out val))
+            if (double.TryParse(XFirstOffset_textBox.Text.Replace(',', '.'), out val))
             {
                 XFirstOffset = val;
             }
@@ -105,7 +105,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (double.TryParse(YFirstOffset_textBox.Text, out val))
+            if (double.TryParse(YFirstOffset_textBox.Text.Replace(',', '.'), out val))
             {
                 YFirstOffset = val;
             }
@@ -139,7 +139,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (int.TryParse(YRepeats_textBox.Text, out intval))
+            if (int.TryParse(YRepeats_textBox.Text.Replace(',', '.'), out intval))
             {
                 YRepeats = intval;
                 if (intval < 1)
@@ -160,7 +160,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (double.TryParse(XIncrement_textBox.Text, out val))
+            if (double.TryParse(XIncrement_textBox.Text.Replace(',', '.'), out val))
             {
                 XIncrement = val;
             }
@@ -173,7 +173,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (double.TryParse(YIncrement_textBox.Text, out val))
+            if (double.TryParse(YIncrement_textBox.Text.Replace(',', '.'), out val))
             {
                 YIncrement = val;
             }
@@ -249,7 +249,7 @@ namespace LitePlacer
                         OK = false;
                         break;
                     }
-                    if (!double.TryParse(Row.Cells["Xpanelize_Column"].Value.ToString(), out val))
+                    if (!double.TryParse(Row.Cells["Xpanelize_Column"].Value.ToString().Replace(',', '.'), out val))
                     {
                         OK = false;
                         break;
@@ -259,7 +259,7 @@ namespace LitePlacer
                         OK = false;
                         break;
                     }
-                    if (!double.TryParse(Row.Cells["Ypanelize_Column"].Value.ToString(), out val))
+                    if (!double.TryParse(Row.Cells["Ypanelize_Column"].Value.ToString().Replace(',', '.'), out val))
                     {
                         OK = false;
                         break;
@@ -343,7 +343,7 @@ namespace LitePlacer
                         // Value_Footprint:
                         CadData.Rows[Last].Cells["Value_Footprint"].Value = Row.Cells["Value_Footprint"].Value;
                         // X_nominal:
-                        if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out val))
+                        if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out val))
                         {
                             OK = false;
                             Component = Row.Cells["Component"].Value.ToString();
@@ -352,7 +352,7 @@ namespace LitePlacer
                         val = XFirstOffset + (double)(PanelColumn - 1) * XIncrement + val;
                         CadData.Rows[Last].Cells["X_nominal"].Value = val;
                         // Y_nominal:
-                        if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out val))
+                        if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out val))
                         {
                             OK = false;
                             Component = Row.Cells["Component"].Value.ToString();
@@ -454,8 +454,8 @@ namespace LitePlacer
                     if (Row.Cells["Component"].Value.ToString().Contains(CurrentFiducial))
                     {
                         // Get its nominal position (value already checked).
-                        double.TryParse(Row.Cells["X_nominal"].Value.ToString(), out X);
-                        double.TryParse(Row.Cells["Y_nominal"].Value.ToString(), out Y);
+                        double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X);
+                        double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y);
                     }
                     if((X+Y)<LowLeft_val)
                     {
