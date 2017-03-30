@@ -1,0 +1,12 @@
+Build date 3/30/2017 
+ 
+New Features, significant changes 
+ 
+* comma is internally converted to dot in input fields
+* added adjustable hysteresis to Z probing
+ 
+Bug Fixes 
+ 
+* Increased default for "Allow Nozzle to below PCB" to 3mm
+* Fixed an issue when nuber of nozzles and number of table rows could get out of sync
+* Default of nozzles is now six
