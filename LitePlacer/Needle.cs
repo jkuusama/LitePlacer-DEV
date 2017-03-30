@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace LitePlacer
 {
@@ -125,7 +126,9 @@ namespace LitePlacer
         public void ProbingMode(bool set, bool JSON)
         {
             int wait= 250;
-            if(set)
+            double b = Properties.Settings.Default.General_ZprobingHysteresis;
+            string backoff= b.ToString("0.00", CultureInfo.InvariantCulture);
+            if (set)
             {
                 if(JSON)
                 {
@@ -134,7 +137,7 @@ namespace LitePlacer
                     Thread.Sleep(wait);
                     CNC_Write("{\"zsx\",1}");
                     Thread.Sleep(wait);
-                    CNC_Write("{\"zzb\",0}");
+                    CNC_Write("{\"zzb\"," + backoff + "}");
                     Thread.Sleep(wait);
                     // probingMode = true;
                 }
@@ -145,7 +148,7 @@ namespace LitePlacer
                     Thread.Sleep(wait);
                     CNC_Write("$zsx=1");
                     Thread.Sleep(wait);
-                    CNC_Write("$zzb=0");
+                    CNC_Write("$zzb=" + backoff);
                     Thread.Sleep(wait);
                     // probingMode = true;
                 }

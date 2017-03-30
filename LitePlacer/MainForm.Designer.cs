@@ -420,6 +420,8 @@
             this.NumPadJog_checkBox = new System.Windows.Forms.CheckBox();
             this.Zlb_label = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.Hysteresis_textBox = new System.Windows.Forms.TextBox();
+            this.label136 = new System.Windows.Forms.Label();
             this.PlacementDepth_textBox = new System.Windows.Forms.TextBox();
             this.label112 = new System.Windows.Forms.Label();
             this.BackOff_textBox = new System.Windows.Forms.TextBox();
@@ -5145,7 +5147,7 @@
             this.Zlb_label.AutoSize = true;
             this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Zlb_label.Location = new System.Drawing.Point(143, 544);
+            this.Zlb_label.Location = new System.Drawing.Point(3, 541);
             this.Zlb_label.Name = "Zlb_label";
             this.Zlb_label.Size = new System.Drawing.Size(369, 38);
             this.Zlb_label.TabIndex = 51;
@@ -5156,6 +5158,8 @@
             // 
             this.panel9.BackColor = System.Drawing.Color.WhiteSmoke;
             this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel9.Controls.Add(this.Hysteresis_textBox);
+            this.panel9.Controls.Add(this.label136);
             this.panel9.Controls.Add(this.PlacementDepth_textBox);
             this.panel9.Controls.Add(this.label112);
             this.panel9.Controls.Add(this.BackOff_textBox);
@@ -5165,14 +5169,31 @@
             this.panel9.Controls.Add(this.SetProbing_button);
             this.panel9.Controls.Add(this.label111);
             this.panel9.Controls.Add(this.label117);
-            this.panel9.Location = new System.Drawing.Point(514, 541);
+            this.panel9.Location = new System.Drawing.Point(422, 541);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(472, 83);
+            this.panel9.Size = new System.Drawing.Size(564, 83);
             this.panel9.TabIndex = 97;
+            // 
+            // Hysteresis_textBox
+            // 
+            this.Hysteresis_textBox.Location = new System.Drawing.Point(323, 51);
+            this.Hysteresis_textBox.Name = "Hysteresis_textBox";
+            this.Hysteresis_textBox.Size = new System.Drawing.Size(55, 20);
+            this.Hysteresis_textBox.TabIndex = 103;
+            this.Hysteresis_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Hysteresis_textBox_KeyPress);
+            // 
+            // label136
+            // 
+            this.label136.AutoSize = true;
+            this.label136.Location = new System.Drawing.Point(226, 54);
+            this.label136.Name = "label136";
+            this.label136.Size = new System.Drawing.Size(91, 13);
+            this.label136.TabIndex = 102;
+            this.label136.Text = "Switch hysteresis:";
             // 
             // PlacementDepth_textBox
             // 
-            this.PlacementDepth_textBox.Location = new System.Drawing.Point(384, 47);
+            this.PlacementDepth_textBox.Location = new System.Drawing.Point(487, 51);
             this.PlacementDepth_textBox.Name = "PlacementDepth_textBox";
             this.PlacementDepth_textBox.Size = new System.Drawing.Size(55, 20);
             this.PlacementDepth_textBox.TabIndex = 101;
@@ -5181,7 +5202,7 @@
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(288, 50);
+            this.label112.Location = new System.Drawing.Point(391, 54);
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(90, 13);
             this.label112.TabIndex = 100;
@@ -5189,7 +5210,7 @@
             // 
             // BackOff_textBox
             // 
-            this.BackOff_textBox.Location = new System.Drawing.Point(384, 21);
+            this.BackOff_textBox.Location = new System.Drawing.Point(487, 25);
             this.BackOff_textBox.Name = "BackOff_textBox";
             this.BackOff_textBox.Size = new System.Drawing.Size(55, 20);
             this.BackOff_textBox.TabIndex = 99;
@@ -5197,7 +5218,7 @@
             // 
             // Z0_textBox
             // 
-            this.Z0_textBox.Location = new System.Drawing.Point(262, 21);
+            this.Z0_textBox.Location = new System.Drawing.Point(323, 25);
             this.Z0_textBox.Name = "Z0_textBox";
             this.Z0_textBox.Size = new System.Drawing.Size(55, 20);
             this.Z0_textBox.TabIndex = 98;
@@ -5238,7 +5259,7 @@
             // label111
             // 
             this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(197, 24);
+            this.label111.Location = new System.Drawing.Point(258, 28);
             this.label111.Name = "label111";
             this.label111.Size = new System.Drawing.Size(59, 13);
             this.label111.TabIndex = 52;
@@ -5247,7 +5268,7 @@
             // label117
             // 
             this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(331, 24);
+            this.label117.Location = new System.Drawing.Point(434, 28);
             this.label117.Name = "label117";
             this.label117.Size = new System.Drawing.Size(47, 13);
             this.label117.TabIndex = 76;
@@ -9973,6 +9994,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn RotationDirect_Column;
         private System.Windows.Forms.CheckBox DownCameraDrawGrid_checkBox;
         private System.Windows.Forms.Button ClearPlaced_button;
+        private System.Windows.Forms.TextBox Hysteresis_textBox;
+        private System.Windows.Forms.Label label136;
     }
 }
 

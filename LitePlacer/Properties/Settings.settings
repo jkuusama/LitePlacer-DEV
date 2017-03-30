@@ -104,7 +104,7 @@
     <Setting Name="General_MachineSizeY" Type="System.Double" Scope="User">
       <Value Profile="(Default)">370</Value>
     </Setting>
-    <Setting Name="General_ProbingBackOff" Type="System.Double" Scope="User">
+    <Setting Name="General_PlacementBackOff" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.2</Value>
     </Setting>
     <Setting Name="General_ZtoPCB" Type="System.Double" Scope="User">
@@ -342,6 +342,9 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Job_Yoffset" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="General_ZprobingHysteresis" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>

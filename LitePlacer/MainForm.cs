@@ -368,8 +368,9 @@ namespace LitePlacer
             NozzleBelowPCB_textBox.Text = Properties.Settings.Default.General_BelowPCB_Allowance.ToString();
 
             Z0_textBox.Text = Properties.Settings.Default.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
-            BackOff_textBox.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
+            BackOff_textBox.Text = Properties.Settings.Default.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture);
             PlacementDepth_textBox.Text = Properties.Settings.Default.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
+            Hysteresis_textBox.Text = Properties.Settings.Default.General_ZprobingHysteresis.ToString("0.00", CultureInfo.InvariantCulture);
 
             JobOffsetX_textBox.Text = Properties.Settings.Default.Job_Xoffset.ToString("0.000", CultureInfo.InvariantCulture);
             JobOffsetY_textBox.Text = Properties.Settings.Default.Job_Yoffset.ToString("0.000", CultureInfo.InvariantCulture);
@@ -6359,7 +6360,7 @@ namespace LitePlacer
                     break;
 
                 case 2:
-                    Properties.Settings.Default.General_ProbingBackOff = Properties.Settings.Default.General_ZtoPCB - Cnc.CurrentZ;
+                    Properties.Settings.Default.General_PlacementBackOff = Properties.Settings.Default.General_ZtoPCB - Cnc.CurrentZ;
                     Properties.Settings.Default.General_ZtoPCB = Cnc.CurrentZ;
                     Nozzle.ProbingMode(false, JSON);
                     SetProbing_button.Text = "Start";
@@ -6369,12 +6370,12 @@ namespace LitePlacer
                     ShowMessageBox(
                        "Probing Backoff set successfully.\n" +
                             "PCB surface: " + Properties.Settings.Default.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) +
-                            "\nBackoff:  " + Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture),
+                            "\nBackoff:  " + Properties.Settings.Default.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture),
                        "Done",
                        MessageBoxButtons.OK);
                     SetProbing_stage = 0;
                     Z0_textBox.Text = Properties.Settings.Default.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
-                    BackOff_textBox.Text = Properties.Settings.Default.General_ProbingBackOff.ToString("0.00", CultureInfo.InvariantCulture);
+                    BackOff_textBox.Text = Properties.Settings.Default.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture);
 
                     ZGuardOn();
                     CancelProbing_button.Visible = false;
@@ -6618,11 +6619,26 @@ namespace LitePlacer
             {
                 if (double.TryParse(BackOff_textBox.Text, out val))
                 {
-                    Properties.Settings.Default.General_ProbingBackOff = val;
+                    Properties.Settings.Default.General_PlacementBackOff = val;
                     BackOff_textBox.ForeColor = Color.Black;
                 }
             }
         }
+
+        private void Hysteresis_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            double val;
+            Hysteresis_textBox.ForeColor = Color.Red;
+            if (e.KeyChar == '\r')
+            {
+                if (double.TryParse(Hysteresis_textBox.Text, out val))
+                {
+                    Properties.Settings.Default.General_ZprobingHysteresis = val;
+                    Hysteresis_textBox.ForeColor = Color.Black;
+                }
+            }
+        }
+
 
         private void PlacementDepth_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -6630,7 +6646,7 @@ namespace LitePlacer
             PlacementDepth_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(PlacementDepth_textBox.Text, out val))
+                if (double.TryParse(PlacementDepth_textBox.Text.Replace(',','.'), out val))
                 {
                     Properties.Settings.Default.Placement_Depth = val;
                     PlacementDepth_textBox.ForeColor = Color.Black;
@@ -8404,7 +8420,7 @@ namespace LitePlacer
                 {
                     return false;
                 }
-                double Zpickup = Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff + Properties.Settings.Default.Placement_Depth;
+                double Zpickup = Cnc.CurrentZ - Properties.Settings.Default.General_PlacementBackOff + Properties.Settings.Default.Placement_Depth;
                 Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value = Zpickup.ToString();
                 DisplayText("PickUpPart_m(): Probed Z= " + Cnc.CurrentZ.ToString());
             }
@@ -8669,7 +8685,7 @@ namespace LitePlacer
                 {
                     return false;
                 };
-                double Zplace = Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff + Properties.Settings.Default.Placement_Depth;
+                double Zplace = Cnc.CurrentZ - Properties.Settings.Default.General_PlacementBackOff + Properties.Settings.Default.Placement_Depth;
                 Tapes_dataGridView.Rows[TapeNum].Cells["Z_Place_Column"].Value = Zplace.ToString();
                 DisplayText("PutPartDown_m(): Probed placement Z= " + Cnc.CurrentZ.ToString());
             }
@@ -8718,7 +8734,7 @@ namespace LitePlacer
                 {
                     return false;
                 }
-                LoosePartPlaceZ = Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff + Properties.Settings.Default.Placement_Depth;
+                LoosePartPlaceZ = Cnc.CurrentZ - Properties.Settings.Default.General_PlacementBackOff + Properties.Settings.Default.Placement_Depth;
                 DisplayText("PutLoosePartDown_m(): probed Z= " + Cnc.CurrentZ.ToString());
                 DisplayText("PutLoosePartDown_m(): placement Z= " + LoosePartPlaceZ.ToString());
             }
@@ -8868,7 +8884,7 @@ namespace LitePlacer
                     DownCamera.Draw_Snapshot = true;
                     return false;
                 }
-                LoosePartPickupZ = Cnc.CurrentZ - Properties.Settings.Default.General_ProbingBackOff + Properties.Settings.Default.Placement_Depth;
+                LoosePartPickupZ = Cnc.CurrentZ - Properties.Settings.Default.General_PlacementBackOff + Properties.Settings.Default.Placement_Depth;
                 DisplayText("PickUpLoosePart_m(): Probed Z= " + Cnc.CurrentZ.ToString());
                 DisplayText("PickUpLoosePart_m(): Pickup Z= " + LoosePartPickupZ.ToString());
             }
@@ -14485,6 +14501,7 @@ namespace LitePlacer
                 DownCamera.BoxRotationDeg = Cnc.CurrentA;
             }
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

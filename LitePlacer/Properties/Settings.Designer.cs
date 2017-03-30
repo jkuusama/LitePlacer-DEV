@@ -434,12 +434,12 @@ namespace LitePlacer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.2")]
-        public double General_ProbingBackOff {
+        public double General_PlacementBackOff {
             get {
-                return ((double)(this["General_ProbingBackOff"]));
+                return ((double)(this["General_PlacementBackOff"]));
             }
             set {
-                this["General_ProbingBackOff"] = value;
+                this["General_PlacementBackOff"] = value;
             }
         }
         
@@ -1388,6 +1388,18 @@ namespace LitePlacer.Properties {
             }
             set {
                 this["Job_Yoffset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double General_ZprobingHysteresis {
+            get {
+                return ((double)(this["General_ZprobingHysteresis"]));
+            }
+            set {
+                this["General_ZprobingHysteresis"] = value;
             }
         }
     }
