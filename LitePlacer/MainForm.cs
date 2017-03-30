@@ -14283,17 +14283,18 @@ namespace LitePlacer
             {
                 NoOfNozzles_UpDown.Value = Properties.Settings.Default.Nozzles_maximum;
             }
-            if (NoOfNozzles_UpDown.Value > NozzlesLoad_dataGridView.RowCount)
+            while (NoOfNozzles_UpDown.Value > NozzlesLoad_dataGridView.RowCount)
             {
                 AddNozzle(true);
             }
-            else
+            while (NoOfNozzles_UpDown.Value < NozzlesLoad_dataGridView.RowCount)
             {
                 if (NozzlesLoad_dataGridView.RowCount > 0)
                 {
                     RemoveNozzle();
                 }
             }
+
             Properties.Settings.Default.Nozzles_count = (int)NoOfNozzles_UpDown.Value;
             ForceNozzle_numericUpDown.Maximum = Properties.Settings.Default.Nozzles_count;
             if (Properties.Settings.Default.Nozzles_count == 0)
