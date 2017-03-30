@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -601,6 +601,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
+            this.ClearPlaced_button = new System.Windows.Forms.Button();
             this.Placement_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
             this.OmitNozzleCalibration_checkBox = new System.Windows.Forms.CheckBox();
@@ -780,7 +781,6 @@
             this.GoY_button = new System.Windows.Forms.Button();
             this.GoA_button = new System.Windows.Forms.Button();
             this.GoZ_button = new System.Windows.Forms.Button();
-            this.ClearPlaced_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -7181,6 +7181,16 @@
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
             // 
+            // ClearPlaced_button
+            // 
+            this.ClearPlaced_button.Location = new System.Drawing.Point(1141, 281);
+            this.ClearPlaced_button.Name = "ClearPlaced_button";
+            this.ClearPlaced_button.Size = new System.Drawing.Size(98, 23);
+            this.ClearPlaced_button.TabIndex = 82;
+            this.ClearPlaced_button.Text = "Clear \"Placed\"";
+            this.ClearPlaced_button.UseVisualStyleBackColor = true;
+            this.ClearPlaced_button.Click += new System.EventHandler(this.resetPlacedDataToolStripMenuItem_Click);
+            // 
             // Placement_pictureBox
             // 
             this.Placement_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -7928,14 +7938,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9053,16 +9063,6 @@
             this.GoZ_button.Text = "Z:";
             this.GoZ_button.UseVisualStyleBackColor = true;
             this.GoZ_button.Click += new System.EventHandler(this.GoZ_button_Click);
-            // 
-            // ClearPlaced_button
-            // 
-            this.ClearPlaced_button.Location = new System.Drawing.Point(1141, 281);
-            this.ClearPlaced_button.Name = "ClearPlaced_button";
-            this.ClearPlaced_button.Size = new System.Drawing.Size(98, 23);
-            this.ClearPlaced_button.TabIndex = 82;
-            this.ClearPlaced_button.Text = "Clear \"Placed\"";
-            this.ClearPlaced_button.UseVisualStyleBackColor = true;
-            this.ClearPlaced_button.Click += new System.EventHandler(this.resetPlacedDataToolStripMenuItem_Click);
             // 
             // FormMain
             // 

@@ -1153,7 +1153,7 @@ namespace LitePlacer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
         public int Nozzles_count {
             get {
                 return ((int)(this["Nozzles_count"]));
