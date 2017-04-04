@@ -299,6 +299,12 @@ namespace LitePlacer
         }
 
         // =================================================================================
+        // Helper: distance, calculates distance of two points
+        private double distance (double X1, double Y1, double X2, double Y2)
+        {
+            return Math.Sqrt((X1 - X2) * (X1 - X2) + (Y1 - Y2) * (Y1 - Y2));
+        }
+
         private bool Panelize()
         {
             if (!ValidateData())
@@ -432,18 +438,27 @@ namespace LitePlacer
             string[] OriginalFiducials = JobData.Rows[FiducialIndex].Cells["ComponentList"].Value.ToString().Split(',');
             // Build the job:
             MainForm.FillJobData_GridView();
+
             // Our job now has multiples of each board fiducials, we only want to use four that are furthest apart
-            double fool = -10000000.0;
-            string LowLeft = OriginalFiducials[1];
-            double LowLeft_val = fool;
-            string HighLeft = OriginalFiducials[1];
-            double HighLeft_val = fool;
-            string LowRight = OriginalFiducials[1];
-            double LowRight_val = fool;
-            string HighRight = OriginalFiducials[1];
-            double HighRight_val = fool;
-            double X = 0.0;
-            double Y = 0.0;
+            string LowLeft = "_";
+            string LowRight = "_";
+            string HighLeft = "_";
+            string HighRight = "_";
+            double LowLeftX = 0;
+            double LowLeftY = 0;
+            double LowRightX = 0;
+            double LowRightY = 0;
+            double HighLeftX = 0;
+            double HighLeftY = 0;
+            double HighRightX = 0;
+            double HighRightY = 0;
+            bool first = true;
+            double X;
+            double Y;
+            double m10 = 10000;
+            double CurrDist;
+            double ThisDist;
+
             // For each fiducial in the list,
             foreach (string CurrentFiducial in OriginalFiducials)
             {
@@ -456,34 +471,83 @@ namespace LitePlacer
                         // Get its nominal position (value already checked).
                         double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X);
                         double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y);
-                    }
-                    if((X+Y)<LowLeft_val)
-                    {
-                        LowLeft = Row.Cells["Component"].Value.ToString();
-                        LowLeft_val = X + Y;
-                    }
-                    if ((Y-X) > HighLeft_val)
-                    {
-                        HighLeft = Row.Cells["Component"].Value.ToString();
-                        HighLeft_val = Y - X;
-                    }
-                    if ((X - Y) > LowRight_val)
-                    {
-                        LowRight = Row.Cells["Component"].Value.ToString();
-                        LowRight_val = X - Y;
-                    }
-                    if ((X + Y) > HighRight_val)
-                    {
-                        HighRight = Row.Cells["Component"].Value.ToString();
-                        HighRight_val = X + Y;
-                    }
+                        // We don't want to be fooled by negative coordinates. Therefore, we'll place the fid 10m up and right
+                        X = X + m10;
+                        Y = Y + m10;
+                        if ((X < 0) || (Y < 0))
+                        {
+                            // if 10m is not enough, then ??
+                            MainForm.ShowMessageBox(
+                                "Problem with data. " + Row.Cells["Component"].Value.ToString() + " X: " + X.ToString() + ", Y: " + Y.ToString() + "?",
+                                "Fiducials data error",
+                                MessageBoxButtons.OK);
+                            return false;
+                        }
+
+                        // First fid that we find is the lowest and rightest, highest and lowest, for now:
+                        if (first)
+                        {
+                            double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X);
+                            double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y);
+                            LowLeft = Row.Cells["Component"].Value.ToString();
+                            LowLeftX = X;
+                            LowLeftY = Y;
+                            LowRight = Row.Cells["Component"].Value.ToString();
+                            LowRightX = X;
+                            LowRightY = Y;
+                            HighLeft = Row.Cells["Component"].Value.ToString();
+                            HighLeftX = X;
+                            HighLeftY = Y;
+                            HighRight = Row.Cells["Component"].Value.ToString();
+                            HighRightX = X;
+                            HighRightY = Y;
+                            first = false;
+                            continue;
+                        }
+
+                        CurrDist = distance(LowLeftX, LowLeftY, 0, 0);
+                        ThisDist = distance(X, Y, 0, 0);
+                        if (ThisDist < CurrDist)
+                        {
+                            LowLeft = Row.Cells["Component"].Value.ToString();
+                            LowLeftX = X;
+                            LowLeftY = Y;
+                        }
+
+                        CurrDist = distance(HighLeftX, HighLeftY, 0, 2 * m10);
+                        ThisDist = distance(X, Y, 0, 2 * m10);
+                        if (ThisDist < CurrDist)
+                        {
+                            HighLeft = Row.Cells["Component"].Value.ToString();
+                            HighLeftX = X;
+                            HighLeftY = Y;
+                        }
+
+                        CurrDist = distance(LowRightX, LowRightY, 2 * m10, 0);
+                        ThisDist = distance(X, Y, 2 * m10, 0);
+                        if (ThisDist < CurrDist)
+                        {
+                            LowRight = Row.Cells["Component"].Value.ToString();
+                            LowRightX = X;
+                            LowRightY = Y;
+                        }
+
+                        CurrDist = distance(HighRightX, HighRightY, 2 * m10, 2 * m10);
+                        ThisDist = distance(X, Y, 2 * m10, 2 * m10);
+                        if (ThisDist < CurrDist)
+                        {
+                            HighRight = Row.Cells["Component"].Value.ToString();
+                            HighRightX = X;
+                            HighRightY = Y;
+                        }
+                    } 
                 }
             }
-            fool = fool / 2;
-            if ((LowLeft_val < fool) || (HighLeft_val < fool) || (LowRight_val < fool) || (HighRight_val < fool))
+
+            // Are all four updated? If not, placement is not going to work
+            // Likely, one fiducial on board, one dimensional panel
+            if (String.Equals(LowLeft, "_") || String.Equals(HighLeft, "_") || String.Equals(LowRight, "_") || String.Equals(HighRight, "_"))
             {
-                // At least one of them did not get updated, placement is not going to work
-                // Likely, one fiducial on board, one dimensional panel
                 MainForm.ShowMessageBox(
                     "Current fiducials don't spread out.",
                     "Fiducials data error",
