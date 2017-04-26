@@ -1447,8 +1447,173 @@ namespace LitePlacer
         }
 
         // ==========================================================================================================
+        // Rectangles:
+        // ==========================================================================================================
+        private List<Shapes.Rectangle> FindRectanglesFunct(Bitmap bitmap)
+        {
+            // step 1 - turn background to black (done)
 
-		private Bitmap MirrorFunct(Bitmap frame)
+            // step 2 - locating objects
+            BlobCounter blobCounter = new BlobCounter();
+            blobCounter.FilterBlobs = true;
+            blobCounter.MinHeight = 3;
+            blobCounter.MinWidth = 3;
+            blobCounter.ProcessImage(bitmap);
+            Blob[] blobs = blobCounter.GetObjectsInformation();
+
+            // step 3 - check objects' type and do what you do:
+            List<Shapes.Rectangle> Rectangles = new List<Shapes.Rectangle>();
+
+            for (int i = 0, n = blobs.Length; i < n; i++)
+            {
+                SimpleShapeChecker QuadChecker = new SimpleShapeChecker();
+                List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
+                List<IntPoint> cornerPoints;
+
+                // fine tune ShapeChecker
+                QuadChecker.AngleError = 7;  // default 7
+                QuadChecker.LengthError = 0.1F;  // default 0.1 (10%)
+                QuadChecker.MinAcceptableDistortion = 0.1F;  // in pixels, default 0.5 
+                QuadChecker.RelativeDistortionLimit = 0.05F;  // default 0.03 (3%)
+
+                // use the Outline checker to extract the corner points
+                if (QuadChecker.IsQuadrilateral(edgePoints, out cornerPoints))
+                {
+                    // only do things if the corners form a rectangle
+                    SimpleShapeChecker RectangleChecker = new SimpleShapeChecker();
+                    RectangleChecker.AngleError = 7;  // default 7
+                    RectangleChecker.LengthError = 0.00F;  // default 0.1 (10%)
+                    RectangleChecker.MinAcceptableDistortion = 1F;  // in pixels, default 0.5 
+                    RectangleChecker.RelativeDistortionLimit = 0.05F;  // default 0.03 (3%)
+                    if (RectangleChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
+                    //if (true)
+                    {
+                        List<IntPoint> corners = PointsCloud.FindQuadrilateralCorners(edgePoints);
+                        float x0 = corners[0].X;
+                        float y0 = corners[0].Y;
+                        float x2 = corners[2].X;
+                        float y2 = corners[2].Y;
+                        AForge.Point C = new AForge.Point();
+                        C.X = (float)(((x2 - x0) / 2.0) + x0);
+                        C.Y = (float)(((y2 - y0) / 2.0) + y0);
+
+                        AForge.Point a1 = corners[0];
+                        AForge.Point a2 = corners[1];
+                        AForge.Point b1 = corners[0];
+                        AForge.Point b2 = corners[1];
+                        b2.Y = b1.Y;
+                        float angle = GeometryTools.GetAngleBetweenLines(a1, a2, b1, b2);
+
+                        Rectangles.Add(new Shapes.Rectangle(C, angle, corners));
+                    }
+                }
+            }
+            return (Rectangles);
+        }
+        // =========================================================
+        private Bitmap DrawRectanglesFunct(Bitmap image)
+        {
+            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
+            int closest = FindClosestRectangle(Rectangles);
+            Graphics g = Graphics.FromImage(image);
+            Pen OrangePen = new Pen(Color.DarkOrange, 2);
+            Pen LimePen = new Pen(Color.Lime, 2);
+
+            for (int i = 0, n = Rectangles.Count; i < n; i++)
+            {
+                if (i==closest)
+                {
+                    g.DrawPolygon(LimePen, ToPointsArray(Rectangles[i].Corners));
+                }
+                else
+                {
+                    g.DrawPolygon(OrangePen, ToPointsArray(Rectangles[i].Corners));
+                }
+            }
+            g.Dispose();
+            LimePen.Dispose();
+            OrangePen.Dispose();
+            return (image);
+        }
+
+        // =========================================================
+        private int FindClosestRectangle(List<Shapes.Rectangle> Rectangles)
+        {
+            if (Rectangles.Count==0)
+            {
+                return 0;
+            }
+            int closest = 0;
+            float X = (Rectangles[0].Center.X - FrameCenterX);
+            float Y = (Rectangles[0].Center.Y - FrameCenterY);
+            float dist = X * X + Y * Y;  // we are interested only which one is closest, don't neet to take square roots to get distance right
+            float dX, dY;
+            for (int i = 0; i < Rectangles.Count; i++)
+            {
+                dX = Rectangles[i].Center.X - FrameCenterX;
+                dY = Rectangles[i].Center.Y - FrameCenterY;
+                if ((dX * dX + dY * dY) < dist)
+                {
+                    dist = dX * dX + dY * dY;
+                    closest = i;
+                }
+            }
+            return closest;
+        }
+
+        // =========================================================
+        public int GetClosestRectangle(out double X, out double Y, double MaxDistance)
+        // Sets X, Y position of the closest circle to the frame center in pixels, return value is number of circles found
+        {
+            List<Shapes.Rectangle> Rectangles = GetMeasurementRectangles(MaxDistance);
+            X = 0.0;
+            Y = 0.0;
+            if (Rectangles.Count == 0)
+            {
+                return (0);
+            }
+            // Find the closest
+            int closest = FindClosestRectangle(Rectangles);
+            double zoom = GetMeasurementZoom();
+            X = (Rectangles[closest].Center.X - FrameCenterX);
+            Y = (Rectangles[closest].Center.Y - FrameCenterY);
+            X = X / zoom;
+            Y = Y / zoom;
+            return (Rectangles.Count);
+        }
+
+        public List<Shapes.Rectangle> GetMeasurementRectangles(double MaxDistance)
+        {
+            // returns a list of circles for measurements, filters for distance (which we always do) and size, if needed
+
+            Bitmap image = GetMeasurementFrame();
+            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
+            List<Shapes.Rectangle> GoodRectangles = new  List<Shapes.Rectangle>();
+            image.Dispose();
+
+            double X = 0.0;
+            double Y = 0.0;
+            MaxDistance = MaxDistance * GetMeasurementZoom();
+            double MaxS = MaxSize * GetMeasurementZoom();
+            double MinS = MinSize * GetMeasurementZoom();
+            // Remove those that are more than MaxDistance away from frame center
+            foreach (Shapes.Rectangle Rectangle in Rectangles)
+            {
+                X = (Rectangle.Center.X - FrameCenterX);
+                Y = (Rectangle.Center.Y - FrameCenterY);
+                if ((X * X + Y * Y) <= (MaxDistance * MaxDistance))
+                {
+                    GoodRectangles.Add(Rectangle);
+                }
+            }
+            return (GoodRectangles);
+        }
+
+
+
+        // ==========================================================================================================
+
+        private Bitmap MirrorFunct(Bitmap frame)
 		{
 			Mirror Mfilter = new Mirror(false, true);
 			// apply the MirrFilter
@@ -1487,53 +1652,6 @@ namespace LitePlacer
 			ResizeBilinear RBfilter = new ResizeBilinear(OrgSizeX, OrgSizeY);
 			frame = RBfilter.Apply(frame);
 		}
-
-		// =========================================================
-		private Bitmap DrawRectanglesFunct(Bitmap image)
-		{
-
-			// step 1 - turn background to black (done)
-
-			// step 2 - locating objects
-			BlobCounter blobCounter = new BlobCounter();
-			blobCounter.FilterBlobs = true;
-			blobCounter.MinHeight = 3;
-			blobCounter.MinWidth = 3;
-			blobCounter.ProcessImage(image);
-			Blob[] blobs = blobCounter.GetObjectsInformation();
-
-			// step 3 - check objects' type and do what you do:
-			Graphics g = Graphics.FromImage(image);
-			Pen pen = new Pen(Color.DarkOrange, 2);
-
-			for (int i = 0, n = blobs.Length; i < n; i++)
-			{
-				SimpleShapeChecker ShapeChecker = new SimpleShapeChecker();
-				List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
-				List<IntPoint> cornerPoints;
-
-				// fine tune ShapeChecker
-				ShapeChecker.AngleError = 15;  // default 7
-				ShapeChecker.LengthError = 0.3F;  // default 0.1 (10%)
-				ShapeChecker.MinAcceptableDistortion = 0.9F;  // in pixels, default 0.5 
-				ShapeChecker.RelativeDistortionLimit = 0.2F;  // default 0.03 (3%)
-
-				// use the Outline checker to extract the corner points
-				if (ShapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
-				{
-					// only do things if the corners form a rectangle
-					if (ShapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
-					{
-						List<IntPoint> corners = PointsCloud.FindQuadrilateralCorners(edgePoints);
-						g.DrawPolygon(pen, ToPointsArray(corners));
-					}
-				}
-			}
-            g.Dispose();
-            pen.Dispose();
-			return (image);
-		}
-
 
         // =========================================================
         private void RotateByFrameCenter(int x, int y, out int px, out int py)

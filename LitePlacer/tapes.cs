@@ -358,7 +358,7 @@ namespace LitePlacer
             };
 
             // get hole exact location:
-            if (!MainForm.GoToCircleLocation_m(1.8, 0.1, out X, out Y))
+            if (!MainForm.GoToFeatureLocation_m(FormMain.FeatureType.Circle, 1.8, 0.1, out X, out Y))
             {
                 MainForm.ShowMessageBox(
                     "Can't find tape hole",
@@ -681,7 +681,7 @@ namespace LitePlacer
 			// Get hole exact location:
             // We want to find the hole less than 2mm from where we think it should be. (Otherwise there is a risk
 			// of picking a wrong hole.)
-            if (!MainForm.GoToCircleLocation_m(1.8, 0.5, out HoleX, out HoleY))
+            if (!MainForm.GoToFeatureLocation_m(FormMain.FeatureType.Circle, 1.8, 0.5, out HoleX, out HoleY))
 			{
 				MainForm.ShowMessageBox(
 					"Can't find tape hole",

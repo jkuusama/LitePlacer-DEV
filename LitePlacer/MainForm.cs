@@ -77,6 +77,8 @@ namespace LitePlacer
 
         // =================================================================================
 
+        // We need "goto" to different features, currently circles, rectangles or both
+        public enum FeatureType { Circle, Rectangle, Both };
 
         // We need some functions both in JSON and in text mode:
         public const bool JSON = true;
@@ -2655,16 +2657,16 @@ namespace LitePlacer
 
 
         // =====================================================================
-        // This routine finds an accurate location of a circle that downcamera is looking at.
-        // Used in homing and locating fiducials.
+        // This routine finds an accurate location of a circle/rectangle that downcamera is looking at.
+        // Used in homing, locating fiducials and locating tape holes.
         // Tolerances in mm; find: how far from center to accept a circle, move: how close to go (set small to ensure view from straight up)
         // At return, the camera is located on top of the circle.
         // X and Y are set to remainding error (true position: currect + error)
         // =====================================================================
 
-        public bool GoToCircleLocation_m(double FindTolerance, double MoveTolerance, out double X, out double Y)
+        public bool GoToFeatureLocation_m(FeatureType Shape, double FindTolerance, double MoveTolerance, out double X, out double Y)
         {
-            DisplayText("GoToCircleLocation_m(), FindTolerance: " + FindTolerance.ToString() + ", MoveTolerance: " + MoveTolerance.ToString());
+            DisplayText("GoToFeatureLocation_m(), FindTolerance: " + FindTolerance.ToString() + ", MoveTolerance: " + MoveTolerance.ToString());
             SelectCamera(DownCamera);
             X = 100;
             Y = 100;
@@ -2684,10 +2686,34 @@ namespace LitePlacer
             DownCamera.PauseProcessing = true;
             do
             {
-                // Measure circle location
+                // Measure location
                 for (tries = 0; tries < 8; tries++)
                 {
-                    res = DownCamera.GetClosestCircle(out X, out Y, FindTolerance);
+                    if (Shape==FeatureType.Circle)
+                    {
+                        res = DownCamera.GetClosestCircle(out X, out Y, FindTolerance);
+                    }
+                    else if (Shape == FeatureType.Rectangle)
+                    {
+                        res = DownCamera.GetClosestRectangle(out X, out Y, FindTolerance);
+                    }
+                    else if (Shape == FeatureType.Both)
+                    {
+                        res = DownCamera.GetClosestCircle(out X, out Y, FindTolerance);
+                        if (res==0)
+                        {
+                            res = DownCamera.GetClosestRectangle(out X, out Y, FindTolerance);
+                        }
+                    }
+                    else
+                    {
+                        ShowMessageBox(
+                            "GoToFeatureLocation called with unknown feature " + Shape.ToString(),
+                            "Programmer error:",
+                            MessageBoxButtons.OK);
+                        return false;
+                    }
+
                     if (res != 0)
                     {
                         break;
@@ -2697,8 +2723,8 @@ namespace LitePlacer
                     {
                         DisplayText("Failed in 8 tries.");
                         ShowMessageBox(
-                            "Optical positioning: Can't find Circle",
-                            "No Circle found",
+                            "Optical positioning: Can't find Feature",
+                            "No found",
                             MessageBoxButtons.OK);
                         DownCamera.PauseProcessing = ProcessingStateSave;
                         return false;
@@ -2738,7 +2764,7 @@ namespace LitePlacer
             double X;
             double Y;
             // Find within 20mm, goto within 0.05
-            if (!GoToCircleLocation_m(20.0, 0.05, out X, out Y))
+            if (!GoToFeatureLocation_m(FeatureType.Circle, 20.0, 0.05, out X, out Y))
             {
                 return false;
             }
@@ -3185,6 +3211,28 @@ namespace LitePlacer
             NozzleMaxSize_textBox.Text = Properties.Settings.Default.Nozzles_CalibrationMaxSize.ToString();
             NozzleMinSize_textBox.Text = Properties.Settings.Default.Nozzles_CalibrationMinSize.ToString();
 
+            FiducialManConfirmation_checkBox.Checked=Properties.Settings.Default.Placement_FiducialConfirmation;
+            if (Properties.Settings.Default.Placement_FiducialsType==0)
+            {
+                RoundFiducial_radioButton.Checked = true;
+            }
+            else if (Properties.Settings.Default.Placement_FiducialsType == 1)
+            {
+                RectangularFiducial_radioButton.Checked = true;
+            }
+            else if (Properties.Settings.Default.Placement_FiducialsType == 2)
+            {
+                AutoFiducial_radioButton.Checked = true;
+            }
+            else
+            {
+                ShowMessageBox(
+                   "Unknown fiducial type "+ Properties.Settings.Default.Placement_FiducialsType.ToString()+", possibly corrupted settings",
+                   "Corrupted settings",
+                   MessageBoxButtons.OK);
+                RoundFiducial_radioButton.Checked = true;
+            }
+            FiducialsTolerance_textBox.Text= Properties.Settings.Default.Placement_FiducialTolerance.ToString("0.00", CultureInfo.InvariantCulture);
 
             Display_dataGridView.Rows.Clear();
             DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
@@ -9314,10 +9362,31 @@ namespace LitePlacer
         {
             CNC_XY_m(fid.X_nominal + Properties.Settings.Default.Job_Xoffset + Properties.Settings.Default.General_JigOffsetX,
                      fid.Y_nominal + Properties.Settings.Default.Job_Yoffset + Properties.Settings.Default.General_JigOffsetY);
-            // If more than 3mm off here, not good.
             double X;
             double Y;
-            if (!GoToCircleLocation_m(3, 0.1, out X, out Y))
+            FeatureType FidShape= FeatureType.Circle;
+            if (Properties.Settings.Default.Placement_FiducialsType==0)
+            {
+                FidShape = FeatureType.Circle;
+            }
+            else if (Properties.Settings.Default.Placement_FiducialsType == 1)
+            {
+                FidShape = FeatureType.Rectangle;
+            }
+            else if (Properties.Settings.Default.Placement_FiducialsType == 2)
+            {
+                FidShape = FeatureType.Both;
+            }
+            else
+            {
+                ShowMessageBox(
+                    "MeasureFiducial_m, unknown fiducial type " + FidShape.ToString(),
+                    "Programmer error:",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            double FindTolerance = Properties.Settings.Default.Placement_FiducialTolerance;
+            if (!GoToFeatureLocation_m(FidShape, FindTolerance, 0.1, out X, out Y))
             {
                 ShowMessageBox(
                     "Finding fiducial: Can't regognize fiducial " + fid.Designator,
@@ -9453,6 +9522,18 @@ namespace LitePlacer
                 if (!MeasureFiducial_m(ref Fiducials[i]))
                 {
                     return false;
+                }
+                if (Properties.Settings.Default.Placement_FiducialConfirmation)
+                {
+                    DialogResult dialogResult = ShowMessageBox(
+                        "Fiducial location OK?",
+                        "Confirm Fiducial",
+                        MessageBoxButtons.OKCancel
+                    );
+                    if (dialogResult == DialogResult.Cancel)
+                    {
+                        return false;
+                    }
                 }
                 // We could put the machine data in place at this point. However, 
                 // we don't, as if the algorithms below are correct, the data will not change more than measurement error.
@@ -9929,8 +10010,7 @@ namespace LitePlacer
         private void ReMeasure_button_Click(object sender, EventArgs e)
         {
             ValidMeasurement_checkBox.Checked = false;
-            BuildMachineCoordinateData_m();
-            ValidMeasurement_checkBox.Checked = true;
+            ValidMeasurement_checkBox.Checked = BuildMachineCoordinateData_m();
             // CNC_Park();
         }
 
@@ -11922,6 +12002,22 @@ namespace LitePlacer
 
 
         // ==========================================================================================================
+        
+         private void DebugRegtanclesDownCamera(double Tolerance)
+        {
+            double X, Y;
+            if (DownCamera.GetClosestRectangle(out X, out Y, Tolerance) > 0)
+            {
+                X = X * Properties.Settings.Default.DownCam_XmmPerPixel;
+                Y = -Y * Properties.Settings.Default.DownCam_YmmPerPixel;
+                DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
+                DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                DisplayText("No results.");
+            }
+        }
 
         private void DebugCirclesDownCamera(double Tolerance)
         {
@@ -12107,7 +12203,10 @@ namespace LitePlacer
             if (DownCamera.IsRunning())
             {
                 SetFiducialsMeasurement();
+                DisplayText("Circles:");
                 DebugCirclesDownCamera(20.0 / Properties.Settings.Default.DownCam_XmmPerPixel);
+                DisplayText("Rectangles:");
+                DebugRegtanclesDownCamera(20.0 / Properties.Settings.Default.DownCam_XmmPerPixel);
             }
             else
             {
@@ -14491,8 +14590,6 @@ namespace LitePlacer
         }
 
 
-
-
         #endregion
         public bool DownCameraRotationFollowsA = false;
         private void apos_textBox_TextChanged(object sender, EventArgs e)
@@ -14503,6 +14600,35 @@ namespace LitePlacer
             }
         }
 
+
+        private void FiducialsTolerance_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(FiducialsTolerance_textBox.Text.Replace(',', '.'), out val))
+            {
+                Properties.Settings.Default.Placement_FiducialTolerance = val;
+            }
+        }
+
+        private void RoundFiducial_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Placement_FiducialsType = 0;
+        }
+
+        private void RectangularFiducial_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Placement_FiducialsType = 1;
+        }
+
+        private void AutoFiducial_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Placement_FiducialsType = 2;
+        }
+
+        private void FiducialManConfirmation_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Placement_FiducialConfirmation = FiducialManConfirmation_checkBox.Checked;
+        }
     }	// end of: 	public partial class FormMain : Form
 
 

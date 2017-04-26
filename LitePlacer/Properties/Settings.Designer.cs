@@ -1402,5 +1402,41 @@ namespace LitePlacer.Properties {
                 this["General_ZprobingHysteresis"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Placement_FiducialsType {
+            get {
+                return ((int)(this["Placement_FiducialsType"]));
+            }
+            set {
+                this["Placement_FiducialsType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public double Placement_FiducialTolerance {
+            get {
+                return ((double)(this["Placement_FiducialTolerance"]));
+            }
+            set {
+                this["Placement_FiducialTolerance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Placement_FiducialConfirmation {
+            get {
+                return ((bool)(this["Placement_FiducialConfirmation"]));
+            }
+            set {
+                this["Placement_FiducialConfirmation"] = value;
+            }
+        }
     }
 }

@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -783,6 +783,13 @@
             this.GoY_button = new System.Windows.Forms.Button();
             this.GoA_button = new System.Windows.Forms.Button();
             this.GoZ_button = new System.Windows.Forms.Button();
+            this.FiducialsTolerance_textBox = new System.Windows.Forms.TextBox();
+            this.label137 = new System.Windows.Forms.Label();
+            this.label138 = new System.Windows.Forms.Label();
+            this.RoundFiducial_radioButton = new System.Windows.Forms.RadioButton();
+            this.RectangularFiducial_radioButton = new System.Windows.Forms.RadioButton();
+            this.AutoFiducial_radioButton = new System.Windows.Forms.RadioButton();
+            this.FiducialManConfirmation_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -2398,7 +2405,7 @@
             // 
             // MeasureDownCam_button
             // 
-            this.MeasureDownCam_button.Location = new System.Drawing.Point(337, 539);
+            this.MeasureDownCam_button.Location = new System.Drawing.Point(501, 340);
             this.MeasureDownCam_button.Name = "MeasureDownCam_button";
             this.MeasureDownCam_button.Size = new System.Drawing.Size(75, 23);
             this.MeasureDownCam_button.TabIndex = 144;
@@ -2447,7 +2454,7 @@
             this.groupBox13.Controls.Add(this.DownCam_SnapshotToDisplay_button);
             this.groupBox13.Controls.Add(this.DownCam_SnapshotToHere_button);
             this.groupBox13.Controls.Add(this.DownCam_TakeSnapshot_button);
-            this.groupBox13.Location = new System.Drawing.Point(6, 521);
+            this.groupBox13.Location = new System.Drawing.Point(324, 218);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(255, 56);
             this.groupBox13.TabIndex = 139;
@@ -2596,7 +2603,7 @@
             this.groupBox9.Controls.Add(this.ComponentsMeasure_button);
             this.groupBox9.Controls.Add(this.ComponentsToDisplay_button);
             this.groupBox9.Controls.Add(this.ComponentsToHere_button);
-            this.groupBox9.Location = new System.Drawing.Point(6, 464);
+            this.groupBox9.Location = new System.Drawing.Point(279, 526);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(255, 56);
             this.groupBox9.TabIndex = 138;
@@ -3331,13 +3338,20 @@
             // groupBox11
             // 
             this.groupBox11.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox11.Controls.Add(this.FiducialManConfirmation_checkBox);
+            this.groupBox11.Controls.Add(this.AutoFiducial_radioButton);
+            this.groupBox11.Controls.Add(this.RectangularFiducial_radioButton);
+            this.groupBox11.Controls.Add(this.RoundFiducial_radioButton);
+            this.groupBox11.Controls.Add(this.label138);
+            this.groupBox11.Controls.Add(this.label137);
+            this.groupBox11.Controls.Add(this.FiducialsTolerance_textBox);
             this.groupBox11.Controls.Add(this.Fiducials_dataGridView);
             this.groupBox11.Controls.Add(this.FiducialsMeasure_button);
             this.groupBox11.Controls.Add(this.FiducialsToDisplay_button);
             this.groupBox11.Controls.Add(this.FiducialsToHere_button);
             this.groupBox11.Location = new System.Drawing.Point(6, 407);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(255, 56);
+            this.groupBox11.Size = new System.Drawing.Size(255, 136);
             this.groupBox11.TabIndex = 124;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Fiducials";
@@ -3355,7 +3369,7 @@
             this.dataGridViewTextBoxColumn19,
             this.dataGridViewTextBoxColumn20});
             this.Fiducials_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Fiducials_dataGridView.Location = new System.Drawing.Point(168, 47);
+            this.Fiducials_dataGridView.Location = new System.Drawing.Point(242, 58);
             this.Fiducials_dataGridView.Name = "Fiducials_dataGridView";
             this.Fiducials_dataGridView.RowHeadersVisible = false;
             this.Fiducials_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
@@ -7959,14 +7973,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9085,6 +9099,86 @@
             this.GoZ_button.UseVisualStyleBackColor = true;
             this.GoZ_button.Click += new System.EventHandler(this.GoZ_button_Click);
             // 
+            // FiducialsTolerance_textBox
+            // 
+            this.FiducialsTolerance_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FiducialsTolerance_textBox.Location = new System.Drawing.Point(147, 49);
+            this.FiducialsTolerance_textBox.Name = "FiducialsTolerance_textBox";
+            this.FiducialsTolerance_textBox.Size = new System.Drawing.Size(46, 20);
+            this.FiducialsTolerance_textBox.TabIndex = 128;
+            this.toolTip1.SetToolTip(this.FiducialsTolerance_textBox, "Set the true size of the box on the image.");
+            this.FiducialsTolerance_textBox.TextChanged += new System.EventHandler(this.FiducialsTolerance_textBox_TextChanged);
+            // 
+            // label137
+            // 
+            this.label137.AutoSize = true;
+            this.label137.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label137.Location = new System.Drawing.Point(86, 52);
+            this.label137.Name = "label137";
+            this.label137.Size = new System.Drawing.Size(58, 13);
+            this.label137.TabIndex = 129;
+            this.label137.Text = "Tolerance:";
+            this.toolTip1.SetToolTip(this.label137, "Set the true size of the box on the image.");
+            // 
+            // label138
+            // 
+            this.label138.AutoSize = true;
+            this.label138.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label138.Location = new System.Drawing.Point(199, 52);
+            this.label138.Name = "label138";
+            this.label138.Size = new System.Drawing.Size(23, 13);
+            this.label138.TabIndex = 130;
+            this.label138.Text = "mm";
+            this.toolTip1.SetToolTip(this.label138, "Set the true size of the box on the image.");
+            // 
+            // RoundFiducial_radioButton
+            // 
+            this.RoundFiducial_radioButton.AutoSize = true;
+            this.RoundFiducial_radioButton.Location = new System.Drawing.Point(11, 48);
+            this.RoundFiducial_radioButton.Name = "RoundFiducial_radioButton";
+            this.RoundFiducial_radioButton.Size = new System.Drawing.Size(57, 17);
+            this.RoundFiducial_radioButton.TabIndex = 131;
+            this.RoundFiducial_radioButton.TabStop = true;
+            this.RoundFiducial_radioButton.Text = "Round";
+            this.RoundFiducial_radioButton.UseVisualStyleBackColor = true;
+            this.RoundFiducial_radioButton.CheckedChanged += new System.EventHandler(this.RoundFiducial_radioButton_CheckedChanged);
+            // 
+            // RectangularFiducial_radioButton
+            // 
+            this.RectangularFiducial_radioButton.AutoSize = true;
+            this.RectangularFiducial_radioButton.Location = new System.Drawing.Point(11, 71);
+            this.RectangularFiducial_radioButton.Name = "RectangularFiducial_radioButton";
+            this.RectangularFiducial_radioButton.Size = new System.Drawing.Size(51, 17);
+            this.RectangularFiducial_radioButton.TabIndex = 132;
+            this.RectangularFiducial_radioButton.TabStop = true;
+            this.RectangularFiducial_radioButton.Text = "Rect.";
+            this.RectangularFiducial_radioButton.UseVisualStyleBackColor = true;
+            this.RectangularFiducial_radioButton.CheckedChanged += new System.EventHandler(this.RectangularFiducial_radioButton_CheckedChanged);
+            // 
+            // AutoFiducial_radioButton
+            // 
+            this.AutoFiducial_radioButton.AutoSize = true;
+            this.AutoFiducial_radioButton.Location = new System.Drawing.Point(11, 94);
+            this.AutoFiducial_radioButton.Name = "AutoFiducial_radioButton";
+            this.AutoFiducial_radioButton.Size = new System.Drawing.Size(47, 17);
+            this.AutoFiducial_radioButton.TabIndex = 133;
+            this.AutoFiducial_radioButton.TabStop = true;
+            this.AutoFiducial_radioButton.Text = "Both";
+            this.AutoFiducial_radioButton.UseVisualStyleBackColor = true;
+            this.AutoFiducial_radioButton.CheckedChanged += new System.EventHandler(this.AutoFiducial_radioButton_CheckedChanged);
+            // 
+            // FiducialManConfirmation_checkBox
+            // 
+            this.FiducialManConfirmation_checkBox.AutoSize = true;
+            this.FiducialManConfirmation_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FiducialManConfirmation_checkBox.Location = new System.Drawing.Point(89, 80);
+            this.FiducialManConfirmation_checkBox.Name = "FiducialManConfirmation_checkBox";
+            this.FiducialManConfirmation_checkBox.Size = new System.Drawing.Size(121, 17);
+            this.FiducialManConfirmation_checkBox.TabIndex = 148;
+            this.FiducialManConfirmation_checkBox.Text = "Manual confirmation";
+            this.FiducialManConfirmation_checkBox.UseVisualStyleBackColor = true;
+            this.FiducialManConfirmation_checkBox.CheckedChanged += new System.EventHandler(this.FiducialManConfirmation_checkBox_CheckedChanged);
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -9176,6 +9270,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.PaperTape_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Parameter_Int_numericUpDown)).EndInit();
             this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Fiducials_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Display_dataGridView)).EndInit();
             this.groupBox4.ResumeLayout(false);
@@ -9996,6 +10091,13 @@
         private System.Windows.Forms.Button ClearPlaced_button;
         private System.Windows.Forms.TextBox Hysteresis_textBox;
         private System.Windows.Forms.Label label136;
+        private System.Windows.Forms.Label label138;
+        private System.Windows.Forms.Label label137;
+        private System.Windows.Forms.TextBox FiducialsTolerance_textBox;
+        private System.Windows.Forms.RadioButton AutoFiducial_radioButton;
+        private System.Windows.Forms.RadioButton RectangularFiducial_radioButton;
+        private System.Windows.Forms.RadioButton RoundFiducial_radioButton;
+        private System.Windows.Forms.CheckBox FiducialManConfirmation_checkBox;
     }
 }
 
