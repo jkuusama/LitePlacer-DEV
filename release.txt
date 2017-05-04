@@ -2,14 +2,14 @@ Build date 4/26/2017
 
 New Features, significant changes
 
-* Improvements for fiducial recongnition, mainly for boards
+* Improvements for fiducial recognition, mainly for boards
   without standard fiducials:
   - Fiducials can be round, rectangle or either.
   - User adjustable tolerance (how close to nominal position
     the fid needs to be found). this is useful if a via or pad is
 	is used as a fiducial, and there might not be much clearance
 	to the closest board item.
-  - Optional manual copnfirmation for a found fid, to ensure the
+  - Optional manual confirmation for a found fid, to ensure the
     intended board feature is selected.
 
 Bug Fixes 

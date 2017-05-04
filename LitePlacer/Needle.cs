@@ -21,8 +21,8 @@ namespace LitePlacer
 
 		public List<NozzlePoint> CalibrationPoints = new List<NozzlePoint>();   // what we use
         // to calibrate nozzles, we can store and restore calibration points and their validity here.
-        public List<NozzlePoint>[] CalibrationPointsArr = new List<NozzlePoint>[Properties.Settings.Default.Nozzles_maximum];
-        public bool[] CalibratedArr = new bool[Properties.Settings.Default.Nozzles_maximum];
+        public List<NozzlePoint>[] CalibrationPointsArr = new List<NozzlePoint>[MainForm.Setting.Nozzles_maximum];
+        public bool[] CalibratedArr = new bool[MainForm.Setting.Nozzles_maximum];
 
         private Camera Cam;
         private CNC Cnc;
@@ -75,15 +75,24 @@ namespace LitePlacer
         // save and load from disk
         // =================================================================================
 
-        public void SaveCalibration(string filename)
+        public bool SaveCalibration(string filename)
         {
-            Stream stream = File.Open(filename, FileMode.Create);
-            BinaryFormatter formatter = new BinaryFormatter();
-            MainForm.DisplayText("Saving nozzle calibration data");
-            formatter.Serialize(stream, CalibrationPointsArr);
-            MainForm.DisplayText("Saving nozzle calibration validity data");
-            formatter.Serialize(stream, CalibratedArr);
-            stream.Close();
+            try
+            {
+                Stream stream = File.Open(filename, FileMode.Create);
+                BinaryFormatter formatter = new BinaryFormatter();
+                MainForm.DisplayText("Saving nozzle calibration data");
+                formatter.Serialize(stream, CalibrationPointsArr);
+                MainForm.DisplayText("Saving nozzle calibration validity data");
+                formatter.Serialize(stream, CalibratedArr);
+                stream.Close();
+                return true;
+            }
+            catch (System.Exception excep)
+            {
+                MainForm.DisplayText("Saving nozzle calibration data failed: " + excep.Message);
+                return false;
+            }
         }
 
         public void LoadCalibration(string filename)
@@ -126,7 +135,7 @@ namespace LitePlacer
         public void ProbingMode(bool set, bool JSON)
         {
             int wait= 250;
-            double b = Properties.Settings.Default.General_ZprobingHysteresis;
+            double b = MainForm.Setting.General_ZprobingHysteresis;
             string backoff= b.ToString("0.00", CultureInfo.InvariantCulture);
             if (set)
             {
@@ -186,7 +195,7 @@ namespace LitePlacer
 
         public bool CorrectedPosition_m(double angle, out double X, out double Y)
         {
-            if (Properties.Settings.Default.Placement_OmitNozzleCalibration)
+            if (MainForm.Setting.Placement_OmitNozzleCalibration)
             {
                 X = 0.0;
                 Y = 0.0;
@@ -273,7 +282,7 @@ namespace LitePlacer
 
         public bool Calibrate()
         {
-            if (Properties.Settings.Default.Placement_OmitNozzleCalibration)
+            if (MainForm.Setting.Placement_OmitNozzleCalibration)
             {
                 return true;
             };
@@ -291,7 +300,7 @@ namespace LitePlacer
 
             double X = 0;
             double Y = 0;
-            double Maxdistance = Properties.Settings.Default.Nozzles_CalibrationDistance / Properties.Settings.Default.UpCam_XmmPerPixel;
+            double Maxdistance = MainForm.Setting.Nozzles_CalibrationDistance / MainForm.Setting.UpCam_XmmPerPixel;
             double radius = 0;
             int res = 0;
             // I goes in .1 of degrees. Makes sense to have the increase so, that multiplies of 45 are hit
@@ -329,15 +338,15 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 }
-                Point.X = X * Properties.Settings.Default.UpCam_XmmPerPixel;
-                Point.Y = Y * Properties.Settings.Default.UpCam_YmmPerPixel;
+                Point.X = X * MainForm.Setting.UpCam_XmmPerPixel;
+                Point.Y = Y * MainForm.Setting.UpCam_YmmPerPixel;
                 // MainForm.DisplayText("A: " + Point.Angle.ToString("0.000") + ", X: " + Point.X.ToString("0.000") + ", Y: " + Point.Y.ToString("0.000"));
                 CalibrationPoints.Add(Point);
             }
             Calibrated = true;
-            if (Properties.Settings.Default.Nozzles_Enabled)
+            if (MainForm.Setting.Nozzles_Enabled)
             {
-                Store(Properties.Settings.Default.Nozzles_current);
+                Store(MainForm.Setting.Nozzles_current);
             };
 
             return true;
@@ -352,8 +361,8 @@ namespace LitePlacer
 			{
 				return false;
 			};
-            double Xoff = Properties.Settings.Default.DownCam_NozzleOffsetX;
-            double Yoff = Properties.Settings.Default.DownCam_NozzleOffsetY;
+            double Xoff = MainForm.Setting.DownCam_NozzleOffsetX;
+            double Yoff = MainForm.Setting.DownCam_NozzleOffsetY;
             return CNC_XYA(X + Xoff + dX, Y + Yoff + dY, A);
         }
 

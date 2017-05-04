@@ -69,9 +69,9 @@ namespace LitePlacer
             {
                 TapeRotation_comboBox.SelectedItem = Row.Cells["Rotation_Column"].Value;
             }
-            if (Properties.Settings.Default.Nozzles_Enabled)
+            if (MainForm.Setting.Nozzles_Enabled)
             {
-                Nozzle_numericUpDown.Maximum = Properties.Settings.Default.Nozzles_count;
+                Nozzle_numericUpDown.Maximum = MainForm.Setting.Nozzles_count;
                 if (Row.Cells["Nozzle_Column"].Value != null)
                 {
                     int nozzle;
@@ -81,12 +81,12 @@ namespace LitePlacer
                     }
                     else
                     {
-                        Nozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
+                        Nozzle_numericUpDown.Value = MainForm.Setting.Nozzles_default;
                     }
                 }
                 else
                 {
-                    Nozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
+                    Nozzle_numericUpDown.Value = MainForm.Setting.Nozzles_default;
                 }
             }
             else

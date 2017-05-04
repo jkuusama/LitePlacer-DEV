@@ -298,7 +298,7 @@ namespace LitePlacer
                 // Small move
                 if (SlowXY)
                 {
-                    if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
+                    if ((double)MainForm.Setting.CNC_SmallMovementSpeed > SlowSpeedXY)
                     {
                         command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
                                                        " Y" + Y.ToString(CultureInfo.InvariantCulture);
@@ -397,7 +397,7 @@ namespace LitePlacer
                 else
                 {
                     if (SlowXY)
-                    {
+                    { 
                         if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
                         {
                             command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
@@ -405,8 +405,8 @@ namespace LitePlacer
                         }
                         else
                         {
-                            command = "G1 F" + SlowSpeedXY.ToString()
-                                    + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                                command = "G1 F" + SlowSpeedXY.ToString()
+                                        + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
                         }
                     }
                     else
@@ -506,13 +506,13 @@ namespace LitePlacer
             {
                 if (SlowZ)
                 {
-                    if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedZ)
+                    if ((double)MainForm.Setting.CNC_SmallMovementSpeed > SlowSpeedZ)
                     {
                         command = "G1 F" + SlowSpeedZ.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                     }
                     else
                     {
-                        command = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
+                        command = "G1 F" + MainForm.Setting.CNC_SmallMovementSpeed.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -685,7 +685,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_sys= line;
+                MainForm.Setting.TinyG_sys= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent sys group");
                 return;
@@ -698,7 +698,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_x= line;
+                MainForm.Setting.TinyG_x= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent x group");
                 return;
@@ -711,7 +711,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_y= line;
+                MainForm.Setting.TinyG_y= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent y group");
                 return;
@@ -724,7 +724,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_z= line;
+                MainForm.Setting.TinyG_z= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent z group");
                 return;
@@ -737,7 +737,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_a= line;
+                MainForm.Setting.TinyG_a= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent a group");
                 return;
@@ -750,7 +750,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_m1 = line;
+                MainForm.Setting.TinyG_m1 = line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent m1 group");
                 return;
@@ -763,7 +763,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_m2 = line;
+                MainForm.Setting.TinyG_m2 = line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent m2 group");
                 return;
@@ -776,7 +776,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_m3 = line;
+                MainForm.Setting.TinyG_m3 = line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent m3 group");
                 return;
@@ -789,7 +789,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_m4 = line;
+                MainForm.Setting.TinyG_m4 = line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent m4 group");
                 return;

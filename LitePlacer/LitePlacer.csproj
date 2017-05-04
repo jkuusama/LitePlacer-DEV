@@ -148,6 +148,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettings.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="CNC.cs" />
     <Compile Include="MainForm.cs">

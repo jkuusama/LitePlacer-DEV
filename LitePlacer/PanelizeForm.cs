@@ -41,19 +41,19 @@ namespace LitePlacer
             path = path.Remove(i + 1);
             MainForm.LoadDataGrid(path + "LitePlacer.PanelFids", PanelFiducials_dataGridView, FormMain.DataTableType.PanelFiducials);
 
-            XFirstOffset = Properties.Settings.Default.Panel_XFirstOffset;
+            XFirstOffset = MainForm.Setting.Panel_XFirstOffset;
             XFirstOffset_textBox.Text = XFirstOffset.ToString("0.00", CultureInfo.InvariantCulture);
-            YFirstOffset = Properties.Settings.Default.Panel_YFirstOffset;
+            YFirstOffset = MainForm.Setting.Panel_YFirstOffset;
             YFirstOffset_textBox.Text = YFirstOffset.ToString("0.00", CultureInfo.InvariantCulture);
-            XRepeats = Properties.Settings.Default.Panel_XRepeats;
+            XRepeats = MainForm.Setting.Panel_XRepeats;
             XRepeats_textBox.Text = XRepeats.ToString();
-            YRepeats = Properties.Settings.Default.Panel_YRepeats;
+            YRepeats = MainForm.Setting.Panel_YRepeats;
             YRepeats_textBox.Text = YRepeats.ToString();
-            XIncrement = Properties.Settings.Default.Panel_XIncrement;
+            XIncrement = MainForm.Setting.Panel_XIncrement;
             XIncrement_textBox.Text = XIncrement.ToString("0.00", CultureInfo.InvariantCulture);
-            YIncrement = Properties.Settings.Default.Panel_YIncrement;
+            YIncrement = MainForm.Setting.Panel_YIncrement;
             YIncrement_textBox.Text = YIncrement.ToString("0.00", CultureInfo.InvariantCulture);
-            UseBoardFids_checkBox.Checked = Properties.Settings.Default.Panel_UseBoardFids;
+            UseBoardFids_checkBox.Checked = MainForm.Setting.Panel_UseBoardFids;
         }
 
         public bool OK = false;
@@ -74,13 +74,13 @@ namespace LitePlacer
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
             MainForm.SaveDataGrid(path + "LitePlacer.PanelFids", PanelFiducials_dataGridView);
-            Properties.Settings.Default.Panel_XFirstOffset = XFirstOffset;
-            Properties.Settings.Default.Panel_YFirstOffset = YFirstOffset;
-            Properties.Settings.Default.Panel_XRepeats = XRepeats;
-            Properties.Settings.Default.Panel_YRepeats = YRepeats;
-            Properties.Settings.Default.Panel_XIncrement = XIncrement;
-            Properties.Settings.Default.Panel_YIncrement = YIncrement;
-            Properties.Settings.Default.Panel_UseBoardFids = UseBoardFids_checkBox.Checked;
+            MainForm.Setting.Panel_XFirstOffset = XFirstOffset;
+            MainForm.Setting.Panel_YFirstOffset = YFirstOffset;
+            MainForm.Setting.Panel_XRepeats = XRepeats;
+            MainForm.Setting.Panel_YRepeats = YRepeats;
+            MainForm.Setting.Panel_XIncrement = XIncrement;
+            MainForm.Setting.Panel_YIncrement = YIncrement;
+            MainForm.Setting.Panel_UseBoardFids = UseBoardFids_checkBox.Checked;
             this.Close();
         }
 
