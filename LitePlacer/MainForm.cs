@@ -503,6 +503,18 @@ namespace LitePlacer
             res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
             OK = OK && res;
 
+            if (!OK)
+            {
+                DialogResult dialogResult = ShowMessageBox(
+                    "some data could not be saved (see log window). Quit anyway?",
+                    "Data save problem", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
             if (Cnc.Connected)
             {
                 PumpIsOn = true;        // so it will be turned off, no matter what we think the status
