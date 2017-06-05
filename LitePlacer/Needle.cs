@@ -21,8 +21,8 @@ namespace LitePlacer
 
 		public List<NozzlePoint> CalibrationPoints = new List<NozzlePoint>();   // what we use
         // to calibrate nozzles, we can store and restore calibration points and their validity here.
-        public List<NozzlePoint>[] CalibrationPointsArr = new List<NozzlePoint>[MainForm.Setting.Nozzles_maximum];
-        public bool[] CalibratedArr = new bool[MainForm.Setting.Nozzles_maximum];
+        public List<NozzlePoint>[] CalibrationPointsArr;
+        public bool[] CalibratedArr;
 
         private Camera Cam;
         private CNC Cnc;
@@ -34,7 +34,9 @@ namespace LitePlacer
             Calibrated = false;
             Cam = MyCam;
             Cnc = MyCnc;
+            CalibrationPointsArr = new List<NozzlePoint>[MainForm.Setting.Nozzles_maximum];
             CalibrationPoints.Clear();
+            CalibratedArr = new bool[MainForm.Setting.Nozzles_maximum];
         }
 
         // =================================================================================
@@ -85,6 +87,7 @@ namespace LitePlacer
                 formatter.Serialize(stream, CalibrationPointsArr);
                 MainForm.DisplayText("Saving nozzle calibration validity data");
                 formatter.Serialize(stream, CalibratedArr);
+                stream.Flush();
                 stream.Close();
                 return true;
             }

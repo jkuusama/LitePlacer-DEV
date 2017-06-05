@@ -795,6 +795,8 @@ namespace LitePlacer
                             }
                         }
                     }
+                    bw.Flush();
+                    bw.Close();
                 }
                 return true;
             }
