@@ -7414,7 +7414,11 @@ namespace LitePlacer
         private void NewRow_button_Click(object sender, EventArgs e)
         {
             MakeJobDataDirty();
-            int index = JobData_GridView.CurrentRow.Index;
+            int index = 0;
+            if (JobData_GridView.RowCount != 0)
+            {
+                index = JobData_GridView.CurrentRow.Index;
+            }
             JobData_GridView.Rows.Insert(index);
             JobData_GridView.Rows[index].Cells["ComponentCount"].Value = "--";
             JobData_GridView.Rows[index].Cells["ComponentType"].Value = "--";
@@ -7425,7 +7429,11 @@ namespace LitePlacer
 
         private void AddCadDataRow_button_Click(object sender, EventArgs e)
         {
-            int index = CadData_GridView.CurrentRow.Index;
+            int index = 0;
+            if (CadData_GridView.RowCount!=0)
+            {
+                index = CadData_GridView.CurrentRow.Index;
+            }
             CadData_GridView.Rows.Insert(index);
             CadData_GridView.Rows[index].Cells["Component"].Value = "new_component";
             CadData_GridView.Rows[index].Cells["Value_Footprint"].Value = "value "+" | "+" footprint";
