@@ -1,5 +1,5 @@
 # LitePlacer
-LitePlacer pick andpPlace machine user interface and control software
+LitePlacer Pick and Place machine user interface and control software
 
 **See  http://www.liteplacer.com/ for information.**
 
