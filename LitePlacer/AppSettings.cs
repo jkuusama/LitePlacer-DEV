@@ -203,6 +203,7 @@ namespace LitePlacer
 
         private static MySettings CopySettings()
         {
+            Properties.Settings.Default.Upgrade();
             MySettings s = new MySettings();
             s.Cameras_KeepActive = Properties.Settings.Default.Cameras_KeepActive;
             s.Cameras_RobustSwitch = Properties.Settings.Default.Cameras_RobustSwitch;
