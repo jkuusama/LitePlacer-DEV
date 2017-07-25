@@ -931,6 +931,7 @@ namespace LitePlacer
                             }
                         }
                     }
+                    bw.Close();
                 }
                 LoadingDataGrid = false;
             }

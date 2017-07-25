@@ -110,6 +110,7 @@ namespace LitePlacer
                     CalibrationPointsArr = (List<NozzlePoint>[])formatter.Deserialize(stream);
                     MainForm.DisplayText("Loading nozzle calibration validity data");
                     CalibratedArr = (bool[])formatter.Deserialize(stream);
+                    stream.Flush();
                     stream.Close();
                 }
                 catch (Exception)
