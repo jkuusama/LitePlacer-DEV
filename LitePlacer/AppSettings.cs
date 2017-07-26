@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace LitePlacer
 {
@@ -159,7 +160,8 @@ namespace LitePlacer
         {
             try
             {
-                File.WriteAllText(fileName, (new JavaScriptSerializer()).Serialize(pSettings));
+                // File.WriteAllText(fileName, (new JavaScriptSerializer()).Serialize(pSettings));
+                File.WriteAllText(fileName, JsonConvert.SerializeObject(pSettings, Formatting.Indented));
                 return true;
             }
             catch (System.Exception excep)
@@ -176,7 +178,8 @@ namespace LitePlacer
                 MySettings settings = new MySettings();
                 if (File.Exists(fileName))
                 {
-                    settings = (new JavaScriptSerializer()).Deserialize<MySettings>(File.ReadAllText(fileName));
+                    // settings = (new JavaScriptSerializer()).Deserialize<MySettings>(File.ReadAllText(fileName));
+                    settings = JsonConvert.DeserializeObject<MySettings>(File.ReadAllText(fileName));
                     return settings;
                 }
                 // else case and the copy routine to be depreciated!
