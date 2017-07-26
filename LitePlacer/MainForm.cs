@@ -49,6 +49,8 @@ namespace LitePlacer
         NozzleClass Nozzle;
         TapesClass Tapes;
         public MySettings Setting;
+        public TinyGSettings TinyGSetting;
+
         AppSettings SettingsOps;
 
         // =================================================================================
@@ -6343,7 +6345,7 @@ namespace LitePlacer
 
         private void SaveSettings_button_Click(object sender, EventArgs e)
         {
-
+            /*
             CNC_Write_m("{\"sys\":\"\"}");
             CNC_Write_m("{\"x\":\"\"}");
             CNC_Write_m("{\"y\":\"\"}");
@@ -6366,11 +6368,13 @@ namespace LitePlacer
             DisplayText(Setting.TinyG_y);
             DisplayText("m1:");
             DisplayText(Setting.TinyG_m1);
+            */
         }
 
 
         private void DefaultSettings_button_Click(object sender, EventArgs e)
         {
+            /*
             if (!Setting.TinyG_settings_saved)
             {
                 ShowMessageBox(
@@ -6388,7 +6392,6 @@ namespace LitePlacer
             }
 
             DisplayText("Start of DefaultSettings()");
-            /*
             DisplayText("sys: " + Setting.TinyG_sys);
             DisplayText("x: " + Setting.TinyG_x);
             DisplayText("y: " + Setting.TinyG_y);
@@ -6398,7 +6401,6 @@ namespace LitePlacer
             DisplayText("2: " + Setting.TinyG_m2);
             DisplayText("3: " + Setting.TinyG_m3);
             DisplayText("4: " + Setting.TinyG_m4");
-            */
             CNC_Write_m(Setting.TinyG_sys);
             Thread.Sleep(150);
             CNC_Write_m(Setting.TinyG_x);
@@ -6422,6 +6424,7 @@ namespace LitePlacer
                 "Settings restored.",
                 "Saved settings restored",
                 MessageBoxButtons.OK);
+            */
         }
 
         private static int SetProbing_stage = 0;

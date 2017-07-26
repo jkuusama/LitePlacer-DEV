@@ -122,16 +122,6 @@ namespace LitePlacer
         public bool Placement_OmitNozzleCalibration = false;
         public bool Placement_SkipMeasurements = false;
         public bool Placement_UpdateJobGridAtRuntime = false;
-        public string TinyG_a = "";
-        public string TinyG_m1 = "";
-        public string TinyG_m2 = "";
-        public string TinyG_m3 = "";
-        public string TinyG_m4 = "";
-        public bool TinyG_settings_saved = false;
-        public string TinyG_sys = "";
-        public string TinyG_x = "";
-        public string TinyG_y = "";
-        public string TinyG_z = "";
         public int UpCam_index = -1;
         public int UpCam_MeasurementDelay = 100;
         public double UpCam_PositionX = 2;
@@ -144,6 +134,20 @@ namespace LitePlacer
         public string UpcamMoniker = "";
     }
 
+    public class TinyGSettings
+    {
+        public string TinyG_sys = "";
+        public string TinyG_x = "";
+        public string TinyG_y = "";
+        public string TinyG_z = "";
+        public string TinyG_a = "";
+        public string TinyG_m1 = "";
+        public string TinyG_m2 = "";
+        public string TinyG_m3 = "";
+        public string TinyG_m4 = "";
+        public bool TinyG_settings_saved = false;
+
+    }
     // =================================================================================
     // 
     // =================================================================================
@@ -306,16 +310,6 @@ namespace LitePlacer
             s.Placement_OmitNozzleCalibration = Properties.Settings.Default.Placement_OmitNozzleCalibration;
             s.Placement_SkipMeasurements = Properties.Settings.Default.Placement_SkipMeasurements;
             s.Placement_UpdateJobGridAtRuntime = Properties.Settings.Default.Placement_UpdateJobGridAtRuntime;
-            s.TinyG_a = Properties.Settings.Default.TinyG_a;
-            s.TinyG_m1 = Properties.Settings.Default.TinyG_m1;
-            s.TinyG_m2 = Properties.Settings.Default.TinyG_m2;
-            s.TinyG_m3 = Properties.Settings.Default.TinyG_m3;
-            s.TinyG_m4 = Properties.Settings.Default.TinyG_m4;
-            s.TinyG_settings_saved = Properties.Settings.Default.TinyG_settings_saved;
-            s.TinyG_sys = Properties.Settings.Default.TinyG_sys;
-            s.TinyG_x = Properties.Settings.Default.TinyG_x;
-            s.TinyG_y = Properties.Settings.Default.TinyG_y;
-            s.TinyG_z = Properties.Settings.Default.TinyG_z;
             s.UpCam_index = Properties.Settings.Default.UpCam_index;
             s.UpCam_MeasurementDelay = Properties.Settings.Default.UpCam_MeasurementDelay;
             s.UpCam_PositionX = Properties.Settings.Default.UpCam_PositionX;

@@ -685,7 +685,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.Setting.TinyG_sys= line;
+                MainForm.TinyGSetting.TinyG_sys= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent sys group");
                 return;
@@ -698,7 +698,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.Setting.TinyG_x= line;
+                MainForm.TinyGSetting.TinyG_x= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent x group");
                 return;
@@ -711,7 +711,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.Setting.TinyG_y= line;
+                MainForm.TinyGSetting.TinyG_y= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent y group");
                 return;
@@ -724,7 +724,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.Setting.TinyG_z= line;
+                MainForm.TinyGSetting.TinyG_z= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent z group");
                 return;
@@ -737,7 +737,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.Setting.TinyG_a= line;
+                MainForm.TinyGSetting.TinyG_a= line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent a group");
                 return;
@@ -750,7 +750,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.Setting.TinyG_m1 = line;
+                MainForm.TinyGSetting.TinyG_m1 = line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent m1 group");
                 return;
@@ -763,7 +763,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.Setting.TinyG_m2 = line;
+                MainForm.TinyGSetting.TinyG_m2 = line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent m2 group");
                 return;
@@ -776,7 +776,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.Setting.TinyG_m3 = line;
+                MainForm.TinyGSetting.TinyG_m3 = line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent m3 group");
                 return;
@@ -789,7 +789,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.Setting.TinyG_m4 = line;
+                MainForm.TinyGSetting.TinyG_m4 = line;
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent m4 group");
                 return;
