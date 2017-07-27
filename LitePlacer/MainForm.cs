@@ -95,6 +95,8 @@ namespace LitePlacer
 
         public FormMain()
         {
+            Font = new Font(Font.Name, 8.25f * 96f / CreateGraphics().DpiX, Font.Style, Font.Unit, Font.GdiCharSet, Font.GdiVerticalFont);
+
             InitializeComponent();
             this.MouseWheel += new MouseEventHandler(MouseWheel_event);
         }
@@ -106,6 +108,7 @@ namespace LitePlacer
         {
             StartingUp = true;
             this.Size = new Size(1280, 900);
+
             DisplayText("Application Start");
             DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
 
