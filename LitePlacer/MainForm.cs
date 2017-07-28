@@ -397,6 +397,7 @@ namespace LitePlacer
                 NozzleNo_textBox.Text = Setting.Nozzles_current.ToString();
             }
             ForceNozzle_numericUpDown.Value = Setting.Nozzles_default;
+            DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
 
             UpdateCncConnectionStatus(false);
             if (Cnc.Connected)
@@ -13986,6 +13987,7 @@ namespace LitePlacer
         private void SetDefaultNozzle_button_Click(object sender, EventArgs e)
         {
             Setting.Nozzles_default = (int)ForceNozzle_numericUpDown.Value;
+            DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
         }
 
         private void ForceNozzleStatus_button_Click(object sender, EventArgs e)

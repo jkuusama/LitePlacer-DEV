@@ -77,6 +77,10 @@ namespace LitePlacer
                     int nozzle;
                     if (int.TryParse(Row.Cells["Nozzle_Column"].Value.ToString(), out nozzle))
                     {
+                        if (nozzle == 0)
+                        {
+                            nozzle = MainForm.Setting.Nozzles_default;   // default nozzle = 0 (!?)
+                        }
                         Nozzle_numericUpDown.Value = nozzle;
                     }
                     else
@@ -86,12 +90,20 @@ namespace LitePlacer
                 }
                 else
                 {
-                    Nozzle_numericUpDown.Value = MainForm.Setting.Nozzles_default;
+                    if (MainForm.Setting.Nozzles_default == 0)
+                    {
+                        Nozzle_numericUpDown.Value = 1;
+                    }
+                    else
+                    {
+                        Nozzle_numericUpDown.Value = MainForm.Setting.Nozzles_default;
+                    }
                 }
             }
             else
             {
                 Nozzle_numericUpDown.Enabled = false;
+                MainForm.DefaultNozzle_label.Text = "--";
             }
 
             if (Row.Cells["Width_Column"].Value != null)
