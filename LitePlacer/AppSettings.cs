@@ -1,11 +1,16 @@
 ﻿#define TRANSFER
 
 /* 
+
  Using the standard method (Settings.settings file, Setting.xxx) was a mistake:
  No easy recovery, impossible to move installation from one machine to another, to name a few.
  This class resolves the issues. See
  http://stackoverflow.com/questions/453161/best-practice-to-save-application-settings-in-a-windows-forms-application,
- third ansswer from top.
+ third ansswer from top. Also, to get a nice formatting (each parameter on its own line), 
+ Newtonsoft.Json library is used. http://www.newtonsoft.com/json
+
+ If you uncomment the first line, you get a version that transfers the settings from old version to new.
+
  */
 
 
