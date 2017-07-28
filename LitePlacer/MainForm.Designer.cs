@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -799,6 +799,8 @@
             this.TinyGSettingsLoad_button = new System.Windows.Forms.Button();
             this.TinyGSettingsSave_button = new System.Windows.Forms.Button();
             this.TinyGBuiltInSettings_button = new System.Windows.Forms.Button();
+            this.AppSettings_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.AppSettings_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -8069,14 +8071,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9249,6 +9251,7 @@
             this.AppSettingsSave_button.Text = "Save as...";
             this.toolTip1.SetToolTip(this.AppSettingsSave_button, "Saves application settings to a file.");
             this.AppSettingsSave_button.UseVisualStyleBackColor = true;
+            this.AppSettingsSave_button.Click += new System.EventHandler(this.AppSettingsSave_button_Click);
             // 
             // AppSettingsLoad_button
             // 
@@ -9259,6 +9262,7 @@
             this.AppSettingsLoad_button.Text = "Load";
             this.toolTip1.SetToolTip(this.AppSettingsLoad_button, "Loads application settings from a file.");
             this.AppSettingsLoad_button.UseVisualStyleBackColor = true;
+            this.AppSettingsLoad_button.Click += new System.EventHandler(this.AppSettingsLoad_button_Click);
             // 
             // TinyGSettingsLoad_button
             // 
@@ -9290,6 +9294,10 @@
             this.toolTip1.SetToolTip(this.TinyGBuiltInSettings_button, "Resets TinyG settings to conservative default settings.\r\nPrevious values will be " +
         "overwritten!");
             this.TinyGBuiltInSettings_button.UseVisualStyleBackColor = true;
+            // 
+            // AppSettings_openFileDialog
+            // 
+            this.AppSettings_openFileDialog.FileName = "openFileDialog1";
             // 
             // FormMain
             // 
@@ -10219,6 +10227,8 @@
         private System.Windows.Forms.Button AppSettingsSave_button;
         private System.Windows.Forms.Label label160;
         private System.Windows.Forms.Label label159;
+        private System.Windows.Forms.SaveFileDialog AppSettings_saveFileDialog;
+        private System.Windows.Forms.OpenFileDialog AppSettings_openFileDialog;
     }
 }
 

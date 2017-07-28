@@ -443,7 +443,7 @@ namespace LitePlacer
             res = SaveTempJobData();
             OK = OK && res;
 
-            res = SettingsOps.Save(Setting, "LitePlacer.Appsettings");  // the routine finds the path itself
+            res = SettingsOps.Save(Setting, path + "LitePlacer.Appsettings");
             OK = OK && res;
 
             res = SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
@@ -14722,6 +14722,28 @@ namespace LitePlacer
         {
             Setting.Placement_FiducialConfirmation = FiducialManConfirmation_checkBox.Checked;
         }
+
+        private void AppSettingsSave_button_Click(object sender, EventArgs e)
+        {
+            AppSettings_saveFileDialog.Filter = "All files (*.*)|*.*";
+            AppSettings_saveFileDialog.FileName = "LitePlacer.Appsettings";
+
+            if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                SettingsOps.Save(Setting, AppSettings_saveFileDialog.FileName);
+            }
+
+        }
+
+        private void AppSettingsLoad_button_Click(object sender, EventArgs e)
+        {
+            if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Setting = SettingsOps.Load(AppSettings_openFileDialog.FileName);
+            }
+        }
+
+
     }	// end of: 	public partial class FormMain : Form
 
 

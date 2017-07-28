@@ -170,11 +170,6 @@ namespace LitePlacer
         {
             try
             {
-                string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-                int i = path.LastIndexOf('\\');
-                path = path.Remove(i + 1);
-                FileName = path + FileName;
-
                 // File.WriteAllText(fileName, (new JavaScriptSerializer()).Serialize(pSettings));
                 File.WriteAllText(FileName, JsonConvert.SerializeObject(pSettings, Formatting.Indented));
                 return true;
@@ -235,7 +230,7 @@ namespace LitePlacer
 
 #if TRANSFER
 
-        private void CopySettings()
+        private void CopySettings(string FileName)
         {
             try
             {
@@ -350,7 +345,7 @@ namespace LitePlacer
                 s.UpCam_Zoomfactor = Properties.Settings.Default.UpCam_Zoomfactor;
                 s.UpcamMoniker = Properties.Settings.Default.UpcamMoniker;
 
-                if (Save(s, "LitePlacer.Appsettings"))
+                if (Save(s, FileName))
                 {
                     MainForm.ShowMessageBox(
                         "New format settings file created.\n" +
@@ -396,7 +391,7 @@ namespace LitePlacer
             }
             else
             {
-                CopySettings();
+                CopySettings(FileName);
             }
         }
 #endif
