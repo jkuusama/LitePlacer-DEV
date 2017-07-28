@@ -6111,18 +6111,19 @@ namespace LitePlacer
         private void BuiltInSettings_button_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = ShowMessageBox(
-                "All your current settings on TinyG will be lost. Are you sure?",
+                "Reset application settings top built in defaults?",
                 "Confirm Loading Built-In settings", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
             {
                 return;
             };
-
-            Thread t = new Thread(_BuiltInSettings);
-            t.Start();
+            Setting = new MySettings();
         }
 
-        private void _BuiltInSettings()
+            // Thread t = new Thread(_BuiltInSettings);
+            // t.Start();
+
+        private void _BuiltInSettings_TinyG()
         {
             // global
             // TODO: exeption, exeption handling here

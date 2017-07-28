@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -792,6 +792,13 @@
             this.GoY_button = new System.Windows.Forms.Button();
             this.GoA_button = new System.Windows.Forms.Button();
             this.GoZ_button = new System.Windows.Forms.Button();
+            this.label159 = new System.Windows.Forms.Label();
+            this.label160 = new System.Windows.Forms.Label();
+            this.AppSettingsSave_button = new System.Windows.Forms.Button();
+            this.AppSettingsLoad_button = new System.Windows.Forms.Button();
+            this.TinyGSettingsLoad_button = new System.Windows.Forms.Button();
+            this.TinyGSettingsSave_button = new System.Windows.Forms.Button();
+            this.TinyGBuiltInSettings_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -5072,6 +5079,13 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.TinyGSettingsLoad_button);
+            this.tabPageBasicSetup.Controls.Add(this.TinyGSettingsSave_button);
+            this.tabPageBasicSetup.Controls.Add(this.TinyGBuiltInSettings_button);
+            this.tabPageBasicSetup.Controls.Add(this.AppSettingsLoad_button);
+            this.tabPageBasicSetup.Controls.Add(this.AppSettingsSave_button);
+            this.tabPageBasicSetup.Controls.Add(this.label160);
+            this.tabPageBasicSetup.Controls.Add(this.label159);
             this.tabPageBasicSetup.Controls.Add(this.NozzleBelowPCB_textBox);
             this.tabPageBasicSetup.Controls.Add(this.label1);
             this.tabPageBasicSetup.Controls.Add(this.DisableLog_checkBox);
@@ -5764,7 +5778,7 @@
             // MotorPower_checkBox
             // 
             this.MotorPower_checkBox.AutoSize = true;
-            this.MotorPower_checkBox.Location = new System.Drawing.Point(740, 55);
+            this.MotorPower_checkBox.Location = new System.Drawing.Point(764, 55);
             this.MotorPower_checkBox.Name = "MotorPower_checkBox";
             this.MotorPower_checkBox.Size = new System.Drawing.Size(86, 17);
             this.MotorPower_checkBox.TabIndex = 54;
@@ -5950,19 +5964,18 @@
             // 
             // BuiltInSettings_button
             // 
-            this.BuiltInSettings_button.Location = new System.Drawing.Point(498, 11);
+            this.BuiltInSettings_button.Location = new System.Drawing.Point(345, 34);
             this.BuiltInSettings_button.Name = "BuiltInSettings_button";
-            this.BuiltInSettings_button.Size = new System.Drawing.Size(210, 23);
+            this.BuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
             this.BuiltInSettings_button.TabIndex = 29;
-            this.BuiltInSettings_button.Text = "Reset all to Built-In Defaults";
-            this.toolTip1.SetToolTip(this.BuiltInSettings_button, "Resets all settings to conservative defualt settings.\r\nALL YOUR SETTINGS MODIFICA" +
-        "TIONS WILL BE LOST!");
+            this.BuiltInSettings_button.Text = "Reset to Defaults";
+            this.toolTip1.SetToolTip(this.BuiltInSettings_button, "Resets application settings to default values.");
             this.BuiltInSettings_button.UseVisualStyleBackColor = true;
             this.BuiltInSettings_button.Click += new System.EventHandler(this.BuiltInSettings_button_Click);
             // 
             // SaveSettings_button
             // 
-            this.SaveSettings_button.Location = new System.Drawing.Point(498, 67);
+            this.SaveSettings_button.Location = new System.Drawing.Point(808, 58);
             this.SaveSettings_button.Name = "SaveSettings_button";
             this.SaveSettings_button.Size = new System.Drawing.Size(210, 23);
             this.SaveSettings_button.TabIndex = 28;
@@ -5973,7 +5986,7 @@
             // 
             // DefaultSettings_button
             // 
-            this.DefaultSettings_button.Location = new System.Drawing.Point(498, 40);
+            this.DefaultSettings_button.Location = new System.Drawing.Point(873, 44);
             this.DefaultSettings_button.Name = "DefaultSettings_button";
             this.DefaultSettings_button.Size = new System.Drawing.Size(210, 21);
             this.DefaultSettings_button.TabIndex = 27;
@@ -5985,7 +5998,7 @@
             // Vacuum_checkBox
             // 
             this.Vacuum_checkBox.AutoSize = true;
-            this.Vacuum_checkBox.Location = new System.Drawing.Point(740, 35);
+            this.Vacuum_checkBox.Location = new System.Drawing.Point(764, 35);
             this.Vacuum_checkBox.Name = "Vacuum_checkBox";
             this.Vacuum_checkBox.Size = new System.Drawing.Size(159, 17);
             this.Vacuum_checkBox.TabIndex = 26;
@@ -5997,7 +6010,7 @@
             // Pump_checkBox
             // 
             this.Pump_checkBox.AutoSize = true;
-            this.Pump_checkBox.Location = new System.Drawing.Point(740, 15);
+            this.Pump_checkBox.Location = new System.Drawing.Point(764, 15);
             this.Pump_checkBox.Name = "Pump_checkBox";
             this.Pump_checkBox.Size = new System.Drawing.Size(70, 17);
             this.Pump_checkBox.TabIndex = 25;
@@ -8056,14 +8069,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9205,6 +9218,79 @@
             this.GoZ_button.UseVisualStyleBackColor = true;
             this.GoZ_button.Click += new System.EventHandler(this.GoZ_button_Click);
             // 
+            // label159
+            // 
+            this.label159.AutoSize = true;
+            this.label159.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label159.Location = new System.Drawing.Point(261, 12);
+            this.label159.Name = "label159";
+            this.label159.Size = new System.Drawing.Size(136, 18);
+            this.label159.TabIndex = 105;
+            this.label159.Text = "Application Settings";
+            this.toolTip1.SetToolTip(this.label159, "Connection status");
+            // 
+            // label160
+            // 
+            this.label160.AutoSize = true;
+            this.label160.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label160.Location = new System.Drawing.Point(511, 12);
+            this.label160.Name = "label160";
+            this.label160.Size = new System.Drawing.Size(104, 18);
+            this.label160.TabIndex = 106;
+            this.label160.Text = "TinyG Settings";
+            this.toolTip1.SetToolTip(this.label160, "Connection status");
+            // 
+            // AppSettingsSave_button
+            // 
+            this.AppSettingsSave_button.Location = new System.Drawing.Point(264, 35);
+            this.AppSettingsSave_button.Name = "AppSettingsSave_button";
+            this.AppSettingsSave_button.Size = new System.Drawing.Size(75, 23);
+            this.AppSettingsSave_button.TabIndex = 107;
+            this.AppSettingsSave_button.Text = "Save as...";
+            this.toolTip1.SetToolTip(this.AppSettingsSave_button, "Saves application settings to a file.");
+            this.AppSettingsSave_button.UseVisualStyleBackColor = true;
+            // 
+            // AppSettingsLoad_button
+            // 
+            this.AppSettingsLoad_button.Location = new System.Drawing.Point(264, 64);
+            this.AppSettingsLoad_button.Name = "AppSettingsLoad_button";
+            this.AppSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
+            this.AppSettingsLoad_button.TabIndex = 108;
+            this.AppSettingsLoad_button.Text = "Load";
+            this.toolTip1.SetToolTip(this.AppSettingsLoad_button, "Loads application settings from a file.");
+            this.AppSettingsLoad_button.UseVisualStyleBackColor = true;
+            // 
+            // TinyGSettingsLoad_button
+            // 
+            this.TinyGSettingsLoad_button.Location = new System.Drawing.Point(514, 64);
+            this.TinyGSettingsLoad_button.Name = "TinyGSettingsLoad_button";
+            this.TinyGSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
+            this.TinyGSettingsLoad_button.TabIndex = 111;
+            this.TinyGSettingsLoad_button.Text = "Load";
+            this.toolTip1.SetToolTip(this.TinyGSettingsLoad_button, "Loads TinyG settings from a file.");
+            this.TinyGSettingsLoad_button.UseVisualStyleBackColor = true;
+            // 
+            // TinyGSettingsSave_button
+            // 
+            this.TinyGSettingsSave_button.Location = new System.Drawing.Point(514, 35);
+            this.TinyGSettingsSave_button.Name = "TinyGSettingsSave_button";
+            this.TinyGSettingsSave_button.Size = new System.Drawing.Size(75, 23);
+            this.TinyGSettingsSave_button.TabIndex = 110;
+            this.TinyGSettingsSave_button.Text = "Save as...";
+            this.toolTip1.SetToolTip(this.TinyGSettingsSave_button, "Saves TinyG settings to a file.");
+            this.TinyGSettingsSave_button.UseVisualStyleBackColor = true;
+            // 
+            // TinyGBuiltInSettings_button
+            // 
+            this.TinyGBuiltInSettings_button.Location = new System.Drawing.Point(595, 34);
+            this.TinyGBuiltInSettings_button.Name = "TinyGBuiltInSettings_button";
+            this.TinyGBuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
+            this.TinyGBuiltInSettings_button.TabIndex = 109;
+            this.TinyGBuiltInSettings_button.Text = "Reset to Defaults";
+            this.toolTip1.SetToolTip(this.TinyGBuiltInSettings_button, "Resets TinyG settings to conservative default settings.\r\nPrevious values will be " +
+        "overwritten!");
+            this.TinyGBuiltInSettings_button.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -10126,6 +10212,13 @@
         private System.Windows.Forms.CheckBox FiducialManConfirmation_checkBox;
         private System.Windows.Forms.Label label139;
         public System.Windows.Forms.Label DefaultNozzle_label;
+        private System.Windows.Forms.Button TinyGSettingsLoad_button;
+        private System.Windows.Forms.Button TinyGSettingsSave_button;
+        private System.Windows.Forms.Button TinyGBuiltInSettings_button;
+        private System.Windows.Forms.Button AppSettingsLoad_button;
+        private System.Windows.Forms.Button AppSettingsSave_button;
+        private System.Windows.Forms.Label label160;
+        private System.Windows.Forms.Label label159;
     }
 }
 
