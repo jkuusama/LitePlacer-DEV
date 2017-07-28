@@ -443,7 +443,7 @@ namespace LitePlacer
             res = SaveTempJobData();
             OK = OK && res;
 
-            res = SettingsOps.Save(Setting, path + "LitePlacer.Appsettings");
+            res = SettingsOps.Save(Setting, "LitePlacer.Appsettings");  // the routine finds the path itself
             OK = OK && res;
 
             res = SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
