@@ -6108,20 +6108,6 @@ namespace LitePlacer
             }
         }
 
-        private void BuiltInSettings_button_Click(object sender, EventArgs e)
-        {
-            DialogResult dialogResult = ShowMessageBox(
-                "Reset application settings top built in defaults?",
-                "Confirm Loading Built-In settings", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.No)
-            {
-                return;
-            };
-            Setting = new MySettings();
-        }
-
-            // Thread t = new Thread(_BuiltInSettings);
-            // t.Start();
 
         private void _BuiltInSettings_TinyG()
         {
@@ -14740,7 +14726,21 @@ namespace LitePlacer
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 Setting = SettingsOps.Load(AppSettings_openFileDialog.FileName);
+                Application.Restart();
             }
+        }
+
+        private void BuiltInSettings_button_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = ShowMessageBox(
+                "Reset application settings top built in defaults?",
+                "Confirm Loading Built-In settings", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No)
+            {
+                return;
+            };
+            Setting = new MySettings();
+            Application.Restart();
         }
 
 

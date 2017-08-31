@@ -418,6 +418,13 @@
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.TinyGSettingsLoad_button = new System.Windows.Forms.Button();
+            this.TinyGSettingsSave_button = new System.Windows.Forms.Button();
+            this.TinyGBuiltInSettings_button = new System.Windows.Forms.Button();
+            this.AppSettingsLoad_button = new System.Windows.Forms.Button();
+            this.AppSettingsSave_button = new System.Windows.Forms.Button();
+            this.label160 = new System.Windows.Forms.Label();
+            this.label159 = new System.Windows.Forms.Label();
             this.NozzleBelowPCB_textBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.DisableLog_checkBox = new System.Windows.Forms.CheckBox();
@@ -792,13 +799,6 @@
             this.GoY_button = new System.Windows.Forms.Button();
             this.GoA_button = new System.Windows.Forms.Button();
             this.GoZ_button = new System.Windows.Forms.Button();
-            this.label159 = new System.Windows.Forms.Label();
-            this.label160 = new System.Windows.Forms.Label();
-            this.AppSettingsSave_button = new System.Windows.Forms.Button();
-            this.AppSettingsLoad_button = new System.Windows.Forms.Button();
-            this.TinyGSettingsLoad_button = new System.Windows.Forms.Button();
-            this.TinyGSettingsSave_button = new System.Windows.Forms.Button();
-            this.TinyGBuiltInSettings_button = new System.Windows.Forms.Button();
             this.AppSettings_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.AppSettings_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.Tapes_tabPage.SuspendLayout();
@@ -1053,7 +1053,7 @@
             // SerialMonitor_richTextBox
             // 
             this.SerialMonitor_richTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SerialMonitor_richTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SerialMonitor_richTextBox.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SerialMonitor_richTextBox.Location = new System.Drawing.Point(3, 665);
             this.SerialMonitor_richTextBox.Name = "SerialMonitor_richTextBox";
             this.SerialMonitor_richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
@@ -2429,7 +2429,8 @@
             // label135
             // 
             this.label135.AutoSize = true;
-            this.label135.Location = new System.Drawing.Point(265, 44);
+            this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label135.Location = new System.Drawing.Point(257, 43);
             this.label135.Name = "label135";
             this.label135.Size = new System.Drawing.Size(79, 13);
             this.label135.TabIndex = 143;
@@ -4730,7 +4731,7 @@
             // 
             this.label55.AutoSize = true;
             this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label55.Location = new System.Drawing.Point(391, 497);
+            this.label55.Location = new System.Drawing.Point(406, 497);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(79, 17);
             this.label55.TabIndex = 115;
@@ -5176,6 +5177,81 @@
             this.tabPageBasicSetup.TabIndex = 1;
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
+            // 
+            // TinyGSettingsLoad_button
+            // 
+            this.TinyGSettingsLoad_button.Location = new System.Drawing.Point(514, 64);
+            this.TinyGSettingsLoad_button.Name = "TinyGSettingsLoad_button";
+            this.TinyGSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
+            this.TinyGSettingsLoad_button.TabIndex = 111;
+            this.TinyGSettingsLoad_button.Text = "Load";
+            this.toolTip1.SetToolTip(this.TinyGSettingsLoad_button, "Loads TinyG settings from a file.");
+            this.TinyGSettingsLoad_button.UseVisualStyleBackColor = true;
+            // 
+            // TinyGSettingsSave_button
+            // 
+            this.TinyGSettingsSave_button.Location = new System.Drawing.Point(514, 35);
+            this.TinyGSettingsSave_button.Name = "TinyGSettingsSave_button";
+            this.TinyGSettingsSave_button.Size = new System.Drawing.Size(75, 23);
+            this.TinyGSettingsSave_button.TabIndex = 110;
+            this.TinyGSettingsSave_button.Text = "Save as...";
+            this.toolTip1.SetToolTip(this.TinyGSettingsSave_button, "Saves TinyG settings to a file.");
+            this.TinyGSettingsSave_button.UseVisualStyleBackColor = true;
+            // 
+            // TinyGBuiltInSettings_button
+            // 
+            this.TinyGBuiltInSettings_button.Location = new System.Drawing.Point(595, 34);
+            this.TinyGBuiltInSettings_button.Name = "TinyGBuiltInSettings_button";
+            this.TinyGBuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
+            this.TinyGBuiltInSettings_button.TabIndex = 109;
+            this.TinyGBuiltInSettings_button.Text = "Reset to Defaults";
+            this.toolTip1.SetToolTip(this.TinyGBuiltInSettings_button, "Resets TinyG settings to conservative default settings.\r\nPrevious values will be " +
+        "overwritten!");
+            this.TinyGBuiltInSettings_button.UseVisualStyleBackColor = true;
+            // 
+            // AppSettingsLoad_button
+            // 
+            this.AppSettingsLoad_button.Location = new System.Drawing.Point(264, 64);
+            this.AppSettingsLoad_button.Name = "AppSettingsLoad_button";
+            this.AppSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
+            this.AppSettingsLoad_button.TabIndex = 108;
+            this.AppSettingsLoad_button.Text = "Load";
+            this.toolTip1.SetToolTip(this.AppSettingsLoad_button, "Loads application settings from a file.");
+            this.AppSettingsLoad_button.UseVisualStyleBackColor = true;
+            this.AppSettingsLoad_button.Click += new System.EventHandler(this.AppSettingsLoad_button_Click);
+            // 
+            // AppSettingsSave_button
+            // 
+            this.AppSettingsSave_button.Location = new System.Drawing.Point(264, 35);
+            this.AppSettingsSave_button.Name = "AppSettingsSave_button";
+            this.AppSettingsSave_button.Size = new System.Drawing.Size(75, 23);
+            this.AppSettingsSave_button.TabIndex = 107;
+            this.AppSettingsSave_button.Text = "Save as...";
+            this.toolTip1.SetToolTip(this.AppSettingsSave_button, "Saves application settings to a file.");
+            this.AppSettingsSave_button.UseVisualStyleBackColor = true;
+            this.AppSettingsSave_button.Click += new System.EventHandler(this.AppSettingsSave_button_Click);
+            // 
+            // label160
+            // 
+            this.label160.AutoSize = true;
+            this.label160.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label160.Location = new System.Drawing.Point(510, 7);
+            this.label160.Name = "label160";
+            this.label160.Size = new System.Drawing.Size(104, 18);
+            this.label160.TabIndex = 106;
+            this.label160.Text = "TinyG Settings";
+            this.toolTip1.SetToolTip(this.label160, "Connection status");
+            // 
+            // label159
+            // 
+            this.label159.AutoSize = true;
+            this.label159.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label159.Location = new System.Drawing.Point(260, 7);
+            this.label159.Name = "label159";
+            this.label159.Size = new System.Drawing.Size(136, 18);
+            this.label159.TabIndex = 105;
+            this.label159.Text = "Application Settings";
+            this.toolTip1.SetToolTip(this.label159, "Connection status");
             // 
             // NozzleBelowPCB_textBox
             // 
@@ -9219,81 +9295,6 @@
             this.GoZ_button.Text = "Z:";
             this.GoZ_button.UseVisualStyleBackColor = true;
             this.GoZ_button.Click += new System.EventHandler(this.GoZ_button_Click);
-            // 
-            // label159
-            // 
-            this.label159.AutoSize = true;
-            this.label159.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label159.Location = new System.Drawing.Point(261, 12);
-            this.label159.Name = "label159";
-            this.label159.Size = new System.Drawing.Size(136, 18);
-            this.label159.TabIndex = 105;
-            this.label159.Text = "Application Settings";
-            this.toolTip1.SetToolTip(this.label159, "Connection status");
-            // 
-            // label160
-            // 
-            this.label160.AutoSize = true;
-            this.label160.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label160.Location = new System.Drawing.Point(511, 12);
-            this.label160.Name = "label160";
-            this.label160.Size = new System.Drawing.Size(104, 18);
-            this.label160.TabIndex = 106;
-            this.label160.Text = "TinyG Settings";
-            this.toolTip1.SetToolTip(this.label160, "Connection status");
-            // 
-            // AppSettingsSave_button
-            // 
-            this.AppSettingsSave_button.Location = new System.Drawing.Point(264, 35);
-            this.AppSettingsSave_button.Name = "AppSettingsSave_button";
-            this.AppSettingsSave_button.Size = new System.Drawing.Size(75, 23);
-            this.AppSettingsSave_button.TabIndex = 107;
-            this.AppSettingsSave_button.Text = "Save as...";
-            this.toolTip1.SetToolTip(this.AppSettingsSave_button, "Saves application settings to a file.");
-            this.AppSettingsSave_button.UseVisualStyleBackColor = true;
-            this.AppSettingsSave_button.Click += new System.EventHandler(this.AppSettingsSave_button_Click);
-            // 
-            // AppSettingsLoad_button
-            // 
-            this.AppSettingsLoad_button.Location = new System.Drawing.Point(264, 64);
-            this.AppSettingsLoad_button.Name = "AppSettingsLoad_button";
-            this.AppSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
-            this.AppSettingsLoad_button.TabIndex = 108;
-            this.AppSettingsLoad_button.Text = "Load";
-            this.toolTip1.SetToolTip(this.AppSettingsLoad_button, "Loads application settings from a file.");
-            this.AppSettingsLoad_button.UseVisualStyleBackColor = true;
-            this.AppSettingsLoad_button.Click += new System.EventHandler(this.AppSettingsLoad_button_Click);
-            // 
-            // TinyGSettingsLoad_button
-            // 
-            this.TinyGSettingsLoad_button.Location = new System.Drawing.Point(514, 64);
-            this.TinyGSettingsLoad_button.Name = "TinyGSettingsLoad_button";
-            this.TinyGSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
-            this.TinyGSettingsLoad_button.TabIndex = 111;
-            this.TinyGSettingsLoad_button.Text = "Load";
-            this.toolTip1.SetToolTip(this.TinyGSettingsLoad_button, "Loads TinyG settings from a file.");
-            this.TinyGSettingsLoad_button.UseVisualStyleBackColor = true;
-            // 
-            // TinyGSettingsSave_button
-            // 
-            this.TinyGSettingsSave_button.Location = new System.Drawing.Point(514, 35);
-            this.TinyGSettingsSave_button.Name = "TinyGSettingsSave_button";
-            this.TinyGSettingsSave_button.Size = new System.Drawing.Size(75, 23);
-            this.TinyGSettingsSave_button.TabIndex = 110;
-            this.TinyGSettingsSave_button.Text = "Save as...";
-            this.toolTip1.SetToolTip(this.TinyGSettingsSave_button, "Saves TinyG settings to a file.");
-            this.TinyGSettingsSave_button.UseVisualStyleBackColor = true;
-            // 
-            // TinyGBuiltInSettings_button
-            // 
-            this.TinyGBuiltInSettings_button.Location = new System.Drawing.Point(595, 34);
-            this.TinyGBuiltInSettings_button.Name = "TinyGBuiltInSettings_button";
-            this.TinyGBuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
-            this.TinyGBuiltInSettings_button.TabIndex = 109;
-            this.TinyGBuiltInSettings_button.Text = "Reset to Defaults";
-            this.toolTip1.SetToolTip(this.TinyGBuiltInSettings_button, "Resets TinyG settings to conservative default settings.\r\nPrevious values will be " +
-        "overwritten!");
-            this.TinyGBuiltInSettings_button.UseVisualStyleBackColor = true;
             // 
             // AppSettings_openFileDialog
             // 
