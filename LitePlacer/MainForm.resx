@@ -318,6 +318,24 @@
   <metadata name="dataGridViewTextBoxColumn10.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="label135.ToolTip" xml:space="preserve">
+    <value>Camera switching methods:
+Fast: Uncheck both. Fastest and uses least resources, may cause issues on some systems
+Robust: Check robust, uncheck Keep active. Saves resources, slower switch mechanism.
+Keep Active: Keeps both cameras live (which may be problematic in itself); doesn't attempt to swith cameras,
+needs more USB and system resources.
+
+Best and most reliable method is unfortunately system dependent.</value>
+  </data>
+  <data name="KeepActive_checkBox.ToolTip" xml:space="preserve">
+    <value>Camera switching methods:
+Fast: Uncheck both. Fastest and uses least resources, may cause issues on some systems
+Robust: Check robust, uncheck Keep active. Saves resources, slower switch mechanism.
+Keep Active: Keeps both cameras live (which may be problematic in itself); doesn't attempt to swith cameras,
+needs more USB and system resources.
+
+Best and most reliable method is unfortunately system dependent.</value>
+  </data>
   <metadata name="dataGridViewComboBoxColumn9.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

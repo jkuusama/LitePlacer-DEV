@@ -959,7 +959,7 @@
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.Location = new System.Drawing.Point(611, 665);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(24, 18);
+            this.label14.Size = new System.Drawing.Size(27, 20);
             this.label14.TabIndex = 7;
             this.label14.Text = "X:";
             // 
@@ -971,7 +971,7 @@
             this.xpos_textBox.Name = "xpos_textBox";
             this.xpos_textBox.ReadOnly = true;
             this.xpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.xpos_textBox.Size = new System.Drawing.Size(113, 17);
+            this.xpos_textBox.Size = new System.Drawing.Size(113, 19);
             this.xpos_textBox.TabIndex = 9;
             this.xpos_textBox.Text = "- - - -";
             this.xpos_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -985,7 +985,7 @@
             this.ypos_textBox.Name = "ypos_textBox";
             this.ypos_textBox.ReadOnly = true;
             this.ypos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.ypos_textBox.Size = new System.Drawing.Size(113, 17);
+            this.ypos_textBox.Size = new System.Drawing.Size(113, 19);
             this.ypos_textBox.TabIndex = 11;
             this.ypos_textBox.Text = "- - - -";
             this.ypos_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -997,7 +997,7 @@
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label17.Location = new System.Drawing.Point(611, 686);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(23, 18);
+            this.label17.Size = new System.Drawing.Size(26, 20);
             this.label17.TabIndex = 10;
             this.label17.Text = "Y:";
             // 
@@ -1009,7 +1009,7 @@
             this.zpos_textBox.Name = "zpos_textBox";
             this.zpos_textBox.ReadOnly = true;
             this.zpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.zpos_textBox.Size = new System.Drawing.Size(113, 17);
+            this.zpos_textBox.Size = new System.Drawing.Size(113, 19);
             this.zpos_textBox.TabIndex = 13;
             this.zpos_textBox.Text = "- - - -";
             this.zpos_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1021,7 +1021,7 @@
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label18.Location = new System.Drawing.Point(611, 707);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(23, 18);
+            this.label18.Size = new System.Drawing.Size(25, 20);
             this.label18.TabIndex = 12;
             this.label18.Text = "Z:";
             // 
@@ -1033,7 +1033,7 @@
             this.apos_textBox.Name = "apos_textBox";
             this.apos_textBox.ReadOnly = true;
             this.apos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.apos_textBox.Size = new System.Drawing.Size(113, 17);
+            this.apos_textBox.Size = new System.Drawing.Size(113, 19);
             this.apos_textBox.TabIndex = 15;
             this.apos_textBox.Text = "- - - -";
             this.apos_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1046,7 +1046,7 @@
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(611, 728);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(23, 18);
+            this.label19.Size = new System.Drawing.Size(27, 20);
             this.label19.TabIndex = 14;
             this.label19.Text = "A:";
             // 
@@ -1376,7 +1376,7 @@
             // 
             this.IdColumn.HeaderText = "ID";
             this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
+            this.IdColumn.Width = 47;
             // 
             // OrientationColumn
             // 
@@ -1389,7 +1389,7 @@
             this.OrientationColumn.Name = "OrientationColumn";
             this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 48;
+            this.OrientationColumn.Width = 52;
             // 
             // RotationColumn
             // 
@@ -1402,19 +1402,19 @@
             this.RotationColumn.Name = "RotationColumn";
             this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 52;
+            this.RotationColumn.Width = 56;
             // 
             // NozzleColumn
             // 
             this.NozzleColumn.HeaderText = "Nozzle";
             this.NozzleColumn.Name = "NozzleColumn";
-            this.NozzleColumn.Width = 64;
+            this.NozzleColumn.Width = 68;
             // 
             // WidthColumn
             // 
             this.WidthColumn.HeaderText = "Width";
             this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Width = 60;
+            this.WidthColumn.Width = 64;
             // 
             // CapacityColumn
             // 
@@ -1437,53 +1437,53 @@
             // 
             this.Tray_Column.HeaderText = "Tray";
             this.Tray_Column.Name = "Tray_Column";
-            this.Tray_Column.Width = 53;
+            this.Tray_Column.Width = 57;
             // 
             // Next_Column
             // 
             this.Next_Column.HeaderText = "Next";
             this.Next_Column.Name = "Next_Column";
-            this.Next_Column.Width = 54;
+            this.Next_Column.Width = 58;
             // 
             // X_Column
             // 
             this.X_Column.HeaderText = "X";
             this.X_Column.Name = "X_Column";
             this.X_Column.ReadOnly = true;
-            this.X_Column.Width = 39;
+            this.X_Column.Width = 43;
             // 
             // Y_Column
             // 
             this.Y_Column.HeaderText = "Y";
             this.Y_Column.Name = "Y_Column";
             this.Y_Column.ReadOnly = true;
-            this.Y_Column.Width = 39;
+            this.Y_Column.Width = 43;
             // 
             // PickupZ_Column
             // 
             this.PickupZ_Column.HeaderText = "Pickup Z";
             this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
+            this.PickupZ_Column.Width = 79;
             // 
             // PlaceZ_Column
             // 
             this.PlaceZ_Column.HeaderText = "PlaceZ";
             this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
+            this.PlaceZ_Column.Width = 70;
             // 
             // NextX_Column
             // 
             this.NextX_Column.HeaderText = "Next X";
             this.NextX_Column.Name = "NextX_Column";
             this.NextX_Column.ReadOnly = true;
-            this.NextX_Column.Width = 64;
+            this.NextX_Column.Width = 68;
             // 
             // NextY_column
             // 
             this.NextY_column.HeaderText = "Next Y";
             this.NextY_column.Name = "NextY_column";
             this.NextY_column.ReadOnly = true;
-            this.NextY_column.Width = 64;
+            this.NextY_column.Width = 68;
             // 
             // Tapes_contextMenuStrip
             // 
@@ -1491,12 +1491,12 @@
             this.Tapes_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editToolStripMenuItem});
             this.Tapes_contextMenuStrip.Name = "Tapes_contextMenuStrip";
-            this.Tapes_contextMenuStrip.Size = new System.Drawing.Size(95, 26);
+            this.Tapes_contextMenuStrip.Size = new System.Drawing.Size(102, 28);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.EditTape_MenuItemClick);
             // 
@@ -1809,13 +1809,13 @@
             // 
             this.Id_Column.HeaderText = "ID";
             this.Id_Column.Name = "Id_Column";
-            this.Id_Column.Width = 43;
+            this.Id_Column.Width = 47;
             // 
             // NextPart_Column
             // 
             this.NextPart_Column.HeaderText = "Next";
             this.NextPart_Column.Name = "NextPart_Column";
-            this.NextPart_Column.Width = 54;
+            this.NextPart_Column.Width = 58;
             // 
             // Orientation_Column
             // 
@@ -1828,13 +1828,13 @@
             this.Orientation_Column.Name = "Orientation_Column";
             this.Orientation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Orientation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Orientation_Column.Width = 48;
+            this.Orientation_Column.Width = 52;
             // 
             // Nozzle_Column
             // 
             this.Nozzle_Column.HeaderText = "Nozzle";
             this.Nozzle_Column.Name = "Nozzle_Column";
-            this.Nozzle_Column.Width = 64;
+            this.Nozzle_Column.Width = 68;
             // 
             // Capacity_Column
             // 
@@ -1847,7 +1847,7 @@
             // 
             this.TrayID_Column.HeaderText = "Tray";
             this.TrayID_Column.Name = "TrayID_Column";
-            this.TrayID_Column.Width = 53;
+            this.TrayID_Column.Width = 57;
             // 
             // Rotation_Column
             // 
@@ -1860,7 +1860,7 @@
             this.Rotation_Column.Name = "Rotation_Column";
             this.Rotation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Rotation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Rotation_Column.Width = 52;
+            this.Rotation_Column.Width = 56;
             // 
             // Type_Column
             // 
@@ -1904,59 +1904,59 @@
             // 
             this.Pitch_Column.HeaderText = "Pitch";
             this.Pitch_Column.Name = "Pitch_Column";
-            this.Pitch_Column.Width = 56;
+            this.Pitch_Column.Width = 60;
             // 
             // OffsetX_Column
             // 
             this.OffsetX_Column.HeaderText = "Offset X";
             this.OffsetX_Column.Name = "OffsetX_Column";
-            this.OffsetX_Column.Width = 65;
+            this.OffsetX_Column.Width = 69;
             // 
             // OffsetY_Column
             // 
             this.OffsetY_Column.HeaderText = "Offset Y";
             this.OffsetY_Column.Name = "OffsetY_Column";
-            this.OffsetY_Column.Width = 65;
+            this.OffsetY_Column.Width = 69;
             // 
             // FirstX_Column
             // 
             this.FirstX_Column.HeaderText = "X";
             this.FirstX_Column.Name = "FirstX_Column";
             this.FirstX_Column.ReadOnly = true;
-            this.FirstX_Column.Width = 39;
+            this.FirstX_Column.Width = 43;
             // 
             // FirstY_Column
             // 
             this.FirstY_Column.HeaderText = "Y";
             this.FirstY_Column.Name = "FirstY_Column";
             this.FirstY_Column.ReadOnly = true;
-            this.FirstY_Column.Width = 39;
+            this.FirstY_Column.Width = 43;
             // 
             // Z_Pickup_Column
             // 
             this.Z_Pickup_Column.HeaderText = "Pickup Z";
             this.Z_Pickup_Column.Name = "Z_Pickup_Column";
-            this.Z_Pickup_Column.Width = 69;
+            this.Z_Pickup_Column.Width = 73;
             // 
             // Z_Place_Column
             // 
             this.Z_Place_Column.HeaderText = "Place Z";
             this.Z_Place_Column.Name = "Z_Place_Column";
-            this.Z_Place_Column.Width = 64;
+            this.Z_Place_Column.Width = 68;
             // 
             // Next_X_Column
             // 
             this.Next_X_Column.HeaderText = "Next X";
             this.Next_X_Column.Name = "Next_X_Column";
             this.Next_X_Column.ReadOnly = true;
-            this.Next_X_Column.Width = 60;
+            this.Next_X_Column.Width = 64;
             // 
             // Next_Y_Column
             // 
             this.Next_Y_Column.HeaderText = "Next Y";
             this.Next_Y_Column.Name = "Next_Y_Column";
             this.Next_Y_Column.ReadOnly = true;
-            this.Next_Y_Column.Width = 60;
+            this.Next_Y_Column.Width = 64;
             // 
             // CoordinatesForParts_Column
             // 
@@ -1968,19 +1968,19 @@
             // 
             this.LastX_Column.HeaderText = "Last X";
             this.LastX_Column.Name = "LastX_Column";
-            this.LastX_Column.Width = 58;
+            this.LastX_Column.Width = 62;
             // 
             // LastY_column
             // 
             this.LastY_column.HeaderText = "Last Y";
             this.LastY_column.Name = "LastY_column";
-            this.LastY_column.Width = 58;
+            this.LastY_column.Width = 62;
             // 
             // RotationDirect_Column
             // 
             this.RotationDirect_Column.HeaderText = "Rotation";
             this.RotationDirect_Column.Name = "RotationDirect_Column";
-            this.RotationDirect_Column.Width = 72;
+            this.RotationDirect_Column.Width = 76;
             // 
             // Tapes_pictureBox
             // 
@@ -2380,7 +2380,7 @@
             // DownCameraDrawGrid_checkBox
             // 
             this.DownCameraDrawGrid_checkBox.AutoSize = true;
-            this.DownCameraDrawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraDrawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCameraDrawGrid_checkBox.Location = new System.Drawing.Point(10, 111);
             this.DownCameraDrawGrid_checkBox.Name = "DownCameraDrawGrid_checkBox";
             this.DownCameraDrawGrid_checkBox.Size = new System.Drawing.Size(73, 17);
@@ -2393,7 +2393,7 @@
             // 
             // DownCamStart_button
             // 
-            this.DownCamStart_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamStart_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCamStart_button.Location = new System.Drawing.Point(372, 8);
             this.DownCamStart_button.Name = "DownCamStart_button";
             this.DownCamStart_button.Size = new System.Drawing.Size(71, 23);
@@ -2405,7 +2405,7 @@
             // 
             // DownCamStop_button
             // 
-            this.DownCamStop_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamStop_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCamStop_button.Location = new System.Drawing.Point(295, 8);
             this.DownCamStop_button.Name = "DownCamStop_button";
             this.DownCamStop_button.Size = new System.Drawing.Size(71, 23);
@@ -2429,23 +2429,24 @@
             // label135
             // 
             this.label135.AutoSize = true;
-            this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.label135.Location = new System.Drawing.Point(257, 43);
+            this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label135.Location = new System.Drawing.Point(282, 43);
             this.label135.Name = "label135";
             this.label135.Size = new System.Drawing.Size(79, 13);
             this.label135.TabIndex = 143;
             this.label135.Text = "Camera switch:";
-            this.toolTip1.SetToolTip(this.label135, "Set parameters for the selected algorithm");
+            this.toolTip1.SetToolTip(this.label135, resources.GetString("label135.ToolTip"));
             // 
             // KeepActive_checkBox
             // 
             this.KeepActive_checkBox.AutoSize = true;
-            this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeepActive_checkBox.Location = new System.Drawing.Point(370, 62);
             this.KeepActive_checkBox.Name = "KeepActive_checkBox";
             this.KeepActive_checkBox.Size = new System.Drawing.Size(84, 17);
             this.KeepActive_checkBox.TabIndex = 142;
             this.KeepActive_checkBox.Text = "Keep Active";
+            this.toolTip1.SetToolTip(this.KeepActive_checkBox, resources.GetString("KeepActive_checkBox.ToolTip"));
             this.KeepActive_checkBox.UseVisualStyleBackColor = true;
             this.KeepActive_checkBox.Click += new System.EventHandler(this.KeepActive_checkBox_Click);
             // 
@@ -2585,7 +2586,7 @@
             // RobustFast_checkBox
             // 
             this.RobustFast_checkBox.AutoSize = true;
-            this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RobustFast_checkBox.Location = new System.Drawing.Point(370, 42);
             this.RobustFast_checkBox.Name = "RobustFast_checkBox";
             this.RobustFast_checkBox.Size = new System.Drawing.Size(134, 17);
@@ -2598,7 +2599,7 @@
             // DownCameraDrawTicks_checkBox
             // 
             this.DownCameraDrawTicks_checkBox.AutoSize = true;
-            this.DownCameraDrawTicks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraDrawTicks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCameraDrawTicks_checkBox.Location = new System.Drawing.Point(10, 88);
             this.DownCameraDrawTicks_checkBox.Name = "DownCameraDrawTicks_checkBox";
             this.DownCameraDrawTicks_checkBox.Size = new System.Drawing.Size(103, 17);
@@ -3128,7 +3129,7 @@
             // DownCam_FindComponents_checkBox
             // 
             this.DownCam_FindComponents_checkBox.AutoSize = true;
-            this.DownCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(141, 88);
             this.DownCam_FindComponents_checkBox.Name = "DownCam_FindComponents_checkBox";
             this.DownCam_FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
@@ -3286,7 +3287,7 @@
             this.DownCameraDrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(161, -4);
             this.DownCameraDrawDashedCross_checkBox.Name = "DownCameraDrawDashedCross_checkBox";
-            this.DownCameraDrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
+            this.DownCameraDrawDashedCross_checkBox.Size = new System.Drawing.Size(147, 20);
             this.DownCameraDrawDashedCross_checkBox.TabIndex = 42;
             this.DownCameraDrawDashedCross_checkBox.Text = "Draw Dashed Cross";
             this.DownCameraDrawDashedCross_checkBox.UseVisualStyleBackColor = true;
@@ -3315,7 +3316,7 @@
             // DownCam_comboBox
             // 
             this.DownCam_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DownCam_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCam_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCam_comboBox.FormattingEnabled = true;
             this.DownCam_comboBox.Location = new System.Drawing.Point(3, 8);
             this.DownCam_comboBox.Name = "DownCam_comboBox";
@@ -3337,7 +3338,7 @@
             // DownCamFindRectangles_checkBox
             // 
             this.DownCamFindRectangles_checkBox.AutoSize = true;
-            this.DownCamFindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamFindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(141, 111);
             this.DownCamFindRectangles_checkBox.Name = "DownCamFindRectangles_checkBox";
             this.DownCamFindRectangles_checkBox.Size = new System.Drawing.Size(103, 17);
@@ -3372,7 +3373,7 @@
             // FiducialManConfirmation_checkBox
             // 
             this.FiducialManConfirmation_checkBox.AutoSize = true;
-            this.FiducialManConfirmation_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FiducialManConfirmation_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
             this.FiducialManConfirmation_checkBox.Location = new System.Drawing.Point(89, 80);
             this.FiducialManConfirmation_checkBox.Name = "FiducialManConfirmation_checkBox";
             this.FiducialManConfirmation_checkBox.Size = new System.Drawing.Size(121, 17);
@@ -3384,6 +3385,7 @@
             // AutoFiducial_radioButton
             // 
             this.AutoFiducial_radioButton.AutoSize = true;
+            this.AutoFiducial_radioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
             this.AutoFiducial_radioButton.Location = new System.Drawing.Point(11, 94);
             this.AutoFiducial_radioButton.Name = "AutoFiducial_radioButton";
             this.AutoFiducial_radioButton.Size = new System.Drawing.Size(47, 17);
@@ -3396,6 +3398,7 @@
             // RectangularFiducial_radioButton
             // 
             this.RectangularFiducial_radioButton.AutoSize = true;
+            this.RectangularFiducial_radioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
             this.RectangularFiducial_radioButton.Location = new System.Drawing.Point(11, 71);
             this.RectangularFiducial_radioButton.Name = "RectangularFiducial_radioButton";
             this.RectangularFiducial_radioButton.Size = new System.Drawing.Size(51, 17);
@@ -3408,6 +3411,7 @@
             // RoundFiducial_radioButton
             // 
             this.RoundFiducial_radioButton.AutoSize = true;
+            this.RoundFiducial_radioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
             this.RoundFiducial_radioButton.Location = new System.Drawing.Point(11, 48);
             this.RoundFiducial_radioButton.Name = "RoundFiducial_radioButton";
             this.RoundFiducial_radioButton.Size = new System.Drawing.Size(57, 17);
@@ -3420,7 +3424,7 @@
             // label138
             // 
             this.label138.AutoSize = true;
-            this.label138.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label138.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
             this.label138.Location = new System.Drawing.Point(199, 52);
             this.label138.Name = "label138";
             this.label138.Size = new System.Drawing.Size(23, 13);
@@ -3431,7 +3435,7 @@
             // label137
             // 
             this.label137.AutoSize = true;
-            this.label137.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label137.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
             this.label137.Location = new System.Drawing.Point(86, 52);
             this.label137.Name = "label137";
             this.label137.Size = new System.Drawing.Size(58, 13);
@@ -3441,7 +3445,7 @@
             // 
             // FiducialsTolerance_textBox
             // 
-            this.FiducialsTolerance_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FiducialsTolerance_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
             this.FiducialsTolerance_textBox.Location = new System.Drawing.Point(147, 49);
             this.FiducialsTolerance_textBox.Name = "FiducialsTolerance_textBox";
             this.FiducialsTolerance_textBox.Size = new System.Drawing.Size(46, 20);
@@ -3559,7 +3563,7 @@
             // 
             // RefreshDownCameraList_button
             // 
-            this.RefreshDownCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RefreshDownCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RefreshDownCameraList_button.Location = new System.Drawing.Point(141, 8);
             this.RefreshDownCameraList_button.Name = "RefreshDownCameraList_button";
             this.RefreshDownCameraList_button.Size = new System.Drawing.Size(71, 23);
@@ -3572,7 +3576,7 @@
             // DownCamFindCircles_checkBox
             // 
             this.DownCamFindCircles_checkBox.AutoSize = true;
-            this.DownCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(141, 65);
             this.DownCamFindCircles_checkBox.Name = "DownCamFindCircles_checkBox";
             this.DownCamFindCircles_checkBox.Size = new System.Drawing.Size(80, 17);
@@ -3585,7 +3589,7 @@
             // 
             // ConnectDownCamera_button
             // 
-            this.ConnectDownCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ConnectDownCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ConnectDownCamera_button.Location = new System.Drawing.Point(218, 8);
             this.ConnectDownCamera_button.Name = "ConnectDownCamera_button";
             this.ConnectDownCamera_button.Size = new System.Drawing.Size(71, 23);
@@ -3601,7 +3605,7 @@
             this.DownCamStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCamStatus_label.Location = new System.Drawing.Point(446, 19);
             this.DownCamStatus_label.Name = "DownCamStatus_label";
-            this.DownCamStatus_label.Size = new System.Drawing.Size(113, 17);
+            this.DownCamStatus_label.Size = new System.Drawing.Size(126, 20);
             this.DownCamStatus_label.TabIndex = 6;
             this.DownCamStatus_label.Text = "Not connected";
             this.toolTip1.SetToolTip(this.DownCamStatus_label, "Camera conection status");
@@ -3621,7 +3625,7 @@
             // DownCameraDrawCross_checkBox
             // 
             this.DownCameraDrawCross_checkBox.AutoSize = true;
-            this.DownCameraDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCameraDrawCross_checkBox.Location = new System.Drawing.Point(10, 42);
             this.DownCameraDrawCross_checkBox.Name = "DownCameraDrawCross_checkBox";
             this.DownCameraDrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
@@ -3634,7 +3638,7 @@
             // DownCameraDrawBox_checkBox
             // 
             this.DownCameraDrawBox_checkBox.AutoSize = true;
-            this.DownCameraDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCameraDrawBox_checkBox.Location = new System.Drawing.Point(10, 65);
             this.DownCameraDrawBox_checkBox.Name = "DownCameraDrawBox_checkBox";
             this.DownCameraDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
@@ -3659,7 +3663,7 @@
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label53.Location = new System.Drawing.Point(447, 2);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(40, 13);
@@ -3672,7 +3676,7 @@
             this.Overlay_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Overlay_checkBox.Location = new System.Drawing.Point(17, 329);
             this.Overlay_checkBox.Name = "Overlay_checkBox";
-            this.Overlay_checkBox.Size = new System.Drawing.Size(131, 17);
+            this.Overlay_checkBox.Size = new System.Drawing.Size(157, 20);
             this.Overlay_checkBox.TabIndex = 31;
             this.Overlay_checkBox.Text = "Draw Snapshot, color:";
             this.Overlay_checkBox.UseVisualStyleBackColor = true;
@@ -3694,7 +3698,7 @@
             // DownCameraBoxYmmPerPixel_label
             // 
             this.DownCameraBoxYmmPerPixel_label.AutoSize = true;
-            this.DownCameraBoxYmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraBoxYmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(453, 112);
             this.DownCameraBoxYmmPerPixel_label.Name = "DownCameraBoxYmmPerPixel_label";
             this.DownCameraBoxYmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
@@ -3705,7 +3709,7 @@
             // label68
             // 
             this.label68.AutoSize = true;
-            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label68.Location = new System.Drawing.Point(328, 86);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(38, 13);
@@ -3728,7 +3732,7 @@
             // DownCameraBoxXmmPerPixel_label
             // 
             this.DownCameraBoxXmmPerPixel_label.AutoSize = true;
-            this.DownCameraBoxXmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraBoxXmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(453, 86);
             this.DownCameraBoxXmmPerPixel_label.Name = "DownCameraBoxXmmPerPixel_label";
             this.DownCameraBoxXmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
@@ -3739,7 +3743,7 @@
             // label69
             // 
             this.label69.AutoSize = true;
-            this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label69.Location = new System.Drawing.Point(328, 112);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(38, 13);
@@ -3831,7 +3835,7 @@
             // label71
             // 
             this.label71.AutoSize = true;
-            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label71.Location = new System.Drawing.Point(424, 112);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(23, 13);
@@ -3841,7 +3845,7 @@
             // 
             // DownCameraBoxX_textBox
             // 
-            this.DownCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(372, 83);
             this.DownCameraBoxX_textBox.Name = "DownCameraBoxX_textBox";
             this.DownCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
@@ -3853,7 +3857,7 @@
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label70.Location = new System.Drawing.Point(424, 86);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(23, 13);
@@ -3863,7 +3867,7 @@
             // 
             // DownCameraBoxY_textBox
             // 
-            this.DownCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(372, 109);
             this.DownCameraBoxY_textBox.Name = "DownCameraBoxY_textBox";
             this.DownCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
@@ -4191,7 +4195,7 @@
             this.UpCamOverlay_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCamOverlay_checkBox.Location = new System.Drawing.Point(325, 304);
             this.UpCamOverlay_checkBox.Name = "UpCamOverlay_checkBox";
-            this.UpCamOverlay_checkBox.Size = new System.Drawing.Size(131, 17);
+            this.UpCamOverlay_checkBox.Size = new System.Drawing.Size(157, 20);
             this.UpCamOverlay_checkBox.TabIndex = 142;
             this.UpCamOverlay_checkBox.Text = "Draw Snapshot, color:";
             this.UpCamOverlay_checkBox.UseVisualStyleBackColor = true;
@@ -4326,7 +4330,7 @@
             this.UpCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCam_FindComponents_checkBox.Location = new System.Drawing.Point(141, 89);
             this.UpCam_FindComponents_checkBox.Name = "UpCam_FindComponents_checkBox";
-            this.UpCam_FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
+            this.UpCam_FindComponents_checkBox.Size = new System.Drawing.Size(132, 20);
             this.UpCam_FindComponents_checkBox.TabIndex = 70;
             this.UpCam_FindComponents_checkBox.Text = "Find Components";
             this.UpCam_FindComponents_checkBox.UseVisualStyleBackColor = true;
@@ -4338,7 +4342,7 @@
             this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox2.Location = new System.Drawing.Point(141, 112);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(103, 17);
+            this.checkBox2.Size = new System.Drawing.Size(125, 20);
             this.checkBox2.TabIndex = 69;
             this.checkBox2.Text = "Find Rectangles";
             this.toolTip1.SetToolTip(this.checkBox2, "Tries to find rectangels on the image,\r\nusing video processing from the table bel" +
@@ -4515,7 +4519,7 @@
             this.UpCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCamFindCircles_checkBox.Location = new System.Drawing.Point(141, 67);
             this.UpCamFindCircles_checkBox.Name = "UpCamFindCircles_checkBox";
-            this.UpCamFindCircles_checkBox.Size = new System.Drawing.Size(80, 17);
+            this.UpCamFindCircles_checkBox.Size = new System.Drawing.Size(97, 20);
             this.UpCamFindCircles_checkBox.TabIndex = 68;
             this.UpCamFindCircles_checkBox.Text = "Find Circles";
             this.toolTip1.SetToolTip(this.UpCamFindCircles_checkBox, "Tries to find circles on the image,\r\nusing video processing from the table below." +
@@ -4530,7 +4534,7 @@
             this.UpCam_comboBox.FormattingEnabled = true;
             this.UpCam_comboBox.Location = new System.Drawing.Point(3, 8);
             this.UpCam_comboBox.Name = "UpCam_comboBox";
-            this.UpCam_comboBox.Size = new System.Drawing.Size(132, 21);
+            this.UpCam_comboBox.Size = new System.Drawing.Size(132, 24);
             this.UpCam_comboBox.TabIndex = 44;
             this.toolTip1.SetToolTip(this.UpCam_comboBox, "List of USB cameras found on this computer.\r\nSelect up looking camera form this l" +
         "ist.\r\n");
@@ -4541,7 +4545,7 @@
             this.UpCameraDrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCameraDrawDashedCross_checkBox.Location = new System.Drawing.Point(6, 90);
             this.UpCameraDrawDashedCross_checkBox.Name = "UpCameraDrawDashedCross_checkBox";
-            this.UpCameraDrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
+            this.UpCameraDrawDashedCross_checkBox.Size = new System.Drawing.Size(147, 20);
             this.UpCameraDrawDashedCross_checkBox.TabIndex = 67;
             this.UpCameraDrawDashedCross_checkBox.Text = "Draw Dashed Cross";
             this.UpCameraDrawDashedCross_checkBox.UseVisualStyleBackColor = true;
@@ -4554,7 +4558,7 @@
             this.UpCameraBoxYmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCameraBoxYmmPerPixel_label.Location = new System.Drawing.Point(453, 113);
             this.UpCameraBoxYmmPerPixel_label.Name = "UpCameraBoxYmmPerPixel_label";
-            this.UpCameraBoxYmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
+            this.UpCameraBoxYmmPerPixel_label.Size = new System.Drawing.Size(20, 16);
             this.UpCameraBoxYmmPerPixel_label.TabIndex = 66;
             this.UpCameraBoxYmmPerPixel_label.Text = "---";
             this.toolTip1.SetToolTip(this.UpCameraBoxYmmPerPixel_label, "Set the true size of the box on the image.");
@@ -4565,7 +4569,7 @@
             this.UpCameraDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCameraDrawBox_checkBox.Location = new System.Drawing.Point(6, 67);
             this.UpCameraDrawBox_checkBox.Name = "UpCameraDrawBox_checkBox";
-            this.UpCameraDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
+            this.UpCameraDrawBox_checkBox.Size = new System.Drawing.Size(84, 20);
             this.UpCameraDrawBox_checkBox.TabIndex = 64;
             this.UpCameraDrawBox_checkBox.Text = "Draw Box";
             this.toolTip1.SetToolTip(this.UpCameraDrawBox_checkBox, "Draws a box on the image\r\n(Used to set camera scale)");
@@ -4590,7 +4594,7 @@
             this.UpCameraDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCameraDrawCross_checkBox.Location = new System.Drawing.Point(6, 44);
             this.UpCameraDrawCross_checkBox.Name = "UpCameraDrawCross_checkBox";
-            this.UpCameraDrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
+            this.UpCameraDrawCross_checkBox.Size = new System.Drawing.Size(96, 20);
             this.UpCameraDrawCross_checkBox.TabIndex = 50;
             this.UpCameraDrawCross_checkBox.Text = "Draw Cross";
             this.toolTip1.SetToolTip(this.UpCameraDrawCross_checkBox, "Draws crosshair cursor on the image");
@@ -4603,7 +4607,7 @@
             this.label110.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label110.Location = new System.Drawing.Point(449, 6);
             this.label110.Name = "label110";
-            this.label110.Size = new System.Drawing.Size(40, 13);
+            this.label110.Size = new System.Drawing.Size(48, 16);
             this.label110.TabIndex = 47;
             this.label110.Text = "Status:";
             // 
@@ -4613,7 +4617,7 @@
             this.UpCameraBoxXmmPerPixel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCameraBoxXmmPerPixel_label.Location = new System.Drawing.Point(453, 87);
             this.UpCameraBoxXmmPerPixel_label.Name = "UpCameraBoxXmmPerPixel_label";
-            this.UpCameraBoxXmmPerPixel_label.Size = new System.Drawing.Size(16, 13);
+            this.UpCameraBoxXmmPerPixel_label.Size = new System.Drawing.Size(20, 16);
             this.UpCameraBoxXmmPerPixel_label.TabIndex = 65;
             this.UpCameraBoxXmmPerPixel_label.Text = "---";
             this.toolTip1.SetToolTip(this.UpCameraBoxXmmPerPixel_label, "Set the true size of the box on the image.");
@@ -4636,7 +4640,7 @@
             this.label103.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label103.Location = new System.Drawing.Point(424, 113);
             this.label103.Name = "label103";
-            this.label103.Size = new System.Drawing.Size(23, 13);
+            this.label103.Size = new System.Drawing.Size(30, 16);
             this.label103.TabIndex = 62;
             this.label103.Text = "mm";
             this.toolTip1.SetToolTip(this.label103, "Set the true size of the box on the image.");
@@ -4646,7 +4650,7 @@
             this.UpCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCameraBoxY_textBox.Location = new System.Drawing.Point(372, 110);
             this.UpCameraBoxY_textBox.Name = "UpCameraBoxY_textBox";
-            this.UpCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.UpCameraBoxY_textBox.Size = new System.Drawing.Size(46, 22);
             this.UpCameraBoxY_textBox.TabIndex = 60;
             this.toolTip1.SetToolTip(this.UpCameraBoxY_textBox, "Set the true size of the box on the image.");
             this.UpCameraBoxY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCameraBoxY_textBox_KeyPress);
@@ -4657,7 +4661,7 @@
             this.UpCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCameraBoxX_textBox.Location = new System.Drawing.Point(372, 84);
             this.UpCameraBoxX_textBox.Name = "UpCameraBoxX_textBox";
-            this.UpCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.UpCameraBoxX_textBox.Size = new System.Drawing.Size(46, 22);
             this.UpCameraBoxX_textBox.TabIndex = 59;
             this.toolTip1.SetToolTip(this.UpCameraBoxX_textBox, "Set the true size of the box on the image.");
             this.UpCameraBoxX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCameraBoxX_textBox_KeyPress);
@@ -4669,7 +4673,7 @@
             this.label106.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label106.Location = new System.Drawing.Point(328, 87);
             this.label106.Name = "label106";
-            this.label106.Size = new System.Drawing.Size(38, 13);
+            this.label106.Size = new System.Drawing.Size(45, 16);
             this.label106.TabIndex = 57;
             this.label106.Text = "Box X:";
             this.toolTip1.SetToolTip(this.label106, "Set the true size of the box on the image.");
@@ -4680,7 +4684,7 @@
             this.UpCamStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCamStatus_label.Location = new System.Drawing.Point(449, 19);
             this.UpCamStatus_label.Name = "UpCamStatus_label";
-            this.UpCamStatus_label.Size = new System.Drawing.Size(105, 18);
+            this.UpCamStatus_label.Size = new System.Drawing.Size(126, 22);
             this.UpCamStatus_label.TabIndex = 45;
             this.UpCamStatus_label.Text = "Not connected";
             this.toolTip1.SetToolTip(this.UpCamStatus_label, "Camera conection status");
@@ -4691,7 +4695,7 @@
             this.label104.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label104.Location = new System.Drawing.Point(424, 87);
             this.label104.Name = "label104";
-            this.label104.Size = new System.Drawing.Size(23, 13);
+            this.label104.Size = new System.Drawing.Size(30, 16);
             this.label104.TabIndex = 61;
             this.label104.Text = "mm";
             this.toolTip1.SetToolTip(this.label104, "Set the true size of the box on the image.");
@@ -4702,7 +4706,7 @@
             this.label105.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label105.Location = new System.Drawing.Point(328, 113);
             this.label105.Name = "label105";
-            this.label105.Size = new System.Drawing.Size(38, 13);
+            this.label105.Size = new System.Drawing.Size(46, 16);
             this.label105.TabIndex = 58;
             this.label105.Text = "Box Y:";
             this.toolTip1.SetToolTip(this.label105, "Set the true size of the box on the image.");
@@ -4713,7 +4717,7 @@
             this.label101.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label101.Location = new System.Drawing.Point(579, 497);
             this.label101.Name = "label101";
-            this.label101.Size = new System.Drawing.Size(50, 17);
+            this.label101.Size = new System.Drawing.Size(53, 18);
             this.label101.TabIndex = 117;
             this.label101.Text = "Pickup";
             // 
@@ -4723,7 +4727,7 @@
             this.label100.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label100.Location = new System.Drawing.Point(491, 497);
             this.label100.Name = "label100";
-            this.label100.Size = new System.Drawing.Size(67, 17);
+            this.label100.Size = new System.Drawing.Size(73, 18);
             this.label100.TabIndex = 116;
             this.label100.Text = "PCB zero";
             // 
@@ -4733,7 +4737,7 @@
             this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label55.Location = new System.Drawing.Point(406, 497);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(79, 17);
+            this.label55.Size = new System.Drawing.Size(84, 18);
             this.label55.TabIndex = 115;
             this.label55.Text = "Up Camera";
             // 
@@ -4956,7 +4960,7 @@
             this.NozzleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NozzleOffset_label.Location = new System.Drawing.Point(9, 553);
             this.NozzleOffset_label.Name = "NozzleOffset_label";
-            this.NozzleOffset_label.Size = new System.Drawing.Size(130, 22);
+            this.NozzleOffset_label.Size = new System.Drawing.Size(150, 26);
             this.NozzleOffset_label.TabIndex = 50;
             this.NozzleOffset_label.Text = "Instructions here";
             // 
@@ -4966,7 +4970,7 @@
             this.label115.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label115.Location = new System.Drawing.Point(9, 497);
             this.label115.Name = "label115";
-            this.label115.Size = new System.Drawing.Size(96, 17);
+            this.label115.Size = new System.Drawing.Size(101, 18);
             this.label115.TabIndex = 49;
             this.label115.Text = "Nozzle Setup:";
             // 
@@ -5237,7 +5241,7 @@
             this.label160.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label160.Location = new System.Drawing.Point(510, 7);
             this.label160.Name = "label160";
-            this.label160.Size = new System.Drawing.Size(104, 18);
+            this.label160.Size = new System.Drawing.Size(129, 22);
             this.label160.TabIndex = 106;
             this.label160.Text = "TinyG Settings";
             this.toolTip1.SetToolTip(this.label160, "Connection status");
@@ -5248,7 +5252,7 @@
             this.label159.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label159.Location = new System.Drawing.Point(260, 7);
             this.label159.Name = "label159";
-            this.label159.Size = new System.Drawing.Size(136, 18);
+            this.label159.Size = new System.Drawing.Size(168, 22);
             this.label159.TabIndex = 105;
             this.label159.Text = "Application Settings";
             this.toolTip1.SetToolTip(this.label159, "Connection status");
@@ -5335,10 +5339,10 @@
             // 
             this.Zlb_label.AutoSize = true;
             this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Zlb_label.Location = new System.Drawing.Point(3, 541);
             this.Zlb_label.Name = "Zlb_label";
-            this.Zlb_label.Size = new System.Drawing.Size(369, 38);
+            this.Zlb_label.Size = new System.Drawing.Size(393, 42);
             this.Zlb_label.TabIndex = 51;
             this.Zlb_label.Text = "Jog Z axis until the Nozzle just barely touches the PCB\r\nthen click \"next\"";
             this.Zlb_label.Visible = false;
@@ -5430,7 +5434,7 @@
             this.label116.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label116.Location = new System.Drawing.Point(3, 4);
             this.label116.Name = "label116";
-            this.label116.Size = new System.Drawing.Size(105, 16);
+            this.label116.Size = new System.Drawing.Size(116, 18);
             this.label116.TabIndex = 49;
             this.label116.Text = "Nozzle height:";
             // 
@@ -6261,7 +6265,7 @@
             this.label47.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label47.Location = new System.Drawing.Point(3, 8);
             this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(59, 16);
+            this.label47.Size = new System.Drawing.Size(67, 18);
             this.label47.TabIndex = 15;
             this.label47.Text = "Motor4:";
             // 
@@ -6302,7 +6306,7 @@
             this.label50.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label50.Location = new System.Drawing.Point(3, 4);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(26, 20);
+            this.label50.Size = new System.Drawing.Size(30, 24);
             this.label50.TabIndex = 14;
             this.label50.Text = "A:";
             // 
@@ -6572,7 +6576,7 @@
             this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label25.Location = new System.Drawing.Point(3, 8);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(59, 16);
+            this.label25.Size = new System.Drawing.Size(67, 18);
             this.label25.TabIndex = 15;
             this.label25.Text = "Motor1:";
             // 
@@ -6613,7 +6617,7 @@
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.Location = new System.Drawing.Point(3, 4);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(26, 20);
+            this.label28.Size = new System.Drawing.Size(31, 24);
             this.label28.TabIndex = 14;
             this.label28.Text = "X:";
             // 
@@ -6883,7 +6887,7 @@
             this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label36.Location = new System.Drawing.Point(3, 8);
             this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(59, 16);
+            this.label36.Size = new System.Drawing.Size(67, 18);
             this.label36.TabIndex = 15;
             this.label36.Text = "Motor3:";
             // 
@@ -6924,7 +6928,7 @@
             this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label39.Location = new System.Drawing.Point(3, 4);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(25, 20);
+            this.label39.Size = new System.Drawing.Size(29, 24);
             this.label39.TabIndex = 14;
             this.label39.Text = "Z:";
             // 
@@ -7194,7 +7198,7 @@
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(3, 8);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 16);
+            this.label10.Size = new System.Drawing.Size(67, 18);
             this.label10.TabIndex = 15;
             this.label10.Text = "Motor2:";
             // 
@@ -7235,7 +7239,7 @@
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(3, 4);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(26, 20);
+            this.label7.Size = new System.Drawing.Size(29, 24);
             this.label7.TabIndex = 14;
             this.label7.Text = "Y:";
             // 
@@ -7296,7 +7300,7 @@
             this.labelSerialPortStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSerialPortStatus.Location = new System.Drawing.Point(72, 69);
             this.labelSerialPortStatus.Name = "labelSerialPortStatus";
-            this.labelSerialPortStatus.Size = new System.Drawing.Size(105, 18);
+            this.labelSerialPortStatus.Size = new System.Drawing.Size(126, 22);
             this.labelSerialPortStatus.TabIndex = 3;
             this.labelSerialPortStatus.Text = "Not connected";
             this.toolTip1.SetToolTip(this.labelSerialPortStatus, "Connection status");
@@ -7589,7 +7593,7 @@
             this.NextGroup_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NextGroup_label.Location = new System.Drawing.Point(455, 523);
             this.NextGroup_label.Name = "NextGroup_label";
-            this.NextGroup_label.Size = new System.Drawing.Size(16, 16);
+            this.NextGroup_label.Size = new System.Drawing.Size(18, 18);
             this.NextGroup_label.TabIndex = 70;
             this.NextGroup_label.Text = "--";
             // 
@@ -7599,7 +7603,7 @@
             this.label125.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label125.Location = new System.Drawing.Point(352, 524);
             this.label125.Name = "label125";
-            this.label125.Size = new System.Drawing.Size(38, 16);
+            this.label125.Size = new System.Drawing.Size(42, 18);
             this.label125.TabIndex = 69;
             this.label125.Text = "Next:";
             // 
@@ -7609,7 +7613,7 @@
             this.PreviousGroup_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PreviousGroup_label.Location = new System.Drawing.Point(455, 490);
             this.PreviousGroup_label.Name = "PreviousGroup_label";
-            this.PreviousGroup_label.Size = new System.Drawing.Size(16, 16);
+            this.PreviousGroup_label.Size = new System.Drawing.Size(18, 18);
             this.PreviousGroup_label.TabIndex = 68;
             this.PreviousGroup_label.Text = "--";
             // 
@@ -7631,7 +7635,7 @@
             this.label122.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label122.Location = new System.Drawing.Point(352, 491);
             this.label122.Name = "label122";
-            this.label122.Size = new System.Drawing.Size(64, 16);
+            this.label122.Size = new System.Drawing.Size(70, 18);
             this.label122.TabIndex = 67;
             this.label122.Text = "Previous:";
             // 
@@ -7641,7 +7645,7 @@
             this.CurrentGroup_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CurrentGroup_label.Location = new System.Drawing.Point(455, 507);
             this.CurrentGroup_label.Name = "CurrentGroup_label";
-            this.CurrentGroup_label.Size = new System.Drawing.Size(16, 16);
+            this.CurrentGroup_label.Size = new System.Drawing.Size(18, 18);
             this.CurrentGroup_label.TabIndex = 66;
             this.CurrentGroup_label.Text = "--";
             // 
@@ -7651,7 +7655,7 @@
             this.label57.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label57.Location = new System.Drawing.Point(352, 508);
             this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(85, 16);
+            this.label57.Size = new System.Drawing.Size(93, 18);
             this.label57.TabIndex = 65;
             this.label57.Text = "Now placing:";
             // 
@@ -7661,7 +7665,7 @@
             this.JobFilePath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.JobFilePath_label.Location = new System.Drawing.Point(904, 340);
             this.JobFilePath_label.Name = "JobFilePath_label";
-            this.JobFilePath_label.Size = new System.Drawing.Size(19, 13);
+            this.JobFilePath_label.Size = new System.Drawing.Size(24, 16);
             this.JobFilePath_label.TabIndex = 64;
             this.JobFilePath_label.Text = "----";
             // 
@@ -7671,7 +7675,7 @@
             this.label91.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label91.Location = new System.Drawing.Point(866, 340);
             this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(32, 13);
+            this.label91.Size = new System.Drawing.Size(38, 16);
             this.label91.TabIndex = 63;
             this.label91.Text = "Path:";
             // 
@@ -7681,7 +7685,7 @@
             this.JobFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.JobFileName_label.Location = new System.Drawing.Point(968, 307);
             this.JobFileName_label.Name = "JobFileName_label";
-            this.JobFileName_label.Size = new System.Drawing.Size(28, 18);
+            this.JobFileName_label.Size = new System.Drawing.Size(33, 20);
             this.JobFileName_label.TabIndex = 62;
             this.JobFileName_label.Text = "----";
             // 
@@ -7691,7 +7695,7 @@
             this.Job_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Job_label.Location = new System.Drawing.Point(865, 310);
             this.Job_label.Name = "Job_label";
-            this.Job_label.Size = new System.Drawing.Size(75, 18);
+            this.Job_label.Size = new System.Drawing.Size(85, 20);
             this.Job_label.TabIndex = 61;
             this.Job_label.Text = "FileName:";
             // 
@@ -8109,7 +8113,7 @@
             this.label89.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label89.Location = new System.Drawing.Point(657, 286);
             this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(72, 18);
+            this.label89.Size = new System.Drawing.Size(82, 20);
             this.label89.TabIndex = 44;
             this.label89.Text = "Job Data:";
             this.toolTip1.SetToolTip(this.label89, "The placement operations are done according\r\nto Job Data specifications.");
@@ -8120,7 +8124,7 @@
             this.label88.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label88.Location = new System.Drawing.Point(659, 13);
             this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(78, 18);
+            this.label88.Size = new System.Drawing.Size(91, 20);
             this.label88.TabIndex = 43;
             this.label88.Text = "CAD Data:";
             // 
@@ -8149,7 +8153,7 @@
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -8269,7 +8273,7 @@
             this.Placed_column.HeaderText = "Placed";
             this.Placed_column.Name = "Placed_column";
             this.Placed_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Placed_column.Width = 65;
+            this.Placed_column.Width = 69;
             // 
             // X_nominal
             // 
@@ -8312,13 +8316,13 @@
             this.RunJob_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.resetPlacedDataToolStripMenuItem});
             this.RunJob_contextMenuStrip.Name = "RunJob_contextMenuStrip";
-            this.RunJob_contextMenuStrip.Size = new System.Drawing.Size(177, 26);
+            this.RunJob_contextMenuStrip.Size = new System.Drawing.Size(196, 28);
             this.RunJob_contextMenuStrip.Text = "Reset \"Placed\" data";
             // 
             // resetPlacedDataToolStripMenuItem
             // 
             this.resetPlacedDataToolStripMenuItem.Name = "resetPlacedDataToolStripMenuItem";
-            this.resetPlacedDataToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.resetPlacedDataToolStripMenuItem.Size = new System.Drawing.Size(195, 24);
             this.resetPlacedDataToolStripMenuItem.Text = "Reset \"Placed\" data";
             this.resetPlacedDataToolStripMenuItem.Click += new System.EventHandler(this.resetPlacedDataToolStripMenuItem_Click);
             // 
@@ -8328,7 +8332,7 @@
             this.CadFilePath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CadFilePath_label.Location = new System.Drawing.Point(904, 38);
             this.CadFilePath_label.Name = "CadFilePath_label";
-            this.CadFilePath_label.Size = new System.Drawing.Size(19, 13);
+            this.CadFilePath_label.Size = new System.Drawing.Size(24, 16);
             this.CadFilePath_label.TabIndex = 3;
             this.CadFilePath_label.Text = "----";
             // 
@@ -8338,7 +8342,7 @@
             this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label56.Location = new System.Drawing.Point(866, 38);
             this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(32, 13);
+            this.label56.Size = new System.Drawing.Size(38, 16);
             this.label56.TabIndex = 2;
             this.label56.Text = "Path:";
             // 
@@ -8348,7 +8352,7 @@
             this.CadFileName_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CadFileName_label.Location = new System.Drawing.Point(968, 10);
             this.CadFileName_label.Name = "CadFileName_label";
-            this.CadFileName_label.Size = new System.Drawing.Size(28, 18);
+            this.CadFileName_label.Size = new System.Drawing.Size(33, 20);
             this.CadFileName_label.TabIndex = 1;
             this.CadFileName_label.Text = "----";
             // 
@@ -8358,7 +8362,7 @@
             this.CAD_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CAD_label.Location = new System.Drawing.Point(865, 10);
             this.CAD_label.Name = "CAD_label";
-            this.CAD_label.Size = new System.Drawing.Size(75, 18);
+            this.CAD_label.Size = new System.Drawing.Size(85, 20);
             this.CAD_label.TabIndex = 0;
             this.CAD_label.Text = "FileName:";
             // 
@@ -8566,33 +8570,33 @@
             this.getUnloadMovesFromLoadMovesToolStripMenuItem,
             this.copyMovesFromNozzle1ToolStripMenuItem});
             this.NozzleUnload_contextMenuStrip.Name = "NozzleUnload_contextMenuStrip";
-            this.NozzleUnload_contextMenuStrip.Size = new System.Drawing.Size(352, 92);
+            this.NozzleUnload_contextMenuStrip.Size = new System.Drawing.Size(401, 100);
             // 
             // gotoUnloadStartToolStripMenuItem
             // 
             this.gotoUnloadStartToolStripMenuItem.Name = "gotoUnloadStartToolStripMenuItem";
-            this.gotoUnloadStartToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
+            this.gotoUnloadStartToolStripMenuItem.Size = new System.Drawing.Size(400, 24);
             this.gotoUnloadStartToolStripMenuItem.Text = "Goto start position";
             this.gotoUnloadStartToolStripMenuItem.Click += new System.EventHandler(this.gotoUnloadStartToolStripMenuItem_Click);
             // 
             // copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem
             // 
             this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Name = "copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem";
-            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
+            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Size = new System.Drawing.Size(400, 24);
             this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Text = "Copy unload start positions from Load end positions";
             this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Click += new System.EventHandler(this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem_Click);
             // 
             // getUnloadMovesFromLoadMovesToolStripMenuItem
             // 
             this.getUnloadMovesFromLoadMovesToolStripMenuItem.Name = "getUnloadMovesFromLoadMovesToolStripMenuItem";
-            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Size = new System.Drawing.Size(400, 24);
             this.getUnloadMovesFromLoadMovesToolStripMenuItem.Text = "get unload moves from load moves";
             this.getUnloadMovesFromLoadMovesToolStripMenuItem.Click += new System.EventHandler(this.getUnloadMovesFromLoadMovesToolStripMenuItem_Click);
             // 
             // copyMovesFromNozzle1ToolStripMenuItem
             // 
             this.copyMovesFromNozzle1ToolStripMenuItem.Name = "copyMovesFromNozzle1ToolStripMenuItem";
-            this.copyMovesFromNozzle1ToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
+            this.copyMovesFromNozzle1ToolStripMenuItem.Size = new System.Drawing.Size(400, 24);
             this.copyMovesFromNozzle1ToolStripMenuItem.Text = "Copy moves from nozzle 1";
             this.copyMovesFromNozzle1ToolStripMenuItem.Click += new System.EventHandler(this.copyUnloadMovesFromNozzle1_ToolStripMenuItem_Click);
             // 
@@ -8632,7 +8636,7 @@
             this.NozzleChangeEnable_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NozzleChangeEnable_checkBox.Location = new System.Drawing.Point(971, 534);
             this.NozzleChangeEnable_checkBox.Name = "NozzleChangeEnable_checkBox";
-            this.NozzleChangeEnable_checkBox.Size = new System.Drawing.Size(205, 24);
+            this.NozzleChangeEnable_checkBox.Size = new System.Drawing.Size(239, 28);
             this.NozzleChangeEnable_checkBox.TabIndex = 32;
             this.NozzleChangeEnable_checkBox.Text = "Nozzle change enable";
             this.NozzleChangeEnable_checkBox.UseVisualStyleBackColor = true;
@@ -8801,7 +8805,7 @@
             this.label140.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label140.Location = new System.Drawing.Point(3, 9);
             this.label140.Name = "label140";
-            this.label140.Size = new System.Drawing.Size(66, 16);
+            this.label140.Size = new System.Drawing.Size(69, 18);
             this.label140.TabIndex = 17;
             this.label140.Text = "Speeds:";
             // 
@@ -9080,19 +9084,19 @@
             this.gotoLoadStartPositionToolStripMenuItem,
             this.copyMovesFromNozzle1ToolStripMenuItem1});
             this.NozzleLoad_contextMenuStrip.Name = "NozzleLoad_contextMenuStrip";
-            this.NozzleLoad_contextMenuStrip.Size = new System.Drawing.Size(215, 48);
+            this.NozzleLoad_contextMenuStrip.Size = new System.Drawing.Size(242, 52);
             // 
             // gotoLoadStartPositionToolStripMenuItem
             // 
             this.gotoLoadStartPositionToolStripMenuItem.Name = "gotoLoadStartPositionToolStripMenuItem";
-            this.gotoLoadStartPositionToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.gotoLoadStartPositionToolStripMenuItem.Size = new System.Drawing.Size(241, 24);
             this.gotoLoadStartPositionToolStripMenuItem.Text = "Goto start position";
             this.gotoLoadStartPositionToolStripMenuItem.Click += new System.EventHandler(this.gotoStartPositionToolStripMenuItem_Click);
             // 
             // copyMovesFromNozzle1ToolStripMenuItem1
             // 
             this.copyMovesFromNozzle1ToolStripMenuItem1.Name = "copyMovesFromNozzle1ToolStripMenuItem1";
-            this.copyMovesFromNozzle1ToolStripMenuItem1.Size = new System.Drawing.Size(214, 22);
+            this.copyMovesFromNozzle1ToolStripMenuItem1.Size = new System.Drawing.Size(241, 24);
             this.copyMovesFromNozzle1ToolStripMenuItem1.Text = "Copy moves from nozzle 1";
             this.copyMovesFromNozzle1ToolStripMenuItem1.Click += new System.EventHandler(this.copyLoadMovesFromNozzle1_ToolStripMenuItem_Click);
             // 
@@ -9114,7 +9118,7 @@
             this.GotoX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.GotoX_textBox.Location = new System.Drawing.Point(1094, 747);
             this.GotoX_textBox.Name = "GotoX_textBox";
-            this.GotoX_textBox.Size = new System.Drawing.Size(50, 20);
+            this.GotoX_textBox.Size = new System.Drawing.Size(50, 22);
             this.GotoX_textBox.TabIndex = 78;
             this.GotoX_textBox.Text = "0.0";
             this.GotoX_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -9125,7 +9129,7 @@
             this.GotoY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.GotoY_textBox.Location = new System.Drawing.Point(1094, 774);
             this.GotoY_textBox.Name = "GotoY_textBox";
-            this.GotoY_textBox.Size = new System.Drawing.Size(50, 20);
+            this.GotoY_textBox.Size = new System.Drawing.Size(50, 22);
             this.GotoY_textBox.TabIndex = 83;
             this.GotoY_textBox.Text = "0.0";
             this.GotoY_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -9136,7 +9140,7 @@
             this.GotoZ_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.GotoZ_textBox.Location = new System.Drawing.Point(1092, 800);
             this.GotoZ_textBox.Name = "GotoZ_textBox";
-            this.GotoZ_textBox.Size = new System.Drawing.Size(50, 20);
+            this.GotoZ_textBox.Size = new System.Drawing.Size(50, 22);
             this.GotoZ_textBox.TabIndex = 85;
             this.GotoZ_textBox.Text = "0.0";
             this.GotoZ_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -9147,7 +9151,7 @@
             this.GotoA_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.GotoA_textBox.Location = new System.Drawing.Point(1092, 828);
             this.GotoA_textBox.Name = "GotoA_textBox";
-            this.GotoA_textBox.Size = new System.Drawing.Size(50, 20);
+            this.GotoA_textBox.Size = new System.Drawing.Size(50, 22);
             this.GotoA_textBox.TabIndex = 87;
             this.GotoA_textBox.Text = "0.0";
             this.GotoA_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -9173,7 +9177,7 @@
             this.NozzleNo_textBox.Name = "NozzleNo_textBox";
             this.NozzleNo_textBox.ReadOnly = true;
             this.NozzleNo_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.NozzleNo_textBox.Size = new System.Drawing.Size(49, 17);
+            this.NozzleNo_textBox.Size = new System.Drawing.Size(49, 19);
             this.NozzleNo_textBox.TabIndex = 96;
             this.NozzleNo_textBox.Text = "-";
             this.NozzleNo_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -9196,7 +9200,7 @@
             this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TrueX_label.Location = new System.Drawing.Point(760, 675);
             this.TrueX_label.Name = "TrueX_label";
-            this.TrueX_label.Size = new System.Drawing.Size(31, 9);
+            this.TrueX_label.Size = new System.Drawing.Size(46, 13);
             this.TrueX_label.TabIndex = 77;
             this.TrueX_label.Text = "000.000";
             this.TrueX_label.Visible = false;
@@ -9243,7 +9247,7 @@
             this.label108.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label108.Location = new System.Drawing.Point(611, 749);
             this.label108.Name = "label108";
-            this.label108.Size = new System.Drawing.Size(63, 18);
+            this.label108.Size = new System.Drawing.Size(70, 20);
             this.label108.TabIndex = 95;
             this.label108.Text = "nozzle:";
             // 
