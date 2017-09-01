@@ -6109,230 +6109,6 @@ namespace LitePlacer
         }
 
 
-        private void _BuiltInSettings_TinyG()
-        {
-            // global
-            // TODO: exeption, exeption handling here
-            CNC_Write_m("{\"st\":0}");   // switches NO type            
-            Thread.Sleep(50);
-            CNC_Write_m("{\"mt\":300}");   // motor timeout 5min
-            Thread.Sleep(50);
-            CNC_Write_m("{\"jv\":3}");   // JSON verbosity
-            Thread.Sleep(50);
-            CNC_Write_m("{\"tv\":1}");   // text verbosity
-            Thread.Sleep(50);
-            CNC_Write_m("{\"qv\":2}");   // queue verbosity
-            Thread.Sleep(50);
-            CNC_Write_m("{\"sv\":1}");   // Status report verbosity
-            Thread.Sleep(50);
-            CNC_Write_m("{\"si\":200}");   // Status report interval
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ec\":0}");   // send LF only
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ee\":0}");   // echo off
-            Thread.Sleep(50);
-            CNC_Write_m("{\"gun\":1}");   // use mm's
-            Thread.Sleep(50);
-            // CNC_RawWrite("f2000");   // default feed rate (important thing that it is not 0)
-            CNC_RawWrite("{\"gc\":\"f2000\"}");   // default feed rate (important thing that it is not 0)
-            Thread.Sleep(50);
-
-            // Motor 1
-            CNC_Write_m("{\"1ma\":0}");   // map 1 to X
-            Thread.Sleep(50);
-            CNC_Write_m("{\"1sa\":0.9}");   // 0.9 deg. per step
-            Thread.Sleep(50);
-            CNC_Write_m("{\"1tr\":40.0}");   // 40mm per rev.
-            Thread.Sleep(50);
-            CNC_Write_m("{\"1mi\":8}");   // microstepping
-            Thread.Sleep(50);
-            CNC_Write_m("{\"1po\":0}");   // normal polarity
-            Thread.Sleep(50);
-            CNC_Write_m("{\"1pm\":2}");   // keep powered (for "mt" seconds after movement)
-            Thread.Sleep(50);
-
-            // Motor 2
-            CNC_Write_m("{\"2ma\":1}");   // map 2 to Y
-            Thread.Sleep(50);
-            CNC_Write_m("{\"2sa\":0.9}");   // 0.9 deg. per step
-            Thread.Sleep(50);
-            CNC_Write_m("{\"2tr\":40.0}");   // 40mm per rev.
-            Thread.Sleep(50);
-            CNC_Write_m("{\"2mi\":8}");   // microstepping
-            Thread.Sleep(50);
-            CNC_Write_m("{\"2po\":0}");   // normal polarity
-            Thread.Sleep(50);
-            CNC_Write_m("{\"2pm\":2}");   // keep powered (for "mt" seconds after movement)
-            Thread.Sleep(50);
-
-            // Motor 3
-            CNC_Write_m("{\"3ma\":2}");   // map 3 to Z
-            Thread.Sleep(50);
-            CNC_Write_m("{\"3sa\":1.8}");   // 1.8 deg. per step
-            Thread.Sleep(50);
-            CNC_Write_m("{\"3tr\":8.0}");   // 8mm per rev.
-            Thread.Sleep(50);
-            CNC_Write_m("{\"3mi\":8}");   // microstepping
-            Thread.Sleep(50);
-            CNC_Write_m("{\"3po\":0}");   // normal polarity
-            Thread.Sleep(50);
-            CNC_Write_m("{\"3pm\":2}");   // keep powered (for "mt" seconds after movement)
-            Thread.Sleep(50);
-
-            // Motor 4
-            CNC_Write_m("{\"4ma\":3}");   // map 4 to A
-            Thread.Sleep(50);
-            CNC_Write_m("{\"4sa\":0.9}");   // 1.8 deg. per step
-            Thread.Sleep(50);
-            CNC_Write_m("{\"4tr\":160.0}");   // 80 deg. per rev.
-            Thread.Sleep(50);
-            CNC_Write_m("{\"4mi\":8}");   // microstepping
-            Thread.Sleep(50);
-            CNC_Write_m("{\"4po\":0}");   // normal polarity
-            Thread.Sleep(50);
-            CNC_Write_m("{\"4pm\":2}");   // keep powered (for "mt" seconds after movement)
-            Thread.Sleep(50);
-
-            // X
-            CNC_Write_m("{\"xam\":1}");   // mormal axis mode
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xvm\":10000}");   // max velocity (proto 20000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xfr\":10000}");   // max feed rate (must be !=0)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xtm\":600}");   // max homing travel
-            Thread.Sleep(50);
-#if (TINYG_SHORTUNITS)
-            CNC_Write_m("{\"xjm\":1000}");   // max jerk (proto 2000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xjh\":2000}");   // homing jerk (== xjm)
-            Thread.Sleep(50);
-#else
-            CNC_Write_m("{\"xjm\":1000000000}");   // max jerk (proto 2000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xjh\":2000000000}");   // homing jerk (== xjm)
-            Thread.Sleep(50);
-#endif
-            CNC_Write_m("{\"xjd\":0.01}");   // junction deviation (default)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xsn\":0}");   // disable switches (!)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xsx\":0}");   // disable switches (!)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xsv\":2000}");   // homing speed
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xlv\":100}");   // latch speed
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xlb\":8}");   // latch backup
-            Thread.Sleep(50);
-            CNC_Write_m("{\"xzb\":2}");   // zero backup
-            Thread.Sleep(50);
-
-            // Y
-            CNC_Write_m("{\"yam\":1}");   // mormal axis mode
-            Thread.Sleep(50);
-            CNC_Write_m("{\"yvm\":10000}");   // max velocity (proto 20000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"yfr\":10000}");   // max feed rate (must be !=0)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ytm\":400}");   // max homing travel
-            Thread.Sleep(50);
-#if (TINYG_SHORTUNITS)
-            CNC_Write_m("{\"yjm\":1000}");   // max jerk (proto 2000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"yjh\":2000}");   // homing jerk (== yjm)
-            Thread.Sleep(50);
-#else
-            CNC_Write_m("{\"yjm\":1000000000}");   // max jerk (proto 2000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"yjh\":2000000000}");   // homing jerk (== yjm)
-            Thread.Sleep(50);
-#endif
-            CNC_Write_m("{\"yjd\":0.01}");   // junction deviation (default)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ysn\":0}");   // disable switches (!)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ysx\":0}");   // disable switches (!)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ysv\":2000}");   // homing speed
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ylv\":100}");   // latch speed
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ylb\":8}");   // latch backup
-            Thread.Sleep(50);
-            CNC_Write_m("{\"yzb\":2}");   // zero backup
-            Thread.Sleep(50);
-
-            // Z
-            CNC_Write_m("{\"zam\":1}");   // mormal axis mode
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zvm\":5000}");   // max velocity (proto 10000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zfr\":2000}");   // max feed rate (must be !=0)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ztm\":80}");   // max homing travel
-            Thread.Sleep(50);
-#if (TINYG_SHORTUNITS)
-            CNC_Write_m("{\"zjm\":500}");   // max jerk (proto 1000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zjh\":500}");   // homing jerk (== zjm)
-            Thread.Sleep(50);
-#else
-            CNC_Write_m("{\"zjm\":500000000}");   // max jerk (proto 1000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zjh\":500000000}");   // homing jerk (== zjm)
-            Thread.Sleep(50);
-#endif
-            CNC_Write_m("{\"zjd\":0.01}");   // junction deviation (default)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zsn\":0}");   // disable switches (!)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zsx\":0}");   // disable switches (!)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zsv\":1000}");   // homing speed
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zlv\":100}");   // latch speed
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zlb\":4}");   // latch backup
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zzb\":2}");   // zero backup
-            Thread.Sleep(50);
-
-            // A
-            CNC_Write_m("{\"aam\":1}");   // mormal axis mode
-            Thread.Sleep(50);
-            CNC_Write_m("{\"avm\":50000}");   // max velocity (proto 50000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"afr\":200000}");   // max feed rate (must be !=0)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"atm\":400}");   // max homing travel
-            Thread.Sleep(50);
-#if (TINYG_SHORTUNITS)
-            CNC_Write_m("{\"ajm\":5000}");   // max jerk (proto 5000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ajh\":5000}");   // homing jerk (== ajm)
-            Thread.Sleep(50);
-#else
-            CNC_Write_m("{\"ajm\":5000000000}");   // max jerk (proto 5000)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"ajh\":5000000000}");   // homing jerk (== ajm)
-            Thread.Sleep(50);
-#endif
-            CNC_Write_m("{\"ajd\":0.01}");   // junction deviation (default)
-            Thread.Sleep(50);
-            CNC_Write_m("{\"asn\":0}");   // disable switches, no homing an A
-            Thread.Sleep(50);
-            CNC_Write_m("{\"asx\":0}");   // disable switches, no homing an A
-            Thread.Sleep(50);
-            // No need to touch A homing parameters
-
-            UpdateWindowValues_m();
-            ShowMessageBox(
-                "Default settings written.",
-                "Default settings written",
-                MessageBoxButtons.OK);
-        }
-
 
         private void SaveSettings_button_Click(object sender, EventArgs e)
         {
@@ -14743,6 +14519,240 @@ namespace LitePlacer
             Application.Restart();
         }
 
+        private void TinyGSettingsSave_button_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TinyGSettingsLoad_button_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void TinyGBuiltInSettings_button_Click(object sender, EventArgs e)
+        {
+            // global
+            // TODO: exeption, exeption handling here
+            CNC_Write_m("{\"st\":0}");   // switches NO type            
+            Thread.Sleep(50);
+            CNC_Write_m("{\"mt\":300}");   // motor timeout 5min
+            Thread.Sleep(50);
+            CNC_Write_m("{\"jv\":3}");   // JSON verbosity
+            Thread.Sleep(50);
+            CNC_Write_m("{\"tv\":1}");   // text verbosity
+            Thread.Sleep(50);
+            CNC_Write_m("{\"qv\":2}");   // queue verbosity
+            Thread.Sleep(50);
+            CNC_Write_m("{\"sv\":1}");   // Status report verbosity
+            Thread.Sleep(50);
+            CNC_Write_m("{\"si\":200}");   // Status report interval
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ec\":0}");   // send LF only
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ee\":0}");   // echo off
+            Thread.Sleep(50);
+            CNC_Write_m("{\"gun\":1}");   // use mm's
+            Thread.Sleep(50);
+            // CNC_RawWrite("f2000");   // default feed rate (important thing that it is not 0)
+            CNC_RawWrite("{\"gc\":\"f2000\"}");   // default feed rate (important thing that it is not 0)
+            Thread.Sleep(50);
+
+            // Motor 1
+            CNC_Write_m("{\"1ma\":0}");   // map 1 to X
+            Thread.Sleep(50);
+            CNC_Write_m("{\"1sa\":0.9}");   // 0.9 deg. per step
+            Thread.Sleep(50);
+            CNC_Write_m("{\"1tr\":40.0}");   // 40mm per rev.
+            Thread.Sleep(50);
+            CNC_Write_m("{\"1mi\":8}");   // microstepping
+            Thread.Sleep(50);
+            CNC_Write_m("{\"1po\":0}");   // normal polarity
+            Thread.Sleep(50);
+            CNC_Write_m("{\"1pm\":2}");   // keep powered (for "mt" seconds after movement)
+            Thread.Sleep(50);
+
+            // Motor 2
+            CNC_Write_m("{\"2ma\":1}");   // map 2 to Y
+            Thread.Sleep(50);
+            CNC_Write_m("{\"2sa\":0.9}");   // 0.9 deg. per step
+            Thread.Sleep(50);
+            CNC_Write_m("{\"2tr\":40.0}");   // 40mm per rev.
+            Thread.Sleep(50);
+            CNC_Write_m("{\"2mi\":8}");   // microstepping
+            Thread.Sleep(50);
+            CNC_Write_m("{\"2po\":0}");   // normal polarity
+            Thread.Sleep(50);
+            CNC_Write_m("{\"2pm\":2}");   // keep powered (for "mt" seconds after movement)
+            Thread.Sleep(50);
+
+            // Motor 3
+            CNC_Write_m("{\"3ma\":2}");   // map 3 to Z
+            Thread.Sleep(50);
+            CNC_Write_m("{\"3sa\":1.8}");   // 1.8 deg. per step
+            Thread.Sleep(50);
+            CNC_Write_m("{\"3tr\":8.0}");   // 8mm per rev.
+            Thread.Sleep(50);
+            CNC_Write_m("{\"3mi\":8}");   // microstepping
+            Thread.Sleep(50);
+            CNC_Write_m("{\"3po\":0}");   // normal polarity
+            Thread.Sleep(50);
+            CNC_Write_m("{\"3pm\":2}");   // keep powered (for "mt" seconds after movement)
+            Thread.Sleep(50);
+
+            // Motor 4
+            CNC_Write_m("{\"4ma\":3}");   // map 4 to A
+            Thread.Sleep(50);
+            CNC_Write_m("{\"4sa\":0.9}");   // 1.8 deg. per step
+            Thread.Sleep(50);
+            CNC_Write_m("{\"4tr\":160.0}");   // 80 deg. per rev.
+            Thread.Sleep(50);
+            CNC_Write_m("{\"4mi\":8}");   // microstepping
+            Thread.Sleep(50);
+            CNC_Write_m("{\"4po\":0}");   // normal polarity
+            Thread.Sleep(50);
+            CNC_Write_m("{\"4pm\":2}");   // keep powered (for "mt" seconds after movement)
+            Thread.Sleep(50);
+
+            // X
+            CNC_Write_m("{\"xam\":1}");   // mormal axis mode
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xvm\":10000}");   // max velocity (proto 20000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xfr\":10000}");   // max feed rate (must be !=0)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xtm\":600}");   // max homing travel
+            Thread.Sleep(50);
+#if (TINYG_SHORTUNITS)
+            CNC_Write_m("{\"xjm\":1000}");   // max jerk (proto 2000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xjh\":2000}");   // homing jerk (== xjm)
+            Thread.Sleep(50);
+#else
+            CNC_Write_m("{\"xjm\":1000000000}");   // max jerk (proto 2000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xjh\":2000000000}");   // homing jerk (== xjm)
+            Thread.Sleep(50);
+#endif
+            CNC_Write_m("{\"xjd\":0.01}");   // junction deviation (default)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xsn\":0}");   // disable switches (!)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xsx\":0}");   // disable switches (!)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xsv\":2000}");   // homing speed
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xlv\":100}");   // latch speed
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xlb\":8}");   // latch backup
+            Thread.Sleep(50);
+            CNC_Write_m("{\"xzb\":2}");   // zero backup
+            Thread.Sleep(50);
+
+            // Y
+            CNC_Write_m("{\"yam\":1}");   // mormal axis mode
+            Thread.Sleep(50);
+            CNC_Write_m("{\"yvm\":10000}");   // max velocity (proto 20000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"yfr\":10000}");   // max feed rate (must be !=0)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ytm\":400}");   // max homing travel
+            Thread.Sleep(50);
+#if (TINYG_SHORTUNITS)
+            CNC_Write_m("{\"yjm\":1000}");   // max jerk (proto 2000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"yjh\":2000}");   // homing jerk (== yjm)
+            Thread.Sleep(50);
+#else
+            CNC_Write_m("{\"yjm\":1000000000}");   // max jerk (proto 2000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"yjh\":2000000000}");   // homing jerk (== yjm)
+            Thread.Sleep(50);
+#endif
+            CNC_Write_m("{\"yjd\":0.01}");   // junction deviation (default)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ysn\":0}");   // disable switches (!)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ysx\":0}");   // disable switches (!)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ysv\":2000}");   // homing speed
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ylv\":100}");   // latch speed
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ylb\":8}");   // latch backup
+            Thread.Sleep(50);
+            CNC_Write_m("{\"yzb\":2}");   // zero backup
+            Thread.Sleep(50);
+
+            // Z
+            CNC_Write_m("{\"zam\":1}");   // mormal axis mode
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zvm\":5000}");   // max velocity (proto 10000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zfr\":2000}");   // max feed rate (must be !=0)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ztm\":80}");   // max homing travel
+            Thread.Sleep(50);
+#if (TINYG_SHORTUNITS)
+            CNC_Write_m("{\"zjm\":500}");   // max jerk (proto 1000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zjh\":500}");   // homing jerk (== zjm)
+            Thread.Sleep(50);
+#else
+            CNC_Write_m("{\"zjm\":500000000}");   // max jerk (proto 1000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zjh\":500000000}");   // homing jerk (== zjm)
+            Thread.Sleep(50);
+#endif
+            CNC_Write_m("{\"zjd\":0.01}");   // junction deviation (default)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zsn\":0}");   // disable switches (!)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zsx\":0}");   // disable switches (!)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zsv\":1000}");   // homing speed
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zlv\":100}");   // latch speed
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zlb\":4}");   // latch backup
+            Thread.Sleep(50);
+            CNC_Write_m("{\"zzb\":2}");   // zero backup
+            Thread.Sleep(50);
+
+            // A
+            CNC_Write_m("{\"aam\":1}");   // mormal axis mode
+            Thread.Sleep(50);
+            CNC_Write_m("{\"avm\":50000}");   // max velocity (proto 50000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"afr\":200000}");   // max feed rate (must be !=0)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"atm\":400}");   // max homing travel
+            Thread.Sleep(50);
+#if (TINYG_SHORTUNITS)
+            CNC_Write_m("{\"ajm\":5000}");   // max jerk (proto 5000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ajh\":5000}");   // homing jerk (== ajm)
+            Thread.Sleep(50);
+#else
+            CNC_Write_m("{\"ajm\":5000000000}");   // max jerk (proto 5000)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"ajh\":5000000000}");   // homing jerk (== ajm)
+            Thread.Sleep(50);
+#endif
+            CNC_Write_m("{\"ajd\":0.01}");   // junction deviation (default)
+            Thread.Sleep(50);
+            CNC_Write_m("{\"asn\":0}");   // disable switches, no homing an A
+            Thread.Sleep(50);
+            CNC_Write_m("{\"asx\":0}");   // disable switches, no homing an A
+            Thread.Sleep(50);
+            // No need to touch A homing parameters
+
+            UpdateWindowValues_m();
+            ShowMessageBox(
+                "Default settings written.",
+                "Default settings written",
+                MessageBoxButtons.OK);
+        }
 
     }	// end of: 	public partial class FormMain : Form
 
