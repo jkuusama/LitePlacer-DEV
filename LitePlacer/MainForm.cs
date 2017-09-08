@@ -2044,11 +2044,8 @@ namespace LitePlacer
         {
             // see https://www.synthetos.com/topics/file-not-open-error/#post-7194
             // Summary: In some cases, we need a dummy move.
-            bool slackSave = Cnc.SlackCompensation;
-            Cnc.SlackCompensation = false;
-            CNC_XY_m(Cnc.CurrentX - 0.5, Cnc.CurrentY - 0.5);
-            CNC_XY_m(Cnc.CurrentX + 0.5, Cnc.CurrentY + 0.5);
-            Cnc.SlackCompensation = slackSave;
+            CNC_Z_m(Cnc.CurrentZ - 0.01);
+            CNC_Z_m(Cnc.CurrentZ + 0.01);
         }
 
         private void PumpOn()
@@ -2058,8 +2055,8 @@ namespace LitePlacer
                 //CNC_RawWrite("M03");
                 CNC_RawWrite("{\"gc\":\"M03\"}");
                 Pump_checkBox.Checked = true;
-                Thread.Sleep(500);  // this much to develop vacuum
                 BugWorkaround();
+                Thread.Sleep(500);  // this much to develop vacuum
                 PumpIsOn = true;
             }
         }
