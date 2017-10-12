@@ -150,23 +150,23 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="CNC.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="UI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MethodSelectionForm.cs">
+    <Compile Include="UI\MethodSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MethodSelectionForm.Designer.cs">
+    <Compile Include="UI\MethodSelectionForm.Designer.cs">
       <DependentUpon>MethodSelectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Needle.cs" />
-    <Compile Include="PanelizeForm.cs">
+    <Compile Include="UI\PanelizeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PanelizeForm.Designer.cs">
+    <Compile Include="UI\PanelizeForm.Designer.cs">
       <DependentUpon>PanelizeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -174,27 +174,27 @@
     <Compile Include="SerialComm.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Shapes.cs" />
-    <Compile Include="TapeEdit.cs">
+    <Compile Include="UI\TapeEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TapeEdit.Designer.cs">
+    <Compile Include="UI\TapeEdit.Designer.cs">
       <DependentUpon>TapeEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="tapes.cs" />
-    <Compile Include="TapeSelectionForm.cs">
+    <Compile Include="UI\TapeSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TapeSelectionForm.Designer.cs">
+    <Compile Include="UI\TapeSelectionForm.Designer.cs">
       <DependentUpon>TapeSelectionForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="MethodSelectionForm.resx">
+    <EmbeddedResource Include="UI\MethodSelectionForm.resx">
       <DependentUpon>MethodSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanelizeForm.resx">
+    <EmbeddedResource Include="UI\PanelizeForm.resx">
       <DependentUpon>PanelizeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -207,10 +207,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="TapeEdit.resx">
+    <EmbeddedResource Include="UI\TapeEdit.resx">
       <DependentUpon>TapeEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TapeSelectionForm.resx">
+    <EmbeddedResource Include="UI\TapeSelectionForm.resx">
       <DependentUpon>TapeSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
