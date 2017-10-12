@@ -7,12 +7,6 @@ LitePlacer Pick and Place machine user interface and control software
 
 To get the code to compile: 
 
-* Install AForge.NET
-
-* In solution explorer-LitePlacer-References, delete references to Math.Net.Numerics and to HomographyEstimation.dll.
-
-* Add reference to <your LitePlacer software directory>/packages/HomographyEstimation/HomographyEstimation.dll
-
-* Run the following command in the Tools-NuGet Package Manager-Package Manager Console: PM> Install-Package MathNet.Numerics
+* Update / Install missing or outdated NuGet packages using the NuGet package manager.
 
 To avoid issues in debugging, turn off the "Enable property evaluation and other implicit function calls" option in Tools->Options->Debugging 
