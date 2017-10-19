@@ -14531,6 +14531,7 @@ namespace LitePlacer
         {
             // global
             // TODO: exeption, exeption handling here
+            DisplayText("Write TinyG system values");
             CNC_Write_m("{\"st\":0}");   // switches NO type            
             Thread.Sleep(50);
             CNC_Write_m("{\"mt\":300}");   // motor timeout 5min
@@ -14556,6 +14557,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // Motor 1
+            DisplayText("Write TinyG motor 1 values");
             CNC_Write_m("{\"1ma\":0}");   // map 1 to X
             Thread.Sleep(50);
             CNC_Write_m("{\"1sa\":0.9}");   // 0.9 deg. per step
@@ -14570,6 +14572,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // Motor 2
+            DisplayText("Write TinyG motor 2 values");
             CNC_Write_m("{\"2ma\":1}");   // map 2 to Y
             Thread.Sleep(50);
             CNC_Write_m("{\"2sa\":0.9}");   // 0.9 deg. per step
@@ -14584,6 +14587,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // Motor 3
+            DisplayText("Write TinyG motor 3 values");
             CNC_Write_m("{\"3ma\":2}");   // map 3 to Z
             Thread.Sleep(50);
             CNC_Write_m("{\"3sa\":1.8}");   // 1.8 deg. per step
@@ -14598,6 +14602,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // Motor 4
+            DisplayText("Write TinyG motor 4 values");
             CNC_Write_m("{\"4ma\":3}");   // map 4 to A
             Thread.Sleep(50);
             CNC_Write_m("{\"4sa\":0.9}");   // 1.8 deg. per step
@@ -14612,6 +14617,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // X
+            DisplayText("Write TinyG X axis values");
             CNC_Write_m("{\"xam\":1}");   // mormal axis mode
             Thread.Sleep(50);
             CNC_Write_m("{\"xvm\":10000}");   // max velocity (proto 20000)
@@ -14647,6 +14653,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // Y
+            DisplayText("Write TinyG Y axis values");
             CNC_Write_m("{\"yam\":1}");   // mormal axis mode
             Thread.Sleep(50);
             CNC_Write_m("{\"yvm\":10000}");   // max velocity (proto 20000)
@@ -14682,6 +14689,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // Z
+            DisplayText("Write TinyG Z axis values");
             CNC_Write_m("{\"zam\":1}");   // mormal axis mode
             Thread.Sleep(50);
             CNC_Write_m("{\"zvm\":5000}");   // max velocity (proto 10000)
@@ -14717,6 +14725,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // A
+            DisplayText("Write TinyG A axis values");
             CNC_Write_m("{\"aam\":1}");   // mormal axis mode
             Thread.Sleep(50);
             CNC_Write_m("{\"avm\":50000}");   // max velocity (proto 50000)
