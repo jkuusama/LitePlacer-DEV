@@ -14261,6 +14261,7 @@ namespace LitePlacer
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;  
 
             Nozzles_Stop = false;
+            /*
             if (Setting.Placement_OmitNozzleCalibration)
             {
                 if (Setting.Placement_OmitNozzleCalibration)
@@ -14277,6 +14278,7 @@ namespace LitePlacer
                     Setting.Placement_OmitNozzleCalibration = false;
                 }
             }
+            */
             for (int nozzle = 1; nozzle <= Setting.Nozzles_count; nozzle++)
             {
                 if (!ChangeNozzle_m(nozzle))

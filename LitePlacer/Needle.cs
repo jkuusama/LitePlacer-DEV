@@ -286,11 +286,6 @@ namespace LitePlacer
 
         public bool Calibrate()
         {
-            if (MainForm.Setting.Placement_OmitNozzleCalibration)
-            {
-                return true;
-            };
-
             CalibrationPoints.Clear();   // Presumably calibration is void no matter if we succeed here
             Calibrated = false;
             if (!Cam.IsRunning())
