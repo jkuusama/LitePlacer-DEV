@@ -10310,19 +10310,12 @@ namespace LitePlacer
             {
                 PlacedDataPresent= true;
             }
-            PlacedIndex = i; 
+            PlacedIndex = i;
 
+            List<string> DesignatorList = new List<string> { "designator", "part", "ref", "refdes", "component" };
             for (i = 0; i < Headers.Count; i++)
             {
-                if ((Headers[i] == "Designator") ||
-                    (Headers[i] == "designator") ||
-                    (Headers[i] == "Part") ||
-                    (Headers[i] == "part") ||
-                    (Headers[i] == "RefDes") ||
-                    (Headers[i] == "Ref") ||
-                    (Headers[i] == "Component") ||
-                    (Headers[i] == "component")
-                  )
+                if (DesignatorList.Contains(Headers[i], StringComparer.OrdinalIgnoreCase))
                 {
                     break;
                 }
@@ -10334,15 +10327,10 @@ namespace LitePlacer
             }
             ComponentIndex = i;
 
+            List<string> ValueList = new List<string> { "value", "val", "comment"};
             for (i = 0; i < Headers.Count; i++)
             {
-                if ((Headers[i] == "Value") ||
-                    (Headers[i] == "value") ||
-                    (Headers[i] == "Val") ||
-                    (Headers[i] == "val") ||
-                    (Headers[i] == "Comment") ||
-                    (Headers[i] == "comment")
-                  )
+                if (ValueList.Contains(Headers[i], StringComparer.OrdinalIgnoreCase))
                 {
                     break;
                 }
@@ -10354,15 +10342,10 @@ namespace LitePlacer
             }
             ValueIndex = i;
 
+            List<string> PackageList = new List<string> { "footprint", "package", "pattern" };
             for (i = 0; i < Headers.Count; i++)
             {
-                if ((Headers[i] == "Footprint") ||
-                    (Headers[i] == "footprint") ||
-                    (Headers[i] == "Package") ||
-                    (Headers[i] == "package") ||
-                    (Headers[i] == "Pattern") ||
-                    (Headers[i] == "pattern")
-                  )
+                if (PackageList.Contains(Headers[i], StringComparer.OrdinalIgnoreCase))
                 {
                     break;
                 }
@@ -10374,17 +10357,10 @@ namespace LitePlacer
             }
             FootPrintIndex = i;
 
+            List<string> XList = new List<string> { "x", "x (mm)", "Center-X(mm)", "PosX", "mid x" };
             for (i = 0; i < Headers.Count; i++)
             {
-                if ((Headers[i] == "X") ||
-                    (Headers[i] == "x") ||
-                    (Headers[i] == "X (mm)") ||
-                    (Headers[i] == "x (mm)") ||
-                    (Headers[i] == "Center-X(mm)") ||
-                    (Headers[i] == "PosX") ||
-                    (Headers[i] == "Mid X") ||
-                    (Headers[i] == "mid x")
-                  )
+                if (XList.Contains(Headers[i], StringComparer.OrdinalIgnoreCase))
                 {
                     break;
                 }
@@ -10396,17 +10372,10 @@ namespace LitePlacer
             }
             X_Nominal_Index = i;
 
+            List<string> YList = new List<string> { "y", "y (mm)", "Center-y(mm)", "Posy", "mid x" };
             for (i = 0; i < Headers.Count; i++)
             {
-                if ((Headers[i] == "Y") ||
-                    (Headers[i] == "y") ||
-                    (Headers[i] == "Y (mm)") ||
-                    (Headers[i] == "y (mm)") ||
-                    (Headers[i] == "Center-Y(mm)") ||
-                    (Headers[i] == "PosY") ||
-                    (Headers[i] == "Mid Y") ||
-                    (Headers[i] == "mid y")
-                  )
+                if (YList.Contains(Headers[i], StringComparer.OrdinalIgnoreCase))
                 {
                     break;
                 }
@@ -10418,14 +10387,10 @@ namespace LitePlacer
             }
             Y_Nominal_Index = i;
 
+            List<string> RotationList = new List<string> { "rotation", "rot", "rotate" };
             for (i = 0; i < Headers.Count; i++)
             {
-                if ((Headers[i] == "Rotation") ||
-                    (Headers[i] == "rotation") ||
-                    (Headers[i] == "Rot") ||
-                    (Headers[i] == "rot") ||
-                    (Headers[i] == "Rotate")
-                  )
+                if (RotationList.Contains(Headers[i], StringComparer.OrdinalIgnoreCase))
                 {
                     break;
                 }
@@ -10437,16 +10402,10 @@ namespace LitePlacer
             }
             RotationIndex = i;
 
-
+            List<string> LayerList = new List<string> { "layer", "side", "tb" };
             for (i = 0; i < Headers.Count; i++)
             {
-                if ((Headers[i] == "Layer") ||
-                    (Headers[i] == "layer") ||
-                    (Headers[i] == "Side") ||
-                    (Headers[i] == "side") ||
-                    (Headers[i] == "TB") ||
-                    (Headers[i] == "tb")
-                  )
+                if (LayerList.Contains(Headers[i], StringComparer.OrdinalIgnoreCase))
                 {
                     LayerIndex = i;
                     LayerDataPresent = true;
@@ -10506,26 +10465,18 @@ namespace LitePlacer
 
                 if (LayerDataPresent)
                 {
+                    List<string> TopList = new List<string> { "top", "t", "F.Cu" };
+                    List<string> BottomList = new List<string> { "bottom", "b", "B.Cu", "bot" };
                     if (Bottom_checkBox.Checked)
                     {
-                        if ((Line[LayerIndex] == "Top") ||
-                            (Line[LayerIndex] == "top") ||
-                            (Line[LayerIndex] == "F.Cu") ||
-                            (Line[LayerIndex] == "T") ||
-                            (Line[LayerIndex] == "t"))
+                        if (TopList.Contains(Line[LayerIndex], StringComparer.OrdinalIgnoreCase))
                         {
                             continue;
                         }
                     }
                     else
                     {
-                        if ((Line[LayerIndex] == "Bottom") ||
-                            (Line[LayerIndex] == "bottom") ||
-                            (Line[LayerIndex] == "B") ||
-                            (Line[LayerIndex] == "b") ||
-                            (Line[LayerIndex] == "B.Cu") ||
-                            (Line[LayerIndex] == "Bot") ||
-                            (Line[LayerIndex] == "bot"))
+                        if (BottomList.Contains(Line[LayerIndex], StringComparer.OrdinalIgnoreCase))
                         {
                             continue;
                         }
