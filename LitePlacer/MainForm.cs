@@ -6193,12 +6193,22 @@ namespace LitePlacer
 
         private static int SetProbing_stage = 0;
 
-        private void CancelProbing_button_Click(object sender, EventArgs e)
+        private void CancelProbing()
         {
+            SetProbing_button.Text = "Start";
+            SetProbing_button.Enabled = false;
             SetProbing_stage = 0;
             ZGuardOn();
             CancelProbing_button.Visible = false;
             Zlb_label.Visible = false;
+            Nozzle.ProbingMode(false, JSON);
+            CNC_Home_m("Z");
+            SetProbing_button.Enabled = true;
+        }
+
+        private void CancelProbing_button_Click(object sender, EventArgs e)
+        {
+            CancelProbing();
         }
 
         private void SetProbing_button_Click(object sender, EventArgs e)
@@ -6208,6 +6218,7 @@ namespace LitePlacer
             {
                 case 0:
                     CancelProbing_button.Visible = true;
+                    CancelProbing_button.Enabled = true;
                     Zlb_label.Text = "Put a regular height PCB under the Nozzle, \n\rthen click \"Next\"";
                     Zlb_label.Visible = true;
                     SetProbing_button.Text = "Next";
@@ -6215,14 +6226,15 @@ namespace LitePlacer
                     break;
 
                 case 1:
+                    SetProbing_button.Enabled = false;
+                    CancelProbing_button.Enabled = false;
                     if (!Nozzle_ProbeDown_m())
                     {
-                        Zlb_label.Text = "";
-                        Zlb_label.Visible = false;
-                        SetProbing_stage = 0;
-                        CancelProbing_button.Visible = false;
+                        CancelProbing();
                         return;
                     }
+                    SetProbing_button.Enabled = true;
+                    CancelProbing_button.Enabled = true;
                     Setting.General_ZtoPCB = Cnc.CurrentZ;
                     Zlb_label.Text = "Jog Z axis until the Nozzle just barely touches the PCB\nThen click \"Next\"";
                     SetProbing_stage = 2;
@@ -6235,7 +6247,11 @@ namespace LitePlacer
                     SetProbing_button.Text = "Start";
                     Zlb_label.Text = "";
                     Zlb_label.Visible = false;
+                    CancelProbing_button.Visible = false;
+                    SetProbing_button.Enabled = false;
                     CNC_Home_m("Z");
+                    ZGuardOn();
+                    SetProbing_button.Enabled = true;
                     ShowMessageBox(
                        "Probing Backoff set successfully.\n" +
                             "PCB surface: " + Setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) +
@@ -6246,8 +6262,6 @@ namespace LitePlacer
                     Z0_textBox.Text = Setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
                     BackOff_textBox.Text = Setting.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture);
 
-                    ZGuardOn();
-                    CancelProbing_button.Visible = false;
                     // If tapes have z heights set, offer to zero out those:
                     bool ZisSet = false;
                     foreach (DataGridViewRow Row in Tapes_dataGridView.Rows)
