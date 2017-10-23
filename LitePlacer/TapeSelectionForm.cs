@@ -83,9 +83,16 @@ namespace LitePlacer
 				return;
 			}
 			ID = Grid.Rows[e.RowIndex].Cells["Id_Column"].Value.ToString();
-            Nozzle= Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value.ToString();
+            if (Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value == null)
+            {
+                MainForm.ShowMessageBox(
+                    "Warning: This tape has no nozzle defined, using default value",
+                    "No nozzle defined",
+                    MessageBoxButtons.OK);
+                Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value = MainForm.Setting.Nozzles_default.ToString();
+            }
             CloseForm();
-		}
+        }
 
 		private void Ignore_button_Click(object sender, EventArgs e)
 		{
