@@ -96,6 +96,7 @@ namespace LitePlacer
         public double General_ZtoPCB = 0;
         public double Job_Xoffset = 0;
         public double Job_Yoffset = 0;
+
         public bool Nozzles_AfullSpeed = true;
         public double Nozzles_Aspeed = 500;
         public double Nozzles_CalibrationDistance = 4;
@@ -114,6 +115,8 @@ namespace LitePlacer
         public double Nozzles_XYspeed = 500;
         public bool Nozzles_ZfullSpeed = true;
         public double Nozzles_Zspeed = 500;
+        public double Nozzles_WarningTreshold = 1.0;
+
         public bool Panel_UseBoardFids = true;
         public double Panel_XFirstOffset = 0;
         public double Panel_XIncrement = 0;

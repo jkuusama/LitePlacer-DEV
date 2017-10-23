@@ -13441,6 +13441,8 @@ namespace LitePlacer
             Nozzle1stMoveSlackComp_checkBox.Checked = Setting.Nozzles_FirstMoveSlackCompensation;
             LastMoveFullSpeed_checkBox.Checked = Setting.Nozzles_LastMoveFullSpeed;
             ForceNozzle_numericUpDown.Maximum = Setting.Nozzles_count;
+            NozzleWarning_textBox.Text = Setting.Nozzles_WarningTreshold.ToString("0.00", CultureInfo.InvariantCulture);
+
 
             // For setup and testing, we want all operations (including jog and go button) to obey speed settings.
             // We don't want to disturb other operations, so we'll store the current state at page enter and restore at page leave.
@@ -14083,6 +14085,20 @@ namespace LitePlacer
             }
         }
 
+        // ==========================================================================================================
+        private void NozzleWarning_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(NozzleWarning_textBox.Text.Replace(',', '.'), out val))
+            {
+                Setting.Nozzles_WarningTreshold = val;
+                NozzleWarning_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                NozzleWarning_textBox.ForeColor = Color.Red;
+            }
+        }
 
         // ==========================================================================================================
         // Speed controls
