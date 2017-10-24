@@ -39,7 +39,7 @@ namespace LitePlacer
 {
     // Note: For function success/failure, I use bool return code. (instead of C# exceptions; a philosophical debate, let's not go there.)
     // The naming convention is xxx_m() for functions that have already displayed an error message to user. If a function only
-    // calls _m functions, it can consider itself a _m function. 
+    // calls _m functions, it can consider itself a _m function.
 
     public partial class FormMain : Form
     {
