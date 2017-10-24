@@ -1,17 +1,26 @@
-Build date 4/26/2017 
+Build date 10/24/2017 
 
 New Features, significant changes
 
-* Improvements for fiducial recognition, mainly for boards
-  without standard fiducials:
-  - Fiducials can be round, rectangle or either.
-  - User adjustable tolerance (how close to nominal position
-    the fid needs to be found). this is useful if a via or pad is
-	is used as a fiducial, and there might not be much clearance
-	to the closest board item.
-  - Optional manual confirmation for a found fid, to ensure the
-    intended board feature is selected.
+* New method for saving settings. A settings transfer program
+  must be run before using this release!
+* Application settings can now be loaded and saved
 
 Bug Fixes 
  
- *
+ * Adding a row to empty jobdata or CADdata table doesn't crash anymore.
+ * More stable file handling in some environments
+ * Much better handling of scaled displays, minor display adjustments
+ * Added label for default nozzle.
+ * Fixed issue when default nozzle was 0.
+ * Pump on/off needs a dummy move. This is now +/-0.01mm Z axis, which
+   is faster and much less annoying
+* It is now possible to calibrate nozzles even with nozzle correction disabled
+* CAD data file header text is now case-insensitive
+* If a tape does not have a nozzle defined, it is now a warning, not a crash
+* Nozzle height calibration process is more stable. It should not be possible
+  to get the process into undefined state by clicking start/next or cancel
+	when the previous move is still ongoing.
+* Nozzles setup remebers warning treshold. The default is 1.0mm
+* Z probing hysteresis default is 0.2mm
+ 
