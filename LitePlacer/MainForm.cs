@@ -14742,7 +14742,6 @@ namespace LitePlacer
                 "Default settings written",
                 MessageBoxButtons.OK);
         }
-
     }	// end of: 	public partial class FormMain : Form
 
 

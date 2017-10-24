@@ -91,7 +91,7 @@ namespace LitePlacer
         public double General_PlacementBackOff = 0.2;
         public double General_ShadeGuard_mm = 0;
         public bool General_UpgradeRequired = true;
-        public double General_ZprobingHysteresis = 0;
+        public double General_ZprobingHysteresis = 0.2;
         public double General_ZTestTravel = 20;
         public double General_ZtoPCB = 0;
         public double Job_Xoffset = 0;
@@ -210,13 +210,20 @@ namespace LitePlacer
                     settings = JsonConvert.DeserializeObject<MySettings>(File.ReadAllText(FileName));
                     return settings;
                 }
-                // else case and the copy routine to be depreciated!
                 else
                 {
-                    MainForm.ShowMessageBox(
-                       "Saved application settings not found, using built in defaults.",
-                       "Settings not loaded",
-                       MessageBoxButtons.OK);
+                    DialogResult dialogResult = MainForm.ShowMessageBox(
+                       "SAVED SETTINGS FILE NOT FOUND. \n\n" +
+                       "If this is the first time you are running this program, this is expected. " +
+                       "Click OK, startup continues and the program uses built-in default values.\n\n" +
+                       "If you are updating from an earlier version, click cancel now, " +
+                       "then run the settings transfer program." +
+                       "Please see https://www.liteplacer.com/downloads/ for instructions and download link.",
+                       "Settings file not found", MessageBoxButtons.OKCancel);
+                    if (dialogResult == DialogResult.Cancel)
+                    {
+                        Environment.Exit(0);
+                    }
                     return settings;
                 }
             }
