@@ -2458,11 +2458,14 @@ namespace LitePlacer
             }
             if (AbortPlacement)
             {
-                AbortPlacement = false;  // one shot
-                ShowMessageBox(
-                           "Operation aborted",
-                           "Operation aborted",
-                           MessageBoxButtons.OK);
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
                 return false;
             }
 
@@ -2528,11 +2531,14 @@ namespace LitePlacer
             }
             if (AbortPlacement)
             {
-                AbortPlacement = false;  // one shot
-                ShowMessageBox(
-                    "Operation aborted.",
-                    "Operation aborted.",
-                    MessageBoxButtons.OK);
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
                 return false;
             }
 
@@ -2597,11 +2603,14 @@ namespace LitePlacer
         {
             if (AbortPlacement)
             {
-                AbortPlacement = false;  // one shot
-                ShowMessageBox(
-                    "Operation aborted.",
-                    "Operation aborted.",
-                    MessageBoxButtons.OK);
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
                 return false;
             }
             if (!Cnc.Connected)
@@ -7586,19 +7595,26 @@ namespace LitePlacer
 
         // =================================================================================
         // Checks if the component is placed already
+        // returns success of operation, sets palced status to placed
         private bool AlreadyPlaced_m(string component, ref bool placed)
         {
+            string comp;
             // find the row
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
+                comp = Row.Cells["Component"].Value.ToString();
                 if (Row.Cells["Component"].Value.ToString()==component)
                 {
                     DataGridViewCheckBoxCell cell = Row.Cells["Placed_column"] as DataGridViewCheckBoxCell;
                     if (cell.Value != null)
                     {
                         placed = (cell.Value.ToString().ToLower() == "true");
-                        return true;
                     }
+                    else
+                    {
+                        placed = false;
+                    }
+                    return true;
                 }
             }
             ShowMessageBox(
@@ -7672,6 +7688,7 @@ namespace LitePlacer
                             NewMethod = "Ignore";
                             NewID = "";
                             AbortPlacement = true;
+                            AbortPlacementShown = true;
                             RestoreRow = true;		// something went astray, keep method at "?"
                         }
                     }
@@ -8071,11 +8088,14 @@ namespace LitePlacer
 
             if (AbortPlacement)
             {
-                AbortPlacement = false;  // one shot
-                ShowMessageBox(
-                    "Operation aborted.",
-                    "Operation aborted.",
-                    MessageBoxButtons.OK);
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
                 return false;
             }
 
@@ -8200,7 +8220,7 @@ namespace LitePlacer
         }
 
         public bool AbortPlacement = false;
-
+        public bool AbortPlacementShown = false;
 
         // =================================================================================
         private bool ChangeNozzleManually_m()
@@ -8290,6 +8310,7 @@ namespace LitePlacer
             }
 
             AbortPlacement = false;
+            AbortPlacementShown = false;
             PlaceThese_button.Capture = false;
             PlaceAll_button.Capture = false;
             JobData_GridView.ReadOnly = true;
@@ -8819,11 +8840,14 @@ namespace LitePlacer
             }
             if (AbortPlacement)
             {
-                AbortPlacement = false;
-                ShowMessageBox(
-                    "Operation aborted.",
-                    "Operation aborted.",
-                    MessageBoxButtons.OK);
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
                 return false;
             }
             return true;
@@ -8840,11 +8864,14 @@ namespace LitePlacer
         {
             if (AbortPlacement)
             {
-                AbortPlacement = false;
-                ShowMessageBox(
-                    "Operation aborted.",
-                    "Operation aborted.",
-                    MessageBoxButtons.OK);
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
                 return false;
             };
             string id = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString();
@@ -8961,11 +8988,14 @@ namespace LitePlacer
                     Thread.Sleep(10);
                     if (AbortPlacement)
                     {
-                        AbortPlacement = false;
-                        ShowMessageBox(
-                            "Operation aborted.",
-                            "Operation aborted.",
-                            MessageBoxButtons.OK);
+                        if (!AbortPlacementShown)
+                        {
+                            AbortPlacementShown = true;
+                            ShowMessageBox(
+                                       "Operation aborted",
+                                       "Operation aborted",
+                                       MessageBoxButtons.OK);
+                        }
                         return false;
                     }
                 } while (!EnterKeyHit);
@@ -8988,11 +9018,14 @@ namespace LitePlacer
             // Place it:
             if (AbortPlacement)
             {
-                AbortPlacement = false;
-                ShowMessageBox(
-                    "Operation aborted.",
-                    "Operation aborted.",
-                MessageBoxButtons.OK);
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
                 DownCamera.Draw_Snapshot = false;
                 UpCamera.Draw_Snapshot = false;
                 return false;
@@ -9024,11 +9057,14 @@ namespace LitePlacer
             };
             if (AbortPlacement)
             {
-                AbortPlacement = false;
-                ShowMessageBox(
-                    "Operation aborted.",
-                    "Operation aborted.",
-                MessageBoxButtons.OK);
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
                 DownCamera.Draw_Snapshot = false;
                 UpCamera.Draw_Snapshot = false;
                 return false;
@@ -9072,6 +9108,7 @@ namespace LitePlacer
                     if (dialogResult == DialogResult.Abort)
                     {
                         AbortPlacement = true;
+                        AbortPlacementShown = true;
                         result = false;
                         GoOn = true;
                     }
@@ -9546,6 +9583,7 @@ namespace LitePlacer
             if (dialogResult == DialogResult.Cancel)
             {
                 AbortPlacement = true;
+                AbortPlacementShown = true;
             }
 
         }
@@ -9560,6 +9598,7 @@ namespace LitePlacer
         private void AbortPlacement_button_Click(object sender, EventArgs e)
         {
             AbortPlacement = true;
+            AbortPlacementShown = false;
         }
 
 
