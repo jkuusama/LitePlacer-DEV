@@ -1,4 +1,4 @@
-Build date 10/24/2017 
+Build date 11/03/2017 
 
 New Features, significant changes
 
@@ -8,10 +8,10 @@ New Features, significant changes
 
 Bug Fixes 
  
- * Stop placement operation was leaking (it still can give multiple error messages
+ * Stop placement operation was leaking (it can still give multiple error messages
    and wrong error information, but you know it was you. At least it doesn't try
    to continue anymore.)
- * Fixed issue on panilzed board not finding component CAD data
+ * Fixed issue on panelized boards not finding component CAD data
  * Adding a row to empty jobdata or CADdata table doesn't crash anymore.
  * More stable file handling in some environments
  * Much better handling of scaled displays, minor display adjustments
