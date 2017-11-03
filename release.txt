@@ -27,4 +27,3 @@ Bug Fixes
 	when the previous move is still ongoing.
 * Nozzles setup remebers warning treshold. The default is 1.0mm
 * Z probing hysteresis default is 0.2mm
- 
