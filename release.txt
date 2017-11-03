@@ -11,7 +11,7 @@ Bug Fixes
  * Stop placement operation was leaking (it still can give multiple error messages
    and wrong error information, but you know it was you. At least it doesn't try
    to continue anymore.)
- * Fixed issue on panilzed baord not finding component CAD data
+ * Fixed issue on panilzed board not finding component CAD data
  * Adding a row to empty jobdata or CADdata table doesn't crash anymore.
  * More stable file handling in some environments
  * Much better handling of scaled displays, minor display adjustments
