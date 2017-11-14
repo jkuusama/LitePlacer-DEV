@@ -84,12 +84,6 @@ namespace LitePlacer
         // We need "goto" to different features, currently circles, rectangles or both
         public enum FeatureType { Circle, Rectangle, Both };
 
-        // We need some functions both in JSON and in text mode:
-        public const bool JSON = true;
-        public const bool TextMode = false;
-
-
-
         private static ManualResetEventSlim Cnc_ReadyEvent = new ManualResetEventSlim(false);
         // This event is raised in the CNC class, and we'll wait for it when we want to continue only after TinyG has stabilized
 
@@ -325,7 +319,6 @@ namespace LitePlacer
         // ==============================================================================================
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            Cnc.Connect(Setting.CNC_SerialPort);  // moved to here, as this can raise error condition, needing the form up
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
@@ -399,21 +392,26 @@ namespace LitePlacer
             ForceNozzle_numericUpDown.Value = Setting.Nozzles_default;
             DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
 
+            Cnc.Connect(Setting.CNC_SerialPort);  // moved to here, as this can raise error condition, needing the form up
             UpdateCncConnectionStatus(false);
             if (Cnc.Connected)
             {
                 Thread.Sleep(200); // Give TinyG time to wake up
-                bool res = CNC_RawWrite("\x11");  // Xon
-                Thread.Sleep(50);
-                //CNC_RawWrite("{\"js\":1}");  // strict JSON syntax
-                //Thread.Sleep(150);
-                //CNC_RawWrite("{\"ec\":0}");  // send LF only
-                //Thread.Sleep(150);
-                if (res)
+                bool res= UpdateCNCBoardType_m();
+                if (!res)
                 {
-                    UpdateWindowValues_m();
-                    OfferHoming();
+                    return;
                 }
+
+                if (Controlboard == ControlBoardType.TinyG)
+                {
+                    CNC_RawWrite("\x11");  // Xon
+                    Thread.Sleep(50);   // TinyG wakeup
+
+                }
+                UpdateWindowValues_m();
+                OfferHoming();
+
             }
 
             DisableLog_checkBox.Checked = Setting.General_MuteLogging;
@@ -1915,6 +1913,26 @@ namespace LitePlacer
         // CNC interface functions
         // =================================================================================
         #region CNC interface functions
+
+        // We need some functions both in JSON and in text mode:
+        public const bool JSON = true;
+        public const bool TextMode = false;
+
+        // Different types of control hardware
+        public enum ControlBoardType { TinyG, qQuintic, other };
+        public ControlBoardType Controlboard = ControlBoardType.TinyG;
+
+        private bool UpdateCNCBoardType_m()
+        {
+            if (!CNC_Write_m("{\"hp\":\"\"}"))
+            {
+                return false;
+            };
+            return true;
+
+        }
+
+        // 
 
         // =================================================================================
         // Position confidence, motor power timer:
@@ -4647,6 +4665,10 @@ namespace LitePlacer
                     Update_mt(value);
                     break;
 
+                case "hp":
+                    Update_hp(value);
+                    break;
+
                 default:
                     break;
             }
@@ -4656,6 +4678,31 @@ namespace LitePlacer
         // Thread-safe update functions and value setting fuctions
 
         // =========================================================================
+        #region hp  // hardware platform
+
+        private void Update_hp(string value)
+        {
+            if (InvokeRequired) { Invoke(new Action<string>(Update_hp), new[] { value }); return; }
+
+            if (value=="1")
+            {
+                Controlboard = ControlBoardType.TinyG;
+                DisplayText("TinyG board found.");
+            }
+            else if (value == "3")
+            {
+                Controlboard = ControlBoardType.qQuintic;
+                DisplayText("qQuintic board found.");
+            }
+            else
+            {
+                Controlboard = ControlBoardType.other;
+                DisplayText("Unknown control board.");
+            }
+        }
+
+        #endregion
+
         #region jm
         // *jm: jerk maximum
         // *jm update

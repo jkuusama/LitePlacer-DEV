@@ -89,7 +89,7 @@ namespace LitePlacer
 
         // ======================================================
         // Write:
-        // If the PC has more thatn one serial port and one which is not connected to TinyG has hardware handshake
+        // If the PC has more than one serial port and one which is not connected to TinyG has hardware handshake
         // on, the write will hang. Doing write this way catches this situation
 
         public bool Write(string TxText)

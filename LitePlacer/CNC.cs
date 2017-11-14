@@ -67,7 +67,7 @@ namespace LitePlacer
 
             if (Com.IsOpen)
             {
-                MainForm.DisplayText("Connecting to serial port " + name + ": already open");
+                MainForm.DisplayText("Already connected to serial port " + name + ": already open");
                 Connected = true;
                 return true;
             }
@@ -78,10 +78,10 @@ namespace LitePlacer
             Connected = Com.IsOpen;
             if (!Connected)
             {
+                MainForm.DisplayText("Connecting to serial port " + name + " failed.");
                 Error();
             }
-            MainForm.DisplayText("Connecting to serial port " + name + ", result:" + Com.IsOpen.ToString());
-
+            MainForm.DisplayText("Connected to serial port " + name);
             return Connected;
         }
 
@@ -809,6 +809,13 @@ namespace LitePlacer
                 return;
             }
 
+            if (line.StartsWith("{\"r\":{\"hp\":"))
+            {
+                // response to hw platform enquiry
+                _readyEvent.Set();
+                MainForm.DisplayText("ReadyEvent hp");
+                return;
+            }
         }  // end InterpretLine()
 
         // =================================================================================
@@ -1293,6 +1300,17 @@ namespace LitePlacer
                 }
             }
 
+            private string _hp = "";
+            public string hp
+            {
+                get { return _hp; }
+                set
+                {
+                    _hp = value;
+                    CNC.MainForm.ValueUpdater("hp", _hp);
+                }
+            }
+
         }   // end class Resp
 
         public class Response
@@ -1300,6 +1318,14 @@ namespace LitePlacer
             public Resp r { get; set; }
             public List<int> f { get; set; }
         }
+
+
+        // =================================================================================
+        // TinyG G2
+        // =================================================================================
+        // 
+        // New hw requires new software functions
+
 
     }  // end Class CNC
 }
