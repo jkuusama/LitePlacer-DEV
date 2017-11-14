@@ -18,6 +18,9 @@ namespace LitePlacer
         static FormMain MainForm;
         private SerialComm Com;
 
+        public enum ControlBoardType { TinyG, qQuintic, other };
+        public ControlBoardType Controlboard = ControlBoardType.TinyG;
+
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
 
         public CNC(FormMain MainF)
@@ -681,117 +684,79 @@ namespace LitePlacer
             if (line.StartsWith("{\"r\":{\"sys\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_sys= line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent sys group");
+                MainForm.DisplayText("ReadyEvent sys group (depreciated)");
                 return;
             }
             
             if (line.StartsWith("{\"r\":{\"x\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
+                /*
+                // remove the wrapper: 
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_x= line;
+                MainForm.TinyGSetting.TinyG_x = line; 
+                */
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent x group");
+                MainForm.DisplayText("ReadyEvent x group (depreciated)");
                 return;
             }
             
             if (line.StartsWith("{\"r\":{\"y\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_y= line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent y group");
+                MainForm.DisplayText("ReadyEvent y group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"z\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_z= line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent z group");
+                MainForm.DisplayText("ReadyEvent z group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"a\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_a= line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent a group");
+                MainForm.DisplayText("ReadyEvent a group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"1\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_m1 = line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m1 group");
+                MainForm.DisplayText("ReadyEvent m1 group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"2\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_m2 = line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m2 group");
+                MainForm.DisplayText("ReadyEvent m2 group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"3\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_m3 = line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m3 group");
+                MainForm.DisplayText("ReadyEvent m3 group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"4\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_m4 = line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m4 group");
+                MainForm.DisplayText("ReadyEvent m4 group (depreciated)");
                 return;
             }
 
@@ -824,6 +789,13 @@ namespace LitePlacer
 
         // =================================================================================
         // Status report
+
+
+        [Serializable]
+        public class StatusReport
+        {
+            public Sr sr { get; set; }
+        }
 
         public StatusReport Status;
         public void NewStatusReport(string line)
@@ -906,15 +878,14 @@ namespace LitePlacer
              * */
         }
 
-        [Serializable]
-        public class StatusReport
-        {
-            public Sr sr { get; set; }
-        }
-
-
         // =================================================================================
         // Settings
+
+       public class Response
+        {
+            public Resp r { get; set; }
+            public List<int> f { get; set; }
+        }
 
         public Response Settings;
         public void NewSetting(string line)
@@ -930,7 +901,20 @@ namespace LitePlacer
             // The individual settings we care about and do something
             // when they change.
 
-            // mt: motor timeout
+            // ==========  System values  ==========
+            // switch type
+            private string _st = "";
+            public string st
+            {
+                get { return _st; }
+                set
+                {
+                    _st = value;
+                    CNC.MainForm.ValueUpdater("st", _st);
+                }
+            }
+
+            // motor idle timeout
             private string _mt = "";
             public string mt
             {
@@ -942,188 +926,104 @@ namespace LitePlacer
                 }
             }
 
-            // *jm: jerk max
-            private string _xjm = "";
-            public string xjm
+            // json verbosity
+            private string _jv = "";
+            public string jv
             {
-                get { return _xjm; }
+                get { return _jv; }
                 set
                 {
-                    _xjm = value;
-                    CNC.MainForm.ValueUpdater("xjm", _xjm);
+                    _jv = value;
+                    CNC.MainForm.ValueUpdater("jv", _jv);
                 }
             }
 
-            private string _yjm = "";
-            public string yjm
+            // json serialize style
+            private string _js = "";
+            public string js
             {
-                get { return _yjm; }
+                get { return _js; }
                 set
                 {
-                    _yjm = value;
-                    CNC.MainForm.ValueUpdater("yjm", _yjm);
+                    _js = value;
+                    CNC.MainForm.ValueUpdater("js", _js);
                 }
             }
 
-            private string _zjm = "";
-            public string zjm
+            // text verbosity
+            private string _tv = "";
+            public string tv
             {
-                get { return _zjm; }
+                get { return _tv; }
                 set
                 {
-                    _zjm = value;
-                    CNC.MainForm.ValueUpdater("zjm", _zjm);
+                    _tv = value;
+                    CNC.MainForm.ValueUpdater("tv", _tv);
                 }
             }
 
-            private string _ajm = "";
-            public string ajm
+            // queue report verbosity
+            private string _qv = "";
+            public string qv
             {
-                get { return _ajm; }
+                get { return _qv; }
                 set
                 {
-                    _ajm = value;
-                    CNC.MainForm.ValueUpdater("ajm", _ajm);
+                    _qv = value;
+                    CNC.MainForm.ValueUpdater("qv", _qv);
                 }
             }
 
-            // *vm: velocity max
-            private string _xvm = "";
-            public string xvm
+            // status report verbosity
+            private string _sv = "";
+            public string sv
             {
-                get { return _xvm; }
+                get { return _sv; }
                 set
                 {
-                    _xvm = value;
-                    CNC.MainForm.ValueUpdater("xvm", _xvm);
+                    _sv = value;
+                    CNC.MainForm.ValueUpdater("sv", _sv);
                 }
             }
 
-            private string _yvm = "";
-            public string yvm
+            // status interval
+            private string _si = "";
+            public string si
             {
-                get { return _yvm; }
+                get { return _si; }
                 set
                 {
-                    _yvm = value;
-                    CNC.MainForm.ValueUpdater("yvm", _yvm);
+                    _si = value;
+                    CNC.MainForm.ValueUpdater("si", _si);
                 }
             }
 
-            private string _zvm = "";
-            public string zvm
+            // default gcode units mode
+            private string _gun = "";
+            public string gun
             {
-                get { return _zvm; }
+                get { return _gun; }
                 set
                 {
-                    _zvm = value;
-                    CNC.MainForm.ValueUpdater("zvm", _zvm);
+                    _gun = value;
+                    CNC.MainForm.ValueUpdater("gun", _gun);
                 }
             }
 
-            private string _avm = "";
-            public string avm
+            // ========== motor 1 ==========
+            // map to axis
+            private string _motor1ma = "";
+            public string motor1ma
             {
-                get { return _avm; }
+                get { return _motor1ma; }
                 set
                 {
-                    _avm = value;
-                    CNC.MainForm.ValueUpdater("avm", _avm);
+                    _motor1ma = value;
+                    CNC.MainForm.ValueUpdater("1ma", _motor1ma);
                 }
             }
 
-            // *mi: motor microsteps 
-            // Note, that InterpretLine() replaces "1" with "motor1" so we can use valid names
-            private string _motor1mi = "";
-            public string motor1mi
-            {
-                get { return _motor1mi; }
-                set
-                {
-                    _motor1mi = value;
-                    CNC.MainForm.ValueUpdater("1mi", _motor1mi);
-                }
-            }
-
-            private string _motor2mi = "";
-            public string motor2mi
-            {
-                get { return _motor2mi; }
-                set
-                {
-                    _motor2mi = value;
-                    CNC.MainForm.ValueUpdater("2mi", _motor2mi);
-                }
-            }
-
-            private string _motor3mi = "";
-            public string motor3mi
-            {
-                get { return _motor3mi; }
-                set
-                {
-                    _motor3mi = value;
-                    CNC.MainForm.ValueUpdater("3mi", _motor3mi);
-                }
-            }
-
-            private string _motor4mi = "";
-            public string motor4mi
-            {
-                get { return _motor4mi; }
-                set
-                {
-                    _motor4mi = value;
-                    CNC.MainForm.ValueUpdater("4mi", _motor4mi);
-                }
-            }
-
-            // *tr: motor travel per rev. 
-            private string _motor1tr = "";
-            public string motor1tr
-            {
-                get { return _motor1tr; }
-                set
-                {
-                    _motor1tr = value;
-                    CNC.MainForm.ValueUpdater("1tr", _motor1tr);
-                }
-            }
-
-            private string _motor2tr = "";
-            public string motor2tr
-            {
-                get { return _motor2tr; }
-                set
-                {
-                    _motor2tr = value;
-                    CNC.MainForm.ValueUpdater("2tr", _motor2tr);
-                }
-            }
-
-            private string _motor3tr = "";
-            public string motor3tr
-            {
-                get { return _motor3tr; }
-                set
-                {
-                    _motor3tr = value;
-                    CNC.MainForm.ValueUpdater("3tr", _motor3tr);
-                }
-            }
-
-            private string _motor4tr = "";
-            public string motor4tr
-            {
-                get { return _motor4tr; }
-                set
-                {
-                    _motor4tr = value;
-                    CNC.MainForm.ValueUpdater("4tr", _motor4tr);
-                }
-            }
-
-            // *sa: motor step angle 
+            // step angle
             private string _motor1sa = "";
             public string motor1sa
             {
@@ -1135,6 +1035,68 @@ namespace LitePlacer
                 }
             }
 
+            // travel per revolution
+            private string _motor1tr = "";
+            public string motor1tr
+            {
+                get { return _motor1tr; }
+                set
+                {
+                    _motor1tr = value;
+                    CNC.MainForm.ValueUpdater("1tr", _motor1tr);
+                }
+            }
+
+            // microsteps
+            private string _motor1mi = "";
+            public string motor1mi
+            {
+                get { return _motor1mi; }
+                set
+                {
+                    _motor1mi = value;
+                    CNC.MainForm.ValueUpdater("1mi", _motor1mi);
+                }
+            }
+
+            // motor polarity
+            private string _motor1po = "";
+            public string motor1po
+            {
+                get { return _motor1po; }
+                set
+                {
+                    _motor1po = value;
+                    CNC.MainForm.ValueUpdater("1po", _motor1po);
+                }
+            }
+
+            // power management
+            private string _motor1pm = "";
+            public string motor1pm
+            {
+                get { return _motor1pm; }
+                set
+                {
+                    _motor1pm = value;
+                    CNC.MainForm.ValueUpdater("1pm", _motor1pm);
+                }
+            }
+
+            // ========== motor 2 ==========
+            // map to axis
+            private string _motor2ma = "";
+            public string motor2ma
+            {
+                get { return _motor2ma; }
+                set
+                {
+                    _motor2ma = value;
+                    CNC.MainForm.ValueUpdater("2ma", _motor2ma);
+                }
+            }
+
+            // step angle
             private string _motor2sa = "";
             public string motor2sa
             {
@@ -1146,6 +1108,68 @@ namespace LitePlacer
                 }
             }
 
+            // travel per revolution
+            private string _motor2tr = "";
+            public string motor2tr
+            {
+                get { return _motor2tr; }
+                set
+                {
+                    _motor2tr = value;
+                    CNC.MainForm.ValueUpdater("2tr", _motor2tr);
+                }
+            }
+
+            // microsteps
+            private string _motor2mi = "";
+            public string motor2mi
+            {
+                get { return _motor2mi; }
+                set
+                {
+                    _motor2mi = value;
+                    CNC.MainForm.ValueUpdater("2mi", _motor2mi);
+                }
+            }
+
+            // motor polarity
+            private string _motor2po = "";
+            public string motor2po
+            {
+                get { return _motor2po; }
+                set
+                {
+                    _motor2po = value;
+                    CNC.MainForm.ValueUpdater("2po", _motor2po);
+                }
+            }
+
+            // power management
+            private string _motor2pm = "";
+            public string motor2pm
+            {
+                get { return _motor2pm; }
+                set
+                {
+                    _motor2pm = value;
+                    CNC.MainForm.ValueUpdater("2pm", _motor2pm);
+                }
+            }
+
+            // ========== motor 3 ==========
+            // map to axis
+            private string _motor3ma = "";
+            public string motor3ma
+            {
+                get { return _motor3ma; }
+                set
+                {
+                    _motor3ma = value;
+                    CNC.MainForm.ValueUpdater("3ma", _motor3ma);
+                }
+            }
+
+            // step angle
             private string _motor3sa = "";
             public string motor3sa
             {
@@ -1157,6 +1181,68 @@ namespace LitePlacer
                 }
             }
 
+            // travel per revolution
+            private string _motor3tr = "";
+            public string motor3tr
+            {
+                get { return _motor3tr; }
+                set
+                {
+                    _motor3tr = value;
+                    CNC.MainForm.ValueUpdater("3tr", _motor3tr);
+                }
+            }
+
+            // microsteps
+            private string _motor3mi = "";
+            public string motor3mi
+            {
+                get { return _motor3mi; }
+                set
+                {
+                    _motor3mi = value;
+                    CNC.MainForm.ValueUpdater("3mi", _motor3mi);
+                }
+            }
+
+            // motor polarity
+            private string _motor3po = "";
+            public string motor3po
+            {
+                get { return _motor3po; }
+                set
+                {
+                    _motor3po = value;
+                    CNC.MainForm.ValueUpdater("3po", _motor3po);
+                }
+            }
+
+            // power management
+            private string _motor3pm = "";
+            public string motor3pm
+            {
+                get { return _motor3pm; }
+                set
+                {
+                    _motor3pm = value;
+                    CNC.MainForm.ValueUpdater("3pm", _motor3pm);
+                }
+            }
+
+            // ========== motor 4 ==========
+            // map to axis
+            private string _motor4ma = "";
+            public string motor4ma
+            {
+                get { return _motor4ma; }
+                set
+                {
+                    _motor4ma = value;
+                    CNC.MainForm.ValueUpdater("4ma", _motor4ma);
+                }
+            }
+
+            // step angle
             private string _motor4sa = "";
             public string motor4sa
             {
@@ -1168,6 +1254,153 @@ namespace LitePlacer
                 }
             }
 
+            // travel per revolution
+            private string _motor4tr = "";
+            public string motor4tr
+            {
+                get { return _motor4tr; }
+                set
+                {
+                    _motor4tr = value;
+                    CNC.MainForm.ValueUpdater("4tr", _motor4tr);
+                }
+            }
+
+            // microsteps
+            private string _motor4mi = "";
+            public string motor4mi
+            {
+                get { return _motor4mi; }
+                set
+                {
+                    _motor4mi = value;
+                    CNC.MainForm.ValueUpdater("4mi", _motor4mi);
+                }
+            }
+
+            // motor polarity
+            private string _motor4po = "";
+            public string motor4po
+            {
+                get { return _motor4po; }
+                set
+                {
+                    _motor4po = value;
+                    CNC.MainForm.ValueUpdater("4po", _motor4po);
+                }
+            }
+
+            // power management
+            private string _motor4pm = "";
+            public string motor4pm
+            {
+                get { return _motor4pm; }
+                set
+                {
+                    _motor4pm = value;
+                    CNC.MainForm.ValueUpdater("4pm", _motor4pm);
+                }
+            }
+
+            // ========== motor 5 (qQuintic only) ==========
+            // map to axis 
+            private string _motor5ma = "";
+            public string motor5ma
+            {
+                get { return _motor5ma; }
+                set
+                {
+                    _motor5ma = value;
+                    CNC.MainForm.ValueUpdater("motor5ma", _motor5ma);
+                }
+            }
+
+            // power management 
+            private string _motor5pm = "";
+            public string motor5pm
+            {
+                get { return _motor5pm; }
+                set
+                {
+                    _motor5pm = value;
+                    CNC.MainForm.ValueUpdater("motor5pm", _motor5pm);
+                }
+            }
+
+            // ========== X axis ==========
+            // x axis mode
+            private string _xam = "";
+            public string xam
+            {
+                get { return _xam; }
+                set
+                {
+                    _xam = value;
+                    CNC.MainForm.ValueUpdater("xam", _xam);
+                }
+            }
+
+            // x velocity maximum
+            private string _xvm = "";
+            public string xvm
+            {
+                get { return _xvm; }
+                set
+                {
+                    _xvm = value;
+                    CNC.MainForm.ValueUpdater("xvm", _xvm);
+                }
+            }
+
+            // x feedrate maximum
+            private string _xfr = "";
+            public string xfr
+            {
+                get { return _xfr; }
+                set
+                {
+                    _xfr = value;
+                    CNC.MainForm.ValueUpdater("xfr", _xfr);
+                }
+            }
+
+            // x travel minimum
+            private string _xtn = "";
+            public string xtn
+            {
+                get { return _xtn; }
+                set
+                {
+                    _xtn = value;
+                    CNC.MainForm.ValueUpdater("xtn", _xtn);
+                }
+            }
+
+            // x travel maximum
+            private string _xtm = "";
+            public string xtm
+            {
+                get { return _xtm; }
+                set
+                {
+                    _xtm = value;
+                    CNC.MainForm.ValueUpdater("xtm", _xtm);
+                }
+            }
+
+            // x jerk maximum
+            private string _xjm = "";
+            public string xjm
+            {
+                get { return _xjm; }
+                set
+                {
+                    _xjm = value;
+                    CNC.MainForm.ValueUpdater("xjm", _xjm);
+                }
+            }
+
+            // x jerk homing
             private string _xjh = "";
             public string xjh
             {
@@ -1179,28 +1412,7 @@ namespace LitePlacer
                 }
             }
 
-            private string _yjh = "";
-            public string yjh
-            {
-                get { return _yjh; }
-                set
-                {
-                    _yjh = value;
-                    CNC.MainForm.ValueUpdater("yjh", _yjh);
-                }
-            }
-
-            private string _zjh = "";
-            public string zjh
-            {
-                get { return _zjh; }
-                set
-                {
-                    _zjh = value;
-                    CNC.MainForm.ValueUpdater("zjh", _zjh);
-                }
-            }
-
+            // x search velocity
             private string _xsv = "";
             public string xsv
             {
@@ -1212,6 +1424,128 @@ namespace LitePlacer
                 }
             }
 
+            // x latch velocity
+            private string _xlv = "";
+            public string xlv
+            {
+                get { return _xlv; }
+                set
+                {
+                    _xlv = value;
+                    CNC.MainForm.ValueUpdater("xlv", _xlv);
+                }
+            }
+
+            // x latch backoff
+            private string _xlb = "";
+            public string xlb
+            {
+                get { return _xlb; }
+                set
+                {
+                    _xlb = value;
+                    CNC.MainForm.ValueUpdater("xlb", _xlb);
+                }
+            }
+
+            // x zero backoff
+            private string _xzb = "";
+            public string xzb
+            {
+                get { return _xzb; }
+                set
+                {
+                    _xzb = value;
+                    CNC.MainForm.ValueUpdater("xzb", _xzb);
+                }
+            }
+
+            // ========== Y axis ==========
+            // y axis mode
+            private string _yam = "";
+            public string yam
+            {
+                get { return _yam; }
+                set
+                {
+                    _yam = value;
+                    CNC.MainForm.ValueUpdater("yam", _yam);
+                }
+            }
+
+            // y velocity maximum
+            private string _yvm = "";
+            public string yvm
+            {
+                get { return _yvm; }
+                set
+                {
+                    _yvm = value;
+                    CNC.MainForm.ValueUpdater("yvm", _yvm);
+                }
+            }
+
+            // y feedrate maximum
+            private string _yfr = "";
+            public string yfr
+            {
+                get { return _yfr; }
+                set
+                {
+                    _yfr = value;
+                    CNC.MainForm.ValueUpdater("yfr", _yfr);
+                }
+            }
+
+            // y travel minimum
+            private string _ytn = "";
+            public string ytn
+            {
+                get { return _ytn; }
+                set
+                {
+                    _ytn = value;
+                    CNC.MainForm.ValueUpdater("ytn", _ytn);
+                }
+            }
+
+            // y travel mayimum
+            private string _ytm = "";
+            public string ytm
+            {
+                get { return _ytm; }
+                set
+                {
+                    _ytm = value;
+                    CNC.MainForm.ValueUpdater("ytm", _ytm);
+                }
+            }
+
+            // y jerk maximum
+            private string _yjm = "";
+            public string yjm
+            {
+                get { return _yjm; }
+                set
+                {
+                    _yjm = value;
+                    CNC.MainForm.ValueUpdater("yjm", _yjm);
+                }
+            }
+
+            // y jerk homing
+            private string _yjh = "";
+            public string yjh
+            {
+                get { return _yjh; }
+                set
+                {
+                    _yjh = value;
+                    CNC.MainForm.ValueUpdater("yjh", _yjh);
+                }
+            }
+
+            // y search velocity
             private string _ysv = "";
             public string ysv
             {
@@ -1223,6 +1557,128 @@ namespace LitePlacer
                 }
             }
 
+            // y latch velocity
+            private string _ylv = "";
+            public string ylv
+            {
+                get { return _ylv; }
+                set
+                {
+                    _ylv = value;
+                    CNC.MainForm.ValueUpdater("ylv", _ylv);
+                }
+            }
+
+            // y latch backoff
+            private string _ylb = "";
+            public string ylb
+            {
+                get { return _ylb; }
+                set
+                {
+                    _ylb = value;
+                    CNC.MainForm.ValueUpdater("ylb", _ylb);
+                }
+            }
+
+            // y zero backoff
+            private string _yzb = "";
+            public string yzb
+            {
+                get { return _yzb; }
+                set
+                {
+                    _yzb = value;
+                    CNC.MainForm.ValueUpdater("yzb", _yzb);
+                }
+            }
+
+            // ========== Z axis ==========
+            // z axis mode
+            private string _zam = "";
+            public string zam
+            {
+                get { return _zam; }
+                set
+                {
+                    _zam = value;
+                    CNC.MainForm.ValueUpdater("zam", _zam);
+                }
+            }
+
+            // z velocity maximum
+            private string _zvm = "";
+            public string zvm
+            {
+                get { return _zvm; }
+                set
+                {
+                    _zvm = value;
+                    CNC.MainForm.ValueUpdater("zvm", _zvm);
+                }
+            }
+
+            // z feedrate maximum
+            private string _zfr = "";
+            public string zfr
+            {
+                get { return _zfr; }
+                set
+                {
+                    _zfr = value;
+                    CNC.MainForm.ValueUpdater("zfr", _zfr);
+                }
+            }
+
+            // z travel minimum
+            private string _ztn = "";
+            public string ztn
+            {
+                get { return _ztn; }
+                set
+                {
+                    _ztn = value;
+                    CNC.MainForm.ValueUpdater("ztn", _ztn);
+                }
+            }
+
+            // z travel mazimum
+            private string _ztm = "";
+            public string ztm
+            {
+                get { return _ztm; }
+                set
+                {
+                    _ztm = value;
+                    CNC.MainForm.ValueUpdater("ztm", _ztm);
+                }
+            }
+
+            // z jerk mazimum
+            private string _zjm = "";
+            public string zjm
+            {
+                get { return _zjm; }
+                set
+                {
+                    _zjm = value;
+                    CNC.MainForm.ValueUpdater("zjm", _zjm);
+                }
+            }
+
+            // z jerk homing
+            private string _zjh = "";
+            public string zjh
+            {
+                get { return _zjh; }
+                set
+                {
+                    _zjh = value;
+                    CNC.MainForm.ValueUpdater("zjh", _zjh);
+                }
+            }
+
+            // z search velocity
             private string _zsv = "";
             public string zsv
             {
@@ -1234,6 +1690,176 @@ namespace LitePlacer
                 }
             }
 
+            // z latch velocity
+            private string _zlv = "";
+            public string zlv
+            {
+                get { return _zlv; }
+                set
+                {
+                    _zlv = value;
+                    CNC.MainForm.ValueUpdater("zlv", _zlv);
+                }
+            }
+
+            // z latch backoff
+            private string _zlb = "";
+            public string zlb
+            {
+                get { return _zlb; }
+                set
+                {
+                    _zlb = value;
+                    CNC.MainForm.ValueUpdater("zlb", _zlb);
+                }
+            }
+
+            // z zero backoff
+            private string _zzb = "";
+            public string zzb
+            {
+                get { return _zzb; }
+                set
+                {
+                    _zzb = value;
+                    CNC.MainForm.ValueUpdater("zzb", _zzb);
+                }
+            }
+
+            // ========== A axis ==========
+            // a axis mode
+            private string _aam = "";
+            public string aam
+            {
+                get { return _aam; }
+                set
+                {
+                    _aam = value;
+                    CNC.MainForm.ValueUpdater("aam", _aam);
+                }
+            }
+
+            // a velocity maximum
+            private string _avm = "";
+            public string avm
+            {
+                get { return _avm; }
+                set
+                {
+                    _avm = value;
+                    CNC.MainForm.ValueUpdater("avm", _avm);
+                }
+            }
+
+            // a feedrate maximum
+            private string _afr = "";
+            public string afr
+            {
+                get { return _afr; }
+                set
+                {
+                    _afr = value;
+                    CNC.MainForm.ValueUpdater("afr", _afr);
+                }
+            }
+
+            // a travel minimum
+            private string _atn = "";
+            public string atn
+            {
+                get { return _atn; }
+                set
+                {
+                    _atn = value;
+                    CNC.MainForm.ValueUpdater("atn", _atn);
+                }
+            }
+
+            // a travel maaimum
+            private string _atm = "";
+            public string atm
+            {
+                get { return _atm; }
+                set
+                {
+                    _atm = value;
+                    CNC.MainForm.ValueUpdater("atm", _atm);
+                }
+            }
+
+            // a jerk maaimum
+            private string _ajm = "";
+            public string ajm
+            {
+                get { return _ajm; }
+                set
+                {
+                    _ajm = value;
+                    CNC.MainForm.ValueUpdater("ajm", _ajm);
+                }
+            }
+
+            // a jerk homing
+            private string _ajh = "";
+            public string ajh
+            {
+                get { return _ajh; }
+                set
+                {
+                    _ajh = value;
+                    CNC.MainForm.ValueUpdater("ajh", _ajh);
+                }
+            }
+
+            // a search velocity
+            private string _asv = "";
+            public string asv
+            {
+                get { return _asv; }
+                set
+                {
+                    _asv = value;
+                    CNC.MainForm.ValueUpdater("asv", _asv);
+                }
+            }
+
+            // ========== TinyG specifics ==========
+            private string _ec = "";
+            public string ec
+            {
+                get { return _ec; }
+                set
+                {
+                    _ec = value;
+                    CNC.MainForm.ValueUpdater("ec", _ec);
+                }
+            }
+
+            // enable echo 
+            private string _ee = "";
+            public string ee
+            {
+                get { return _ee; }
+                set
+                {
+                    _ee = value;
+                    CNC.MainForm.ValueUpdater("ee", _ee);
+                }
+            }
+
+            // enable flow control 
+            private string _ex = "";
+            public string ex
+            {
+                get { return _ex; }
+                set
+                {
+                    _ex = value;
+                    CNC.MainForm.ValueUpdater("ex", _ex);
+                }
+            }
+
+            // x switch min 
             private string _xsn = "";
             public string xsn
             {
@@ -1245,28 +1871,7 @@ namespace LitePlacer
                 }
             }
 
-            private string _ysn = "";
-            public string ysn
-            {
-                get { return _ysn; }
-                set
-                {
-                    _ysn = value;
-                    CNC.MainForm.ValueUpdater("ysn", _ysn);
-                }
-            }
-
-            private string _zsn = "";
-            public string zsn
-            {
-                get { return _zsn; }
-                set
-                {
-                    _zsn = value;
-                    CNC.MainForm.ValueUpdater("zsn", _zsn);
-                }
-            }
-
+            // x switch max 
             private string _xsx = "";
             public string xsx
             {
@@ -1278,6 +1883,19 @@ namespace LitePlacer
                 }
             }
 
+            // y switch min 
+            private string _ysn = "";
+            public string ysn
+            {
+                get { return _ysn; }
+                set
+                {
+                    _ysn = value;
+                    CNC.MainForm.ValueUpdater("ysn", _ysn);
+                }
+            }
+
+            // y switch max 
             private string _ysx = "";
             public string ysx
             {
@@ -1289,6 +1907,19 @@ namespace LitePlacer
                 }
             }
 
+            // z switch min 
+            private string _zsn = "";
+            public string zsn
+            {
+                get { return _zsn; }
+                set
+                {
+                    _zsn = value;
+                    CNC.MainForm.ValueUpdater("zsn", _zsn);
+                }
+            }
+
+            // z switch max 
             private string _zsx = "";
             public string zsx
             {
@@ -1300,25 +1931,177 @@ namespace LitePlacer
                 }
             }
 
-            private string _hp = "";
-            public string hp
+            // a switch min 
+            private string _asn = "";
+            public string asn
             {
-                get { return _hp; }
+                get { return _asn; }
                 set
                 {
-                    _hp = value;
-                    CNC.MainForm.ValueUpdater("hp", _hp);
+                    _asn = value;
+                    CNC.MainForm.ValueUpdater("asn", _asn);
+                }
+            }
+
+            // a switch max 
+            private string _asx = "";
+            public string asx
+            {
+                get { return _asx; }
+                set
+                {
+                    _asx = value;
+                    CNC.MainForm.ValueUpdater("asx", _asx);
+                }
+            }
+
+            // ========== qQuintic specifics ==========
+            // motor power level 
+            private string _motor1pl = "";
+            public string motor1pl
+            {
+                get { return _motor1pl; }
+                set
+                {
+                    _motor1pl = value;
+                    CNC.MainForm.ValueUpdater("motor1pl", _motor1pl);
+                }
+            }
+
+            // motor power level 
+            private string _motor2pl = "";
+            public string motor2pl
+            {
+                get { return _motor2pl; }
+                set
+                {
+                    _motor2pl = value;
+                    CNC.MainForm.ValueUpdater("motor2pl", _motor2pl);
+                }
+            }
+
+            // motor power level 
+            private string _motor3pl = "";
+            public string motor3pl
+            {
+                get { return _motor3pl; }
+                set
+                {
+                    _motor3pl = value;
+                    CNC.MainForm.ValueUpdater("motor3pl", _motor3pl);
+                }
+            }
+
+            // motor power level 
+            private string _motor4pl = "";
+            public string motor4pl
+            {
+                get { return _motor4pl; }
+                set
+                {
+                    _motor4pl = value;
+                    CNC.MainForm.ValueUpdater("motor4pl", _motor4pl);
+                }
+            }
+
+            // motor power level 
+            private string _motor5pl = "";
+            public string motor5pl
+            {
+                get { return _motor5pl; }
+                set
+                {
+                    _motor5pl = value;
+                    CNC.MainForm.ValueUpdater("motor5pl", _motor5pl);
+                }
+            }
+
+
+            // x homing input 
+            private string _xhi = "";
+            public string xhi
+            {
+                get { return _xhi; }
+                set
+                {
+                    _xhi = value;
+                    CNC.MainForm.ValueUpdater("xhi", _xhi);
+                }
+            }
+
+            // x homing direction 
+            private string _xhd = "";
+            public string xhd
+            {
+                get { return _xhd; }
+                set
+                {
+                    _xhd = value;
+                    CNC.MainForm.ValueUpdater("xhd", _xhd);
+                }
+            }
+
+            // y homing input 
+            private string _yhi = "";
+            public string yhi
+            {
+                get { return _yhi; }
+                set
+                {
+                    _yhi = value;
+                    CNC.MainForm.ValueUpdater("yhi", _yhi);
+                }
+            }
+
+            // y homing direction 
+            private string _yhd = "";
+            public string yhd
+            {
+                get { return _yhd; }
+                set
+                {
+                    _yhd = value;
+                    CNC.MainForm.ValueUpdater("yhd", _yhd);
+                }
+            }
+
+            // z homing input 
+            private string _zhi = "";
+            public string zhi
+            {
+                get { return _zhi; }
+                set
+                {
+                    _zhi = value;
+                    CNC.MainForm.ValueUpdater("zhi", _zhi);
+                }
+            }
+
+            // z homing direction 
+            private string _zhd = "";
+            public string zhd
+            {
+                get { return _zhd; }
+                set
+                {
+                    _zhd = value;
+                    CNC.MainForm.ValueUpdater("zhd", _zhd);
+                }
+            }
+
+            // b homing input bhi
+            private string _bhi = "";
+            public string bhi
+            {
+                get { return _bhi; }
+                set
+                {
+                    _bhi = value;
+                    CNC.MainForm.ValueUpdater("bhi", _bhi);
                 }
             }
 
         }   // end class Resp
-
-        public class Response
-        {
-            public Resp r { get; set; }
-            public List<int> f { get; set; }
-        }
-
 
         // =================================================================================
         // TinyG G2

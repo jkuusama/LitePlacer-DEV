@@ -49,7 +49,9 @@ namespace LitePlacer
         NozzleClass Nozzle;
         TapesClass Tapes;
         public MySettings Setting;
-        public TinyGSettings TinyGSetting;
+        public BoardSettings.Common CommonBoardSettings;
+        public BoardSettings.TinyG TinyGSettings;
+        public BoardSettings.qQuintic qQuinticSettings;
 
         AppSettings SettingsOps;
 
@@ -123,10 +125,13 @@ namespace LitePlacer
             UpCamera = new Camera(this);
             Nozzle = new NozzleClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Nozzle, DownCamera, Cnc, this);
+            CommonBoardSettings = new BoardSettings.Common();
+            TinyGSettings = new BoardSettings.TinyG();
+            qQuinticSettings = new BoardSettings.qQuintic();
 
-            // Setup error handling for Tapes_dataGridViews
-            // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
-            Tapes_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
+        // Setup error handling for Tapes_dataGridViews
+        // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
+        Tapes_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
             TapesOld_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
 
             this.KeyPreview = true;
@@ -403,7 +408,7 @@ namespace LitePlacer
                     return;
                 }
 
-                if (Controlboard == ControlBoardType.TinyG)
+                if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
                 {
                     CNC_RawWrite("\x11");  // Xon
                     Thread.Sleep(50);   // TinyG wakeup
@@ -1919,8 +1924,6 @@ namespace LitePlacer
         public const bool TextMode = false;
 
         // Different types of control hardware
-        public enum ControlBoardType { TinyG, qQuintic, other };
-        public ControlBoardType Controlboard = ControlBoardType.TinyG;
 
         private bool UpdateCNCBoardType_m()
         {
@@ -4410,7 +4413,7 @@ namespace LitePlacer
             }
         }
 
-        // Sends the calls that will result to messages that update the values shown
+        // Sends the calls that will result to messages that update the values shown on UI
         private bool UpdateWindowValues_m()
         {
             if (!CNC_Write_m("{\"sr\":\"\"}"))
@@ -4579,92 +4582,370 @@ namespace LitePlacer
 
             switch (item)
             {
-                case "posx": Update_xpos(value);
+                // ==========  position values  ==========
+                case "posx":
+                    Update_xpos(value);
                     break;
-                case "posy": Update_ypos(value);
+                case "posy":
+                    Update_ypos(value);
                     break;
-                case "posz": Update_zpos(value);
+                case "posz":
+                    Update_zpos(value);
                     break;
-                case "posa": Update_apos(value);
-                    break;
-
-                case "xjm": Update_xjm(value);
-                    break;
-                case "yjm": Update_yjm(value);
-                    break;
-                case "zjm": Update_zjm(value);
-                    break;
-                case "ajm": Update_ajm(value);
+                case "posa":
+                    Update_apos(value);
                     break;
 
-                case "xjh": Update_xjh(value);
+                // ==========  System values  ==========
+                case "st":
+                    CommonBoardSettings.st = value;
                     break;
-                case "yjh": Update_yjh(value);
-                    break;
-                case "zjh": Update_zjh(value);
-                    break;
-
-                case "xsv": Update_xsv(value);
-                    break;
-                case "ysv": Update_ysv(value);
-                    break;
-                case "zsv": Update_zsv(value);
-                    break;
-
-                case "xsn": Update_xsn(value);
-                    break;
-                case "ysn": Update_ysn(value);
-                    break;
-                case "zsn": Update_zsn(value);
-                    break;
-
-                case "xsx": Update_xsx(value);
-                    break;
-                case "ysx": Update_ysx(value);
-                    break;
-                case "zsx": Update_zsx(value);
-                    break;
-
-                case "xvm": Update_xvm(value);
-                    break;
-                case "yvm": Update_yvm(value);
-                    break;
-                case "zvm": Update_zvm(value);
-                    break;
-                case "avm": Update_avm(value);
-                    break;
-
-                case "1mi": Update_1mi(value);
-                    break;
-                case "2mi": Update_2mi(value);
-                    break;
-                case "3mi": Update_3mi(value);
-                    break;
-                case "4mi": Update_4mi(value);
-                    break;
-
-                case "1tr": Update_1tr(value);
-                    break;
-                case "2tr": Update_2tr(value);
-                    break;
-                case "3tr": Update_3tr(value);
-                    break;
-                case "4tr": Update_4tr(value);
-                    break;
-
-                case "1sa": Update_1sa(value);
-                    break;
-                case "2sa": Update_2sa(value);
-                    break;
-                case "3sa": Update_3sa(value);
-                    break;
-                case "4sa": Update_4sa(value);
-                    break;
-
                 case "mt":
+                    CommonBoardSettings.mt = value;
                     Update_mt(value);
                     break;
+                case "jv":
+                    CommonBoardSettings.jv = value;
+                    break;
+                case "js":
+                    CommonBoardSettings.js = value;
+                    break;
+                case "tv":
+                    CommonBoardSettings.tv = value;
+                    break;
+                case "qv":
+                    CommonBoardSettings.qv = value;
+                    break;
+                case "sv":
+                    CommonBoardSettings.sv = value;
+                    break;
+                case "si":
+                    CommonBoardSettings.si = value;
+                    break;
+                case "gun":
+                    CommonBoardSettings.gun = value;
+                    break;
 
+                // ========== motor 1 ==========
+                case "1ma":
+                    CommonBoardSettings.motor1ma = value;
+                    break;
+                case "1sa":
+                    Update_1sa(value);
+                    CommonBoardSettings.motor1sa = value;
+                    break;
+                case "1tr":
+                    Update_1tr(value);
+                    CommonBoardSettings.motor1tr = value;
+                    break;
+                case "1mi":
+                    Update_1mi(value);
+                    CommonBoardSettings.motor1mi = value;
+                    break;
+                case "1po":
+                    CommonBoardSettings.motor1po = value;
+                    break;
+                case "1pm":
+                    CommonBoardSettings.motor1pm = value;
+                    break;
+                case "1pl":
+                    qQuinticSettings.motor1pl = value;
+                    break;
+
+                // ========== motor 2 ==========
+                case "2ma":
+                    CommonBoardSettings.motor2ma = value;
+                    break;
+                case "2sa":
+                    Update_2sa(value);
+                    CommonBoardSettings.motor2sa = value;
+                    break;
+                case "2tr":
+                    Update_2tr(value);
+                    CommonBoardSettings.motor2tr = value;
+                    break;
+                case "2mi":
+                    Update_2mi(value);
+                    CommonBoardSettings.motor2mi = value;
+                    break;
+                case "2po":
+                    CommonBoardSettings.motor2po = value;
+                    break;
+                case "2pm":
+                    CommonBoardSettings.motor2pm = value;
+                    break;
+                case "2pl":
+                    qQuinticSettings.motor2pl = value;
+                    break;
+
+                // ========== motor 3 ==========
+                case "3ma":
+                    CommonBoardSettings.motor3ma = value;
+                    break;
+                case "3sa":
+                    Update_3sa(value);
+                    CommonBoardSettings.motor3sa = value;
+                    break;
+                case "3tr":
+                    Update_3tr(value);
+                    CommonBoardSettings.motor3tr = value;
+                    break;
+                case "3mi":
+                    Update_3mi(value);
+                    CommonBoardSettings.motor3mi = value;
+                    break;
+                case "3po":
+                    CommonBoardSettings.motor3po = value;
+                    break;
+                case "3pm":
+                    CommonBoardSettings.motor3pm = value;
+                    break;
+                case "3pl":
+                    qQuinticSettings.motor3pl = value;
+                    break;
+
+                // ========== motor 4 ==========
+                case "4ma":
+                    CommonBoardSettings.motor4ma = value;
+                    break;
+                case "4sa":
+                    Update_4sa(value);
+                    CommonBoardSettings.motor4sa = value;
+                    break;
+                case "4tr":
+                    Update_4tr(value);
+                    CommonBoardSettings.motor4tr = value;
+                    break;
+                case "4mi":
+                    Update_4mi(value);
+                    CommonBoardSettings.motor4mi = value;
+                    break;
+                case "4po":
+                    CommonBoardSettings.motor4po = value;
+                    break;
+                case "4pm":
+                    CommonBoardSettings.motor4pm = value;
+                    break;
+                case "4pl":
+                    qQuinticSettings.motor4pl = value;
+                    break;
+
+                // ========== motor 5 (qQuintic only) ==========
+                case "5ma":
+                    qQuinticSettings.motor5ma = value;
+                    break;
+                case "5pm":
+                    qQuinticSettings.motor5pm = value;
+                    break;
+                case "5pl":
+                    qQuinticSettings.motor5pl = value;
+                    break;
+
+                // ========== X axis ==========
+                case "xam":
+                    CommonBoardSettings.xam = value;
+                    break;
+                case "xvm":
+                    Update_xvm(value);
+                    CommonBoardSettings.xvm = value;
+                    break;
+                case "xfr":
+                    CommonBoardSettings.xfr = value;
+                    break;
+                case "xtn":
+                    CommonBoardSettings.xtn = value;
+                    break;
+                case "xtm":
+                    CommonBoardSettings.xtm = value;
+                    break;
+                case "xjm":
+                    Update_xjm(value);
+                    CommonBoardSettings.xjm = value;
+                    break;
+                case "xjh":
+                    Update_xjh(value);
+                    CommonBoardSettings.xjh = value;
+                    break;
+                case "xsv":
+                    Update_xsv(value);
+                    CommonBoardSettings.xsv = value;
+                    break;
+                case "xlv":
+                    CommonBoardSettings.xlv = value;
+                    break;
+                case "xlb":
+                    CommonBoardSettings.xlb = value;
+                    break;
+                case "xzb":
+                    CommonBoardSettings.xzb = value;
+                    break;
+
+                // ========== Y axis ==========
+                case "yam":
+                    CommonBoardSettings.yam = value;
+                    break;
+                case "yvm":
+                    Update_yvm(value);
+                    CommonBoardSettings.yvm = value;
+                    break;
+                case "yfr":
+                    CommonBoardSettings.yfr = value;
+                    break;
+                case "ytn":
+                    CommonBoardSettings.ytn = value;
+                    break;
+                case "ytm":
+                    CommonBoardSettings.ytm = value;
+                    break;
+                case "yjm":
+                    Update_yjm(value);
+                    CommonBoardSettings.yjm = value;
+                    break;
+                case "yjh":
+                    Update_yjh(value);
+                    CommonBoardSettings.yjh = value;
+                    break;
+                case "ysv":
+                    Update_ysv(value);
+                    CommonBoardSettings.ysv = value;
+                    break;
+                case "ylv":
+                    CommonBoardSettings.ylv = value;
+                    break;
+                case "ylb":
+                    CommonBoardSettings.ylb = value;
+                    break;
+                case "yzb":
+                    CommonBoardSettings.yzb = value;
+                    break;
+
+                // ========== Z axis ==========
+                case "zam":
+                    CommonBoardSettings.zam = value;
+                    break;
+                case "zvm":
+                    Update_zvm(value);
+                    CommonBoardSettings.zvm = value;
+                    break;
+                case "zfr":
+                    CommonBoardSettings.zfr = value;
+                    break;
+                case "ztn":
+                    CommonBoardSettings.ztn = value;
+                    break;
+                case "ztm":
+                    CommonBoardSettings.ztm = value;
+                    break;
+                case "zjm":
+                    Update_zjm(value);
+                    CommonBoardSettings.zjm = value;
+                    break;
+                case "zjh":
+                    Update_zjh(value);
+                    CommonBoardSettings.zjh = value;
+                    break;
+                case "zsv":
+                    Update_zsv(value);
+                    CommonBoardSettings.zsv = value;
+                    break;
+                case "zlv":
+                    CommonBoardSettings.zlv = value;
+                    break;
+                case "zlb":
+                    CommonBoardSettings.zlb = value;
+                    break;
+                case "zzb":
+                    CommonBoardSettings.zzb = value;
+                    break;
+
+                // ========== A axis ==========
+                case "aam":
+                    CommonBoardSettings.aam = value;
+                    break;
+                case "avm":
+                    Update_avm(value);
+                    CommonBoardSettings.avm = value;
+                    break;
+                case "afr":
+                    CommonBoardSettings.afr = value;
+                    break;
+                case "atn":
+                    CommonBoardSettings.atn = value;
+                    break;
+                case "atm":
+                    CommonBoardSettings.atm = value;
+                    break;
+                case "ajm":
+                    Update_ajm(value);
+                    CommonBoardSettings.ajm = value;
+                    break;
+                case "ajh":
+                    CommonBoardSettings.ajh = value;
+                    break;
+                case "asv":
+                    CommonBoardSettings.asv = value;
+                    break;
+
+
+                // ========== TinyG switch values ==========
+                case "xsn":
+                    Update_xsn(value);
+                    TinyGSettings.xsn = value;
+                    break;
+                case "xsx":
+                    Update_xsx(value);
+                    TinyGSettings.xsx = value;
+                    break;
+                case "ysn":
+                    Update_ysn(value);
+                    TinyGSettings.ysn = value;
+                    break;
+                case "ysx":
+                    Update_ysx(value);
+                    TinyGSettings.ysx = value;
+                    break;
+                case "zsn":
+                    Update_zsn(value);
+                    TinyGSettings.zsn = value;
+                    break;
+                case "zsx":
+                    Update_zsx(value);
+                    TinyGSettings.zsx = value;
+                    break;
+                case "asn":
+                    TinyGSettings.asn = value;
+                    break;
+                case "asx":
+                    TinyGSettings.asx = value;
+                    break;
+
+                // ========== qQuintic switch values ==========
+                case "xhi":
+                    qQuinticSettings.xhi = value;
+                    break;
+                case "xhd":
+                    qQuinticSettings.xhd = value;
+                    break;
+                case "yhi":
+                    qQuinticSettings.yhi = value;
+                    break;
+                case "yhd":
+                    qQuinticSettings.yhd = value;
+                    break;
+                case "zhi":
+                    qQuinticSettings.zhi = value;
+                    break;
+                case "zhd":
+                    qQuinticSettings.zhd = value;
+                    break;
+                case "ahi":
+                    qQuinticSettings.ahi = value;
+                    break;
+                case "bhi":
+                    qQuinticSettings.bhi = value;
+                    break;
+
+                // Hardware platform
                 case "hp":
                     Update_hp(value);
                     break;
@@ -4686,17 +4967,17 @@ namespace LitePlacer
 
             if (value=="1")
             {
-                Controlboard = ControlBoardType.TinyG;
+                Cnc.Controlboard = CNC.ControlBoardType.TinyG;
                 DisplayText("TinyG board found.");
             }
             else if (value == "3")
             {
-                Controlboard = ControlBoardType.qQuintic;
+                Cnc.Controlboard = CNC.ControlBoardType.qQuintic;
                 DisplayText("qQuintic board found.");
             }
             else
             {
-                Controlboard = ControlBoardType.other;
+                Cnc.Controlboard = CNC.ControlBoardType.other;
                 DisplayText("Unknown control board.");
             }
         }

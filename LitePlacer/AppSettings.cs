@@ -143,20 +143,6 @@ namespace LitePlacer
         public string UpcamMoniker = "";
     }
 
-    public class TinyGSettings
-    {
-        public string TinyG_sys = "";
-        public string TinyG_x = "";
-        public string TinyG_y = "";
-        public string TinyG_z = "";
-        public string TinyG_a = "";
-        public string TinyG_m1 = "";
-        public string TinyG_m2 = "";
-        public string TinyG_m3 = "";
-        public string TinyG_m4 = "";
-        public bool TinyG_settings_saved = false;
-
-    }
     // =================================================================================
     // 
     // =================================================================================
