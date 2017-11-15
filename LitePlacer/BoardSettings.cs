@@ -103,8 +103,8 @@ namespace LitePlacer
             public string avm = "50000";    // a velocity maximum, mm/min
             public string afr = "200000";   // a feedrate maximum, mm/min
             public string atn = "0";        // a travel minimum, mm
-            public string atm = "600";      // a travel maaimum, mm
-            public string ajm = "5000";     // a jerk maaimum, mm/min^3 * 1 million
+            public string atm = "600";      // a travel maximum, mm
+            public string ajm = "5000";     // a jerk maximum, mm/min^3 * 1 million
             public string ajh = "5000";     // a jerk homing, mm/min^3 * 1 million
             public string asv = "2000";     // a search velocity, mm/min
 

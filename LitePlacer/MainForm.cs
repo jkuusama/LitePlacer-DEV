@@ -1951,16 +1951,17 @@ namespace LitePlacer
             return true;
         }
 
-        /*
         private bool UpdateCNCBoardSettings_m()
         {
-            // Read settings stored to file
+            // When called, the parameters are already read from storage.
             // If board is TinyG, compare to what we have. If different, ask what to do
             // (on some crash situations, TinyG can loose the settings)
             // If board is qQuintic, write the values
-        }
-        */
 
+            return true;
+        }
+
+        // =================================================================================
         public bool SaveBoardSettings(object pSettings, string FileName)
         {
             try
@@ -1975,6 +1976,7 @@ namespace LitePlacer
             }
         }
 
+        // =================================================================================
         public void LoadBoardSettings<T>(ref T settings, string FileName)
         {
             try
@@ -1998,7 +2000,7 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
             }
         }
-        // 
+
 
         // =================================================================================
         // Position confidence, motor power timer:
@@ -4660,136 +4662,136 @@ namespace LitePlacer
                     break;
 
                 // ==========  System values  ==========
-                case "st":
+                case "st":     // switch type, [0=NO,1=NC]
                     CommonBoardSettings.st = value;
                     break;
-                case "mt":
+                case "mt":   // motor idle timeout, in seconds
                     CommonBoardSettings.mt = value;
                     Update_mt(value);
                     break;
-                case "jv":
+                case "jv":     // json verbosity, [0=silent,1=footer,2=messages,3=configs,4=linenum,5=verbose]
                     CommonBoardSettings.jv = value;
                     break;
-                case "js":
+                case "js":     // json serialize style [0=relaxed,1=strict]
                     CommonBoardSettings.js = value;
                     break;
-                case "tv":
+                case "tv":     // text verbosity [0=silent,1=verbose]
                     CommonBoardSettings.tv = value;
                     break;
-                case "qv":
+                case "qv":     // queue report verbosity [0=off,1=single,2=triple]
                     CommonBoardSettings.qv = value;
                     break;
-                case "sv":
+                case "sv":     // status report verbosity [0=off,1=filtered,2=verbose
                     CommonBoardSettings.sv = value;
                     break;
-                case "si":
+                case "si":   // status interval, in ms
                     CommonBoardSettings.si = value;
                     break;
-                case "gun":
+                case "gun":    // default gcode units mode [0=G20,1=G21] (1=mm)
                     CommonBoardSettings.gun = value;
                     break;
 
                 // ========== motor 1 ==========
-                case "1ma":
+                case "1ma":        // map to axis [0=X,1=Y,2=Z...]
                     CommonBoardSettings.motor1ma = value;
                     break;
-                case "1sa":
+                case "1sa":    // step angle, deg
                     Update_1sa(value);
                     CommonBoardSettings.motor1sa = value;
                     break;
-                case "1tr":
+                case "1tr":  // travel per revolution, mm
                     Update_1tr(value);
                     CommonBoardSettings.motor1tr = value;
                     break;
-                case "1mi":
+                case "1mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
                     Update_1mi(value);
                     CommonBoardSettings.motor1mi = value;
                     break;
-                case "1po":
+                case "1po":        // motor polarity [0=normal,1=reverse]
                     CommonBoardSettings.motor1po = value;
                     break;
-                case "1pm":
+                case "1pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
                     CommonBoardSettings.motor1pm = value;
                     break;
-                case "1pl":
+                case "1pl":    // motor power level [0.000=minimum, 1.000=maximum]
                     qQuinticSettings.motor1pl = value;
                     break;
 
                 // ========== motor 2 ==========
-                case "2ma":
+                case "2ma":        // map to axis [0=X,1=Y,2=Z...]
                     CommonBoardSettings.motor2ma = value;
                     break;
-                case "2sa":
+                case "2sa":    // step angle, deg
                     Update_2sa(value);
                     CommonBoardSettings.motor2sa = value;
                     break;
-                case "2tr":
+                case "2tr":  // travel per revolution, mm
                     Update_2tr(value);
                     CommonBoardSettings.motor2tr = value;
                     break;
-                case "2mi":
+                case "2mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
                     Update_2mi(value);
                     CommonBoardSettings.motor2mi = value;
                     break;
-                case "2po":
+                case "2po":        // motor polarity [0=normal,1=reverse]
                     CommonBoardSettings.motor2po = value;
                     break;
-                case "2pm":
+                case "2pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
                     CommonBoardSettings.motor2pm = value;
                     break;
-                case "2pl":
+                case "2pl":    // motor power level [0.000=minimum, 1.000=maximum]
                     qQuinticSettings.motor2pl = value;
                     break;
 
                 // ========== motor 3 ==========
-                case "3ma":
+                case "3ma":        // map to axis [0=X,1=Y,2=Z...]
                     CommonBoardSettings.motor3ma = value;
                     break;
-                case "3sa":
+                case "3sa":    // step angle, deg
                     Update_3sa(value);
                     CommonBoardSettings.motor3sa = value;
                     break;
-                case "3tr":
+                case "3tr":  // travel per revolution, mm
                     Update_3tr(value);
                     CommonBoardSettings.motor3tr = value;
                     break;
-                case "3mi":
+                case "3mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
                     Update_3mi(value);
                     CommonBoardSettings.motor3mi = value;
                     break;
-                case "3po":
+                case "3po":        // motor polarity [0=normal,1=reverse]
                     CommonBoardSettings.motor3po = value;
                     break;
-                case "3pm":
+                case "3pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
                     CommonBoardSettings.motor3pm = value;
                     break;
-                case "3pl":
+                case "3pl":    // motor power level [0.000=minimum, 1.000=maximum]
                     qQuinticSettings.motor3pl = value;
                     break;
 
                 // ========== motor 4 ==========
-                case "4ma":
+                case "4ma":        // map to axis [0=X,1=Y,2=Z...]
                     CommonBoardSettings.motor4ma = value;
                     break;
-                case "4sa":
+                case "4sa":    // step angle, deg
                     Update_4sa(value);
                     CommonBoardSettings.motor4sa = value;
                     break;
-                case "4tr":
+                case "4tr":  // travel per revolution, mm
                     Update_4tr(value);
                     CommonBoardSettings.motor4tr = value;
                     break;
-                case "4mi":
+                case "4mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
                     Update_4mi(value);
                     CommonBoardSettings.motor4mi = value;
                     break;
-                case "4po":
+                case "4po":        // motor polarity [0=normal,1=reverse]
                     CommonBoardSettings.motor4po = value;
                     break;
-                case "4pm":
+                case "4pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
                     CommonBoardSettings.motor4pm = value;
                     break;
-                case "4pl":
+                case "4pl":    // motor power level [0.000=minimum, 1.000=maximum]
                     qQuinticSettings.motor4pl = value;
                     break;
 
@@ -4797,214 +4799,214 @@ namespace LitePlacer
                 case "5ma":
                     qQuinticSettings.motor5ma = value;
                     break;
-                case "5pm":
+                case "5pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
                     qQuinticSettings.motor5pm = value;
                     break;
-                case "5pl":
+                case "5pl":    // motor power level [0.000=minimum, 1.000=maximum]
                     qQuinticSettings.motor5pl = value;
                     break;
 
                 // ========== X axis ==========
-                case "xam":
+                case "xam":        // x axis mode, 1=standard
                     CommonBoardSettings.xam = value;
                     break;
-                case "xvm":
+                case "xvm":    // x velocity maximum, mm/min
                     Update_xvm(value);
                     CommonBoardSettings.xvm = value;
                     break;
-                case "xfr":
+                case "xfr":    // x feedrate maximum, mm/mi
                     CommonBoardSettings.xfr = value;
                     break;
-                case "xtn":
+                case "xtn":        // x travel minimum, mm
                     CommonBoardSettings.xtn = value;
                     break;
-                case "xtm":
+                case "xtm":      // x travel maximum, mm
                     CommonBoardSettings.xtm = value;
                     break;
-                case "xjm":
+                case "xjm":     // x jerk maximum, mm/min^3 * 1 million
                     Update_xjm(value);
                     CommonBoardSettings.xjm = value;
                     break;
-                case "xjh":
+                case "xjh":     // x jerk homing, mm/min^3 * 1 million
                     Update_xjh(value);
                     CommonBoardSettings.xjh = value;
                     break;
-                case "xsv":
+                case "xsv":     // x search velocity, mm/min
                     Update_xsv(value);
                     CommonBoardSettings.xsv = value;
                     break;
-                case "xlv":
+                case "xlv":      // x latch velocity, mm/min
                     CommonBoardSettings.xlv = value;
                     break;
-                case "xlb":
+                case "xlb":        // x latch backoff, mm
                     CommonBoardSettings.xlb = value;
                     break;
-                case "xzb":
+                case "xzb":        // x zero backoff, mm
                     CommonBoardSettings.xzb = value;
                     break;
 
                 // ========== Y axis ==========
-                case "yam":
+                case "yam":        // y axis mode, 1=standard
                     CommonBoardSettings.yam = value;
                     break;
-                case "yvm":
+                case "yvm":    // y velocity maximum, mm/min
                     Update_yvm(value);
                     CommonBoardSettings.yvm = value;
                     break;
-                case "yfr":
+                case "yfr":    // y feedrate maximum, mm/min
                     CommonBoardSettings.yfr = value;
                     break;
-                case "ytn":
+                case "ytn":        // y travel minimum, mm
                     CommonBoardSettings.ytn = value;
                     break;
-                case "ytm":
+                case "ytm":      // y travel mayimum, mm
                     CommonBoardSettings.ytm = value;
                     break;
-                case "yjm":
+                case "yjm":     // y jerk maximum, mm/min^3 * 1 million
                     Update_yjm(value);
                     CommonBoardSettings.yjm = value;
                     break;
-                case "yjh":
+                case "yjh":     // y jerk homing, mm/min^3 * 1 million
                     Update_yjh(value);
                     CommonBoardSettings.yjh = value;
                     break;
-                case "ysv":
+                case "ysv":     // y search velocity, mm/min
                     Update_ysv(value);
                     CommonBoardSettings.ysv = value;
                     break;
-                case "ylv":
+                case "ylv":      // y latch velocity, mm/min
                     CommonBoardSettings.ylv = value;
                     break;
-                case "ylb":
+                case "ylb":        // y latch backoff, mm
                     CommonBoardSettings.ylb = value;
                     break;
-                case "yzb":
+                case "yzb":        // y zero backoff, mm
                     CommonBoardSettings.yzb = value;
                     break;
 
                 // ========== Z axis ==========
-                case "zam":
+                case "zam":        // z axis mode, 1=standard
                     CommonBoardSettings.zam = value;
                     break;
-                case "zvm":
+                case "zvm":     // z velocity maximum, mm/min
                     Update_zvm(value);
                     CommonBoardSettings.zvm = value;
                     break;
-                case "zfr":
+                case "zfr":     // z feedrate maximum, mm/min
                     CommonBoardSettings.zfr = value;
                     break;
-                case "ztn":
+                case "ztn":        // z travel minimum, mm
                     CommonBoardSettings.ztn = value;
                     break;
-                case "ztm":
+                case "ztm":       // z travel mazimum, mm
                     CommonBoardSettings.ztm = value;
                     break;
-                case "zjm":
+                case "zjm":      // z jerk mazimum, mm/min^3 * 1 million
                     Update_zjm(value);
                     CommonBoardSettings.zjm = value;
                     break;
-                case "zjh":
+                case "zjh":      // z jerk homing, mm/min^3 * 1 million
                     Update_zjh(value);
                     CommonBoardSettings.zjh = value;
                     break;
-                case "zsv":
+                case "zsv":     // z search velocity, mm/min
                     Update_zsv(value);
                     CommonBoardSettings.zsv = value;
                     break;
-                case "zlv":
+                case "zlv":      // z latch velocity, mm/min
                     CommonBoardSettings.zlv = value;
                     break;
-                case "zlb":
+                case "zlb":        // z latch backoff, mm
                     CommonBoardSettings.zlb = value;
                     break;
-                case "zzb":
+                case "zzb":        // z zero backoff, mm
                     CommonBoardSettings.zzb = value;
                     break;
 
                 // ========== A axis ==========
-                case "aam":
+                case "aam":        // a axis mode, 1=standard
                     CommonBoardSettings.aam = value;
                     break;
-                case "avm":
+                case "avm":    // a velocity maximum, mm/min
                     Update_avm(value);
                     CommonBoardSettings.avm = value;
                     break;
-                case "afr":
+                case "afr":   // a feedrate maximum, mm/min
                     CommonBoardSettings.afr = value;
                     break;
-                case "atn":
+                case "atn":        // a travel minimum, mm
                     CommonBoardSettings.atn = value;
                     break;
-                case "atm":
+                case "atm":      // a travel maximum, mm
                     CommonBoardSettings.atm = value;
                     break;
-                case "ajm":
+                case "ajm":     // a jerk maximum, mm/min^3 * 1 million
                     Update_ajm(value);
                     CommonBoardSettings.ajm = value;
                     break;
-                case "ajh":
+                case "ajh":     // a jerk homing, mm/min^3 * 1 million
                     CommonBoardSettings.ajh = value;
                     break;
-                case "asv":
+                case "asv":     // a search velocity, mm/min
                     CommonBoardSettings.asv = value;
                     break;
 
 
                 // ========== TinyG switch values ==========
-                case "xsn":
+                case "xsn":   // x switch min [0=off,1=homing,2=limit,3=limit+homing];
                     Update_xsn(value);
                     TinyGSettings.xsn = value;
                     break;
-                case "xsx":
+                case "xsx":   // x switch max [0=off,1=homing,2=limit,3=limit+homing];
                     Update_xsx(value);
                     TinyGSettings.xsx = value;
                     break;
-                case "ysn":
+                case "ysn":   // y switch min [0=off,1=homing,2=limit,3=limit+homing];
                     Update_ysn(value);
                     TinyGSettings.ysn = value;
                     break;
-                case "ysx":
+                case "ysx":   // y switch max [0=off,1=homing,2=limit,3=limit+homing];
                     Update_ysx(value);
                     TinyGSettings.ysx = value;
                     break;
-                case "zsn":
+                case "zsn":   // z switch min [0=off,1=homing,2=limit,3=limit+homing];
                     Update_zsn(value);
                     TinyGSettings.zsn = value;
                     break;
-                case "zsx":
+                case "zsx":   // z switch max [0=off,1=homing,2=limit,3=limit+homing];
                     Update_zsx(value);
                     TinyGSettings.zsx = value;
                     break;
-                case "asn":
+                case "asn":   // a switch min [0=off,1=homing,2=limit,3=limit+homing];
                     TinyGSettings.asn = value;
                     break;
-                case "asx":
+                case "asx":   // a switch max [0=off,1=homing,2=limit,3=limit+homing];
                     TinyGSettings.asx = value;
                     break;
 
                 // ========== qQuintic switch values ==========
-                case "xhi":
+                case "xhi":     // x homing input [input 1-N or 0 to disable homing this axis]
                     qQuinticSettings.xhi = value;
                     break;
-                case "xhd":
+                case "xhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
                     qQuinticSettings.xhd = value;
                     break;
-                case "yhi":
+                case "yhi":     // x homing input [input 1-N or 0 to disable homing this axis]
                     qQuinticSettings.yhi = value;
                     break;
-                case "yhd":
+                case "yhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
                     qQuinticSettings.yhd = value;
                     break;
-                case "zhi":
+                case "zhi":     // x homing input [input 1-N or 0 to disable homing this axis]
                     qQuinticSettings.zhi = value;
                     break;
-                case "zhd":
+                case "zhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
                     qQuinticSettings.zhd = value;
                     break;
-                case "ahi":
+                case "ahi":     // x homing input [input 1-N or 0 to disable homing this axis]
                     qQuinticSettings.ahi = value;
                     break;
-                case "bhi":
+                case "bhi":     // x homing input [input 1-N or 0 to disable homing this axis]
                     qQuinticSettings.bhi = value;
                     break;
 
@@ -5047,8 +5049,8 @@ namespace LitePlacer
 
         #endregion
 
-        #region jm
-        // *jm: jerk maximum
+        // =========================================================================
+        #region jm  // *jm: jerk maximum
         // *jm update
         private void Update_xjm(string value)
         {
@@ -5167,8 +5169,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region jh
-        // *jh: jerk homing
+        #region jh  // *jh: jerk homing
         // *jh update
 
         private void Update_xjh(string value)
@@ -5259,8 +5260,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region sv
-        // *sv: search velocity
+        #region sv  // *sv: search velocity
         // * update
 
         private void Update_xsv(string value)
@@ -5341,8 +5341,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region sn
-        // *sn: Negative limit switch
+        #region sn  // *sn: Negative limit switch
         // *sn update
 
         private void Update_xsn(string value)
@@ -5474,8 +5473,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region sx
-        // *sx: Maximum limit switch
+        #region sx  // *sx: Maximum limit switch
         // *sx update
 
         private void Update_xsx(string value)
@@ -5562,8 +5560,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region vm
-        // *vm: Velocity maximum
+        #region vm  // *vm: Velocity maximum
         // *vm update
 
         private void Update_xvm(string value)
@@ -5684,8 +5681,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region mi
-        // *mi: microstepping
+        #region mi  // *mi: microstepping
         // *mi update
 
         private void Update_1mi(string value)
@@ -5787,8 +5783,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region tr
-        // *tr: Travel per revolution
+        #region tr  // *tr: Travel per revolution
         // *tr update
 
         private void Update_1tr(string value)
@@ -5877,8 +5872,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region sa
-        // *sa: Step angle, 0.9 or 1.8
+        #region sa  // *sa: Step angle, 0.9 or 1.8
         // *sa update
 
         private void Update_1sa(string value)
@@ -6056,8 +6050,7 @@ namespace LitePlacer
         #endregion
 
         // =========================================================================
-        #region mpo
-        // mpo*: Position
+        #region mpo  // mpo*: Position
         // * update
         private void Update_xpos(string value)
         {
