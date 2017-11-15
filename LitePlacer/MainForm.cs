@@ -5719,65 +5719,44 @@ namespace LitePlacer
         // =========================================================================
         // *mi setting
 
-        private void mi1_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void Microstep_KeyPress(MaskedTextBox box, int BoxNo, KeyPressEventArgs e)
         {
-            mi1_maskedTextBox.ForeColor = Color.Red;
+            box.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if ((mi1_maskedTextBox.Text == "1") || (mi1_maskedTextBox.Text == "2")
-                    || (mi1_maskedTextBox.Text == "4") || (mi1_maskedTextBox.Text == "8"))
+                List<String> GoodValues = new List<string> { "1", "2", "4", "8" };
+                if (Cnc.Controlboard == CNC.ControlBoardType.qQuintic)
                 {
-                    CNC_Write_m("{\"1mi\":" + mi1_maskedTextBox.Text + "}");
+                    GoodValues.Add("16");
+                    GoodValues.Add("32");
+                }
+                if (GoodValues.Contains(box.Text))
+                {
+                    CNC_Write_m("{\"" + BoxNo.ToString() + "mi\":" + box.Text + "}");
                     Thread.Sleep(50);
-                    mi1_maskedTextBox.ForeColor = Color.Black;
+                    box.ForeColor = Color.Black;
                 }
             }
+        }
+        private void mi1_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Microstep_KeyPress(mi1_maskedTextBox, 1, e);
         }
 
         private void mi2_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            mi2_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if ((mi2_maskedTextBox.Text == "1") || (mi2_maskedTextBox.Text == "2")
-                    || (mi2_maskedTextBox.Text == "4") || (mi2_maskedTextBox.Text == "8"))
-                {
-                    CNC_Write_m("{\"2mi\":" + mi2_maskedTextBox.Text + "}");
-                    Thread.Sleep(50);
-                    mi2_maskedTextBox.ForeColor = Color.Black;
-                }
-            }
+            Microstep_KeyPress(mi2_maskedTextBox, 2, e);
         }
 
 
         private void mi3_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            mi3_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if ((mi3_maskedTextBox.Text == "1") || (mi3_maskedTextBox.Text == "2")
-                    || (mi3_maskedTextBox.Text == "4") || (mi3_maskedTextBox.Text == "8"))
-                {
-                    CNC_Write_m("{\"3mi\":" + mi3_maskedTextBox.Text + "}");
-                    Thread.Sleep(50);
-                    mi3_maskedTextBox.ForeColor = Color.Black;
-                }
-            }
+            Microstep_KeyPress(mi3_maskedTextBox, 3, e);
         }
 
         private void mi4_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            mi4_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if ((mi4_maskedTextBox.Text == "1") || (mi4_maskedTextBox.Text == "2")
-                    || (mi4_maskedTextBox.Text == "4") || (mi4_maskedTextBox.Text == "8"))
-                {
-                    CNC_Write_m("{\"4mi\":" + mi4_maskedTextBox.Text + "}");
-                    Thread.Sleep(50);
-                    mi4_maskedTextBox.ForeColor = Color.Black;
-                }
-            }
+            Microstep_KeyPress(mi4_maskedTextBox, 4, e);
         }
 
         #endregion
