@@ -33,6 +33,7 @@ using AForge.Video.DirectShow;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
+using Newtonsoft.Json;
 
 
 namespace LitePlacer
@@ -125,9 +126,6 @@ namespace LitePlacer
             UpCamera = new Camera(this);
             Nozzle = new NozzleClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Nozzle, DownCamera, Cnc, this);
-            CommonBoardSettings = new BoardSettings.Common();
-            TinyGSettings = new BoardSettings.TinyG();
-            qQuinticSettings = new BoardSettings.qQuintic();
 
         // Setup error handling for Tapes_dataGridViews
         // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
@@ -180,6 +178,14 @@ namespace LitePlacer
             LoadTapesTable(path + "LitePlacer.TapesData_v2");
             // LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
             Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData");
+
+            CommonBoardSettings = new BoardSettings.Common();
+            TinyGSettings = new BoardSettings.TinyG();
+            qQuinticSettings = new BoardSettings.qQuintic();
+
+            LoadBoardSettings<BoardSettings.Common>(ref CommonBoardSettings, path + "LitePlacer.CommonBoardSettings");
+            LoadBoardSettings<BoardSettings.TinyG>(ref TinyGSettings, path + "LitePlacer.TinyGSettings");
+            LoadBoardSettings<BoardSettings.qQuintic>(ref qQuinticSettings, path + "LitePlacer.qQuinticSettings");
 
             ContextmenuLoadNozzle = Setting.Nozzles_default;
             ContextmenuUnloadNozzle = Setting.Nozzles_default;
@@ -510,6 +516,15 @@ namespace LitePlacer
             OK = OK && res;
 
             res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
+            OK = OK && res;
+
+            res = SaveBoardSettings(CommonBoardSettings, path + "LitePlacer.CommonBoardSettings");
+            OK = OK && res;
+
+            res = SaveBoardSettings(TinyGSettings, path + "LitePlacer.TinyGSettings");
+            OK = OK && res;
+
+            res = SaveBoardSettings(qQuinticSettings, path + "LitePlacer.qQuinticSettings");
             OK = OK && res;
 
             if (!OK)
@@ -1923,7 +1938,9 @@ namespace LitePlacer
         public const bool JSON = true;
         public const bool TextMode = false;
 
-        // Different types of control hardware
+        // =================================================================================
+        // Different types of control hardware and settings
+        // =================================================================================
 
         private bool UpdateCNCBoardType_m()
         {
@@ -1932,9 +1949,55 @@ namespace LitePlacer
                 return false;
             };
             return true;
-
         }
 
+        /*
+        private bool UpdateCNCBoardSettings_m()
+        {
+            // Read settings stored to file
+            // If board is TinyG, compare to what we have. If different, ask what to do
+            // (on some crash situations, TinyG can loose the settings)
+            // If board is qQuintic, write the values
+        }
+        */
+
+        public bool SaveBoardSettings(object pSettings, string FileName)
+        {
+            try
+            {
+                File.WriteAllText(FileName, JsonConvert.SerializeObject(pSettings, Formatting.Indented));
+                return true;
+            }
+            catch (System.Exception excep)
+            {
+                DisplayText("Saving settings to " + FileName + " failed:\n" + excep.Message);
+                return false;
+            }
+        }
+
+        public void LoadBoardSettings<T>(ref T settings, string FileName)
+        {
+            try
+            {
+                if (File.Exists(FileName))
+                {
+                    // settings = (new JavaScriptSerializer()).Deserialize<MySettings>(File.ReadAllText(fileName));
+                    settings = JsonConvert.DeserializeObject<T>(File.ReadAllText(FileName));
+                    DisplayText("read " + FileName + ".");
+                }
+                else
+                {
+                    DisplayText("Settings file " + FileName + " not found, using default values.");
+                }
+            }
+            catch (System.Exception excep)
+            {
+                ShowMessageBox(
+                    "Problem loading application settings:\n" + excep.Message + "\nUsing built in defaults.",
+                    "Settings not loaded",
+                    MessageBoxButtons.OK);
+            }
+        }
         // 
 
         // =================================================================================
