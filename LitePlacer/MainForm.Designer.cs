@@ -517,7 +517,7 @@
             this.label44 = new System.Windows.Forms.Label();
             this.mi4_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label45 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
+            this.Microsteps4_label = new System.Windows.Forms.Label();
             this.label47 = new System.Windows.Forms.Label();
             this.label48 = new System.Windows.Forms.Label();
             this.avm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -545,7 +545,7 @@
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.mi1_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label24 = new System.Windows.Forms.Label();
+            this.Microsteps1_label = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.xvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -573,7 +573,7 @@
             this.label33 = new System.Windows.Forms.Label();
             this.mi3_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label34 = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
+            this.Microsteps3_label = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
             this.zvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -601,7 +601,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.mi2_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label12 = new System.Windows.Forms.Label();
+            this.Microsteps2_label = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.yvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -6173,7 +6173,7 @@
             this.panel8.Controls.Add(this.label44);
             this.panel8.Controls.Add(this.mi4_maskedTextBox);
             this.panel8.Controls.Add(this.label45);
-            this.panel8.Controls.Add(this.label46);
+            this.panel8.Controls.Add(this.Microsteps4_label);
             this.panel8.Controls.Add(this.label47);
             this.panel8.Location = new System.Drawing.Point(3, 214);
             this.panel8.Name = "panel8";
@@ -6241,12 +6241,12 @@
             // 
             // mi4_maskedTextBox
             // 
-            this.mi4_maskedTextBox.Location = new System.Drawing.Point(101, 32);
+            this.mi4_maskedTextBox.Location = new System.Drawing.Point(91, 32);
             this.mi4_maskedTextBox.Mask = "99999";
             this.mi4_maskedTextBox.Name = "mi4_maskedTextBox";
             this.mi4_maskedTextBox.PromptChar = ' ';
             this.mi4_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.mi4_maskedTextBox.Size = new System.Drawing.Size(43, 22);
+            this.mi4_maskedTextBox.Size = new System.Drawing.Size(24, 22);
             this.mi4_maskedTextBox.TabIndex = 20;
             this.mi4_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.mi4_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
@@ -6261,14 +6261,14 @@
             this.label45.TabIndex = 19;
             this.label45.Text = "Microsteps [4mi]:";
             // 
-            // label46
+            // Microsteps4_label
             // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(150, 35);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(72, 17);
-            this.label46.TabIndex = 18;
-            this.label46.Text = "[1, 2, 4, 8]";
+            this.Microsteps4_label.AutoSize = true;
+            this.Microsteps4_label.Location = new System.Drawing.Point(123, 34);
+            this.Microsteps4_label.Name = "Microsteps4_label";
+            this.Microsteps4_label.Size = new System.Drawing.Size(72, 17);
+            this.Microsteps4_label.TabIndex = 18;
+            this.Microsteps4_label.Text = "[1, 2, 4, 8]";
             // 
             // label47
             // 
@@ -6482,10 +6482,10 @@
             this.panel4.Controls.Add(this.label20);
             this.panel4.Controls.Add(this.label21);
             this.panel4.Controls.Add(this.label22);
-            this.panel4.Controls.Add(this.label23);
             this.panel4.Controls.Add(this.mi1_maskedTextBox);
-            this.panel4.Controls.Add(this.label24);
+            this.panel4.Controls.Add(this.Microsteps1_label);
             this.panel4.Controls.Add(this.label25);
+            this.panel4.Controls.Add(this.label23);
             this.panel4.Location = new System.Drawing.Point(3, 214);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(236, 112);
@@ -6553,7 +6553,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(3, 34);
+            this.label23.Location = new System.Drawing.Point(3, 35);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(114, 17);
             this.label23.TabIndex = 19;
@@ -6561,25 +6561,25 @@
             // 
             // mi1_maskedTextBox
             // 
-            this.mi1_maskedTextBox.Location = new System.Drawing.Point(101, 32);
+            this.mi1_maskedTextBox.Location = new System.Drawing.Point(93, 32);
             this.mi1_maskedTextBox.Mask = "99999";
             this.mi1_maskedTextBox.Name = "mi1_maskedTextBox";
             this.mi1_maskedTextBox.PromptChar = ' ';
             this.mi1_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.mi1_maskedTextBox.Size = new System.Drawing.Size(43, 22);
+            this.mi1_maskedTextBox.Size = new System.Drawing.Size(24, 22);
             this.mi1_maskedTextBox.TabIndex = 20;
             this.mi1_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.mi1_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
             this.mi1_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.mi1_maskedTextBox_KeyPress);
             // 
-            // label24
+            // Microsteps1_label
             // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(150, 34);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(72, 17);
-            this.label24.TabIndex = 18;
-            this.label24.Text = "[1, 2, 4, 8]";
+            this.Microsteps1_label.AutoSize = true;
+            this.Microsteps1_label.Location = new System.Drawing.Point(123, 34);
+            this.Microsteps1_label.Name = "Microsteps1_label";
+            this.Microsteps1_label.Size = new System.Drawing.Size(72, 17);
+            this.Microsteps1_label.TabIndex = 18;
+            this.Microsteps1_label.Text = "[1, 2, 4, 8]";
             // 
             // label25
             // 
@@ -6795,7 +6795,7 @@
             this.panel6.Controls.Add(this.label33);
             this.panel6.Controls.Add(this.mi3_maskedTextBox);
             this.panel6.Controls.Add(this.label34);
-            this.panel6.Controls.Add(this.label35);
+            this.panel6.Controls.Add(this.Microsteps3_label);
             this.panel6.Controls.Add(this.label36);
             this.panel6.Location = new System.Drawing.Point(3, 214);
             this.panel6.Name = "panel6";
@@ -6863,12 +6863,12 @@
             // 
             // mi3_maskedTextBox
             // 
-            this.mi3_maskedTextBox.Location = new System.Drawing.Point(101, 32);
+            this.mi3_maskedTextBox.Location = new System.Drawing.Point(89, 32);
             this.mi3_maskedTextBox.Mask = "99999";
             this.mi3_maskedTextBox.Name = "mi3_maskedTextBox";
             this.mi3_maskedTextBox.PromptChar = ' ';
             this.mi3_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.mi3_maskedTextBox.Size = new System.Drawing.Size(43, 22);
+            this.mi3_maskedTextBox.Size = new System.Drawing.Size(24, 22);
             this.mi3_maskedTextBox.TabIndex = 20;
             this.mi3_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.mi3_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
@@ -6883,14 +6883,14 @@
             this.label34.TabIndex = 19;
             this.label34.Text = "Microsteps [3mi]:";
             // 
-            // label35
+            // Microsteps3_label
             // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(150, 35);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(72, 17);
-            this.label35.TabIndex = 18;
-            this.label35.Text = "[1, 2, 4, 8]";
+            this.Microsteps3_label.AutoSize = true;
+            this.Microsteps3_label.Location = new System.Drawing.Point(123, 34);
+            this.Microsteps3_label.Name = "Microsteps3_label";
+            this.Microsteps3_label.Size = new System.Drawing.Size(72, 17);
+            this.Microsteps3_label.TabIndex = 18;
+            this.Microsteps3_label.Text = "[1, 2, 4, 8]";
             // 
             // label36
             // 
@@ -7104,10 +7104,10 @@
             this.panel2.Controls.Add(this.label15);
             this.panel2.Controls.Add(this.label16);
             this.panel2.Controls.Add(this.label13);
-            this.panel2.Controls.Add(this.label11);
             this.panel2.Controls.Add(this.mi2_maskedTextBox);
-            this.panel2.Controls.Add(this.label12);
+            this.panel2.Controls.Add(this.Microsteps2_label);
             this.panel2.Controls.Add(this.label10);
+            this.panel2.Controls.Add(this.label11);
             this.panel2.Location = new System.Drawing.Point(3, 214);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(236, 112);
@@ -7183,25 +7183,26 @@
             // 
             // mi2_maskedTextBox
             // 
-            this.mi2_maskedTextBox.Location = new System.Drawing.Point(101, 31);
+            this.mi2_maskedTextBox.Location = new System.Drawing.Point(91, 32);
             this.mi2_maskedTextBox.Mask = "99999";
             this.mi2_maskedTextBox.Name = "mi2_maskedTextBox";
             this.mi2_maskedTextBox.PromptChar = ' ';
+            this.mi2_maskedTextBox.ResetOnPrompt = false;
             this.mi2_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.mi2_maskedTextBox.Size = new System.Drawing.Size(43, 22);
+            this.mi2_maskedTextBox.Size = new System.Drawing.Size(24, 22);
             this.mi2_maskedTextBox.TabIndex = 20;
             this.mi2_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.mi2_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
             this.mi2_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.mi2_maskedTextBox_KeyPress);
             // 
-            // label12
+            // Microsteps2_label
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(150, 34);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(72, 17);
-            this.label12.TabIndex = 18;
-            this.label12.Text = "[1, 2, 4, 8]";
+            this.Microsteps2_label.AutoSize = true;
+            this.Microsteps2_label.Location = new System.Drawing.Point(123, 34);
+            this.Microsteps2_label.Name = "Microsteps2_label";
+            this.Microsteps2_label.Size = new System.Drawing.Size(72, 17);
+            this.Microsteps2_label.TabIndex = 18;
+            this.Microsteps2_label.Text = "[1, 2, 4, 8]";
             // 
             // label10
             // 
@@ -9650,7 +9651,7 @@
 		private System.Windows.Forms.Label label44;
 		private System.Windows.Forms.MaskedTextBox mi4_maskedTextBox;
 		private System.Windows.Forms.Label label45;
-		private System.Windows.Forms.Label label46;
+		private System.Windows.Forms.Label Microsteps4_label;
 		private System.Windows.Forms.Label label47;
 		private System.Windows.Forms.Label label48;
 		private System.Windows.Forms.MaskedTextBox avm_maskedTextBox;
@@ -9678,7 +9679,7 @@
 		private System.Windows.Forms.Label label22;
 		private System.Windows.Forms.Label label23;
 		private System.Windows.Forms.MaskedTextBox mi1_maskedTextBox;
-		private System.Windows.Forms.Label label24;
+		private System.Windows.Forms.Label Microsteps1_label;
 		private System.Windows.Forms.Label label25;
 		private System.Windows.Forms.Label label26;
 		private System.Windows.Forms.MaskedTextBox xvm_maskedTextBox;
@@ -9706,7 +9707,7 @@
 		private System.Windows.Forms.Label label33;
 		private System.Windows.Forms.MaskedTextBox mi3_maskedTextBox;
 		private System.Windows.Forms.Label label34;
-		private System.Windows.Forms.Label label35;
+		private System.Windows.Forms.Label Microsteps3_label;
 		private System.Windows.Forms.Label label36;
 		private System.Windows.Forms.Label label37;
 		private System.Windows.Forms.MaskedTextBox zvm_maskedTextBox;
@@ -9734,7 +9735,7 @@
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.MaskedTextBox mi2_maskedTextBox;
-		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Label Microsteps2_label;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.MaskedTextBox yvm_maskedTextBox;
