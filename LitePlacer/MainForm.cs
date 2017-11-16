@@ -50,9 +50,12 @@ namespace LitePlacer
         NozzleClass Nozzle;
         TapesClass Tapes;
         public MySettings Setting;
-        public BoardSettings.Common CommonBoardSettings;
-        public BoardSettings.TinyG TinyGSettings;
-        public BoardSettings.qQuintic qQuinticSettings;
+        public BoardSettings.Common CommonBoardSettings = new BoardSettings.Common();
+        public BoardSettings.TinyG TinyGSettings = new BoardSettings.TinyG();
+        public BoardSettings.qQuintic qQuinticSettings = new BoardSettings.qQuintic();
+        public List<string> CommonBoardSettingsFields = new List<string>();
+        public List<string> TinyGSettingsFields = new List<string>();
+        public List<string> qQuinticSettingsFields = new List<string>();
 
         AppSettings SettingsOps;
 
@@ -179,10 +182,18 @@ namespace LitePlacer
             // LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
             Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData");
 
-            CommonBoardSettings = new BoardSettings.Common();
-            TinyGSettings = new BoardSettings.TinyG();
-            qQuinticSettings = new BoardSettings.qQuintic();
-
+           foreach (var par in typeof(BoardSettings.Common).GetFields())
+            {
+                CommonBoardSettingsFields.Add(par.Name);
+            }
+            foreach (var par in typeof(BoardSettings.TinyG).GetFields())
+            {
+                TinyGSettingsFields.Add(par.Name);
+            }
+            foreach (var par in typeof(BoardSettings.qQuintic).GetFields())
+            {
+                qQuinticSettingsFields.Add(par.Name);
+            }
             LoadBoardSettings<BoardSettings.Common>(ref CommonBoardSettings, path + "LitePlacer.CommonBoardSettings");
             LoadBoardSettings<BoardSettings.TinyG>(ref TinyGSettings, path + "LitePlacer.TinyGSettings");
             LoadBoardSettings<BoardSettings.qQuintic>(ref qQuinticSettings, path + "LitePlacer.qQuinticSettings");
@@ -4479,153 +4490,42 @@ namespace LitePlacer
         }
 
         // Sends the calls that will result to messages that update the values shown on UI
+        // see https://stackoverflow.com/questions/12480279/iterate-through-properties-of-static-class-to-populate-list
+
+        private bool LoopParameters(Type type)
+        {
+            foreach (var parameter in type.GetFields())
+            {
+                if (!CNC_Write_m("{\"" + parameter.Name + "\":\"\"}"))
+                {
+                    return false;
+                };
+            }
+            return true;
+        }
+
         private bool UpdateWindowValues_m()
         {
-            if (!CNC_Write_m("{\"sr\":\"\"}"))
+            if (!LoopParameters(typeof(BoardSettings.Common)))
             {
                 return false;
-            };
+            }
 
-            if (!CNC_Write_m("{\"xjm\":\"\"}"))
+            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
             {
-                return false;
-            };
-            if (!CNC_Write_m("{\"xvm\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"xsv\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"xsn\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"xjh\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"xsx\":\"\"}"))
-            {
-                return false;
-            };
+                if (!LoopParameters(typeof(BoardSettings.TinyG)))
+                {
+                    return false;
+                }
+            }
 
-            if (!CNC_Write_m("{\"1mi\":\"\"}"))
+            if (Cnc.Controlboard == CNC.ControlBoardType.qQuintic)
             {
-                return false;
-            };
-            if (!CNC_Write_m("{\"1sa\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"1tr\":\"\"}"))
-            {
-                return false;
-            };
-
-            if (!CNC_Write_m("{\"yjm\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"yvm\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"ysn\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"ysx\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"yjh\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"ysv\":\"\"}"))
-            {
-                return false;
-            };
-
-            if (!CNC_Write_m("{\"2mi\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"2sa\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"2tr\":\"\"}"))
-            {
-                return false;
-            };
-
-            if (!CNC_Write_m("{\"zjm\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"zvm\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"zsn\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"zsx\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"zjh\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"zsv\":\"\"}"))
-            {
-                return false;
-            };
-
-            if (!CNC_Write_m("{\"3mi\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"3sa\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"3tr\":\"\"}"))
-            {
-                return false;
-            };
-
-            if (!CNC_Write_m("{\"ajm\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"avm\":\"\"}"))
-            {
-                return false;
-            };
-
-            if (!CNC_Write_m("{\"4mi\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"4sa\":\"\"}"))
-            {
-                return false;
-            };
-            if (!CNC_Write_m("{\"4tr\":\"\"}"))
-            {
-                return false;
-            };
-
-            if (!CNC_Write_m("{\"mt\":\"\"}"))
-            {
-                return false;
-            };
+                if (!LoopParameters(typeof(BoardSettings.qQuintic)))
+                {
+                    return false;
+                }
+            }
 
             // Do settings that need to be done always
             Cnc.IgnoreError = true;
