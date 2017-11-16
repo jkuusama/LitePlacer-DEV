@@ -682,6 +682,15 @@ namespace LitePlacer
                 return;
             }
 
+            if (line.StartsWith("{\"r\":"))
+            {
+                // response to setting a setting or reading motor settings for saving them
+                ParameterValue(line);  // <========= causes UI update
+                _readyEvent.Set();
+                MainForm.DisplayText("ReadyEvent r");
+                return;
+            }
+
             if (line.StartsWith("{\"r\":{\"sys\":"))
             {
                 // response to reading settings for saving them
@@ -761,34 +770,17 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":"))
-            {
-                // response to setting a setting or reading motor settings for saving them
-                ParameterValue(line);
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent r");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"hp\":"))
-            {
-                // response to hw platform enquiry
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent hp");
-                return;
-            }
         }  // end InterpretLine()
 
         public void ParameterValue(string line)
         {
             // line format is {"r":{"<parameter>":<value>},"f":[<some numbers>]}
             line = line.Substring(7);  // line: <parameter>":<value>},"f":[<some numbers>]}
-            string parameter = line.Split(':')[0];            // <parameter>"
+            string parameter = line.Split(':')[0];            // line: <parameter>"
             parameter = parameter.Substring(0, parameter.Length - 1);     // remove the "
             line = line.Substring(line.IndexOf(':') + 1);   //line: <value>},"f":[<some numbers>]}
             line = line.Substring(0, line.IndexOf('}'));    // line is now the value
-            // line = par + "=" + line;
-            CNC.MainForm.ValueUpdater(parameter, line);
+            MainForm.ValueUpdater(parameter, line);
 
         }
         // =================================================================================

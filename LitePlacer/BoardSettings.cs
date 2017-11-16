@@ -7,11 +7,8 @@ namespace LitePlacer
 {
     public class BoardSettings
     {
-        // To handle field names programmatically, we need to use real names. On motors, the true parameter name
-        // starts with the motor number (1ma, 1sa etc). To avoid the problem from this, these are converted 
-        // to motor1ma (etc) by InterpretLine() routine in CNC.cs.
+        // These parameters on both TinyG and qQuintic:
 
-        // These parameters on both TinyG and qQuintic
         public class Common
         {
             // ==========  System values  ==========

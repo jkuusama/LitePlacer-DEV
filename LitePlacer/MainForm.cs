@@ -4490,13 +4490,20 @@ namespace LitePlacer
         }
 
         // Sends the calls that will result to messages that update the values shown on UI
-        // see https://stackoverflow.com/questions/12480279/iterate-through-properties-of-static-class-to-populate-list
 
         private bool LoopParameters(Type type)
         {
             foreach (var parameter in type.GetFields())
             {
-                if (!CNC_Write_m("{\"" + parameter.Name + "\":\"\"}"))
+                // The motor parameters are <motor number><parameter>, such as 1ma, 1sa, 1tr etc.
+                // These are not valid parameter names, so motor1ma, motor1sa etc are used.
+                // to retrieve the values, we remove the "motor"
+                string Name = parameter.Name;
+                if (Name.StartsWith("motor"))
+                {
+                    Name = Name.Substring(5);
+                }
+                if (!CNC_Write_m("{\"" + Name + "\":\"\"}"))
                 {
                     return false;
                 };
@@ -4922,7 +4929,6 @@ namespace LitePlacer
 
         // =========================================================================
         // Thread-safe update functions and value setting fuctions
-
         // =========================================================================
         #region hp  // hardware platform
 
