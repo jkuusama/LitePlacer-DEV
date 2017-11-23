@@ -129,10 +129,11 @@ namespace LitePlacer
             UpCamera = new Camera(this);
             Nozzle = new NozzleClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Nozzle, DownCamera, Cnc, this);
+            BoardSettings.MainForm = this;
 
         // Setup error handling for Tapes_dataGridViews
         // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
-        Tapes_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
+            Tapes_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
             TapesOld_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
 
             this.KeyPreview = true;
@@ -194,9 +195,7 @@ namespace LitePlacer
             {
                 qQuinticSettingsFields.Add(par.Name);
             }
-            LoadBoardSettings<BoardSettings.Common>(ref CommonBoardSettings, path + "LitePlacer.CommonBoardSettings");
-            LoadBoardSettings<BoardSettings.TinyG>(ref TinyGSettings, path + "LitePlacer.TinyGSettings");
-            LoadBoardSettings<BoardSettings.qQuintic>(ref qQuinticSettings, path + "LitePlacer.qQuinticSettings");
+            BoardSettings.Load(ref CommonBoardSettings, ref TinyGSettings, ref qQuinticSettings, path + "LitePlacer.BoardSettings");
 
             ContextmenuLoadNozzle = Setting.Nozzles_default;
             ContextmenuUnloadNozzle = Setting.Nozzles_default;
@@ -529,13 +528,7 @@ namespace LitePlacer
             res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
             OK = OK && res;
 
-            res = SaveBoardSettings(CommonBoardSettings, path + "LitePlacer.CommonBoardSettings");
-            OK = OK && res;
-
-            res = SaveBoardSettings(TinyGSettings, path + "LitePlacer.TinyGSettings");
-            OK = OK && res;
-
-            res = SaveBoardSettings(qQuinticSettings, path + "LitePlacer.qQuinticSettings");
+            res = BoardSettings.Save(CommonBoardSettings, TinyGSettings, qQuinticSettings, path + "LitePlacer.BoardSettings");
             OK = OK && res;
 
             if (!OK)
@@ -1971,47 +1964,6 @@ namespace LitePlacer
 
             return true;
         }
-
-        // =================================================================================
-        public bool SaveBoardSettings(object pSettings, string FileName)
-        {
-            try
-            {
-                File.WriteAllText(FileName, JsonConvert.SerializeObject(pSettings, Formatting.Indented));
-                return true;
-            }
-            catch (System.Exception excep)
-            {
-                DisplayText("Saving settings to " + FileName + " failed:\n" + excep.Message);
-                return false;
-            }
-        }
-
-        // =================================================================================
-        public void LoadBoardSettings<T>(ref T settings, string FileName)
-        {
-            try
-            {
-                if (File.Exists(FileName))
-                {
-                    // settings = (new JavaScriptSerializer()).Deserialize<MySettings>(File.ReadAllText(fileName));
-                    settings = JsonConvert.DeserializeObject<T>(File.ReadAllText(FileName));
-                    DisplayText("read " + FileName + ".");
-                }
-                else
-                {
-                    DisplayText("Settings file " + FileName + " not found, using default values.");
-                }
-            }
-            catch (System.Exception excep)
-            {
-                ShowMessageBox(
-                    "Problem loading application settings:\n" + excep.Message + "\nUsing built in defaults.",
-                    "Settings not loaded",
-                    MessageBoxButtons.OK);
-            }
-        }
-
 
         // =================================================================================
         // Position confidence, motor power timer:
@@ -6383,91 +6335,6 @@ namespace LitePlacer
             }
         }
 
-
-
-        private void SaveSettings_button_Click(object sender, EventArgs e)
-        {
-            /*
-            CNC_Write_m("{\"sys\":\"\"}");
-            CNC_Write_m("{\"x\":\"\"}");
-            CNC_Write_m("{\"y\":\"\"}");
-            CNC_Write_m("{\"z\":\"\"}");
-            CNC_Write_m("{\"a\":\"\"}");
-            CNC_Write_m("{\"1\":\"\"}");
-            CNC_Write_m("{\"2\":\"\"}");
-            CNC_Write_m("{\"3\":\"\"}");
-            CNC_Write_m("{\"4\":\"\"}");
-
-            // And save
-            // Setting.Save();
-            DisplayText("Settings saved.");
-            Setting.TinyG_settings_saved = true;
-            DisplayText("sys:");
-            DisplayText(Setting.TinyG_sys);
-            DisplayText("x:");
-            DisplayText(Setting.TinyG_x);
-            DisplayText("y:");
-            DisplayText(Setting.TinyG_y);
-            DisplayText("m1:");
-            DisplayText(Setting.TinyG_m1);
-            */
-        }
-
-
-        private void DefaultSettings_button_Click(object sender, EventArgs e)
-        {
-            /*
-            if (!Setting.TinyG_settings_saved)
-            {
-                ShowMessageBox(
-                "You don't have saved User Default settings.",
-                "No Saved settings", MessageBoxButtons.OK);
-                return;
-            }
-
-            DialogResult dialogResult = ShowMessageBox(
-                "All your current settings on TinyG will be lost. Are you sure?",
-                "Confirm Loading Saved settings", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.No)
-            {
-                return;
-            }
-
-            DisplayText("Start of DefaultSettings()");
-            DisplayText("sys: " + Setting.TinyG_sys);
-            DisplayText("x: " + Setting.TinyG_x);
-            DisplayText("y: " + Setting.TinyG_y);
-            DisplayText("z: " + Setting.TinyG_z);
-            DisplayText("a: " + Setting.TinyG_a);
-            DisplayText("1: " + Setting.TinyG_m1);
-            DisplayText("2: " + Setting.TinyG_m2);
-            DisplayText("3: " + Setting.TinyG_m3);
-            DisplayText("4: " + Setting.TinyG_m4");
-            CNC_Write_m(Setting.TinyG_sys);
-            Thread.Sleep(150);
-            CNC_Write_m(Setting.TinyG_x);
-            Thread.Sleep(150);
-            CNC_Write_m(Setting.TinyG_y);
-            Thread.Sleep(150);
-            CNC_Write_m(Setting.TinyG_z);
-            Thread.Sleep(150);
-            CNC_Write_m(Setting.TinyG_a);
-            Thread.Sleep(150);
-            CNC_Write_m(Setting.TinyG_m1);
-            Thread.Sleep(150);
-            CNC_Write_m(Setting.TinyG_m2);
-            Thread.Sleep(150);
-            CNC_Write_m(Setting.TinyG_m3);
-            Thread.Sleep(150);
-            CNC_Write_m(Setting.TinyG_m4);
-            Thread.Sleep(150);
-            UpdateWindowValues_m();
-            ShowMessageBox(
-                "Settings restored.",
-                "Saved settings restored",
-                MessageBoxButtons.OK);
-            */
-        }
 
         private static int SetProbing_stage = 0;
 
@@ -14775,8 +14642,13 @@ namespace LitePlacer
 
         private void AppSettingsSave_button_Click(object sender, EventArgs e)
         {
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+
             AppSettings_saveFileDialog.Filter = "All files (*.*)|*.*";
             AppSettings_saveFileDialog.FileName = "LitePlacer.Appsettings";
+            AppSettings_saveFileDialog.InitialDirectory = path;
 
             if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -14787,6 +14659,14 @@ namespace LitePlacer
 
         private void AppSettingsLoad_button_Click(object sender, EventArgs e)
         {
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+
+            AppSettings_openFileDialog.Filter = "All files (*.*)|*.*";
+            AppSettings_openFileDialog.FileName = "LitePlacer.Appsettings";
+            AppSettings_openFileDialog.InitialDirectory = path;
+
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 Setting = SettingsOps.Load(AppSettings_openFileDialog.FileName);
@@ -14794,7 +14674,7 @@ namespace LitePlacer
             }
         }
 
-        private void BuiltInSettings_button_Click(object sender, EventArgs e)
+        private void AppBuiltInSettings_button_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = ShowMessageBox(
                 "Reset application settings top built in defaults?",
@@ -14807,18 +14687,29 @@ namespace LitePlacer
             Application.Restart();
         }
 
-        private void TinyGSettingsSave_button_Click(object sender, EventArgs e)
+        private void BoardSettingsSave_button_Click(object sender, EventArgs e)
+        {
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+
+            AppSettings_saveFileDialog.Filter = "All files (*.*)|*.*";
+            AppSettings_saveFileDialog.FileName = "LitePlacer.BoardSettings";
+            AppSettings_saveFileDialog.InitialDirectory = path;
+
+            if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                BoardSettings.Save(CommonBoardSettings, TinyGSettings, qQuinticSettings, path + "LitePlacer.BoardSettings");
+            }
+        }
+
+        private void BoardSettingsLoad_button_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void TinyGSettingsLoad_button_Click(object sender, EventArgs e)
-        {
 
-        }
-
-
-        private void TinyGBuiltInSettings_button_Click(object sender, EventArgs e)
+        private void BoardBuiltInSettings_button_Click(object sender, EventArgs e)
         {
             // global
             // TODO: exeption, exeption handling here

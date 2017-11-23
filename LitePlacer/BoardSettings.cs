@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace LitePlacer
 {
     public class BoardSettings
     {
         // These parameters on both TinyG and qQuintic:
-
         public class Common
         {
             // ==========  System values  ==========
@@ -144,5 +146,70 @@ namespace LitePlacer
             public string ahi = "0";     // a homing input [input 1-N or 0 to disable homing this axis]
             public string bhi = "0";     // b homing input [input 1-N or 0 to disable homing this axis]
         }
+
+        public static FormMain MainForm;
+
+        static public bool Save(Common Commons, TinyG TinyGs, qQuintic qQuintics, string FileName)
+        {
+            try
+            {
+                File.WriteAllText(FileName, JsonConvert.SerializeObject(Commons, Formatting.Indented));
+                File.WriteAllText(FileName + "TinyG", JsonConvert.SerializeObject(TinyGs, Formatting.Indented));
+                File.WriteAllText(FileName + "qQuintic", JsonConvert.SerializeObject(qQuintics, Formatting.Indented));
+                return true;
+            }
+            catch (System.Exception excep)
+            {
+                MainForm.DisplayText("Saving settings to " + FileName + " failed:\n" + excep.Message);
+                return false;
+            }
+        }
+
+        static public void Load(ref Common Commons, ref TinyG TinyGs, ref qQuintic qQuintics, string FileName)
+        {
+            try
+            {
+                string name = FileName;
+                if (File.Exists(name))
+                {
+                    Commons = JsonConvert.DeserializeObject<Common>(File.ReadAllText(name));
+                    MainForm.DisplayText("read " + name + ".");
+                }
+                else
+                {
+                    MainForm.DisplayText("Settings file " + name + " not found, using default values.");
+                }
+
+                name = FileName + "TinyG";
+                if (File.Exists(name))
+                {
+                    TinyGs = JsonConvert.DeserializeObject<TinyG>(File.ReadAllText(name));
+                    MainForm.DisplayText("read " + name + ".");
+                }
+                else
+                {
+                    MainForm.DisplayText("Settings file " + name + " not found, using default values.");
+                }
+
+                name = FileName + "qQuintic";
+                if (File.Exists(name))
+                {
+                    qQuintics = JsonConvert.DeserializeObject<qQuintic>(File.ReadAllText(name));
+                    MainForm.DisplayText("read " + name + ".");
+                }
+                else
+                {
+                    MainForm.DisplayText("Settings file " + name + " not found, using default values.");
+                }
+            }
+            catch (System.Exception excep)
+            {
+                MainForm.ShowMessageBox(
+                    "Problem loading application settings:\n" + excep.Message + "\nUsing built in defaults.",
+                    "Settings not loaded",
+                    MessageBoxButtons.OK);
+            }
+        }
     }
+
 }

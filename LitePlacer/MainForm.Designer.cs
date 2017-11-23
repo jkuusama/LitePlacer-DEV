@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -418,12 +418,12 @@
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
-            this.TinyGSettingsLoad_button = new System.Windows.Forms.Button();
-            this.TinyGSettingsSave_button = new System.Windows.Forms.Button();
-            this.TinyGBuiltInSettings_button = new System.Windows.Forms.Button();
+            this.BoardSettingsLoad_button = new System.Windows.Forms.Button();
+            this.BoardSettingsSave_button = new System.Windows.Forms.Button();
+            this.BoardBuiltInSettings_button = new System.Windows.Forms.Button();
             this.AppSettingsLoad_button = new System.Windows.Forms.Button();
             this.AppSettingsSave_button = new System.Windows.Forms.Button();
-            this.label160 = new System.Windows.Forms.Label();
+            this.Board_label = new System.Windows.Forms.Label();
             this.label159 = new System.Windows.Forms.Label();
             this.NozzleBelowPCB_textBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -499,9 +499,7 @@
             this.HomeY_button = new System.Windows.Forms.Button();
             this.HomeXY_button = new System.Windows.Forms.Button();
             this.HomeX_button = new System.Windows.Forms.Button();
-            this.BuiltInSettings_button = new System.Windows.Forms.Button();
-            this.SaveSettings_button = new System.Windows.Forms.Button();
-            this.DefaultSettings_button = new System.Windows.Forms.Button();
+            this.AppBuiltInSettings_button = new System.Windows.Forms.Button();
             this.Vacuum_checkBox = new System.Windows.Forms.CheckBox();
             this.Pump_checkBox = new System.Windows.Forms.CheckBox();
             this.TestXY_button = new System.Windows.Forms.Button();
@@ -543,10 +541,10 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
             this.mi1_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.Microsteps1_label = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.xvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label27 = new System.Windows.Forms.Label();
@@ -599,10 +597,10 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.mi2_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.Microsteps2_label = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.yvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -5086,12 +5084,12 @@
             // 
             // tabPageBasicSetup
             // 
-            this.tabPageBasicSetup.Controls.Add(this.TinyGSettingsLoad_button);
-            this.tabPageBasicSetup.Controls.Add(this.TinyGSettingsSave_button);
-            this.tabPageBasicSetup.Controls.Add(this.TinyGBuiltInSettings_button);
+            this.tabPageBasicSetup.Controls.Add(this.BoardSettingsLoad_button);
+            this.tabPageBasicSetup.Controls.Add(this.BoardSettingsSave_button);
+            this.tabPageBasicSetup.Controls.Add(this.BoardBuiltInSettings_button);
             this.tabPageBasicSetup.Controls.Add(this.AppSettingsLoad_button);
             this.tabPageBasicSetup.Controls.Add(this.AppSettingsSave_button);
-            this.tabPageBasicSetup.Controls.Add(this.label160);
+            this.tabPageBasicSetup.Controls.Add(this.Board_label);
             this.tabPageBasicSetup.Controls.Add(this.label159);
             this.tabPageBasicSetup.Controls.Add(this.NozzleBelowPCB_textBox);
             this.tabPageBasicSetup.Controls.Add(this.label1);
@@ -5156,9 +5154,7 @@
             this.tabPageBasicSetup.Controls.Add(this.HomeY_button);
             this.tabPageBasicSetup.Controls.Add(this.HomeXY_button);
             this.tabPageBasicSetup.Controls.Add(this.HomeX_button);
-            this.tabPageBasicSetup.Controls.Add(this.BuiltInSettings_button);
-            this.tabPageBasicSetup.Controls.Add(this.SaveSettings_button);
-            this.tabPageBasicSetup.Controls.Add(this.DefaultSettings_button);
+            this.tabPageBasicSetup.Controls.Add(this.AppBuiltInSettings_button);
             this.tabPageBasicSetup.Controls.Add(this.Vacuum_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.Pump_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.TestXY_button);
@@ -5182,43 +5178,41 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
-            // TinyGSettingsLoad_button
+            // BoardSettingsLoad_button
             // 
-            this.TinyGSettingsLoad_button.Enabled = false;
-            this.TinyGSettingsLoad_button.Location = new System.Drawing.Point(655, 65);
-            this.TinyGSettingsLoad_button.Name = "TinyGSettingsLoad_button";
-            this.TinyGSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
-            this.TinyGSettingsLoad_button.TabIndex = 111;
-            this.TinyGSettingsLoad_button.Text = "Load";
-            this.toolTip1.SetToolTip(this.TinyGSettingsLoad_button, "Loads TinyG settings from a file.");
-            this.TinyGSettingsLoad_button.UseVisualStyleBackColor = true;
-            this.TinyGSettingsLoad_button.Visible = false;
-            this.TinyGSettingsLoad_button.Click += new System.EventHandler(this.TinyGSettingsLoad_button_Click);
+            this.BoardSettingsLoad_button.Enabled = false;
+            this.BoardSettingsLoad_button.Location = new System.Drawing.Point(514, 64);
+            this.BoardSettingsLoad_button.Name = "BoardSettingsLoad_button";
+            this.BoardSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
+            this.BoardSettingsLoad_button.TabIndex = 111;
+            this.BoardSettingsLoad_button.Text = "Load";
+            this.toolTip1.SetToolTip(this.BoardSettingsLoad_button, "Loads TinyG settings from a file.");
+            this.BoardSettingsLoad_button.UseVisualStyleBackColor = true;
+            this.BoardSettingsLoad_button.Visible = false;
+            this.BoardSettingsLoad_button.Click += new System.EventHandler(this.BoardSettingsLoad_button_Click);
             // 
-            // TinyGSettingsSave_button
+            // BoardSettingsSave_button
             // 
-            this.TinyGSettingsSave_button.Enabled = false;
-            this.TinyGSettingsSave_button.Location = new System.Drawing.Point(655, 34);
-            this.TinyGSettingsSave_button.Name = "TinyGSettingsSave_button";
-            this.TinyGSettingsSave_button.Size = new System.Drawing.Size(75, 23);
-            this.TinyGSettingsSave_button.TabIndex = 110;
-            this.TinyGSettingsSave_button.Text = "Save as...";
-            this.toolTip1.SetToolTip(this.TinyGSettingsSave_button, "Saves TinyG settings to a file.");
-            this.TinyGSettingsSave_button.UseVisualStyleBackColor = true;
-            this.TinyGSettingsSave_button.Visible = false;
-            this.TinyGSettingsSave_button.Click += new System.EventHandler(this.TinyGSettingsSave_button_Click);
+            this.BoardSettingsSave_button.Location = new System.Drawing.Point(514, 35);
+            this.BoardSettingsSave_button.Name = "BoardSettingsSave_button";
+            this.BoardSettingsSave_button.Size = new System.Drawing.Size(75, 23);
+            this.BoardSettingsSave_button.TabIndex = 110;
+            this.BoardSettingsSave_button.Text = "Save as...";
+            this.toolTip1.SetToolTip(this.BoardSettingsSave_button, "Saves TinyG settings to a file.");
+            this.BoardSettingsSave_button.UseVisualStyleBackColor = true;
+            this.BoardSettingsSave_button.Click += new System.EventHandler(this.BoardSettingsSave_button_Click);
             // 
-            // TinyGBuiltInSettings_button
+            // BoardBuiltInSettings_button
             // 
-            this.TinyGBuiltInSettings_button.Location = new System.Drawing.Point(514, 35);
-            this.TinyGBuiltInSettings_button.Name = "TinyGBuiltInSettings_button";
-            this.TinyGBuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
-            this.TinyGBuiltInSettings_button.TabIndex = 109;
-            this.TinyGBuiltInSettings_button.Text = "Reset to Defaults";
-            this.toolTip1.SetToolTip(this.TinyGBuiltInSettings_button, "Resets TinyG settings to conservative default settings.\r\nPrevious values will be " +
+            this.BoardBuiltInSettings_button.Location = new System.Drawing.Point(599, 35);
+            this.BoardBuiltInSettings_button.Name = "BoardBuiltInSettings_button";
+            this.BoardBuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
+            this.BoardBuiltInSettings_button.TabIndex = 109;
+            this.BoardBuiltInSettings_button.Text = "Reset to Defaults";
+            this.toolTip1.SetToolTip(this.BoardBuiltInSettings_button, "Resets TinyG settings to conservative default settings.\r\nPrevious values will be " +
         "overwritten!");
-            this.TinyGBuiltInSettings_button.UseVisualStyleBackColor = true;
-            this.TinyGBuiltInSettings_button.Click += new System.EventHandler(this.TinyGBuiltInSettings_button_Click);
+            this.BoardBuiltInSettings_button.UseVisualStyleBackColor = true;
+            this.BoardBuiltInSettings_button.Click += new System.EventHandler(this.BoardBuiltInSettings_button_Click);
             // 
             // AppSettingsLoad_button
             // 
@@ -5242,16 +5236,16 @@
             this.AppSettingsSave_button.UseVisualStyleBackColor = true;
             this.AppSettingsSave_button.Click += new System.EventHandler(this.AppSettingsSave_button_Click);
             // 
-            // label160
+            // Board_label
             // 
-            this.label160.AutoSize = true;
-            this.label160.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label160.Location = new System.Drawing.Point(510, 7);
-            this.label160.Name = "label160";
-            this.label160.Size = new System.Drawing.Size(131, 24);
-            this.label160.TabIndex = 106;
-            this.label160.Text = "TinyG Settings";
-            this.toolTip1.SetToolTip(this.label160, "Connection status");
+            this.Board_label.AutoSize = true;
+            this.Board_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Board_label.Location = new System.Drawing.Point(510, 7);
+            this.Board_label.Name = "Board_label";
+            this.Board_label.Size = new System.Drawing.Size(196, 24);
+            this.Board_label.TabIndex = 106;
+            this.Board_label.Text = "Control Board Settings";
+            this.toolTip1.SetToolTip(this.Board_label, "Connection status");
             // 
             // label159
             // 
@@ -6051,42 +6045,16 @@
             this.HomeX_button.UseVisualStyleBackColor = true;
             this.HomeX_button.Click += new System.EventHandler(this.HomeX_button_Click);
             // 
-            // BuiltInSettings_button
+            // AppBuiltInSettings_button
             // 
-            this.BuiltInSettings_button.Location = new System.Drawing.Point(345, 34);
-            this.BuiltInSettings_button.Name = "BuiltInSettings_button";
-            this.BuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
-            this.BuiltInSettings_button.TabIndex = 29;
-            this.BuiltInSettings_button.Text = "Reset to Defaults";
-            this.toolTip1.SetToolTip(this.BuiltInSettings_button, "Resets application settings to default values.");
-            this.BuiltInSettings_button.UseVisualStyleBackColor = true;
-            this.BuiltInSettings_button.Click += new System.EventHandler(this.BuiltInSettings_button_Click);
-            // 
-            // SaveSettings_button
-            // 
-            this.SaveSettings_button.Enabled = false;
-            this.SaveSettings_button.Location = new System.Drawing.Point(808, 58);
-            this.SaveSettings_button.Name = "SaveSettings_button";
-            this.SaveSettings_button.Size = new System.Drawing.Size(210, 23);
-            this.SaveSettings_button.TabIndex = 28;
-            this.SaveSettings_button.Text = "Save Current Settings to User Defaults";
-            this.toolTip1.SetToolTip(this.SaveSettings_button, "Saves these settings, so they can be retrieved by\r\nthe above button.");
-            this.SaveSettings_button.UseVisualStyleBackColor = true;
-            this.SaveSettings_button.Visible = false;
-            this.SaveSettings_button.Click += new System.EventHandler(this.SaveSettings_button_Click);
-            // 
-            // DefaultSettings_button
-            // 
-            this.DefaultSettings_button.Enabled = false;
-            this.DefaultSettings_button.Location = new System.Drawing.Point(873, 44);
-            this.DefaultSettings_button.Name = "DefaultSettings_button";
-            this.DefaultSettings_button.Size = new System.Drawing.Size(210, 21);
-            this.DefaultSettings_button.TabIndex = 27;
-            this.DefaultSettings_button.Text = "Load User Defaults to TinyG";
-            this.toolTip1.SetToolTip(this.DefaultSettings_button, "Loads your saved settings back to system.");
-            this.DefaultSettings_button.UseVisualStyleBackColor = true;
-            this.DefaultSettings_button.Visible = false;
-            this.DefaultSettings_button.Click += new System.EventHandler(this.DefaultSettings_button_Click);
+            this.AppBuiltInSettings_button.Location = new System.Drawing.Point(345, 34);
+            this.AppBuiltInSettings_button.Name = "AppBuiltInSettings_button";
+            this.AppBuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
+            this.AppBuiltInSettings_button.TabIndex = 29;
+            this.AppBuiltInSettings_button.Text = "Reset to Defaults";
+            this.toolTip1.SetToolTip(this.AppBuiltInSettings_button, "Resets application settings to default values.");
+            this.AppBuiltInSettings_button.UseVisualStyleBackColor = true;
+            this.AppBuiltInSettings_button.Click += new System.EventHandler(this.AppBuiltInSettings_button_Click);
             // 
             // Vacuum_checkBox
             // 
@@ -6550,15 +6518,6 @@
             this.label22.TabIndex = 22;
             this.label22.Text = "Step angle [1sa]:";
             // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(3, 35);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(114, 17);
-            this.label23.TabIndex = 19;
-            this.label23.Text = "Microsteps [1mi]:";
-            // 
             // mi1_maskedTextBox
             // 
             this.mi1_maskedTextBox.Location = new System.Drawing.Point(93, 32);
@@ -6590,6 +6549,15 @@
             this.label25.Size = new System.Drawing.Size(73, 20);
             this.label25.TabIndex = 15;
             this.label25.Text = "Motor1:";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(3, 35);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(114, 17);
+            this.label23.TabIndex = 19;
+            this.label23.Text = "Microsteps [1mi]:";
             // 
             // label26
             // 
@@ -7172,15 +7140,6 @@
             this.label13.TabIndex = 22;
             this.label13.Text = "Step angle [2sa]:";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(3, 34);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(114, 17);
-            this.label11.TabIndex = 19;
-            this.label11.Text = "Microsteps [2mi]:";
-            // 
             // mi2_maskedTextBox
             // 
             this.mi2_maskedTextBox.Location = new System.Drawing.Point(91, 32);
@@ -7213,6 +7172,15 @@
             this.label10.Size = new System.Drawing.Size(73, 20);
             this.label10.TabIndex = 15;
             this.label10.Text = "Motor2:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(3, 34);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(114, 17);
+            this.label11.TabIndex = 19;
+            this.label11.Text = "Microsteps [2mi]:";
             // 
             // label8
             // 
@@ -8163,14 +8131,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9633,9 +9601,7 @@
 		private System.Windows.Forms.Button HomeY_button;
 		private System.Windows.Forms.Button HomeXY_button;
 		private System.Windows.Forms.Button HomeX_button;
-		private System.Windows.Forms.Button BuiltInSettings_button;
-		private System.Windows.Forms.Button SaveSettings_button;
-		private System.Windows.Forms.Button DefaultSettings_button;
+		private System.Windows.Forms.Button AppBuiltInSettings_button;
 		private System.Windows.Forms.CheckBox Vacuum_checkBox;
 		private System.Windows.Forms.CheckBox Pump_checkBox;
 		private System.Windows.Forms.Button TestXY_button;
@@ -10238,12 +10204,12 @@
         private System.Windows.Forms.CheckBox FiducialManConfirmation_checkBox;
         private System.Windows.Forms.Label label139;
         public System.Windows.Forms.Label DefaultNozzle_label;
-        private System.Windows.Forms.Button TinyGSettingsLoad_button;
-        private System.Windows.Forms.Button TinyGSettingsSave_button;
-        private System.Windows.Forms.Button TinyGBuiltInSettings_button;
+        private System.Windows.Forms.Button BoardSettingsLoad_button;
+        private System.Windows.Forms.Button BoardSettingsSave_button;
+        private System.Windows.Forms.Button BoardBuiltInSettings_button;
         private System.Windows.Forms.Button AppSettingsLoad_button;
         private System.Windows.Forms.Button AppSettingsSave_button;
-        private System.Windows.Forms.Label label160;
+        private System.Windows.Forms.Label Board_label;
         private System.Windows.Forms.Label label159;
         private System.Windows.Forms.SaveFileDialog AppSettings_saveFileDialog;
         private System.Windows.Forms.OpenFileDialog AppSettings_openFileDialog;
