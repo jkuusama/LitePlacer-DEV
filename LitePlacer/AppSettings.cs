@@ -159,7 +159,7 @@ namespace LitePlacer
         {
             try
             {
-                // File.WriteAllText(fileName, (new JavaScriptSerializer()).Serialize(pSettings));
+                MainForm.DisplayText("Writing " + FileName);
                 File.WriteAllText(FileName, JsonConvert.SerializeObject(pSettings, Formatting.Indented));
                 return true;
             }
@@ -192,7 +192,7 @@ namespace LitePlacer
                 MySettings settings = new MySettings();
                 if (File.Exists(FileName))
                 {
-                    // settings = (new JavaScriptSerializer()).Deserialize<MySettings>(File.ReadAllText(fileName));
+                    MainForm.DisplayText("Reading " + FileName);
                     settings = JsonConvert.DeserializeObject<MySettings>(File.ReadAllText(FileName));
                     return settings;
                 }

@@ -153,8 +153,11 @@ namespace LitePlacer
         {
             try
             {
+                MainForm.DisplayText("Writing " + FileName);
                 File.WriteAllText(FileName, JsonConvert.SerializeObject(Commons, Formatting.Indented));
+                MainForm.DisplayText("Writing " + FileName + "TinyG");
                 File.WriteAllText(FileName + "TinyG", JsonConvert.SerializeObject(TinyGs, Formatting.Indented));
+                MainForm.DisplayText("Writing " + FileName + "qQuintic");
                 File.WriteAllText(FileName + "qQuintic", JsonConvert.SerializeObject(qQuintics, Formatting.Indented));
                 return true;
             }
@@ -165,42 +168,47 @@ namespace LitePlacer
             }
         }
 
-        static public void Load(ref Common Commons, ref TinyG TinyGs, ref qQuintic qQuintics, string FileName)
+        static public bool Load(ref Common Commons, ref TinyG TinyGs, ref qQuintic qQuintics, string FileName)
         {
+            bool res = true;
             try
             {
                 string name = FileName;
                 if (File.Exists(name))
                 {
+                    MainForm.DisplayText("Reading " + name);
                     Commons = JsonConvert.DeserializeObject<Common>(File.ReadAllText(name));
-                    MainForm.DisplayText("read " + name + ".");
                 }
                 else
                 {
                     MainForm.DisplayText("Settings file " + name + " not found, using default values.");
+                    res = false;
                 }
 
                 name = FileName + "TinyG";
                 if (File.Exists(name))
                 {
+                    MainForm.DisplayText("Reading " + name);
                     TinyGs = JsonConvert.DeserializeObject<TinyG>(File.ReadAllText(name));
-                    MainForm.DisplayText("read " + name + ".");
                 }
                 else
                 {
                     MainForm.DisplayText("Settings file " + name + " not found, using default values.");
+                    res = false;
                 }
 
                 name = FileName + "qQuintic";
                 if (File.Exists(name))
                 {
+                    MainForm.DisplayText("Reading " + name);
                     qQuintics = JsonConvert.DeserializeObject<qQuintic>(File.ReadAllText(name));
-                    MainForm.DisplayText("read " + name + ".");
                 }
                 else
                 {
                     MainForm.DisplayText("Settings file " + name + " not found, using default values.");
+                    res = false;
                 }
+                return res;
             }
             catch (System.Exception excep)
             {
@@ -209,6 +217,7 @@ namespace LitePlacer
                     "Settings not loaded",
                     MessageBoxButtons.OK);
             }
+            return false;
         }
     }
 

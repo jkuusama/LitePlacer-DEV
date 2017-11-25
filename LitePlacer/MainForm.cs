@@ -14699,13 +14699,83 @@ namespace LitePlacer
 
             if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                BoardSettings.Save(CommonBoardSettings, TinyGSettings, qQuinticSettings, path + "LitePlacer.BoardSettings");
+                BoardSettings.Save(CommonBoardSettings, TinyGSettings, qQuinticSettings, AppSettings_saveFileDialog.FileName);
             }
+        }
+
+
+        private bool WriteBoardSettings_m<T>(T parameters)
+        {
+            string Value;
+            string Name;
+            string dbg;
+            foreach (var field in typeof(T).GetFields())
+            {
+                // The motor parameters are <motor number><parameter>, such as 1ma, 1sa, 1tr etc.
+                // These are not valid parameter names, so motor1ma, motor1sa etc are used.
+                // to retrieve the values, we remove the "motor"
+                Name = field.Name;
+                FieldInfo fld = typeof(T).GetField(Name);
+                Value = fld.GetValue(parameters).ToString();
+                if (Name.StartsWith("motor"))
+                {
+                    Name = Name.Substring(5);
+                }
+                dbg = "{\"" + Name + "\":" + Value + "}";
+                DisplayText("write: " + dbg);
+                if (!CNC_Write_m(dbg))
+                {
+                    return false;
+                };
+                if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+                {
+                    Thread.Sleep(50);
+                }
+            }
+            return true;
         }
 
         private void BoardSettingsLoad_button_Click(object sender, EventArgs e)
         {
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
 
+            AppSettings_openFileDialog.Filter = "All files (*.*)|*.*";
+            AppSettings_openFileDialog.FileName = "LitePlacer.BoardSettings";
+            AppSettings_openFileDialog.InitialDirectory = path;
+
+            if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if(!BoardSettings.Load(ref CommonBoardSettings, ref TinyGSettings, ref qQuinticSettings, AppSettings_openFileDialog.FileName))
+                {
+                    return;
+                }
+
+                bool res = WriteBoardSettings_m(CommonBoardSettings);
+                if (res)
+                {
+                    if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+                    {
+                        res = WriteBoardSettings_m(TinyGSettings);
+                    }
+                    else
+                    {
+                        res = WriteBoardSettings_m(qQuinticSettings);
+                    }
+                }
+                if (res)
+                {
+                    DisplayText("Board settings loaded.");
+                }
+                else
+                {
+                    ShowMessageBox(
+                        "Problem loading board settings. Board is in undefined state, fix the problem before continuing!",
+                        "Settings not loaded",
+                        MessageBoxButtons.OK);
+                }
+            }
         }
 
 
