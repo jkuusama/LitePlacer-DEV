@@ -516,9 +516,9 @@ namespace LitePlacer
 
             if (Cnc.Connected)
             {
-                PumpIsOn = true;        // so it will be turned off, no matter what we think the status
-                PumpOff_NoWorkaround();
-                VacuumDefaultSetting();
+                Cnc.PumpIsOn = true;        // so it will be turned off, no matter what we think the status
+                Cnc.PumpOff_NoWorkaround();
+                Cnc.VacuumDefaultSetting();
                 CNC_Write_m("{\"md\":\"\"}");  // motor power off
             }
             Cnc.Close();
@@ -1909,10 +1909,6 @@ namespace LitePlacer
         // =================================================================================
         #region CNC interface functions
 
-        // We need some functions both in JSON and in text mode:
-        public const bool JSON = true;
-        public const bool TextMode = false;
-
         // =================================================================================
         // Different types of control hardware and settings
         // =================================================================================
@@ -2023,92 +2019,6 @@ namespace LitePlacer
         }
 
 
-        // =================================================================================
-        private bool VacuumIsOn = false;
-
-        private void VacuumDefaultSetting()
-        {
-            VacuumOff();
-        }
-
-        private void VacuumOn()
-        {
-            if (!VacuumIsOn)
-            {
-                DisplayText("VacuumOn()");
-                CNC_RawWrite("{\"gc\":\"M08\"}");
-                VacuumIsOn = true;
-                Vacuum_checkBox.Checked = true;
-                Thread.Sleep(Setting.General_PickupVacuumTime);
-            }
-        }
-
-        private void VacuumOff()
-        {
-            if (VacuumIsOn)
-            {
-                DisplayText("VacuumOff()");
-                CNC_RawWrite("{\"gc\":\"M09\"}");
-                VacuumIsOn = false;
-                Vacuum_checkBox.Checked = false;
-                Thread.Sleep(Setting.General_PickupReleaseTime);
-            }
-        }
-
-        private bool PumpIsOn = false;
-        private void PumpDefaultSetting()
-        {
-            PumpOff();
-        }
-
-        private void BugWorkaround()
-        {
-            // see https://www.synthetos.com/topics/file-not-open-error/#post-7194
-            // Summary: In some cases, we need a dummy move.
-            CNC_Z_m(Cnc.CurrentZ - 0.01);
-            CNC_Z_m(Cnc.CurrentZ + 0.01);
-        }
-
-        private void PumpOn()
-        {
-            if (!PumpIsOn)
-            {
-                //CNC_RawWrite("M03");
-                CNC_RawWrite("{\"gc\":\"M03\"}");
-                Pump_checkBox.Checked = true;
-                BugWorkaround();
-                Thread.Sleep(500);  // this much to develop vacuum
-                PumpIsOn = true;
-            }
-        }
-
-        private void PumpOff()
-        {
-            if (PumpIsOn)
-            {
-                //CNC_RawWrite("M05");
-                CNC_RawWrite("{\"gc\":\"M05\"}");
-                Thread.Sleep(50);
-                BugWorkaround();
-                Pump_checkBox.Checked = false;
-                PumpIsOn = false;
-            }
-        }
-
-        private void PumpOff_NoWorkaround()
-        // For error situations where we don't want to do the dance
-        {
-            if (PumpIsOn)
-            {
-                //CNC_RawWrite("M05");
-                CNC_RawWrite("{\"gc\":\"M05\"}");
-                Thread.Sleep(50);
-                Pump_checkBox.Checked = false;
-                PumpIsOn = false;
-            }
-        }
-
-
         private bool Nozzle_ProbeDown_m()
         {
             if (!HomingTimeout_m(out CNC_HomingTimeout, "Z"))
@@ -2118,16 +2028,16 @@ namespace LitePlacer
 
             DisplayText("Probing Z, timeout value: " + CNC_HomingTimeout.ToString());
 
-            Nozzle.ProbingMode(true, JSON);
+            Cnc.ProbingMode(true);
             Cnc.Homing = true;
             if (!CNC_Write_m("{\"gc\":\"G28.4 Z0\"}", 4000))
             {
                 Cnc.Homing = false;
-                Nozzle.ProbingMode(false, JSON);
+                Cnc.ProbingMode(false);
                 return false;
             }
             Cnc.Homing = false;
-            Nozzle.ProbingMode(false, JSON);
+            Cnc.ProbingMode(false);
             return true;
         }
 
@@ -2620,7 +2530,7 @@ namespace LitePlacer
             CNC_BlockingWriteDone = true;
         }
 
-        private bool CNC_Z_m(double Z)
+        public bool CNC_Z_m(double Z)
         {
             if (AbortPlacement)
             {
@@ -2870,7 +2780,7 @@ namespace LitePlacer
 
         private bool MechanicalHoming_m()
         {
-            Nozzle.ProbingMode(false, JSON);
+            Cnc.ProbingMode(false);
             if (!CNC_Home_m("Z"))
             {
                 return false;
@@ -4500,7 +4410,7 @@ namespace LitePlacer
 
             // Do settings that need to be done always
             Cnc.IgnoreError = true;
-            Nozzle.ProbingMode(false, JSON);
+            Cnc.ProbingMode(false);
             //PumpDefaultSetting();
             //VacuumDefaultSetting();
             //Thread.Sleep(100);
@@ -6216,7 +6126,7 @@ namespace LitePlacer
 
         private void HomeZ_button_Click(object sender, EventArgs e)
         {
-            Nozzle.ProbingMode(false, JSON);
+            Cnc.ProbingMode(false);
             CNC_Home_m("Z");
         }
 
@@ -6293,27 +6203,15 @@ namespace LitePlacer
             CNC_A_m(0);
         }
 
-
-
-        private void MotorPowerOff()
-        {
-            CNC_Write_m("{\"md\":\"\"}");
-        }
-
-        private void MotorPowerOn()
-        {
-            CNC_Write_m("{\"me\":\"\"}");
-        }
-
         private void MotorPower_checkBox_Click(object sender, EventArgs e)
         {
             if (MotorPower_checkBox.Checked)
             {
-                MotorPowerOn();
+                Cnc.MotorPowerOn();
             }
             else
             {
-                MotorPowerOff();
+                Cnc.MotorPowerOff();
             }
         }
 
@@ -6321,11 +6219,11 @@ namespace LitePlacer
         {
             if (Pump_checkBox.Checked)
             {
-                PumpOn();
+                Cnc.PumpOn();
             }
             else
             {
-                PumpOff();
+                Cnc.PumpOff();
             }
         }
 
@@ -6333,11 +6231,11 @@ namespace LitePlacer
         {
             if (Vacuum_checkBox.Checked)
             {
-                VacuumOn();
+                Cnc.VacuumOn();
             }
             else
             {
-                VacuumOff();
+                Cnc.VacuumOff();
             }
         }
 
@@ -6415,7 +6313,7 @@ namespace LitePlacer
             ZGuardOn();
             CancelProbing_button.Visible = false;
             Zlb_label.Visible = false;
-            Nozzle.ProbingMode(false, JSON);
+            Cnc.ProbingMode(false);
             CNC_Home_m("Z");
             SetProbing_button.Enabled = true;
         }
@@ -6457,7 +6355,7 @@ namespace LitePlacer
                 case 2:
                     Setting.General_PlacementBackOff = Setting.General_ZtoPCB - Cnc.CurrentZ;
                     Setting.General_ZtoPCB = Cnc.CurrentZ;
-                    Nozzle.ProbingMode(false, JSON);
+                    Cnc.ProbingMode(false);
                     SetProbing_button.Text = "Start";
                     Zlb_label.Text = "";
                     Zlb_label.Visible = false;
@@ -7750,7 +7648,7 @@ namespace LitePlacer
                 }
                 if (JobRowNo >= JobData_GridView.RowCount)
                 {
-                    PumpOff();
+                    Cnc.PumpOff();
                     ShowMessageBox(
                         "Did not find " + component + " from Job data.",
                         "Job data error",
@@ -8434,13 +8332,13 @@ namespace LitePlacer
             Thread.Sleep(50);
             CNC_Write_m("{\"zsx\":0}");
             Thread.Sleep(50);
-            PumpOff();
-            MotorPowerOff();
+            Cnc.PumpOff();
+            Cnc.MotorPowerOff();
             ShowMessageBox(
                 "Change Nozzle now, press OK when done",
                 "Nozzle change pause",
                 MessageBoxButtons.OK);
-            MotorPowerOn();
+            Cnc.MotorPowerOn();
             Zlim_checkBox.Checked = true;
             Zhome_checkBox.Checked = true;
             Nozzle.Calibrated = false;
@@ -8465,7 +8363,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            PumpOn();
+            Cnc.PumpOn();
             return true;
         }
 
@@ -8519,7 +8417,7 @@ namespace LitePlacer
             PlaceThese_button.Capture = false;
             PlaceAll_button.Capture = false;
             JobData_GridView.ReadOnly = true;
-            PumpOn();
+            Cnc.PumpOn();
             return true;
         }  // end PrepareToPlace_m
 
@@ -8538,12 +8436,12 @@ namespace LitePlacer
             CurrentGroup_label.Text = "--";
             NextGroup_label.Text = "--";
             JobData_GridView.ReadOnly = false;
-            PumpDefaultSetting();
+            Cnc.PumpDefaultSetting();
             if (success)
             {
                 CNC_Park();  // if fail, it helps debugging if machine stays still
             }
-            VacuumDefaultSetting();
+            Cnc.VacuumDefaultSetting();
         }
 
 
@@ -8581,7 +8479,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            VacuumOn();
+            Cnc.VacuumOn();
             DisplayText("PickUpPart_m(): Nozzle up");
             if (!CNC_Z_m(0))
             {
@@ -8653,7 +8551,7 @@ namespace LitePlacer
             double HoleY = 0;
             DisplayText("PickUpPart_m(), tape no: " + TapeNumber.ToString());
             // Go to part location:
-            VacuumOff();
+            Cnc.VacuumOff();
             if (!Tapes.GotoNextPartByMeasurement_m(TapeNumber, out HoleX, out HoleY))
             {
                 return false;
@@ -8850,7 +8748,7 @@ namespace LitePlacer
             //    "Debug",
             //    MessageBoxButtons.OK);
             DisplayText("PlacePart_m(): Nozzle up.");
-            VacuumOff();
+            Cnc.VacuumOff();
             if (!CNC_Z_m(0))  // back up
             {
                 return false;
@@ -8885,7 +8783,7 @@ namespace LitePlacer
                 }
             }
             DisplayText("PutLoosePartDown_m(): Nozzle up.");
-            VacuumOff();
+            Cnc.VacuumOff();
             if (!CNC_Z_m(0))  // back up
             {
                 return false;
@@ -9036,7 +8934,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            VacuumOn();
+            Cnc.VacuumOn();
             DisplayText("PickUpLoosePart_m(): Nozzle up");
             if (!CNC_Z_m(0))
             {
@@ -11845,18 +11743,18 @@ namespace LitePlacer
             double Xmark = Cnc.CurrentX;
             double Ymark = Cnc.CurrentY;
             DisplayText("test 1: Pick up this (probing)");
-            PumpOn();
-            VacuumOff();
+            Cnc.PumpOn();
+            Cnc.VacuumOff();
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
             {
-                PumpOff_NoWorkaround();
+                Cnc.PumpOff_NoWorkaround();
                 return;
             }
             if (!Nozzle_ProbeDown_m())
             {
                 return;
             }
-            VacuumOn();
+            Cnc.VacuumOn();
             CNC_Z_m(0);  // pick up
             CNC_XY_m(Xmark, Ymark);
         }
@@ -11875,7 +11773,7 @@ namespace LitePlacer
                 return;
             }
             Nozzle_ProbeDown_m();
-            VacuumOff();
+            Cnc.VacuumOff();
             CNC_Z_m(0);  // back up
             CNC_XY_m(Xmark, Ymark);  // show results
         }
@@ -11916,7 +11814,7 @@ namespace LitePlacer
             {
                 return;
             }
-            Nozzle.ProbingMode(true, JSON);
+            Cnc.ProbingMode(true);
             Nozzle_ProbeDown_m();
         }
 

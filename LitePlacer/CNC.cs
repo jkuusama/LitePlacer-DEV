@@ -63,6 +63,7 @@ namespace LitePlacer
             MainForm.UpdateCncConnectionStatus();
         }
 
+        // =================================================================================
         public bool Connect(String name)
         {
             // For now, just see that the port opens. 
@@ -143,18 +144,19 @@ namespace LitePlacer
             Com.Write(command);
         }
 
-		// Square compensation:
-		// The machine will be only approximately square. Fortunately, the squareness is easy to measure with camera.
-		// User measures correction value, that we apply to movements and reads.
-		// For example, correction value is +0.002, meaning that for every unit of +Y movement, 
-		// the machine actually also unintentionally moves 0.002 units to +X. 
-		// Therefore, for each movement when the user wants to go to (X, Y),
-		// we really go to (X - 0.002*Y, Y)
+        // =================================================================================
+        // Square compensation:
+        // The machine will be only approximately square. Fortunately, the squareness is easy to measure with camera.
+        // User measures correction value, that we apply to movements and reads.
+        // For example, correction value is +0.002, meaning that for every unit of +Y movement, 
+        // the machine actually also unintentionally moves 0.002 units to +X. 
+        // Therefore, for each movement when the user wants to go to (X, Y),
+        // we really go to (X - 0.002*Y, Y)
 
-		// CurrentX/Y is the corrected value that user sees and uses, and reflects a square machine
-		// TrueX/Y is what the TinyG actually uses.
+        // CurrentX/Y is the corrected value that user sees and uses, and reflects a square machine
+        // TrueX/Y is what the TinyG actually uses.
 
-		public static double SquareCorrection { get; set; }
+        public static double SquareCorrection { get; set; }
 
 		private static double CurrX;
 		private static double _trueX;
@@ -573,9 +575,248 @@ namespace LitePlacer
             _readyEvent.Wait();
         }
 
+        // =================================================================================
         public bool Homing { get; set; }
         public bool IgnoreError { get; set; }
 
+        // =================================================================================
+        public void ProbingMode(bool set)
+        {
+            int wait = 250;
+            double b = MainForm.Setting.General_ZprobingHysteresis;
+            string backoff = b.ToString("0.00", CultureInfo.InvariantCulture);
+
+            if (Controlboard==ControlBoardType.TinyG)
+            {
+                if (set)
+                {
+                    MainForm.DisplayText("Probing mode on, TinyG");
+                    MainForm.CNC_Write_m("{\"zsn\",0}");
+                    Thread.Sleep(wait);
+                    MainForm.CNC_Write_m("{\"zsx\",1}");
+                    Thread.Sleep(wait);
+                    MainForm.CNC_Write_m("{\"zzb\"," + backoff + "}");
+                    Thread.Sleep(wait);
+                }
+                else
+                {
+                    MainForm.DisplayText("Probing mode off, TinyG");
+                    MainForm.CNC_Write_m("{\"zsn\",3}");
+                    Thread.Sleep(wait);
+                    MainForm.CNC_Write_m("{\"zsx\",2}");
+                    Thread.Sleep(wait);
+                    MainForm.CNC_Write_m("{\"zzb\",2}");
+                    Thread.Sleep(wait);
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("Set probing mode, qQuintic -- SKIPPED --");
+                if (set)
+                {
+                    MainForm.DisplayText("Probing mode on, qQuintic");
+                }
+                else
+                {
+                    MainForm.DisplayText("Probing mode off, qQuintic");
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("Set probing mode, unknown board!!", KnownColor.DarkRed, true);
+            }
+        }
+
+        // =================================================================================
+        public void MotorPowerOn()
+        {
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("MotorPowerOff(), TinyG");
+                MainForm.CNC_Write_m("{\"me\":\"\"}");
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("MotorPowerOff(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("*** MotorPowerOff(), unknown board!!", KnownColor.DarkRed, true);
+            }
+        }
+
+        public void MotorPowerOff()
+        {
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("MotorPowerOff(), TinyG");
+                MainForm.CNC_Write_m("{\"md\":\"\"}");
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("MotorPowerOff(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("*** MotorPowerOff(), unknown board!!", KnownColor.DarkRed, true);
+            }
+        }
+
+        // =================================================================================
+        private bool VacuumIsOn = false;
+
+        public void VacuumDefaultSetting()
+        {
+            VacuumOff();
+        }
+
+        public void VacuumOn()
+        {
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("VacuumOn(), TinyG");
+                if (!VacuumIsOn)
+                {
+                    if (RawWrite("{\"gc\":\"M08\"}"))
+                    {
+                        VacuumIsOn = true;
+                        MainForm.Vacuum_checkBox.Checked = true;
+                        Thread.Sleep(MainForm.Setting.General_PickupVacuumTime);
+                    }
+                }
+
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("VacuumOn(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("*** VacuumOn(), unknown board!!", KnownColor.DarkRed, true);
+            }
+
+
+        }
+
+        // =================================================================================
+        public void VacuumOff()
+        {
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("VacuumOff(), TinyG");
+                if (VacuumIsOn)
+                {
+                    if (RawWrite("{\"gc\":\"M09\"}"))
+                    {
+                        VacuumIsOn = false;
+                        MainForm.Vacuum_checkBox.Checked = false;
+                        Thread.Sleep(MainForm.Setting.General_PickupReleaseTime);
+                    }
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("VacuumOff(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("*** VacuumOff(), unknown board!!", KnownColor.DarkRed, true);
+            }
+        }
+
+        // =================================================================================
+        public bool PumpIsOn = false;
+
+        public void PumpDefaultSetting()
+        {
+            PumpOff();
+        }
+
+        private void BugWorkaround()
+        {
+            // see https://www.synthetos.com/topics/file-not-open-error/#post-7194
+            // Summary: In some cases, we need a dummy move.
+            MainForm.CNC_Z_m(CurrentZ - 0.01);
+            MainForm.CNC_Z_m(CurrentZ + 0.01);
+        }
+
+        public void PumpOn()
+        {
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("PumpOn(), TinyG");
+                if (!PumpIsOn)
+                {
+                        if (RawWrite("{\"gc\":\"M03\"}"))
+                    {
+                        MainForm.Pump_checkBox.Checked = true;
+                        BugWorkaround();
+                        Thread.Sleep(500);  // this much to develop vacuum
+                        PumpIsOn = true;
+                    }
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("PumpOn(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("PumpOn(), TinyG");
+            }
+        }
+
+        public void PumpOff()
+        {
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("PumpOff(), TinyG");
+                if (PumpIsOn)
+                {
+                    if (RawWrite("{\"gc\":\"M05\"}"))
+                    {
+                        Thread.Sleep(50);
+                        BugWorkaround();
+                        MainForm.Pump_checkBox.Checked = false;
+                        PumpIsOn = false;
+                    }
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("PumpOff(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("PumpOff(), qQuintic  -- SKIPPED --");
+            }
+        }
+
+        public void PumpOff_NoWorkaround()
+        // For error situations where we don't want to do the dance
+        {
+            MainForm.DisplayText("PumpOff_NoWorkaround(), TinyG");
+            if (PumpIsOn)
+            {
+                if (RawWrite("{\"gc\":\"M05\"}"))
+                {
+                    Thread.Sleep(50);
+                    MainForm.Pump_checkBox.Checked = false;
+                    PumpIsOn = false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("PumpOff_NoWorkaround(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("PumpOff_NoWorkaround(), qQuintic  -- SKIPPED --");
+            }
+        }
+
+
+        // =================================================================================
         public void InterpretLine(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            

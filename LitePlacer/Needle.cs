@@ -135,66 +135,7 @@ namespace LitePlacer
 
 
         // =================================================================================
-        // private bool probingMode;
-        public void ProbingMode(bool set, bool JSON)
-        {
-            int wait= 250;
-            double b = MainForm.Setting.General_ZprobingHysteresis;
-            string backoff= b.ToString("0.00", CultureInfo.InvariantCulture);
-            if (set)
-            {
-                if(JSON)
-                {
-                    // set in JSON mode
-                    CNC_Write("{\"zsn\",0}");
-                    Thread.Sleep(wait);
-                    CNC_Write("{\"zsx\",1}");
-                    Thread.Sleep(wait);
-                    CNC_Write("{\"zzb\"," + backoff + "}");
-                    Thread.Sleep(wait);
-                    // probingMode = true;
-                }
-                else
-                {
-                    // set in text mode
-                    CNC_Write("$zsn=0");
-                    Thread.Sleep(wait);
-                    CNC_Write("$zsx=1");
-                    Thread.Sleep(wait);
-                    CNC_Write("$zzb=" + backoff);
-                    Thread.Sleep(wait);
-                    // probingMode = true;
-                }
-            }            
-            else
-            {
-                if (JSON)
-                {
-                    // clear in JSON mode
-                    CNC_Write("{\"zsn\",3}");
-                    Thread.Sleep(wait);
-                    CNC_Write("{\"zsx\",2}");
-                    Thread.Sleep(wait);
-                    CNC_Write("{\"zzb\",2}");
-                    Thread.Sleep(wait);
-                    // probingMode = false;
-                }
-                else
-                {
-                    // clear in text mode
-                    CNC_Write("$zsn=3");
-                    Thread.Sleep(wait);
-                    CNC_Write("$zsx=2");
-                    Thread.Sleep(wait);
-                    CNC_Write("$zzb=2");
-                    Thread.Sleep(wait);
-                    // probingMode = false;
-                }
-            }
-
-        }
-
-
+ 
         public bool Calibrated { get; set; }
 
         public bool CorrectedPosition_m(double angle, out double X, out double Y)
