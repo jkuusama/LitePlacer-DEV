@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace LitePlacer
     public class BoardSettings
     {
         // These parameters on both TinyG and qQuintic:
-        public class Common
+        public class CommonSettings
         {
             // ==========  System values  ==========
             public string st = "0";     // switch type, [0=NO,1=NC]
@@ -109,7 +110,7 @@ namespace LitePlacer
 
         }
 
-        public class TinyG
+        public class TinyG : CommonSettings
         {
             public string ec = "0";     // expand LF to CRLF on TX [0=off,1=on]
             public string ee = "0";     // enable echo [0=off,1=on]
@@ -126,7 +127,7 @@ namespace LitePlacer
             public string asx = "0";   // a switch max [0=off,1=homing,2=limit,3=limit+homing];
         }
 
-        public class qQuintic
+        public class qQuintic : CommonSettings
         {
             public string motor1pl = "0.600";    // motor power level [0.000=minimum, 1.000=maximum]
             public string motor2pl = "0.600";    // motor power level [0.000=minimum, 1.000=maximum]
@@ -147,68 +148,82 @@ namespace LitePlacer
             public string bhi = "0";     // b homing input [input 1-N or 0 to disable homing this axis]
         }
 
+
         public static FormMain MainForm;
 
-        static public bool Save(Common Commons, TinyG TinyGs, qQuintic qQuintics, string FileName)
+        // Board settings file: Text file, starting with 8 characters board name and \n\r, 
+        // then the setings in Json format
+        static public bool Save(TinyG TinyGSettings, qQuintic qQuinticSettings, string FileName)
         {
             try
             {
-                MainForm.DisplayText("Writing " + FileName);
-                File.WriteAllText(FileName, JsonConvert.SerializeObject(Commons, Formatting.Indented));
-                MainForm.DisplayText("Writing " + FileName + "TinyG");
-                File.WriteAllText(FileName + "TinyG", JsonConvert.SerializeObject(TinyGs, Formatting.Indented));
-                MainForm.DisplayText("Writing " + FileName + "qQuintic");
-                File.WriteAllText(FileName + "qQuintic", JsonConvert.SerializeObject(qQuintics, Formatting.Indented));
+                if (MainForm.Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+                {
+                    MainForm.DisplayText("Writing TinyG settings file: " + FileName);
+                    File.WriteAllText(FileName, "TinyG   \n\r" + JsonConvert.SerializeObject(TinyGSettings, Formatting.Indented));
+                }
+                else if (MainForm.Cnc.Controlboard == CNC.ControlBoardType.qQuintic)
+                {
+                    MainForm.DisplayText("Writing qQuintic settings file: " + FileName);
+                    File.WriteAllText(FileName, "qQuintic\n\r" + JsonConvert.SerializeObject(qQuinticSettings, Formatting.Indented));
+                }
+                else
+                {
+                    MainForm.DisplayText("Skipping writing board settings file; board type unknown");
+                }
                 return true;
             }
             catch (System.Exception excep)
             {
-                MainForm.DisplayText("Saving settings to " + FileName + " failed:\n" + excep.Message);
+                MainForm.DisplayText("Saving settings to " + FileName + " failed:\n" + excep.Message, KnownColor.DarkRed);
                 return false;
             }
         }
 
-        static public bool Load(ref Common Commons, ref TinyG TinyGs, ref qQuintic qQuintics, string FileName)
+        static public bool Load(ref TinyG TinyGSettings, ref qQuintic qQuinticSettings, string FileName)
         {
-            bool res = true;
+            string content= "";
             try
             {
                 string name = FileName;
                 if (File.Exists(name))
                 {
                     MainForm.DisplayText("Reading " + name);
-                    Commons = JsonConvert.DeserializeObject<Common>(File.ReadAllText(name));
+                    content = File.ReadAllText(name);
                 }
                 else
                 {
                     MainForm.DisplayText("Settings file " + name + " not found, using default values.");
-                    res = false;
+                    return false;
                 }
-
-                name = FileName + "TinyG";
-                if (File.Exists(name))
+                if (content.Length<10)
                 {
-                    MainForm.DisplayText("Reading " + name);
-                    TinyGs = JsonConvert.DeserializeObject<TinyG>(File.ReadAllText(name));
+                    MainForm.ShowMessageBox(
+                       "Problem loading application settings: File is too short.\nUsing built in defaults.",
+                       "Settings not loaded",
+                       MessageBoxButtons.OK);
+                    return false;
+                }
+                string boardType = content.Substring(0, 10);
+                content = content.Remove(0, 10);
+                if (boardType == "TinyG   \n\r")
+                {
+                    TinyGSettings = JsonConvert.DeserializeObject<TinyG>(content);
+                }
+                else if (boardType == "qQuintic\n\r")
+                {
+                    qQuinticSettings = JsonConvert.DeserializeObject<qQuintic>(content
+                        );
                 }
                 else
                 {
-                    MainForm.DisplayText("Settings file " + name + " not found, using default values.");
-                    res = false;
+                    MainForm.ShowMessageBox(
+                       "Unknown baord type " + boardType + "\nUsing built in defaults.",
+                       "Settings not loaded",
+                       MessageBoxButtons.OK);
+                    return false;
                 }
-
-                name = FileName + "qQuintic";
-                if (File.Exists(name))
-                {
-                    MainForm.DisplayText("Reading " + name);
-                    qQuintics = JsonConvert.DeserializeObject<qQuintic>(File.ReadAllText(name));
-                }
-                else
-                {
-                    MainForm.DisplayText("Settings file " + name + " not found, using default values.");
-                    res = false;
-                }
-                return res;
+                return true;
             }
             catch (System.Exception excep)
             {
@@ -216,8 +231,8 @@ namespace LitePlacer
                     "Problem loading application settings:\n" + excep.Message + "\nUsing built in defaults.",
                     "Settings not loaded",
                     MessageBoxButtons.OK);
+                return false;
             }
-            return false;
         }
     }
 

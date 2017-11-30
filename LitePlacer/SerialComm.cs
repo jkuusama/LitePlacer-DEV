@@ -36,7 +36,14 @@ namespace LitePlacer
 
         private void Close_thread()
         {
-            Port.Close();
+            try
+            {
+                Port.Close();
+            }
+            catch
+            {
+                // there would be an exeption if the device is turned off and the port doesn't exist anymore
+            }
         }
 
         public void Close()
@@ -96,6 +103,10 @@ namespace LitePlacer
         {
             try
             {
+                if (!Port.IsOpen)
+                {
+                    MainForm.DisplayText("Serial port not open, attempt to re-open", KnownColor.DarkRed);
+                }
                 if (Port.IsOpen)
                 {
                     Port.Write(TxText + "\r");
@@ -107,9 +118,9 @@ namespace LitePlacer
                 }
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                MainForm.DisplayText("Serial port write failed.", KnownColor.DarkRed);
+                MainForm.DisplayText("Serial port write failed: " + e.Message, KnownColor.DarkRed);
                 Close();
                 return false;
             }

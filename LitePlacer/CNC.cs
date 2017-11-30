@@ -19,8 +19,8 @@ namespace LitePlacer
         static FormMain MainForm;
         private SerialComm Com;
 
-        public enum ControlBoardType { TinyG, qQuintic, other };
-        public ControlBoardType Controlboard = ControlBoardType.TinyG;
+        public enum ControlBoardType { TinyG, qQuintic, other, unknown};
+        public ControlBoardType Controlboard = ControlBoardType.unknown;
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
 
@@ -50,7 +50,7 @@ namespace LitePlacer
             // Connected = false;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus(false);
+            MainForm.UpdateCncConnectionStatus();
         }
 
         public void Close()
@@ -60,7 +60,7 @@ namespace LitePlacer
             Connected = false;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus(false);
+            MainForm.UpdateCncConnectionStatus();
         }
 
         public bool Connect(String name)
@@ -85,7 +85,10 @@ namespace LitePlacer
                 MainForm.DisplayText("Connecting to serial port " + name + " failed.");
                 Error();
             }
-            MainForm.DisplayText("Connected to serial port " + name);
+            else
+            {
+                MainForm.DisplayText("Connected to serial port " + name);
+            }
             return Connected;
         }
 
@@ -585,7 +588,7 @@ namespace LitePlacer
                     "TinyG Reset.",
                     "System Reset",
                     MessageBoxButtons.OK);
-                MainForm.UpdateCncConnectionStatus(false);
+                MainForm.UpdateCncConnectionStatus();
                 return;
             }
 

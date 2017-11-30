@@ -44,18 +44,14 @@ namespace LitePlacer
 
     public partial class FormMain : Form
     {
-        CNC Cnc;
+        public CNC Cnc;
         Camera DownCamera;
         Camera UpCamera;
         NozzleClass Nozzle;
         TapesClass Tapes;
         public MySettings Setting;
-        public BoardSettings.Common CommonBoardSettings = new BoardSettings.Common();
-        public BoardSettings.TinyG TinyGSettings = new BoardSettings.TinyG();
-        public BoardSettings.qQuintic qQuinticSettings = new BoardSettings.qQuintic();
-        public List<string> CommonBoardSettingsFields = new List<string>();
-        public List<string> TinyGSettingsFields = new List<string>();
-        public List<string> qQuinticSettingsFields = new List<string>();
+        public BoardSettings.TinyG TinyGBoard = new BoardSettings.TinyG();
+        public BoardSettings.qQuintic qQuinticBoard = new BoardSettings.qQuintic();
 
         AppSettings SettingsOps;
 
@@ -109,7 +105,7 @@ namespace LitePlacer
             StartingUp = true;
             this.Size = new Size(1280, 900);
 
-            DisplayText("Application Start");
+            DisplayText("Application Start", KnownColor.Black, true);
             DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
 
             SettingsOps = new AppSettings(this);
@@ -182,20 +178,6 @@ namespace LitePlacer
             LoadTapesTable(path + "LitePlacer.TapesData_v2");
             // LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
             Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData");
-
-           foreach (var par in typeof(BoardSettings.Common).GetFields())
-            {
-                CommonBoardSettingsFields.Add(par.Name);
-            }
-            foreach (var par in typeof(BoardSettings.TinyG).GetFields())
-            {
-                TinyGSettingsFields.Add(par.Name);
-            }
-            foreach (var par in typeof(BoardSettings.qQuintic).GetFields())
-            {
-                qQuinticSettingsFields.Add(par.Name);
-            }
-            BoardSettings.Load(ref CommonBoardSettings, ref TinyGSettings, ref qQuinticSettings, path + "LitePlacer.BoardSettings");
 
             ContextmenuLoadNozzle = Setting.Nozzles_default;
             ContextmenuUnloadNozzle = Setting.Nozzles_default;
@@ -414,24 +396,13 @@ namespace LitePlacer
             DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
 
             Cnc.Connect(Setting.CNC_SerialPort);  // moved to here, as this can raise error condition, needing the form up
-            UpdateCncConnectionStatus(false);
+            UpdateCncConnectionStatus();
             if (Cnc.Connected)
             {
-                Thread.Sleep(200); // Give TinyG time to wake up
-                bool res= UpdateCNCBoardType_m();
-                if (!res)
+                if (ControlBoardJustConnected())
                 {
-                    return;
+                    OfferHoming();
                 }
-
-                if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
-                {
-                    CNC_RawWrite("\x11");  // Xon
-                    Thread.Sleep(50);   // TinyG wakeup
-
-                }
-                UpdateWindowValues_m();
-                OfferHoming();
 
             }
 
@@ -528,7 +499,7 @@ namespace LitePlacer
             res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
             OK = OK && res;
 
-            res = BoardSettings.Save(CommonBoardSettings, TinyGSettings, qQuinticSettings, path + "LitePlacer.BoardSettings");
+            res = BoardSettings.Save(TinyGBoard, qQuinticBoard, path + "LitePlacer.BoardSettings");
             OK = OK && res;
 
             if (!OK)
@@ -1948,6 +1919,7 @@ namespace LitePlacer
 
         private bool UpdateCNCBoardType_m()
         {
+            DisplayText("Finding board type:");
             if (!CNC_Write_m("{\"hp\":\"\"}"))
             {
                 return false;
@@ -4231,7 +4203,7 @@ namespace LitePlacer
             UpCamera.Active = false;
             DownCamera.Active = false;
 
-            UpdateCncConnectionStatus(false);
+            UpdateCncConnectionStatus();
             SizeXMax_textBox.Text = Setting.General_MachineSizeX.ToString();
             SizeYMax_textBox.Text = Setting.General_MachineSizeY.ToString();
 
@@ -4311,12 +4283,12 @@ namespace LitePlacer
         public void CncError()
         {
             Cnc.ErrorState = true;
-            UpdateCncConnectionStatus(false);
+            UpdateCncConnectionStatus();
         }
 
-        public void UpdateCncConnectionStatus(bool Offer)
+        public void UpdateCncConnectionStatus()
         {
-            if (InvokeRequired) { Invoke(new Action<bool>(UpdateCncConnectionStatus), Offer); return; }
+            if (InvokeRequired) { Invoke(new Action(UpdateCncConnectionStatus)); return; }
 
             if (Cnc.ErrorState)
             {
@@ -4331,10 +4303,6 @@ namespace LitePlacer
                 buttonConnectSerial.Text = "Close";
                 labelSerialPortStatus.Text = "Connected";
                 labelSerialPortStatus.ForeColor = Color.Black;
-                if (Offer)
-                {
-                    OfferHoming();
-                }
             }
             else
             {
@@ -4373,11 +4341,11 @@ namespace LitePlacer
                     buttonConnectSerial.Text = "Connecting..";
                     Cnc.ErrorState = false;
                     Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
-                    if (!UpdateWindowValues_m())
+                    UpdateCncConnectionStatus();
+                    if (!ControlBoardJustConnected())
                     {
                         CncError();
                     }
-                    UpdateCncConnectionStatus(true);
                 }
             }
             else
@@ -4390,7 +4358,7 @@ namespace LitePlacer
                     Thread.Sleep(2);
                     Application.DoEvents();
                 }
-                UpdateCncConnectionStatus(false);
+                UpdateCncConnectionStatus();
             }
         }
 
@@ -4398,24 +4366,43 @@ namespace LitePlacer
         // =================================================================================
         // Logging textbox
 
-        Color AppCol = Color.Black;
-        public void DisplayText(string txt, KnownColor col = KnownColor.Black, bool force= false)
+        Color DisplayTxtCol = Color.Black;
+
+        public void DisplayText(string txt, KnownColor col = KnownColor.Black, bool force = false)
         {
             if (DisableLog_checkBox.Checked && !force)
             {
                 return;
             }
-            // intermediate step to get the invoke... work with calls with one or two parameters
-            AppCol = Color.FromName(col.ToString());
+            DisplayTxtCol = Color.FromKnownColor(col);
             DisplayTxt(txt);
         }
 
         public void DisplayTxt(string txt)
         {
+            if (InvokeRequired) { Invoke(new Action<string>(DisplayTxt), new [] { txt }); return; }
+
+            txt = txt.Replace("\n", "");
+            txt = txt.Replace("\r", "");
+            // TinyG sends \n, textbox needs \r\n. (TinyG could be set to send \n\r, which does not work with textbox.)
+            // Adding end of line here saves typing elsewhere
+            txt = txt + "\r\n";
+
+            if (SerialMonitor_richTextBox.Text.Length > 1000000)
+            {
+                SerialMonitor_richTextBox.Text = SerialMonitor_richTextBox.Text.Substring(SerialMonitor_richTextBox.Text.Length - 10000);
+            }
+            SerialMonitor_richTextBox.AppendText(txt, DisplayTxtCol);
+        }
+
+        
+        /*
+        public void DisplayTxt(string txt)
+        {
             try
             {
-                if (InvokeRequired) { Invoke(new Action<string>(DisplayTxt), new[] { txt }); return; }
                 txt = txt.Replace("\n", "");
+                txt = txt.Replace("\r", "");
                 // TinyG sends \n, textbox needs \r\n. (TinyG could be set to send \n\r, which does not work with textbox.)
                 // Adding end of line here saves typing elsewhere
                 txt = txt + "\r\n";
@@ -4423,14 +4410,18 @@ namespace LitePlacer
                 {
                     SerialMonitor_richTextBox.Text = SerialMonitor_richTextBox.Text.Substring(SerialMonitor_richTextBox.Text.Length - 10000);
                 }
+                SerialMonitor_richTextBox.AppendText("**" + linecount.ToString() + AppCol.ToString() + "\r\n", Color.DarkViolet);
+                SerialMonitor_richTextBox.ScrollToCaret();
                 SerialMonitor_richTextBox.AppendText(txt, AppCol);
+                SerialMonitor_richTextBox.ScrollToCaret();
+                SerialMonitor_richTextBox.AppendText("**" + linecount++.ToString() + "\r\n");
                 SerialMonitor_richTextBox.ScrollToCaret();
             }
             catch
             {
             }
         }
-
+        */
 
         private void textBoxSendtoTinyG_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -4459,31 +4450,52 @@ namespace LitePlacer
                 {
                     return false;
                 };
+                Thread.Sleep(500);
             }
             return true;
         }
 
-        private bool UpdateWindowValues_m()
+        private bool ControlBoardJustConnected()
         {
-            if (!LoopParameters(typeof(BoardSettings.Common)))
+            // Called when control board conenction is estabished.
+            // First, find out the board type. Then, 
+            // for TinyG boards, read the parameter values stored on board.
+            // For qQuintic boards that dont' have on-board storage, write the values.
+
+            Thread.Sleep(200); // Give TinyG time to wake up
+            bool res = UpdateCNCBoardType_m();
+            if (!res)
             {
                 return false;
             }
 
             if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
             {
+                CNC_RawWrite("\x11");  // Xon
+                Thread.Sleep(50);   // TinyG wakeup
+
+            }
+
+            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+            {
+                DisplayText("Reading TinyG settings:");
                 if (!LoopParameters(typeof(BoardSettings.TinyG)))
                 {
                     return false;
                 }
             }
-
-            if (Cnc.Controlboard == CNC.ControlBoardType.qQuintic)
+            else if (Cnc.Controlboard == CNC.ControlBoardType.qQuintic)
             {
-                if (!LoopParameters(typeof(BoardSettings.qQuintic)))
+                DisplayText("Writing qQuintic settings:");
+                if (!WriteqQuinticSettings())
                 {
                     return false;
                 }
+            }
+            else
+            {
+                DisplayText("Unknown board!");
+                return false;
             }
 
             // Do settings that need to be done always
@@ -4503,6 +4515,7 @@ namespace LitePlacer
         public void ValueUpdater(string item, string value)
         {
             if (InvokeRequired) { Invoke(new Action<string, string>(ValueUpdater), new[] { item, value }); return; }
+            DisplayText("ValueUpdater: item= " + item + ", value= " + value);
 
             switch (item)
             {
@@ -4522,351 +4535,407 @@ namespace LitePlacer
 
                 // ==========  System values  ==========
                 case "st":     // switch type, [0=NO,1=NC]
-                    CommonBoardSettings.st = value;
                     break;
                 case "mt":   // motor idle timeout, in seconds
-                    CommonBoardSettings.mt = value;
                     Update_mt(value);
                     break;
                 case "jv":     // json verbosity, [0=silent,1=footer,2=messages,3=configs,4=linenum,5=verbose]
-                    CommonBoardSettings.jv = value;
                     break;
                 case "js":     // json serialize style [0=relaxed,1=strict]
-                    CommonBoardSettings.js = value;
                     break;
                 case "tv":     // text verbosity [0=silent,1=verbose]
-                    CommonBoardSettings.tv = value;
                     break;
                 case "qv":     // queue report verbosity [0=off,1=single,2=triple]
-                    CommonBoardSettings.qv = value;
                     break;
                 case "sv":     // status report verbosity [0=off,1=filtered,2=verbose
-                    CommonBoardSettings.sv = value;
                     break;
                 case "si":   // status interval, in ms
-                    CommonBoardSettings.si = value;
                     break;
                 case "gun":    // default gcode units mode [0=G20,1=G21] (1=mm)
-                    CommonBoardSettings.gun = value;
                     break;
 
                 // ========== motor 1 ==========
                 case "1ma":        // map to axis [0=X,1=Y,2=Z...]
-                    CommonBoardSettings.motor1ma = value;
+                    TinyGBoard.motor1ma = value;
+                    qQuinticBoard.motor1ma = value;
                     break;
                 case "1sa":    // step angle, deg
+                    TinyGBoard.motor1sa = value;
+                    qQuinticBoard.motor1sa = value;
                     Update_1sa(value);
-                    CommonBoardSettings.motor1sa = value;
                     break;
                 case "1tr":  // travel per revolution, mm
+                    TinyGBoard.motor1tr = value;
+                    qQuinticBoard.motor1tr = value;
                     Update_1tr(value);
-                    CommonBoardSettings.motor1tr = value;
                     break;
                 case "1mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
+                    TinyGBoard.motor1mi = value;
+                    qQuinticBoard.motor1mi = value;
                     Update_1mi(value);
-                    CommonBoardSettings.motor1mi = value;
                     break;
                 case "1po":        // motor polarity [0=normal,1=reverse]
-                    CommonBoardSettings.motor1po = value;
+                    TinyGBoard.motor1po = value;
+                    qQuinticBoard.motor1po = value;
                     break;
                 case "1pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    CommonBoardSettings.motor1pm = value;
+                    TinyGBoard.motor1pm = value;
+                    qQuinticBoard.motor1pm = value;
                     break;
                 case "1pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticSettings.motor1pl = value;
+                    qQuinticBoard.motor1pl = value;
                     break;
 
                 // ========== motor 2 ==========
                 case "2ma":        // map to axis [0=X,1=Y,2=Z...]
-                    CommonBoardSettings.motor2ma = value;
+                    TinyGBoard.motor2ma = value;
+                    qQuinticBoard.motor2ma = value;
                     break;
                 case "2sa":    // step angle, deg
+                    TinyGBoard.motor2sa = value;
+                    qQuinticBoard.motor2sa = value;
                     Update_2sa(value);
-                    CommonBoardSettings.motor2sa = value;
                     break;
                 case "2tr":  // travel per revolution, mm
+                    TinyGBoard.motor2tr = value;
+                    qQuinticBoard.motor2tr = value;
                     Update_2tr(value);
-                    CommonBoardSettings.motor2tr = value;
                     break;
                 case "2mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
+                    TinyGBoard.motor2mi = value;
+                    qQuinticBoard.motor2mi = value;
                     Update_2mi(value);
-                    CommonBoardSettings.motor2mi = value;
                     break;
                 case "2po":        // motor polarity [0=normal,1=reverse]
-                    CommonBoardSettings.motor2po = value;
+                    TinyGBoard.motor2po = value;
+                    qQuinticBoard.motor2po = value;
                     break;
                 case "2pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    CommonBoardSettings.motor2pm = value;
+                    TinyGBoard.motor2pm = value;
+                    qQuinticBoard.motor2pm = value;
                     break;
                 case "2pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticSettings.motor2pl = value;
+                    qQuinticBoard.motor2pl = value;
                     break;
 
                 // ========== motor 3 ==========
                 case "3ma":        // map to axis [0=X,1=Y,2=Z...]
-                    CommonBoardSettings.motor3ma = value;
+                    TinyGBoard.motor3ma = value;
+                    qQuinticBoard.motor3ma = value;
                     break;
                 case "3sa":    // step angle, deg
+                    TinyGBoard.motor3sa = value;
+                    qQuinticBoard.motor3sa = value;
                     Update_3sa(value);
-                    CommonBoardSettings.motor3sa = value;
                     break;
                 case "3tr":  // travel per revolution, mm
+                    TinyGBoard.motor3tr = value;
+                    qQuinticBoard.motor3tr = value;
                     Update_3tr(value);
-                    CommonBoardSettings.motor3tr = value;
                     break;
                 case "3mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
+                    TinyGBoard.motor3mi = value;
+                    qQuinticBoard.motor3mi = value;
                     Update_3mi(value);
-                    CommonBoardSettings.motor3mi = value;
                     break;
                 case "3po":        // motor polarity [0=normal,1=reverse]
-                    CommonBoardSettings.motor3po = value;
+                    TinyGBoard.motor3po = value;
+                    qQuinticBoard.motor3po = value;
                     break;
                 case "3pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    CommonBoardSettings.motor3pm = value;
+                    TinyGBoard.motor3pm = value;
+                    qQuinticBoard.motor3pm = value;
                     break;
                 case "3pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticSettings.motor3pl = value;
+                    qQuinticBoard.motor3pl = value;
                     break;
 
                 // ========== motor 4 ==========
                 case "4ma":        // map to axis [0=X,1=Y,2=Z...]
-                    CommonBoardSettings.motor4ma = value;
+                    TinyGBoard.motor4ma = value;
+                    qQuinticBoard.motor4ma = value;
                     break;
                 case "4sa":    // step angle, deg
+                    TinyGBoard.motor4sa = value;
+                    qQuinticBoard.motor4sa = value;
                     Update_4sa(value);
-                    CommonBoardSettings.motor4sa = value;
                     break;
                 case "4tr":  // travel per revolution, mm
+                    TinyGBoard.motor4tr = value;
+                    qQuinticBoard.motor4tr = value;
                     Update_4tr(value);
-                    CommonBoardSettings.motor4tr = value;
                     break;
                 case "4mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
+                    TinyGBoard.motor4mi = value;
+                    qQuinticBoard.motor4mi = value;
                     Update_4mi(value);
-                    CommonBoardSettings.motor4mi = value;
                     break;
                 case "4po":        // motor polarity [0=normal,1=reverse]
-                    CommonBoardSettings.motor4po = value;
+                    TinyGBoard.motor4po = value;
+                    qQuinticBoard.motor4po = value;
                     break;
                 case "4pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    CommonBoardSettings.motor4pm = value;
+                    TinyGBoard.motor4pm = value;
+                    qQuinticBoard.motor4pm = value;
                     break;
                 case "4pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticSettings.motor4pl = value;
+                    qQuinticBoard.motor4pl = value;
                     break;
 
                 // ========== motor 5 (qQuintic only) ==========
                 case "5ma":
-                    qQuinticSettings.motor5ma = value;
+                    qQuinticBoard.motor5ma = value;
                     break;
                 case "5pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    qQuinticSettings.motor5pm = value;
+                    qQuinticBoard.motor5pm = value;
                     break;
                 case "5pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticSettings.motor5pl = value;
+                    qQuinticBoard.motor5pl = value;
                     break;
 
                 // ========== X axis ==========
                 case "xam":        // x axis mode, 1=standard
-                    CommonBoardSettings.xam = value;
+                    TinyGBoard.xam = value;
+                    qQuinticBoard.xam = value;
                     break;
                 case "xvm":    // x velocity maximum, mm/min
                     Update_xvm(value);
-                    CommonBoardSettings.xvm = value;
+                    TinyGBoard.xvm = value;
+                    qQuinticBoard.xvm = value;
                     break;
                 case "xfr":    // x feedrate maximum, mm/mi
-                    CommonBoardSettings.xfr = value;
+                    TinyGBoard.xfr = value;
+                    qQuinticBoard.xfr = value;
                     break;
                 case "xtn":        // x travel minimum, mm
-                    CommonBoardSettings.xtn = value;
+                    TinyGBoard.xtn = value;
+                    qQuinticBoard.xtn = value;
                     break;
                 case "xtm":      // x travel maximum, mm
-                    CommonBoardSettings.xtm = value;
+                    TinyGBoard.xtm = value;
+                    qQuinticBoard.xtm = value;
                     break;
                 case "xjm":     // x jerk maximum, mm/min^3 * 1 million
+                    TinyGBoard.xjm = value;
+                    qQuinticBoard.xjm = value;
                     Update_xjm(value);
-                    CommonBoardSettings.xjm = value;
                     break;
                 case "xjh":     // x jerk homing, mm/min^3 * 1 million
+                    TinyGBoard.xjh = value;
+                    qQuinticBoard.xjh = value;
                     Update_xjh(value);
-                    CommonBoardSettings.xjh = value;
                     break;
                 case "xsv":     // x search velocity, mm/min
+                    TinyGBoard.xsv = value;
+                    qQuinticBoard.xsv = value;
                     Update_xsv(value);
-                    CommonBoardSettings.xsv = value;
                     break;
                 case "xlv":      // x latch velocity, mm/min
-                    CommonBoardSettings.xlv = value;
+                    TinyGBoard.xlv = value;
+                    qQuinticBoard.xlv = value;
                     break;
                 case "xlb":        // x latch backoff, mm
-                    CommonBoardSettings.xlb = value;
+                    TinyGBoard.xlb = value;
+                    qQuinticBoard.xlb = value;
                     break;
                 case "xzb":        // x zero backoff, mm
-                    CommonBoardSettings.xzb = value;
+                    TinyGBoard.xzb = value;
+                    qQuinticBoard.xzb = value;
                     break;
 
                 // ========== Y axis ==========
                 case "yam":        // y axis mode, 1=standard
-                    CommonBoardSettings.yam = value;
+                    TinyGBoard.yam = value;
+                    qQuinticBoard.yam = value;
                     break;
                 case "yvm":    // y velocity maximum, mm/min
                     Update_yvm(value);
-                    CommonBoardSettings.yvm = value;
+                    TinyGBoard.yvm = value;
+                    qQuinticBoard.yvm = value;
                     break;
                 case "yfr":    // y feedrate maximum, mm/min
-                    CommonBoardSettings.yfr = value;
+                    TinyGBoard.yfr = value;
+                    qQuinticBoard.yfr = value;
                     break;
                 case "ytn":        // y travel minimum, mm
-                    CommonBoardSettings.ytn = value;
+                    TinyGBoard.ytn = value;
+                    qQuinticBoard.ytn = value;
                     break;
                 case "ytm":      // y travel mayimum, mm
-                    CommonBoardSettings.ytm = value;
+                    TinyGBoard.ytm = value;
+                    qQuinticBoard.ytm = value;
                     break;
                 case "yjm":     // y jerk maximum, mm/min^3 * 1 million
+                    TinyGBoard.yjm = value;
+                    qQuinticBoard.yjm = value;
                     Update_yjm(value);
-                    CommonBoardSettings.yjm = value;
                     break;
                 case "yjh":     // y jerk homing, mm/min^3 * 1 million
+                    TinyGBoard.yjh = value;
+                    qQuinticBoard.yjh = value;
                     Update_yjh(value);
-                    CommonBoardSettings.yjh = value;
                     break;
                 case "ysv":     // y search velocity, mm/min
+                    TinyGBoard.ysv = value;
+                    qQuinticBoard.ysv = value;
                     Update_ysv(value);
-                    CommonBoardSettings.ysv = value;
                     break;
                 case "ylv":      // y latch velocity, mm/min
-                    CommonBoardSettings.ylv = value;
+                    TinyGBoard.ylv = value;
+                    qQuinticBoard.ylv = value;
                     break;
                 case "ylb":        // y latch backoff, mm
-                    CommonBoardSettings.ylb = value;
+                    TinyGBoard.ylb = value;
+                    qQuinticBoard.ylb = value;
                     break;
                 case "yzb":        // y zero backoff, mm
-                    CommonBoardSettings.yzb = value;
+                    TinyGBoard.yzb = value;
+                    qQuinticBoard.yzb = value;
                     break;
 
                 // ========== Z axis ==========
                 case "zam":        // z axis mode, 1=standard
-                    CommonBoardSettings.zam = value;
+                    TinyGBoard.zam = value;
+                    qQuinticBoard.zam = value;
                     break;
                 case "zvm":     // z velocity maximum, mm/min
                     Update_zvm(value);
-                    CommonBoardSettings.zvm = value;
+                    TinyGBoard.zvm = value;
+                    qQuinticBoard.zvm = value;
                     break;
                 case "zfr":     // z feedrate maximum, mm/min
-                    CommonBoardSettings.zfr = value;
+                    TinyGBoard.zfr = value;
+                    qQuinticBoard.zfr = value;
                     break;
                 case "ztn":        // z travel minimum, mm
-                    CommonBoardSettings.ztn = value;
+                    TinyGBoard.ztn = value;
+                    qQuinticBoard.ztn = value;
                     break;
                 case "ztm":       // z travel mazimum, mm
-                    CommonBoardSettings.ztm = value;
+                    TinyGBoard.ztm = value;
+                    qQuinticBoard.ztm = value;
                     break;
                 case "zjm":      // z jerk mazimum, mm/min^3 * 1 million
+                    TinyGBoard.zjm = value;
+                    qQuinticBoard.zjm = value;
                     Update_zjm(value);
-                    CommonBoardSettings.zjm = value;
                     break;
                 case "zjh":      // z jerk homing, mm/min^3 * 1 million
+                    TinyGBoard.zjh = value;
+                    qQuinticBoard.zjh = value;
                     Update_zjh(value);
-                    CommonBoardSettings.zjh = value;
                     break;
                 case "zsv":     // z search velocity, mm/min
+                    TinyGBoard.zsv = value;
+                    qQuinticBoard.zsv = value;
                     Update_zsv(value);
-                    CommonBoardSettings.zsv = value;
                     break;
                 case "zlv":      // z latch velocity, mm/min
-                    CommonBoardSettings.zlv = value;
+                    TinyGBoard.zlv = value;
+                    qQuinticBoard.zlv = value;
                     break;
                 case "zlb":        // z latch backoff, mm
-                    CommonBoardSettings.zlb = value;
+                    TinyGBoard.zlb = value;
+                    qQuinticBoard.zlb = value;
                     break;
                 case "zzb":        // z zero backoff, mm
-                    CommonBoardSettings.zzb = value;
+                    TinyGBoard.zzb = value;
+                    qQuinticBoard.zzb = value;
                     break;
 
                 // ========== A axis ==========
                 case "aam":        // a axis mode, 1=standard
-                    CommonBoardSettings.aam = value;
+                    TinyGBoard.aam = value;
+                    qQuinticBoard.aam = value;
                     break;
                 case "avm":    // a velocity maximum, mm/min
+                    TinyGBoard.avm = value;
+                    qQuinticBoard.avm = value;
                     Update_avm(value);
-                    CommonBoardSettings.avm = value;
                     break;
                 case "afr":   // a feedrate maximum, mm/min
-                    CommonBoardSettings.afr = value;
+                    TinyGBoard.afr = value;
+                    qQuinticBoard.afr = value;
                     break;
                 case "atn":        // a travel minimum, mm
-                    CommonBoardSettings.atn = value;
+                    TinyGBoard.atn = value;
+                    qQuinticBoard.atn = value;
                     break;
                 case "atm":      // a travel maximum, mm
-                    CommonBoardSettings.atm = value;
+                    TinyGBoard.atm = value;
+                    qQuinticBoard.atm = value;
                     break;
                 case "ajm":     // a jerk maximum, mm/min^3 * 1 million
+                    TinyGBoard.ajm = value;
+                    qQuinticBoard.ajm = value;
                     Update_ajm(value);
-                    CommonBoardSettings.ajm = value;
                     break;
                 case "ajh":     // a jerk homing, mm/min^3 * 1 million
-                    CommonBoardSettings.ajh = value;
+                    TinyGBoard.ajh = value;
+                    qQuinticBoard.ajh = value;
                     break;
                 case "asv":     // a search velocity, mm/min
-                    CommonBoardSettings.asv = value;
+                    TinyGBoard.asv = value;
+                    qQuinticBoard.asv = value;
                     break;
 
 
                 // ========== TinyG switch values ==========
                 case "xsn":   // x switch min [0=off,1=homing,2=limit,3=limit+homing];
+                    TinyGBoard.xsn = value;
                     Update_xsn(value);
-                    TinyGSettings.xsn = value;
                     break;
                 case "xsx":   // x switch max [0=off,1=homing,2=limit,3=limit+homing];
+                    TinyGBoard.xsx = value;
                     Update_xsx(value);
-                    TinyGSettings.xsx = value;
                     break;
                 case "ysn":   // y switch min [0=off,1=homing,2=limit,3=limit+homing];
+                    TinyGBoard.ysn = value;
                     Update_ysn(value);
-                    TinyGSettings.ysn = value;
                     break;
                 case "ysx":   // y switch max [0=off,1=homing,2=limit,3=limit+homing];
+                    TinyGBoard.ysx = value;
                     Update_ysx(value);
-                    TinyGSettings.ysx = value;
                     break;
                 case "zsn":   // z switch min [0=off,1=homing,2=limit,3=limit+homing];
+                    TinyGBoard.zsn = value;
                     Update_zsn(value);
-                    TinyGSettings.zsn = value;
                     break;
                 case "zsx":   // z switch max [0=off,1=homing,2=limit,3=limit+homing];
+                    TinyGBoard.zsx = value;
                     Update_zsx(value);
-                    TinyGSettings.zsx = value;
                     break;
                 case "asn":   // a switch min [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGSettings.asn = value;
+                    TinyGBoard.asn = value;
                     break;
                 case "asx":   // a switch max [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGSettings.asx = value;
+                    TinyGBoard.asx = value;
                     break;
 
                 // ========== qQuintic switch values ==========
                 case "xhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticSettings.xhi = value;
+                    qQuinticBoard.xhi = value;
                     break;
                 case "xhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
-                    qQuinticSettings.xhd = value;
+                    qQuinticBoard.xhd = value;
                     break;
                 case "yhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticSettings.yhi = value;
+                    qQuinticBoard.yhi = value;
                     break;
                 case "yhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
-                    qQuinticSettings.yhd = value;
+                    qQuinticBoard.yhd = value;
                     break;
                 case "zhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticSettings.zhi = value;
+                    qQuinticBoard.zhi = value;
                     break;
                 case "zhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
-                    qQuinticSettings.zhd = value;
+                    qQuinticBoard.zhd = value;
                     break;
                 case "ahi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticSettings.ahi = value;
+                    qQuinticBoard.ahi = value;
                     break;
                 case "bhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticSettings.bhi = value;
+                    qQuinticBoard.bhi = value;
                     break;
 
                 // Hardware platform
@@ -7633,7 +7702,7 @@ namespace LitePlacer
             }
             if (!DoSomething)
             {
-                DisplayText("Selected component(s) already placed.",KnownColor.DarkRed);
+                DisplayText("Selected component(s) already placed.", KnownColor.DarkRed);
                 return;
             }
 
@@ -14699,42 +14768,11 @@ namespace LitePlacer
 
             if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                BoardSettings.Save(CommonBoardSettings, TinyGSettings, qQuinticSettings, AppSettings_saveFileDialog.FileName);
+                BoardSettings.Save(TinyGBoard, qQuinticBoard, AppSettings_saveFileDialog.FileName);
             }
         }
 
-
-        private bool WriteBoardSettings_m<T>(T parameters)
-        {
-            string Value;
-            string Name;
-            string dbg;
-            foreach (var field in typeof(T).GetFields())
-            {
-                // The motor parameters are <motor number><parameter>, such as 1ma, 1sa, 1tr etc.
-                // These are not valid parameter names, so motor1ma, motor1sa etc are used.
-                // to retrieve the values, we remove the "motor"
-                Name = field.Name;
-                FieldInfo fld = typeof(T).GetField(Name);
-                Value = fld.GetValue(parameters).ToString();
-                if (Name.StartsWith("motor"))
-                {
-                    Name = Name.Substring(5);
-                }
-                dbg = "{\"" + Name + "\":" + Value + "}";
-                DisplayText("write: " + dbg);
-                if (!CNC_Write_m(dbg))
-                {
-                    return false;
-                };
-                if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
-                {
-                    Thread.Sleep(50);
-                }
-            }
-            return true;
-        }
-
+        // ===================================================================================
         private void BoardSettingsLoad_button_Click(object sender, EventArgs e)
         {
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
@@ -14747,7 +14785,7 @@ namespace LitePlacer
 
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if(!BoardSettings.Load(ref CommonBoardSettings, ref TinyGSettings, ref qQuinticSettings, AppSettings_openFileDialog.FileName))
+                if(!BoardSettings.Load(ref TinyGBoard, ref qQuinticBoard, AppSettings_openFileDialog.FileName))
                 {
                     return;
                 }
@@ -14755,41 +14793,249 @@ namespace LitePlacer
             }
         }
 
-
         private void BoardBuiltInSettings_button_Click(object sender, EventArgs e)
         {
-            CommonBoardSettings = new BoardSettings.Common();
-            TinyGSettings = new BoardSettings.TinyG();
-            qQuinticSettings = new BoardSettings.qQuintic();
+            TinyGBoard = new BoardSettings.TinyG();
+            qQuinticBoard = new BoardSettings.qQuintic();
             WriteAllBoardSettings_m();
         }
 
         private void WriteAllBoardSettings_m()
         {
-            bool res = WriteBoardSettings_m(CommonBoardSettings);
-            if (res)
+            bool res = true;
+            DialogResult dialogResult;
+            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
             {
-                if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+                dialogResult = ShowMessageBox(
+                   "Settings currently stored on board of your TinyG will be permanently lost,\n" +
+                   "if you haven't stored a backup copy.\n" +
+                   "Continue?",
+                   "Overwrite current settings?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No)
                 {
-                    res = WriteBoardSettings_m(TinyGSettings);
+                    return;
                 }
-                else
-                {
-                    res = WriteBoardSettings_m(qQuinticSettings);
-                }
-            }
-            if (res)
-            {
-                DisplayText("Board settings loaded.");
+                res = WriteTinyGSettings();
             }
             else
             {
+                res = WriteqQuinticSettings();
+            }
+            if (!res)
+            {
+                DisplayText("Writing settings failed.");
                 ShowMessageBox(
-                    "Problem loading board settings. Board is in undefined state, fix the problem before continuing!",
+                    "Problem writing board settings. Board is in undefined state, fix the problem before continuing!",
                     "Settings not loaded",
                     MessageBoxButtons.OK);
             }
         }
+
+        // =============
+        private bool WriteSetting(string setting, string value, bool delay)
+        {
+            string dbg = "{\"" + setting + "\":" + value + "}";
+            DisplayText("write: " + dbg);
+            if (!CNC_Write_m(dbg))
+            {
+                return false;
+            };
+            if (delay)
+            {
+                Thread.Sleep(50);
+            }
+            return true;
+        }
+
+
+        private bool WriteTinyGSettings()
+        {
+            DisplayText("Writing settings to TinyG board.");
+            if (!WriteSetting("st", TinyGBoard.st, true)) return false;
+            if (!WriteSetting("mt", TinyGBoard.mt, true)) return false;
+            if (!WriteSetting("jv", TinyGBoard.jv, true)) return false;
+            if (!WriteSetting("js", TinyGBoard.js, true)) return false;
+            if (!WriteSetting("tv", TinyGBoard.tv, true)) return false;
+            if (!WriteSetting("qv", TinyGBoard.qv, true)) return false;
+            if (!WriteSetting("sv", TinyGBoard.sv, true)) return false;
+            if (!WriteSetting("si", TinyGBoard.si, true)) return false;
+            if (!WriteSetting("gun", TinyGBoard.gun, true)) return false;
+            if (!WriteSetting("1ma", TinyGBoard.motor1ma, true)) return false;
+            if (!WriteSetting("1sa", TinyGBoard.motor1sa, true)) return false;
+            if (!WriteSetting("1tr", TinyGBoard.motor1tr, true)) return false;
+            if (!WriteSetting("1mi", TinyGBoard.motor1mi, true)) return false;
+            if (!WriteSetting("1po", TinyGBoard.motor1po, true)) return false;
+            if (!WriteSetting("1pm", TinyGBoard.motor1pm, true)) return false;
+            if (!WriteSetting("2ma", TinyGBoard.motor2ma, true)) return false;
+            if (!WriteSetting("2sa", TinyGBoard.motor2sa, true)) return false;
+            if (!WriteSetting("2tr", TinyGBoard.motor2tr, true)) return false;
+            if (!WriteSetting("2mi", TinyGBoard.motor2mi, true)) return false;
+            if (!WriteSetting("2po", TinyGBoard.motor2po, true)) return false;
+            if (!WriteSetting("2pm", TinyGBoard.motor2pm, true)) return false;
+            if (!WriteSetting("3ma", TinyGBoard.motor3ma, true)) return false;
+            if (!WriteSetting("3sa", TinyGBoard.motor3sa, true)) return false;
+            if (!WriteSetting("3tr", TinyGBoard.motor3tr, true)) return false;
+            if (!WriteSetting("3mi", TinyGBoard.motor3mi, true)) return false;
+            if (!WriteSetting("3po", TinyGBoard.motor3po, true)) return false;
+            if (!WriteSetting("3pm", TinyGBoard.motor3pm, true)) return false;
+            if (!WriteSetting("4ma", TinyGBoard.motor4ma, true)) return false;
+            if (!WriteSetting("4sa", TinyGBoard.motor4sa, true)) return false;
+            if (!WriteSetting("4tr", TinyGBoard.motor4tr, true)) return false;
+            if (!WriteSetting("4mi", TinyGBoard.motor4mi, true)) return false;
+            if (!WriteSetting("4po", TinyGBoard.motor4po, true)) return false;
+            if (!WriteSetting("4pm", TinyGBoard.motor4pm, true)) return false;
+            if (!WriteSetting("xam", TinyGBoard.xam, true)) return false;
+            if (!WriteSetting("xvm", TinyGBoard.xvm, true)) return false;
+            if (!WriteSetting("xfr", TinyGBoard.xfr, true)) return false;
+            if (!WriteSetting("xtn", TinyGBoard.xtn, true)) return false;
+            if (!WriteSetting("xtm", TinyGBoard.xtm, true)) return false;
+            if (!WriteSetting("xjm", TinyGBoard.xjm, true)) return false;
+            if (!WriteSetting("xjh", TinyGBoard.xjh, true)) return false;
+            if (!WriteSetting("xsv", TinyGBoard.xsv, true)) return false;
+            if (!WriteSetting("xlv", TinyGBoard.xlv, true)) return false;
+            if (!WriteSetting("xlb", TinyGBoard.xlb, true)) return false;
+            if (!WriteSetting("xzb", TinyGBoard.xzb, true)) return false;
+            if (!WriteSetting("yam", TinyGBoard.yam, true)) return false;
+            if (!WriteSetting("yvm", TinyGBoard.yvm, true)) return false;
+            if (!WriteSetting("yfr", TinyGBoard.yfr, true)) return false;
+            if (!WriteSetting("ytn", TinyGBoard.ytn, true)) return false;
+            if (!WriteSetting("ytm", TinyGBoard.ytm, true)) return false;
+            if (!WriteSetting("yjm", TinyGBoard.yjm, true)) return false;
+            if (!WriteSetting("yjh", TinyGBoard.yjh, true)) return false;
+            if (!WriteSetting("ysv", TinyGBoard.ysv, true)) return false;
+            if (!WriteSetting("ylv", TinyGBoard.ylv, true)) return false;
+            if (!WriteSetting("ylb", TinyGBoard.ylb, true)) return false;
+            if (!WriteSetting("yzb", TinyGBoard.yzb, true)) return false;
+            if (!WriteSetting("zam", TinyGBoard.zam, true)) return false;
+            if (!WriteSetting("zvm", TinyGBoard.zvm, true)) return false;
+            if (!WriteSetting("zfr", TinyGBoard.zfr, true)) return false;
+            if (!WriteSetting("ztn", TinyGBoard.ztn, true)) return false;
+            if (!WriteSetting("ztm", TinyGBoard.ztm, true)) return false;
+            if (!WriteSetting("zjm", TinyGBoard.zjm, true)) return false;
+            if (!WriteSetting("zjh", TinyGBoard.zjh, true)) return false;
+            if (!WriteSetting("zsv", TinyGBoard.zsv, true)) return false;
+            if (!WriteSetting("zlv", TinyGBoard.zlv, true)) return false;
+            if (!WriteSetting("zlb", TinyGBoard.zlb, true)) return false;
+            if (!WriteSetting("zzb", TinyGBoard.zzb, true)) return false;
+            if (!WriteSetting("aam", TinyGBoard.aam, true)) return false;
+            if (!WriteSetting("avm", TinyGBoard.avm, true)) return false;
+            if (!WriteSetting("afr", TinyGBoard.afr, true)) return false;
+            if (!WriteSetting("atn", TinyGBoard.atn, true)) return false;
+            if (!WriteSetting("atm", TinyGBoard.atm, true)) return false;
+            if (!WriteSetting("ajm", TinyGBoard.ajm, true)) return false;
+            if (!WriteSetting("ajh", TinyGBoard.ajh, true)) return false;
+            if (!WriteSetting("asv", TinyGBoard.asv, true)) return false;
+            if (!WriteSetting("ec", TinyGBoard.ec, true)) return false;
+            if (!WriteSetting("ee", TinyGBoard.ee, true)) return false;
+            if (!WriteSetting("ex", TinyGBoard.ex, true)) return false;
+            if (!WriteSetting("xsn", TinyGBoard.xsn, true)) return false;
+            if (!WriteSetting("xsx", TinyGBoard.xsx, true)) return false;
+            if (!WriteSetting("ysn", TinyGBoard.ysn, true)) return false;
+            if (!WriteSetting("ysx", TinyGBoard.ysx, true)) return false;
+            if (!WriteSetting("zsn", TinyGBoard.zsn, true)) return false;
+            if (!WriteSetting("zsx", TinyGBoard.zsx, true)) return false;
+            if (!WriteSetting("asn", TinyGBoard.asn, true)) return false;
+            if (!WriteSetting("asx", TinyGBoard.asx, true)) return false;
+            return true;
+        }
+
+        private bool WriteqQuinticSettings()
+        {
+            DisplayText("Writing settings to qQuintic board.");
+            if (!WriteSetting("st", TinyGBoard.st, false)) return false;
+            if (!WriteSetting("mt", qQuinticBoard.mt, false)) return false;
+            if (!WriteSetting("jv", qQuinticBoard.jv, false)) return false;
+            if (!WriteSetting("js", qQuinticBoard.js, false)) return false;
+            if (!WriteSetting("tv", qQuinticBoard.tv, false)) return false;
+            if (!WriteSetting("qv", qQuinticBoard.qv, false)) return false;
+            if (!WriteSetting("sv", qQuinticBoard.sv, false)) return false;
+            if (!WriteSetting("si", qQuinticBoard.si, false)) return false;
+            if (!WriteSetting("gun", qQuinticBoard.gun, false)) return false;
+            if (!WriteSetting("1ma", qQuinticBoard.motor1ma, false)) return false;
+            if (!WriteSetting("1sa", qQuinticBoard.motor1sa, false)) return false;
+            if (!WriteSetting("1tr", qQuinticBoard.motor1tr, false)) return false;
+            if (!WriteSetting("1mi", qQuinticBoard.motor1mi, false)) return false;
+            if (!WriteSetting("1po", qQuinticBoard.motor1po, false)) return false;
+            if (!WriteSetting("1pm", qQuinticBoard.motor1pm, false)) return false;
+            if (!WriteSetting("2ma", qQuinticBoard.motor2ma, false)) return false;
+            if (!WriteSetting("2sa", qQuinticBoard.motor2sa, false)) return false;
+            if (!WriteSetting("2tr", qQuinticBoard.motor2tr, false)) return false;
+            if (!WriteSetting("2mi", qQuinticBoard.motor2mi, false)) return false;
+            if (!WriteSetting("2po", qQuinticBoard.motor2po, false)) return false;
+            if (!WriteSetting("2pm", qQuinticBoard.motor2pm, false)) return false;
+            if (!WriteSetting("3ma", qQuinticBoard.motor3ma, false)) return false;
+            if (!WriteSetting("3sa", qQuinticBoard.motor3sa, false)) return false;
+            if (!WriteSetting("3tr", qQuinticBoard.motor3tr, false)) return false;
+            if (!WriteSetting("3mi", qQuinticBoard.motor3mi, false)) return false;
+            if (!WriteSetting("3po", qQuinticBoard.motor3po, false)) return false;
+            if (!WriteSetting("3pm", qQuinticBoard.motor3pm, false)) return false;
+            if (!WriteSetting("4ma", qQuinticBoard.motor4ma, false)) return false;
+            if (!WriteSetting("4sa", qQuinticBoard.motor4sa, false)) return false;
+            if (!WriteSetting("4tr", qQuinticBoard.motor4tr, false)) return false;
+            if (!WriteSetting("4mi", qQuinticBoard.motor4mi, false)) return false;
+            if (!WriteSetting("4po", qQuinticBoard.motor4po, false)) return false;
+            if (!WriteSetting("4pm", qQuinticBoard.motor4pm, false)) return false;
+            if (!WriteSetting("xam", qQuinticBoard.xam, false)) return false;
+            if (!WriteSetting("xvm", qQuinticBoard.xvm, false)) return false;
+            if (!WriteSetting("xfr", qQuinticBoard.xfr, false)) return false;
+            if (!WriteSetting("xtn", qQuinticBoard.xtn, false)) return false;
+            if (!WriteSetting("xtm", qQuinticBoard.xtm, false)) return false;
+            if (!WriteSetting("xjm", qQuinticBoard.xjm, false)) return false;
+            if (!WriteSetting("xjh", qQuinticBoard.xjh, false)) return false;
+            if (!WriteSetting("xsv", qQuinticBoard.xsv, false)) return false;
+            if (!WriteSetting("xlv", qQuinticBoard.xlv, false)) return false;
+            if (!WriteSetting("xlb", qQuinticBoard.xlb, false)) return false;
+            if (!WriteSetting("xzb", qQuinticBoard.xzb, false)) return false;
+            if (!WriteSetting("yam", qQuinticBoard.yam, false)) return false;
+            if (!WriteSetting("yvm", qQuinticBoard.yvm, false)) return false;
+            if (!WriteSetting("yfr", qQuinticBoard.yfr, false)) return false;
+            if (!WriteSetting("ytn", qQuinticBoard.ytn, false)) return false;
+            if (!WriteSetting("ytm", qQuinticBoard.ytm, false)) return false;
+            if (!WriteSetting("yjm", qQuinticBoard.yjm, false)) return false;
+            if (!WriteSetting("yjh", qQuinticBoard.yjh, false)) return false;
+            if (!WriteSetting("ysv", qQuinticBoard.ysv, false)) return false;
+            if (!WriteSetting("ylv", qQuinticBoard.ylv, false)) return false;
+            if (!WriteSetting("ylb", qQuinticBoard.ylb, false)) return false;
+            if (!WriteSetting("yzb", qQuinticBoard.yzb, false)) return false;
+            if (!WriteSetting("zam", qQuinticBoard.zam, false)) return false;
+            if (!WriteSetting("zvm", qQuinticBoard.zvm, false)) return false;
+            if (!WriteSetting("zfr", qQuinticBoard.zfr, false)) return false;
+            if (!WriteSetting("ztn", qQuinticBoard.ztn, false)) return false;
+            if (!WriteSetting("ztm", qQuinticBoard.ztm, false)) return false;
+            if (!WriteSetting("zjm", qQuinticBoard.zjm, false)) return false;
+            if (!WriteSetting("zjh", qQuinticBoard.zjh, false)) return false;
+            if (!WriteSetting("zsv", qQuinticBoard.zsv, false)) return false;
+            if (!WriteSetting("zlv", qQuinticBoard.zlv, false)) return false;
+            if (!WriteSetting("zlb", qQuinticBoard.zlb, false)) return false;
+            if (!WriteSetting("zzb", qQuinticBoard.zzb, false)) return false;
+            if (!WriteSetting("aam", qQuinticBoard.aam, false)) return false;
+            if (!WriteSetting("avm", qQuinticBoard.avm, false)) return false;
+            if (!WriteSetting("afr", qQuinticBoard.afr, false)) return false;
+            if (!WriteSetting("atn", qQuinticBoard.atn, false)) return false;
+            if (!WriteSetting("atm", qQuinticBoard.atm, false)) return false;
+            if (!WriteSetting("ajm", qQuinticBoard.ajm, false)) return false;
+            if (!WriteSetting("ajh", qQuinticBoard.ajh, false)) return false;
+            if (!WriteSetting("asv", qQuinticBoard.asv, false)) return false;
+            if (!WriteSetting("1pl", qQuinticBoard.motor1pl, false)) return false;
+            if (!WriteSetting("2pl", qQuinticBoard.motor2pl, false)) return false;
+            if (!WriteSetting("3pl", qQuinticBoard.motor3pl, false)) return false;
+            if (!WriteSetting("4pl", qQuinticBoard.motor4pl, false)) return false;
+            if (!WriteSetting("5pl", qQuinticBoard.motor5pl, false)) return false;
+            if (!WriteSetting("5ma", qQuinticBoard.motor5ma, false)) return false;
+            if (!WriteSetting("5pm", qQuinticBoard.motor5pm, false)) return false;
+            if (!WriteSetting("xhi", qQuinticBoard.xhi, false)) return false;
+            if (!WriteSetting("xhd", qQuinticBoard.xhd, false)) return false;
+            if (!WriteSetting("yhi", qQuinticBoard.yhi, false)) return false;
+            if (!WriteSetting("yhd", qQuinticBoard.yhd, false)) return false;
+            if (!WriteSetting("zhi", qQuinticBoard.zhi, false)) return false;
+            if (!WriteSetting("zhd", qQuinticBoard.zhd, false)) return false;
+            if (!WriteSetting("ahi", qQuinticBoard.ahi, false)) return false;
+            if (!WriteSetting("bhi", qQuinticBoard.bhi, false)) return false;
+            return true;
+        }
+        // ===================================================================================
+
+
 
     }	// end of: 	public partial class FormMain : Form
 
