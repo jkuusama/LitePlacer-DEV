@@ -49,3 +49,9 @@ Temporary Items
 .apdisk
 *.suo
 *.suo
+
+*.lock
+
+\.vs/LitePlacer/v15/sqlite3/
+
+\.vs/LitePlacer/v15/Server/sqlite3/
