@@ -4252,7 +4252,11 @@ namespace LitePlacer
                     Cnc.ErrorState = false;
                     Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                     UpdateCncConnectionStatus();
-                    if (!ControlBoardJustConnected())
+                    if (ControlBoardJustConnected())
+                    {
+                        OfferHoming();
+                    }
+                    else
                     {
                         CncError();
                     }
@@ -4360,7 +4364,7 @@ namespace LitePlacer
                 {
                     return false;
                 };
-                Thread.Sleep(500);
+                //Thread.Sleep(500);
             }
             return true;
         }
@@ -4385,7 +4389,11 @@ namespace LitePlacer
                 Thread.Sleep(50);   // TinyG wakeup
 
             }
-
+            // initial position
+            if (!CNC_Write_m("{\"sr\":\"\""))
+            {
+                return false;
+            }
             if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
             {
                 DisplayText("Reading TinyG settings:");
@@ -6415,6 +6423,7 @@ namespace LitePlacer
         {
             Setting.General_Mark1X = Cnc.CurrentX;
             Setting.General_Mark1Y = Cnc.CurrentY;
+            Setting.General_Mark1A = Cnc.CurrentA;
             Setting.General_Mark1Name = Mark1_textBox.Text;
             Bookmark1_button.Text = Setting.General_Mark1Name;
         }
@@ -6423,6 +6432,7 @@ namespace LitePlacer
         {
             Setting.General_Mark2X = Cnc.CurrentX;
             Setting.General_Mark2Y = Cnc.CurrentY;
+            Setting.General_Mark2A = Cnc.CurrentA;
             Setting.General_Mark2Name = Mark2_textBox.Text;
             Bookmark2_button.Text = Setting.General_Mark2Name;
         }
@@ -6431,6 +6441,7 @@ namespace LitePlacer
         {
             Setting.General_Mark3X = Cnc.CurrentX;
             Setting.General_Mark3Y = Cnc.CurrentY;
+            Setting.General_Mark3A = Cnc.CurrentA;
             Setting.General_Mark3Name = Mark3_textBox.Text;
             Bookmark3_button.Text = Setting.General_Mark3Name;
         }
@@ -6439,6 +6450,7 @@ namespace LitePlacer
         {
             Setting.General_Mark4X = Cnc.CurrentX;
             Setting.General_Mark4Y = Cnc.CurrentY;
+            Setting.General_Mark4A = Cnc.CurrentA;
             Setting.General_Mark4Name = Mark4_textBox.Text;
             Bookmark4_button.Text = Setting.General_Mark4Name;
         }
@@ -6447,6 +6459,7 @@ namespace LitePlacer
         {
             Setting.General_Mark5X = Cnc.CurrentX;
             Setting.General_Mark5Y = Cnc.CurrentY;
+            Setting.General_Mark5A = Cnc.CurrentA;
             Setting.General_Mark5Name = Mark5_textBox.Text;
             Bookmark5_button.Text = Setting.General_Mark5Name;
         }
@@ -6455,6 +6468,7 @@ namespace LitePlacer
         {
             Setting.General_Mark6X = Cnc.CurrentX;
             Setting.General_Mark6Y = Cnc.CurrentY;
+            Setting.General_Mark6A = Cnc.CurrentA;
             Setting.General_Mark6Name = Mark6_textBox.Text;
             Bookmark6_button.Text = Setting.General_Mark6Name;
         }
@@ -6465,9 +6479,10 @@ namespace LitePlacer
             {
                 Setting.General_Mark1X = Cnc.CurrentX;
                 Setting.General_Mark1Y = Cnc.CurrentY;
+                Setting.General_Mark1A = Cnc.CurrentA;
                 return;
             };
-            CNC_XY_m(Setting.General_Mark1X, Setting.General_Mark1Y);
+            CNC_XYA_m(Setting.General_Mark1X, Setting.General_Mark1Y, Setting.General_Mark1A);
         }
 
         private void Bookmark2_button_Click(object sender, EventArgs e)
@@ -6476,9 +6491,10 @@ namespace LitePlacer
             {
                 Setting.General_Mark2X = Cnc.CurrentX;
                 Setting.General_Mark2Y = Cnc.CurrentY;
+                Setting.General_Mark2A = Cnc.CurrentA;
                 return;
             };
-            CNC_XY_m(Setting.General_Mark2X, Setting.General_Mark2Y);
+            CNC_XYA_m(Setting.General_Mark2X, Setting.General_Mark2Y, Setting.General_Mark2A);
         }
 
         private void Bookmark3_button_Click(object sender, EventArgs e)
@@ -6487,9 +6503,10 @@ namespace LitePlacer
             {
                 Setting.General_Mark3X = Cnc.CurrentX;
                 Setting.General_Mark3Y = Cnc.CurrentY;
+                Setting.General_Mark3A = Cnc.CurrentA;
                 return;
             };
-            CNC_XY_m(Setting.General_Mark3X, Setting.General_Mark3Y);
+            CNC_XYA_m(Setting.General_Mark3X, Setting.General_Mark3Y, Setting.General_Mark3A);
         }
 
         private void Bookmark4_button_Click(object sender, EventArgs e)
@@ -6498,9 +6515,10 @@ namespace LitePlacer
             {
                 Setting.General_Mark4X = Cnc.CurrentX;
                 Setting.General_Mark4Y = Cnc.CurrentY;
+                Setting.General_Mark4A = Cnc.CurrentA;
                 return;
             };
-            CNC_XY_m(Setting.General_Mark4X, Setting.General_Mark4Y);
+            CNC_XYA_m(Setting.General_Mark4X, Setting.General_Mark4Y, Setting.General_Mark4A);
         }
 
         private void Bookmark5_button_Click(object sender, EventArgs e)
@@ -6509,9 +6527,10 @@ namespace LitePlacer
             {
                 Setting.General_Mark5X = Cnc.CurrentX;
                 Setting.General_Mark5Y = Cnc.CurrentY;
+                Setting.General_Mark5A = Cnc.CurrentA;
                 return;
             };
-            CNC_XY_m(Setting.General_Mark5X, Setting.General_Mark5Y);
+            CNC_XYA_m(Setting.General_Mark5X, Setting.General_Mark5Y, Setting.General_Mark5A);
         }
 
         private void Bookmark6_button_Click(object sender, EventArgs e)
@@ -6520,9 +6539,10 @@ namespace LitePlacer
             {
                 Setting.General_Mark6X = Cnc.CurrentX;
                 Setting.General_Mark6Y = Cnc.CurrentY;
+                Setting.General_Mark6A = Cnc.CurrentA;
                 return;
             };
-            CNC_XY_m(Setting.General_Mark6X, Setting.General_Mark6Y);
+            CNC_XYA_m(Setting.General_Mark6X, Setting.General_Mark6Y, Setting.General_Mark6A);
         }
 
         private void SmallMovement_numericUpDown_ValueChanged(object sender, EventArgs e)
@@ -13208,12 +13228,22 @@ namespace LitePlacer
 
         private void gotoStartPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (ContextmenuLoadNozzle==0)
+            {
+                DisplayText("Goto load start - heaqder click, ignored", KnownColor.DarkGreen);
+                return;
+            }
             DisplayText("Goto load start", KnownColor.DarkGreen);
             m_NozzleGotoStart(NozzlesLoad_dataGridView, ContextmenuLoadNozzle);
         }
 
         private void gotoUnloadStartToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (ContextmenuUnloadNozzle == 0)
+            {
+                DisplayText("Goto unload start - heaqder click, ignored", KnownColor.DarkGreen);
+                return;
+            }
             DisplayText("Goto unload start", KnownColor.DarkGreen);
             m_NozzleGotoStart(NozzlesUnload_dataGridView, ContextmenuUnloadNozzle);
         }
@@ -13926,6 +13956,7 @@ namespace LitePlacer
                 DisplayText("Wanted nozzle (#" + Nozzle.ToString() + ") already loaded");
                 return true;
             };
+            /*
             if (Nozzle>0)
             {
                 if (NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[1].Value == null)
@@ -13963,6 +13994,7 @@ namespace LitePlacer
                     return false;
                 }
             }
+            */
 
             // store cnc speed settings
             bool slowXY = Cnc.SlowXY;
@@ -14182,7 +14214,10 @@ namespace LitePlacer
 
             if (axis=="Z")
             {
-                CNC_Z_m(Cnc.CurrentZ + val);
+                if (!CNC_Z_m(Cnc.CurrentZ + val))
+                {
+                    return false;
+                }
             }
             else
             {
@@ -14206,7 +14241,10 @@ namespace LitePlacer
                         return false;
                         //break;
                 }
-                CNC_XY_m(X, Y);
+                if (!CNC_XY_m(X, Y))
+                {
+                    return false;
+                }
             }
             Cnc.SlowXY = !Setting.Nozzles_XYfullSpeed;
             Cnc.SlowZ = !Setting.Nozzles_ZfullSpeed;
