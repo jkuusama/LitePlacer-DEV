@@ -10548,7 +10548,7 @@ namespace LitePlacer
             }
             X_Nominal_Index = i;
 
-            List<string> YList = new List<string> { "y", "y (mm)", "Center-y(mm)", "Posy", "mid x" };
+            List<string> YList = new List<string> { "y", "y (mm)", "Center-y(mm)", "Posy", "mid y" };
             for (i = 0; i < Headers.Count; i++)
             {
                 if (YList.Contains(Headers[i], StringComparer.OrdinalIgnoreCase))
