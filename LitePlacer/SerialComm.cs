@@ -75,7 +75,8 @@ namespace LitePlacer
                 Port.Parity = Parity.None;
                 Port.StopBits = StopBits.One;
                 Port.DataBits = 8;
-                Port.Handshake = Handshake.RequestToSend;
+                // Port.Handshake = Handshake.RequestToSend;
+                Port.Handshake = Handshake.None;
                 Port.DtrEnable = true;  // prevent hangs on some drivers
                 Port.RtsEnable = true;
                 Port.WriteTimeout = 500;
@@ -109,7 +110,7 @@ namespace LitePlacer
                 }
                 if (Port.IsOpen)
                 {
-                    Port.Write(TxText + "\r");
+                    Port.Write(TxText + "\n");
                     MainForm.DisplayText("==> " + TxText, KnownColor.Blue);
                 }
                 else

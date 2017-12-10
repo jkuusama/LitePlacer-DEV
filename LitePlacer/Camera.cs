@@ -760,6 +760,7 @@ namespace LitePlacer
             }
 
             frame.Dispose();
+            GC.Collect();
         } // end Video_NewFrame
 
         // see http://www.codeproject.com/Questions/689320/object-is-currently-in-use-elsewhere about the locker

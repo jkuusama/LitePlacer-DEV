@@ -820,7 +820,7 @@ namespace LitePlacer
         public void InterpretLine(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
-            MainForm.DisplayText(line);
+            MainForm.DisplayText("<== " + line);
 
             if (line.Contains("SYSTEM READY"))
             {
