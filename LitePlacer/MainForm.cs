@@ -3079,12 +3079,8 @@ namespace LitePlacer
         private void SetDownCameraDefaults()
         {
             DownCamera.Id = "Downcamera";
-            DownCamera.FrameSizeX = 640;
-            DownCamera.FrameSizeY = 480;
-            DownCamera.FrameCenterX = 640 / 2;
-            DownCamera.FrameCenterY = 480 / 2;
-            DownCamera.ImageCenterX = 640 / 2;
-            DownCamera.ImageCenterY = 480 / 2;
+            DownCamera.DesiredX = Setting.DownCam_DesiredX;
+            DownCamera.DesiredY = Setting.DownCam_DesiredY;
             DownCamera.BoxSizeX = 200;
             DownCamera.BoxSizeY = 200;
             DownCamera.BoxRotationDeg = 0;
@@ -3117,12 +3113,8 @@ namespace LitePlacer
         private void SetUpCameraDefaults()
         {
             UpCamera.Id = "Upcamera";
-            UpCamera.FrameSizeX = 640;
-            UpCamera.FrameSizeY = 480;
-            UpCamera.FrameCenterX = 640 / 2;
-            UpCamera.FrameCenterY = 480 / 2;
-            UpCamera.ImageCenterX = 640 / 2;
-            UpCamera.ImageCenterY = 480 / 2;
+            UpCamera.DesiredX = Setting.UpCam_DesiredX;
+            UpCamera.DesiredY = Setting.UpCam_DesiredY;
 
             UpCamera.BoxSizeX = 200;
             UpCamera.BoxSizeY = 200;
@@ -3152,6 +3144,8 @@ namespace LitePlacer
         private void tabPageSetupCameras_Begin()
         {
             SetDownCameraDefaults();
+            DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString();
+            DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString();
             DownCamera.DrawBox = DownCameraDrawBox_checkBox.Checked;
             DownCamera.DrawCross = DownCameraDrawCross_checkBox.Checked;
             DownCamera.DrawSidemarks = DownCameraDrawTicks_checkBox.Checked;
@@ -3161,6 +3155,8 @@ namespace LitePlacer
             DownCamera.FindComponent = DownCam_FindComponents_checkBox.Checked;
 
             SetUpCameraDefaults();
+            UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString();
+            UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString();
             UpCamera.DrawBox = UpCameraDrawBox_checkBox.Checked;
             UpCamera.DrawCross = UpCameraDrawCross_checkBox.Checked;
             UpCamera.Draw_Snapshot = Overlay_checkBox.Checked;
@@ -3207,6 +3203,8 @@ namespace LitePlacer
             NozzleDistance_textBox.Text = Setting.Nozzles_CalibrationDistance.ToString();
             NozzleMaxSize_textBox.Text = Setting.Nozzles_CalibrationMaxSize.ToString();
             NozzleMinSize_textBox.Text = Setting.Nozzles_CalibrationMinSize.ToString();
+            CamShowPixels_checkBox.Checked = true;
+            Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
 
             FiducialManConfirmation_checkBox.Checked=Setting.Placement_FiducialConfirmation;
             if (Setting.Placement_FiducialsType==0)
@@ -3367,13 +3365,8 @@ namespace LitePlacer
             List<string> Monikers = DownCamera.GetMonikerStrings();
             Setting.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
-            //DownCamera.Close();
-            //Thread.Sleep(200);
-            //if (!StartDownCamera_m())
-            //{
-            //    return;
-            //}
-            //Thread.Sleep(200);
+            DownCamera.DesiredX = Setting.DownCam_DesiredX;
+            DownCamera.DesiredY = Setting.DownCam_DesiredY;
             SelectCamera(DownCamera);
 
             if (DownCamera.IsRunning())
@@ -3397,7 +3390,8 @@ namespace LitePlacer
             List<string> Monikers = UpCamera.GetMonikerStrings();
             Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
-            UpCamera.Close();
+            UpCamera.DesiredX = Setting.UpCam_DesiredX;
+            UpCamera.DesiredY = Setting.UpCam_DesiredY;
             SelectCamera(UpCamera);
             if (UpCamera.IsRunning())
             {
@@ -4108,7 +4102,7 @@ namespace LitePlacer
 
         private void BasicSetupTab_Begin()
         {
-            SetDownCameraDefaults();
+            // SetDownCameraDefaults();
 
             UpCamera.Active = false;
             DownCamera.Active = false;
@@ -12670,6 +12664,8 @@ namespace LitePlacer
             ColorHelp_label.Parent = Page;
             RobustFast_checkBox.Parent = Page;
             KeepActive_checkBox.Parent = Page;
+            ListResolutions_button.Parent = Page;
+            CamShowPixels_checkBox.Parent = Page;
         }
 
         private void ClearEditTargets()
@@ -14999,9 +14995,122 @@ namespace LitePlacer
 
             return true;
         }
+
+
+
+        private void ListResolutions_button_Click(object sender, EventArgs e)
+        {
+            List<string> Monikers;
+            ComboBox Box;
+            string MonikerStr;
+            Camera Cam;
+            if (CamerasSetUp_tabControl.SelectedTab.Name== "DownCamera_tabPage")
+            {
+                Monikers = DownCamera.GetMonikerStrings();
+                Box = DownCam_comboBox;
+                Cam = DownCamera;
+            }
+            else if (CamerasSetUp_tabControl.SelectedTab.Name == "UpCamera_tabPage")
+            {
+                Monikers = UpCamera.GetMonikerStrings();
+                Box = UpCam_comboBox;
+                Cam = UpCamera;
+            }
+            else
+            {
+                ShowMessageBox(
+                    "Bad tab name",
+                    "Programmer error",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            if (Monikers.Count == 0)
+            {
+                DisplayText("No camera");
+                return;
+            }
+            if (Box.SelectedIndex> Monikers.Count)
+            {
+                DisplayText("Select camera");
+                return;
+            }
+            MonikerStr = Monikers[Box.SelectedIndex];
+            Cam.ListResolutions(MonikerStr);
+
+        }
+
+        private void DownCameraDesiredX_textBox_TextChanged(object sender, EventArgs e)
+        {
+            int res;
+            if (int.TryParse(DownCameraDesiredX_textBox.Text, out res))
+            {
+                DownCameraDesiredX_textBox.ForeColor = Color.Black;
+                Setting.DownCam_DesiredX = res;
+                DownCamera.DesiredX = res;
+            }
+            else
+            {
+                DownCameraDesiredX_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void DownCameraDesiredY_textBox_TextChanged(object sender, EventArgs e)
+        {
+            int res;
+            if (int.TryParse(DownCameraDesiredY_textBox.Text, out res))
+            {
+                DownCameraDesiredY_textBox.ForeColor = Color.Black;
+                Setting.DownCam_DesiredY = res;
+                DownCamera.DesiredY = res;
+            }
+            else
+            {
+                DownCameraDesiredY_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void UpCameraDesiredX_textBox_TextChanged(object sender, EventArgs e)
+        {
+            int res;
+            if (int.TryParse(UpCameraDesiredX_textBox.Text, out res))
+            {
+                UpCameraDesiredX_textBox.ForeColor = Color.Black;
+                Setting.UpCam_DesiredX = res;
+                UpCamera.DesiredX = res;
+            }
+            else
+            {
+                UpCameraDesiredX_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void UpCameraDesiredY_textBox_TextChanged(object sender, EventArgs e)
+        {
+            int res;
+            if (int.TryParse(UpCameraDesiredY_textBox.Text, out res))
+            {
+                UpCameraDesiredY_textBox.ForeColor = Color.Black;
+                Setting.UpCam_DesiredY = res;
+                UpCamera.DesiredY = res;
+            }
+            else
+            {
+                UpCameraDesiredY_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void CamShowPixels_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CamShowPixels_checkBox.Checked)
+            {
+                Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+            }
+            else
+            {
+                Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+        }
         // ===================================================================================
-
-
 
     }	// end of: 	public partial class FormMain : Form
 

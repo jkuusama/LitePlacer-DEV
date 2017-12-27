@@ -109,26 +109,62 @@ namespace LitePlacer
                 lock (_locker)
                 {
                     _imageBox = value;
-                    ImageCenterX = value.Width / 2;
-                    ImageCenterY = value.Height / 2;
                 }
             }
         }
 
-        public int ImageCenterX { get; set; }
-        public int ImageCenterY { get; set; }
-        public int ImageSizeX { get; set; }
-        public int ImageSizeY { get; set; }
         public int FrameCenterX { get; set; }
         public int FrameCenterY { get; set; }
         public int FrameSizeX { get; set; }
         public int FrameSizeY { get; set; }
+        public int DesiredX { get; set; }
+        public int DesiredY { get; set; }
 
         public string MonikerString = "unconnected";
         public string Id = "unconnected";
 
         public bool ReceivingFrames { get; set; }
 
+        // =================================================================================================
+        public void ListResolutions(string MonikerStr)
+        {
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            // create video source
+            if (videoDevices == null)
+            {
+                MainForm.DisplayText("No Cameras.", KnownColor.Purple);
+                return;
+            }
+            if (videoDevices.Count == 0)
+            {
+                MainForm.DisplayText("No Cameras.", KnownColor.Purple);
+                return;
+            }
+            VideoCaptureDevice source = new VideoCaptureDevice(MonikerStr);
+            int tries = 0;
+            while (tries < 4)
+            {
+                if (source == null)
+                {
+                    Thread.Sleep(20);
+                    tries++;
+                    break;
+                }
+                if (source.VideoCapabilities.Length > 0)
+                {
+                    for (int i = 0; i < source.VideoCapabilities.Length; i++)
+                    {
+                        MainForm.DisplayText("X: " + source.VideoCapabilities[i].FrameSize.Width.ToString() +
+                            ", Y: " + source.VideoCapabilities[i].FrameSize.Height.ToString());
+                    }
+                    return;
+                }
+            }
+            // if we didn't return from above:
+            MainForm.DisplayText("Could not get resolution info.", KnownColor.Purple);
+        }
+
+        // =================================================================================================
         public bool Start(string cam, string MonikerStr)
         {
             try
@@ -139,13 +175,53 @@ namespace LitePlacer
                 FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
                 // create the video source (check that the camera exists is already done
                 VideoSource = new VideoCaptureDevice(MonikerStr);
+                int tries = 0;
+                while (tries < 4)
+                {
+                    if (VideoSource != null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Thread.Sleep(10);
+                        tries++;
+                    }
+                }
+                if (tries>=4)
+                {
+                    MainForm.DisplayText("Could not get resolution info");
+                    return false;
+                }
+                if (VideoSource.VideoCapabilities.Length <= 0)
+                {
+                    MainForm.DisplayText("Could not get resolution info");
+                    return false;
+                }
+
+                bool fine = false;
+                for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
+                {
+                    if ((VideoSource.VideoCapabilities[i].FrameSize.Width== DesiredX)
+                        &&
+                        (VideoSource.VideoCapabilities[i].FrameSize.Height == DesiredY))
+                    {
+                        VideoSource.VideoResolution = VideoSource.VideoCapabilities[i];
+                        fine = true;
+                        break;
+                    }
+                }
+                if (!fine)
+                {
+                    MainForm.DisplayText("Desired resolution not available");
+                    return false;
+                }
 
                 VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
                 ReceivingFrames = false;
 
                 // try ten times to start
-                int tries = 0;
-
+                tries = 0;
                 while (tries < 80)  // 4s maximum to a camera to start
                 {
                     // VideoSource.Start() checks running status, is safe to call multiple times
@@ -165,34 +241,24 @@ namespace LitePlacer
                         break;
                     }
                 }
-                MainForm.DisplayText("*** Camera started: " + tries.ToString() + ", " + ReceivingFrames.ToString(), KnownColor.Purple);
-                // another pause so that if we are receiveing frames, we have time to notice it
-                //for (int i = 0; i < 10; i++)
-                //{
-                //    Thread.Sleep(5);
-                //    Application.DoEvents();
-                //}
-
                 if (!ReceivingFrames)
                 {
+                    MainForm.DisplayText("Camera started, but is not sending video");
                     return false;
                 }
+                MainForm.DisplayText("*** Camera started: " + tries.ToString(), KnownColor.Purple);
 
-                VideoCapabilities Capability = VideoSource.VideoCapabilities[0];
-                FrameSizeX = Capability.FrameSize.Width;
-                FrameSizeY = Capability.FrameSize.Height;
+                // We managed to start the camera using desired resolution
+                FrameSizeX = DesiredX;
+                FrameSizeY = DesiredY;
                 FrameCenterX = FrameSizeX / 2;
                 FrameCenterY = FrameSizeY / 2;
-                lock (_locker)
-                {
-                    ImageCenterX = ImageBox.Width / 2;
-                    ImageCenterY = ImageBox.Height / 2;
-                }
                 PauseProcessing = false;
                 return true;
             }
-            catch
+            catch (System.Exception excep)
             {
+                MessageBox.Show(excep.Message);
                 return false;
             }
         }

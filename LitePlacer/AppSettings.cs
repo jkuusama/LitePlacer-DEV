@@ -147,6 +147,10 @@ namespace LitePlacer
         public bool UpCam_Zoom = false;
         public double UpCam_Zoomfactor = 1.5;
         public string UpcamMoniker = "";
+        public int DownCam_DesiredX = 640;
+        public int DownCam_DesiredY = 480;
+        public int UpCam_DesiredX = 640;
+        public int UpCam_DesiredY = 480;
     }
 
     // =================================================================================
