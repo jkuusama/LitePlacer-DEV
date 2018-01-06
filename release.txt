@@ -1,7 +1,9 @@
-Build date 12/20/2017 
+Build date 01/07/2018
 
 New Features, significant changes
 
+* High resolution cameras are supported: Set desired resolution on setup, and camera is
+  set to use this resolution. All measurements are done in high resolution. On setup, you can see actual pixels or scale the image to fit the screen.
 * It is now possible to save and reload control board parameters
 
 Bug Fixes 
