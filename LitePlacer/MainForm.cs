@@ -11793,7 +11793,8 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // test 3
+        // test 3 "Probe (n.c.)"
+
         private void Test3_button_Click(object sender, EventArgs e)
         {
             Xmark = Cnc.CurrentX;
@@ -11804,7 +11805,7 @@ namespace LitePlacer
 
 
         // =================================================================================
-        // test 4
+        // test 4 "Nozzle to cam"
 
         private void Test4_button_Click(object sender, EventArgs e)
         {
@@ -11816,7 +11817,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // test 5
+        // test 5 "Probe down";
 
         private double Xmark;
         private double Ymark;
