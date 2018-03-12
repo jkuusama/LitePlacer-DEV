@@ -6775,7 +6775,7 @@ namespace LitePlacer
                     CadDataFileName = CAD_openFileDialog.FileName;
                     CadFileName_label.Text = Path.GetFileName(CadDataFileName);
                     CadFilePath_label.Text = Path.GetDirectoryName(CadDataFileName);
-                    AllLines = File.ReadAllLines(CadDataFileName);
+                    AllLines = File.ReadAllLines(CadDataFileName, Encoding.Default);
                     if (Path.GetExtension(CAD_openFileDialog.FileName) == ".pos")
                     {
                         result = ParseKiCadData_m(AllLines);
