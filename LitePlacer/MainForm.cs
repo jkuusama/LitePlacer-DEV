@@ -9562,8 +9562,14 @@ namespace LitePlacer
             // Find the homographic tranformation from CAD data (fiducials.nominal) to measured machine coordinates
             // (fiducials.machine):
             Transform transform = new Transform();
-            HomographyEstimation.Point[] nominals = new HomographyEstimation.Point[Fiducials.Length];
-            HomographyEstimation.Point[] measured = new HomographyEstimation.Point[Fiducials.Length];
+            int num_corr_points = Fiducials.Length;
+            // Special case for 2 fiducials: Inject 3rd bogus fiducal, see below
+            if (Fiducials.Length == 2)
+            {
+                num_corr_points = 3;
+            }
+            HomographyEstimation.Point[] nominals = new HomographyEstimation.Point[num_corr_points];
+            HomographyEstimation.Point[] measured = new HomographyEstimation.Point[num_corr_points];
             // build point data arrays:
             for (int i = 0; i < Fiducials.Length; i++)
             {
@@ -9574,6 +9580,26 @@ namespace LitePlacer
                 measured[i].Y = Fiducials[i].Y_machine;
                 measured[i].W = 1.0;
             }
+
+            // Special case for 2 fiducials: Inject 3rd bogus fiducal
+            // The 3rd fiducial is simply the 2nd fiducial rotated +90 degrees around the 1st fiducial
+            // This should imply a shear and inversion free transformation, hence collapsing a full affine
+            // solution space to a similarity transform
+            if (Fiducials.Length == 2)
+            {
+                double deltaXnominal = nominals[1].X - nominals[0].X;
+                double deltaYnominal = nominals[1].Y - nominals[0].Y;
+                nominals[2].X = nominals[0].X - deltaYnominal;
+                nominals[2].Y = nominals[0].Y + deltaXnominal;
+                nominals[2].W = 1.0;
+
+                double deltaXmeasured = measured[1].X - measured[0].X;
+                double deltaYmeasured = measured[1].Y - measured[0].Y;
+                measured[2].X = measured[0].X - deltaYmeasured;
+                measured[2].Y = measured[0].Y + deltaXmeasured;
+                measured[2].W = 1.0;
+            }
+
             // find the tranformation
             bool res = transform.Estimate(nominals, measured, ErrorMetric.Transfer, 450, 450);  // the PCBs are smaller than 450mm
             if (!res)
