@@ -209,6 +209,8 @@ namespace LitePlacer
             Mark5_textBox.Text = Setting.General_Mark5Name;
             Mark6_textBox.Text = Setting.General_Mark6Name;
 
+            VigorousHoming_checkBox.Checked = Setting.General_VigorousHoming;
+
             Relative_Button.Checked = true;
 
             Zlb_label.Text = "";
@@ -1923,6 +1925,56 @@ namespace LitePlacer
             GotoA_textBox.Text = Cnc.CurrentA.ToString("0.000", CultureInfo.InvariantCulture);
         }
 
+        private void SetCurrentPosition_button_Click(object sender, EventArgs e)
+        {
+            double tst;
+            string Xstr = "";
+            string Ystr = "";
+            string Zstr = "";
+            string Astr = "";
+            if (double.TryParse(GotoX_textBox.Text.Replace(',', '.'), out tst))
+            {
+                Xstr = tst.ToString();
+            }
+            else
+            {
+                DisplayText("X value error", KnownColor.Red, true);
+                return;
+            }
+
+            if (double.TryParse(GotoY_textBox.Text.Replace(',', '.'), out tst))
+            {
+                Ystr = tst.ToString();
+            }
+            else
+            {
+                DisplayText("Y value error", KnownColor.Red, true);
+                return;
+            }
+
+            if (double.TryParse(GotoZ_textBox.Text.Replace(',', '.'), out tst))
+            {
+                Zstr = tst.ToString();
+            }
+            else
+            {
+                DisplayText("Z value error", KnownColor.Red, true);
+                return;
+            }
+
+            if (double.TryParse(GotoA_textBox.Text.Replace(',', '.'), out tst))
+            {
+                Astr = tst.ToString();
+            }
+            else
+            {
+                DisplayText("A value error", KnownColor.Red, true);
+                return;
+            }
+            CNC_RawWrite("{\"gc\":\"G28.3 X" + Xstr + " Y" + Ystr + " Z" + Zstr + " A" + Astr + "\"}");
+            Thread.Sleep(50);
+        }
+
         #endregion Jogging
 
         // =================================================================================
@@ -2033,12 +2085,52 @@ namespace LitePlacer
                 OpticalHome_button.BackColor = Color.Red;
                 return false;
             }
+            if (VigorousHoming_checkBox.Checked)
+            {
+                // shake the machine
+                if (!DoTheShake())
+                {
+                    return false;
+                }
+                // home again
+                if (!OpticalHoming_m())
+                {
+                    OpticalHome_button.BackColor = Color.Red;
+                    return false;
+                }
+            }
             OpticalHome_button.BackColor = default(Color);
             OpticalHome_button.UseVisualStyleBackColor = true;
             PositionConfidence = true;
             return true;
         }
 
+        private bool DoTheShake()
+        {
+            DisplayText("Vigorous homing");
+            if ((Setting.General_MachineSizeX<300)|| (Setting.General_MachineSizeY < 300))
+            {
+                DisplayText("Machine too small for vigorous homing routine (Please give feedback!)");
+                return true;
+            }
+            int[] x = new int[] { 250, 250, 250, 50, 50,0 };
+            int[] y = new int[] { 250, 50, 150, 50, 150,0 };
+            for (int i = 0; i < x.Length; i++)
+            {
+                if (!CNC_XY_m(x[i], y[i]))
+                {
+                    return false;
+                }
+            }
+            for (int i = 0; i < x.Length; i++)
+            {
+                if (!CNC_XY_m(x[i], y[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         private bool Nozzle_ProbeDown_m()
         {
@@ -15192,6 +15284,12 @@ namespace LitePlacer
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             }
         }
+
+        private void VigorousHoming_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.General_VigorousHoming = VigorousHoming_checkBox.Checked;
+        }
+
         // ===================================================================================
 
     }	// end of: 	public partial class FormMain : Form

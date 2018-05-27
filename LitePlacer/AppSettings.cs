@@ -102,6 +102,7 @@ namespace LitePlacer
         public double General_ZtoPCB = 0;
         public double Job_Xoffset = 0;
         public double Job_Yoffset = 0;
+        public bool General_VigorousHoming = false;
 
         public bool Nozzles_AfullSpeed = true;
         public double Nozzles_Aspeed = 500;
@@ -137,6 +138,7 @@ namespace LitePlacer
         public bool Placement_OmitNozzleCalibration = false;
         public bool Placement_SkipMeasurements = false;
         public bool Placement_UpdateJobGridAtRuntime = false;
+
         public int UpCam_index = -1;
         public int UpCam_MeasurementDelay = 100;
         public double UpCam_PositionX = 2;

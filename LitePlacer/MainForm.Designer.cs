@@ -798,6 +798,7 @@
             this.Goto_button = new System.Windows.Forms.Button();
             this.NozzleNo_textBox = new System.Windows.Forms.TextBox();
             this.LoadCurrentPosition_button = new System.Windows.Forms.Button();
+            this.SetCurrentPosition_button = new System.Windows.Forms.Button();
             this.TrueX_label = new System.Windows.Forms.Label();
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -812,6 +813,9 @@
             this.GoZ_button = new System.Windows.Forms.Button();
             this.AppSettings_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.AppSettings_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
+            this.label164 = new System.Windows.Forms.Label();
+            this.label165 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -910,7 +914,7 @@
             // 
             // DownCamZoomFactor_textBox
             // 
-            this.DownCamZoomFactor_textBox.Location = new System.Drawing.Point(1092, 669);
+            this.DownCamZoomFactor_textBox.Location = new System.Drawing.Point(542, 694);
             this.DownCamZoomFactor_textBox.Name = "DownCamZoomFactor_textBox";
             this.DownCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 22);
             this.DownCamZoomFactor_textBox.TabIndex = 57;
@@ -923,11 +927,11 @@
             // DownCamZoom_checkBox
             // 
             this.DownCamZoom_checkBox.AutoSize = true;
-            this.DownCamZoom_checkBox.Location = new System.Drawing.Point(946, 673);
+            this.DownCamZoom_checkBox.Location = new System.Drawing.Point(444, 673);
             this.DownCamZoom_checkBox.Name = "DownCamZoom_checkBox";
-            this.DownCamZoom_checkBox.Size = new System.Drawing.Size(179, 21);
+            this.DownCamZoom_checkBox.Size = new System.Drawing.Size(131, 21);
             this.DownCamZoom_checkBox.TabIndex = 56;
-            this.DownCamZoom_checkBox.Text = "Downcam Zoom, factor:";
+            this.DownCamZoom_checkBox.Text = "Downcam Zoom";
             this.toolTip1.SetToolTip(this.DownCamZoom_checkBox, "Digital zoom for Downcam image");
             this.DownCamZoom_checkBox.UseVisualStyleBackColor = true;
             this.DownCamZoom_checkBox.Click += new System.EventHandler(this.DownCamZoom_checkBox_Click);
@@ -1069,7 +1073,7 @@
             this.SerialMonitor_richTextBox.Location = new System.Drawing.Point(3, 665);
             this.SerialMonitor_richTextBox.Name = "SerialMonitor_richTextBox";
             this.SerialMonitor_richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(604, 187);
+            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(435, 187);
             this.SerialMonitor_richTextBox.TabIndex = 16;
             this.SerialMonitor_richTextBox.TabStop = false;
             this.SerialMonitor_richTextBox.Text = "";
@@ -1121,7 +1125,7 @@
             // 
             // UpCamZoomFactor_textBox
             // 
-            this.UpCamZoomFactor_textBox.Location = new System.Drawing.Point(1092, 695);
+            this.UpCamZoomFactor_textBox.Location = new System.Drawing.Point(542, 747);
             this.UpCamZoomFactor_textBox.Name = "UpCamZoomFactor_textBox";
             this.UpCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 22);
             this.UpCamZoomFactor_textBox.TabIndex = 59;
@@ -1134,11 +1138,11 @@
             // UpCamZoom_checkBox
             // 
             this.UpCamZoom_checkBox.AutoSize = true;
-            this.UpCamZoom_checkBox.Location = new System.Drawing.Point(946, 697);
+            this.UpCamZoom_checkBox.Location = new System.Drawing.Point(444, 723);
             this.UpCamZoom_checkBox.Name = "UpCamZoom_checkBox";
-            this.UpCamZoom_checkBox.Size = new System.Drawing.Size(162, 21);
+            this.UpCamZoom_checkBox.Size = new System.Drawing.Size(114, 21);
             this.UpCamZoom_checkBox.TabIndex = 58;
-            this.UpCamZoom_checkBox.Text = "Upcam Zoom, factor:";
+            this.UpCamZoom_checkBox.Text = "Upcam Zoom";
             this.toolTip1.SetToolTip(this.UpCamZoom_checkBox, "Digital zoom for Upcam image");
             this.UpCamZoom_checkBox.UseVisualStyleBackColor = true;
             this.UpCamZoom_checkBox.Click += new System.EventHandler(this.UpCamZoom_checkBox_Click);
@@ -9267,7 +9271,7 @@
             // GotoX_textBox
             // 
             this.GotoX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoX_textBox.Location = new System.Drawing.Point(1094, 747);
+            this.GotoX_textBox.Location = new System.Drawing.Point(1086, 670);
             this.GotoX_textBox.Name = "GotoX_textBox";
             this.GotoX_textBox.Size = new System.Drawing.Size(50, 23);
             this.GotoX_textBox.TabIndex = 78;
@@ -9278,7 +9282,7 @@
             // GotoY_textBox
             // 
             this.GotoY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoY_textBox.Location = new System.Drawing.Point(1094, 774);
+            this.GotoY_textBox.Location = new System.Drawing.Point(1086, 697);
             this.GotoY_textBox.Name = "GotoY_textBox";
             this.GotoY_textBox.Size = new System.Drawing.Size(50, 23);
             this.GotoY_textBox.TabIndex = 83;
@@ -9289,7 +9293,7 @@
             // GotoZ_textBox
             // 
             this.GotoZ_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoZ_textBox.Location = new System.Drawing.Point(1092, 800);
+            this.GotoZ_textBox.Location = new System.Drawing.Point(1084, 723);
             this.GotoZ_textBox.Name = "GotoZ_textBox";
             this.GotoZ_textBox.Size = new System.Drawing.Size(50, 23);
             this.GotoZ_textBox.TabIndex = 85;
@@ -9300,7 +9304,7 @@
             // GotoA_textBox
             // 
             this.GotoA_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoA_textBox.Location = new System.Drawing.Point(1092, 828);
+            this.GotoA_textBox.Location = new System.Drawing.Point(1084, 751);
             this.GotoA_textBox.Name = "GotoA_textBox";
             this.GotoA_textBox.Size = new System.Drawing.Size(50, 23);
             this.GotoA_textBox.TabIndex = 87;
@@ -9311,7 +9315,7 @@
             // Goto_button
             // 
             this.Goto_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Goto_button.Location = new System.Drawing.Point(959, 777);
+            this.Goto_button.Location = new System.Drawing.Point(959, 727);
             this.Goto_button.Name = "Goto_button";
             this.Goto_button.Size = new System.Drawing.Size(76, 40);
             this.Goto_button.TabIndex = 89;
@@ -9336,14 +9340,25 @@
             // 
             // LoadCurrentPosition_button
             // 
-            this.LoadCurrentPosition_button.Location = new System.Drawing.Point(959, 827);
+            this.LoadCurrentPosition_button.Location = new System.Drawing.Point(959, 780);
             this.LoadCurrentPosition_button.Name = "LoadCurrentPosition_button";
-            this.LoadCurrentPosition_button.Size = new System.Drawing.Size(87, 23);
+            this.LoadCurrentPosition_button.Size = new System.Drawing.Size(177, 23);
             this.LoadCurrentPosition_button.TabIndex = 105;
-            this.LoadCurrentPosition_button.Text = "Load curr. pos.";
+            this.LoadCurrentPosition_button.Text = "Load current position";
             this.toolTip1.SetToolTip(this.LoadCurrentPosition_button, "Loads current coordinates to X-A boxes");
             this.LoadCurrentPosition_button.UseVisualStyleBackColor = true;
             this.LoadCurrentPosition_button.Click += new System.EventHandler(this.LoadCurrentPosition_button_Click);
+            // 
+            // SetCurrentPosition_button
+            // 
+            this.SetCurrentPosition_button.Location = new System.Drawing.Point(959, 809);
+            this.SetCurrentPosition_button.Name = "SetCurrentPosition_button";
+            this.SetCurrentPosition_button.Size = new System.Drawing.Size(177, 23);
+            this.SetCurrentPosition_button.TabIndex = 114;
+            this.SetCurrentPosition_button.Text = "Set current position";
+            this.toolTip1.SetToolTip(this.SetCurrentPosition_button, "Loads current coordinates to X-A boxes");
+            this.SetCurrentPosition_button.UseVisualStyleBackColor = true;
+            this.SetCurrentPosition_button.Click += new System.EventHandler(this.SetCurrentPosition_button_Click);
             // 
             // TrueX_label
             // 
@@ -9374,7 +9389,7 @@
             // 
             this.Abs_radioButton.AutoSize = true;
             this.Abs_radioButton.Checked = true;
-            this.Abs_radioButton.Location = new System.Drawing.Point(959, 732);
+            this.Abs_radioButton.Location = new System.Drawing.Point(958, 672);
             this.Abs_radioButton.Name = "Abs_radioButton";
             this.Abs_radioButton.Size = new System.Drawing.Size(84, 21);
             this.Abs_radioButton.TabIndex = 92;
@@ -9385,7 +9400,7 @@
             // Relative_Button
             // 
             this.Relative_Button.AutoSize = true;
-            this.Relative_Button.Location = new System.Drawing.Point(959, 753);
+            this.Relative_Button.Location = new System.Drawing.Point(959, 696);
             this.Relative_Button.Name = "Relative_Button";
             this.Relative_Button.Size = new System.Drawing.Size(80, 21);
             this.Relative_Button.TabIndex = 93;
@@ -9410,7 +9425,7 @@
             // GoX_button
             // 
             this.GoX_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoX_button.Location = new System.Drawing.Point(1056, 747);
+            this.GoX_button.Location = new System.Drawing.Point(1048, 670);
             this.GoX_button.Name = "GoX_button";
             this.GoX_button.Size = new System.Drawing.Size(32, 23);
             this.GoX_button.TabIndex = 106;
@@ -9421,7 +9436,7 @@
             // GoY_button
             // 
             this.GoY_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoY_button.Location = new System.Drawing.Point(1056, 775);
+            this.GoY_button.Location = new System.Drawing.Point(1048, 698);
             this.GoY_button.Name = "GoY_button";
             this.GoY_button.Size = new System.Drawing.Size(32, 23);
             this.GoY_button.TabIndex = 107;
@@ -9432,7 +9447,7 @@
             // GoA_button
             // 
             this.GoA_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoA_button.Location = new System.Drawing.Point(1056, 829);
+            this.GoA_button.Location = new System.Drawing.Point(1048, 752);
             this.GoA_button.Name = "GoA_button";
             this.GoA_button.Size = new System.Drawing.Size(32, 23);
             this.GoA_button.TabIndex = 109;
@@ -9443,7 +9458,7 @@
             // GoZ_button
             // 
             this.GoZ_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoZ_button.Location = new System.Drawing.Point(1056, 801);
+            this.GoZ_button.Location = new System.Drawing.Point(1048, 724);
             this.GoZ_button.Name = "GoZ_button";
             this.GoZ_button.Size = new System.Drawing.Size(32, 23);
             this.GoZ_button.TabIndex = 108;
@@ -9455,12 +9470,45 @@
             // 
             this.AppSettings_openFileDialog.FileName = "openFileDialog1";
             // 
+            // VigorousHoming_checkBox
+            // 
+            this.VigorousHoming_checkBox.AutoSize = true;
+            this.VigorousHoming_checkBox.Location = new System.Drawing.Point(444, 829);
+            this.VigorousHoming_checkBox.Name = "VigorousHoming_checkBox";
+            this.VigorousHoming_checkBox.Size = new System.Drawing.Size(138, 21);
+            this.VigorousHoming_checkBox.TabIndex = 110;
+            this.VigorousHoming_checkBox.Text = "Vigorous Homing";
+            this.VigorousHoming_checkBox.UseVisualStyleBackColor = true;
+            this.VigorousHoming_checkBox.CheckedChanged += new System.EventHandler(this.VigorousHoming_checkBox_CheckedChanged);
+            // 
+            // label164
+            // 
+            this.label164.AutoSize = true;
+            this.label164.Location = new System.Drawing.Point(444, 698);
+            this.label164.Name = "label164";
+            this.label164.Size = new System.Drawing.Size(92, 17);
+            this.label164.TabIndex = 112;
+            this.label164.Text = "Zoom Factor:";
+            // 
+            // label165
+            // 
+            this.label165.AutoSize = true;
+            this.label165.Location = new System.Drawing.Point(444, 750);
+            this.label165.Name = "label165";
+            this.label165.Size = new System.Drawing.Size(92, 17);
+            this.label165.TabIndex = 113;
+            this.label165.Text = "Zoom Factor:";
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1258, 856);
+            this.Controls.Add(this.SetCurrentPosition_button);
+            this.Controls.Add(this.label165);
+            this.Controls.Add(this.label164);
+            this.Controls.Add(this.VigorousHoming_checkBox);
             this.Controls.Add(this.GoA_button);
             this.Controls.Add(this.GoZ_button);
             this.Controls.Add(this.GoY_button);
@@ -10395,6 +10443,10 @@
         private System.Windows.Forms.Label label163;
         private System.Windows.Forms.Button ListResolutions_button;
         private System.Windows.Forms.CheckBox CamShowPixels_checkBox;
+        private System.Windows.Forms.CheckBox VigorousHoming_checkBox;
+        private System.Windows.Forms.Label label164;
+        private System.Windows.Forms.Label label165;
+        private System.Windows.Forms.Button SetCurrentPosition_button;
     }
 }
 
