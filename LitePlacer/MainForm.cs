@@ -1684,36 +1684,62 @@ namespace LitePlacer
             // Output is mouse position in mm's from image center (machine position)
             Xmm = 0.0;
             Ymm = 0.0;
-            int X = MouseX - Box.Size.Width / 2;  // X= diff from center
+            int X = MouseX - Box.Size.Width / 2;  // X= diff from centern in pixels
             int Y = MouseY - Box.Size.Height / 2;
+
+            double XmmPerPixel;
+            double YmmPerPixel;
+            double Xscale = 1.0;
+            double Yscale = 1.0;
+            int Xres = 0;
+            int Yres = 0;
+            int pol = 1;
+
+            Camera cam = DownCamera;
             if (DownCamera.Active)
             {
-                Xmm = Convert.ToDouble(X) * Setting.DownCam_XmmPerPixel;
-                Ymm = Convert.ToDouble(Y) * Setting.DownCam_YmmPerPixel;
-                if (DownCamera.Zoom)  // if zoomed for display
-                {
-                    Xmm = Xmm / DownCamera.ZoomFactor;
-                    Ymm = Ymm / DownCamera.ZoomFactor;
-                };
-                Xmm = Xmm / DownCamera.GetDisplayZoom();	// Might also be zoomed for processing
-                Ymm = Ymm / DownCamera.GetDisplayZoom();
+                cam = DownCamera;
+                XmmPerPixel = Setting.DownCam_XmmPerPixel;
+                YmmPerPixel = Setting.DownCam_XmmPerPixel;
+                Xres = Setting.DownCam_DesiredX;
+                Yres = Setting.DownCam_DesiredY;
             }
             else if (UpCamera.Active)
             {
-                Xmm = Convert.ToDouble(X) * Setting.UpCam_XmmPerPixel;
-                Ymm = Convert.ToDouble(Y) * Setting.UpCam_YmmPerPixel;
-                if (UpCamera.Zoom)
-                {
-                    Xmm = Xmm / UpCamera.ZoomFactor;
-                    Ymm = Ymm / UpCamera.ZoomFactor;
-                }
-                Xmm = -Xmm / UpCamera.GetDisplayZoom();	// Might also be zoomed for processing
-                Ymm = -Ymm / UpCamera.GetDisplayZoom();
+                cam = UpCamera;
+                XmmPerPixel = Setting.UpCam_XmmPerPixel;
+                YmmPerPixel = Setting.UpCam_YmmPerPixel;
+                Xres = Setting.UpCam_DesiredX;
+                Yres = Setting.UpCam_DesiredY;
+                pol = -1;
             }
             else
             {
                 DisplayText("No camera running");
+                return;
             };
+
+
+
+
+            if (!CamShowPixels_checkBox.Checked)
+            {
+                // image on screen is not at camera resolution
+                Xscale = Convert.ToDouble(Xres) / Convert.ToDouble(Box.Size.Width);
+                Yscale = Convert.ToDouble(Yres) / Convert.ToDouble(Box.Size.Height);
+            }
+            Xmm = Convert.ToDouble(X) * XmmPerPixel * Xscale * Convert.ToDouble(pol);
+            Ymm = Convert.ToDouble(Y) * YmmPerPixel * Yscale * Convert.ToDouble(pol);
+
+
+            if (cam.Zoom)  // if zoomed for display
+            {
+                Xmm = Xmm / cam.ZoomFactor;
+                Ymm = Ymm / cam.ZoomFactor;
+            };
+            Xmm = Xmm / cam.GetDisplayZoom();	// Might also be zoomed for processing
+            Ymm = Ymm / cam.GetDisplayZoom();
+
             DisplayText("BoxTo_mms: MouseX: " + MouseX.ToString() + ", X: " + X.ToString() + ", Xmm: " + Xmm.ToString());
             DisplayText("BoxTo_mms: MouseY: " + MouseY.ToString() + ", Y: " + Y.ToString() + ", Ymm: " + Ymm.ToString());
         }
@@ -1751,11 +1777,6 @@ namespace LitePlacer
             else
             {
                 BoxTo_mms(out Xmm, out Ymm, MouseX, MouseY, Box);
-                if (UpCamera.IsRunning())
-                {
-                    //Xmm = -Xmm;
-                    //Ymm = -Ymm;
-                }
                 CNC_XY_m(Cnc.CurrentX + Xmm, Cnc.CurrentY - Ymm);
             }
         }
