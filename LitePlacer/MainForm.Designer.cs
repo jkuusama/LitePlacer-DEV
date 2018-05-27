@@ -144,6 +144,7 @@
             this.SizeX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SizeY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
+            this.NozzleOffset_label = new System.Windows.Forms.Label();
             this.Nozzle2_dataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewComboBoxColumn11 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewCheckBoxColumn11 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -293,7 +294,7 @@
             this.RefreshDownCameraList_button = new System.Windows.Forms.Button();
             this.DownCamFindCircles_checkBox = new System.Windows.Forms.CheckBox();
             this.ConnectDownCamera_button = new System.Windows.Forms.Button();
-            this.DownCamStatus_label = new System.Windows.Forms.Label();
+            this.CameraStatus_label = new System.Windows.Forms.Label();
             this.CamFunctionDown_button = new System.Windows.Forms.Button();
             this.DownCameraDrawCross_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCameraDrawBox_checkBox = new System.Windows.Forms.CheckBox();
@@ -389,7 +390,6 @@
             this.label103 = new System.Windows.Forms.Label();
             this.UpCameraBoxY_textBox = new System.Windows.Forms.TextBox();
             this.UpCameraBoxX_textBox = new System.Windows.Forms.TextBox();
-            this.UpCamStatus_label = new System.Windows.Forms.Label();
             this.label104 = new System.Windows.Forms.Label();
             this.DownCameraDrawDashedCross_checkBox = new System.Windows.Forms.CheckBox();
             this.label101 = new System.Windows.Forms.Label();
@@ -418,7 +418,6 @@
             this.Z0toPCB_CamerasTab_label = new System.Windows.Forms.Label();
             this.label120 = new System.Windows.Forms.Label();
             this.Offset2Method_button = new System.Windows.Forms.Button();
-            this.NozzleOffset_label = new System.Windows.Forms.Label();
             this.label115 = new System.Windows.Forms.Label();
             this.label114 = new System.Windows.Forms.Label();
             this.SetPickupCenter_button = new System.Windows.Forms.Button();
@@ -2099,6 +2098,18 @@
             this.tabPageSetupCameras.Text = "Setup Cameras";
             this.tabPageSetupCameras.UseVisualStyleBackColor = true;
             // 
+            // NozzleOffset_label
+            // 
+            this.NozzleOffset_label.AutoSize = true;
+            this.NozzleOffset_label.BackColor = System.Drawing.Color.White;
+            this.NozzleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.NozzleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NozzleOffset_label.Location = new System.Drawing.Point(9, 553);
+            this.NozzleOffset_label.Name = "NozzleOffset_label";
+            this.NozzleOffset_label.Size = new System.Drawing.Size(150, 26);
+            this.NozzleOffset_label.TabIndex = 50;
+            this.NozzleOffset_label.Text = "Instructions here";
+            // 
             // Nozzle2_dataGridView
             // 
             this.Nozzle2_dataGridView.AllowUserToAddRows = false;
@@ -2381,7 +2392,7 @@
             this.DownCamera_tabPage.Controls.Add(this.RefreshDownCameraList_button);
             this.DownCamera_tabPage.Controls.Add(this.DownCamFindCircles_checkBox);
             this.DownCamera_tabPage.Controls.Add(this.ConnectDownCamera_button);
-            this.DownCamera_tabPage.Controls.Add(this.DownCamStatus_label);
+            this.DownCamera_tabPage.Controls.Add(this.CameraStatus_label);
             this.DownCamera_tabPage.Controls.Add(this.CamFunctionDown_button);
             this.DownCamera_tabPage.Controls.Add(this.DownCameraDrawCross_checkBox);
             this.DownCamera_tabPage.Controls.Add(this.DownCameraDrawBox_checkBox);
@@ -3772,16 +3783,16 @@
             this.ConnectDownCamera_button.UseVisualStyleBackColor = true;
             this.ConnectDownCamera_button.Click += new System.EventHandler(this.ConnectDownCamera_button_Click);
             // 
-            // DownCamStatus_label
+            // CameraStatus_label
             // 
-            this.DownCamStatus_label.AutoSize = true;
-            this.DownCamStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamStatus_label.Location = new System.Drawing.Point(446, 19);
-            this.DownCamStatus_label.Name = "DownCamStatus_label";
-            this.DownCamStatus_label.Size = new System.Drawing.Size(130, 20);
-            this.DownCamStatus_label.TabIndex = 6;
-            this.DownCamStatus_label.Text = "Not connected";
-            this.toolTip1.SetToolTip(this.DownCamStatus_label, "Camera conection status");
+            this.CameraStatus_label.AutoSize = true;
+            this.CameraStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CameraStatus_label.Location = new System.Drawing.Point(446, 19);
+            this.CameraStatus_label.Name = "CameraStatus_label";
+            this.CameraStatus_label.Size = new System.Drawing.Size(130, 20);
+            this.CameraStatus_label.TabIndex = 6;
+            this.CameraStatus_label.Text = "Not connected";
+            this.toolTip1.SetToolTip(this.CameraStatus_label, "Camera conection status");
             // 
             // CamFunctionDown_button
             // 
@@ -4114,7 +4125,6 @@
             this.UpCamera_tabPage.Controls.Add(this.label103);
             this.UpCamera_tabPage.Controls.Add(this.UpCameraBoxY_textBox);
             this.UpCamera_tabPage.Controls.Add(this.UpCameraBoxX_textBox);
-            this.UpCamera_tabPage.Controls.Add(this.UpCamStatus_label);
             this.UpCamera_tabPage.Controls.Add(this.label104);
             this.UpCamera_tabPage.Location = new System.Drawing.Point(4, 25);
             this.UpCamera_tabPage.Name = "UpCamera_tabPage";
@@ -4781,10 +4791,10 @@
             // label110
             // 
             this.label110.AutoSize = true;
-            this.label110.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label110.Location = new System.Drawing.Point(449, 6);
+            this.label110.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            this.label110.Location = new System.Drawing.Point(447, 2);
             this.label110.Name = "label110";
-            this.label110.Size = new System.Drawing.Size(52, 17);
+            this.label110.Size = new System.Drawing.Size(44, 15);
             this.label110.TabIndex = 47;
             this.label110.Text = "Status:";
             // 
@@ -4843,17 +4853,6 @@
             this.toolTip1.SetToolTip(this.UpCameraBoxX_textBox, "Set the true size of the box on the image.");
             this.UpCameraBoxX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCameraBoxX_textBox_KeyPress);
             this.UpCameraBoxX_textBox.Leave += new System.EventHandler(this.UpCameraBoxX_textBox_Leave);
-            // 
-            // UpCamStatus_label
-            // 
-            this.UpCamStatus_label.AutoSize = true;
-            this.UpCamStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamStatus_label.Location = new System.Drawing.Point(449, 19);
-            this.UpCamStatus_label.Name = "UpCamStatus_label";
-            this.UpCamStatus_label.Size = new System.Drawing.Size(134, 24);
-            this.UpCamStatus_label.TabIndex = 45;
-            this.UpCamStatus_label.Text = "Not connected";
-            this.toolTip1.SetToolTip(this.UpCamStatus_label, "Camera conection status");
             // 
             // label104
             // 
@@ -5134,18 +5133,6 @@
             this.Offset2Method_button.Text = "Start";
             this.Offset2Method_button.UseVisualStyleBackColor = true;
             this.Offset2Method_button.Click += new System.EventHandler(this.Offset2Method_button_Click);
-            // 
-            // NozzleOffset_label
-            // 
-            this.NozzleOffset_label.AutoSize = true;
-            this.NozzleOffset_label.BackColor = System.Drawing.Color.White;
-            this.NozzleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NozzleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NozzleOffset_label.Location = new System.Drawing.Point(9, 553);
-            this.NozzleOffset_label.Name = "NozzleOffset_label";
-            this.NozzleOffset_label.Size = new System.Drawing.Size(150, 26);
-            this.NozzleOffset_label.TabIndex = 50;
-            this.NozzleOffset_label.Text = "Instructions here";
             // 
             // label115
             // 
@@ -9686,14 +9673,13 @@
 		private System.Windows.Forms.Label label103;
 		private System.Windows.Forms.CheckBox UpCameraDrawDashedCross_checkBox;
 		private System.Windows.Forms.CheckBox UpCameraDrawBox_checkBox;
-		private System.Windows.Forms.Label UpCamStatus_label;
 		private System.Windows.Forms.Label label104;
 		private System.Windows.Forms.TextBox UpCameraBoxX_textBox;
 		private System.Windows.Forms.TextBox UpCameraBoxY_textBox;
 		private System.Windows.Forms.CheckBox UpCameraDrawCross_checkBox;
 		private System.Windows.Forms.ComboBox DownCam_comboBox;
 		private System.Windows.Forms.Button ConnectDownCamera_button;
-		private System.Windows.Forms.Label DownCamStatus_label;
+		private System.Windows.Forms.Label CameraStatus_label;
 		private System.Windows.Forms.Button RefreshDownCameraList_button;
 		private System.Windows.Forms.Label label53;
 		private System.Windows.Forms.Label label68;
