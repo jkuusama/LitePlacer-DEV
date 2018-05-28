@@ -209,6 +209,8 @@ namespace LitePlacer
             Mark5_textBox.Text = Setting.General_Mark5Name;
             Mark6_textBox.Text = Setting.General_Mark6Name;
 
+            VigorousHoming_checkBox.Checked = Setting.General_VigorousHoming;
+
             Relative_Button.Checked = true;
 
             Zlb_label.Text = "";
@@ -1684,36 +1686,62 @@ namespace LitePlacer
             // Output is mouse position in mm's from image center (machine position)
             Xmm = 0.0;
             Ymm = 0.0;
-            int X = MouseX - Box.Size.Width / 2;  // X= diff from center
+            int X = MouseX - Box.Size.Width / 2;  // X= diff from centern in pixels
             int Y = MouseY - Box.Size.Height / 2;
+
+            double XmmPerPixel;
+            double YmmPerPixel;
+            double Xscale = 1.0;
+            double Yscale = 1.0;
+            int Xres = 0;
+            int Yres = 0;
+            int pol = 1;
+
+            Camera cam = DownCamera;
             if (DownCamera.Active)
             {
-                Xmm = Convert.ToDouble(X) * Setting.DownCam_XmmPerPixel;
-                Ymm = Convert.ToDouble(Y) * Setting.DownCam_YmmPerPixel;
-                if (DownCamera.Zoom)  // if zoomed for display
-                {
-                    Xmm = Xmm / DownCamera.ZoomFactor;
-                    Ymm = Ymm / DownCamera.ZoomFactor;
-                };
-                Xmm = Xmm / DownCamera.GetDisplayZoom();	// Might also be zoomed for processing
-                Ymm = Ymm / DownCamera.GetDisplayZoom();
+                cam = DownCamera;
+                XmmPerPixel = Setting.DownCam_XmmPerPixel;
+                YmmPerPixel = Setting.DownCam_XmmPerPixel;
+                Xres = Setting.DownCam_DesiredX;
+                Yres = Setting.DownCam_DesiredY;
             }
             else if (UpCamera.Active)
             {
-                Xmm = Convert.ToDouble(X) * Setting.UpCam_XmmPerPixel;
-                Ymm = Convert.ToDouble(Y) * Setting.UpCam_YmmPerPixel;
-                if (UpCamera.Zoom)
-                {
-                    Xmm = Xmm / UpCamera.ZoomFactor;
-                    Ymm = Ymm / UpCamera.ZoomFactor;
-                }
-                Xmm = -Xmm / UpCamera.GetDisplayZoom();	// Might also be zoomed for processing
-                Ymm = -Ymm / UpCamera.GetDisplayZoom();
+                cam = UpCamera;
+                XmmPerPixel = Setting.UpCam_XmmPerPixel;
+                YmmPerPixel = Setting.UpCam_YmmPerPixel;
+                Xres = Setting.UpCam_DesiredX;
+                Yres = Setting.UpCam_DesiredY;
+                pol = -1;
             }
             else
             {
                 DisplayText("No camera running");
+                return;
             };
+
+
+
+
+            if (!CamShowPixels_checkBox.Checked)
+            {
+                // image on screen is not at camera resolution
+                Xscale = Convert.ToDouble(Xres) / Convert.ToDouble(Box.Size.Width);
+                Yscale = Convert.ToDouble(Yres) / Convert.ToDouble(Box.Size.Height);
+            }
+            Xmm = Convert.ToDouble(X) * XmmPerPixel * Xscale * Convert.ToDouble(pol);
+            Ymm = Convert.ToDouble(Y) * YmmPerPixel * Yscale * Convert.ToDouble(pol);
+
+
+            if (cam.Zoom)  // if zoomed for display
+            {
+                Xmm = Xmm / cam.ZoomFactor;
+                Ymm = Ymm / cam.ZoomFactor;
+            };
+            Xmm = Xmm / cam.GetDisplayZoom();	// Might also be zoomed for processing
+            Ymm = Ymm / cam.GetDisplayZoom();
+
             DisplayText("BoxTo_mms: MouseX: " + MouseX.ToString() + ", X: " + X.ToString() + ", Xmm: " + Xmm.ToString());
             DisplayText("BoxTo_mms: MouseY: " + MouseY.ToString() + ", Y: " + Y.ToString() + ", Ymm: " + Ymm.ToString());
         }
@@ -1751,11 +1779,6 @@ namespace LitePlacer
             else
             {
                 BoxTo_mms(out Xmm, out Ymm, MouseX, MouseY, Box);
-                if (UpCamera.IsRunning())
-                {
-                    //Xmm = -Xmm;
-                    //Ymm = -Ymm;
-                }
                 CNC_XY_m(Cnc.CurrentX + Xmm, Cnc.CurrentY - Ymm);
             }
         }
@@ -1902,6 +1925,56 @@ namespace LitePlacer
             GotoA_textBox.Text = Cnc.CurrentA.ToString("0.000", CultureInfo.InvariantCulture);
         }
 
+        private void SetCurrentPosition_button_Click(object sender, EventArgs e)
+        {
+            double tst;
+            string Xstr = "";
+            string Ystr = "";
+            string Zstr = "";
+            string Astr = "";
+            if (double.TryParse(GotoX_textBox.Text.Replace(',', '.'), out tst))
+            {
+                Xstr = tst.ToString();
+            }
+            else
+            {
+                DisplayText("X value error", KnownColor.Red, true);
+                return;
+            }
+
+            if (double.TryParse(GotoY_textBox.Text.Replace(',', '.'), out tst))
+            {
+                Ystr = tst.ToString();
+            }
+            else
+            {
+                DisplayText("Y value error", KnownColor.Red, true);
+                return;
+            }
+
+            if (double.TryParse(GotoZ_textBox.Text.Replace(',', '.'), out tst))
+            {
+                Zstr = tst.ToString();
+            }
+            else
+            {
+                DisplayText("Z value error", KnownColor.Red, true);
+                return;
+            }
+
+            if (double.TryParse(GotoA_textBox.Text.Replace(',', '.'), out tst))
+            {
+                Astr = tst.ToString();
+            }
+            else
+            {
+                DisplayText("A value error", KnownColor.Red, true);
+                return;
+            }
+            CNC_RawWrite("{\"gc\":\"G28.3 X" + Xstr + " Y" + Ystr + " Z" + Zstr + " A" + Astr + "\"}");
+            Thread.Sleep(50);
+        }
+
         #endregion Jogging
 
         // =================================================================================
@@ -2012,12 +2085,52 @@ namespace LitePlacer
                 OpticalHome_button.BackColor = Color.Red;
                 return false;
             }
+            if (VigorousHoming_checkBox.Checked)
+            {
+                // shake the machine
+                if (!DoTheShake())
+                {
+                    return false;
+                }
+                // home again
+                if (!OpticalHoming_m())
+                {
+                    OpticalHome_button.BackColor = Color.Red;
+                    return false;
+                }
+            }
             OpticalHome_button.BackColor = default(Color);
             OpticalHome_button.UseVisualStyleBackColor = true;
             PositionConfidence = true;
             return true;
         }
 
+        private bool DoTheShake()
+        {
+            DisplayText("Vigorous homing");
+            if ((Setting.General_MachineSizeX<300)|| (Setting.General_MachineSizeY < 300))
+            {
+                DisplayText("Machine too small for vigorous homing routine (Please give feedback!)");
+                return true;
+            }
+            int[] x = new int[] { 250, 250, 250, 50, 50,0 };
+            int[] y = new int[] { 250, 50, 150, 50, 150,0 };
+            for (int i = 0; i < x.Length; i++)
+            {
+                if (!CNC_XY_m(x[i], y[i]))
+                {
+                    return false;
+                }
+            }
+            for (int i = 0; i < x.Length; i++)
+            {
+                if (!CNC_XY_m(x[i], y[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         private bool Nozzle_ProbeDown_m()
         {
@@ -2959,6 +3072,7 @@ namespace LitePlacer
             {
                 DisplayText("DownCamera already running");
                 DownCamera.Active = true;
+                UpdateCameraCameraStatus_label();
                 return true;
             };
 
@@ -2966,6 +3080,7 @@ namespace LitePlacer
             if (Setting.DowncamMoniker == "")
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
+                UpdateCameraCameraStatus_label();
                 return true;
             };
             // Check that the device exists
@@ -2973,6 +3088,7 @@ namespace LitePlacer
             if (!monikers.Contains(Setting.DowncamMoniker))
             {
                 DisplayText("Downcamera moniker not found. Moniker: " + Setting.DowncamMoniker);
+                UpdateCameraCameraStatus_label();
                 return false;
             }
 
@@ -2983,7 +3099,7 @@ namespace LitePlacer
                     "Camera selection isse",
                     MessageBoxButtons.OK
                 );
-                UpCamStatus_label.Text = "Not Connected";
+                UpdateCameraCameraStatus_label();
                 return false;
             }
 
@@ -2994,13 +3110,13 @@ namespace LitePlacer
                     "Down Camera problem",
                     MessageBoxButtons.OK
                 );
-                DownCamStatus_label.Text = "Not Connected";
+                CameraStatus_label.Text = "Not Connected";
                 DownCamera.Active = false;
+                UpdateCameraCameraStatus_label();
                 return false;
             };
-            DownCamStatus_label.Text = "Active";
-            UpCamStatus_label.Text = "Not Active";
             DownCamera.Active = true;
+            UpdateCameraCameraStatus_label();
             return true;
         }
 
@@ -3013,6 +3129,7 @@ namespace LitePlacer
             {
                 DisplayText("UpCamera already running");
                 UpCamera.Active = true;
+                UpdateCameraCameraStatus_label();
                 return true;
             };
 
@@ -3020,6 +3137,7 @@ namespace LitePlacer
             if (Setting.UpcamMoniker == "")
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
+                UpdateCameraCameraStatus_label();
                 return true;
             };
             // Check that the device exists
@@ -3027,6 +3145,7 @@ namespace LitePlacer
             if (!monikers.Contains(Setting.UpcamMoniker))
             {
                 DisplayText("Upcamera moniker not found. Moniker: " + Setting.UpcamMoniker);
+                UpdateCameraCameraStatus_label();
                 return false;
             }
 
@@ -3034,10 +3153,10 @@ namespace LitePlacer
             {
                 ShowMessageBox(
                     "Up camera and Down camera point to same physical device.",
-                    "Camera selection isse",
+                    "Camera selection issue",
                     MessageBoxButtons.OK
                 );
-                UpCamStatus_label.Text = "Not Connected";
+                UpdateCameraCameraStatus_label();
                 return false;
             }
 
@@ -3048,12 +3167,11 @@ namespace LitePlacer
                     "Up camera problem",
                     MessageBoxButtons.OK
                 );
-                UpCamStatus_label.Text = "Not Connected";
+                UpdateCameraCameraStatus_label();
                 return false;
             };
-            UpCamStatus_label.Text = "Active";
-            DownCamStatus_label.Text = "Not Active";
             UpCamera.Active = true;
+            UpdateCameraCameraStatus_label();
             return true;
         }
 
@@ -3234,6 +3352,8 @@ namespace LitePlacer
             UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
             getDownCamList();
             getUpCamList();
+            UpdateCameraCameraStatus_label();
+
             // SelectCamera(DownCamera);
         }
 
@@ -3254,7 +3374,7 @@ namespace LitePlacer
             else
             {
                 DownCam_comboBox.Items.Add("----");
-                DownCamStatus_label.Text = "No Cam";
+                CameraStatus_label.Text = "No Cam";
             }
             if (
                 (Devices.Count > Setting.DownCam_index) && (Setting.DownCam_index > 0))
@@ -3285,7 +3405,6 @@ namespace LitePlacer
             else
             {
                 UpCam_comboBox.Items.Add("----");
-                UpCamStatus_label.Text = "No Cam";
             }
             if ((Devices.Count > Setting.UpCam_index) && (Setting.UpCam_index > 0))
             {
@@ -4427,7 +4546,7 @@ namespace LitePlacer
         public void ValueUpdater(string item, string value)
         {
             if (InvokeRequired) { Invoke(new Action<string, string>(ValueUpdater), new[] { item, value }); return; }
-            DisplayText("ValueUpdater: item= " + item + ", value= " + value);
+            // DisplayText("ValueUpdater: item= " + item + ", value= " + value);
 
             switch (item)
             {
@@ -12656,6 +12775,32 @@ namespace LitePlacer
         // Parameter labels and control widgets:
         // ==========================================================================================================
         // Sharing the labels and some controls so I don't need to duplicate so much code:
+        private void UpdateCameraCameraStatus_label()
+        {
+            if (tabControlPages.SelectedTab.Name!= "tabPageSetupCameras")
+            {
+                return;
+            }
+            Camera cam= DownCamera;
+            switch (CamerasSetUp_tabControl.SelectedTab.Name)
+            {
+                case "DownCamera_tabPage":
+                    cam = DownCamera;
+                    break;
+                case "UpCamera_tabPage":
+                    cam = UpCamera;
+                    break;
+            }
+            if (cam.Active)
+            {
+                CameraStatus_label.Text = "Active";
+            }
+            else
+            {
+                CameraStatus_label.Text = "Not Active";
+            }
+        }
+
 
         private void CamerasSetUp_tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -12693,6 +12838,8 @@ namespace LitePlacer
             KeepActive_checkBox.Parent = Page;
             ListResolutions_button.Parent = Page;
             CamShowPixels_checkBox.Parent = Page;
+            CameraStatus_label.Parent = Page;
+            UpdateCameraCameraStatus_label();
         }
 
         private void ClearEditTargets()
@@ -15137,6 +15284,12 @@ namespace LitePlacer
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             }
         }
+
+        private void VigorousHoming_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.General_VigorousHoming = VigorousHoming_checkBox.Checked;
+        }
+
         // ===================================================================================
 
     }	// end of: 	public partial class FormMain : Form
