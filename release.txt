@@ -1,19 +1,14 @@
-Build date 1/7/2018
+Build date 5/28/2018
 
 New Features, significant changes
 
-* High resolution cameras are supported: Set desired resolution on setup, and camera is
-  set to use this resolution. All measurements are done in high resolution. On setup, you can see actual pixels or scale the image to fit the screen.  Note: If you have high resolution cameras already, you need to set the box size again.
-* It is now possible to save and reload control board parameters
+* Two fiducials works with some assumptions (thanks to Oskar Weigl)
+* Set machine coordinates button
+* Vigorous homing: Makes a few full speed machine movements before setting zero
 
 Bug Fixes 
 
-* Garbage collection is now forced to run, greatly adding stability on some systems
-* More robust nozzle change
-* When setting up nozzle changes, clicking header in goto start position (no nozzle selected) doesn't crash anymore
-* Rotation coordinate now shows on status display at startup
-* Rotation coordinate now stored in bookmarks
-* Better diagnostics on serial port errors
-* Homing is now offered when recovering from serial port errors
-* Internal code improvements, more logging information in certain situations
-* Fixed a typo that prevented CAD files with Mid X/Mid Y coordinates to load correctly
+* mouse click on camera image works as expected with show pixels off
+* µ character now works in CAD data
+* camera active label was sometimes incorrect
+* log is less noisy
