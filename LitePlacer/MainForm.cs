@@ -2075,6 +2075,7 @@ namespace LitePlacer
         {
             PositionConfidence = false;
             ValidMeasurement_checkBox.Checked = false;
+            OpticalHome_button.BackColor = Color.Red;
             if (!MechanicalHoming_m())
             {
                 OpticalHome_button.BackColor = Color.Red;
