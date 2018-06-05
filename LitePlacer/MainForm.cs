@@ -2316,8 +2316,8 @@ namespace LitePlacer
             }
 
             MaxTime = MaxTime / 60;  // Now in seconds/mm
-            MaxTime = (size / MaxTime) * 1.2 + 3; 
-            // in seconds for the machine size and some (1.2 to allow acceleration, + 3 for the operarations at end stop
+            MaxTime = (size / MaxTime) * 1.2 + 8; 
+            // in seconds for the machine size and some (1.2 to allow acceleration, + 8 for the operarations at end stop
             TimeOut = (int)MaxTime;
             return true;
         }
@@ -2362,7 +2362,7 @@ namespace LitePlacer
                 _cnc_Timeout = value * 500;
             }
         }
-        public int CNC_HomingTimeout = 16;  // in seconds
+        public int CNC_HomingTimeout = 20;  // in seconds
 
         private bool CNC_RawWrite(string s)
         {
