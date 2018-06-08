@@ -2879,8 +2879,38 @@ namespace LitePlacer
             {
                 return false;
             }
-            X = -X;
-            Y = -Y;
+
+            // Measure 7 times, get median: 
+            SetHomingMeasurement();
+            List<double> Xlist = new List<double>();
+            List<double> Ylist = new List<double>();
+            int res;
+            int Successes = 0;
+            int Tries = 0;
+            do
+            {
+                Tries++;
+                res = DownCamera.GetClosestCircle(out X, out Y, 0.1/ Setting.DownCam_XmmPerPixel); 
+                if (res==1)
+                {
+                    Successes++;
+                    X = -X * Setting.DownCam_XmmPerPixel;
+                    Y = -Y * Setting.DownCam_YmmPerPixel;
+                    Xlist.Add(X);
+                    Ylist.Add(Y);
+                    DisplayText("X: " + X.ToString("0.000") + ", Y: " + Y.ToString("0.000"));
+                }
+            }
+            while ((Successes<7)&&(Tries<20));
+            if (Tries >= 20)
+            {
+                DisplayText("Optical homing failed, 20 tries did not give 7 results.");
+                return false;
+            }
+            Xlist.Sort();
+            Ylist.Sort();
+            X = Xlist[3];
+            Y = Ylist[3];
             // CNC_RawWrite("G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000"));
             CNC_RawWrite("{\"gc\":\"G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000") + "\"}");
             Thread.Sleep(50);
