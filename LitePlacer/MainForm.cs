@@ -386,6 +386,10 @@ namespace LitePlacer
             JobOffsetX_textBox.Text = Setting.Job_Xoffset.ToString("0.000", CultureInfo.InvariantCulture);
             JobOffsetY_textBox.Text = Setting.Job_Yoffset.ToString("0.000", CultureInfo.InvariantCulture);
 
+            PumpInvert_checkBox.Checked= Setting.General_PumpOutputInverted;
+            VacuumInvert_checkBox.Checked = Setting.General_VacuumOutputInverted;
+
+
             if (Setting.Nozzles_current == 0)
             {
                 NozzleNo_textBox.Text = "--";
@@ -6339,7 +6343,12 @@ namespace LitePlacer
 
         private void Pump_checkBox_Click(object sender, EventArgs e)
         {
-            if (Pump_checkBox.Checked)
+            bool TurnOn = Pump_checkBox.Checked;
+            if (Setting.General_PumpOutputInverted)
+            {
+                TurnOn = !TurnOn;
+            }
+            if (TurnOn)
             {
                 Cnc.PumpOn();
             }
@@ -6349,9 +6358,19 @@ namespace LitePlacer
             }
         }
 
+        private void PumpInvert_checkBox_Click(object sender, EventArgs e)
+        {
+            Setting.General_PumpOutputInverted = PumpInvert_checkBox.Checked;
+        }
+
         private void Vacuum_checkBox_Click(object sender, EventArgs e)
         {
-            if (Vacuum_checkBox.Checked)
+            bool TurnOn = Vacuum_checkBox.Checked;
+            if (Setting.General_VacuumOutputInverted)
+            {
+                TurnOn = !TurnOn;
+            }
+            if (TurnOn)
             {
                 Cnc.VacuumOn();
             }
@@ -6360,6 +6379,12 @@ namespace LitePlacer
                 Cnc.VacuumOff();
             }
         }
+
+        private void VacuumInvert_checkBox_Click(object sender, EventArgs e)
+        {
+            Setting.General_VacuumOutputInverted = VacuumInvert_checkBox.Checked;
+        }
+
 
         private void VacuumTime_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {

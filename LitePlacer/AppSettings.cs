@@ -103,6 +103,8 @@ namespace LitePlacer
         public double Job_Xoffset = 0;
         public double Job_Yoffset = 0;
         public bool General_VigorousHoming = false;
+        public bool General_PumpOutputInverted = false;
+        public bool General_VacuumOutputInverted = false;
 
         public bool Nozzles_AfullSpeed = true;
         public double Nozzles_Aspeed = 500;
