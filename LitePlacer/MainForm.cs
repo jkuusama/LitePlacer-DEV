@@ -2320,8 +2320,8 @@ namespace LitePlacer
             }
 
             MaxTime = MaxTime / 60;  // Now in seconds/mm
-            MaxTime = (size / MaxTime) * 1.2 + 3; 
-            // in seconds for the machine size and some (1.2 to allow acceleration, + 3 for the operarations at end stop
+            MaxTime = (size / MaxTime) * 1.2 + 8; 
+            // in seconds for the machine size and some (1.2 to allow acceleration, + 8 for the operarations at end stop
             TimeOut = (int)MaxTime;
             return true;
         }
@@ -2366,7 +2366,7 @@ namespace LitePlacer
                 _cnc_Timeout = value * 500;
             }
         }
-        public int CNC_HomingTimeout = 16;  // in seconds
+        public int CNC_HomingTimeout = 20;  // in seconds
 
         private bool CNC_RawWrite(string s)
         {
@@ -2883,8 +2883,38 @@ namespace LitePlacer
             {
                 return false;
             }
-            X = -X;
-            Y = -Y;
+
+            // Measure 7 times, get median: 
+            SetHomingMeasurement();
+            List<double> Xlist = new List<double>();
+            List<double> Ylist = new List<double>();
+            int res;
+            int Successes = 0;
+            int Tries = 0;
+            do
+            {
+                Tries++;
+                res = DownCamera.GetClosestCircle(out X, out Y, 0.1/ Setting.DownCam_XmmPerPixel); 
+                if (res==1)
+                {
+                    Successes++;
+                    X = -X * Setting.DownCam_XmmPerPixel;
+                    Y = -Y * Setting.DownCam_YmmPerPixel;
+                    Xlist.Add(X);
+                    Ylist.Add(Y);
+                    DisplayText("X: " + X.ToString("0.000") + ", Y: " + Y.ToString("0.000"));
+                }
+            }
+            while ((Successes<7)&&(Tries<20));
+            if (Tries >= 20)
+            {
+                DisplayText("Optical homing failed, 20 tries did not give 7 results.");
+                return false;
+            }
+            Xlist.Sort();
+            Ylist.Sort();
+            X = Xlist[3];
+            Y = Ylist[3];
             // CNC_RawWrite("G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000"));
             CNC_RawWrite("{\"gc\":\"G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000") + "\"}");
             Thread.Sleep(50);
