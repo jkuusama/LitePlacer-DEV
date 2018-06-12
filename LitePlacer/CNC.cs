@@ -667,20 +667,25 @@ namespace LitePlacer
 
         public void VacuumDefaultSetting()
         {
+            VacuumIsOn = true;      // force action
             VacuumOff();
         }
 
         public void VacuumOn()
         {
+            string command = "{\"gc\":\"M08\"}";
+            if (MainForm.Setting.General_VacuumOutputInverted)
+            {
+                command = "{\"gc\":\"M09\"}";
+            }
             if (Controlboard == ControlBoardType.TinyG)
             {
                 MainForm.DisplayText("VacuumOn(), TinyG");
                 if (!VacuumIsOn)
                 {
-                    if (RawWrite("{\"gc\":\"M08\"}"))
+                    if (RawWrite(command))
                     {
                         VacuumIsOn = true;
-                        MainForm.Vacuum_checkBox.Checked = true;
                         Thread.Sleep(MainForm.Setting.General_PickupVacuumTime);
                     }
                 }
@@ -694,22 +699,24 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("*** VacuumOn(), unknown board!!", KnownColor.DarkRed, true);
             }
-
-
+            MainForm.Vacuum_checkBox.Checked = VacuumIsOn;
         }
 
-        // =================================================================================
         public void VacuumOff()
         {
+            string command = "{\"gc\":\"M09\"}";
+            if (MainForm.Setting.General_VacuumOutputInverted)
+            {
+                command = "{\"gc\":\"M08\"}";
+            }
             if (Controlboard == ControlBoardType.TinyG)
             {
                 MainForm.DisplayText("VacuumOff(), TinyG");
                 if (VacuumIsOn)
                 {
-                    if (RawWrite("{\"gc\":\"M09\"}"))
+                    if (RawWrite(command))
                     {
                         VacuumIsOn = false;
-                        MainForm.Vacuum_checkBox.Checked = false;
                         Thread.Sleep(MainForm.Setting.General_PickupReleaseTime);
                     }
                 }
@@ -722,6 +729,7 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("*** VacuumOff(), unknown board!!", KnownColor.DarkRed, true);
             }
+            MainForm.Vacuum_checkBox.Checked = VacuumIsOn;
         }
 
         // =================================================================================
@@ -729,6 +737,7 @@ namespace LitePlacer
 
         public void PumpDefaultSetting()
         {
+            PumpIsOn = true;   // to force action
             PumpOff();
         }
 
@@ -742,14 +751,18 @@ namespace LitePlacer
 
         public void PumpOn()
         {
+            string command = "{\"gc\":\"M03\"}";
+            if (MainForm.Setting.General_PumpOutputInverted)
+            {
+                command= "{\"gc\":\"M05\"}";
+            }
             if (Controlboard == ControlBoardType.TinyG)
             {
                 MainForm.DisplayText("PumpOn(), TinyG");
                 if (!PumpIsOn)
                 {
-                        if (RawWrite("{\"gc\":\"M03\"}"))
+                        if (RawWrite(command))
                     {
-                        MainForm.Pump_checkBox.Checked = true;
                         BugWorkaround();
                         Thread.Sleep(500);  // this much to develop vacuum
                         PumpIsOn = true;
@@ -764,20 +777,25 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("PumpOn(), TinyG");
             }
+            MainForm.Pump_checkBox.Checked = PumpIsOn;
         }
 
         public void PumpOff()
         {
+            string command = "{\"gc\":\"M05\"}";
+            if (MainForm.Setting.General_PumpOutputInverted)
+            {
+                command = "{\"gc\":\"M03\"}";
+            }
             if (Controlboard == ControlBoardType.TinyG)
             {
                 MainForm.DisplayText("PumpOff(), TinyG");
                 if (PumpIsOn)
                 {
-                    if (RawWrite("{\"gc\":\"M05\"}"))
+                    if (RawWrite(command))
                     {
                         Thread.Sleep(50);
                         BugWorkaround();
-                        MainForm.Pump_checkBox.Checked = false;
                         PumpIsOn = false;
                     }
                 }
@@ -790,18 +808,23 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("PumpOff(), qQuintic  -- SKIPPED --");
             }
+            MainForm.Pump_checkBox.Checked = PumpIsOn;
         }
 
         public void PumpOff_NoWorkaround()
         // For error situations where we don't want to do the dance
         {
+            string command = "{\"gc\":\"M05\"}";
+            if (MainForm.Setting.General_PumpOutputInverted)
+            {
+                command = "{\"gc\":\"M03\"}";
+            }
             MainForm.DisplayText("PumpOff_NoWorkaround(), TinyG");
             if (PumpIsOn)
             {
-                if (RawWrite("{\"gc\":\"M05\"}"))
+                if (RawWrite(command))
                 {
                     Thread.Sleep(50);
-                    MainForm.Pump_checkBox.Checked = false;
                     PumpIsOn = false;
                 }
             }
@@ -813,10 +836,10 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("PumpOff_NoWorkaround(), qQuintic  -- SKIPPED --");
             }
+            MainForm.Pump_checkBox.Checked = PumpIsOn;
         }
 
-
-        // =================================================================================
+         // =================================================================================
         public void InterpretLine(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            

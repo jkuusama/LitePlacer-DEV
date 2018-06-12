@@ -405,11 +405,12 @@ namespace LitePlacer
             UpdateCncConnectionStatus();
             if (Cnc.Connected)
             {
+                Cnc.PumpDefaultSetting();
+                Cnc.VacuumDefaultSetting();
                 if (ControlBoardJustConnected())
                 {
                     OfferHoming();
                 }
-
             }
 
             DisableLog_checkBox.Checked = Setting.General_MuteLogging;
@@ -6373,12 +6374,7 @@ namespace LitePlacer
 
         private void Pump_checkBox_Click(object sender, EventArgs e)
         {
-            bool TurnOn = Pump_checkBox.Checked;
-            if (Setting.General_PumpOutputInverted)
-            {
-                TurnOn = !TurnOn;
-            }
-            if (TurnOn)
+            if (Pump_checkBox.Checked)
             {
                 Cnc.PumpOn();
             }
@@ -6395,12 +6391,7 @@ namespace LitePlacer
 
         private void Vacuum_checkBox_Click(object sender, EventArgs e)
         {
-            bool TurnOn = Vacuum_checkBox.Checked;
-            if (Setting.General_VacuumOutputInverted)
-            {
-                TurnOn = !TurnOn;
-            }
-            if (TurnOn)
+            if (Vacuum_checkBox.Checked)
             {
                 Cnc.VacuumOn();
             }
