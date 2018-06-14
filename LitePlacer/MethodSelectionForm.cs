@@ -114,6 +114,5 @@ namespace LitePlacer
             SelectedMethod = "Place Assisted";
             this.Close();
         }
-
 	}
 }

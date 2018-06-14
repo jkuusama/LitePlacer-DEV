@@ -7039,10 +7039,11 @@ namespace LitePlacer
             }
         }
 
-
         // =================================================================================
         private void ParseJobData(String[] AllLines)
         {
+
+
             int LineIndex = 0;
             JobData_GridView.Rows.Clear();
             // ComponentCount ComponentType GroupMethod MethodParamAllComponents ComponentList
@@ -7055,12 +7056,14 @@ namespace LitePlacer
                 JobData_GridView.Rows[Last].Cells["ComponentType"].Value = Line[1];
                 JobData_GridView.Rows[Last].Cells["GroupMethod"].Value = Line[2];
                 JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = Line[3];
+
                 JobData_GridView.Rows[Last].Cells["ComponentList"].Value = Line[4];
                 if (Line.Count>5)
                 {
                     JobData_GridView.Rows[Last].Cells["JobDataNozzle_Column"].Value = Line[5];
                 }
             }
+
             JobData_GridView.ClearSelection();
         }
 
@@ -8628,18 +8631,38 @@ namespace LitePlacer
 
         // ====================================================================================
         // Moves the part a certain distance above the placement position and allows manually
-        // fine tuning of the position. After done ENTER will trigger the final placement.
+        // fine tuning of the position.
+        // After done ENTER will trigger the final placement.
+        //
+        // MethodeParameter: For Loose Part Assisted => stop distance above board in mm 
         // ====================================================================================
-        private bool PutLoosePartDownAssisted_m(bool Probe)
+        private bool PutLoosePartDownAssisted_m(bool Probe, string MethodeParameter)
         {
             double PlaceZ;
+            double distance2pcb;
+
+            // secure convert of string to double
+            try
+            {
+                distance2pcb = Convert.ToDouble(MethodeParameter);
+            }
+            catch (FormatException)
+            {
+                distance2pcb = 2.0; // if convertion faild, set minimum stop distance to board
+            }
+            
+            // we need a minimum stop distance
+            if (distance2pcb < 2.0)
+            {
+                distance2pcb = 2.0;
+            };
+
             PlaceZ = Properties.Settings.Default.General_ZtoPCB + Properties.Settings.Default.General_ProbingBackOff - Properties.Settings.Default.Placement_Depth;
 
-            if (!CNC_Z_m(PlaceZ - 2.0)) // 2.0mm above board
+            if (!CNC_Z_m(PlaceZ - distance2pcb)) 
             {
                 return false;
             }
-
             
             DisplayText("Now fine tune part position. If done press ENTER");
 
@@ -8881,7 +8904,7 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             };
-            string id = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString();
+            string id = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString(); // Methode Parameter
             string Method = JobData_GridView.Rows[JobDataRow].Cells["GroupMethod"].Value.ToString();
 
             int TapeNum = 0;
@@ -9044,14 +9067,21 @@ namespace LitePlacer
 
             switch (Method)
             {
-                // Allows manually correction of part position 
+                // For parts from tapes, allows manually correction of part position
                 case "Place Assisted":
-                case "LoosePartAssisted": 
-                    if (!PutLoosePartDownAssisted_m(FirstInRow))
+                    // since for tape parts id contains Tape index, we use here a fixed stop distance above board
+                    if (!PutLoosePartDownAssisted_m(FirstInRow, "2.5")) 
                     {
                         // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
                         return false;
                     } 
+                    break;
+                case "LoosePartAssisted":
+                    if (!PutLoosePartDownAssisted_m(FirstInRow, id)) // id contains stop distance above board
+                    {
+                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                        return false;
+                    }
                     break;
                 case "LoosePart":
                 case "DownCam Snapshot":

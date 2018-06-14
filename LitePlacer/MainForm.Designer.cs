@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -671,12 +671,6 @@
             this.label86 = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
             this.JobData_GridView = new System.Windows.Forms.DataGridView();
-            this.ComponentCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GroupMethod = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MethodParamAllComponents = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataNozzle_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentList = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Bottom_checkBox = new System.Windows.Forms.CheckBox();
             this.CadData_GridView = new System.Windows.Forms.DataGridView();
             this.Component = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -780,6 +774,12 @@
             this.GoY_button = new System.Windows.Forms.Button();
             this.GoA_button = new System.Windows.Forms.Button();
             this.GoZ_button = new System.Windows.Forms.Button();
+            this.ComponentCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ComponentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GroupMethod = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MethodParamAllComponents = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataNozzle_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ComponentList = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -7925,14 +7925,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7951,44 +7951,6 @@
             this.JobData_GridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellClick);
             this.JobData_GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellContentClick);
             this.JobData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellEndEdit);
-            // 
-            // ComponentCount
-            // 
-            this.ComponentCount.HeaderText = "Count";
-            this.ComponentCount.Name = "ComponentCount";
-            this.ComponentCount.Width = 40;
-            // 
-            // ComponentType
-            // 
-            this.ComponentType.HeaderText = "Component Type";
-            this.ComponentType.Name = "ComponentType";
-            this.ComponentType.Width = 130;
-            // 
-            // GroupMethod
-            // 
-            this.GroupMethod.HeaderText = "Method";
-            this.GroupMethod.Name = "GroupMethod";
-            this.GroupMethod.ReadOnly = true;
-            this.GroupMethod.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.GroupMethod.Width = 80;
-            // 
-            // MethodParamAllComponents
-            // 
-            this.MethodParamAllComponents.HeaderText = "Method Parameters";
-            this.MethodParamAllComponents.Name = "MethodParamAllComponents";
-            this.MethodParamAllComponents.Width = 80;
-            // 
-            // JobDataNozzle_Column
-            // 
-            this.JobDataNozzle_Column.HeaderText = "Nozzle";
-            this.JobDataNozzle_Column.Name = "JobDataNozzle_Column";
-            this.JobDataNozzle_Column.Width = 50;
-            // 
-            // ComponentList
-            // 
-            this.ComponentList.HeaderText = "Components";
-            this.ComponentList.Name = "ComponentList";
-            this.ComponentList.Width = 130;
             // 
             // Bottom_checkBox
             // 
@@ -9051,6 +9013,45 @@
             this.GoZ_button.UseVisualStyleBackColor = true;
             this.GoZ_button.Click += new System.EventHandler(this.GoZ_button_Click);
             // 
+            // ComponentCount
+            // 
+            this.ComponentCount.HeaderText = "Count";
+            this.ComponentCount.Name = "ComponentCount";
+            this.ComponentCount.Width = 40;
+            // 
+            // ComponentType
+            // 
+            this.ComponentType.HeaderText = "Component Type";
+            this.ComponentType.Name = "ComponentType";
+            this.ComponentType.Width = 130;
+            // 
+            // GroupMethod
+            // 
+            this.GroupMethod.HeaderText = "Method";
+            this.GroupMethod.Name = "GroupMethod";
+            this.GroupMethod.ReadOnly = true;
+            this.GroupMethod.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.GroupMethod.Width = 80;
+            // 
+            // MethodParamAllComponents
+            // 
+            this.MethodParamAllComponents.HeaderText = "Method Parameters";
+            this.MethodParamAllComponents.Name = "MethodParamAllComponents";
+            this.MethodParamAllComponents.ToolTipText = "For Assisted placement:  stop distance to board [mm]";
+            this.MethodParamAllComponents.Width = 80;
+            // 
+            // JobDataNozzle_Column
+            // 
+            this.JobDataNozzle_Column.HeaderText = "Nozzle";
+            this.JobDataNozzle_Column.Name = "JobDataNozzle_Column";
+            this.JobDataNozzle_Column.Width = 50;
+            // 
+            // ComponentList
+            // 
+            this.ComponentList.HeaderText = "Components";
+            this.ComponentList.Name = "ComponentList";
+            this.ComponentList.Width = 130;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -9877,12 +9878,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
         private System.Windows.Forms.Button ResetPlaceZ_button;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GroupMethod;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MethodParamAllComponents;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzle_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentList;
         private System.Windows.Forms.Button CalibrateNozzles_button;
         private System.Windows.Forms.ToolStripMenuItem getUnloadMovesFromLoadMovesToolStripMenuItem;
         private System.Windows.Forms.Button NozzlesSave_button;
@@ -9959,6 +9954,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastY_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn RotationDirect_Column;
         private System.Windows.Forms.CheckBox DownCameraDrawGrid_checkBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GroupMethod;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MethodParamAllComponents;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzle_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentList;
     }
 }
 
