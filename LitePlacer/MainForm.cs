@@ -8839,11 +8839,19 @@ namespace LitePlacer
                     return false;
                 }
                 increments = increments - 1;
-                double mag = Math.Sqrt(((LastX - FirstX) * (LastX - FirstX)) + ((LastY - FirstY) * (LastY - FirstY)));
-                double Xincr = (LastX - FirstX) * pitch / mag;
-                double Yincr = (LastY - FirstY) * pitch / mag;
-                X = FirstX + Xincr * increments;
-                Y = FirstY + Yincr * increments;
+                if (increments==0)
+                {
+                    X = FirstX;
+                    Y = FirstY;
+                }
+                else
+                {
+                    double mag = Math.Sqrt(((LastX - FirstX) * (LastX - FirstX)) + ((LastY - FirstY) * (LastY - FirstY)));
+                    double Xincr = (LastX - FirstX) * pitch / mag;
+                    double Yincr = (LastY - FirstY) * pitch / mag;
+                    X = FirstX + Xincr * increments;
+                    Y = FirstY + Yincr * increments;
+                }
             }
 
             if (Tapes_dataGridView.Rows[TapeNum].Cells["RotationDirect_Column"].Value != null)
@@ -11598,6 +11606,7 @@ namespace LitePlacer
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
                 DisplayText("Bad data in part # ");
+                return;
             }
             // Tapes.GetPartLocationFromHolePosition_m() and ShowPartByCoordinates_m() use the next column from Tapes_dataGridView.
             // Set it temporarily, but remember what was there:
