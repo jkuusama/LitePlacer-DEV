@@ -1738,7 +1738,7 @@ namespace LitePlacer
             Pen BluePen = new Pen(Color.Blue, 1);
             Graphics g = Graphics.FromImage(img);
             int x1, x2, y1, y2;
-            int step = 20;
+            int step = 40;
             // vertical
             int i = 0;
             while (i< FrameSizeX)
@@ -1793,73 +1793,6 @@ namespace LitePlacer
                 g.DrawLine(BluePen, x1, y1, x2, y2);
                 i = i + step;
             }
-            /*
-            for (int i = step; i < FrameSizeY; i = i + step)
-            {
-                // right
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
-                // left
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
-                // bottom
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
-                // top
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
-                i = i + step;
-                // right
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(GreenPen, x1, y1, x2, y2);
-                // left
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(GreenPen, x1, y1, x2, y2);
-                // bottom
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x2, out y2);
-                g.DrawLine(GreenPen, x1, y1, x2, y2);
-                // top
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(GreenPen, x1, y1, x2, y2);
-                i = i + step;
-                // right
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(BluePen, x1, y1, x2, y2);
-                // left
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(BluePen, x1, y1, x2, y2);
-                // bottom
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x2, out y2);
-                g.DrawLine(BluePen, x1, y1, x2, y2);
-                // top
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(BluePen, x1, y1, x2, y2);
-            }
-            // Draw rotated cross
-            RotateByFrameCenter(FrameCenterX, -1000, out x1, out y1);
-            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
-
-            RotateByFrameCenter(FrameCenterX, 1000, out x1, out y1);
-            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
-
-            RotateByFrameCenter(-1000, FrameCenterY, out x1, out y1);
-            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
-
-            RotateByFrameCenter(1000, FrameCenterY, out x1, out y1);
-            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
-            */
 
             RedPen.Dispose();
             GreenPen.Dispose();
