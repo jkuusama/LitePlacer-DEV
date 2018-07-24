@@ -13331,25 +13331,28 @@ namespace LitePlacer
             Color pixelColor;
             int deb = 0;
             Bitmap img = (Bitmap)Cam_pictureBox.Image;
-            for (int ix = X - 2; ix <= X + 2; ix++)
+            if (img!=null)
             {
-                for (int iy = Y - 2; iy <= Y + 2; iy++)
+                for (int ix = X - 2; ix <= X + 2; ix++)
                 {
-                    pixelColor = img.GetPixel(ix, iy);
-                    Rsum += pixelColor.R;
-                    Gsum += pixelColor.G;
-                    Bsum += pixelColor.B;
-                    deb++;
+                    for (int iy = Y - 2; iy <= Y + 2; iy++)
+                    {
+                        pixelColor = img.GetPixel(ix, iy);
+                        Rsum += pixelColor.R;
+                        Gsum += pixelColor.G;
+                        Bsum += pixelColor.B;
+                        deb++;
+                    }
                 }
-            }
-            R = (byte)(Rsum / 25);
-            G = (byte)(Gsum / 25);
-            B = (byte)(Bsum / 25);
+                R = (byte)(Rsum / 25);
+                G = (byte)(Gsum / 25);
+                B = (byte)(Bsum / 25);
+                img.Dispose();
+           }
             R_numericUpDown.Value = R;
             G_numericUpDown.Value = G;
             B_numericUpDown.Value = B;
             Color_Box.BackColor = Color.FromArgb(R, G, B);
-            img.Dispose();
         }
 
         private void Display_dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs anError)
