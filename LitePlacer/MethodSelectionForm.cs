@@ -106,5 +106,16 @@ namespace LitePlacer
             this.Close();
         }
 
+        private void PlaceAssisted_button_Click(object sender, EventArgs e)
+        {
+            SelectedMethod = "Place Assisted";
+            this.Close();
+        }
+
+        private void LoosePartAssisted_button_Click(object sender, EventArgs e)
+        {
+            SelectedMethod = "LoosePart Assisted";
+            this.Close();
+        }
 	}
 }

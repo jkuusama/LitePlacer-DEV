@@ -12,3 +12,7 @@ Bug Fixes
 * µ character now works in CAD data
 * camera active label was sometimes incorrect
 * log is less noisy
+
+Build date 7/26/2018
+Assisted placement added
+
