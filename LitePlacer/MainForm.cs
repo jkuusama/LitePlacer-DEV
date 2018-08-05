@@ -2516,6 +2516,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
 
@@ -2589,6 +2590,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
 
@@ -2661,6 +2663,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
             if (!Cnc.Connected)
@@ -8380,6 +8383,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
 
@@ -9225,6 +9229,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
             return true;
@@ -9249,6 +9254,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             };
             string id = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString();
@@ -9377,6 +9383,7 @@ namespace LitePlacer
                                        "Operation aborted",
                                        MessageBoxButtons.OK);
                         }
+                        AbortPlacement = false;
                         return false;
                     }
                 } while (!EnterKeyHit);
@@ -9409,6 +9416,7 @@ namespace LitePlacer
                 }
                 DownCamera.Draw_Snapshot = false;
                 UpCamera.Draw_Snapshot = false;
+                AbortPlacement = false;
                 return false;
             }
 
@@ -9463,6 +9471,7 @@ namespace LitePlacer
                 }
                 DownCamera.Draw_Snapshot = false;
                 UpCamera.Draw_Snapshot = false;
+                AbortPlacement = false;
                 return false;
             }
             return true;
