@@ -8721,6 +8721,20 @@ namespace LitePlacer
             {
                 return false;
             }
+
+            if (AbortPlacement)
+            {
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
+                AbortPlacement = false;
+                return false;
+            }
             return true;
         }
 
@@ -8754,6 +8768,19 @@ namespace LitePlacer
                 return false;
             }
 
+            if (AbortPlacement)
+            {
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
+                AbortPlacement = false;
+                return false;
+            }
             return true;
         }
 
