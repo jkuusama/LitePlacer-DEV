@@ -1368,7 +1368,7 @@ namespace LitePlacer
             }
         }
 
-        static bool EnterKeyHit = true;
+        static bool EnterKeyHit = true;   // petegit: Why is this initialized with true???
         static string Movestr;
 
         public void My_KeyDown(object sender, KeyEventArgs e)
@@ -1379,6 +1379,14 @@ namespace LitePlacer
             {
                 EnterKeyHit = true;
                 return;
+            }
+
+            // Abort placment should also be triggered by keyboard
+            // In some situations this is much faster then using the mouse
+            if (e.KeyCode == Keys.Escape) 
+            {
+                AbortPlacement = true;
+                AbortPlacementShown = false;
             }
 
             if ( (e.KeyCode == Keys.F4) &&
