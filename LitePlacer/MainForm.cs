@@ -9065,11 +9065,24 @@ namespace LitePlacer
                 Thread.Sleep(10);
                 if (AbortPlacement)
                 {
-                    AbortPlacement = false;
                     ShowMessageBox(
                         "Operation aborted.",
                         "Operation aborted.",
                         MessageBoxButtons.OK);
+                    
+                    AbortPlacement = false;                    
+                    
+                    if (!CNC_Z_m(0))  // move nozzle to zero position
+                    {
+                        return false;
+                    }
+
+                    ZGuardOn();
+
+                    //Restore Slack Compensation state
+                    Cnc.SlackCompensation = SaveSlackCompState;
+                    Cnc.SlackCompensationA = SaveSlackCompAState;
+
                     return false;
                 }
             } while (!EnterKeyHit);
