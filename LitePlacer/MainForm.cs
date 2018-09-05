@@ -386,10 +386,6 @@ namespace LitePlacer
             JobOffsetX_textBox.Text = Setting.Job_Xoffset.ToString("0.000", CultureInfo.InvariantCulture);
             JobOffsetY_textBox.Text = Setting.Job_Yoffset.ToString("0.000", CultureInfo.InvariantCulture);
 
-            PumpInvert_checkBox.Checked= Setting.General_PumpOutputInverted;
-            VacuumInvert_checkBox.Checked = Setting.General_VacuumOutputInverted;
-
-
             if (Setting.Nozzles_current == 0)
             {
                 NozzleNo_textBox.Text = "--";
@@ -401,14 +397,20 @@ namespace LitePlacer
             ForceNozzle_numericUpDown.Value = Setting.Nozzles_default;
             DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
 
+             PumpInvert_checkBox.Checked= Setting.General_PumpOutputInverted;
+            VacuumInvert_checkBox.Checked = Setting.General_VacuumOutputInverted;
+            Pump_checkBox.Checked = false;
+            Vacuum_checkBox.Checked = false;
+
             Cnc.Connect(Setting.CNC_SerialPort);  // moved to here, as this can raise error condition, needing the form up
             UpdateCncConnectionStatus();
+
             if (Cnc.Connected)
             {
-                Cnc.PumpDefaultSetting();
-                Cnc.VacuumDefaultSetting();
                 if (ControlBoardJustConnected())
                 {
+                    Cnc.PumpDefaultSetting();
+                    Cnc.VacuumDefaultSetting();
                     OfferHoming();
                 }
             }
