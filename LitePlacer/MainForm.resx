@@ -555,6 +555,13 @@ Best and most reliable method is unfortunately system dependent.</value>
   <metadata name="dataGridViewTextBoxColumn40.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="Ato0_button.ToolTip" xml:space="preserve">
+    <value>There is no automatic homing on A axis.
+Instead, A should be manually set to 0 position, 
+with help of a mark on the big pulley.
+You can also jog A to 0 position; this button
+will set A coordinate to 0 after that.</value>
+  </data>
   <metadata name="ComponentCount.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

@@ -15454,6 +15454,11 @@ namespace LitePlacer
             Setting.General_VigorousHoming = VigorousHoming_checkBox.Checked;
         }
 
+        private void Ato0_button_Click(object sender, EventArgs e)
+        {
+            CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
+        }
+
         // ===================================================================================
 
     }	// end of: 	public partial class FormMain : Form
