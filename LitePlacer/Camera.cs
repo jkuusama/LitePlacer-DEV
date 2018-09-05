@@ -707,6 +707,8 @@ namespace LitePlacer
         // ==========================================================================================================
 
         Bitmap frame;
+        int CollectorCount = 0;
+
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             ReceivingFrames = true;
@@ -826,7 +828,15 @@ namespace LitePlacer
             }
 
             frame.Dispose();
-            GC.Collect();
+            if (CollectorCount>20)
+            {
+                GC.Collect();
+                CollectorCount = 0;
+            }
+            else
+            {
+                CollectorCount++;
+            }
         } // end Video_NewFrame
 
         // see http://www.codeproject.com/Questions/689320/object-is-currently-in-use-elsewhere about the locker

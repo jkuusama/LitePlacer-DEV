@@ -431,6 +431,7 @@
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.Ato0_button = new System.Windows.Forms.Button();
             this.VacuumInvert_checkBox = new System.Windows.Forms.CheckBox();
             this.PumpInvert_checkBox = new System.Windows.Forms.CheckBox();
             this.BoardSettingsLoad_button = new System.Windows.Forms.Button();
@@ -818,7 +819,6 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.Ato0_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -3335,7 +3335,7 @@
             // 
             this.DownCam_FindComponents_checkBox.AutoSize = true;
             this.DownCam_FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(106, 98);
+            this.DownCam_FindComponents_checkBox.Location = new System.Drawing.Point(125, 96);
             this.DownCam_FindComponents_checkBox.Name = "DownCam_FindComponents_checkBox";
             this.DownCam_FindComponents_checkBox.Size = new System.Drawing.Size(126, 19);
             this.DownCam_FindComponents_checkBox.TabIndex = 54;
@@ -3530,7 +3530,7 @@
             // 
             this.DownCamFindRectangles_checkBox.AutoSize = true;
             this.DownCamFindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(106, 121);
+            this.DownCamFindRectangles_checkBox.Location = new System.Drawing.Point(125, 119);
             this.DownCamFindRectangles_checkBox.Name = "DownCamFindRectangles_checkBox";
             this.DownCamFindRectangles_checkBox.Size = new System.Drawing.Size(118, 19);
             this.DownCamFindRectangles_checkBox.TabIndex = 53;
@@ -3768,7 +3768,7 @@
             // 
             this.DownCamFindCircles_checkBox.AutoSize = true;
             this.DownCamFindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(106, 75);
+            this.DownCamFindCircles_checkBox.Location = new System.Drawing.Point(125, 73);
             this.DownCamFindCircles_checkBox.Name = "DownCamFindCircles_checkBox";
             this.DownCamFindCircles_checkBox.Size = new System.Drawing.Size(93, 19);
             this.DownCamFindCircles_checkBox.TabIndex = 43;
@@ -5359,6 +5359,17 @@
             this.tabPageBasicSetup.TabIndex = 1;
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
+            // 
+            // Ato0_button
+            // 
+            this.Ato0_button.Location = new System.Drawing.Point(860, 435);
+            this.Ato0_button.Name = "Ato0_button";
+            this.Ato0_button.Size = new System.Drawing.Size(75, 23);
+            this.Ato0_button.TabIndex = 114;
+            this.Ato0_button.Text = "Set A=0";
+            this.toolTip1.SetToolTip(this.Ato0_button, resources.GetString("Ato0_button.ToolTip"));
+            this.Ato0_button.UseVisualStyleBackColor = true;
+            this.Ato0_button.Click += new System.EventHandler(this.Ato0_button_Click);
             // 
             // VacuumInvert_checkBox
             // 
@@ -9528,17 +9539,6 @@
             this.label165.Size = new System.Drawing.Size(92, 17);
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
-            // 
-            // Ato0_button
-            // 
-            this.Ato0_button.Location = new System.Drawing.Point(860, 435);
-            this.Ato0_button.Name = "Ato0_button";
-            this.Ato0_button.Size = new System.Drawing.Size(75, 23);
-            this.Ato0_button.TabIndex = 114;
-            this.Ato0_button.Text = "Set A=0";
-            this.toolTip1.SetToolTip(this.Ato0_button, resources.GetString("Ato0_button.ToolTip"));
-            this.Ato0_button.UseVisualStyleBackColor = true;
-            this.Ato0_button.Click += new System.EventHandler(this.Ato0_button_Click);
             // 
             // FormMain
             // 
