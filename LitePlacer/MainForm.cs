@@ -1370,7 +1370,7 @@ namespace LitePlacer
             }
         }
 
-        static bool EnterKeyHit = true;
+        static bool EnterKeyHit = true;   // petegit: Why is this initialized with true???
         static string Movestr;
 
         public void My_KeyDown(object sender, KeyEventArgs e)
@@ -1381,6 +1381,14 @@ namespace LitePlacer
             {
                 EnterKeyHit = true;
                 return;
+            }
+
+            // Abort placment should also be triggered by keyboard
+            // In some situations this is much faster then using the mouse
+            if (e.KeyCode == Keys.Escape) 
+            {
+                AbortPlacement = true;
+                AbortPlacementShown = false;
             }
 
             if ( (e.KeyCode == Keys.F4) &&
@@ -2518,6 +2526,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
 
@@ -2591,6 +2600,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
 
@@ -2663,6 +2673,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
             if (!Cnc.Connected)
@@ -8382,6 +8393,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
 
@@ -8719,6 +8731,20 @@ namespace LitePlacer
             {
                 return false;
             }
+
+            if (AbortPlacement)
+            {
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
+                AbortPlacement = false;
+                return false;
+            }
             return true;
         }
 
@@ -8752,6 +8778,19 @@ namespace LitePlacer
                 return false;
             }
 
+            if (AbortPlacement)
+            {
+                if (!AbortPlacementShown)
+                {
+                    AbortPlacementShown = true;
+                    ShowMessageBox(
+                               "Operation aborted",
+                               "Operation aborted",
+                               MessageBoxButtons.OK);
+                }
+                AbortPlacement = false;
+                return false;
+            }
             return true;
         }
 
@@ -9036,11 +9075,24 @@ namespace LitePlacer
                 Thread.Sleep(10);
                 if (AbortPlacement)
                 {
-                    AbortPlacement = false;
                     ShowMessageBox(
                         "Operation aborted.",
                         "Operation aborted.",
                         MessageBoxButtons.OK);
+                    
+                    AbortPlacement = false;                    
+                    
+                    if (!CNC_Z_m(0))  // move nozzle to zero position
+                    {
+                        return false;
+                    }
+
+                    ZGuardOn();
+
+                    //Restore Slack Compensation state
+                    Cnc.SlackCompensation = SaveSlackCompState;
+                    Cnc.SlackCompensationA = SaveSlackCompAState;
+
                     return false;
                 }
             } while (!EnterKeyHit);
@@ -9227,6 +9279,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             }
             return true;
@@ -9251,6 +9304,7 @@ namespace LitePlacer
                                "Operation aborted",
                                MessageBoxButtons.OK);
                 }
+                AbortPlacement = false;
                 return false;
             };
             string id = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString();
@@ -9379,6 +9433,7 @@ namespace LitePlacer
                                        "Operation aborted",
                                        MessageBoxButtons.OK);
                         }
+                        AbortPlacement = false;
                         return false;
                     }
                 } while (!EnterKeyHit);
@@ -9411,6 +9466,7 @@ namespace LitePlacer
                 }
                 DownCamera.Draw_Snapshot = false;
                 UpCamera.Draw_Snapshot = false;
+                AbortPlacement = false;
                 return false;
             }
 
@@ -9465,6 +9521,7 @@ namespace LitePlacer
                 }
                 DownCamera.Draw_Snapshot = false;
                 UpCamera.Draw_Snapshot = false;
+                AbortPlacement = false;
                 return false;
             }
             return true;

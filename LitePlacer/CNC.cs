@@ -667,7 +667,7 @@ namespace LitePlacer
 
         public void VacuumDefaultSetting()
         {
-            VacuumIsOn = true;      // force action
+            //VacuumIsOn = true;      // force action
             VacuumOff();
         }
 
@@ -737,7 +737,7 @@ namespace LitePlacer
 
         public void PumpDefaultSetting()
         {
-            PumpIsOn = true;   // to force action
+            //PumpIsOn = true;   // to force action
             PumpOff();
         }
 
