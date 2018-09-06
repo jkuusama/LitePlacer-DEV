@@ -10902,15 +10902,11 @@ namespace LitePlacer
             }
 
             // Parse data
-            List<String> Line;
-            string peek;
+            List<String> NewLine;
+            List<List<string>> DataLines = new List<List<string>>();
 
             for (i = LineIndex; i < AllLines.Count(); i++)   // for each component
             {
-                if (i == 113)
-                {
-                    peek = AllLines[i];
-                }
                 // Skip: empty lines and comment lines (starting with # or "//")
                 if (
                         (AllLines[i] == "")  // empty lines
@@ -10927,12 +10923,21 @@ namespace LitePlacer
 
                 if (KiCad)
                 {
-                    Line = SplitKiCadLine(AllLines[i]);
+                    NewLine = SplitKiCadLine(AllLines[i]);
                 }
                 else
                 {
-                    Line = SplitCSV(AllLines[i], delimiter);
+                    NewLine = SplitCSV(AllLines[i], delimiter);
                 }
+                DataLines.Add(NewLine);
+            }
+
+            // DataLines now contain the splitted data from the original CSV file, with header and empty lines removed.
+
+            HandleDuplicates(ref DataLines, ComponentIndex);    
+
+            foreach (var Line in DataLines)
+            {
 
                 // Line = SplitCSV(AllLines[i], delimiter);
                 // If layer is indicated and the component is not on this layer, skip it
@@ -11036,6 +11041,42 @@ namespace LitePlacer
 
             return true;
         }   // end ParseCadData
+
+        // =================================================================================
+        // HandleDuplicates():
+        // If the inout data has duplicate designators, like R1, R1, R1, this routine 
+        // replaces them with R1_1, R1_2, R1_3 etc.
+
+        public void HandleDuplicates(ref List<List<string>> DataLines, int ComponentIndex)
+        {
+            string Designator = "";
+            int Count;
+            bool DuplicateFound;
+
+            // For each component,
+            for (int i = 0; i < DataLines.Count; i++)
+            {
+                Designator = DataLines[i][ComponentIndex];  // get the designator
+                DuplicateFound = false;
+                Count = 2;
+                // and check, if there are duplicates
+                for (int j = i+1; j < DataLines.Count; j++)
+                {
+                    if (DataLines[j][ComponentIndex]==Designator)
+                    {
+                        DuplicateFound = true;
+                        DataLines[j][ComponentIndex] = Designator + "_" + Count.ToString();
+                        Count++;
+                    }
+                }
+                // if there were, all others are now renamed but the first one
+                if (DuplicateFound)
+                {
+                    DataLines[i][ComponentIndex] = Designator + "_1";
+                }
+            }
+        }
+
 
         // =================================================================================
         // Helper function for ParseCadData() (and some others, hence public)
