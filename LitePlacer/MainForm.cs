@@ -77,6 +77,7 @@ namespace LitePlacer
             {
                 return (DialogResult)this.Invoke(new PassStringStringReturnDialogResultDelegate(ShowMessageBox), message, header, buttons);
             }
+            CenteredMessageBox.PrepToCenterMessageBoxOnForm(this);
             return MessageBox.Show(this, message, header, buttons);
         }
         public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
@@ -2527,6 +2528,10 @@ namespace LitePlacer
                                MessageBoxButtons.OK);
                 }
                 AbortPlacement = false;
+                if ( Math.Abs(Cnc.CurrentZ) > 0.01)
+                {
+                    CNC_Z_m(0.0);
+                }
                 return false;
             }
 
@@ -2601,6 +2606,10 @@ namespace LitePlacer
                                MessageBoxButtons.OK);
                 }
                 AbortPlacement = false;
+                if (Math.Abs(Cnc.CurrentZ) > 0.01)
+                {
+                    CNC_Z_m(0.0);
+                }
                 return false;
             }
 
@@ -2674,6 +2683,10 @@ namespace LitePlacer
                                MessageBoxButtons.OK);
                 }
                 AbortPlacement = false;
+                if (Math.Abs(Cnc.CurrentZ) > 0.01)
+                {
+                    CNC_Z_m(0.0);
+                }
                 return false;
             }
             if (!Cnc.Connected)
@@ -2865,7 +2878,10 @@ namespace LitePlacer
                 // If we are further than move tolerance, go there
                 if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance))
                 {
-                    CNC_XY_m(Cnc.CurrentX + X, Cnc.CurrentY + Y);
+                    if (!CNC_XY_m(Cnc.CurrentX + X, Cnc.CurrentY + Y))
+                    {
+                        return false;
+                    }
                 }
                 count++;
             }  // repeat this until we didn't need to move
@@ -9717,8 +9733,11 @@ namespace LitePlacer
 
         private bool MeasureFiducial_m(ref PhysicalComponent fid)
         {
-            CNC_XY_m(fid.X_nominal + Setting.Job_Xoffset + Setting.General_JigOffsetX,
-                     fid.Y_nominal + Setting.Job_Yoffset + Setting.General_JigOffsetY);
+            if (!CNC_XY_m(fid.X_nominal + Setting.Job_Xoffset + Setting.General_JigOffsetX,
+                     fid.Y_nominal + Setting.Job_Yoffset + Setting.General_JigOffsetY))
+            {
+                return false;
+            }
             double X;
             double Y;
             FeatureType FidShape= FeatureType.Circle;
@@ -15544,5 +15563,89 @@ namespace LitePlacer
         }
     }
 
+    // ===================================================================================
+    // A message box that is centered on the main form.
+    // From: http://www.jasoncarr.com/technology/centering-a-message-box-on-the-active-window-in-csharp
 
-}	// end of: namespace LitePlacer
+    internal static class CenteredMessageBox
+    {
+        internal static void PrepToCenterMessageBoxOnForm(Form form)
+        {
+            MessageBoxCenterHelper helper = new MessageBoxCenterHelper();
+            helper.Prep(form);
+        }
+
+        private class MessageBoxCenterHelper
+        {
+            private int messageHook;
+            private IntPtr parentFormHandle;
+
+            public void Prep(Form form)
+            {
+                NativeMethods.CenterMessageCallBackDelegate callBackDelegate = new NativeMethods.CenterMessageCallBackDelegate(CenterMessageCallBack);
+                GCHandle.Alloc(callBackDelegate);
+
+                parentFormHandle = form.Handle;
+                messageHook = NativeMethods.SetWindowsHookEx(5, callBackDelegate, new IntPtr(NativeMethods.GetWindowLong(parentFormHandle, -6)), NativeMethods.GetCurrentThreadId()).ToInt32();
+            }
+
+            private int CenterMessageCallBack(int message, int wParam, int lParam)
+            {
+                NativeMethods.RECT formRect;
+                NativeMethods.RECT messageBoxRect;
+                int xPos;
+                int yPos;
+
+                if (message == 5)
+                {
+                    NativeMethods.GetWindowRect(parentFormHandle, out formRect);
+                    NativeMethods.GetWindowRect(new IntPtr(wParam), out messageBoxRect);
+
+                    xPos = (int)((formRect.Left + (formRect.Right - formRect.Left) / 2) - ((messageBoxRect.Right - messageBoxRect.Left) / 2));
+                    yPos = (int)((formRect.Top + (formRect.Bottom - formRect.Top) / 2) - ((messageBoxRect.Bottom - messageBoxRect.Top) / 2));
+
+                    NativeMethods.SetWindowPos(wParam, 0, xPos, yPos, 0, 0, 0x1 | 0x4 | 0x10);
+                    NativeMethods.UnhookWindowsHookEx(messageHook);
+                }
+
+                return 0;
+            }
+        }
+
+        private static class NativeMethods
+        {
+            internal struct RECT
+            {
+                public int Left;
+                public int Top;
+                public int Right;
+                public int Bottom;
+            }
+
+            internal delegate int CenterMessageCallBackDelegate(int message, int wParam, int lParam);
+
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            internal static extern bool UnhookWindowsHookEx(int hhk);
+
+            [DllImport("user32.dll", SetLastError = true)]
+            internal static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+            [DllImport("kernel32.dll")]
+            internal static extern int GetCurrentThreadId();
+
+            [DllImport("user32.dll", SetLastError = true)]
+            internal static extern IntPtr SetWindowsHookEx(int hook, CenterMessageCallBackDelegate callback, IntPtr hMod, int dwThreadId);
+
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            internal static extern bool SetWindowPos(int hWnd, int hWndInsertAfter, int X, int Y, int cx, int cy, int uFlags);
+
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            internal static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+        }
+    }
+
+
+    }	// end of: namespace LitePlacer
