@@ -15537,12 +15537,12 @@ namespace LitePlacer
             CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
         }
 
-        // ===================================================================================
 
     }	// end of: 	public partial class FormMain : Form
 
 
 
+    // ===================================================================================
     // allows addition of color info to displayText 
     public static class RichTextBoxExtensions
     {
