@@ -15578,7 +15578,10 @@ namespace LitePlacer
             CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
         }
 
+        private void Display_dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
+        }
     }	// end of: 	public partial class FormMain : Form
 
 
