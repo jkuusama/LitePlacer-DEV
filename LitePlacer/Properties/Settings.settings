@@ -104,7 +104,7 @@
     <Setting Name="General_MachineSizeY" Type="System.Double" Scope="User">
       <Value Profile="(Default)">370</Value>
     </Setting>
-    <Setting Name="General_ProbingBackOff" Type="System.Double" Scope="User">
+    <Setting Name="General_PlacementBackOff" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.2</Value>
     </Setting>
     <Setting Name="General_ZtoPCB" Type="System.Double" Scope="User">
@@ -282,10 +282,10 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="General_BelowPCB_Allowance" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="Nozzles_count" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">6</Value>
     </Setting>
     <Setting Name="Nozzles_default" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
@@ -337,6 +337,24 @@
     </Setting>
     <Setting Name="Nozzles_CalibrationMinSize" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Job_Xoffset" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Job_Yoffset" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="General_ZprobingHysteresis" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Placement_FiducialsType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Placement_FiducialTolerance" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="Placement_FiducialConfirmation" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

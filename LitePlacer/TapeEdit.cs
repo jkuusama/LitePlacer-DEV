@@ -69,29 +69,41 @@ namespace LitePlacer
             {
                 TapeRotation_comboBox.SelectedItem = Row.Cells["Rotation_Column"].Value;
             }
-            if (Properties.Settings.Default.Nozzles_Enabled)
+            if (MainForm.Setting.Nozzles_Enabled)
             {
-                Nozzle_numericUpDown.Maximum = Properties.Settings.Default.Nozzles_count;
+                Nozzle_numericUpDown.Maximum = MainForm.Setting.Nozzles_count;
                 if (Row.Cells["Nozzle_Column"].Value != null)
                 {
                     int nozzle;
                     if (int.TryParse(Row.Cells["Nozzle_Column"].Value.ToString(), out nozzle))
                     {
+                        if (nozzle == 0)
+                        {
+                            nozzle = MainForm.Setting.Nozzles_default;   // default nozzle = 0 (!?)
+                        }
                         Nozzle_numericUpDown.Value = nozzle;
                     }
                     else
                     {
-                        Nozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
+                        Nozzle_numericUpDown.Value = MainForm.Setting.Nozzles_default;
                     }
                 }
                 else
                 {
-                    Nozzle_numericUpDown.Value = Properties.Settings.Default.Nozzles_default;
+                    if (MainForm.Setting.Nozzles_default == 0)
+                    {
+                        Nozzle_numericUpDown.Value = 1;
+                    }
+                    else
+                    {
+                        Nozzle_numericUpDown.Value = MainForm.Setting.Nozzles_default;
+                    }
                 }
             }
             else
             {
                 Nozzle_numericUpDown.Enabled = false;
+                MainForm.DefaultNozzle_label.Text = "--";
             }
 
             if (Row.Cells["Width_Column"].Value != null)
@@ -177,7 +189,7 @@ namespace LitePlacer
                 {
                     CoordinatesForParts_checkBox.Checked = true;
                     double val;
-                    if (double.TryParse(RotationDirect_textBox.Text, out val))
+                    if (double.TryParse(RotationDirect_textBox.Text.Replace(',', '.'), out val))
                     {
                         MainForm.CNC_A_m(val);
                     }
@@ -265,7 +277,7 @@ namespace LitePlacer
         private void ValidateDouble(TextBox box)
         {
             double val;
-            if (double.TryParse(box.Text, out val))
+            if (double.TryParse(box.Text.Replace(',', '.'), out val))
             {
                 box.ForeColor = Color.Black;
             }

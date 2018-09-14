@@ -11,9 +11,11 @@ namespace LitePlacer
 {
 	public partial class TapeSelectionForm : Form
 	{
-		public DataGridView Grid;
+        static FormMain MainForm;
+
+        public DataGridView Grid;
 		public string ID = "none";
-        public string Nozzle = Properties.Settings.Default.Nozzles_default.ToString();
+        public string Nozzle;
         public string HeaderString = "";
 
 		const int ButtonWidth = 75;
@@ -24,13 +26,15 @@ namespace LitePlacer
 
         private Size GridSizeSave= new Size();
 
-		public TapeSelectionForm(DataGridView grd)
+		public TapeSelectionForm(DataGridView grd, FormMain MainF)
 		{
-			InitializeComponent();
+            MainForm = MainF;
+            InitializeComponent();
 			Grid = grd;
             GridSizeSave = Grid.Size;
-			// this.Size = new Size(10 * ButtonWidth + 9*ButtonGap + 2 * SideGap+20, 133);  // 20?? 404; 480
-			this.Controls.Add(Grid);
+            Nozzle = MainForm.Setting.Nozzles_default.ToString();
+            // this.Size = new Size(10 * ButtonWidth + 9*ButtonGap + 2 * SideGap+20, 133);  // 20?? 404; 480
+            this.Controls.Add(Grid);
 			for (int i = 0; i < Grid.RowCount; i++)
 			{
 				Grid.Rows[i].Cells["SelectButton_Column"].Value="Select";
@@ -56,7 +60,7 @@ namespace LitePlacer
 		private void TapeSelectionForm_Load(object sender, EventArgs e)
 		{
             this.Text = HeaderString;
-            UpdateJobData_checkBox.Checked = Properties.Settings.Default.Placement_UpdateJobGridAtRuntime;
+            UpdateJobData_checkBox.Checked = MainForm.Setting.Placement_UpdateJobGridAtRuntime;
 		}
 
 
@@ -68,7 +72,7 @@ namespace LitePlacer
 
 		private void UpdateJobData_checkBox_CheckedChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.Placement_UpdateJobGridAtRuntime = UpdateJobData_checkBox.Checked;
+			MainForm.Setting.Placement_UpdateJobGridAtRuntime = UpdateJobData_checkBox.Checked;
 		}
 
 		private void Grid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -79,9 +83,16 @@ namespace LitePlacer
 				return;
 			}
 			ID = Grid.Rows[e.RowIndex].Cells["Id_Column"].Value.ToString();
-            Nozzle= Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value.ToString();
+            if (Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value == null)
+            {
+                MainForm.ShowMessageBox(
+                    "Warning: This tape has no nozzle defined, using default value",
+                    "No nozzle defined",
+                    MessageBoxButtons.OK);
+                Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value = MainForm.Setting.Nozzles_default.ToString();
+            }
             CloseForm();
-		}
+        }
 
 		private void Ignore_button_Click(object sender, EventArgs e)
 		{

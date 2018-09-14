@@ -36,7 +36,14 @@ namespace LitePlacer
 
         private void Close_thread()
         {
-            Port.Close();
+            try
+            {
+                Port.Close();
+            }
+            catch
+            {
+                // there would be an exeption if the device is turned off and the port doesn't exist anymore
+            }
         }
 
         public void Close()
@@ -68,7 +75,8 @@ namespace LitePlacer
                 Port.Parity = Parity.None;
                 Port.StopBits = StopBits.One;
                 Port.DataBits = 8;
-                Port.Handshake = Handshake.RequestToSend;
+                // Port.Handshake = Handshake.RequestToSend;
+                Port.Handshake = Handshake.None;
                 Port.DtrEnable = true;  // prevent hangs on some drivers
                 Port.RtsEnable = true;
                 Port.WriteTimeout = 500;
@@ -89,16 +97,20 @@ namespace LitePlacer
 
         // ======================================================
         // Write:
-        // If the PC has more thatn one serial port and one which is not connected to TinyG has hardware handshake
+        // If the PC has more than one serial port and one which is not connected to TinyG has hardware handshake
         // on, the write will hang. Doing write this way catches this situation
 
         public bool Write(string TxText)
         {
             try
             {
+                if (!Port.IsOpen)
+                {
+                    MainForm.DisplayText("Serial port not open, attempt to re-open", KnownColor.DarkRed);
+                }
                 if (Port.IsOpen)
                 {
-                    Port.Write(TxText + "\r");
+                    Port.Write(TxText + "\n");
                     MainForm.DisplayText("==> " + TxText, KnownColor.Blue);
                 }
                 else
@@ -107,9 +119,9 @@ namespace LitePlacer
                 }
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                MainForm.DisplayText("Serial port write failed.", KnownColor.DarkRed);
+                MainForm.DisplayText("Serial port write failed: " + e.Message, KnownColor.DarkRed);
                 Close();
                 return false;
             }

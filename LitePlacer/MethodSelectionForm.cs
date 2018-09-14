@@ -15,12 +15,15 @@ namespace LitePlacer
 		public bool ShowCheckBox = false;
 		public string HeaderString = "";
 
-		public MethodSelectionForm()
+        static FormMain MainForm;
+
+        public MethodSelectionForm(FormMain MainF)
 		{
 			InitializeComponent();
-		}
+            MainForm = MainF;
+        }
 
-		private void MethodSelectionForm_Load(object sender, EventArgs e)
+        private void MethodSelectionForm_Load(object sender, EventArgs e)
 		{
 			UpdateJobGrid_checkBox.Visible = ShowCheckBox;
 			if (ShowCheckBox)
@@ -29,12 +32,12 @@ namespace LitePlacer
 				Question_button.Enabled = false;
 				this.Text = "Place " + HeaderString;
 			}
-			UpdateJobGrid_checkBox.Checked = Properties.Settings.Default.Placement_UpdateJobGridAtRuntime;
+			UpdateJobGrid_checkBox.Checked = MainForm.Setting.Placement_UpdateJobGridAtRuntime;
 		}
 
 		private void UpdateJobGrid_checkBox_CheckedChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.Placement_UpdateJobGridAtRuntime = UpdateJobGrid_checkBox.Checked;
+            MainForm.Setting.Placement_UpdateJobGridAtRuntime = UpdateJobGrid_checkBox.Checked;
 		}
 
 		private void Question_button_Click(object sender, EventArgs e)
@@ -103,5 +106,16 @@ namespace LitePlacer
             this.Close();
         }
 
+        private void PlaceAssisted_button_Click(object sender, EventArgs e)
+        {
+            SelectedMethod = "Place Assisted";
+            this.Close();
+        }
+
+        private void LoosePartAssisted_button_Click(object sender, EventArgs e)
+        {
+            SelectedMethod = "LoosePart Assisted";
+            this.Close();
+        }
 	}
 }

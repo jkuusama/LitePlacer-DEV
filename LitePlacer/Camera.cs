@@ -109,26 +109,62 @@ namespace LitePlacer
                 lock (_locker)
                 {
                     _imageBox = value;
-                    ImageCenterX = value.Width / 2;
-                    ImageCenterY = value.Height / 2;
                 }
             }
         }
 
-        public int ImageCenterX { get; set; }
-        public int ImageCenterY { get; set; }
-        public int ImageSizeX { get; set; }
-        public int ImageSizeY { get; set; }
         public int FrameCenterX { get; set; }
         public int FrameCenterY { get; set; }
         public int FrameSizeX { get; set; }
         public int FrameSizeY { get; set; }
+        public int DesiredX { get; set; }
+        public int DesiredY { get; set; }
 
         public string MonikerString = "unconnected";
         public string Id = "unconnected";
 
         public bool ReceivingFrames { get; set; }
 
+        // =================================================================================================
+        public void ListResolutions(string MonikerStr)
+        {
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            // create video source
+            if (videoDevices == null)
+            {
+                MainForm.DisplayText("No Cameras.", KnownColor.Purple);
+                return;
+            }
+            if (videoDevices.Count == 0)
+            {
+                MainForm.DisplayText("No Cameras.", KnownColor.Purple);
+                return;
+            }
+            VideoCaptureDevice source = new VideoCaptureDevice(MonikerStr);
+            int tries = 0;
+            while (tries < 4)
+            {
+                if (source == null)
+                {
+                    Thread.Sleep(20);
+                    tries++;
+                    break;
+                }
+                if (source.VideoCapabilities.Length > 0)
+                {
+                    for (int i = 0; i < source.VideoCapabilities.Length; i++)
+                    {
+                        MainForm.DisplayText("X: " + source.VideoCapabilities[i].FrameSize.Width.ToString() +
+                            ", Y: " + source.VideoCapabilities[i].FrameSize.Height.ToString());
+                    }
+                    return;
+                }
+            }
+            // if we didn't return from above:
+            MainForm.DisplayText("Could not get resolution info.", KnownColor.Purple);
+        }
+
+        // =================================================================================================
         public bool Start(string cam, string MonikerStr)
         {
             try
@@ -139,13 +175,53 @@ namespace LitePlacer
                 FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
                 // create the video source (check that the camera exists is already done
                 VideoSource = new VideoCaptureDevice(MonikerStr);
+                int tries = 0;
+                while (tries < 4)
+                {
+                    if (VideoSource != null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Thread.Sleep(10);
+                        tries++;
+                    }
+                }
+                if (tries>=4)
+                {
+                    MainForm.DisplayText("Could not get resolution info");
+                    return false;
+                }
+                if (VideoSource.VideoCapabilities.Length <= 0)
+                {
+                    MainForm.DisplayText("Could not get resolution info");
+                    return false;
+                }
+
+                bool fine = false;
+                for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
+                {
+                    if ((VideoSource.VideoCapabilities[i].FrameSize.Width== DesiredX)
+                        &&
+                        (VideoSource.VideoCapabilities[i].FrameSize.Height == DesiredY))
+                    {
+                        VideoSource.VideoResolution = VideoSource.VideoCapabilities[i];
+                        fine = true;
+                        break;
+                    }
+                }
+                if (!fine)
+                {
+                    MainForm.DisplayText("Desired resolution not available");
+                    return false;
+                }
 
                 VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
                 ReceivingFrames = false;
 
                 // try ten times to start
-                int tries = 0;
-
+                tries = 0;
                 while (tries < 80)  // 4s maximum to a camera to start
                 {
                     // VideoSource.Start() checks running status, is safe to call multiple times
@@ -165,34 +241,24 @@ namespace LitePlacer
                         break;
                     }
                 }
-                MainForm.DisplayText("*** Camera started: " + tries.ToString() + ", " + ReceivingFrames.ToString(), KnownColor.Purple);
-                // another pause so that if we are receiveing frames, we have time to notice it
-                //for (int i = 0; i < 10; i++)
-                //{
-                //    Thread.Sleep(5);
-                //    Application.DoEvents();
-                //}
-
                 if (!ReceivingFrames)
                 {
+                    MainForm.DisplayText("Camera started, but is not sending video");
                     return false;
                 }
+                MainForm.DisplayText("*** Camera started: " + tries.ToString(), KnownColor.Purple);
 
-                VideoCapabilities Capability = VideoSource.VideoCapabilities[0];
-                FrameSizeX = Capability.FrameSize.Width;
-                FrameSizeY = Capability.FrameSize.Height;
+                // We managed to start the camera using desired resolution
+                FrameSizeX = DesiredX;
+                FrameSizeY = DesiredY;
                 FrameCenterX = FrameSizeX / 2;
                 FrameCenterY = FrameSizeY / 2;
-                lock (_locker)
-                {
-                    ImageCenterX = ImageBox.Width / 2;
-                    ImageCenterY = ImageBox.Height / 2;
-                }
                 PauseProcessing = false;
                 return true;
             }
-            catch
+            catch (System.Exception excep)
             {
+                MessageBox.Show(excep.Message);
                 return false;
             }
         }
@@ -350,7 +416,7 @@ namespace LitePlacer
                 msg += " / ";
                 if (Row.Cells[DoubleCol].Value != null)
                 {
-                    double.TryParse(Row.Cells[DoubleCol].Value.ToString(), out temp_d);
+                    double.TryParse(Row.Cells[DoubleCol].Value.ToString().Replace(',', '.'), out temp_d);
                     f.parameter_double = temp_d;
                     msg += temp_d.ToString();
                 }
@@ -641,6 +707,8 @@ namespace LitePlacer
         // ==========================================================================================================
 
         Bitmap frame;
+        int CollectorCount = 0;
+
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             ReceivingFrames = true;
@@ -760,6 +828,15 @@ namespace LitePlacer
             }
 
             frame.Dispose();
+            if (CollectorCount>20)
+            {
+                GC.Collect();
+                CollectorCount = 0;
+            }
+            else
+            {
+                CollectorCount++;
+            }
         } // end Video_NewFrame
 
         // see http://www.codeproject.com/Questions/689320/object-is-currently-in-use-elsewhere about the locker
@@ -1447,8 +1524,173 @@ namespace LitePlacer
         }
 
         // ==========================================================================================================
+        // Rectangles:
+        // ==========================================================================================================
+        private List<Shapes.Rectangle> FindRectanglesFunct(Bitmap bitmap)
+        {
+            // step 1 - turn background to black (done)
 
-		private Bitmap MirrorFunct(Bitmap frame)
+            // step 2 - locating objects
+            BlobCounter blobCounter = new BlobCounter();
+            blobCounter.FilterBlobs = true;
+            blobCounter.MinHeight = 3;
+            blobCounter.MinWidth = 3;
+            blobCounter.ProcessImage(bitmap);
+            Blob[] blobs = blobCounter.GetObjectsInformation();
+
+            // step 3 - check objects' type and do what you do:
+            List<Shapes.Rectangle> Rectangles = new List<Shapes.Rectangle>();
+
+            for (int i = 0, n = blobs.Length; i < n; i++)
+            {
+                SimpleShapeChecker QuadChecker = new SimpleShapeChecker();
+                List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
+                List<IntPoint> cornerPoints;
+
+                // fine tune ShapeChecker
+                QuadChecker.AngleError = 7;  // default 7
+                QuadChecker.LengthError = 0.1F;  // default 0.1 (10%)
+                QuadChecker.MinAcceptableDistortion = 0.1F;  // in pixels, default 0.5 
+                QuadChecker.RelativeDistortionLimit = 0.05F;  // default 0.03 (3%)
+
+                // use the Outline checker to extract the corner points
+                if (QuadChecker.IsQuadrilateral(edgePoints, out cornerPoints))
+                {
+                    // only do things if the corners form a rectangle
+                    SimpleShapeChecker RectangleChecker = new SimpleShapeChecker();
+                    RectangleChecker.AngleError = 7;  // default 7
+                    RectangleChecker.LengthError = 0.00F;  // default 0.1 (10%)
+                    RectangleChecker.MinAcceptableDistortion = 1F;  // in pixels, default 0.5 
+                    RectangleChecker.RelativeDistortionLimit = 0.05F;  // default 0.03 (3%)
+                    if (RectangleChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
+                    //if (true)
+                    {
+                        List<IntPoint> corners = PointsCloud.FindQuadrilateralCorners(edgePoints);
+                        float x0 = corners[0].X;
+                        float y0 = corners[0].Y;
+                        float x2 = corners[2].X;
+                        float y2 = corners[2].Y;
+                        AForge.Point C = new AForge.Point();
+                        C.X = (float)(((x2 - x0) / 2.0) + x0);
+                        C.Y = (float)(((y2 - y0) / 2.0) + y0);
+
+                        AForge.Point a1 = corners[0];
+                        AForge.Point a2 = corners[1];
+                        AForge.Point b1 = corners[0];
+                        AForge.Point b2 = corners[1];
+                        b2.Y = b1.Y;
+                        float angle = GeometryTools.GetAngleBetweenLines(a1, a2, b1, b2);
+
+                        Rectangles.Add(new Shapes.Rectangle(C, angle, corners));
+                    }
+                }
+            }
+            return (Rectangles);
+        }
+        // =========================================================
+        private Bitmap DrawRectanglesFunct(Bitmap image)
+        {
+            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
+            int closest = FindClosestRectangle(Rectangles);
+            Graphics g = Graphics.FromImage(image);
+            Pen OrangePen = new Pen(Color.DarkOrange, 2);
+            Pen LimePen = new Pen(Color.Lime, 2);
+
+            for (int i = 0, n = Rectangles.Count; i < n; i++)
+            {
+                if (i==closest)
+                {
+                    g.DrawPolygon(LimePen, ToPointsArray(Rectangles[i].Corners));
+                }
+                else
+                {
+                    g.DrawPolygon(OrangePen, ToPointsArray(Rectangles[i].Corners));
+                }
+            }
+            g.Dispose();
+            LimePen.Dispose();
+            OrangePen.Dispose();
+            return (image);
+        }
+
+        // =========================================================
+        private int FindClosestRectangle(List<Shapes.Rectangle> Rectangles)
+        {
+            if (Rectangles.Count==0)
+            {
+                return 0;
+            }
+            int closest = 0;
+            float X = (Rectangles[0].Center.X - FrameCenterX);
+            float Y = (Rectangles[0].Center.Y - FrameCenterY);
+            float dist = X * X + Y * Y;  // we are interested only which one is closest, don't neet to take square roots to get distance right
+            float dX, dY;
+            for (int i = 0; i < Rectangles.Count; i++)
+            {
+                dX = Rectangles[i].Center.X - FrameCenterX;
+                dY = Rectangles[i].Center.Y - FrameCenterY;
+                if ((dX * dX + dY * dY) < dist)
+                {
+                    dist = dX * dX + dY * dY;
+                    closest = i;
+                }
+            }
+            return closest;
+        }
+
+        // =========================================================
+        public int GetClosestRectangle(out double X, out double Y, double MaxDistance)
+        // Sets X, Y position of the closest circle to the frame center in pixels, return value is number of circles found
+        {
+            List<Shapes.Rectangle> Rectangles = GetMeasurementRectangles(MaxDistance);
+            X = 0.0;
+            Y = 0.0;
+            if (Rectangles.Count == 0)
+            {
+                return (0);
+            }
+            // Find the closest
+            int closest = FindClosestRectangle(Rectangles);
+            double zoom = GetMeasurementZoom();
+            X = (Rectangles[closest].Center.X - FrameCenterX);
+            Y = (Rectangles[closest].Center.Y - FrameCenterY);
+            X = X / zoom;
+            Y = Y / zoom;
+            return (Rectangles.Count);
+        }
+
+        public List<Shapes.Rectangle> GetMeasurementRectangles(double MaxDistance)
+        {
+            // returns a list of circles for measurements, filters for distance (which we always do) and size, if needed
+
+            Bitmap image = GetMeasurementFrame();
+            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
+            List<Shapes.Rectangle> GoodRectangles = new  List<Shapes.Rectangle>();
+            image.Dispose();
+
+            double X = 0.0;
+            double Y = 0.0;
+            MaxDistance = MaxDistance * GetMeasurementZoom();
+            double MaxS = MaxSize * GetMeasurementZoom();
+            double MinS = MinSize * GetMeasurementZoom();
+            // Remove those that are more than MaxDistance away from frame center
+            foreach (Shapes.Rectangle Rectangle in Rectangles)
+            {
+                X = (Rectangle.Center.X - FrameCenterX);
+                Y = (Rectangle.Center.Y - FrameCenterY);
+                if ((X * X + Y * Y) <= (MaxDistance * MaxDistance))
+                {
+                    GoodRectangles.Add(Rectangle);
+                }
+            }
+            return (GoodRectangles);
+        }
+
+
+
+        // ==========================================================================================================
+
+        private Bitmap MirrorFunct(Bitmap frame)
 		{
 			Mirror Mfilter = new Mirror(false, true);
 			// apply the MirrFilter
@@ -1488,53 +1730,6 @@ namespace LitePlacer
 			frame = RBfilter.Apply(frame);
 		}
 
-		// =========================================================
-		private Bitmap DrawRectanglesFunct(Bitmap image)
-		{
-
-			// step 1 - turn background to black (done)
-
-			// step 2 - locating objects
-			BlobCounter blobCounter = new BlobCounter();
-			blobCounter.FilterBlobs = true;
-			blobCounter.MinHeight = 3;
-			blobCounter.MinWidth = 3;
-			blobCounter.ProcessImage(image);
-			Blob[] blobs = blobCounter.GetObjectsInformation();
-
-			// step 3 - check objects' type and do what you do:
-			Graphics g = Graphics.FromImage(image);
-			Pen pen = new Pen(Color.DarkOrange, 2);
-
-			for (int i = 0, n = blobs.Length; i < n; i++)
-			{
-				SimpleShapeChecker ShapeChecker = new SimpleShapeChecker();
-				List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
-				List<IntPoint> cornerPoints;
-
-				// fine tune ShapeChecker
-				ShapeChecker.AngleError = 15;  // default 7
-				ShapeChecker.LengthError = 0.3F;  // default 0.1 (10%)
-				ShapeChecker.MinAcceptableDistortion = 0.9F;  // in pixels, default 0.5 
-				ShapeChecker.RelativeDistortionLimit = 0.2F;  // default 0.03 (3%)
-
-				// use the Outline checker to extract the corner points
-				if (ShapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
-				{
-					// only do things if the corners form a rectangle
-					if (ShapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
-					{
-						List<IntPoint> corners = PointsCloud.FindQuadrilateralCorners(edgePoints);
-						g.DrawPolygon(pen, ToPointsArray(corners));
-					}
-				}
-			}
-            g.Dispose();
-            pen.Dispose();
-			return (image);
-		}
-
-
         // =========================================================
         private void RotateByFrameCenter(int x, int y, out int px, out int py)
         {
@@ -1553,7 +1748,7 @@ namespace LitePlacer
             Pen BluePen = new Pen(Color.Blue, 1);
             Graphics g = Graphics.FromImage(img);
             int x1, x2, y1, y2;
-            int step = 20;
+            int step = 40;
             // vertical
             int i = 0;
             while (i< FrameSizeX)
@@ -1608,73 +1803,6 @@ namespace LitePlacer
                 g.DrawLine(BluePen, x1, y1, x2, y2);
                 i = i + step;
             }
-            /*
-            for (int i = step; i < FrameSizeY; i = i + step)
-            {
-                // right
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
-                // left
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
-                // bottom
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
-                // top
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
-                i = i + step;
-                // right
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(GreenPen, x1, y1, x2, y2);
-                // left
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(GreenPen, x1, y1, x2, y2);
-                // bottom
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x2, out y2);
-                g.DrawLine(GreenPen, x1, y1, x2, y2);
-                // top
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(GreenPen, x1, y1, x2, y2);
-                i = i + step;
-                // right
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(BluePen, x1, y1, x2, y2);
-                // left
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(BluePen, x1, y1, x2, y2);
-                // bottom
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY - i, out x2, out y2);
-                g.DrawLine(BluePen, x1, y1, x2, y2);
-                // top
-                RotateByFrameCenter(FrameCenterX - i, FrameCenterY + i, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(BluePen, x1, y1, x2, y2);
-            }
-            // Draw rotated cross
-            RotateByFrameCenter(FrameCenterX, -1000, out x1, out y1);
-            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
-
-            RotateByFrameCenter(FrameCenterX, 1000, out x1, out y1);
-            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
-
-            RotateByFrameCenter(-1000, FrameCenterY, out x1, out y1);
-            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
-
-            RotateByFrameCenter(1000, FrameCenterY, out x1, out y1);
-            g.DrawLine(RedPen, FrameCenterX, FrameCenterY, x1, y1);
-            */
 
             RedPen.Dispose();
             GreenPen.Dispose();

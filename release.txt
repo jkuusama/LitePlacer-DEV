@@ -1,0 +1,24 @@
+Build date 9/7/2018
+
+New Features, significant changes
+
+* Manually assisted placement: Machine takes the part almost
+  to position, user can jog it on place (Thank you for contribution!)
+* Pump and vacuum relay output can now be inverted
+* Added button to set A=0
+* Greatly reduced video lag
+* Duplicate designators are now replaced (R1, R1; ... => R1_1, R1_2, ...)
+* Message boxes are now shown centered on the LitePlacer window
+  (instead of Windows standard center of the screen)
+
+Bug Fixes 
+
+* More stable operation when manually stopping placement job
+* Homing button is now red during homing
+* Increased homing timeout for long latch travels
+* Optical homing now takes several measurements and uses the median
+* Jig setup used too fine grid for HD cameras
+* Bad tape data doesn't crash anymore on show part
+* Pump and vacuum checkboxes now show correct status at startup
+
+

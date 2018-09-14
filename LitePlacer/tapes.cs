@@ -145,7 +145,7 @@ namespace LitePlacer
             {
                 // get pitch
                 double pitch = 0;
-                if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString(), out pitch))
+                if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString().Replace(',', '.'), out pitch))
                 {
                     MainForm.ShowMessageBox(
                         "Bad data at Pitch column, tape ID: " + Grid.Rows[TapeNum].Cells["Id_Column"].Value.ToString(),
@@ -209,7 +209,7 @@ namespace LitePlacer
 
             // get pitch
             double pitch = 0;
-            if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString(), out pitch))
+            if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString().Replace(',', '.'), out pitch))
             {
                 MainForm.ShowMessageBox(
                     "Bad data at Pitch column, tape ID: " + Grid.Rows[TapeNum].Cells["Id_Column"].Value.ToString(),
@@ -244,7 +244,7 @@ namespace LitePlacer
             OffsetY = 0.0;
             Pitch = 0.0;
             // Check for values
-            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetX_Column"].Value.ToString(), out OffsetX))
+            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetX_Column"].Value.ToString().Replace(',', '.'), out OffsetX))
             {
                 MainForm.ShowMessageBox(
                     "Bad data at Tape " + Grid.Rows[Tape].Cells["ID_Column"].Value.ToString() + ", OffsetX",
@@ -253,7 +253,7 @@ namespace LitePlacer
                 );
                 return false;
             }
-            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetY_Column"].Value.ToString(), out OffsetY))
+            if (!double.TryParse(Grid.Rows[Tape].Cells["OffsetY_Column"].Value.ToString().Replace(',', '.'), out OffsetY))
             {
                 MainForm.ShowMessageBox(
                     "Bad data at Tape " + Grid.Rows[Tape].Cells["ID_Column"].Value.ToString() + ", OffsetY",
@@ -262,7 +262,7 @@ namespace LitePlacer
                 );
                 return false;
             }
-            if (!double.TryParse(Grid.Rows[Tape].Cells["Pitch_Column"].Value.ToString(), out Pitch))
+            if (!double.TryParse(Grid.Rows[Tape].Cells["Pitch_Column"].Value.ToString().Replace(',', '.'), out Pitch))
             {
                 MainForm.ShowMessageBox(
                     "Bad data at Tape " + Grid.Rows[Tape].Cells["ID_Column"].Value.ToString() + ", Pitch",
@@ -285,7 +285,7 @@ namespace LitePlacer
             // Get start points
             double X = 0.0;
             double Y = 0.0;
-            if (!double.TryParse(Grid.Rows[TapeNum].Cells["FirstX_Column"].Value.ToString(), out X))
+            if (!double.TryParse(Grid.Rows[TapeNum].Cells["FirstX_Column"].Value.ToString().Replace(',', '.'), out X))
             {
                 MainForm.ShowMessageBox(
                     "Bad data at Tape " + TapeNum.ToString() + ", X",
@@ -294,7 +294,7 @@ namespace LitePlacer
                 );
                 return false;
             }
-            if (!double.TryParse(Grid.Rows[TapeNum].Cells["FirstY_Column"].Value.ToString(), out Y))
+            if (!double.TryParse(Grid.Rows[TapeNum].Cells["FirstY_Column"].Value.ToString().Replace(',', '.'), out Y))
             {
                 MainForm.ShowMessageBox(
                     "Bad data at Tape " + TapeNum.ToString() + ", Y",
@@ -358,7 +358,7 @@ namespace LitePlacer
             };
 
             // get hole exact location:
-            if (!MainForm.GoToCircleLocation_m(1.8, 0.1, out X, out Y))
+            if (!MainForm.GoToFeatureLocation_m(FormMain.FeatureType.Circle, 1.8, 0.1, out X, out Y))
             {
                 MainForm.ShowMessageBox(
                     "Can't find tape hole",
@@ -653,7 +653,7 @@ namespace LitePlacer
 
 			double NextX= 0;
             double NextY = 0;
-            if (!double.TryParse(Grid.Rows[TapeNumber].Cells["Next_X_Column"].Value.ToString(), out NextX))
+            if (!double.TryParse(Grid.Rows[TapeNumber].Cells["Next_X_Column"].Value.ToString().Replace(',', '.'), out NextX))
 			{
 				MainForm.ShowMessageBox(
                     "Bad data at Tape " + Grid.Rows[TapeNumber].Cells["Id_Column"].Value.ToString() + ", Next X",
@@ -663,7 +663,7 @@ namespace LitePlacer
 				return false;
 			}
 
-            if (!double.TryParse(Grid.Rows[TapeNumber].Cells["Next_Y_Column"].Value.ToString(), out NextY))
+            if (!double.TryParse(Grid.Rows[TapeNumber].Cells["Next_Y_Column"].Value.ToString().Replace(',', '.'), out NextY))
 			{
 				MainForm.ShowMessageBox(
                     "Bad data at Tape " + Grid.Rows[TapeNumber].Cells["Id_Column"].Value.ToString() + ", Next Y",
@@ -681,7 +681,7 @@ namespace LitePlacer
 			// Get hole exact location:
             // We want to find the hole less than 2mm from where we think it should be. (Otherwise there is a risk
 			// of picking a wrong hole.)
-            if (!MainForm.GoToCircleLocation_m(1.8, 0.5, out HoleX, out HoleY))
+            if (!MainForm.GoToFeatureLocation_m(FormMain.FeatureType.Circle, 1.8, 0.5, out HoleX, out HoleY))
 			{
 				MainForm.ShowMessageBox(
 					"Can't find tape hole",

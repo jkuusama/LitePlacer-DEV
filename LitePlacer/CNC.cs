@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Globalization;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 
 namespace LitePlacer
@@ -17,6 +18,9 @@ namespace LitePlacer
     {
         static FormMain MainForm;
         private SerialComm Com;
+
+        public enum ControlBoardType { TinyG, qQuintic, other, unknown};
+        public ControlBoardType Controlboard = ControlBoardType.unknown;
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
 
@@ -46,7 +50,7 @@ namespace LitePlacer
             // Connected = false;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus(false);
+            MainForm.UpdateCncConnectionStatus();
         }
 
         public void Close()
@@ -56,9 +60,10 @@ namespace LitePlacer
             Connected = false;
             Homing = false;
             _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus(false);
+            MainForm.UpdateCncConnectionStatus();
         }
 
+        // =================================================================================
         public bool Connect(String name)
         {
             // For now, just see that the port opens. 
@@ -67,7 +72,7 @@ namespace LitePlacer
 
             if (Com.IsOpen)
             {
-                MainForm.DisplayText("Connecting to serial port " + name + ": already open");
+                MainForm.DisplayText("Already connected to serial port " + name + ": already open");
                 Connected = true;
                 return true;
             }
@@ -78,10 +83,13 @@ namespace LitePlacer
             Connected = Com.IsOpen;
             if (!Connected)
             {
+                MainForm.DisplayText("Connecting to serial port " + name + " failed.");
                 Error();
             }
-            MainForm.DisplayText("Connecting to serial port " + name + ", result:" + Com.IsOpen.ToString());
-
+            else
+            {
+                MainForm.DisplayText("Connected to serial port " + name);
+            }
             return Connected;
         }
 
@@ -136,18 +144,19 @@ namespace LitePlacer
             Com.Write(command);
         }
 
-		// Square compensation:
-		// The machine will be only approximately square. Fortunately, the squareness is easy to measure with camera.
-		// User measures correction value, that we apply to movements and reads.
-		// For example, correction value is +0.002, meaning that for every unit of +Y movement, 
-		// the machine actually also unintentionally moves 0.002 units to +X. 
-		// Therefore, for each movement when the user wants to go to (X, Y),
-		// we really go to (X - 0.002*Y, Y)
+        // =================================================================================
+        // Square compensation:
+        // The machine will be only approximately square. Fortunately, the squareness is easy to measure with camera.
+        // User measures correction value, that we apply to movements and reads.
+        // For example, correction value is +0.002, meaning that for every unit of +Y movement, 
+        // the machine actually also unintentionally moves 0.002 units to +X. 
+        // Therefore, for each movement when the user wants to go to (X, Y),
+        // we really go to (X - 0.002*Y, Y)
 
-		// CurrentX/Y is the corrected value that user sees and uses, and reflects a square machine
-		// TrueX/Y is what the TinyG actually uses.
+        // CurrentX/Y is the corrected value that user sees and uses, and reflects a square machine
+        // TrueX/Y is what the TinyG actually uses.
 
-		public static double SquareCorrection { get; set; }
+        public static double SquareCorrection { get; set; }
 
 		private static double CurrX;
 		private static double _trueX;
@@ -298,7 +307,7 @@ namespace LitePlacer
                 // Small move
                 if (SlowXY)
                 {
-                    if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
+                    if ((double)MainForm.Setting.CNC_SmallMovementSpeed > SlowSpeedXY)
                     {
                         command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
                                                        " Y" + Y.ToString(CultureInfo.InvariantCulture);
@@ -397,7 +406,7 @@ namespace LitePlacer
                 else
                 {
                     if (SlowXY)
-                    {
+                    { 
                         if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
                         {
                             command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
@@ -405,8 +414,8 @@ namespace LitePlacer
                         }
                         else
                         {
-                            command = "G1 F" + SlowSpeedXY.ToString()
-                                    + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                                command = "G1 F" + SlowSpeedXY.ToString()
+                                        + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
                         }
                     }
                     else
@@ -506,13 +515,13 @@ namespace LitePlacer
             {
                 if (SlowZ)
                 {
-                    if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedZ)
+                    if ((double)MainForm.Setting.CNC_SmallMovementSpeed > SlowSpeedZ)
                     {
                         command = "G1 F" + SlowSpeedZ.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                     }
                     else
                     {
-                        command = "G1 F" + Properties.Settings.Default.CNC_SmallMovementSpeed.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
+                        command = "G1 F" + MainForm.Setting.CNC_SmallMovementSpeed.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -566,13 +575,275 @@ namespace LitePlacer
             _readyEvent.Wait();
         }
 
+        // =================================================================================
         public bool Homing { get; set; }
         public bool IgnoreError { get; set; }
 
+        // =================================================================================
+        public void ProbingMode(bool set)
+        {
+            int wait = 250;
+            double b = MainForm.Setting.General_ZprobingHysteresis;
+            string backoff = b.ToString("0.00", CultureInfo.InvariantCulture);
+
+            if (Controlboard==ControlBoardType.TinyG)
+            {
+                if (set)
+                {
+                    MainForm.DisplayText("Probing mode on, TinyG");
+                    MainForm.CNC_Write_m("{\"zsn\",0}");
+                    Thread.Sleep(wait);
+                    MainForm.CNC_Write_m("{\"zsx\",1}");
+                    Thread.Sleep(wait);
+                    MainForm.CNC_Write_m("{\"zzb\"," + backoff + "}");
+                    Thread.Sleep(wait);
+                }
+                else
+                {
+                    MainForm.DisplayText("Probing mode off, TinyG");
+                    MainForm.CNC_Write_m("{\"zsn\",3}");
+                    Thread.Sleep(wait);
+                    MainForm.CNC_Write_m("{\"zsx\",2}");
+                    Thread.Sleep(wait);
+                    MainForm.CNC_Write_m("{\"zzb\",2}");
+                    Thread.Sleep(wait);
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("Set probing mode, qQuintic -- SKIPPED --");
+                if (set)
+                {
+                    MainForm.DisplayText("Probing mode on, qQuintic");
+                }
+                else
+                {
+                    MainForm.DisplayText("Probing mode off, qQuintic");
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("Set probing mode, unknown board!!", KnownColor.DarkRed, true);
+            }
+        }
+
+        // =================================================================================
+        public void MotorPowerOn()
+        {
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("MotorPowerOff(), TinyG");
+                MainForm.CNC_Write_m("{\"me\":\"\"}");
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("MotorPowerOff(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("*** MotorPowerOff(), unknown board!!", KnownColor.DarkRed, true);
+            }
+        }
+
+        public void MotorPowerOff()
+        {
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("MotorPowerOff(), TinyG");
+                MainForm.CNC_Write_m("{\"md\":\"\"}");
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("MotorPowerOff(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("*** MotorPowerOff(), unknown board!!", KnownColor.DarkRed, true);
+            }
+        }
+
+        // =================================================================================
+        private bool VacuumIsOn = false;
+
+        public void VacuumDefaultSetting()
+        {
+            //VacuumIsOn = true;      // force action
+            VacuumOff();
+        }
+
+        public void VacuumOn()
+        {
+            string command = "{\"gc\":\"M08\"}";
+            if (MainForm.Setting.General_VacuumOutputInverted)
+            {
+                command = "{\"gc\":\"M09\"}";
+            }
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("VacuumOn(), TinyG");
+                if (!VacuumIsOn)
+                {
+                    if (RawWrite(command))
+                    {
+                        VacuumIsOn = true;
+                        Thread.Sleep(MainForm.Setting.General_PickupVacuumTime);
+                    }
+                }
+
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("VacuumOn(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("*** VacuumOn(), unknown board!!", KnownColor.DarkRed, true);
+            }
+            MainForm.Vacuum_checkBox.Checked = VacuumIsOn;
+        }
+
+        public void VacuumOff()
+        {
+            string command = "{\"gc\":\"M09\"}";
+            if (MainForm.Setting.General_VacuumOutputInverted)
+            {
+                command = "{\"gc\":\"M08\"}";
+            }
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("VacuumOff(), TinyG");
+                if (VacuumIsOn)
+                {
+                    if (RawWrite(command))
+                    {
+                        VacuumIsOn = false;
+                        Thread.Sleep(MainForm.Setting.General_PickupReleaseTime);
+                    }
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("VacuumOff(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("*** VacuumOff(), unknown board!!", KnownColor.DarkRed, true);
+            }
+            MainForm.Vacuum_checkBox.Checked = VacuumIsOn;
+        }
+
+        // =================================================================================
+        public bool PumpIsOn = false;
+
+        public void PumpDefaultSetting()
+        {
+            //PumpIsOn = true;   // to force action
+            PumpOff();
+        }
+
+        private void BugWorkaround()
+        {
+            // see https://www.synthetos.com/topics/file-not-open-error/#post-7194
+            // Summary: In some cases, we need a dummy move.
+            MainForm.CNC_Z_m(CurrentZ - 0.01);
+            MainForm.CNC_Z_m(CurrentZ + 0.01);
+        }
+
+        public void PumpOn()
+        {
+            string command = "{\"gc\":\"M03\"}";
+            if (MainForm.Setting.General_PumpOutputInverted)
+            {
+                command= "{\"gc\":\"M05\"}";
+            }
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("PumpOn(), TinyG");
+                if (!PumpIsOn)
+                {
+                        if (RawWrite(command))
+                    {
+                        BugWorkaround();
+                        Thread.Sleep(500);  // this much to develop vacuum
+                        PumpIsOn = true;
+                    }
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("PumpOn(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("PumpOn(), TinyG");
+            }
+            MainForm.Pump_checkBox.Checked = PumpIsOn;
+        }
+
+        public void PumpOff()
+        {
+            string command = "{\"gc\":\"M05\"}";
+            if (MainForm.Setting.General_PumpOutputInverted)
+            {
+                command = "{\"gc\":\"M03\"}";
+            }
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                MainForm.DisplayText("PumpOff(), TinyG");
+                if (PumpIsOn)
+                {
+                    if (RawWrite(command))
+                    {
+                        Thread.Sleep(50);
+                        BugWorkaround();
+                        PumpIsOn = false;
+                    }
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("PumpOff(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("PumpOff(), qQuintic  -- SKIPPED --");
+            }
+            MainForm.Pump_checkBox.Checked = PumpIsOn;
+        }
+
+        public void PumpOff_NoWorkaround()
+        // For error situations where we don't want to do the dance
+        {
+            string command = "{\"gc\":\"M05\"}";
+            if (MainForm.Setting.General_PumpOutputInverted)
+            {
+                command = "{\"gc\":\"M03\"}";
+            }
+            MainForm.DisplayText("PumpOff_NoWorkaround(), TinyG");
+            if (PumpIsOn)
+            {
+                if (RawWrite(command))
+                {
+                    Thread.Sleep(50);
+                    PumpIsOn = false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.qQuintic)
+            {
+                MainForm.DisplayText("PumpOff_NoWorkaround(), qQuintic  -- SKIPPED --");
+            }
+            else
+            {
+                MainForm.DisplayText("PumpOff_NoWorkaround(), qQuintic  -- SKIPPED --");
+            }
+            MainForm.Pump_checkBox.Checked = PumpIsOn;
+        }
+
+         // =================================================================================
         public void InterpretLine(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
-            MainForm.DisplayText(line);
+            MainForm.DisplayText("<== " + line);
 
             if (line.Contains("SYSTEM READY"))
             {
@@ -581,7 +852,7 @@ namespace LitePlacer
                     "TinyG Reset.",
                     "System Reset",
                     MessageBoxButtons.OK);
-                MainForm.UpdateCncConnectionStatus(false);
+                MainForm.UpdateCncConnectionStatus();
                 return;
             }
 
@@ -678,145 +949,120 @@ namespace LitePlacer
                 return;
             }
 
+            if (line.StartsWith("{\"r\":"))
+            {
+                // response to setting a setting or reading motor settings for saving them
+                ParameterValue(line);  // <========= causes UI update
+                _readyEvent.Set();
+                MainForm.DisplayText("ReadyEvent r");
+                return;
+            }
+
             if (line.StartsWith("{\"r\":{\"sys\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_sys= line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent sys group");
+                MainForm.DisplayText("ReadyEvent sys group (depreciated)");
                 return;
             }
             
             if (line.StartsWith("{\"r\":{\"x\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
+                /*
+                // remove the wrapper: 
                 line = line.Substring(5);
                 int i = line.IndexOf("}}");
                 line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_x= line;
+                MainForm.TinyGSetting.TinyG_x = line; 
+                */
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent x group");
+                MainForm.DisplayText("ReadyEvent x group (depreciated)");
                 return;
             }
             
             if (line.StartsWith("{\"r\":{\"y\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_y= line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent y group");
+                MainForm.DisplayText("ReadyEvent y group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"z\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_z= line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent z group");
+                MainForm.DisplayText("ReadyEvent z group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"a\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_a= line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent a group");
+                MainForm.DisplayText("ReadyEvent a group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"1\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_m1 = line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m1 group");
+                MainForm.DisplayText("ReadyEvent m1 group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"2\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_m2 = line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m2 group");
+                MainForm.DisplayText("ReadyEvent m2 group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"3\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_m3 = line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m3 group");
+                MainForm.DisplayText("ReadyEvent m3 group (depreciated)");
                 return;
             }
 
             if (line.StartsWith("{\"r\":{\"4\":"))
             {
                 // response to reading settings for saving them
-                // remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                Properties.Settings.Default.TinyG_m4 = line;
                 _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m4 group");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":"))
-            {
-                // response to setting a setting or reading motor settings for saving them
-                // Replace {"1 with {"motor1 so that the field name is valid
-                line = line.Replace("{\"1", "{\"motor1");
-                line = line.Replace("{\"2", "{\"motor2");
-                line = line.Replace("{\"3", "{\"motor3");
-                line = line.Replace("{\"4", "{\"motor4");
-                NewSetting(line);
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent r");
+                MainForm.DisplayText("ReadyEvent m4 group (depreciated)");
                 return;
             }
 
         }  // end InterpretLine()
 
+        public void ParameterValue(string line)
+        {
+            // line format is {"r":{"<parameter>":<value>},"f":[<some numbers>]}
+            line = line.Substring(7);  // line: <parameter>":<value>},"f":[<some numbers>]}
+            string parameter = line.Split(':')[0];            // line: <parameter>"
+            parameter = parameter.Substring(0, parameter.Length - 1);     // remove the "
+            line = line.Substring(line.IndexOf(':') + 1);   //line: <value>},"f":[<some numbers>]}
+            line = line.Substring(0, line.IndexOf('}'));    // line is now the value
+            MainForm.ValueUpdater(parameter, line);
+
+        }
         // =================================================================================
         // TinyG JSON stuff
         // =================================================================================
 
         // =================================================================================
         // Status report
+
+
+        [Serializable]
+        public class StatusReport
+        {
+            public Sr sr { get; set; }
+        }
 
         public StatusReport Status;
         public void NewStatusReport(string line)
@@ -880,427 +1126,7 @@ namespace LitePlacer
                 }
             }
 
-            /*
-            public double ofsx { get; set; }
-            public double ofsy { get; set; }
-            public double ofsz { get; set; }
-            public double ofsa { get; set; }
-            public int unit { get; set; }
-            public int stat { get; set; }
-            public int coor { get; set; }
-            public int momo { get; set; }
-            public int dist { get; set; }
-            public int home { get; set; }
-            public int hold { get; set; }
-            public int macs { get; set; }
-            public int cycs { get; set; }
-            public int mots { get; set; }
-            public int plan { get; set; }
-             * */
         }
-
-        [Serializable]
-        public class StatusReport
-        {
-            public Sr sr { get; set; }
-        }
-
-
-        // =================================================================================
-        // Settings
-
-        public Response Settings;
-        public void NewSetting(string line)
-        {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Settings = serializer.Deserialize<Response>(line);
-        }
-
-        public class Resp
-        {
-
-            // =========================================================
-            // The individual settings we care about and do something
-            // when they change.
-
-            // mt: motor timeout
-            private string _mt = "";
-            public string mt
-            {
-                get { return _mt; }
-                set
-                {
-                    _mt = value;
-                    CNC.MainForm.ValueUpdater("mt", _mt);
-                }
-            }
-
-            // *jm: jerk max
-            private string _xjm = "";
-            public string xjm
-            {
-                get { return _xjm; }
-                set
-                {
-                    _xjm = value;
-                    CNC.MainForm.ValueUpdater("xjm", _xjm);
-                }
-            }
-
-            private string _yjm = "";
-            public string yjm
-            {
-                get { return _yjm; }
-                set
-                {
-                    _yjm = value;
-                    CNC.MainForm.ValueUpdater("yjm", _yjm);
-                }
-            }
-
-            private string _zjm = "";
-            public string zjm
-            {
-                get { return _zjm; }
-                set
-                {
-                    _zjm = value;
-                    CNC.MainForm.ValueUpdater("zjm", _zjm);
-                }
-            }
-
-            private string _ajm = "";
-            public string ajm
-            {
-                get { return _ajm; }
-                set
-                {
-                    _ajm = value;
-                    CNC.MainForm.ValueUpdater("ajm", _ajm);
-                }
-            }
-
-            // *vm: velocity max
-            private string _xvm = "";
-            public string xvm
-            {
-                get { return _xvm; }
-                set
-                {
-                    _xvm = value;
-                    CNC.MainForm.ValueUpdater("xvm", _xvm);
-                }
-            }
-
-            private string _yvm = "";
-            public string yvm
-            {
-                get { return _yvm; }
-                set
-                {
-                    _yvm = value;
-                    CNC.MainForm.ValueUpdater("yvm", _yvm);
-                }
-            }
-
-            private string _zvm = "";
-            public string zvm
-            {
-                get { return _zvm; }
-                set
-                {
-                    _zvm = value;
-                    CNC.MainForm.ValueUpdater("zvm", _zvm);
-                }
-            }
-
-            private string _avm = "";
-            public string avm
-            {
-                get { return _avm; }
-                set
-                {
-                    _avm = value;
-                    CNC.MainForm.ValueUpdater("avm", _avm);
-                }
-            }
-
-            // *mi: motor microsteps 
-            // Note, that InterpretLine() replaces "1" with "motor1" so we can use valid names
-            private string _motor1mi = "";
-            public string motor1mi
-            {
-                get { return _motor1mi; }
-                set
-                {
-                    _motor1mi = value;
-                    CNC.MainForm.ValueUpdater("1mi", _motor1mi);
-                }
-            }
-
-            private string _motor2mi = "";
-            public string motor2mi
-            {
-                get { return _motor2mi; }
-                set
-                {
-                    _motor2mi = value;
-                    CNC.MainForm.ValueUpdater("2mi", _motor2mi);
-                }
-            }
-
-            private string _motor3mi = "";
-            public string motor3mi
-            {
-                get { return _motor3mi; }
-                set
-                {
-                    _motor3mi = value;
-                    CNC.MainForm.ValueUpdater("3mi", _motor3mi);
-                }
-            }
-
-            private string _motor4mi = "";
-            public string motor4mi
-            {
-                get { return _motor4mi; }
-                set
-                {
-                    _motor4mi = value;
-                    CNC.MainForm.ValueUpdater("4mi", _motor4mi);
-                }
-            }
-
-            // *tr: motor travel per rev. 
-            private string _motor1tr = "";
-            public string motor1tr
-            {
-                get { return _motor1tr; }
-                set
-                {
-                    _motor1tr = value;
-                    CNC.MainForm.ValueUpdater("1tr", _motor1tr);
-                }
-            }
-
-            private string _motor2tr = "";
-            public string motor2tr
-            {
-                get { return _motor2tr; }
-                set
-                {
-                    _motor2tr = value;
-                    CNC.MainForm.ValueUpdater("2tr", _motor2tr);
-                }
-            }
-
-            private string _motor3tr = "";
-            public string motor3tr
-            {
-                get { return _motor3tr; }
-                set
-                {
-                    _motor3tr = value;
-                    CNC.MainForm.ValueUpdater("3tr", _motor3tr);
-                }
-            }
-
-            private string _motor4tr = "";
-            public string motor4tr
-            {
-                get { return _motor4tr; }
-                set
-                {
-                    _motor4tr = value;
-                    CNC.MainForm.ValueUpdater("4tr", _motor4tr);
-                }
-            }
-
-            // *sa: motor step angle 
-            private string _motor1sa = "";
-            public string motor1sa
-            {
-                get { return _motor1sa; }
-                set
-                {
-                    _motor1sa = value;
-                    CNC.MainForm.ValueUpdater("1sa", _motor1sa);
-                }
-            }
-
-            private string _motor2sa = "";
-            public string motor2sa
-            {
-                get { return _motor2sa; }
-                set
-                {
-                    _motor2sa = value;
-                    CNC.MainForm.ValueUpdater("2sa", _motor2sa);
-                }
-            }
-
-            private string _motor3sa = "";
-            public string motor3sa
-            {
-                get { return _motor3sa; }
-                set
-                {
-                    _motor3sa = value;
-                    CNC.MainForm.ValueUpdater("3sa", _motor3sa);
-                }
-            }
-
-            private string _motor4sa = "";
-            public string motor4sa
-            {
-                get { return _motor4sa; }
-                set
-                {
-                    _motor4sa = value;
-                    CNC.MainForm.ValueUpdater("4sa", _motor4sa);
-                }
-            }
-
-            private string _xjh = "";
-            public string xjh
-            {
-                get { return _xjh; }
-                set
-                {
-                    _xjh = value;
-                    CNC.MainForm.ValueUpdater("xjh", _xjh);
-                }
-            }
-
-            private string _yjh = "";
-            public string yjh
-            {
-                get { return _yjh; }
-                set
-                {
-                    _yjh = value;
-                    CNC.MainForm.ValueUpdater("yjh", _yjh);
-                }
-            }
-
-            private string _zjh = "";
-            public string zjh
-            {
-                get { return _zjh; }
-                set
-                {
-                    _zjh = value;
-                    CNC.MainForm.ValueUpdater("zjh", _zjh);
-                }
-            }
-
-            private string _xsv = "";
-            public string xsv
-            {
-                get { return _xsv; }
-                set
-                {
-                    _xsv = value;
-                    CNC.MainForm.ValueUpdater("xsv", _xsv);
-                }
-            }
-
-            private string _ysv = "";
-            public string ysv
-            {
-                get { return _ysv; }
-                set
-                {
-                    _ysv = value;
-                    CNC.MainForm.ValueUpdater("ysv", _ysv);
-                }
-            }
-
-            private string _zsv = "";
-            public string zsv
-            {
-                get { return _zsv; }
-                set
-                {
-                    _zsv = value;
-                    CNC.MainForm.ValueUpdater("zsv", _zsv);
-                }
-            }
-
-            private string _xsn = "";
-            public string xsn
-            {
-                get { return _xsn; }
-                set
-                {
-                    _xsn = value;
-                    CNC.MainForm.ValueUpdater("xsn", _xsn);
-                }
-            }
-
-            private string _ysn = "";
-            public string ysn
-            {
-                get { return _ysn; }
-                set
-                {
-                    _ysn = value;
-                    CNC.MainForm.ValueUpdater("ysn", _ysn);
-                }
-            }
-
-            private string _zsn = "";
-            public string zsn
-            {
-                get { return _zsn; }
-                set
-                {
-                    _zsn = value;
-                    CNC.MainForm.ValueUpdater("zsn", _zsn);
-                }
-            }
-
-            private string _xsx = "";
-            public string xsx
-            {
-                get { return _xsx; }
-                set
-                {
-                    _xsx = value;
-                    CNC.MainForm.ValueUpdater("xsx", _xsx);
-                }
-            }
-
-            private string _ysx = "";
-            public string ysx
-            {
-                get { return _ysx; }
-                set
-                {
-                    _ysx = value;
-                    CNC.MainForm.ValueUpdater("ysx", _ysx);
-                }
-            }
-
-            private string _zsx = "";
-            public string zsx
-            {
-                get { return _zsx; }
-                set
-                {
-                    _zsx = value;
-                    CNC.MainForm.ValueUpdater("zsx", _zsx);
-                }
-            }
-
-        }   // end class Resp
-
-        public class Response
-        {
-            public Resp r { get; set; }
-            public List<int> f { get; set; }
-        }
-
     }  // end Class CNC
 }
 

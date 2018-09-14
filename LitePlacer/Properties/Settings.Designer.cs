@@ -12,7 +12,7 @@ namespace LitePlacer.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -434,12 +434,12 @@ namespace LitePlacer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.2")]
-        public double General_ProbingBackOff {
+        public double General_PlacementBackOff {
             get {
-                return ((double)(this["General_ProbingBackOff"]));
+                return ((double)(this["General_PlacementBackOff"]));
             }
             set {
-                this["General_ProbingBackOff"] = value;
+                this["General_PlacementBackOff"] = value;
             }
         }
         
@@ -1141,7 +1141,7 @@ namespace LitePlacer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public double General_BelowPCB_Allowance {
             get {
                 return ((double)(this["General_BelowPCB_Allowance"]));
@@ -1153,7 +1153,7 @@ namespace LitePlacer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
         public int Nozzles_count {
             get {
                 return ((int)(this["Nozzles_count"]));
@@ -1364,6 +1364,78 @@ namespace LitePlacer.Properties {
             }
             set {
                 this["Nozzles_CalibrationMinSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double Job_Xoffset {
+            get {
+                return ((double)(this["Job_Xoffset"]));
+            }
+            set {
+                this["Job_Xoffset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double Job_Yoffset {
+            get {
+                return ((double)(this["Job_Yoffset"]));
+            }
+            set {
+                this["Job_Yoffset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double General_ZprobingHysteresis {
+            get {
+                return ((double)(this["General_ZprobingHysteresis"]));
+            }
+            set {
+                this["General_ZprobingHysteresis"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Placement_FiducialsType {
+            get {
+                return ((int)(this["Placement_FiducialsType"]));
+            }
+            set {
+                this["Placement_FiducialsType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public double Placement_FiducialTolerance {
+            get {
+                return ((double)(this["Placement_FiducialTolerance"]));
+            }
+            set {
+                this["Placement_FiducialTolerance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Placement_FiducialConfirmation {
+            get {
+                return ((bool)(this["Placement_FiducialConfirmation"]));
+            }
+            set {
+                this["Placement_FiducialConfirmation"] = value;
             }
         }
     }
