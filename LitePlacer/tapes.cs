@@ -723,6 +723,8 @@ namespace LitePlacer
 		// SetCurrentTapeMeasurement_m(): sets the camera measurement parameters according to the tape type.
 		private bool SetCurrentTapeMeasurement_m(int row)
 		{
+            return false;
+            /* xxx
 			switch (Grid.Rows[row].Cells["Type_Column"].Value.ToString())
 			{
 				case "Paper (White)":
@@ -747,7 +749,7 @@ namespace LitePlacer
 						MessageBoxButtons.OK
 					);
 					return false;
-			}
+			} */
 		}
 
 	}

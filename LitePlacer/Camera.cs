@@ -172,7 +172,6 @@ namespace LitePlacer
                 MainForm.DisplayText(cam + " start, moniker= " + MonikerStr);
 
                 // enumerate video devices
-                FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
                 // create the video source (check that the camera exists is already done
                 VideoSource = new VideoCaptureDevice(MonikerStr);
                 int tries = 0;
@@ -1671,8 +1670,6 @@ namespace LitePlacer
             double X = 0.0;
             double Y = 0.0;
             MaxDistance = MaxDistance * GetMeasurementZoom();
-            double MaxS = MaxSize * GetMeasurementZoom();
-            double MinS = MinSize * GetMeasurementZoom();
             // Remove those that are more than MaxDistance away from frame center
             foreach (Shapes.Rectangle Rectangle in Rectangles)
             {

@@ -317,19 +317,10 @@ namespace LitePlacer
 			return MainForm.CNC_A_m(A);
         }
 
-        private bool CNC_XY_m(double X, double Y)
-        {
-			return MainForm.CNC_XY_m(X, Y);
-        }
-
         private bool CNC_XYA(double X, double Y, double A)
         {
 			return MainForm.CNC_XYA_m(X, Y, A);
         }
 
-        private bool CNC_Write(string s)
-        {
-			return MainForm.CNC_Write_m(s);
-        }
     }
 }

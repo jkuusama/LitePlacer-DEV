@@ -1,5 +1,5 @@
 ﻿#define TINYG_SHORTUNITS
-// Some firmvare versions use units in millions, some don't. If not, comment out the above line.
+// Some firmware versions use units in millions, some don't. If not, comment out the above line.
 
 using System;
 using System.Collections.Generic;
@@ -34,6 +34,7 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
 using Newtonsoft.Json;
+// ReSharper disable All
 
 
 namespace LitePlacer
@@ -77,8 +78,12 @@ namespace LitePlacer
             {
                 return (DialogResult)this.Invoke(new PassStringStringReturnDialogResultDelegate(ShowMessageBox), message, header, buttons);
             }
-            CenteredMessageBox.PrepToCenterMessageBoxOnForm(this);
-            return MessageBox.Show(this, message, header, buttons);
+            if (!StartingUp)
+            {
+                CenteredMessageBox.PrepToCenterMessageBoxOnForm(this);
+                return MessageBox.Show(this, message, header, buttons);
+           }
+            return DialogResult.Cancel;
         }
         public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
 
@@ -143,59 +148,11 @@ namespace LitePlacer
             // and uncomment this:
             // LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
 
-            LoadDataGrid(path + "LitePlacer.HomingFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref Homing_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.FiducialsFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref Fiducials_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.ComponentsFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref Components_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.PaperTapeFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref PaperTape_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.BlackTapeFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref BlackTape_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.ClearTapeFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref ClearTape_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.SnapshotFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref DowncamSnapshot_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.NozzleFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref Nozzle_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.Nozzle2Functions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref Nozzle2_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.UpCamComponentsFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref UpCamComponents_dataGridView, false);
-
-            LoadDataGrid(path + "LitePlacer.UpCamSnapshotFunctions", Temp_dataGridView, DataTableType.VideoProcessing);
-            DataGridViewCopy(Temp_dataGridView, ref UpcamSnapshot_dataGridView, false);
-
-            LoadTapesTable(path + "LitePlacer.TapesData_v2");
-            // LoadDataGrid(path + "LitePlacer.TapesData", Tapes_dataGridView, DataTableType.Tapes);
             Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData");
-
             ContextmenuLoadNozzle = Setting.Nozzles_default;
             ContextmenuUnloadNozzle = Setting.Nozzles_default;
             Nozzles_initialize();   // must be after Nozzle.LoadCalibration
 
-            SetProcessingFunctions(Display_dataGridView);
-            SetProcessingFunctions(Homing_dataGridView);
-            SetProcessingFunctions(Fiducials_dataGridView);
-            SetProcessingFunctions(Components_dataGridView);
-            SetProcessingFunctions(PaperTape_dataGridView);
-            SetProcessingFunctions(BlackTape_dataGridView);
-            SetProcessingFunctions(ClearTape_dataGridView);
-            SetProcessingFunctions(DowncamSnapshot_dataGridView);
-            SetProcessingFunctions(Nozzle_dataGridView);
-            SetProcessingFunctions(Nozzle2_dataGridView);
-            SetProcessingFunctions(UpCamComponents_dataGridView);
-            SetProcessingFunctions(UpcamSnapshot_dataGridView);
 
             Bookmark1_button.Text = Setting.General_Mark1Name;
             Bookmark2_button.Text = Setting.General_Mark2Name;
@@ -217,8 +174,6 @@ namespace LitePlacer
             Zlb_label.Text = "";
             Zlb_label.Visible = false;
 
-            Display_dataGridView.DataError += new
-                DataGridViewDataErrorEventHandler(Display_dataGridView_DataError);
         }
 
         // ==============================================================================================
@@ -330,6 +285,7 @@ namespace LitePlacer
 
             LoadTempCADdata();
             LoadTempJobData();
+            InitVideoAlgorithmsUI();
 
             CheckForUpdate_checkBox.Checked = Setting.General_CheckForUpdates;
             if (CheckForUpdate_checkBox.Checked)
@@ -461,52 +417,10 @@ namespace LitePlacer
             res = SaveDataGrid(path + "LitePlacer.NozzlesParameters_v2", NozzlesParameters_dataGridView);
             OK = OK && res;
 
-
-            DataGridViewCopy(Homing_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.HomingFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(Fiducials_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.FiducialsFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(Components_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.ComponentsFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(PaperTape_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.PaperTapeFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(BlackTape_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.BlackTapeFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(ClearTape_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.ClearTapeFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(DowncamSnapshot_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.SnapshotFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(Nozzle_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.NozzleFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(Nozzle2_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.Nozzle2Functions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(UpCamComponents_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(UpcamSnapshot_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.UpCamSnapshotFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
             res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
+            OK = OK && res;
+
+            res = SaveVideoAlgorithms(path + "LitePlacer.VideoAlgorithms", VideoAlgorithms);
             OK = OK && res;
 
             res = BoardSettings.Save(TinyGBoard, qQuinticBoard, path + "LitePlacer.BoardSettings");
@@ -544,6 +458,7 @@ namespace LitePlacer
                 Thread.Sleep(200);   // camera feed needs a frame to close.
             }
             Thread.Sleep(200);
+            Environment.Exit(0);    // kills all processes and threads (solves exit during startup issue)
         }
 
         // =================================================================================
@@ -593,6 +508,10 @@ namespace LitePlacer
                     tabPageSetupCameras_Begin();
                     LastTabPage = "tabPageSetupCameras";
                     break;
+                case "Algorithms_tabPage":
+                    Algorithms_tabPage_Begin();
+                    LastTabPage = "Algorithms_tabPage";
+                    break;
                 case "Tapes_tabPage":
                     Tapes_tabPage_Begin();
                     LastTabPage = "Tapes_tabPage";
@@ -616,6 +535,10 @@ namespace LitePlacer
                     break;
                 case "tabPageSetupCameras":
                     tabPageSetupCameras_End();
+                    break;
+                case "Algorithms_tabPage":
+                    Algorithms_tabPage_End();
+                    LastTabPage = "Algorithms_tabPage";
                     break;
                 case "Tapes_tabPage":
                     Tapes_tabPage_End();
@@ -707,7 +630,7 @@ namespace LitePlacer
 	                }
                     else
                     {
-                        Headers = Addv1Headers(FileName, TableType);
+                        Headers = Addv1Headers( TableType);
                     }
 
                     // read data
@@ -821,7 +744,7 @@ namespace LitePlacer
         // format headers, since I didn't have the insight to write them to the file from beginning.
         // this routine does it, called from LoadDataGrid()
 
-        public List<string> Addv1Headers(string filename, DataTableType TableType )
+        public List<string> Addv1Headers(DataTableType TableType )
         {
             List<string> Headers = new List<string>();
 
@@ -1187,7 +1110,6 @@ namespace LitePlacer
         {
             int row = Grid.CurrentCell.RowIndex;
             int col = Grid.CurrentCell.ColumnIndex;
-            int i = Grid.RowCount;
             if (row == Grid.RowCount - 1)
             {
                 return;
@@ -1545,8 +1467,8 @@ namespace LitePlacer
         }
 
 
-        [DllImport("user32.dll")]
-        private static extern int HideCaret(IntPtr hwnd);
+        // [DllImport("user32.dll")]
+        // private static extern int HideCaret(IntPtr hwnd);
 
         private void Jog(object sender, KeyEventArgs e)
         {
@@ -1740,7 +1662,7 @@ namespace LitePlacer
 
 
 
-            if (!CamShowPixels_checkBox.Checked)
+            if (!ShowPixels_checkBox.Checked)
             {
                 // image on screen is not at camera resolution
                 Xscale = Convert.ToDouble(Xres) / Convert.ToDouble(Box.Size.Width);
@@ -1765,7 +1687,7 @@ namespace LitePlacer
 
         bool PictureBox_MouseDragged = false;
 
-        private void General_pictureBox_MouseMove(PictureBox Box, int MouseX, int MouseY)
+        private void General_pictureBox_MouseMove(int MouseX, int MouseY)
         {
             if (MouseButtons == MouseButtons.Left)
             {
@@ -2179,11 +2101,6 @@ namespace LitePlacer
                 return true;
             };
 
-            double MarkX = Cnc.CurrentX;
-            double MarkY = Cnc.CurrentY;
-            double MarkZ = Cnc.CurrentZ;
-            double MarkA = Cnc.CurrentA;
-
             bool UpCamWasRunning = false;
             if (UpCamera.Active)
             {
@@ -2210,7 +2127,7 @@ namespace LitePlacer
 
 
             // measure the values
-            SetNozzleMeasurement();
+            // xxx SetNozzleMeasurement();
             if (Setting.Nozzles_Enabled)
             {
                 double MinSize = 0.0;
@@ -2905,7 +2822,7 @@ namespace LitePlacer
         private bool OpticalHoming_m()
         {
             DisplayText("Optical homing");
-            SetHomingMeasurement();
+            // xxx SetHomingMeasurement();
             double X;
             double Y;
             // Find within 20mm, goto within 0.05
@@ -2915,7 +2832,7 @@ namespace LitePlacer
             }
 
             // Measure 7 times, get median: 
-            SetHomingMeasurement();
+            // xxx SetHomingMeasurement();
             List<double> Xlist = new List<double>();
             List<double> Ylist = new List<double>();
             int res;
@@ -3020,7 +2937,7 @@ namespace LitePlacer
         private void KeepActive_checkBox_Click(object sender, EventArgs e)
         {
             // We handle checked state ourselves to avoid automatic call to StartCameras at startup
-            // (Changing Checked activatges CheckedChanged event
+            // (Changing Checked activates CheckedChanged event
             if (KeepActive_checkBox.Checked)
             {
                 // KeepActive_checkBox.Checked = true;
@@ -3137,7 +3054,7 @@ namespace LitePlacer
             {
                 DisplayText("DownCamera already running");
                 DownCamera.Active = true;
-                UpdateCameraCameraStatus_label();
+                DownCameraStatus_label.Text = "Active";
                 return true;
             };
 
@@ -3145,7 +3062,7 @@ namespace LitePlacer
             if (Setting.DowncamMoniker == "")
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
-                UpdateCameraCameraStatus_label();
+                DownCameraStatus_label.Text = "Not Active";
                 return true;
             };
             // Check that the device exists
@@ -3153,7 +3070,7 @@ namespace LitePlacer
             if (!monikers.Contains(Setting.DowncamMoniker))
             {
                 DisplayText("Downcamera moniker not found. Moniker: " + Setting.DowncamMoniker);
-                UpdateCameraCameraStatus_label();
+                DownCameraStatus_label.Text = "Not Active";
                 return false;
             }
 
@@ -3161,10 +3078,10 @@ namespace LitePlacer
             {
                 ShowMessageBox(
                     "Up camera and Down camera point to same physical device.",
-                    "Camera selection isse",
+                    "Camera selection issue",
                     MessageBoxButtons.OK
                 );
-                UpdateCameraCameraStatus_label();
+                DownCameraStatus_label.Text = "Not Active";
                 return false;
             }
 
@@ -3175,13 +3092,13 @@ namespace LitePlacer
                     "Down Camera problem",
                     MessageBoxButtons.OK
                 );
-                CameraStatus_label.Text = "Not Connected";
+                DownCameraStatus_label.Text = "Not Connected";
                 DownCamera.Active = false;
-                UpdateCameraCameraStatus_label();
+                DownCameraStatus_label.Text = "Not Active";
                 return false;
             };
             DownCamera.Active = true;
-            UpdateCameraCameraStatus_label();
+            DownCameraStatus_label.Text = "Active";
             return true;
         }
 
@@ -3194,7 +3111,7 @@ namespace LitePlacer
             {
                 DisplayText("UpCamera already running");
                 UpCamera.Active = true;
-                UpdateCameraCameraStatus_label();
+                UpCameraStatus_label.Text = "Active";
                 return true;
             };
 
@@ -3202,7 +3119,7 @@ namespace LitePlacer
             if (Setting.UpcamMoniker == "")
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
-                UpdateCameraCameraStatus_label();
+                UpCameraStatus_label.Text = "Not Active";
                 return true;
             };
             // Check that the device exists
@@ -3210,7 +3127,7 @@ namespace LitePlacer
             if (!monikers.Contains(Setting.UpcamMoniker))
             {
                 DisplayText("Upcamera moniker not found. Moniker: " + Setting.UpcamMoniker);
-                UpdateCameraCameraStatus_label();
+                UpCameraStatus_label.Text = "Not Active";
                 return false;
             }
 
@@ -3221,7 +3138,7 @@ namespace LitePlacer
                     "Camera selection issue",
                     MessageBoxButtons.OK
                 );
-                UpdateCameraCameraStatus_label();
+                UpCameraStatus_label.Text = "Not Active";
                 return false;
             }
 
@@ -3232,11 +3149,11 @@ namespace LitePlacer
                     "Up camera problem",
                     MessageBoxButtons.OK
                 );
-                UpdateCameraCameraStatus_label();
+                UpCameraStatus_label.Text = "Not Active";
                 return false;
             };
             UpCamera.Active = true;
-            UpdateCameraCameraStatus_label();
+            UpCameraStatus_label.Text = "Active";
             return true;
         }
 
@@ -3273,24 +3190,20 @@ namespace LitePlacer
             DownCamera.SnapshotColor = Setting.DownCam_SnapshotColor;
             // Draws
             DownCamera.DrawCross = true;
-            DownCameraDrawCross_checkBox.Checked = true;
             DownCamera.DrawDashedCross = false;
             DownCamera.DrawGrid = false;
-            DownCameraDrawDashedCross_checkBox.Checked = false;
             DownCamera.Draw_Snapshot = false;
             // Finds:
             DownCamera.FindCircles = false;
-            DownCamFindCircles_checkBox.Checked = false;
             DownCamera.FindRectangles = false;
-            DownCamFindRectangles_checkBox.Checked = false;
             DownCamera.FindComponent = false;
-            DownCam_FindComponents_checkBox.Checked = false;
             DownCamera.TestAlgorithm = false;
-            ImageTest_checkBox.Checked = false;
-            Overlay_checkBox.Checked = false;
             DownCamera.DrawBox = false;
             DownCamera.DrawArrow = false;
-            DownCameraDrawBox_checkBox.Checked = false;
+
+            DownCamera.SideMarksX = Setting.General_MachineSizeX / 100;
+            DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
+
         }
         // ====
         private void SetUpCameraDefaults()
@@ -3308,10 +3221,8 @@ namespace LitePlacer
             UpCamera.SnapshotColor = Setting.UpCam_SnapshotColor;
             // Draws
             UpCamera.DrawCross = true;
-            UpCameraDrawCross_checkBox.Checked = true;
             UpCamera.DrawGrid = false;
             UpCamera.DrawDashedCross = false;
-            UpCameraDrawDashedCross_checkBox.Checked = false;
             UpCamera.Draw_Snapshot = false;
             // Finds:
             UpCamera.FindCircles = false;
@@ -3320,7 +3231,10 @@ namespace LitePlacer
             UpCamera.TestAlgorithm = false;
             UpCamera.DrawBox = false;
             UpCamera.DrawArrow = false;
-            UpCameraDrawBox_checkBox.Checked = false;
+
+            UpCamera.SideMarksX = Setting.General_MachineSizeX / 100;
+            UpCamera.SideMarksY = Setting.General_MachineSizeY / 100;
+
         }
 
         // =================================================================================
@@ -3329,25 +3243,13 @@ namespace LitePlacer
             SetDownCameraDefaults();
             DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString();
             DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString();
-            DownCamera.DrawBox = DownCameraDrawBox_checkBox.Checked;
-            DownCamera.DrawCross = DownCameraDrawCross_checkBox.Checked;
-            DownCamera.DrawSidemarks = DownCameraDrawTicks_checkBox.Checked;
-            DownCamera.Draw_Snapshot = Overlay_checkBox.Checked;
-            DownCamera.FindCircles = DownCamFindCircles_checkBox.Checked;
-            DownCamera.FindRectangles = DownCamFindRectangles_checkBox.Checked;
-            DownCamera.FindComponent = DownCam_FindComponents_checkBox.Checked;
+            // SelectCamera(DownCamera); UpdateCameraCameraStatus_label();
 
             SetUpCameraDefaults();
             UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString();
             UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString();
-            UpCamera.DrawBox = UpCameraDrawBox_checkBox.Checked;
-            UpCamera.DrawCross = UpCameraDrawCross_checkBox.Checked;
-            UpCamera.Draw_Snapshot = Overlay_checkBox.Checked;
-            UpCamera.FindCircles = UpCamFindCircles_checkBox.Checked;
-            UpCamera.FindComponent = UpCam_FindComponents_checkBox.Checked;
 
             NozzleOffset_label.Visible = false;
-            ClearEditTargets();
 
             double f;
             f = Setting.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
@@ -3375,51 +3277,11 @@ namespace LitePlacer
             UpcamPositionX_textBox.Text = Setting.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
             UpcamPositionY_textBox.Text = Setting.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
 
-            DownCamera.SideMarksX = Setting.General_MachineSizeX / 100;
-            DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
-            DownCameraDrawTicks_checkBox.Checked = Setting.DownCam_DrawTicks;
-            DownCameraDrawGrid_checkBox.Checked = false;
-
-            DowncamSnapshot_ColorBox.BackColor = Setting.DownCam_SnapshotColor;
-            UpcamSnapshot_ColorBox.BackColor = Setting.UpCam_SnapshotColor;
-
-            NozzleDistance_textBox.Text = Setting.Nozzles_CalibrationDistance.ToString();
-            NozzleMaxSize_textBox.Text = Setting.Nozzles_CalibrationMaxSize.ToString();
-            NozzleMinSize_textBox.Text = Setting.Nozzles_CalibrationMinSize.ToString();
-            CamShowPixels_checkBox.Checked = true;
+            ShowPixels_checkBox.Checked = true;
             Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
 
-            FiducialManConfirmation_checkBox.Checked=Setting.Placement_FiducialConfirmation;
-            if (Setting.Placement_FiducialsType==0)
-            {
-                RoundFiducial_radioButton.Checked = true;
-            }
-            else if (Setting.Placement_FiducialsType == 1)
-            {
-                RectangularFiducial_radioButton.Checked = true;
-            }
-            else if (Setting.Placement_FiducialsType == 2)
-            {
-                AutoFiducial_radioButton.Checked = true;
-            }
-            else
-            {
-                ShowMessageBox(
-                   "Unknown fiducial type "+ Setting.Placement_FiducialsType.ToString()+", possibly corrupted settings",
-                   "Corrupted settings",
-                   MessageBoxButtons.OK);
-                RoundFiducial_radioButton.Checked = true;
-            }
-            FiducialsTolerance_textBox.Text= Setting.Placement_FiducialTolerance.ToString("0.00", CultureInfo.InvariantCulture);
-
-            Display_dataGridView.Rows.Clear();
-            DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-            UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
             getDownCamList();
             getUpCamList();
-            UpdateCameraCameraStatus_label();
-
-            // SelectCamera(DownCamera);
         }
 
         // =================================================================================
@@ -3439,7 +3301,7 @@ namespace LitePlacer
             else
             {
                 DownCam_comboBox.Items.Add("----");
-                CameraStatus_label.Text = "No Cam";
+                DownCameraStatus_label.Text = "No Cam";
             }
             if (
                 (Devices.Count > Setting.DownCam_index) && (Setting.DownCam_index > 0))
@@ -3458,7 +3320,6 @@ namespace LitePlacer
         {
             List<string> Devices = UpCamera.GetDeviceList();
             UpCam_comboBox.Items.Clear();
-            int d = Setting.UpCam_index;
             if (Devices.Count != 0)
             {
                 for (int i = 0; i < Devices.Count; i++)
@@ -3587,104 +3448,6 @@ namespace LitePlacer
                     "Problem starting this camera",
                     "Problem starting camera",
                     MessageBoxButtons.OK);
-            }
-        }
-
-        // =================================================================================
-        private void DownCameraDrawDashedCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawDashedCross_checkBox.Checked)
-            {
-                DownCamera.DrawDashedCross = true;
-            }
-            else
-            {
-                DownCamera.DrawDashedCross = false;
-            }
-        }
-
-        // ====
-        private void UpCameraDrawDashedCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCameraDrawDashedCross_checkBox.Checked)
-            {
-                UpCamera.DrawDashedCross = true;
-            }
-            else
-            {
-                UpCamera.DrawDashedCross = false;
-            }
-        }
-
-
-        // =================================================================================
-        private void DownCameraDrawTicks_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawTicks_checkBox.Checked)
-            {
-                DownCamera.DrawSidemarks = true;
-                Setting.DownCam_DrawTicks = true;
-            }
-            else
-            {
-                DownCamera.DrawSidemarks = false;
-                Setting.DownCam_DrawTicks = false;
-            }
-        }
-
-        private void DownCameraDrawGrid_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DownCamera.DrawGrid = DownCameraDrawGrid_checkBox.Checked;
-        }
-        // =================================================================================
-        private void DownCameraDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawCross_checkBox.Checked)
-            {
-                DownCamera.DrawCross = true;
-            }
-            else
-            {
-                DownCamera.DrawCross = false;
-            }
-        }
-
-        // ====
-        private void UpCameraDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCameraDrawCross_checkBox.Checked)
-            {
-                UpCamera.DrawCross = true;
-            }
-            else
-            {
-                UpCamera.DrawCross = false;
-            }
-        }
-
-        // =================================================================================
-        private void DownCameraDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCameraDrawBox_checkBox.Checked)
-            {
-                DownCamera.DrawBox = true;
-            }
-            else
-            {
-                DownCamera.DrawBox = false;
-            }
-        }
-
-        // ====
-        private void UpCameraDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCameraDrawBox_checkBox.Checked)
-            {
-                UpCamera.DrawBox = true;
-            }
-            else
-            {
-                UpCamera.DrawBox = false;
             }
         }
 
@@ -3865,97 +3628,6 @@ namespace LitePlacer
             {
                 UpCamera.ZoomFactor = val;
                 Setting.UpCam_Zoomfactor = val;
-            }
-        }
-
-
-        // ==========================================================================================================
-
-        private void DownCamFindCircles_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCamFindCircles_checkBox.Checked)
-            {
-                DownCamera.FindCircles = true;
-            }
-            else
-            {
-                DownCamera.FindCircles = false;
-            }
-        }
-
-        private void UpCamFindCircles_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCamFindCircles_checkBox.Checked)
-            {
-                UpCamera.FindCircles = true;
-            }
-            else
-            {
-                UpCamera.FindCircles = false;
-            }
-        }
-
-        // =================================================================================
-        private void DownCamFindRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCamFindRectangles_checkBox.Checked)
-            {
-                DownCamera.FindRectangles = true;
-            }
-            else
-            {
-                DownCamera.FindRectangles = false;
-            }
-
-        }
-
-        // =================================================================================
-        private void DownCam_FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DownCam_FindComponents_checkBox.Checked)
-            {
-                DownCamera.FindComponent = true;
-            }
-            else
-            {
-                DownCamera.FindComponent = false;
-            }
-        }
-
-        private void UpCam_FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCam_FindComponents_checkBox.Checked)
-            {
-                UpCamera.FindComponent = true;
-            }
-            else
-            {
-                UpCamera.FindComponent = false;
-            }
-        }
-
-        // =================================================================================
-        private void Overlay_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Overlay_checkBox.Checked)
-            {
-                DownCamera.Draw_Snapshot = true;
-            }
-            else
-            {
-                DownCamera.Draw_Snapshot = false;
-            }
-        }
-
-        private void UpCamOverlay_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (UpCamOverlay_checkBox.Checked)
-            {
-                UpCamera.Draw_Snapshot = true;
-            }
-            else
-            {
-                UpCamera.Draw_Snapshot = false;
             }
         }
 
@@ -4474,20 +4146,27 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(DisplayTxt), new [] { txt }); return; }
 
-            txt = txt.Replace("\n", "");
-            txt = txt.Replace("\r", "");
-            // TinyG sends \n, textbox needs \r\n. (TinyG could be set to send \n\r, which does not work with textbox.)
-            // Adding end of line here saves typing elsewhere
-            txt = txt + "\r\n";
-
-            if (SerialMonitor_richTextBox.Text.Length > 1000000)
+            try
             {
-                SerialMonitor_richTextBox.Text = SerialMonitor_richTextBox.Text.Substring(SerialMonitor_richTextBox.Text.Length - 10000);
+                txt = txt.Replace("\n", "");
+                txt = txt.Replace("\r", "");
+                // TinyG sends \n, textbox needs \r\n. (TinyG could be set to send \n\r, which does not work with textbox.)
+                // Adding end of line here saves typing elsewhere
+                txt = txt + "\r\n";
+                if (SerialMonitor_richTextBox.Text.Length > 1000000)
+                {
+                    SerialMonitor_richTextBox.Text = SerialMonitor_richTextBox.Text.Substring(SerialMonitor_richTextBox.Text.Length - 10000);
+                }
+                SerialMonitor_richTextBox.AppendText(txt, DisplayTxtCol);
+
             }
-            SerialMonitor_richTextBox.AppendText(txt, DisplayTxtCol);
+            catch (ObjectDisposedException)
+            {
+                return;     // exit during startup
+            }
         }
 
-        
+
         /*
         public void DisplayTxt(string txt)
         {
@@ -6204,25 +5883,19 @@ namespace LitePlacer
 
         private void TestX_thread()
         {
-            //if (!CNC_XY_m(0.0, Cnc.CurrentY))
-            //    return;
-            //if (!CNC_XY_m(Setting.General_MachineSizeX, Cnc.CurrentY))
-            //    return;
-            //if (!CNC_XY_m(0.0, Cnc.CurrentY))
-            //    return;
-        }
-
-        private void TestX_button_Click(object sender, EventArgs e)
-        {
             if (!CNC_XY_m(0.0, Cnc.CurrentY))
                 return;
             if (!CNC_XY_m(Setting.General_MachineSizeX, Cnc.CurrentY))
                 return;
             if (!CNC_XY_m(0.0, Cnc.CurrentY))
                 return;
-            //Thread t = new Thread(() => TestX_thread());
-            //t.IsBackground = true;
-            //t.Start();
+        }
+
+        private void TestX_button_Click(object sender, EventArgs e)
+        {
+            Thread t = new Thread(() => TestX_thread());
+            t.IsBackground = true;
+            t.Start();
         }
 
         private void TestY_thread()
@@ -6869,14 +6542,14 @@ namespace LitePlacer
         private class PhysicalComponent
         {
             public string Designator { get; set; }
-            public string Footprint { get; set; }
+            // public string Footprint { get; set; }
             public double X_nominal { get; set; }
             public double Y_nominal { get; set; }
-            public double Rotation { get; set; }
+            // public double Rotation { get; set; }
             public double X_machine { get; set; }
             public double Y_machine { get; set; }
-            public string Method { get; set; }
-            public string MethodParameter { get; set; }
+            // public string Method { get; set; }
+            // public string MethodParameter { get; set; }
         }
 
         private void Placement_pictureBox_MouseClick(object sender, MouseEventArgs e)
@@ -6887,7 +6560,7 @@ namespace LitePlacer
 
         private void Placement_pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            General_pictureBox_MouseMove(Tapes_pictureBox, e.X, e.Y);
+            General_pictureBox_MouseMove(e.X, e.Y);
         }
 
 
@@ -6993,7 +6666,7 @@ namespace LitePlacer
                     CadFilePath_label.Text = "--";
                     CadDataFileName = "--";
                     return false;
-                };
+                }
             }
             else
             {
@@ -7186,7 +6859,7 @@ namespace LitePlacer
                 DisplayText("Msg: " + ex.Message, KnownColor.DarkRed, true);
                 JobData_GridView.Rows.Clear();
                 return;
-            };
+            }
         }
 
         private void LoadTempCADdata()
@@ -7222,7 +6895,7 @@ namespace LitePlacer
                 DisplayText("Msg: " + ex.Message, KnownColor.DarkRed, true);
                 CadData_GridView.Rows.Clear();
                 return;
-            };
+            }
         }
 
         // =================================================================================
@@ -7386,12 +7059,11 @@ namespace LitePlacer
         // =================================================================================
         private void ParseJobData(String[] AllLines)
         {
-            int LineIndex = 0;
             JobData_GridView.Rows.Clear();
             // ComponentCount ComponentType GroupMethod MethodParamAllComponents ComponentList
-            foreach (string s in AllLines)
+            foreach (string LineIn in AllLines)
             {
-                List<String> Line = SplitCSV(AllLines[LineIndex++], ',');
+                List<String> Line = SplitCSV(LineIn, ',');
                 JobData_GridView.Rows.Add();
                 int Last = JobData_GridView.RowCount - 1;
                 JobData_GridView.Rows[Last].Cells["ComponentCount"].Value = Line[0];
@@ -7911,11 +7583,9 @@ namespace LitePlacer
         // returns success of operation, sets palced status to placed
         private bool AlreadyPlaced_m(string component, ref bool placed)
         {
-            string comp;
             // find the row
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
-                comp = Row.Cells["Component"].Value.ToString();
                 if (Row.Cells["Component"].Value.ToString()==component)
                 {
                     DataGridViewCheckBoxCell cell = Row.Cells["Placed_column"] as DataGridViewCheckBoxCell;
@@ -9208,7 +8878,7 @@ namespace LitePlacer
             double X = 0;
             double Y = 0;
             double A = 0.0;
-            SetComponentsMeasurement();
+            // xxx SetComponentsMeasurement();
             // If we don't get a look from straight up (more than 2mm off) we need to re-measure
             for (int i = 0; i < 2; i++)
             {
@@ -9245,7 +8915,7 @@ namespace LitePlacer
                     return false;
                 }
                 DownCamera.SnapshotRotation = A;
-                DownCamera.BuildMeasurementFunctionsList(DowncamSnapshot_dataGridView);
+                // xxx DownCamera.BuildMeasurementFunctionsList(DowncamSnapshot_dataGridView);
                 DownCamera.TakeSnapshot();
                 DownCamera.Draw_Snapshot = true;
                 X = 0.0;
@@ -9413,7 +9083,7 @@ namespace LitePlacer
                 };
                 // take snapshot
                 SelectCamera(UpCamera);
-                UpCam_TakeSnapshot();
+                // xxx UpCam_TakeSnapshot();
                 SelectCamera(DownCamera);
                 if (!CNC_Z_m(0.0))
                 {
@@ -9559,7 +9229,7 @@ namespace LitePlacer
                 SelectCamera(DownCamera);
                 return false;
             }
-            SetUpCamComponentsMeasurement();
+            // xxx SetUpCamComponentsMeasurement();
             bool GoOn = false;
             bool result = false;
             while (!GoOn)
@@ -9872,7 +9542,7 @@ namespace LitePlacer
             }
             // Get ready for position measurements
             DisplayText("SetFiducialsMeasurement");
-            SetFiducialsMeasurement();
+            // xxx SetFiducialsMeasurement();
             // move them to our array, checking the data:
             PhysicalComponent[] Fiducials = new PhysicalComponent[FiducialDesignators.Length];  // store the data here
             // double X_nom = 0;
@@ -10164,7 +9834,7 @@ namespace LitePlacer
             }
             if (!double.TryParse(cell.OwningRow.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X))
             {
-                DialogResult dialogResult = ShowMessageBox(
+                ShowMessageBox(
                     "Bad data at X_nominal",
                     "Bad data",
                     MessageBoxButtons.OK);
@@ -10173,7 +9843,7 @@ namespace LitePlacer
 
             if (!double.TryParse(cell.OwningRow.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y))
             {
-                DialogResult dialogResult = ShowMessageBox(
+                ShowMessageBox(
                     "Bad data at Y_nominal",
                     "Bad data",
                     MessageBoxButtons.OK);
@@ -10182,7 +9852,7 @@ namespace LitePlacer
 
             if (!double.TryParse(cell.OwningRow.Cells["Rotation"].Value.ToString().Replace(',', '.'), out A))
             {
-                DialogResult dialogResult = ShowMessageBox(
+                ShowMessageBox(
                     "Bad data at Rotation",
                     "Bad data",
                     MessageBoxButtons.OK);
@@ -10385,7 +10055,7 @@ namespace LitePlacer
 
             // go there
             CNC_XY_m(X_shortest, Y_shortest);
-            SetFiducialsMeasurement();
+            // xxx SetFiducialsMeasurement();
 
             for (int tries = 0; tries < 5; tries++)
             {
@@ -11077,7 +10747,7 @@ namespace LitePlacer
                         double rot;
                         if (!double.TryParse(CadData_GridView.Rows[Last].Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot))
                         {
-                            DialogResult dialogResult = ShowMessageBox(
+                            ShowMessageBox(
                                 "Bad data at Rotation",
                                 "Bad data",
                                 MessageBoxButtons.OK);
@@ -12282,7 +11952,7 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return;
             }
-            SetHomingMeasurement();
+            // xxx SetHomingMeasurement();
             const double dist = 1.0;
             double X1, Y1;
             if (DownCamera.GetClosestCircle(out X1, out Y1, 50.0) <= 0)
@@ -12391,50 +12061,15 @@ namespace LitePlacer
                         DisplayText(DebugStr);
                     }
                 }
-                ClearEditTargets();
             }
         }
 
         // ==========================================================================================================
         // DownCam:
 
-
-        // ==========================================================================================================
-        
-         private void DebugRegtanclesDownCamera(double Tolerance)
-        {
-            double X, Y;
-            if (DownCamera.GetClosestRectangle(out X, out Y, Tolerance) > 0)
-            {
-                X = X * Setting.DownCam_XmmPerPixel;
-                Y = -Y * Setting.DownCam_YmmPerPixel;
-                DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
-                DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                DisplayText("No results.");
-            }
-        }
-
-        private void DebugCirclesDownCamera(double Tolerance)
-        {
-            double X, Y;
-            if (DownCamera.GetClosestCircle(out X, out Y, Tolerance) > 0)
-            {
-                X = X * Setting.DownCam_XmmPerPixel;
-                Y = -Y * Setting.DownCam_YmmPerPixel;
-                DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
-                DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                DisplayText("No results.");
-            }
-        }
-
         // ==========================================================================================================
         // Snapshot:
+        /*
         private void UpCam_SnapshotToHere_button_Click(object sender, EventArgs e)
         {
             DataGridViewCopy(Display_dataGridView, ref UpcamSnapshot_dataGridView);
@@ -12544,997 +12179,22 @@ namespace LitePlacer
             }
         }
 
-
-        // ==========================================================================================================
-        // Homing:
-        private void HomingToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref Homing_dataGridView);
-        }
-
-        private void HomingToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Homing_dataGridView, ref Display_dataGridView);
-            DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-        private void HomingMeasure_button_Click(object sender, EventArgs e)
-        {
-            if (DownCamera.IsRunning())
-            {
-                SetHomingMeasurement();
-                // Big tolerance for manual debug
-                DebugCirclesDownCamera(20.0 / Setting.DownCam_XmmPerPixel);
-            }
-            else
-            {
-                DisplayText("Down camera is not running.");
-            }
-        }
-
-        private void SetHomingMeasurement()
-        {
-            DownCamera.BuildMeasurementFunctionsList(Homing_dataGridView);
-        }
-
-        // ==========================================================================================================
-        // OriginalFiducials:
-        private void FiducialsToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref Fiducials_dataGridView);
-        }
-
-        private void FiducialsToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Fiducials_dataGridView, ref Display_dataGridView);
-            DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-        private void SetFiducialsMeasurement()
-        {
-            DownCamera.BuildMeasurementFunctionsList(Fiducials_dataGridView);
-            Thread.Sleep(100);   // for automatic camera gain to have an effect
-        }
-
-        private void FiducialsMeasure_button_Click(object sender, EventArgs e)
-        {
-            if (DownCamera.IsRunning())
-            {
-                SetFiducialsMeasurement();
-                DisplayText("Circles:");
-                DebugCirclesDownCamera(20.0 / Setting.DownCam_XmmPerPixel);
-                DisplayText("Rectangles:");
-                DebugRegtanclesDownCamera(20.0 / Setting.DownCam_XmmPerPixel);
-            }
-            else
-            {
-                DisplayText("Down camera is not running.");
-            }
-        }
-
-        // ==========================================================================================================
-        // Components:
-
-        private void DebugComponents_Camera(double Tolerance, Camera Cam, double mmPerPixel)
-        {
-            double X = 0;
-            double Y = 0;
-            double A = 0.0;
-            int count = MeasureClosestComponentInPx(out X, out Y, out A, Cam, Tolerance, 5);
-            if (count == 0)
-            {
-                DisplayText("No results");
-                return;
-            }
-            X = X * mmPerPixel;
-            Y = -Y * mmPerPixel;
-            DisplayText("Component measurement:");
-            DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture) + " (" + count.ToString() + " results out of 5)");
-            DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-            DisplayText("A: " + A.ToString("0.000", CultureInfo.InvariantCulture));
-        }
-
-
-        private void ComponentsToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref Components_dataGridView);
-        }
-
-        private void ComponentsToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Components_dataGridView, ref Display_dataGridView);
-            DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-
-        private void SetComponentsMeasurement()
-        {
-            DownCamera.BuildMeasurementFunctionsList(Components_dataGridView);
-        }
-
-        private void ComponentsMeasure_button_Click(object sender, EventArgs e)
-        {
-            if (DownCamera.IsRunning())
-            {
-                SetComponentsMeasurement();
-                DebugComponents_Camera(
-                    10.0 / Setting.DownCam_XmmPerPixel,
-                    DownCamera,
-                    Setting.DownCam_XmmPerPixel);
-            }
-            else
-            {
-                DisplayText("Down camera is not running.");
-            }
-        }
-
-
-        // ==========================================================================================================
-        // Paper TapeNumber:
-        private void PaperTapeToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref PaperTape_dataGridView);
-        }
-
-        private void PaperTapeToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(PaperTape_dataGridView, ref Display_dataGridView);
-            DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-        public void SetPaperTapeMeasurement()
-        {
-            DownCamera.BuildMeasurementFunctionsList(PaperTape_dataGridView);
-        }
-
-        private void PaperTapeMeasure_button_Click(object sender, EventArgs e)
-        {
-            if (DownCamera.IsRunning())
-            {
-                SetPaperTapeMeasurement();
-                DebugCirclesDownCamera(20.0 / Setting.DownCam_XmmPerPixel);
-            }
-            else
-            {
-                DisplayText("Down camera is not running.");
-            }
-        }
-
-        // ==========================================================================================================
-        // Clear Plastic TapeNumber:
-        private void ClearTapeToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref ClearTape_dataGridView);
-        }
-
-        private void ClearTapeToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(ClearTape_dataGridView, ref Display_dataGridView);
-            DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-        public void SetClearTapeMeasurement()
-        {
-            DownCamera.BuildMeasurementFunctionsList(ClearTape_dataGridView);
-        }
-
-        private void ClearTapeMeasure_button_Click(object sender, EventArgs e)
-        {
-            if (DownCamera.IsRunning())
-            {
-                SetClearTapeMeasurement();
-                DebugCirclesDownCamera(20.0 / Setting.DownCam_XmmPerPixel);
-            }
-            else
-            {
-                DisplayText("Down camera is not running.");
-            }
-        }
-
-        // ==========================================================================================================
-        // Black Plastic TapeNumber:
-        private void BlackTapeToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref BlackTape_dataGridView);
-        }
-
-        private void BlackTapeToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(BlackTape_dataGridView, ref Display_dataGridView);
-            DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-        public void SetBlackTapeMeasurement()
-        {
-            DownCamera.BuildMeasurementFunctionsList(BlackTape_dataGridView);
-        }
-
-        private void BlackTapeMeasure_button_Click(object sender, EventArgs e)
-        {
-            if (DownCamera.IsRunning())
-            {
-                SetBlackTapeMeasurement();
-                DebugCirclesDownCamera(20.0 / Setting.DownCam_XmmPerPixel);
-            }
-            else
-            {
-                DisplayText("Down camera is not running.");
-            }
-        }
-
-        // ==========================================================================================================
-        // UpCam:
-        // Nozzle:
-        private void NozzleToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref Nozzle_dataGridView);
-        }
-
-        private void NozzleToHere2_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref Nozzle2_dataGridView);
-        }
-
-        private void NozzleToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Nozzle_dataGridView, ref Display_dataGridView);
-            UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-         private void NozzleToDisplay2_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Nozzle2_dataGridView, ref Display_dataGridView);
-            UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-        //private void NozzleMeasure()
-        //{
-        //    if (UpCamera.IsRunning())
-        //    {
-        //        SetNozzleMeasurement();
-        //        DebugNozzle();
-        //    }
-        //    else
-        //    {
-        //        DisplayText("Up camera is not running.");
-        //    }
-        //}
-
-        private void NozzleMeasure_button_Click(object sender, EventArgs e)
-        {
-            if (UpCamera.IsRunning())
-            {
-                UpCamera.BuildMeasurementFunctionsList(Nozzle_dataGridView);
-                DebugNozzle();
-            }
-            else
-            {
-                DisplayText("Up camera is not running.");
-            }
-        }
-
-        private void NozzleMeasure2_button_Click(object sender, EventArgs e)
-        {
-            if (UpCamera.IsRunning())
-            {
-                UpCamera.BuildMeasurementFunctionsList(Nozzle2_dataGridView);
-                DebugNozzle();
-            }
-            else
-            {
-                DisplayText("Up camera is not running.");
-            }
-        }
-
-        private void SetNozzleMeasurement()
-        {
-            if (NozzleUseTable2())
-            {
-                DisplayText("Using alternative table");
-                UpCamera.BuildMeasurementFunctionsList(Nozzle2_dataGridView);
-            }
-            else
-            {
-                DisplayText("Using regular table");
-                UpCamera.BuildMeasurementFunctionsList(Nozzle_dataGridView);
-            }
-        }
-
-        //private void DebugCirclesUpCamera(double Tolerance)
-        //{
-        //    double X, Y;
-        //    double Xpx, Ypx;
-        //    if (UpCamera.GetClosestCircle(out X, out Y, Tolerance) > 0)
-        //    {
-        //        Xpx = X * UpCamera.GetMeasurementZoom();
-        //        Ypx = Y * UpCamera.GetMeasurementZoom();
-        //        DisplayText("X: " + Xpx.ToString() + "pixels, Y: " + Ypx.ToString() + "pixels");
-        //        X = X * Setting.UpCam_XmmPerPixel;
-        //        Y = -Y * Setting.UpCam_YmmPerPixel;
-        //        DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
-        //        DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-        //    }
-        //    else
-        //    {
-        //        DisplayText("No results.");
-        //    }
-        //}
-
-        private void DebugNozzle()
-        {
-            double X = 0;
-            double Y = 0;
-            double radius = 0;
-            UpCamera.MaxSize = Setting.Nozzles_CalibrationMaxSize / Setting.UpCam_XmmPerPixel;
-            UpCamera.MinSize = Setting.Nozzles_CalibrationMinSize / Setting.UpCam_XmmPerPixel;
-            double Maxdistance = Setting.Nozzles_CalibrationDistance / Setting.UpCam_XmmPerPixel;
-            double Xpx, Ypx;
-            double db1 = Setting.Nozzles_CalibrationMinSize;
-            double db2 = Setting.Nozzles_CalibrationMaxSize;
-            double db3 = Setting.UpCam_XmmPerPixel;
-            int res = 0;
-            UpCamera.SizeLimited = true;
-            for (int tries = 0; tries < 10; tries++)
-            {
-                res = UpCamera.GetSmallestCircle(out X, out Y, out radius, Maxdistance);
-                if (res != 0)
-                {
-                    break;
-                }
-                Thread.Sleep(100);
-
-                if (tries >= 9)
-                {
-                    DisplayText("Can't see Nozzle, no results.");
-                    UpCamera.SizeLimited = false;
-                    return;
-                }
-            }
-            Xpx = X * UpCamera.GetMeasurementZoom();
-            Ypx = Y * UpCamera.GetMeasurementZoom();
-            DisplayText(res.ToString() + " candidates, smallest: ");
-            DisplayText("radius: " + radius.ToString("0.000", CultureInfo.InvariantCulture) + " pixels, " 
-                + (radius * Setting.UpCam_XmmPerPixel).ToString("0.000", CultureInfo.InvariantCulture) + "mm");
-            DisplayText("X: " + Xpx.ToString() + " pixels, Y: " + Ypx.ToString() + " pixels");
-            X = X * Setting.UpCam_XmmPerPixel;
-            Y = -Y * Setting.UpCam_YmmPerPixel;
-            DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture));
-            DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-            UpCamera.SizeLimited = false;
-        }
-
-
-        // ==========================================================================================================
-        // Components:
-        private void UpCamComponentsToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref UpCamComponents_dataGridView);
-        }
-
-        private void UpCamComponentsToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(UpCamComponents_dataGridView, ref Display_dataGridView);
-            UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-        private void SetUpCamComponentsMeasurement()
-        {
-            UpCamera.BuildMeasurementFunctionsList(UpCamComponents_dataGridView);
-        }
-
-        private void UpCamComponentsMeasure_button_Click(object sender, EventArgs e)
-        {
-            if (UpCamera.IsRunning())
-            {
-                SetUpCamComponentsMeasurement();
-                DebugComponents_Camera(
-                    10.0 / Setting.UpCam_XmmPerPixel,
-                    UpCamera,
-                    Setting.UpCam_XmmPerPixel);
-            }
-            else
-            {
-                DisplayText("Up camera is not running.");
-            }
-        }
-
-
-        #endregion  Measurementboxes
+        */
+         #endregion  Measurementboxes
 
         // ==========================================================================================================
         // Video processing functions lists control
         // ==========================================================================================================
         #region VideoProcessingFunctionsLists
 
-        private void UpdateDisplayFunctions()
-        {
-            if (DownCamera.IsRunning())
-            {
 
-                DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-            }
-            if (UpCamera.IsRunning())
-            {
-
-                UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
-            }
-        }
-
-        // ==========================================================================================================
-        // Add, delete and move rows:
-
-        private void AddCamFunction_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewSelectedRowCollection SelectedRows = Display_dataGridView.SelectedRows;
-            int index = 0;
-            if (Display_dataGridView.Rows.Count == 0)
-            {
-                // grid is empty:
-                Display_dataGridView.Rows.Insert(0);
-            }
-            else
-            {
-                // insert at end
-                Display_dataGridView.Rows.Insert(Display_dataGridView.Rows.Count);
-                index = Display_dataGridView.Rows.Count - 1;
-            };
-            Display_dataGridView.Rows[index].Cells[1].Value = "false";	// This will be tested later, and can't be null
-        }
-
-        private void DeleteCamFunction_button_Click(object sender, EventArgs e)
-        {
-            int DoomedRow = Display_dataGridView.CurrentCell.RowIndex;
-            Display_dataGridView.ClearSelection();
-            Display_dataGridView.Rows.RemoveAt(DoomedRow);
-            UpdateDisplayFunctions();
-        }
-
-        private void CamFunctionUp_button_Click(object sender, EventArgs e)
-        {
-            DataGrid_Up_button(Display_dataGridView);
-        }
-
-        private void CamFunctionDown_button_Click(object sender, EventArgs e)
-        {
-            DataGrid_Down_button(Display_dataGridView);
-        }
-
-        private void CamFunctionsClear_button_Click(object sender, EventArgs e)
-        {
-            Display_dataGridView.Rows.Clear();
-            UpdateDisplayFunctions();
-            ClearEditTargets();
-        }
-
-        // ==========================================================================================================
-        // Display_dataGridView functions:
-        enum Display_dataGridViewColumns { Function, Active, Int, Double, R, G, B };
-        // NOTE: a verbatim copy is at camera.cs. If you edit this, edit camera.cs as well!
-
-        private void Display_dataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-        {
-            int FunctionCol = (int)Display_dataGridViewColumns.Function;
-            int ActiveCol = (int)Display_dataGridViewColumns.Active;
-            if ((Display_dataGridView.CurrentCell.ColumnIndex != FunctionCol)
-                &&
-                (Display_dataGridView.CurrentCell.ColumnIndex != ActiveCol))
-            {
-                return;  // parameter changes hadled by the parameter edit widgets
-            };
-
-            // Return if not dirty; otherwise the stuff is executed twice (once when it changes, once when it becomes clean)
-            if (!Display_dataGridView.IsCurrentCellDirty)
-            {
-                return;
-            }
-            if (SetupCamerasPageVisible)
-            {
-                // react immediately to changes
-                Update_GridView(Display_dataGridView);
-                if (Display_dataGridView.CurrentRow.Cells[ActiveCol].Value.ToString() == "True")
-                {
-                    SetEditTargets();
-                }
-                else
-                {
-                    ClearEditTargets();
-                }
-                UpdateDisplayFunctions();
-            }
-        }
-
-        private void Display_dataGridView_CurrentCellChanged(object sender, EventArgs e)
-        {
-            if (Display_dataGridView.CurrentCell != null)
-            {
-                SetEditTargets();
-            }
-        }
-
-        // ==========================================================================================================
-        // Parameter labels and control widgets:
-        // ==========================================================================================================
-        // Sharing the labels and some controls so I don't need to duplicate so much code:
-        private void UpdateCameraCameraStatus_label()
-        {
-            if (tabControlPages.SelectedTab.Name!= "tabPageSetupCameras")
-            {
-                return;
-            }
-            Camera cam= DownCamera;
-            switch (CamerasSetUp_tabControl.SelectedTab.Name)
-            {
-                case "DownCamera_tabPage":
-                    cam = DownCamera;
-                    break;
-                case "UpCamera_tabPage":
-                    cam = UpCamera;
-                    break;
-            }
-            if (cam.Active)
-            {
-                CameraStatus_label.Text = "Active";
-            }
-            else
-            {
-                CameraStatus_label.Text = "Not Active";
-            }
-        }
-
-
-        private void CamerasSetUp_tabControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // move labels and value setting widgets to current page
-            TabPage Page = DownCamera_tabPage;
-            switch (CamerasSetUp_tabControl.SelectedTab.Name)
-            {
-                case "DownCamera_tabPage":
-                    Page = DownCamera_tabPage;
-                    break;
-                case "UpCamera_tabPage":
-                    Page = UpCamera_tabPage;
-                    break;
-            }
-            Display_dataGridView.Parent = Page;
-            Parameter_int_label.Parent = Page;
-            Parameter_Int_numericUpDown.Parent = Page;
-            Parameter_double_label.Parent = Page;
-            Parameter_double_textBox.Parent = Page;
-            AddCamFunction_button.Parent = Page;
-            DeleteCamFunction_button.Parent = Page;
-            CamFunctionUp_button.Parent = Page;
-            CamFunctionDown_button.Parent = Page;
-            CamFunctionsClear_button.Parent = Page;
-            Color_label.Parent = Page;
-            Color_Box.Parent = Page;
-            R_label.Parent = Page;
-            R_numericUpDown.Parent = Page;
-            G_label.Parent = Page;
-            G_numericUpDown.Parent = Page;
-            B_label.Parent = Page;
-            B_numericUpDown.Parent = Page;
-            ColorHelp_label.Parent = Page;
-            RobustFast_checkBox.Parent = Page;
-            KeepActive_checkBox.Parent = Page;
-            ListResolutions_button.Parent = Page;
-            CamShowPixels_checkBox.Parent = Page;
-            CameraStatus_label.Parent = Page;
-            UpdateCameraCameraStatus_label();
-        }
-
-        private void ClearEditTargets()
-        {
-            Parameter_int_label.Text = "--";
-            Parameter_Int_numericUpDown.Enabled = false;
-            Parameter_Int_numericUpDown.Value = 0;
-            Parameter_double_label.Text = "--";
-            Parameter_double_textBox.Enabled = false;
-            Color_label.Text = "--";
-            Color_Box.Enabled = false;
-            R_label.Text = "--";
-            R_numericUpDown.Enabled = false;
-            G_label.Text = "--";
-            G_numericUpDown.Enabled = false;
-            B_label.Text = "--";
-            B_numericUpDown.Enabled = false;
-            ColorHelp_label.Visible = false;
-        }
-
-        private void ClearParameterValuesExcept(int row, int keep)
-        {
-            for (int i = 2; i < Display_dataGridView.Columns.Count; i++)
-            {
-                if (i != keep)
-                {
-                    Display_dataGridView.Rows[row].Cells[i].Value = null;
-                }
-            }
-        }
-
-        private void DoRGBparameters(int row)
-        {
-            Parameter_int_label.Text = "Range";
-            Parameter_Int_numericUpDown.Enabled = true;
-            Parameter_double_textBox.Enabled = false;
-            int DoubleCol = (int)Display_dataGridViewColumns.Double;
-            Display_dataGridView.Rows[row].Cells[DoubleCol].Value = null;
-            R_label.Text = "R";
-            R_numericUpDown.Enabled = true;
-            G_label.Text = "G";
-            G_numericUpDown.Enabled = true;
-            B_label.Text = "B";
-            B_numericUpDown.Enabled = true;
-            ColorHelp_label.Visible = true;
-
-            int par_i;
-            int IntCol = (int)Display_dataGridViewColumns.Int;
-            if (Display_dataGridView.Rows[row].Cells[IntCol].Value == null)
-            {
-                Parameter_Int_numericUpDown.Value = 10;
-                Display_dataGridView.Rows[row].Cells[IntCol].Value = "10";
-            }
-            else if (!int.TryParse(Display_dataGridView.Rows[row].Cells[IntCol].Value.ToString(), out par_i))
-            {
-                Parameter_Int_numericUpDown.Value = 10;
-                Display_dataGridView.Rows[row].Cells[IntCol].Value = "10";
-            }
-            else
-            {
-                Parameter_Int_numericUpDown.Value = par_i;
-            }
-
-            SetColorBoxColor(row);
-
-
-        }
-
-        private void SetGridRowColor(int row)
-        {
-            // Didn't find good color definition from dataviewgrid, so we'll copy the box color to grid.
-            int R_col = (int)Display_dataGridViewColumns.R;
-            int G_col = (int)Display_dataGridViewColumns.G;
-            int B_col = (int)Display_dataGridViewColumns.B;
-
-            Color BoxColor = Color_Box.BackColor;
-            Display_dataGridView.Rows[row].Cells[R_col].Value = BoxColor.R;
-            Display_dataGridView.Rows[row].Cells[G_col].Value = BoxColor.G;
-            Display_dataGridView.Rows[row].Cells[B_col].Value = BoxColor.B;
-        }
 
         private void SetColorBoxColor(int row)
         {
-            byte R = 128;
-            byte G = 128;
-            byte B = 128;
-            byte temp;
-            int R_col = (int)Display_dataGridViewColumns.R;
-            int G_col = (int)Display_dataGridViewColumns.G;
-            int B_col = (int)Display_dataGridViewColumns.B;
-
-            if (Display_dataGridView.Rows[row].Cells[R_col].Value == null)
-            {
-                SetGridRowColor(row);
-                return;
-            }
-            else
-            {
-                if (byte.TryParse(Display_dataGridView.Rows[row].Cells[R_col].Value.ToString(), out temp))
-                {
-                    R = temp;
-                }
-                else
-                {
-                    SetGridRowColor(row);
-                    return;
-                }
-            };
-
-            if (Display_dataGridView.Rows[row].Cells[G_col].Value == null)
-            {
-                SetGridRowColor(row);
-                return;
-            }
-            else
-            {
-                if (byte.TryParse(Display_dataGridView.Rows[row].Cells[G_col].Value.ToString(), out temp))
-                {
-                    G = temp;
-                }
-                else
-                {
-                    SetGridRowColor(row);
-                    return;
-                }
-            };
-
-            if (Display_dataGridView.Rows[row].Cells[B_col].Value == null)
-            {
-                SetGridRowColor(row);
-                return;
-            }
-            else
-            {
-                if (byte.TryParse(Display_dataGridView.Rows[row].Cells[B_col].Value.ToString(), out temp))
-                {
-                    B = temp;
-                }
-                else
-                {
-                    SetGridRowColor(row);
-                    return;
-                }
-            };
-            // have not returned, so set box color:
-            Color_Box.BackColor = Color.FromArgb(R, G, B);
+            // xxx Color_Box.BackColor = Color.FromArgb(R, G, B);
         }
 
-        private void SetProcessingFunctions(DataGridView Grid)
-        {
-            // To add a video processing fuction:
-            // Add the name to here.
-            // Add the name to Camera.cs, BuildFunctionsList()
-            // Add the parameter handling to SetEditTargets() below
-            // Add the actual function (take example of any function already referred from BuildFunctionsList()
-
-            DataGridViewComboBoxColumn comboboxColumn =
-                (DataGridViewComboBoxColumn)Grid.Columns[(int)Display_dataGridViewColumns.Function];
-            comboboxColumn.Items.Clear();
-            comboboxColumn.Items.AddRange("Threshold", "Histogram", "Grayscale", "Invert", "Edge detect",
-                "Noise reduction", "Kill color", "Keep color", "Blur", "Gaussian blur", "Meas. zoom");
-        }
-
-        private void SetEditTargets()
-        {
-            int row = Display_dataGridView.CurrentCell.RowIndex;
-            int col = Display_dataGridView.CurrentCell.ColumnIndex;
-            int FunctCol = (int)Display_dataGridViewColumns.Function;
-            int ActiveCol = (int)Display_dataGridViewColumns.Active;
-            int par_i;
-            int IntCol = (int)Display_dataGridViewColumns.Int;
-            double par_d;
-            int DoubleCol = (int)Display_dataGridViewColumns.Double;
-
-            ClearEditTargets();
-            if (Display_dataGridView.Rows[row].Cells[FunctCol].Value == null)
-            {
-                return;
-            };
-            if (Display_dataGridView.Rows[row].Cells[ActiveCol].Value == null)
-            {
-                return;
-            };
-            if (Display_dataGridView.Rows[row].Cells[ActiveCol].Value.ToString() == "False")
-            {
-                return;
-            };
-            switch (Display_dataGridView.Rows[row].Cells[FunctCol].Value.ToString())
-            {
-                // switch by the selected algorithm:  
-                case "Blur":
-                    ClearParameterValuesExcept(row, -1);
-                    return;		// no parameters
-
-                case "Histogram":
-                    ClearParameterValuesExcept(row, -1);
-                    return;		// no parameters
-
-                case "Grayscale":
-                    ClearParameterValuesExcept(row, -1);
-                    return;		// no parameters
-
-                case "Invert":
-                    ClearParameterValuesExcept(row, -1);
-                    return;		// no parameters
-
-                case "Edge detect":
-                    ClearParameterValuesExcept(row, 2);
-                    if (Display_dataGridView.Rows[row].Cells[IntCol].Value == null)
-                    {
-                        Parameter_Int_numericUpDown.Value = 1;
-                        Display_dataGridView.Rows[row].Cells[IntCol].Value = "1";
-                    }
-                    else if (!int.TryParse(Display_dataGridView.Rows[row].Cells[2].Value.ToString(), out par_i))
-                    {
-                        Parameter_Int_numericUpDown.Value = 1;
-                        Display_dataGridView.Rows[row].Cells[IntCol].Value = "1";
-                    }
-                    else
-                    {
-                        Parameter_Int_numericUpDown.Value = par_i;
-                    }
-                    Parameter_Int_numericUpDown.Enabled = true;
-                    Parameter_int_label.Text = "Type (1..4)";
-                    UpdateDisplayFunctions();
-                    return;		// no parameters
-
-                case "Noise reduction":
-                    ClearParameterValuesExcept(row, 2);
-                    if (Display_dataGridView.Rows[row].Cells[IntCol].Value == null)
-                    {
-                        Parameter_Int_numericUpDown.Value = 1;
-                        Display_dataGridView.Rows[row].Cells[IntCol].Value = "1";
-                    }
-                    else if (!int.TryParse(Display_dataGridView.Rows[row].Cells[2].Value.ToString(), out par_i))
-                    {
-                        Parameter_Int_numericUpDown.Value = 1;
-                        Display_dataGridView.Rows[row].Cells[IntCol].Value = "1";
-                    }
-                    else
-                    {
-                        Parameter_Int_numericUpDown.Value = par_i;
-                    }
-                    Parameter_Int_numericUpDown.Enabled = true;
-                    Parameter_int_label.Text = "Type (1..3)";
-                    UpdateDisplayFunctions();
-                    return;		// no parameters
-
-                case "Kill color":
-                    DoRGBparameters(row);
-                    Color_label.Text = "Color to kill:";
-                    UpdateDisplayFunctions();
-                    return;
-
-                case "Keep color":
-                    Color_label.Text = "Color to keep:";
-                    DoRGBparameters(row);
-                    UpdateDisplayFunctions();
-                    return;
-
-                case "Meas. zoom":
-                    // one double parameter
-                    ClearParameterValuesExcept(row, 3);
-                    if (Display_dataGridView.Rows[row].Cells[DoubleCol].Value == null)
-                    {
-                        Parameter_double_textBox.Text = "2.0";
-                        Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
-                    }
-                    else if (!double.TryParse(Display_dataGridView.Rows[row].Cells[3].Value.ToString().Replace(',', '.'), out par_d))
-                    {
-                        Parameter_double_textBox.Text = "2.0";
-                        Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
-                    }
-                    else
-                    {
-                        Parameter_double_textBox.Text = par_d.ToString("0.0");
-                    }
-                    Parameter_double_textBox.Enabled = true;
-                    Parameter_double_label.Text = "Zoom factor";
-                    UpdateDisplayFunctions();
-                    break;
-
-                case "Gaussian blur":
-                    // one double parameter
-                    ClearParameterValuesExcept(row, 3);
-                    if (Display_dataGridView.Rows[row].Cells[DoubleCol].Value == null)
-                    {
-                        Parameter_double_textBox.Text = "2.0";
-                        Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
-                    }
-                    else if (!double.TryParse(Display_dataGridView.Rows[row].Cells[3].Value.ToString().Replace(',', '.'), out par_d))
-                    {
-                        Parameter_double_textBox.Text = "2.0";
-                        Display_dataGridView.Rows[row].Cells[DoubleCol].Value = "2.0";
-                    }
-                    else
-                    {
-                        Parameter_double_textBox.Text = par_d.ToString("0.00");
-                    }
-                    Parameter_double_textBox.Enabled = true;
-                    Parameter_double_label.Text = "Sigma, 0.01 to 5.0";
-                    UpdateDisplayFunctions();
-                    break;
-
-                case "Threshold":
-                    // one int parameter
-                    ClearParameterValuesExcept(row, 2);
-
-                    if (Display_dataGridView.Rows[row].Cells[IntCol].Value == null)
-                    {
-                        Parameter_Int_numericUpDown.Value = 100;
-                        Display_dataGridView.Rows[row].Cells[IntCol].Value = "100";
-                    }
-                    else if (!int.TryParse(Display_dataGridView.Rows[row].Cells[2].Value.ToString(), out par_i))
-                    {
-                        Parameter_Int_numericUpDown.Value = 100;
-                        Display_dataGridView.Rows[row].Cells[IntCol].Value = "100";
-                    }
-                    else
-                    {
-                        Parameter_Int_numericUpDown.Value = par_i;
-                    }
-                    Parameter_Int_numericUpDown.Enabled = true;
-                    Parameter_int_label.Text = "Threshold";
-                    UpdateDisplayFunctions();
-                    break;
-
-                default:
-                    return;
-                // break;
-            }
-        }
-
-        private void Parameter_Int_numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (!Parameter_Int_numericUpDown.Enabled)
-            {
-                return;		// so that it can be cleared safely
-            }
-
-            int row = Display_dataGridView.CurrentCell.RowIndex;
-            int IntCol = (int)Display_dataGridViewColumns.Int;
-            Display_dataGridView.Rows[row].Cells[IntCol].Value = Parameter_Int_numericUpDown.Value.ToString();
-            UpdateDisplayFunctions();
-        }
-
-        private void Parameter_double_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            int DoubleCol = (int)Display_dataGridViewColumns.Double;
-            int row = Display_dataGridView.CurrentCell.RowIndex;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(Parameter_double_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Display_dataGridView.Rows[row].Cells[DoubleCol].Value = Parameter_double_textBox.Text;
-                    UpdateDisplayFunctions();
-                }
-            }
-
-        }
-
-        private void Parameter_double_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            int DoubleCol = (int)Display_dataGridViewColumns.Double;
-            int row = Display_dataGridView.CurrentCell.RowIndex;
-            if (double.TryParse(Parameter_double_textBox.Text.Replace(',', '.'), out val))
-            {
-                Display_dataGridView.Rows[row].Cells[DoubleCol].Value = Parameter_double_textBox.Text;
-                UpdateDisplayFunctions();
-            }
-
-        }
-
-        private void R_numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (!R_numericUpDown.Enabled)
-            {
-                return;
-            }
-            int row = Display_dataGridView.CurrentCell.RowIndex;
-            int R_col = (int)Display_dataGridViewColumns.R;
-            Display_dataGridView.Rows[row].Cells[R_col].Value = R_numericUpDown.Value.ToString();
-            SetColorBoxColor(row);
-            UpdateDisplayFunctions();
-        }
-
-        private void G_numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (!G_numericUpDown.Enabled)
-            {
-                return;
-            }
-            int row = Display_dataGridView.CurrentCell.RowIndex;
-            int G_col = (int)Display_dataGridViewColumns.G;
-            Display_dataGridView.Rows[row].Cells[G_col].Value = G_numericUpDown.Value.ToString();
-            SetColorBoxColor(row);
-            UpdateDisplayFunctions();
-        }
-
-        private void B_numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (!B_numericUpDown.Enabled)
-            {
-                return;
-            }
-            int row = Display_dataGridView.CurrentCell.RowIndex;
-            int B_col = (int)Display_dataGridViewColumns.B;
-            Display_dataGridView.Rows[row].Cells[B_col].Value = B_numericUpDown.Value.ToString();
-            SetColorBoxColor(row);
-            UpdateDisplayFunctions();
-        }
-
-
+ 
         private void PickColor(int X, int Y)
         {
             if (X < 2)
@@ -13579,44 +12239,6 @@ namespace LitePlacer
             Color_Box.BackColor = Color.FromArgb(R, G, B);
         }
 
-        private void Display_dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs anError)
-        {
-            DisplayText("PaperTape_dataGridView values:");
-            string msg = "";
-            foreach (DataGridViewRow Row in PaperTape_dataGridView.Rows)
-            {
-                for (int i = 0; i < Row.Cells.Count; i++)
-                {
-                    if (Row.Cells[i].Value == null)
-                    {
-                        msg += "null:";
-                    }
-                    else
-                    {
-                        msg += Row.Cells[i].Value.ToString() + ":";
-                    }
-                }
-                DisplayText(msg);
-            }
-            DisplayText("Display_dataGridView values:");
-            msg = "";
-            foreach (DataGridViewRow Row in Display_dataGridView.Rows)
-            {
-                for (int i = 0; i < Row.Cells.Count; i++)
-                {
-                    if (Row.Cells[i].Value == null)
-                    {
-                        msg += "null:";
-                    }
-                    else
-                    {
-                        msg += Row.Cells[i].Value.ToString() + ":";
-                    }
-                }
-                DisplayText("msg");
-            }
-
-        }
         #endregion
 
         // ==========================================================================================================
@@ -14476,7 +13098,7 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // Unload if needed
-            int dbg = Setting.Nozzles_current;
+            // int dbg = Setting.Nozzles_current;
             if (Setting.Nozzles_current != 0)
             {
                 if (!m_UnloadNozzle(Setting.Nozzles_current))
@@ -14940,66 +13562,6 @@ namespace LitePlacer
             Nozzles_Stop = true;
         }
 
-        private void NozzlesParameters_dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-
-        private void NozzleDistance_textBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            double val;
-            if (double.TryParse(NozzleDistance_textBox.Text.Replace(',', '.'), out val))
-            {
-                Setting.Nozzles_CalibrationDistance = val;
-                NozzleDistance_textBox.ForeColor = Color.Black;
-            }
-            else
-            {
-                NozzleDistance_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        private void NozzleMinSize_textBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            double val;
-            if (double.TryParse(NozzleMinSize_textBox.Text.Replace(',', '.'), out val))
-            {
-                Setting.Nozzles_CalibrationMinSize = val;
-                NozzleMinSize_textBox.ForeColor = Color.Black;
-            }
-            else
-            {
-                NozzleMinSize_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        private void NozzleMaxSize_textBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            double val;
-            if (double.TryParse(NozzleMaxSize_textBox.Text.Replace(',', '.'), out val))
-            {
-                Setting.Nozzles_CalibrationMaxSize = val;
-                NozzleMaxSize_textBox.ForeColor = Color.Black;
-            }
-            else
-            {
-                NozzleMaxSize_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        private bool NozzleUseTable2()
-        {
-            if (!Setting.Nozzles_Enabled)
-            {
-                return false;
-            }
-            DataGridViewCheckBoxCell cell = NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current-1].Cells["NozzleAlternative_column"] as DataGridViewCheckBoxCell;
-            if (cell.Value==null)
-            {
-                return false;
-            }
-            return (cell.Value.ToString() == "True");
-        }
-
 
         private void CalData_button_Click(object sender, EventArgs e)
         {
@@ -15069,34 +13631,6 @@ namespace LitePlacer
         }
 
 
-        private void FiducialsTolerance_textBox_TextChanged(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(FiducialsTolerance_textBox.Text.Replace(',', '.'), out val))
-            {
-                Setting.Placement_FiducialTolerance = val;
-            }
-        }
-
-        private void RoundFiducial_radioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            Setting.Placement_FiducialsType = 0;
-        }
-
-        private void RectangularFiducial_radioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            Setting.Placement_FiducialsType = 1;
-        }
-
-        private void AutoFiducial_radioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            Setting.Placement_FiducialsType = 2;
-        }
-
-        private void FiducialManConfirmation_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Setting.Placement_FiducialConfirmation = FiducialManConfirmation_checkBox.Checked;
-        }
 
         private void AppSettingsSave_button_Click(object sender, EventArgs e)
         {
@@ -15234,17 +13768,6 @@ namespace LitePlacer
             {
                 Thread.Sleep(50);
             }
-/*            dbg = "{sr:n}";
-            DisplayText("write: " + dbg);
-            if (!CNC_Write_m(dbg))
-            {
-                return false;
-            };
-            if (delay)
-            {
-                Thread.Sleep(50);
-            }
-*/
             return true;
         }
 
@@ -15454,47 +13977,30 @@ namespace LitePlacer
         }
 
 
-
-        private void ListResolutions_button_Click(object sender, EventArgs e)
+        private void DownCamListResolutions_button_Click(object sender, EventArgs e)
         {
-            List<string> Monikers;
-            ComboBox Box;
-            string MonikerStr;
-            Camera Cam;
-            if (CamerasSetUp_tabControl.SelectedTab.Name== "DownCamera_tabPage")
+            List<string> Monikers = DownCamera.GetMonikerStrings();
+            if (Monikers==null)
             {
-                Monikers = DownCamera.GetMonikerStrings();
-                Box = DownCam_comboBox;
-                Cam = DownCamera;
-            }
-            else if (CamerasSetUp_tabControl.SelectedTab.Name == "UpCamera_tabPage")
-            {
-                Monikers = UpCamera.GetMonikerStrings();
-                Box = UpCam_comboBox;
-                Cam = UpCamera;
-            }
-            else
-            {
-                ShowMessageBox(
-                    "Bad tab name",
-                    "Programmer error",
-                    MessageBoxButtons.OK);
+                DisplayText("Could not get resolution info.", KnownColor.Purple);
                 return;
             }
-            if (Monikers.Count == 0)
-            {
-                DisplayText("No camera");
-                return;
-            }
-            if (Box.SelectedIndex> Monikers.Count)
-            {
-                DisplayText("Select camera");
-                return;
-            }
-            MonikerStr = Monikers[Box.SelectedIndex];
-            Cam.ListResolutions(MonikerStr);
-
+            string MonikerStr = Monikers[DownCam_comboBox.SelectedIndex];
+            DownCamera.ListResolutions(MonikerStr);
         }
+
+        private void UpCamListResolutions_button_Click(object sender, EventArgs e)
+        {
+            List<string> Monikers = UpCamera.GetMonikerStrings();
+            if (Monikers == null)
+            {
+                DisplayText("Could not get resolution info.", KnownColor.Purple);
+                return;
+            }
+            string MonikerStr = Monikers[UpCam_comboBox.SelectedIndex];
+            UpCamera.ListResolutions(MonikerStr);
+        }
+
 
         private void DownCameraDesiredX_textBox_TextChanged(object sender, EventArgs e)
         {
@@ -15556,17 +14062,6 @@ namespace LitePlacer
             }
         }
 
-        private void CamShowPixels_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (CamShowPixels_checkBox.Checked)
-            {
-                Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-            }
-            else
-            {
-                Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            }
-        }
 
         private void VigorousHoming_checkBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -15578,10 +14073,6 @@ namespace LitePlacer
             CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
         }
 
-        private void Display_dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
     }	// end of: 	public partial class FormMain : Form
 
 
@@ -15592,17 +14083,25 @@ namespace LitePlacer
     {
         public static void AppendText(this RichTextBox box, string text, Color color)
         {
-            if (color != box.ForeColor)
+            try
             {
-                box.SelectionStart = box.TextLength;
-                box.SelectionLength = 0;
-                box.SelectionColor = color;
-                box.AppendText(text);
-                box.SelectionColor = box.ForeColor;
+                if (color != box.ForeColor)
+                {
+                    box.SelectionStart = box.TextLength;
+                    box.SelectionLength = 0;
+                    box.SelectionColor = color;
+                    box.AppendText(text);
+                    box.SelectionColor = box.ForeColor;
+                }
+                else
+                {
+                    box.AppendText(text);
+                }
+
             }
-            else
+            catch (ObjectDisposedException)
             {
-                box.AppendText(text);
+                return;
             }
         }
     }
