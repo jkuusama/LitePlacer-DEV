@@ -536,7 +536,7 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
-            this.ShowPixels_checkBox = new System.Windows.Forms.CheckBox();
+            this.FunctionExplanation_textBox = new System.Windows.Forms.TextBox();
             this.DrawDashedCross_checkBox = new System.Windows.Forms.CheckBox();
             this.DrawGrid_checkBox = new System.Windows.Forms.CheckBox();
             this.DrawTicks_checkBox = new System.Windows.Forms.CheckBox();
@@ -576,7 +576,6 @@
             this.label167 = new System.Windows.Forms.Label();
             this.RGBParameter_label = new System.Windows.Forms.Label();
             this.IntParameter_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.FunctionExplanationText_label = new System.Windows.Forms.Label();
             this.B_label = new System.Windows.Forms.Label();
             this.G_label = new System.Windows.Forms.Label();
             this.R_label = new System.Windows.Forms.Label();
@@ -667,6 +666,7 @@
             this.NozzleLoad_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.gotoLoadStartPositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyMovesFromNozzle1ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ShowPixels_checkBox = new System.Windows.Forms.CheckBox();
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.GotoX_textBox = new System.Windows.Forms.TextBox();
@@ -6317,6 +6317,7 @@
             // 
             // Algorithms_tabPage
             // 
+            this.Algorithms_tabPage.Controls.Add(this.FunctionExplanation_textBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawDashedCross_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawGrid_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawTicks_checkBox);
@@ -6354,7 +6355,6 @@
             this.Algorithms_tabPage.Controls.Add(this.label167);
             this.Algorithms_tabPage.Controls.Add(this.RGBParameter_label);
             this.Algorithms_tabPage.Controls.Add(this.IntParameter_numericUpDown);
-            this.Algorithms_tabPage.Controls.Add(this.FunctionExplanationText_label);
             this.Algorithms_tabPage.Controls.Add(this.B_label);
             this.Algorithms_tabPage.Controls.Add(this.G_label);
             this.Algorithms_tabPage.Controls.Add(this.R_label);
@@ -6385,20 +6385,16 @@
             this.Algorithms_tabPage.Text = "Setup Video Processing";
             this.Algorithms_tabPage.UseVisualStyleBackColor = true;
             // 
-            // ShowPixels_checkBox
+            // FunctionExplanation_textBox
             // 
-            this.ShowPixels_checkBox.AutoSize = true;
-            this.ShowPixels_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShowPixels_checkBox.Location = new System.Drawing.Point(444, 775);
-            this.ShowPixels_checkBox.Name = "ShowPixels_checkBox";
-            this.ShowPixels_checkBox.Size = new System.Drawing.Size(82, 17);
-            this.ShowPixels_checkBox.TabIndex = 265;
-            this.ShowPixels_checkBox.Text = "Show pixels";
-            this.toolTip1.SetToolTip(this.ShowPixels_checkBox, "This draws camera image mapped 1:1 to pixels \r\non the screen. With high resolutio" +
-        "n cameras, imace is clipped.\r\nUse this mode to set box size!\r\nUncheck to zoom ou" +
-        "t to full camera view.");
-            this.ShowPixels_checkBox.UseVisualStyleBackColor = true;
-            this.ShowPixels_checkBox.CheckedChanged += new System.EventHandler(this.ShowPixels_checkBox_CheckedChanged);
+            this.FunctionExplanation_textBox.BackColor = System.Drawing.SystemColors.Window;
+            this.FunctionExplanation_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.FunctionExplanation_textBox.Location = new System.Drawing.Point(1068, 281);
+            this.FunctionExplanation_textBox.Multiline = true;
+            this.FunctionExplanation_textBox.Name = "FunctionExplanation_textBox";
+            this.FunctionExplanation_textBox.ReadOnly = true;
+            this.FunctionExplanation_textBox.Size = new System.Drawing.Size(171, 127);
+            this.FunctionExplanation_textBox.TabIndex = 265;
             // 
             // DrawDashedCross_checkBox
             // 
@@ -6834,17 +6830,6 @@
             0});
             this.IntParameter_numericUpDown.Visible = false;
             this.IntParameter_numericUpDown.ValueChanged += new System.EventHandler(this.IntParameter_numericUpDown_ValueChanged);
-            // 
-            // FunctionExplanationText_label
-            // 
-            this.FunctionExplanationText_label.AutoSize = true;
-            this.FunctionExplanationText_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FunctionExplanationText_label.Location = new System.Drawing.Point(1066, 265);
-            this.FunctionExplanationText_label.Name = "FunctionExplanationText_label";
-            this.FunctionExplanationText_label.Size = new System.Drawing.Size(82, 26);
-            this.FunctionExplanationText_label.TabIndex = 227;
-            this.FunctionExplanationText_label.Text = "Explanation text\r\nline2\r\n";
-            this.FunctionExplanationText_label.Visible = false;
             // 
             // B_label
             // 
@@ -7803,6 +7788,21 @@
             this.copyMovesFromNozzle1ToolStripMenuItem1.Size = new System.Drawing.Size(214, 22);
             this.copyMovesFromNozzle1ToolStripMenuItem1.Text = "Copy moves from nozzle 1";
             this.copyMovesFromNozzle1ToolStripMenuItem1.Click += new System.EventHandler(this.copyLoadMovesFromNozzle1_ToolStripMenuItem_Click);
+            // 
+            // ShowPixels_checkBox
+            // 
+            this.ShowPixels_checkBox.AutoSize = true;
+            this.ShowPixels_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowPixels_checkBox.Location = new System.Drawing.Point(444, 775);
+            this.ShowPixels_checkBox.Name = "ShowPixels_checkBox";
+            this.ShowPixels_checkBox.Size = new System.Drawing.Size(82, 17);
+            this.ShowPixels_checkBox.TabIndex = 265;
+            this.ShowPixels_checkBox.Text = "Show pixels";
+            this.toolTip1.SetToolTip(this.ShowPixels_checkBox, "This draws camera image mapped 1:1 to pixels \r\non the screen. With high resolutio" +
+        "n cameras, imace is clipped.\r\nUse this mode to set box size!\r\nUncheck to zoom ou" +
+        "t to full camera view.");
+            this.ShowPixels_checkBox.UseVisualStyleBackColor = true;
+            this.ShowPixels_checkBox.CheckedChanged += new System.EventHandler(this.ShowPixels_checkBox_CheckedChanged);
             // 
             // CAD_openFileDialog
             // 
@@ -8770,7 +8770,6 @@
         private System.Windows.Forms.Label label167;
         private System.Windows.Forms.Label RGBParameter_label;
         private System.Windows.Forms.NumericUpDown IntParameter_numericUpDown;
-        private System.Windows.Forms.Label FunctionExplanationText_label;
         private System.Windows.Forms.Label B_label;
         private System.Windows.Forms.Label G_label;
         private System.Windows.Forms.Label R_label;
@@ -8856,6 +8855,7 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label UpCameraStatus_label;
         private System.Windows.Forms.Button UpCamListResolutions_button;
+        private System.Windows.Forms.TextBox FunctionExplanation_textBox;
     }
 }
 

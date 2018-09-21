@@ -311,46 +311,24 @@ namespace LitePlacer
         }
 
 
-        private List<AForgeFunction> BuildFunctionsList(DataGridView Grid)
+        private List<AForgeFunction> BuildFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
             List<AForgeFunction> NewList = new List<AForgeFunction>();
-            int temp_i;
-            double temp_d;
-            int FunctionCol = (int)DataGridViewColumns.Function;
-            int ActiveCol = (int)DataGridViewColumns.Active;
-            int IntCol = (int)DataGridViewColumns.Int;
-            int DoubleCol = (int)DataGridViewColumns.Double;
-            int R_col = (int)DataGridViewColumns.R;
-            int G_col = (int)DataGridViewColumns.G;
-            int B_col = (int)DataGridViewColumns.B;
-
             NewList.Clear();
-            MainForm.DisplayText("BuildFunctionsList:");
-
-            foreach (DataGridViewRow Row in Grid.Rows)
+            MainForm.DisplayText("BuildFunctionsList: ");
+            foreach (AForgeFunctionDefinition UIfucnt in UiList)
             {
                 AForgeFunction f = new AForgeFunction();
-                // newly created rows are not complete yet
-                if (Row.Cells[FunctionCol].Value == null)
-                {
-                    continue;
-                }
-                if (Row.Cells[ActiveCol].Value == null)
-                {
-                    continue;
-                }
                 // skip inactive rows
-                if (Row.Cells[ActiveCol].Value.ToString() == "False")
+                if (UIfucnt == null)
                 {
                     continue;
                 }
-
-                if (Row.Cells[ActiveCol].Value.ToString() == "false")
+                if (!UIfucnt.Active)
                 {
                     continue;
                 }
-
-                switch (Row.Cells[FunctionCol].Value.ToString())
+                switch (UIfucnt.Name)
                 {
                     case "Grayscale":
                         f.func = GrayscaleFunc;
@@ -404,52 +382,21 @@ namespace LitePlacer
                         continue;
                         // break; 
                 }
-                string msg = Row.Cells[FunctionCol].Value.ToString();
-                msg += " / ";
-                if (Row.Cells[IntCol].Value != null)
-                {
-                    int.TryParse(Row.Cells[IntCol].Value.ToString(), out temp_i);
-                    f.parameter_int = temp_i;
-                    msg += temp_i.ToString();
-                }
-                msg += " / ";
-                if (Row.Cells[DoubleCol].Value != null)
-                {
-                    double.TryParse(Row.Cells[DoubleCol].Value.ToString().Replace(',', '.'), out temp_d);
-                    f.parameter_double = temp_d;
-                    msg += temp_d.ToString();
-                }
-                msg += " / ";
-                if (Row.Cells[R_col].Value != null)
-                {
-                    int.TryParse(Row.Cells[R_col].Value.ToString(), out temp_i);
-                    f.R = temp_i;
-                    msg += temp_i.ToString();
-                }
-                msg += " / ";
-                if (Row.Cells[G_col].Value != null)
-                {
-                    int.TryParse(Row.Cells[G_col].Value.ToString(), out temp_i);
-                    f.G = temp_i;
-                    msg += temp_i.ToString();
-                }
-                msg += " / ";
-                if (Row.Cells[B_col].Value != null)
-                {
-                    int.TryParse(Row.Cells[B_col].Value.ToString(), out temp_i);
-                    f.B = temp_i;
-                    msg += temp_i.ToString();
-                }
-                msg += " / ";
+                f.parameter_int = UIfucnt.parameterInt;
+                f.parameter_double = UIfucnt.parameterDouble;
+                f.R = UIfucnt.R;
+                f.B = UIfucnt.B;
+                f.G = UIfucnt.G;
                 NewList.Add(f);
-                MainForm.DisplayText(msg);
+                MainForm.DisplayText(UIfucnt.Name +", "+f.parameter_int.ToString() + ", " + f.parameter_double.ToString() + ", " 
+                    + f.R.ToString() + ", " + f.G.ToString() + ", " + f.B.ToString());
             };
             return NewList;
         }
 
-        public void BuildDisplayFunctionsList(DataGridView Grid)
+        public void BuildDisplayFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
-            List<AForgeFunction> NewList = BuildFunctionsList(Grid);    // Get the list
+            List<AForgeFunction> NewList = BuildFunctionsList(UiList);    // Get the list
                                                                         // Stop video
             bool pause = PauseProcessing;
             if (VideoSource != null)
@@ -500,9 +447,9 @@ namespace LitePlacer
 
         // The caller builds the MeasurementFunctions list:
 
-        public void BuildMeasurementFunctionsList(DataGridView Grid)
+        public void BuildMeasurementFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
-            MeasurementFunctions = BuildFunctionsList(Grid);
+            MeasurementFunctions = BuildFunctionsList(UiList);
         }
 
         // And calls xx_measure() funtion. (Any function doing measurement from video frames.)

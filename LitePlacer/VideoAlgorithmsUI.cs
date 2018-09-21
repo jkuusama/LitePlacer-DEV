@@ -586,76 +586,76 @@ namespace LitePlacer
                 // switch by the selected algorithm:  
                 case "Blur":
                     // no parameters
-                    FunctionExplanationText_label.Text = "Blurs the image, reducing the effects of camera noise/n" +
-                        "and possible imerfections in the target outline";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Text = "Blurs the image, reducing the effects of camera noise " +
+                        "and possible imperfections in the target outline";
+                    FunctionExplanation_textBox.Visible = true;
                     break;
 
                 case "Histogram":
-                    FunctionExplanationText_label.Text = "Increases contrast in the image";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Text = "Increases contrast in the image";
+                    FunctionExplanation_textBox.Visible = true;
                     break;		// no parameters
 
                 case "Grayscale":
-                    FunctionExplanationText_label.Text = "Converts the image to grayscale";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Text = "Converts the image to grayscale";
+                    FunctionExplanation_textBox.Visible = true;
                     break;		// no parameters
 
                 case "Invert":
-                    FunctionExplanationText_label.Text = "Inverts the image; the detection functions are lookign for\n" +
-                        "white image on black background.";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Text = "Inverts the image; the detection functions are looking for" +
+                        " white image on black background.";
+                    FunctionExplanation_textBox.Visible = true;
                     break;		// no parameters
 
                 case "Edge detect":
                     // single int parameter, 1..4
                     EnableInt(1, 4, "Operator type:");
-                    FunctionExplanationText_label.Text = "Finds edges in the image:\n" +
-                        "1: Using Sobel operator.\n" +
-                        "2: Calculating maximum difference between pixels in 4 directions around the processing pixel.\n" +
-                        "3: Calculating maximum difference of processing pixel with neighboring pixels in 8 direction.\n" +
+                    FunctionExplanation_textBox.Text = "Finds edges in the image:\r\n" +
+                        "1: Using Sobel operator.\r\n" +
+                        "2: Calculating maximum difference between pixels in 4 directions around the processing pixel.\r\n" +
+                        "3: Calculating maximum difference of processing pixel with neighboring pixels in 8 direction.\r\n" +
                         "4: Applying Canny edge detector";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Visible = true;
                     break;
 
                 case "Kill color":
                     // int and RGB parameter
                     EnableInt(0, 255, "Radius:");
                     EnableRGB("Color to remove");
-                    FunctionExplanationText_label.Text = "Removes color that is inside of RGB sphere\n" +
+                    FunctionExplanation_textBox.Text = "Removes color that is inside of RGB sphere " +
                         "with specified center color and radius.";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Visible = true;
                     break;
 
                 case "Keep color":
                     // int and RGB parameter
                     EnableInt(0, 255, "Radius:");
                     EnableRGB("Color to keep:");
-                    FunctionExplanationText_label.Text = "Removes color that is outside of RGB sphere\n" +
+                    FunctionExplanation_textBox.Text = "Removes color that is outside of RGB sphere " +
                         "with specified center color and radius.";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Visible = true;
                     break;
 
                 case "Meas. zoom":
                     // one double parameter
                     EnableDouble("Zoom factor:");
-                    FunctionExplanationText_label.Text = "Enlargens the image that is used for measurements.";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Text = "Enlargens the image that is used for measurements.";
+                    FunctionExplanation_textBox.Visible = true;
 
                     break;
 
                 case "Gaussian blur":
                     // one double parameter
                     EnableDouble("Sigma:");
-                    FunctionExplanationText_label.Text = "Another method to blur the image: gaussian blur with kernel size of 11.";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Text = "Another method to blur the image: gaussian blur with kernel size of 11.";
+                    FunctionExplanation_textBox.Visible = true;
                     break;
 
                 case "Threshold":
                     // one int parameter
                     EnableInt(0, 255, "Threshold:");
-                    FunctionExplanationText_label.Text = "Makes the image black and white.";
-                    FunctionExplanationText_label.Visible = true;
+                    FunctionExplanation_textBox.Text = "Makes the image black and white.";
+                    FunctionExplanation_textBox.Visible = true;
                     break;
 
                 default:
@@ -725,8 +725,8 @@ namespace LitePlacer
             G_label.Visible = false;
             B_label.Visible = false;
 
-            FunctionExplanationText_label.Text = "";
-            FunctionExplanationText_label.Visible = false;
+            FunctionExplanation_textBox.Text = "";
+            FunctionExplanation_textBox.Visible = false;
         }
 
         private void UpdateVideoProcessing()
@@ -737,13 +737,34 @@ namespace LitePlacer
             {
                 return;
             }
+            if (VideoAlgorithms.CurrentAlgorithm == null)
+            {
+                Console.WriteLine("UpdateVideoProcessing(), no current algorithm");
+                return;
+            }
+            // Pass CurrentAlgorithm to camera
             Console.WriteLine("UpdateVideoProcessing()");
-            // For real: Pass CurrentAlgorithm to camera
+            if (DownCam_radioButton.Checked)
+            {
+                DownCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
+            }
+            if (UpCam_radioButton.Checked)
+            {
+                UpCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
+            }
         }
 
         private void StopVideoProcessing()
         {
             Console.WriteLine("StopVideoProcessing()");
+            if (DownCam_radioButton.Checked)
+            {
+                DownCamera.ClearDisplayFunctionsList();
+            }
+            if (UpCam_radioButton.Checked)
+            {
+                UpCamera.ClearDisplayFunctionsList();
+            }
         }
 
 
