@@ -137,7 +137,6 @@
             this.LastX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LastY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RotationDirect_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tapes_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
             this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
             this.PartialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -441,7 +440,6 @@
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
             this.ClearPlaced_button = new System.Windows.Forms.Button();
-            this.Placement_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
             this.OmitNozzleCalibration_checkBox = new System.Windows.Forms.CheckBox();
             this.MeasureZs_checkBox = new System.Windows.Forms.CheckBox();
@@ -548,7 +546,6 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.DownCam_radioButton = new System.Windows.Forms.RadioButton();
             this.UpCam_radioButton = new System.Windows.Forms.RadioButton();
-            this.Algorithms_PictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.Algorithm_Measure_button = new System.Windows.Forms.Button();
             this.SearchComponents_checkBox = new System.Windows.Forms.CheckBox();
             this.SearchRectangles_checkBox = new System.Windows.Forms.CheckBox();
@@ -698,7 +695,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
             this.Components_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
             this.tabPageSetupCameras.SuspendLayout();
@@ -721,7 +717,6 @@
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.RunJob_tabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Placement_pictureBox)).BeginInit();
             this.groupBox12.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -732,7 +727,6 @@
             this.tabControlPages.SuspendLayout();
             this.Algorithms_tabPage.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Algorithms_PictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.G_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).BeginInit();
@@ -1145,7 +1139,6 @@
             this.Tapes_tabPage.Controls.Add(this.AddTape_button);
             this.Tapes_tabPage.Controls.Add(this.label109);
             this.Tapes_tabPage.Controls.Add(this.Tapes_dataGridView);
-            this.Tapes_tabPage.Controls.Add(this.Tapes_pictureBox);
             this.Tapes_tabPage.Location = new System.Drawing.Point(4, 22);
             this.Tapes_tabPage.Name = "Tapes_tabPage";
             this.Tapes_tabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -1856,17 +1849,6 @@
             this.RotationDirect_Column.HeaderText = "Rotation";
             this.RotationDirect_Column.Name = "RotationDirect_Column";
             this.RotationDirect_Column.Width = 72;
-            // 
-            // Tapes_pictureBox
-            // 
-            this.Tapes_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tapes_pictureBox.Location = new System.Drawing.Point(6, 6);
-            this.Tapes_pictureBox.Name = "Tapes_pictureBox";
-            this.Tapes_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Tapes_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Tapes_pictureBox.TabIndex = 13;
-            this.Tapes_pictureBox.TabStop = false;
-            this.Tapes_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Tapes_pictureBox_MouseClick);
             // 
             // Components_tabPage
             // 
@@ -2996,6 +2978,7 @@
             this.Cam_pictureBox.TabIndex = 10;
             this.Cam_pictureBox.TabStop = false;
             this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
+            this.Cam_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseMove);
             // 
             // tabPageBasicSetup
             // 
@@ -5229,12 +5212,12 @@
             // labelSerialPortStatus
             // 
             this.labelSerialPortStatus.AutoSize = true;
-            this.labelSerialPortStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSerialPortStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSerialPortStatus.Location = new System.Drawing.Point(72, 69);
             this.labelSerialPortStatus.Name = "labelSerialPortStatus";
-            this.labelSerialPortStatus.Size = new System.Drawing.Size(105, 18);
+            this.labelSerialPortStatus.Size = new System.Drawing.Size(138, 32);
             this.labelSerialPortStatus.TabIndex = 3;
-            this.labelSerialPortStatus.Text = "Not connected";
+            this.labelSerialPortStatus.Text = "No serial ports found.\r\nIs TinyG powered on?";
             this.toolTip1.SetToolTip(this.labelSerialPortStatus, "Connection status");
             // 
             // buttonConnectSerial
@@ -5271,7 +5254,6 @@
             // RunJob_tabPage
             // 
             this.RunJob_tabPage.Controls.Add(this.ClearPlaced_button);
-            this.RunJob_tabPage.Controls.Add(this.Placement_pictureBox);
             this.RunJob_tabPage.Controls.Add(this.SkipMeasurements_checkBox);
             this.RunJob_tabPage.Controls.Add(this.OmitNozzleCalibration_checkBox);
             this.RunJob_tabPage.Controls.Add(this.MeasureZs_checkBox);
@@ -5335,18 +5317,6 @@
             this.ClearPlaced_button.Text = "Clear \"Placed\"";
             this.ClearPlaced_button.UseVisualStyleBackColor = true;
             this.ClearPlaced_button.Click += new System.EventHandler(this.resetPlacedDataToolStripMenuItem_Click);
-            // 
-            // Placement_pictureBox
-            // 
-            this.Placement_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Placement_pictureBox.Location = new System.Drawing.Point(6, 6);
-            this.Placement_pictureBox.Name = "Placement_pictureBox";
-            this.Placement_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Placement_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Placement_pictureBox.TabIndex = 12;
-            this.Placement_pictureBox.TabStop = false;
-            this.Placement_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Placement_pictureBox_MouseClick);
-            this.Placement_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Placement_pictureBox_MouseMove);
             // 
             // SkipMeasurements_checkBox
             // 
@@ -6327,7 +6297,6 @@
             this.Algorithms_tabPage.Controls.Add(this.DrawCross_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawBox_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.groupBox4);
-            this.Algorithms_tabPage.Controls.Add(this.Algorithms_PictureBox);
             this.Algorithms_tabPage.Controls.Add(this.Algorithm_Measure_button);
             this.Algorithms_tabPage.Controls.Add(this.SearchComponents_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.SearchRectangles_checkBox);
@@ -6425,7 +6394,7 @@
             // 
             this.DrawTicks_checkBox.AutoSize = true;
             this.DrawTicks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawTicks_checkBox.Location = new System.Drawing.Point(838, 46);
+            this.DrawTicks_checkBox.Location = new System.Drawing.Point(838, 49);
             this.DrawTicks_checkBox.Name = "DrawTicks_checkBox";
             this.DrawTicks_checkBox.Size = new System.Drawing.Size(98, 17);
             this.DrawTicks_checkBox.TabIndex = 263;
@@ -6439,7 +6408,7 @@
             // 
             this.FindComponents_checkBox.AutoSize = true;
             this.FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindComponents_checkBox.Location = new System.Drawing.Point(954, 49);
+            this.FindComponents_checkBox.Location = new System.Drawing.Point(952, 72);
             this.FindComponents_checkBox.Name = "FindComponents_checkBox";
             this.FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
             this.FindComponents_checkBox.TabIndex = 262;
@@ -6447,12 +6416,13 @@
             this.toolTip1.SetToolTip(this.FindComponents_checkBox, "Tries to find component shapes on the image,\r\nusing video processing from the tab" +
         "le below.");
             this.FindComponents_checkBox.UseVisualStyleBackColor = true;
+            this.FindComponents_checkBox.CheckedChanged += new System.EventHandler(this.FindComponents_checkBox_CheckedChanged);
             // 
             // FindRectangles_checkBox
             // 
             this.FindRectangles_checkBox.AutoSize = true;
             this.FindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindRectangles_checkBox.Location = new System.Drawing.Point(954, 72);
+            this.FindRectangles_checkBox.Location = new System.Drawing.Point(952, 49);
             this.FindRectangles_checkBox.Name = "FindRectangles_checkBox";
             this.FindRectangles_checkBox.Size = new System.Drawing.Size(101, 17);
             this.FindRectangles_checkBox.TabIndex = 261;
@@ -6460,12 +6430,13 @@
             this.toolTip1.SetToolTip(this.FindRectangles_checkBox, "Tries to find rectangels on the image,\r\nusing video processing from the table bel" +
         "ow.");
             this.FindRectangles_checkBox.UseVisualStyleBackColor = true;
+            this.FindRectangles_checkBox.CheckedChanged += new System.EventHandler(this.FindRectangles_checkBox_CheckedChanged);
             // 
             // FindCircles_checkBox
             // 
             this.FindCircles_checkBox.AutoSize = true;
             this.FindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindCircles_checkBox.Location = new System.Drawing.Point(954, 26);
+            this.FindCircles_checkBox.Location = new System.Drawing.Point(952, 26);
             this.FindCircles_checkBox.Name = "FindCircles_checkBox";
             this.FindCircles_checkBox.Size = new System.Drawing.Size(79, 17);
             this.FindCircles_checkBox.TabIndex = 260;
@@ -6473,12 +6444,13 @@
             this.toolTip1.SetToolTip(this.FindCircles_checkBox, "Tries to find circles on the image,\r\nusing video processing from the table below." +
         "");
             this.FindCircles_checkBox.UseVisualStyleBackColor = true;
+            this.FindCircles_checkBox.CheckedChanged += new System.EventHandler(this.FindCircles_checkBox_CheckedChanged);
             // 
             // DrawCross_checkBox
             // 
             this.DrawCross_checkBox.AutoSize = true;
             this.DrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawCross_checkBox.Location = new System.Drawing.Point(838, 25);
+            this.DrawCross_checkBox.Location = new System.Drawing.Point(838, 26);
             this.DrawCross_checkBox.Name = "DrawCross_checkBox";
             this.DrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
             this.DrawCross_checkBox.TabIndex = 257;
@@ -6491,7 +6463,7 @@
             // 
             this.DrawBox_checkBox.AutoSize = true;
             this.DrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawBox_checkBox.Location = new System.Drawing.Point(838, 68);
+            this.DrawBox_checkBox.Location = new System.Drawing.Point(838, 72);
             this.DrawBox_checkBox.Name = "DrawBox_checkBox";
             this.DrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
             this.DrawBox_checkBox.TabIndex = 258;
@@ -6534,16 +6506,6 @@
             this.UpCam_radioButton.Text = "Up looking camera";
             this.UpCam_radioButton.UseVisualStyleBackColor = true;
             this.UpCam_radioButton.CheckedChanged += new System.EventHandler(this.UpCam_radioButton_CheckedChanged);
-            // 
-            // Algorithms_PictureBox
-            // 
-            this.Algorithms_PictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Algorithms_PictureBox.Location = new System.Drawing.Point(6, 6);
-            this.Algorithms_PictureBox.Name = "Algorithms_PictureBox";
-            this.Algorithms_PictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Algorithms_PictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Algorithms_PictureBox.TabIndex = 255;
-            this.Algorithms_PictureBox.TabStop = false;
             // 
             // Algorithm_Measure_button
             // 
@@ -7009,7 +6971,6 @@
             this.RemoveAlgorithm_button.TabIndex = 211;
             this.RemoveAlgorithm_button.Text = "Remove";
             this.RemoveAlgorithm_button.UseVisualStyleBackColor = true;
-            this.RemoveAlgorithm_button.Click += new System.EventHandler(this.RemoveAlgorithm_button_Click);
             // 
             // AddAlgorithm_button
             // 
@@ -8117,7 +8078,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).EndInit();
             this.Tapes_contextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).EndInit();
             this.Components_tabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
             this.tabPageSetupCameras.ResumeLayout(false);
@@ -8154,7 +8114,6 @@
             this.panel2.PerformLayout();
             this.RunJob_tabPage.ResumeLayout(false);
             this.RunJob_tabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Placement_pictureBox)).EndInit();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -8169,7 +8128,6 @@
             this.Algorithms_tabPage.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Algorithms_PictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.G_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).EndInit();
@@ -8230,7 +8188,6 @@
 		private System.Windows.Forms.Button AddTape_button;
 		private System.Windows.Forms.Label label109;
 		private System.Windows.Forms.DataGridView Tapes_dataGridView;
-		private Camera.ProtectedPictureBox Tapes_pictureBox;
 		private System.Windows.Forms.TabPage Components_tabPage;
 		private System.Windows.Forms.DataGridView ComponentData_dataGridView;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PartialName;
@@ -8461,7 +8418,6 @@
 		private System.Windows.Forms.Label label88;
 		private System.Windows.Forms.Label label86;
 		private System.Windows.Forms.Label label85;
-		private Camera.ProtectedPictureBox Placement_pictureBox;
 		private System.Windows.Forms.DataGridView JobData_GridView;
 		private System.Windows.Forms.CheckBox Bottom_checkBox;
 		private System.Windows.Forms.DataGridView CadData_GridView;
@@ -8742,7 +8698,6 @@
         public System.Windows.Forms.CheckBox PumpInvert_checkBox;
         private System.Windows.Forms.Button Ato0_button;
         private System.Windows.Forms.TabPage Algorithms_tabPage;
-        private Camera.ProtectedPictureBox Algorithms_PictureBox;
         private System.Windows.Forms.Button Algorithm_Measure_button;
         private System.Windows.Forms.CheckBox SearchComponents_checkBox;
         private System.Windows.Forms.CheckBox SearchRectangles_checkBox;
