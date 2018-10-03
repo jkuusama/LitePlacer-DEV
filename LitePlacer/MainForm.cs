@@ -280,6 +280,8 @@ namespace LitePlacer
         // ==============================================================================================
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            tabControlPages.SelectedTab = tabPageBasicSetup;
+            LastTabPage = "tabPageBasicSetup";
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
@@ -300,11 +302,16 @@ namespace LitePlacer
             DownCamera.Zoom = Setting.DownCam_Zoom;
             DownCamZoomFactor_textBox.Text = Setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             DownCamera.ZoomFactor = Setting.DownCam_Zoomfactor;
+            DownCamera.ImageBox = Cam_pictureBox;
 
             UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
             UpCamera.Zoom = Setting.UpCam_Zoom;
             UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
+            UpCamera.ImageBox = Cam_pictureBox;
+
+            ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
+            ShowPixels_checkBox_CheckedChanged(sender, e);
 
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
             KeepActive_checkBox.Checked = Setting.Cameras_KeepActive;
@@ -319,8 +326,6 @@ namespace LitePlacer
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
 
             StartCameras();
-            tabControlPages.SelectedTab = tabPageBasicSetup;
-            LastTabPage = "tabPageBasicSetup";
 
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
             SlackCompensation_checkBox.Checked = Setting.CNC_SlackCompensation;
@@ -488,14 +493,13 @@ namespace LitePlacer
         }
         */
         // =================================================================================
-        public bool SetupCamerasPageVisible = false;
 
         private void tabControlPages_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetupCamerasPageVisible = false;
             switch (tabControlPages.SelectedTab.Name)
             {
                 case "RunJob_tabPage":
+                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
                     RunJob_tabPage_Begin();
                     LastTabPage = "RunJob_tabPage";
                     break;
@@ -504,15 +508,17 @@ namespace LitePlacer
                     LastTabPage = "tabPageBasicSetup";
                     break;
                 case "tabPageSetupCameras":
-                    SetupCamerasPageVisible = true;
+                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
                     tabPageSetupCameras_Begin();
                     LastTabPage = "tabPageSetupCameras";
                     break;
                 case "Algorithms_tabPage":
+                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
                     Algorithms_tabPage_Begin();
                     LastTabPage = "Algorithms_tabPage";
                     break;
                 case "Tapes_tabPage":
+                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
                     Tapes_tabPage_Begin();
                     LastTabPage = "Tapes_tabPage";
                     break;
@@ -1687,36 +1693,43 @@ namespace LitePlacer
 
         bool PictureBox_MouseDragged = false;
 
-        private void General_pictureBox_MouseMove(int MouseX, int MouseY)
+        private void Cam_pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             if (MouseButtons == MouseButtons.Left)
             {
-                DisplayText("X: " + MouseX.ToString() + ", Y: " + MouseY.ToString());
+                DisplayText("X: " + e.X.ToString() + ", Y: " + e.Y.ToString());
             }
+
         }
 
-        private void General_pictureBox_MouseClick(PictureBox Box, int MouseX, int MouseY)
+        private void Cam_pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            double Xmm, Ymm;
+            if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
+            {
+                PickColor(e.X, e.Y);
+                return;
+            }
 
             if (PictureBox_MouseDragged)
             {
                 PictureBox_MouseDragged = false;
                 return;
             }
+
+            double Xmm, Ymm;
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Control)
             {
                 // Cntrl-click
-                double X = Convert.ToDouble(MouseX) / Convert.ToDouble(Box.Size.Width);
+                double X = Convert.ToDouble(e.X) / Convert.ToDouble(Cam_pictureBox.Size.Width);
                 X = X * Setting.General_MachineSizeX;
-                double Y = Convert.ToDouble(Box.Size.Height - MouseY) / Convert.ToDouble(Box.Size.Height);
+                double Y = Convert.ToDouble(Cam_pictureBox.Size.Height - e.Y) / Convert.ToDouble(Cam_pictureBox.Size.Height);
                 Y = Y * Setting.General_MachineSizeY;
                 CNC_XY_m(X, Y);
             }
 
             else
             {
-                BoxTo_mms(out Xmm, out Ymm, MouseX, MouseY, Box);
+                BoxTo_mms(out Xmm, out Ymm, e.X, e.Y, Cam_pictureBox);
                 CNC_XY_m(Cnc.CurrentX + Xmm, Cnc.CurrentY - Ymm);
             }
         }
@@ -3159,19 +3172,6 @@ namespace LitePlacer
 
         // =================================================================================
 
-        // =================================================================================
-
-        private void Cam_pictureBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
-            {
-                PickColor(e.X, e.Y);
-            }
-            else
-            {
-                General_pictureBox_MouseClick(Cam_pictureBox, e.X, e.Y);
-            }
-        }
 
         // =================================================================================
 
@@ -3208,6 +3208,7 @@ namespace LitePlacer
         // ====
         private void SetUpCameraDefaults()
         {
+            UpCamera.ImageBox = Cam_pictureBox;
             UpCamera.Id = "Upcamera";
             UpCamera.DesiredX = Setting.UpCam_DesiredX;
             UpCamera.DesiredY = Setting.UpCam_DesiredY;
@@ -3408,6 +3409,14 @@ namespace LitePlacer
             DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString());
             Setting.DownCam_index = DownCam_comboBox.SelectedIndex;
             List<string> Monikers = DownCamera.GetMonikerStrings();
+            if (Monikers.Count==0)
+            {
+                ShowMessageBox(
+                    "No cameras",
+                    "No cameras",
+                    MessageBoxButtons.OK);
+                return;
+            }
             Setting.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.DesiredX = Setting.DownCam_DesiredX;
@@ -3433,6 +3442,14 @@ namespace LitePlacer
             DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString());
             Setting.UpCam_index = UpCam_comboBox.SelectedIndex;
             List<string> Monikers = UpCamera.GetMonikerStrings();
+            if (Monikers.Count == 0)
+            {
+                ShowMessageBox(
+                    "No cameras",
+                    "No cameras",
+                    MessageBoxButtons.OK);
+                return;
+            }
             Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.DesiredX = Setting.UpCam_DesiredX;
@@ -4030,7 +4047,7 @@ namespace LitePlacer
             }
             if (comboBoxSerialPorts.Items.Count == 0)
             {
-                labelSerialPortStatus.Text = "No serial ports found. Is TinyG powered on?";
+                labelSerialPortStatus.Text = "No serial ports found.\n\rIs TinyG powered on?";
             }
             else
             {
@@ -6552,22 +6569,9 @@ namespace LitePlacer
             // public string MethodParameter { get; set; }
         }
 
-        private void Placement_pictureBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            General_pictureBox_MouseClick(Placement_pictureBox, e.X, e.Y);
-        }
-
-
-        private void Placement_pictureBox_MouseMove(object sender, MouseEventArgs e)
-        {
-            General_pictureBox_MouseMove(e.X, e.Y);
-        }
-
-
         private void RunJob_tabPage_Begin()
         {
             SetDownCameraDefaults();
-            DownCamera.ImageBox = Placement_pictureBox;
             SelectCamera(DownCamera);
             if (!DownCamera.IsRunning())
             {
@@ -10978,7 +10982,6 @@ namespace LitePlacer
             }
             SetDownCameraDefaults();
             SelectCamera(DownCamera);
-            DownCamera.ImageBox = Tapes_pictureBox;
         }
 
         private void Tapes_tabPage_End()
@@ -11269,12 +11272,6 @@ namespace LitePlacer
             }
             Tapes.Reset(e.RowIndex);
             Update_GridView(Tapes_dataGridView);
-        }
-
-        // ==========================================================================================================
-        private void Tapes_pictureBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            General_pictureBox_MouseClick(Tapes_pictureBox, e.X, e.Y);
         }
 
 
