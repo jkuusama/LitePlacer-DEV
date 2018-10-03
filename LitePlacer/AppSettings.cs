@@ -32,6 +32,7 @@ namespace LitePlacer
     {
         public bool Cameras_KeepActive = false;
         public bool Cameras_RobustSwitch = false;
+
         public int CNC_AltJogSpeed = 4000;
         public int CNC_AspeedMax = 4000;
         public int CNC_CtlrJogSpeed = 4000;
@@ -44,9 +45,9 @@ namespace LitePlacer
         public decimal CNC_SmallMovementSpeed = 150;
         public double CNC_SquareCorrection = 0;
         public int CNC_ZspeedMax = 1000;
+
         public bool DownCam_DrawTicks = true;
         public int DownCam_index = -1;
-        public bool Downcam_InvertedHomeMark = false;
         public int DownCam_MeasurementDelay = 100;
         public double DownCam_NozzleOffsetX = 75;
         public double DownCam_NozzleOffsetY = 29;
@@ -56,6 +57,24 @@ namespace LitePlacer
         public bool DownCam_Zoom = false;
         public double DownCam_Zoomfactor = 1.5;
         public string DowncamMoniker = "";
+        public int DownCam_DesiredX = 640;
+        public int DownCam_DesiredY = 480;
+
+        public bool Cam_ShowPixels = false;
+
+        public int UpCam_index = -1;
+        public int UpCam_MeasurementDelay = 100;
+        public double UpCam_PositionX = 2;
+        public double UpCam_PositionY = 3;
+        public System.Drawing.Color UpCam_SnapshotColor = System.Drawing.Color.White;
+        public double UpCam_XmmPerPixel = 0.05;
+        public double UpCam_YmmPerPixel = 0.05;
+        public bool UpCam_Zoom = false;
+        public double UpCam_Zoomfactor = 1.5;
+        public string UpcamMoniker = "";
+        public int UpCam_DesiredX = 640;
+        public int UpCam_DesiredY = 480;
+
         public double General_BelowPCB_Allowance = 3;
         public bool General_CheckForUpdates = false;
         public double General_JigOffsetX = 10;
@@ -141,20 +160,6 @@ namespace LitePlacer
         public bool Placement_SkipMeasurements = false;
         public bool Placement_UpdateJobGridAtRuntime = false;
 
-        public int UpCam_index = -1;
-        public int UpCam_MeasurementDelay = 100;
-        public double UpCam_PositionX = 2;
-        public double UpCam_PositionY = 3;
-        public System.Drawing.Color UpCam_SnapshotColor = System.Drawing.Color.White;
-        public double UpCam_XmmPerPixel = 0.05;
-        public double UpCam_YmmPerPixel = 0.05;
-        public bool UpCam_Zoom = false;
-        public double UpCam_Zoomfactor = 1.5;
-        public string UpcamMoniker = "";
-        public int DownCam_DesiredX = 640;
-        public int DownCam_DesiredY = 480;
-        public int UpCam_DesiredX = 640;
-        public int UpCam_DesiredY = 480;
     }
 
     // =================================================================================
