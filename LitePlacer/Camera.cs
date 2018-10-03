@@ -311,6 +311,9 @@ namespace LitePlacer
         }
 
 
+        // ==========================================================================================================
+        // Convert from UI functions (AForgeFunctionDefinition) to processing functions (AForgeFunction)
+
         private List<AForgeFunction> BuildFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
             List<AForgeFunction> NewList = new List<AForgeFunction>();
@@ -394,6 +397,9 @@ namespace LitePlacer
             return NewList;
         }
 
+        // ==========================================================================================================
+        // For display: Get the function list, transfer to video processing
+
         public void BuildDisplayFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
             List<AForgeFunction> NewList = BuildFunctionsList(UiList);    // Get the list
@@ -452,7 +458,7 @@ namespace LitePlacer
             MeasurementFunctions = BuildFunctionsList(UiList);
         }
 
-        // And calls xx_measure() funtion. (Any function doing measurement from video frames.)
+        // And calls xx_measure() funtion. (Caller = any function doing measurement from video frames.)
         // The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame from the stream, 
         // processes it with the MeasurementFunctions list and returns the processed frame:
 
@@ -1381,9 +1387,6 @@ namespace LitePlacer
         }
 
         // =========================================================
-        //public bool SizeLimited { get; set; } = false;
-        //public double MaxSize { get; set; } = 1000;
-        //public double MinSize { get; set; } = 1000;
         public bool SizeLimited  = false;
         public double MaxSize = 1000;
         public double MinSize = 1000;
@@ -1788,29 +1791,50 @@ namespace LitePlacer
             g.Dispose();
 		}
 
-		// =========================================================
+        // =========================================================
 
-		private void DrawSidemarksFunct(ref Bitmap img)
-		{
-			Pen pen = new Pen(Color.Red, 2);
-			Graphics g = Graphics.FromImage(img);
-			int Xinc = Convert.ToInt32(FrameSizeX / SideMarksX);
-			int X = Xinc;
-			int tick = 6;
-			while (X<FrameSizeX)
-			{
-				g.DrawLine(pen, X, FrameSizeY, X, FrameSizeY - tick);
-				g.DrawLine(pen, X, 0, X, tick);
-				X += Xinc;
-			}
-			int Yinc = Convert.ToInt32(FrameSizeY / SideMarksY);
-			int Y = Yinc;
-			while (Y < FrameSizeY)
-			{
-				g.DrawLine(pen, FrameSizeX, Y, FrameSizeX - tick, Y);
-				g.DrawLine(pen, 0, Y, tick, Y);
-				Y += Yinc;
-			}
+        private void DrawSidemarksFunct(ref Bitmap img)
+        {
+            // default values used when show pixels is off: 
+            // Draw from frame edges inwards, using ticksize that gets zoomed down
+            int TickSize = (FrameSizeX / 640) * 8;
+            int XstartUp = FrameSizeY;  // values used when drawing along X axis
+            int XstartBot = 0;
+            int YstartLeft = 0;         // values used when drawing along Y axis
+            int YstartRight = FrameSizeX;
+            int Xinc = Convert.ToInt32(YstartRight / SideMarksX);    // sidemarks: 10cm on machine
+            int Yinc = Convert.ToInt32(XstartUp / SideMarksY);
+
+            if (ImageBox.SizeMode == PictureBoxSizeMode.CenterImage)
+            {
+                // Show pixels is on, draw to middle of the image
+                TickSize = 8;
+                XstartUp = (FrameSizeY / 2) + 240;
+                XstartBot = (FrameSizeY / 2) - 240;
+                YstartLeft = (FrameSizeX / 2) - 320;
+                YstartRight = (FrameSizeX / 2) + 320;
+                Xinc = Convert.ToInt32(640 / SideMarksX);
+                Yinc = Convert.ToInt32(480 / SideMarksY);
+            }
+
+            Pen pen = new Pen(Color.Red, 2);
+            Graphics g = Graphics.FromImage(img);
+            int X = YstartLeft + Xinc;
+            while (X < YstartRight)
+            {
+                g.DrawLine(pen, X, XstartUp, X, XstartUp - TickSize);
+                g.DrawLine(pen, X, XstartBot, X, XstartBot + TickSize);
+                X += Xinc;
+            }
+
+            int Y = XstartBot + Yinc;
+            while (Y < XstartUp)
+            {
+                g.DrawLine(pen, YstartLeft, Y, YstartLeft + TickSize, Y);
+                g.DrawLine(pen, YstartRight, Y, YstartRight - TickSize, Y);
+                Y += Yinc;
+            }
+
             pen.Dispose();
             g.Dispose();
         }
