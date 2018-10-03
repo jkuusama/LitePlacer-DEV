@@ -65,7 +65,7 @@ namespace LitePlacer
             string FileName = path + "LitePlacer.VideoAlgorithms";
             if (File.Exists(FileName))
             {
-                Console.WriteLine("Reading " + FileName);
+                DisplayText("LoadVideoAlgorithms from " + FileName);
                 List<VideoAlgorithmsCollection.FullAlgorithmDescription> NewList = new List<VideoAlgorithmsCollection.FullAlgorithmDescription>();
                 NewList = JsonConvert.DeserializeObject<List<VideoAlgorithmsCollection.FullAlgorithmDescription>>(File.ReadAllText(FileName));
                 Collection.AllAlgorithms = NewList;
@@ -107,13 +107,13 @@ namespace LitePlacer
         {
             try
             {
-                Console.WriteLine("Writing " + FileName);
+                DisplayText("SaveVideoAlgorithms to " + FileName);
                 File.WriteAllText(FileName, JsonConvert.SerializeObject(VideoAlgorithms.AllAlgorithms, Formatting.Indented));
                 return true;
             }
             catch (System.Exception excep)
             {
-                Console.WriteLine("Saving Video algorithms failed. " + excep.Message);
+                DisplayText("Saving Video algorithms failed. " + excep.Message);
                 return false;
             }
         }
@@ -131,7 +131,7 @@ namespace LitePlacer
         {
             AlgorithmChange = true;
             string AlgorithmName = Algorithm_comboBox.SelectedItem.ToString();
-            Console.WriteLine("Algorithm_comboBox_SelectedIndexChanged(), func: " + AlgorithmName);
+            DisplayText("Algorithm_comboBox_SelectedIndexChanged(), func: " + AlgorithmName);
             VideoAlgorithms.SelectedAlgorithmChanged(AlgorithmName);
             FillFunctionTable(AlgorithmName);
             FillMeasurementValues(AlgorithmName);
@@ -368,13 +368,13 @@ namespace LitePlacer
         {
             if (Functions_dataGridView.CurrentCell == null)
             {
-                Console.WriteLine("Move up, cell=null");
+                DisplayText("Move up, cell=null");
                 return;
             }
             int OldPos = Functions_dataGridView.CurrentCell.RowIndex;
             if (OldPos == 0)
             {
-                Console.WriteLine("Move up, at top (row==0)");
+                DisplayText("Move up, at top (row==0)");
                 return;
             }
             MoveFunction(OldPos, OldPos - 1);
@@ -384,13 +384,13 @@ namespace LitePlacer
         {
             if (Functions_dataGridView.CurrentCell == null)
             {
-                Console.WriteLine("Move down, cell=null");
+                DisplayText("Move down, cell=null");
                 return;
             }
             int OldPos = Functions_dataGridView.CurrentCell.RowIndex;
             if (OldPos >= Functions_dataGridView.RowCount - 1)
             {
-                Console.WriteLine("Move down, at bottom)");
+                DisplayText("Move down, at bottom)");
                 return;
             }
             MoveFunction(OldPos, OldPos + 1);
@@ -422,26 +422,26 @@ namespace LitePlacer
         {
             if (AlgorithmChange)
             {
-                Console.WriteLine("Functions_dataGridView_CellValueChanged(), AlgorithmChange");
+                DisplayText("Functions_dataGridView_CellValueChanged(), AlgorithmChange");
                 return;
             }
             if (Functions_dataGridView.CurrentCell == null)
             {
-                Console.WriteLine("Functions_dataGridView_CellValueChanged(), cell=null");
+                DisplayText("Functions_dataGridView_CellValueChanged(), cell=null");
                 return;
             }
             int row = Functions_dataGridView.CurrentCell.RowIndex;
             int col = Functions_dataGridView.CurrentCell.ColumnIndex;
-            Console.WriteLine("Functions_dataGridView_CellValueChanged(), " + row.ToString() + ", " + col.ToString());
+            DisplayText("Functions_dataGridView_CellValueChanged(), " + row.ToString() + ", " + col.ToString());
             int FunctCol = (int)Functions_dataGridViewColumns.FunctionColumn;
             int ActiveCol = (int)Functions_dataGridViewColumns.ActiveColumn;
 
             if (Functions_dataGridView.Rows[row].Cells[FunctCol].Value == null)
             {
-                Console.WriteLine("value: null");
+                DisplayText("value: null");
                 return;
             };
-            Console.WriteLine("value: " + Functions_dataGridView.Rows[row].Cells[FunctCol].Value.ToString());
+            DisplayText("value: " + Functions_dataGridView.Rows[row].Cells[FunctCol].Value.ToString());
             Update_GridView(Functions_dataGridView);
 
             if (col == FunctCol)
@@ -468,17 +468,17 @@ namespace LitePlacer
         {
             if (AlgorithmChange)
             {
-                Console.WriteLine("Functions_dataGridView_CurrentCellChanged(), AlgorithmChange");
+                DisplayText("Functions_dataGridView_CurrentCellChanged(), AlgorithmChange");
                 return;
             }
             if (Functions_dataGridView.CurrentCell == null)
             {
-                Console.WriteLine("Functions_dataGridView_CurrentCellChanged(), cell=null");
+                DisplayText("Functions_dataGridView_CurrentCellChanged(), cell=null");
                 return;
             }
             int row = Functions_dataGridView.CurrentCell.RowIndex;
             int col = Functions_dataGridView.CurrentCell.ColumnIndex;
-            Console.WriteLine("Functions_dataGridView_CurrentCellChanged(), " + row.ToString() + ", " + col.ToString());
+            DisplayText("Functions_dataGridView_CurrentCellChanged(), " + row.ToString() + ", " + col.ToString());
             VideoAlgorithms.CurrentFunctionIndex = row;
             if (Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.FunctionColumn].Value == null)
             {
@@ -492,14 +492,14 @@ namespace LitePlacer
         {
             if (Functions_dataGridView.CurrentCell == null)
             {
-                Console.WriteLine("Functions_dataGridView_CurrentCellDirtyStateChanged(), cell=null");
+                DisplayText("Functions_dataGridView_CurrentCellDirtyStateChanged(), cell=null");
                 return;
             }
 
             int row = Functions_dataGridView.CurrentCell.RowIndex;
             int col = Functions_dataGridView.CurrentCell.ColumnIndex;
 
-            Console.WriteLine("Functions_dataGridView_CurrentCellDirtyStateChanged: "
+            DisplayText("Functions_dataGridView_CurrentCellDirtyStateChanged: "
                 + row.ToString() + ", " + col.ToString());
             // Return if not dirty; otherwise the stuff is executed twice (once when it changes, once when it becomes clean)
             if (!Functions_dataGridView.IsCurrentCellDirty)
@@ -739,11 +739,11 @@ namespace LitePlacer
             }
             if (VideoAlgorithms.CurrentAlgorithm == null)
             {
-                Console.WriteLine("UpdateVideoProcessing(), no current algorithm");
+                DisplayText("UpdateVideoProcessing(), no current algorithm");
                 return;
             }
             // Pass CurrentAlgorithm to camera
-            Console.WriteLine("UpdateVideoProcessing()");
+            DisplayText("UpdateVideoProcessing()");
             if (DownCam_radioButton.Checked)
             {
                 DownCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
@@ -756,7 +756,7 @@ namespace LitePlacer
 
         private void StopVideoProcessing()
         {
-            Console.WriteLine("StopVideoProcessing()");
+            DisplayText("StopVideoProcessing()");
             if (DownCam_radioButton.Checked)
             {
                 DownCamera.ClearDisplayFunctionsList();
@@ -812,7 +812,7 @@ namespace LitePlacer
 
         private void Functions_dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            Console.WriteLine("Functions_dataGridView_DataError ");
+            DisplayText("Functions_dataGridView_DataError ");
         }
 
         // =====================================================================================
@@ -866,10 +866,10 @@ namespace LitePlacer
             string NewName = GetName("", false);
             if (NewName == null)
             {
-                Console.WriteLine("Add canceled");
+                DisplayText("Add algorithm canceled");
                 return;
             }
-            Console.WriteLine("Add " + NewName);
+            DisplayText("Add algorithm " + NewName);
             VideoAlgorithmsCollection.FullAlgorithmDescription Alg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
             Alg.Name = NewName;
             VideoAlgorithms.AllAlgorithms.Add(Alg);
@@ -877,12 +877,12 @@ namespace LitePlacer
             Algorithm_comboBox.SelectedIndex = Algorithm_comboBox.Items.Count - 1;
         }
 
-        private void RemoveAlgorithm_button_Click(object sender, EventArgs e)
+        private void algorithm_button_Click(object sender, EventArgs e)
         {
             int pos = 0;
             if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out pos))
             {
-                Console.WriteLine("Remove, not found!");
+                DisplayText("Remove algorithm, algorithm not found!");
                 return;
             }
             VideoAlgorithms.AllAlgorithms.RemoveAt(pos);
@@ -912,14 +912,14 @@ namespace LitePlacer
             string NewName = GetName(Algorithm_comboBox.SelectedItem.ToString(), true);
             if (NewName == null)
             {
-                Console.WriteLine("Rename canceled");
+                DisplayText("Rename algorithm canceled");
                 return;
             }
-            Console.WriteLine("Rename to " + NewName);
+            DisplayText("Rename algorithm to " + NewName);
             int AlgPos;
             if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out AlgPos))
             {
-                Console.WriteLine("Rename, algorithm not found!");
+                DisplayText("Rename algorithm, algorithm not found!");
                 return;
             }
             VideoAlgorithms.AllAlgorithms[AlgPos].Name = NewName;
@@ -934,10 +934,10 @@ namespace LitePlacer
             int loc;
             if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out loc))
             {
-                Console.WriteLine("Duplicate, algorithm not found!");
+                DisplayText("Duplicate algorithm, algorithm not found!");
                 return;
             }
-            Console.WriteLine("Duplicate " + VideoAlgorithms.AllAlgorithms[loc].Name);
+            DisplayText("Duplicate algorithm " + VideoAlgorithms.AllAlgorithms[loc].Name);
             VideoAlgorithmsCollection.FullAlgorithmDescription Alg =
                 DeepClone<VideoAlgorithmsCollection.FullAlgorithmDescription>(VideoAlgorithms.AllAlgorithms[loc]);
             Alg.Name = VideoAlgorithms.AllAlgorithms[loc].Name + "(duplicate)";
@@ -955,9 +955,7 @@ namespace LitePlacer
         private void Algorithms_tabPage_Begin()
         {
             SetDownCameraDefaults();
-            DownCamera.ImageBox = Algorithms_PictureBox;
             SetUpCameraDefaults();
-            UpCamera.ImageBox = Algorithms_PictureBox;
             // default to Downcamera
             DownCam_radioButton.Checked = true;
             cam = DownCamera;
@@ -1011,8 +1009,7 @@ namespace LitePlacer
 
         private void ShowPixels_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            /* xxx
-            if (CamShowPixels_checkBox.Checked)
+            if (ShowPixels_checkBox.Checked) 
             {
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
             }
@@ -1020,9 +1017,23 @@ namespace LitePlacer
             {
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             }
-            */
+            Setting.Cam_ShowPixels = ShowPixels_checkBox.Checked;
         }
 
+        private void FindCircles_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            cam.FindCircles = FindCircles_checkBox.Checked;
+        }
+
+        private void FindRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            cam.FindRectangles = FindRectangles_checkBox.Checked;
+        }
+
+        private void FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            cam.FindComponent = FindComponents_checkBox.Checked;
+        }
 
     }
 
