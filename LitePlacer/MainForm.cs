@@ -280,21 +280,12 @@ namespace LitePlacer
         // ==============================================================================================
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            // TODO: Arrange the functions below as follows:
+            // ======== General form setup:
             tabControlPages.SelectedTab = tabPageBasicSetup;
             LastTabPage = "tabPageBasicSetup";
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
-
-            LoadTempCADdata();
-            LoadTempJobData();
-            InitVideoAlgorithmsUI();
-
-            CheckForUpdate_checkBox.Checked = Setting.General_CheckForUpdates;
-            if (CheckForUpdate_checkBox.Checked)
-            {
-                CheckForUpdate();
-            }
-
             OmitNozzleCalibration_checkBox.Checked = Setting.Placement_OmitNozzleCalibration;
             SkipMeasurements_checkBox.Checked = Setting.Placement_SkipMeasurements;
 
@@ -313,20 +304,30 @@ namespace LitePlacer
             ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
             ShowPixels_checkBox_CheckedChanged(sender, e);
 
-            RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
-            KeepActive_checkBox.Checked = Setting.Cameras_KeepActive;
-            if (KeepActive_checkBox.Checked)
+            if (Setting.Nozzles_current == 0)
             {
-                RobustFast_checkBox.Enabled = false;
+                NozzleNo_textBox.Text = "--";
             }
             else
             {
-                RobustFast_checkBox.Enabled = true;
+                NozzleNo_textBox.Text = Setting.Nozzles_current.ToString();
             }
-            RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
+            ForceNozzle_numericUpDown.Value = Setting.Nozzles_default;
+            DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
 
-            StartCameras();
+            // ======== Run Job tab
+            LoadTempCADdata();
+            LoadTempJobData();
 
+            JobOffsetX_textBox.Text = Setting.Job_Xoffset.ToString("0.000", CultureInfo.InvariantCulture);
+            JobOffsetY_textBox.Text = Setting.Job_Yoffset.ToString("0.000", CultureInfo.InvariantCulture);
+
+            // ======== Basic Setup tab
+            CheckForUpdate_checkBox.Checked = Setting.General_CheckForUpdates;
+            if (CheckForUpdate_checkBox.Checked)
+            {
+                CheckForUpdate();
+            }
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
             SlackCompensation_checkBox.Checked = Setting.CNC_SlackCompensation;
             Cnc.SlackCompensationA = Setting.CNC_SlackCompensationA;
@@ -345,26 +346,34 @@ namespace LitePlacer
             PlacementDepth_textBox.Text = Setting.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
             Hysteresis_textBox.Text = Setting.General_ZprobingHysteresis.ToString("0.00", CultureInfo.InvariantCulture);
 
-            JobOffsetX_textBox.Text = Setting.Job_Xoffset.ToString("0.000", CultureInfo.InvariantCulture);
-            JobOffsetY_textBox.Text = Setting.Job_Yoffset.ToString("0.000", CultureInfo.InvariantCulture);
-
-            if (Setting.Nozzles_current == 0)
-            {
-                NozzleNo_textBox.Text = "--";
-            }
-            else
-            {
-                NozzleNo_textBox.Text = Setting.Nozzles_current.ToString();
-            }
-            ForceNozzle_numericUpDown.Value = Setting.Nozzles_default;
-            DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
-
              PumpInvert_checkBox.Checked= Setting.General_PumpOutputInverted;
             VacuumInvert_checkBox.Checked = Setting.General_VacuumOutputInverted;
             Pump_checkBox.Checked = false;
             Vacuum_checkBox.Checked = false;
 
-            Cnc.Connect(Setting.CNC_SerialPort);  // moved to here, as this can raise error condition, needing the form up
+            // ======== Setup Cameras tab
+            RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
+            KeepActive_checkBox.Checked = Setting.Cameras_KeepActive;
+            if (KeepActive_checkBox.Checked)
+            {
+                RobustFast_checkBox.Enabled = false;
+            }
+            else
+            {
+                RobustFast_checkBox.Enabled = true;
+            }
+            RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
+
+            // ======== Setup Video Processing tab
+            // ======== Tape Positions tab
+            // ======== Nozzles Setup tab
+
+            StartCameras();
+            // Algorithm setup tab init:
+            InitVideoAlgorithmsUI();
+
+            // Setup opeartions that can cause visible reaction:
+            Cnc.Connect(Setting.CNC_SerialPort);  // This can raise error condition, needing the form up
             UpdateCncConnectionStatus();
 
             if (Cnc.Connected)

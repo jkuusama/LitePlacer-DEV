@@ -1309,11 +1309,19 @@ namespace LitePlacer
             // find closest to center
             int Closest = FindClosestCircle(Circles);
 
+            int PenSize = 3;
+            // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
+            // To make the circles visible, we need to draw then bit thicker
+            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage)&&!Zoom)
+            {
+                PenSize = 5;
+            }
+
             Graphics g = Graphics.FromImage(bitmap);
-            Pen OrangePen = new Pen(Color.DarkOrange, 2);
-            Pen AquaPen = new Pen(Color.Aqua, 2);
-            Pen LimePen = new Pen(Color.Lime, 2);
-            Pen MagentaPen = new Pen(Color.Magenta, 2);
+            Pen OrangePen = new Pen(Color.DarkOrange, PenSize);
+            Pen AquaPen = new Pen(Color.Aqua, PenSize);
+            Pen LimePen = new Pen(Color.Lime, PenSize);
+            Pen MagentaPen = new Pen(Color.Magenta, PenSize);
 
             if (Closest == Smallest)
             {
@@ -1541,9 +1549,16 @@ namespace LitePlacer
         {
             List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
             int closest = FindClosestRectangle(Rectangles);
+            int PenSize = 3;
+            // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
+            // To make the circles visible, we need to draw then bit thicker
+            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Zoom)
+            {
+                PenSize = 5;
+            }
             Graphics g = Graphics.FromImage(image);
-            Pen OrangePen = new Pen(Color.DarkOrange, 2);
-            Pen LimePen = new Pen(Color.Lime, 2);
+            Pen OrangePen = new Pen(Color.DarkOrange, PenSize);
+            Pen LimePen = new Pen(Color.Lime, PenSize);
 
             for (int i = 0, n = Rectangles.Count; i < n; i++)
             {

@@ -37,6 +37,7 @@ namespace LitePlacer
 
         public void InitVideoAlgorithmsUI()
         {
+            DownCam_radioButton.Checked = true; // default to Downcamera
             Functions_dataGridView.Rows.Clear();
             DataGridViewComboBoxColumn comboboxColumn =
                  (DataGridViewComboBoxColumn)Functions_dataGridView.Columns[(int)Functions_dataGridViewColumns.FunctionColumn];
@@ -897,15 +898,21 @@ namespace LitePlacer
 
         private void ProcessDisplay_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (!ProcessDisplay_checkBox.Checked)
-            {
-                StopVideoProcessing();
-            }
-            else
+            ProcessDisplay_checkBox_Checked_Change();
+        }
+
+        private void ProcessDisplay_checkBox_Checked_Change()
+        {
+            if (ProcessDisplay_checkBox.Checked)
             {
                 UpdateVideoProcessing();
             }
+            else
+            {
+                StopVideoProcessing();
+            }
         }
+
 
         private void RenameAlgorithm_button_Click(object sender, EventArgs e)
         {
@@ -960,7 +967,8 @@ namespace LitePlacer
             DownCam_radioButton.Checked = true;
             cam = DownCamera;
             SelectCamera(DownCamera);
-            AlgorithmsTab_FillBoxes();
+            AlgorithmsTab_RestoreBehaviour();
+            ProcessDisplay_checkBox_Checked_Change();
         }
 
         private void Algorithms_tabPage_End()
@@ -970,25 +978,37 @@ namespace LitePlacer
         // =====================================================================================
         // draw and find boxes:
 
-        private void AlgorithmsTab_FillBoxes()
+        private void AlgorithmsTab_RestoreBehaviour()
         {
             DrawCross_checkBox.Checked = cam.DrawCross;
             DrawTicks_checkBox.Checked = cam.DrawSidemarks;
             DrawBox_checkBox.Checked = cam.DrawBox;
+            FindCircles_checkBox.Checked = cam.FindCircles;
+            FindRectangles_checkBox.Checked = cam.FindRectangles;
+            FindComponents_checkBox.Checked = cam.FindComponent;
+            if (ProcessDisplay_checkBox.Checked)
+            {
+                UpdateVideoProcessing();
+            }
+            else
+            {
+                StopVideoProcessing();
+            }
+
         }
 
         private void DownCam_radioButton_CheckedChanged(object sender, EventArgs e)
         {
             cam = DownCamera;
             SelectCamera(DownCamera);
-            AlgorithmsTab_FillBoxes();
+            AlgorithmsTab_RestoreBehaviour();
         }
 
         private void UpCam_radioButton_CheckedChanged(object sender, EventArgs e)
         {
             cam = UpCamera;
             SelectCamera(UpCamera);
-            AlgorithmsTab_FillBoxes();
+            AlgorithmsTab_RestoreBehaviour();
         }
 
         private void DrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
