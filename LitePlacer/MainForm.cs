@@ -1,4 +1,4 @@
-﻿#define TINYG_SHORTUNITS
+#define TINYG_SHORTUNITS
 // Some firmvare versions use units in millions, some don't. If not, comment out the above line.
 
 using System;
@@ -8040,17 +8040,23 @@ namespace LitePlacer
             int nozzle;
             // Check, that the row isn't placed already
             bool EverythingPlaced = true;
+            bool thisPlaced = true;
+            int placedCount = 0;
             if ((method == "Place Fast") || (method == "Place") || (method == "LoosePart") || (method == "LoosePart Assisted") || (method == "Place Assisted"))
             {
                 foreach (string component in Components)
                 {
-                    if (!AlreadyPlaced_m(component, ref EverythingPlaced))
+                    if (!AlreadyPlaced_m(component, ref thisPlaced))
                     {
                         return false;
                     }
-                    if (!EverythingPlaced)
+                    if (!thisPlaced)
                     {
-                        break;
+                        EverythingPlaced = false;
+                    }
+                    else
+                    {
+                        placedCount++;
                     }
                 }
                 if (EverythingPlaced)
@@ -8106,6 +8112,14 @@ namespace LitePlacer
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
                     return false;
+                }
+                if(count <= placedCount)
+                {
+                    count = 1;
+                }
+                else
+                {
+                    count -= placedCount;
                 }
                 if (!Tapes.PrepareForFastPlacement_m(TapeID, count))
                 {
