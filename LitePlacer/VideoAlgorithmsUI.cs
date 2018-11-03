@@ -35,6 +35,26 @@ namespace LitePlacer
 
         VideoAlgorithmsCollection VideoAlgorithms;
 
+        // =====================================================================================
+        // interface to main form:
+        Camera cam;
+
+        private void Algorithms_tabPage_Begin()
+        {
+            SetDownCameraDefaults();
+            SetUpCameraDefaults();
+            // default to Downcamera
+            DownCam_radioButton.Checked = true;
+            cam = DownCamera;
+            SelectCamera(DownCamera);
+            AlgorithmsTab_RestoreBehaviour();
+            ProcessDisplay_checkBox_Checked_Change();
+        }
+
+        private void Algorithms_tabPage_End()
+        {
+        }
+
         public void InitVideoAlgorithmsUI()
         {
             DownCam_radioButton.Checked = true; // default to Downcamera
@@ -49,7 +69,83 @@ namespace LitePlacer
         }
 
         // =====================================================================================
-        // Algorithms Load and Save
+        #region select, draw and find boxes
+
+        private void AlgorithmsTab_RestoreBehaviour()
+        {
+            // called on tab load and camera change
+            DrawCross_checkBox.Checked = cam.DrawCross;
+            DrawTicks_checkBox.Checked = cam.DrawSidemarks;
+            DrawBox_checkBox.Checked = cam.DrawBox;
+            FindCircles_checkBox.Checked = cam.FindCircles;
+            FindRectangles_checkBox.Checked = cam.FindRectangles;
+            FindComponents_checkBox.Checked = cam.FindComponent;
+            if (ProcessDisplay_checkBox.Checked)
+            {
+                UpdateVideoProcessing();
+            }
+            else
+            {
+                StopVideoProcessing();
+            }
+
+        }
+
+        // camera change
+        private void DownCam_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            cam = DownCamera;
+            SelectCamera(DownCamera);
+            AlgorithmsTab_RestoreBehaviour();
+        }
+
+        private void UpCam_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            cam = UpCamera;
+            SelectCamera(UpCamera);
+            AlgorithmsTab_RestoreBehaviour();
+        }
+
+        // =====================================================================================
+        // draw boxes
+
+        private void DrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            cam.DrawCross = DrawCross_checkBox.Checked;
+        }
+
+        private void DrawTicks_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            cam.DrawSidemarks = DrawTicks_checkBox.Checked;
+        }
+
+        private void DrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            cam.DrawBox = DrawBox_checkBox.Checked;
+        }
+
+        // =====================================================================================
+        // find boxes
+        private void FindCircles_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            cam.FindCircles = FindCircles_checkBox.Checked;
+        }
+
+        private void FindRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            cam.FindRectangles = FindRectangles_checkBox.Checked;
+        }
+
+        private void FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            cam.FindComponent = FindComponents_checkBox.Checked;
+        }
+
+        #endregion select, draw and find boxes
+        // =====================================================================================
+
+        // =====================================================================================
+        #region Algorithms Load and Save
 
         // Load:
         private bool AlgorithmChange = false;   // to prevent parameters etc updates in the middle of process
@@ -125,8 +221,11 @@ namespace LitePlacer
             SaveVideoAlgorithms(path + "LitePlacer.VideoAlgorithms", VideoAlgorithms);
         }
 
+        #endregion Algorithms Load and Save
+        // =====================================================================================
 
         // =====================================================================================
+        #region Current video algorithm
 
         private void Algorithm_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -160,164 +259,153 @@ namespace LitePlacer
             YmaxDistance_textBox.Text = values.XmaxDistance.ToString("0.00", CultureInfo.InvariantCulture);
             ChangeYwithX = true;
         }
-
         // =====================================================================================
-        // Textbox values and interaction
-        void CommasToPoints(TextBox box)
+        // Add, Remove, Duplicate, Rename
+
+        // ==================
+        // helpers
+        public string GetName(string StartName, bool rename)
         {
-            int pos = box.SelectionStart;
-            box.Text = box.Text.Replace(',', '.');
-            box.SelectionStart = pos;
+            AlgorithmNameForm GetNameDialog = new AlgorithmNameForm(StartName);
+            GetNameDialog.Algorithms = VideoAlgorithms.AllAlgorithms;
+            GetNameDialog.Renaming = rename;
+            GetNameDialog.ShowDialog(this);
+            if (GetNameDialog.OK)
+            {
+                return GetNameDialog.NewName;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        private void Xmin_textBox_TextChanged(object sender, EventArgs e)
+        private bool FindLocation(string AlgorithmName, out int loc)
         {
-            double val = 0.0;
-            CommasToPoints(Xmin_textBox);
-            if (double.TryParse(Xmin_textBox.Text, out val))
+            // returns the index of the named algorithm in AllAlgorithms
+            for (int i = 0; i < VideoAlgorithms.AllAlgorithms.Count; i++)
             {
-                if (ChangeYwithX)
+                if (VideoAlgorithms.AllAlgorithms[i].Name == AlgorithmName)
                 {
-                    Ymin_textBox.Text = Xmin_textBox.Text;
-                }
-                Xmin_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmin = val;
-            }
-            else
-            {
-                Xmin_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        private void Xmax_textBox_TextChanged(object sender, EventArgs e)
-        {
-            double val = 0.0;
-            CommasToPoints(Xmax_textBox);
-            if (double.TryParse(Xmax_textBox.Text, out val))
-            {
-                if (ChangeYwithX)
-                {
-                    Ymax_textBox.Text = Xmax_textBox.Text;
-                }
-                Xmax_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmax = val;
-            }
-            else
-            {
-                Xmax_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        private void Ymin_textBox_TextChanged(object sender, EventArgs e)
-        {
-            double val = 0.0;
-            CommasToPoints(Ymin_textBox);
-            if (double.TryParse(Ymin_textBox.Text, out val))
-            {
-                Ymin_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymin = val;
-            }
-            else
-            {
-                Ymin_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        private void Ymax_textBox_TextChanged(object sender, EventArgs e)
-        {
-            double val = 0.0;
-            CommasToPoints(Ymax_textBox);
-            if (double.TryParse(Ymax_textBox.Text, out val))
-            {
-                Ymax_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymax = val;
-            }
-            else
-            {
-                Ymax_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        private void XmaxDistance_textBox_TextChanged(object sender, EventArgs e)
-        {
-            double val = 0.0;
-            CommasToPoints(XmaxDistance_textBox);
-            if (double.TryParse(XmaxDistance_textBox.Text, out val))
-            {
-                if (ChangeYwithX)
-                {
-                    YmaxDistance_textBox.Text = XmaxDistance_textBox.Text;
-                }
-                XmaxDistance_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.XmaxDistance = val;
-            }
-            else
-            {
-                XmaxDistance_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        private void YmaxDistance_textBox_TextChanged(object sender, EventArgs e)
-        {
-            double val = 0.0;
-            CommasToPoints(YmaxDistance_textBox);
-            if (double.TryParse(YmaxDistance_textBox.Text, out val))
-            {
-                YmaxDistance_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YmaxDistance = val;
-            }
-            else
-            {
-                YmaxDistance_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        private void SearchRound_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRounds = SearchRound_checkBox.Checked;
-        }
-
-        private void SearchRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRectangles = SearchRectangles_checkBox.Checked;
-        }
-
-        private void SearchComponents_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponents = SearchComponents_checkBox.Checked;
-        }
-
-        // =====================================================================================
-        // =====================================================================================
-        // Functions_dataGridView stuff
-
-        // =====================================================================================
-        // Helper functions:
-
-        private void FillFunctionTable(string AlgorithmName)
-        {
-            // User changed the current algorithm or deleted a fuction. 
-            // This function (re-)fills Algorithms_dataGridView function column
-            Functions_dataGridView.Rows.Clear();
-            int row = 0;
-            AForgeFunctionDefinition func = new AForgeFunctionDefinition();
-
-            for (int i = 0; i < VideoAlgorithms.CurrentAlgorithm.FunctionList.Count; i++)
-            {
-                func = VideoAlgorithms.CurrentAlgorithm.FunctionList[i];
-                if (KnownFunctions.Contains(func.Name))
-                {
-                    int index = KnownFunctions.IndexOf(func.Name);
-                    Functions_dataGridView.Rows.Add();
-                    Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.FunctionColumn].Value =
-                        func.Name;
-                    Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.ActiveColumn].Value =
-                        func.Active;
-                    row++;
+                    loc = i;
+                    return true;
                 }
             }
-            Update_GridView(Functions_dataGridView);
+            loc = -1;
+            return false;
         }
+
+        public static T DeepClone<T>(T obj)
+        {
+            string clone = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            return JsonConvert.DeserializeObject<T>(clone);
+        }
+
+        // ==================
+        // Button clicks
+
+        private void AddAlgorithm_button_Click(object sender, EventArgs e)
+        {
+            string NewName = GetName("", false);
+            if (NewName == null)
+            {
+                DisplayText("Add algorithm canceled");
+                return;
+            }
+            DisplayText("Add algorithm " + NewName);
+            VideoAlgorithmsCollection.FullAlgorithmDescription Alg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+            Alg.Name = NewName;
+            VideoAlgorithms.AllAlgorithms.Add(Alg);
+            Algorithm_comboBox.Items.Add(NewName);
+            Algorithm_comboBox.SelectedIndex = Algorithm_comboBox.Items.Count - 1;
+        }
+
+        private void RemoveAlgorithm_button_Click(object sender, EventArgs e)
+        {
+            int pos = 0;
+            if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out pos))
+            {
+                DisplayText("Remove algorithm, algorithm not found!");
+                return;
+            }
+            VideoAlgorithms.AllAlgorithms.RemoveAt(pos);
+            Algorithm_comboBox.Items.RemoveAt(Algorithm_comboBox.SelectedIndex);
+            AlgorithmChange = true;
+            ClearFunctionParameters();
+            Algorithm_comboBox.SelectedIndex = 0;
+            Functions_dataGridView.CurrentCell = null;
+            AlgorithmChange = false;
+            UpdateVideoProcessing();
+        }
+
+        private void DuplicateAlgorithm_button_Click(object sender, EventArgs e)
+        {
+            int loc;
+            if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out loc))
+            {
+                DisplayText("Duplicate algorithm, algorithm not found!");
+                return;
+            }
+            DisplayText("Duplicate algorithm " + VideoAlgorithms.AllAlgorithms[loc].Name);
+            VideoAlgorithmsCollection.FullAlgorithmDescription Alg =
+                DeepClone<VideoAlgorithmsCollection.FullAlgorithmDescription>(VideoAlgorithms.AllAlgorithms[loc]);
+            Alg.Name = VideoAlgorithms.AllAlgorithms[loc].Name + "(duplicate)";
+            VideoAlgorithms.AllAlgorithms.Add(Alg);
+            Algorithm_comboBox.Items.Add(Alg.Name);
+            Algorithm_comboBox.SelectedIndex = Algorithm_comboBox.Items.Count - 1;
+            // User propably doesn't want the name+(duplicate), so let's click the rename button automatically
+            RenameAlgorithm_button_Click(sender, e);
+        }
+
+        private void RenameAlgorithm_button_Click(object sender, EventArgs e)
+        {
+            if (Algorithm_comboBox.SelectedIndex == 0)
+            {
+                DisplayText("Homing can't be renamed.");
+                return;
+            }
+            string NewName = GetName(Algorithm_comboBox.SelectedItem.ToString(), true);
+            if (NewName == null)
+            {
+                DisplayText("Rename algorithm canceled");
+                return;
+            }
+            DisplayText("Rename algorithm to " + NewName);
+            int AlgPos;
+            if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out AlgPos))
+            {
+                DisplayText("Rename algorithm, algorithm not found!");
+                return;
+            }
+            VideoAlgorithms.AllAlgorithms[AlgPos].Name = NewName;
+            int NamePos = Algorithm_comboBox.SelectedIndex;
+            Algorithm_comboBox.Items.RemoveAt(NamePos);
+            Algorithm_comboBox.Items.Insert(NamePos, NewName);
+            Algorithm_comboBox.SelectedIndex = NamePos;
+        }
+
+        private void ProcessDisplay_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            ProcessDisplay_checkBox_Checked_Change();
+        }
+
+        private void ProcessDisplay_checkBox_Checked_Change()
+        {
+            if (ProcessDisplay_checkBox.Checked)
+            {
+                UpdateVideoProcessing();
+            }
+            else
+            {
+                StopVideoProcessing();
+            }
+        }
+
+        #endregion Current video algorithm
+        // =====================================================================================
+
+        // =====================================================================================
+        #region Functions and parameters
 
         // =====================================================================================
         // Buttons:
@@ -416,6 +504,43 @@ namespace LitePlacer
             }
         }
 
+        private void Algorithm_Measure_button_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        // =====================================================================================
+        // Functions_dataGridView 
+
+        // =====================================================================================
+        // Helper functions:
+
+        private void FillFunctionTable(string AlgorithmName)
+        {
+            // User changed the current algorithm or deleted a fuction. 
+            // This function (re-)fills Algorithms_dataGridView function column
+            Functions_dataGridView.Rows.Clear();
+            int row = 0;
+            AForgeFunctionDefinition func = new AForgeFunctionDefinition();
+
+            for (int i = 0; i < VideoAlgorithms.CurrentAlgorithm.FunctionList.Count; i++)
+            {
+                func = VideoAlgorithms.CurrentAlgorithm.FunctionList[i];
+                if (KnownFunctions.Contains(func.Name))
+                {
+                    int index = KnownFunctions.IndexOf(func.Name);
+                    Functions_dataGridView.Rows.Add();
+                    Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.FunctionColumn].Value =
+                        func.Name;
+                    Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.ActiveColumn].Value =
+                        func.Active;
+                    row++;
+                }
+            }
+            Update_GridView(Functions_dataGridView);
+        }
+
         // =====================================================================================
         // Grid cell events:
 
@@ -510,9 +635,9 @@ namespace LitePlacer
             Update_GridView(Functions_dataGridView);
         }
 
+
         // =====================================================================================
-        // =====================================================================================
-        // Functions parameters stuff
+        // Functions parameters 
 
         private void SetFunctionDefaultParameters(string FunctionName)
         {
@@ -570,8 +695,6 @@ namespace LitePlacer
                     break;
             }
             return;
-
-
         }
 
         private void UpdateParameterTargets(string Name)
@@ -815,217 +938,28 @@ namespace LitePlacer
         {
             DisplayText("Functions_dataGridView_DataError ");
         }
+        #endregion Functions and parameters
+        // =====================================================================================
 
         // =====================================================================================
-        // =====================================================================================
-        // Add, Remove, Duplicate, Rename
-
-        // ==================
-        // helpers
-        public string GetName(string StartName, bool rename)
-        {
-            AlgorithmNameForm GetNameDialog = new AlgorithmNameForm(StartName);
-            GetNameDialog.Algorithms = VideoAlgorithms.AllAlgorithms;
-            GetNameDialog.Renaming = rename;
-            GetNameDialog.ShowDialog(this);
-            if (GetNameDialog.OK)
-            {
-                return GetNameDialog.NewName;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private bool FindLocation(string AlgorithmName, out int loc)
-        {
-            // returns the index of the named algorithm in AllAlgorithms
-            for (int i = 0; i < VideoAlgorithms.AllAlgorithms.Count; i++)
-            {
-                if (VideoAlgorithms.AllAlgorithms[i].Name == AlgorithmName)
-                {
-                    loc = i;
-                    return true;
-                }
-            }
-            loc = -1;
-            return false;
-        }
-
-        public static T DeepClone<T>(T obj)
-        {
-            string clone = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            return JsonConvert.DeserializeObject<T>(clone);
-        }
-
-        // ==================
-        // Button clicks
-
-        private void AddAlgorithm_button_Click(object sender, EventArgs e)
-        {
-            string NewName = GetName("", false);
-            if (NewName == null)
-            {
-                DisplayText("Add algorithm canceled");
-                return;
-            }
-            DisplayText("Add algorithm " + NewName);
-            VideoAlgorithmsCollection.FullAlgorithmDescription Alg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
-            Alg.Name = NewName;
-            VideoAlgorithms.AllAlgorithms.Add(Alg);
-            Algorithm_comboBox.Items.Add(NewName);
-            Algorithm_comboBox.SelectedIndex = Algorithm_comboBox.Items.Count - 1;
-        }
-
-        private void algorithm_button_Click(object sender, EventArgs e)
-        {
-            int pos = 0;
-            if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out pos))
-            {
-                DisplayText("Remove algorithm, algorithm not found!");
-                return;
-            }
-            VideoAlgorithms.AllAlgorithms.RemoveAt(pos);
-            Algorithm_comboBox.Items.RemoveAt(Algorithm_comboBox.SelectedIndex);
-            AlgorithmChange = true;
-            ClearFunctionParameters();
-            Algorithm_comboBox.SelectedIndex = 0;
-            Functions_dataGridView.CurrentCell = null;
-            AlgorithmChange = false;
-            UpdateVideoProcessing();
-        }
-
-        private void ProcessDisplay_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            ProcessDisplay_checkBox_Checked_Change();
-        }
-
-        private void ProcessDisplay_checkBox_Checked_Change()
-        {
-            if (ProcessDisplay_checkBox.Checked)
-            {
-                UpdateVideoProcessing();
-            }
-            else
-            {
-                StopVideoProcessing();
-            }
-        }
-
-
-        private void RenameAlgorithm_button_Click(object sender, EventArgs e)
-        {
-            string NewName = GetName(Algorithm_comboBox.SelectedItem.ToString(), true);
-            if (NewName == null)
-            {
-                DisplayText("Rename algorithm canceled");
-                return;
-            }
-            DisplayText("Rename algorithm to " + NewName);
-            int AlgPos;
-            if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out AlgPos))
-            {
-                DisplayText("Rename algorithm, algorithm not found!");
-                return;
-            }
-            VideoAlgorithms.AllAlgorithms[AlgPos].Name = NewName;
-            int NamePos = Algorithm_comboBox.SelectedIndex;
-            Algorithm_comboBox.Items.RemoveAt(NamePos);
-            Algorithm_comboBox.Items.Insert(NamePos, NewName);
-            Algorithm_comboBox.SelectedIndex = NamePos;
-        }
-
-        private void DuplicateAlgorithm_button_Click(object sender, EventArgs e)
-        {
-            int loc;
-            if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out loc))
-            {
-                DisplayText("Duplicate algorithm, algorithm not found!");
-                return;
-            }
-            DisplayText("Duplicate algorithm " + VideoAlgorithms.AllAlgorithms[loc].Name);
-            VideoAlgorithmsCollection.FullAlgorithmDescription Alg =
-                DeepClone<VideoAlgorithmsCollection.FullAlgorithmDescription>(VideoAlgorithms.AllAlgorithms[loc]);
-            Alg.Name = VideoAlgorithms.AllAlgorithms[loc].Name + "(duplicate)";
-            VideoAlgorithms.AllAlgorithms.Add(Alg);
-            Algorithm_comboBox.Items.Add(Alg.Name);
-            Algorithm_comboBox.SelectedIndex = Algorithm_comboBox.Items.Count - 1;
-            // User propably doesn't want the name+(duplicate), so let's click the rename button automatically
-            RenameAlgorithm_button_Click(sender, e);
-        }
+        #region search, size and distance
 
         // =====================================================================================
-        // interface to main form:
-        Camera cam;
-
-        private void Algorithms_tabPage_Begin()
+        // search boxes
+        private void SearchRound_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            SetDownCameraDefaults();
-            SetUpCameraDefaults();
-            // default to Downcamera
-            DownCam_radioButton.Checked = true;
-            cam = DownCamera;
-            SelectCamera(DownCamera);
-            AlgorithmsTab_RestoreBehaviour();
-            ProcessDisplay_checkBox_Checked_Change();
+            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRounds = SearchRound_checkBox.Checked;
         }
 
-        private void Algorithms_tabPage_End()
+        private void SearchRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
         {
+            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRectangles = SearchRectangles_checkBox.Checked;
         }
 
-        // =====================================================================================
-        // draw and find boxes:
-
-        private void AlgorithmsTab_RestoreBehaviour()
+        private void SearchComponents_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            DrawCross_checkBox.Checked = cam.DrawCross;
-            DrawTicks_checkBox.Checked = cam.DrawSidemarks;
-            DrawBox_checkBox.Checked = cam.DrawBox;
-            FindCircles_checkBox.Checked = cam.FindCircles;
-            FindRectangles_checkBox.Checked = cam.FindRectangles;
-            FindComponents_checkBox.Checked = cam.FindComponent;
-            if (ProcessDisplay_checkBox.Checked)
-            {
-                UpdateVideoProcessing();
-            }
-            else
-            {
-                StopVideoProcessing();
-            }
-
+            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponents = SearchComponents_checkBox.Checked;
         }
-
-        private void DownCam_radioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            cam = DownCamera;
-            SelectCamera(DownCamera);
-            AlgorithmsTab_RestoreBehaviour();
-        }
-
-        private void UpCam_radioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            cam = UpCamera;
-            SelectCamera(UpCamera);
-            AlgorithmsTab_RestoreBehaviour();
-        }
-
-        private void DrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            cam.DrawCross = DrawCross_checkBox.Checked;
-        }
-
-        private void DrawTicks_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            cam.DrawSidemarks = DrawTicks_checkBox.Checked;
-        }
-
-        private void DrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            cam.DrawBox = DrawBox_checkBox.Checked;
-        }
-
 
         private void ShowPixels_checkBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -1040,20 +974,118 @@ namespace LitePlacer
             Setting.Cam_ShowPixels = ShowPixels_checkBox.Checked;
         }
 
-        private void FindCircles_checkBox_CheckedChanged(object sender, EventArgs e)
+        // =====================================================================================
+        // Textbox values and interaction
+        void CommasToPoints(TextBox box)
         {
-            cam.FindCircles = FindCircles_checkBox.Checked;
+            int pos = box.SelectionStart;
+            box.Text = box.Text.Replace(',', '.');
+            box.SelectionStart = pos;
         }
 
-        private void FindRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
+        private void Xmin_textBox_TextChanged(object sender, EventArgs e)
         {
-            cam.FindRectangles = FindRectangles_checkBox.Checked;
+            double val = 0.0;
+            CommasToPoints(Xmin_textBox);
+            if (double.TryParse(Xmin_textBox.Text, out val))
+            {
+                if (ChangeYwithX)
+                {
+                    Ymin_textBox.Text = Xmin_textBox.Text;
+                }
+                Xmin_textBox.ForeColor = Color.Black;
+                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmin = val;
+            }
+            else
+            {
+                Xmin_textBox.ForeColor = Color.Red;
+            }
         }
 
-        private void FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
+        private void Xmax_textBox_TextChanged(object sender, EventArgs e)
         {
-            cam.FindComponent = FindComponents_checkBox.Checked;
+            double val = 0.0;
+            CommasToPoints(Xmax_textBox);
+            if (double.TryParse(Xmax_textBox.Text, out val))
+            {
+                if (ChangeYwithX)
+                {
+                    Ymax_textBox.Text = Xmax_textBox.Text;
+                }
+                Xmax_textBox.ForeColor = Color.Black;
+                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmax = val;
+            }
+            else
+            {
+                Xmax_textBox.ForeColor = Color.Red;
+            }
         }
+
+        private void Ymin_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val = 0.0;
+            CommasToPoints(Ymin_textBox);
+            if (double.TryParse(Ymin_textBox.Text, out val))
+            {
+                Ymin_textBox.ForeColor = Color.Black;
+                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymin = val;
+            }
+            else
+            {
+                Ymin_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void Ymax_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val = 0.0;
+            CommasToPoints(Ymax_textBox);
+            if (double.TryParse(Ymax_textBox.Text, out val))
+            {
+                Ymax_textBox.ForeColor = Color.Black;
+                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymax = val;
+            }
+            else
+            {
+                Ymax_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void XmaxDistance_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val = 0.0;
+            CommasToPoints(XmaxDistance_textBox);
+            if (double.TryParse(XmaxDistance_textBox.Text, out val))
+            {
+                if (ChangeYwithX)
+                {
+                    YmaxDistance_textBox.Text = XmaxDistance_textBox.Text;
+                }
+                XmaxDistance_textBox.ForeColor = Color.Black;
+                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.XmaxDistance = val;
+            }
+            else
+            {
+                XmaxDistance_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void YmaxDistance_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val = 0.0;
+            CommasToPoints(YmaxDistance_textBox);
+            if (double.TryParse(YmaxDistance_textBox.Text, out val))
+            {
+                YmaxDistance_textBox.ForeColor = Color.Black;
+                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YmaxDistance = val;
+            }
+            else
+            {
+                YmaxDistance_textBox.ForeColor = Color.Red;
+            }
+        }
+        #endregion search, size and distance
+        // =====================================================================================
 
     }
 

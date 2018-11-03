@@ -6515,6 +6515,7 @@
             this.Algorithm_Measure_button.TabIndex = 254;
             this.Algorithm_Measure_button.Text = "Measure";
             this.Algorithm_Measure_button.UseVisualStyleBackColor = true;
+            this.Algorithm_Measure_button.Click += new System.EventHandler(this.Algorithm_Measure_button_Click);
             // 
             // SearchComponents_checkBox
             // 
@@ -6971,6 +6972,7 @@
             this.RemoveAlgorithm_button.TabIndex = 211;
             this.RemoveAlgorithm_button.Text = "Remove";
             this.RemoveAlgorithm_button.UseVisualStyleBackColor = true;
+            this.RemoveAlgorithm_button.Click += new System.EventHandler(this.RemoveAlgorithm_button_Click);
             // 
             // AddAlgorithm_button
             // 
