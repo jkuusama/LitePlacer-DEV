@@ -280,14 +280,20 @@ namespace LitePlacer
         // ==============================================================================================
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            // TODO: Arrange the functions below as follows:
             // ======== General form setup:
+
+            // For ease of design, the picture box is drawn on a setup Cameras tab. 
+            // We want it to be owned by main form (not by tab) and visible when needed.
+            // Position math: https://stackoverflow.com/questions/1478022/c-sharp-get-a-controls-position-on-a-form
+            System.Drawing.Point locationOnForm = 
+                Cam_pictureBox.FindForm().PointToClient(Cam_pictureBox.Parent.PointToScreen(Cam_pictureBox.Location));
+            Cam_pictureBox.Parent = this;                   // position changes
+            Cam_pictureBox.Location = locationOnForm;       // move it back
+
             tabControlPages.SelectedTab = tabPageBasicSetup;
             LastTabPage = "tabPageBasicSetup";
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
-            OmitNozzleCalibration_checkBox.Checked = Setting.Placement_OmitNozzleCalibration;
-            SkipMeasurements_checkBox.Checked = Setting.Placement_SkipMeasurements;
 
             DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
             DownCamera.Zoom = Setting.DownCam_Zoom;
@@ -315,14 +321,19 @@ namespace LitePlacer
             ForceNozzle_numericUpDown.Value = Setting.Nozzles_default;
             DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
 
-            // ======== Run Job tab
+            // ======== Run Job tab:
+
+            OmitNozzleCalibration_checkBox.Checked = Setting.Placement_OmitNozzleCalibration;
+            SkipMeasurements_checkBox.Checked = Setting.Placement_SkipMeasurements;
+
             LoadTempCADdata();
             LoadTempJobData();
 
             JobOffsetX_textBox.Text = Setting.Job_Xoffset.ToString("0.000", CultureInfo.InvariantCulture);
             JobOffsetY_textBox.Text = Setting.Job_Yoffset.ToString("0.000", CultureInfo.InvariantCulture);
 
-            // ======== Basic Setup tab
+            // ======== Basic Setup tab:
+
             CheckForUpdate_checkBox.Checked = Setting.General_CheckForUpdates;
             if (CheckForUpdate_checkBox.Checked)
             {
@@ -346,12 +357,13 @@ namespace LitePlacer
             PlacementDepth_textBox.Text = Setting.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
             Hysteresis_textBox.Text = Setting.General_ZprobingHysteresis.ToString("0.00", CultureInfo.InvariantCulture);
 
-             PumpInvert_checkBox.Checked= Setting.General_PumpOutputInverted;
+            PumpInvert_checkBox.Checked= Setting.General_PumpOutputInverted;
             VacuumInvert_checkBox.Checked = Setting.General_VacuumOutputInverted;
             Pump_checkBox.Checked = false;
             Vacuum_checkBox.Checked = false;
 
-            // ======== Setup Cameras tab
+            // ======== Setup Cameras tab:
+
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
             KeepActive_checkBox.Checked = Setting.Cameras_KeepActive;
             if (KeepActive_checkBox.Checked)
@@ -363,16 +375,18 @@ namespace LitePlacer
                 RobustFast_checkBox.Enabled = true;
             }
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
-
-            // ======== Setup Video Processing tab
-            // ======== Tape Positions tab
-            // ======== Nozzles Setup tab
-
             StartCameras();
-            // Algorithm setup tab init:
+
+            // ======== Setup Video Processing tab:
+
             InitVideoAlgorithmsUI();
 
-            // Setup opeartions that can cause visible reaction:
+            // ======== Tape Positions tab:
+
+            // ======== Nozzles Setup tab:
+
+            // ======== Setup operations that can cause visible reaction:
+
             Cnc.Connect(Setting.CNC_SerialPort);  // This can raise error condition, needing the form up
             UpdateCncConnectionStatus();
 
@@ -508,30 +522,36 @@ namespace LitePlacer
             switch (tabControlPages.SelectedTab.Name)
             {
                 case "RunJob_tabPage":
-                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
+                    Cam_pictureBox.BringToFront();
+                    Cam_pictureBox.Visible = true;
                     RunJob_tabPage_Begin();
                     LastTabPage = "RunJob_tabPage";
                     break;
                 case "tabPageBasicSetup":
+                    Cam_pictureBox.Visible = false;
                     BasicSetupTab_Begin();
                     LastTabPage = "tabPageBasicSetup";
                     break;
                 case "tabPageSetupCameras":
-                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
+                    Cam_pictureBox.BringToFront();
+                    Cam_pictureBox.Visible = true;
                     tabPageSetupCameras_Begin();
                     LastTabPage = "tabPageSetupCameras";
                     break;
                 case "Algorithms_tabPage":
-                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
+                    Cam_pictureBox.BringToFront();
+                    Cam_pictureBox.Visible = true;
                     Algorithms_tabPage_Begin();
                     LastTabPage = "Algorithms_tabPage";
                     break;
                 case "Tapes_tabPage":
-                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
+                    Cam_pictureBox.BringToFront();
+                    Cam_pictureBox.Visible = true;
                     Tapes_tabPage_Begin();
                     LastTabPage = "Tapes_tabPage";
                     break;
                 case "Nozzles_tabPage":
+                    Cam_pictureBox.Visible = false;
                     Nozzles_tabPage_Begin();
                     LastTabPage = "Nozzles_tabPage";
                     break;
@@ -3198,10 +3218,12 @@ namespace LitePlacer
             DownCamera.ClearDisplayFunctionsList();
             DownCamera.SnapshotColor = Setting.DownCam_SnapshotColor;
             // Draws
+            /*
             DownCamera.DrawCross = true;
             DownCamera.DrawDashedCross = false;
             DownCamera.DrawGrid = false;
             DownCamera.Draw_Snapshot = false;
+            */
             // Finds:
             DownCamera.FindCircles = false;
             DownCamera.FindRectangles = false;
@@ -3253,28 +3275,32 @@ namespace LitePlacer
             SetDownCameraDefaults();
             DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString();
             DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString();
+            DownCamDrawCross_checkBox.Checked = DownCamera.DrawCross;
+            DownCamDrawBox_checkBox.Checked = DownCamera.DrawBox;
             // SelectCamera(DownCamera); UpdateCameraCameraStatus_label();
 
             SetUpCameraDefaults();
             UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString();
             UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString();
+            UpCamDrawCross_checkBox.Checked = UpCamera.DrawCross;
+            UpCamDrawBox_checkBox.Checked = UpCamera.DrawBox;
 
             NozzleOffset_label.Visible = false;
 
             double f;
             f = Setting.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
             DownCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            DownCameraBoxXmmPerPixel_label.Text = "(" + Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             f = Setting.DownCam_YmmPerPixel * DownCamera.BoxSizeY;
             DownCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            DownCameraBoxYmmPerPixel_label.Text = "(" + Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
 
             f = Setting.UpCam_XmmPerPixel * UpCamera.BoxSizeX;
             UpCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            UpCameraBoxXmmPerPixel_label.Text = "(" + Setting.UpCam_XmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture);
             f = Setting.UpCam_YmmPerPixel * UpCamera.BoxSizeY;
             UpCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            UpCameraBoxYmmPerPixel_label.Text = "(" + Setting.UpCam_YmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture) + "mm/pixel)";
+            UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture);
 
             JigX_textBox.Text = Setting.General_JigOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
             JigY_textBox.Text = Setting.General_JigOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
@@ -3478,6 +3504,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
+        // Down Camera, X size
         private void DownCameraBoxX_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '\r')
@@ -3491,42 +3518,34 @@ namespace LitePlacer
             DownCameraUpdateXmmPerPixel();
         }
 
-
         private void DownCameraUpdateXmmPerPixel()
         {
             double val;
             if (double.TryParse(DownCameraBoxX_textBox.Text.Replace(',', '.'), out val))
             {
                 Setting.DownCam_XmmPerPixel = val / DownCamera.BoxSizeX;
-                DownCameraBoxXmmPerPixel_label.Text = "(" + Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+                DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             }
         }
 
-        // ====
-        private void UpCameraBoxX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                UpCameraUpdateXmmPerPixel();
-            }
-        }
-
-        private void UpCameraBoxX_textBox_Leave(object sender, EventArgs e)
-        {
-            UpCameraUpdateXmmPerPixel();
-        }
-
-        private void UpCameraUpdateXmmPerPixel()
+        private void DownCameraXmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
-            if (double.TryParse(UpCameraBoxX_textBox.Text.Replace(',', '.'), out val))
+            if (double.TryParse(DownCameraXmmPerPixel_textBox.Text.Replace(',', '.'), out val))
             {
-                Setting.UpCam_XmmPerPixel = val / UpCamera.BoxSizeX;
-                UpCameraBoxXmmPerPixel_label.Text = "(" + Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+                DownCameraXmmPerPixel_textBox.ForeColor = Color.Black;
+                Setting.DownCam_XmmPerPixel = val;
+                DownCameraBoxX_textBox.Text = (val * DownCamera.BoxSizeX).ToString("0.00", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                DownCameraXmmPerPixel_textBox.ForeColor = Color.Red;
             }
         }
 
         // =================================================================================
+        // Down Camera, Y size
+
         private void DownCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '\r')
@@ -3546,11 +3565,69 @@ namespace LitePlacer
             if (double.TryParse(DownCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
                 Setting.DownCam_YmmPerPixel = val / DownCamera.BoxSizeY;
-                DownCameraBoxYmmPerPixel_label.Text = "(" + Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+                DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             }
         }
 
-        // ====
+        private void DownCameraYmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(DownCameraYmmPerPixel_textBox.Text.Replace(',', '.'), out val))
+            {
+                DownCameraYmmPerPixel_textBox.ForeColor = Color.Black;
+                Setting.DownCam_YmmPerPixel = val;
+                DownCameraBoxY_textBox.Text = (val * DownCamera.BoxSizeY).ToString("0.00", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                DownCameraYmmPerPixel_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        // =================================================================================
+        // Up Camera, X size
+
+        private void UpCameraBoxX_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                UpCameraUpdateXmmPerPixel();
+            }
+        }
+
+        private void UpCameraBoxX_textBox_Leave(object sender, EventArgs e)
+        {
+            UpCameraUpdateXmmPerPixel();
+        }
+
+        private void UpCameraUpdateXmmPerPixel()
+        {
+            double val;
+            if (double.TryParse(UpCameraBoxX_textBox.Text.Replace(',', '.'), out val))
+            {
+                Setting.UpCam_XmmPerPixel = val / UpCamera.BoxSizeX;
+                UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+            }
+        }
+
+        private void UpCameraXmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(UpCameraXmmPerPixel_textBox.Text.Replace(',', '.'), out val))
+            {
+                UpCameraXmmPerPixel_textBox.ForeColor = Color.Black;
+                Setting.UpCam_XmmPerPixel = val;
+                UpCameraBoxX_textBox.Text = (val * UpCamera.BoxSizeX).ToString("0.00", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                UpCameraXmmPerPixel_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        // =================================================================================
+        // Up Camera, Y size
+
         private void UpCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '\r')
@@ -3561,11 +3638,7 @@ namespace LitePlacer
 
         private void UpCameraBoxY_textBox_Leave(object sender, EventArgs e)
         {
-            double val;
-            if (double.TryParse(UpCameraBoxY_textBox.Text.Replace(',', '.'), out val))
-            {
-                UpCameraUpdateYmmPerPixel();
-            }
+            UpCameraUpdateYmmPerPixel();
         }
 
         private void UpCameraUpdateYmmPerPixel()
@@ -3574,11 +3647,24 @@ namespace LitePlacer
             if (double.TryParse(UpCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
                 Setting.UpCam_YmmPerPixel = val / UpCamera.BoxSizeY;
-                UpCameraBoxYmmPerPixel_label.Text = "(" + Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
+                UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             }
         }
 
-
+        private void UpCameraYmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(UpCameraYmmPerPixel_textBox.Text.Replace(',', '.'), out val))
+            {
+                UpCameraYmmPerPixel_textBox.ForeColor = Color.Black;
+                Setting.UpCam_YmmPerPixel = val;
+                UpCameraBoxY_textBox.Text = (val * UpCamera.BoxSizeY).ToString("0.00", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                UpCameraYmmPerPixel_textBox.ForeColor = Color.Red;
+            }
+        }
 
         // =================================================================================
         private void DownCamZoom_checkBox_Click(object sender, EventArgs e)
@@ -3661,6 +3747,15 @@ namespace LitePlacer
         // =================================================================================
         // DownCam specific functions
         // =================================================================================
+        private void DownCamDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            DownCamera.DrawCross = DownCamDrawCross_checkBox.Checked;
+        }
+
+        private void DownCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            DownCamera.DrawBox = DownCamDrawBox_checkBox.Checked;
+        }
 
         // =================================================================================
         private void ImageTest_checkBox_CheckedChanged(object sender, EventArgs e)
@@ -3916,6 +4011,17 @@ namespace LitePlacer
         // =================================================================================
         // UpCam specific functions
         // =================================================================================
+
+        private void UpCamDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpCamera.DrawCross = UpCamDrawCross_checkBox.Checked;
+        }
+
+        private void UpCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpCamera.DrawBox = UpCamDrawCross_checkBox.Checked;
+        }
+
 
         private void UpcamPositionX_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -11941,76 +12047,6 @@ namespace LitePlacer
             DisplayText("test 6: Nozzle up");
             CNC_Z_m(0);  // go up
             CNC_XY_m(Xmark, Ymark);
-        }
-
-
-        // ==========================================================================================================
-        // I tried automatic measurement of mm/pixel, but results were not great: repeatable, but not accurate. ??
-        // I'll hide the button, but keep the code, just in case.
-
-        private void MeasureDownCam_button_Click(object sender, EventArgs e)
-        {
-            if (!DownCamera.IsRunning())
-            {
-                ShowMessageBox(
-                    "Downcamera not running.",
-                    "Measurement failed.",
-                    MessageBoxButtons.OK);
-                return;
-            }
-            // xxx SetHomingMeasurement();
-            const double dist = 1.0;
-            double X1, Y1;
-            if (DownCamera.GetClosestCircle(out X1, out Y1, 50.0) <= 0)
-            {
-                ShowMessageBox(
-                    "To use: Set homing parameters, then place a single homing mark close to camera center.",
-                    "Measurement failed.",
-                    MessageBoxButtons.OK);
-                return;
-            }
-            CNC_XY_m(Cnc.CurrentX - (dist / 2.0), Cnc.CurrentY - (dist / 2.0));
-            Thread.Sleep(500);
-            if (DownCamera.GetClosestCircle(out X1, out Y1, 250.0) <= 0)
-            {
-                ShowMessageBox(
-                    "Measurement failed.",
-                    "Measurement failed.",
-                    MessageBoxButtons.OK);
-                return;
-            }
-            double X2, Y2;
-            CNC_XY_m(Cnc.CurrentX + dist, Cnc.CurrentY + dist);
-            Thread.Sleep(500);
-            if (DownCamera.GetClosestCircle(out X2, out Y2, 250.0) <= 0)
-            {
-                ShowMessageBox(
-                    "Measurement failed.",
-                    "Measurement failed.",
-                    MessageBoxButtons.OK);
-                return;
-            }
-            // sanity check
-            double X3, Y3;
-            CNC_XY_m(Cnc.CurrentX - (dist / 2.0), Cnc.CurrentY - (dist / 2.0));
-            Thread.Sleep(500);
-            if (DownCamera.GetClosestCircle(out X3, out Y3, 10.0) <= 0)
-            {
-                ShowMessageBox(
-                    "Measurement failed.",
-                    "Measurement failed.",
-                    MessageBoxButtons.OK);
-                return;
-            }
-            Setting.DownCam_XmmPerPixel = dist / (X1 - X2);
-            DownCameraBoxXmmPerPixel_label.Text = "(" + Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            double BoxX = Setting.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
-            DownCameraBoxX_textBox.Text = BoxX.ToString("0.000", CultureInfo.InvariantCulture);
-
-            Setting.DownCam_YmmPerPixel = dist / (Y2 - Y1);
-            DownCameraBoxYmmPerPixel_label.Text = "(" + Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture) + "mm/pixel)";
-            double BoxY = Setting.DownCam_YmmPerPixel * DownCamera.BoxSizeY;
-            DownCameraBoxY_textBox.Text = BoxY.ToString("0.000", CultureInfo.InvariantCulture);
         }
 
         #endregion test functions

@@ -87,6 +87,14 @@ namespace LitePlacer
                     base.OnPaint(e);
                 }
             }
+
+            protected override void OnVisibleChanged(EventArgs e)
+            {
+                lock (_locker)
+                {
+                    base.OnVisibleChanged(e);
+                }
+            }
         }
 
         // _locker must be a static Camera class variable to be available to the overridden OnPaint method
@@ -411,8 +419,8 @@ namespace LitePlacer
                 {
                     // stop video
                     PauseProcessing = true;  // ask for stop
-                    paused = false;
-                    while (!paused)
+                    Paused = false;
+                    while (!Paused)
                     {
                         Thread.Sleep(10);  // wait until really stopped
                     };
@@ -434,8 +442,8 @@ namespace LitePlacer
                 {
                     // stop video
                     PauseProcessing = true;  // ask for stop
-                    paused = false;
-                    while (!paused)
+                    Paused = false;
+                    while (!Paused)
                     {
                         Thread.Sleep(10);  // wait until really stopped
                     };
@@ -561,7 +569,7 @@ namespace LitePlacer
         public bool FindComponent { get; set; }     // Finds a component and identifies its center
         public bool Draw_Snapshot { get; set; }     // Draws the snapshot on the image 
         public bool PauseProcessing { get; set; }   // Drawing the video slows everything down. This can pause it for measurements.
-        private bool paused = true;                 // set in video processing indicating it is safe to change processing function list
+        public bool Paused = true;                 // set in video processing indicating it is safe to change processing function list
         public bool TestAlgorithm { get; set; }
         public bool DrawBox { get; set; }           // Draws a box on the image that is used for scale setting
 
@@ -664,41 +672,33 @@ namespace LitePlacer
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             ReceivingFrames = true;
-            // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
-            lock (_locker)
-            {
-                frame = (Bitmap)eventArgs.Frame.Clone();
-            }
+
             if (CopyFrame)
             {
                 if (TemporaryFrame != null)
                 {
                     TemporaryFrame.Dispose();
                 }
-                TemporaryFrame = (Bitmap)frame.Clone();
+                TemporaryFrame = (Bitmap)eventArgs.Frame.Clone();
                 CopyFrame = false;
             };
 
             if (PauseProcessing)
             {
-                //if (ImageBox.Image != null)
-                //{
-                //    ImageBox.Image.Dispose();
-                //}
-                frame.Dispose();
-                paused = true;
+                Paused = true;
                 return;
             };
 
             if (!Active)
             {
-                //if (ImageBox.Image != null)
-                //{
-                //    ImageBox.Image.Dispose();
-                //}
-                //ImageBox.Image = (Bitmap)frame.Clone();
-                frame.Dispose();
                 return;
+            }
+
+
+           // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
+            lock (_locker)
+            {
+                frame = (Bitmap)eventArgs.Frame.Clone();
             }
 
 
@@ -1136,6 +1136,15 @@ namespace LitePlacer
             return Components;
         }
 
+        public List<Shapes.Component> GetMeasurementComponents()
+        {
+            // No filtering! (tech. dept, maybe)
+            Bitmap image = GetMeasurementFrame();
+            List<Shapes.Component> Components = FindComponentsFunct(image);
+            image.Dispose();
+            return Components;
+        }
+
         private Bitmap DrawComponentsFunct(Bitmap bitmap)
         {
             List<Shapes.Component> Components = FindComponentsFunct(bitmap);
@@ -1239,7 +1248,7 @@ namespace LitePlacer
             // Find the closest
             X = (GoodComponents[0].Center.X - FrameCenterX);
             Y = (GoodComponents[0].Center.Y - FrameCenterY);
-            A = GoodComponents[0].Alignment;
+            A = GoodComponents[0].Angle;
             double dist = X * X + Y * Y;  // we return X and Y, so we don't neet to take square roots to use right distance value
             double dX, dY;
             for (int i = 0; i < GoodComponents.Count; i++)
@@ -1251,7 +1260,7 @@ namespace LitePlacer
                     dist = dX * dX + dY * dY;
                     X = dX;
                     Y = dY;
-                    A = GoodComponents[i].Alignment;
+                    A = GoodComponents[i].Angle;
                 }
             }
             double zoom = GetMeasurementZoom();
@@ -1287,7 +1296,7 @@ namespace LitePlacer
                 {
                     if (radius > 3)  // MirrFilter out some noise
                     {
-                        Circles.Add(new Shapes.Circle(center.X, center.Y, radius));
+                        Circles.Add(new Shapes.Circle(center, radius));
                     }
                 }
             }
@@ -1326,16 +1335,16 @@ namespace LitePlacer
             if (Closest == Smallest)
             {
                 g.DrawEllipse(MagentaPen,
-                    (float)(Circles[Closest].X - Circles[Closest].Radius), (float)(Circles[Closest].Y - Circles[Closest].Radius),
+                    (float)(Circles[Closest].Center.X - Circles[Closest].Radius), (float)(Circles[Closest].Center.Y - Circles[Closest].Radius),
                     (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
             }
             else
             {
                 g.DrawEllipse(LimePen,
-                    (float)(Circles[Closest].X - Circles[Closest].Radius), (float)(Circles[Closest].Y - Circles[Closest].Radius),
+                    (float)(Circles[Closest].Center.X - Circles[Closest].Radius), (float)(Circles[Closest].Center.Y - Circles[Closest].Radius),
                     (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
                 g.DrawEllipse(AquaPen,
-                    (float)(Circles[Smallest].X - Circles[Smallest].Radius), (float)(Circles[Smallest].Y - Circles[Smallest].Radius),
+                    (float)(Circles[Smallest].Center.X - Circles[Smallest].Radius), (float)(Circles[Smallest].Center.Y - Circles[Smallest].Radius),
                     (float)(Circles[Smallest].Radius * 2), (float)(Circles[Smallest].Radius * 2));
             }
 
@@ -1345,7 +1354,7 @@ namespace LitePlacer
                 if ((i != Closest) && (i != Smallest))
                 {
                     g.DrawEllipse(OrangePen,
-                       (float)(Circles[i].X - Circles[i].Radius), (float)(Circles[i].Y - Circles[i].Radius),
+                       (float)(Circles[i].Center.X - Circles[i].Radius), (float)(Circles[i].Center.Y - Circles[i].Radius),
                        (float)(Circles[i].Radius * 2), (float)(Circles[i].Radius * 2));
                 }
             }
@@ -1377,14 +1386,14 @@ namespace LitePlacer
         private int FindClosestCircle(List<Shapes.Circle> Circles)
         {
             int closest = 0;
-            double X = (Circles[0].X - FrameCenterX);
-            double Y = (Circles[0].Y - FrameCenterY);
+            double X = (Circles[0].Center.X - FrameCenterX);
+            double Y = (Circles[0].Center.Y - FrameCenterY);
             double dist = X * X + Y * Y;  // we are interested only which one is closest, don't neet to take square roots to get distance right
             double dX, dY;
             for (int i = 0; i < Circles.Count; i++)
             {
-                dX = Circles[i].X - FrameCenterX;
-                dY = Circles[i].Y - FrameCenterY;
+                dX = Circles[i].Center.X - FrameCenterX;
+                dY = Circles[i].Center.Y - FrameCenterY;
                 if ((dX * dX + dY * dY) < dist)
                 {
                     dist = dX * dX + dY * dY;
@@ -1401,7 +1410,7 @@ namespace LitePlacer
 
         public List<Shapes.Circle> GetMeasurementCircles(double MaxDistance)
         {
-            // returns a list of circles for measurements, filters for distance (which we always do) and size, if needed
+            // returns a list of circle for measurements, filters for distance (which we always do) 
 
             Bitmap image = GetMeasurementFrame();
             List<Shapes.Circle> Circles = FindCirclesFunct(image);
@@ -1416,8 +1425,8 @@ namespace LitePlacer
             // Remove those that are more than MaxDistance away from frame center
             foreach (Shapes.Circle Circle in Circles)
             {
-                X = (Circle.X - FrameCenterX);
-                Y = (Circle.Y - FrameCenterY);
+                X = (Circle.Center.X - FrameCenterX);
+                Y = (Circle.Center.Y - FrameCenterY);
                 if ((X * X + Y * Y) <= (MaxDistance * MaxDistance))
                 {
                     if (SizeLimited)
@@ -1450,8 +1459,8 @@ namespace LitePlacer
             // Find the closest
             int closest = FindClosestCircle(Circles);
             double zoom = GetMeasurementZoom();
-            X = (Circles[closest].X - FrameCenterX);
-            Y = (Circles[closest].Y - FrameCenterY);
+            X = (Circles[closest].Center.X - FrameCenterX);
+            Y = (Circles[closest].Center.Y - FrameCenterY);
             X = X / zoom;
             Y = Y / zoom;
             return (Circles.Count);
@@ -1472,8 +1481,8 @@ namespace LitePlacer
             // Find the smallest
             int smallest = FindSmallestCircle(Circles);
             double zoom = GetMeasurementZoom();
-            X = (Circles[smallest].X - FrameCenterX);
-            Y = (Circles[smallest].Y - FrameCenterY);
+            X = (Circles[smallest].Center.X - FrameCenterX);
+            Y = (Circles[smallest].Center.Y - FrameCenterY);
             radius = Circles[smallest].Radius / zoom;
             X = X / zoom;
             Y = Y / zoom;
@@ -1507,7 +1516,7 @@ namespace LitePlacer
                 // fine tune ShapeChecker
                 QuadChecker.AngleError = 7;  // default 7
                 QuadChecker.LengthError = 0.1F;  // default 0.1 (10%)
-                QuadChecker.MinAcceptableDistortion = 0.1F;  // in pixels, default 0.5 
+                QuadChecker.MinAcceptableDistortion = 0.5F;  // in pixels, default 0.5 
                 QuadChecker.RelativeDistortionLimit = 0.05F;  // default 0.03 (3%)
 
                 // use the Outline checker to extract the corner points
@@ -1516,29 +1525,14 @@ namespace LitePlacer
                     // only do things if the corners form a rectangle
                     SimpleShapeChecker RectangleChecker = new SimpleShapeChecker();
                     RectangleChecker.AngleError = 7;  // default 7
-                    RectangleChecker.LengthError = 0.00F;  // default 0.1 (10%)
+                    RectangleChecker.LengthError = 0.050F;  // default 0.1 (10%)
                     RectangleChecker.MinAcceptableDistortion = 1F;  // in pixels, default 0.5 
                     RectangleChecker.RelativeDistortionLimit = 0.05F;  // default 0.03 (3%)
                     if (RectangleChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
                     //if (true)
                     {
                         List<IntPoint> corners = PointsCloud.FindQuadrilateralCorners(edgePoints);
-                        float x0 = corners[0].X;
-                        float y0 = corners[0].Y;
-                        float x2 = corners[2].X;
-                        float y2 = corners[2].Y;
-                        AForge.Point C = new AForge.Point();
-                        C.X = (float)(((x2 - x0) / 2.0) + x0);
-                        C.Y = (float)(((y2 - y0) / 2.0) + y0);
-
-                        AForge.Point a1 = corners[0];
-                        AForge.Point a2 = corners[1];
-                        AForge.Point b1 = corners[0];
-                        AForge.Point b2 = corners[1];
-                        b2.Y = b1.Y;
-                        float angle = GeometryTools.GetAngleBetweenLines(a1, a2, b1, b2);
-
-                        Rectangles.Add(new Shapes.Rectangle(C, angle, corners));
+                        Rectangles.Add(new Shapes.Rectangle(corners));
                     }
                 }
             }
