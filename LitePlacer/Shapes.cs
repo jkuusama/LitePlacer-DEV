@@ -18,14 +18,14 @@ namespace LitePlacer
         }
 
 
-        public class Component: Shape
+        public class ComponentOld : Shape
         {
             public List<IntPoint> Outline { get; set; }
             public LineSegment Longest { get; set; }    // Longest line segment in Outline (needed in drawing, avoid calculating twice)
             public AForge.Point NormalStart { get; set; }  // (needed in drawing, avoid calculating twice)
             public AForge.Point NormalEnd { get; set; }     // (needed in drawing, avoid calculating twice)
 
-            public Component(AForge.Point centr, double angl, List<IntPoint> outln,
+            public ComponentOld(AForge.Point centr, double angl, List<IntPoint> outln,
                              LineSegment lngst, AForge.Point Nstart, AForge.Point Nend)
             {
                 Center = centr;
@@ -59,10 +59,34 @@ namespace LitePlacer
                 C.X = (float)(((x2 - x0) / 2.0) + x0);
                 C.Y = (float)(((y2 - y0) / 2.0) + y0);
                 Center = C;
-                double dist1 = new LineSegment(corners[0], corners[1]).Length;
-                double dist2 = new LineSegment(corners[1], corners[2]).Length;
-                double A = Math.Atan(Math.Abs((y1 - y0) / (x1 - x0)));
-                A = A * 180.0 / Math.PI; // in deg.
+                double dist1;
+                double dist2;
+                if (corners[0] ==corners[1])
+                {
+                    dist1 = 0;
+                }
+                else
+                {
+                    dist1 = new LineSegment(corners[0], corners[1]).Length;
+                }
+                if (corners[1] == corners[2])
+                {
+                    dist2 = 0;
+                }
+                else
+                {
+                    dist2 = new LineSegment(corners[1], corners[2]).Length;
+                }
+                double A;
+                if (x1==x0)
+                {
+                    A = 0;
+                }
+                else
+                {
+                    A= Math.Atan(Math.Abs((y1 - y0) / (x1 - x0)));
+                    A = A * 180.0 / Math.PI; // in deg.
+                }
 
                 if (dist1>dist2)
                 {
@@ -92,7 +116,18 @@ namespace LitePlacer
 			}
 		}
 
-	}
+        public class Component : Shape
+            // for now, equivalent to rectangle, but we'll see if this needs to change...
+        {
+            public Rectangle BoundingBox { get; set; }
+
+            public Component(List<IntPoint> corners)
+            {
+                BoundingBox = new Rectangle(corners);
+            }
+        }
+
+    }
 
 
 }

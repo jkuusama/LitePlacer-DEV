@@ -967,9 +967,236 @@ namespace LitePlacer
         }
 
         // ==========================================================================================================
-        // Components:
+        // Components, newer version:
         // ==========================================================================================================
+        // helpers:
+
+        // ===========
+        private List<IntPoint> GetBlobsOutline(BlobCounter blobCounter, Blob blob)
+        {
+            List<IntPoint> leftPoints, rightPoints, edgePoints = new List<IntPoint>();
+            // get blob's edge points
+            blobCounter.GetBlobsLeftAndRightEdges(blob,
+                out leftPoints, out rightPoints);
+
+            edgePoints.AddRange(leftPoints);
+            edgePoints.AddRange(rightPoints);
+            return edgePoints;
+        }
+
+        // ===========
+        private List<IntPoint> GetConvexHull(List<IntPoint> edgePoints)
+        {
+            // create convex hull searching algorithm
+            GrahamConvexHull hullFinder = new GrahamConvexHull();
+            ClosePointsMergingOptimizer optimizer1 = new ClosePointsMergingOptimizer();
+            FlatAnglesOptimizer optimizer2 = new FlatAnglesOptimizer();
+            List<IntPoint> Outline = hullFinder.FindHull(edgePoints);
+            optimizer1.MaxDistanceToMerge = 4;
+            optimizer2.MaxAngleToKeep = 170F;
+            Outline = optimizer2.OptimizeShape(Outline);
+            Outline = optimizer1.OptimizeShape(Outline);
+            if (Outline.Count < 3)
+            {
+                return null;
+            }
+            return Outline;
+        }
+
+        // ===========
+        private double GetAngle(IntPoint p1, IntPoint p2)
+        {
+            // returns the angle between line (p1,p2) and horizontal axis, in degrees
+            double A = 0;
+            if (p2.X == p1.X)
+            {
+                if (p2.Y > p1.Y)
+                {
+                    return 90;
+                }
+                else
+                {
+                    return 270;
+                }
+            }
+            else
+            {
+                A = Math.Atan(Math.Abs((double)(p1.Y - p2.Y) / (double)(p1.X - p2.X)));
+                A = A * 180.0 / Math.PI; // in deg.
+            }
+            // quadrants: A is now first quadrant solution
+            if ((p1.X < p2.X) && (p1.Y <= p2.Y))
+            {
+                return A;   // 1st q.
+            }
+            else if ((p1.X > p2.X) && (p1.Y < p2.Y))
+            {
+                return A + 90; // 2nd q.
+            }
+            else if ((p1.X > p2.X) && (p1.Y >= p2.Y))
+            {
+                return A + 180; // 3rd q.
+            }
+            else
+            {
+                return 360 - A; // 4th q.
+            }
+        }
+
+        // ===========
+        private double RectangleArea(IntPoint p1, IntPoint p2)
+        {
+            return Math.Abs(((double)p2.X - (double)p1.X) * ((double)p2.Y - (double)p1.Y));
+        }
+
+        // ===========
+        private List<IntPoint> ScaleOutline(Double scale, List<IntPoint> Outline)
+        {
+            List<IntPoint> Result = new List<IntPoint>();
+            foreach (var p in Outline)
+            {
+                Result.Add(new IntPoint((int)(p.X * scale), (int)(p.Y * scale)));
+            }
+            return Result;
+        }
+        // ===========
+        private IntPoint RotatePoint(double angle, IntPoint p, IntPoint o)
+        {
+            // TODO: put all rotations in one routine
+
+            // If you rotate point (px, py) around point (ox, oy) by angle theta you'll get:
+            // p'x = cos(theta) * (px-ox) - sin(theta) * (py-oy) + ox
+            // p'y = sin(theta) * (px-ox) + cos(theta) * (py-oy) + oy
+
+            double theta = angle * (Math.PI / 180.0); // to radians
+            IntPoint Pout = new IntPoint();
+            Pout.X = Convert.ToInt32(Math.Cos(theta) * (p.X - o.X) - Math.Sin(theta) * (p.Y - o.Y) + o.X);
+            Pout.Y = Convert.ToInt32(Math.Sin(theta) * (p.X - o.X) + Math.Cos(theta) * (p.Y - o.Y) + o.Y);
+            return Pout;
+        }
+
+         // ===========
+       private List<IntPoint> RotateOutline(double theta, List<IntPoint> Outline, IntPoint RotOrigin)
+        {
+            // returns the outline, rotated by angle around RotOrigin
+            List<IntPoint> Result = new List<IntPoint>();
+            IntPoint Pout = new IntPoint();
+            foreach (var p in Outline)
+            {
+                Pout = RotatePoint(theta, p, RotOrigin);
+                Result.Add(Pout);
+            }
+            return Result;
+        }
+
+        // ===========
+        private List<IntPoint> GetMinimumBoundingRectangle(List<IntPoint> Outline)
+        {
+            // Using caliber algorithm to find the minimum bounding regtangle
+            // (see http://www.datagenetics.com/blog/march12014/index.html):
+
+            // For each line segment,
+            // Rotate the hull so that the segment is horizontal.
+            // Get the hull bounding rectangle
+            // Measure the area
+            // If first iteration or the area is smaller than the previous one,
+            // store the area, the rectangle and the rotation with point
+            // The solution is the stored rectangle, rotated back to original orientation.
+
+            bool first = true;
+            IntPoint minXY = new IntPoint();
+            IntPoint maxXY = new IntPoint();
+            double SmallestArea = 0;
+            double AngleOfsolution = 0;
+            IntPoint SolutionMin = new IntPoint();
+            IntPoint SolutionMax = new IntPoint();
+            IntPoint SolutionOrg = new IntPoint();
+
+            for (int i = 1; i < Outline.Count; i++) // For each line segment,
+            {
+                double angle = GetAngle(Outline[i - 1], Outline[i]);
+                List<IntPoint> RotatedOutline = RotateOutline(-angle, Outline, Outline[i - 1]); // Rotate the hull so that the segment is horizontal.
+                PointsCloud.GetBoundingRectangle(RotatedOutline, out minXY, out maxXY);    // Get the hull bounding rectangle
+                double area = RectangleArea(minXY, maxXY);
+                if (first || (area < SmallestArea))
+                {
+                    SmallestArea = area;        // store the area, the rectangle and the rotation
+                    AngleOfsolution = angle;
+                    SolutionMin = minXY;
+                    SolutionMax = maxXY;
+                    SolutionOrg = Outline[i - 1];
+                    first = false;
+                }
+            }
+            List<IntPoint> rect = new List<IntPoint>() { SolutionMin, new IntPoint(SolutionMax.X, SolutionMin.Y),
+                SolutionMax ,new IntPoint(SolutionMin.X, SolutionMax.Y) };
+            rect = RotateOutline(AngleOfsolution, rect, SolutionOrg); // stored rectangle, rotated back to original orientation and place
+            return rect;
+        }
+
+        // ===========
         private List<Shapes.Component> FindComponentsFunct(Bitmap bitmap)
+        {
+            // Locating objects
+            BlobCounter blobCounter = new BlobCounter();
+            blobCounter.FilterBlobs = true;
+            blobCounter.MinHeight = 8;
+            blobCounter.MinWidth = 8;
+            blobCounter.ProcessImage(bitmap);
+            List<Shapes.Component> Components = new List<Shapes.Component>();
+
+            Blob[] blobs = blobCounter.GetObjectsInformation(); // Get blobs
+            foreach (Blob blob in blobs)
+            {
+                if ((blob.Rectangle.Height > 400) && (blob.Rectangle.Width > 600))
+                {
+                    break;  // The whole image could be a blob, discard that
+                }
+
+                List<IntPoint> edgePoints = GetBlobsOutline(blobCounter, blob);     // get edge points
+                List<IntPoint> OutlineRaw = GetConvexHull(edgePoints);                 // convert to convex hull
+                if (OutlineRaw.Count < 3)
+                {
+                    break;
+                }
+                // add start point to list, so we get line segments
+                OutlineRaw.Add(OutlineRaw[0]);
+                // We are dealing with small objects, one pixel is coarse. Therefore, all calculations are done
+                // on a scaled outline, scaling back after finding the rectangle. (This is because AForge uses IntPoints.)
+                List<IntPoint> Outline = ScaleOutline(1.0, OutlineRaw);
+                List<IntPoint> Box = GetMinimumBoundingRectangle(Outline);    // get bounding rectangle
+                //Box= ScaleOutline(0.001, Box);  // scale back
+                if (Box.Count != 4)
+                {
+                    MainForm.DisplayText("Rectangle with " + Box.Count.ToString() + "corners (BoxToComponent)", KnownColor.Red, true);
+                }
+                else
+                {
+                    Components.Add(new Shapes.Component(Box));
+                }
+            }
+            return Components;
+        }
+
+        // ===========
+        private Bitmap DrawComponentsFunct(Bitmap bitmap)
+        {
+            List<Shapes.Component> Components = FindComponentsFunct(bitmap);
+            Graphics g = Graphics.FromImage(bitmap);
+            Pen OrangePen = new Pen(Color.DarkOrange, 3);
+            for (int i = 0, n = Components.Count; i < n; i++)
+            {
+               g.DrawPolygon(OrangePen, ToPointsArray(Components[i].BoundingBox.Corners));
+            }
+            g.Dispose();
+            OrangePen.Dispose();
+            return (bitmap);
+        }
+
+        // ==========================================================================================================
+        // Components, older version:
+        // ==========================================================================================================
+        private List<Shapes.ComponentOld> FindComponentsFunctOld(Bitmap bitmap)
         {
             // Locating objects
             BlobCounter blobCounter = new BlobCounter();
@@ -984,7 +1211,7 @@ namespace LitePlacer
             ClosePointsMergingOptimizer optimizer1 = new ClosePointsMergingOptimizer();
             FlatAnglesOptimizer optimizer2 = new FlatAnglesOptimizer();
 
-            List<Shapes.Component> Components = new List<Shapes.Component>();
+            List<Shapes.ComponentOld> Components = new List<Shapes.ComponentOld>();
 
             // process each blob
             foreach (Blob blob in blobs)
@@ -1130,7 +1357,7 @@ namespace LitePlacer
                         Alignment = Math.Atan((Longest.End.Y - Longest.Start.Y) / (Longest.End.X - Longest.Start.X));
                         Alignment = Alignment * 180.0 / Math.PI; // in deg.
                     }
-                    Components.Add(new Shapes.Component(ComponentCenter, Alignment, Outline, Longest, NormalStart, NormalEnd));
+                    Components.Add(new Shapes.ComponentOld(ComponentCenter, Alignment, Outline, Longest, NormalStart, NormalEnd));
                 }
             }
             return Components;
@@ -1138,22 +1365,22 @@ namespace LitePlacer
 
         public List<Shapes.Component> GetMeasurementComponents()
         {
-            // No filtering! (tech. dept, maybe)
+            // No filtering! (tech. debt, maybe)
             Bitmap image = GetMeasurementFrame();
             List<Shapes.Component> Components = FindComponentsFunct(image);
             image.Dispose();
             return Components;
         }
 
-        private Bitmap DrawComponentsFunct(Bitmap bitmap)
+        private Bitmap DrawComponentsFunctOld(Bitmap bitmap)
         {
-            List<Shapes.Component> Components = FindComponentsFunct(bitmap);
+            List<Shapes.ComponentOld> Components = FindComponentsFunctOld(bitmap);
 
             Graphics g = Graphics.FromImage(bitmap);
             Pen OrangePen = new Pen(Color.DarkOrange, 1);
             Pen RedPen = new Pen(Color.DarkRed, 2);
             Pen BluePen = new Pen(Color.Blue, 2);
-            Shapes.Component Component;
+            Shapes.ComponentOld Component;
             System.Drawing.Point p1 = new System.Drawing.Point();
             System.Drawing.Point p2 = new System.Drawing.Point();
 
@@ -1220,9 +1447,9 @@ namespace LitePlacer
         // return value is number of components found
         {
             Bitmap image = GetMeasurementFrame();
-            List<Shapes.Component> RawComponents = FindComponentsFunct(image);
+            List<Shapes.ComponentOld> RawComponents = FindComponentsFunctOld(image);
             image.Dispose();
-            List<Shapes.Component> GoodComponents = new List<Shapes.Component>();
+            List<Shapes.ComponentOld> GoodComponents = new List<Shapes.ComponentOld>();
 
             X = 0.0;
             Y = 0.0;
@@ -1232,7 +1459,7 @@ namespace LitePlacer
                 return (0);
             }
             // Remove those that are more than MaxDistance away from frame center
-            foreach (Shapes.Component Component in RawComponents)
+            foreach (Shapes.ComponentOld Component in RawComponents)
             {
                 X = (Component.Center.X - FrameCenterX);
                 Y = (Component.Center.Y - FrameCenterY);

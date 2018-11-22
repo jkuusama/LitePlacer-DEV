@@ -431,6 +431,7 @@ namespace LitePlacer
             AlgorithmChange = false;
         }
 
+        // ===================
         private void RemoveFunction_button_Click(object sender, EventArgs e)
         {
             // If function exists, remove it.
@@ -453,6 +454,7 @@ namespace LitePlacer
             }
         }
 
+        // ===================
         private void MoveUp_button_Click(object sender, EventArgs e)
         {
             if (Functions_dataGridView.CurrentCell == null)
@@ -469,6 +471,7 @@ namespace LitePlacer
             MoveFunction(OldPos, OldPos - 1);
         }
 
+        // ===================
         private void MoveDown_button_Click(object sender, EventArgs e)
         {
             if (Functions_dataGridView.CurrentCell == null)
@@ -485,6 +488,7 @@ namespace LitePlacer
             MoveFunction(OldPos, OldPos + 1);
         }
 
+        // ===================
         private void MoveFunction(int OldPos, int NewPos)
         {
             // Re-arranges functions in the UI
@@ -504,6 +508,7 @@ namespace LitePlacer
             }
         }
 
+        // ===================
         private void Algorithm_Measure_button_Click(object sender, EventArgs e)
         {
             Camera cam = UpCamera;
@@ -525,13 +530,46 @@ namespace LitePlacer
             }
             if (SearchComponents_checkBox.Checked)
             {
-                // ListShapes(ComponentFeatures(cam.GetMeasurementComponents()), "Components", true);
+                ListComponents(cam);
+            }
+        }
+
+        // ===================
+        private void ListComponents(Camera cam)
+        {
+            List<Shapes.Component> Components = cam.GetMeasurementComponents();
+            List<Shapes.Rectangle> Rectangles = new List<Shapes.Rectangle>();
+            foreach (var comp in Components)
+            {
+                Rectangles.Add(comp.BoundingBox);
+                DisplayText("Components:");
+                if (Rectangles.Count == 0)
+                {
+                    DisplayText("no results.");
+                }
+                else
+                {
+                    ListRectanglesBody(cam, Rectangles);
+                }
             }
         }
 
         private void ListRectangles(Camera cam)
         {
             List<Shapes.Rectangle> Rectangles = cam.GetMeasurementRectangles(90000);
+            DisplayText("Rectangles:");
+            if (Rectangles.Count == 0)
+            {
+                DisplayText("no results.");
+            }
+            else
+            {
+                ListRectanglesBody(cam, Rectangles);
+            }
+        }
+
+        private void ListRectanglesBody(Camera cam, List<Shapes.Rectangle> Rectangles)
+        {
             double Xmul;
             double Ymul;
             if (cam == DownCamera)
@@ -544,51 +582,41 @@ namespace LitePlacer
                 Xmul = Setting.UpCam_XmmPerPixel;
                 Ymul = Setting.UpCam_YmmPerPixel;
             }
+            string Xpxls;
+            string Ypxls;
+            string Xmms;
+            string Ymms;
+            string Angle;
+            int i = 1;
 
-            DisplayText("Rectangles:");
-            if (Rectangles.Count == 0)
+            string OutString = "";
+            DisplayText("Positions:");
+            DisplayText("Pixels                         mm's, by (x)");
+            foreach (var rec in Rectangles)
             {
-                DisplayText("no results.");
+                Xpxls = String.Format("{0,6:0.0}", rec.Center.X - cam.FrameCenterX);
+                Ypxls = String.Format("{0,6:0.0}", cam.FrameCenterY - rec.Center.Y);
+                Xmms = String.Format("{0,6:0.00}", (rec.Center.X - cam.FrameCenterX) * Xmul);
+                Ymms = String.Format("{0,6:0.00}", (cam.FrameCenterY - rec.Center.Y) * Ymul);
+                Angle = String.Format("{0,4:0.0}", rec.Angle);
+
+                OutString = i.ToString("##") + ": x: " + Xpxls + ", y:" + Ypxls +
+                         "; x:" + Xmms + ", y:" + Ymms + ", angle: " + Angle;
+                DisplayText(OutString);
+                i++;
             }
-            else
+            i = 1;
+            DisplayText("Sizes:");
+            foreach (var rec in Rectangles)
             {
-                string Xpxls;
-                string Ypxls;
-                string Xmms;
-                string Ymms;
-                string Angle;
-                int i = 1;
+                Xpxls = String.Format("{0,6:0.0}", rec.LongsideLenght);
+                Ypxls = String.Format("{0,6:0.0}", rec.ShortSideLenght);
+                Xmms = String.Format("{0,6:0.00}", rec.LongsideLenght * Xmul);
+                Ymms = String.Format("{0,6:0.00}", rec.ShortSideLenght * Xmul);
 
-                string OutString = "";
-                DisplayText("Positions:");
-                DisplayText("Pixels                         mm's, by (x)");
-                foreach (var rec in Rectangles)
-                {
-                    Xpxls = String.Format("{0,6:0.0}", rec.Center.X - cam.FrameCenterX);
-                    Ypxls = String.Format("{0,6:0.0}", cam.FrameCenterY - rec.Center.Y);
-                    Xmms = String.Format("{0,6:0.00}", (rec.Center.X - cam.FrameCenterX) * Xmul);
-                    Ymms = String.Format("{0,6:0.00}", (cam.FrameCenterY - rec.Center.Y) * Ymul);
-                    Angle = String.Format("{0,4:0.0}", rec.Angle);
-
-                    OutString = i.ToString("##") + ": x: " + Xpxls + ", y:" + Ypxls +
-                             "; x:" + Xmms + ", y:" + Ymms + ", angle: " + Angle;
-                    DisplayText(OutString);
-                    i++;
-                }
-                i = 1;
-                DisplayText("Sizes:");
-                foreach (var rec in Rectangles)
-                {
-                    Xpxls = String.Format("{0,6:0.0}", rec.LongsideLenght);
-                    Ypxls = String.Format("{0,6:0.0}", rec.ShortSideLenght);
-                    Xmms = String.Format("{0,6:0.00}", rec.LongsideLenght * Xmul);
-                    Ymms = String.Format("{0,6:0.00}", rec.ShortSideLenght * Xmul);
-
-                    OutString = i.ToString("##") + ": x: " + Xpxls + ", y:" + Ypxls + ";     x:" + Xmms + ", y:" + Ymms;
-                    DisplayText(OutString);
-                }
+                OutString = i.ToString("##") + ": x: " + Xpxls + ", y:" + Ypxls + ";     x:" + Xmms + ", y:" + Ymms;
+                DisplayText(OutString);
             }
-
         }
 
         private void ListCirles(Camera cam)
@@ -668,7 +696,7 @@ namespace LitePlacer
         }
 
 
-        public List<Shapes.Shape> ComponentFeatures(List<Shapes.Component> Components)
+        public List<Shapes.Shape> ComponentFeatures(List<Shapes.ComponentOld> Components)
         {
             List<Shapes.Shape> Features = new List<Shapes.Shape>();
             foreach (var C in Components)
