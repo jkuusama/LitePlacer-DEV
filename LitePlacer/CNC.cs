@@ -246,7 +246,7 @@ namespace LitePlacer
         }
 
         public bool SlackCompensation { get; set; }
-        private double SlackCompensationDistance = 0.4;
+        public double SlackCompensationDistance { get; set; }
 
         public bool SlackCompensationA { get; set; }
         private double SlackCompensationDistanceA = 5.0;

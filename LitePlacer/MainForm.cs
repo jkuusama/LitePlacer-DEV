@@ -368,6 +368,8 @@ namespace LitePlacer
 
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
             SlackCompensation_checkBox.Checked = Setting.CNC_SlackCompensation;
+            Cnc.SlackCompensationDistance = Setting.CNC_SlackCompensationDistance;
+            SlackCompensationDistance_textBox.Text = Setting.CNC_SlackCompensationDistance.ToString();
             Cnc.SlackCompensationA = Setting.CNC_SlackCompensationA;
             SlackCompensationA_checkBox.Checked = Setting.CNC_SlackCompensationA;
             Cnc.SmallMovementString = "G1 F" + Setting.CNC_SmallMovementSpeed + " ";
@@ -6499,6 +6501,20 @@ namespace LitePlacer
             }
         }
 
+        private void SlackCompensationDistance_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            double val;
+            SlackCompensationDistance_textBox.ForeColor = Color.Red;
+            if (e.KeyChar == '\r')
+            {
+                if (double.TryParse(SlackCompensationDistance_textBox.Text.Replace(',', '.'), out val))
+                {
+                    Setting.CNC_SlackCompensationDistance = val;
+                    Cnc.SlackCompensationDistance = Setting.CNC_SlackCompensationDistance;
+                    SlackCompensationDistance_textBox.ForeColor = Color.Black;
+                }
+            }
+        }
 
         private static int SetProbing_stage = 0;
 
@@ -15577,8 +15593,6 @@ namespace LitePlacer
         {
             CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
         }
-
-
     }	// end of: 	public partial class FormMain : Form
 
 
