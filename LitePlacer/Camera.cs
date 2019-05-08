@@ -188,7 +188,7 @@ namespace LitePlacer
                         tries++;
                     }
                 }
-                if (tries>=4)
+                if (tries >= 4)
                 {
                     MainForm.DisplayText("Could not get resolution info");
                     return false;
@@ -202,7 +202,7 @@ namespace LitePlacer
                 bool fine = false;
                 for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
                 {
-                    if ((VideoSource.VideoCapabilities[i].FrameSize.Width== DesiredX)
+                    if ((VideoSource.VideoCapabilities[i].FrameSize.Width == DesiredX)
                         &&
                         (VideoSource.VideoCapabilities[i].FrameSize.Height == DesiredY))
                     {
@@ -828,7 +828,7 @@ namespace LitePlacer
             }
 
             frame.Dispose();
-            if (CollectorCount>20)
+            if (CollectorCount > 20)
             {
                 GC.Collect();
                 CollectorCount = 0;
@@ -1438,7 +1438,7 @@ namespace LitePlacer
         //public bool SizeLimited { get; set; } = false;
         //public double MaxSize { get; set; } = 1000;
         //public double MinSize { get; set; } = 1000;
-        public bool SizeLimited  = false;
+        public bool SizeLimited = false;
         public double MaxSize = 1000;
         public double MinSize = 1000;
 
@@ -1448,7 +1448,7 @@ namespace LitePlacer
 
             Bitmap image = GetMeasurementFrame();
             List<Shapes.Circle> Circles = FindCirclesFunct(image);
-            List<Shapes.Circle> GoodCircles= new  List<Shapes.Circle>();
+            List<Shapes.Circle> GoodCircles = new List<Shapes.Circle>();
             image.Dispose();
 
             double X = 0.0;
@@ -1598,7 +1598,7 @@ namespace LitePlacer
 
             for (int i = 0, n = Rectangles.Count; i < n; i++)
             {
-                if (i==closest)
+                if (i == closest)
                 {
                     g.DrawPolygon(LimePen, ToPointsArray(Rectangles[i].Corners));
                 }
@@ -1616,7 +1616,7 @@ namespace LitePlacer
         // =========================================================
         private int FindClosestRectangle(List<Shapes.Rectangle> Rectangles)
         {
-            if (Rectangles.Count==0)
+            if (Rectangles.Count == 0)
             {
                 return 0;
             }
@@ -1665,7 +1665,7 @@ namespace LitePlacer
 
             Bitmap image = GetMeasurementFrame();
             List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
-            List<Shapes.Rectangle> GoodRectangles = new  List<Shapes.Rectangle>();
+            List<Shapes.Rectangle> GoodRectangles = new List<Shapes.Rectangle>();
             image.Dispose();
 
             double X = 0.0;
@@ -1691,49 +1691,49 @@ namespace LitePlacer
         // ==========================================================================================================
 
         private Bitmap MirrorFunct(Bitmap frame)
-		{
-			Mirror Mfilter = new Mirror(false, true);
-			// apply the MirrFilter
-			Mfilter.ApplyInPlace(frame);
-			return (frame);
-		}
+        {
+            Mirror Mfilter = new Mirror(false, true);
+            // apply the MirrFilter
+            Mfilter.ApplyInPlace(frame);
+            return (frame);
+        }
 
 
-		// =========================================================
-		private Bitmap TestAlgorithmFunct(Bitmap frame)
-		{
-			frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);
-			Invert filter = new Invert();
-			filter.ApplyInPlace(frame);
-			return (frame);
-		}
+        // =========================================================
+        private Bitmap TestAlgorithmFunct(Bitmap frame)
+        {
+            frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);
+            Invert filter = new Invert();
+            filter.ApplyInPlace(frame);
+            return (frame);
+        }
 
-		// =========================================================
-		private void ZoomFunct(ref Bitmap frame, double Factor)
-		{
-			if (Factor < 0.1)
-			{
-				return;
-			}
-			int centerX = frame.Width / 2;
-			int centerY = frame.Height / 2;
-			int OrgSizeX = frame.Width;
-			int OrgSizeY = frame.Height;
+        // =========================================================
+        private void ZoomFunct(ref Bitmap frame, double Factor)
+        {
+            if (Factor < 0.1)
+            {
+                return;
+            }
+            int centerX = frame.Width / 2;
+            int centerY = frame.Height / 2;
+            int OrgSizeX = frame.Width;
+            int OrgSizeY = frame.Height;
 
-			int fromX = centerX - (int)(centerX / Factor);
-			int fromY = centerY - (int)(centerY / Factor);
-			int SizeX = (int)(OrgSizeX / Factor);
-			int SizeY = (int)(OrgSizeY / Factor);
-			Crop CrFilter = new Crop(new Rectangle(fromX, fromY, SizeX, SizeY));
-			frame = CrFilter.Apply(frame);
-			ResizeBilinear RBfilter = new ResizeBilinear(OrgSizeX, OrgSizeY);
-			frame = RBfilter.Apply(frame);
-		}
+            int fromX = centerX - (int)(centerX / Factor);
+            int fromY = centerY - (int)(centerY / Factor);
+            int SizeX = (int)(OrgSizeX / Factor);
+            int SizeY = (int)(OrgSizeY / Factor);
+            Crop CrFilter = new Crop(new Rectangle(fromX, fromY, SizeX, SizeY));
+            frame = CrFilter.Apply(frame);
+            ResizeBilinear RBfilter = new ResizeBilinear(OrgSizeX, OrgSizeY);
+            frame = RBfilter.Apply(frame);
+        }
 
         // =========================================================
         private void RotateByFrameCenter(int x, int y, out int px, out int py)
         {
-            double theta = boxRotationRad; 
+            double theta = boxRotationRad;
             // If you rotate point (px, py) around point (ox, oy) by angle theta you'll get:
             // p'x = cos(theta) * (px-ox) - sin(theta) * (py-oy) + ox
             // p'y = sin(theta) * (px-ox) + cos(theta) * (py-oy) + oy
@@ -1751,7 +1751,7 @@ namespace LitePlacer
             int step = 40;
             // vertical
             int i = 0;
-            while (i< FrameSizeX)
+            while (i < FrameSizeX)
             {
                 // FrameCenterX, 0 to FrameCenterX, FrameSizeY
                 RotateByFrameCenter(FrameCenterX + i, 0, out x1, out y1);
@@ -1814,88 +1814,88 @@ namespace LitePlacer
         private void DrawDashedCrossFunct(Bitmap img)
         {
             Pen pen = new Pen(Color.SlateGray, 1);
-			Graphics g = Graphics.FromImage(img);
-			int step = FrameSizeY / 40;
-			int i = step / 2;
-			while (i < FrameSizeY)
-			{
-				g.DrawLine(pen, FrameCenterX, i, FrameCenterX, i + step);
-				i = i + 2 * step;
-			}
-			step = FrameSizeX / 40;
-			i = step / 2;
-			while (i < FrameSizeX)
-			{
-				g.DrawLine(pen, i, FrameCenterY, i + step, FrameCenterY);
-				i = i + 2 * step;
-			}
+            Graphics g = Graphics.FromImage(img);
+            int step = FrameSizeY / 40;
+            int i = step / 2;
+            while (i < FrameSizeY)
+            {
+                g.DrawLine(pen, FrameCenterX, i, FrameCenterX, i + step);
+                i = i + 2 * step;
+            }
+            step = FrameSizeX / 40;
+            i = step / 2;
+            while (i < FrameSizeX)
+            {
+                g.DrawLine(pen, i, FrameCenterY, i + step, FrameCenterY);
+                i = i + 2 * step;
+            }
             pen.Dispose();
             g.Dispose();
-		}
-		// =========================================================
+        }
+        // =========================================================
 
-		private void DrawCrossFunct(ref Bitmap img)
-		{
-			Pen pen = new Pen(Color.Red, 1);
-			Graphics g = Graphics.FromImage(img);
-			g.DrawLine(pen, FrameCenterX, 0, FrameCenterX, FrameSizeY);
-			g.DrawLine(pen, 0, FrameCenterY, FrameSizeX, FrameCenterY);
-            pen.Dispose();
-            g.Dispose();
-		}
-
-		// =========================================================
-
-		private void DrawSidemarksFunct(ref Bitmap img)
-		{
-			Pen pen = new Pen(Color.Red, 2);
-			Graphics g = Graphics.FromImage(img);
-			int Xinc = Convert.ToInt32(FrameSizeX / SideMarksX);
-			int X = Xinc;
-			int tick = 6;
-			while (X<FrameSizeX)
-			{
-				g.DrawLine(pen, X, FrameSizeY, X, FrameSizeY - tick);
-				g.DrawLine(pen, X, 0, X, tick);
-				X += Xinc;
-			}
-			int Yinc = Convert.ToInt32(FrameSizeY / SideMarksY);
-			int Y = Yinc;
-			while (Y < FrameSizeY)
-			{
-				g.DrawLine(pen, FrameSizeX, Y, FrameSizeX - tick, Y);
-				g.DrawLine(pen, 0, Y, tick, Y);
-				Y += Yinc;
-			}
+        private void DrawCrossFunct(ref Bitmap img)
+        {
+            Pen pen = new Pen(Color.Red, 1);
+            Graphics g = Graphics.FromImage(img);
+            g.DrawLine(pen, FrameCenterX, 0, FrameCenterX, FrameSizeY);
+            g.DrawLine(pen, 0, FrameCenterY, FrameSizeX, FrameCenterY);
             pen.Dispose();
             g.Dispose();
         }
 
-		// =========================================================
-		private void DrawBoxFunct(Bitmap img)
-		{
-			Pen pen = new Pen(Color.Red, 1);
-			Graphics g = Graphics.FromImage(img);
-			g.DrawLine(pen, BoxPoints[0].X + FrameCenterX, BoxPoints[0].Y + FrameCenterY,
-				BoxPoints[1].X + FrameCenterX, BoxPoints[1].Y + FrameCenterY);
+        // =========================================================
 
-			g.DrawLine(pen, BoxPoints[1].X + FrameCenterX, BoxPoints[1].Y + FrameCenterY,
-				BoxPoints[2].X + FrameCenterX, BoxPoints[2].Y + FrameCenterY);
-
-			g.DrawLine(pen, BoxPoints[2].X + FrameCenterX, BoxPoints[2].Y + FrameCenterY,
-				BoxPoints[3].X + FrameCenterX, BoxPoints[3].Y + FrameCenterY);
-
-			g.DrawLine(pen, BoxPoints[3].X + FrameCenterX, BoxPoints[3].Y + FrameCenterY,
-				BoxPoints[0].X + FrameCenterX, BoxPoints[0].Y + FrameCenterY);
+        private void DrawSidemarksFunct(ref Bitmap img)
+        {
+            Pen pen = new Pen(Color.Red, 2);
+            Graphics g = Graphics.FromImage(img);
+            int Xinc = Convert.ToInt32(FrameSizeX / SideMarksX);
+            int X = Xinc;
+            int tick = 6;
+            while (X < FrameSizeX)
+            {
+                g.DrawLine(pen, X, FrameSizeY, X, FrameSizeY - tick);
+                g.DrawLine(pen, X, 0, X, tick);
+                X += Xinc;
+            }
+            int Yinc = Convert.ToInt32(FrameSizeY / SideMarksY);
+            int Y = Yinc;
+            while (Y < FrameSizeY)
+            {
+                g.DrawLine(pen, FrameSizeX, Y, FrameSizeX - tick, Y);
+                g.DrawLine(pen, 0, Y, tick, Y);
+                Y += Yinc;
+            }
             pen.Dispose();
             g.Dispose();
         }
 
-		private void DrawArrowFunct(Bitmap img)
-		{
-			Pen pen = new Pen(Color.Blue, 3);
-			Graphics g = Graphics.FromImage(img);
-            double length= 60;
+        // =========================================================
+        private void DrawBoxFunct(Bitmap img)
+        {
+            Pen pen = new Pen(Color.Red, 1);
+            Graphics g = Graphics.FromImage(img);
+            g.DrawLine(pen, BoxPoints[0].X + FrameCenterX, BoxPoints[0].Y + FrameCenterY,
+                BoxPoints[1].X + FrameCenterX, BoxPoints[1].Y + FrameCenterY);
+
+            g.DrawLine(pen, BoxPoints[1].X + FrameCenterX, BoxPoints[1].Y + FrameCenterY,
+                BoxPoints[2].X + FrameCenterX, BoxPoints[2].Y + FrameCenterY);
+
+            g.DrawLine(pen, BoxPoints[2].X + FrameCenterX, BoxPoints[2].Y + FrameCenterY,
+                BoxPoints[3].X + FrameCenterX, BoxPoints[3].Y + FrameCenterY);
+
+            g.DrawLine(pen, BoxPoints[3].X + FrameCenterX, BoxPoints[3].Y + FrameCenterY,
+                BoxPoints[0].X + FrameCenterX, BoxPoints[0].Y + FrameCenterY);
+            pen.Dispose();
+            g.Dispose();
+        }
+
+        private void DrawArrowFunct(Bitmap img)
+        {
+            Pen pen = new Pen(Color.Blue, 3);
+            Graphics g = Graphics.FromImage(img);
+            double length = 60;
             double angle1 = (Math.PI / -180.0) * (ArrowAngle + 90); // to radians, -180 to get ccw, +90 to start from up
             double angle2 = (Math.PI / -180.0) * (ArrowAngle - 90); // to radians, -180 to get ccw, -90 to draw from center away
             //Draw end
@@ -1909,88 +1909,87 @@ namespace LitePlacer
         }
 
 
-		// =========================================================
-		// Snapshot handling
-		// =========================================================
+        // =========================================================
+        // Snapshot handling
+        // =========================================================
 
-		// repeated rotations destroy the image. We'll store the original here and rotate only once.
-		public Bitmap SnapshotOriginalImage = new Bitmap(640, 480);
+        // repeated rotations destroy the image. We'll store the original here and rotate only once.
+        public Bitmap SnapshotOriginalImage = new Bitmap(640, 480);
 
         // This is the image drawn by draw snapshot function (both public so they can be set externally).
-		public Bitmap SnapshotImage = new Bitmap(640, 480);
+        public Bitmap SnapshotImage = new Bitmap(640, 480);
 
-		public double SnapshotRotation = 0.0;  // rotation when snapshot was taken
+        public double SnapshotRotation = 0.0;  // rotation when snapshot was taken
 
         public Color SnapshotColor { get; set; }
 
-		public void TakeSnapshot()
-		{
+        public void TakeSnapshot()
+        {
             Bitmap image = GetMeasurementFrame();
 
-			Color peek;
-			for (int y = 0; y < image.Height; y++)
-			{
-				for (int x = 0; x < image.Width; x++)
-				{
-					peek = image.GetPixel(x, y);
-					if (peek.R != 0)  // i.e. background
-					{
+            Color peek;
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    peek = image.GetPixel(x, y);
+                    if (peek.R != 0)  // i.e. background
+                    {
                         image.SetPixel(x, y, SnapshotColor);
-					}
-				}
-			}
+                    }
+                }
+            }
 
-			image.MakeTransparent(Color.Black);
-			SnapshotImage = new Bitmap(image);
-			SnapshotOriginalImage = new Bitmap(image);
+            image.MakeTransparent(Color.Black);
+            SnapshotImage = new Bitmap(image);
+            SnapshotOriginalImage = new Bitmap(image);
             image.Dispose();
-		}
+        }
 
 
 
-		// =========================================================
-		public bool rotating = false;
-		private bool overlaying = false;
+        // =========================================================
+        public bool rotating = false;
+        private bool overlaying = false;
 
-		private Bitmap Draw_SnapshotFunct(Bitmap image)
-		{
-			if (rotating)
-			{
-				return (image);
-			}
-			overlaying = true;
-			Graphics g = Graphics.FromImage(image);
-			g.DrawImage(SnapshotImage, new System.Drawing.Point(0, 0));
-			g.Dispose();
-			overlaying = false;
-			return (image);
-		}
+        private Bitmap Draw_SnapshotFunct(Bitmap image)
+        {
+            if (rotating)
+            {
+                return (image);
+            }
+            overlaying = true;
+            Graphics g = Graphics.FromImage(image);
+            g.DrawImage(SnapshotImage, new System.Drawing.Point(0, 0));
+            g.Dispose();
+            overlaying = false;
+            return (image);
+        }
 
-		// =========================================================
-		public void RotateSnapshot(double deg)
-		{
-			while (overlaying)
-			{
-				Thread.Sleep(10);
-			}
-			rotating = true;
-			// Convert to 24 bpp RGB Image
-			Rectangle dimensions = new Rectangle(0, 0, SnapshotOriginalImage.Width, SnapshotOriginalImage.Height);
-			Bitmap Snapshot24b = new Bitmap(SnapshotOriginalImage.Width, SnapshotOriginalImage.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-			using (Graphics gr = Graphics.FromImage(Snapshot24b))
-			{
-				gr.DrawImage(SnapshotOriginalImage, dimensions);
-                gr.Dispose();
-			}
+        // =========================================================
+        public void RotateSnapshot(double deg)
+        {
+            while (overlaying)
+            {
+                Thread.Sleep(10);
+            }
+            rotating = true;
+            // Convert to 24 bpp RGB Image
+            Rectangle dimensions = new Rectangle(0, 0, SnapshotOriginalImage.Width, SnapshotOriginalImage.Height);
+            Bitmap Snapshot24b = new Bitmap(SnapshotOriginalImage.Width, SnapshotOriginalImage.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            using (Graphics gr = Graphics.FromImage(Snapshot24b))
+            {
+                gr.DrawImage(SnapshotOriginalImage, dimensions);
+            }
 
-			RotateNearestNeighbor filter = new RotateNearestNeighbor(deg - SnapshotRotation, true);
-			Snapshot24b = filter.Apply(Snapshot24b);
-			// convert back to 32b, to have transparency
-			Snapshot24b.MakeTransparent(Color.Black);
-			SnapshotImage = Snapshot24b;
-			rotating = false;
-		}
+            RotateNearestNeighbor filter = new RotateNearestNeighbor(deg - SnapshotRotation, true);
+            Snapshot24b = filter.Apply(Snapshot24b);
+            // convert back to 32b, to have transparency
+            Snapshot24b.MakeTransparent(Color.Black);
+            SnapshotImage = Snapshot24b;
+            rotating = false;
+        }
 
 
-	}
+    }
 }

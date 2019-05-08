@@ -1,4 +1,4 @@
-#define TINYG_SHORTUNITS
+﻿#define TINYG_SHORTUNITS
 // Some firmvare versions use units in millions, some don't. If not, comment out the above line.
 
 using System;
@@ -807,7 +807,7 @@ namespace LitePlacer
                         }
                     }
                     bw.Flush();
-                    bw.Close();
+                    // bw.Close();
                 }
                 return true;
             }
@@ -942,7 +942,6 @@ namespace LitePlacer
                             }
                         }
                     }
-                    bw.Close();
                 }
                 LoadingDataGrid = false;
             }
