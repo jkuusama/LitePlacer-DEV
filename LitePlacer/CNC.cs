@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO.Ports;
 using System.Collections.Generic;
 using System.Linq;
@@ -246,7 +246,7 @@ namespace LitePlacer
         }
 
         public bool SlackCompensation { get; set; }
-        private double SlackCompensationDistance = 0.4;
+        public double SlackCompensationDistance { get; set; }
 
         public bool SlackCompensationA { get; set; }
         private double SlackCompensationDistanceA = 5.0;
@@ -274,16 +274,14 @@ namespace LitePlacer
                 _readyEvent.Set();
                 return;   // already there
             }
-            if ((!SlackCompensation)
-                ||
-                ((CurrentX < X) && (CurrentY < Y))
-                )
+            //if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
+            if (SlackCompensation)
             {
+                XY_move(X - SlackCompensationDistance, Y - SlackCompensationDistance);
                 XY_move(X, Y);
             }
             else
             {
-                XY_move(X - SlackCompensationDistance, Y - SlackCompensationDistance);
                 XY_move(X, Y);
             }
         }
@@ -347,7 +345,8 @@ namespace LitePlacer
             bool CompensateXY = false;
             bool CompensateA = false;
 
-            if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
+            //if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
+            if (SlackCompensation)
             {
                 CompensateXY = true;
             }

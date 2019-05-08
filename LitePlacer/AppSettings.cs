@@ -40,6 +40,7 @@ namespace LitePlacer
         public int CNC_NormalJogSpeed = 1000;
         public string CNC_SerialPort = "";
         public bool CNC_SlackCompensation = false;
+        public double SlackCompensationDistance = 0.4;
         public bool CNC_SlackCompensationA = false;
         public decimal CNC_SmallMovementSpeed = 150;
         public double CNC_SquareCorrection = 0;

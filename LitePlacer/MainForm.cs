@@ -1,4 +1,4 @@
-﻿#define TINYG_SHORTUNITS
+#define TINYG_SHORTUNITS
 // Some firmvare versions use units in millions, some don't. If not, comment out the above line.
 
 using System;
@@ -368,6 +368,8 @@ namespace LitePlacer
 
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
             SlackCompensation_checkBox.Checked = Setting.CNC_SlackCompensation;
+            SlackCompensationDistance_textBox.Text= Setting.SlackCompensationDistance.ToString("0.00", CultureInfo.InvariantCulture);
+            Cnc.SlackCompensationDistance = Setting.SlackCompensationDistance;
             Cnc.SlackCompensationA = Setting.CNC_SlackCompensationA;
             SlackCompensationA_checkBox.Checked = Setting.CNC_SlackCompensationA;
             Cnc.SmallMovementString = "G1 F" + Setting.CNC_SmallMovementSpeed + " ";
@@ -15578,6 +15580,28 @@ namespace LitePlacer
             CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
         }
 
+        private void SlackCompensationDistance_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            double val;
+            if (e.KeyChar == '\r')
+            {
+                if (double.TryParse(SlackCompensationDistance_textBox.Text.Replace(',', '.'), out val))
+                {
+                    Setting.SlackCompensationDistance = val;
+                    Cnc.SlackCompensationDistance = val;
+                }
+            }
+        }
+
+        private void SlackCompensationDistance_textBox_Leave(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(SlackCompensationDistance_textBox.Text.Replace(',', '.'), out val))
+            {
+                Setting.SlackCompensationDistance = val;
+                Cnc.SlackCompensationDistance = val;
+            }
+        }
 
     }	// end of: 	public partial class FormMain : Form
 
