@@ -4460,6 +4460,8 @@ namespace LitePlacer
                     UpdateCncConnectionStatus();
                     if (ControlBoardJustConnected())
                     {
+                        Cnc.PumpDefaultSetting();
+                        Cnc.VacuumDefaultSetting();
                         OfferHoming();
                     }
                     else
