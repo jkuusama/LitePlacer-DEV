@@ -1745,9 +1745,6 @@ namespace LitePlacer
                 return;
             };
 
-
-
-
             if (!CamShowPixels_checkBox.Checked)
             {
                 // image on screen is not at camera resolution
@@ -3352,25 +3349,24 @@ namespace LitePlacer
         // =================================================================================
         private void tabPageSetupCameras_Begin()
         {
-            SetDownCameraDefaults();
             DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString(CultureInfo.InvariantCulture);
-            DownCamera.DrawBox = DownCameraDrawBox_checkBox.Checked;
-            DownCamera.DrawCross = DownCameraDrawCross_checkBox.Checked;
-            DownCamera.DrawSidemarks = DownCameraDrawTicks_checkBox.Checked;
-            DownCamera.Draw_Snapshot = Overlay_checkBox.Checked;
-            DownCamera.FindCircles = DownCamFindCircles_checkBox.Checked;
-            DownCamera.FindRectangles = DownCamFindRectangles_checkBox.Checked;
-            DownCamera.FindComponent = DownCam_FindComponents_checkBox.Checked;
+            DownCamera.DrawBox = DownCamera.DrawBox;
+            DownCamera.DrawCross = DownCamera.DrawCross;
+            DownCamera.DrawSidemarks = DownCamera.DrawSidemarks;
+            DownCamera.Draw_Snapshot = DownCamera.Draw_Snapshot;
+            DownCamera.FindCircles = DownCamera.FindCircles;
+            DownCamera.FindRectangles = DownCamera.FindRectangles;
+            DownCamera.FindComponent = DownCamera.FindComponent;
 
             SetUpCameraDefaults();
             UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString(CultureInfo.InvariantCulture);
-            UpCamera.DrawBox = UpCameraDrawBox_checkBox.Checked;
-            UpCamera.DrawCross = UpCameraDrawCross_checkBox.Checked;
-            UpCamera.Draw_Snapshot = Overlay_checkBox.Checked;
-            UpCamera.FindCircles = UpCamFindCircles_checkBox.Checked;
-            UpCamera.FindComponent = UpCam_FindComponents_checkBox.Checked;
+            UpCamera.DrawBox = UpCamera.DrawBox;
+            UpCamera.DrawCross = UpCamera.DrawCross;
+            UpCamera.Draw_Snapshot = UpCamera.Draw_Snapshot;
+            UpCamera.FindCircles = UpCamera.FindCircles;
+            UpCamera.FindComponent = UpCamera.FindComponent;
 
             NozzleOffset_label.Visible = false;
             ClearEditTargets();
@@ -3412,8 +3408,14 @@ namespace LitePlacer
             NozzleDistance_textBox.Text = Setting.Nozzles_CalibrationDistance.ToString(CultureInfo.InvariantCulture);
             NozzleMaxSize_textBox.Text = Setting.Nozzles_CalibrationMaxSize.ToString(CultureInfo.InvariantCulture);
             NozzleMinSize_textBox.Text = Setting.Nozzles_CalibrationMinSize.ToString(CultureInfo.InvariantCulture);
-            CamShowPixels_checkBox.Checked = true;
-            Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+            if (CamShowPixels_checkBox.Checked)
+            {
+                Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+            }
+            else
+            {
+                Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            }
 
             FiducialManConfirmation_checkBox.Checked = Setting.Placement_FiducialConfirmation;
             if (Setting.Placement_FiducialsType == 0)
@@ -6933,8 +6935,6 @@ namespace LitePlacer
                 );
             }
             DownCamera.DrawCross = true;
-            DownCamera.BoxSizeX = 200;
-            DownCamera.BoxSizeY = 200;
             DownCamera.BoxRotationDeg = 0;
             DownCamera.TestAlgorithm = false;
             DownCamera.Draw_Snapshot = false;
