@@ -56,8 +56,8 @@ namespace LitePlacer
         NozzleClass Nozzle;
         TapesClass Tapes;
         public MySettings Setting { get; set; }
-        public BoardSettings.TinyG TinyGBoard { get; set; } = new BoardSettings.TinyG();
-        public BoardSettings.QQuintic qQuinticBoard { get; set; } = new BoardSettings.QQuintic();
+        public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
+        public QQuinticSettings qQuinticBoard { get; set; } = new QQuinticSettings();
 
         AppSettings SettingsOps;
 
@@ -4553,15 +4553,16 @@ namespace LitePlacer
 
         // Sends the calls that will result to messages that update the values shown on UI
 
-        private bool LoopParameters(Type type)
+        private bool LoopTinyGParameters()
         {
-            foreach (var parameter in type.GetFields())
+
+            foreach (var parameter in TinyGBoard.GetType().GetProperties())
             {
                 // The motor parameters are <motor number><parameter>, such as 1ma, 1sa, 1tr etc.
-                // These are not valid parameter names, so motor1ma, motor1sa etc are used.
-                // to retrieve the values, we remove the "motor"
+                // These are not valid parameter names, so Motor1ma, motor1sa etc are used.
+                // to retrieve the values, we remove the "Motor"
                 string Name = parameter.Name;
-                if (Name.StartsWith("motor", StringComparison.Ordinal))
+                if (Name.StartsWith("Motor", StringComparison.Ordinal))
                 {
                     Name = Name.Substring(5);
                 }
@@ -4602,7 +4603,7 @@ namespace LitePlacer
             if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
             {
                 DisplayText("Reading TinyG settings:");
-                if (!LoopParameters(typeof(BoardSettings.TinyG)))
+                if (!LoopTinyGParameters())
                 {
                     return false;
                 }
@@ -15274,8 +15275,8 @@ namespace LitePlacer
             AppSettings_openFileDialog.FileName = "LitePlacer.BoardSettings";
             AppSettings_openFileDialog.InitialDirectory = path;
 
-            BoardSettings.TinyG tg = TinyGBoard;
-            BoardSettings.QQuintic qQ = qQuinticBoard;
+            TinyGSettings tg = TinyGBoard;
+            QQuinticSettings qQ = qQuinticBoard;
 
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -15291,8 +15292,8 @@ namespace LitePlacer
 
         private void BoardBuiltInSettings_button_Click(object sender, EventArgs e)
         {
-            TinyGBoard = new BoardSettings.TinyG();
-            qQuinticBoard = new BoardSettings.QQuintic();
+            TinyGBoard = new TinyGSettings();
+            qQuinticBoard = new QQuinticSettings();
             WriteAllBoardSettings_m();
         }
 

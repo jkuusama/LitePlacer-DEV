@@ -11,12 +11,8 @@ namespace LitePlacer
 {
 #pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
 
-    public static class BoardSettings
-    {
         // These parameters on both TinyG and qQuintic:
-#pragma warning disable CA1034 // Nested types should not be visible
-        public class CommonSettings
-#pragma warning restore CA1034 // Nested types should not be visible
+        public class CommonBoardSettings
         {
             // ==========  System values  ==========
             public string Sys_st { get; set; } = "0";     // switch type, [0=NO,1=NC]
@@ -114,9 +110,7 @@ namespace LitePlacer
 
         }
 
-#pragma warning disable CA1034 // Nested types should not be visible
-        public class TinyG : CommonSettings
-#pragma warning restore CA1034 // Nested types should not be visible
+        public class TinyGSettings : CommonBoardSettings
         {
             public string TG_ec { get; set; } = "0";     // expand LF to CRLF on TX [0=off,1=on]
             public string TG_ee { get; set; } = "0";     // enable echo [0=off,1=on]
@@ -133,9 +127,7 @@ namespace LitePlacer
             public string Asx { get; set; } = "0";   // a switch max [0=off,1=homing,2=limit,3=limit+homing];
         }
 
-#pragma warning disable CA1034 // Nested types should not be visible
-        public class QQuintic : CommonSettings
-#pragma warning restore CA1034 // Nested types should not be visible
+        public class QQuinticSettings : CommonBoardSettings
         {
             public string Motor1pl { get; set; } = "0.600";    // motor power level [0.000=minimum, 1.000=maximum]
             public string Motor2pl { get; set; } = "0.600";    // motor power level [0.000=minimum, 1.000=maximum]
@@ -156,12 +148,14 @@ namespace LitePlacer
             public string Bhi { get; set; } = "0";     // b homing input [input 1-N or 0 to disable homing this axis]
         }
 
+    public static class BoardSettings
+    {
 
-        static public FormMain MainForm { get; set; }
+    static public FormMain MainForm { get; set; }
 
         // Board settings file: Text file, starting with 8 characters board name and \n\r, 
-        // then the setings in Json format
-        static public bool Save(TinyG TinyGSettings, QQuintic qQuinticSettings, string FileName)
+        // then the settings in Json format
+        static public bool Save(TinyGSettings TinyGSettings, QQuinticSettings qQuinticSettings, string FileName)
         {
             try
             {
@@ -188,7 +182,7 @@ namespace LitePlacer
             }
         }
 
-        static public bool Load(ref TinyG TinyGSettings, ref QQuintic qQuinticSettings, string FileName)
+        static public bool Load(ref TinyGSettings TinyGSettings, ref QQuinticSettings qQuinticSettings, string FileName)
         {
             string content = "";
             try
@@ -216,12 +210,11 @@ namespace LitePlacer
                 content = content.Remove(0, 10);
                 if (boardType == "TinyG   \n\r")
                 {
-                    TinyGSettings = JsonConvert.DeserializeObject<TinyG>(content);
+                    TinyGSettings = JsonConvert.DeserializeObject<TinyGSettings>(content);
                 }
                 else if (boardType == "qQuintic\n\r")
                 {
-                    qQuinticSettings = JsonConvert.DeserializeObject<QQuintic>(content
-                        );
+                    qQuinticSettings = JsonConvert.DeserializeObject<QQuinticSettings>(content);
                 }
                 else
                 {
