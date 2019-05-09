@@ -2929,12 +2929,11 @@ namespace LitePlacer
             SetHomingMeasurement();
             double X;
             double Y;
-            // Find within 20mm, goto within 0.05
+            // Find within 20mm, goto within 0.5
             if (!GoToFeatureLocation_m(FeatureType.Circle, 20.0, 0.05, out X, out Y))
             {
                 return false;
             }
-
             // Measure 7 times, get median: 
             SetHomingMeasurement();
             List<double> Xlist = new List<double>();
@@ -2945,12 +2944,12 @@ namespace LitePlacer
             do
             {
                 Tries++;
-                res = DownCamera.GetClosestCircle(out X, out Y, 0.1 / Setting.DownCam_XmmPerPixel);
+                res = DownCamera.GetClosestCircle(out X, out Y, 1 / Setting.DownCam_XmmPerPixel);
                 if (res == 1)
                 {
                     Successes++;
                     X = -X * Setting.DownCam_XmmPerPixel;
-                    Y = -Y * Setting.DownCam_YmmPerPixel;
+                    Y = Y * Setting.DownCam_YmmPerPixel;
                     Xlist.Add(X);
                     Ylist.Add(Y);
                     DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
@@ -11829,6 +11828,7 @@ namespace LitePlacer
                     {
                         Tapes_dataGridView.Rows[tape].Cells["Z_Pickup_Column"].Value = "--";
                     }
+                    DoRow = false;
                 }
             }
         }
