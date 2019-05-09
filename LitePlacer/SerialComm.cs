@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace LitePlacer
 {
+#pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
+
     class SerialComm
     {
         
@@ -146,20 +148,22 @@ namespace LitePlacer
                 //The received data is ASCII
                 RxString += Encoding.ASCII.GetString(buffer, 0, bytesRead);
                 //Process each line
-                while (RxString.IndexOf("\n") > -1)
+                while (RxString.IndexOf("\n", StringComparison.Ordinal) > -1)
                 {
                         //Even when RxString does contain terminator we cannot assume that it is the last character received 
-                        WorkingString = RxString.Substring(0, RxString.IndexOf("\n")+1);
+                        WorkingString = RxString.Substring(0, RxString.IndexOf("\n", StringComparison.Ordinal) +1);
                         //Remove the data and the terminator from tString 
-                        RxString = RxString.Substring(RxString.IndexOf("\n") + 1);
+                        RxString = RxString.Substring(RxString.IndexOf("\n", StringComparison.Ordinal) + 1);
                         Cnc.InterpretLine(WorkingString);
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
             {
                 MainForm.DisplayText("########## " + ex);
             }
-         } 
+#pragma warning restore CA1031 // Do not catch general exception types
+        } 
 
      }
 }

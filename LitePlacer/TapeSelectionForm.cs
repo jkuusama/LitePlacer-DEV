@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -13,16 +14,16 @@ namespace LitePlacer
 	{
         static FormMain MainForm;
 
-        public DataGridView Grid;
-		public string ID = "none";
-        public string Nozzle;
-        public string HeaderString = "";
+        public DataGridView Grid { get; set; }
+        public string ID { get; set; } = "none";
+        public string Nozzle { get; set; }
+        public string HeaderString { get; set; }= "";
 
-		const int ButtonWidth = 75;
-		const int ButtonHeight = 23;
-		const int SideGap = 12;
-		const int ButtonGap = 6;
-		Size ButtonSize = new Size(ButtonWidth, ButtonHeight);
+		//const int ButtonWidth = 75;
+		//const int ButtonHeight = 23;
+		// const int SideGap = 12;
+		// const int ButtonGap = 6;
+		// Size ButtonSize = new Size(ButtonWidth, ButtonHeight);
 
         private Size GridSizeSave= new Size();
 
@@ -32,7 +33,7 @@ namespace LitePlacer
             InitializeComponent();
 			Grid = grd;
             GridSizeSave = Grid.Size;
-            Nozzle = MainForm.Setting.Nozzles_default.ToString();
+            Nozzle = MainForm.Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
             // this.Size = new Size(10 * ButtonWidth + 9*ButtonGap + 2 * SideGap+20, 133);  // 20?? 404; 480
             this.Controls.Add(Grid);
 			for (int i = 0; i < Grid.RowCount; i++)
@@ -89,7 +90,7 @@ namespace LitePlacer
                     "Warning: This tape has no nozzle defined, using default value",
                     "No nozzle defined",
                     MessageBoxButtons.OK);
-                Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value = MainForm.Setting.Nozzles_default.ToString();
+                Grid.Rows[e.RowIndex].Cells["Nozzle_Column"].Value = MainForm.Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
             }
             CloseForm();
         }

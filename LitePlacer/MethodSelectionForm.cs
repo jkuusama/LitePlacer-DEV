@@ -11,9 +11,9 @@ namespace LitePlacer
 {
 	public partial class MethodSelectionForm : Form
 	{
-		public string SelectedMethod = "";
-		public bool ShowCheckBox = false;
-		public string HeaderString = "";
+		public string SelectedMethod { get; set; } = "";
+		public bool ShowCheckBox { get; set; } = false;
+		public string HeaderString { get; set; } = "";
 
         static FormMain MainForm;
 

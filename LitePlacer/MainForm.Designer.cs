@@ -6495,7 +6495,7 @@ namespace LitePlacer
             this.avm_maskedTextBox.TabIndex = 17;
             this.avm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.avm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.avm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.avm_maskedTextBox_KeyPress);
+            this.avm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Avm_maskedTextBox_KeyPress);
             // 
             // label49
             // 
@@ -6806,7 +6806,7 @@ namespace LitePlacer
             this.xvm_maskedTextBox.TabIndex = 17;
             this.xvm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.xvm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.xvm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.xvm_maskedTextBox_KeyPress);
+            this.xvm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Xvm_maskedTextBox_KeyPress);
             // 
             // label27
             // 
@@ -7117,7 +7117,7 @@ namespace LitePlacer
             this.zvm_maskedTextBox.TabIndex = 17;
             this.zvm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.zvm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.zvm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zvm_maskedTextBox_KeyPress);
+            this.zvm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Zvm_maskedTextBox_KeyPress);
             // 
             // label38
             // 
@@ -7429,7 +7429,7 @@ namespace LitePlacer
             this.yvm_maskedTextBox.TabIndex = 17;
             this.yvm_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.yvm_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.yvm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.yvm_maskedTextBox_KeyPress);
+            this.yvm_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Yvm_maskedTextBox_KeyPress);
             // 
             // label9
             // 
@@ -7499,7 +7499,7 @@ namespace LitePlacer
             this.buttonRefreshPortList.Text = "Refresh List";
             this.toolTip1.SetToolTip(this.buttonRefreshPortList, "Re-scans the serial ports on this computer");
             this.buttonRefreshPortList.UseVisualStyleBackColor = true;
-            this.buttonRefreshPortList.Click += new System.EventHandler(this.buttonRefreshPortList_Click);
+            this.buttonRefreshPortList.Click += new System.EventHandler(this.ButtonRefreshPortList_Click);
             // 
             // labelSerialPortStatus
             // 
@@ -7609,7 +7609,7 @@ namespace LitePlacer
             this.ClearPlaced_button.TabIndex = 82;
             this.ClearPlaced_button.Text = "Clear \"Placed\"";
             this.ClearPlaced_button.UseVisualStyleBackColor = true;
-            this.ClearPlaced_button.Click += new System.EventHandler(this.resetPlacedDataToolStripMenuItem_Click);
+            this.ClearPlaced_button.Click += new System.EventHandler(this.ResetPlacedDataToolStripMenuItem_Click);
             // 
             // Placement_pictureBox
             // 
@@ -8531,7 +8531,7 @@ namespace LitePlacer
             this.resetPlacedDataToolStripMenuItem.Name = "resetPlacedDataToolStripMenuItem";
             this.resetPlacedDataToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.resetPlacedDataToolStripMenuItem.Text = "Reset \"Placed\" data";
-            this.resetPlacedDataToolStripMenuItem.Click += new System.EventHandler(this.resetPlacedDataToolStripMenuItem_Click);
+            this.resetPlacedDataToolStripMenuItem.Click += new System.EventHandler(this.ResetPlacedDataToolStripMenuItem_Click);
             // 
             // CadFilePath_label
             // 
