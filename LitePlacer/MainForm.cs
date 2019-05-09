@@ -2929,7 +2929,7 @@ namespace LitePlacer
             SetHomingMeasurement();
             double X;
             double Y;
-            // Find within 20mm, goto within 0.5
+            // Find within 20mm, goto within 0.05
             if (!GoToFeatureLocation_m(FeatureType.Circle, 20.0, 0.05, out X, out Y))
             {
                 return false;
