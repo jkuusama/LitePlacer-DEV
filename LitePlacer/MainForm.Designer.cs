@@ -143,6 +143,7 @@
             this.SizeX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SizeY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
+            this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label130 = new System.Windows.Forms.Label();
             this.UpCameraYmmPerPixel_textBox = new System.Windows.Forms.TextBox();
@@ -243,7 +244,6 @@
             this.label93 = new System.Windows.Forms.Label();
             this.label94 = new System.Windows.Forms.Label();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
-            this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
             this.Ato0_button = new System.Windows.Forms.Button();
             this.VacuumInvert_checkBox = new System.Windows.Forms.CheckBox();
@@ -335,7 +335,6 @@
             this.TestXY_button = new System.Windows.Forms.Button();
             this.TestY_button = new System.Windows.Forms.Button();
             this.TestX_button = new System.Windows.Forms.Button();
-            this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.tr4_textBox = new System.Windows.Forms.TextBox();
             this.m4deg18_radioButton = new System.Windows.Forms.RadioButton();
@@ -350,11 +349,9 @@
             this.label48 = new System.Windows.Forms.Label();
             this.avm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label49 = new System.Windows.Forms.Label();
-            this.label50 = new System.Windows.Forms.Label();
             this.label51 = new System.Windows.Forms.Label();
             this.ajm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label52 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.label73 = new System.Windows.Forms.Label();
             this.xsv_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label74 = new System.Windows.Forms.Label();
@@ -378,11 +375,9 @@
             this.label26 = new System.Windows.Forms.Label();
             this.xvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.xjm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label30 = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
             this.label81 = new System.Windows.Forms.Label();
             this.zsv_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label82 = new System.Windows.Forms.Label();
@@ -406,11 +401,9 @@
             this.label37 = new System.Windows.Forms.Label();
             this.zvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label38 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
             this.label40 = new System.Windows.Forms.Label();
             this.zjm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label41 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.label77 = new System.Windows.Forms.Label();
             this.ysv_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label78 = new System.Windows.Forms.Label();
@@ -434,7 +427,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.yvm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.yjm_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -697,6 +689,12 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.Motors_tabControl = new System.Windows.Forms.TabControl();
+            this.X_tabPage = new System.Windows.Forms.TabPage();
+            this.Y_tabPage = new System.Windows.Forms.TabPage();
+            this.Z_tabPage = new System.Windows.Forms.TabPage();
+            this.A_tabPage = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -704,23 +702,19 @@
             this.Components_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
             this.tabPageSetupCameras.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Temp_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
             this.tabPageBasicSetup.SuspendLayout();
             this.panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AltJogSpeed_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NormalJogSpeed_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CtlrJogSpeed_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SmallMovement_numericUpDown)).BeginInit();
-            this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.RunJob_tabPage.SuspendLayout();
             this.groupBox12.SuspendLayout();
@@ -747,6 +741,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).BeginInit();
             this.NozzleLoad_contextMenuStrip.SuspendLayout();
+            this.Motors_tabControl.SuspendLayout();
+            this.X_tabPage.SuspendLayout();
+            this.Y_tabPage.SuspendLayout();
+            this.Z_tabPage.SuspendLayout();
+            this.A_tabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // Park_button
@@ -1949,6 +1948,18 @@
             this.tabPageSetupCameras.Text = "Setup Cameras";
             this.tabPageSetupCameras.UseVisualStyleBackColor = true;
             // 
+            // Cam_pictureBox
+            // 
+            this.Cam_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Cam_pictureBox.Location = new System.Drawing.Point(6, 6);
+            this.Cam_pictureBox.Name = "Cam_pictureBox";
+            this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
+            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.Cam_pictureBox.TabIndex = 10;
+            this.Cam_pictureBox.TabStop = false;
+            this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
+            this.Cam_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseMove);
+            // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.label130);
@@ -3046,20 +3057,10 @@
             this.ImageTest_checkBox.Visible = false;
             this.ImageTest_checkBox.CheckedChanged += new System.EventHandler(this.ImageTest_checkBox_CheckedChanged);
             // 
-            // Cam_pictureBox
-            // 
-            this.Cam_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Cam_pictureBox.Location = new System.Drawing.Point(6, 6);
-            this.Cam_pictureBox.Name = "Cam_pictureBox";
-            this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.Cam_pictureBox.TabIndex = 10;
-            this.Cam_pictureBox.TabStop = false;
-            this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
-            this.Cam_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseMove);
-            // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.label7);
+            this.tabPageBasicSetup.Controls.Add(this.Motors_tabControl);
             this.tabPageBasicSetup.Controls.Add(this.Ato0_button);
             this.tabPageBasicSetup.Controls.Add(this.VacuumInvert_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.PumpInvert_checkBox);
@@ -3139,10 +3140,6 @@
             this.tabPageBasicSetup.Controls.Add(this.TestXY_button);
             this.tabPageBasicSetup.Controls.Add(this.TestY_button);
             this.tabPageBasicSetup.Controls.Add(this.TestX_button);
-            this.tabPageBasicSetup.Controls.Add(this.panel7);
-            this.tabPageBasicSetup.Controls.Add(this.panel3);
-            this.tabPageBasicSetup.Controls.Add(this.panel5);
-            this.tabPageBasicSetup.Controls.Add(this.panel1);
             this.tabPageBasicSetup.Controls.Add(this.label3);
             this.tabPageBasicSetup.Controls.Add(this.buttonRefreshPortList);
             this.tabPageBasicSetup.Controls.Add(this.labelSerialPortStatus);
@@ -3159,7 +3156,7 @@
             // 
             // Ato0_button
             // 
-            this.Ato0_button.Location = new System.Drawing.Point(860, 435);
+            this.Ato0_button.Location = new System.Drawing.Point(726, 153);
             this.Ato0_button.Name = "Ato0_button";
             this.Ato0_button.Size = new System.Drawing.Size(75, 23);
             this.Ato0_button.TabIndex = 114;
@@ -3752,7 +3749,7 @@
             // 
             // TestXYA_button
             // 
-            this.TestXYA_button.Location = new System.Drawing.Point(735, 459);
+            this.TestXYA_button.Location = new System.Drawing.Point(601, 255);
             this.TestXYA_button.Name = "TestXYA_button";
             this.TestXYA_button.Size = new System.Drawing.Size(75, 23);
             this.TestXYA_button.TabIndex = 56;
@@ -3851,7 +3848,7 @@
             // 
             // TestYX_button
             // 
-            this.TestYX_button.Location = new System.Drawing.Point(230, 486);
+            this.TestYX_button.Location = new System.Drawing.Point(498, 255);
             this.TestYX_button.Name = "TestYX_button";
             this.TestYX_button.Size = new System.Drawing.Size(75, 23);
             this.TestYX_button.TabIndex = 55;
@@ -3975,7 +3972,7 @@
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(822, 487);
+            this.label72.Location = new System.Drawing.Point(723, 208);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(89, 13);
             this.label72.TabIndex = 36;
@@ -3983,7 +3980,7 @@
             // 
             // TestA_button
             // 
-            this.TestA_button.Location = new System.Drawing.Point(860, 461);
+            this.TestA_button.Location = new System.Drawing.Point(726, 179);
             this.TestA_button.Name = "TestA_button";
             this.TestA_button.Size = new System.Drawing.Size(75, 23);
             this.TestA_button.TabIndex = 35;
@@ -3994,7 +3991,7 @@
             // 
             // Homebutton
             // 
-            this.Homebutton.Location = new System.Drawing.Point(477, 435);
+            this.Homebutton.Location = new System.Drawing.Point(553, 208);
             this.Homebutton.Name = "Homebutton";
             this.Homebutton.Size = new System.Drawing.Size(75, 23);
             this.Homebutton.TabIndex = 17;
@@ -4005,7 +4002,7 @@
             // 
             // TestZ_button
             // 
-            this.TestZ_button.Location = new System.Drawing.Point(593, 461);
+            this.TestZ_button.Location = new System.Drawing.Point(601, 179);
             this.TestZ_button.Name = "TestZ_button";
             this.TestZ_button.Size = new System.Drawing.Size(75, 23);
             this.TestZ_button.TabIndex = 34;
@@ -4016,7 +4013,7 @@
             // 
             // HomeZ_button
             // 
-            this.HomeZ_button.Location = new System.Drawing.Point(593, 435);
+            this.HomeZ_button.Location = new System.Drawing.Point(601, 153);
             this.HomeZ_button.Name = "HomeZ_button";
             this.HomeZ_button.Size = new System.Drawing.Size(75, 23);
             this.HomeZ_button.TabIndex = 33;
@@ -4027,7 +4024,7 @@
             // 
             // HomeY_button
             // 
-            this.HomeY_button.Location = new System.Drawing.Point(341, 435);
+            this.HomeY_button.Location = new System.Drawing.Point(498, 153);
             this.HomeY_button.Name = "HomeY_button";
             this.HomeY_button.Size = new System.Drawing.Size(75, 23);
             this.HomeY_button.TabIndex = 32;
@@ -4038,7 +4035,7 @@
             // 
             // HomeXY_button
             // 
-            this.HomeXY_button.Location = new System.Drawing.Point(230, 435);
+            this.HomeXY_button.Location = new System.Drawing.Point(452, 209);
             this.HomeXY_button.Name = "HomeXY_button";
             this.HomeXY_button.Size = new System.Drawing.Size(75, 23);
             this.HomeXY_button.TabIndex = 31;
@@ -4049,7 +4046,7 @@
             // 
             // HomeX_button
             // 
-            this.HomeX_button.Location = new System.Drawing.Point(88, 435);
+            this.HomeX_button.Location = new System.Drawing.Point(402, 154);
             this.HomeX_button.Name = "HomeX_button";
             this.HomeX_button.Size = new System.Drawing.Size(75, 23);
             this.HomeX_button.TabIndex = 30;
@@ -4095,7 +4092,7 @@
             // 
             // TestXY_button
             // 
-            this.TestXY_button.Location = new System.Drawing.Point(230, 461);
+            this.TestXY_button.Location = new System.Drawing.Point(402, 255);
             this.TestXY_button.Name = "TestXY_button";
             this.TestXY_button.Size = new System.Drawing.Size(75, 23);
             this.TestXY_button.TabIndex = 24;
@@ -4106,7 +4103,7 @@
             // 
             // TestY_button
             // 
-            this.TestY_button.Location = new System.Drawing.Point(341, 461);
+            this.TestY_button.Location = new System.Drawing.Point(498, 179);
             this.TestY_button.Name = "TestY_button";
             this.TestY_button.Size = new System.Drawing.Size(75, 23);
             this.TestY_button.TabIndex = 23;
@@ -4117,7 +4114,7 @@
             // 
             // TestX_button
             // 
-            this.TestX_button.Location = new System.Drawing.Point(88, 461);
+            this.TestX_button.Location = new System.Drawing.Point(402, 180);
             this.TestX_button.Name = "TestX_button";
             this.TestX_button.Size = new System.Drawing.Size(75, 23);
             this.TestX_button.TabIndex = 22;
@@ -4125,23 +4122,6 @@
             this.toolTip1.SetToolTip(this.TestX_button, "Makes some moves to test axis settings");
             this.TestX_button.UseVisualStyleBackColor = true;
             this.TestX_button.Click += new System.EventHandler(this.TestX_button_Click);
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel7.Controls.Add(this.panel8);
-            this.panel7.Controls.Add(this.label48);
-            this.panel7.Controls.Add(this.avm_maskedTextBox);
-            this.panel7.Controls.Add(this.label49);
-            this.panel7.Controls.Add(this.label50);
-            this.panel7.Controls.Add(this.label51);
-            this.panel7.Controls.Add(this.ajm_maskedTextBox);
-            this.panel7.Controls.Add(this.label52);
-            this.panel7.Location = new System.Drawing.Point(764, 101);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(244, 331);
-            this.panel7.TabIndex = 21;
             // 
             // panel8
             // 
@@ -4156,7 +4136,7 @@
             this.panel8.Controls.Add(this.label45);
             this.panel8.Controls.Add(this.Microsteps4_label);
             this.panel8.Controls.Add(this.label47);
-            this.panel8.Location = new System.Drawing.Point(3, 214);
+            this.panel8.Location = new System.Drawing.Point(6, 201);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(236, 112);
             this.panel8.TabIndex = 18;
@@ -4264,7 +4244,7 @@
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(3, 53);
+            this.label48.Location = new System.Drawing.Point(6, 40);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(91, 13);
             this.label48.TabIndex = 16;
@@ -4272,7 +4252,7 @@
             // 
             // avm_maskedTextBox
             // 
-            this.avm_maskedTextBox.Location = new System.Drawing.Point(105, 50);
+            this.avm_maskedTextBox.Location = new System.Drawing.Point(108, 37);
             this.avm_maskedTextBox.Mask = "99999";
             this.avm_maskedTextBox.Name = "avm_maskedTextBox";
             this.avm_maskedTextBox.PromptChar = ' ';
@@ -4286,26 +4266,16 @@
             // label49
             // 
             this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(154, 54);
+            this.label49.Location = new System.Drawing.Point(157, 41);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(67, 13);
             this.label49.TabIndex = 15;
             this.label49.Text = "000 deg/min";
             // 
-            // label50
-            // 
-            this.label50.AutoSize = true;
-            this.label50.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label50.Location = new System.Drawing.Point(3, 4);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(26, 20);
-            this.label50.TabIndex = 14;
-            this.label50.Text = "A:";
-            // 
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(3, 28);
+            this.label51.Location = new System.Drawing.Point(6, 15);
             this.label51.Name = "label51";
             this.label51.Size = new System.Drawing.Size(74, 13);
             this.label51.TabIndex = 12;
@@ -4313,7 +4283,7 @@
             // 
             // ajm_maskedTextBox
             // 
-            this.ajm_maskedTextBox.Location = new System.Drawing.Point(105, 25);
+            this.ajm_maskedTextBox.Location = new System.Drawing.Point(108, 12);
             this.ajm_maskedTextBox.Mask = "99999";
             this.ajm_maskedTextBox.Name = "ajm_maskedTextBox";
             this.ajm_maskedTextBox.PromptChar = ' ';
@@ -4327,42 +4297,16 @@
             // label52
             // 
             this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(151, 27);
+            this.label52.Location = new System.Drawing.Point(154, 14);
             this.label52.Name = "label52";
             this.label52.Size = new System.Drawing.Size(80, 13);
             this.label52.TabIndex = 11;
             this.label52.Text = "10^6mm/min^3";
             // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.label73);
-            this.panel3.Controls.Add(this.xsv_maskedTextBox);
-            this.panel3.Controls.Add(this.label74);
-            this.panel3.Controls.Add(this.label75);
-            this.panel3.Controls.Add(this.xjh_maskedTextBox);
-            this.panel3.Controls.Add(this.label76);
-            this.panel3.Controls.Add(this.Xmax_checkBox);
-            this.panel3.Controls.Add(this.Xlim_checkBox);
-            this.panel3.Controls.Add(this.Xhome_checkBox);
-            this.panel3.Controls.Add(this.panel4);
-            this.panel3.Controls.Add(this.label26);
-            this.panel3.Controls.Add(this.xvm_maskedTextBox);
-            this.panel3.Controls.Add(this.label27);
-            this.panel3.Controls.Add(this.label28);
-            this.panel3.Controls.Add(this.label29);
-            this.panel3.Controls.Add(this.xjm_maskedTextBox);
-            this.panel3.Controls.Add(this.label30);
-            this.panel3.Location = new System.Drawing.Point(14, 101);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(244, 331);
-            this.panel3.TabIndex = 19;
-            // 
             // label73
             // 
             this.label73.AutoSize = true;
-            this.label73.Location = new System.Drawing.Point(3, 189);
+            this.label73.Location = new System.Drawing.Point(6, 176);
             this.label73.Name = "label73";
             this.label73.Size = new System.Drawing.Size(78, 13);
             this.label73.TabIndex = 26;
@@ -4370,7 +4314,7 @@
             // 
             // xsv_maskedTextBox
             // 
-            this.xsv_maskedTextBox.Location = new System.Drawing.Point(112, 186);
+            this.xsv_maskedTextBox.Location = new System.Drawing.Point(115, 173);
             this.xsv_maskedTextBox.Mask = "99999";
             this.xsv_maskedTextBox.Name = "xsv_maskedTextBox";
             this.xsv_maskedTextBox.PromptChar = ' ';
@@ -4384,7 +4328,7 @@
             // label74
             // 
             this.label74.AutoSize = true;
-            this.label74.Location = new System.Drawing.Point(161, 189);
+            this.label74.Location = new System.Drawing.Point(164, 176);
             this.label74.Name = "label74";
             this.label74.Size = new System.Drawing.Size(44, 13);
             this.label74.TabIndex = 25;
@@ -4393,7 +4337,7 @@
             // label75
             // 
             this.label75.AutoSize = true;
-            this.label75.Location = new System.Drawing.Point(4, 163);
+            this.label75.Location = new System.Drawing.Point(7, 150);
             this.label75.Name = "label75";
             this.label75.Size = new System.Drawing.Size(107, 13);
             this.label75.TabIndex = 23;
@@ -4401,7 +4345,7 @@
             // 
             // xjh_maskedTextBox
             // 
-            this.xjh_maskedTextBox.Location = new System.Drawing.Point(112, 160);
+            this.xjh_maskedTextBox.Location = new System.Drawing.Point(115, 147);
             this.xjh_maskedTextBox.Mask = "99999";
             this.xjh_maskedTextBox.Name = "xjh_maskedTextBox";
             this.xjh_maskedTextBox.PromptChar = ' ';
@@ -4415,7 +4359,7 @@
             // label76
             // 
             this.label76.AutoSize = true;
-            this.label76.Location = new System.Drawing.Point(159, 163);
+            this.label76.Location = new System.Drawing.Point(162, 150);
             this.label76.Name = "label76";
             this.label76.Size = new System.Drawing.Size(80, 13);
             this.label76.TabIndex = 22;
@@ -4424,7 +4368,7 @@
             // Xmax_checkBox
             // 
             this.Xmax_checkBox.AutoSize = true;
-            this.Xmax_checkBox.Location = new System.Drawing.Point(7, 133);
+            this.Xmax_checkBox.Location = new System.Drawing.Point(10, 120);
             this.Xmax_checkBox.Name = "Xmax_checkBox";
             this.Xmax_checkBox.Size = new System.Drawing.Size(125, 17);
             this.Xmax_checkBox.TabIndex = 21;
@@ -4435,7 +4379,7 @@
             // Xlim_checkBox
             // 
             this.Xlim_checkBox.AutoSize = true;
-            this.Xlim_checkBox.Location = new System.Drawing.Point(7, 110);
+            this.Xlim_checkBox.Location = new System.Drawing.Point(10, 97);
             this.Xlim_checkBox.Name = "Xlim_checkBox";
             this.Xlim_checkBox.Size = new System.Drawing.Size(122, 17);
             this.Xlim_checkBox.TabIndex = 20;
@@ -4446,7 +4390,7 @@
             // Xhome_checkBox
             // 
             this.Xhome_checkBox.AutoSize = true;
-            this.Xhome_checkBox.Location = new System.Drawing.Point(7, 87);
+            this.Xhome_checkBox.Location = new System.Drawing.Point(10, 74);
             this.Xhome_checkBox.Name = "Xhome_checkBox";
             this.Xhome_checkBox.Size = new System.Drawing.Size(121, 17);
             this.Xhome_checkBox.TabIndex = 19;
@@ -4467,7 +4411,7 @@
             this.panel4.Controls.Add(this.Microsteps1_label);
             this.panel4.Controls.Add(this.label25);
             this.panel4.Controls.Add(this.label23);
-            this.panel4.Location = new System.Drawing.Point(3, 214);
+            this.panel4.Location = new System.Drawing.Point(6, 201);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(236, 112);
             this.panel4.TabIndex = 18;
@@ -4575,7 +4519,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(4, 54);
+            this.label26.Location = new System.Drawing.Point(7, 41);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(86, 13);
             this.label26.TabIndex = 16;
@@ -4583,7 +4527,7 @@
             // 
             // xvm_maskedTextBox
             // 
-            this.xvm_maskedTextBox.Location = new System.Drawing.Point(110, 51);
+            this.xvm_maskedTextBox.Location = new System.Drawing.Point(113, 38);
             this.xvm_maskedTextBox.Mask = "99999";
             this.xvm_maskedTextBox.Name = "xvm_maskedTextBox";
             this.xvm_maskedTextBox.PromptChar = ' ';
@@ -4597,26 +4541,16 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(159, 54);
+            this.label27.Location = new System.Drawing.Point(162, 41);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(65, 13);
             this.label27.TabIndex = 15;
             this.label27.Text = "000 mm/min";
             // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.Location = new System.Drawing.Point(3, 4);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(26, 20);
-            this.label28.TabIndex = 14;
-            this.label28.Text = "X:";
-            // 
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(3, 28);
+            this.label29.Location = new System.Drawing.Point(6, 15);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(93, 13);
             this.label29.TabIndex = 12;
@@ -4624,7 +4558,7 @@
             // 
             // xjm_maskedTextBox
             // 
-            this.xjm_maskedTextBox.Location = new System.Drawing.Point(110, 25);
+            this.xjm_maskedTextBox.Location = new System.Drawing.Point(113, 12);
             this.xjm_maskedTextBox.Mask = "99999";
             this.xjm_maskedTextBox.Name = "xjm_maskedTextBox";
             this.xjm_maskedTextBox.PromptChar = ' ';
@@ -4638,42 +4572,16 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(159, 28);
+            this.label30.Location = new System.Drawing.Point(162, 15);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(80, 13);
             this.label30.TabIndex = 11;
             this.label30.Text = "10^6mm/min^3";
             // 
-            // panel5
-            // 
-            this.panel5.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel5.Controls.Add(this.label81);
-            this.panel5.Controls.Add(this.zsv_maskedTextBox);
-            this.panel5.Controls.Add(this.label82);
-            this.panel5.Controls.Add(this.label83);
-            this.panel5.Controls.Add(this.zjh_maskedTextBox);
-            this.panel5.Controls.Add(this.label84);
-            this.panel5.Controls.Add(this.Zmax_checkBox);
-            this.panel5.Controls.Add(this.Zlim_checkBox);
-            this.panel5.Controls.Add(this.Zhome_checkBox);
-            this.panel5.Controls.Add(this.panel6);
-            this.panel5.Controls.Add(this.label37);
-            this.panel5.Controls.Add(this.zvm_maskedTextBox);
-            this.panel5.Controls.Add(this.label38);
-            this.panel5.Controls.Add(this.label39);
-            this.panel5.Controls.Add(this.label40);
-            this.panel5.Controls.Add(this.zjm_maskedTextBox);
-            this.panel5.Controls.Add(this.label41);
-            this.panel5.Location = new System.Drawing.Point(514, 101);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(244, 331);
-            this.panel5.TabIndex = 20;
-            // 
             // label81
             // 
             this.label81.AutoSize = true;
-            this.label81.Location = new System.Drawing.Point(3, 189);
+            this.label81.Location = new System.Drawing.Point(6, 176);
             this.label81.Name = "label81";
             this.label81.Size = new System.Drawing.Size(78, 13);
             this.label81.TabIndex = 32;
@@ -4681,7 +4589,7 @@
             // 
             // zsv_maskedTextBox
             // 
-            this.zsv_maskedTextBox.Location = new System.Drawing.Point(110, 186);
+            this.zsv_maskedTextBox.Location = new System.Drawing.Point(113, 173);
             this.zsv_maskedTextBox.Mask = "99999";
             this.zsv_maskedTextBox.Name = "zsv_maskedTextBox";
             this.zsv_maskedTextBox.PromptChar = ' ';
@@ -4695,7 +4603,7 @@
             // label82
             // 
             this.label82.AutoSize = true;
-            this.label82.Location = new System.Drawing.Point(159, 189);
+            this.label82.Location = new System.Drawing.Point(162, 176);
             this.label82.Name = "label82";
             this.label82.Size = new System.Drawing.Size(44, 13);
             this.label82.TabIndex = 31;
@@ -4704,7 +4612,7 @@
             // label83
             // 
             this.label83.AutoSize = true;
-            this.label83.Location = new System.Drawing.Point(3, 163);
+            this.label83.Location = new System.Drawing.Point(6, 150);
             this.label83.Name = "label83";
             this.label83.Size = new System.Drawing.Size(107, 13);
             this.label83.TabIndex = 29;
@@ -4712,7 +4620,7 @@
             // 
             // zjh_maskedTextBox
             // 
-            this.zjh_maskedTextBox.Location = new System.Drawing.Point(110, 160);
+            this.zjh_maskedTextBox.Location = new System.Drawing.Point(113, 147);
             this.zjh_maskedTextBox.Mask = "99999";
             this.zjh_maskedTextBox.Name = "zjh_maskedTextBox";
             this.zjh_maskedTextBox.PromptChar = ' ';
@@ -4726,7 +4634,7 @@
             // label84
             // 
             this.label84.AutoSize = true;
-            this.label84.Location = new System.Drawing.Point(159, 163);
+            this.label84.Location = new System.Drawing.Point(162, 150);
             this.label84.Name = "label84";
             this.label84.Size = new System.Drawing.Size(80, 13);
             this.label84.TabIndex = 28;
@@ -4735,7 +4643,7 @@
             // Zmax_checkBox
             // 
             this.Zmax_checkBox.AutoSize = true;
-            this.Zmax_checkBox.Location = new System.Drawing.Point(7, 133);
+            this.Zmax_checkBox.Location = new System.Drawing.Point(10, 120);
             this.Zmax_checkBox.Name = "Zmax_checkBox";
             this.Zmax_checkBox.Size = new System.Drawing.Size(125, 17);
             this.Zmax_checkBox.TabIndex = 24;
@@ -4746,7 +4654,7 @@
             // Zlim_checkBox
             // 
             this.Zlim_checkBox.AutoSize = true;
-            this.Zlim_checkBox.Location = new System.Drawing.Point(7, 110);
+            this.Zlim_checkBox.Location = new System.Drawing.Point(10, 97);
             this.Zlim_checkBox.Name = "Zlim_checkBox";
             this.Zlim_checkBox.Size = new System.Drawing.Size(122, 17);
             this.Zlim_checkBox.TabIndex = 23;
@@ -4757,7 +4665,7 @@
             // Zhome_checkBox
             // 
             this.Zhome_checkBox.AutoSize = true;
-            this.Zhome_checkBox.Location = new System.Drawing.Point(7, 87);
+            this.Zhome_checkBox.Location = new System.Drawing.Point(10, 74);
             this.Zhome_checkBox.Name = "Zhome_checkBox";
             this.Zhome_checkBox.Size = new System.Drawing.Size(121, 17);
             this.Zhome_checkBox.TabIndex = 22;
@@ -4778,7 +4686,7 @@
             this.panel6.Controls.Add(this.label34);
             this.panel6.Controls.Add(this.Microsteps3_label);
             this.panel6.Controls.Add(this.label36);
-            this.panel6.Location = new System.Drawing.Point(3, 214);
+            this.panel6.Location = new System.Drawing.Point(6, 201);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(236, 112);
             this.panel6.TabIndex = 18;
@@ -4886,7 +4794,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(3, 54);
+            this.label37.Location = new System.Drawing.Point(6, 41);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(89, 13);
             this.label37.TabIndex = 16;
@@ -4894,7 +4802,7 @@
             // 
             // zvm_maskedTextBox
             // 
-            this.zvm_maskedTextBox.Location = new System.Drawing.Point(110, 50);
+            this.zvm_maskedTextBox.Location = new System.Drawing.Point(113, 37);
             this.zvm_maskedTextBox.Mask = "99999";
             this.zvm_maskedTextBox.Name = "zvm_maskedTextBox";
             this.zvm_maskedTextBox.PromptChar = ' ';
@@ -4908,26 +4816,16 @@
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(159, 54);
+            this.label38.Location = new System.Drawing.Point(162, 41);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(44, 13);
             this.label38.TabIndex = 15;
             this.label38.Text = "mm/min";
             // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label39.Location = new System.Drawing.Point(3, 4);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(25, 20);
-            this.label39.TabIndex = 14;
-            this.label39.Text = "Z:";
-            // 
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(3, 28);
+            this.label40.Location = new System.Drawing.Point(6, 15);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(73, 13);
             this.label40.TabIndex = 12;
@@ -4935,7 +4833,7 @@
             // 
             // zjm_maskedTextBox
             // 
-            this.zjm_maskedTextBox.Location = new System.Drawing.Point(110, 25);
+            this.zjm_maskedTextBox.Location = new System.Drawing.Point(113, 12);
             this.zjm_maskedTextBox.Mask = "99999";
             this.zjm_maskedTextBox.Name = "zjm_maskedTextBox";
             this.zjm_maskedTextBox.PromptChar = ' ';
@@ -4949,42 +4847,16 @@
             // label41
             // 
             this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(159, 27);
+            this.label41.Location = new System.Drawing.Point(162, 14);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(80, 13);
             this.label41.TabIndex = 11;
             this.label41.Text = "10^6mm/min^3";
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label77);
-            this.panel1.Controls.Add(this.ysv_maskedTextBox);
-            this.panel1.Controls.Add(this.label78);
-            this.panel1.Controls.Add(this.label79);
-            this.panel1.Controls.Add(this.yjh_maskedTextBox);
-            this.panel1.Controls.Add(this.label80);
-            this.panel1.Controls.Add(this.Ymax_checkBox);
-            this.panel1.Controls.Add(this.Ylim_checkBox);
-            this.panel1.Controls.Add(this.Yhome_checkBox);
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.label8);
-            this.panel1.Controls.Add(this.yvm_maskedTextBox);
-            this.panel1.Controls.Add(this.label9);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.yjm_maskedTextBox);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Location = new System.Drawing.Point(264, 101);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(244, 331);
-            this.panel1.TabIndex = 14;
-            // 
             // label77
             // 
             this.label77.AutoSize = true;
-            this.label77.Location = new System.Drawing.Point(4, 189);
+            this.label77.Location = new System.Drawing.Point(7, 176);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(78, 13);
             this.label77.TabIndex = 32;
@@ -4992,7 +4864,7 @@
             // 
             // ysv_maskedTextBox
             // 
-            this.ysv_maskedTextBox.Location = new System.Drawing.Point(110, 186);
+            this.ysv_maskedTextBox.Location = new System.Drawing.Point(113, 173);
             this.ysv_maskedTextBox.Mask = "99999";
             this.ysv_maskedTextBox.Name = "ysv_maskedTextBox";
             this.ysv_maskedTextBox.PromptChar = ' ';
@@ -5006,7 +4878,7 @@
             // label78
             // 
             this.label78.AutoSize = true;
-            this.label78.Location = new System.Drawing.Point(159, 189);
+            this.label78.Location = new System.Drawing.Point(162, 176);
             this.label78.Name = "label78";
             this.label78.Size = new System.Drawing.Size(44, 13);
             this.label78.TabIndex = 31;
@@ -5015,7 +4887,7 @@
             // label79
             // 
             this.label79.AutoSize = true;
-            this.label79.Location = new System.Drawing.Point(3, 163);
+            this.label79.Location = new System.Drawing.Point(6, 150);
             this.label79.Name = "label79";
             this.label79.Size = new System.Drawing.Size(107, 13);
             this.label79.TabIndex = 29;
@@ -5023,7 +4895,7 @@
             // 
             // yjh_maskedTextBox
             // 
-            this.yjh_maskedTextBox.Location = new System.Drawing.Point(110, 160);
+            this.yjh_maskedTextBox.Location = new System.Drawing.Point(113, 147);
             this.yjh_maskedTextBox.Mask = "99999";
             this.yjh_maskedTextBox.Name = "yjh_maskedTextBox";
             this.yjh_maskedTextBox.PromptChar = ' ';
@@ -5037,7 +4909,7 @@
             // label80
             // 
             this.label80.AutoSize = true;
-            this.label80.Location = new System.Drawing.Point(159, 163);
+            this.label80.Location = new System.Drawing.Point(162, 150);
             this.label80.Name = "label80";
             this.label80.Size = new System.Drawing.Size(80, 13);
             this.label80.TabIndex = 28;
@@ -5046,7 +4918,7 @@
             // Ymax_checkBox
             // 
             this.Ymax_checkBox.AutoSize = true;
-            this.Ymax_checkBox.Location = new System.Drawing.Point(7, 133);
+            this.Ymax_checkBox.Location = new System.Drawing.Point(10, 120);
             this.Ymax_checkBox.Name = "Ymax_checkBox";
             this.Ymax_checkBox.Size = new System.Drawing.Size(125, 17);
             this.Ymax_checkBox.TabIndex = 24;
@@ -5057,7 +4929,7 @@
             // Ylim_checkBox
             // 
             this.Ylim_checkBox.AutoSize = true;
-            this.Ylim_checkBox.Location = new System.Drawing.Point(7, 110);
+            this.Ylim_checkBox.Location = new System.Drawing.Point(10, 97);
             this.Ylim_checkBox.Name = "Ylim_checkBox";
             this.Ylim_checkBox.Size = new System.Drawing.Size(122, 17);
             this.Ylim_checkBox.TabIndex = 23;
@@ -5068,7 +4940,7 @@
             // Yhome_checkBox
             // 
             this.Yhome_checkBox.AutoSize = true;
-            this.Yhome_checkBox.Location = new System.Drawing.Point(7, 87);
+            this.Yhome_checkBox.Location = new System.Drawing.Point(10, 74);
             this.Yhome_checkBox.Name = "Yhome_checkBox";
             this.Yhome_checkBox.Size = new System.Drawing.Size(121, 17);
             this.Yhome_checkBox.TabIndex = 22;
@@ -5089,7 +4961,7 @@
             this.panel2.Controls.Add(this.Microsteps2_label);
             this.panel2.Controls.Add(this.label10);
             this.panel2.Controls.Add(this.label11);
-            this.panel2.Location = new System.Drawing.Point(3, 214);
+            this.panel2.Location = new System.Drawing.Point(6, 201);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(236, 112);
             this.panel2.TabIndex = 18;
@@ -5198,7 +5070,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 54);
+            this.label8.Location = new System.Drawing.Point(6, 41);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(86, 13);
             this.label8.TabIndex = 16;
@@ -5206,7 +5078,7 @@
             // 
             // yvm_maskedTextBox
             // 
-            this.yvm_maskedTextBox.Location = new System.Drawing.Point(110, 50);
+            this.yvm_maskedTextBox.Location = new System.Drawing.Point(113, 37);
             this.yvm_maskedTextBox.Mask = "99999";
             this.yvm_maskedTextBox.Name = "yvm_maskedTextBox";
             this.yvm_maskedTextBox.PromptChar = ' ';
@@ -5220,26 +5092,16 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(159, 53);
+            this.label9.Location = new System.Drawing.Point(162, 40);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(65, 13);
             this.label9.TabIndex = 15;
             this.label9.Text = "000 mm/min";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(3, 4);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(26, 20);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "Y:";
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 28);
+            this.label6.Location = new System.Drawing.Point(7, 14);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(93, 13);
             this.label6.TabIndex = 12;
@@ -5247,7 +5109,7 @@
             // 
             // yjm_maskedTextBox
             // 
-            this.yjm_maskedTextBox.Location = new System.Drawing.Point(110, 25);
+            this.yjm_maskedTextBox.Location = new System.Drawing.Point(113, 12);
             this.yjm_maskedTextBox.Mask = "99999";
             this.yjm_maskedTextBox.Name = "yjm_maskedTextBox";
             this.yjm_maskedTextBox.PromptChar = ' ';
@@ -5261,7 +5123,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(159, 27);
+            this.label5.Location = new System.Drawing.Point(162, 14);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(80, 13);
             this.label5.TabIndex = 11;
@@ -8089,6 +7951,128 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
+            // Motors_tabControl
+            // 
+            this.Motors_tabControl.Controls.Add(this.X_tabPage);
+            this.Motors_tabControl.Controls.Add(this.Y_tabPage);
+            this.Motors_tabControl.Controls.Add(this.Z_tabPage);
+            this.Motors_tabControl.Controls.Add(this.A_tabPage);
+            this.Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Motors_tabControl.Location = new System.Drawing.Point(31, 161);
+            this.Motors_tabControl.Name = "Motors_tabControl";
+            this.Motors_tabControl.SelectedIndex = 0;
+            this.Motors_tabControl.Size = new System.Drawing.Size(325, 362);
+            this.Motors_tabControl.TabIndex = 115;
+            // 
+            // X_tabPage
+            // 
+            this.X_tabPage.Controls.Add(this.panel4);
+            this.X_tabPage.Controls.Add(this.label73);
+            this.X_tabPage.Controls.Add(this.label29);
+            this.X_tabPage.Controls.Add(this.xsv_maskedTextBox);
+            this.X_tabPage.Controls.Add(this.label30);
+            this.X_tabPage.Controls.Add(this.label74);
+            this.X_tabPage.Controls.Add(this.xjm_maskedTextBox);
+            this.X_tabPage.Controls.Add(this.label75);
+            this.X_tabPage.Controls.Add(this.label27);
+            this.X_tabPage.Controls.Add(this.xjh_maskedTextBox);
+            this.X_tabPage.Controls.Add(this.xvm_maskedTextBox);
+            this.X_tabPage.Controls.Add(this.label76);
+            this.X_tabPage.Controls.Add(this.label26);
+            this.X_tabPage.Controls.Add(this.Xmax_checkBox);
+            this.X_tabPage.Controls.Add(this.Xhome_checkBox);
+            this.X_tabPage.Controls.Add(this.Xlim_checkBox);
+            this.X_tabPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.X_tabPage.Location = new System.Drawing.Point(4, 33);
+            this.X_tabPage.Name = "X_tabPage";
+            this.X_tabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.X_tabPage.Size = new System.Drawing.Size(317, 325);
+            this.X_tabPage.TabIndex = 0;
+            this.X_tabPage.Text = "X";
+            this.X_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // Y_tabPage
+            // 
+            this.Y_tabPage.Controls.Add(this.label77);
+            this.Y_tabPage.Controls.Add(this.label6);
+            this.Y_tabPage.Controls.Add(this.ysv_maskedTextBox);
+            this.Y_tabPage.Controls.Add(this.label5);
+            this.Y_tabPage.Controls.Add(this.label78);
+            this.Y_tabPage.Controls.Add(this.yjm_maskedTextBox);
+            this.Y_tabPage.Controls.Add(this.label79);
+            this.Y_tabPage.Controls.Add(this.label9);
+            this.Y_tabPage.Controls.Add(this.yjh_maskedTextBox);
+            this.Y_tabPage.Controls.Add(this.yvm_maskedTextBox);
+            this.Y_tabPage.Controls.Add(this.label80);
+            this.Y_tabPage.Controls.Add(this.label8);
+            this.Y_tabPage.Controls.Add(this.Ymax_checkBox);
+            this.Y_tabPage.Controls.Add(this.panel2);
+            this.Y_tabPage.Controls.Add(this.Ylim_checkBox);
+            this.Y_tabPage.Controls.Add(this.Yhome_checkBox);
+            this.Y_tabPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Y_tabPage.Location = new System.Drawing.Point(4, 33);
+            this.Y_tabPage.Name = "Y_tabPage";
+            this.Y_tabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.Y_tabPage.Size = new System.Drawing.Size(317, 325);
+            this.Y_tabPage.TabIndex = 1;
+            this.Y_tabPage.Text = "Y";
+            this.Y_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // Z_tabPage
+            // 
+            this.Z_tabPage.Controls.Add(this.label81);
+            this.Z_tabPage.Controls.Add(this.label40);
+            this.Z_tabPage.Controls.Add(this.zsv_maskedTextBox);
+            this.Z_tabPage.Controls.Add(this.label41);
+            this.Z_tabPage.Controls.Add(this.label82);
+            this.Z_tabPage.Controls.Add(this.zjm_maskedTextBox);
+            this.Z_tabPage.Controls.Add(this.label83);
+            this.Z_tabPage.Controls.Add(this.label38);
+            this.Z_tabPage.Controls.Add(this.zjh_maskedTextBox);
+            this.Z_tabPage.Controls.Add(this.zvm_maskedTextBox);
+            this.Z_tabPage.Controls.Add(this.label84);
+            this.Z_tabPage.Controls.Add(this.label37);
+            this.Z_tabPage.Controls.Add(this.Zmax_checkBox);
+            this.Z_tabPage.Controls.Add(this.panel6);
+            this.Z_tabPage.Controls.Add(this.Zlim_checkBox);
+            this.Z_tabPage.Controls.Add(this.Zhome_checkBox);
+            this.Z_tabPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Z_tabPage.Location = new System.Drawing.Point(4, 33);
+            this.Z_tabPage.Name = "Z_tabPage";
+            this.Z_tabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.Z_tabPage.Size = new System.Drawing.Size(317, 325);
+            this.Z_tabPage.TabIndex = 2;
+            this.Z_tabPage.Text = "Z";
+            this.Z_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // A_tabPage
+            // 
+            this.A_tabPage.Controls.Add(this.panel8);
+            this.A_tabPage.Controls.Add(this.label51);
+            this.A_tabPage.Controls.Add(this.label48);
+            this.A_tabPage.Controls.Add(this.label52);
+            this.A_tabPage.Controls.Add(this.avm_maskedTextBox);
+            this.A_tabPage.Controls.Add(this.ajm_maskedTextBox);
+            this.A_tabPage.Controls.Add(this.label49);
+            this.A_tabPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.A_tabPage.Location = new System.Drawing.Point(4, 33);
+            this.A_tabPage.Name = "A_tabPage";
+            this.A_tabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.A_tabPage.Size = new System.Drawing.Size(317, 325);
+            this.A_tabPage.TabIndex = 3;
+            this.A_tabPage.Text = "A";
+            this.A_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(27, 134);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(136, 24);
+            this.label7.TabIndex = 116;
+            this.label7.Text = "Motors setup:";
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -8162,12 +8146,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
             this.tabPageSetupCameras.ResumeLayout(false);
             this.tabPageSetupCameras.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Temp_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
             this.tabPageBasicSetup.ResumeLayout(false);
             this.tabPageBasicSetup.PerformLayout();
             this.panel9.ResumeLayout(false);
@@ -8176,20 +8160,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.NormalJogSpeed_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CtlrJogSpeed_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SmallMovement_numericUpDown)).EndInit();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.RunJob_tabPage.ResumeLayout(false);
@@ -8224,6 +8200,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).EndInit();
             this.NozzleLoad_contextMenuStrip.ResumeLayout(false);
+            this.Motors_tabControl.ResumeLayout(false);
+            this.X_tabPage.ResumeLayout(false);
+            this.X_tabPage.PerformLayout();
+            this.Y_tabPage.ResumeLayout(false);
+            this.Y_tabPage.PerformLayout();
+            this.Z_tabPage.ResumeLayout(false);
+            this.Z_tabPage.PerformLayout();
+            this.A_tabPage.ResumeLayout(false);
+            this.A_tabPage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -8355,7 +8340,6 @@
 		private System.Windows.Forms.Button TestXY_button;
 		private System.Windows.Forms.Button TestY_button;
 		private System.Windows.Forms.Button TestX_button;
-		private System.Windows.Forms.Panel panel7;
 		private System.Windows.Forms.Panel panel8;
 		private System.Windows.Forms.TextBox tr4_textBox;
 		private System.Windows.Forms.RadioButton m4deg18_radioButton;
@@ -8370,11 +8354,9 @@
 		private System.Windows.Forms.Label label48;
 		private System.Windows.Forms.MaskedTextBox avm_maskedTextBox;
 		private System.Windows.Forms.Label label49;
-		private System.Windows.Forms.Label label50;
 		private System.Windows.Forms.Label label51;
 		private System.Windows.Forms.MaskedTextBox ajm_maskedTextBox;
 		private System.Windows.Forms.Label label52;
-		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Label label73;
 		private System.Windows.Forms.MaskedTextBox xsv_maskedTextBox;
 		private System.Windows.Forms.Label label74;
@@ -8398,11 +8380,9 @@
 		private System.Windows.Forms.Label label26;
 		private System.Windows.Forms.MaskedTextBox xvm_maskedTextBox;
 		private System.Windows.Forms.Label label27;
-		private System.Windows.Forms.Label label28;
 		private System.Windows.Forms.Label label29;
 		private System.Windows.Forms.MaskedTextBox xjm_maskedTextBox;
 		private System.Windows.Forms.Label label30;
-		private System.Windows.Forms.Panel panel5;
 		private System.Windows.Forms.Label label81;
 		private System.Windows.Forms.MaskedTextBox zsv_maskedTextBox;
 		private System.Windows.Forms.Label label82;
@@ -8426,11 +8406,9 @@
 		private System.Windows.Forms.Label label37;
 		private System.Windows.Forms.MaskedTextBox zvm_maskedTextBox;
 		private System.Windows.Forms.Label label38;
-		private System.Windows.Forms.Label label39;
 		private System.Windows.Forms.Label label40;
 		private System.Windows.Forms.MaskedTextBox zjm_maskedTextBox;
 		private System.Windows.Forms.Label label41;
-		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label label77;
 		private System.Windows.Forms.MaskedTextBox ysv_maskedTextBox;
 		private System.Windows.Forms.Label label78;
@@ -8454,7 +8432,6 @@
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.MaskedTextBox yvm_maskedTextBox;
 		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.MaskedTextBox yjm_maskedTextBox;
 		private System.Windows.Forms.Label label5;
@@ -8897,6 +8874,12 @@
         private System.Windows.Forms.TextBox UpCameraXmmPerPixel_textBox;
         private System.Windows.Forms.Label label121;
         private System.Windows.Forms.TextBox DownCameraYmmPerPixel_textBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TabControl Motors_tabControl;
+        private System.Windows.Forms.TabPage X_tabPage;
+        private System.Windows.Forms.TabPage Y_tabPage;
+        private System.Windows.Forms.TabPage Z_tabPage;
+        private System.Windows.Forms.TabPage A_tabPage;
     }
 }
 
