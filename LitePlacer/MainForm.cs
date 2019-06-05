@@ -39,9 +39,15 @@ using Newtonsoft.Json;
 
 namespace LitePlacer
 {
-    // Note: For function success/failure, I use bool return code. (instead of C# exceptions; a philosophical debate, let's not go there.)
-    // The naming convention is xxx_m() for functions that have already displayed an error message to user. If a function only
-    // calls _m functions, it can consider itself a _m function.
+#pragma warning disable CA1031 // Do not catch general exception types
+    /*
+    Note: For function success/failure, I use bool return code. (instead of C# exceptions; a philosophical debate, let's not go there too much.
+    Still, it should be mentioned that CA1031 is supressed: I think the right way is to tell the user and continue. For example: A save fails; tell the user, 
+    Let the user to free room on the disk, plug in a USB stick, whatever, and let the user to try again. 
+
+    The naming convention is xxx_m() for functions that have already displayed an error message to user. If a function only
+    calls _m functions, it can consider itself a _m function.
+    */
 
     public partial class FormMain : Form
     {
@@ -763,7 +769,7 @@ namespace LitePlacer
                         }
                     }
                     bw.Flush();
-                    bw.Close();
+                    // bw.Close();
                 }
                 return true;
             }
@@ -898,7 +904,7 @@ namespace LitePlacer
                             }
                         }
                     }
-                    bw.Close();
+                    //bw.Close();
                 }
                 LoadingDataGrid = false;
             }
