@@ -8,6 +8,8 @@ using System.Globalization;
 
 namespace LitePlacer
 {
+#pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
+
     [Serializable()]
     class NozzleClass
     {
@@ -24,8 +26,10 @@ namespace LitePlacer
         public List<NozzlePoint>[] CalibrationPointsArr;
         public bool[] CalibratedArr;
 
+#pragma warning disable CA2235 // Mark all non-serializable fields
         private Camera Cam;
         private CNC Cnc;
+#pragma warning restore CA2235 // Mark all non-serializable fields
         private static FormMain MainForm;
 
         public NozzleClass(Camera MyCam, CNC MyCnc, FormMain MainF)
@@ -58,7 +62,7 @@ namespace LitePlacer
 
         public void Store(int nozzle)
         {
-            MainForm.DisplayText("Stored calibration for nozzle " + nozzle.ToString());
+            MainForm.DisplayText("Stored calibration for nozzle " + nozzle.ToString(CultureInfo.InvariantCulture));
             CalibrationPointsArr[nozzle] = (List<NozzlePoint>)DeepClone(CalibrationPoints);
             CalibratedArr[nozzle] = Calibrated;
         }
@@ -67,7 +71,7 @@ namespace LitePlacer
         {
             if (CalibratedArr[nozzle])
             {
-                MainForm.DisplayText("Using calibration for nozzle " + nozzle.ToString());
+                MainForm.DisplayText("Using calibration for nozzle " + nozzle.ToString(CultureInfo.InvariantCulture));
                 CalibrationPoints = (List<NozzlePoint>)DeepClone(CalibrationPointsArr[nozzle]);
             }
             Calibrated = CalibratedArr[nozzle];
@@ -91,6 +95,7 @@ namespace LitePlacer
                 stream.Close();
                 return true;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (System.Exception excep)
             {
                 MainForm.DisplayText("Saving nozzle calibration data failed: " + excep.Message);
@@ -296,7 +301,8 @@ namespace LitePlacer
         {
             double dX;
             double dY;
-			MainForm.DisplayText("Nozzle.Move_m(): X= " + X.ToString() + ", Y= " + Y.ToString() + ", A= " + A.ToString());
+			MainForm.DisplayText("Nozzle.Move_m(): X= " + X.ToString(CultureInfo.InvariantCulture)
+                + ", Y= " + Y.ToString(CultureInfo.InvariantCulture) + ", A= " + A.ToString(CultureInfo.InvariantCulture));
 			if (!CorrectedPosition_m(A, out dX, out dY))
 			{
 				return false;

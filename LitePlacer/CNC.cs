@@ -19,8 +19,8 @@ namespace LitePlacer
         static FormMain MainForm;
         private SerialComm Com;
 
-        public enum ControlBoardType { TinyG, qQuintic, other, unknown};
-        public ControlBoardType Controlboard = ControlBoardType.unknown;
+        public enum ControlBoardType { TinyG, qQuintic, other, unknown };
+        public ControlBoardType Controlboard { get; set; } = ControlBoardType.unknown;
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
 
@@ -158,8 +158,8 @@ namespace LitePlacer
 
         public static double SquareCorrection { get; set; }
 
-		private static double CurrX;
-		private static double _trueX;
+        private static double CurrX;
+        private static double _trueX;
 
         public double TrueX
         {
@@ -173,7 +173,7 @@ namespace LitePlacer
             }
         }
 
-		public double CurrentX
+        public double CurrentX
         {
             get
             {
@@ -187,8 +187,8 @@ namespace LitePlacer
 
         public static void setCurrX(double x)
         {
-			_trueX = x;
-			CurrX = x - CurrY * SquareCorrection;
+            _trueX = x;
+            CurrX = x - CurrY * SquareCorrection;
             //MainForm.DisplayText("CNC.setCurrX: x= " + x.ToString() + ", CurrX= " + CurrX.ToString() + ", CurrY= " + CurrY.ToString());
         }
 
@@ -202,14 +202,14 @@ namespace LitePlacer
             set
             {
                 CurrY = value;
-			}
+            }
         }
         public static void setCurrY(double y)
         {
             CurrY = y;
-			CurrX = _trueX - CurrY * SquareCorrection;
-			//MainForm.DisplayText("CNC.setCurrY: "+ y.ToString()+ " CurrX= " + CurrX.ToString());
-		}
+            CurrX = _trueX - CurrY * SquareCorrection;
+            //MainForm.DisplayText("CNC.setCurrY: "+ y.ToString()+ " CurrX= " + CurrX.ToString());
+        }
 
         private static double CurrZ;
         public double CurrentZ
@@ -246,12 +246,12 @@ namespace LitePlacer
         }
 
         public bool SlackCompensation { get; set; }
-        private double SlackCompensationDistance = 0.4;
+        public double SlackCompensationDistance { get; set; }
 
         public bool SlackCompensationA { get; set; }
         private double SlackCompensationDistanceA = 5.0;
 
-        public string SmallMovementString = "G1 F200 ";
+        public string SmallMovementString { get; set; } = "G1 F200 ";
 
         public bool SlowXY { get; set; }
         public double SlowSpeedXY { get; set; }
@@ -274,16 +274,14 @@ namespace LitePlacer
                 _readyEvent.Set();
                 return;   // already there
             }
-            if ((!SlackCompensation)
-                ||
-                ((CurrentX < X) && (CurrentY < Y))
-                )
+            //if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
+            if (SlackCompensation)
             {
+                XY_move(X - SlackCompensationDistance, Y - SlackCompensationDistance);
                 XY_move(X, Y);
             }
             else
             {
-                XY_move(X - SlackCompensationDistance, Y - SlackCompensationDistance);
                 XY_move(X, Y);
             }
         }
@@ -300,8 +298,8 @@ namespace LitePlacer
                 _readyEvent.Set();
                 return;   // already there
             }
-			X = X + SquareCorrection * Y;
-			X = Math.Round(X, 3);
+            X = X + SquareCorrection * Y;
+            X = Math.Round(X, 3);
             if ((dX < 1) && (dY < 1))
             {
                 // Small move
@@ -314,7 +312,7 @@ namespace LitePlacer
                     }
                     else
                     {
-                        command = "G1 F" + SlowSpeedXY.ToString()
+                        command = "G1 F" + SlowSpeedXY.ToString(CultureInfo.InvariantCulture)
                                 + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
                     }
                 }
@@ -329,7 +327,7 @@ namespace LitePlacer
                 // large move
                 if (SlowXY)
                 {
-                    command = "G1 F" + SlowSpeedXY.ToString()
+                    command = "G1 F" + SlowSpeedXY.ToString(CultureInfo.InvariantCulture)
                             + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
                 }
                 else
@@ -347,7 +345,8 @@ namespace LitePlacer
             bool CompensateXY = false;
             bool CompensateA = false;
 
-            if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
+            //if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
+            if (SlackCompensation)
             {
                 CompensateXY = true;
             }
@@ -369,7 +368,7 @@ namespace LitePlacer
             }
             else if ((!CompensateXY) && (CompensateA))
             {
-                XYA_move(X, Y, Am-SlackCompensationDistanceA);
+                XYA_move(X, Y, Am - SlackCompensationDistanceA);
                 A_move(Am);
             }
             else
@@ -399,14 +398,14 @@ namespace LitePlacer
                 // small movement
                 // First do XY move, then A. This works always.
                 // (small moves and fast settings can sometimes cause problems)
-                if ((dX < 0.004) && (dY < 0.004) )
+                if ((dX < 0.004) && (dY < 0.004))
                 {
                     MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
                 }
                 else
                 {
                     if (SlowXY)
-                    { 
+                    {
                         if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
                         {
                             command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
@@ -414,8 +413,8 @@ namespace LitePlacer
                         }
                         else
                         {
-                                command = "G1 F" + SlowSpeedXY.ToString()
-                                        + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                            command = "G1 F" + SlowSpeedXY.ToString(CultureInfo.InvariantCulture)
+                                    + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
                         }
                     }
                     else
@@ -437,7 +436,7 @@ namespace LitePlacer
                 {
                     if (SlowA)
                     {
-                        command = "G1 F" + SlowSpeedA.ToString() + " A" + Am.ToString(CultureInfo.InvariantCulture);
+                        command = "G1 F" + SlowSpeedA.ToString(CultureInfo.InvariantCulture) + " A" + Am.ToString(CultureInfo.InvariantCulture);
                     }
                     else
                     {
@@ -468,7 +467,7 @@ namespace LitePlacer
                     {
                         if (SlowA)
                         {
-                            command = "G1 F" + SlowSpeedA.ToString() + " A" + Am.ToString(CultureInfo.InvariantCulture);
+                            command = "G1 F" + SlowSpeedA.ToString(CultureInfo.InvariantCulture) + " A" + Am.ToString(CultureInfo.InvariantCulture);
                         }
                         else
                         {
@@ -479,7 +478,7 @@ namespace LitePlacer
                         _readyEvent.Wait();
                     }
                     // A done, we know XY is slow and large
-                    command = "G1 F" + SlowSpeedXY.ToString() +
+                    command = "G1 F" + SlowSpeedXY.ToString(CultureInfo.InvariantCulture) +
                                 " X" + X.ToString(CultureInfo.InvariantCulture) +
                                 " Y" + Y.ToString(CultureInfo.InvariantCulture);
                     _readyEvent.Reset();
@@ -492,10 +491,10 @@ namespace LitePlacer
                     command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) +
                                      " Y" + Y.ToString(CultureInfo.InvariantCulture) +
                                      " A" + Am.ToString(CultureInfo.InvariantCulture);
-                     _readyEvent.Reset();
+                    _readyEvent.Reset();
                     Com.Write("{\"gc\":\"" + command + "\"}");
                     _readyEvent.Wait();
-               }
+                }
             }
         }
 
@@ -517,11 +516,11 @@ namespace LitePlacer
                 {
                     if ((double)MainForm.Setting.CNC_SmallMovementSpeed > SlowSpeedZ)
                     {
-                        command = "G1 F" + SlowSpeedZ.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
+                        command = "G1 F" + SlowSpeedZ.ToString(CultureInfo.InvariantCulture) + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                     }
                     else
                     {
-                        command = "G1 F" + MainForm.Setting.CNC_SmallMovementSpeed.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
+                        command = "G1 F" + MainForm.Setting.CNC_SmallMovementSpeed.ToString(CultureInfo.InvariantCulture) + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -529,7 +528,7 @@ namespace LitePlacer
             {
                 if (SlowZ)
                 {
-                    command = "G1 F" + SlowSpeedZ.ToString() + " Z" + Z.ToString(CultureInfo.InvariantCulture);
+                    command = "G1 F" + SlowSpeedZ.ToString(CultureInfo.InvariantCulture) + " Z" + Z.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -564,7 +563,7 @@ namespace LitePlacer
             string command;
             if (SlowA)
             {
-                command = "G1 F" + SlowSpeedA.ToString() + " A" + A.ToString(CultureInfo.InvariantCulture);
+                command = "G1 F" + SlowSpeedA.ToString(CultureInfo.InvariantCulture) + " A" + A.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
@@ -586,7 +585,7 @@ namespace LitePlacer
             double b = MainForm.Setting.General_ZprobingHysteresis;
             string backoff = b.ToString("0.00", CultureInfo.InvariantCulture);
 
-            if (Controlboard==ControlBoardType.TinyG)
+            if (Controlboard == ControlBoardType.TinyG)
             {
                 if (set)
                 {
@@ -733,7 +732,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        public bool PumpIsOn = false;
+        public bool PumpIsOn { get; set; } = false;
 
         public void PumpDefaultSetting()
         {
@@ -754,14 +753,14 @@ namespace LitePlacer
             string command = "{\"gc\":\"M03\"}";
             if (MainForm.Setting.General_PumpOutputInverted)
             {
-                command= "{\"gc\":\"M05\"}";
+                command = "{\"gc\":\"M05\"}";
             }
             if (Controlboard == ControlBoardType.TinyG)
             {
                 MainForm.DisplayText("PumpOn(), TinyG");
                 if (!PumpIsOn)
                 {
-                        if (RawWrite(command))
+                    if (RawWrite(command))
                     {
                         BugWorkaround();
                         Thread.Sleep(500);  // this much to develop vacuum
@@ -839,7 +838,7 @@ namespace LitePlacer
             MainForm.Pump_checkBox.Checked = PumpIsOn;
         }
 
-         // =================================================================================
+        // =================================================================================
         public void InterpretLine(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
@@ -856,7 +855,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"msg"))
+            if (line.StartsWith("{\"r\":{\"msg", StringComparison.Ordinal))
             {
                 line = line.Substring(13);
                 int i = line.IndexOf('"');
@@ -869,7 +868,7 @@ namespace LitePlacer
             }
 
 
-            if (line.StartsWith("{\"er\":"))
+            if (line.StartsWith("{\"er\":", StringComparison.Ordinal))
             {
                 if (line.Contains("File not open") && IgnoreError)
                 {
@@ -885,7 +884,7 @@ namespace LitePlacer
             }
 
 
-            if (line.StartsWith("{\"r\":{}"))
+            if (line.StartsWith("{\"r\":{}", StringComparison.Ordinal))
             {
                 // ack for g code command
                 return;
@@ -909,7 +908,7 @@ namespace LitePlacer
             }
             */
 
-            if (line.StartsWith("tinyg [mm] ok>"))
+            if (line.StartsWith("tinyg [mm] ok>", StringComparison.Ordinal))
             {
                 // MainForm.DisplayText("ReadyEvent ok");
                 _readyEvent.Set();
@@ -917,7 +916,7 @@ namespace LitePlacer
             }
 
 
-            if (line.StartsWith("{\"sr\":"))
+            if (line.StartsWith("{\"sr\":", StringComparison.Ordinal))
             {
                 // Status report
                 NewStatusReport(line);
@@ -930,11 +929,11 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"sr\""))
+            if (line.StartsWith("{\"r\":{\"sr\"", StringComparison.Ordinal))
             {
                 // Status enquiry response, remove the wrapper:
                 line = line.Substring(5);
-                int i = line.IndexOf("}}");
+                int i = line.IndexOf("}}", StringComparison.Ordinal);
                 line = line.Substring(0, i + 2);
                 NewStatusReport(line);
                 _readyEvent.Set();
@@ -942,14 +941,14 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"me") || line.StartsWith("{\"r\":{\"md"))
+            if (line.StartsWith("{\"r\":{\"me", StringComparison.Ordinal) || line.StartsWith("{\"r\":{\"md", StringComparison.Ordinal))
             {
                 // response to motor power on/off commands
                 _readyEvent.Set();
                 return;
             }
 
-            if (line.StartsWith("{\"r\":"))
+            if (line.StartsWith("{\"r\":", StringComparison.Ordinal))
             {
                 // response to setting a setting or reading motor settings for saving them
                 ParameterValue(line);  // <========= causes UI update
@@ -958,15 +957,15 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"sys\":"))
+            if (line.StartsWith("{\"r\":{\"sys\":", StringComparison.Ordinal))
             {
                 // response to reading settings for saving them
                 _readyEvent.Set();
                 MainForm.DisplayText("ReadyEvent sys group (depreciated)");
                 return;
             }
-            
-            if (line.StartsWith("{\"r\":{\"x\":"))
+
+            if (line.StartsWith("{\"r\":{\"x\":", StringComparison.Ordinal))
             {
                 // response to reading settings for saving them
                 /*
@@ -980,8 +979,8 @@ namespace LitePlacer
                 MainForm.DisplayText("ReadyEvent x group (depreciated)");
                 return;
             }
-            
-            if (line.StartsWith("{\"r\":{\"y\":"))
+
+            if (line.StartsWith("{\"r\":{\"y\":", StringComparison.Ordinal))
             {
                 // response to reading settings for saving them
                 _readyEvent.Set();
@@ -989,7 +988,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"z\":"))
+            if (line.StartsWith("{\"r\":{\"z\":", StringComparison.Ordinal))
             {
                 // response to reading settings for saving them
                 _readyEvent.Set();
@@ -997,7 +996,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"a\":"))
+            if (line.StartsWith("{\"r\":{\"a\":", StringComparison.Ordinal))
             {
                 // response to reading settings for saving them
                 _readyEvent.Set();
@@ -1005,7 +1004,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"1\":"))
+            if (line.StartsWith("{\"r\":{\"1\":", StringComparison.Ordinal))
             {
                 // response to reading settings for saving them
                 _readyEvent.Set();
@@ -1013,7 +1012,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"2\":"))
+            if (line.StartsWith("{\"r\":{\"2\":", StringComparison.Ordinal))
             {
                 // response to reading settings for saving them
                 _readyEvent.Set();
@@ -1021,7 +1020,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"3\":"))
+            if (line.StartsWith("{\"r\":{\"3\":", StringComparison.Ordinal))
             {
                 // response to reading settings for saving them
                 _readyEvent.Set();
@@ -1029,7 +1028,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (line.StartsWith("{\"r\":{\"4\":"))
+            if (line.StartsWith("{\"r\":{\"4\":", StringComparison.Ordinal))
             {
                 // response to reading settings for saving them
                 _readyEvent.Set();
@@ -1059,12 +1058,12 @@ namespace LitePlacer
 
 
         [Serializable]
-        public class StatusReport
+        internal class StatusReport
         {
             public Sr sr { get; set; }
         }
 
-        public StatusReport Status;
+        StatusReport Status { get; set; }
         public void NewStatusReport(string line)
         {
             //MainForm.DisplayText("NewStatusReport: " + line);
@@ -1073,7 +1072,7 @@ namespace LitePlacer
         }
 
         [Serializable]
-        public class Sr
+        internal class Sr
         {
             // mpox, posy, ...: Position
             // NOTE: Some firmware versions use mpox, mpoy,... some use posx, posy, ... 
@@ -1129,5 +1128,3 @@ namespace LitePlacer
         }
     }  // end Class CNC
 }
-
-

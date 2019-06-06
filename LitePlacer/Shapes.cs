@@ -18,14 +18,16 @@ namespace LitePlacer
         }
 
 
-        public class ComponentOld : Shape
+        public class LitePlacerShapeComponent : Shape
         {
-            public List<IntPoint> Outline { get; set; }
+#pragma warning disable CA2227 // Collection properties should be read only
+            public List<IntPoint> Outline { get; set; }  // Compiler does not see tht this is undeed used(?), need to disable the warning
+#pragma warning restore CA2227 // Collection properties should be read only
             public LineSegment Longest { get; set; }    // Longest line segment in Outline (needed in drawing, avoid calculating twice)
             public AForge.Point NormalStart { get; set; }  // (needed in drawing, avoid calculating twice)
             public AForge.Point NormalEnd { get; set; }     // (needed in drawing, avoid calculating twice)
 
-            public ComponentOld(AForge.Point centr, double angl, List<IntPoint> outln,
+            public LitePlacerShapeComponent(AForge.Point centr, double angl, List<IntPoint> outln,
                              LineSegment lngst, AForge.Point Nstart, AForge.Point Nend)
             {
                 Center = centr;

@@ -12,10 +12,10 @@ namespace LitePlacer
 {
     public partial class TapeEditForm : Form
     {
-        public DataGridView TapesDataGrid;
-        public DataGridViewRow Row;
-        public int TapeRowNo;
-        public FormMain MainForm;
+        public DataGridView TapesDataGrid { get; set; }
+        public DataGridViewRow Row { get; set; }
+        public int TapeRowNo { get; set; }
+        public FormMain MainForm { get; set; }
         Camera Cam;
         CNC Cnc;
 
@@ -224,7 +224,7 @@ namespace LitePlacer
             Row.Cells["Id_Column"].Value = ID_textBox.Text;
             Row.Cells["Rotation_Column"].Value = TapeRotation_comboBox.SelectedItem;
             Row.Cells["Orientation_Column"].Value = TapeOrientation_comboBox.SelectedItem;
-            Row.Cells["Nozzle_Column"].Value = Nozzle_numericUpDown.Value.ToString();
+            Row.Cells["Nozzle_Column"].Value = Nozzle_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             Row.Cells["Width_Column"].Value = TapeWidth_comboBox.Text;
             Row.Cells["Pitch_Column"].Value = TapePitch_textBox.Text;
             Row.Cells["OffsetX_Column"].Value = TapeOffsetX_textBox.Text;
@@ -266,11 +266,11 @@ namespace LitePlacer
             double Yoff;
             double pitch;
             MainForm.TapeWidthStringToValues(TapeWidth_comboBox.SelectedItem.ToString(), out Xoff, out Yoff, out pitch);
-            TapeOffsetX_textBox.Text = Xoff.ToString();
+            TapeOffsetX_textBox.Text = Xoff.ToString(CultureInfo.InvariantCulture);
             TapeOffsetX_textBox.ForeColor = Color.Black;    // in case there are erroneous edits left
-            TapeOffsetY_textBox.Text = Yoff.ToString();
+            TapeOffsetY_textBox.Text = Yoff.ToString(CultureInfo.InvariantCulture);
             TapeOffsetY_textBox.ForeColor = Color.Black;
-            TapePitch_textBox.Text = pitch.ToString();
+            TapePitch_textBox.Text = pitch.ToString(CultureInfo.InvariantCulture);
             TapePitch_textBox.ForeColor = Color.Black;
         }
 

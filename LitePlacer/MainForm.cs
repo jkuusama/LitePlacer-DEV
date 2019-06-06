@@ -34,7 +34,6 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
 using Newtonsoft.Json;
-// ReSharper disable All
 
 
 namespace LitePlacer
@@ -51,14 +50,14 @@ namespace LitePlacer
 
     public partial class FormMain : Form
     {
-        public CNC Cnc;
+        public CNC Cnc { get; set; }
         Camera DownCamera;
         Camera UpCamera;
         NozzleClass Nozzle;
         TapesClass Tapes;
-        public MySettings Setting;
-        public BoardSettings.TinyG TinyGBoard = new BoardSettings.TinyG();
-        public BoardSettings.qQuintic qQuinticBoard = new BoardSettings.qQuintic();
+        public MySettings Setting { get; set; }
+        public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
+        public QQuinticSettings qQuinticBoard { get; set; } = new QQuinticSettings();
 
         AppSettings SettingsOps;
 
@@ -110,7 +109,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        public bool StartingUp = false; // we want to react to some changes, but not during startup data load (which is counts as a change)
+        public bool StartingUp { get; set; } = false; // we want to react to some changes, but not during startup data load (which counts as a change)
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -192,7 +191,7 @@ namespace LitePlacer
             var buildDateTime = new DateTime(2000, 1, 1).Add(new TimeSpan(
             TimeSpan.TicksPerDay * version.Build + // days since 1 January 2000
             TimeSpan.TicksPerSecond * 2 * version.Revision)); // seconds since midnight, (multiply by 2 to get original)
-            return buildDateTime.ToString();
+            return buildDateTime.ToString(CultureInfo.InvariantCulture);
         }
 
         private bool UpdateAvailable(out string UpdateDescription)
@@ -277,7 +276,7 @@ namespace LitePlacer
         {
 
             Button button = sender as Button;
-            DisplayText(button.Text.ToString(), KnownColor.DarkGreen);
+            DisplayText(button.Text.ToString(CultureInfo.InvariantCulture), KnownColor.DarkGreen);
         }
         // ==============================================================================================
 
@@ -322,10 +321,10 @@ namespace LitePlacer
             }
             else
             {
-                NozzleNo_textBox.Text = Setting.Nozzles_current.ToString();
+                NozzleNo_textBox.Text = Setting.Nozzles_current.ToString(CultureInfo.InvariantCulture);
             }
             ForceNozzle_numericUpDown.Value = Setting.Nozzles_default;
-            DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
+            DefaultNozzle_label.Text = Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
 
             // ======== Run Job tab:
 
@@ -354,9 +353,9 @@ namespace LitePlacer
             MouseScroll_checkBox.Checked = Setting.CNC_EnableMouseWheelJog;
             NumPadJog_checkBox.Checked = Setting.CNC_EnableNumPadJog;
 
-            ZTestTravel_textBox.Text = Setting.General_ZTestTravel.ToString();
-            ShadeGuard_textBox.Text = Setting.General_ShadeGuard_mm.ToString();
-            NozzleBelowPCB_textBox.Text = Setting.General_BelowPCB_Allowance.ToString();
+            ZTestTravel_textBox.Text = Setting.General_ZTestTravel.ToString(CultureInfo.InvariantCulture);
+            ShadeGuard_textBox.Text = Setting.General_ShadeGuard_mm.ToString(CultureInfo.InvariantCulture);
+            NozzleBelowPCB_textBox.Text = Setting.General_BelowPCB_Allowance.ToString(CultureInfo.InvariantCulture);
 
             Z0_textBox.Text = Setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
             BackOff_textBox.Text = Setting.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture);
@@ -671,7 +670,7 @@ namespace LitePlacer
 	                }
                     else
                     {
-                        Headers = Addv1Headers( TableType);
+                        Headers = Addv1Headers(TableType);
                     }
 
                     // read data
@@ -898,7 +897,7 @@ namespace LitePlacer
                             {
                                 dgv.Rows[i].Cells[j].Value = "--";
                             }
-                            if (dgv.Rows[i].Cells[j].Value.ToString() == "")
+                            if (string.IsNullOrEmpty(dgv.Rows[i].Cells[j].Value.ToString()))
                             {
                                 dgv.Rows[i].Cells[j].Value = "--";
                             }
@@ -928,7 +927,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (filename.EndsWith("_v2"))
+            if (filename.EndsWith("_v2", StringComparison.Ordinal))
             {
                 ReadV2TapesFile(filename);
             }
@@ -1043,9 +1042,9 @@ namespace LitePlacer
                                 if (TapesOld_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString() != "custom")
                                 {
                                     TapeWidthStringToValues(TapesOld_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString(), out X, out Y, out pitch);
-                                    Tapes_dataGridView.Rows[i].Cells["Pitch_Column"].Value = pitch.ToString();
-                                    Tapes_dataGridView.Rows[i].Cells["OffsetX_Column"].Value = X.ToString();
-                                    Tapes_dataGridView.Rows[i].Cells["OffsetY_Column"].Value = Y.ToString();
+                                    Tapes_dataGridView.Rows[i].Cells["Pitch_Column"].Value = pitch.ToString(CultureInfo.InvariantCulture);
+                                    Tapes_dataGridView.Rows[i].Cells["OffsetX_Column"].Value = X.ToString(CultureInfo.InvariantCulture);
+                                    Tapes_dataGridView.Rows[i].Cells["OffsetY_Column"].Value = Y.ToString(CultureInfo.InvariantCulture);
                                 }
                             }
                             Tapes_dataGridView.Rows[i].Cells["RotationDirect_Column"].Value = "0.00";
@@ -1100,9 +1099,9 @@ namespace LitePlacer
                         if (Tapes_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString() != "custom")
                         {
                             TapeWidthStringToValues(Tapes_dataGridView.Rows[i].Cells["WidthColumn"].Value.ToString(), out X, out Y, out pitch);
-                            Tapes_dataGridView.Rows[i].Cells["Pitch_Column"].Value = pitch.ToString();
-                            Tapes_dataGridView.Rows[i].Cells["OffsetX_Column"].Value = X.ToString();
-                            Tapes_dataGridView.Rows[i].Cells["OffsetY_Column"].Value = Y.ToString();
+                            Tapes_dataGridView.Rows[i].Cells["Pitch_Column"].Value = pitch.ToString(CultureInfo.InvariantCulture);
+                            Tapes_dataGridView.Rows[i].Cells["OffsetX_Column"].Value = X.ToString(CultureInfo.InvariantCulture);
+                            Tapes_dataGridView.Rows[i].Cells["OffsetY_Column"].Value = Y.ToString(CultureInfo.InvariantCulture);
                         }
                     }
                     Tapes_dataGridView.Rows[i].Cells["RotationDirect_Column"].Value = "0.00";
@@ -1287,7 +1286,7 @@ namespace LitePlacer
         }
 
 
-        public bool JoggingBusy = false;
+        public bool JoggingBusy { get; set; } = false;
         List<Keys> JoggingKeys = new List<Keys>()
 	    {
 	        Keys.NumPad1,   // down + left
@@ -1399,15 +1398,15 @@ namespace LitePlacer
 
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
             {
-                Movestr = "{\"gc\":\"G1 F" + AltJogSpeed_numericUpDown.Value.ToString() + " ";
+                Movestr = "{\"gc\":\"G1 F" + AltJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
             }
             else if (System.Windows.Forms.Control.ModifierKeys == Keys.Control)
             {
-                Movestr = "{\"gc\":\"G1 F" + CtlrJogSpeed_numericUpDown.Value.ToString() + " ";
+                Movestr = "{\"gc\":\"G1 F" + CtlrJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
             }
             else
             {
-                Movestr = "{\"gc\":\"G1 F" + NormalJogSpeed_numericUpDown.Value.ToString() + " ";
+                Movestr = "{\"gc\":\"G1 F" + NormalJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
             }
 
 
@@ -1440,7 +1439,7 @@ namespace LitePlacer
             else if (e.KeyCode == Keys.NumPad3)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "Y0" + "X" + Setting.General_MachineSizeX.ToString() + "\"}");
+                Cnc.RawWrite(Movestr + "Y0" + "X" + Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture) + "\"}");
             }
             else if (e.KeyCode == Keys.NumPad4)
             {
@@ -1450,7 +1449,7 @@ namespace LitePlacer
             else if (e.KeyCode == Keys.NumPad6)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X" + Setting.General_MachineSizeX.ToString() + "\"}");
+                Cnc.RawWrite(Movestr + "X" + Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture) + "\"}");
             }
             else if (e.KeyCode == Keys.NumPad7)
             {
@@ -1460,31 +1459,32 @@ namespace LitePlacer
             else if (e.KeyCode == Keys.NumPad8)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "Y" + Setting.General_MachineSizeY.ToString() + "\"}");
+                Cnc.RawWrite(Movestr + "X0" + "Y" + Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture) + "\"}");
             }
             else if (e.KeyCode == Keys.NumPad9)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X" + Setting.General_MachineSizeX.ToString() + "Y" + Setting.General_MachineSizeY.ToString() + "\"}");
+                Cnc.RawWrite(Movestr + "X" + Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture) 
+                    + "Y" + Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture) + "\"}");
             }
            //     (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
             else if (e.KeyCode == Keys.Add)
             {
                 JoggingBusy = true;
                 double Ztarget;
-                if (!double.TryParse(Setting.General_ZtoPCB.ToString().Replace(',', '.'), out Ztarget))
+                if (!double.TryParse(Setting.General_ZtoPCB.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out Ztarget))
                 {
                     DisplayText("Z to PCB internal value error!");
                     return;
                 }
                 double Zadd;
-                if (!double.TryParse(Setting.General_BelowPCB_Allowance.ToString().Replace(',', '.'), out Zadd))
+                if (!double.TryParse(Setting.General_BelowPCB_Allowance.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out Zadd))
                 {
                     DisplayText("Below PCB allowance internal value error!");
                     return;
                 }
                 Ztarget += Zadd;
-                Cnc.RawWrite(Movestr + "Z" + Ztarget.ToString() + "\"}");
+                Cnc.RawWrite(Movestr + "Z" + Ztarget.ToString(CultureInfo.InvariantCulture) + "\"}");
             }
             else if (e.KeyCode == Keys.Subtract)
             {
@@ -1721,8 +1721,10 @@ namespace LitePlacer
             Xmm = Xmm / cam.GetDisplayZoom();	// Might also be zoomed for processing
             Ymm = Ymm / cam.GetDisplayZoom();
 
-            DisplayText("BoxTo_mms: MouseX: " + MouseX.ToString() + ", X: " + X.ToString() + ", Xmm: " + Xmm.ToString());
-            DisplayText("BoxTo_mms: MouseY: " + MouseY.ToString() + ", Y: " + Y.ToString() + ", Ymm: " + Ymm.ToString());
+            DisplayText("BoxTo_mms: MouseX: " + MouseX.ToString(CultureInfo.InvariantCulture)
+                + ", X: " + X.ToString(CultureInfo.InvariantCulture) + ", Xmm: " + Xmm.ToString(CultureInfo.InvariantCulture));
+            DisplayText("BoxTo_mms: MouseY: " + MouseY.ToString(CultureInfo.InvariantCulture)
+                + ", Y: " + Y.ToString(CultureInfo.InvariantCulture) + ", Ymm: " + Ymm.ToString(CultureInfo.InvariantCulture));
         }
 
 
@@ -1732,7 +1734,7 @@ namespace LitePlacer
         {
             if (MouseButtons == MouseButtons.Left)
             {
-                DisplayText("X: " + e.X.ToString() + ", Y: " + e.Y.ToString());
+                DisplayText("X: " + e.X.ToString(CultureInfo.InvariantCulture) + ", Y: " + e.Y.ToString(CultureInfo.InvariantCulture));
             }
 
         }
@@ -1920,7 +1922,7 @@ namespace LitePlacer
             string Astr = "";
             if (double.TryParse(GotoX_textBox.Text.Replace(',', '.'), out tst))
             {
-                Xstr = tst.ToString();
+                Xstr = tst.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
@@ -1930,7 +1932,7 @@ namespace LitePlacer
 
             if (double.TryParse(GotoY_textBox.Text.Replace(',', '.'), out tst))
             {
-                Ystr = tst.ToString();
+                Ystr = tst.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
@@ -1940,7 +1942,7 @@ namespace LitePlacer
 
             if (double.TryParse(GotoZ_textBox.Text.Replace(',', '.'), out tst))
             {
-                Zstr = tst.ToString();
+                Zstr = tst.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
@@ -1950,7 +1952,7 @@ namespace LitePlacer
 
             if (double.TryParse(GotoA_textBox.Text.Replace(',', '.'), out tst))
             {
-                Astr = tst.ToString();
+                Astr = tst.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
@@ -2013,7 +2015,7 @@ namespace LitePlacer
             if (double.TryParse(ValStr.Replace(',', '.'), out val))
             {
                 TinyGMotorTimeout = val;
-                DisplayText("mt value: " + TinyGMotorTimeout.ToString());
+                DisplayText("mt value: " + TinyGMotorTimeout.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
@@ -2121,12 +2123,13 @@ namespace LitePlacer
 
         private bool Nozzle_ProbeDown_m()
         {
-            if (!HomingTimeout_m(out CNC_HomingTimeout, "Z"))
+            int timeout;
+            if (!HomingTimeout_m(out timeout, "Z"))
             {
                 return false;
             }
-
-            DisplayText("Probing Z, timeout value: " + CNC_HomingTimeout.ToString());
+            CNC_HomingTimeout = timeout;
+            DisplayText("Probing Z, timeout value: " + CNC_HomingTimeout.ToString(CultureInfo.InvariantCulture));
 
             Cnc.ProbingMode(true);
             Cnc.Homing = true;
@@ -2186,7 +2189,8 @@ namespace LitePlacer
                     if (NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[1].Value == null)
                     {
                         ShowMessageBox(
-                            "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", min. size",
+                            "Bad data at Nozzles vision parameters table, nozzle "
+                                + nozzle.ToString(CultureInfo.InvariantCulture) + ", min. size",
                             "Bad data",
                             MessageBoxButtons.OK);
                         return false;
@@ -2195,7 +2199,8 @@ namespace LitePlacer
                     if (NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[2].Value == null)
                     {
                         ShowMessageBox(
-                            "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", max. size",
+                            "Bad data at Nozzles vision parameters table, nozzle "
+                                + nozzle.ToString(CultureInfo.InvariantCulture) + ", max. size",
                             "Bad data",
                             MessageBoxButtons.OK);
                         return false;
@@ -2204,7 +2209,8 @@ namespace LitePlacer
                     if (!double.TryParse(NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[1].Value.ToString().Replace(',', '.'), out MinSize))
                     {
                         ShowMessageBox(
-                            "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", min. size",
+                            "Bad data at Nozzles vision parameters table, nozzle "
+                                + nozzle.ToString(CultureInfo.InvariantCulture) + ", min. size",
                             "Bad data",
                             MessageBoxButtons.OK);
                         return false;
@@ -2212,13 +2218,15 @@ namespace LitePlacer
                     if (!double.TryParse(NozzlesParameters_dataGridView.Rows[nozzle - 1].Cells[2].Value.ToString().Replace(',', '.'), out MaxSize))
                     {
                         ShowMessageBox(
-                            "Bad data at Nozzles vision parameters table, nozzle " + nozzle.ToString() + ", max. size",
+                            "Bad data at Nozzles vision parameters table, nozzle "
+                            + nozzle.ToString(CultureInfo.InvariantCulture) + ", max. size",
                             "Bad data",
                             MessageBoxButtons.OK);
                         return false;
                     }
                 }
-                DisplayText("Measuring nozzle, min. size "+ MinSize.ToString() + ", max. size" + MaxSize.ToString());
+                DisplayText("Measuring nozzle, min. size " + MinSize.ToString(CultureInfo.InvariantCulture)
+                    + ", max. size" + MaxSize.ToString(CultureInfo.InvariantCulture));
                 UpCamera.MaxSize = MaxSize / Setting.UpCam_XmmPerPixel;
                 UpCamera.MinSize = MinSize / Setting.UpCam_XmmPerPixel;
                 UpCamera.SizeLimited = true;
@@ -2238,9 +2246,9 @@ namespace LitePlacer
             {
                 for (int i = 0; i < Nozzle.CalibrationPoints.Count; i++)
                 {
-                    DisplayText("A: " + Nozzle.CalibrationPoints[i].Angle.ToString("0.000") +
-                        ", X: " + Nozzle.CalibrationPoints[i].X.ToString("0.000") +
-                        ", Y: " + Nozzle.CalibrationPoints[i].Y.ToString("0.000"));
+                    DisplayText("A: " + Nozzle.CalibrationPoints[i].Angle.ToString("0.000", CultureInfo.InvariantCulture) +
+                        ", X: " + Nozzle.CalibrationPoints[i].X.ToString("0.000", CultureInfo.InvariantCulture) +
+                        ", Y: " + Nozzle.CalibrationPoints[i].Y.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
             else
@@ -2305,11 +2313,14 @@ namespace LitePlacer
 
         private bool CNC_Home_m(string axis)
         {
-            if (!HomingTimeout_m(out CNC_HomingTimeout, axis))
+            int timeout;
+            if (!HomingTimeout_m(out timeout, axis))
             {
                 return false;
             }
-            DisplayText("Homing axis " + axis + ", timeout value: " + CNC_HomingTimeout.ToString());
+            CNC_HomingTimeout = timeout;
+
+            DisplayText("Homing axis " + axis + ", timeout value: " + CNC_HomingTimeout.ToString(CultureInfo.InvariantCulture));
 
             Cnc.Homing = true;
             if (!CNC_Write_m("{\"gc\":\"G28.2 " + axis + "0\"}"))
@@ -2343,7 +2354,7 @@ namespace LitePlacer
                 _cnc_Timeout = value * 500;
             }
         }
-        public int CNC_HomingTimeout = 20;  // in seconds
+        public int CNC_HomingTimeout { get; set; } = 20;  // in seconds
 
         private bool CNC_RawWrite(string s)
         {
@@ -2472,7 +2483,7 @@ namespace LitePlacer
 
         public bool CNC_XY_m(double X, double Y)
         {
-            DisplayText("CNC_XY_m, x: " + X.ToString() + ", y: " + Y.ToString());
+            DisplayText("CNC_XY_m, x: " + X.ToString(CultureInfo.InvariantCulture) + ", y: " + Y.ToString(CultureInfo.InvariantCulture));
             if (CNC_NozzleIsDown_m())
             {
                 return false;
@@ -2550,7 +2561,8 @@ namespace LitePlacer
 
         public bool CNC_XYA_m(double X, double Y, double A)
         {
-            DisplayText("CNC_XYA_m, x: " + X.ToString() + ", y: " + Y.ToString() + ", a: " + A.ToString());
+            DisplayText("CNC_XYA_m, x: " + X.ToString(CultureInfo.InvariantCulture)
+                + ", y: " + Y.ToString(CultureInfo.InvariantCulture) + ", a: " + A.ToString(CultureInfo.InvariantCulture));
             if (CNC_NozzleIsDown_m())
             {
                 return false;
@@ -2720,7 +2732,7 @@ namespace LitePlacer
 
         public bool CNC_A_m(double A)
         {
-            DisplayText("CNC_A_m, a: " + A.ToString());
+            DisplayText("CNC_A_m, a: " + A.ToString(CultureInfo.InvariantCulture));
             if (Cnc.ErrorState)
             {
                 DisplayText("### Cnc in error state, ignored", KnownColor.DarkRed);
@@ -2773,7 +2785,9 @@ namespace LitePlacer
 
         public bool GoToFeatureLocation_m(FeatureType Shape, double FindTolerance, double MoveTolerance, out double X, out double Y)
         {
-            DisplayText("GoToFeatureLocation_m(), FindTolerance: " + FindTolerance.ToString() + ", MoveTolerance: " + MoveTolerance.ToString());
+            DisplayText("GoToFeatureLocation_m(), FindTolerance: "
+                + FindTolerance.ToString(CultureInfo.InvariantCulture)
+                + ", MoveTolerance: " + MoveTolerance.ToString(CultureInfo.InvariantCulture));
             SelectCamera(DownCamera);
             X = 100;
             Y = 100;
@@ -2839,7 +2853,9 @@ namespace LitePlacer
                 }
                 X = X * Setting.DownCam_XmmPerPixel;
                 Y = -Y * Setting.DownCam_YmmPerPixel;
-                DisplayText("Optical positioning, round " + count.ToString() + ", dX= " + X.ToString() + ", dY= " + Y.ToString() + ", tries= " + tries.ToString());
+                DisplayText("Optical positioning, round " + count.ToString(CultureInfo.InvariantCulture)
+                    + ", dX= " + X.ToString(CultureInfo.InvariantCulture) + ", dY= " + Y.ToString(CultureInfo.InvariantCulture)
+                    + ", tries= " + tries.ToString(CultureInfo.InvariantCulture));
                 // If we are further than move tolerance, go there
                 if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance))
                 {
@@ -2897,7 +2913,8 @@ namespace LitePlacer
                     Y = -Y * Setting.DownCam_YmmPerPixel;
                     Xlist.Add(X);
                     Ylist.Add(Y);
-                    DisplayText("X: " + X.ToString("0.000") + ", Y: " + Y.ToString("0.000"));
+                    DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
+                        + ", Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
             while ((Successes<7)&&(Tries<20));
@@ -2911,7 +2928,8 @@ namespace LitePlacer
             X = Xlist[3];
             Y = Ylist[3];
             // CNC_RawWrite("G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000"));
-            CNC_RawWrite("{\"gc\":\"G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000") + "\"}");
+            CNC_RawWrite("{\"gc\":\"G28.3 X" + X.ToString("0.000", CultureInfo.InvariantCulture)
+                + " Y" + Y.ToString("0.000", CultureInfo.InvariantCulture) + "\"}");
             Thread.Sleep(50);
             Cnc.CurrentX = 0.0;
             Cnc.CurrentY = 0.0;
@@ -3107,7 +3125,7 @@ namespace LitePlacer
             };
 
             DownCamera.Active = false;
-            if (Setting.DowncamMoniker == "")
+            if (string.IsNullOrEmpty(Setting.DowncamMoniker))
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
                 DownCameraStatus_label.Text = "Not Active";
@@ -3164,7 +3182,7 @@ namespace LitePlacer
             };
 
             UpCamera.Active = false;
-            if (Setting.UpcamMoniker == "")
+            if (string.IsNullOrEmpty(Setting.UpcamMoniker))
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
                 UpCameraStatus_label.Text = "Not Active";
@@ -3279,15 +3297,15 @@ namespace LitePlacer
         private void tabPageSetupCameras_Begin()
         {
             SetDownCameraDefaults();
-            DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString();
-            DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString();
+            DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString(CultureInfo.InvariantCulture);
+            DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString(CultureInfo.InvariantCulture);
             DownCamDrawCross_checkBox.Checked = DownCamera.DrawCross;
             DownCamDrawBox_checkBox.Checked = DownCamera.DrawBox;
             // SelectCamera(DownCamera); UpdateCameraCameraStatus_label();
 
             SetUpCameraDefaults();
-            UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString();
-            UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString();
+            UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString(CultureInfo.InvariantCulture);
+            UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString(CultureInfo.InvariantCulture);
             UpCamDrawCross_checkBox.Checked = UpCamera.DrawCross;
             UpCamDrawBox_checkBox.Checked = UpCamera.DrawBox;
 
@@ -3336,8 +3354,8 @@ namespace LitePlacer
             {
                 for (int i = 0; i < Devices.Count; i++)
                 {
-                    DownCam_comboBox.Items.Add(i.ToString() + ": " + Devices[i]);
-                    DisplayText("Device " + i.ToString() + ": " + Devices[i]);
+                    DownCam_comboBox.Items.Add(i.ToString(CultureInfo.InvariantCulture) + ": " + Devices[i]);
+                    DisplayText("Device " + i.ToString(CultureInfo.InvariantCulture) + ": " + Devices[i]);
                 }
             }
             else
@@ -3354,7 +3372,7 @@ namespace LitePlacer
             {
                 DownCam_comboBox.SelectedIndex = 0;  // default to first
             }
-            DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString());
+            DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString(CultureInfo.InvariantCulture));
         }
 
         // ====
@@ -3366,8 +3384,8 @@ namespace LitePlacer
             {
                 for (int i = 0; i < Devices.Count; i++)
                 {
-                    UpCam_comboBox.Items.Add(i.ToString() + ": " + Devices[i]);
-                    DisplayText("Device " + i.ToString() + ": " + Devices[i]);
+                    UpCam_comboBox.Items.Add(i.ToString(CultureInfo.InvariantCulture) + ": " + Devices[i]);
+                    DisplayText("Device " + i.ToString(CultureInfo.InvariantCulture) + ": " + Devices[i]);
                 }
             }
             else
@@ -3447,7 +3465,7 @@ namespace LitePlacer
 
         private void ConnectDownCamera_button_Click(object sender, EventArgs e)
         {
-            DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString());
+            DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString(CultureInfo.InvariantCulture));
             Setting.DownCam_index = DownCam_comboBox.SelectedIndex;
             List<string> Monikers = DownCamera.GetMonikerStrings();
             if (Monikers.Count==0)
@@ -3480,7 +3498,7 @@ namespace LitePlacer
         // ====
         private void ConnectUpCamera_button_Click(object sender, EventArgs e)
         {
-            DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString());
+            DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString(CultureInfo.InvariantCulture));
             Setting.UpCam_index = UpCam_comboBox.SelectedIndex;
             List<string> Monikers = UpCamera.GetMonikerStrings();
             if (Monikers.Count == 0)
@@ -4078,8 +4096,8 @@ namespace LitePlacer
             UpcamPositionY_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             Setting.UpCam_PositionY = Cnc.CurrentY;
             DisplayText("True position (with Nozzle offset):");
-            DisplayText("X: " + (Cnc.CurrentX - Setting.DownCam_NozzleOffsetX).ToString());
-            DisplayText("Y: " + (Cnc.CurrentY - Setting.DownCam_NozzleOffsetY).ToString());
+            DisplayText("X: " + (Cnc.CurrentX - Setting.DownCam_NozzleOffsetX).ToString(CultureInfo.InvariantCulture));
+            DisplayText("Y: " + (Cnc.CurrentY - Setting.DownCam_NozzleOffsetY).ToString(CultureInfo.InvariantCulture));
         }
 
         private void GotoUpCamPosition_button_Click(object sender, EventArgs e)
@@ -4102,14 +4120,14 @@ namespace LitePlacer
             DownCamera.Active = false;
 
             UpdateCncConnectionStatus();
-            SizeXMax_textBox.Text = Setting.General_MachineSizeX.ToString();
-            SizeYMax_textBox.Text = Setting.General_MachineSizeY.ToString();
+            SizeXMax_textBox.Text = Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture);
+            SizeYMax_textBox.Text = Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture);
 
-            ParkLocationX_textBox.Text = Setting.General_ParkX.ToString();
-            ParkLocationY_textBox.Text = Setting.General_ParkY.ToString();
-            SquareCorrection_textBox.Text = Setting.CNC_SquareCorrection.ToString();
-            VacuumTime_textBox.Text = Setting.General_PickupVacuumTime.ToString();
-            VacuumRelease_textBox.Text = Setting.General_PickupReleaseTime.ToString();
+            ParkLocationX_textBox.Text = Setting.General_ParkX.ToString(CultureInfo.InvariantCulture);
+            ParkLocationY_textBox.Text = Setting.General_ParkY.ToString(CultureInfo.InvariantCulture);
+            SquareCorrection_textBox.Text = Setting.CNC_SquareCorrection.ToString(CultureInfo.InvariantCulture);
+            VacuumTime_textBox.Text = Setting.General_PickupVacuumTime.ToString(CultureInfo.InvariantCulture);
+            VacuumRelease_textBox.Text = Setting.General_PickupReleaseTime.ToString(CultureInfo.InvariantCulture);
             SmallMovement_numericUpDown.Value = Setting.CNC_SmallMovementSpeed;
 
             CtlrJogSpeed_numericUpDown.Value = Setting.CNC_CtlrJogSpeed;
@@ -4154,7 +4172,7 @@ namespace LitePlacer
             ZGuardOn();
         }
 
-        private void buttonRefreshPortList_Click(object sender, EventArgs e)
+        private void ButtonRefreshPortList_Click(object sender, EventArgs e)
         {
             RefreshPortList();
         }
@@ -4343,15 +4361,16 @@ namespace LitePlacer
 
         // Sends the calls that will result to messages that update the values shown on UI
 
-        private bool LoopParameters(Type type)
+        private bool LoopTinyGParameters()
         {
-            foreach (var parameter in type.GetFields())
+
+            foreach (var parameter in TinyGBoard.GetType().GetProperties())
             {
                 // The motor parameters are <motor number><parameter>, such as 1ma, 1sa, 1tr etc.
-                // These are not valid parameter names, so motor1ma, motor1sa etc are used.
-                // to retrieve the values, we remove the "motor"
+                // These are not valid parameter names, so Motor1ma, motor1sa etc are used.
+                // to retrieve the values, we remove the "Motor"
                 string Name = parameter.Name;
-                if (Name.StartsWith("motor"))
+                if (Name.StartsWith("Motor", StringComparison.Ordinal))
                 {
                     Name = Name.Substring(5);
                 }
@@ -4363,6 +4382,7 @@ namespace LitePlacer
             }
             return true;
         }
+
 
         private bool ControlBoardJustConnected()
         {
@@ -4392,7 +4412,7 @@ namespace LitePlacer
             if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
             {
                 DisplayText("Reading TinyG settings:");
-                if (!LoopParameters(typeof(BoardSettings.TinyG)))
+                if (!LoopTinyGParameters())
                 {
                     return false;
                 }
@@ -4469,386 +4489,385 @@ namespace LitePlacer
 
                 // ========== motor 1 ==========
                 case "1ma":        // map to axis [0=X,1=Y,2=Z...]
-                    TinyGBoard.motor1ma = value;
-                    qQuinticBoard.motor1ma = value;
+                    TinyGBoard.Motor1ma = value;
+                    qQuinticBoard.Motor1ma = value;
                     break;
                 case "1sa":    // step angle, deg
-                    TinyGBoard.motor1sa = value;
-                    qQuinticBoard.motor1sa = value;
+                    TinyGBoard.Motor1ma = value;
+                    qQuinticBoard.Motor1ma = value;
                     Update_1sa(value);
                     break;
                 case "1tr":  // travel per revolution, mm
-                    TinyGBoard.motor1tr = value;
-                    qQuinticBoard.motor1tr = value;
+                    TinyGBoard.Motor1tr = value;
+                    qQuinticBoard.Motor1tr = value;
                     Update_1tr(value);
                     break;
                 case "1mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
-                    TinyGBoard.motor1mi = value;
-                    qQuinticBoard.motor1mi = value;
+                    TinyGBoard.Motor1mi = value;
+                    qQuinticBoard.Motor1mi = value;
                     Update_1mi(value);
                     break;
                 case "1po":        // motor polarity [0=normal,1=reverse]
-                    TinyGBoard.motor1po = value;
-                    qQuinticBoard.motor1po = value;
+                    TinyGBoard.Motor1po = value;
+                    qQuinticBoard.Motor1po = value;
                     break;
                 case "1pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    TinyGBoard.motor1pm = value;
-                    qQuinticBoard.motor1pm = value;
+                    TinyGBoard.Motor1pm = value;
+                    qQuinticBoard.Motor1pm = value;
                     break;
                 case "1pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.motor1pl = value;
+                    qQuinticBoard.Motor1pl = value;
                     break;
 
                 // ========== motor 2 ==========
                 case "2ma":        // map to axis [0=X,1=Y,2=Z...]
-                    TinyGBoard.motor2ma = value;
-                    qQuinticBoard.motor2ma = value;
+                    TinyGBoard.Motor2ma = value;
+                    qQuinticBoard.Motor2ma = value;
                     break;
                 case "2sa":    // step angle, deg
-                    TinyGBoard.motor2sa = value;
-                    qQuinticBoard.motor2sa = value;
+                    TinyGBoard.Motor2sa = value;
+                    qQuinticBoard.Motor2sa = value;
                     Update_2sa(value);
                     break;
                 case "2tr":  // travel per revolution, mm
-                    TinyGBoard.motor2tr = value;
-                    qQuinticBoard.motor2tr = value;
+                    TinyGBoard.Motor2tr = value;
+                    qQuinticBoard.Motor2tr = value;
                     Update_2tr(value);
                     break;
                 case "2mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
-                    TinyGBoard.motor2mi = value;
-                    qQuinticBoard.motor2mi = value;
+                    TinyGBoard.Motor2mi = value;
+                    qQuinticBoard.Motor2mi = value;
                     Update_2mi(value);
                     break;
                 case "2po":        // motor polarity [0=normal,1=reverse]
-                    TinyGBoard.motor2po = value;
-                    qQuinticBoard.motor2po = value;
+                    TinyGBoard.Motor2po = value;
+                    qQuinticBoard.Motor2po = value;
                     break;
                 case "2pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    TinyGBoard.motor2pm = value;
-                    qQuinticBoard.motor2pm = value;
+                    TinyGBoard.Motor2pm = value;
+                    qQuinticBoard.Motor2pm = value;
                     break;
                 case "2pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.motor2pl = value;
+                    qQuinticBoard.Motor2pl = value;
                     break;
 
                 // ========== motor 3 ==========
                 case "3ma":        // map to axis [0=X,1=Y,2=Z...]
-                    TinyGBoard.motor3ma = value;
-                    qQuinticBoard.motor3ma = value;
+                    TinyGBoard.Motor3ma = value;
+                    qQuinticBoard.Motor3ma = value;
                     break;
                 case "3sa":    // step angle, deg
-                    TinyGBoard.motor3sa = value;
-                    qQuinticBoard.motor3sa = value;
+                    TinyGBoard.Motor3sa = value;
+                    qQuinticBoard.Motor3sa = value;
                     Update_3sa(value);
                     break;
                 case "3tr":  // travel per revolution, mm
-                    TinyGBoard.motor3tr = value;
-                    qQuinticBoard.motor3tr = value;
+                    TinyGBoard.Motor3tr = value;
+                    qQuinticBoard.Motor3tr = value;
                     Update_3tr(value);
                     break;
                 case "3mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
-                    TinyGBoard.motor3mi = value;
-                    qQuinticBoard.motor3mi = value;
+                    TinyGBoard.Motor3mi = value;
+                    qQuinticBoard.Motor3mi = value;
                     Update_3mi(value);
                     break;
                 case "3po":        // motor polarity [0=normal,1=reverse]
-                    TinyGBoard.motor3po = value;
-                    qQuinticBoard.motor3po = value;
+                    TinyGBoard.Motor3po = value;
+                    qQuinticBoard.Motor3po = value;
                     break;
                 case "3pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    TinyGBoard.motor3pm = value;
-                    qQuinticBoard.motor3pm = value;
+                    TinyGBoard.Motor3pm = value;
+                    qQuinticBoard.Motor3pm = value;
                     break;
                 case "3pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.motor3pl = value;
+                    qQuinticBoard.Motor3pl = value;
                     break;
 
                 // ========== motor 4 ==========
                 case "4ma":        // map to axis [0=X,1=Y,2=Z...]
-                    TinyGBoard.motor4ma = value;
-                    qQuinticBoard.motor4ma = value;
+                    TinyGBoard.Motor4ma = value;
+                    qQuinticBoard.Motor4ma = value;
                     break;
                 case "4sa":    // step angle, deg
-                    TinyGBoard.motor4sa = value;
-                    qQuinticBoard.motor4sa = value;
+                    TinyGBoard.Motor4sa = value;
+                    qQuinticBoard.Motor4sa = value;
                     Update_4sa(value);
                     break;
                 case "4tr":  // travel per revolution, mm
-                    TinyGBoard.motor4tr = value;
-                    qQuinticBoard.motor4tr = value;
+                    TinyGBoard.Motor4tr = value;
+                    qQuinticBoard.Motor4tr = value;
                     Update_4tr(value);
                     break;
                 case "4mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
-                    TinyGBoard.motor4mi = value;
-                    qQuinticBoard.motor4mi = value;
+                    TinyGBoard.Motor4mi = value;
+                    qQuinticBoard.Motor4mi = value;
                     Update_4mi(value);
                     break;
                 case "4po":        // motor polarity [0=normal,1=reverse]
-                    TinyGBoard.motor4po = value;
-                    qQuinticBoard.motor4po = value;
+                    TinyGBoard.Motor4po = value;
+                    qQuinticBoard.Motor4po = value;
                     break;
                 case "4pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    TinyGBoard.motor4pm = value;
-                    qQuinticBoard.motor4pm = value;
+                    TinyGBoard.Motor4pm = value;
+                    qQuinticBoard.Motor4pm = value;
                     break;
                 case "4pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.motor4pl = value;
+                    qQuinticBoard.Motor4pl = value;
                     break;
 
                 // ========== motor 5 (qQuintic only) ==========
                 case "5ma":
-                    qQuinticBoard.motor5ma = value;
+                    qQuinticBoard.Motor5ma = value;
                     break;
                 case "5pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    qQuinticBoard.motor5pm = value;
+                    qQuinticBoard.Motor5pm = value;
                     break;
                 case "5pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.motor5pl = value;
+                    qQuinticBoard.Motor5pl = value;
                     break;
 
                 // ========== X axis ==========
                 case "xam":        // x axis mode, 1=standard
-                    TinyGBoard.xam = value;
-                    qQuinticBoard.xam = value;
+                    TinyGBoard.Xam = value;
+                    qQuinticBoard.Xam = value;
                     break;
                 case "xvm":    // x velocity maximum, mm/min
                     Update_xvm(value);
-                    TinyGBoard.xvm = value;
-                    qQuinticBoard.xvm = value;
+                    TinyGBoard.Xvm = value;
+                    qQuinticBoard.Xvm = value;
                     break;
                 case "xfr":    // x feedrate maximum, mm/mi
-                    TinyGBoard.xfr = value;
-                    qQuinticBoard.xfr = value;
+                    TinyGBoard.Xfr = value;
+                    qQuinticBoard.Xfr = value;
                     break;
                 case "xtn":        // x travel minimum, mm
-                    TinyGBoard.xtn = value;
-                    qQuinticBoard.xtn = value;
+                    TinyGBoard.Xtn = value;
+                    qQuinticBoard.Xtn = value;
                     break;
                 case "xtm":      // x travel maximum, mm
-                    TinyGBoard.xtm = value;
-                    qQuinticBoard.xtm = value;
+                    TinyGBoard.Xtm = value;
+                    qQuinticBoard.Xtm = value;
                     break;
                 case "xjm":     // x jerk maximum, mm/min^3 * 1 million
-                    TinyGBoard.xjm = value;
-                    qQuinticBoard.xjm = value;
+                    TinyGBoard.Xjm = value;
+                    qQuinticBoard.Xjm = value;
                     Update_xjm(value);
                     break;
                 case "xjh":     // x jerk homing, mm/min^3 * 1 million
-                    TinyGBoard.xjh = value;
-                    qQuinticBoard.xjh = value;
+                    TinyGBoard.Xjh = value;
+                    qQuinticBoard.Xjh = value;
                     Update_xjh(value);
                     break;
                 case "xsv":     // x search velocity, mm/min
-                    TinyGBoard.xsv = value;
-                    qQuinticBoard.xsv = value;
+                    TinyGBoard.Xsv = value;
+                    qQuinticBoard.Xsv = value;
                     Update_xsv(value);
                     break;
                 case "xlv":      // x latch velocity, mm/min
-                    TinyGBoard.xlv = value;
-                    qQuinticBoard.xlv = value;
+                    TinyGBoard.Xlv = value;
+                    qQuinticBoard.Xlv = value;
                     break;
                 case "xlb":        // x latch backoff, mm
-                    TinyGBoard.xlb = value;
-                    qQuinticBoard.xlb = value;
+                    TinyGBoard.Xlb = value;
+                    qQuinticBoard.Xlb = value;
                     break;
                 case "xzb":        // x zero backoff, mm
-                    TinyGBoard.xzb = value;
-                    qQuinticBoard.xzb = value;
+                    TinyGBoard.Xzb = value;
+                    qQuinticBoard.Xzb = value;
                     break;
 
                 // ========== Y axis ==========
                 case "yam":        // y axis mode, 1=standard
-                    TinyGBoard.yam = value;
-                    qQuinticBoard.yam = value;
+                    TinyGBoard.Yam = value;
+                    qQuinticBoard.Yam = value;
                     break;
                 case "yvm":    // y velocity maximum, mm/min
                     Update_yvm(value);
-                    TinyGBoard.yvm = value;
-                    qQuinticBoard.yvm = value;
+                    TinyGBoard.Yvm = value;
+                    qQuinticBoard.Yvm = value;
                     break;
                 case "yfr":    // y feedrate maximum, mm/min
-                    TinyGBoard.yfr = value;
-                    qQuinticBoard.yfr = value;
+                    TinyGBoard.Yfr = value;
+                    qQuinticBoard.Yfr = value;
                     break;
                 case "ytn":        // y travel minimum, mm
-                    TinyGBoard.ytn = value;
-                    qQuinticBoard.ytn = value;
+                    TinyGBoard.Ytn = value;
+                    qQuinticBoard.Ytn = value;
                     break;
                 case "ytm":      // y travel mayimum, mm
-                    TinyGBoard.ytm = value;
-                    qQuinticBoard.ytm = value;
+                    TinyGBoard.Ytm = value;
+                    qQuinticBoard.Ytm = value;
                     break;
                 case "yjm":     // y jerk maximum, mm/min^3 * 1 million
-                    TinyGBoard.yjm = value;
-                    qQuinticBoard.yjm = value;
+                    TinyGBoard.Yjm = value;
+                    qQuinticBoard.Yjm = value;
                     Update_yjm(value);
                     break;
                 case "yjh":     // y jerk homing, mm/min^3 * 1 million
-                    TinyGBoard.yjh = value;
-                    qQuinticBoard.yjh = value;
+                    TinyGBoard.Yjh = value;
+                    qQuinticBoard.Yjh = value;
                     Update_yjh(value);
                     break;
                 case "ysv":     // y search velocity, mm/min
-                    TinyGBoard.ysv = value;
-                    qQuinticBoard.ysv = value;
+                    TinyGBoard.Ysv = value;
+                    qQuinticBoard.Ysv = value;
                     Update_ysv(value);
                     break;
                 case "ylv":      // y latch velocity, mm/min
-                    TinyGBoard.ylv = value;
-                    qQuinticBoard.ylv = value;
+                    TinyGBoard.Ylv = value;
+                    qQuinticBoard.Ylv = value;
                     break;
                 case "ylb":        // y latch backoff, mm
-                    TinyGBoard.ylb = value;
-                    qQuinticBoard.ylb = value;
+                    TinyGBoard.Ylb = value;
+                    qQuinticBoard.Ylb = value;
                     break;
                 case "yzb":        // y zero backoff, mm
-                    TinyGBoard.yzb = value;
-                    qQuinticBoard.yzb = value;
+                    TinyGBoard.Yzb = value;
+                    qQuinticBoard.Yzb = value;
                     break;
 
                 // ========== Z axis ==========
                 case "zam":        // z axis mode, 1=standard
-                    TinyGBoard.zam = value;
-                    qQuinticBoard.zam = value;
+                    TinyGBoard.Zam = value;
+                    qQuinticBoard.Zam = value;
                     break;
                 case "zvm":     // z velocity maximum, mm/min
                     Update_zvm(value);
-                    TinyGBoard.zvm = value;
-                    qQuinticBoard.zvm = value;
+                    TinyGBoard.Zvm = value;
+                    qQuinticBoard.Zvm = value;
                     break;
                 case "zfr":     // z feedrate maximum, mm/min
-                    TinyGBoard.zfr = value;
-                    qQuinticBoard.zfr = value;
+                    TinyGBoard.Zfr = value;
+                    qQuinticBoard.Zfr = value;
                     break;
                 case "ztn":        // z travel minimum, mm
-                    TinyGBoard.ztn = value;
-                    qQuinticBoard.ztn = value;
+                    TinyGBoard.Ztn = value;
+                    qQuinticBoard.Ztn = value;
                     break;
                 case "ztm":       // z travel mazimum, mm
-                    TinyGBoard.ztm = value;
-                    qQuinticBoard.ztm = value;
+                    TinyGBoard.Ztm = value;
+                    qQuinticBoard.Ztm = value;
                     break;
                 case "zjm":      // z jerk mazimum, mm/min^3 * 1 million
-                    TinyGBoard.zjm = value;
-                    qQuinticBoard.zjm = value;
+                    TinyGBoard.Zjm = value;
+                    qQuinticBoard.Zjm = value;
                     Update_zjm(value);
                     break;
                 case "zjh":      // z jerk homing, mm/min^3 * 1 million
-                    TinyGBoard.zjh = value;
-                    qQuinticBoard.zjh = value;
+                    TinyGBoard.Zjh = value;
+                    qQuinticBoard.Zjh = value;
                     Update_zjh(value);
                     break;
                 case "zsv":     // z search velocity, mm/min
-                    TinyGBoard.zsv = value;
-                    qQuinticBoard.zsv = value;
+                    TinyGBoard.Zsv = value;
+                    qQuinticBoard.Zsv = value;
                     Update_zsv(value);
                     break;
                 case "zlv":      // z latch velocity, mm/min
-                    TinyGBoard.zlv = value;
-                    qQuinticBoard.zlv = value;
+                    TinyGBoard.Zlv = value;
+                    qQuinticBoard.Zlv = value;
                     break;
                 case "zlb":        // z latch backoff, mm
-                    TinyGBoard.zlb = value;
-                    qQuinticBoard.zlb = value;
+                    TinyGBoard.Zlb = value;
+                    qQuinticBoard.Zlb = value;
                     break;
                 case "zzb":        // z zero backoff, mm
-                    TinyGBoard.zzb = value;
-                    qQuinticBoard.zzb = value;
+                    TinyGBoard.Zzb = value;
+                    qQuinticBoard.Zzb = value;
                     break;
 
                 // ========== A axis ==========
                 case "aam":        // a axis mode, 1=standard
-                    TinyGBoard.aam = value;
-                    qQuinticBoard.aam = value;
+                    TinyGBoard.Aam = value;
+                    qQuinticBoard.Aam = value;
                     break;
                 case "avm":    // a velocity maximum, mm/min
-                    TinyGBoard.avm = value;
-                    qQuinticBoard.avm = value;
+                    TinyGBoard.Avm = value;
+                    qQuinticBoard.Avm = value;
                     Update_avm(value);
                     break;
                 case "afr":   // a feedrate maximum, mm/min
-                    TinyGBoard.afr = value;
-                    qQuinticBoard.afr = value;
+                    TinyGBoard.Afr = value;
+                    qQuinticBoard.Afr = value;
                     break;
                 case "atn":        // a travel minimum, mm
-                    TinyGBoard.atn = value;
-                    qQuinticBoard.atn = value;
+                    TinyGBoard.Atn = value;
+                    qQuinticBoard.Atn = value;
                     break;
                 case "atm":      // a travel maximum, mm
-                    TinyGBoard.atm = value;
-                    qQuinticBoard.atm = value;
+                    TinyGBoard.Atm = value;
+                    qQuinticBoard.Atm = value;
                     break;
                 case "ajm":     // a jerk maximum, mm/min^3 * 1 million
-                    TinyGBoard.ajm = value;
-                    qQuinticBoard.ajm = value;
+                    TinyGBoard.Ajm = value;
+                    qQuinticBoard.Ajm = value;
                     Update_ajm(value);
                     break;
                 case "ajh":     // a jerk homing, mm/min^3 * 1 million
-                    TinyGBoard.ajh = value;
-                    qQuinticBoard.ajh = value;
+                    TinyGBoard.Ajh = value;
+                    qQuinticBoard.Ajh = value;
                     break;
                 case "asv":     // a search velocity, mm/min
-                    TinyGBoard.asv = value;
-                    qQuinticBoard.asv = value;
+                    TinyGBoard.Asv = value;
+                    qQuinticBoard.Asv = value;
                     break;
-
 
                 // ========== TinyG switch values ==========
                 case "xsn":   // x switch min [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGBoard.xsn = value;
+                    TinyGBoard.Xsn = value;
                     Update_xsn(value);
                     break;
                 case "xsx":   // x switch max [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGBoard.xsx = value;
+                    TinyGBoard.Xsx = value;
                     Update_xsx(value);
                     break;
                 case "ysn":   // y switch min [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGBoard.ysn = value;
+                    TinyGBoard.Ysn = value;
                     Update_ysn(value);
                     break;
                 case "ysx":   // y switch max [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGBoard.ysx = value;
+                    TinyGBoard.Ysx = value;
                     Update_ysx(value);
                     break;
                 case "zsn":   // z switch min [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGBoard.zsn = value;
+                    TinyGBoard.Zsn = value;
                     Update_zsn(value);
                     break;
                 case "zsx":   // z switch max [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGBoard.zsx = value;
+                    TinyGBoard.Zsx = value;
                     Update_zsx(value);
                     break;
                 case "asn":   // a switch min [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGBoard.asn = value;
+                    TinyGBoard.Asn = value;
                     break;
                 case "asx":   // a switch max [0=off,1=homing,2=limit,3=limit+homing];
-                    TinyGBoard.asx = value;
+                    TinyGBoard.Asx = value;
                     break;
 
                 // ========== qQuintic switch values ==========
                 case "xhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.xhi = value;
+                    qQuinticBoard.Xhi = value;
                     break;
                 case "xhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
-                    qQuinticBoard.xhd = value;
+                    qQuinticBoard.Xhd = value;
                     break;
                 case "yhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.yhi = value;
+                    qQuinticBoard.Yhi = value;
                     break;
                 case "yhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
-                    qQuinticBoard.yhd = value;
+                    qQuinticBoard.Yhd = value;
                     break;
                 case "zhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.zhi = value;
+                    qQuinticBoard.Zhi = value;
                     break;
                 case "zhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
-                    qQuinticBoard.zhd = value;
+                    qQuinticBoard.Zhd = value;
                     break;
                 case "ahi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.ahi = value;
+                    qQuinticBoard.Ahi = value;
                     break;
                 case "bhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.bhi = value;
+                    qQuinticBoard.Bhi = value;
                     break;
 
                 // Hardware platform
@@ -4897,11 +4916,11 @@ namespace LitePlacer
             if (InvokeRequired) { Invoke(new Action<string>(Update_xjm), new[] { value }); return; }
 
 #if (TINYG_SHORTUNITS)
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
 #else
             double val = Convert.ToDouble(value) / 1000000;
 #endif
-            xjm_maskedTextBox.Text = val.ToString();
+            xjm_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_yjm(string value)
@@ -4909,11 +4928,11 @@ namespace LitePlacer
             if (InvokeRequired) { Invoke(new Action<string>(Update_yjm), new[] { value }); return; }
 
 #if (TINYG_SHORTUNITS)
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
 #else
             double val = Convert.ToDouble(value) / 1000000;
 #endif
-            yjm_maskedTextBox.Text = val.ToString();
+            yjm_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_zjm(string value)
@@ -4921,11 +4940,11 @@ namespace LitePlacer
             if (InvokeRequired) { Invoke(new Action<string>(Update_zjm), new[] { value }); return; }
 
 #if (TINYG_SHORTUNITS)
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
 #else
             double val = Convert.ToDouble(value) / 1000000;
 #endif
-            zjm_maskedTextBox.Text = val.ToString();
+            zjm_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_ajm(string value)
@@ -4933,11 +4952,11 @@ namespace LitePlacer
             if (InvokeRequired) { Invoke(new Action<string>(Update_ajm), new[] { value }); return; }
 
 #if (TINYG_SHORTUNITS)
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
 #else
             double val = Convert.ToDouble(value) / 1000000;
 #endif
-            ajm_maskedTextBox.Text = val.ToString();
+            ajm_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         // =========================================================================
@@ -5017,11 +5036,11 @@ namespace LitePlacer
             if (InvokeRequired) { Invoke(new Action<string>(Update_xjh), new[] { value }); return; }
 
 #if (TINYG_SHORTUNITS)
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
 #else
             double val = Convert.ToDouble(value) / 1000000;
 #endif
-            xjh_maskedTextBox.Text = val.ToString();
+            xjh_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_yjh(string value)
@@ -5029,11 +5048,11 @@ namespace LitePlacer
             if (InvokeRequired) { Invoke(new Action<string>(Update_yjh), new[] { value }); return; }
 
 #if (TINYG_SHORTUNITS)
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
 #else
             double val = Convert.ToDouble(value) / 1000000;
 #endif
-            yjh_maskedTextBox.Text = val.ToString();
+            yjh_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_zjh(string value)
@@ -5041,11 +5060,11 @@ namespace LitePlacer
             if (InvokeRequired) { Invoke(new Action<string>(Update_zjh), new[] { value }); return; }
 
 #if (TINYG_SHORTUNITS)
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
 #else
             double val = Convert.ToDouble(value) / 1000000;
 #endif
-            zjh_maskedTextBox.Text = val.ToString();
+            zjh_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         // =========================================================================
@@ -5112,8 +5131,8 @@ namespace LitePlacer
             {
                 value = value.Substring(0, ind);
             };
-            double val = Convert.ToDouble(value);
-            xsv_maskedTextBox.Text = val.ToString();
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
+            xsv_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_ysv(string value)
@@ -5125,8 +5144,8 @@ namespace LitePlacer
             {
                 value = value.Substring(0, ind);
             };
-            double val = Convert.ToDouble(value);
-            ysv_maskedTextBox.Text = val.ToString();
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
+            ysv_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_zsv(string value)
@@ -5138,8 +5157,8 @@ namespace LitePlacer
             {
                 value = value.Substring(0, ind);
             };
-            double val = Convert.ToDouble(value);
-            zsv_maskedTextBox.Text = val.ToString();
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
+            zsv_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         // =========================================================================
@@ -5261,7 +5280,7 @@ namespace LitePlacer
             int i = 0;
             if (Xlim_checkBox.Checked) i = 2;
             if (Xhome_checkBox.Checked) i++;
-            CNC_Write_m("{\"xsn\":" + i.ToString() + "}");
+            CNC_Write_m("{\"xsn\":" + i.ToString(CultureInfo.InvariantCulture) + "}");
             Thread.Sleep(50);
         }
 
@@ -5270,7 +5289,7 @@ namespace LitePlacer
             int i = 0;
             if (Xlim_checkBox.Checked) i = 2;
             if (Xhome_checkBox.Checked) i++;
-            CNC_Write_m("{\"xsn\":" + i.ToString() + "}");
+            CNC_Write_m("{\"xsn\":" + i.ToString(CultureInfo.InvariantCulture) + "}");
             Thread.Sleep(50);
         }
 
@@ -5279,7 +5298,7 @@ namespace LitePlacer
             int i = 0;
             if (Ylim_checkBox.Checked) i = 2;
             if (Yhome_checkBox.Checked) i++;
-            CNC_Write_m("{\"ysn\":" + i.ToString() + "}");
+            CNC_Write_m("{\"ysn\":" + i.ToString(CultureInfo.InvariantCulture) + "}");
             Thread.Sleep(50);
         }
 
@@ -5288,7 +5307,7 @@ namespace LitePlacer
             int i = 0;
             if (Ylim_checkBox.Checked) i = 2;
             if (Yhome_checkBox.Checked) i++;
-            CNC_Write_m("{\"ysn\":" + i.ToString() + "}");
+            CNC_Write_m("{\"ysn\":" + i.ToString(CultureInfo.InvariantCulture) + "}");
             Thread.Sleep(50);
         }
 
@@ -5297,7 +5316,7 @@ namespace LitePlacer
             int i = 0;
             if (Zlim_checkBox.Checked) i = 2;
             if (Zhome_checkBox.Checked) i++;
-            CNC_Write_m("{\"zsn\":" + i.ToString() + "}");
+            CNC_Write_m("{\"zsn\":" + i.ToString(CultureInfo.InvariantCulture) + "}");
             Thread.Sleep(50);
         }
 
@@ -5306,7 +5325,7 @@ namespace LitePlacer
             int i = 0;
             if (Zlim_checkBox.Checked) i = 2;
             if (Zhome_checkBox.Checked) i++;
-            CNC_Write_m("{\"zsn\":" + i.ToString() + "}");
+            CNC_Write_m("{\"zsn\":" + i.ToString(CultureInfo.InvariantCulture) + "}");
             Thread.Sleep(50);
         }
 
@@ -5412,9 +5431,9 @@ namespace LitePlacer
             {
                 value = value.Substring(0, ind);
             };
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
             val = val / 1000;
-            xvm_maskedTextBox.Text = val.ToString();
+            xvm_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_yvm(string value)
@@ -5426,9 +5445,9 @@ namespace LitePlacer
             {
                 value = value.Substring(0, ind);
             };
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
             val = val / 1000;
-            yvm_maskedTextBox.Text = val.ToString();
+            yvm_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_zvm(string value)
@@ -5440,8 +5459,8 @@ namespace LitePlacer
             {
                 value = value.Substring(0, ind);
             };
-            double val = Convert.ToDouble(value);
-            zvm_maskedTextBox.Text = val.ToString();
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
+            zvm_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
 
@@ -5454,15 +5473,15 @@ namespace LitePlacer
             {
                 value = value.Substring(0, ind);
             };
-            double val = Convert.ToDouble(value);
+            double val = Convert.ToDouble(value, CultureInfo.InvariantCulture);
             val = val / 1000;
-            avm_maskedTextBox.Text = val.ToString();
+            avm_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         // =========================================================================
         // *vm setting
 
-        private void xvm_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void Xvm_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             xvm_maskedTextBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
@@ -5475,7 +5494,7 @@ namespace LitePlacer
             }
         }
 
-        private void yvm_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void Yvm_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             yvm_maskedTextBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
@@ -5488,7 +5507,7 @@ namespace LitePlacer
             }
         }
 
-        private void zvm_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void Zvm_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             zvm_maskedTextBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
@@ -5503,7 +5522,7 @@ namespace LitePlacer
             }
         }
 
-        private void avm_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void Avm_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             avm_maskedTextBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
@@ -5528,32 +5547,32 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_1mi), new[] { value }); return; }
 
-            int val = Convert.ToInt32(value);
-            mi1_maskedTextBox.Text = val.ToString();
+            int val = Convert.ToInt32(value, CultureInfo.InvariantCulture);
+            mi1_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_2mi(string value)
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_2mi), new[] { value }); return; }
 
-            int val = Convert.ToInt32(value);
-            mi2_maskedTextBox.Text = val.ToString();
+            int val = Convert.ToInt32(value, CultureInfo.InvariantCulture);
+            mi2_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_3mi(string value)
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_3mi), new[] { value }); return; }
 
-            int val = Convert.ToInt32(value);
-            mi3_maskedTextBox.Text = val.ToString();
+            int val = Convert.ToInt32(value, CultureInfo.InvariantCulture);
+            mi3_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update_4mi(string value)
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_4mi), new[] { value }); return; }
 
-            int val = Convert.ToInt32(value);
-            mi4_maskedTextBox.Text = val.ToString();
+            int val = Convert.ToInt32(value, CultureInfo.InvariantCulture);
+            mi4_maskedTextBox.Text = val.ToString(CultureInfo.InvariantCulture);
         }
 
         // =========================================================================
@@ -5572,7 +5591,7 @@ namespace LitePlacer
                 }
                 if (GoodValues.Contains(box.Text))
                 {
-                    CNC_Write_m("{\"" + BoxNo.ToString() + "mi\":" + box.Text + "}");
+                    CNC_Write_m("{\"" + BoxNo.ToString(CultureInfo.InvariantCulture) + "mi\":" + box.Text + "}");
                     Thread.Sleep(50);
                     box.ForeColor = Color.Black;
                 }
@@ -6548,7 +6567,7 @@ namespace LitePlacer
         private void SmallMovement_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             Setting.CNC_SmallMovementSpeed = SmallMovement_numericUpDown.Value;
-            Cnc.SmallMovementString = "G1 F" + Setting.CNC_SmallMovementSpeed.ToString() + " ";
+            Cnc.SmallMovementString = "G1 F" + Setting.CNC_SmallMovementSpeed.ToString(CultureInfo.InvariantCulture) + " ";
         }
 
         private void SquareCorrection_textBox_Leave(object sender, EventArgs e)
@@ -6724,19 +6743,16 @@ namespace LitePlacer
         const int CADdata_XNomColumn = 3;
         const int CADdata_YNomColumn = 4;
         const int CADdata_RotNomColumn = 5;
-        const int CADdata_XMachColumn = 6;
-        const int CADdata_YMachColumn = 7;
-        const int CADdata_RotMachColumn = 8;
+        //const int CADdata_XMachColumn = 6;
+        //const int CADdata_YMachColumn = 7;
+        //const int CADdata_RotMachColumn = 8;
 
-        const int Jobdata_CountColumn = 0;
-        const int Jobdata_ComponentTypColumn = 1;
-        const int Jobdata_MethodColumn = 2;
-        const int Jobdata_MethodParametersColumn = 3;
-        const int Jobdata_NozzleColumn = 4;
-        const int Jobdata_ComponentsColumn = 5;
+        //const int CADdata_XMachColumn = 6;
+        //const int CADdata_YMachColumn = 7;
+        //const int CADdata_RotMachColumn = 8;
 
         // =================================================================================
-        private void resetPlacedDataToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ResetPlacedDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // the foreach loop below ignores last checked box, unless we manually select some other cell before. ??
             CadData_GridView.CurrentCell = CadData_GridView[0, 0];
@@ -7243,9 +7259,10 @@ namespace LitePlacer
                 else
                 {
                     // Yes, increment component count and add component name to list
-                    ComponentCount = Convert.ToInt32(JobData_GridView.Rows[TypeRow].Cells["ComponentCount"].Value.ToString());
+                    string tmp = JobData_GridView.Rows[TypeRow].Cells["ComponentCount"].Value.ToString();
+                    ComponentCount = Convert.ToInt32(tmp, CultureInfo.InvariantCulture);
                     ComponentCount++;
-                    JobData_GridView.Rows[TypeRow].Cells["ComponentCount"].Value = ComponentCount.ToString();
+                    JobData_GridView.Rows[TypeRow].Cells["ComponentCount"].Value = ComponentCount.ToString(CultureInfo.InvariantCulture);
                     // and add component name to list
                     string CurrentComponentList = JobData_GridView.Rows[TypeRow].Cells["ComponentList"].Value.ToString();
                     CurrentComponentList = CurrentComponentList + ',' + InRow.Cells["Component"].Value.ToString();
@@ -7264,7 +7281,7 @@ namespace LitePlacer
                     JobRow.Cells["GroupMethod"].Value = "Place Fast";
                     if (Setting.Nozzles_Enabled)
                     {
-                        JobRow.Cells["JobDataNozzle_Column"].Value = Setting.Nozzles_default.ToString();
+                        JobRow.Cells["JobDataNozzle_Column"].Value = Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -7402,7 +7419,7 @@ namespace LitePlacer
                 MethodSelectionForm MethodDialog = new MethodSelectionForm(this);
                 MethodDialog.ShowCheckBox = false;
                 MethodDialog.ShowDialog(this);
-                if (MethodDialog.SelectedMethod != "")
+                if (string.IsNullOrEmpty(MethodDialog.SelectedMethod))
                 {
                     foreach (DataGridViewCell cell in JobData_GridView.SelectedCells)
                     {
@@ -7453,7 +7470,7 @@ namespace LitePlacer
                 MakeJobDataDirty();
                 List<String> Line = SplitCSV(JobData_GridView.CurrentCell.Value.ToString(), ',');
                 int row = JobData_GridView.CurrentCell.RowIndex;
-                JobData_GridView.Rows[row].Cells["ComponentCount"].Value = Line.Count.ToString();
+                JobData_GridView.Rows[row].Cells["ComponentCount"].Value = Line.Count.ToString(CultureInfo.InvariantCulture);
                 Update_GridView(JobData_GridView);
             }
         }
@@ -7598,7 +7615,7 @@ namespace LitePlacer
                 DataGridViewCheckBoxCell cell = CadData_GridView.Rows[oneCell.RowIndex].Cells["Placed_column"] as DataGridViewCheckBoxCell;
                 if (cell.Value != null)
                 {
-                    if (cell.Value.ToString().ToLower() == "false")
+                    if (cell.Value.ToString().ToUpperInvariant() == "FALSE")
                     {
                         DoSomething = true;
                         break;
@@ -7716,7 +7733,10 @@ namespace LitePlacer
                     DataGridViewCheckBoxCell cell = Row.Cells["Placed_column"] as DataGridViewCheckBoxCell;
                     if (cell.Value != null)
                     {
-                        placed = (cell.Value.ToString().ToLower() == "true");
+                        if (cell.Value.ToString().ToUpperInvariant() == "TRUE")
+                        {
+                            placed = true;
+                        }
                     }
                     else
                     {
@@ -7736,7 +7756,7 @@ namespace LitePlacer
         // This routine places the [index] row from Job data grid view:
         private bool PlaceRow_m(int RowNo)
         {
-            DisplayText("PlaceRow_m(" + RowNo.ToString() + ")", KnownColor.Blue);
+            DisplayText("PlaceRow_m(" + RowNo.ToString(CultureInfo.InvariantCulture) + ")", KnownColor.Blue);
             // Select the row and keep it visible
             JobData_GridView.Rows[RowNo].Selected = true;
             HandleGridScrolling(false, JobData_GridView);
@@ -7802,7 +7822,7 @@ namespace LitePlacer
                     }
 
                 } while (UserHasNotDecided);
-                if (NewMethod == "")
+                if (string.IsNullOrEmpty(NewMethod))
                 {
                     return false;   // user pressed x
                 }
@@ -8086,7 +8106,7 @@ namespace LitePlacer
 
         private bool PlaceComponent_m(string Component, int GroupRow, bool FirstInRow)
         {
-            DisplayText("PlaceComponent_m: Component: " + Component + ", Row:" + GroupRow.ToString(), KnownColor.Blue);
+            DisplayText("PlaceComponent_m: Component: " + Component + ", Row:" + GroupRow.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
             // Skip fiducials
             if (JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value.ToString() == "Fiducials")
             {
@@ -8120,7 +8140,6 @@ namespace LitePlacer
             string Xstr = "n/a";
             string Ystr = "n/a";
             string RotationStr = "n/a";
-            double Rotation = Double.NaN;
             double X_machine = 0;
             double Y_machine = 0;
             double A_machine = 0;
@@ -8132,21 +8151,19 @@ namespace LitePlacer
                 if (SkipMeasurements_checkBox.Checked)
                 {
                     // User wants to use the nominal coordinates. Copy the nominal to machine for this to happen:
-                    double X;
-                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X))
+                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString().Replace(',', '.'), out double X))
                     {
                         DisplayText("Bad data X nominal at component " + Component);
                     }
                     X = X + Setting.General_JigOffsetX + Setting.Job_Xoffset;
-                    CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value = X.ToString();
+                    CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value = X.ToString(CultureInfo.InvariantCulture);
 
-                    double Y;
-                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y))
+                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out double Y))
                     {
                         DisplayText("Bad data Y nominal at component " + Component);
                     }
                     Y = Y + Setting.General_JigOffsetY + Setting.Job_Yoffset;
-                    CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value = Y.ToString();
+                    CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value = Y.ToString(CultureInfo.InvariantCulture);
 
                     CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value = CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value;
                 }
@@ -8160,10 +8177,34 @@ namespace LitePlacer
                 Xstr = CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString();
                 Ystr = CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value.ToString();
                 RotationStr = CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString();
-                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString().Replace(',', '.'), out Rotation);
-                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString().Replace(',', '.'), out X_machine);
-                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString().Replace(',', '.'), out Y_machine);
-                double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out A_machine);
+                double tempD;
+                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString().Replace(',', '.'), out tempD))
+                {
+                    X_machine = tempD;
+                }
+                else
+                {
+                    DisplayText("Bad data X machine at component " + Component);
+                    return false;
+                }
+                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString().Replace(',', '.'), out tempD))
+                {
+                    Y_machine = tempD;
+                }
+                else
+                {
+                    DisplayText("Bad data Y machine at component " + Component);
+                    return false;
+                }
+                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["A_machine"].Value.ToString().Replace(',', '.'), out tempD))
+                {
+                    A_machine = tempD;
+                }
+                else
+                {
+                    DisplayText("Bad data A machine at component " + Component);
+                    return false;
+                }
             }
 
             Method = JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value.ToString();
@@ -8330,8 +8371,8 @@ namespace LitePlacer
             return true;
         }
 
-        public bool AbortPlacement = false;
-        public bool AbortPlacementShown = false;
+        public bool AbortPlacement { get; set; } = false;
+        public bool AbortPlacementShown { get; set; } = false;
 
         // =================================================================================
         private bool ChangeNozzleManually_m()
@@ -8466,8 +8507,8 @@ namespace LitePlacer
                     return false;
                 }
                 double Zpickup = Cnc.CurrentZ - Setting.General_PlacementBackOff + Setting.Placement_Depth;
-                Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value = Zpickup.ToString();
-                DisplayText("PickUpPart_m(): Probed Z= " + Cnc.CurrentZ.ToString());
+                Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value = Zpickup.ToString(CultureInfo.InvariantCulture);
+                DisplayText("PickUpPart_m(): Probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
@@ -8475,13 +8516,13 @@ namespace LitePlacer
                 if (!double.TryParse(Z_str.Replace(',', '.'), out Z))
                 {
                     ShowMessageBox(
-                        "Bad pickup Z data at Tape #" + TapeNumber.ToString(),
+                        "Bad pickup Z data at Tape #" + TapeNumber.ToString(CultureInfo.InvariantCulture),
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
                     return false;
                 };
                 // Z += 0.5;
-                DisplayText("PickUpPart_m(): Part pickup, Z" + Z.ToString(), KnownColor.Blue);
+                DisplayText("PickUpPart_m(): Part pickup, Z" + Z.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
                 if (!CNC_Z_m(Z))
                 {
                     return false;
@@ -8571,7 +8612,7 @@ namespace LitePlacer
             // If this succeeds, we update next hole location at the end, but these values are measured at start
             double HoleX = 0;
             double HoleY = 0;
-            DisplayText("PickUpPart_m(), tape no: " + TapeNumber.ToString());
+            DisplayText("PickUpPart_m(), tape no: " + TapeNumber.ToString(CultureInfo.InvariantCulture));
             // Go to part location:
             Cnc.VacuumOff();
             if (!Tapes.GotoNextPartByMeasurement_m(TapeNumber, out HoleX, out HoleY))
@@ -8731,7 +8772,9 @@ namespace LitePlacer
                 return false;
             }
             DisplayText("PickUpPartWithDirectCoordinates_m(), tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString()
-                + ", X: " + X.ToString("0.000") + ", Y: " + Y.ToString("0.000") + ", A: " + A.ToString("0.000"));
+                + ", X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
+                + ", Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture)
+                + ", A: " + A.ToString("0.000", CultureInfo.InvariantCulture));
 
             if (!Nozzle.Move_m(X, Y, A))
             {
@@ -8745,9 +8788,12 @@ namespace LitePlacer
             if (increment)
             {
                 int i;
-                int.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out i);  // we know it parses
-                i++;
-                Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value = i.ToString();
+                if (int.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out i))
+                {
+                    i++;
+                    Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value = i.ToString(CultureInfo.InvariantCulture);
+                }
+                // we know it parses, but compiler wants us to check enayway; no else clause is needed.
             }
             return true;
         }
@@ -8766,8 +8812,8 @@ namespace LitePlacer
                     return false;
                 };
                 double Zplace = Cnc.CurrentZ - Setting.General_PlacementBackOff + Setting.Placement_Depth;
-                Tapes_dataGridView.Rows[TapeNum].Cells["Z_Place_Column"].Value = Zplace.ToString();
-                DisplayText("PutPartDown_m(): Probed placement Z= " + Cnc.CurrentZ.ToString());
+                Tapes_dataGridView.Rows[TapeNum].Cells["Z_Place_Column"].Value = Zplace.ToString(CultureInfo.InvariantCulture);
+                DisplayText("PutPartDown_m(): Probed placement Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
@@ -8780,7 +8826,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                DisplayText("PlacePart_m(): Part down, Z" + Z.ToString(), KnownColor.Blue);
+                DisplayText("PlacePart_m(): Part down, Z" + Z.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
                 if (!CNC_Z_m(Z))
                 {
                     return false;
@@ -8815,8 +8861,8 @@ namespace LitePlacer
                     return false;
                 }
                 LoosePartPlaceZ = Cnc.CurrentZ - Setting.General_PlacementBackOff + Setting.Placement_Depth;
-                DisplayText("PutLoosePartDown_m(): probed Z= " + Cnc.CurrentZ.ToString());
-                DisplayText("PutLoosePartDown_m(): placement Z= " + LoosePartPlaceZ.ToString());
+                DisplayText("PutLoosePartDown_m(): probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
+                DisplayText("PutLoosePartDown_m(): placement Z= " + LoosePartPlaceZ.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
@@ -8841,14 +8887,14 @@ namespace LitePlacer
         //
         // MethodeParameter: For Loose Part Assisted => stop distance above board in mm 
         // ====================================================================================
-        private bool PutLoosePartDownAssisted_m(bool Probe, string MethodeParameter)
+        private bool PutLoosePartDownAssisted_m(string MethodParameter)
         {
             double distance2pcb;
 
             // secure convert of string to double
             try
             {
-                distance2pcb = Convert.ToDouble(MethodeParameter);
+                distance2pcb = Convert.ToDouble(MethodParameter, CultureInfo.InvariantCulture);
             }
             catch (FormatException)
             {
@@ -8982,7 +9028,9 @@ namespace LitePlacer
 
         private bool PickUpLoosePart_m(bool Probe, bool Snapshot, int CADdataRow, string Component)
         {
-            DisplayText("PickUpLoosePart_m: " + Probe.ToString() + ", " + Snapshot.ToString() + ", " + CADdataRow.ToString() + ", " + Component, KnownColor.Blue);
+            DisplayText("PickUpLoosePart_m: " + Probe.ToString(CultureInfo.InvariantCulture) + ", "
+                + Snapshot.ToString(CultureInfo.InvariantCulture) + ", "
+                + CADdataRow.ToString(CultureInfo.InvariantCulture) + ", " + Component, KnownColor.Blue);
             if (!CNC_XY_m(Setting.General_PickupCenterX, Setting.General_PickupCenterY))
             {
                 return false;
@@ -9019,7 +9067,10 @@ namespace LitePlacer
                 }
                 X = X * Setting.DownCam_XmmPerPixel;
                 Y = -Y * Setting.DownCam_YmmPerPixel;
-                DisplayText("PickUpLoosePart_m(): measurement " + i.ToString() + ", X: " + X.ToString() + ", Y: " + Y.ToString() + ", A: " + A.ToString());
+                DisplayText("PickUpLoosePart_m(): measurement " + i.ToString(CultureInfo.InvariantCulture)
+                    + ", X: " + X.ToString(CultureInfo.InvariantCulture)
+                    + ", Y: " + Y.ToString(CultureInfo.InvariantCulture)
+                    + ", A: " + A.ToString(CultureInfo.InvariantCulture));
                 if ((Math.Abs(X) < 2.0) && (Math.Abs(Y) < 2.0))
                 {
                     break;
@@ -9061,12 +9112,12 @@ namespace LitePlacer
                     return false;
                 }
                 LoosePartPickupZ = Cnc.CurrentZ - Setting.General_PlacementBackOff + Setting.Placement_Depth;
-                DisplayText("PickUpLoosePart_m(): Probed Z= " + Cnc.CurrentZ.ToString());
-                DisplayText("PickUpLoosePart_m(): Pickup Z= " + LoosePartPickupZ.ToString());
+                DisplayText("PickUpLoosePart_m(): Probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
+                DisplayText("PickUpLoosePart_m(): Pickup Z= " + LoosePartPickupZ.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                DisplayText("PickUpLoosePart_m(): Part pickup, Z" + LoosePartPickupZ.ToString());
+                DisplayText("PickUpLoosePart_m(): Part pickup, Z" + LoosePartPickupZ.ToString(CultureInfo.InvariantCulture));
                 if (!CNC_Z_m(LoosePartPickupZ))
                 {
                     DownCamera.Draw_Snapshot = true;
@@ -9123,7 +9174,7 @@ namespace LitePlacer
 
             int TapeNum = 0;
             string Component = CadData_GridView.Rows[CADdataRow].Cells["Component"].Value.ToString();
-            DisplayText("PlacePart_m, Component: " + Component + ", CAD data row: " + CADdataRow.ToString(), KnownColor.Blue);
+            DisplayText("PlacePart_m, Component: " + Component + ", CAD data row: " + CADdataRow.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
 
             // Preparing:
             switch (Method)
@@ -9285,14 +9336,14 @@ namespace LitePlacer
             {
                 case "Place Assisted": // For parts from tapes allows manually correction of part position before placing them
                     // since for tape parts id contains the Tape index, we use here a fixed stop distance above board
-                    if (!PutLoosePartDownAssisted_m(FirstInRow, "2.5"))  
+                    if (!PutLoosePartDownAssisted_m("2.5"))
                     {
                         // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
                         return false;
                     }
                     break;
                 case "LoosePart Assisted":
-                    if (!PutLoosePartDownAssisted_m(FirstInRow, id)) // id contains stop distance above board
+                    if (!PutLoosePartDownAssisted_m(id)) // id contains stop distance above board
                     {
                         // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
                         return false;
@@ -9422,7 +9473,8 @@ namespace LitePlacer
             Y = -Y / Setting.UpCam_XmmPerPixel;
             dY = Y / (float)count;
             DisplayText("Component measurement:");
-            DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture) + " (" + count.ToString() + " results out of 5)");
+            DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
+                + " (" + count.ToString(CultureInfo.InvariantCulture) + " results out of 5)");
             DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
             return true;
         }
@@ -9533,8 +9585,6 @@ namespace LitePlacer
             {
                 return false;
             }
-            double X;
-            double Y;
             FeatureType FidShape= FeatureType.Circle;
             if (Setting.Placement_FiducialsType==0)
             {
@@ -9557,7 +9607,7 @@ namespace LitePlacer
                 return false;
             }
             double FindTolerance = Setting.Placement_FiducialTolerance;
-            if (!GoToFeatureLocation_m(FidShape, FindTolerance, 0.1, out X, out Y))
+            if (!GoToFeatureLocation_m(FidShape, FindTolerance, 0.1, out double X, out double Y))
             {
                 ShowMessageBox(
                     "Finding fiducial: Can't regognize fiducial " + fid.Designator,
@@ -9580,12 +9630,9 @@ namespace LitePlacer
         // ValidateCADdata_m(): Checks, that supplied nominal values are good numbers:
         private bool ValidateCADdata_m()
         {
-            double x;
-            double y;
-            double r;
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
-                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out x))
+                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out double x))
                 {
                     ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
@@ -9593,7 +9640,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out y))
+                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out double y))
                 {
                     ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
@@ -9601,7 +9648,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                if (!double.TryParse(Row.Cells["Rotation"].Value.ToString().Replace(',', '.'), out r))
+                if (!double.TryParse(Row.Cells["Rotation"].Value.ToString().Replace(',', '.'), out double r))
                 {
                     ShowMessageBox(
                         "Problem with " + Row.Cells["Component"].Value.ToString() + " rotation data",
@@ -9625,9 +9672,17 @@ namespace LitePlacer
             {
                 foreach (DataGridViewRow Row in CadData_GridView.Rows)
                 {
-                    // Cad data is validated.
-                    double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X_nom);
-                    double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y_nom);
+                    // Cad data is validated (but still need to test because compiler)
+                    if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X_nom))
+                    {
+                        DisplayText("Bad X nominal data, component " + Row.Cells["Component"].Value.ToString());
+                        return false;
+                    }
+                    if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y_nom))
+                    {
+                        DisplayText("Bad Y nominal data, component " + Row.Cells["Component"].Value.ToString());
+                        return false;
+                    }
                     X_nom += Setting.General_JigOffsetX;
                     Y_nom += Setting.General_JigOffsetY;
                     Row.Cells["X_machine"].Value = X_nom.ToString("0.000", CultureInfo.InvariantCulture);
@@ -9682,8 +9737,16 @@ namespace LitePlacer
                     if (Row.Cells["Component"].Value.ToString() == FiducialDesignators[i]) // If this is the fiducial we want,
                     {
                         // Get its nominal position (value already checked).
-                        double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X_nom);
-                        double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y_nom);
+                        if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X_nom))
+                        {
+                            DisplayText("Bad X nominal data, fiducial " + Row.Cells["Component"].Value.ToString());
+                            return false;
+                        }
+                        if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y_nom))
+                        {
+                            DisplayText("Bad Y nominal data, fiducial " + Row.Cells["Component"].Value.ToString());
+                            return false;
+                        }
                         break;
                     }
                 }
@@ -9771,25 +9834,33 @@ namespace LitePlacer
             Loc = transform.TransformPoint(Loc);
             Loc = Loc.NormalizeHomogeneous();
             DisplayText("Transform:");
-            DisplayText("dX= " + (Loc.X).ToString());
-            DisplayText("dY= " + Loc.Y.ToString());
+            DisplayText("dX= " + (Loc.X).ToString(CultureInfo.InvariantCulture));
+            DisplayText("dY= " + Loc.Y.ToString(CultureInfo.InvariantCulture));
             // We do need rotation. Find out by rotatíng a unit vector:
             Loc2.X = 1.0;
             Loc2.Y = 0.0;
             Loc2.W = 1.0;
             Loc2 = transform.TransformPoint(Loc2);
             Loc2 = Loc2.NormalizeHomogeneous();
-            DisplayText("dX= " + Loc2.X.ToString());
-            DisplayText("dY= " + Loc2.Y.ToString());
+            DisplayText("dX= " + Loc2.X.ToString(CultureInfo.InvariantCulture));
+            DisplayText("dY= " + Loc2.Y.ToString(CultureInfo.InvariantCulture));
             double angle = Math.Asin(Loc2.Y - Loc.Y) * 180.0 / Math.PI; // in degrees
-            DisplayText("angle= " + angle.ToString());
+            DisplayText("angle= " + angle.ToString(CultureInfo.InvariantCulture));
 
             // Calculate machine coordinates of all components:
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
                 // build a point from CAD data values
-                double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out Loc.X);
-                double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Loc.Y);
+                Loc.X = 0.0;
+                if (double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out double tempD))
+                {
+                    Loc.X = tempD;
+                }
+                Loc.Y = 0.0;
+                if (double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out tempD))
+                {
+                    Loc.Y = tempD;
+                }
                 Loc.W = 1;
                 // transform it
                 Loc = transform.TransformPoint(Loc);
@@ -9798,9 +9869,11 @@ namespace LitePlacer
                 Row.Cells["X_machine"].Value = Loc.X.ToString("0.000", CultureInfo.InvariantCulture);
                 Row.Cells["Y_machine"].Value = Loc.Y.ToString("0.000", CultureInfo.InvariantCulture);
                 // handle rotation
-                double rot;
-                double.TryParse(Row.Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot);
-                rot += angle;
+                double rot = 0.0;
+                if (double.TryParse(Row.Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot))
+                {
+                    rot += angle;
+                }
                 while (rot > 360.0)
                 {
                     rot -= 360.0;
@@ -10470,7 +10543,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Row.Cells["X_nominal"].Value = Math.Round((val * 25.4), 3).ToString();
+                Row.Cells["X_nominal"].Value = Math.Round((val * 25.4), 3).ToString(CultureInfo.InvariantCulture);
                 if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out val))
                 {
                     ShowMessageBox(
@@ -10479,7 +10552,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Row.Cells["Y_nominal"].Value = Math.Round((val * 25.4), 3).ToString();
+                Row.Cells["Y_nominal"].Value = Math.Round((val * 25.4), 3).ToString(CultureInfo.InvariantCulture);
             }
             return true;
         }
@@ -10493,7 +10566,7 @@ namespace LitePlacer
             int i = 0;
             bool inches = false;
             // Skip headers until find one starting with "## "
-            while (!(AllLines[i].StartsWith("## ")))
+            while (!(AllLines[i].StartsWith("## ", StringComparison.Ordinal)))
             {
                 i++;
             };
@@ -10507,7 +10580,7 @@ namespace LitePlacer
             List<string> KiCadLines = new List<string>();
             KiCadLines.Add(AllLines[i++].Substring(2));  // add header, skip the "# " start
             // add rest of the lines
-            while (!(AllLines[i]).StartsWith("## End"))
+            while (!(AllLines[i].StartsWith("## ", StringComparison.Ordinal)))
             {
                 KiCadLines.Add(AllLines[i++]);
             };
@@ -10601,7 +10674,7 @@ namespace LitePlacer
             foreach (string s in AllLines)
             {
                 // Skip empty lines and comment lines(starting with # or "//")
-                if (s == "")
+                if (string.IsNullOrEmpty(s))
                 {
                     LineIndex++;
                     continue;
@@ -10780,7 +10853,7 @@ namespace LitePlacer
             {
                 // Skip: empty lines and comment lines (starting with # or "//")
                 if (
-                        (AllLines[i] == "")  // empty lines
+                        (string.IsNullOrEmpty(AllLines[i]))  // empty lines
                         ||
                         (AllLines[i] == "\"\"")  // empty lines ("")
                         ||
@@ -10861,7 +10934,7 @@ namespace LitePlacer
                 {
                     if (Bottom_checkBox.Checked)
                     {
-                        if (Line[X_Nominal_Index].StartsWith("-"))
+                        if (Line[X_Nominal_Index].StartsWith("-", StringComparison.Ordinal))
                         {
                             CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "").Replace("-", "");
                         }
@@ -10879,7 +10952,7 @@ namespace LitePlacer
                             return false;
                         }
                         rot = -rot + 180;
-                        CadData_GridView.Rows[Last].Cells["Rotation"].Value= rot.ToString();
+                        CadData_GridView.Rows[Last].Cells["Rotation"].Value = rot.ToString(CultureInfo.InvariantCulture);
                     }
                     else
                     {
@@ -10936,7 +11009,7 @@ namespace LitePlacer
                     if (DataLines[j][ComponentIndex]==Designator)
                     {
                         DuplicateFound = true;
-                        DataLines[j][ComponentIndex] = Designator + "_" + Count.ToString();
+                        DataLines[j][ComponentIndex] = Designator + "_" + Count.ToString(CultureInfo.InvariantCulture);
                         Count++;
                     }
                 }
@@ -10960,7 +11033,7 @@ namespace LitePlacer
 
             List<String> Tokens = new List<string>();
             string Line = InputLine;
-            while (Line != "")
+            while (!string.IsNullOrEmpty(Line))
             {
                 // skip the delimiter(s)
                 while (Line[0] == delimiter)
@@ -11034,7 +11107,7 @@ namespace LitePlacer
 
             List<String> Tokens = new List<string>();
             string Line = InputLine;
-            while (Line != "")
+            while (!string.IsNullOrEmpty(Line))
             {
                 // skip leading spaces
                 Line = Line.Trim(' ');       
@@ -11098,7 +11171,7 @@ namespace LitePlacer
         {
             foreach (DataGridViewRow row in Tapes_dataGridView.Rows)
             {
-                row.HeaderCell.Value = row.Index.ToString();
+                row.HeaderCell.Value = row.Index.ToString(CultureInfo.InvariantCulture);
                 row.Cells["SelectButton_Column"].Value = "Reset";
             }
             SetDownCameraDefaults();
@@ -11289,7 +11362,7 @@ namespace LitePlacer
             // The gridView is moved to selection dialog on job run time. There the SelectButton selects that tape.
             Tapes_dataGridView.Rows[index].Cells["SelectButton_Column"].Value = "Reset";
             // Id_Column: User settable name for the tape
-            Tapes_dataGridView.Rows[index].Cells["Id_Column"].Value = index.ToString();
+            Tapes_dataGridView.Rows[index].Cells["Id_Column"].Value = index.ToString(CultureInfo.InvariantCulture);
             // FirstX_Column, FirstY_Column: Originally set approximate location for the first hole
             Tapes_dataGridView.Rows[index].Cells["FirstX_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[index].Cells["FirstY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
@@ -11470,9 +11543,9 @@ namespace LitePlacer
                 return;
             }
             DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
-            Row.Cells["NextPart_Column"].Value = no.ToString();
-            Row.Cells["Next_X_Column"].Value = Cnc.CurrentX.ToString();
-            Row.Cells["Next_Y_Column"].Value = Cnc.CurrentY.ToString();
+            Row.Cells["NextPart_Column"].Value = no.ToString(CultureInfo.InvariantCulture);
+            Row.Cells["Next_X_Column"].Value = Cnc.CurrentX.ToString(CultureInfo.InvariantCulture);
+            Row.Cells["Next_Y_Column"].Value = Cnc.CurrentY.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Tape_GoToNext_button_Click(object sender, EventArgs e)
@@ -11623,12 +11696,12 @@ namespace LitePlacer
             // Tapes.GetPartLocationFromHolePosition_m() and ShowPartByCoordinates_m() use the next column from Tapes_dataGridView.
             // Set it temporarily, but remember what was there:
             string temp = Row.Cells["NextPart_Column"].Value.ToString();
-            Row.Cells["NextPart_Column"].Value = PartNum.ToString();
+            Row.Cells["NextPart_Column"].Value = PartNum.ToString(CultureInfo.InvariantCulture);
 
             if (UseCoordinatesDirectly(Tapes_dataGridView.CurrentCell.RowIndex))
             {
                 ShowPartByCoordinates_m();
-                Row.Cells["NextPart_Column"].Value = temp.ToString();
+                Row.Cells["NextPart_Column"].Value = temp.ToString(CultureInfo.InvariantCulture);
                 return;
             }
 
@@ -11637,12 +11710,12 @@ namespace LitePlacer
             double Y = 0.0;
             if (!Tapes.IdValidates_m(Id, out TapeNum))
             {
-                Row.Cells["NextPart_Column"].Value = temp.ToString();
+                Row.Cells["NextPart_Column"].Value = temp.ToString(CultureInfo.InvariantCulture);
                 return;
             }
             if (!Tapes.GetPartHole_m(TapeNum, PartNum, out X, out Y))
             {
-                Row.Cells["NextPart_Column"].Value = temp.ToString();
+                Row.Cells["NextPart_Column"].Value = temp.ToString(CultureInfo.InvariantCulture);
                 return;
             }
             double pX = 0.0;
@@ -11655,7 +11728,7 @@ namespace LitePlacer
             DownCamera.ArrowAngle = A;
             DownCamera.DrawArrow = true;
 
-            Row.Cells["NextPart_Column"].Value = temp.ToString();
+            Row.Cells["NextPart_Column"].Value = temp.ToString(CultureInfo.InvariantCulture);
         }
 
         private void ShowPart_button_Leave(object sender, EventArgs e)
@@ -11736,9 +11809,9 @@ namespace LitePlacer
                     if (Tapes_dataGridView.Rows[row].Cells["Width_Column"].Value.ToString() != "custom")
                     {
                         TapeWidthStringToValues(Tapes_dataGridView.Rows[row].Cells["Width_Column"].Value.ToString(), out X, out Y, out pitch);
-                        Tapes_dataGridView.Rows[row].Cells["Pitch_Column"].Value = pitch.ToString();
-                        Tapes_dataGridView.Rows[row].Cells["OffsetX_Column"].Value = X.ToString();
-                        Tapes_dataGridView.Rows[row].Cells["OffsetY_Column"].Value = Y.ToString();
+                        Tapes_dataGridView.Rows[row].Cells["Pitch_Column"].Value = pitch.ToString(CultureInfo.InvariantCulture);
+                        Tapes_dataGridView.Rows[row].Cells["OffsetX_Column"].Value = X.ToString(CultureInfo.InvariantCulture);
+                        Tapes_dataGridView.Rows[row].Cells["OffsetY_Column"].Value = Y.ToString(CultureInfo.InvariantCulture);
                     }
                     return;
                 }
@@ -12430,14 +12503,15 @@ namespace LitePlacer
                         }
                         if (!double.TryParse(NozzlesLoad_dataGridView.Rows[row].Cells[ValInd].Value.ToString().Replace(',', '.'), out Z))
                         {
-                            DisplayText("Bad data: nozzle #" + (row + 1).ToString() + ", move " + i.ToString(), KnownColor.DarkRed);
+                            DisplayText("Bad data: nozzle #" + (row + 1).ToString(CultureInfo.InvariantCulture)
+                                + ", move " + i.ToString(CultureInfo.InvariantCulture), KnownColor.DarkRed);
                             return false;
                         }
                         return true;
                     }
                 }
             }
-            DisplayText("Moves to load nozzle "+(row+1).ToString()+" not set", KnownColor.DarkRed);
+            DisplayText("Moves to load nozzle " + (row + 1).ToString(CultureInfo.InvariantCulture) + " not set", KnownColor.DarkRed);
             return false;
         }
 
@@ -12462,22 +12536,22 @@ namespace LitePlacer
                 double Xunload;
                 if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[Nozzledata_StartYColumn].Value.ToString().Replace(',', '.'), out Yload))
                 {
-                    DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Load start Y", KnownColor.DarkRed);
+                    DisplayText("Bad data: nozzle #" + (i + 1).ToString(CultureInfo.InvariantCulture) + ", Load start Y", KnownColor.DarkRed);
                     return;
                 }
                 if (!double.TryParse(NozzlesUnload_dataGridView.Rows[i].Cells[Nozzledata_StartYColumn].Value.ToString().Replace(',', '.'), out Yunload))
                 {
-                    DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Unload start Y", KnownColor.DarkRed);
+                    DisplayText("Bad data: nozzle #" + (i + 1).ToString(CultureInfo.InvariantCulture) + ", Unload start Y", KnownColor.DarkRed);
                     return;
                 }
                 if (!double.TryParse(NozzlesLoad_dataGridView.Rows[i].Cells[Nozzledata_StartXColumn].Value.ToString().Replace(',', '.'), out Xload))
                 {
-                    DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Load start X", KnownColor.DarkRed);
+                    DisplayText("Bad data: nozzle #" + (i + 1).ToString(CultureInfo.InvariantCulture) + ", Load start X", KnownColor.DarkRed);
                     return;
                 }
                 if (!double.TryParse(NozzlesUnload_dataGridView.Rows[i].Cells[Nozzledata_StartXColumn].Value.ToString().Replace(',', '.'), out Xunload))
                 {
-                    DisplayText("Bad data: nozzle #" + (i + 1).ToString() + ", Unload start X", KnownColor.DarkRed);
+                    DisplayText("Bad data: nozzle #" + (i + 1).ToString(CultureInfo.InvariantCulture) + ", Unload start X", KnownColor.DarkRed);
                     return;
                 }
                 if ((Math.Abs(Yload - Yunload)>0.1)&& (Math.Abs(Xload - Xunload) > 0.1))
@@ -12592,27 +12666,31 @@ namespace LitePlacer
             }
             if (!NozzleDataCheck(grid, nozzle, DirCol + 1, out val))
             {
-                DisplayText("Bad data: " + op + "nozzle #" + nozzle + ", move " + (DirCol + 1).ToString(), KnownColor.DarkRed);
+                DisplayText("Bad data: " + op + "nozzle #" + nozzle + ", move " + (DirCol + 1).ToString(CultureInfo.InvariantCulture), KnownColor.DarkRed);
             }
             switch (grid.Rows[nozzle - 1].Cells[DirCol].Value.ToString())
             {
                 case "X":
                     dX = val;
-                    DisplayText(op + " nozzle " + nozzle.ToString() + ", move " + move.ToString() + ": X" + val.ToString());
+                    DisplayText(op + " nozzle " + nozzle.ToString(CultureInfo.InvariantCulture)
+                        + ", move " + move.ToString(CultureInfo.InvariantCulture) + ": X" + val.ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case "Y":
                     dY = val;
-                    DisplayText(op + " nozzle " + nozzle.ToString() + ", move " + move.ToString() + ": Y" + val.ToString());
+                    DisplayText(op + " nozzle " + nozzle.ToString(CultureInfo.InvariantCulture)
+                        + ", move " + move.ToString(CultureInfo.InvariantCulture) + ": Y" + val.ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case "Z":
                     dZ = val;
-                    DisplayText(op + " nozzle " + nozzle.ToString() + ", move " + move.ToString() + ": Z" + val.ToString());
+                    DisplayText(op + " nozzle " + nozzle.ToString(CultureInfo.InvariantCulture)
+                        + ", move " + move.ToString(CultureInfo.InvariantCulture) + ": Z" + val.ToString(CultureInfo.InvariantCulture));
                     break;
 
                 default:
-                    DisplayText("m_getNozzleMove: " + op + " nozzle" + nozzle.ToString() + ", move " + move.ToString() + "?");
+                    DisplayText("m_getNozzleMove: " + op + " nozzle" + nozzle.ToString(CultureInfo.InvariantCulture)
+                        + ", move " + move.ToString(CultureInfo.InvariantCulture) + "?");
                     return false;
                     //break;
             }
@@ -12629,14 +12707,14 @@ namespace LitePlacer
                 ComboCol.Items.Add("Y");
                 ComboCol.Items.Add("Z");
                 ComboCol.Items.Add("--");
-                ComboCol.HeaderText = "move" + i.ToString() + " axis";
+                ComboCol.HeaderText = "move" + i.ToString(CultureInfo.InvariantCulture) + " axis";
                 ComboCol.Width = 44;
-                ComboCol.Name = "MoveNumber" + i.ToString() + "axis_Column";
+                ComboCol.Name = "MoveNumber" + i.ToString(CultureInfo.InvariantCulture) + "axis_Column";
                 Grid.Columns.Add(ComboCol);
                 DataGridViewTextBoxColumn TextCol = new DataGridViewTextBoxColumn();
-                TextCol.HeaderText="move" + i.ToString() + " amount";
+                TextCol.HeaderText="move" + i.ToString(CultureInfo.InvariantCulture) + " amount";
                 TextCol.Width = 48;
-                TextCol.Name = "MoveNumber" + i.ToString() + "amount_Column";
+                TextCol.Name = "MoveNumber" + i.ToString(CultureInfo.InvariantCulture) + "amount_Column";
                 Grid.Columns.Add(TextCol);
             }
             foreach (DataGridViewColumn column in Grid.Columns)
@@ -12725,10 +12803,10 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             NozzleChangeEnable_checkBox.Checked = Setting.Nozzles_Enabled;
-            NozzleXYspeed_textBox.Text = Setting.Nozzles_XYspeed.ToString();
-            NozzleZspeed_textBox.Text = Setting.Nozzles_Zspeed.ToString();
-            NozzleAspeed_textBox.Text = Setting.Nozzles_Aspeed.ToString();
-            NozzleTimeout_textBox.Text = Setting.Nozzles_Timeout.ToString();
+            NozzleXYspeed_textBox.Text = Setting.Nozzles_XYspeed.ToString(CultureInfo.InvariantCulture);
+            NozzleZspeed_textBox.Text = Setting.Nozzles_Zspeed.ToString(CultureInfo.InvariantCulture);
+            NozzleAspeed_textBox.Text = Setting.Nozzles_Aspeed.ToString(CultureInfo.InvariantCulture);
+            NozzleTimeout_textBox.Text = Setting.Nozzles_Timeout.ToString(CultureInfo.InvariantCulture);
             NozzleXYFullSpeed_checkBox.Checked = Setting.Nozzles_XYfullSpeed;
             NozzleZFullSpeed_checkBox.Checked = Setting.Nozzles_ZfullSpeed;
             NozzleAFullSpeed_checkBox.Checked = Setting.Nozzles_AfullSpeed;
@@ -12798,9 +12876,9 @@ namespace LitePlacer
             NozzlesUnload_dataGridView.Rows.Insert(RowNo);
             NozzlesParameters_dataGridView.Rows.Insert(RowNo);
             RowNo++;
-            NozzlesLoad_dataGridView.Rows[RowNo-1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString();
-            NozzlesUnload_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString();
-            NozzlesParameters_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString();
+            NozzlesLoad_dataGridView.Rows[RowNo-1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString(CultureInfo.InvariantCulture);
+            NozzlesUnload_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString(CultureInfo.InvariantCulture);
+            NozzlesParameters_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString(CultureInfo.InvariantCulture);
             if (ResizeNeeded)
             {
                 ResizeNozzleTables();
@@ -12878,7 +12956,7 @@ namespace LitePlacer
             }
             int row = grid.CurrentCell.RowIndex;
             int col = grid.CurrentCell.ColumnIndex;
-            DisplayText("Current Cell: " + row.ToString() + ", " + col.ToString());
+            DisplayText("Current Cell: " + row.ToString() + ", " + col.ToString(CultureInfo.InvariantCulture));
 
             if (col <= Nozzledata_StartZColumn)
             {
@@ -12890,7 +12968,7 @@ namespace LitePlacer
             else
             {
                 int MoveNo = (col - Nozzledata_StartZColumn) / 2;
-                DisplayText("move no " + MoveNo.ToString());
+                DisplayText("move no " + MoveNo.ToString(CultureInfo.InvariantCulture));
                 // Get coordinates until the move
                 // Start position
                 double X; 
@@ -12908,18 +12986,18 @@ namespace LitePlacer
                     int dirCol = 2 * move + Nozzledata_StartZColumn-1;
                     if (!NozzleDataCheck(grid, row+1, amountCol, out amount))
                     {
-                        DisplayText("Bad data, move " + move.ToString() + " amount", KnownColor.DarkRed);
+                        DisplayText("Bad data, move " + move.ToString(CultureInfo.InvariantCulture) + " amount", KnownColor.DarkRed);
                         return;
                     }
                     // direction
                     if (grid.Rows[row].Cells[dirCol].Value == null)
                     {
-                        DisplayText("Direction not set at move " + MoveNo.ToString(), KnownColor.DarkRed);
+                        DisplayText("Direction not set at move " + MoveNo.ToString(CultureInfo.InvariantCulture), KnownColor.DarkRed);
                         return;
                     }
                     else if (grid.Rows[row].Cells[dirCol].Value.ToString() == "--")
                     {
-                        DisplayText("Direction not set at move " + MoveNo.ToString(), KnownColor.DarkRed);
+                        DisplayText("Direction not set at move " + MoveNo.ToString(CultureInfo.InvariantCulture), KnownColor.DarkRed);
                         return;
                     }
                     else
@@ -12938,7 +13016,10 @@ namespace LitePlacer
                         }
                     }
                 }
-                DisplayText("Position until here: X= " + X.ToString() + ", Y= " + Y.ToString() + ", Z= " + Z.ToString(), KnownColor.Blue);
+                DisplayText("Position until here: X= "
+                    + X.ToString(CultureInfo.InvariantCulture)
+                    + ", Y= " + Y.ToString(CultureInfo.InvariantCulture)
+                    + ", Z= " + Z.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
                 // get current position
                 // check that one but only one coordinate has changed
                 int count = 0;
@@ -12978,17 +13059,17 @@ namespace LitePlacer
                 if (Math.Abs(X - Cnc.CurrentX) > 0.01)
                 {
                     grid.Rows[row].Cells[dCol].Value = "X";
-                    grid.Rows[row].Cells[amCol].Value = (Cnc.CurrentX - X).ToString();
+                    grid.Rows[row].Cells[amCol].Value = (Cnc.CurrentX - X).ToString(CultureInfo.InvariantCulture);
                     return;
                 }
                 if (Math.Abs(Y - Cnc.CurrentY) > 0.01)
                 {
                     grid.Rows[row].Cells[dCol].Value = "Y";
-                    grid.Rows[row].Cells[amCol].Value = (Cnc.CurrentY - Y).ToString();
+                    grid.Rows[row].Cells[amCol].Value = (Cnc.CurrentY - Y).ToString(CultureInfo.InvariantCulture);
                     return;
                 }
                 grid.Rows[row].Cells[dCol].Value = "Z";
-                grid.Rows[row].Cells[amCol].Value = (Cnc.CurrentZ - Z).ToString();
+                grid.Rows[row].Cells[amCol].Value = (Cnc.CurrentZ - Z).ToString(CultureInfo.InvariantCulture);
                 return;
             }
         }
@@ -13009,7 +13090,7 @@ namespace LitePlacer
         private void SetDefaultNozzle_button_Click(object sender, EventArgs e)
         {
             Setting.Nozzles_default = (int)ForceNozzle_numericUpDown.Value;
-            DefaultNozzle_label.Text = Setting.Nozzles_default.ToString();
+            DefaultNozzle_label.Text = Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
         }
 
         private void ForceNozzleStatus_button_Click(object sender, EventArgs e)
@@ -13020,7 +13101,7 @@ namespace LitePlacer
             }
             else
             {
-                NozzleNo_textBox.Text = ForceNozzle_numericUpDown.Value.ToString();
+                NozzleNo_textBox.Text = ForceNozzle_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             }
             Setting.Nozzles_current = (int)ForceNozzle_numericUpDown.Value;
             if (Setting.Nozzles_current != 0)
@@ -13031,7 +13112,7 @@ namespace LitePlacer
 
         private bool m_UnloadNozzle(int Nozzle)
         {
-            DisplayText("Unload nozzle #" + Nozzle.ToString(), KnownColor.Blue);
+            DisplayText("Unload nozzle #" + Nozzle.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
             if (m_DoNozzleSequence(NozzlesUnload_dataGridView, Nozzle))
             {
                 NozzleNo_textBox.Text = "--";
@@ -13046,10 +13127,10 @@ namespace LitePlacer
 
         private bool m_LoadNozzle(int NozzleNo)
         {
-            DisplayText("Load nozzle #" + NozzleNo.ToString(), KnownColor.Blue);
+            DisplayText("Load nozzle #" + NozzleNo.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
             if (m_DoNozzleSequence(NozzlesLoad_dataGridView, NozzleNo))
             {
-                NozzleNo_textBox.Text = NozzleNo.ToString();
+                NozzleNo_textBox.Text = NozzleNo.ToString(CultureInfo.InvariantCulture);
                 Setting.Nozzles_current = NozzleNo;
                 Nozzle.UseCalibration(NozzleNo);
                 return true;
@@ -13076,7 +13157,7 @@ namespace LitePlacer
             Nozzles_Stop = false;
             if (Nozzle == Setting.Nozzles_current)
             {
-                DisplayText("Wanted nozzle (#" + Nozzle.ToString() + ") already loaded");
+                DisplayText("Wanted nozzle (#" + Nozzle.ToString(CultureInfo.InvariantCulture) + ") already loaded");
                 return true;
             };
             /*
@@ -13276,7 +13357,7 @@ namespace LitePlacer
         {
             if (MoveNumber> NoOfNozzleMoves+1)
             {
-                DisplayText("attempting move #" + MoveNumber.ToString(), KnownColor.DarkRed);
+                DisplayText("attempting move #" + MoveNumber.ToString(CultureInfo.InvariantCulture), KnownColor.DarkRed);
                 AllDone = true;
                 return false;
             }
@@ -13324,7 +13405,7 @@ namespace LitePlacer
                 {
                     op = "unload ";
                 }
-                DisplayText("Bad data: " + op + "nozzle #" + nozzle + ", move " + MoveNumber.ToString(), KnownColor.DarkRed);
+                DisplayText("Bad data: " + op + "nozzle #" + nozzle + ", move " + MoveNumber.ToString(CultureInfo.InvariantCulture), KnownColor.DarkRed);
             }
             string axis=grid.Rows[nozzle - 1].Cells[DirCol].Value.ToString();
 
@@ -13357,7 +13438,8 @@ namespace LitePlacer
                         break;
 
                     default:
-                        DisplayText("m_DoNozzleMove: nozzle #" + nozzle + ", move " + MoveNumber.ToString() + ", axis?", KnownColor.DarkRed);
+                        DisplayText("m_DoNozzleMove: nozzle #" + nozzle + ", move " 
+                            + MoveNumber.ToString(CultureInfo.InvariantCulture) + ", axis?", KnownColor.DarkRed);
                         Cnc.SlowXY = !Setting.Nozzles_XYfullSpeed;
                         Cnc.SlowZ = !Setting.Nozzles_ZfullSpeed;
                         Cnc.SlowA = !Setting.Nozzles_AfullSpeed;
@@ -13618,11 +13700,11 @@ namespace LitePlacer
             {
                 if (Nozzle.CalibratedArr[i])
                 {
-                    DisplayText("Nozzle " + i.ToString() + " is calibrated:");
+                    DisplayText("Nozzle " + i.ToString(CultureInfo.InvariantCulture) + " is calibrated:");
                 }
                 else
                 {
-                    DisplayText("Nozzle " + i.ToString() + " is not calibrated:");
+                    DisplayText("Nozzle " + i.ToString(CultureInfo.InvariantCulture) + " is not calibrated:");
                 }
                 if ( Nozzle.CalibrationPointsArr[i]==null)
                 {
@@ -13632,14 +13714,18 @@ namespace LitePlacer
                 {
                     foreach (NozzleClass.NozzlePoint p in Nozzle.CalibrationPointsArr[i])
                     {
-                        DisplayText("A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
+                        DisplayText("A: " + p.Angle.ToString("0.000", CultureInfo.InvariantCulture)
+                            + ", X: " + p.X.ToString("0.000", CultureInfo.InvariantCulture)
+                            + ", Y: " + p.Y.ToString("0.000", CultureInfo.InvariantCulture));
                     }
                 }
             }
             DisplayText("Currently used:");
             foreach (NozzleClass.NozzlePoint p in Nozzle.CalibrationPoints)
             {
-                DisplayText("A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
+                DisplayText("A: " + p.Angle.ToString("0.000", CultureInfo.InvariantCulture)
+                    + ", X: " + p.X.ToString("0.000", CultureInfo.InvariantCulture)
+                    + ", Y: " + p.Y.ToString("0.000", CultureInfo.InvariantCulture));
             }
         }
 
@@ -13662,14 +13748,17 @@ namespace LitePlacer
                 if ((Math.Abs(p.X) > Math.Abs(val)) || (Math.Abs(p.Y) > Math.Abs(val)))
                 {
                     DisplayText("WARNING: Calibration value over threshold: ");
-                    DisplayText("Nozzle " + nozzle.ToString() + ", A: " + p.Angle.ToString("0.000") + ", X: " + p.X.ToString("0.000") + ", Y: " + p.Y.ToString("0.000"));
+                    DisplayText("Nozzle " + nozzle.ToString(CultureInfo.InvariantCulture)
+                        + ", A: " + p.Angle.ToString("0.000", CultureInfo.InvariantCulture)
+                        + ", X: " + p.X.ToString("0.000", CultureInfo.InvariantCulture)
+                        + ", Y: " + p.Y.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
         }
 
 
         #endregion
-        public bool DownCameraRotationFollowsA = false;
+        public bool DownCameraRotationFollowsA { get; set; } = false;
         private void apos_textBox_TextChanged(object sender, EventArgs e)
         {
             if (DownCameraRotationFollowsA)
@@ -13754,20 +13843,25 @@ namespace LitePlacer
             AppSettings_openFileDialog.FileName = "LitePlacer.BoardSettings";
             AppSettings_openFileDialog.InitialDirectory = path;
 
+            TinyGSettings tg = TinyGBoard;
+            QQuinticSettings qQ = qQuinticBoard;
+
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if(!BoardSettings.Load(ref TinyGBoard, ref qQuinticBoard, AppSettings_openFileDialog.FileName))
+                if (!BoardSettings.Load(ref tg, ref qQ, AppSettings_openFileDialog.FileName))
                 {
                     return;
                 }
+                TinyGBoard = tg;
+                qQuinticBoard = qQ;
                 WriteAllBoardSettings_m();
             }
         }
 
         private void BoardBuiltInSettings_button_Click(object sender, EventArgs e)
         {
-            TinyGBoard = new BoardSettings.TinyG();
-            qQuinticBoard = new BoardSettings.qQuintic();
+            TinyGBoard = new TinyGSettings();
+            qQuinticBoard = new QQuinticSettings();
             WriteAllBoardSettings_m();
         }
 
@@ -13823,200 +13917,201 @@ namespace LitePlacer
         private bool WriteTinyGSettings()
         {
             DisplayText("Writing settings to TinyG board.");
-            if (!WriteSetting("st", TinyGBoard.st, true)) return false;
-            if (!WriteSetting("mt", TinyGBoard.mt, true)) return false;
-            if (!WriteSetting("jv", TinyGBoard.jv, true)) return false;
-            if (!WriteSetting("js", TinyGBoard.js, true)) return false;
-            if (!WriteSetting("tv", TinyGBoard.tv, true)) return false;
-            if (!WriteSetting("qv", TinyGBoard.qv, true)) return false;
-            if (!WriteSetting("sv", TinyGBoard.sv, true)) return false;
-            if (!WriteSetting("si", TinyGBoard.si, true)) return false;
-            if (!WriteSetting("gun", TinyGBoard.gun, true)) return false;
-            if (!WriteSetting("1ma", TinyGBoard.motor1ma, true)) return false;
-            if (!WriteSetting("1sa", TinyGBoard.motor1sa, true)) return false;
-            if (!WriteSetting("1tr", TinyGBoard.motor1tr, true)) return false;
-            if (!WriteSetting("1mi", TinyGBoard.motor1mi, true)) return false;
-            if (!WriteSetting("1po", TinyGBoard.motor1po, true)) return false;
-            if (!WriteSetting("1pm", TinyGBoard.motor1pm, true)) return false;
-            if (!WriteSetting("2ma", TinyGBoard.motor2ma, true)) return false;
-            if (!WriteSetting("2sa", TinyGBoard.motor2sa, true)) return false;
-            if (!WriteSetting("2tr", TinyGBoard.motor2tr, true)) return false;
-            if (!WriteSetting("2mi", TinyGBoard.motor2mi, true)) return false;
-            if (!WriteSetting("2po", TinyGBoard.motor2po, true)) return false;
-            if (!WriteSetting("2pm", TinyGBoard.motor2pm, true)) return false;
-            if (!WriteSetting("3ma", TinyGBoard.motor3ma, true)) return false;
-            if (!WriteSetting("3sa", TinyGBoard.motor3sa, true)) return false;
-            if (!WriteSetting("3tr", TinyGBoard.motor3tr, true)) return false;
-            if (!WriteSetting("3mi", TinyGBoard.motor3mi, true)) return false;
-            if (!WriteSetting("3po", TinyGBoard.motor3po, true)) return false;
-            if (!WriteSetting("3pm", TinyGBoard.motor3pm, true)) return false;
-            if (!WriteSetting("4ma", TinyGBoard.motor4ma, true)) return false;
-            if (!WriteSetting("4sa", TinyGBoard.motor4sa, true)) return false;
-            if (!WriteSetting("4tr", TinyGBoard.motor4tr, true)) return false;
-            if (!WriteSetting("4mi", TinyGBoard.motor4mi, true)) return false;
-            if (!WriteSetting("4po", TinyGBoard.motor4po, true)) return false;
-            if (!WriteSetting("4pm", TinyGBoard.motor4pm, true)) return false;
-            if (!WriteSetting("xam", TinyGBoard.xam, true)) return false;
-            if (!WriteSetting("xvm", TinyGBoard.xvm, true)) return false;
-            if (!WriteSetting("xfr", TinyGBoard.xfr, true)) return false;
-            if (!WriteSetting("xtn", TinyGBoard.xtn, true)) return false;
-            if (!WriteSetting("xtm", TinyGBoard.xtm, true)) return false;
-            if (!WriteSetting("xjm", TinyGBoard.xjm, true)) return false;
-            if (!WriteSetting("xjh", TinyGBoard.xjh, true)) return false;
-            if (!WriteSetting("xsv", TinyGBoard.xsv, true)) return false;
-            if (!WriteSetting("xlv", TinyGBoard.xlv, true)) return false;
-            if (!WriteSetting("xlb", TinyGBoard.xlb, true)) return false;
-            if (!WriteSetting("xzb", TinyGBoard.xzb, true)) return false;
-            if (!WriteSetting("yam", TinyGBoard.yam, true)) return false;
-            if (!WriteSetting("yvm", TinyGBoard.yvm, true)) return false;
-            if (!WriteSetting("yfr", TinyGBoard.yfr, true)) return false;
-            if (!WriteSetting("ytn", TinyGBoard.ytn, true)) return false;
-            if (!WriteSetting("ytm", TinyGBoard.ytm, true)) return false;
-            if (!WriteSetting("yjm", TinyGBoard.yjm, true)) return false;
-            if (!WriteSetting("yjh", TinyGBoard.yjh, true)) return false;
-            if (!WriteSetting("ysv", TinyGBoard.ysv, true)) return false;
-            if (!WriteSetting("ylv", TinyGBoard.ylv, true)) return false;
-            if (!WriteSetting("ylb", TinyGBoard.ylb, true)) return false;
-            if (!WriteSetting("yzb", TinyGBoard.yzb, true)) return false;
-            if (!WriteSetting("zam", TinyGBoard.zam, true)) return false;
-            if (!WriteSetting("zvm", TinyGBoard.zvm, true)) return false;
-            if (!WriteSetting("zfr", TinyGBoard.zfr, true)) return false;
-            if (!WriteSetting("ztn", TinyGBoard.ztn, true)) return false;
-            if (!WriteSetting("ztm", TinyGBoard.ztm, true)) return false;
-            if (!WriteSetting("zjm", TinyGBoard.zjm, true)) return false;
-            if (!WriteSetting("zjh", TinyGBoard.zjh, true)) return false;
-            if (!WriteSetting("zsv", TinyGBoard.zsv, true)) return false;
-            if (!WriteSetting("zlv", TinyGBoard.zlv, true)) return false;
-            if (!WriteSetting("zlb", TinyGBoard.zlb, true)) return false;
-            if (!WriteSetting("zzb", TinyGBoard.zzb, true)) return false;
-            if (!WriteSetting("aam", TinyGBoard.aam, true)) return false;
-            if (!WriteSetting("avm", TinyGBoard.avm, true)) return false;
-            if (!WriteSetting("afr", TinyGBoard.afr, true)) return false;
-            if (!WriteSetting("atn", TinyGBoard.atn, true)) return false;
-            if (!WriteSetting("atm", TinyGBoard.atm, true)) return false;
-            if (!WriteSetting("ajm", TinyGBoard.ajm, true)) return false;
-            if (!WriteSetting("ajh", TinyGBoard.ajh, true)) return false;
-            if (!WriteSetting("asv", TinyGBoard.asv, true)) return false;
-            if (!WriteSetting("ec", TinyGBoard.ec, true)) return false;
-            if (!WriteSetting("ee", TinyGBoard.ee, true)) return false;
-            if (!WriteSetting("ex", TinyGBoard.ex, true)) return false;
-            if (!WriteSetting("xsn", TinyGBoard.xsn, true)) return false;
-            if (!WriteSetting("xsx", TinyGBoard.xsx, true)) return false;
-            if (!WriteSetting("ysn", TinyGBoard.ysn, true)) return false;
-            if (!WriteSetting("ysx", TinyGBoard.ysx, true)) return false;
-            if (!WriteSetting("zsn", TinyGBoard.zsn, true)) return false;
-            if (!WriteSetting("zsx", TinyGBoard.zsx, true)) return false;
-            if (!WriteSetting("asn", TinyGBoard.asn, true)) return false;
-            if (!WriteSetting("asx", TinyGBoard.asx, true)) return false;
+            if (!WriteSetting("st", TinyGBoard.Sys_st, true)) return false;
+            if (!WriteSetting("mt", TinyGBoard.Sys_mt, true)) return false;
+            if (!WriteSetting("jv", TinyGBoard.Sys_jv, true)) return false;
+            if (!WriteSetting("js", TinyGBoard.Sys_js, true)) return false;
+            if (!WriteSetting("tv", TinyGBoard.Sys_tv, true)) return false;
+            if (!WriteSetting("qv", TinyGBoard.Sys_qv, true)) return false;
+            if (!WriteSetting("sv", TinyGBoard.Sys_sv, true)) return false;
+            if (!WriteSetting("si", TinyGBoard.Sys_si, true)) return false;
+            if (!WriteSetting("gun", TinyGBoard.Sys_gun, true)) return false;
+            if (!WriteSetting("1ma", TinyGBoard.Motor1ma, true)) return false;
+            if (!WriteSetting("1sa", TinyGBoard.Motor1sa, true)) return false;
+            if (!WriteSetting("1tr", TinyGBoard.Motor1tr, true)) return false;
+            if (!WriteSetting("1mi", TinyGBoard.Motor1mi, true)) return false;
+            if (!WriteSetting("1po", TinyGBoard.Motor1po, true)) return false;
+            if (!WriteSetting("1pm", TinyGBoard.Motor1pm, true)) return false;
+            if (!WriteSetting("2ma", TinyGBoard.Motor2ma, true)) return false;
+            if (!WriteSetting("2sa", TinyGBoard.Motor2sa, true)) return false;
+            if (!WriteSetting("2tr", TinyGBoard.Motor2tr, true)) return false;
+            if (!WriteSetting("2mi", TinyGBoard.Motor2mi, true)) return false;
+            if (!WriteSetting("2po", TinyGBoard.Motor2po, true)) return false;
+            if (!WriteSetting("2pm", TinyGBoard.Motor2pm, true)) return false;
+            if (!WriteSetting("3ma", TinyGBoard.Motor3ma, true)) return false;
+            if (!WriteSetting("3sa", TinyGBoard.Motor3sa, true)) return false;
+            if (!WriteSetting("3tr", TinyGBoard.Motor3tr, true)) return false;
+            if (!WriteSetting("3mi", TinyGBoard.Motor3mi, true)) return false;
+            if (!WriteSetting("3po", TinyGBoard.Motor3po, true)) return false;
+            if (!WriteSetting("3pm", TinyGBoard.Motor3pm, true)) return false;
+            if (!WriteSetting("4ma", TinyGBoard.Motor4ma, true)) return false;
+            if (!WriteSetting("4sa", TinyGBoard.Motor4sa, true)) return false;
+            if (!WriteSetting("4tr", TinyGBoard.Motor4tr, true)) return false;
+            if (!WriteSetting("4mi", TinyGBoard.Motor4mi, true)) return false;
+            if (!WriteSetting("4po", TinyGBoard.Motor4po, true)) return false;
+            if (!WriteSetting("4pm", TinyGBoard.Motor4pm, true)) return false;
+            if (!WriteSetting("xam", TinyGBoard.Xam, true)) return false;
+            if (!WriteSetting("xvm", TinyGBoard.Xvm, true)) return false;
+            if (!WriteSetting("xfr", TinyGBoard.Xfr, true)) return false;
+            if (!WriteSetting("xtn", TinyGBoard.Xtn, true)) return false;
+            if (!WriteSetting("xtm", TinyGBoard.Xtm, true)) return false;
+            if (!WriteSetting("xjm", TinyGBoard.Xjm, true)) return false;
+            if (!WriteSetting("xjh", TinyGBoard.Xjh, true)) return false;
+            if (!WriteSetting("xsv", TinyGBoard.Xsv, true)) return false;
+            if (!WriteSetting("xlv", TinyGBoard.Xlv, true)) return false;
+            if (!WriteSetting("xlb", TinyGBoard.Xlb, true)) return false;
+            if (!WriteSetting("xzb", TinyGBoard.Xzb, true)) return false;
+            if (!WriteSetting("yam", TinyGBoard.Yam, true)) return false;
+            if (!WriteSetting("yvm", TinyGBoard.Yvm, true)) return false;
+            if (!WriteSetting("yfr", TinyGBoard.Yfr, true)) return false;
+            if (!WriteSetting("ytn", TinyGBoard.Ytn, true)) return false;
+            if (!WriteSetting("ytm", TinyGBoard.Ytm, true)) return false;
+            if (!WriteSetting("yjm", TinyGBoard.Yjm, true)) return false;
+            if (!WriteSetting("yjh", TinyGBoard.Yjh, true)) return false;
+            if (!WriteSetting("ysv", TinyGBoard.Ysv, true)) return false;
+            if (!WriteSetting("ylv", TinyGBoard.Ylv, true)) return false;
+            if (!WriteSetting("ylb", TinyGBoard.Ylb, true)) return false;
+            if (!WriteSetting("yzb", TinyGBoard.Yzb, true)) return false;
+            if (!WriteSetting("zam", TinyGBoard.Zam, true)) return false;
+            if (!WriteSetting("zvm", TinyGBoard.Zvm, true)) return false;
+            if (!WriteSetting("zfr", TinyGBoard.Zfr, true)) return false;
+            if (!WriteSetting("ztn", TinyGBoard.Ztn, true)) return false;
+            if (!WriteSetting("ztm", TinyGBoard.Ztm, true)) return false;
+            if (!WriteSetting("zjm", TinyGBoard.Zjm, true)) return false;
+            if (!WriteSetting("zjh", TinyGBoard.Zjh, true)) return false;
+            if (!WriteSetting("zsv", TinyGBoard.Zsv, true)) return false;
+            if (!WriteSetting("zlv", TinyGBoard.Zlv, true)) return false;
+            if (!WriteSetting("zlb", TinyGBoard.Zlb, true)) return false;
+            if (!WriteSetting("zzb", TinyGBoard.Zzb, true)) return false;
+            if (!WriteSetting("aam", TinyGBoard.Aam, true)) return false;
+            if (!WriteSetting("avm", TinyGBoard.Avm, true)) return false;
+            if (!WriteSetting("afr", TinyGBoard.Afr, true)) return false;
+            if (!WriteSetting("atn", TinyGBoard.Atn, true)) return false;
+            if (!WriteSetting("atm", TinyGBoard.Atm, true)) return false;
+            if (!WriteSetting("ajm", TinyGBoard.Ajm, true)) return false;
+            if (!WriteSetting("ajh", TinyGBoard.Ajh, true)) return false;
+            if (!WriteSetting("asv", TinyGBoard.Asv, true)) return false;
+            if (!WriteSetting("ec", TinyGBoard.TG_ec, true)) return false;
+            if (!WriteSetting("ee", TinyGBoard.TG_ee, true)) return false;
+            if (!WriteSetting("ex", TinyGBoard.TG_ex, true)) return false;
+            if (!WriteSetting("xsn", TinyGBoard.Xsn, true)) return false;
+            if (!WriteSetting("xsx", TinyGBoard.Xsx, true)) return false;
+            if (!WriteSetting("ysn", TinyGBoard.Ysn, true)) return false;
+            if (!WriteSetting("ysx", TinyGBoard.Ysx, true)) return false;
+            if (!WriteSetting("zsn", TinyGBoard.Zsn, true)) return false;
+            if (!WriteSetting("zsx", TinyGBoard.Zsx, true)) return false;
+            if (!WriteSetting("asn", TinyGBoard.Asn, true)) return false;
+            if (!WriteSetting("asx", TinyGBoard.Asx, true)) return false;
             return true;
         }
 
         private bool WriteqQuinticSettings()
         {
             DisplayText("Writing settings to qQuintic board.");
+            DisplayText("Writing settings to qQuintic board.");
             //if (!WriteSetting("st", TinyGBoard.st, false)) return false;
-            if (!WriteSetting("mt", qQuinticBoard.mt, false)) return false;
-            if (!WriteSetting("jv", qQuinticBoard.jv, false)) return false;
+            if (!WriteSetting("mt", qQuinticBoard.Sys_mt, false)) return false;
+            if (!WriteSetting("jv", qQuinticBoard.Sys_jv, false)) return false;
             //if (!WriteSetting("js", qQuinticBoard.js, false)) return false;
-            if (!WriteSetting("tv", qQuinticBoard.tv, false)) return false;
-            if (!WriteSetting("qv", qQuinticBoard.qv, false)) return false;
-            if (!WriteSetting("sv", qQuinticBoard.sv, false)) return false;
-            if (!WriteSetting("si", qQuinticBoard.si, false)) return false;
-            if (!WriteSetting("gun", qQuinticBoard.gun, false)) return false;
+            if (!WriteSetting("tv", qQuinticBoard.Sys_tv, false)) return false;
+            if (!WriteSetting("qv", qQuinticBoard.Sys_qv, false)) return false;
+            if (!WriteSetting("sv", qQuinticBoard.Sys_sv, false)) return false;
+            if (!WriteSetting("si", qQuinticBoard.Sys_si, false)) return false;
+            if (!WriteSetting("gun", qQuinticBoard.Sys_gun, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("1ma", qQuinticBoard.motor1ma, false)) return false;
-            if (!WriteSetting("1sa", qQuinticBoard.motor1sa, false)) return false;
-            if (!WriteSetting("1tr", qQuinticBoard.motor1tr, false)) return false;
-            if (!WriteSetting("1mi", qQuinticBoard.motor1mi, false)) return false;
-            if (!WriteSetting("1po", qQuinticBoard.motor1po, false)) return false;
-            if (!WriteSetting("1pm", qQuinticBoard.motor1pm, false)) return false;
+            if (!WriteSetting("1ma", qQuinticBoard.Motor1ma, false)) return false;
+            if (!WriteSetting("1sa", qQuinticBoard.Motor1sa, false)) return false;
+            if (!WriteSetting("1tr", qQuinticBoard.Motor1tr, false)) return false;
+            if (!WriteSetting("1mi", qQuinticBoard.Motor1mi, false)) return false;
+            if (!WriteSetting("1po", qQuinticBoard.Motor1po, false)) return false;
+            if (!WriteSetting("1pm", qQuinticBoard.Motor1pm, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("2ma", qQuinticBoard.motor2ma, false)) return false;
-            if (!WriteSetting("2sa", qQuinticBoard.motor2sa, false)) return false;
-            if (!WriteSetting("2tr", qQuinticBoard.motor2tr, false)) return false;
-            if (!WriteSetting("2mi", qQuinticBoard.motor2mi, false)) return false;
-            if (!WriteSetting("2po", qQuinticBoard.motor2po, false)) return false;
-            if (!WriteSetting("2pm", qQuinticBoard.motor2pm, false)) return false;
-            if (!WriteSetting("3ma", qQuinticBoard.motor3ma, false)) return false;
+            if (!WriteSetting("2ma", qQuinticBoard.Motor2ma, false)) return false;
+            if (!WriteSetting("2sa", qQuinticBoard.Motor2sa, false)) return false;
+            if (!WriteSetting("2tr", qQuinticBoard.Motor2tr, false)) return false;
+            if (!WriteSetting("2mi", qQuinticBoard.Motor2mi, false)) return false;
+            if (!WriteSetting("2po", qQuinticBoard.Motor2po, false)) return false;
+            if (!WriteSetting("2pm", qQuinticBoard.Motor2pm, false)) return false;
+            if (!WriteSetting("3ma", qQuinticBoard.Motor3ma, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("3sa", qQuinticBoard.motor3sa, false)) return false;
-            if (!WriteSetting("3tr", qQuinticBoard.motor3tr, false)) return false;
-            if (!WriteSetting("3mi", qQuinticBoard.motor3mi, false)) return false;
-            if (!WriteSetting("3po", qQuinticBoard.motor3po, false)) return false;
-            if (!WriteSetting("3pm", qQuinticBoard.motor3pm, false)) return false;
+            if (!WriteSetting("3sa", qQuinticBoard.Motor3sa, false)) return false;
+            if (!WriteSetting("3tr", qQuinticBoard.Motor3tr, false)) return false;
+            if (!WriteSetting("3mi", qQuinticBoard.Motor3mi, false)) return false;
+            if (!WriteSetting("3po", qQuinticBoard.Motor3po, false)) return false;
+            if (!WriteSetting("3pm", qQuinticBoard.Motor3pm, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("4ma", qQuinticBoard.motor4ma, false)) return false;
-            if (!WriteSetting("4sa", qQuinticBoard.motor4sa, false)) return false;
-            if (!WriteSetting("4tr", qQuinticBoard.motor4tr, false)) return false;
-            if (!WriteSetting("4mi", qQuinticBoard.motor4mi, false)) return false;
-            if (!WriteSetting("4po", qQuinticBoard.motor4po, false)) return false;
-            if (!WriteSetting("4pm", qQuinticBoard.motor4pm, false)) return false;
+            if (!WriteSetting("4ma", qQuinticBoard.Motor4ma, false)) return false;
+            if (!WriteSetting("4sa", qQuinticBoard.Motor4sa, false)) return false;
+            if (!WriteSetting("4tr", qQuinticBoard.Motor4tr, false)) return false;
+            if (!WriteSetting("4mi", qQuinticBoard.Motor4mi, false)) return false;
+            if (!WriteSetting("4po", qQuinticBoard.Motor4po, false)) return false;
+            if (!WriteSetting("4pm", qQuinticBoard.Motor4pm, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("xam", qQuinticBoard.xam, false)) return false;
-            if (!WriteSetting("xvm", qQuinticBoard.xvm, false)) return false;
-            if (!WriteSetting("xfr", qQuinticBoard.xfr, false)) return false;
-            if (!WriteSetting("xtn", qQuinticBoard.xtn, false)) return false;
-            if (!WriteSetting("xtm", qQuinticBoard.xtm, false)) return false;
-            if (!WriteSetting("xjm", qQuinticBoard.xjm, false)) return false;
+            if (!WriteSetting("xam", qQuinticBoard.Xam, false)) return false;
+            if (!WriteSetting("xvm", qQuinticBoard.Xvm, false)) return false;
+            if (!WriteSetting("xfr", qQuinticBoard.Xfr, false)) return false;
+            if (!WriteSetting("xtn", qQuinticBoard.Xtn, false)) return false;
+            if (!WriteSetting("xtm", qQuinticBoard.Xtm, false)) return false;
+            if (!WriteSetting("xjm", qQuinticBoard.Xjm, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("xjh", qQuinticBoard.xjh, false)) return false;
-            if (!WriteSetting("xsv", qQuinticBoard.xsv, false)) return false;
-            if (!WriteSetting("xlv", qQuinticBoard.xlv, false)) return false;
-            if (!WriteSetting("xlb", qQuinticBoard.xlb, false)) return false;
-            if (!WriteSetting("xzb", qQuinticBoard.xzb, false)) return false;
+            if (!WriteSetting("xjh", qQuinticBoard.Xjh, false)) return false;
+            if (!WriteSetting("xsv", qQuinticBoard.Xsv, false)) return false;
+            if (!WriteSetting("xlv", qQuinticBoard.Xlv, false)) return false;
+            if (!WriteSetting("xlb", qQuinticBoard.Xlb, false)) return false;
+            if (!WriteSetting("xzb", qQuinticBoard.Xzb, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("yam", qQuinticBoard.yam, false)) return false;
-            if (!WriteSetting("yvm", qQuinticBoard.yvm, false)) return false;
-            if (!WriteSetting("yfr", qQuinticBoard.yfr, false)) return false;
-            if (!WriteSetting("ytn", qQuinticBoard.ytn, false)) return false;
-            if (!WriteSetting("ytm", qQuinticBoard.ytm, false)) return false;
-            if (!WriteSetting("yjm", qQuinticBoard.yjm, false)) return false;
+            if (!WriteSetting("yam", qQuinticBoard.Yam, false)) return false;
+            if (!WriteSetting("yvm", qQuinticBoard.Yvm, false)) return false;
+            if (!WriteSetting("yfr", qQuinticBoard.Yfr, false)) return false;
+            if (!WriteSetting("ytn", qQuinticBoard.Ytn, false)) return false;
+            if (!WriteSetting("ytm", qQuinticBoard.Ytm, false)) return false;
+            if (!WriteSetting("yjm", qQuinticBoard.Yjm, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("yjh", qQuinticBoard.yjh, false)) return false;
-            if (!WriteSetting("ysv", qQuinticBoard.ysv, false)) return false;
-            if (!WriteSetting("ylv", qQuinticBoard.ylv, false)) return false;
-            if (!WriteSetting("ylb", qQuinticBoard.ylb, false)) return false;
-            if (!WriteSetting("yzb", qQuinticBoard.yzb, false)) return false;
+            if (!WriteSetting("yjh", qQuinticBoard.Yjh, false)) return false;
+            if (!WriteSetting("ysv", qQuinticBoard.Ysv, false)) return false;
+            if (!WriteSetting("ylv", qQuinticBoard.Ylv, false)) return false;
+            if (!WriteSetting("ylb", qQuinticBoard.Ylb, false)) return false;
+            if (!WriteSetting("yzb", qQuinticBoard.Yzb, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("zam", qQuinticBoard.zam, false)) return false;
-            if (!WriteSetting("zvm", qQuinticBoard.zvm, false)) return false;
-            if (!WriteSetting("zfr", qQuinticBoard.zfr, false)) return false;
-            if (!WriteSetting("ztn", qQuinticBoard.ztn, false)) return false;
-            if (!WriteSetting("ztm", qQuinticBoard.ztm, false)) return false;
-            if (!WriteSetting("zjm", qQuinticBoard.zjm, false)) return false;
+            if (!WriteSetting("zam", qQuinticBoard.Zam, false)) return false;
+            if (!WriteSetting("zvm", qQuinticBoard.Zvm, false)) return false;
+            if (!WriteSetting("zfr", qQuinticBoard.Zfr, false)) return false;
+            if (!WriteSetting("ztn", qQuinticBoard.Ztn, false)) return false;
+            if (!WriteSetting("ztm", qQuinticBoard.Ztm, false)) return false;
+            if (!WriteSetting("zjm", qQuinticBoard.Zjm, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("zjh", qQuinticBoard.zjh, false)) return false;
-            if (!WriteSetting("zsv", qQuinticBoard.zsv, false)) return false;
-            if (!WriteSetting("zlv", qQuinticBoard.zlv, false)) return false;
-            if (!WriteSetting("zlb", qQuinticBoard.zlb, false)) return false;
-            if (!WriteSetting("zzb", qQuinticBoard.zzb, false)) return false;
+            if (!WriteSetting("zjh", qQuinticBoard.Zjh, false)) return false;
+            if (!WriteSetting("zsv", qQuinticBoard.Zsv, false)) return false;
+            if (!WriteSetting("zlv", qQuinticBoard.Zlv, false)) return false;
+            if (!WriteSetting("zlb", qQuinticBoard.Zlb, false)) return false;
+            if (!WriteSetting("zzb", qQuinticBoard.Zzb, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("aam", qQuinticBoard.aam, false)) return false;
-            if (!WriteSetting("avm", qQuinticBoard.avm, false)) return false;
-            if (!WriteSetting("afr", qQuinticBoard.afr, false)) return false;
-            if (!WriteSetting("atn", qQuinticBoard.atn, false)) return false;
-            if (!WriteSetting("atm", qQuinticBoard.atm, false)) return false;
-            if (!WriteSetting("ajm", qQuinticBoard.ajm, false)) return false;
-            if (!WriteSetting("ajh", qQuinticBoard.ajh, false)) return false;
-            if (!WriteSetting("asv", qQuinticBoard.asv, false)) return false;
+            if (!WriteSetting("aam", qQuinticBoard.Aam, false)) return false;
+            if (!WriteSetting("avm", qQuinticBoard.Avm, false)) return false;
+            if (!WriteSetting("afr", qQuinticBoard.Afr, false)) return false;
+            if (!WriteSetting("atn", qQuinticBoard.Atn, false)) return false;
+            if (!WriteSetting("atm", qQuinticBoard.Atm, false)) return false;
+            if (!WriteSetting("ajm", qQuinticBoard.Ajm, false)) return false;
+            if (!WriteSetting("ajh", qQuinticBoard.Ajh, false)) return false;
+            if (!WriteSetting("asv", qQuinticBoard.Asv, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("1pl", qQuinticBoard.motor1pl, false)) return false;
-            if (!WriteSetting("2pl", qQuinticBoard.motor2pl, false)) return false;
-            if (!WriteSetting("3pl", qQuinticBoard.motor3pl, false)) return false;
-            if (!WriteSetting("4pl", qQuinticBoard.motor4pl, false)) return false;
-            if (!WriteSetting("5pl", qQuinticBoard.motor5pl, false)) return false;
+            if (!WriteSetting("1pl", qQuinticBoard.Motor1pl, false)) return false;
+            if (!WriteSetting("2pl", qQuinticBoard.Motor2pl, false)) return false;
+            if (!WriteSetting("3pl", qQuinticBoard.Motor3pl, false)) return false;
+            if (!WriteSetting("4pl", qQuinticBoard.Motor4pl, false)) return false;
+            if (!WriteSetting("5pl", qQuinticBoard.Motor5pl, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("5ma", qQuinticBoard.motor5ma, false)) return false;
-            if (!WriteSetting("5pm", qQuinticBoard.motor5pm, false)) return false;
+            if (!WriteSetting("5ma", qQuinticBoard.Motor5ma, false)) return false;
+            if (!WriteSetting("5pm", qQuinticBoard.Motor5pm, false)) return false;
             if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("xhi", qQuinticBoard.xhi, false)) return false;
-            if (!WriteSetting("xhd", qQuinticBoard.xhd, false)) return false;
-            if (!WriteSetting("yhi", qQuinticBoard.yhi, false)) return false;
-            if (!WriteSetting("yhd", qQuinticBoard.yhd, false)) return false;
-            if (!WriteSetting("zhi", qQuinticBoard.zhi, false)) return false;
-            if (!WriteSetting("zhd", qQuinticBoard.zhd, false)) return false;
-            if (!WriteSetting("ahi", qQuinticBoard.ahi, false)) return false;
-            if (!WriteSetting("bhi", qQuinticBoard.bhi, false)) return false;
+            if (!WriteSetting("xhi", qQuinticBoard.Xhi, false)) return false;
+            if (!WriteSetting("xhd", qQuinticBoard.Xhd, false)) return false;
+            if (!WriteSetting("yhi", qQuinticBoard.Yhi, false)) return false;
+            if (!WriteSetting("yhd", qQuinticBoard.Yhd, false)) return false;
+            if (!WriteSetting("zhi", qQuinticBoard.Zhi, false)) return false;
+            if (!WriteSetting("zhd", qQuinticBoard.Zhd, false)) return false;
+            if (!WriteSetting("ahi", qQuinticBoard.Ahi, false)) return false;
+            if (!WriteSetting("bhi", qQuinticBoard.Bhi, false)) return false;
 
             // setup status message:
             if (!CNC_Write_m("{sr:{posx:t,posy:t,posz:t,posa:t,stat:t,vel:t}}")) return false;

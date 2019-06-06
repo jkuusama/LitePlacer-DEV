@@ -23,6 +23,7 @@ using System;
 
 namespace LitePlacer
 {
+#pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
 
     // =================================================================================
     // The settings
@@ -30,136 +31,133 @@ namespace LitePlacer
 
     public class MySettings
     {
-        public bool Cameras_KeepActive = false;
-        public bool Cameras_RobustSwitch = false;
+        public bool Cam_ShowPixels { get; set; } = false;
+        public bool Cameras_KeepActive { get; set; } = false;
+        public bool Cameras_RobustSwitch { get; set; } = false;
+        public int CNC_AltJogSpeed { get; set; } = 4000;
+        public int CNC_AspeedMax { get; set; } = 4000;
+        public int CNC_CtlrJogSpeed { get; set; } = 4000;
+        public bool CNC_EnableMouseWheelJog { get; set; } = true;
+        public bool CNC_EnableNumPadJog { get; set; } = true;
+        public int CNC_NormalJogSpeed { get; set; } = 1000;
+        public string CNC_SerialPort { get; set; } = "";
+        public bool CNC_SlackCompensation { get; set; } = false;
+        public double SlackCompensationDistance { get; set; } = 0.4;
+        public bool CNC_SlackCompensationA { get; set; } = false;
+        public decimal CNC_SmallMovementSpeed { get; set; } = 150;
+        public double CNC_SquareCorrection { get; set; } = 0;
+        public int CNC_ZspeedMax { get; set; } = 1000;
+        public bool DownCam_DrawTicks { get; set; } = true;
+        public int DownCam_index { get; set; } = -1;
+        public bool Downcam_InvertedHomeMark { get; set; } = false;
+        public int DownCam_MeasurementDelay { get; set; } = 100;
+        public double DownCam_NozzleOffsetX { get; set; } = 75;
+        public double DownCam_NozzleOffsetY { get; set; } = 29;
+        public System.Drawing.Color DownCam_SnapshotColor { get; set; } = System.Drawing.Color.White;
+        public double DownCam_XmmPerPixel { get; set; } = 0.1;
+        public double DownCam_YmmPerPixel { get; set; } = 0.1;
+        public bool DownCam_Zoom { get; set; } = false;
+        public double DownCam_Zoomfactor { get; set; } = 1.5;
+        public string DowncamMoniker { get; set; } = "";
+        public double General_BelowPCB_Allowance { get; set; } = 3;
+        public bool General_CheckForUpdates { get; set; } = false;
+        public double General_JigOffsetX { get; set; } = 10;
+        public double General_JigOffsetY { get; set; } = 10;
+        public double General_MachineSizeX { get; set; } = 590;
+        public double General_MachineSizeY { get; set; } = 370;
+        public string General_Mark1Name { get; set; } = "Mark1";
+        public double General_Mark1X { get; set; } = 0;
+        public double General_Mark1Y { get; set; } = 0;
+        public double General_Mark1A { get; set; } = 0;
+        public string General_Mark2Name { get; set; } = "Mark2";
+        public double General_Mark2X { get; set; } = 0;
+        public double General_Mark2Y { get; set; } = 0;
+        public double General_Mark2A { get; set; } = 0;
+        public string General_Mark3Name { get; set; } = "Mark3";
+        public double General_Mark3X { get; set; } = 0;
+        public double General_Mark3Y { get; set; } = 0;
+        public double General_Mark3A { get; set; } = 0;
+        public string General_Mark4Name { get; set; } = "Mark4";
+        public double General_Mark4X { get; set; } = 0;
+        public double General_Mark4Y { get; set; } = 0;
+        public double General_Mark4A { get; set; } = 0;
+        public string General_Mark5Name { get; set; } = "Mark5";
+        public double General_Mark5X { get; set; } = 0;
+        public double General_Mark5Y { get; set; } = 0;
+        public double General_Mark5A { get; set; } = 0;
+        public string General_Mark6Name { get; set; } = "Mark6";
+        public double General_Mark6X { get; set; } = 0;
+        public double General_Mark6Y { get; set; } = 0;
+        public double General_Mark6A { get; set; } = 0;
+        public string General_MediumSpeed { get; set; } = "50000";
+        public bool General_MuteLogging { get; set; } = false;
+        public double General_ParkX { get; set; } = 0;
+        public double General_ParkY { get; set; } = 0;
+        public double General_PickupCenterX { get; set; } = 0;
+        public double General_PickupCenterY { get; set; } = 0;
+        public int General_PickupReleaseTime { get; set; } = 150;
+        public int General_PickupVacuumTime { get; set; } = 250;
+        public double General_PlacementBackOff { get; set; } = 0.2;
+        public double General_ShadeGuard_mm { get; set; } = 0;
+        public bool General_UpgradeRequired { get; set; } = true;
+        public double General_ZprobingHysteresis { get; set; } = 0.2;
+        public double General_ZTestTravel { get; set; } = 20;
+        public double General_ZtoPCB { get; set; } = 0;
+        public double Job_Xoffset { get; set; } = 0;
+        public double Job_Yoffset { get; set; } = 0;
+        public bool General_VigorousHoming { get; set; } = false;
+        public bool General_PumpOutputInverted { get; set; } = false;
+        public bool General_VacuumOutputInverted { get; set; } = false;
 
-        public int CNC_AltJogSpeed = 4000;
-        public int CNC_AspeedMax = 4000;
-        public int CNC_CtlrJogSpeed = 4000;
-        public bool CNC_EnableMouseWheelJog = true;
-        public bool CNC_EnableNumPadJog = true;
-        public int CNC_NormalJogSpeed = 1000;
-        public string CNC_SerialPort = "";
-        public bool CNC_SlackCompensation = false;
-        public bool CNC_SlackCompensationA = false;
-        public decimal CNC_SmallMovementSpeed = 150;
-        public double CNC_SquareCorrection = 0;
-        public int CNC_ZspeedMax = 1000;
+        public bool Nozzles_AfullSpeed { get; set; } = true;
+        public double Nozzles_Aspeed { get; set; } = 500;
+        public double Nozzles_CalibrationDistance { get; set; } = 4;
+        public double Nozzles_CalibrationMaxSize { get; set; } = 2;
+        public double Nozzles_CalibrationMinSize { get; set; } = 0;
+        public int Nozzles_count { get; set; } = 6;
+        public int Nozzles_current { get; set; } = 1;
+        public int Nozzles_default { get; set; } = 1;
+        public bool Nozzles_Enabled { get; set; } = false;
+        public bool Nozzles_FirstMoveFullSpeed { get; set; } = true;
+        public bool Nozzles_FirstMoveSlackCompensation { get; set; } = true;
+        public bool Nozzles_LastMoveFullSpeed { get; set; } = false;
+        public int Nozzles_maximum { get; set; } = 10;
+        public int Nozzles_Timeout { get; set; } = 5000;
+        public bool Nozzles_XYfullSpeed { get; set; } = true;
+        public double Nozzles_XYspeed { get; set; } = 500;
+        public bool Nozzles_ZfullSpeed { get; set; } = true;
+        public double Nozzles_Zspeed { get; set; } = 500;
+        public double Nozzles_WarningTreshold { get; set; } = 1.0;
 
-        public bool DownCam_DrawTicks = true;
-        public int DownCam_index = -1;
-        public int DownCam_MeasurementDelay = 100;
-        public double DownCam_NozzleOffsetX = 75;
-        public double DownCam_NozzleOffsetY = 29;
-        public System.Drawing.Color DownCam_SnapshotColor = System.Drawing.Color.White;
-        public double DownCam_XmmPerPixel = 0.1;
-        public double DownCam_YmmPerPixel = 0.1;
-        public bool DownCam_Zoom = false;
-        public double DownCam_Zoomfactor = 1.5;
-        public string DowncamMoniker = "";
-        public int DownCam_DesiredX = 640;
-        public int DownCam_DesiredY = 480;
+        public bool Panel_UseBoardFids { get; set; } = true;
+        public double Panel_XFirstOffset { get; set; } = 0;
+        public double Panel_XIncrement { get; set; } = 0;
+        public int Panel_XRepeats { get; set; } = 0;
+        public double Panel_YFirstOffset { get; set; } = 0;
+        public double Panel_YIncrement { get; set; } = 0;
+        public int Panel_YRepeats { get; set; } = 0;
+        public double Placement_Depth { get; set; } = 1;
+        public bool Placement_FiducialConfirmation { get; set; } = false;
+        public int Placement_FiducialsType { get; set; } = 0;
+        public double Placement_FiducialTolerance { get; set; } = 3;
+        public bool Placement_OmitNozzleCalibration { get; set; } = false;
+        public bool Placement_SkipMeasurements { get; set; } = false;
+        public bool Placement_UpdateJobGridAtRuntime { get; set; } = false;
 
-        public bool Cam_ShowPixels = false;
-
-        public int UpCam_index = -1;
-        public int UpCam_MeasurementDelay = 100;
-        public double UpCam_PositionX = 2;
-        public double UpCam_PositionY = 3;
-        public System.Drawing.Color UpCam_SnapshotColor = System.Drawing.Color.White;
-        public double UpCam_XmmPerPixel = 0.05;
-        public double UpCam_YmmPerPixel = 0.05;
-        public bool UpCam_Zoom = false;
-        public double UpCam_Zoomfactor = 1.5;
-        public string UpcamMoniker = "";
-        public int UpCam_DesiredX = 640;
-        public int UpCam_DesiredY = 480;
-
-        public double General_BelowPCB_Allowance = 3;
-        public bool General_CheckForUpdates = false;
-        public double General_JigOffsetX = 10;
-        public double General_JigOffsetY = 10;
-        public double General_MachineSizeX = 590;
-        public double General_MachineSizeY = 370;
-        public string General_Mark1Name = "Mark1";
-        public double General_Mark1X = 0;
-        public double General_Mark1Y = 0;
-        public double General_Mark1A = 0;
-        public string General_Mark2Name = "Mark2";
-        public double General_Mark2X = 0;
-        public double General_Mark2Y = 0;
-        public double General_Mark2A = 0;
-        public string General_Mark3Name = "Mark3";
-        public double General_Mark3X = 0;
-        public double General_Mark3Y = 0;
-        public double General_Mark3A = 0;
-        public string General_Mark4Name = "Mark4";
-        public double General_Mark4X = 0;
-        public double General_Mark4Y = 0;
-        public double General_Mark4A = 0;
-        public string General_Mark5Name = "Mark5";
-        public double General_Mark5X = 0;
-        public double General_Mark5Y = 0;
-        public double General_Mark5A = 0;
-        public string General_Mark6Name = "Mark6";
-        public double General_Mark6X = 0;
-        public double General_Mark6Y = 0;
-        public double General_Mark6A = 0;
-        public string General_MediumSpeed = "50000";
-        public bool General_MuteLogging = false;
-        public double General_ParkX = 0;
-        public double General_ParkY = 0;
-        public double General_PickupCenterX = 0;
-        public double General_PickupCenterY = 0;
-        public int General_PickupReleaseTime = 150;
-        public int General_PickupVacuumTime = 250;
-        public double General_PlacementBackOff = 0.2;
-        public double General_ShadeGuard_mm = 0;
-        public bool General_UpgradeRequired = true;
-        public double General_ZprobingHysteresis = 0.2;
-        public double General_ZTestTravel = 20;
-        public double General_ZtoPCB = 0;
-        public double Job_Xoffset = 0;
-        public double Job_Yoffset = 0;
-        public bool General_VigorousHoming = false;
-        public bool General_PumpOutputInverted = false;
-        public bool General_VacuumOutputInverted = false;
-
-        public bool Nozzles_AfullSpeed = true;
-        public double Nozzles_Aspeed = 500;
-        public double Nozzles_CalibrationDistance = 4;
-        public double Nozzles_CalibrationMaxSize = 2;
-        public double Nozzles_CalibrationMinSize = 0;
-        public int Nozzles_count = 6;
-        public int Nozzles_current = 1;
-        public int Nozzles_default = 1;
-        public bool Nozzles_Enabled = false;
-        public bool Nozzles_FirstMoveFullSpeed = true;
-        public bool Nozzles_FirstMoveSlackCompensation = true;
-        public bool Nozzles_LastMoveFullSpeed = false;
-        public int Nozzles_maximum = 10;
-        public int Nozzles_Timeout = 5000;
-        public bool Nozzles_XYfullSpeed = true;
-        public double Nozzles_XYspeed = 500;
-        public bool Nozzles_ZfullSpeed = true;
-        public double Nozzles_Zspeed = 500;
-        public double Nozzles_WarningTreshold = 1.0;
-
-        public bool Panel_UseBoardFids = true;
-        public double Panel_XFirstOffset = 0;
-        public double Panel_XIncrement = 0;
-        public int Panel_XRepeats = 0;
-        public double Panel_YFirstOffset = 0;
-        public double Panel_YIncrement = 0;
-        public int Panel_YRepeats = 0;
-        public double Placement_Depth = 1;
-        public bool Placement_FiducialConfirmation = false;
-        public int Placement_FiducialsType = 0;
-        public double Placement_FiducialTolerance = 3;
-        public bool Placement_OmitNozzleCalibration = false;
-        public bool Placement_SkipMeasurements = false;
-        public bool Placement_UpdateJobGridAtRuntime = false;
-
+        public int UpCam_index { get; set; } = -1;
+        public int UpCam_MeasurementDelay { get; set; } = 100;
+        public double UpCam_PositionX { get; set; } = 2;
+        public double UpCam_PositionY { get; set; } = 3;
+        public System.Drawing.Color UpCam_SnapshotColor { get; set; } = System.Drawing.Color.White;
+        public double UpCam_XmmPerPixel { get; set; } = 0.05;
+        public double UpCam_YmmPerPixel { get; set; } = 0.05;
+        public bool UpCam_Zoom { get; set; } = false;
+        public double UpCam_Zoomfactor { get; set; } = 1.5;
+        public string UpcamMoniker { get; set; } = "";
+        public int DownCam_DesiredX { get; set; } = 640;
+        public int DownCam_DesiredY { get; set; } = 480;
+        public int UpCam_DesiredX { get; set; } = 640;
+        public int UpCam_DesiredY { get; set; } = 480;
     }
 
     // =================================================================================
@@ -167,6 +165,8 @@ namespace LitePlacer
     // =================================================================================
     public class AppSettings
     {
+#pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
+
         static FormMain MainForm;
 
         public AppSettings(FormMain MainF)
@@ -182,7 +182,7 @@ namespace LitePlacer
                 File.WriteAllText(FileName, JsonConvert.SerializeObject(pSettings, Formatting.Indented));
                 return true;
             }
-            catch (System.Exception excep)
+            catch (Exception excep)
             {
                 MainForm.DisplayText("Application settings save failed: " + excep.Message);
                 return false;
@@ -232,7 +232,7 @@ namespace LitePlacer
                     return settings;
                 }
             }
-            catch (System.Exception excep)
+            catch (Exception excep)
             {
                 MainForm.ShowMessageBox(
                     "Problem loading application settings:\n" + excep.Message + "\nUsing built in defaults.",

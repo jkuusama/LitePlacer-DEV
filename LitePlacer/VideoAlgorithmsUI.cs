@@ -696,7 +696,7 @@ namespace LitePlacer
         }
 
 
-        public List<Shapes.Shape> ComponentFeatures(List<Shapes.ComponentOld> Components)
+        public List<Shapes.Shape> ComponentFeatures(List<Shapes.LitePlacerShapeComponent> Components)
         {
             List<Shapes.Shape> Features = new List<Shapes.Shape>();
             foreach (var C in Components)

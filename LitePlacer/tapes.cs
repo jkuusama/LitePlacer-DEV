@@ -67,7 +67,7 @@ namespace LitePlacer
 				}
 			}
 			MainForm.ShowMessageBox(
-				"Did not find tape " + Id.ToString(),
+				"Did not find tape " + Id.ToString(CultureInfo.InvariantCulture),
 				"Tape data error",
 				MessageBoxButtons.OK
 			);
@@ -183,10 +183,12 @@ namespace LitePlacer
                 FastYstep = 0.0;
             }
 
-            MainForm.DisplayText("Fast parameters:");
-            MainForm.DisplayText("First X: " + FirstX.ToString() + ", Y: " + FirstY.ToString());
-            MainForm.DisplayText("Last X: " + LastX.ToString() + ", Y: " + LastY.ToString());
-            MainForm.DisplayText("Step X: " + FastXstep.ToString() + ", Y: " + FastYstep.ToString());
+            MainForm.DisplayText("First X: " + FirstX.ToString(CultureInfo.InvariantCulture)
+                + ", Y: " + FirstY.ToString(CultureInfo.InvariantCulture));
+            MainForm.DisplayText("Last X: " + LastX.ToString(CultureInfo.InvariantCulture)
+                + ", Y: " + LastY.ToString(CultureInfo.InvariantCulture));
+            MainForm.DisplayText("Step X: " + FastXstep.ToString(CultureInfo.InvariantCulture)
+                + ", Y: " + FastYstep.ToString(CultureInfo.InvariantCulture));
 
             return true;
         }
@@ -231,7 +233,7 @@ namespace LitePlacer
                 Grid.Rows[TapeNum].Cells["Next_Y_Column"].Value = FastYpos.ToString("0.000", CultureInfo.InvariantCulture);
             }
             pos += 1;
-            Grid.Rows[TapeNum].Cells["NextPart_Column"].Value = pos.ToString();
+            Grid.Rows[TapeNum].Cells["NextPart_Column"].Value = pos.ToString(CultureInfo.InvariantCulture);
             return true;
 
     }
@@ -288,7 +290,7 @@ namespace LitePlacer
             if (!double.TryParse(Grid.Rows[TapeNum].Cells["FirstX_Column"].Value.ToString().Replace(',', '.'), out X))
             {
                 MainForm.ShowMessageBox(
-                    "Bad data at Tape " + TapeNum.ToString() + ", X",
+                    "Bad data at Tape " + TapeNum.ToString(CultureInfo.InvariantCulture) + ", X",
                     "Tape data error",
                     MessageBoxButtons.OK
                 );
@@ -297,7 +299,7 @@ namespace LitePlacer
             if (!double.TryParse(Grid.Rows[TapeNum].Cells["FirstY_Column"].Value.ToString().Replace(',', '.'), out Y))
             {
                 MainForm.ShowMessageBox(
-                    "Bad data at Tape " + TapeNum.ToString() + ", Y",
+                    "Bad data at Tape " + TapeNum.ToString(CultureInfo.InvariantCulture) + ", Y",
                     "Tape data error",
                     MessageBoxButtons.OK
                 );
@@ -338,7 +340,7 @@ namespace LitePlacer
 
                 default:
                     MainForm.ShowMessageBox(
-                        "Bad data at Tape #" + TapeNum.ToString() + ", Orientation",
+                        "Bad data at Tape #" + TapeNum.ToString(CultureInfo.InvariantCulture) + ", Orientation",
                         "Tape data error",
                         MessageBoxButtons.OK
                     );
@@ -394,7 +396,7 @@ namespace LitePlacer
 			if (!int.TryParse(Grid.Rows[Tape].Cells["NextPart_Column"].Value.ToString(), out pos))
 			{
 				MainForm.ShowMessageBox(
-					"Bad data at Tape " + Tape.ToString() + ", Next",
+					"Bad data at Tape " + Tape.ToString(CultureInfo.InvariantCulture) + ", Next",
 					"Tape data error",
 					MessageBoxButtons.OK
 				);
@@ -442,16 +444,17 @@ namespace LitePlacer
 
 				default:
 					MainForm.ShowMessageBox(
-						"Bad data at Tape #" + Tape.ToString() + ", Orientation",
+						"Bad data at Tape #" + Tape.ToString(CultureInfo.InvariantCulture) + ", Orientation",
 						"Tape data error",
 						MessageBoxButtons.OK
 					);
 					return false;
 			}
-            MainForm.DisplayText("Part position: " + Grid.Rows[Tape].Cells["Id_Column"].Value.ToString() + ", part #" + pos.ToString()
-                + ": X= " + PartX.ToString() + ", Y= " + PartY.ToString());
-			// rotation:
-			if (Grid.Rows[Tape].Cells["Rotation_Column"].Value == null)
+            MainForm.DisplayText("Part position: " + Grid.Rows[Tape].Cells["Id_Column"].Value.ToString() + ", part #"
+                + pos.ToString(CultureInfo.InvariantCulture)
+                + ": X= " + PartX.ToString(CultureInfo.InvariantCulture) + ", Y= " + PartY.ToString(CultureInfo.InvariantCulture));
+            // rotation:
+            if (Grid.Rows[Tape].Cells["Rotation_Column"].Value == null)
 			{
 				MainForm.ShowMessageBox(
 					"Bad data at tape " + Grid.Rows[Tape].Cells["Id_Column"].Value.ToString() +" rotation",
@@ -551,11 +554,11 @@ namespace LitePlacer
                     HoleX = HoleX - (double)Pitch;
                     break;
             };
-            Grid.Rows[Tape].Cells["Next_X_Column"].Value = HoleX.ToString();
-            Grid.Rows[Tape].Cells["Next_Y_Column"].Value = HoleY.ToString();
+            Grid.Rows[Tape].Cells["Next_X_Column"].Value = HoleX.ToString(CultureInfo.InvariantCulture);
+            Grid.Rows[Tape].Cells["Next_Y_Column"].Value = HoleY.ToString(CultureInfo.InvariantCulture);
             // increment next count
             pos++;
-            Grid.Rows[Tape].Cells["NextPart_Column"].Value = pos.ToString();
+            Grid.Rows[Tape].Cells["NextPart_Column"].Value = pos.ToString(CultureInfo.InvariantCulture);
             return true;
         }
 
