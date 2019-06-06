@@ -6747,9 +6747,12 @@ namespace LitePlacer
         //const int CADdata_YMachColumn = 7;
         //const int CADdata_RotMachColumn = 8;
 
-        //const int CADdata_XMachColumn = 6;
-        //const int CADdata_YMachColumn = 7;
-        //const int CADdata_RotMachColumn = 8;
+        //const int Jobdata_CountColumn = 0;
+        //const int Jobdata_ComponentTypColumn = 1;
+        const int Jobdata_MethodColumn = 2;
+        const int Jobdata_MethodParametersColumn = 3;
+        //const int Jobdata_NozzleColumn = 4;
+        //const int Jobdata_ComponentsColumn = 5;
 
         // =================================================================================
         private void ResetPlacedDataToolStripMenuItem_Click(object sender, EventArgs e)

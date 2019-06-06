@@ -18,6 +18,7 @@ using AForge.Math.Geometry;
 
 
 
+
 namespace LitePlacer
 {
     public class Camera
@@ -97,33 +98,6 @@ namespace LitePlacer
 
         }
 
-        // Program has been crashing due to access of ImageBox.  As a shared resource it needs
-        // to be accessed in protected regions.  The lock _locker is to be used for this purpose.
-        // The OnPaint method in PictureBox runs in a second task.  By extending the PictureBox
-        // class, overriding the OnPaint method and putting the call into a region protected
-        // by _locker we can stop the crashing.
-        public class ProtectedPictureBox : System.Windows.Forms.PictureBox
-        {
-            protected override void OnPaint(PaintEventArgs e)
-            {
-                lock (_locker)
-                {
-                    base.OnPaint(e);
-                }
-            }
-
-            protected override void OnVisibleChanged(EventArgs e)
-            {
-                lock (_locker)
-                {
-                    base.OnVisibleChanged(e);
-                }
-            }
-        }
-
-        // _locker must be a static Camera class variable to be available to the overridden OnPaint method
-        private static object _locker = new object();
-
         // Image= PictureBox in UI, the final shown image
         // Frame= picture from camera
 
@@ -138,7 +112,7 @@ namespace LitePlacer
             }
             set
             {
-                lock (_locker)
+                lock (ProtectedPictureBox._locker)
                 {
                     _imageBox = value;
                 }
@@ -152,8 +126,8 @@ namespace LitePlacer
         public int DesiredX { get; set; }
         public int DesiredY { get; set; }
 
-        public string MonikerString = "unconnected";
-        public string Id = "unconnected";
+        public string MonikerString { get; set; } = "unconnected";
+        public string Id { get; set; } = "unconnected";
 
         public bool ReceivingFrames { get; set; }
 
@@ -186,8 +160,8 @@ namespace LitePlacer
                 {
                     for (int i = 0; i < source.VideoCapabilities.Length; i++)
                     {
-                        MainForm.DisplayText("X: " + source.VideoCapabilities[i].FrameSize.Width.ToString() +
-                            ", Y: " + source.VideoCapabilities[i].FrameSize.Height.ToString());
+                        MainForm.DisplayText("X: " + source.VideoCapabilities[i].FrameSize.Width.ToString(CultureInfo.InvariantCulture) +
+                            ", Y: " + source.VideoCapabilities[i].FrameSize.Height.ToString(CultureInfo.InvariantCulture));
                     }
                     return;
                 }
@@ -204,6 +178,7 @@ namespace LitePlacer
                 MainForm.DisplayText(cam + " start, moniker= " + MonikerStr);
 
                 // enumerate video devices
+                FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
                 // create the video source (check that the camera exists is already done
                 VideoSource = new VideoCaptureDevice(MonikerStr);
                 int tries = 0;
@@ -277,7 +252,7 @@ namespace LitePlacer
                     MainForm.DisplayText("Camera started, but is not sending video");
                     return false;
                 }
-                MainForm.DisplayText("*** Camera started: " + tries.ToString(), KnownColor.Purple);
+                MainForm.DisplayText("*** Camera started: " + tries.ToString(CultureInfo.InvariantCulture), KnownColor.Purple);
 
                 // We managed to start the camera using desired resolution
                 FrameSizeX = DesiredX;
@@ -287,11 +262,13 @@ namespace LitePlacer
                 PauseProcessing = false;
                 return true;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (System.Exception excep)
             {
                 MessageBox.Show(excep.Message);
                 return false;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         public List<string> GetDeviceList()
@@ -720,7 +697,7 @@ namespace LitePlacer
 
 
             // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
-            lock (_locker)
+            lock (ProtectedPictureBox._locker)
             {
                 frame = (Bitmap)eventArgs.Frame.Clone();
             }
@@ -794,7 +771,7 @@ namespace LitePlacer
                 DrawArrowFunct(frame);
             };
 
-            lock (_locker)
+            lock (ProtectedPictureBox._locker)
             {
                 if (ImageBox.Image != null)
                 {
