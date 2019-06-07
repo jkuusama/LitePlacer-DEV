@@ -300,12 +300,18 @@ namespace LitePlacer
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
+            DownCamera.DrawCross = Setting.DownCam_DrawCross;
+            DownCamera.DrawBox = Setting.DownCam_DrawBox;
+            DownCamera.DrawSidemarks = Setting.DownCam_DrawSidemarks;
             DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
             DownCamera.Zoom = Setting.DownCam_Zoom;
             DownCamZoomFactor_textBox.Text = Setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             DownCamera.ZoomFactor = Setting.DownCam_Zoomfactor;
             DownCamera.ImageBox = Cam_pictureBox;
 
+            UpCamera.DrawCross = Setting.UpCam_DrawCross;
+            UpCamera.DrawBox = Setting.UpCam_DrawBox;
+            UpCamera.DrawSidemarks = Setting.UpCam_DrawSidemarks;
             UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
             UpCamera.Zoom = Setting.UpCam_Zoom;
             UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
@@ -313,7 +319,15 @@ namespace LitePlacer
             UpCamera.ImageBox = Cam_pictureBox;
 
             ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
-            ShowPixels_checkBox_CheckedChanged(sender, e);
+            if (ShowPixels_checkBox.Checked)
+            {
+                Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+            }
+            else
+            {
+                Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+
 
             if (Setting.Nozzles_current == 0)
             {
@@ -391,6 +405,7 @@ namespace LitePlacer
             // ======== Nozzles Setup tab:
 
             // ======== Setup operations that can cause visible reaction:
+            StartingUp = false;
 
             Cnc.Connect(Setting.CNC_SerialPort);  // This can raise error condition, needing the form up
             UpdateCncConnectionStatus();
@@ -407,7 +422,6 @@ namespace LitePlacer
 
             DisableLog_checkBox.Checked = Setting.General_MuteLogging;
             MotorPower_timer.Enabled = true;
-            StartingUp = false;
             DisplayText("Startup completed.");
         }
 
@@ -3158,7 +3172,6 @@ namespace LitePlacer
                     "Down Camera problem",
                     MessageBoxButtons.OK
                 );
-                DownCameraStatus_label.Text = "Not Connected";
                 DownCamera.Active = false;
                 DownCameraStatus_label.Text = "Not Active";
                 return false;
@@ -3299,15 +3312,26 @@ namespace LitePlacer
             SetDownCameraDefaults();
             DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString(CultureInfo.InvariantCulture);
+            DownCamDrawSidemarks_checkBox.Checked = Setting.DownCam_DrawSidemarks;
             DownCamDrawCross_checkBox.Checked = DownCamera.DrawCross;
             DownCamDrawBox_checkBox.Checked = DownCamera.DrawBox;
-            // SelectCamera(DownCamera); UpdateCameraCameraStatus_label();
 
             SetUpCameraDefaults();
             UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString(CultureInfo.InvariantCulture);
             UpCamDrawCross_checkBox.Checked = UpCamera.DrawCross;
             UpCamDrawBox_checkBox.Checked = UpCamera.DrawBox;
+
+            if (DownCamera.Active)
+            {
+                DownCameraStatus_label.Text = "Active";
+                UpCameraStatus_label.Text = "Not Active";
+            }
+            else
+            {
+                DownCameraStatus_label.Text = "Not Active";
+                UpCameraStatus_label.Text = "Active";
+            }
 
             NozzleOffset_label.Visible = false;
 
@@ -3336,9 +3360,6 @@ namespace LitePlacer
 
             UpcamPositionX_textBox.Text = Setting.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
             UpcamPositionY_textBox.Text = Setting.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
-
-            ShowPixels_checkBox.Checked = true;
-            Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
 
             getDownCamList();
             getUpCamList();
@@ -3774,11 +3795,19 @@ namespace LitePlacer
         private void DownCamDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             DownCamera.DrawCross = DownCamDrawCross_checkBox.Checked;
+            Setting.DownCam_DrawCross = DownCamDrawCross_checkBox.Checked;
         }
 
         private void DownCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             DownCamera.DrawBox = DownCamDrawBox_checkBox.Checked;
+            Setting.DownCam_DrawBox = DownCamDrawBox_checkBox.Checked;
+        }
+
+        private void DownCamDrawSidemarks_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            DownCamera.DrawSidemarks = DownCamDrawSidemarks_checkBox.Checked;
+            Setting.DownCam_DrawSidemarks = DownCamDrawSidemarks_checkBox.Checked;
         }
 
         // =================================================================================
@@ -4039,13 +4068,20 @@ namespace LitePlacer
         private void UpCamDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             UpCamera.DrawCross = UpCamDrawCross_checkBox.Checked;
+            Setting.UpCam_DrawCross = UpCamDrawCross_checkBox.Checked;
         }
 
         private void UpCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            UpCamera.DrawBox = UpCamDrawCross_checkBox.Checked;
+            UpCamera.DrawBox = UpCamDrawBox_checkBox.Checked;
+            Setting.UpCam_DrawBox = UpCamDrawBox_checkBox.Checked;
         }
 
+        private void UpCamDrawSidemarks_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpCamera.DrawSidemarks = UpCamDrawSidemarks_checkBox.Checked;
+            Setting.UpCam_DrawSidemarks  = UpCamDrawSidemarks_checkBox.Checked;
+        }
 
         private void UpcamPositionX_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {

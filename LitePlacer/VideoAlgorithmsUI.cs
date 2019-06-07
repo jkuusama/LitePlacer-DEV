@@ -43,10 +43,14 @@ namespace LitePlacer
         {
             SetDownCameraDefaults();
             SetUpCameraDefaults();
-            // default to Downcamera
-            DownCam_radioButton.Checked = true;
-            cam = DownCamera;
-            SelectCamera(DownCamera);
+            if (UpCamera.Active)
+            {
+                UpCam_radioButton.Checked = true;
+            }
+            else
+            {
+                DownCam_radioButton.Checked = true;
+            }
             AlgorithmsTab_RestoreBehaviour();
             ProcessDisplay_checkBox_Checked_Change();
         }
@@ -74,9 +78,6 @@ namespace LitePlacer
         private void AlgorithmsTab_RestoreBehaviour()
         {
             // called on tab load and camera change
-            DrawCross_checkBox.Checked = cam.DrawCross;
-            DrawTicks_checkBox.Checked = cam.DrawSidemarks;
-            DrawBox_checkBox.Checked = cam.DrawBox;
             FindCircles_checkBox.Checked = cam.FindCircles;
             FindRectangles_checkBox.Checked = cam.FindRectangles;
             FindComponents_checkBox.Checked = cam.FindComponent;
@@ -104,24 +105,6 @@ namespace LitePlacer
             cam = UpCamera;
             SelectCamera(UpCamera);
             AlgorithmsTab_RestoreBehaviour();
-        }
-
-        // =====================================================================================
-        // draw boxes
-
-        private void DrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            cam.DrawCross = DrawCross_checkBox.Checked;
-        }
-
-        private void DrawTicks_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            cam.DrawSidemarks = DrawTicks_checkBox.Checked;
-        }
-
-        private void DrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            cam.DrawBox = DrawBox_checkBox.Checked;
         }
 
         // =====================================================================================

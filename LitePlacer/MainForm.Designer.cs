@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -145,6 +145,7 @@
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.UpCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
             this.label130 = new System.Windows.Forms.Label();
             this.UpCameraYmmPerPixel_textBox = new System.Windows.Forms.TextBox();
             this.UpCameraXmmPerPixel_textBox = new System.Windows.Forms.TextBox();
@@ -174,6 +175,7 @@
             this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
             this.label135 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.DownCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
             this.label121 = new System.Windows.Forms.Label();
             this.DownCameraYmmPerPixel_textBox = new System.Windows.Forms.TextBox();
             this.DownCameraXmmPerPixel_textBox = new System.Windows.Forms.TextBox();
@@ -541,12 +543,9 @@
             this.FunctionExplanation_textBox = new System.Windows.Forms.TextBox();
             this.DrawDashedCross_checkBox = new System.Windows.Forms.CheckBox();
             this.DrawGrid_checkBox = new System.Windows.Forms.CheckBox();
-            this.DrawTicks_checkBox = new System.Windows.Forms.CheckBox();
             this.FindComponents_checkBox = new System.Windows.Forms.CheckBox();
             this.FindRectangles_checkBox = new System.Windows.Forms.CheckBox();
             this.FindCircles_checkBox = new System.Windows.Forms.CheckBox();
-            this.DrawCross_checkBox = new System.Windows.Forms.CheckBox();
-            this.DrawBox_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.DownCam_radioButton = new System.Windows.Forms.RadioButton();
             this.UpCam_radioButton = new System.Windows.Forms.RadioButton();
@@ -1962,6 +1961,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.UpCamDrawSidemarks_checkBox);
             this.groupBox6.Controls.Add(this.label130);
             this.groupBox6.Controls.Add(this.UpCameraYmmPerPixel_textBox);
             this.groupBox6.Controls.Add(this.UpCameraXmmPerPixel_textBox);
@@ -1987,12 +1987,24 @@
             this.groupBox6.Controls.Add(this.label163);
             this.groupBox6.Controls.Add(this.UpCameraBoxY_textBox);
             this.groupBox6.Controls.Add(this.label103);
-            this.groupBox6.Location = new System.Drawing.Point(652, 170);
+            this.groupBox6.Location = new System.Drawing.Point(652, 184);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(587, 158);
+            this.groupBox6.Size = new System.Drawing.Size(587, 176);
             this.groupBox6.TabIndex = 227;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Up Looking Camera";
+            // 
+            // UpCamDrawSidemarks_checkBox
+            // 
+            this.UpCamDrawSidemarks_checkBox.AutoSize = true;
+            this.UpCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(374, 143);
+            this.UpCamDrawSidemarks_checkBox.Name = "UpCamDrawSidemarks_checkBox";
+            this.UpCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(103, 17);
+            this.UpCamDrawSidemarks_checkBox.TabIndex = 213;
+            this.UpCamDrawSidemarks_checkBox.Text = "Draw SideMarks";
+            this.UpCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
+            this.UpCamDrawSidemarks_checkBox.CheckedChanged += new System.EventHandler(this.UpCamDrawSidemarks_checkBox_CheckedChanged);
             // 
             // label130
             // 
@@ -2276,7 +2288,7 @@
             // 
             this.RobustFast_checkBox.AutoSize = true;
             this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RobustFast_checkBox.Location = new System.Drawing.Point(752, 348);
+            this.RobustFast_checkBox.Location = new System.Drawing.Point(750, 378);
             this.RobustFast_checkBox.Name = "RobustFast_checkBox";
             this.RobustFast_checkBox.Size = new System.Drawing.Size(130, 17);
             this.RobustFast_checkBox.TabIndex = 195;
@@ -2289,7 +2301,7 @@
             // 
             this.KeepActive_checkBox.AutoSize = true;
             this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KeepActive_checkBox.Location = new System.Drawing.Point(908, 348);
+            this.KeepActive_checkBox.Location = new System.Drawing.Point(906, 378);
             this.KeepActive_checkBox.Name = "KeepActive_checkBox";
             this.KeepActive_checkBox.Size = new System.Drawing.Size(83, 17);
             this.KeepActive_checkBox.TabIndex = 196;
@@ -2302,7 +2314,7 @@
             // 
             this.label135.AutoSize = true;
             this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label135.Location = new System.Drawing.Point(655, 349);
+            this.label135.Location = new System.Drawing.Point(653, 379);
             this.label135.Name = "label135";
             this.label135.Size = new System.Drawing.Size(78, 13);
             this.label135.TabIndex = 197;
@@ -2311,6 +2323,7 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.DownCamDrawSidemarks_checkBox);
             this.groupBox5.Controls.Add(this.label121);
             this.groupBox5.Controls.Add(this.DownCameraYmmPerPixel_textBox);
             this.groupBox5.Controls.Add(this.DownCameraXmmPerPixel_textBox);
@@ -2338,10 +2351,22 @@
             this.groupBox5.Controls.Add(this.DownCamListResolutions_button);
             this.groupBox5.Location = new System.Drawing.Point(652, 6);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(587, 158);
+            this.groupBox5.Size = new System.Drawing.Size(587, 172);
             this.groupBox5.TabIndex = 145;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Down Looking Camera";
+            // 
+            // DownCamDrawSidemarks_checkBox
+            // 
+            this.DownCamDrawSidemarks_checkBox.AutoSize = true;
+            this.DownCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(374, 145);
+            this.DownCamDrawSidemarks_checkBox.Name = "DownCamDrawSidemarks_checkBox";
+            this.DownCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(103, 17);
+            this.DownCamDrawSidemarks_checkBox.TabIndex = 212;
+            this.DownCamDrawSidemarks_checkBox.Text = "Draw SideMarks";
+            this.DownCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
+            this.DownCamDrawSidemarks_checkBox.CheckedChanged += new System.EventHandler(this.DownCamDrawSidemarks_checkBox_CheckedChanged);
             // 
             // label121
             // 
@@ -6115,14 +6140,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6352,12 +6377,9 @@
             this.Algorithms_tabPage.Controls.Add(this.FunctionExplanation_textBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawDashedCross_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawGrid_checkBox);
-            this.Algorithms_tabPage.Controls.Add(this.DrawTicks_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.FindComponents_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.FindRectangles_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.FindCircles_checkBox);
-            this.Algorithms_tabPage.Controls.Add(this.DrawCross_checkBox);
-            this.Algorithms_tabPage.Controls.Add(this.DrawBox_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.groupBox4);
             this.Algorithms_tabPage.Controls.Add(this.Algorithm_Measure_button);
             this.Algorithms_tabPage.Controls.Add(this.SearchComponents_checkBox);
@@ -6431,7 +6453,7 @@
             // 
             this.DrawDashedCross_checkBox.AutoSize = true;
             this.DrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawDashedCross_checkBox.Location = new System.Drawing.Point(1077, 26);
+            this.DrawDashedCross_checkBox.Location = new System.Drawing.Point(956, 26);
             this.DrawDashedCross_checkBox.Name = "DrawDashedCross_checkBox";
             this.DrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
             this.DrawDashedCross_checkBox.TabIndex = 259;
@@ -6443,7 +6465,7 @@
             // 
             this.DrawGrid_checkBox.AutoSize = true;
             this.DrawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawGrid_checkBox.Location = new System.Drawing.Point(1077, 49);
+            this.DrawGrid_checkBox.Location = new System.Drawing.Point(956, 49);
             this.DrawGrid_checkBox.Name = "DrawGrid_checkBox";
             this.DrawGrid_checkBox.Size = new System.Drawing.Size(73, 17);
             this.DrawGrid_checkBox.TabIndex = 264;
@@ -6452,25 +6474,11 @@
             this.DrawGrid_checkBox.UseVisualStyleBackColor = true;
             this.DrawGrid_checkBox.Visible = false;
             // 
-            // DrawTicks_checkBox
-            // 
-            this.DrawTicks_checkBox.AutoSize = true;
-            this.DrawTicks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawTicks_checkBox.Location = new System.Drawing.Point(838, 49);
-            this.DrawTicks_checkBox.Name = "DrawTicks_checkBox";
-            this.DrawTicks_checkBox.Size = new System.Drawing.Size(98, 17);
-            this.DrawTicks_checkBox.TabIndex = 263;
-            this.DrawTicks_checkBox.Text = "Draw Tickmarks";
-            this.toolTip1.SetToolTip(this.DrawTicks_checkBox, "Draws tickmarks on image side\r\ncorresponding to 10cm in workarea\r\n(cntrl-click mo" +
-        "ves machine to position, \r\nthese help in navigating)\r\n");
-            this.DrawTicks_checkBox.UseVisualStyleBackColor = true;
-            this.DrawTicks_checkBox.CheckedChanged += new System.EventHandler(this.DrawTicks_checkBox_CheckedChanged);
-            // 
             // FindComponents_checkBox
             // 
             this.FindComponents_checkBox.AutoSize = true;
             this.FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindComponents_checkBox.Location = new System.Drawing.Point(952, 72);
+            this.FindComponents_checkBox.Location = new System.Drawing.Point(831, 72);
             this.FindComponents_checkBox.Name = "FindComponents_checkBox";
             this.FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
             this.FindComponents_checkBox.TabIndex = 262;
@@ -6484,7 +6492,7 @@
             // 
             this.FindRectangles_checkBox.AutoSize = true;
             this.FindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindRectangles_checkBox.Location = new System.Drawing.Point(952, 49);
+            this.FindRectangles_checkBox.Location = new System.Drawing.Point(831, 49);
             this.FindRectangles_checkBox.Name = "FindRectangles_checkBox";
             this.FindRectangles_checkBox.Size = new System.Drawing.Size(101, 17);
             this.FindRectangles_checkBox.TabIndex = 261;
@@ -6498,7 +6506,7 @@
             // 
             this.FindCircles_checkBox.AutoSize = true;
             this.FindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindCircles_checkBox.Location = new System.Drawing.Point(952, 26);
+            this.FindCircles_checkBox.Location = new System.Drawing.Point(831, 26);
             this.FindCircles_checkBox.Name = "FindCircles_checkBox";
             this.FindCircles_checkBox.Size = new System.Drawing.Size(79, 17);
             this.FindCircles_checkBox.TabIndex = 260;
@@ -6507,32 +6515,6 @@
         "");
             this.FindCircles_checkBox.UseVisualStyleBackColor = true;
             this.FindCircles_checkBox.CheckedChanged += new System.EventHandler(this.FindCircles_checkBox_CheckedChanged);
-            // 
-            // DrawCross_checkBox
-            // 
-            this.DrawCross_checkBox.AutoSize = true;
-            this.DrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawCross_checkBox.Location = new System.Drawing.Point(838, 26);
-            this.DrawCross_checkBox.Name = "DrawCross_checkBox";
-            this.DrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
-            this.DrawCross_checkBox.TabIndex = 257;
-            this.DrawCross_checkBox.Text = "Draw Cross";
-            this.toolTip1.SetToolTip(this.DrawCross_checkBox, "Draws crosshair cursor on the image");
-            this.DrawCross_checkBox.UseVisualStyleBackColor = true;
-            this.DrawCross_checkBox.CheckedChanged += new System.EventHandler(this.DrawCross_checkBox_CheckedChanged);
-            // 
-            // DrawBox_checkBox
-            // 
-            this.DrawBox_checkBox.AutoSize = true;
-            this.DrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawBox_checkBox.Location = new System.Drawing.Point(838, 72);
-            this.DrawBox_checkBox.Name = "DrawBox_checkBox";
-            this.DrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
-            this.DrawBox_checkBox.TabIndex = 258;
-            this.DrawBox_checkBox.Text = "Draw Box";
-            this.toolTip1.SetToolTip(this.DrawBox_checkBox, "Draws a box on the image\r\n(Used to set camera scale)\r\n");
-            this.DrawBox_checkBox.UseVisualStyleBackColor = true;
-            this.DrawBox_checkBox.CheckedChanged += new System.EventHandler(this.DrawBox_checkBox_CheckedChanged);
             // 
             // groupBox4
             // 
@@ -8851,12 +8833,9 @@
         private System.Windows.Forms.CheckBox ShowPixels_checkBox;
         private System.Windows.Forms.CheckBox DrawDashedCross_checkBox;
         private System.Windows.Forms.CheckBox DrawGrid_checkBox;
-        private System.Windows.Forms.CheckBox DrawTicks_checkBox;
         private System.Windows.Forms.CheckBox FindComponents_checkBox;
         private System.Windows.Forms.CheckBox FindRectangles_checkBox;
         private System.Windows.Forms.CheckBox FindCircles_checkBox;
-        private System.Windows.Forms.CheckBox DrawCross_checkBox;
-        private System.Windows.Forms.CheckBox DrawBox_checkBox;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.RadioButton DownCam_radioButton;
         private System.Windows.Forms.RadioButton UpCam_radioButton;
@@ -8880,6 +8859,8 @@
         private System.Windows.Forms.TabPage Y_tabPage;
         private System.Windows.Forms.TabPage Z_tabPage;
         private System.Windows.Forms.TabPage A_tabPage;
+        private System.Windows.Forms.CheckBox DownCamDrawSidemarks_checkBox;
+        private System.Windows.Forms.CheckBox UpCamDrawSidemarks_checkBox;
     }
 }
 
