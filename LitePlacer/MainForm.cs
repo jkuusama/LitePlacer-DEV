@@ -2312,7 +2312,7 @@ namespace LitePlacer
         private void CNC_Park()
         {
             CNC_Z_m(0);
-            CNC_XY_m(Setting.General_ParkX, Setting.General_ParkY);
+            CNC_XYA_m(Setting.General_ParkX, Setting.General_ParkY, 0.0);
         }
 
         private bool HomingTimeout_m(out int TimeOut, string axis)
