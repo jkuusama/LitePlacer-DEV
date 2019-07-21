@@ -1441,6 +1441,11 @@ namespace LitePlacer
                     return;
                 }
             }
+            if (Cnc.CurrentZ > 5)
+            {
+                DisplayText("Nozzle is down", KnownColor.DarkRed, true);
+                return;
+            }
 
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
             {
