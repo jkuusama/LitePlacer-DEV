@@ -47,6 +47,7 @@ namespace LitePlacer
     The naming convention is xxx_m() for functions that have already displayed an error message to user. If a function only
     calls _m functions, it can consider itself a _m function.
     */
+	// BugFix
 
     public partial class FormMain : Form
     {
