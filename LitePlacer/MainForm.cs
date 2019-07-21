@@ -2924,7 +2924,7 @@ namespace LitePlacer
                 {
                     Successes++;
                     X = -X * Setting.DownCam_XmmPerPixel;
-                    Y = -Y * Setting.DownCam_YmmPerPixel;
+                    Y = Y * Setting.DownCam_YmmPerPixel;
                     Xlist.Add(X);
                     Ylist.Add(Y);
                     DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
