@@ -357,6 +357,7 @@ namespace LitePlacer
             UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
 
+            CamShowPixels_checkBox.Checked = Setting.General_ShowPixels;
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
             KeepActive_checkBox.Checked = Setting.Cameras_KeepActive;
             if (KeepActive_checkBox.Checked)
@@ -1747,7 +1748,7 @@ namespace LitePlacer
             }
             else
             {
-                DisplayText("No camera running");
+                DisplayText("No camera running", KnownColor.DarkRed, true);
                 return;
             };
 
@@ -15676,11 +15677,17 @@ namespace LitePlacer
         {
             if (CamShowPixels_checkBox.Checked)
             {
+                Setting.General_ShowPixels = true;
+                Placement_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+                Tapes_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
             }
             else
             {
+                Setting.General_ShowPixels = false;
+                Placement_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                Tapes_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             }
         }
 

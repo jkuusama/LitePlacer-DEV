@@ -33,6 +33,7 @@ namespace LitePlacer
     {
         public bool Cameras_KeepActive { get; set; } = false;
         public bool Cameras_RobustSwitch { get; set; } = false;
+
         public int CNC_AltJogSpeed { get; set; } = 4000;
         public int CNC_AspeedMax { get; set; } = 4000;
         public int CNC_CtlrJogSpeed { get; set; } = 4000;
@@ -46,6 +47,7 @@ namespace LitePlacer
         public decimal CNC_SmallMovementSpeed { get; set; } = 150;
         public double CNC_SquareCorrection { get; set; } = 0;
         public int CNC_ZspeedMax { get; set; } = 1000;
+
         public bool DownCam_DrawTicks { get; set; } = true;
         public int DownCam_index { get; set; } = -1;
         public bool Downcam_InvertedHomeMark { get; set; } = false;
@@ -58,6 +60,8 @@ namespace LitePlacer
         public bool DownCam_Zoom { get; set; } = false;
         public double DownCam_Zoomfactor { get; set; } = 1.5;
         public string DowncamMoniker { get; set; } = "";
+
+        public bool General_ShowPixels { get; set; } = false;
         public double General_BelowPCB_Allowance { get; set; } = 3;
         public bool General_CheckForUpdates { get; set; } = false;
         public double General_JigOffsetX { get; set; } = 10;
@@ -135,6 +139,7 @@ namespace LitePlacer
         public double Panel_YFirstOffset { get; set; } = 0;
         public double Panel_YIncrement { get; set; } = 0;
         public int Panel_YRepeats { get; set; } = 0;
+
         public double Placement_Depth { get; set; } = 1;
         public bool Placement_FiducialConfirmation { get; set; } = false;
         public int Placement_FiducialsType { get; set; } = 0;
