@@ -1656,7 +1656,6 @@
             this.Tapes_dataGridView.ContextMenuStrip = this.Tapes_contextMenuStrip;
             this.Tapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.Tapes_dataGridView.Location = new System.Drawing.Point(655, 19);
-            this.Tapes_dataGridView.MultiSelect = false;
             this.Tapes_dataGridView.Name = "Tapes_dataGridView";
             this.Tapes_dataGridView.RowHeadersVisible = false;
             this.Tapes_dataGridView.RowHeadersWidth = 50;

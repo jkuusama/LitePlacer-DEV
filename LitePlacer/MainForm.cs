@@ -11646,6 +11646,7 @@ namespace LitePlacer
                     {
                         Tapes_dataGridView.Rows[tape].Cells["Z_Pickup_Column"].Value = "--";
                     }
+                    DoRow = false;
                 }
             }
         }
