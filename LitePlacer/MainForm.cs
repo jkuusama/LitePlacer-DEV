@@ -1442,7 +1442,7 @@ namespace LitePlacer
                     return;
                 }
             }
-            if (Cnc.CurrentZ > 5)
+            if ( (Cnc.CurrentZ > 5) && !((e.KeyCode == Keys.F11) || (e.KeyCode == Keys.F12)) )  // F11&F12: It is ok to move z manually
             {
                 DisplayText("Nozzle is down", KnownColor.DarkRed, true);
                 return;
@@ -1687,7 +1687,7 @@ namespace LitePlacer
             }
 
             // move up
-            if (e.KeyCode == Keys.F11)
+            if ((e.KeyCode == Keys.F11)&& (Mag < 50))
             {
                 JoggingBusy = true;
                 CNC_Z_m(Cnc.CurrentZ - Mag);
