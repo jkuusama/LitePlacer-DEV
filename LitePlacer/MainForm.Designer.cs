@@ -30,7 +30,7 @@ namespace LitePlacer
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -171,7 +171,6 @@ namespace LitePlacer
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CamerasSetUp_tabControl = new System.Windows.Forms.TabControl();
             this.DownCamera_tabPage = new System.Windows.Forms.TabPage();
-            this.CamShowPixels_checkBox = new System.Windows.Forms.CheckBox();
             this.label46 = new System.Windows.Forms.Label();
             this.DownCameraBoxYmmPerPixel_label = new System.Windows.Forms.Label();
             this.ListResolutions_button = new System.Windows.Forms.Button();
@@ -430,6 +429,7 @@ namespace LitePlacer
             this.label94 = new System.Windows.Forms.Label();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
+            this.CamShowPixels_checkBox = new System.Windows.Forms.CheckBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
             this.SlackCompensationDistance_textBox = new System.Windows.Forms.TextBox();
             this.Ato0_button = new System.Windows.Forms.Button();
@@ -820,6 +820,7 @@ namespace LitePlacer
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.CadDataDelay_label = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -2415,21 +2416,6 @@ namespace LitePlacer
             this.DownCamera_tabPage.TabIndex = 3;
             this.DownCamera_tabPage.Text = "Down Looking Camera";
             this.DownCamera_tabPage.UseVisualStyleBackColor = true;
-            // 
-            // CamShowPixels_checkBox
-            // 
-            this.CamShowPixels_checkBox.AutoSize = true;
-            this.CamShowPixels_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CamShowPixels_checkBox.Location = new System.Drawing.Point(444, 775);
-            this.CamShowPixels_checkBox.Name = "CamShowPixels_checkBox";
-            this.CamShowPixels_checkBox.Size = new System.Drawing.Size(82, 17);
-            this.CamShowPixels_checkBox.TabIndex = 156;
-            this.CamShowPixels_checkBox.Text = "Show pixels";
-            this.toolTip1.SetToolTip(this.CamShowPixels_checkBox, "This draws camera image mapped 1:1 to pixels \r\non the screen. With high resolutio" +
-        "n cameras, imace is clipped.\r\nUse this mode to set box size!\r\nUncheck to zoom ou" +
-        "t to full camera view.");
-            this.CamShowPixels_checkBox.UseVisualStyleBackColor = true;
-            this.CamShowPixels_checkBox.CheckedChanged += new System.EventHandler(this.CamShowPixels_checkBox_CheckedChanged);
             // 
             // label46
             // 
@@ -5260,6 +5246,21 @@ namespace LitePlacer
             this.Cam_pictureBox.TabStop = false;
             this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
             // 
+            // CamShowPixels_checkBox
+            // 
+            this.CamShowPixels_checkBox.AutoSize = true;
+            this.CamShowPixels_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CamShowPixels_checkBox.Location = new System.Drawing.Point(444, 775);
+            this.CamShowPixels_checkBox.Name = "CamShowPixels_checkBox";
+            this.CamShowPixels_checkBox.Size = new System.Drawing.Size(82, 17);
+            this.CamShowPixels_checkBox.TabIndex = 156;
+            this.CamShowPixels_checkBox.Text = "Show pixels";
+            this.toolTip1.SetToolTip(this.CamShowPixels_checkBox, "This draws camera image mapped 1:1 to pixels \r\non the screen. With high resolutio" +
+        "n cameras, imace is clipped.\r\nUse this mode to set box size!\r\nUncheck to zoom ou" +
+        "t to full camera view.");
+            this.CamShowPixels_checkBox.UseVisualStyleBackColor = true;
+            this.CamShowPixels_checkBox.CheckedChanged += new System.EventHandler(this.CamShowPixels_checkBox_CheckedChanged);
+            // 
             // tabPageBasicSetup
             // 
             this.tabPageBasicSetup.Controls.Add(this.SlackCompensationDistance_textBox);
@@ -7543,6 +7544,7 @@ namespace LitePlacer
             // 
             // RunJob_tabPage
             // 
+            this.RunJob_tabPage.Controls.Add(this.CadDataDelay_label);
             this.RunJob_tabPage.Controls.Add(this.ClearPlaced_button);
             this.RunJob_tabPage.Controls.Add(this.Placement_pictureBox);
             this.RunJob_tabPage.Controls.Add(this.SkipMeasurements_checkBox);
@@ -8356,14 +8358,14 @@ namespace LitePlacer
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -8439,7 +8441,7 @@ namespace LitePlacer
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
             this.Value_Footprint,
@@ -8455,6 +8457,7 @@ namespace LitePlacer
             this.CadData_GridView.Name = "CadData_GridView";
             this.CadData_GridView.RowHeadersVisible = false;
             this.CadData_GridView.RowHeadersWidth = 16;
+            this.CadData_GridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.CadData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.CadData_GridView.Size = new System.Drawing.Size(457, 212);
             this.CadData_GridView.TabIndex = 5;
@@ -9550,6 +9553,20 @@ namespace LitePlacer
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
+            // CadDataDelay_label
+            // 
+            this.CadDataDelay_label.AutoSize = true;
+            this.CadDataDelay_label.BackColor = System.Drawing.Color.White;
+            this.CadDataDelay_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CadDataDelay_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CadDataDelay_label.Location = new System.Drawing.Point(897, 145);
+            this.CadDataDelay_label.Name = "CadDataDelay_label";
+            this.CadDataDelay_label.Padding = new System.Windows.Forms.Padding(10);
+            this.CadDataDelay_label.Size = new System.Drawing.Size(129, 47);
+            this.CadDataDelay_label.TabIndex = 83;
+            this.CadDataDelay_label.Text = "Loading...";
+            this.CadDataDelay_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -10503,6 +10520,7 @@ namespace LitePlacer
         public System.Windows.Forms.CheckBox PumpInvert_checkBox;
         private System.Windows.Forms.Button Ato0_button;
         private System.Windows.Forms.TextBox SlackCompensationDistance_textBox;
+        private System.Windows.Forms.Label CadDataDelay_label;
     }
 }
 
