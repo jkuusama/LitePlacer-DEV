@@ -7037,6 +7037,9 @@ namespace LitePlacer
                     CadFileName_label.Text = "--";
                     CadFilePath_label.Text = "--";
                     CadDataFileName = "--";
+                    CadDataDelay_label.Visible = false;
+                    Update_GridView(CadData_GridView);
+                    this.Refresh();
                     return false;
                 };
             }
@@ -11123,6 +11126,17 @@ namespace LitePlacer
 
             foreach (var Line in DataLines)
             {
+                if (Line.Count != Headers.Count)
+                {
+                    DialogResult dialogResult = ShowMessageBox(
+                        "Problem with data on line starting with " + Line[0],
+                        "Bad data",
+                        MessageBoxButtons.OK);
+                    CadDataDelay_label.Visible = false;
+                    Update_GridView(CadData_GridView);
+                    this.Refresh();
+                    return false;
+                }
 
                 // Line = SplitCSV(AllLines[i], delimiter);
                 // If layer is indicated and the component is not on this layer, skip it

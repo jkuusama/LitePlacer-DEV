@@ -345,7 +345,7 @@ namespace LitePlacer
                         int Last = CadData.RowCount - 1;
                         // Component:
                         Component = Row.Cells["Component"].Value.ToString() + "_"
-                            + PanelRow.ToString(CultureInfo.InvariantCulture) + PanelColumn.ToString(CultureInfo.InvariantCulture);
+                            + PanelRow.ToString(CultureInfo.InvariantCulture) + "_" + PanelColumn.ToString(CultureInfo.InvariantCulture);
                         CadData.Rows[Last].Cells["Component"].Value = Component;
                         // Value_Footprint:
                         CadData.Rows[Last].Cells["Value_Footprint"].Value = Row.Cells["Value_Footprint"].Value;
