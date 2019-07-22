@@ -3867,8 +3867,15 @@ namespace LitePlacer
             {
                 if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
-                    DownCamera.ZoomFactor = val;
-                    Setting.DownCam_Zoomfactor = val;
+                    if (val<1.0)
+                    {
+                        DisplayText("Zoom factor must be >1", KnownColor.DarkRed, true);
+                    }
+                    else
+                    {
+                        DownCamera.ZoomFactor = val;
+                        Setting.DownCam_Zoomfactor = val;
+                    }
                 }
             }
         }
@@ -3878,6 +3885,12 @@ namespace LitePlacer
             double val;
             if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
             {
+                if (val < 1.0)
+                {
+                    DisplayText("Zoom factor must be >1", KnownColor.DarkRed, true);
+                    val = 1.0;
+                    DownCamZoomFactor_textBox.Text = val.ToString("0.0", CultureInfo.InvariantCulture);
+                }
                 DownCamera.ZoomFactor = val;
                 Setting.DownCam_Zoomfactor = val;
             }
@@ -3891,8 +3904,15 @@ namespace LitePlacer
             {
                 if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
-                    UpCamera.ZoomFactor = val;
-                    Setting.UpCam_Zoomfactor = val;
+                    if (val < 1.0)
+                    {
+                        DisplayText("Zoom factor must be >1", KnownColor.DarkRed, true);
+                    }
+                    else
+                    {
+                        UpCamera.ZoomFactor = val;
+                        Setting.UpCam_Zoomfactor = val;
+                    }
                 }
             }
         }
@@ -3902,6 +3922,12 @@ namespace LitePlacer
             double val;
             if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
             {
+                if (val < 1.0)
+                {
+                    DisplayText("Zoom factor must be >1", KnownColor.DarkRed, true);
+                    val = 1.0;
+                    UpCamZoomFactor_textBox.Text = val.ToString("0.0", CultureInfo.InvariantCulture);
+                }
                 UpCamera.ZoomFactor = val;
                 Setting.UpCam_Zoomfactor = val;
             }
