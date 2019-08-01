@@ -1,24 +1,31 @@
-Build date 9/7/2018
+Build date 08/01/2019
 
 New Features, significant changes
 
-* Manually assisted placement: Machine takes the part almost
-  to position, user can jog it on place (Thank you for contribution!)
-* Pump and vacuum relay output can now be inverted
-* Added button to set A=0
-* Greatly reduced video lag
-* Duplicate designators are now replaced (R1, R1; ... => R1_1, R1_2, ...)
-* Message boxes are now shown centered on the LitePlacer window
-  (instead of Windows standard center of the screen)
+* Slack correction distance is now editable, correction always applies
+* Show pixels is moved to be always visible
+* Goto Park now happens with A=0
+* Added a label for CAD file load and placed status reset
+  (The operations are still slow, thanks to MicroSoft 
+   and the UI component used)
+* For developers: Now using Visual Studio 2019 and C# 8.0:
+  this should improve stability.
 
 Bug Fixes 
 
-* More stable operation when manually stopping placement job
-* Homing button is now red during homing
-* Increased homing timeout for long latch travels
-* Optical homing now takes several measurements and uses the median
-* Jig setup used too fine grid for HD cameras
-* Bad tape data doesn't crash anymore on show part
-* Pump and vacuum checkboxes now show correct status at startup
+* Show pixels doesn't reset when changing tabs
+* Pump and vacuum statuses are now "off" when recovering a board reset
+* Homing is now more accurate in certain conditions
+* On tapes grid, several rows can now be selected, Z reset 
+  only affect the selected rows
+* It was possible to jog with numpad keys even when nozzle was down
+* Clicking the picture now produced the expected amount of movement
+  with showpixels on or off (triangular error is still there)
+* Manually moving Z with F11/F12 no more triggers nozzle down error
+* Fixed issue on identifiers on panelisation with more than 10 repeats
+* Camera zoom factors are now forced to be >1.0
+* Motor power checkbox now more accurately reflects the true status 
+  of the system
+* Tickmarks now show properly with show pixels on
 
 
