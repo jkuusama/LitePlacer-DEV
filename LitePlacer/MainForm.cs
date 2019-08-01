@@ -39,6 +39,7 @@ using Newtonsoft.Json;
 namespace LitePlacer
 {
 #pragma warning disable CA1031 // Do not catch general exception types
+#pragma warning disable CA1308 // Yes, we want to use lower case characters
     /*
     Note: For function success/failure, I use bool return code. (instead of C# exceptions; a philosophical debate, let's not go there too much.
     Still, it should be mentioned that CA1031 is supressed: I think the right way is to tell the user and continue. For example: A save fails; tell the user, 
@@ -47,7 +48,7 @@ namespace LitePlacer
     The naming convention is xxx_m() for functions that have already displayed an error message to user. If a function only
     calls _m functions, it can consider itself a _m function.
     */
-	// BugFix
+    // BugFix
 
     public partial class FormMain : Form
     {
@@ -2072,17 +2073,28 @@ namespace LitePlacer
 
         public void ResetMotorTimer()
         {
+            SetMotorPower_checkBox(true);
             PowerTimerCount = 0;
         }
 
-        [DebuggerStepThrough]
+        public void SetMotorPower_checkBox(bool val) // to get the set/clear to UI thread
+        {
+            // Running on the worker thread
+            this.MotorPower_checkBox.Invoke((MethodInvoker)delegate
+            {
+                // Running on the UI thread
+                MotorPower_checkBox.Checked = val;
+            });
+        }
+
+        // [DebuggerStepThrough]
         private void MotorPower_timer_Tick(object sender, EventArgs e)
         {
-            if (PositionConfidence)         // == if timer should run
+            PowerTimerCount = PowerTimerCount + 1.0;
+            if ((PowerTimerCount + 0.1) > TinyGMotorTimeout)
             {
-                // DisplayText("timer: " + PowerTimerCount.ToString());
-                PowerTimerCount = PowerTimerCount + 1.0;
-                if ((PowerTimerCount + 0.1) > TinyGMotorTimeout)
+                SetMotorPower_checkBox(false);
+                if (PositionConfidence)         // == if timer should run
                 {
                     OfferHoming();
                 }
@@ -4606,6 +4618,9 @@ namespace LitePlacer
                 {
                     Name = Name.Substring(5);
                 }
+                // to separate TinyG and other boards settings, a prefix XXX_ is used. Remove that:
+                Name = Name.Substring(Name.IndexOf('_')+1);
+                Name = Name.ToLowerInvariant();
                 if (!CNC_Write_m("{\"" + Name + "\":\"\"}"))
                 {
                     return false;
