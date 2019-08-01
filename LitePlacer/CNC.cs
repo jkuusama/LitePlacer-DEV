@@ -631,16 +631,17 @@ namespace LitePlacer
         {
             if (Controlboard == ControlBoardType.TinyG)
             {
-                MainForm.DisplayText("MotorPowerOff(), TinyG");
+                MainForm.DisplayText("MotorPowerOn(), TinyG");
                 MainForm.CNC_Write_m("{\"me\":\"\"}");
+                MainForm.ResetMotorTimer();
             }
             else if (Controlboard == ControlBoardType.qQuintic)
             {
-                MainForm.DisplayText("MotorPowerOff(), qQuintic  -- SKIPPED --");
+                MainForm.DisplayText("MotorPowerOn(), qQuintic  -- SKIPPED --");
             }
             else
             {
-                MainForm.DisplayText("*** MotorPowerOff(), unknown board!!", KnownColor.DarkRed, true);
+                MainForm.DisplayText("*** MotorPowerOn(), unknown board!!", KnownColor.DarkRed, true);
             }
         }
 
@@ -649,6 +650,7 @@ namespace LitePlacer
             if (Controlboard == ControlBoardType.TinyG)
             {
                 MainForm.DisplayText("MotorPowerOff(), TinyG");
+                MainForm.TimerDone = true;
                 MainForm.CNC_Write_m("{\"md\":\"\"}");
             }
             else if (Controlboard == ControlBoardType.qQuintic)
@@ -851,6 +853,7 @@ namespace LitePlacer
                     "TinyG Reset.",
                     "System Reset",
                     MessageBoxButtons.OK);
+                MainForm.SetMotorPower_checkBox(false);
                 MainForm.UpdateCncConnectionStatus();
                 return;
             }

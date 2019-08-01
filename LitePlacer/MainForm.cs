@@ -1447,7 +1447,7 @@ namespace LitePlacer
                     return;
                 }
             }
-            if ( (Cnc.CurrentZ > 5) && !((e.KeyCode == Keys.F11) || (e.KeyCode == Keys.F12)) )  // F11&F12: It is ok to move z manually
+            if ((Cnc.CurrentZ > 5) && !((e.KeyCode == Keys.F11) || (e.KeyCode == Keys.F12)))  // F11&F12: It is ok to move z manually
             {
                 DisplayText("Nozzle is down", KnownColor.DarkRed, true);
                 return;
@@ -1692,7 +1692,7 @@ namespace LitePlacer
             }
 
             // move up
-            if ((e.KeyCode == Keys.F11)&& (Mag < 50))
+            if ((e.KeyCode == Keys.F11) && (Mag < 50))
             {
                 JoggingBusy = true;
                 CNC_Z_m(Cnc.CurrentZ - Mag);
@@ -2071,10 +2071,15 @@ namespace LitePlacer
 
         }
 
+        // Timer start-stop loses event hook if done from another thread. Therefore,
+        // let the timer run all the time, and keep track if we've done the task already
+        public bool TimerDone { get; set; }
+
         public void ResetMotorTimer()
         {
             SetMotorPower_checkBox(true);
             PowerTimerCount = 0;
+            TimerDone = false;
         }
 
         public void SetMotorPower_checkBox(bool val) // to get the set/clear to UI thread
@@ -2090,11 +2095,17 @@ namespace LitePlacer
         // [DebuggerStepThrough]
         private void MotorPower_timer_Tick(object sender, EventArgs e)
         {
+            if(TimerDone)
+            {
+                return;
+            };
             PowerTimerCount = PowerTimerCount + 1.0;
+            // DisplayText("*** timer tick, count: " + PowerTimerCount.ToString(CultureInfo.InvariantCulture));
             if ((PowerTimerCount + 0.1) > TinyGMotorTimeout)
             {
                 SetMotorPower_checkBox(false);
-                if (PositionConfidence)         // == if timer should run
+                TimerDone = true;
+                if (PositionConfidence)
                 {
                     OfferHoming();
                 }
