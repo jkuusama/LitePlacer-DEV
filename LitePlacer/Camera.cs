@@ -1889,24 +1889,41 @@ namespace LitePlacer
 
         private void DrawSidemarksFunct(ref Bitmap img)
         {
-            Pen pen = new Pen(Color.Red, 2);
             Graphics g = Graphics.FromImage(img);
-            int Xinc = Convert.ToInt32(FrameSizeX / SideMarksX);
-            int X = Xinc;
-            int tick = 6;
-            while (X < FrameSizeX)
+            int PenSize = 2;
+            int tick = 12;
+            int PicSizeX = FrameSizeX;
+            int PicSizeY = FrameSizeY;
+            if (MainForm.Setting.General_ShowPixels)
             {
-                g.DrawLine(pen, X, FrameSizeY, X, FrameSizeY - tick);
-                g.DrawLine(pen, X, 0, X, tick);
+                // UI shows 640x480 from middle of image. Draw tics accordingly
+                PicSizeX = 640;
+                PicSizeY = 480;
+                PenSize = 1;
+                tick = 6;
+            }
+
+            Pen pen = new Pen(Color.Red, PenSize);
+            int XStart = (FrameSizeX / 2) - (PicSizeX / 2);
+            int XEnd = (FrameSizeX / 2) + (PicSizeX / 2);
+            int YStart = (FrameSizeY / 2) - (PicSizeY / 2);
+            int YEnd = (FrameSizeY / 2) + (PicSizeY / 2);
+
+            int Xinc = Convert.ToInt32( PicSizeX / SideMarksX);
+            int X = XStart;
+            while (X < XEnd)
+            {
+                g.DrawLine(pen, X, YEnd, X, YEnd - tick);
+                g.DrawLine(pen, X, YStart, X, YStart + tick);
                 X += Xinc;
             }
-            int Yinc = Convert.ToInt32(FrameSizeY / SideMarksY);
-            int Y = Yinc;
-            while (Y < FrameSizeY)
+            int Yinc = Convert.ToInt32(PicSizeY / SideMarksY);
+            int Y = YEnd;
+            while (Y > YStart)
             {
-                g.DrawLine(pen, FrameSizeX, Y, FrameSizeX - tick, Y);
-                g.DrawLine(pen, 0, Y, tick, Y);
-                Y += Yinc;
+                g.DrawLine(pen, XEnd, Y, XEnd - tick, Y);
+                g.DrawLine(pen, XStart, Y, XStart + tick, Y);
+                Y -= Yinc;
             }
             pen.Dispose();
             g.Dispose();
