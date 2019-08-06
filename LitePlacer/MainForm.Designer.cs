@@ -30,7 +30,7 @@ namespace LitePlacer
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -632,6 +632,7 @@ namespace LitePlacer
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
+            this.CadDataDelay_label = new System.Windows.Forms.Label();
             this.ClearPlaced_button = new System.Windows.Forms.Button();
             this.Placement_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
@@ -820,7 +821,6 @@ namespace LitePlacer
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.CadDataDelay_label = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -7601,6 +7601,20 @@ namespace LitePlacer
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
             // 
+            // CadDataDelay_label
+            // 
+            this.CadDataDelay_label.AutoSize = true;
+            this.CadDataDelay_label.BackColor = System.Drawing.Color.White;
+            this.CadDataDelay_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CadDataDelay_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CadDataDelay_label.Location = new System.Drawing.Point(897, 145);
+            this.CadDataDelay_label.Name = "CadDataDelay_label";
+            this.CadDataDelay_label.Padding = new System.Windows.Forms.Padding(10);
+            this.CadDataDelay_label.Size = new System.Drawing.Size(129, 47);
+            this.CadDataDelay_label.TabIndex = 83;
+            this.CadDataDelay_label.Text = "Loading...";
+            this.CadDataDelay_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // ClearPlaced_button
             // 
             this.ClearPlaced_button.Location = new System.Drawing.Point(1141, 281);
@@ -8358,14 +8372,14 @@ namespace LitePlacer
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9552,20 +9566,6 @@ namespace LitePlacer
             this.label165.Size = new System.Drawing.Size(70, 13);
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
-            // 
-            // CadDataDelay_label
-            // 
-            this.CadDataDelay_label.AutoSize = true;
-            this.CadDataDelay_label.BackColor = System.Drawing.Color.White;
-            this.CadDataDelay_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CadDataDelay_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CadDataDelay_label.Location = new System.Drawing.Point(897, 145);
-            this.CadDataDelay_label.Name = "CadDataDelay_label";
-            this.CadDataDelay_label.Padding = new System.Windows.Forms.Padding(10);
-            this.CadDataDelay_label.Size = new System.Drawing.Size(129, 47);
-            this.CadDataDelay_label.TabIndex = 83;
-            this.CadDataDelay_label.Text = "Loading...";
-            this.CadDataDelay_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormMain
             // 
