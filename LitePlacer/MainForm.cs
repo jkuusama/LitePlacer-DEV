@@ -7706,7 +7706,7 @@ namespace LitePlacer
                 MethodSelectionForm MethodDialog = new MethodSelectionForm(this);
                 MethodDialog.ShowCheckBox = false;
                 MethodDialog.ShowDialog(this);
-                if (string.IsNullOrEmpty(SelectedMethod))
+                if (!string.IsNullOrEmpty(SelectedMethod))
                 {
                     foreach (DataGridViewCell cell in JobData_GridView.SelectedCells)
                     {
