@@ -492,7 +492,9 @@ namespace LitePlacer
         public void BuildDisplayFunctionsList(DataGridView Grid)
         {
             List<AForgeFunction> NewList = BuildFunctionsList(Grid);    // Get the list
-                                                                        // Stop video
+
+            int tries=0;
+            // Stop video
             bool pause = PauseProcessing;
             if (VideoSource != null)
             {
@@ -504,6 +506,11 @@ namespace LitePlacer
                     while (!paused)
                     {
                         Thread.Sleep(10);  // wait until really stopped
+                        tries++;
+                        if (tries>200)
+                        {
+                            break;
+                        }
                     };
                 }
             }
