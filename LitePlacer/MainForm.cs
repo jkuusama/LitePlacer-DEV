@@ -1447,7 +1447,10 @@ namespace LitePlacer
                     return;
                 }
             }
-            if ((Cnc.CurrentZ > 5) && !((e.KeyCode == Keys.F11) || (e.KeyCode == Keys.F12)))  // F11&F12: It is ok to move z manually
+            if (
+                ((Cnc.CurrentZ > 5) && ZguardIsOn())
+                && 
+                !((e.KeyCode == Keys.F11) || (e.KeyCode == Keys.F12)))  // F11&F12: It is ok to move z manually
             {
                 DisplayText("Nozzle is down", KnownColor.DarkRed, true);
                 return;
@@ -2516,6 +2519,11 @@ namespace LitePlacer
         }
 
         private bool _Zguard = true;
+        private bool ZguardIsOn()
+        {
+            return _Zguard;
+        }
+
         private void ZGuardOn()
         {
             _Zguard = true;
@@ -2527,7 +2535,7 @@ namespace LitePlacer
 
         private bool CNC_NozzleIsDown_m()
         {
-            if ((Cnc.CurrentZ > 5) && _Zguard)
+            if ((Cnc.CurrentZ > 5) && ZguardIsOn())
             {
                 DisplayText("Nozzle down error.");
                 ShowMessageBox(
