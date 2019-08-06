@@ -1,7 +1,8 @@
-Build date 08/01/2019
+Build date 08/06/2019
 
 New Features, significant changes
 
+* Z0 to PCB value can be manually edited
 * Slack correction distance is now editable, correction always applies
 * Show pixels is moved to be always visible
 * Goto Park now happens with A=0
@@ -11,8 +12,11 @@ New Features, significant changes
 * For developers: Now using Visual Studio 2019 and C# 8.0:
   this should improve stability.
 
-Bug Fixes 
+Bug Fixes in this and previous version
 
+* If camera refuses to stop, program doesn't freeze anymore
+* Zguard works again (was broken in previous version (08/01/2019))
+* Placement method selection works again (was broken in previous version (08/01/2019))
 * Show pixels doesn't reset when changing tabs
 * Pump and vacuum statuses are now "off" when recovering a board reset
 * Homing is now more accurate in certain conditions
