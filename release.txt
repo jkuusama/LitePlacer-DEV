@@ -5,8 +5,8 @@ New Features, significant changes
 * Reset tape only resets the count. There are other methods for 
   resetting z values, but there wasn't a way to reset count only
   (= reload the tape)
-* Movement tests do only one move per click to prevent crash if 
-  motor stalls
+* Movement tests do only one move per click to prevent crash
+  if motor stalls
 
 Bug Fixes
 
