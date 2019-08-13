@@ -7,6 +7,9 @@ New Features, significant changes
   (= reload the tape)
 * Movement tests do only one move per click to prevent crash
   if motor stalls
+* Added a "Measure and set" homing button, that relatively quickly
+  corrects drift: Machine goes to zero, and measures the homing mark.
+  Result should be zero, but isn't, so coordinates are set to the difference.
 
 Bug Fixes
 

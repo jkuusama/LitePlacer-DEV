@@ -2136,14 +2136,13 @@ namespace LitePlacer
             PositionConfidence = false;
             ValidMeasurement_checkBox.Checked = false;
             OpticalHome_button.BackColor = Color.Red;
+            MeaseureAndSet_button.Enabled = false;
             if (!MechanicalHoming_m())
             {
-                OpticalHome_button.BackColor = Color.Red;
                 return false;
             }
             if (!OpticalHoming_m())
             {
-                OpticalHome_button.BackColor = Color.Red;
                 return false;
             }
             if (VigorousHoming_checkBox.Checked)
@@ -2156,11 +2155,11 @@ namespace LitePlacer
                 // home again
                 if (!OpticalHoming_m())
                 {
-                    OpticalHome_button.BackColor = Color.Red;
                     return false;
                 }
             }
             OpticalHome_button.BackColor = default(Color);
+            MeaseureAndSet_button.Enabled = true;
             OpticalHome_button.UseVisualStyleBackColor = true;
             PositionConfidence = true;
             return true;
@@ -2967,15 +2966,22 @@ namespace LitePlacer
 
         private bool OpticalHoming_m()
         {
-            DisplayText("Optical homing");
-            SetHomingMeasurement();
             double X;
             double Y;
+            DisplayText("Optical homing");
+            SetHomingMeasurement();
             // Find within 20mm, goto within 0.05
             if (!GoToFeatureLocation_m(FeatureType.Circle, 20.0, 0.05, out X, out Y))
             {
                 return false;
             }
+            return MeasureAndSetHome_m(1.0);
+        }
+
+        private bool MeasureAndSetHome_m(double dist)
+        {
+            double X;
+            double Y;
             // Measure 7 times, get median: 
             SetHomingMeasurement();
             List<double> Xlist = new List<double>();
@@ -2986,7 +2992,7 @@ namespace LitePlacer
             do
             {
                 Tries++;
-                res = DownCamera.GetClosestCircle(out X, out Y, 1 / Setting.DownCam_XmmPerPixel);
+                res = DownCamera.GetClosestCircle(out X, out Y, dist / Setting.DownCam_XmmPerPixel);
                 if (res == 1)
                 {
                     Successes++;
@@ -6408,9 +6414,14 @@ namespace LitePlacer
 
         private void TestZ_button_Click(object sender, EventArgs e)
         {
-            Thread t = new Thread(() => TestZ_thread());
-            t.IsBackground = true;
-            t.Start();
+            if (Cnc.CurrentZ < 1.0)
+            {
+                CNC_Z_m(Setting.General_ZTestTravel);
+            }
+            else
+            {
+                CNC_Z_m(0);
+            }
         }
 
         private void NozzleBelowPCB_textBox_TextChanged(object sender, EventArgs e)
@@ -15792,6 +15803,14 @@ namespace LitePlacer
             }
         }
 
+        private void MeaseureAndSet_button_Click(object sender, EventArgs e)
+        {
+            if (!CNC_XY_m(0.0,0.0))
+            {
+                return;
+            }
+            MeasureAndSetHome_m(2.0);
+        }
     }	// end of: 	public partial class FormMain : Form
 
 

@@ -30,7 +30,7 @@ namespace LitePlacer
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -821,6 +821,7 @@ namespace LitePlacer
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.MeaseureAndSet_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -1118,9 +1119,9 @@ namespace LitePlacer
             // OpticalHome_button
             // 
             this.OpticalHome_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OpticalHome_button.Location = new System.Drawing.Point(612, 777);
+            this.OpticalHome_button.Location = new System.Drawing.Point(652, 777);
             this.OpticalHome_button.Name = "OpticalHome_button";
-            this.OpticalHome_button.Size = new System.Drawing.Size(178, 46);
+            this.OpticalHome_button.Size = new System.Drawing.Size(138, 46);
             this.OpticalHome_button.TabIndex = 37;
             this.OpticalHome_button.Text = "Home";
             this.toolTip1.SetToolTip(this.OpticalHome_button, "Homes the machine\r\nFirst basic homing using limit swithces,\r\nthen optical homing " +
@@ -8373,14 +8374,14 @@ namespace LitePlacer
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9568,12 +9569,25 @@ namespace LitePlacer
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
+            // MeaseureAndSet_button
+            // 
+            this.MeaseureAndSet_button.Location = new System.Drawing.Point(571, 786);
+            this.MeaseureAndSet_button.Name = "MeaseureAndSet_button";
+            this.MeaseureAndSet_button.Size = new System.Drawing.Size(75, 37);
+            this.MeaseureAndSet_button.TabIndex = 157;
+            this.MeaseureAndSet_button.Text = "Measure and set";
+            this.toolTip1.SetToolTip(this.MeaseureAndSet_button, "Goes to zero, measures the position of home mark,\r\nand sets coordinates according" +
+        "ly. Fast way to correct \r\nany drift.");
+            this.MeaseureAndSet_button.UseVisualStyleBackColor = true;
+            this.MeaseureAndSet_button.Click += new System.EventHandler(this.MeaseureAndSet_button_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1258, 856);
+            this.Controls.Add(this.MeaseureAndSet_button);
             this.Controls.Add(this.CamShowPixels_checkBox);
             this.Controls.Add(this.SetCurrentPosition_button);
             this.Controls.Add(this.label165);
@@ -10522,6 +10536,7 @@ namespace LitePlacer
         private System.Windows.Forms.Button Ato0_button;
         private System.Windows.Forms.TextBox SlackCompensationDistance_textBox;
         private System.Windows.Forms.Label CadDataDelay_label;
+        private System.Windows.Forms.Button MeaseureAndSet_button;
     }
 }
 
