@@ -3404,6 +3404,7 @@ namespace LitePlacer
         // =================================================================================
         private void tabPageSetupCameras_Begin()
         {
+            DownCamera.ImageBox = Cam_pictureBox;
             DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString(CultureInfo.InvariantCulture);
             DownCamera.DrawBox = DownCamera.DrawBox;
@@ -3414,6 +3415,7 @@ namespace LitePlacer
             DownCamera.FindRectangles = DownCamera.FindRectangles;
             DownCamera.FindComponent = DownCamera.FindComponent;
 
+            UpCamera.ImageBox = Placement_pictureBox;
             SetUpCameraDefaults();
             UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString(CultureInfo.InvariantCulture);
@@ -8006,7 +8008,7 @@ namespace LitePlacer
 
         // =================================================================================
         // Checks if the component is placed already
-        // returns success of operation, sets palced status to placed
+        // returns success of operation, sets component status to placed
         private bool AlreadyPlaced_m(string component, ref bool placed)
         {
             string comp;
@@ -8023,10 +8025,10 @@ namespace LitePlacer
                         {
                             placed = true;
                         }
-                    }
-                    else
-                    {
-                        placed = false;
+                        else
+                        {
+                            placed = false;
+                        }
                     }
                     return true;
                 }
@@ -8481,7 +8483,7 @@ namespace LitePlacer
                     DisplayText("Bad data Y machine at component " + Component);
                     return false;
                 }
-                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["A_machine"].Value.ToString().Replace(',', '.'), out tempD))
+                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out tempD))
                 {
                     A_machine = tempD;
                 }
@@ -15809,7 +15811,7 @@ namespace LitePlacer
             {
                 return;
             }
-            MeasureAndSetHome_m(2.0);
+            OpticalHoming_m();
         }
     }	// end of: 	public partial class FormMain : Form
 
