@@ -2977,7 +2977,7 @@ namespace LitePlacer
                 return false;
             }
             // Measure 7 times, get median: 
-            SetHomingMeasurement();
+            // SetHomingMeasurement();
             List<double> Xlist = new List<double>();
             List<double> Ylist = new List<double>();
             int res;
