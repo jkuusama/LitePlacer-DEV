@@ -1,4 +1,4 @@
-Build date 08/06/2019
+Build date 08/14/2019
 
 New Features, significant changes
 
@@ -14,5 +14,6 @@ New Features, significant changes
 Bug Fixes
 
 * Fixed unwanted move in place assissted mode
+* Fixed issues in rotation and already placed status handling in placement
 * Better diagnostics on failed homing
 * More robust camera stream handling
