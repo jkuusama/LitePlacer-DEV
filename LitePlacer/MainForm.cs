@@ -2998,15 +2998,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            return MeasureAndSetHome_m(1.0);
-        }
-
-        private bool MeasureAndSetHome_m(double dist)
-        {
-            double X;
-            double Y;
             // Measure 7 times, get median: 
-            SetHomingMeasurement();
             List<double> Xlist = new List<double>();
             List<double> Ylist = new List<double>();
             int res;
@@ -3015,7 +3007,7 @@ namespace LitePlacer
             do
             {
                 Tries++;
-                res = DownCamera.GetClosestCircle(out X, out Y, dist / Setting.DownCam_XmmPerPixel);
+                res = DownCamera.GetClosestCircle(out X, out Y, 1 / Setting.DownCam_XmmPerPixel);
                 if (res == 1)
                 {
                     Successes++;
