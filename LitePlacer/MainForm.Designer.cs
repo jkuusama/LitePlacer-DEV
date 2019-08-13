@@ -30,7 +30,7 @@ namespace LitePlacer
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -137,7 +137,6 @@ namespace LitePlacer
             this.LastX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LastY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RotationDirect_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tapes_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
             this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
             this.PartialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -634,7 +633,6 @@ namespace LitePlacer
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
             this.CadDataDelay_label = new System.Windows.Forms.Label();
             this.ClearPlaced_button = new System.Windows.Forms.Button();
-            this.Placement_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
             this.OmitNozzleCalibration_checkBox = new System.Windows.Forms.CheckBox();
             this.MeasureZs_checkBox = new System.Windows.Forms.CheckBox();
@@ -804,6 +802,7 @@ namespace LitePlacer
             this.NozzleNo_textBox = new System.Windows.Forms.TextBox();
             this.LoadCurrentPosition_button = new System.Windows.Forms.Button();
             this.SetCurrentPosition_button = new System.Windows.Forms.Button();
+            this.MeaseureAndSet_button = new System.Windows.Forms.Button();
             this.TrueX_label = new System.Windows.Forms.Label();
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -821,12 +820,10 @@ namespace LitePlacer
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.MeaseureAndSet_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).BeginInit();
             this.Components_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
             this.tabPageSetupCameras.SuspendLayout();
@@ -876,7 +873,6 @@ namespace LitePlacer
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.RunJob_tabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Placement_pictureBox)).BeginInit();
             this.groupBox12.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -1292,7 +1288,6 @@ namespace LitePlacer
             this.Tapes_tabPage.Controls.Add(this.AddTape_button);
             this.Tapes_tabPage.Controls.Add(this.label109);
             this.Tapes_tabPage.Controls.Add(this.Tapes_dataGridView);
-            this.Tapes_tabPage.Controls.Add(this.Tapes_pictureBox);
             this.Tapes_tabPage.Location = new System.Drawing.Point(4, 22);
             this.Tapes_tabPage.Name = "Tapes_tabPage";
             this.Tapes_tabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -2002,17 +1997,6 @@ namespace LitePlacer
             this.RotationDirect_Column.HeaderText = "Rotation";
             this.RotationDirect_Column.Name = "RotationDirect_Column";
             this.RotationDirect_Column.Width = 72;
-            // 
-            // Tapes_pictureBox
-            // 
-            this.Tapes_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tapes_pictureBox.Location = new System.Drawing.Point(6, 6);
-            this.Tapes_pictureBox.Name = "Tapes_pictureBox";
-            this.Tapes_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Tapes_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Tapes_pictureBox.TabIndex = 13;
-            this.Tapes_pictureBox.TabStop = false;
-            this.Tapes_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Tapes_pictureBox_MouseClick);
             // 
             // Components_tabPage
             // 
@@ -7548,7 +7532,6 @@ namespace LitePlacer
             // 
             this.RunJob_tabPage.Controls.Add(this.CadDataDelay_label);
             this.RunJob_tabPage.Controls.Add(this.ClearPlaced_button);
-            this.RunJob_tabPage.Controls.Add(this.Placement_pictureBox);
             this.RunJob_tabPage.Controls.Add(this.SkipMeasurements_checkBox);
             this.RunJob_tabPage.Controls.Add(this.OmitNozzleCalibration_checkBox);
             this.RunJob_tabPage.Controls.Add(this.MeasureZs_checkBox);
@@ -7626,18 +7609,6 @@ namespace LitePlacer
             this.ClearPlaced_button.Text = "Clear \"Placed\"";
             this.ClearPlaced_button.UseVisualStyleBackColor = true;
             this.ClearPlaced_button.Click += new System.EventHandler(this.ResetPlacedDataToolStripMenuItem_Click);
-            // 
-            // Placement_pictureBox
-            // 
-            this.Placement_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Placement_pictureBox.Location = new System.Drawing.Point(6, 6);
-            this.Placement_pictureBox.Name = "Placement_pictureBox";
-            this.Placement_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Placement_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Placement_pictureBox.TabIndex = 12;
-            this.Placement_pictureBox.TabStop = false;
-            this.Placement_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Placement_pictureBox_MouseClick);
-            this.Placement_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Placement_pictureBox_MouseMove);
             // 
             // SkipMeasurements_checkBox
             // 
@@ -8374,14 +8345,14 @@ namespace LitePlacer
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9430,6 +9401,18 @@ namespace LitePlacer
             this.SetCurrentPosition_button.UseVisualStyleBackColor = true;
             this.SetCurrentPosition_button.Click += new System.EventHandler(this.SetCurrentPosition_button_Click);
             // 
+            // MeaseureAndSet_button
+            // 
+            this.MeaseureAndSet_button.Location = new System.Drawing.Point(571, 786);
+            this.MeaseureAndSet_button.Name = "MeaseureAndSet_button";
+            this.MeaseureAndSet_button.Size = new System.Drawing.Size(75, 37);
+            this.MeaseureAndSet_button.TabIndex = 157;
+            this.MeaseureAndSet_button.Text = "Measure and set";
+            this.toolTip1.SetToolTip(this.MeaseureAndSet_button, "Goes to zero, measures the position of home mark,\r\nand sets coordinates according" +
+        "ly. Fast way to correct \r\nany drift.");
+            this.MeaseureAndSet_button.UseVisualStyleBackColor = true;
+            this.MeaseureAndSet_button.Click += new System.EventHandler(this.MeaseureAndSet_button_Click);
+            // 
             // TrueX_label
             // 
             this.TrueX_label.AutoSize = true;
@@ -9569,18 +9552,6 @@ namespace LitePlacer
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
-            // MeaseureAndSet_button
-            // 
-            this.MeaseureAndSet_button.Location = new System.Drawing.Point(571, 786);
-            this.MeaseureAndSet_button.Name = "MeaseureAndSet_button";
-            this.MeaseureAndSet_button.Size = new System.Drawing.Size(75, 37);
-            this.MeaseureAndSet_button.TabIndex = 157;
-            this.MeaseureAndSet_button.Text = "Measure and set";
-            this.toolTip1.SetToolTip(this.MeaseureAndSet_button, "Goes to zero, measures the position of home mark,\r\nand sets coordinates according" +
-        "ly. Fast way to correct \r\nany drift.");
-            this.MeaseureAndSet_button.UseVisualStyleBackColor = true;
-            this.MeaseureAndSet_button.Click += new System.EventHandler(this.MeaseureAndSet_button_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -9651,7 +9622,6 @@ namespace LitePlacer
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).EndInit();
             this.Tapes_contextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Tapes_pictureBox)).EndInit();
             this.Components_tabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
             this.tabPageSetupCameras.ResumeLayout(false);
@@ -9717,7 +9687,6 @@ namespace LitePlacer
             this.panel2.PerformLayout();
             this.RunJob_tabPage.ResumeLayout(false);
             this.RunJob_tabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Placement_pictureBox)).EndInit();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -9783,7 +9752,6 @@ namespace LitePlacer
 		private System.Windows.Forms.Button AddTape_button;
 		private System.Windows.Forms.Label label109;
 		private System.Windows.Forms.DataGridView Tapes_dataGridView;
-		private Camera.ProtectedPictureBox Tapes_pictureBox;
 		private System.Windows.Forms.TabPage Components_tabPage;
 		private System.Windows.Forms.DataGridView ComponentData_dataGridView;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PartialName;
@@ -10046,7 +10014,6 @@ namespace LitePlacer
 		private System.Windows.Forms.Label label88;
 		private System.Windows.Forms.Label label86;
 		private System.Windows.Forms.Label label85;
-		private Camera.ProtectedPictureBox Placement_pictureBox;
 		private System.Windows.Forms.DataGridView JobData_GridView;
 		private System.Windows.Forms.CheckBox Bottom_checkBox;
 		private System.Windows.Forms.DataGridView CadData_GridView;

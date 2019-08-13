@@ -333,6 +333,27 @@ namespace LitePlacer
         // ==============================================================================================
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
+            DownCamera.Zoom = Setting.DownCam_Zoom;
+            DownCamZoomFactor_textBox.Text = Setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
+            DownCamera.ZoomFactor = Setting.DownCam_Zoomfactor;
+
+            UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
+            UpCamera.Zoom = Setting.UpCam_Zoom;
+            UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
+            UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
+
+            CamShowPixels_checkBox.Checked = Setting.General_ShowPixels;
+            if (CamShowPixels_checkBox.Checked)
+            {
+                Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+            }
+            else
+            {
+                Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+
+            Cam_pictureBox.Parent = tabControlPages.SelectedTab;
             tabControlPages.SelectedTab = RunJob_tabPage;
             LastTabPage = "RunJob_tabPage";
 
@@ -362,7 +383,6 @@ namespace LitePlacer
             UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
 
-            CamShowPixels_checkBox.Checked = Setting.General_ShowPixels;
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
             KeepActive_checkBox.Checked = Setting.Cameras_KeepActive;
             if (KeepActive_checkBox.Checked)
@@ -596,6 +616,7 @@ namespace LitePlacer
             switch (tabControlPages.SelectedTab.Name)
             {
                 case "RunJob_tabPage":
+                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
                     RunJob_tabPage_Begin();
                     LastTabPage = "RunJob_tabPage";
                     break;
@@ -604,11 +625,13 @@ namespace LitePlacer
                     LastTabPage = "tabPageBasicSetup";
                     break;
                 case "tabPageSetupCameras":
+                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
                     SetupCamerasPageVisible = true;
                     tabPageSetupCameras_Begin();
                     LastTabPage = "tabPageSetupCameras";
                     break;
                 case "Tapes_tabPage":
+                    Cam_pictureBox.Parent = tabControlPages.SelectedTab;
                     Tapes_tabPage_Begin();
                     LastTabPage = "Tapes_tabPage";
                     break;
@@ -3415,7 +3438,6 @@ namespace LitePlacer
             DownCamera.FindRectangles = DownCamera.FindRectangles;
             DownCamera.FindComponent = DownCamera.FindComponent;
 
-            UpCamera.ImageBox = Placement_pictureBox;
             SetUpCameraDefaults();
             UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString(CultureInfo.InvariantCulture);
@@ -6972,22 +6994,9 @@ namespace LitePlacer
             public string MethodParameter { get; set; }
         }
 
-        private void Placement_pictureBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            General_pictureBox_MouseClick(Placement_pictureBox, e.X, e.Y);
-        }
-
-
-        private void Placement_pictureBox_MouseMove(object sender, MouseEventArgs e)
-        {
-            General_pictureBox_MouseMove(e.X, e.Y);
-        }
-
-
         private void RunJob_tabPage_Begin()
         {
             SetDownCameraDefaults();
-            DownCamera.ImageBox = Placement_pictureBox;
             SelectCamera(DownCamera);
             if (!DownCamera.IsRunning())
             {
@@ -11482,7 +11491,6 @@ namespace LitePlacer
             }
             SetDownCameraDefaults();
             SelectCamera(DownCamera);
-            DownCamera.ImageBox = Tapes_pictureBox;
         }
 
         private void Tapes_tabPage_End()
@@ -11774,13 +11782,6 @@ namespace LitePlacer
             Tapes.Reset(e.RowIndex);
             Update_GridView(Tapes_dataGridView);
         }
-
-        // ==========================================================================================================
-        private void Tapes_pictureBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            General_pictureBox_MouseClick(Tapes_pictureBox, e.X, e.Y);
-        }
-
 
         // ==========================================================================================================
         // SelectTape(): 
@@ -13294,7 +13295,6 @@ namespace LitePlacer
             RobustFast_checkBox.Parent = Page;
             KeepActive_checkBox.Parent = Page;
             ListResolutions_button.Parent = Page;
-            CamShowPixels_checkBox.Parent = Page;
             CameraStatus_label.Parent = Page;
             UpdateCameraCameraStatus_label();
         }
@@ -15759,16 +15759,12 @@ namespace LitePlacer
             if (CamShowPixels_checkBox.Checked)
             {
                 Setting.General_ShowPixels = true;
-                Placement_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-                Tapes_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
             }
             else
             {
                 Setting.General_ShowPixels = false;
-                Placement_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                Tapes_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             }
         }
 

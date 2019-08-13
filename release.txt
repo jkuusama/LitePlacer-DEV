@@ -14,3 +14,4 @@ New Features, significant changes
 Bug Fixes
 
 * Better diagnostics on failed homing
+* More robust camera stream handling
