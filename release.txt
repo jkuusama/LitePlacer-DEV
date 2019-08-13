@@ -13,5 +13,6 @@ New Features, significant changes
 
 Bug Fixes
 
+* Fixed unwanted move in place assissted mode
 * Better diagnostics on failed homing
 * More robust camera stream handling

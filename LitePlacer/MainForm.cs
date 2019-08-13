@@ -7887,6 +7887,8 @@ namespace LitePlacer
         // and then that row is processed.
         private void PlaceOne_button_Click(object sender, EventArgs e)
         {
+            this.ActiveControl = null; // User might need press enter during the process, which would run this again...
+
             // Do we need to do something in the first place?
             // is something actually selected?
             if (CadData_GridView.SelectedCells.Count == 0)
@@ -8248,6 +8250,7 @@ namespace LitePlacer
         // All rows:
         private void PlaceAll_button_Click(object sender, EventArgs e)
         {
+            this.ActiveControl = null; // User might need press enter during the process, which would run this again...
 
             if (!PrepareToPlace_m())
             {
