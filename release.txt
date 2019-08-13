@@ -10,4 +10,4 @@ New Features, significant changes
 
 Bug Fixes
 
-* 
+* Better diagnostics on failed homing

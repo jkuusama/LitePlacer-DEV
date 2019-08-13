@@ -2977,7 +2977,7 @@ namespace LitePlacer
                 return false;
             }
             // Measure 7 times, get median: 
-            // SetHomingMeasurement();
+            SetHomingMeasurement();
             List<double> Xlist = new List<double>();
             List<double> Ylist = new List<double>();
             int res;
@@ -2997,11 +2997,19 @@ namespace LitePlacer
                     DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
                         + ", Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
                 }
+                else if (res==0)
+                {
+                    DisplayText("Measurement " + Tries.ToString(CultureInfo.InvariantCulture) + ", no result");
+                }
+                else
+                {
+                    DisplayText("Measurement " + Tries.ToString(CultureInfo.InvariantCulture) + ", multiple results (" + res.ToString(CultureInfo.InvariantCulture) + ")");
+                }
             }
             while ((Successes < 7) && (Tries < 20));
             if (Tries >= 20)
             {
-                DisplayText("Optical homing failed, 20 tries did not give 7 results.");
+                DisplayText("Optical homing failed, 20 tries did not give 7 unique results.");
                 return false;
             }
             Xlist.Sort();
