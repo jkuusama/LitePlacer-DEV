@@ -12398,8 +12398,6 @@ namespace LitePlacer
 
         private void Test3_button_Click(object sender, EventArgs e)
         {
-            Xmark = Cnc.CurrentX;
-            Ymark = Cnc.CurrentY;
             CNC_XY_m((Cnc.CurrentX + Setting.DownCam_NozzleOffsetX), (Cnc.CurrentY + Setting.DownCam_NozzleOffsetY));
             Nozzle_ProbeDown_m();
         }
@@ -12420,12 +12418,8 @@ namespace LitePlacer
         // =================================================================================
         // test 5 "Probe down";
 
-        private double Xmark;
-        private double Ymark;
         private void Test5_button_Click(object sender, EventArgs e)
         {
-            Xmark = Cnc.CurrentX;
-            Ymark = Cnc.CurrentY;
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
             {
                 return;
@@ -12440,7 +12434,6 @@ namespace LitePlacer
         {
             DisplayText("test 6: Nozzle up");
             CNC_Z_m(0);  // go up
-            CNC_XY_m(Xmark, Ymark);
         }
 
 
