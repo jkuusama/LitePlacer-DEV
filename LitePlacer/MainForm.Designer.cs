@@ -30,7 +30,7 @@ namespace LitePlacer
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -6080,6 +6080,7 @@ namespace LitePlacer
             this.MotorPower_checkBox.Text = "Motor Power";
             this.toolTip1.SetToolTip(this.MotorPower_checkBox, "Motor power on/off \r\n(Motor power on holds machine position)");
             this.MotorPower_checkBox.UseVisualStyleBackColor = true;
+            this.MotorPower_checkBox.CheckedChanged += new System.EventHandler(this.MotorPower_checkBox_CheckedChanged);
             this.MotorPower_checkBox.Click += new System.EventHandler(this.MotorPower_checkBox_Click);
             // 
             // SetMark4_button
@@ -8345,14 +8346,14 @@ namespace LitePlacer
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,

@@ -158,9 +158,9 @@ namespace LitePlacer
                 }
             }
 #pragma warning disable CA1031 // Do not catch general exception types
-            catch (Exception ex)
+            catch
             {
-                MainForm.DisplayText("########## " + ex);
+                // MainForm.DisplayText("########## " + ex);
             }
 #pragma warning restore CA1031 // Do not catch general exception types
         } 

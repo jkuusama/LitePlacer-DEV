@@ -564,7 +564,7 @@ namespace LitePlacer
                 Cnc.PumpIsOn = true;        // so it will be turned off, no matter what we think the status
                 Cnc.PumpOff_NoWorkaround();
                 Cnc.VacuumDefaultSetting();
-                CNC_Write_m("{\"md\":\"\"}");  // motor power off
+                Cnc.MotorPowerOff();
             }
             Cnc.Close();
 
@@ -5190,7 +5190,7 @@ namespace LitePlacer
                 Cnc.Controlboard = CNC.ControlBoardType.TinyG;
                 DisplayText("TinyG board found.");
             }
-            else if (value == "3")
+            else if (value == "\"gQuintic\"")
             {
                 Cnc.Controlboard = CNC.ControlBoardType.qQuintic;
                 DisplayText("qQuintic board found.");
@@ -6013,11 +6013,11 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_1sa), new[] { value }); return; }
 
-            if ((value == "0.90") || (value == "0.900"))
+            if (value.StartsWith("0.9", System.StringComparison.InvariantCulture))
             {
                 m1deg09_radioButton.Checked = true;
             }
-            else if ((value == "1.80") || (value == "1.800"))
+            else if (value.StartsWith("1.8", System.StringComparison.InvariantCulture))
             {
                 m1deg18_radioButton.Checked = true;
             }
@@ -6027,11 +6027,11 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_2sa), new[] { value }); return; }
 
-            if ((value == "0.90") || (value == "0.900"))
+            if (value.StartsWith("0.9", System.StringComparison.InvariantCulture))
             {
                 m2deg09_radioButton.Checked = true;
             }
-            else if ((value == "1.80") || (value == "1.800"))
+            else if (value.StartsWith("1.8", System.StringComparison.InvariantCulture))
             {
                 m2deg18_radioButton.Checked = true;
             }
@@ -6041,11 +6041,11 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_3sa), new[] { value }); return; }
 
-            if ((value == "0.90") || (value == "0.900"))
+            if (value.StartsWith("0.9", System.StringComparison.InvariantCulture))
             {
                 m3deg09_radioButton.Checked = true;
             }
-            else if ((value == "1.80") || (value == "1.800"))
+            else if (value.StartsWith("1.8", System.StringComparison.InvariantCulture))
             {
                 m3deg18_radioButton.Checked = true;
             }
@@ -6055,11 +6055,11 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_4sa), new[] { value }); return; }
 
-            if ((value == "0.90") || (value == "0.900"))
+            if (value.StartsWith("0.9", System.StringComparison.InvariantCulture))
             {
                 m4deg09_radioButton.Checked = true;
             }
-            else if ((value == "1.80") || (value == "1.800"))
+            else if (value.StartsWith("1.8", System.StringComparison.InvariantCulture))
             {
                 m4deg18_radioButton.Checked = true;
             }
@@ -6506,6 +6506,11 @@ namespace LitePlacer
             {
                 Cnc.MotorPowerOff();
             }
+        }
+
+
+        private void MotorPower_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
         }
 
         private void Pump_checkBox_Click(object sender, EventArgs e)
@@ -15545,7 +15550,7 @@ namespace LitePlacer
             if (!WriteSetting("sv", qQuinticBoard.Sys_sv, false)) return false;
             if (!WriteSetting("si", qQuinticBoard.Sys_si, false)) return false;
             if (!WriteSetting("gun", qQuinticBoard.Sys_gun, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+            //if (!Cnc.RawWrite("%")) return false;
             if (!WriteSetting("1ma", qQuinticBoard.Motor1ma, false)) return false;
             if (!WriteSetting("1sa", qQuinticBoard.Motor1sa, false)) return false;
             if (!WriteSetting("1tr", qQuinticBoard.Motor1tr, false)) return false;
@@ -15804,6 +15809,7 @@ namespace LitePlacer
             }
             OpticalHoming_m();
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

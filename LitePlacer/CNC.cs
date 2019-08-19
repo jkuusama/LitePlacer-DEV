@@ -637,7 +637,9 @@ namespace LitePlacer
             }
             else if (Controlboard == ControlBoardType.qQuintic)
             {
-                MainForm.DisplayText("MotorPowerOn(), qQuintic  -- SKIPPED --");
+                MainForm.DisplayText("MotorPowerOn(), qQuintic");
+                MainForm.CNC_Write_m("{\"me\":\"0\"}");
+                MainForm.ResetMotorTimer();
             }
             else
             {
@@ -655,7 +657,9 @@ namespace LitePlacer
             }
             else if (Controlboard == ControlBoardType.qQuintic)
             {
-                MainForm.DisplayText("MotorPowerOff(), qQuintic  -- SKIPPED --");
+                MainForm.DisplayText("MotorPowerOff(), qQuintic");
+                MainForm.TimerDone = true;
+                MainForm.CNC_Write_m("{\"md\":\"0\"}");
             }
             else
             {
@@ -846,6 +850,28 @@ namespace LitePlacer
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
             MainForm.DisplayText("<== " + line);
 
+            if (line=="{\"sr\":{\"stat\":3}}\n")
+            {
+                // qQuintic (g2core) sends lots of empty status reports: {"sr":{"stat":3}}
+                // skip those
+                MainForm.DisplayText("skipped");
+                return;
+            }
+
+            if (line.StartsWith("{\"sr\":", StringComparison.Ordinal))
+            {
+                // Status report
+                NewStatusReport(line);
+                if (line.Contains("\"stat\":3"))
+                {
+                    MainForm.DisplayText("ReadyEvent stat");
+                    MainForm.ResetMotorTimer();
+                    _readyEvent.Set();
+                }
+                return;
+            }
+
+
             if (line.Contains("SYSTEM READY"))
             {
                 Error();
@@ -919,18 +945,6 @@ namespace LitePlacer
             }
 
 
-            if (line.StartsWith("{\"sr\":", StringComparison.Ordinal))
-            {
-                // Status report
-                NewStatusReport(line);
-                if (line.Contains("\"stat\":3"))
-                {
-                    MainForm.DisplayText("ReadyEvent stat");
-                    MainForm.ResetMotorTimer();
-                    _readyEvent.Set();
-                }
-                return;
-            }
 
             if (line.StartsWith("{\"r\":{\"sr\"", StringComparison.Ordinal))
             {
