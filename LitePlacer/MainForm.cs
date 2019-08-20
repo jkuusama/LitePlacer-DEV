@@ -2140,6 +2140,7 @@ namespace LitePlacer
 
         private void OfferHoming()
         {
+            DisplayText("OfferHoming");
             PositionConfidence = false;
             DialogResult dialogResult = ShowMessageBox(
                 "Home machine now?",
@@ -2325,7 +2326,7 @@ namespace LitePlacer
                     }
                 }
                 DisplayText("Measuring nozzle, min. size " + MinSize.ToString(CultureInfo.InvariantCulture)
-                    + ", max. size" + MaxSize.ToString(CultureInfo.InvariantCulture));
+                    + ", max. size " + MaxSize.ToString(CultureInfo.InvariantCulture));
                 UpCamera.MaxSize = MaxSize / Setting.UpCam_XmmPerPixel;
                 UpCamera.MinSize = MinSize / Setting.UpCam_XmmPerPixel;
                 UpCamera.SizeLimited = true;
