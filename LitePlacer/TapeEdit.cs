@@ -53,7 +53,7 @@ namespace LitePlacer
 
         // =================================================================================
 
-        private bool DrawCross = true;
+        // private bool DrawCross = true;
         private void TapeEditForm_Load(object sender, EventArgs e)
         {
             Row = TapesDataGrid.Rows[TapeRowNo];
@@ -181,8 +181,8 @@ namespace LitePlacer
                 TrayID_textBox.Text = Row.Cells["TrayID_Column"].Value.ToString();
             }
             MainForm.DownCameraRotationFollowsA = true;
-            DrawCross = Cam.DrawCross;
-            Cam.DrawCross = false;
+            // DrawCross = Cam.DrawCross;
+            // Cam.DrawCross = false;
             if (Row.Cells["CoordinatesForParts_Column"].Value != null)
             {
                 if (Row.Cells["CoordinatesForParts_Column"].Value.ToString() == "True")
@@ -215,7 +215,7 @@ namespace LitePlacer
             GetLastPosition_button.Enabled = CoordinatesForParts_checkBox.Checked;
             LastX_label.Enabled = CoordinatesForParts_checkBox.Checked;
             LastY_label.Enabled = CoordinatesForParts_checkBox.Checked;
-            Cam.DrawGrid = CoordinatesForParts_checkBox.Checked;
+            // Cam.DrawGrid = CoordinatesForParts_checkBox.Checked;
         }
 
         // =================================================================================
@@ -243,16 +243,16 @@ namespace LitePlacer
             Row.Cells["LastY_Column"].Value = LastY_textBox.Text;
             MainForm.Update_GridView(TapesDataGrid);
             MainForm.DownCameraRotationFollowsA = false;
-            Cam.DrawGrid = false;
-            Cam.DrawCross = DrawCross;
+            // Cam.DrawGrid = false;
+            // Cam.DrawCross = DrawCross;
             Close();
         }
 
         private void TapeEditCancel_button_Click(object sender, EventArgs e)
         {
             MainForm.DownCameraRotationFollowsA = false;
-            Cam.DrawGrid = false;
-            Cam.DrawCross = DrawCross;
+            // Cam.DrawGrid = false;
+            // Cam.DrawCross = DrawCross;
             Close();
         }
 
