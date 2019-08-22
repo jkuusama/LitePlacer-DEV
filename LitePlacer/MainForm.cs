@@ -15536,6 +15536,7 @@ namespace LitePlacer
         {
             DisplayText("Writing settings to qQuintic board.");
             //if (!WriteSetting("st", TinyGBoard.st, false)) return false;
+            if (!WriteSetting("ej", "2", false)) return false;  // JSON/text response to auto
             if (!WriteSetting("mt", qQuinticBoard.Sys_mt, false)) return false;
             if (!WriteSetting("jv", qQuinticBoard.Sys_jv, false)) return false;
             //if (!WriteSetting("js", qQuinticBoard.js, false)) return false;
@@ -15544,74 +15545,74 @@ namespace LitePlacer
             if (!WriteSetting("sv", qQuinticBoard.Sys_sv, false)) return false;
             if (!WriteSetting("si", qQuinticBoard.Sys_si, false)) return false;
             if (!WriteSetting("gun", qQuinticBoard.Sys_gun, false)) return false;
-            //if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("1ma", qQuinticBoard.Motor1ma, false)) return false;
             if (!WriteSetting("1sa", qQuinticBoard.Motor1sa, false)) return false;
             if (!WriteSetting("1tr", qQuinticBoard.Motor1tr, false)) return false;
             if (!WriteSetting("1mi", qQuinticBoard.Motor1mi, false)) return false;
             if (!WriteSetting("1po", qQuinticBoard.Motor1po, false)) return false;
             if (!WriteSetting("1pm", qQuinticBoard.Motor1pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("2ma", qQuinticBoard.Motor2ma, false)) return false;
             if (!WriteSetting("2sa", qQuinticBoard.Motor2sa, false)) return false;
             if (!WriteSetting("2tr", qQuinticBoard.Motor2tr, false)) return false;
             if (!WriteSetting("2mi", qQuinticBoard.Motor2mi, false)) return false;
             if (!WriteSetting("2po", qQuinticBoard.Motor2po, false)) return false;
             if (!WriteSetting("2pm", qQuinticBoard.Motor2pm, false)) return false;
+
             if (!WriteSetting("3ma", qQuinticBoard.Motor3ma, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
             if (!WriteSetting("3sa", qQuinticBoard.Motor3sa, false)) return false;
             if (!WriteSetting("3tr", qQuinticBoard.Motor3tr, false)) return false;
             if (!WriteSetting("3mi", qQuinticBoard.Motor3mi, false)) return false;
             if (!WriteSetting("3po", qQuinticBoard.Motor3po, false)) return false;
             if (!WriteSetting("3pm", qQuinticBoard.Motor3pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("4ma", qQuinticBoard.Motor4ma, false)) return false;
             if (!WriteSetting("4sa", qQuinticBoard.Motor4sa, false)) return false;
             if (!WriteSetting("4tr", qQuinticBoard.Motor4tr, false)) return false;
             if (!WriteSetting("4mi", qQuinticBoard.Motor4mi, false)) return false;
             if (!WriteSetting("4po", qQuinticBoard.Motor4po, false)) return false;
             if (!WriteSetting("4pm", qQuinticBoard.Motor4pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("xam", qQuinticBoard.Xam, false)) return false;
             if (!WriteSetting("xvm", qQuinticBoard.Xvm, false)) return false;
             if (!WriteSetting("xfr", qQuinticBoard.Xfr, false)) return false;
             if (!WriteSetting("xtn", qQuinticBoard.Xtn, false)) return false;
             if (!WriteSetting("xtm", qQuinticBoard.Xtm, false)) return false;
             if (!WriteSetting("xjm", qQuinticBoard.Xjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("xjh", qQuinticBoard.Xjh, false)) return false;
             if (!WriteSetting("xsv", qQuinticBoard.Xsv, false)) return false;
             if (!WriteSetting("xlv", qQuinticBoard.Xlv, false)) return false;
             if (!WriteSetting("xlb", qQuinticBoard.Xlb, false)) return false;
             if (!WriteSetting("xzb", qQuinticBoard.Xzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("yam", qQuinticBoard.Yam, false)) return false;
             if (!WriteSetting("yvm", qQuinticBoard.Yvm, false)) return false;
             if (!WriteSetting("yfr", qQuinticBoard.Yfr, false)) return false;
             if (!WriteSetting("ytn", qQuinticBoard.Ytn, false)) return false;
             if (!WriteSetting("ytm", qQuinticBoard.Ytm, false)) return false;
             if (!WriteSetting("yjm", qQuinticBoard.Yjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("yjh", qQuinticBoard.Yjh, false)) return false;
             if (!WriteSetting("ysv", qQuinticBoard.Ysv, false)) return false;
             if (!WriteSetting("ylv", qQuinticBoard.Ylv, false)) return false;
             if (!WriteSetting("ylb", qQuinticBoard.Ylb, false)) return false;
             if (!WriteSetting("yzb", qQuinticBoard.Yzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("zam", qQuinticBoard.Zam, false)) return false;
             if (!WriteSetting("zvm", qQuinticBoard.Zvm, false)) return false;
             if (!WriteSetting("zfr", qQuinticBoard.Zfr, false)) return false;
             if (!WriteSetting("ztn", qQuinticBoard.Ztn, false)) return false;
             if (!WriteSetting("ztm", qQuinticBoard.Ztm, false)) return false;
             if (!WriteSetting("zjm", qQuinticBoard.Zjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("zjh", qQuinticBoard.Zjh, false)) return false;
             if (!WriteSetting("zsv", qQuinticBoard.Zsv, false)) return false;
             if (!WriteSetting("zlv", qQuinticBoard.Zlv, false)) return false;
             if (!WriteSetting("zlb", qQuinticBoard.Zlb, false)) return false;
             if (!WriteSetting("zzb", qQuinticBoard.Zzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("aam", qQuinticBoard.Aam, false)) return false;
             if (!WriteSetting("avm", qQuinticBoard.Avm, false)) return false;
             if (!WriteSetting("afr", qQuinticBoard.Afr, false)) return false;
@@ -15620,16 +15621,16 @@ namespace LitePlacer
             if (!WriteSetting("ajm", qQuinticBoard.Ajm, false)) return false;
             if (!WriteSetting("ajh", qQuinticBoard.Ajh, false)) return false;
             if (!WriteSetting("asv", qQuinticBoard.Asv, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("1pl", qQuinticBoard.Motor1pl, false)) return false;
             if (!WriteSetting("2pl", qQuinticBoard.Motor2pl, false)) return false;
             if (!WriteSetting("3pl", qQuinticBoard.Motor3pl, false)) return false;
             if (!WriteSetting("4pl", qQuinticBoard.Motor4pl, false)) return false;
             if (!WriteSetting("5pl", qQuinticBoard.Motor5pl, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("5ma", qQuinticBoard.Motor5ma, false)) return false;
             if (!WriteSetting("5pm", qQuinticBoard.Motor5pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("xhi", qQuinticBoard.Xhi, false)) return false;
             if (!WriteSetting("xhd", qQuinticBoard.Xhd, false)) return false;
             if (!WriteSetting("yhi", qQuinticBoard.Yhi, false)) return false;
