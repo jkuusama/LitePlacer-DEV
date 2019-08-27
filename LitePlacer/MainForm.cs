@@ -15322,7 +15322,7 @@ namespace LitePlacer
         private void AppBuiltInSettings_button_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = ShowMessageBox(
-                "Reset application settings top built in defaults?",
+                "Reset application settings to built in defaults?",
                 "Confirm Loading Built-In settings", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
             {
