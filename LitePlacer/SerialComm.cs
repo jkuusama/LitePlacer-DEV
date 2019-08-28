@@ -13,7 +13,7 @@ namespace LitePlacer
 
     class SerialComm
     {
-        
+
         SerialPort Port = new SerialPort();
 
         // To process data on the DataReceived thread, get reference of Cnc, so we can pass data to it.
@@ -30,8 +30,8 @@ namespace LitePlacer
 
         public bool IsOpen
         {
-            get 
-            { 
+            get
+            {
                 return Port.IsOpen;
             }
         }
@@ -57,10 +57,11 @@ namespace LitePlacer
                     Port.DiscardInBuffer();
                     Port.DiscardOutBuffer();
                 }
-                // Known issue: Sometimes serial port hangs in app closing. Google says that 
+                // Known issue: Sometimes serial port hangs in app closing. Google says that
                 // the workaround is to close in another thread
                 Thread t = new Thread(() => Close_thread());
                 t.Start();
+                t.Join(); // Wait until the port has been closed.
             }
             catch
             {
@@ -135,14 +136,14 @@ namespace LitePlacer
 
         void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //Initialize a buffer to hold the received data 
+            //Initialize a buffer to hold the received data
             byte[] buffer = new byte[ReadBufferSize];
             string WorkingString;
 
             try
             {
-                //There is no accurate method for checking how many bytes are read 
-                //unless you check the return from the Read method 
+                //There is no accurate method for checking how many bytes are read
+                //unless you check the return from the Read method
                 int bytesRead = Port.Read(buffer, 0, buffer.Length);
 
                 //The received data is ASCII
@@ -150,9 +151,9 @@ namespace LitePlacer
                 //Process each line
                 while (RxString.IndexOf("\n", StringComparison.Ordinal) > -1)
                 {
-                        //Even when RxString does contain terminator we cannot assume that it is the last character received 
+                        //Even when RxString does contain terminator we cannot assume that it is the last character received
                         WorkingString = RxString.Substring(0, RxString.IndexOf("\n", StringComparison.Ordinal) +1);
-                        //Remove the data and the terminator from tString 
+                        //Remove the data and the terminator from tString
                         RxString = RxString.Substring(RxString.IndexOf("\n", StringComparison.Ordinal) + 1);
                         Cnc.InterpretLine(WorkingString);
                 }
@@ -163,7 +164,7 @@ namespace LitePlacer
                 // MainForm.DisplayText("########## " + ex);
             }
 #pragma warning restore CA1031 // Do not catch general exception types
-        } 
+        }
 
      }
 }
