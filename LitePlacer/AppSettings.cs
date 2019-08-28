@@ -1,12 +1,12 @@
 ﻿//#define TRANSFER
 
-/* 
+/*
 
  Using the standard method (Settings.settings file, Setting.xxx) was a mistake:
  No easy recovery, impossible to move installation from one machine to another, to name a few.
  This class resolves the issues. See
  http://stackoverflow.com/questions/453161/best-practice-to-save-application-settings-in-a-windows-forms-application,
- Trevor's answer (second answer from top). Also, to get a nice formatting (each parameter on its own line), 
+ Trevor's answer (second answer from top). Also, to get a nice formatting (each parameter on its own line),
  Newtonsoft.Json library is used. http://www.newtonsoft.com/json
 
  If you uncomment the first line, you get a version that transfers the settings from old version to new.
@@ -165,7 +165,7 @@ namespace LitePlacer
     }
 
     // =================================================================================
-    // 
+    //
     // =================================================================================
     public class AppSettings
     {
@@ -217,6 +217,14 @@ namespace LitePlacer
                 {
                     MainForm.DisplayText("Reading " + FileName);
                     settings = JsonConvert.DeserializeObject<MySettings>(File.ReadAllText(FileName));
+
+                    // JsonConvert.DeserializeObject can return null if the setings file is corrupt,
+                    // catch this here and inform the operator before we cause a NullReferenceException in Form1_Load.
+                    if (settings == null)
+                    {
+                        throw new Exception($"Couldn't load {FileName}. File exists but is corrupt.");
+                    }
+
                     return settings;
                 }
                 else
