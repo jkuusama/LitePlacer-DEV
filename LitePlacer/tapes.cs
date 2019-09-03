@@ -45,8 +45,6 @@ namespace LitePlacer
 		public void Reset(int tape)
 		{
 			Grid.Rows[tape].Cells["NextPart_Column"].Value = "1";
-			Grid.Rows[tape].Cells["Z_Pickup_Column"].Value = "--";
-			Grid.Rows[tape].Cells["Z_Place_Column"].Value = "--";
             // fix #22 reset next coordinates
             Grid.Rows[tape].Cells["Next_X_Column"].Value = Grid.Rows[tape].Cells["FirstX_Column"].Value;
 			Grid.Rows[tape].Cells["Next_Y_Column"].Value = Grid.Rows[tape].Cells["FirstY_Column"].Value;
