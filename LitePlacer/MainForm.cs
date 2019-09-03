@@ -6147,92 +6147,70 @@ namespace LitePlacer
             Cnc.Write("\x18");
         }
 
-        private void TestX_thread()
-        {
-            if (!CNC_XY_m(0.0, Cnc.CurrentY))
-                return;
-            if (!CNC_XY_m(Setting.General_MachineSizeX, Cnc.CurrentY))
-                return;
-            if (!CNC_XY_m(0.0, Cnc.CurrentY))
-                return;
-        }
 
         private void TestX_button_Click(object sender, EventArgs e)
         {
-            Thread t = new Thread(() => TestX_thread());
-            t.IsBackground = true;
-            t.Start();
-        }
-
-        private void TestY_thread()
-        {
-            if (!CNC_XY_m(Cnc.CurrentX, 0))
-                return;
-            if (!CNC_XY_m(Cnc.CurrentX, Setting.General_MachineSizeY))
-                return;
-            if (!CNC_XY_m(Cnc.CurrentX, 0))
-                return;
+            if (Cnc.CurrentX < 1.0)
+            {
+                CNC_XY_m(Setting.General_MachineSizeX, Cnc.CurrentY);
+            }
+            else
+            {
+                CNC_XY_m(0.0, Cnc.CurrentY);
+            }
         }
 
         private void TestY_button_Click(object sender, EventArgs e)
         {
-            Thread t = new Thread(() => TestY_thread());
-            t.IsBackground = true;
-            t.Start();
+            if (Cnc.CurrentY < 1.0)
+            {
+                CNC_XY_m(Cnc.CurrentX, Setting.General_MachineSizeY);
+            }
+            else
+            {
+                CNC_XY_m(Cnc.CurrentX, 0.0);
+            }
         }
 
-        private void TestXYA_thread()
-        {
-            if (!CNC_XYA_m(0, 0, 0))
-                return;
-            if (!CNC_XYA_m(Setting.General_MachineSizeX, Setting.General_MachineSizeY, 360.0))
-                return;
-            if (!CNC_XYA_m(0, 0, 0))
-                return;
-        }
 
         private void TestXYA_button_Click(object sender, EventArgs e)
         {
-            Thread t = new Thread(() => TestXYA_thread());
-            t.IsBackground = true;
-            t.Start();
-        }
-
-        private void TestXY_thread()
-        {
-            if (!CNC_XY_m(0, 0))
-                return;
-            if (!CNC_XY_m(Setting.General_MachineSizeX, Setting.General_MachineSizeY))
-                return;
-            if (!CNC_XY_m(0, 0))
-                return;
+            if ((Cnc.CurrentX < 1.0) && (Cnc.CurrentY < 1.0))
+            {
+                CNC_XYA_m(Setting.General_MachineSizeX, Setting.General_MachineSizeY, 360.0);
+            }
+            else
+            {
+                CNC_XYA_m(0, 0, 0);
+            }
         }
 
         private void TestXY_button_Click(object sender, EventArgs e)
         {
-            Thread t = new Thread(() => TestXY_thread());
-            t.IsBackground = true;
-            t.Start();
-        }
-
-        private void TestYX_thread()
-        {
-            if (!CNC_XY_m(Setting.General_MachineSizeX, 0))
-                return;
-            if (!CNC_XY_m(0, Setting.General_MachineSizeY))
-                return;
-            if (!CNC_XY_m(Setting.General_MachineSizeX, 0))
-                return;
+            if ((Cnc.CurrentX < 1.0) && (Cnc.CurrentY < 1.0))
+            {
+                CNC_XY_m(Setting.General_MachineSizeX, Setting.General_MachineSizeY);
+            }
+            else
+            {
+                CNC_XY_m(0, 0);
+            }
         }
 
         private void TestYX_button_Click(object sender, EventArgs e)
         {
-            Thread t = new Thread(() => TestYX_thread());
-            t.IsBackground = true;
-            t.Start();
+            if ((Cnc.CurrentX > (Setting.General_MachineSizeX - 1.0)) && (Cnc.CurrentY < 1.0))
+            {
+                CNC_XY_m(0.0, Setting.General_MachineSizeY);
+            }
+            else
+            {
+                CNC_XY_m(Setting.General_MachineSizeX, 0.0);
+            }
         }
+ 
 
-        private void HomeX_button_Click(object sender, EventArgs e)
+    private void HomeX_button_Click(object sender, EventArgs e)
         {
             CNC_Home_m("X");
         }
