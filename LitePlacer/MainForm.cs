@@ -7835,13 +7835,13 @@ namespace LitePlacer
 
         // =================================================================================
         // Checks if the component is placed already
-        // returns success of operation, sets palced status to placed
+        // returns success of operation, sets placed status to placed
         private bool AlreadyPlaced_m(string component, ref bool placed)
         {
             // find the row
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
-                if (Row.Cells["Component"].Value.ToString()==component)
+                if (Row.Cells["Component"].Value.ToString() == component)
                 {
                     DataGridViewCheckBoxCell cell = Row.Cells["Placed_column"] as DataGridViewCheckBoxCell;
                     if (cell.Value != null)
@@ -7850,10 +7850,10 @@ namespace LitePlacer
                         {
                             placed = true;
                         }
-                    }
-                    else
-                    {
-                        placed = false;
+                        else
+                        {
+                            placed = false;
+                        }
                     }
                     return true;
                 }
@@ -8307,7 +8307,7 @@ namespace LitePlacer
                     DisplayText("Bad data Y machine at component " + Component);
                     return false;
                 }
-                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["A_machine"].Value.ToString().Replace(',', '.'), out tempD))
+                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out tempD))
                 {
                     A_machine = tempD;
                 }
@@ -14340,7 +14340,7 @@ namespace LitePlacer
             {
                 return;
             }
-            MeasureAndSetHome_m(1.0);
+            OpticalHoming_m();
         }
     }	// end of: 	public partial class FormMain : Form
 
