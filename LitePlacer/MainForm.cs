@@ -295,8 +295,9 @@ namespace LitePlacer
             Cam_pictureBox.Parent = this;                   // position changes
             Cam_pictureBox.Location = locationOnForm;       // move it back
 
-            tabControlPages.SelectedTab = tabPageBasicSetup;
-            LastTabPage = "tabPageBasicSetup";
+            tabControlPages.SelectedTab = RunJob_tabPage;
+            LastTabPage = "RunJob_tabPage";
+
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
@@ -344,12 +345,12 @@ namespace LitePlacer
 
             OmitNozzleCalibration_checkBox.Checked = Setting.Placement_OmitNozzleCalibration;
             SkipMeasurements_checkBox.Checked = Setting.Placement_SkipMeasurements;
-
-            LoadTempCADdata();
-            LoadTempJobData();
-
             JobOffsetX_textBox.Text = Setting.Job_Xoffset.ToString("0.000", CultureInfo.InvariantCulture);
             JobOffsetY_textBox.Text = Setting.Job_Yoffset.ToString("0.000", CultureInfo.InvariantCulture);
+
+            this.Refresh(); // waits until all widgets have loaded
+            LoadTempCADdata();
+            LoadTempJobData();
 
             // ======== Basic Setup tab:
 
@@ -380,6 +381,10 @@ namespace LitePlacer
             VacuumInvert_checkBox.Checked = Setting.General_VacuumOutputInverted;
             Pump_checkBox.Checked = false;
             Vacuum_checkBox.Checked = false;
+
+            tabControlPages.SelectedTab = tabPageBasicSetup;
+            LastTabPage = "tabPageBasicSetup";
+            StartCameras();
 
             // ======== Setup Cameras tab:
 
@@ -6803,12 +6808,17 @@ namespace LitePlacer
         {
             // the foreach loop below ignores last checked box, unless we manually select some other cell before. ??
             CadData_GridView.CurrentCell = CadData_GridView[0, 0];
+            CadDataDelay_label.Text = "Resetting...";
+            CadDataDelay_label.Visible = true;
+            this.Refresh();
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
                 Row.Cells[CADdata_PlacedColumn].Value = false;
             }
             CadData_GridView.ClearSelection();  // and we don't want a random celected cell
+            CadDataDelay_label.Visible = false;
             Update_GridView(CadData_GridView);
+            this.Refresh();
         }
 
 
@@ -10883,7 +10893,14 @@ namespace LitePlacer
 
             // clear and rebuild the data tables
             CadData_GridView.Rows.Clear();
+            Update_GridView(CadData_GridView);
+            CadDataDelay_label.Text = "Loading...";
+            CadDataDelay_label.Visible = true;
+            this.Refresh();
+
             JobData_GridView.Rows.Clear();
+            Update_GridView(JobData_GridView);
+
             foreach (DataGridViewColumn column in JobData_GridView.Columns)
             {
                 if (column.HeaderText!="Nozzle")
@@ -11025,12 +11042,11 @@ namespace LitePlacer
             }
             CadData_GridView.ClearSelection();
             // Check, that our data is good:
-            if (!ValidateCADdata_m())
-            {
-                return false;
-            }
-
-            return true;
+            bool result = ValidateCADdata_m();
+            CadDataDelay_label.Visible = false;
+            Update_GridView(CadData_GridView);
+            this.Refresh();
+            return result;
         }   // end ParseCadData
 
         // =================================================================================

@@ -694,6 +694,7 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.CadDataDelay_label = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -5339,6 +5340,7 @@
             // 
             // RunJob_tabPage
             // 
+            this.RunJob_tabPage.Controls.Add(this.CadDataDelay_label);
             this.RunJob_tabPage.Controls.Add(this.ClearPlaced_button);
             this.RunJob_tabPage.Controls.Add(this.SkipMeasurements_checkBox);
             this.RunJob_tabPage.Controls.Add(this.OmitNozzleCalibration_checkBox);
@@ -6222,7 +6224,7 @@
             this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Component,
             this.Value_Footprint,
@@ -6238,6 +6240,7 @@
             this.CadData_GridView.Name = "CadData_GridView";
             this.CadData_GridView.RowHeadersVisible = false;
             this.CadData_GridView.RowHeadersWidth = 16;
+            this.CadData_GridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.CadData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.CadData_GridView.Size = new System.Drawing.Size(457, 212);
             this.CadData_GridView.TabIndex = 5;
@@ -8054,6 +8057,16 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
+            // CadDataDelay_label
+            // 
+            this.CadDataDelay_label.AutoSize = true;
+            this.CadDataDelay_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CadDataDelay_label.Location = new System.Drawing.Point(974, 158);
+            this.CadDataDelay_label.Name = "CadDataDelay_label";
+            this.CadDataDelay_label.Size = new System.Drawing.Size(107, 25);
+            this.CadDataDelay_label.TabIndex = 83;
+            this.CadDataDelay_label.Text = "Loading...";
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -8860,6 +8873,7 @@
         private System.Windows.Forms.TabPage A_tabPage;
         private System.Windows.Forms.CheckBox DownCamDrawSidemarks_checkBox;
         private System.Windows.Forms.CheckBox UpCamDrawSidemarks_checkBox;
+        private System.Windows.Forms.Label CadDataDelay_label;
     }
 }
 
