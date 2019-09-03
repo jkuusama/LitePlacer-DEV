@@ -11,7 +11,6 @@ namespace LitePlacer
 {
 	public partial class MethodSelectionForm : Form
 	{
-        public string SelectedMethod { get; set; } = "";
         public bool ShowCheckBox { get; set; } = false;
         public string HeaderString { get; set; } = "";
 
@@ -42,79 +41,79 @@ namespace LitePlacer
 
 		private void Question_button_Click(object sender, EventArgs e)
 		{
-			SelectedMethod = "?";
+			 MainForm.SelectedMethod = "?";
 			this.Close();
 		}
 
 		private void ChangeNozzle_button_Click(object sender, EventArgs e)
 		{
-			SelectedMethod = "Change Nozzle";
+			 MainForm.SelectedMethod = "Change Nozzle";
 			this.Close();
 		}
 
 		private void Recalibrate_button_Click(object sender, EventArgs e)
 		{
-			SelectedMethod = "Recalibrate";
+			 MainForm.SelectedMethod = "Recalibrate";
 			this.Close();
 		}
 
 		private void Ignore_button_Click(object sender, EventArgs e)
 		{
-			SelectedMethod = "Ignore";
+			 MainForm.SelectedMethod = "Ignore";
 			this.Close();
 		}
 
 		private void Fiducials_button_Click(object sender, EventArgs e)
 		{
-			SelectedMethod = "Fiducials";
+			 MainForm.SelectedMethod = "Fiducials";
 			this.Close();
 		}
 
 		private void Pause_button_Click(object sender, EventArgs e)
 		{
-			SelectedMethod = "Pause";
+			 MainForm.SelectedMethod = "Pause";
 			this.Close();
 		}
 
 		private void Place_button_Click(object sender, EventArgs e)
 		{
-			SelectedMethod = "Place";
+			 MainForm.SelectedMethod = "Place";
 			this.Close();
 		}
 
 		private void ManualUpCam_button_Click(object sender, EventArgs e)
 		{
-            SelectedMethod = "UpCam Snapshot";
+             MainForm.SelectedMethod = "UpCam Snapshot";
             this.Close();
 		}
 
         private void LoosePart_button_Click(object sender, EventArgs e)
         {
-            SelectedMethod = "LoosePart";
+             MainForm.SelectedMethod = "LoosePart";
             this.Close();
         }
 
         private void PlaceFast_button_Click(object sender, EventArgs e)
         {
-            SelectedMethod = "Place Fast";
+             MainForm.SelectedMethod = "Place Fast";
             this.Close();
         }
 
         private void ManualDownCam_button_Click(object sender, EventArgs e)
         {
-            SelectedMethod = "DownCam Snapshot";
+             MainForm.SelectedMethod = "DownCam Snapshot";
             this.Close();
         }
 
         private void PlaceAssisted_button_Click(object sender, EventArgs e)
         {
-            SelectedMethod = "Place Assisted";
+             MainForm.SelectedMethod = "Place Assisted";
             this.Close();
         }
 
         private void LoosePartAssisted_button_Click(object sender, EventArgs e)
         {
-            SelectedMethod = "LoosePart Assisted";
+             MainForm.SelectedMethod = "LoosePart Assisted";
             this.Close();
         }
 	}

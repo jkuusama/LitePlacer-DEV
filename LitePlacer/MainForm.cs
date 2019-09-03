@@ -7518,11 +7518,13 @@ namespace LitePlacer
             MakeJobDataDirty();
         }
 
+        public string SelectedMethod { get; set; }
+
         private void JobData_GridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if(e.RowIndex == -1)
             {
-                // user clicked header, most likely to sor for nozzles
+                // user clicked header, most likely to sort for nozzles
                 return;
             }
             if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_MethodColumn)
@@ -7532,11 +7534,11 @@ namespace LitePlacer
                 MethodSelectionForm MethodDialog = new MethodSelectionForm(this);
                 MethodDialog.ShowCheckBox = false;
                 MethodDialog.ShowDialog(this);
-                if (string.IsNullOrEmpty(MethodDialog.SelectedMethod))
+                if (string.IsNullOrEmpty(SelectedMethod))
                 {
                     foreach (DataGridViewCell cell in JobData_GridView.SelectedCells)
                     {
-                        JobData_GridView.Rows[cell.RowIndex].Cells[2].Value = MethodDialog.SelectedMethod;
+                        JobData_GridView.Rows[cell.RowIndex].Cells[2].Value = SelectedMethod;
                     }
                 }
                 Update_GridView(JobData_GridView);
@@ -7894,7 +7896,6 @@ namespace LitePlacer
 
                 // Display Method selection form:
                 bool UserHasNotDecided = false;
-                string NewMethod;
                 MethodSelectionForm MethodDialog = new MethodSelectionForm(this);
                 do
                 {
@@ -7905,8 +7906,7 @@ namespace LitePlacer
                     {
                         RestoreRow = false;
                     };
-                    NewMethod = MethodDialog.SelectedMethod;
-                    if ((NewMethod == "Place") || (NewMethod == "Place Assisted") || (NewMethod == "Place Fast"))
+                    if ((SelectedMethod == "Place") || (SelectedMethod == "Place Assisted") || (SelectedMethod == "Place Fast"))
                     {
                         // show the tape selection dialog
                         NewID = SelectTape("Select tape for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString());
@@ -7921,12 +7921,12 @@ namespace LitePlacer
                         }
                         else if (NewID == "Ignore")
                         {
-                            NewMethod = "Ignore";
+                            SelectedMethod = "Ignore";
                             NewID = "";
                         }
                         else if (NewID == "Abort")
                         {
-                            NewMethod = "Ignore";
+                            SelectedMethod = "Ignore";
                             NewID = "";
                             AbortPlacement = true;
                             AbortPlacementShown = true;
@@ -7935,12 +7935,12 @@ namespace LitePlacer
                     }
 
                 } while (UserHasNotDecided);
-                if (string.IsNullOrEmpty(NewMethod))
+                if (string.IsNullOrEmpty(SelectedMethod))
                 {
                     return false;   // user pressed x
                 }
                 // Put the values to JobData_GridView
-                JobData_GridView.Rows[RowNo].Cells["GroupMethod"].Value = NewMethod;
+                JobData_GridView.Rows[RowNo].Cells["GroupMethod"].Value = SelectedMethod;
                 JobData_GridView.Rows[RowNo].Cells["MethodParamAllComponents"].Value = NewID;
                 Update_GridView(JobData_GridView);
                 MethodDialog.Dispose();
