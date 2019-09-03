@@ -41,6 +41,9 @@ $RECYCLE.BIN/
 .Spotlight-V100
 .Trashes
 
+#
+.vs/LitePlacer/v16/Server/sqlite3/
+
 # Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop
@@ -52,11 +55,6 @@ Temporary Items
 
 *.lock
 
-\.vs/LitePlacer/v15/sqlite3/
-
-\.vs/LitePlacer/v15/Server/sqlite3/
 
 *.ide
 
-
-.vs/LitePlacer/v16/Server/sqlite3/
