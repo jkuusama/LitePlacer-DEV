@@ -2031,7 +2031,7 @@ namespace LitePlacer
         // =========================================================
 
         private void DrawSidemarksFunct(ref Bitmap img)
-        {
+        {/*
             // default values used when show pixels is off: 
             // Draw from frame edges inwards, using ticksize that gets zoomed down
             int TickSize = (FrameSizeX / 640) * 8;
@@ -2071,6 +2071,45 @@ namespace LitePlacer
                 g.DrawLine(pen, YstartRight, Y, YstartRight - TickSize, Y);
                 Y += Yinc;
             }
+*/
+            Graphics g = Graphics.FromImage(img);
+            int PenSize = 2;
+            int tick = 12;
+            int PicSizeX = FrameSizeX;
+            int PicSizeY = FrameSizeY;
+            if (ImageBox.SizeMode == PictureBoxSizeMode.CenterImage)
+            {
+                // UI shows 640x480 from middle of image. Draw tics accordingly
+                PicSizeX = 640;
+                PicSizeY = 480;
+                PenSize = 1;
+                tick = 6;
+            }
+
+            Pen pen = new Pen(Color.Red, PenSize);
+            int XStart = (FrameSizeX / 2) - (PicSizeX / 2);
+            int XEnd = (FrameSizeX / 2) + (PicSizeX / 2);
+            int YStart = (FrameSizeY / 2) - (PicSizeY / 2);
+            int YEnd = (FrameSizeY / 2) + (PicSizeY / 2);
+
+            int Xinc = Convert.ToInt32(PicSizeX / SideMarksX);
+            int X = XStart;
+            while (X < XEnd)
+            {
+                g.DrawLine(pen, X, YEnd, X, YEnd - tick);
+                g.DrawLine(pen, X, YStart, X, YStart + tick);
+                X += Xinc;
+            }
+            int Yinc = Convert.ToInt32(PicSizeY / SideMarksY);
+            int Y = YEnd;
+            while (Y > YStart)
+            {
+                g.DrawLine(pen, XEnd, Y, XEnd - tick, Y);
+                g.DrawLine(pen, XStart, Y, XStart + tick, Y);
+                Y -= Yinc;
+            }
+            pen.Dispose();
+            g.Dispose();
 
             pen.Dispose();
             g.Dispose();
