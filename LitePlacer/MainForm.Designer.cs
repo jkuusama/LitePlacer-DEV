@@ -445,6 +445,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
+            this.CadDataDelay_label = new System.Windows.Forms.Label();
             this.ClearPlaced_button = new System.Windows.Forms.Button();
             this.SkipMeasurements_checkBox = new System.Windows.Forms.CheckBox();
             this.OmitNozzleCalibration_checkBox = new System.Windows.Forms.CheckBox();
@@ -694,7 +695,7 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.CadDataDelay_label = new System.Windows.Forms.Label();
+            this.MeasureAndSet_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -971,9 +972,9 @@
             // OpticalHome_button
             // 
             this.OpticalHome_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OpticalHome_button.Location = new System.Drawing.Point(612, 777);
+            this.OpticalHome_button.Location = new System.Drawing.Point(684, 777);
             this.OpticalHome_button.Name = "OpticalHome_button";
-            this.OpticalHome_button.Size = new System.Drawing.Size(178, 46);
+            this.OpticalHome_button.Size = new System.Drawing.Size(106, 46);
             this.OpticalHome_button.TabIndex = 37;
             this.OpticalHome_button.Text = "Home";
             this.toolTip1.SetToolTip(this.OpticalHome_button, "Homes the machine\r\nFirst basic homing using limit swithces,\r\nthen optical homing " +
@@ -5396,6 +5397,16 @@
             this.RunJob_tabPage.Text = "Run Job";
             this.RunJob_tabPage.UseVisualStyleBackColor = true;
             // 
+            // CadDataDelay_label
+            // 
+            this.CadDataDelay_label.AutoSize = true;
+            this.CadDataDelay_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CadDataDelay_label.Location = new System.Drawing.Point(974, 158);
+            this.CadDataDelay_label.Name = "CadDataDelay_label";
+            this.CadDataDelay_label.Size = new System.Drawing.Size(107, 25);
+            this.CadDataDelay_label.TabIndex = 83;
+            this.CadDataDelay_label.Text = "Loading...";
+            // 
             // ClearPlaced_button
             // 
             this.ClearPlaced_button.Location = new System.Drawing.Point(1141, 281);
@@ -8057,15 +8068,17 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
-            // CadDataDelay_label
+            // MeasureAndSet_button
             // 
-            this.CadDataDelay_label.AutoSize = true;
-            this.CadDataDelay_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CadDataDelay_label.Location = new System.Drawing.Point(974, 158);
-            this.CadDataDelay_label.Name = "CadDataDelay_label";
-            this.CadDataDelay_label.Size = new System.Drawing.Size(107, 25);
-            this.CadDataDelay_label.TabIndex = 83;
-            this.CadDataDelay_label.Text = "Loading...";
+            this.MeasureAndSet_button.Location = new System.Drawing.Point(600, 777);
+            this.MeasureAndSet_button.Name = "MeasureAndSet_button";
+            this.MeasureAndSet_button.Size = new System.Drawing.Size(78, 46);
+            this.MeasureAndSet_button.TabIndex = 266;
+            this.MeasureAndSet_button.Text = "Measure and Set";
+            this.toolTip1.SetToolTip(this.MeasureAndSet_button, "Goes to zero, measures the position of home mark,\r\nand sets coordinates according" +
+        "ly. Fast way to correct\r\nany drift.\"");
+            this.MeasureAndSet_button.UseVisualStyleBackColor = true;
+            this.MeasureAndSet_button.Click += new System.EventHandler(this.MeasureAndSet_button_Click);
             // 
             // FormMain
             // 
@@ -8073,6 +8086,7 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1258, 856);
+            this.Controls.Add(this.MeasureAndSet_button);
             this.Controls.Add(this.ShowPixels_checkBox);
             this.Controls.Add(this.SetCurrentPosition_button);
             this.Controls.Add(this.label165);
@@ -8874,6 +8888,7 @@
         private System.Windows.Forms.CheckBox DownCamDrawSidemarks_checkBox;
         private System.Windows.Forms.CheckBox UpCamDrawSidemarks_checkBox;
         private System.Windows.Forms.Label CadDataDelay_label;
+        private System.Windows.Forms.Button MeasureAndSet_button;
     }
 }
 

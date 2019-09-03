@@ -2117,6 +2117,7 @@ namespace LitePlacer
             PositionConfidence = false;
             ValidMeasurement_checkBox.Checked = false;
             OpticalHome_button.BackColor = Color.Red;
+            MeasureAndSet_button.Enabled = false;
             if (!MechanicalHoming_m())
             {
                 OpticalHome_button.BackColor = Color.Red;
@@ -2144,6 +2145,7 @@ namespace LitePlacer
             OpticalHome_button.BackColor = default(Color);
             OpticalHome_button.UseVisualStyleBackColor = true;
             PositionConfidence = true;
+            MeasureAndSet_button.Enabled = true;
             return true;
         }
 
@@ -2952,6 +2954,13 @@ namespace LitePlacer
                 return false;
             }
 
+            return MeasureAndSetHome_m(0.1);
+        }
+
+        private bool MeasureAndSetHome_m(double dist)
+        {
+            double X;
+            double Y;
             // Measure 7 times, get median: 
             // xxx SetHomingMeasurement();
             List<double> Xlist = new List<double>();
@@ -2962,7 +2971,7 @@ namespace LitePlacer
             do
             {
                 Tries++;
-                res = DownCamera.GetClosestCircle(out X, out Y, 0.1/ Setting.DownCam_XmmPerPixel); 
+                res = DownCamera.GetClosestCircle(out X, out Y, dist / Setting.DownCam_XmmPerPixel); 
                 if (res==1)
                 {
                     Successes++;
@@ -6241,21 +6250,17 @@ namespace LitePlacer
             CNC_Home_m("Z");
         }
 
-        private void TestZ_thread()
-        {
-            if (!CNC_Z_m(0))
-                return;
-            if (!CNC_Z_m(Setting.General_ZTestTravel))
-                return;
-            if (!CNC_Z_m(0))
-                return;
-        }
 
         private void TestZ_button_Click(object sender, EventArgs e)
         {
-            Thread t = new Thread(() => TestZ_thread());
-            t.IsBackground = true;
-            t.Start();
+            if (Cnc.CurrentZ < 1.0)
+            {
+                CNC_Z_m(Setting.General_ZTestTravel);
+            }
+            else
+            {
+                CNC_Z_m(0);
+            }
         }
 
         private void NozzleBelowPCB_textBox_TextChanged(object sender, EventArgs e)
@@ -14329,6 +14334,14 @@ namespace LitePlacer
             CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
         }
 
+        private void MeasureAndSet_button_Click(object sender, EventArgs e)
+        {
+            if (!CNC_XY_m(0.0, 0.0))
+            {
+                return;
+            }
+            MeasureAndSetHome_m(1.0);
+        }
     }	// end of: 	public partial class FormMain : Form
 
 
