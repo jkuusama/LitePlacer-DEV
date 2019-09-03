@@ -1410,6 +1410,12 @@ namespace LitePlacer
                 }
             }
 
+            if (Cnc.CurrentZ > 5)
+            {
+                DisplayText("Nozzle is down", KnownColor.DarkRed, true);
+                return;
+            }
+
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
             {
                 Movestr = "{\"gc\":\"G1 F" + AltJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
