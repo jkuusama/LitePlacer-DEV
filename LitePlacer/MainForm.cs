@@ -2053,10 +2053,15 @@ namespace LitePlacer
 
         }
 
+        // Timer start-stop loses event hook if done from another thread. Therefore,
+        // let the timer run all the time, and keep track if we've done the task already
+        public bool TimerDone { get; set; }
+
         public void ResetMotorTimer()
         {
             SetMotorPower_checkBox(true);
             PowerTimerCount = 0;
+            TimerDone = false;
         }
 
         public void SetMotorPower_checkBox(bool val) // to get the set/clear to UI thread
@@ -2072,10 +2077,15 @@ namespace LitePlacer
         [DebuggerStepThrough]
         private void MotorPower_timer_Tick(object sender, EventArgs e)
         {
+            if (TimerDone)
+            {
+                return;
+            };
             PowerTimerCount = PowerTimerCount + 1.0;
             if ((PowerTimerCount + 0.1) > TinyGMotorTimeout)
             {
                 SetMotorPower_checkBox(false);
+                TimerDone = true;
                 if (PositionConfidence)         // == if timer should run
                 {
                     OfferHoming();
