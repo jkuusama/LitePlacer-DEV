@@ -6863,6 +6863,9 @@ namespace LitePlacer
                     CadFileName_label.Text = "--";
                     CadFilePath_label.Text = "--";
                     CadDataFileName = "--";
+                    CadDataDelay_label.Visible = false;
+                    Update_GridView(CadData_GridView);
+                    this.Refresh();
                     return false;
                 }
             }
