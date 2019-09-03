@@ -412,7 +412,8 @@ namespace LitePlacer
         public void BuildDisplayFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
             List<AForgeFunction> NewList = BuildFunctionsList(UiList);    // Get the list
-                                                                          // Stop video
+            int tries = 0;
+            // Stop video
             bool pause = PauseProcessing;
             if (VideoSource != null)
             {
@@ -424,6 +425,11 @@ namespace LitePlacer
                     while (!Paused)
                     {
                         Thread.Sleep(10);  // wait until really stopped
+                        tries++;
+                        if (tries > 200)
+                        {
+                            break;
+                        }
                     };
                 }
             }
