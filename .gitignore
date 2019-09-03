@@ -41,8 +41,8 @@ $RECYCLE.BIN/
 .Spotlight-V100
 .Trashes
 
-#
-.vs/LitePlacer/v16/Server/sqlite3/
+# Visual Studio 2015/2017 cache/options directory
+*.vs/
 
 # Directories potentially created on remote AFP share
 .AppleDB
