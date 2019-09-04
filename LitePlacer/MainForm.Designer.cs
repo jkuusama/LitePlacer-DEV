@@ -678,6 +678,7 @@
             this.NozzleNo_textBox = new System.Windows.Forms.TextBox();
             this.LoadCurrentPosition_button = new System.Windows.Forms.Button();
             this.SetCurrentPosition_button = new System.Windows.Forms.Button();
+            this.MeasureAndSet_button = new System.Windows.Forms.Button();
             this.TrueX_label = new System.Windows.Forms.Label();
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -695,7 +696,6 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.MeasureAndSet_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
@@ -4764,7 +4764,7 @@
             // label123
             // 
             this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(517, 493);
+            this.label123.Location = new System.Drawing.Point(703, 306);
             this.label123.Name = "label123";
             this.label123.Size = new System.Drawing.Size(70, 13);
             this.label123.TabIndex = 83;
@@ -4772,7 +4772,7 @@
             // 
             // ZTestTravel_textBox
             // 
-            this.ZTestTravel_textBox.Location = new System.Drawing.Point(593, 490);
+            this.ZTestTravel_textBox.Location = new System.Drawing.Point(779, 303);
             this.ZTestTravel_textBox.Name = "ZTestTravel_textBox";
             this.ZTestTravel_textBox.Size = new System.Drawing.Size(75, 20);
             this.ZTestTravel_textBox.TabIndex = 82;
@@ -7929,6 +7929,18 @@
             this.SetCurrentPosition_button.UseVisualStyleBackColor = true;
             this.SetCurrentPosition_button.Click += new System.EventHandler(this.SetCurrentPosition_button_Click);
             // 
+            // MeasureAndSet_button
+            // 
+            this.MeasureAndSet_button.Location = new System.Drawing.Point(600, 777);
+            this.MeasureAndSet_button.Name = "MeasureAndSet_button";
+            this.MeasureAndSet_button.Size = new System.Drawing.Size(78, 46);
+            this.MeasureAndSet_button.TabIndex = 266;
+            this.MeasureAndSet_button.Text = "Measure and Set";
+            this.toolTip1.SetToolTip(this.MeasureAndSet_button, "Goes to zero, measures the position of home mark,\r\nand sets coordinates according" +
+        "ly. Fast way to correct\r\nany drift.\"");
+            this.MeasureAndSet_button.UseVisualStyleBackColor = true;
+            this.MeasureAndSet_button.Click += new System.EventHandler(this.MeasureAndSet_button_Click);
+            // 
             // TrueX_label
             // 
             this.TrueX_label.AutoSize = true;
@@ -8067,18 +8079,6 @@
             this.label165.Size = new System.Drawing.Size(70, 13);
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
-            // 
-            // MeasureAndSet_button
-            // 
-            this.MeasureAndSet_button.Location = new System.Drawing.Point(600, 777);
-            this.MeasureAndSet_button.Name = "MeasureAndSet_button";
-            this.MeasureAndSet_button.Size = new System.Drawing.Size(78, 46);
-            this.MeasureAndSet_button.TabIndex = 266;
-            this.MeasureAndSet_button.Text = "Measure and Set";
-            this.toolTip1.SetToolTip(this.MeasureAndSet_button, "Goes to zero, measures the position of home mark,\r\nand sets coordinates according" +
-        "ly. Fast way to correct\r\nany drift.\"");
-            this.MeasureAndSet_button.UseVisualStyleBackColor = true;
-            this.MeasureAndSet_button.Click += new System.EventHandler(this.MeasureAndSet_button_Click);
             // 
             // FormMain
             // 

@@ -10,6 +10,9 @@ packages/
 LitePlacer/bin/
 LitePlacer/obj/
 
+# Visual Studio cache/options directory
+.vs/
+
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
@@ -40,9 +43,6 @@ $RECYCLE.BIN/
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
-
-# Visual Studio 2015/2017 cache/options directory
-*.vs/
 
 # Directories potentially created on remote AFP share
 .AppleDB
