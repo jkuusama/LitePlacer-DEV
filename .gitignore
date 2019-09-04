@@ -10,9 +10,6 @@ packages/
 LitePlacer/bin/
 LitePlacer/obj/
 
-# Visual Studio cache/options directory
-.vs/
-
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
@@ -55,6 +52,15 @@ Temporary Items
 
 *.lock
 
+\.vs/LitePlacer/v15/sqlite3/
+
+\.vs/LitePlacer/v15/Server/sqlite3/
 
 *.ide
+
+\.vs/LitePlacer/v16/Server/sqlite3/storage\.ide-shm
+
+\.vs/LitePlacer/v16/Server/sqlite3/storage\.ide-wal
+
+LitePlacer/MainForm\.prog
 
