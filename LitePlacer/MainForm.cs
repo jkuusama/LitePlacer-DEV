@@ -2945,6 +2945,13 @@ namespace LitePlacer
         private bool OpticalHoming_m()
         {
             DisplayText("Optical homing");
+            VideoAlgorithmsCollection.FullAlgorithmDescription HomeAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+                if (!VideoAlgorithms.FindAlgorithm("Homing", out HomeAlg))
+            {
+                DisplayText("*** Homing algorithm not found - programming error or corrupt data file!", KnownColor.Red, true);
+                return false;
+            }
+            DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
             // xxx SetHomingMeasurement();
             double X;
             double Y;

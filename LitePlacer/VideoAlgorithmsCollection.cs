@@ -52,21 +52,28 @@ namespace LitePlacer
         }
 
 
-        public bool SelectedAlgorithmChanged(string NewAlgorithmName)
+        public bool FindAlgorithm(string AlgorithmName, out FullAlgorithmDescription Result)
         {
+            Result = new FullAlgorithmDescription();
             foreach (FullAlgorithmDescription Algorithm in AllAlgorithms)
             {
-                if (Algorithm.Name == NewAlgorithmName)
+                if (Algorithm.Name == AlgorithmName)
                 {
-                    CurrentAlgorithm = Algorithm;
+                    Result = Algorithm;
                     return true;
                 }
             }
-            // not found, use empty algorithm:
-            CurrentAlgorithm.FunctionList.Clear();
-            CurrentAlgorithm.MeasurementParameters = new MeasurementParametersClass();
+            // not found, return empty algorithm:
+            Result.FunctionList.Clear();
+            Result.MeasurementParameters = new MeasurementParametersClass();
             return false;
         }
+
+        public bool SelectedAlgorithmChanged(string AlgorithmName)
+        {
+            return FindAlgorithm(AlgorithmName, out CurrentAlgorithm);
+        }
+
 
         public void CurrentFunction_NewInt(int val)
         {

@@ -4423,7 +4423,7 @@
             // 
             // NozzleBelowPCB_textBox
             // 
-            this.NozzleBelowPCB_textBox.Location = new System.Drawing.Point(899, 516);
+            this.NozzleBelowPCB_textBox.Location = new System.Drawing.Point(931, 515);
             this.NozzleBelowPCB_textBox.Name = "NozzleBelowPCB_textBox";
             this.NozzleBelowPCB_textBox.Size = new System.Drawing.Size(55, 20);
             this.NozzleBelowPCB_textBox.TabIndex = 104;
@@ -4432,7 +4432,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(756, 519);
+            this.label1.Location = new System.Drawing.Point(788, 518);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(137, 13);
             this.label1.TabIndex = 103;
@@ -4504,7 +4504,7 @@
             this.Zlb_label.AutoSize = true;
             this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Zlb_label.Location = new System.Drawing.Point(3, 541);
+            this.Zlb_label.Location = new System.Drawing.Point(422, 501);
             this.Zlb_label.Name = "Zlb_label";
             this.Zlb_label.Size = new System.Drawing.Size(353, 36);
             this.Zlb_label.TabIndex = 51;
@@ -4746,7 +4746,7 @@
             // 
             // ShadeGuard_textBox
             // 
-            this.ShadeGuard_textBox.Location = new System.Drawing.Point(593, 516);
+            this.ShadeGuard_textBox.Location = new System.Drawing.Point(560, 350);
             this.ShadeGuard_textBox.Name = "ShadeGuard_textBox";
             this.ShadeGuard_textBox.Size = new System.Drawing.Size(75, 20);
             this.ShadeGuard_textBox.TabIndex = 85;
@@ -4755,7 +4755,7 @@
             // label126
             // 
             this.label126.AutoSize = true;
-            this.label126.Location = new System.Drawing.Point(508, 519);
+            this.label126.Location = new System.Drawing.Point(475, 353);
             this.label126.Name = "label126";
             this.label126.Size = new System.Drawing.Size(79, 13);
             this.label126.TabIndex = 84;
@@ -7080,6 +7080,7 @@
             this.ColorHelp_label.TabIndex = 206;
             this.ColorHelp_label.Text = "(Alt+click to select color from image)";
             this.toolTip1.SetToolTip(this.ColorHelp_label, "Set parameters for the selected algorithm");
+            this.ColorHelp_label.Visible = false;
             // 
             // Color_Box
             // 
@@ -7089,6 +7090,7 @@
             this.Color_Box.Size = new System.Drawing.Size(21, 20);
             this.Color_Box.TabIndex = 205;
             this.toolTip1.SetToolTip(this.Color_Box, "Set parameters for the selected algorithm");
+            this.Color_Box.Visible = false;
             // 
             // Nozzles_tabPage
             // 
