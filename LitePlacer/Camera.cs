@@ -301,8 +301,7 @@ namespace LitePlacer
         // Video processing and measurements are done by appying AForge functions one by one to a videoframe.
         // To do this, lists of functions are maintained.
         // ==========================================================================================================
-        // The list of functions processing the image used in measurements:
-        List<AForgeFunction> MeasurementFunctions = new List<AForgeFunction>();
+
         // The list of functions processing the image shown to user:
         List<AForgeFunction> DisplayFunctions = new List<AForgeFunction>();
 
@@ -460,85 +459,6 @@ namespace LitePlacer
             PauseProcessing = pause;  // restart video is it was running
         }
 
-
-        // ==========================================================================================================
-        // Measurements are done by taking one frame and processing that:
-        private bool CopyFrame = false;     // Tells we need to take a frame from the stream 
-        private Bitmap TemporaryFrame;      // The frame is stored here.
-
-        // The caller builds the MeasurementFunctions list:
-
-        public void BuildMeasurementFunctionsList(List<AForgeFunctionDefinition> UiList)
-        {
-            MeasurementFunctions = BuildFunctionsList(UiList);
-        }
-
-        // And calls xx_measure() funtion. (Caller = any function doing measurement from video frames.)
-        // The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame from the stream, 
-        // processes it with the MeasurementFunctions list and returns the processed frame:
-
-        private Bitmap GetMeasurementFrame()
-        {
-            // Take a snapshot:
-            CopyFrame = true;
-            int tries = 100;
-            while (tries > 0)
-            {
-                tries--;
-                if (!CopyFrame)
-                {
-                    break;
-                }
-                Thread.Sleep(10);
-                Application.DoEvents();
-            }
-            if (CopyFrame)
-            {
-                // failed!
-                Graphics g = Graphics.FromImage(TemporaryFrame);
-                g.Clear(Color.Black);
-                g.Dispose();
-                MainForm.DisplayText("*** GetMeasurementFrame() failed!", KnownColor.Purple);
-                return TemporaryFrame;
-            }
-
-            if (MeasurementFunctions != null)
-            {
-                foreach (AForgeFunction f in MeasurementFunctions)
-                {
-                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
-                }
-            }
-            return TemporaryFrame;
-        }
-
-        // Since the measured image might be zoomed in, we need the value, so that we can convert to real measurements (public for debug)
-        public double GetMeasurementZoom()
-        {
-            double zoom = 1.0;
-            foreach (AForgeFunction f in MeasurementFunctions)
-            {
-                if (f.func == Meas_ZoomFunc)
-                {
-                    zoom = zoom * f.parameter_double;
-                }
-            }
-            return zoom;
-        }
-
-        // UI also needs the zoom factor from the DisplayFunctions
-        public double GetDisplayZoom()
-        {
-            double zoom = 1.0;
-            foreach (AForgeFunction f in DisplayFunctions)
-            {
-                if (f.func == Meas_ZoomFunc)
-                {
-                    zoom = zoom * f.parameter_double;
-                }
-            }
-            return zoom;
-        }
         // ==========================================================================================================
         // Members we need for our drawing functions
         // ==========================================================================================================
@@ -680,6 +600,7 @@ namespace LitePlacer
         {
             ReceivingFrames = true;
 
+            // Take a copy for measurements, if needed:
             if (CopyFrame)
             {
                 if (TemporaryFrame != null)
@@ -1379,74 +1300,6 @@ namespace LitePlacer
             return Components;
         }
 
-        private Bitmap DrawComponentsFunctOld(Bitmap bitmap)
-        {
-            List<Shapes.LitePlacerShapeComponent> Components = FindComponentsFunctOld(bitmap);
-
-            Graphics g = Graphics.FromImage(bitmap);
-            Pen OrangePen = new Pen(Color.DarkOrange, 1);
-            Pen RedPen = new Pen(Color.DarkRed, 2);
-            Pen BluePen = new Pen(Color.Blue, 2);
-            Shapes.LitePlacerShapeComponent Component;
-            System.Drawing.Point p1 = new System.Drawing.Point();
-            System.Drawing.Point p2 = new System.Drawing.Point();
-
-            for (int i = 0, n = Components.Count; i < n; i++)
-            {
-                Component = Components[i];
-
-                // Move Component.Longest start to ComponentCenter, draw it
-                float dx = Component.Center.X - Component.Longest.Start.X;
-                float dy = Component.Center.Y - Component.Longest.Start.Y;
-                p1.X = (int)Math.Round(Component.Longest.Start.X + dx);
-                p1.Y = (int)Math.Round(Component.Longest.Start.Y + dy);
-                p2.X = (int)Math.Round(Component.Longest.End.X + dx);
-                p2.Y = (int)Math.Round(Component.Longest.End.Y + dy);
-                g.DrawLine(RedPen, p1, p2);
-
-                // Move Component.Longest end to ComponentCenter, draw Component.Longest
-                dx = Component.Center.X - Component.Longest.End.X;
-                dy = Component.Center.Y - Component.Longest.End.Y;
-                p1.X = (int)Math.Round(Component.Longest.Start.X + dx);
-                p1.Y = (int)Math.Round(Component.Longest.Start.Y + dy);
-                p2.X = (int)Math.Round(Component.Longest.End.X + dx);
-                p2.Y = (int)Math.Round(Component.Longest.End.Y + dy);
-                g.DrawLine(RedPen, p1, p2);
-
-                //  Move Normal start to ComponentCenter, draw it
-                dx = Component.Center.X - Component.NormalStart.X;
-                dy = Component.Center.Y - Component.NormalStart.Y;
-                p1.X = (int)Math.Round(Component.NormalStart.X + dx);
-                p1.Y = (int)Math.Round(Component.NormalStart.Y + dy);
-                p2.X = (int)Math.Round(Component.NormalEnd.X + dx);
-                p2.Y = (int)Math.Round(Component.NormalEnd.Y + dy);
-                g.DrawLine(RedPen, p1, p2);
-
-                //  Move Component.Normal end to ComponentCenter, draw it
-                dx = Component.Center.X - Component.NormalEnd.X;
-                dy = Component.Center.Y - Component.NormalEnd.Y;
-                p1.X = (int)Math.Round(Component.NormalStart.X + dx);
-                p1.Y = (int)Math.Round(Component.NormalStart.Y + dy);
-                p2.X = (int)Math.Round(Component.NormalEnd.X + dx);
-                p2.Y = (int)Math.Round(Component.NormalEnd.Y + dy);
-                g.DrawLine(RedPen, p1, p2);
-
-                // draw outline
-                g.DrawPolygon(OrangePen, ToPointsArray(Component.Outline));
-
-                // draw Component.Longest
-                p1.X = (int)Math.Round(Component.Longest.Start.X);
-                p1.Y = (int)Math.Round(Component.Longest.Start.Y);
-                p2.X = (int)Math.Round(Component.Longest.End.X);
-                p2.Y = (int)Math.Round(Component.Longest.End.Y);
-                g.DrawLine(BluePen, p1, p2);
-            }
-            g.Dispose();
-            OrangePen.Dispose();
-            RedPen.Dispose();
-            BluePen.Dispose();
-            return (bitmap);
-        }
 
         public int GetClosestComponent(out double X, out double Y, out double A, double MaxDistance)
         // Sets X, Y position of the closest component to the frame center in pixels, 
@@ -1528,7 +1381,7 @@ namespace LitePlacer
                 // is circle ?
                 if (shapeChecker.IsCircle(edgePoints, out center, out radius))
                 {
-                    if (radius > 3)  // MirrFilter out some noise
+                    if (radius > 2)  // Filter out some noise
                     {
                         Circles.Add(new Shapes.Circle(center, radius));
                     }
@@ -1635,92 +1488,6 @@ namespace LitePlacer
                 }
             }
             return closest;
-        }
-
-        // =========================================================
-        public bool SizeLimited = false;
-        public double MaxSize = 1000;
-        public double MinSize = 1000;
-
-        public List<Shapes.Circle> GetMeasurementCircles(double MaxDistance)
-        {
-            // returns a list of circle for measurements, filters for distance (which we always do) 
-
-            Bitmap image = GetMeasurementFrame();
-            List<Shapes.Circle> Circles = FindCirclesFunct(image);
-            List<Shapes.Circle> GoodCircles = new List<Shapes.Circle>();
-            image.Dispose();
-
-            double X = 0.0;
-            double Y = 0.0;
-            MaxDistance = MaxDistance * GetMeasurementZoom();
-            double MaxS = MaxSize * GetMeasurementZoom();
-            double MinS = MinSize * GetMeasurementZoom();
-            // Remove those that are more than MaxDistance away from frame center
-            foreach (Shapes.Circle Circle in Circles)
-            {
-                X = (Circle.Center.X - FrameCenterX);
-                Y = (Circle.Center.Y - FrameCenterY);
-                if ((X * X + Y * Y) <= (MaxDistance * MaxDistance))
-                {
-                    if (SizeLimited)
-                    {
-                        if ((Circle.Radius >= MinS) && (Circle.Radius <= MaxS))
-                        {
-                            GoodCircles.Add(Circle);
-                        }
-                    }
-                    else
-                    {
-                        GoodCircles.Add(Circle);
-                    }
-                }
-            }
-            return (GoodCircles);
-        }
-
-        // =========================================================
-        public int GetClosestCircle(out double X, out double Y, double MaxDistance)
-        // Sets X, Y position of the closest circle to the frame center in pixels, return value is number of circles found
-        {
-            List<Shapes.Circle> Circles = GetMeasurementCircles(MaxDistance);
-            X = 0.0;
-            Y = 0.0;
-            if (Circles.Count == 0)
-            {
-                return (0);
-            }
-            // Find the closest
-            int closest = FindClosestCircle(Circles);
-            double zoom = GetMeasurementZoom();
-            X = (Circles[closest].Center.X - FrameCenterX);
-            Y = (Circles[closest].Center.Y - FrameCenterY);
-            X = X / zoom;
-            Y = Y / zoom;
-            return (Circles.Count);
-        }
-
-        // =========================================================
-        public int GetSmallestCircle(out double X, out double Y, out double radius, double MaxDistance)
-        // Sets X, Y position of the smallest circle to the frame center in pixels, return value is number of circles found
-        {
-            List<Shapes.Circle> Circles = GetMeasurementCircles(MaxDistance);
-            X = 0.0;
-            Y = 0.0;
-            radius = 0.0;
-            if (Circles.Count == 0)
-            {
-                return (0);
-            }
-            // Find the smallest
-            int smallest = FindSmallestCircle(Circles);
-            double zoom = GetMeasurementZoom();
-            X = (Circles[smallest].Center.X - FrameCenterX);
-            Y = (Circles[smallest].Center.Y - FrameCenterY);
-            radius = Circles[smallest].Radius / zoom;
-            X = X / zoom;
-            Y = Y / zoom;
-            return (Circles.Count);
         }
 
         // ==========================================================================================================
@@ -2242,5 +2009,316 @@ namespace LitePlacer
         }
 
 
+        // =========================================================
+        // Measurements on video images
+        // =========================================================
+        #region Measurements
+
+        // Caller = any function doing measurement from video frames. 
+        // The list of functions processing the image used in measurements, set by caller:
+        List<AForgeFunction> MeasurementFunctions = new List<AForgeFunction>();
+
+        // Measurement parameters: min and max size, max distance from initial location, set by caller:
+        public MeasurementParametersClass MeasurementParameters = new MeasurementParametersClass();
+
+        // ==========================================================================================================
+        // Measurements are done by taking one frame and processing that:
+        private bool CopyFrame = false;     // Tells we need to take a frame from the stream 
+        private Bitmap TemporaryFrame;      // The frame is stored here.
+
+        // The caller builds the MeasurementFunctions list:
+
+        public void BuildMeasurementFunctionsList(List<AForgeFunctionDefinition> UiList)
+        {
+            MeasurementFunctions = BuildFunctionsList(UiList);
+        }
+
+        // And calls xx_measure() funtion. 
+        // The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame from the stream, 
+        // processes it with the MeasurementFunctions list and returns the processed frame:
+
+        private Bitmap GetMeasurementFrame()
+        {
+            // Take a snapshot:
+            CopyFrame = true;
+            int tries = 100;
+            while (tries > 0)
+            {
+                tries--;
+                if (!CopyFrame)
+                {
+                    break;
+                }
+                Thread.Sleep(10);
+                Application.DoEvents();
+            }
+            if (CopyFrame)
+            {
+                // failed!
+                Graphics g = Graphics.FromImage(TemporaryFrame);
+                g.Clear(Color.Black);
+                g.Dispose();
+                MainForm.DisplayText("*** GetMeasurementFrame() failed!", KnownColor.Purple);
+                return TemporaryFrame;
+            }
+
+            if (MeasurementFunctions != null)
+            {
+                foreach (AForgeFunction f in MeasurementFunctions)
+                {
+                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
+                }
+            }
+            return TemporaryFrame;
+        }
+
+        // Since the measured image might be zoomed in, we need the value, so that we can convert to real measurements (public for debug)
+        public double GetMeasurementZoom()
+        {
+            double zoom = 1.0;
+            foreach (AForgeFunction f in MeasurementFunctions)
+            {
+                if (f.func == Meas_ZoomFunc)
+                {
+                    zoom = zoom * f.parameter_double;
+                }
+            }
+            return zoom;
+        }
+
+        // UI also needs the zoom factor from the DisplayFunctions
+        public double GetDisplayZoom()
+        {
+            double zoom = 1.0;
+            foreach (AForgeFunction f in DisplayFunctions)
+            {
+                if (f.func == Meas_ZoomFunc)
+                {
+                    zoom = zoom * f.parameter_double;
+                }
+            }
+            return zoom;
+        }
+
+        // ==========================================================================================================
+        // Measure
+        // ==========================================================================================================
+
+        private void DisplayShapes(List<Shapes.Shape> Shapes, int StartFrom, double XmmPerPixel, double YmmPerPixel)
+        {
+            if ((Shapes.Count - StartFrom) == 0)
+            {
+                MainForm.DisplayText("    No results.");
+                return;
+            }
+            string OutString = "";
+            string Xpxls;
+            string Ypxls;
+            string Xmms;
+            string Ymms;
+            string Xsize;
+            string Ysize;
+            string SizeXmm;
+            string SizeYmm;
+
+            for (int i = StartFrom; i < Shapes.Count; i++)
+            {
+                Xpxls = String.Format("{0,6:0.0}", Shapes[i].Center.X - FrameCenterX);
+                Xmms = String.Format("{0,6:0.000}", (Shapes[i].Center.X - FrameCenterX) * XmmPerPixel);
+                Ypxls = String.Format("{0,6:0.0}", FrameCenterY - Shapes[i].Center.Y);
+                Ymms = String.Format("{0,6:0.000}", (FrameCenterY - Shapes[i].Center.Y) * YmmPerPixel);
+                Xsize = String.Format("{0,5:0.0}", Shapes[i].Xsize);
+                Ysize = String.Format("{0,5:0.0}", Shapes[i].Ysize);
+                SizeXmm = String.Format("{0,5:0.00}", Shapes[i].Xsize * XmmPerPixel);
+                SizeYmm = String.Format("{0,5:0.00}", Shapes[i].Ysize * YmmPerPixel);
+                OutString = "pos: " + Xpxls + ", " + Ypxls + "px; " + Xmms + ", " + Ymms + "mm; " +
+                    "size: " + Xsize + ", " + Ysize + "px; " + SizeXmm + ", " + SizeYmm + "mm";
+                MainForm.DisplayText(OutString);
+            }
+        }
+
+
+        // =========================================================
+        private double DistanceToCenter(Shapes.Shape shape)
+        {
+            double X = shape.Center.X - FrameCenterX;
+            double Y = FrameCenterY - shape.Center.Y;
+
+            return Math.Sqrt(X * X + Y * Y);
+        }
+
+        public bool Measure(out double Xresult, out double Yresult, out int err,
+                            double XmmPerPixel, double YmmPerPixel, bool DisplayResults = false )
+        {
+            Xresult = 0.0;
+            Yresult = 0.0;
+            err = 0;
+
+            if ((!MeasurementParameters.SearchRounds) && (!MeasurementParameters.SearchRectangles)
+                && (!MeasurementParameters.SearchComponents))
+            {
+                MainForm.DisplayText("Camera Measure(), nothing to search for", KnownColor.Red, true);
+                return false;
+            }
+
+            Bitmap image = GetMeasurementFrame();
+
+            // Find candidates:
+            if (DisplayResults)
+            {
+                MainForm.DisplayText("Measure()");
+                MainForm.DisplayText("Result candidates:");
+            }
+            List<Shapes.Shape> Candidates = new List<Shapes.Shape>();
+
+            if (MeasurementParameters.SearchRounds)
+            {
+                List<Shapes.Circle> Circles = FindCirclesFunct(image);
+                foreach (Shapes.Circle circle in Circles)
+                {
+                    Candidates.Add(new Shapes.Shape()
+                    {
+                        Center = circle.Center,
+                        Angle = circle.Angle,
+                        Xsize = circle.Radius * 2.0,
+                        Ysize = circle.Radius * 2.0
+                    });
+                }
+                if (DisplayResults)
+                {
+                    MainForm.DisplayText("Circles:");
+                    DisplayShapes(Candidates, 0, XmmPerPixel, YmmPerPixel);
+                }
+            }
+            int count = Candidates.Count;
+
+            if (MeasurementParameters.SearchRectangles)
+            {
+                List<Shapes.Rectangle> Regtangles = FindRectanglesFunct(image);
+                foreach (Shapes.Rectangle regt in Regtangles)
+                {
+                    Candidates.Add(new Shapes.Shape()
+                    {
+                        Center = regt.Center,
+                        Angle = regt.Angle
+                    });
+                }
+                if (DisplayResults)
+                {
+                    MainForm.DisplayText("Regtangles:");
+                    DisplayShapes(Candidates, count, XmmPerPixel, YmmPerPixel);
+                }
+            }
+
+            count = Candidates.Count;
+            if (MeasurementParameters.SearchComponents)
+            {
+                List<Shapes.Component> Components = FindComponentsFunct(image);
+                foreach (Shapes.Component comp in Components)
+                {
+                    Candidates.Add(new Shapes.Shape()
+                    {
+                        Center = comp.Center,
+                        Angle = comp.Angle
+                    });
+                }
+                if (DisplayResults)
+                {
+                    MainForm.DisplayText("Components:");
+                    DisplayShapes(Candidates, count, XmmPerPixel, YmmPerPixel);
+                }
+            }
+
+            // Filter for size
+            List<Shapes.Shape> FilteredForSize = new List<Shapes.Shape>();
+            foreach (Shapes.Shape shape in Candidates)
+            {
+                if (  ((shape.Xsize * XmmPerPixel) > MeasurementParameters.Xmin) &&
+                      ((shape.Xsize * XmmPerPixel) < MeasurementParameters.Xmax) &&
+                      ((shape.Ysize * YmmPerPixel) > MeasurementParameters.Ymin) &&
+                      ((shape.Ysize * YmmPerPixel) < MeasurementParameters.Ymax))
+
+                {
+                    FilteredForSize.Add(shape);
+                }
+            }
+            if (DisplayResults)
+            {
+                MainForm.DisplayText("Filtered for size, results:");
+            }
+            if (FilteredForSize.Count == 0)
+            {
+                MainForm.DisplayText("  No items left.");
+                return false;
+            }
+            if (DisplayResults)
+            {
+                DisplayShapes(FilteredForSize, 0, XmmPerPixel, YmmPerPixel);
+            };
+
+            // Find closest to center
+            int ResultIndex = 0;
+            int ResultCount = 0;
+            double ResultDistance = DistanceToCenter(FilteredForSize[0]);
+
+            if (FilteredForSize.Count > 0)
+            {
+                // if more than one result candidate at this point, find closest to center
+                for (int i = 1; i < FilteredForSize.Count; i++)
+                {
+                    double ThisDistance = DistanceToCenter(FilteredForSize[i]);
+                    if (ThisDistance< ResultDistance)
+                    {
+                        ResultIndex = i;
+                        ResultDistance = ThisDistance;
+                    }
+                }
+                // and check uniqueness:
+                // ResultIndex tells which item is closest. There should not be others too close
+                double Xclosest = FilteredForSize[ResultIndex].Center.X;
+                double Yclosest = FilteredForSize[ResultIndex].Center.Y;
+                foreach (Shapes.Shape shape in FilteredForSize)
+                {
+                    double Xdist = Math.Abs((shape.Center.X - Xclosest) * XmmPerPixel);
+                    double Ydist = Math.Abs((shape.Center.Y - Yclosest) * YmmPerPixel);
+                    if ((Xdist < MeasurementParameters.XUniqueDistance) && (Ydist < MeasurementParameters.YUniqueDistance))
+                    {
+                        ResultCount++;
+                    }
+                }
+                if (ResultCount==0)
+                {
+                    MainForm.DisplayText("***Camera Measure(), uniquetest=0", KnownColor.Red, true);
+                    return false;
+                }
+            }
+            Xresult = (FilteredForSize[ResultIndex].Center.X - FrameCenterX) * XmmPerPixel;
+            Yresult = (FrameCenterY - FilteredForSize[ResultIndex].Center.Y) * YmmPerPixel;
+            if (DisplayResults)
+            {
+                MainForm.DisplayText("Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
+                    ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture));
+                if (ResultCount==1)
+                {
+                    MainForm.DisplayText("Result is unique.");
+                }
+                else
+                {
+                    MainForm.DisplayText("Result is NOT unique! There are "+ (ResultCount-1).ToString()+" other possible results."
+                        , KnownColor.DarkRed, true);
+                }
+            }
+            err = ResultCount;
+            if (err==1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

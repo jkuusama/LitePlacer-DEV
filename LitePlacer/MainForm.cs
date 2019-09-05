@@ -2282,9 +2282,6 @@ namespace LitePlacer
                 }
                 DisplayText("Measuring nozzle, min. size " + MinSize.ToString(CultureInfo.InvariantCulture)
                     + ", max. size" + MaxSize.ToString(CultureInfo.InvariantCulture));
-                UpCamera.MaxSize = MaxSize / Setting.UpCam_XmmPerPixel;
-                UpCamera.MinSize = MinSize / Setting.UpCam_XmmPerPixel;
-                UpCamera.SizeLimited = true;
             }
 
             result &= Nozzle.Calibrate();  
@@ -2313,7 +2310,6 @@ namespace LitePlacer
                     "Nozzle calibration failed.",
                     MessageBoxButtons.OK);
             }
-            UpCamera.SizeLimited = false;
             return (result);
         }
 
@@ -2835,28 +2831,22 @@ namespace LitePlacer
 
 
         // =====================================================================
-        // This routine finds an accurate location of a circle/rectangle that downcamera is looking at.
+        // This routine finds an accurate location of a circle/rectangle/... that downcamera is looking at.
         // Used in homing, locating fiducials and locating tape holes.
-        // Tolerances in mm; find: how far from center to accept a circle, move: how close to go (set small to ensure view from straight up)
-        // At return, the camera is located on top of the circle.
-        // X and Y are set to remainding error (true position: currect + error)
+        // At return, the camera is located on top of the feature.
+        // X and Y are set to remaining error (true position: currect + error)
+        // Measurement is already set up
         // =====================================================================
 
-        public bool GoToFeatureLocation_m(FeatureType Shape, double FindTolerance, double MoveTolerance, out double X, out double Y)
+        public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y)
         {
-            DisplayText("GoToFeatureLocation_m(), FindTolerance: "
-                + FindTolerance.ToString(CultureInfo.InvariantCulture)
-                + ", MoveTolerance: " + MoveTolerance.ToString(CultureInfo.InvariantCulture));
+            DisplayText("GoToFeatureLocation_m()");
             SelectCamera(DownCamera);
             X = 100;
             Y = 100;
-            FindTolerance = FindTolerance / Setting.DownCam_XmmPerPixel;
             if (!DownCamera.IsRunning())
             {
-                ShowMessageBox(
-                    "Attempt to find circle, downcamera is not running.",
-                    "Camera not running",
-                    MessageBoxButtons.OK);
+                DisplayText("***Camera not running", KnownColor.Red, true);
                 return false;
             }
             int count = 0;
@@ -2869,32 +2859,7 @@ namespace LitePlacer
                 // Measure location
                 for (tries = 0; tries < 8; tries++)
                 {
-                    if (Shape==FeatureType.Circle)
-                    {
-                        res = DownCamera.GetClosestCircle(out X, out Y, FindTolerance);
-                    }
-                    else if (Shape == FeatureType.Rectangle)
-                    {
-                        res = DownCamera.GetClosestRectangle(out X, out Y, FindTolerance);
-                    }
-                    else if (Shape == FeatureType.Both)
-                    {
-                        res = DownCamera.GetClosestCircle(out X, out Y, FindTolerance);
-                        if (res==0)
-                        {
-                            res = DownCamera.GetClosestRectangle(out X, out Y, FindTolerance);
-                        }
-                    }
-                    else
-                    {
-                        ShowMessageBox(
-                            "GoToFeatureLocation called with unknown feature " + Shape.ToString(),
-                            "Programmer error:",
-                            MessageBoxButtons.OK);
-                        return false;
-                    }
-
-                    if (res != 0)
+                    if (DownCamera.Measure(out X, out Y, out res, Setting.DownCam_XmmPerPixel, Setting.DownCam_YmmPerPixel, false))
                     {
                         break;
                     }
@@ -2910,8 +2875,6 @@ namespace LitePlacer
                         return false;
                     }
                 }
-                X = X * Setting.DownCam_XmmPerPixel;
-                Y = -Y * Setting.DownCam_YmmPerPixel;
                 DisplayText("Optical positioning, round " + count.ToString(CultureInfo.InvariantCulture)
                     + ", dX= " + X.ToString(CultureInfo.InvariantCulture) + ", dY= " + Y.ToString(CultureInfo.InvariantCulture)
                     + ", tries= " + tries.ToString(CultureInfo.InvariantCulture));
@@ -2952,11 +2915,9 @@ namespace LitePlacer
                 return false;
             }
             DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
-            // xxx SetHomingMeasurement();
-            double X;
-            double Y;
-            // Find within 20mm, goto within 0.05
-            if (!GoToFeatureLocation_m(FeatureType.Circle, 20.0, 0.05, out X, out Y))
+            DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
+
+            if (!GoToFeatureLocation_m(0.2, out double X, out double Y))
             {
                 return false;
             }
@@ -2970,12 +2931,10 @@ namespace LitePlacer
             do
             {
                 Tries++;
-                res = DownCamera.GetClosestCircle(out X, out Y, 1 / Setting.DownCam_XmmPerPixel); 
+                DownCamera.Measure(out X, out Y, out res, Setting.DownCam_XmmPerPixel, Setting.DownCam_YmmPerPixel, false);
                 if (res==1)
                 {
                     Successes++;
-                    X = -X * Setting.DownCam_XmmPerPixel;
-                    Y = Y * Setting.DownCam_YmmPerPixel;
                     Xlist.Add(X);
                     Ylist.Add(Y);
                     DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
@@ -9720,7 +9679,7 @@ namespace LitePlacer
                 return false;
             }
             double FindTolerance = Setting.Placement_FiducialTolerance;
-            if (!GoToFeatureLocation_m(FidShape, FindTolerance, 0.1, out double X, out double Y))
+            if (!GoToFeatureLocation_m(0.5, out double X, out double Y))
             {
                 ShowMessageBox(
                     "Finding fiducial: Can't regognize fiducial " + fid.Designator,
@@ -10278,118 +10237,6 @@ namespace LitePlacer
             DownCamera.DrawArrow = false;
         }
 
-
-        // =================================================================================
-        private bool MeasurePositionErrorByFiducial_m(double X, double Y, out double errX, out double errY)
-        {
-
-            // find nearest fiducial
-            int FiducialsRow = 0;
-            errX = 0;
-            errY = 0;
-            foreach (DataGridViewRow Row in JobData_GridView.Rows)
-            {
-                if (Row.Cells["GroupMethod"].Value.ToString() == "Fiducials")
-                {
-                    FiducialsRow = Row.Index;
-                    break;
-                }
-            }
-            if (FiducialsRow == 0)
-            {
-                ShowMessageBox(
-                    "ResetPositionByFiducial: Fiducials not indicated",
-                    "Missing data",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            string[] FiducialDesignators = JobData_GridView.Rows[FiducialsRow].Cells["ComponentList"].Value.ToString().Split(',');
-            double ShortestDistance = 10000;
-            double X_fid = Double.NaN;
-            double Y_fid = Double.NaN;
-            double X_shortest = Double.NaN;
-            double Y_shortest = Double.NaN;
-            int i;
-            for (i = 0; i < FiducialDesignators.Count(); i++)
-            {
-                foreach (DataGridViewRow Row in CadData_GridView.Rows)
-                {
-                    if (Row.Cells["Component"].Value.ToString() == FiducialDesignators[i])
-                    {
-                        if (!double.TryParse(Row.Cells["X_Machine"].Value.ToString().Replace(',', '.'), out X_fid))
-                        {
-                            ShowMessageBox(
-                                "Problem with " + FiducialDesignators[i] + "X machine coordinate data",
-                                "Bad data",
-                                MessageBoxButtons.OK);
-                            return false;
-                        };
-                        if (!double.TryParse(Row.Cells["Y_Machine"].Value.ToString().Replace(',', '.'), out Y_fid))
-                        {
-                            ShowMessageBox(
-                                "Problem with " + FiducialDesignators[i] + "Y machine coordinate data",
-                                "Bad data",
-                                MessageBoxButtons.OK);
-                            return false;
-                        };
-                        break;
-                    }  // end "if this is the row of the current fiducial, ...
-                }
-                // This is the fid we want. It is measured to be at X_fid, Y_fid
-                if (double.IsNaN(X_fid) || double.IsNaN(Y_fid))
-                {
-                    ShowMessageBox(
-                        "Machine coord data for fiducial " + FiducialDesignators[i] + "not found",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-                double dX = X_fid - X;
-                double dY = Y_fid - Y;
-                double Distance = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
-
-                if (Distance < ShortestDistance)
-                {
-                    X_shortest = X_fid;
-                    Y_shortest = Y_fid;
-                    ShortestDistance = Distance;
-                }
-            }
-            if (double.IsNaN(X_shortest) || double.IsNaN(Y_shortest))
-            {
-                ShowMessageBox(
-                    "Problem finding nearest fiducial",
-                    "Sloppy programmer error",
-                    MessageBoxButtons.OK);
-                return false;
-            };
-
-            // go there
-            CNC_XY_m(X_shortest, Y_shortest);
-            // xxx SetFiducialsMeasurement();
-
-            for (int tries = 0; tries < 5; tries++)
-            {
-                // 3mm max. error
-                int res = DownCamera.GetClosestCircle(out errX, out errY, 3.0 / Setting.DownCam_XmmPerPixel);
-                if (res != 0)
-                {
-                    break;
-                }
-                if (tries >= 4)
-                {
-                    ShowMessageBox(
-                        "Finding fiducial: Can't regognize fiducial " + FiducialDesignators[i],
-                        "No Circle found",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-            }
-            errX = errX * Setting.DownCam_XmmPerPixel;
-            errY = -errY * Setting.DownCam_YmmPerPixel;
-            // and err_ now tell how much we are off.
-            return true;
-        }
 
         // =================================================================================
         private void ReMeasure_button_Click(object sender, EventArgs e)
@@ -13271,8 +13118,6 @@ namespace LitePlacer
         // ==========================================================================================================
         public bool ChangeNozzle_m(int Nozzle)
         {
-            double MinSize=0;
-            double MaxSize=10;
 
             Nozzles_Stop = false;
             if (Nozzle == Setting.Nozzles_current)
@@ -13280,45 +13125,6 @@ namespace LitePlacer
                 DisplayText("Wanted nozzle (#" + Nozzle.ToString(CultureInfo.InvariantCulture) + ") already loaded");
                 return true;
             };
-            /*
-            if (Nozzle>0)
-            {
-                if (NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[1].Value == null)
-                {
-                    ShowMessageBox(
-                        "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", min. size",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-
-                if (NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[2].Value == null)
-                {
-                    ShowMessageBox(
-                        "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", max. size",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-
-                if (!double.TryParse(NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[1].Value.ToString().Replace(',', '.'), out MinSize))
-                {
-                    ShowMessageBox(
-                        "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", min. size",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-                if (!double.TryParse(NozzlesParameters_dataGridView.Rows[Nozzle - 1].Cells[2].Value.ToString().Replace(',', '.'), out MaxSize))
-                {
-                    ShowMessageBox(
-                        "Bad data at Nozzles vision parameters table, nozzle " + Nozzle.ToString() + ", max. size",
-                        "Bad data",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-            }
-            */
 
             // store cnc speed settings
             bool slowXY = Cnc.SlowXY;
@@ -13347,7 +13153,6 @@ namespace LitePlacer
             Thread.Sleep(50);
 
             // Unload if needed
-            // int dbg = Setting.Nozzles_current;
             if (Setting.Nozzles_current != 0)
             {
                 if (!m_UnloadNozzle(Setting.Nozzles_current))
@@ -13391,11 +13196,6 @@ namespace LitePlacer
             Cnc.SlowSpeedA = Aspeed;
             CNC_timeout = timeout;
 
-            if (Nozzle > 0)
-            {
-                UpCamera.MinSize = MinSize;
-                UpCamera.MaxSize = MaxSize;
-            }
             return ok;
         }
 

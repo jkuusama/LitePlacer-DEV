@@ -12,17 +12,19 @@ namespace LitePlacer
         public class Shape
         {
             public AForge.Point Center { get; set; }    // Centerpoint of a shape
-            public double Angle { get; set; }       // Rotation of a shape
+            public double Angle { get; set; }       // Rotation of a shape; zero is parallel to X axis
             // Note: Either we have rotation on a circle (that doesn't have a meaning) or we need to complicate code to
             // make the difference. I chose the former, so angle is here.
+            public double Xsize;
+            public double Ysize;
         }
 
 
         public class LitePlacerShapeComponent : Shape
         {
-#pragma warning disable CA2227 // Collection properties should be read only
-            public List<IntPoint> Outline { get; set; }  // Compiler does not see tht this is undeed used(?), need to disable the warning
-#pragma warning restore CA2227 // Collection properties should be read only
+    #pragma warning disable CA2227 // Collection properties should be read only
+            public List<IntPoint> Outline { get; set; }  // Compiler does not see tht this is indeed used(?), need to disable the warning
+#pragma warning restore CA2227
             public LineSegment Longest { get; set; }    // Longest line segment in Outline (needed in drawing, avoid calculating twice)
             public AForge.Point NormalStart { get; set; }  // (needed in drawing, avoid calculating twice)
             public AForge.Point NormalEnd { get; set; }     // (needed in drawing, avoid calculating twice)

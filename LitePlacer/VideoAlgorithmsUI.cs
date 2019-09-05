@@ -238,8 +238,8 @@ namespace LitePlacer
             Xmax_textBox.Text = values.Xmax.ToString("0.00", CultureInfo.InvariantCulture);
             Ymin_textBox.Text = values.Ymin.ToString("0.00", CultureInfo.InvariantCulture);
             Ymax_textBox.Text = values.Ymax.ToString("0.00", CultureInfo.InvariantCulture);
-            XmaxDistance_textBox.Text = values.XmaxDistance.ToString("0.00", CultureInfo.InvariantCulture);
-            YmaxDistance_textBox.Text = values.XmaxDistance.ToString("0.00", CultureInfo.InvariantCulture);
+            XmaxDistance_textBox.Text = values.XUniqueDistance.ToString("0.00", CultureInfo.InvariantCulture);
+            YmaxDistance_textBox.Text = values.XUniqueDistance.ToString("0.00", CultureInfo.InvariantCulture);
             ChangeYwithX = true;
         }
         // =====================================================================================
@@ -495,201 +495,17 @@ namespace LitePlacer
         private void Algorithm_Measure_button_Click(object sender, EventArgs e)
         {
             Camera cam = UpCamera;
+            double Xmult = Setting.UpCam_XmmPerPixel;
+            double Ymult = Setting.UpCam_YmmPerPixel;
             if (DownCam_radioButton.Checked)
             {
                 cam = DownCamera;
+                Xmult = Setting.DownCam_XmmPerPixel;
+                Ymult = Setting.DownCam_YmmPerPixel;
             }
             cam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
-
-            DisplayText("\n\rResults:");
-
-            if (SearchRound_checkBox.Checked)
-            {
-                ListCirles(cam);
-            }
-            if (SearchRectangles_checkBox.Checked)
-            {
-                ListRectangles(cam);
-            }
-            if (SearchComponents_checkBox.Checked)
-            {
-                ListComponents(cam);
-            }
-        }
-
-        // ===================
-        private void ListComponents(Camera cam)
-        {
-            List<Shapes.Component> Components = cam.GetMeasurementComponents();
-            List<Shapes.Rectangle> Rectangles = new List<Shapes.Rectangle>();
-            foreach (var comp in Components)
-            {
-                Rectangles.Add(comp.BoundingBox);
-                DisplayText("Components:");
-                if (Rectangles.Count == 0)
-                {
-                    DisplayText("no results.");
-                }
-                else
-                {
-                    ListRectanglesBody(cam, Rectangles);
-                }
-            }
-        }
-
-        private void ListRectangles(Camera cam)
-        {
-            List<Shapes.Rectangle> Rectangles = cam.GetMeasurementRectangles(90000);
-            DisplayText("Rectangles:");
-            if (Rectangles.Count == 0)
-            {
-                DisplayText("no results.");
-            }
-            else
-            {
-                ListRectanglesBody(cam, Rectangles);
-            }
-        }
-
-        private void ListRectanglesBody(Camera cam, List<Shapes.Rectangle> Rectangles)
-        {
-            double Xmul;
-            double Ymul;
-            if (cam == DownCamera)
-            {
-                Xmul = Setting.DownCam_XmmPerPixel;
-                Ymul = Setting.DownCam_YmmPerPixel;
-            }
-            else
-            {
-                Xmul = Setting.UpCam_XmmPerPixel;
-                Ymul = Setting.UpCam_YmmPerPixel;
-            }
-            string Xpxls;
-            string Ypxls;
-            string Xmms;
-            string Ymms;
-            string Angle;
-            int i = 1;
-
-            string OutString = "";
-            DisplayText("Positions:");
-            DisplayText("Pixels                         mm's, by (x)");
-            foreach (var rec in Rectangles)
-            {
-                Xpxls = String.Format("{0,6:0.0}", rec.Center.X - cam.FrameCenterX);
-                Ypxls = String.Format("{0,6:0.0}", cam.FrameCenterY - rec.Center.Y);
-                Xmms = String.Format("{0,6:0.00}", (rec.Center.X - cam.FrameCenterX) * Xmul);
-                Ymms = String.Format("{0,6:0.00}", (cam.FrameCenterY - rec.Center.Y) * Ymul);
-                Angle = String.Format("{0,4:0.0}", rec.Angle);
-
-                OutString = i.ToString("##") + ": x: " + Xpxls + ", y:" + Ypxls +
-                         "; x:" + Xmms + ", y:" + Ymms + ", angle: " + Angle;
-                DisplayText(OutString);
-                i++;
-            }
-            i = 1;
-            DisplayText("Sizes:");
-            foreach (var rec in Rectangles)
-            {
-                Xpxls = String.Format("{0,6:0.0}", rec.LongsideLenght);
-                Ypxls = String.Format("{0,6:0.0}", rec.ShortSideLenght);
-                Xmms = String.Format("{0,6:0.00}", rec.LongsideLenght * Xmul);
-                Ymms = String.Format("{0,6:0.00}", rec.ShortSideLenght * Xmul);
-
-                OutString = i.ToString("##") + ": x: " + Xpxls + ", y:" + Ypxls + ";     x:" + Xmms + ", y:" + Ymms;
-                DisplayText(OutString);
-            }
-        }
-
-        private void ListCirles(Camera cam)
-        {
-            List<Shapes.Circle> Circles = cam.GetMeasurementCircles(90000);
-            double Xmul;
-            double Ymul;
-            if (cam == DownCamera)
-            {
-                Xmul = Setting.DownCam_XmmPerPixel;
-                Ymul = Setting.DownCam_YmmPerPixel;
-            }
-            else
-            {
-                Xmul = Setting.UpCam_XmmPerPixel;
-                Ymul = Setting.UpCam_YmmPerPixel;
-            }
-
-            string OutString="";
-            string Xpxls;
-            string Ypxls;
-            string Xmms;
-            string Ymms;
-            string Size;
-            string SizemmX;
-            string SizemmY;
-
-            DisplayText("Circles:");
-            if (Circles.Count==0)
-            {
-                DisplayText("no results.");
-            }
-            else
-            {
-                DisplayText("Pixels                         mm's");
-                foreach (var circle in Circles)
-                {
-                    Xpxls = String.Format("{0,6:0.0}", circle.Center.X - cam.FrameCenterX);
-                    Ypxls = String.Format("{0,6:0.0}", cam.FrameCenterY - circle.Center.Y);
-                    Xmms = String.Format("{0,6:0.00}", (circle.Center.X - cam.FrameCenterX) * Xmul);
-                    Ymms = String.Format("{0,6:0.00}", (cam.FrameCenterY - circle.Center.Y) * Ymul);
-                    Size = String.Format("{0,5:0.0}", circle.Radius);
-                    SizemmX = String.Format("{0,5:0.00}", circle.Radius * 2.0 * Xmul);
-                    SizemmY = String.Format("{0,5:0.00}", circle.Radius * 2.0 * Ymul);
-
-                    OutString = "x: " + Xpxls + ", y:" + Ypxls + ", r: " + Size +
-                        "; x:" + Xmms + ", y:" + Ymms + ", d(x): " + SizemmX + ", d(y): " + SizemmY;
-                    DisplayText(OutString);
-                }
-            }
-        }
-
-        public List<Shapes.Shape> CircleFeatures(List<Shapes.Circle> Circles)
-        {
-            List<Shapes.Shape> Features = new List<Shapes.Shape>();
-            foreach (var c in Circles)
-            {
-                Shapes.Shape Feat = new Shapes.Shape();
-                Feat.Center = c.Center;
-                Feat.Angle = 0.0;
-                Features.Add(Feat);
-            }
-            return Features;
-        }
-
-        public List<Shapes.Shape> RectangleFeatures(List<Shapes.Rectangle> Rectangles)
-        {
-            List<Shapes.Shape> Features = new List<Shapes.Shape>();
-            foreach (var R in Rectangles)
-            {
-                Shapes.Shape Feat = new Shapes.Shape();
-                Feat.Center = R.Center;
-                Feat.Angle = R.Angle;
-                Features.Add(Feat);
-            }
-            return Features;
-        }
-
-
-        public List<Shapes.Shape> ComponentFeatures(List<Shapes.LitePlacerShapeComponent> Components)
-        {
-            List<Shapes.Shape> Features = new List<Shapes.Shape>();
-            foreach (var C in Components)
-            {
-                Shapes.Shape Feat = new Shapes.Shape();
-                Feat.Center = C.Center;
-                Feat.Angle = C.Angle;
-                Features.Add(Feat);
-            }
-            return Features;
+            cam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
+            cam.Measure(out double X, out double Y, out int err, Xmult, Ymult, true);
         }
 
 
@@ -699,7 +515,7 @@ namespace LitePlacer
         // =====================================================================================
         // Helper functions:
 
-        private void FillFunctionTable(string AlgorithmName)
+        void FillFunctionTable(string AlgorithmName)
         {
             // User changed the current algorithm or deleted a fuction. 
             // This function (re-)fills Algorithms_dataGridView function column
@@ -1245,7 +1061,7 @@ namespace LitePlacer
                     YmaxDistance_textBox.Text = XmaxDistance_textBox.Text;
                 }
                 XmaxDistance_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.XmaxDistance = val;
+                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.XUniqueDistance = val;
             }
             else
             {
@@ -1260,7 +1076,7 @@ namespace LitePlacer
             if (double.TryParse(YmaxDistance_textBox.Text, out val))
             {
                 YmaxDistance_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YmaxDistance = val;
+                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YUniqueDistance = val;
             }
             else
             {

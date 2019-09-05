@@ -232,6 +232,7 @@ namespace LitePlacer
 
         public bool Calibrate()
         {
+            // xxxx
             CalibrationPoints.Clear();   // Presumably calibration is void no matter if we succeed here
             Calibrated = false;
             if (!Cam.IsRunning())
@@ -246,7 +247,7 @@ namespace LitePlacer
             double X = 0;
             double Y = 0;
             double Maxdistance = MainForm.Setting.Nozzles_CalibrationDistance / MainForm.Setting.UpCam_XmmPerPixel;
-            double radius = 0;
+            // double radius = 0;
             int res = 0;
             // I goes in .1 of degrees. Makes sense to have the increase so, that multiplies of 45 are hit
             for (int i = 0; i <= 3600; i = i + 225)
@@ -259,7 +260,7 @@ namespace LitePlacer
                 }
                 for (int tries = 0; tries < 10; tries++)
                 {
-                    res = Cam.GetSmallestCircle(out X, out Y, out radius, Maxdistance);
+                    // res = Cam.GetSmallestCircle(out X, out Y, out radius, Maxdistance);
                     if (res != 0)
                     {
                         break;

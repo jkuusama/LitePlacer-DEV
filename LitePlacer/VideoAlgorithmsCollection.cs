@@ -170,8 +170,8 @@ namespace LitePlacer
         public double Xmax = 0.0;
         public double Ymin = 0.0;
         public double Ymax = 0.0;
-        public double XmaxDistance = 0.0;
-        public double YmaxDistance = 0.0;
+        public double XUniqueDistance = 0.0;
+        public double YUniqueDistance = 0.0;
     }
 
 }

@@ -6732,9 +6732,12 @@
             this.label170.AutoSize = true;
             this.label170.Location = new System.Drawing.Point(1051, 523);
             this.label170.Name = "label170";
-            this.label170.Size = new System.Drawing.Size(165, 13);
+            this.label170.Size = new System.Drawing.Size(87, 13);
             this.label170.TabIndex = 236;
-            this.label170.Text = "Max. distance from initial location:";
+            this.label170.Text = "Unique distance:";
+            this.toolTip1.SetToolTip(this.label170, "Measurement takes the closest feature from the intial location.\r\nOnce this is det" +
+        "ermined, the result must be unique; no other\r\nvalid results can occur within thi" +
+        "s distacnce.");
             // 
             // AlgorithmsLoad_button
             // 
