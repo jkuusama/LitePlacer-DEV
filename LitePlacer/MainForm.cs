@@ -2896,7 +2896,7 @@ namespace LitePlacer
             if (count >= 7)
             {
                 ShowMessageBox(
-                    "Optical positioning: Process is unstable, result is unreliable!",
+                    "Optical positioning: Process is unstable, result is unreliable.",
                     "Count exeeded",
                     MessageBoxButtons.OK);
                 return false;
