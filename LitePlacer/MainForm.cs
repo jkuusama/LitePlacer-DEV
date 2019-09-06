@@ -6930,18 +6930,17 @@ namespace LitePlacer
                             "Job Data load error",
                             MessageBoxButtons.OK);
                         FillJobData_GridView();
-                        int dummy;
-                        FindFiducials_m(out dummy);  // don't care of the result, just trying to find fids
                     }
                 }
                 else
                 {
                     // If not, build job data ourselves.
                     FillJobData_GridView();
-                    int dummy;      // don't care of the result, just trying to find fids
-                    if (FindFiducials_m(out dummy))
+                    int FidRow;      // don't care of the result, just trying to find fids
+                    if (FindFiducials_m(out FidRow))
                     {
                         FillDefaultJobValues();
+                        FillFiducialComboBox(FidRow);
                     }
                     JobFileName_label.Text = "--";
                     JobFilePath_label.Text = "--";
@@ -7434,8 +7433,9 @@ namespace LitePlacer
         {
             // TO DO: Error checking here
             FillJobData_GridView();
-            int dummy;
-            FindFiducials_m(out dummy);  // don't care of the result, just trying to find fids
+            int FidRow;
+            FindFiducials_m(out FidRow);
+            FillFiducialComboBox(FidRow);
             JobFileName_label.Text = "--";
             JobFilePath_label.Text = "--";
 
@@ -7469,6 +7469,19 @@ namespace LitePlacer
         // =================================================================================
         // JobData editing
         // =================================================================================
+        private void FillFiducialComboBox(int RowIndex)
+        {
+            JobData_GridView.Rows[RowIndex].Cells["MethodParamAllComponents"].Value = null;
+            DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+            for (int i = 1; i < VideoAlgorithms.AllAlgorithms.Count; i++)
+            {
+                c.Items.Add(VideoAlgorithms.AllAlgorithms[i].Name);
+            }
+            JobData_GridView.Rows[RowIndex].Cells["MethodParamAllComponents"] = c;
+            JobData_GridView.Rows[RowIndex].Cells["MethodParamAllComponents"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+        }
+
+
         private void JobData_GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             MakeJobDataDirty();
@@ -7494,7 +7507,15 @@ namespace LitePlacer
                 {
                     foreach (DataGridViewCell cell in JobData_GridView.SelectedCells)
                     {
-                        JobData_GridView.Rows[cell.RowIndex].Cells[2].Value = SelectedMethod;
+                        JobData_GridView.Rows[cell.RowIndex].Cells["GroupMethod"].Value = SelectedMethod;
+                        JobData_GridView.Rows[cell.RowIndex].Cells["MethodParamAllComponents"].Value = null;
+                        DataGridViewTextBoxCell s = new DataGridViewTextBoxCell();
+                        s.Value = "--";
+                        JobData_GridView.Rows[cell.RowIndex].Cells["MethodParamAllComponents"] = s;
+                        if (SelectedMethod== "Fiducials")
+                        {
+                            FillFiducialComboBox(cell.RowIndex);
+                        }
                     }
                 }
                 Update_GridView(JobData_GridView);
@@ -7503,7 +7524,7 @@ namespace LitePlacer
 
             if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_MethodParametersColumn)
             {
-                // For method parameter, show the tape selection form if method is "place" 
+                // For method parameter, show the tape selection form if method is place of some sort;
                 MakeJobDataDirty();
                 string TapeID;
                 int TapeNo;

@@ -427,8 +427,8 @@ namespace LitePlacer
                 }
                 // Build Job data
                 MainForm.FillJobData_GridView();
-                int dummy;
-                if (!MainForm.FindFiducials_m(out dummy)) // don't care of the result, just trying to find fids
+                int FidRow;
+                if (!MainForm.FindFiducials_m(out FidRow)) 
                 {
                     return false;
                 }
