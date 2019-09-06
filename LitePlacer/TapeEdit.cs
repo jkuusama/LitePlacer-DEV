@@ -16,6 +16,7 @@ namespace LitePlacer
         public DataGridViewRow Row { get; set; }
         public int TapeRowNo { get; set; }
         public FormMain MainForm { get; set; }
+        public bool CreatingNew { get; set; }
         Camera Cam;
         CNC Cnc;
 
@@ -135,11 +136,6 @@ namespace LitePlacer
 
             }
 
-            if (Row.Cells["Type_Column"].Value != null)
-            {
-                Type_comboBox.Text = Row.Cells["Type_Column"].Value.ToString();
-            }
-
             if (Row.Cells["NextPart_Column"].Value != null)
             {
                 NextPart_textBox.Text = Row.Cells["NextPart_Column"].Value.ToString();
@@ -206,6 +202,25 @@ namespace LitePlacer
                 CoordinatesForParts_checkBox.Checked = false;
                 EnableLastItems();
             }
+
+            Type_comboBox.Items.Clear();
+            int CurrentItem = 0;
+            for (int i = 1; i < MainForm.VideoAlgorithms.AllAlgorithms.Count; i++)
+            {
+                Type_comboBox.Items.Add(MainForm.VideoAlgorithms.AllAlgorithms[i].Name);
+                if (MainForm.VideoAlgorithms.AllAlgorithms[i].Name == Row.Cells["Type_Column"].Value.ToString())
+                {
+                    CurrentItem = i;
+                }
+            }
+            if (CurrentItem!=0)
+            {
+                Type_comboBox.SelectedIndex = CurrentItem-1;
+            }
+            else
+            {
+                Type_comboBox.SelectedIndex = 0;
+            }
         }
 
         private void EnableLastItems()
@@ -253,6 +268,11 @@ namespace LitePlacer
             MainForm.DownCameraRotationFollowsA = false;
             Cam.DrawGrid = false;
             Cam.DrawCross = DrawCross;
+            if (CreatingNew)
+            {
+                TapesDataGrid.Rows.RemoveAt(TapeRowNo);
+                MainForm.Update_GridView(TapesDataGrid);
+            }
             Close();
         }
 

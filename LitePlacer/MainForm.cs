@@ -2833,7 +2833,7 @@ namespace LitePlacer
         // =====================================================================
         // This routine finds an accurate location of a circle/rectangle/... that downcamera is looking at.
         // Used in homing, locating fiducials and locating tape holes.
-        // At return, the camera is located on top of the feature.
+        // At return, the camera is located on top of the feature. 
         // X and Y are set to remaining error (true position: currect + error)
         // Measurement is already set up
         // =====================================================================
@@ -11281,7 +11281,7 @@ namespace LitePlacer
             }
         }
 
-        private void Invoke_TapeEditDialog(int row)
+        private void Invoke_TapeEditDialog(int row, bool CreatingNew)
         {
             DisplayText("Open edit tape dialog", KnownColor.DarkGreen);
             TapeEditForm TapeEditDialog = new TapeEditForm(Cnc, DownCamera);
@@ -11289,6 +11289,7 @@ namespace LitePlacer
             TapeEditDialog.TapeRowNo = TapesGridEditRow;
             TapeEditDialog.TapesDataGrid = Tapes_dataGridView;
             TapeEditDialog.Row = Tapes_dataGridView.Rows[row];
+            TapeEditDialog.CreatingNew = CreatingNew;
             AttachButtonLogging(TapeEditDialog.Controls);
             TapeEditDialog.Show(this);
         }
@@ -11299,7 +11300,7 @@ namespace LitePlacer
             {
                 return; // user clicked header or empty space
             }
-            Invoke_TapeEditDialog(TapesGridEditRow);
+            Invoke_TapeEditDialog(TapesGridEditRow, false);
         }
 
         // end edit dialog stuff
@@ -11308,6 +11309,15 @@ namespace LitePlacer
 
         private void AddTape_button_Click(object sender, EventArgs e)
         {
+            if (VideoAlgorithms.AllAlgorithms.Count < 2)
+            {
+                ShowMessageBox(
+                    "Define some video processing algorithms first.\n\r",
+                    "No algorithm",
+                    MessageBoxButtons.OK);
+                return;
+            }
+
             DataGridViewSelectedRowCollection SelectedRows = Tapes_dataGridView.SelectedRows;
             int index = 0;
             if (SelectedRows.Count == 0)
@@ -11340,8 +11350,8 @@ namespace LitePlacer
             // WidthColumn: sets the width of the tape and the distance from one part to next. 
             // From EIA-481, we get the part location from the hole location.
             Tapes_dataGridView.Rows[index].Cells["Width_Column"].Value = "8/4mm";
-            // Type_Column: used in hole recognition
-            Tapes_dataGridView.Rows[index].Cells["Type_Column"].Value = "Paper (White)";
+            // Type_Column: used in hole/part recognition
+            Tapes_dataGridView.Rows[index].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
             // NextPart_Column tells the part number of next part. 
             // NextX, NextY tell the approximate hole location for the next part. Incremented when a part is picked up.
             Tapes_dataGridView.Rows[index].Cells["NextPart_Column"].Value = "1";
@@ -11362,7 +11372,7 @@ namespace LitePlacer
             Tapes_dataGridView.Rows[index].Cells["LastY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[index].Cells["RotationDirect_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             TapesGridEditRow = index;
-            Invoke_TapeEditDialog(index);
+            Invoke_TapeEditDialog(index, true);
         }
 
         private void TapeUp_button_Click(object sender, EventArgs e)

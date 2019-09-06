@@ -33,7 +33,7 @@ namespace LitePlacer
         public List<string> KnownFunctions = new List<string> {"Threshold", "Histogram", "Grayscale", "Invert", "Edge detect",
                 "Noise reduction", "Kill color", "Keep color", "Blur", "Gaussian blur", "Meas. zoom"};
 
-        VideoAlgorithmsCollection VideoAlgorithms;
+        public VideoAlgorithmsCollection VideoAlgorithms;
 
         // =====================================================================================
         // interface to main form:

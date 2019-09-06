@@ -2273,7 +2273,7 @@ namespace LitePlacer
                         ResultDistance = ThisDistance;
                     }
                 }
-                // and check uniqueness:
+                // and check uniqueness: 
                 // ResultIndex tells which item is closest. There should not be others too close
                 double Xclosest = FilteredForSize[ResultIndex].Center.X;
                 double Yclosest = FilteredForSize[ResultIndex].Center.Y;
