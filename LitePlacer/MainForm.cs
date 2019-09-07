@@ -2852,8 +2852,8 @@ namespace LitePlacer
             int count = 0;
             int res = 0;
             int tries = 0;
-            bool ProcessingStateSave = DownCamera.PauseProcessing;
-            DownCamera.PauseProcessing = true;
+            // bool ProcessingStateSave = DownCamera.PauseProcessing;
+            // DownCamera.PauseProcessing = true;
             do
             {
                 // Measure location
@@ -2871,7 +2871,7 @@ namespace LitePlacer
                             "Optical positioning: Can't find Feature",
                             "No found",
                             MessageBoxButtons.OK);
-                        DownCamera.PauseProcessing = ProcessingStateSave;
+                        // DownCamera.PauseProcessing = ProcessingStateSave;
                         return false;
                     }
                 }
@@ -2892,7 +2892,7 @@ namespace LitePlacer
                 && ((Math.Abs(X) > MoveTolerance)
                 || (Math.Abs(Y) > MoveTolerance)));
 
-            DownCamera.PauseProcessing = ProcessingStateSave;
+            // DownCamera.PauseProcessing = ProcessingStateSave;
             if (count >= 7)
             {
                 ShowMessageBox(
@@ -7435,7 +7435,8 @@ namespace LitePlacer
             FillJobData_GridView();
             int FidRow;
             FindFiducials_m(out FidRow);
-            FillFiducialComboBox(FidRow);
+                                    FillFiducialComboBox(FidRow);
+
             JobFileName_label.Text = "--";
             JobFilePath_label.Text = "--";
 
@@ -9678,33 +9679,12 @@ namespace LitePlacer
             {
                 return false;
             }
-            FeatureType FidShape= FeatureType.Circle;
-            if (Setting.Placement_FiducialsType==0)
-            {
-                FidShape = FeatureType.Circle;
-            }
-            else if (Setting.Placement_FiducialsType == 1)
-            {
-                FidShape = FeatureType.Rectangle;
-            }
-            else if (Setting.Placement_FiducialsType == 2)
-            {
-                FidShape = FeatureType.Both;
-            }
-            else
-            {
-                ShowMessageBox(
-                    "MeasureFiducial_m, unknown fiducial type " + FidShape.ToString(),
-                    "Programmer error:",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-            double FindTolerance = Setting.Placement_FiducialTolerance;
-            if (!GoToFeatureLocation_m(0.5, out double X, out double Y))
+
+            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
             {
                 ShowMessageBox(
                     "Finding fiducial: Can't regognize fiducial " + fid.Designator,
-                    "No Circle found",
+                    "No Fiducial found",
                     MessageBoxButtons.OK);
                 return false;
             }
@@ -9815,7 +9795,16 @@ namespace LitePlacer
             }
             // Get ready for position measurements
             DisplayText("SetFiducialsMeasurement");
-            // xxx SetFiducialsMeasurement();
+            VideoAlgorithmsCollection.FullAlgorithmDescription FidAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+            string VidAlgName = JobData_GridView.Rows[FiducialsRow].Cells["MethodParamAllComponents"].Value.ToString();
+            if (!VideoAlgorithms.FindAlgorithm(VidAlgName, out FidAlg))
+            {
+                DisplayText("*** Fiducial algorithm (" + VidAlgName + ") not found", KnownColor.Red, true);
+                return false;
+            }
+            DownCamera.BuildMeasurementFunctionsList(FidAlg.FunctionList);
+            DownCamera.MeasurementParameters = FidAlg.MeasurementParameters;
+
             // move them to our array, checking the data:
             PhysicalComponent[] Fiducials = new PhysicalComponent[FiducialDesignators.Length];  // store the data here
             // double X_nom = 0;

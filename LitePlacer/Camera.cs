@@ -2154,10 +2154,11 @@ namespace LitePlacer
             Yresult = 0.0;
             err = 0;
 
+            MainForm.DisplayText("Camera Measure():");
             if ((!MeasurementParameters.SearchRounds) && (!MeasurementParameters.SearchRectangles)
                 && (!MeasurementParameters.SearchComponents))
             {
-                MainForm.DisplayText("Camera Measure(), nothing to search for", KnownColor.Red, true);
+                MainForm.DisplayText("Nothing to search for", KnownColor.Red, true);
                 return false;
             }
 
@@ -2166,10 +2167,13 @@ namespace LitePlacer
             // Find candidates:
             if (DisplayResults)
             {
-                MainForm.DisplayText("Measure()");
                 MainForm.DisplayText("Result candidates:");
             }
             List<Shapes.Shape> Candidates = new List<Shapes.Shape>();
+
+            double zoom = GetMeasurementZoom();
+            XmmPerPixel = XmmPerPixel / zoom;
+            YmmPerPixel = YmmPerPixel / zoom;
 
             if (MeasurementParameters.SearchRounds)
             {
@@ -2248,7 +2252,14 @@ namespace LitePlacer
             }
             if (FilteredForSize.Count == 0)
             {
-                MainForm.DisplayText("  No items left.");
+                if (DisplayResults)
+                {
+                    MainForm.DisplayText("No items left.");
+                }
+                else
+                {
+                    MainForm.DisplayText("Camera Measure(), no items left after size filtering.");
+                }
                 return false;
             }
             if (DisplayResults)
@@ -2277,6 +2288,12 @@ namespace LitePlacer
                 // ResultIndex tells which item is closest. There should not be others too close
                 double Xclosest = FilteredForSize[ResultIndex].Center.X;
                 double Yclosest = FilteredForSize[ResultIndex].Center.Y;
+                if ((MeasurementParameters.XUniqueDistance<0.01)||
+                    (MeasurementParameters.YUniqueDistance < 0.01))
+                {
+                    MainForm.DisplayText("Uniquedistance is 0 or less.", KnownColor.Red, true);
+                    return false;
+                }
                 foreach (Shapes.Shape shape in FilteredForSize)
                 {
                     double Xdist = Math.Abs((shape.Center.X - Xclosest) * XmmPerPixel);
@@ -2294,19 +2311,34 @@ namespace LitePlacer
             }
             Xresult = (FilteredForSize[ResultIndex].Center.X - FrameCenterX) * XmmPerPixel;
             Yresult = (FrameCenterY - FilteredForSize[ResultIndex].Center.Y) * YmmPerPixel;
-            if (DisplayResults)
+            string result = "Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture);
+            if (ResultCount == 1)
             {
-                MainForm.DisplayText("Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
-                    ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture));
-                if (ResultCount==1)
+                if (DisplayResults)
                 {
+                    MainForm.DisplayText(result);
                     MainForm.DisplayText("Result is unique.");
                 }
                 else
                 {
-                    MainForm.DisplayText("Result is NOT unique! There are "+ (ResultCount-1).ToString()+" other possible results."
+                    MainForm.DisplayText(result+", unique");
+                }
+            }
+            else
+            {
+                if (DisplayResults)
+                {
+                    MainForm.DisplayText(result);
+                    MainForm.DisplayText("Result is NOT unique! There are " + (ResultCount - 1).ToString() + " other possible results."
                         , KnownColor.DarkRed, true);
                 }
+                else
+                {
+                    MainForm.DisplayText(result + ", not unique");
+                }
+
+
             }
             err = ResultCount;
             if (err==1)

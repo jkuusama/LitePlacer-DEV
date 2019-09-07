@@ -146,7 +146,6 @@ namespace LitePlacer
         public double Placement_Depth { get; set; } = 1;
         public bool Placement_FiducialConfirmation { get; set; } = false;
         public int Placement_FiducialsType { get; set; } = 0;
-        public double Placement_FiducialTolerance { get; set; } = 3;
         public bool Placement_OmitNozzleCalibration { get; set; } = false;
         public bool Placement_SkipMeasurements { get; set; } = false;
         public bool Placement_UpdateJobGridAtRuntime { get; set; } = false;
