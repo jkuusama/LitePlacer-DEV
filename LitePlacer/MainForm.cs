@@ -2937,9 +2937,9 @@ namespace LitePlacer
                     Successes++;
                     Xlist.Add(X);
                     Ylist.Add(Y);
-                    DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
-                        + ", Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
+                    // DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture) + ", Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
                 }
+                /*
                 else if (res == 0)
                 {
                     DisplayText("Measurement " + Tries.ToString(CultureInfo.InvariantCulture) + ", no result");
@@ -2948,6 +2948,7 @@ namespace LitePlacer
                 {
                     DisplayText("Measurement " + Tries.ToString(CultureInfo.InvariantCulture) + ", multiple results (" + res.ToString(CultureInfo.InvariantCulture) + ")");
                 }
+                */
             }
             while ((Successes<7)&&(Tries<20));
             if (Tries >= 20)

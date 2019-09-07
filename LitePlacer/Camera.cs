@@ -2154,7 +2154,6 @@ namespace LitePlacer
             Yresult = 0.0;
             err = 0;
 
-            MainForm.DisplayText("Camera Measure():");
             if ((!MeasurementParameters.SearchRounds) && (!MeasurementParameters.SearchRectangles)
                 && (!MeasurementParameters.SearchComponents))
             {
@@ -2311,6 +2310,7 @@ namespace LitePlacer
             }
             Xresult = (FilteredForSize[ResultIndex].Center.X - FrameCenterX) * XmmPerPixel;
             Yresult = (FrameCenterY - FilteredForSize[ResultIndex].Center.Y) * YmmPerPixel;
+
             string result = "Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
                 ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture);
             if (ResultCount == 1)
@@ -2322,7 +2322,7 @@ namespace LitePlacer
                 }
                 else
                 {
-                    MainForm.DisplayText(result+", unique");
+                    MainForm.DisplayText("Camera Measure(): " + result + ", unique");
                 }
             }
             else
@@ -2335,7 +2335,7 @@ namespace LitePlacer
                 }
                 else
                 {
-                    MainForm.DisplayText(result + ", not unique");
+                    MainForm.DisplayText("Camera Measure(): " + result + ", not unique");
                 }
 
 
