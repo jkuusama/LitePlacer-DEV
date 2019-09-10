@@ -123,14 +123,13 @@ namespace LitePlacer
             DisplayText("Application Start", KnownColor.Black, true);
             DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
 
-            SettingsOps = new AppSettings(this);
-
-            //Do_Upgrade();
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int i = path.LastIndexOf('\\');
             path = path.Remove(i + 1);
 
+            SettingsOps = new AppSettings(this);
             Setting = SettingsOps.Load(path + "LitePlacer.Appsettings");
+
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
@@ -141,6 +140,8 @@ namespace LitePlacer
             Nozzle = new NozzleClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Nozzle, DownCamera, Cnc, this);
             BoardSettings.MainForm = this;
+
+            //Do_Upgrade();
 
         // Setup error handling for Tapes_dataGridViews
         // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
@@ -156,12 +157,6 @@ namespace LitePlacer
             tabControlPages.TabPages.Remove(Components_tabPage);
             // and uncomment this:
             // LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
-
-            Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData");
-            ContextmenuLoadNozzle = Setting.Nozzles_default;
-            ContextmenuUnloadNozzle = Setting.Nozzles_default;
-            Nozzles_initialize();   // must be after Nozzle.LoadCalibration
-
 
             Bookmark1_button.Text = Setting.General_Mark1Name;
             Bookmark2_button.Text = Setting.General_Mark2Name;
@@ -291,6 +286,11 @@ namespace LitePlacer
         {
             // ======== General form setup:
 
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            int i = path.LastIndexOf('\\');
+            path = path.Remove(i + 1);
+
+
             // For ease of design, the picture box is drawn on a setup Cameras tab. 
             // We want it to be owned by main form (not by tab) and visible when needed.
             // Position math: https://stackoverflow.com/questions/1478022/c-sharp-get-a-controls-position-on-a-form
@@ -344,6 +344,11 @@ namespace LitePlacer
             }
             ForceNozzle_numericUpDown.Value = Setting.Nozzles_default;
             DefaultNozzle_label.Text = Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
+
+            // ======== Setup Video Processing tab:  (needs to be first, other pages need the algorithms info)
+
+            InitVideoAlgorithmsUI();
+
 
             // ======== Run Job tab:
 
@@ -405,13 +410,16 @@ namespace LitePlacer
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
             StartCameras();
 
-            // ======== Setup Video Processing tab:
-
-            InitVideoAlgorithmsUI();
-
             // ======== Tape Positions tab:
 
+            LoadTapesTable(path + "LitePlacer.TapesData_v2");
+
             // ======== Nozzles Setup tab:
+
+            Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData");
+            ContextmenuLoadNozzle = Setting.Nozzles_default;
+            ContextmenuUnloadNozzle = Setting.Nozzles_default;
+            Nozzles_initialize();   // must be after Nozzle.LoadCalibration
 
             // ======== Setup operations that can cause visible reaction:
             StartingUp = false;
@@ -1080,6 +1088,33 @@ namespace LitePlacer
                         // read in new format 
                         DisplayText("Loading tapes with nozzles data");
                         LoadDataGrid(filename, Tapes_dataGridView, DataTableType.Tapes);
+                        // build type combobox and set values
+                        string WarningMessage = "";
+                        for (int i = 0; i < Tapes_dataGridView.Rows.Count; i++)
+                        {
+                            string AlgName = Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString();  // value is correct, cell content is not
+
+                            Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = null;
+                            DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                            BuildAlgorithmsCombox(out c);
+                            Tapes_dataGridView.Rows[i].Cells["Type_Column"] = c;
+                            // Does the saved algorithm stil exist?
+                            if (VideoAlgorithms.AlgorithmExists(AlgName))
+                            {
+                                Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = AlgName;
+                            }
+                            else
+                            {
+                                WarningMessage = WarningMessage + "Algorithm " + AlgName + ", used on tape " +
+                                   Tapes_dataGridView.Rows[i].Cells["Id_Column"].Value.ToString() + ", does not exist.\n\r";
+                                Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                            }
+                        }
+                        if (WarningMessage!="")
+                        {
+                            ShowMessageBox(WarningMessage, "Algorithm missing", MessageBoxButtons.OK);
+                        }
+
                     }
                 }
             }
@@ -7270,6 +7305,8 @@ namespace LitePlacer
         private void ParseJobData(String[] AllLines)
         {
             JobData_GridView.Rows.Clear();
+            string WarningMessage = "";
+
             // ComponentCount ComponentType GroupMethod MethodParamAllComponents ComponentList
             foreach (string LineIn in AllLines)
             {
@@ -7279,12 +7316,36 @@ namespace LitePlacer
                 JobData_GridView.Rows[Last].Cells["ComponentCount"].Value = Line[0];
                 JobData_GridView.Rows[Last].Cells["ComponentType"].Value = Line[1];
                 JobData_GridView.Rows[Last].Cells["GroupMethod"].Value = Line[2];
-                JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = Line[3];
+                if (Line[2] == "Fiducials")
+                {
+                    DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                    BuildAlgorithmsCombox(out c);
+                    JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"] = c;
+                    // Does the saved algorithm stil exist?
+                    string AlgName = Line[3];
+                    if (VideoAlgorithms.AlgorithmExists(AlgName))
+                    {
+                        JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = AlgName;
+                    }
+                    else
+                    {
+                        WarningMessage = WarningMessage + "Algorithm " + AlgName + " used on file does not exist.\n\r";
+                        JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                    }
+                }
+                else
+                {
+                    JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = Line[3];
+                }
                 JobData_GridView.Rows[Last].Cells["ComponentList"].Value = Line[4];
                 if (Line.Count>5)
                 {
                     JobData_GridView.Rows[Last].Cells["JobDataNozzle_Column"].Value = Line[5];
                 }
+            }
+            if (WarningMessage != "")
+            {
+                ShowMessageBox(WarningMessage, "Algorithm missing", MessageBoxButtons.OK);
             }
             JobData_GridView.ClearSelection();
         }
@@ -7435,9 +7496,10 @@ namespace LitePlacer
             // TO DO: Error checking here
             FillJobData_GridView();
             int FidRow;
-            FindFiducials_m(out FidRow);
-                                    FillFiducialComboBox(FidRow);
-
+            if (FindFiducials_m(out FidRow))
+            {
+                FillFiducialComboBox(FidRow);
+            }
             JobFileName_label.Text = "--";
             JobFilePath_label.Text = "--";
 
@@ -7475,10 +7537,7 @@ namespace LitePlacer
         {
             JobData_GridView.Rows[RowIndex].Cells["MethodParamAllComponents"].Value = null;
             DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
-            for (int i = 1; i < VideoAlgorithms.AllAlgorithms.Count; i++)
-            {
-                c.Items.Add(VideoAlgorithms.AllAlgorithms[i].Name);
-            }
+            BuildAlgorithmsCombox(out c);
             JobData_GridView.Rows[RowIndex].Cells["MethodParamAllComponents"] = c;
             JobData_GridView.Rows[RowIndex].Cells["MethodParamAllComponents"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
         }
@@ -11276,28 +11335,12 @@ namespace LitePlacer
         // =================================================================================
         // tape parameters edit dialog
 
-        private int TapesGridEditRow = 0;
-        private int TapesGridEnterRow = 0;
-
-        private void Tapes_dataGridView_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            TapesGridEnterRow = e.RowIndex;
-        }
-
-        private void Tapes_dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                TapesGridEditRow = TapesGridEnterRow;
-            }
-        }
-
         private void Invoke_TapeEditDialog(int row, bool CreatingNew)
         {
             DisplayText("Open edit tape dialog", KnownColor.DarkGreen);
             TapeEditForm TapeEditDialog = new TapeEditForm(Cnc, DownCamera);
             TapeEditDialog.MainForm = this;
-            TapeEditDialog.TapeRowNo = TapesGridEditRow;
+            TapeEditDialog.TapeRowNo = row;
             TapeEditDialog.TapesDataGrid = Tapes_dataGridView;
             TapeEditDialog.Row = Tapes_dataGridView.Rows[row];
             TapeEditDialog.CreatingNew = CreatingNew;
@@ -11305,13 +11348,14 @@ namespace LitePlacer
             TapeEditDialog.Show(this);
         }
 
-        private void EditTape_MenuItemClick(object sender, EventArgs e)
+        private void EditTape_button_Click(object sender, EventArgs e)
         {
-            if (TapesGridEditRow<0)
+            if (Tapes_dataGridView.SelectedCells.Count != 1)
             {
-                return; // user clicked header or empty space
-            }
-            Invoke_TapeEditDialog(TapesGridEditRow, false);
+                DisplayText("Nothing selected");
+                return;
+            };
+            Invoke_TapeEditDialog(Tapes_dataGridView.CurrentCell.RowIndex, false);
         }
 
         // end edit dialog stuff
@@ -11324,7 +11368,7 @@ namespace LitePlacer
             {
                 ShowMessageBox(
                     "Define some video processing algorithms first.\n\r",
-                    "No algorithm",
+                    "No algorithms",
                     MessageBoxButtons.OK);
                 return;
             }
@@ -11362,7 +11406,11 @@ namespace LitePlacer
             // From EIA-481, we get the part location from the hole location.
             Tapes_dataGridView.Rows[index].Cells["Width_Column"].Value = "8/4mm";
             // Type_Column: used in hole/part recognition
+            DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+            BuildAlgorithmsCombox(out c);
+            Tapes_dataGridView.Rows[index].Cells["Type_Column"] = c;
             Tapes_dataGridView.Rows[index].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+            // Tapes_dataGridView.Rows[index].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
             // NextPart_Column tells the part number of next part. 
             // NextX, NextY tell the approximate hole location for the next part. Incremented when a part is picked up.
             Tapes_dataGridView.Rows[index].Cells["NextPart_Column"].Value = "1";
@@ -11382,7 +11430,6 @@ namespace LitePlacer
             Tapes_dataGridView.Rows[index].Cells["LastX_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[index].Cells["LastY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[index].Cells["RotationDirect_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
-            TapesGridEditRow = index;
             Invoke_TapeEditDialog(index, true);
         }
 
@@ -11620,7 +11667,6 @@ namespace LitePlacer
             if (TapesAll_openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 LoadTapesTable(TapesAll_openFileDialog.FileName);
-                // LoadDataGrid(TapesAll_openFileDialog.FileName, Tapes_dataGridView, DataTableType.Tapes);
             }
         }
 
@@ -14165,6 +14211,7 @@ namespace LitePlacer
             }
             OpticalHoming_m();
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

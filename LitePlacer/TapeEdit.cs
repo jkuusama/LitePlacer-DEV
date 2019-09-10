@@ -57,7 +57,7 @@ namespace LitePlacer
         private bool DrawCross = true;
         private void TapeEditForm_Load(object sender, EventArgs e)
         {
-            Row = TapesDataGrid.Rows[TapeRowNo];
+            //Row = TapesDataGrid.Rows[TapeRowNo];
             if (Row.Cells["Id_Column"].Value != null)
             {
                 ID_textBox.Text = Row.Cells["Id_Column"].Value.ToString();
@@ -203,12 +203,14 @@ namespace LitePlacer
                 EnableLastItems();
             }
 
+            // add videoalgorithms to the election box
             Type_comboBox.Items.Clear();
+            string CurrentAlg = Row.Cells["Type_Column"].Value.ToString();
             int CurrentItem = 0;
             for (int i = 1; i < MainForm.VideoAlgorithms.AllAlgorithms.Count; i++)
             {
                 Type_comboBox.Items.Add(MainForm.VideoAlgorithms.AllAlgorithms[i].Name);
-                if (MainForm.VideoAlgorithms.AllAlgorithms[i].Name == Row.Cells["Type_Column"].Value.ToString())
+                if (MainForm.VideoAlgorithms.AllAlgorithms[i].Name.ToString() == CurrentAlg)
                 {
                     CurrentItem = i;
                 }
@@ -219,7 +221,7 @@ namespace LitePlacer
             }
             else
             {
-                Type_comboBox.SelectedIndex = 0;
+                Type_comboBox.SelectedIndex = 1;
             }
         }
 

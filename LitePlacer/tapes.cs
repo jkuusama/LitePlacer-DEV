@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace LitePlacer
 {
@@ -724,33 +725,17 @@ namespace LitePlacer
 		// SetCurrentTapeMeasurement_m(): sets the camera measurement parameters according to the tape type.
 		private bool SetCurrentTapeMeasurement_m(int row)
 		{
-            return false;
-            /* xxx
-			switch (Grid.Rows[row].Cells["Type_Column"].Value.ToString())
-			{
-				case "Paper (White)":
-					MainForm.SetPaperTapeMeasurement();
-					Thread.Sleep(200);   // for automatic camera gain to have an effect
-					return true;
-
-				case "Black Plastic":
-					MainForm.SetBlackTapeMeasurement();
-					Thread.Sleep(200);   // for automatic camera gain to have an effect
-					return true;
-
-				case "Clear Plastic":
-					MainForm.SetClearTapeMeasurement();
-					Thread.Sleep(200);   // for automatic camera gain to have an effect
-					return true;
-
-				default:
-					MainForm.ShowMessageBox(
-						"Bad Type data on row " + row.ToString() + ": " + Grid.Rows[row].Cells["Type_Column"].Value.ToString(),
-						"Bad Type data",
-						MessageBoxButtons.OK
-					);
-					return false;
-			} */
+            VideoAlgorithmsCollection.FullAlgorithmDescription TapeAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+            string TapeAlgName = Grid.Rows[row].Cells["Type_Column"].Value.ToString();
+            if (!MainForm.VideoAlgorithms.FindAlgorithm(TapeAlgName, out TapeAlg))
+            {
+                MainForm.DisplayText("SetCurrentTapeMeasurement_m: *** Tape algorithm (" + TapeAlgName + ") not found", KnownColor.Red, true);
+                return false;
+            }
+            MainForm.DisplayText("SetCurrentTapeMeasurement_m: using alg " + TapeAlgName);
+            DownCamera.BuildMeasurementFunctionsList(TapeAlg.FunctionList);
+            DownCamera.MeasurementParameters = TapeAlg.MeasurementParameters;
+            return true;
 		}
 
 	}

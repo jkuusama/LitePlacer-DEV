@@ -214,7 +214,7 @@ namespace LitePlacer
         {
             AlgorithmChange = true;
             string AlgorithmName = Algorithm_comboBox.SelectedItem.ToString();
-            DisplayText("Algorithm_comboBox_SelectedIndexChanged(), func: " + AlgorithmName);
+            // DisplayText("Algorithm_comboBox_SelectedIndexChanged(), func: " + AlgorithmName);
             VideoAlgorithms.SelectedAlgorithmChanged(AlgorithmName);
             FillFunctionTable(AlgorithmName);
             FillMeasurementValues(AlgorithmName);
@@ -252,6 +252,7 @@ namespace LitePlacer
             AlgorithmNameForm GetNameDialog = new AlgorithmNameForm(StartName);
             GetNameDialog.Algorithms = VideoAlgorithms.AllAlgorithms;
             GetNameDialog.Renaming = rename;
+            GetNameDialog.StartPosition = FormStartPosition.CenterParent;
             GetNameDialog.ShowDialog(this);
             if (GetNameDialog.OK)
             {
@@ -347,7 +348,8 @@ namespace LitePlacer
                 DisplayText("Homing can't be renamed.");
                 return;
             }
-            string NewName = GetName(Algorithm_comboBox.SelectedItem.ToString(), true);
+            string OldName = Algorithm_comboBox.SelectedItem.ToString();
+            string NewName = GetName(OldName, true);
             if (NewName == null)
             {
                 DisplayText("Rename algorithm canceled");
@@ -355,9 +357,9 @@ namespace LitePlacer
             }
             DisplayText("Rename algorithm to " + NewName);
             int AlgPos;
-            if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out AlgPos))
+            if (!FindLocation(OldName, out AlgPos))
             {
-                DisplayText("Rename algorithm, algorithm not found!");
+                DisplayText("***Rename algorithm, algorithm not found!");
                 return;
             }
             VideoAlgorithms.AllAlgorithms[AlgPos].Name = NewName;
@@ -365,6 +367,47 @@ namespace LitePlacer
             Algorithm_comboBox.Items.RemoveAt(NamePos);
             Algorithm_comboBox.Items.Insert(NamePos, NewName);
             Algorithm_comboBox.SelectedIndex = NamePos;
+
+            // Rename algorithm names if already in use
+            // Fiducials on the job table
+            foreach (DataGridViewRow row in JobData_GridView.Rows)
+            {
+                if (row.Cells["GroupMethod"].Value.ToString() == "Fiducials")
+                {
+                    if (row.Cells["MethodParamAllComponents"].Value.ToString() == OldName)
+                    {
+                        row.Cells["MethodParamAllComponents"].Value = null;
+                        DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                        BuildAlgorithmsCombox(out c);
+                        row.Cells["MethodParamAllComponents"] = c;
+                        row.Cells["MethodParamAllComponents"].Value = NewName;
+                    }
+                }
+            }
+            // Tapes data table
+            foreach (DataGridViewRow row in Tapes_dataGridView.Rows)
+            {
+                string CurrentValue = row.Cells["Type_Column"].Value.ToString();
+                row.Cells["Type_Column"].Value = null;
+                DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                BuildAlgorithmsCombox(out c);
+                row.Cells["Type_Column"] = c;
+                if (VideoAlgorithms.AlgorithmExists(CurrentValue))
+                {
+                    row.Cells["Type_Column"].Value = CurrentValue;
+                }
+                else
+                {
+                    // if CurrentValue does not exist anymore, the name was changed
+                    if (CurrentValue != OldName)
+                    {
+                        DisplayText("*** Rename algorithm: Assert failed!");  // or something else is off
+                    }
+                    row.Cells["Type_Column"].Value = NewName;
+                }
+            }
+            // Nozzles
+
         }
 
         private void ProcessDisplay_checkBox_CheckedChanged(object sender, EventArgs e)
@@ -515,6 +558,17 @@ namespace LitePlacer
         // =====================================================================================
         // Helper functions:
 
+        public void BuildAlgorithmsCombox(out DataGridViewComboBoxCell Cout)
+        {
+            DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+            for (int i = 1; i < VideoAlgorithms.AllAlgorithms.Count; i++)
+            {
+                c.Items.Add(VideoAlgorithms.AllAlgorithms[i].Name);
+            }
+            Cout = c;
+        }
+
+
         void FillFunctionTable(string AlgorithmName)
         {
             // User changed the current algorithm or deleted a fuction. 
@@ -547,26 +601,26 @@ namespace LitePlacer
         {
             if (AlgorithmChange)
             {
-                DisplayText("Functions_dataGridView_CellValueChanged(), AlgorithmChange");
+                //DisplayText("Functions_dataGridView_CellValueChanged(), AlgorithmChange");
                 return;
             }
             if (Functions_dataGridView.CurrentCell == null)
             {
-                DisplayText("Functions_dataGridView_CellValueChanged(), cell=null");
+                //DisplayText("Functions_dataGridView_CellValueChanged(), cell=null");
                 return;
             }
             int row = Functions_dataGridView.CurrentCell.RowIndex;
             int col = Functions_dataGridView.CurrentCell.ColumnIndex;
-            DisplayText("Functions_dataGridView_CellValueChanged(), " + row.ToString() + ", " + col.ToString());
+            //DisplayText("Functions_dataGridView_CellValueChanged(), " + row.ToString() + ", " + col.ToString());
             int FunctCol = (int)Functions_dataGridViewColumns.FunctionColumn;
             int ActiveCol = (int)Functions_dataGridViewColumns.ActiveColumn;
 
             if (Functions_dataGridView.Rows[row].Cells[FunctCol].Value == null)
             {
-                DisplayText("value: null");
+                //DisplayText("value: null");
                 return;
             };
-            DisplayText("value: " + Functions_dataGridView.Rows[row].Cells[FunctCol].Value.ToString());
+            //DisplayText("value: " + Functions_dataGridView.Rows[row].Cells[FunctCol].Value.ToString());
             Update_GridView(Functions_dataGridView);
 
             if (col == FunctCol)

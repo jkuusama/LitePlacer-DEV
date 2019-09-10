@@ -65,6 +65,7 @@
             this.Bookmark5_button = new System.Windows.Forms.Button();
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.EditTape_button = new System.Windows.Forms.Button();
             this.label158 = new System.Windows.Forms.Label();
             this.label157 = new System.Windows.Forms.Label();
             this.ResetSelectedPlaceZs_button = new System.Windows.Forms.Button();
@@ -87,8 +88,6 @@
             this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tapes_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ShowPart_button = new System.Windows.Forms.Button();
             this.label129 = new System.Windows.Forms.Label();
             this.HoleTest_button = new System.Windows.Forms.Button();
@@ -698,7 +697,6 @@
             this.label165 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
-            this.Tapes_contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             this.Components_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
@@ -1114,6 +1112,7 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.EditTape_button);
             this.Tapes_tabPage.Controls.Add(this.label158);
             this.Tapes_tabPage.Controls.Add(this.label157);
             this.Tapes_tabPage.Controls.Add(this.ResetSelectedPlaceZs_button);
@@ -1153,10 +1152,21 @@
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
             // 
+            // EditTape_button
+            // 
+            this.EditTape_button.Location = new System.Drawing.Point(1152, 135);
+            this.EditTape_button.Name = "EditTape_button";
+            this.EditTape_button.Size = new System.Drawing.Size(75, 23);
+            this.EditTape_button.TabIndex = 96;
+            this.EditTape_button.Text = "Edit";
+            this.toolTip1.SetToolTip(this.EditTape_button, "Edit the selected tape definition");
+            this.EditTape_button.UseVisualStyleBackColor = true;
+            this.EditTape_button.Click += new System.EventHandler(this.EditTape_button_Click);
+            // 
             // label158
             // 
             this.label158.AutoSize = true;
-            this.label158.Location = new System.Drawing.Point(1152, 431);
+            this.label158.Location = new System.Drawing.Point(1155, 472);
             this.label158.Name = "label158";
             this.label158.Size = new System.Drawing.Size(77, 13);
             this.label158.TabIndex = 95;
@@ -1165,7 +1175,7 @@
             // label157
             // 
             this.label157.AutoSize = true;
-            this.label157.Location = new System.Drawing.Point(1149, 349);
+            this.label157.Location = new System.Drawing.Point(1155, 390);
             this.label157.Name = "label157";
             this.label157.Size = new System.Drawing.Size(46, 13);
             this.label157.TabIndex = 94;
@@ -1173,7 +1183,7 @@
             // 
             // ResetSelectedPlaceZs_button
             // 
-            this.ResetSelectedPlaceZs_button.Location = new System.Drawing.Point(1155, 476);
+            this.ResetSelectedPlaceZs_button.Location = new System.Drawing.Point(1158, 517);
             this.ResetSelectedPlaceZs_button.Name = "ResetSelectedPlaceZs_button";
             this.ResetSelectedPlaceZs_button.Size = new System.Drawing.Size(75, 23);
             this.ResetSelectedPlaceZs_button.TabIndex = 93;
@@ -1184,7 +1194,7 @@
             // 
             // ResetSelectedZs_button
             // 
-            this.ResetSelectedZs_button.Location = new System.Drawing.Point(1155, 447);
+            this.ResetSelectedZs_button.Location = new System.Drawing.Point(1158, 488);
             this.ResetSelectedZs_button.Name = "ResetSelectedZs_button";
             this.ResetSelectedZs_button.Size = new System.Drawing.Size(75, 23);
             this.ResetSelectedZs_button.TabIndex = 92;
@@ -1195,7 +1205,7 @@
             // 
             // ResetPlaceZ_button
             // 
-            this.ResetPlaceZ_button.Location = new System.Drawing.Point(1152, 394);
+            this.ResetPlaceZ_button.Location = new System.Drawing.Point(1155, 435);
             this.ResetPlaceZ_button.Name = "ResetPlaceZ_button";
             this.ResetPlaceZ_button.Size = new System.Drawing.Size(75, 23);
             this.ResetPlaceZ_button.TabIndex = 63;
@@ -1227,7 +1237,6 @@
             this.PlaceZ_Column,
             this.NextX_Column,
             this.NextY_column});
-            this.TapesOld_dataGridView.ContextMenuStrip = this.Tapes_contextMenuStrip;
             this.TapesOld_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.TapesOld_dataGridView.Location = new System.Drawing.Point(189, 337);
             this.TapesOld_dataGridView.MultiSelect = false;
@@ -1359,21 +1368,6 @@
             this.NextY_column.ReadOnly = true;
             this.NextY_column.Width = 64;
             // 
-            // Tapes_contextMenuStrip
-            // 
-            this.Tapes_contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.Tapes_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editToolStripMenuItem});
-            this.Tapes_contextMenuStrip.Name = "Tapes_contextMenuStrip";
-            this.Tapes_contextMenuStrip.Size = new System.Drawing.Size(95, 26);
-            // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
-            this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.EditTape_MenuItemClick);
-            // 
             // ShowPart_button
             // 
             this.ShowPart_button.Location = new System.Drawing.Point(392, 571);
@@ -1490,7 +1484,7 @@
             // 
             // TapeSet1_button
             // 
-            this.TapeSet1_button.Location = new System.Drawing.Point(1152, 222);
+            this.TapeSet1_button.Location = new System.Drawing.Point(1152, 251);
             this.TapeSet1_button.Name = "TapeSet1_button";
             this.TapeSet1_button.Size = new System.Drawing.Size(75, 23);
             this.TapeSet1_button.TabIndex = 40;
@@ -1501,7 +1495,7 @@
             // 
             // Tape_resetZs_button
             // 
-            this.Tape_resetZs_button.Location = new System.Drawing.Point(1152, 365);
+            this.Tape_resetZs_button.Location = new System.Drawing.Point(1155, 406);
             this.Tape_resetZs_button.Name = "Tape_resetZs_button";
             this.Tape_resetZs_button.Size = new System.Drawing.Size(75, 23);
             this.Tape_resetZs_button.TabIndex = 39;
@@ -1512,7 +1506,7 @@
             // 
             // Tape_GoToNext_button
             // 
-            this.Tape_GoToNext_button.Location = new System.Drawing.Point(1152, 251);
+            this.Tape_GoToNext_button.Location = new System.Drawing.Point(1152, 280);
             this.Tape_GoToNext_button.Name = "Tape_GoToNext_button";
             this.Tape_GoToNext_button.Size = new System.Drawing.Size(75, 23);
             this.Tape_GoToNext_button.TabIndex = 38;
@@ -1524,7 +1518,7 @@
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(1152, 325);
+            this.label67.Location = new System.Drawing.Point(1155, 358);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(39, 13);
             this.label67.TabIndex = 37;
@@ -1533,7 +1527,7 @@
             // label62
             // 
             this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(1161, 306);
+            this.label62.Location = new System.Drawing.Point(1155, 335);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(66, 13);
             this.label62.TabIndex = 36;
@@ -1541,7 +1535,7 @@
             // 
             // SetPartNo_button
             // 
-            this.SetPartNo_button.Location = new System.Drawing.Point(1152, 280);
+            this.SetPartNo_button.Location = new System.Drawing.Point(1152, 309);
             this.SetPartNo_button.Name = "SetPartNo_button";
             this.SetPartNo_button.Size = new System.Drawing.Size(75, 23);
             this.SetPartNo_button.TabIndex = 35;
@@ -1551,7 +1545,7 @@
             // 
             // NextPart_TextBox
             // 
-            this.NextPart_TextBox.Location = new System.Drawing.Point(1195, 322);
+            this.NextPart_TextBox.Location = new System.Drawing.Point(1198, 355);
             this.NextPart_TextBox.Mask = "999";
             this.NextPart_TextBox.Name = "NextPart_TextBox";
             this.NextPart_TextBox.PromptChar = ' ';
@@ -1563,7 +1557,7 @@
             // 
             // TapeGoTo_button
             // 
-            this.TapeGoTo_button.Location = new System.Drawing.Point(1152, 193);
+            this.TapeGoTo_button.Location = new System.Drawing.Point(1152, 222);
             this.TapeGoTo_button.Name = "TapeGoTo_button";
             this.TapeGoTo_button.Size = new System.Drawing.Size(75, 23);
             this.TapeGoTo_button.TabIndex = 21;
@@ -1574,7 +1568,7 @@
             // 
             // TapeDown_button
             // 
-            this.TapeDown_button.Location = new System.Drawing.Point(1152, 164);
+            this.TapeDown_button.Location = new System.Drawing.Point(1152, 193);
             this.TapeDown_button.Name = "TapeDown_button";
             this.TapeDown_button.Size = new System.Drawing.Size(75, 23);
             this.TapeDown_button.TabIndex = 20;
@@ -1585,7 +1579,7 @@
             // 
             // TapeUp_button
             // 
-            this.TapeUp_button.Location = new System.Drawing.Point(1152, 135);
+            this.TapeUp_button.Location = new System.Drawing.Point(1152, 164);
             this.TapeUp_button.Name = "TapeUp_button";
             this.TapeUp_button.Size = new System.Drawing.Size(75, 23);
             this.TapeUp_button.TabIndex = 19;
@@ -1655,7 +1649,6 @@
             this.LastX_Column,
             this.LastY_column,
             this.RotationDirect_Column});
-            this.Tapes_dataGridView.ContextMenuStrip = this.Tapes_contextMenuStrip;
             this.Tapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.Tapes_dataGridView.Location = new System.Drawing.Point(655, 19);
             this.Tapes_dataGridView.Name = "Tapes_dataGridView";
@@ -1665,8 +1658,6 @@
             this.Tapes_dataGridView.Size = new System.Drawing.Size(494, 610);
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
-            this.Tapes_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Tapes_dataGridView_CellMouseDown);
-            this.Tapes_dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellMouseEnter);
             this.Tapes_dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellValueChanged);
             this.Tapes_dataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.Tapes_dataGridView_CurrentCellDirtyStateChanged);
             this.Tapes_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Tapes_dataGridView_EditingControlShowing);
@@ -6150,7 +6141,6 @@
             // JobData_GridView
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
-            this.JobData_GridView.AllowUserToResizeRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -6715,7 +6705,7 @@
             this.XmaxDistance_textBox.Location = new System.Drawing.Point(1074, 542);
             this.XmaxDistance_textBox.Name = "XmaxDistance_textBox";
             this.XmaxDistance_textBox.Size = new System.Drawing.Size(48, 20);
-            this.XmaxDistance_textBox.TabIndex = 238;
+            this.XmaxDistance_textBox.TabIndex = 246;
             this.XmaxDistance_textBox.TextChanged += new System.EventHandler(this.XmaxDistance_textBox_TextChanged);
             // 
             // label169
@@ -8153,7 +8143,6 @@
             this.Tapes_tabPage.ResumeLayout(false);
             this.Tapes_tabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).EndInit();
-            this.Tapes_contextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).EndInit();
             this.Components_tabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
@@ -8662,8 +8651,6 @@
         private System.Windows.Forms.CheckBox Nozzle1stMoveSlackComp_checkBox;
         private System.Windows.Forms.CheckBox LastMoveFullSpeed_checkBox;
         private System.Windows.Forms.CheckBox NozzleChangeEnable_checkBox;
-        private System.Windows.Forms.ContextMenuStrip Tapes_contextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.DataGridView TapesOld_dataGridView;
         private System.Windows.Forms.DataGridViewButtonColumn SelectButtonColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
@@ -8894,6 +8881,7 @@
         private System.Windows.Forms.CheckBox UpCamDrawSidemarks_checkBox;
         private System.Windows.Forms.Label CadDataDelay_label;
         private System.Windows.Forms.Button MeasureAndSet_button;
+        private System.Windows.Forms.Button EditTape_button;
     }
 }
 

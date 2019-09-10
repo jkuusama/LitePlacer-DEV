@@ -440,6 +440,7 @@ namespace LitePlacer
 
         public void ClearDisplayFunctionsList()
         {
+            /*
             // Stop video
             bool pause = PauseProcessing;
             if (VideoSource != null)
@@ -455,8 +456,9 @@ namespace LitePlacer
                     };
                 }
             }
+            */
             DisplayFunctions.Clear();
-            PauseProcessing = pause;  // restart video is it was running
+            // PauseProcessing = pause;  // restart video is it was running
         }
 
         // ==========================================================================================================

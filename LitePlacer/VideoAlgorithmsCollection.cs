@@ -51,6 +51,17 @@ namespace LitePlacer
             }
         }
 
+        public bool AlgorithmExists(string AlgorithmName)
+        {
+            foreach (FullAlgorithmDescription Algorithm in AllAlgorithms)
+            {
+                if (Algorithm.Name == AlgorithmName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public bool FindAlgorithm(string AlgorithmName, out FullAlgorithmDescription Result)
         {
