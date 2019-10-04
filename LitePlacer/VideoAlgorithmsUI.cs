@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,8 +30,8 @@ namespace LitePlacer
     public partial class FormMain : Form
     {
         enum Functions_dataGridViewColumns : int { FunctionColumn, ActiveColumn };
-        public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", "Grayscale", "Edge detect",
-                "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles"};
+        public List<string> KnownFunctions = new List<string> {"Threshold", "Histogram", "Grayscale", "Invert", "Edge detect",
+                "Noise reduction", "Kill color", "Keep color", "Blur", "Gaussian blur", "Meas. zoom"};
 
         public VideoAlgorithmsCollection VideoAlgorithms;
 
@@ -152,7 +152,7 @@ namespace LitePlacer
             }
             else
             {
-                LoadOldVideoAlgorithms(path, Collection);  // For now (maybe for good?), only builds an placeholder list
+                LoadOldVideoAlgorithms(path, Collection);
             }
             // fill Algorithm_comboBox
             Algorithm_comboBox.Items.Clear();
@@ -160,8 +160,10 @@ namespace LitePlacer
             {
                 Algorithm_comboBox.Items.Add(Algorithm.Name);
             }
+            ClearFunctionParameters();
+            Algorithm_comboBox.SelectedIndex = 0;
             Functions_dataGridView.CurrentCell = null;
-            UpdateFunctions();
+            AlgorithmChange = false;
         }
 
 
@@ -310,15 +312,14 @@ namespace LitePlacer
                 DisplayText("Remove algorithm, algorithm not found!");
                 return;
             }
-            if (Algorithm_comboBox.SelectedItem.ToString()==VideoAlgorithms.CurrentAlgorithm.Name)
-            {
-                ProcessDisplay_checkBox.Checked = false; // causes call to StopVideoProcessing();
-                Functions_dataGridView.Rows.Clear();
-                Functions_dataGridView.CurrentCell = null;
-                UpdateFunctions();
-            }
             VideoAlgorithms.AllAlgorithms.RemoveAt(pos);
             Algorithm_comboBox.Items.RemoveAt(Algorithm_comboBox.SelectedIndex);
+            AlgorithmChange = true;
+            ClearFunctionParameters();
+            Algorithm_comboBox.SelectedIndex = 0;
+            Functions_dataGridView.CurrentCell = null;
+            AlgorithmChange = false;
+            UpdateVideoProcessing();
         }
 
         private void DuplicateAlgorithm_button_Click(object sender, EventArgs e)
@@ -367,7 +368,7 @@ namespace LitePlacer
             Algorithm_comboBox.Items.Insert(NamePos, NewName);
             Algorithm_comboBox.SelectedIndex = NamePos;
 
-            // Rename algorithm names elsewhere, if algorithm was already in use
+            // Rename algorithm names if already in use
             // Fiducials on the job table
             foreach (DataGridViewRow row in JobData_GridView.Rows)
             {
@@ -440,8 +441,6 @@ namespace LitePlacer
             // adding a row will change current cell; we don't want false update of function parameters
             AlgorithmChange = true;
             DataGridViewSelectedRowCollection SelectedRows = Functions_dataGridView.SelectedRows;
-            Functions_dataGridView.Rows.Insert(Functions_dataGridView.Rows.Count);
-            Functions_dataGridView.CurrentCell = null;
             int index = 0;
             if (Functions_dataGridView.Rows.Count == 0)
             {
@@ -451,10 +450,10 @@ namespace LitePlacer
             else
             {
                 // insert at end
+                Functions_dataGridView.Rows.Insert(Functions_dataGridView.Rows.Count);
                 index = Functions_dataGridView.Rows.Count - 1;
             };
-            ClearFunctionParameters();
-            Update_GridView(Functions_dataGridView);
+            Functions_dataGridView.CurrentCell = null;
             AlgorithmChange = false;
         }
 
@@ -472,9 +471,12 @@ namespace LitePlacer
                 AlgorithmChange = true;
                 FillFunctionTable(VideoAlgorithms.CurrentAlgorithm.Name);
                 ClearFunctionParameters();
-                AlgorithmChange = false;
                 Functions_dataGridView.CurrentCell = null;
-                UpdateFunctions();
+                AlgorithmChange = false;
+                if (WasActive)
+                {
+                    UpdateVideoProcessing();
+                }
             }
         }
 
@@ -526,7 +528,10 @@ namespace LitePlacer
             Functions_dataGridView.CurrentCell = null; // to force the change event at last statement
             AlgorithmChange = false;
             Functions_dataGridView.CurrentCell = Functions_dataGridView[col, NewPos];
-            UpdateFunctions();
+            if (funct.Active)
+            {
+                UpdateVideoProcessing();
+            }
         }
 
         // ===================
@@ -571,24 +576,22 @@ namespace LitePlacer
             Functions_dataGridView.Rows.Clear();
             int row = 0;
             AForgeFunctionDefinition func = new AForgeFunctionDefinition();
-            if (VideoAlgorithms.CurrentAlgorithm != null)
+
+            for (int i = 0; i < VideoAlgorithms.CurrentAlgorithm.FunctionList.Count; i++)
             {
-                for (int i = 0; i < VideoAlgorithms.CurrentAlgorithm.FunctionList.Count; i++)
+                func = VideoAlgorithms.CurrentAlgorithm.FunctionList[i];
+                if (KnownFunctions.Contains(func.Name))
                 {
-                    func = VideoAlgorithms.CurrentAlgorithm.FunctionList[i];
-                    if (KnownFunctions.Contains(func.Name))
-                    {
-                        int index = KnownFunctions.IndexOf(func.Name);
-                        Functions_dataGridView.Rows.Add();
-                        Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.FunctionColumn].Value =
-                            func.Name;
-                        Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.ActiveColumn].Value =
-                            func.Active;
-                        row++;
-                    }
+                    int index = KnownFunctions.IndexOf(func.Name);
+                    Functions_dataGridView.Rows.Add();
+                    Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.FunctionColumn].Value =
+                        func.Name;
+                    Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.ActiveColumn].Value =
+                        func.Active;
+                    row++;
                 }
             }
-            UpdateFunctions();
+            Update_GridView(Functions_dataGridView);
         }
 
         // =====================================================================================
@@ -603,7 +606,7 @@ namespace LitePlacer
             }
             if (Functions_dataGridView.CurrentCell == null)
             {
-                DisplayText("Functions_dataGridView_CellValueChanged(), cell=null");
+                //DisplayText("Functions_dataGridView_CellValueChanged(), cell=null");
                 return;
             }
             int row = Functions_dataGridView.CurrentCell.RowIndex;
@@ -614,10 +617,11 @@ namespace LitePlacer
 
             if (Functions_dataGridView.Rows[row].Cells[FunctCol].Value == null)
             {
-                DisplayText("value: null");
+                //DisplayText("value: null");
                 return;
             };
             //DisplayText("value: " + Functions_dataGridView.Rows[row].Cells[FunctCol].Value.ToString());
+            Update_GridView(Functions_dataGridView);
 
             if (col == FunctCol)
             {
@@ -628,7 +632,6 @@ namespace LitePlacer
                 SetFunctionDefaultParameters(FunctionName);
                 VideoAlgorithms.CurrentAlgorithm.FunctionList[row].Active = false;  // newly selected function is inactive by default
                 UpdateParameterTargets(FunctionName);
-                Update_GridView(Functions_dataGridView);
                 // No need to update video processing
             }
             else
@@ -636,7 +639,6 @@ namespace LitePlacer
                 // active column changed
                 VideoAlgorithms.CurrentAlgorithm.FunctionList[row].Active =
                     (bool)Functions_dataGridView.Rows[row].Cells[ActiveCol].Value;
-                Update_GridView(Functions_dataGridView);
                 UpdateVideoProcessing();
             }
         }
@@ -669,49 +671,22 @@ namespace LitePlacer
         {
             if (Functions_dataGridView.CurrentCell == null)
             {
-                // user is creating new function and has not yet selected the value
                 DisplayText("Functions_dataGridView_CurrentCellDirtyStateChanged(), cell=null");
-                return;
-            }
-
-            // Return if not dirty; otherwise the stuff is executed twice (once when it changes, once when it becomes clean)
-            if (!Functions_dataGridView.IsCurrentCellDirty)
-            {
                 return;
             }
 
             int row = Functions_dataGridView.CurrentCell.RowIndex;
             int col = Functions_dataGridView.CurrentCell.ColumnIndex;
-            DisplayText("Functions_dataGridView_CurrentCellDirtyStateChanged, function:" + row.ToString() + ", " + col.ToString());
 
-            if (Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.FunctionColumn].Value !=null)
+            DisplayText("Functions_dataGridView_CurrentCellDirtyStateChanged: "
+                + row.ToString() + ", " + col.ToString());
+            // Return if not dirty; otherwise the stuff is executed twice (once when it changes, once when it becomes clean)
+            if (!Functions_dataGridView.IsCurrentCellDirty)
             {
-                UpdateParameterTargets(Functions_dataGridView.Rows[row].Cells[(int)Functions_dataGridViewColumns.FunctionColumn].Value.ToString());
+                return;
             }
-
             Update_GridView(Functions_dataGridView);
-            UpdateVideoProcessing();
         }
-
-        // ===================
-        private void UpdateFunctions()
-        {
-            // User changed something on the functions table. This function updates the display and if needed, video processing as well.
-            if (Functions_dataGridView.CurrentCell == null)
-            {
-                Algorithm_comboBox.SelectedIndex = 0;
-                ClearFunctionParameters();
-            };
-
-            Update_GridView(Functions_dataGridView);
-
-            if (ProcessDisplay_checkBox.Checked)
-            {
-                UpdateVideoProcessing();
-            }
-
-        }
-
 
 
         // =====================================================================================
@@ -734,9 +709,6 @@ namespace LitePlacer
                     break;		// no parameters
 
                 case "Invert":
-                    break;		// no parameters
-
-                case "Erosion":
                     break;		// no parameters
 
                 case "Edge detect":
@@ -769,10 +741,6 @@ namespace LitePlacer
                     break;
 
                 case "Threshold":
-                    funct.parameterInt = 128;
-                    break;
-
-                case "Hough circles":
                     funct.parameterInt = 128;
                     break;
 
@@ -813,12 +781,6 @@ namespace LitePlacer
                 case "Invert":
                     FunctionExplanation_textBox.Text = "Inverts the image; the detection functions are looking for" +
                         " white image on black background.";
-                    FunctionExplanation_textBox.Visible = true;
-                    break;		// no parameters
-
-                case "Erosion":
-                    FunctionExplanation_textBox.Text = "Assigns minimum value of surrounding pixels to each pixel of the result image." +
-                        "  Remove noisy pixels, shrinks objects.";
                     FunctionExplanation_textBox.Visible = true;
                     break;		// no parameters
 
@@ -863,15 +825,6 @@ namespace LitePlacer
                     // one double parameter
                     EnableDouble("Sigma:");
                     FunctionExplanation_textBox.Text = "Another method to blur the image: gaussian blur with kernel size of 11.";
-                    FunctionExplanation_textBox.Visible = true;
-                    break;
-
-                case "Hough circles":
-                    // int and double parameter
-                    EnableInt(0, 255, "Diameter:");
-                    EnableDouble("Intensity:");
-                    FunctionExplanation_textBox.Text = "Finds partial circles with specified diameter.\r\n"
-                        +"Result intensity correlates to match quality.";
                     FunctionExplanation_textBox.Visible = true;
                     break;
 

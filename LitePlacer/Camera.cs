@@ -361,10 +361,6 @@ namespace LitePlacer
                         f.func = InvertFunct;
                         break;
 
-                    case "Erosion":
-                        f.func = ErosionFunct;
-                        break;
-
                     case "Meas. zoom":
                         f.func = Meas_ZoomFunc;
                         break;
@@ -390,11 +386,7 @@ namespace LitePlacer
                         break;
 
                     case "Gaussian blur":
-                        f.func = GaussianBlurFunct; 
-                        break;
-
-                    case "Hough circles":
-                        f.func = HoughCirclesFunct; 
+                        f.func = GaussianBlurFunct;
                         break;
 
                     default:
@@ -433,7 +425,7 @@ namespace LitePlacer
                     {
                         Thread.Sleep(10);  // wait until really stopped
                         tries++;
-                        if (tries > 40)
+                        if (tries > 200)
                         {
                             break;
                         }
@@ -448,9 +440,9 @@ namespace LitePlacer
 
         public void ClearDisplayFunctionsList()
         {
+            /*
             // Stop video
             bool pause = PauseProcessing;
-            int tries = 0;
             if (VideoSource != null)
             {
                 if (ReceivingFrames)
@@ -461,16 +453,12 @@ namespace LitePlacer
                     while (!Paused)
                     {
                         Thread.Sleep(10);  // wait until really stopped
-                        tries++;
-                        if (tries>40)
-                        {
-                            break;
-                        }
                     };
                 }
             }
+            */
             DisplayFunctions.Clear();
-            PauseProcessing = pause;  // restart video is it was running
+            // PauseProcessing = pause;  // restart video is it was running
         }
 
         // ==========================================================================================================
@@ -820,13 +808,6 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void ErosionFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
-        {
-            Erosion filter = new Erosion();
-            filter.ApplyInPlace(frame);
-        }
-
-        // =========================================================
         private void HistogramFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
         {
             // create MirrFilter
@@ -853,20 +834,6 @@ namespace LitePlacer
             GaussianBlur filter = new GaussianBlur(par_d, 11);
             // apply the filter
             filter.ApplyInPlace(frame);
-        }
-
-        private void HoughCirclesFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
-        {
-            HoughCircleTransformation circleTransform = new HoughCircleTransformation(2* par_int);
-            // apply Hough circle transform
-            frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);    // Make gray
-            circleTransform.ProcessImage(frame);
-            frame = circleTransform.ToBitmap();
-            GrayscaleToRGB RGBfilter = new GrayscaleToRGB();    // back to color format
-            frame = RGBfilter.Apply(frame);
-
-            // get circles using relative intensity
-            //HoughCircle[] circles = circleTransform.GetCirclesByRelativeIntensity(par_d);
         }
 
 
@@ -907,7 +874,7 @@ namespace LitePlacer
         }
 
 
-        // =========================================================
+        // ========================================================= Contrast_scretchFunc
         private void GrayscaleFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
         {
             Grayscale toGrFilter = new Grayscale(0.2125, 0.7154, 0.0721);       // create grayscale MirrFilter (BT709)
@@ -916,7 +883,6 @@ namespace LitePlacer
             frame = toColFilter.Apply(fr);
         }
 
-        // =========================================================
         private void Contrast_scretchFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
         {
             ContrastStretch filter = new ContrastStretch();
