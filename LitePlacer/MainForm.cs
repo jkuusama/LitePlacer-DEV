@@ -42,12 +42,22 @@ namespace LitePlacer
 #pragma warning disable CA1308 // Yes, we want to use lower case characters
 
     /*
-    Note: For function success/failure, I use bool return code. (instead of C# exceptions; a philosophical debate, let's not go there too much.
+    NOTES: 
+    
+    For function success/failure, I use bool return code. (instead of C# exceptions; a philosophical debate, let's not go there too much.)
     Still, it should be mentioned that CA1031 is supressed: I think the right way is to tell the user and continue. For example: A save fails; tell the user, 
     Let the user to free room on the disk, plug in a USB stick, whatever, and let the user to try again. 
 
     The naming convention is xxx_m() for functions that have already displayed an error message to user. If a function only
     calls _m functions, it can consider itself a _m function.
+
+    The first hardware was TinyG from Sythetos. I started upgrading to a board called qQuintic running G2Core software, but I lost 
+    faith to ever getting a supported board. This code is discarded. (If you are interested, Github commit mid-september 2019 has some code for that.)
+    I changed to Duet 3 board. The Duet 3 communication is different enough that I rewrote 
+    and streamlined the communication routines:
+    - File TinyG.cs contains TinyG based board communications routines. These are still supported. 
+    - File Duet3.cs contains routines for Duet 3 board.
+
     */
 
     // Processing tables branch
@@ -61,7 +71,8 @@ namespace LitePlacer
         TapesClass Tapes;
         public MySettings Setting { get; set; }
         public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
-        public QQuinticSettings qQuinticBoard { get; set; } = new QQuinticSettings();
+        TinyGclass TinyG;
+        Duet3class Duet3;
 
         AppSettings SettingsOps;
 
@@ -133,7 +144,7 @@ namespace LitePlacer
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
-            Cnc_ReadyEvent = Cnc.ReadyEvent;
+            // Cnc_ReadyEvent = Cnc.ReadyEvent;
             CNC.SquareCorrection = Setting.CNC_SquareCorrection;
             DownCamera = new Camera(this);
             UpCamera = new Camera(this);
@@ -141,10 +152,13 @@ namespace LitePlacer
             Tapes = new TapesClass(Tapes_dataGridView, Nozzle, DownCamera, Cnc, this);
             BoardSettings.MainForm = this;
 
-            //Do_Upgrade();
+            TinyG= new TinyGclass(this, Cnc);
+            Duet3 = new Duet3class(this, Cnc);
+            Cnc.TinyG = TinyG;
+            Cnc.Duet3 = Duet3;
 
-        // Setup error handling for Tapes_dataGridViews
-        // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
+            // Setup error handling for Tapes_dataGridViews
+            // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
             Tapes_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
             TapesOld_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
 
@@ -278,7 +292,54 @@ namespace LitePlacer
             DisplayText(button.Text.ToString(CultureInfo.InvariantCulture), KnownColor.DarkGreen);
         }
         // ==============================================================================================
+        // Logging textbox
 
+        Color DisplayTxtCol = Color.Black;
+
+        public void DisplayText(string txt, KnownColor col = KnownColor.Black, bool force = false)
+        {
+            if (DisableLog_checkBox.Checked && !force)
+            {
+                return;
+            }
+            DisplayTxtCol = Color.FromKnownColor(col);
+            DisplayTxt(txt);
+        }
+
+        public void DisplayTxt(string txt)
+        {
+            if (InvokeRequired) { Invoke(new Action<string>(DisplayTxt), new[] { txt }); return; }
+
+            try
+            {
+                txt = txt.Replace("\n", "");
+                txt = txt.Replace("\r", "");
+                // TinyG sends \n, textbox needs \r\n. (TinyG could be set to send \n\r, which does not work with textbox.)
+                // Adding end of line here saves typing elsewhere
+                txt = txt + "\r\n";
+                if (SerialMonitor_richTextBox.Text.Length > 1000000)
+                {
+                    SerialMonitor_richTextBox.Text = SerialMonitor_richTextBox.Text.Substring(SerialMonitor_richTextBox.Text.Length - 10000);
+                }
+                SerialMonitor_richTextBox.AppendText(txt, DisplayTxtCol);
+
+            }
+            catch (ObjectDisposedException)
+            {
+                return;     // exit during startup
+            }
+        }
+
+        // ===============================
+        // "TinyG" for historical reasons, applies to any control board
+        private void textBoxSendtoTinyG_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                Cnc.ForceWrite(textBoxSendtoTinyG.Text);
+                textBoxSendtoTinyG.Clear();
+            }
+        }
         private string LastTabPage = "";
 
         // ==============================================================================================
@@ -429,11 +490,15 @@ namespace LitePlacer
 
             if (Cnc.Connected)
             {
-                if (ControlBoardJustConnected())
+                if (Cnc.JustConnected())
                 {
-                    Cnc.PumpDefaultSetting();
-                    Cnc.VacuumDefaultSetting();
+                    PumpDefaultSetting();
+                    VacuumDefaultSetting();
                     OfferHoming();
+                }
+                else
+                {
+                    CncError();
                 }
             }
 
@@ -487,9 +552,6 @@ namespace LitePlacer
             res = SaveVideoAlgorithms(path + "LitePlacer.VideoAlgorithms", VideoAlgorithms);
             OK = OK && res;
 
-            res = BoardSettings.Save(TinyGBoard, qQuinticBoard, path + "LitePlacer.BoardSettings");
-            OK = OK && res;
-
             if (!OK)
             {
                 DialogResult dialogResult = ShowMessageBox(
@@ -504,10 +566,10 @@ namespace LitePlacer
 
             if (Cnc.Connected)
             {
-                Cnc.PumpIsOn = true;        // so it will be turned off, no matter what we think the status
-                Cnc.PumpOff_NoWorkaround();
-                Cnc.VacuumDefaultSetting();
-                CNC_Write_m("{\"md\":\"\"}");  // motor power off
+                PumpIsOn = true;        // so it will be turned off, no matter what we think the status
+                PumpOff_NoWorkaround();
+                VacuumDefaultSetting();
+                Cnc.MotorPowerOff();
             }
             Cnc.Close();
 
@@ -525,32 +587,7 @@ namespace LitePlacer
             Environment.Exit(0);    // kills all processes and threads (solves exit during startup issue)
         }
 
-        // =================================================================================
-        // Get and save settings from old version if necessary
-        // http://blog.johnsworkshop.net/automatically-upgrading-user-settings-after-an-application-version-change/
-        /*
-        private void Do_Upgrade()
-        {
-            try
-            {
-                if (Setting.General_UpgradeRequired)
-                {
-                    DisplayText("Updating from previous version");
-                    Setting.Upgrade();
-                    Setting.General_UpgradeRequired = false;
-                    Setting.Save();
-                }
-            }
-            catch (SettingsPropertyNotFoundException)
-            {
-                DisplayText("Updating from previous version (through ex)");
-                Setting.Upgrade();
-                Setting.General_UpgradeRequired = false;
-                Setting.Save();
-            }
 
-        }
-        */
         // =================================================================================
 
         private void tabControlPages_SelectedIndexChanged(object sender, EventArgs e)
@@ -1286,6 +1323,7 @@ namespace LitePlacer
             BindingSource bs = new BindingSource(); // create a BindingSource
             bs.DataSource = Grid.DataSource;  // copy jobdata to bs
             DataTable dat = (DataTable)(bs.DataSource);  // make a datatable from bs
+            Grid.DataSource = null;
             Grid.DataSource = dat;  // and copy datatable data to jobdata, forcing redraw
             Grid.RefreshEdit();
             Grid.Refresh();
@@ -1387,12 +1425,12 @@ namespace LitePlacer
                 JoggingBusy = false;
                 e.Handled = true;
                 e.SuppressKeyPress = true;
-                Cnc.RawWrite("!%");
+                Cnc.CancelJog();
             }
         }
 
         static bool EnterKeyHit = true;   // petegit: Why is this initialized with true???
-        static string Movestr;
+        static string Speedstr;
 
         public void My_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1465,15 +1503,15 @@ namespace LitePlacer
 
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
             {
-                Movestr = "{\"gc\":\"G1 F" + AltJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
+                Speedstr = AltJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             }
             else if (System.Windows.Forms.Control.ModifierKeys == Keys.Control)
             {
-                Movestr = "{\"gc\":\"G1 F" + CtlrJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
+                Speedstr = CtlrJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
-                Movestr = "{\"gc\":\"G1 F" + NormalJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
+                Speedstr = NormalJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             }
 
 
@@ -1492,47 +1530,43 @@ namespace LitePlacer
             if (e.KeyCode == Keys.NumPad1)
             {
                 JoggingBusy = true;
-                //DisplayText("up");
-                //return;
-                Cnc.RawWrite(Movestr + "X0 Y0\"}");
+                Cnc.Jog(Speedstr, "0", "0", "", "");
             }
             else if (e.KeyCode == Keys.NumPad2)
             {
                 JoggingBusy = true;
-                //DisplayText("down");
-                //return;
-                Cnc.RawWrite(Movestr + "Y0\"}");
+                Cnc.Jog(Speedstr, "", "0", "", "");
             }
             else if (e.KeyCode == Keys.NumPad3)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "Y0" + "X" + Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture), "0", "", "");
             }
             else if (e.KeyCode == Keys.NumPad4)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X0\"}");
+                Cnc.Jog(Speedstr, "0", "", "", "");
             }
             else if (e.KeyCode == Keys.NumPad6)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X" + Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture), "", "", "");
             }
             else if (e.KeyCode == Keys.NumPad7)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X0" + "Y" + Setting.General_MachineSizeY.ToString() + "\"}");
+                Cnc.Jog(Speedstr, "0", Setting.General_MachineSizeY.ToString(), "", "");
             }
             else if (e.KeyCode == Keys.NumPad8)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X0" + "Y" + Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, "", Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture), "", "");
             }
             else if (e.KeyCode == Keys.NumPad9)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X" + Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture) 
-                    + "Y" + Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture), 
+                    Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture), "", "");
             }
            //     (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
             else if (e.KeyCode == Keys.Add)
@@ -1551,22 +1585,22 @@ namespace LitePlacer
                     return;
                 }
                 Ztarget += Zadd;
-                Cnc.RawWrite(Movestr + "Z" + Ztarget.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, "", "", "Z" + Ztarget.ToString(CultureInfo.InvariantCulture), "");
             }
             else if (e.KeyCode == Keys.Subtract)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "Z0\"}");
+                Cnc.Jog(Speedstr, "", "", "0", "");
             }
             else if (e.KeyCode == Keys.Divide)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "A0\"}");
+                Cnc.Jog(Speedstr, "", "", "", "0");
             }
             else if (e.KeyCode == Keys.Multiply)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "A10000\"}");  // should be enough
+                Cnc.Jog(Speedstr, "", "", "", "100000");  // should be enough
             }
             else
             {
@@ -2026,8 +2060,7 @@ namespace LitePlacer
                 DisplayText("A value error", KnownColor.Red, true);
                 return;
             }
-            CNC_RawWrite("{\"gc\":\"G28.3 X" + Xstr + " Y" + Ystr + " Z" + Zstr + " A" + Astr + "\"}");
-            Thread.Sleep(50);
+            Cnc.SetPosition(X: Xstr, Y: Ystr, Z: Zstr, A: Astr);
         }
 
         #endregion Jogging
@@ -2036,30 +2069,6 @@ namespace LitePlacer
         // CNC interface functions
         // =================================================================================
         #region CNC interface functions
-
-        // =================================================================================
-        // Different types of control hardware and settings
-        // =================================================================================
-
-        private bool UpdateCNCBoardType_m()
-        {
-            DisplayText("Finding board type:");
-            if (!CNC_Write_m("{\"hp\":\"\"}"))
-            {
-                return false;
-            };
-            return true;
-        }
-
-        private bool UpdateCNCBoardSettings_m()
-        {
-            // When called, the parameters are already read from storage.
-            // If board is TinyG, compare to what we have. If different, ask what to do
-            // (on some crash situations, TinyG can loose the settings)
-            // If board is qQuintic, write the values
-
-            return true;
-        }
 
         // =================================================================================
         // Position confidence, motor power timer:
@@ -2213,27 +2222,17 @@ namespace LitePlacer
 
         private bool Nozzle_ProbeDown_m()
         {
-            int timeout;
-            if (!HomingTimeout_m(out timeout, "Z"))
-            {
-                return false;
-            }
-            CNC_HomingTimeout = timeout;
-            DisplayText("Probing Z, timeout value: " + CNC_HomingTimeout.ToString(CultureInfo.InvariantCulture));
-
-            Cnc.ProbingMode(true);
-            Cnc.Homing = true;
-            if (!CNC_Write_m("{\"gc\":\"G28.4 Z0\"}", 4000))
-            {
-                Cnc.Homing = false;
-                Cnc.ProbingMode(false);
-                return false;
-            }
-            Cnc.Homing = false;
-            Cnc.ProbingMode(false);
-            return true;
+            return Cnc.Nozzle_ProbeDown_m();
         }
 
+        // ==========================================
+        // On CNC error, this is called
+        public void SetValidMeasurement_checkBox(bool val)
+        {
+            ValidMeasurement_checkBox.Checked = val;
+        }
+
+        // ==========================================
         public bool CalibrateNozzle_m()
         {
             if (Setting.Placement_OmitNozzleCalibration)
@@ -2397,30 +2396,107 @@ namespace LitePlacer
             return true;
         }
 
-        private bool CNC_Home_m(string axis)
+        // =================================================================================
+        // vacuum
+        private bool VacuumIsOn = false;
+
+        public void VacuumDefaultSetting()
         {
-            int timeout;
-            if (!HomingTimeout_m(out timeout, axis))
-            {
-                return false;
-            }
-            CNC_HomingTimeout = timeout;
+            //VacuumIsOn = true;      // force action
+            VacuumOff();
+        }
 
-            DisplayText("Homing axis " + axis + ", timeout value: " + CNC_HomingTimeout.ToString(CultureInfo.InvariantCulture));
-
-            Cnc.Homing = true;
-            if (!CNC_Write_m("{\"gc\":\"G28.2 " + axis + "0\"}"))
+        public void VacuumOn()
+        {
+            if (Setting.General_VacuumOutputInverted)
             {
-                ShowMessageBox(
-                    "Homing operation mechanical step failed, CNC issue",
-                    "Homing failed",
-                    MessageBoxButtons.OK);
-                Cnc.Homing = false;
-                return false;
+                Cnc.VacuumOff();
             }
-            Cnc.Homing = false;
-            DisplayText("Homing " + axis + " done.");
-            return true;
+            else
+            {
+                Cnc.VacuumOn();
+            }
+            Thread.Sleep(Setting.General_PickupVacuumTime);
+            VacuumIsOn = true;
+            Vacuum_checkBox.Checked = true;
+        }
+
+        public void VacuumOff()
+        {
+            if (Setting.General_VacuumOutputInverted)
+            {
+                Cnc.VacuumOn();
+            }
+            else
+            {
+                Cnc.VacuumOff();
+            }
+            Thread.Sleep(Setting.General_PickupReleaseTime);
+            VacuumIsOn = false;
+            Vacuum_checkBox.Checked = false;
+        }
+
+        // =================================================================================
+
+        public bool PumpIsOn { get; set; } = false;
+
+        public void PumpDefaultSetting()
+        {
+            PumpOff();
+        }
+
+        private void BugWorkaround()
+        {
+            // see https://www.synthetos.com/topics/file-not-open-error/#post-7194
+            // Summary: In some cases, we need a dummy move.
+            CNC_Z_m(CurrentZ - 0.01);
+            CNC_Z_m(CurrentZ + 0.01);
+        }
+
+        public void PumpOn()
+        {
+            if (Setting.General_PumpOutputInverted)
+            {
+                Cnc.PumpOff();
+            }
+            else
+            {
+                Cnc.PumpOn();
+            }
+            if (Cnc.Controlboard == CNC.ControlBoardType.TinygHW)
+            {
+                BugWorkaround();
+            }
+            Thread.Sleep(500);  // this much to develop vacuum
+            PumpIsOn = true;
+            Pump_checkBox.Checked = true;
+        }
+
+        public void PumpOff(bool Workaround = true)
+        {
+            if (Setting.General_PumpOutputInverted)
+            {
+                Cnc.PumpOn();
+            }
+            else
+            {
+                Cnc.PumpOff();
+            }
+            if ((Cnc.Controlboard == CNC.ControlBoardType.TinygHW) && Workaround)
+            {
+                BugWorkaround();
+            }
+            Thread.Sleep(500);  // this much to develop vacuum
+            PumpIsOn = true;
+            Pump_checkBox.Checked = PumpIsOn;
+            PumpIsOn = false;
+            Pump_checkBox.Checked = false;
+        }
+
+        public void PumpOff_NoWorkaround()
+        // For error situations where we don't want to do the dance
+        {
+            PumpOff(false);
         }
 
         // =================================================================================
@@ -2995,9 +3071,8 @@ namespace LitePlacer
             Ylist.Sort();
             X = Xlist[3];
             Y = Ylist[3];
-            // CNC_RawWrite("G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000"));
-            CNC_RawWrite("{\"gc\":\"G28.3 X" + X.ToString("0.000", CultureInfo.InvariantCulture)
-                + " Y" + Y.ToString("0.000", CultureInfo.InvariantCulture) + "\"}");
+            Cnc.SetPosition(X: X.ToString("0.000", CultureInfo.InvariantCulture),
+                Y: Y.ToString("0.000", CultureInfo.InvariantCulture), Z: "", A: "");
             Thread.Sleep(50);
             Cnc.CurrentX = 0.0;
             Cnc.CurrentY = 0.0;
@@ -3010,7 +3085,7 @@ namespace LitePlacer
         private bool MechanicalHoming_m()
         {
             Cnc.ProbingMode(false);
-            if (!CNC_Home_m("Z"))
+            if (!Cnc.Home_m("Z"))
             {
                 return false;
             };
@@ -3019,11 +3094,11 @@ namespace LitePlacer
             {
                 return false;
             };
-            if (!CNC_Home_m("Y"))
+            if (!Cnc.Home_m("Y"))
             {
                 return false;
             };
-            if (!CNC_Home_m("X"))
+            if (!Cnc.Home_m("X"))
             {
                 return false;
             };
@@ -4304,7 +4379,7 @@ namespace LitePlacer
             }
             if (comboBoxSerialPorts.Items.Count == 0)
             {
-                labelSerialPortStatus.Text = "No serial ports found.\n\rIs TinyG powered on?";
+                labelSerialPortStatus.Text = "No serial ports found.\n\rIs the control board powered on?";
             }
             else
             {
@@ -4376,7 +4451,7 @@ namespace LitePlacer
                     Cnc.ErrorState = false;
                     Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                     UpdateCncConnectionStatus();
-                    if (ControlBoardJustConnected())
+                    if (Cnc.JustConnected())
                     {
                         Cnc.PumpDefaultSetting();
                         Cnc.VacuumDefaultSetting();
@@ -4403,168 +4478,7 @@ namespace LitePlacer
         }
 
 
-        // =================================================================================
-        // Logging textbox
-
-        Color DisplayTxtCol = Color.Black;
-
-        public void DisplayText(string txt, KnownColor col = KnownColor.Black, bool force = false)
-        {
-            if (DisableLog_checkBox.Checked && !force)
-            {
-                return;
-            }
-            DisplayTxtCol = Color.FromKnownColor(col);
-            DisplayTxt(txt);
-        }
-
-        public void DisplayTxt(string txt)
-        {
-            if (InvokeRequired) { Invoke(new Action<string>(DisplayTxt), new [] { txt }); return; }
-
-            try
-            {
-                txt = txt.Replace("\n", "");
-                txt = txt.Replace("\r", "");
-                // TinyG sends \n, textbox needs \r\n. (TinyG could be set to send \n\r, which does not work with textbox.)
-                // Adding end of line here saves typing elsewhere
-                txt = txt + "\r\n";
-                if (SerialMonitor_richTextBox.Text.Length > 1000000)
-                {
-                    SerialMonitor_richTextBox.Text = SerialMonitor_richTextBox.Text.Substring(SerialMonitor_richTextBox.Text.Length - 10000);
-                }
-                SerialMonitor_richTextBox.AppendText(txt, DisplayTxtCol);
-
-            }
-            catch (ObjectDisposedException)
-            {
-                return;     // exit during startup
-            }
-        }
-
-
-        /*
-        public void DisplayTxt(string txt)
-        {
-            try
-            {
-                txt = txt.Replace("\n", "");
-                txt = txt.Replace("\r", "");
-                // TinyG sends \n, textbox needs \r\n. (TinyG could be set to send \n\r, which does not work with textbox.)
-                // Adding end of line here saves typing elsewhere
-                txt = txt + "\r\n";
-                if (SerialMonitor_richTextBox.Text.Length > 1000000)
-                {
-                    SerialMonitor_richTextBox.Text = SerialMonitor_richTextBox.Text.Substring(SerialMonitor_richTextBox.Text.Length - 10000);
-                }
-                SerialMonitor_richTextBox.AppendText("**" + linecount.ToString() + AppCol.ToString() + "\r\n", Color.DarkViolet);
-                SerialMonitor_richTextBox.ScrollToCaret();
-                SerialMonitor_richTextBox.AppendText(txt, AppCol);
-                SerialMonitor_richTextBox.ScrollToCaret();
-                SerialMonitor_richTextBox.AppendText("**" + linecount++.ToString() + "\r\n");
-                SerialMonitor_richTextBox.ScrollToCaret();
-            }
-            catch
-            {
-            }
-        }
-        */
-
-        private void textBoxSendtoTinyG_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                Cnc.ForceWrite(textBoxSendtoTinyG.Text);
-                textBoxSendtoTinyG.Clear();
-            }
-        }
-
-        // Sends the calls that will result to messages that update the values shown on UI
-
-        private bool LoopTinyGParameters()
-        {
-
-            foreach (var parameter in TinyGBoard.GetType().GetProperties())
-            {
-                // The motor parameters are <motor number><parameter>, such as 1ma, 1sa, 1tr etc.
-                // These are not valid parameter names, so Motor1ma, motor1sa etc are used.
-                // to retrieve the values, we remove the "Motor"
-                string Name = parameter.Name;
-                if (Name.StartsWith("Motor", StringComparison.Ordinal))
-                {
-                    Name = Name.Substring(5);
-                }
-                if (!CNC_Write_m("{\"" + Name + "\":\"\"}"))
-                {
-                    return false;
-                };
-                //Thread.Sleep(500);
-            }
-            return true;
-        }
-
-
-        private bool ControlBoardJustConnected()
-        {
-            // Called when control board conenction is estabished.
-            // First, find out the board type. Then, 
-            // for TinyG boards, read the parameter values stored on board.
-            // For qQuintic boards that dont' have on-board storage, write the values.
-
-            Thread.Sleep(200); // Give TinyG time to wake up
-            bool res = UpdateCNCBoardType_m();
-            if (!res)
-            {
-                return false;
-            }
-
-            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
-            {
-                CNC_RawWrite("\x11");  // Xon
-                Thread.Sleep(50);   // TinyG wakeup
-
-            }
-            // initial position
-            if (!CNC_Write_m("{sr:n}"))
-            {
-                return false;
-            }
-            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
-            {
-                DisplayText("Reading TinyG settings:");
-                if (!LoopTinyGParameters())
-                {
-                    return false;
-                }
-            }
-            else if (Cnc.Controlboard == CNC.ControlBoardType.qQuintic)
-            {
-                DisplayText("Writing qQuintic settings:");
-                if (!WriteqQuinticSettings())
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                DisplayText("Unknown board!");
-                return false;
-            }
-
-            // Do settings that need to be done always
-            Cnc.IgnoreError = true;
-            Cnc.ProbingMode(false);
-            //PumpDefaultSetting();
-            //VacuumDefaultSetting();
-            //Thread.Sleep(100);
-            //Vacuum_checkBox.Checked = true;
-            //Cnc.IgnoreError = false;
-            CNC_Write_m("{\"me\":\"\"}");  // motor power on
-            MotorPower_checkBox.Checked = true;
-            return true;
-        }
-
-        // Called from CNC class when UI need updating
+        // Called from board class when UI need updating
         public void ValueUpdater(string item, string value)
         {
             if (InvokeRequired) { Invoke(new Action<string, string>(ValueUpdater), new[] { item, value }); return; }
@@ -4610,326 +4524,246 @@ namespace LitePlacer
                 // ========== motor 1 ==========
                 case "1ma":        // map to axis [0=X,1=Y,2=Z...]
                     TinyGBoard.Motor1ma = value;
-                    qQuinticBoard.Motor1ma = value;
                     break;
                 case "1sa":    // step angle, deg
                     TinyGBoard.Motor1ma = value;
-                    qQuinticBoard.Motor1ma = value;
                     Update_1sa(value);
                     break;
                 case "1tr":  // travel per revolution, mm
                     TinyGBoard.Motor1tr = value;
-                    qQuinticBoard.Motor1tr = value;
                     Update_1tr(value);
                     break;
                 case "1mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
                     TinyGBoard.Motor1mi = value;
-                    qQuinticBoard.Motor1mi = value;
                     Update_1mi(value);
                     break;
                 case "1po":        // motor polarity [0=normal,1=reverse]
                     TinyGBoard.Motor1po = value;
-                    qQuinticBoard.Motor1po = value;
                     break;
                 case "1pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
                     TinyGBoard.Motor1pm = value;
-                    qQuinticBoard.Motor1pm = value;
                     break;
                 case "1pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.Motor1pl = value;
                     break;
 
                 // ========== motor 2 ==========
                 case "2ma":        // map to axis [0=X,1=Y,2=Z...]
                     TinyGBoard.Motor2ma = value;
-                    qQuinticBoard.Motor2ma = value;
                     break;
                 case "2sa":    // step angle, deg
                     TinyGBoard.Motor2sa = value;
-                    qQuinticBoard.Motor2sa = value;
                     Update_2sa(value);
                     break;
                 case "2tr":  // travel per revolution, mm
                     TinyGBoard.Motor2tr = value;
-                    qQuinticBoard.Motor2tr = value;
                     Update_2tr(value);
                     break;
                 case "2mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
                     TinyGBoard.Motor2mi = value;
-                    qQuinticBoard.Motor2mi = value;
                     Update_2mi(value);
                     break;
                 case "2po":        // motor polarity [0=normal,1=reverse]
                     TinyGBoard.Motor2po = value;
-                    qQuinticBoard.Motor2po = value;
                     break;
                 case "2pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
                     TinyGBoard.Motor2pm = value;
-                    qQuinticBoard.Motor2pm = value;
                     break;
                 case "2pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.Motor2pl = value;
                     break;
 
                 // ========== motor 3 ==========
                 case "3ma":        // map to axis [0=X,1=Y,2=Z...]
                     TinyGBoard.Motor3ma = value;
-                    qQuinticBoard.Motor3ma = value;
                     break;
                 case "3sa":    // step angle, deg
                     TinyGBoard.Motor3sa = value;
-                    qQuinticBoard.Motor3sa = value;
                     Update_3sa(value);
                     break;
                 case "3tr":  // travel per revolution, mm
                     TinyGBoard.Motor3tr = value;
-                    qQuinticBoard.Motor3tr = value;
                     Update_3tr(value);
                     break;
                 case "3mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
                     TinyGBoard.Motor3mi = value;
-                    qQuinticBoard.Motor3mi = value;
                     Update_3mi(value);
                     break;
                 case "3po":        // motor polarity [0=normal,1=reverse]
                     TinyGBoard.Motor3po = value;
-                    qQuinticBoard.Motor3po = value;
                     break;
                 case "3pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
                     TinyGBoard.Motor3pm = value;
-                    qQuinticBoard.Motor3pm = value;
                     break;
                 case "3pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.Motor3pl = value;
                     break;
 
                 // ========== motor 4 ==========
                 case "4ma":        // map to axis [0=X,1=Y,2=Z...]
                     TinyGBoard.Motor4ma = value;
-                    qQuinticBoard.Motor4ma = value;
                     break;
                 case "4sa":    // step angle, deg
                     TinyGBoard.Motor4sa = value;
-                    qQuinticBoard.Motor4sa = value;
                     Update_4sa(value);
                     break;
                 case "4tr":  // travel per revolution, mm
                     TinyGBoard.Motor4tr = value;
-                    qQuinticBoard.Motor4tr = value;
                     Update_4tr(value);
                     break;
                 case "4mi":        // microsteps [1,2,4,8], qQuintic [1,2,4,8,16,32]
                     TinyGBoard.Motor4mi = value;
-                    qQuinticBoard.Motor4mi = value;
                     Update_4mi(value);
                     break;
                 case "4po":        // motor polarity [0=normal,1=reverse]
                     TinyGBoard.Motor4po = value;
-                    qQuinticBoard.Motor4po = value;
                     break;
                 case "4pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
                     TinyGBoard.Motor4pm = value;
-                    qQuinticBoard.Motor4pm = value;
                     break;
                 case "4pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.Motor4pl = value;
-                    break;
-
-                // ========== motor 5 (qQuintic only) ==========
-                case "5ma":
-                    qQuinticBoard.Motor5ma = value;
-                    break;
-                case "5pm":        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-                    qQuinticBoard.Motor5pm = value;
-                    break;
-                case "5pl":    // motor power level [0.000=minimum, 1.000=maximum]
-                    qQuinticBoard.Motor5pl = value;
                     break;
 
                 // ========== X axis ==========
                 case "xam":        // x axis mode, 1=standard
                     TinyGBoard.Xam = value;
-                    qQuinticBoard.Xam = value;
                     break;
                 case "xvm":    // x velocity maximum, mm/min
                     Update_xvm(value);
                     TinyGBoard.Xvm = value;
-                    qQuinticBoard.Xvm = value;
                     break;
                 case "xfr":    // x feedrate maximum, mm/mi
                     TinyGBoard.Xfr = value;
-                    qQuinticBoard.Xfr = value;
                     break;
                 case "xtn":        // x travel minimum, mm
                     TinyGBoard.Xtn = value;
-                    qQuinticBoard.Xtn = value;
                     break;
                 case "xtm":      // x travel maximum, mm
                     TinyGBoard.Xtm = value;
-                    qQuinticBoard.Xtm = value;
                     break;
                 case "xjm":     // x jerk maximum, mm/min^3 * 1 million
                     TinyGBoard.Xjm = value;
-                    qQuinticBoard.Xjm = value;
                     Update_xjm(value);
                     break;
                 case "xjh":     // x jerk homing, mm/min^3 * 1 million
                     TinyGBoard.Xjh = value;
-                    qQuinticBoard.Xjh = value;
                     Update_xjh(value);
                     break;
                 case "xsv":     // x search velocity, mm/min
                     TinyGBoard.Xsv = value;
-                    qQuinticBoard.Xsv = value;
                     Update_xsv(value);
                     break;
                 case "xlv":      // x latch velocity, mm/min
                     TinyGBoard.Xlv = value;
-                    qQuinticBoard.Xlv = value;
                     break;
                 case "xlb":        // x latch backoff, mm
                     TinyGBoard.Xlb = value;
-                    qQuinticBoard.Xlb = value;
                     break;
                 case "xzb":        // x zero backoff, mm
                     TinyGBoard.Xzb = value;
-                    qQuinticBoard.Xzb = value;
                     break;
 
                 // ========== Y axis ==========
                 case "yam":        // y axis mode, 1=standard
                     TinyGBoard.Yam = value;
-                    qQuinticBoard.Yam = value;
                     break;
                 case "yvm":    // y velocity maximum, mm/min
                     Update_yvm(value);
                     TinyGBoard.Yvm = value;
-                    qQuinticBoard.Yvm = value;
                     break;
                 case "yfr":    // y feedrate maximum, mm/min
                     TinyGBoard.Yfr = value;
-                    qQuinticBoard.Yfr = value;
                     break;
                 case "ytn":        // y travel minimum, mm
                     TinyGBoard.Ytn = value;
-                    qQuinticBoard.Ytn = value;
                     break;
                 case "ytm":      // y travel mayimum, mm
                     TinyGBoard.Ytm = value;
-                    qQuinticBoard.Ytm = value;
                     break;
                 case "yjm":     // y jerk maximum, mm/min^3 * 1 million
                     TinyGBoard.Yjm = value;
-                    qQuinticBoard.Yjm = value;
                     Update_yjm(value);
                     break;
                 case "yjh":     // y jerk homing, mm/min^3 * 1 million
                     TinyGBoard.Yjh = value;
-                    qQuinticBoard.Yjh = value;
                     Update_yjh(value);
                     break;
                 case "ysv":     // y search velocity, mm/min
                     TinyGBoard.Ysv = value;
-                    qQuinticBoard.Ysv = value;
                     Update_ysv(value);
                     break;
                 case "ylv":      // y latch velocity, mm/min
                     TinyGBoard.Ylv = value;
-                    qQuinticBoard.Ylv = value;
                     break;
                 case "ylb":        // y latch backoff, mm
                     TinyGBoard.Ylb = value;
-                    qQuinticBoard.Ylb = value;
                     break;
                 case "yzb":        // y zero backoff, mm
                     TinyGBoard.Yzb = value;
-                    qQuinticBoard.Yzb = value;
                     break;
 
                 // ========== Z axis ==========
                 case "zam":        // z axis mode, 1=standard
                     TinyGBoard.Zam = value;
-                    qQuinticBoard.Zam = value;
                     break;
                 case "zvm":     // z velocity maximum, mm/min
                     Update_zvm(value);
                     TinyGBoard.Zvm = value;
-                    qQuinticBoard.Zvm = value;
                     break;
                 case "zfr":     // z feedrate maximum, mm/min
                     TinyGBoard.Zfr = value;
-                    qQuinticBoard.Zfr = value;
                     break;
                 case "ztn":        // z travel minimum, mm
                     TinyGBoard.Ztn = value;
-                    qQuinticBoard.Ztn = value;
                     break;
                 case "ztm":       // z travel mazimum, mm
                     TinyGBoard.Ztm = value;
-                    qQuinticBoard.Ztm = value;
                     break;
                 case "zjm":      // z jerk mazimum, mm/min^3 * 1 million
                     TinyGBoard.Zjm = value;
-                    qQuinticBoard.Zjm = value;
                     Update_zjm(value);
                     break;
                 case "zjh":      // z jerk homing, mm/min^3 * 1 million
                     TinyGBoard.Zjh = value;
-                    qQuinticBoard.Zjh = value;
                     Update_zjh(value);
                     break;
                 case "zsv":     // z search velocity, mm/min
                     TinyGBoard.Zsv = value;
-                    qQuinticBoard.Zsv = value;
                     Update_zsv(value);
                     break;
                 case "zlv":      // z latch velocity, mm/min
                     TinyGBoard.Zlv = value;
-                    qQuinticBoard.Zlv = value;
                     break;
                 case "zlb":        // z latch backoff, mm
                     TinyGBoard.Zlb = value;
-                    qQuinticBoard.Zlb = value;
                     break;
                 case "zzb":        // z zero backoff, mm
                     TinyGBoard.Zzb = value;
-                    qQuinticBoard.Zzb = value;
                     break;
 
                 // ========== A axis ==========
                 case "aam":        // a axis mode, 1=standard
                     TinyGBoard.Aam = value;
-                    qQuinticBoard.Aam = value;
                     break;
                 case "avm":    // a velocity maximum, mm/min
                     TinyGBoard.Avm = value;
-                    qQuinticBoard.Avm = value;
                     Update_avm(value);
                     break;
                 case "afr":   // a feedrate maximum, mm/min
                     TinyGBoard.Afr = value;
-                    qQuinticBoard.Afr = value;
                     break;
                 case "atn":        // a travel minimum, mm
                     TinyGBoard.Atn = value;
-                    qQuinticBoard.Atn = value;
                     break;
                 case "atm":      // a travel maximum, mm
                     TinyGBoard.Atm = value;
-                    qQuinticBoard.Atm = value;
                     break;
                 case "ajm":     // a jerk maximum, mm/min^3 * 1 million
                     TinyGBoard.Ajm = value;
-                    qQuinticBoard.Ajm = value;
                     Update_ajm(value);
                     break;
                 case "ajh":     // a jerk homing, mm/min^3 * 1 million
                     TinyGBoard.Ajh = value;
-                    qQuinticBoard.Ajh = value;
                     break;
                 case "asv":     // a search velocity, mm/min
                     TinyGBoard.Asv = value;
-                    qQuinticBoard.Asv = value;
                     break;
 
                 // ========== TinyG switch values ==========
@@ -4964,37 +4798,6 @@ namespace LitePlacer
                     TinyGBoard.Asx = value;
                     break;
 
-                // ========== qQuintic switch values ==========
-                case "xhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.Xhi = value;
-                    break;
-                case "xhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
-                    qQuinticBoard.Xhd = value;
-                    break;
-                case "yhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.Yhi = value;
-                    break;
-                case "yhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
-                    qQuinticBoard.Yhd = value;
-                    break;
-                case "zhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.Zhi = value;
-                    break;
-                case "zhd":     // x homing direction [0=search-to-negative, 1=search-to-positive]
-                    qQuinticBoard.Zhd = value;
-                    break;
-                case "ahi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.Ahi = value;
-                    break;
-                case "bhi":     // x homing input [input 1-N or 0 to disable homing this axis]
-                    qQuinticBoard.Bhi = value;
-                    break;
-
-                // Hardware platform
-                case "hp":
-                    Update_hp(value);
-                    break;
-
                 default:
                     break;
             }
@@ -5003,30 +4806,6 @@ namespace LitePlacer
         // =========================================================================
         // Thread-safe update functions and value setting fuctions
         // =========================================================================
-        #region hp  // hardware platform
-
-        private void Update_hp(string value)
-        {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_hp), new[] { value }); return; }
-
-            if (value=="1")
-            {
-                Cnc.Controlboard = CNC.ControlBoardType.TinyG;
-                DisplayText("TinyG board found.");
-            }
-            else if (value == "3")
-            {
-                Cnc.Controlboard = CNC.ControlBoardType.qQuintic;
-                DisplayText("qQuintic board found.");
-            }
-            else
-            {
-                Cnc.Controlboard = CNC.ControlBoardType.other;
-                DisplayText("Unknown control board.");
-            }
-        }
-
-        #endregion
 
         // =========================================================================
         #region jm  // *jm: jerk maximum
@@ -5704,7 +5483,7 @@ namespace LitePlacer
             if (e.KeyChar == '\r')
             {
                 List<String> GoodValues = new List<string> { "1", "2", "4", "8" };
-                if (Cnc.Controlboard == CNC.ControlBoardType.qQuintic)
+                if (Cnc.Controlboard == CNC.ControlBoardType.qQuinticHW)
                 {
                     GoodValues.Add("16");
                     GoodValues.Add("32");
@@ -6022,7 +5801,7 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_ypos), new[] { value }); return; }
             ypos_textBox.Text = value;
-            xpos_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+            ypos_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             //DisplayText("Update_ypos, x: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture));
         }
 
@@ -6223,25 +6002,25 @@ namespace LitePlacer
 
     private void HomeX_button_Click(object sender, EventArgs e)
         {
-            CNC_Home_m("X");
+            Cnc.Home_m("X");
         }
 
         private void HomeXY_button_Click(object sender, EventArgs e)
         {
-            if (!CNC_Home_m("X"))
+            if (!Cnc.Home_m("X"))
                 return;
-            CNC_Home_m("Y");
+            Cnc.Home_m("Y");
         }
 
         private void HomeY_button_Click(object sender, EventArgs e)
         {
-            CNC_Home_m("Y");
+            Cnc.Home_m("Y");
         }
 
         private void HomeZ_button_Click(object sender, EventArgs e)
         {
             Cnc.ProbingMode(false);
-            CNC_Home_m("Z");
+            Cnc.Home_m("Z");
         }
 
 
@@ -6304,11 +6083,11 @@ namespace LitePlacer
 
         private void Homebutton_Click(object sender, EventArgs e)
         {
-            if (!CNC_Home_m("Z"))
+            if (!Cnc.Home_m("Z"))
                 return;
-            if (!CNC_Home_m("X"))
+            if (!Cnc.Home_m("X"))
                 return;
-            if (!CNC_Home_m("Y"))
+            if (!Cnc.Home_m("Y"))
                 return;
             CNC_A_m(0);
         }
@@ -6435,7 +6214,7 @@ namespace LitePlacer
             CancelProbing_button.Visible = false;
             Zlb_label.Visible = false;
             Cnc.ProbingMode(false);
-            CNC_Home_m("Z");
+            Cnc.Home_m("Z");
             SetProbing_button.Enabled = true;
         }
 
@@ -6482,7 +6261,7 @@ namespace LitePlacer
                     Zlb_label.Visible = false;
                     CancelProbing_button.Visible = false;
                     SetProbing_button.Enabled = false;
-                    CNC_Home_m("Z");
+                    Cnc.Home_m("Z");
                     ZGuardOn();
                     SetProbing_button.Enabled = true;
                     ShowMessageBox(
@@ -10402,121 +10181,10 @@ namespace LitePlacer
 
         private void DemoWork()
         {
-            /*
-            double PCB_X = Setting.General_JigOffsetX + Setting.DownCam_NozzleOffsetX;
-            double PCB_Y = Setting.General_JigOffsetY + Setting.DownCam_NozzleOffsetY;
-            double HoleX;
-            double HoleY;
-            double PartX;
-            double PartY;
-            Random rnd = new Random();
-            int a;
-            int b;
-            NumberStyles style = NumberStyles.AllowDecimalPoint;
-            CultureInfo culture = CultureInfo.InvariantCulture;
-            string s = Tapes_dataGridView.Rows[0].Cells["FirstX_Column"].Value.ToString();
-            if (!double.TryParse(s, style, culture, out HoleX))
-            {
-                ShowMessageBox(
-                    "Bad X data at Tape 1",
-                    "Tape data error",
-                    MessageBoxButtons.OK
-                );
-                return;
-            }
-            s = Tapes_dataGridView.Rows[0].Cells["FirstY_Column"].Value.ToString();
-            if (!double.TryParse(s, style, culture, out HoleY))
-            {
-                ShowMessageBox(
-                    "Bad Y data at Tape 1",
-                    "Tape data error",
-                    MessageBoxButtons.OK
-                );
-                return;
-            }
-            */
-            // vacuum off, no UI update because of threading
-            CNC_RawWrite("{\"gc\":\"M09\"}");
-            Thread.Sleep(Setting.General_PickupReleaseTime);
-
-            // PumpOn, off main thread
-            CNC_RawWrite("{\"gc\":\"M03\"}");
-            Thread.Sleep(500);  // this much to develop vacuum
-
-            // BugWorkaround();
             while (DemoRunning)
             {
-                /*
-                // Simulate fast measurement. Last hole:
-                if (!CNC_XY_m(HoleX + 6 * 4.0, HoleY)) goto err;
-                Thread.Sleep(400);
-                if (!DemoRunning) return;
-                // First hole:
-                if (!CNC_XY_m(HoleX, HoleY)) goto err;
-                Thread.Sleep(400);
-                if (!DemoRunning) return;
-                // components
-                for (int i = 0; i < 6; i++)
-                {
-                    // Nozzle to part:
-                    PartX = HoleX + i * 4 - 2 + Setting.DownCam_NozzleOffsetX;
-                    PartY = HoleY + 3.5 + Setting.DownCam_NozzleOffsetY;
-                    if (!CNC_XY_m(PartX, PartY)) goto err;
-                    if (!DemoRunning) return;
-                    // Pick up
-                    if (!CNC_Z_m(Setting.General_ZtoPCB)) goto err;
-                    Thread.Sleep(Setting.General_PickupVacuumTime);
-                    if (!CNC_Z_m(0.0)) goto err;
-                    if (!DemoRunning) return;
-                    // goto position
-                    a = rnd.Next(10, 60);
-                    b = rnd.Next(10, 60);
-                    if (!CNC_XY_m(PCB_X + a, PCB_Y + b)) goto err;
-                    if (!DemoRunning) return;
-                    // place
-                    if (!CNC_Z_m(Setting.General_ZtoPCB - 0.5)) goto err;
-                    Thread.Sleep(Setting.General_PickupReleaseTime);
-                    if (!CNC_Z_m(0.0)) goto err;
-                    if (!DemoRunning) return;
-                }
-                */
-                if (!DemoRunning) goto demoend;
-                if (!Demo_Pickup(100, 100, 0, 20)) goto demoend;
-                if (!DemoRunning) goto demoend;
-                if (!Demo_Place(200, 200, 0, 20)) goto demoend;
-                if (!DemoRunning) goto demoend;
+                Thread.Sleep(50);
             }
-        demoend:
-            DemoRunning = false;
-            // vacuum off, no UI update because of threading
-            CNC_RawWrite("{\"gc\":\"M09\"}");
-            Thread.Sleep(Setting.General_PickupReleaseTime);
-            // pump off, off thread
-            CNC_RawWrite("{\"gc\":\"M05\"}");
-            Thread.Sleep(50);
-        }
-
-
-        private bool Demo_Pickup(double X, double Y, double A, double Z)
-        {
-            if (!Nozzle.Move_m(X, Y, A)) return false;
-            if (!CNC_Z_m(Z)) return false;
-            // vacuum on, no UI update because of threading
-            CNC_RawWrite("{\"gc\":\"M08\"}");
-            Thread.Sleep(Setting.General_PickupVacuumTime);
-            if (!CNC_Z_m(0)) return false;
-            return true;
-        }
-
-        private bool Demo_Place(double X, double Y, double A, double Z)
-        {
-            if (!Nozzle.Move_m(X, Y, A)) return false;
-            if (!CNC_Z_m(Z)) return false;
-            // vacuum off, no UI update because of threading
-            CNC_RawWrite("{\"gc\":\"M09\"}");
-            Thread.Sleep(Setting.General_PickupReleaseTime);
-            if (!CNC_Z_m(0)) return false;
-            return true;
         }
 
         // =================================================================================
@@ -13815,7 +13483,7 @@ namespace LitePlacer
 
             if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                BoardSettings.Save(TinyGBoard, qQuinticBoard, AppSettings_saveFileDialog.FileName);
+                BoardSettings.Save(TinyGBoard, AppSettings_saveFileDialog.FileName);
             }
         }
 
@@ -13831,7 +13499,6 @@ namespace LitePlacer
             AppSettings_openFileDialog.InitialDirectory = path;
 
             TinyGSettings tg = TinyGBoard;
-            QQuinticSettings qQ = qQuinticBoard;
 
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -13840,7 +13507,6 @@ namespace LitePlacer
                     return;
                 }
                 TinyGBoard = tg;
-                qQuinticBoard = qQ;
                 WriteAllBoardSettings_m();
             }
         }
@@ -13848,7 +13514,6 @@ namespace LitePlacer
         private void BoardBuiltInSettings_button_Click(object sender, EventArgs e)
         {
             TinyGBoard = new TinyGSettings();
-            qQuinticBoard = new QQuinticSettings();
             WriteAllBoardSettings_m();
         }
 
@@ -13856,7 +13521,7 @@ namespace LitePlacer
         {
             bool res = true;
             DialogResult dialogResult;
-            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+            if (Cnc.Controlboard == CNC.ControlBoardType.TinygHW)
             {
                 dialogResult = ShowMessageBox(
                    "Settings currently stored on board of your TinyG will be permanently lost,\n" +
@@ -13868,10 +13533,6 @@ namespace LitePlacer
                     return;
                 }
                 res = WriteTinyGSettings();
-            }
-            else
-            {
-                res = WriteqQuinticSettings();
             }
             if (!res)
             {
@@ -13992,120 +13653,6 @@ namespace LitePlacer
             return true;
         }
 
-        private bool WriteqQuinticSettings()
-        {
-            DisplayText("Writing settings to qQuintic board.");
-            DisplayText("Writing settings to qQuintic board.");
-            //if (!WriteSetting("st", TinyGBoard.st, false)) return false;
-            if (!WriteSetting("mt", qQuinticBoard.Sys_mt, false)) return false;
-            if (!WriteSetting("jv", qQuinticBoard.Sys_jv, false)) return false;
-            //if (!WriteSetting("js", qQuinticBoard.js, false)) return false;
-            if (!WriteSetting("tv", qQuinticBoard.Sys_tv, false)) return false;
-            if (!WriteSetting("qv", qQuinticBoard.Sys_qv, false)) return false;
-            if (!WriteSetting("sv", qQuinticBoard.Sys_sv, false)) return false;
-            if (!WriteSetting("si", qQuinticBoard.Sys_si, false)) return false;
-            if (!WriteSetting("gun", qQuinticBoard.Sys_gun, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("1ma", qQuinticBoard.Motor1ma, false)) return false;
-            if (!WriteSetting("1sa", qQuinticBoard.Motor1sa, false)) return false;
-            if (!WriteSetting("1tr", qQuinticBoard.Motor1tr, false)) return false;
-            if (!WriteSetting("1mi", qQuinticBoard.Motor1mi, false)) return false;
-            if (!WriteSetting("1po", qQuinticBoard.Motor1po, false)) return false;
-            if (!WriteSetting("1pm", qQuinticBoard.Motor1pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("2ma", qQuinticBoard.Motor2ma, false)) return false;
-            if (!WriteSetting("2sa", qQuinticBoard.Motor2sa, false)) return false;
-            if (!WriteSetting("2tr", qQuinticBoard.Motor2tr, false)) return false;
-            if (!WriteSetting("2mi", qQuinticBoard.Motor2mi, false)) return false;
-            if (!WriteSetting("2po", qQuinticBoard.Motor2po, false)) return false;
-            if (!WriteSetting("2pm", qQuinticBoard.Motor2pm, false)) return false;
-            if (!WriteSetting("3ma", qQuinticBoard.Motor3ma, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("3sa", qQuinticBoard.Motor3sa, false)) return false;
-            if (!WriteSetting("3tr", qQuinticBoard.Motor3tr, false)) return false;
-            if (!WriteSetting("3mi", qQuinticBoard.Motor3mi, false)) return false;
-            if (!WriteSetting("3po", qQuinticBoard.Motor3po, false)) return false;
-            if (!WriteSetting("3pm", qQuinticBoard.Motor3pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("4ma", qQuinticBoard.Motor4ma, false)) return false;
-            if (!WriteSetting("4sa", qQuinticBoard.Motor4sa, false)) return false;
-            if (!WriteSetting("4tr", qQuinticBoard.Motor4tr, false)) return false;
-            if (!WriteSetting("4mi", qQuinticBoard.Motor4mi, false)) return false;
-            if (!WriteSetting("4po", qQuinticBoard.Motor4po, false)) return false;
-            if (!WriteSetting("4pm", qQuinticBoard.Motor4pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("xam", qQuinticBoard.Xam, false)) return false;
-            if (!WriteSetting("xvm", qQuinticBoard.Xvm, false)) return false;
-            if (!WriteSetting("xfr", qQuinticBoard.Xfr, false)) return false;
-            if (!WriteSetting("xtn", qQuinticBoard.Xtn, false)) return false;
-            if (!WriteSetting("xtm", qQuinticBoard.Xtm, false)) return false;
-            if (!WriteSetting("xjm", qQuinticBoard.Xjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("xjh", qQuinticBoard.Xjh, false)) return false;
-            if (!WriteSetting("xsv", qQuinticBoard.Xsv, false)) return false;
-            if (!WriteSetting("xlv", qQuinticBoard.Xlv, false)) return false;
-            if (!WriteSetting("xlb", qQuinticBoard.Xlb, false)) return false;
-            if (!WriteSetting("xzb", qQuinticBoard.Xzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("yam", qQuinticBoard.Yam, false)) return false;
-            if (!WriteSetting("yvm", qQuinticBoard.Yvm, false)) return false;
-            if (!WriteSetting("yfr", qQuinticBoard.Yfr, false)) return false;
-            if (!WriteSetting("ytn", qQuinticBoard.Ytn, false)) return false;
-            if (!WriteSetting("ytm", qQuinticBoard.Ytm, false)) return false;
-            if (!WriteSetting("yjm", qQuinticBoard.Yjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("yjh", qQuinticBoard.Yjh, false)) return false;
-            if (!WriteSetting("ysv", qQuinticBoard.Ysv, false)) return false;
-            if (!WriteSetting("ylv", qQuinticBoard.Ylv, false)) return false;
-            if (!WriteSetting("ylb", qQuinticBoard.Ylb, false)) return false;
-            if (!WriteSetting("yzb", qQuinticBoard.Yzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("zam", qQuinticBoard.Zam, false)) return false;
-            if (!WriteSetting("zvm", qQuinticBoard.Zvm, false)) return false;
-            if (!WriteSetting("zfr", qQuinticBoard.Zfr, false)) return false;
-            if (!WriteSetting("ztn", qQuinticBoard.Ztn, false)) return false;
-            if (!WriteSetting("ztm", qQuinticBoard.Ztm, false)) return false;
-            if (!WriteSetting("zjm", qQuinticBoard.Zjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("zjh", qQuinticBoard.Zjh, false)) return false;
-            if (!WriteSetting("zsv", qQuinticBoard.Zsv, false)) return false;
-            if (!WriteSetting("zlv", qQuinticBoard.Zlv, false)) return false;
-            if (!WriteSetting("zlb", qQuinticBoard.Zlb, false)) return false;
-            if (!WriteSetting("zzb", qQuinticBoard.Zzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("aam", qQuinticBoard.Aam, false)) return false;
-            if (!WriteSetting("avm", qQuinticBoard.Avm, false)) return false;
-            if (!WriteSetting("afr", qQuinticBoard.Afr, false)) return false;
-            if (!WriteSetting("atn", qQuinticBoard.Atn, false)) return false;
-            if (!WriteSetting("atm", qQuinticBoard.Atm, false)) return false;
-            if (!WriteSetting("ajm", qQuinticBoard.Ajm, false)) return false;
-            if (!WriteSetting("ajh", qQuinticBoard.Ajh, false)) return false;
-            if (!WriteSetting("asv", qQuinticBoard.Asv, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("1pl", qQuinticBoard.Motor1pl, false)) return false;
-            if (!WriteSetting("2pl", qQuinticBoard.Motor2pl, false)) return false;
-            if (!WriteSetting("3pl", qQuinticBoard.Motor3pl, false)) return false;
-            if (!WriteSetting("4pl", qQuinticBoard.Motor4pl, false)) return false;
-            if (!WriteSetting("5pl", qQuinticBoard.Motor5pl, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("5ma", qQuinticBoard.Motor5ma, false)) return false;
-            if (!WriteSetting("5pm", qQuinticBoard.Motor5pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("xhi", qQuinticBoard.Xhi, false)) return false;
-            if (!WriteSetting("xhd", qQuinticBoard.Xhd, false)) return false;
-            if (!WriteSetting("yhi", qQuinticBoard.Yhi, false)) return false;
-            if (!WriteSetting("yhd", qQuinticBoard.Yhd, false)) return false;
-            if (!WriteSetting("zhi", qQuinticBoard.Zhi, false)) return false;
-            if (!WriteSetting("zhd", qQuinticBoard.Zhd, false)) return false;
-            if (!WriteSetting("ahi", qQuinticBoard.Ahi, false)) return false;
-            if (!WriteSetting("bhi", qQuinticBoard.Bhi, false)) return false;
-
-            // setup status message:
-            if (!CNC_Write_m("{sr:{posx:t,posy:t,posz:t,posa:t,stat:t,vel:t}}")) return false;
-
-            return true;
-        }
-
 
         private void DownCamListResolutions_button_Click(object sender, EventArgs e)
         {
@@ -14200,7 +13747,7 @@ namespace LitePlacer
 
         private void Ato0_button_Click(object sender, EventArgs e)
         {
-            CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
+            Cnc.SetPosition(X: "", Y: "", Z: "", A: "0");
         }
 
         private void MeasureAndSet_button_Click(object sender, EventArgs e)

@@ -11,7 +11,6 @@ namespace LitePlacer
 {
 #pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
 
-    // These parameters on both TinyG and qQuintic:
     public class CommonBoardSettings
     {
         // ==========  System values  ==========
@@ -127,27 +126,6 @@ namespace LitePlacer
             public string Asx { get; set; } = "0";   // a switch max [0=off,1=homing,2=limit,3=limit+homing];
         }
 
-    public class QQuinticSettings : CommonBoardSettings
-    {
-        public string Motor1pl { get; set; } = "0.600";    // motor power level [0.000=minimum, 1.000=maximum]
-            public string Motor2pl { get; set; } = "0.600";    // motor power level [0.000=minimum, 1.000=maximum]
-            public string Motor3pl { get; set; } = "0.600";    // motor power level [0.000=minimum, 1.000=maximum]
-            public string Motor4pl { get; set; } = "0.100";    // motor power level [0.000=minimum, 1.000=maximum]
-            public string Motor5pl { get; set; } = "0.000";    // motor power level [0.000=minimum, 1.000=maximum]
-
-            public string Motor5ma { get; set; } = "4";        // map to axis [0=X,1=Y,2=Z...]
-            public string Motor5pm { get; set; } = "0";        // power management [0=disabled,1=always on,2=in cycle,3=when moving]
-
-            public string Xhi { get; set; } = "0";     // x homing input [input 1-N or 0 to disable homing this axis]
-            public string Xhd { get; set; } = "0";     // x homing direction [0=search-to-negative, 1=search-to-positive]
-            public string Yhi { get; set; } = "0";     // y homing input [input 1-N or 0 to disable homing this axis]
-            public string Yhd { get; set; } = "0";     // y homing direction [0=search-to-negative, 1=search-to-positive]
-            public string Zhi { get; set; } = "0";     // z homing input [input 1-N or 0 to disable homing this axis]
-            public string Zhd { get; set; } = "0";     // z homing direction [0=search-to-negative, 1=search-to-positive]
-            public string Ahi { get; set; } = "0";     // a homing input [input 1-N or 0 to disable homing this axis]
-            public string Bhi { get; set; } = "0";     // b homing input [input 1-N or 0 to disable homing this axis]
-        }
-
     public static class BoardSettings
     {
 
@@ -155,19 +133,14 @@ namespace LitePlacer
 
         // Board settings file: Text file, starting with 8 characters board name and \n\r, 
         // then the setings in Json format
-        static public bool Save(TinyGSettings TinyGSettings, QQuinticSettings qQuinticSettings, string FileName)
+        static public bool Save(TinyGSettings TinyGSettings, string FileName)
         {
             try
             {
-                if (MainForm.Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+                if (MainForm.Cnc.Controlboard == CNC.ControlBoardType.TinygHW)
                 {
                     MainForm.DisplayText("Writing TinyG settings file: " + FileName);
                     File.WriteAllText(FileName, "TinyG   \n\r" + JsonConvert.SerializeObject(TinyGSettings, Formatting.Indented));
-                }
-                else if (MainForm.Cnc.Controlboard == CNC.ControlBoardType.qQuintic)
-                {
-                    MainForm.DisplayText("Writing qQuintic settings file: " + FileName);
-                    File.WriteAllText(FileName, "qQuintic\n\r" + JsonConvert.SerializeObject(qQuinticSettings, Formatting.Indented));
                 }
                 else
                 {
@@ -182,7 +155,7 @@ namespace LitePlacer
             }
         }
 
-        static public bool Load(ref TinyGSettings TinyGSettings, ref QQuinticSettings qQuinticSettings, string FileName)
+        static public bool Load(ref TinyGSettings TinyGSettings, string FileName)
         {
             string content = "";
             try
@@ -211,10 +184,6 @@ namespace LitePlacer
                 if (boardType == "TinyG   \n\r")
                 {
                     TinyGSettings = JsonConvert.DeserializeObject<TinyGSettings>(content);
-                }
-                else if (boardType == "qQuintic\n\r")
-                {
-                    qQuinticSettings = JsonConvert.DeserializeObject<QQuinticSettings>(content);
                 }
                 else
                 {

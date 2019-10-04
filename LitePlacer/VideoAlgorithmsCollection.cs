@@ -25,7 +25,7 @@ namespace LitePlacer
         public List<FullAlgorithmDescription> AllAlgorithms = new List<FullAlgorithmDescription>();
 
         // CurrentAlgorithm: The algorithm that is currently shown in UI
-        public FullAlgorithmDescription CurrentAlgorithm;
+        public FullAlgorithmDescription CurrentAlgorithm=new FullAlgorithmDescription();
 
         // CurrentFunction: Index to CurrentAlgorithm.FunctionList indicating which function 
         // is currently being edited in UI

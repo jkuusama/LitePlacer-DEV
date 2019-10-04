@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Windows.Forms;
 using System.Text;
 using System.Drawing;
 using System.IO.Ports;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace LitePlacer
 {
@@ -16,16 +14,16 @@ namespace LitePlacer
 
         SerialPort Port = new SerialPort();
 
-        // To process data on the DataReceived thread, get reference of Cnc, so we can pass data to it.
-        private CNC Cnc;
         // To show what we send, we need a reference to mainform.
         private static FormMain MainForm;
+        // Interpreter is the function to call when a line has been received
+        public Action<string> Interpreter;
 
-        public SerialComm(CNC caller, FormMain MainF)
+        public SerialComm(FormMain MainF, Action<string> intr)
         {
-            Cnc = caller;
             Port.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
             MainForm = MainF;
+            Interpreter = intr;
         }
 
         public bool IsOpen
@@ -154,7 +152,8 @@ namespace LitePlacer
                     WorkingString = RxString.Substring(0, RxString.IndexOf("\n", StringComparison.Ordinal) + 1);
                     //Remove the data and the terminator from tString 
                     RxString = RxString.Substring(RxString.IndexOf("\n", StringComparison.Ordinal) + 1);
-                    Cnc.InterpretLine(WorkingString);
+
+                    Interpreter(WorkingString);
                 }
             }
 #pragma warning disable CA1031 // Do not catch general exception types
