@@ -2051,16 +2051,6 @@ namespace LitePlacer
             return true;
         }
 
-        private bool UpdateCNCBoardSettings_m()
-        {
-            // When called, the parameters are already read from storage.
-            // If board is TinyG, compare to what we have. If different, ask what to do
-            // (on some crash situations, TinyG can loose the settings)
-            // If board is qQuintic, write the values
-
-            return true;
-        }
-
         // =================================================================================
         // Position confidence, motor power timer:
         // we want to keep track about TinyG motor power state. To do that, we run our own timer, MotorPower_timer.

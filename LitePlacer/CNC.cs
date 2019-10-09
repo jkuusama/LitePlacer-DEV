@@ -10,6 +10,32 @@ using System.Globalization;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 
+/*
+CNC class handles communication with the control board. Most calls are just passed to a supported board.
+(For now, there are only two supported boards, so most routines are
+    - if board is Duet3, call Duet3.routine
+    - else if board is Tinyg, call TinyG.routine
+    - else report and return failure )
+
+Here is a template for that:
+
+        public void ()
+        {
+            if (Controlboard == ControlBoardType.Duet3HW)
+            {
+                Duet3.();
+            }
+            else if (Controlboard == ControlBoardType.TinygHW)
+            {
+                TinyG.();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+*/
 
 namespace LitePlacer
 {
@@ -17,22 +43,172 @@ namespace LitePlacer
     public class CNC
     {
         static FormMain MainForm;
-        private SerialComm Com;
+        public TinyGclass TinyG;
+        public Duet3class Duet3;
 
-        public enum ControlBoardType { TinyG, qQuintic, other, unknown };
+        public enum ControlBoardType { TinyG, Duet3, qQuintic, other, unknown };
         public ControlBoardType Controlboard { get; set; } = ControlBoardType.unknown;
 
-        static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
+        public bool SlackCompensation { get; set; }
+        public double SlackCompensationDistance { get; set; }
 
+        public bool SlackCompensationA { get; set; }
+        private double SlackCompensationDistanceA = 5.0;
+
+
+        public bool SlowXY { get; set; }
+        public double SlowSpeedXY { get; set; }
+
+        public bool SlowZ { get; set; }
+        public double SlowSpeedZ { get; set; }
+
+        public bool SlowA { get; set; }
+        public double SlowSpeedA { get; set; }
+
+
+        // =================================================================================
         public CNC(FormMain MainF)
         {
             MainForm = MainF;
-            Com = new SerialComm(this, MainF);
+            Com = new SerialComm(this, MainF);  // ####
             SlowXY = false;
             SlowZ = false;
             SlowA = false;
+            TinyG = new TinyGclass(MainForm, this);
+            Duet3 = new Duet3class(MainForm, this);
         }
 
+        // =================================================================================
+        // Square compensation, current position:
+        #region Position
+        // The machine will be only approximately square. Fortunately, the squareness is easy to measure with camera.
+        // User measures correction value, that we apply to movements and reads.
+        // For example, correction value is +0.002, meaning that for every unit of +Y movement, 
+        // the machine actually also unintentionally moves 0.002 units to +X. 
+        // Therefore, for each movement when the user wants to go to (X, Y),
+        // we really go to (X - 0.002*Y, Y)
+
+        // CurrentX, CurrentXY are the corrected values that user and MainForm sees and uses.
+        // These reflect a square machine.
+        // TrueX/Y is what the control board actually uses.
+
+        // CurrentZ, CurrentA are the values that user and MainForm sees and uses; no correction at the moment
+
+        public static double SquareCorrection { get; set; }
+
+        private static double CurrX;
+        private static double _trueX;
+
+        public double TrueX
+        {
+            get
+            {
+                return (_trueX);
+            }
+            set
+            {
+                _trueX = value;
+            }
+        }
+
+        public double CurrentX
+        {
+            get
+            {
+                return (CurrX);
+            }
+            set
+            {
+                CurrX = value;
+            }
+        }
+
+        public static void setCurrX(double x)
+        {
+            _trueX = x;
+            CurrX = x - CurrY * SquareCorrection;
+            //MainForm.DisplayText("CNC.setCurrX: x= " + x.ToString() + ", CurrX= " + CurrX.ToString() + ", CurrY= " + CurrY.ToString());
+        }
+
+        private static double CurrY;
+        public double CurrentY
+        {
+            get
+            {
+                return (CurrY);
+            }
+            set
+            {
+                CurrY = value;
+            }
+        }
+        public static void setCurrY(double y)
+        {
+            CurrY = y;
+            CurrX = _trueX - CurrY * SquareCorrection;
+            //MainForm.DisplayText("CNC.setCurrY: "+ y.ToString()+ " CurrX= " + CurrX.ToString());
+        }
+
+        private static double CurrZ;
+        public double CurrentZ
+        {
+            get
+            {
+                return (CurrZ);
+            }
+            set
+            {
+                CurrZ = value;
+            }
+        }
+        public static void setCurrZ(double z)
+        {
+            CurrZ = z;
+        }
+
+        private static double CurrA;
+        public double CurrentA
+        {
+            get
+            {
+                return (CurrA);
+            }
+            set
+            {
+                CurrA = value;
+            }
+        }
+        public static void setCurrA(double a)
+        {
+            CurrA = a;
+        }
+
+        #endregion Position
+        // =================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // =================================================================================
+        // =================================================================================
+        // =================================================================================
+        // Old code from this down:
+
+        private SerialComm Com;
+
+        public string SmallMovementString { get; set; } = "G1 F200 ";
+
+        static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
         public ManualResetEventSlim ReadyEvent
         {
             get
@@ -144,125 +320,7 @@ namespace LitePlacer
             Com.Write(command);
         }
 
-        // =================================================================================
-        // Square compensation:
-        // The machine will be only approximately square. Fortunately, the squareness is easy to measure with camera.
-        // User measures correction value, that we apply to movements and reads.
-        // For example, correction value is +0.002, meaning that for every unit of +Y movement, 
-        // the machine actually also unintentionally moves 0.002 units to +X. 
-        // Therefore, for each movement when the user wants to go to (X, Y),
-        // we really go to (X - 0.002*Y, Y)
-
-        // CurrentX/Y is the corrected value that user sees and uses, and reflects a square machine
-        // TrueX/Y is what the TinyG actually uses.
-
-        public static double SquareCorrection { get; set; }
-
-        private static double CurrX;
-        private static double _trueX;
-
-        public double TrueX
-        {
-            get
-            {
-                return (_trueX);
-            }
-            set
-            {
-                _trueX = value;
-            }
-        }
-
-        public double CurrentX
-        {
-            get
-            {
-                return (CurrX);
-            }
-            set
-            {
-                CurrX = value;
-            }
-        }
-
-        public static void setCurrX(double x)
-        {
-            _trueX = x;
-            CurrX = x - CurrY * SquareCorrection;
-            //MainForm.DisplayText("CNC.setCurrX: x= " + x.ToString() + ", CurrX= " + CurrX.ToString() + ", CurrY= " + CurrY.ToString());
-        }
-
-        private static double CurrY;
-        public double CurrentY
-        {
-            get
-            {
-                return (CurrY);
-            }
-            set
-            {
-                CurrY = value;
-            }
-        }
-        public static void setCurrY(double y)
-        {
-            CurrY = y;
-            CurrX = _trueX - CurrY * SquareCorrection;
-            //MainForm.DisplayText("CNC.setCurrY: "+ y.ToString()+ " CurrX= " + CurrX.ToString());
-        }
-
-        private static double CurrZ;
-        public double CurrentZ
-        {
-            get
-            {
-                return (CurrZ);
-            }
-            set
-            {
-                CurrZ = value;
-            }
-        }
-        public static void setCurrZ(double z)
-        {
-            CurrZ = z;
-        }
-
-        private static double CurrA;
-        public double CurrentA
-        {
-            get
-            {
-                return (CurrA);
-            }
-            set
-            {
-                CurrA = value;
-            }
-        }
-        public static void setCurrA(double a)
-        {
-            CurrA = a;
-        }
-
-        public bool SlackCompensation { get; set; }
-        public double SlackCompensationDistance { get; set; }
-
-        public bool SlackCompensationA { get; set; }
-        private double SlackCompensationDistanceA = 5.0;
-
-        public string SmallMovementString { get; set; } = "G1 F200 ";
-
-        public bool SlowXY { get; set; }
-        public double SlowSpeedXY { get; set; }
-
-        public bool SlowZ { get; set; }
-        public double SlowSpeedZ { get; set; }
-
-        public bool SlowA { get; set; }
-        public double SlowSpeedA { get; set; }
-
-
+ 
         public void XY(double X, double Y)
         {
             double dX = Math.Abs(X - CurrentX);
