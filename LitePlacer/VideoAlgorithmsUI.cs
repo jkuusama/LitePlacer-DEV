@@ -30,8 +30,8 @@ namespace LitePlacer
     public partial class FormMain : Form
     {
         enum Functions_dataGridViewColumns : int { FunctionColumn, ActiveColumn };
-        public List<string> KnownFunctions = new List<string> {"Threshold", "Histogram", "Grayscale", "Invert", "Edge detect",
-                "Noise reduction", "Kill color", "Keep color", "Blur", "Gaussian blur", "Meas. zoom"};
+        public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", "Grayscale", "Edge detect",
+                "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles"};
 
         public VideoAlgorithmsCollection VideoAlgorithms;
 
@@ -714,7 +714,10 @@ namespace LitePlacer
                     break;		// no parameters
 
                 case "Invert":
-                    break;		// no parameters
+                    break;      // no parameters
+
+                case "Erosion":
+                    break;      // no parameters
 
                 case "Edge detect":
                     // Type, maximum difference of processing pixel with neighboring pixels in 8 direction
@@ -746,6 +749,10 @@ namespace LitePlacer
                     break;
 
                 case "Threshold":
+                    funct.parameterInt = 128;
+                    break;
+
+                case "Hough circles":
                     funct.parameterInt = 128;
                     break;
 
@@ -786,6 +793,12 @@ namespace LitePlacer
                 case "Invert":
                     FunctionExplanation_textBox.Text = "Inverts the image; the detection functions are looking for" +
                         " white image on black background.";
+                    FunctionExplanation_textBox.Visible = true;
+                    break;		// no parameters
+
+                case "Erosion":
+                    FunctionExplanation_textBox.Text = "Assigns minimum value of surrounding pixels to each pixel of the result image." +
+                        "  Removes noisy pixels, shrinks objects.";
                     FunctionExplanation_textBox.Visible = true;
                     break;		// no parameters
 
@@ -830,6 +843,15 @@ namespace LitePlacer
                     // one double parameter
                     EnableDouble("Sigma:");
                     FunctionExplanation_textBox.Text = "Another method to blur the image: gaussian blur with kernel size of 11.";
+                    FunctionExplanation_textBox.Visible = true;
+                    break;
+
+                case "Hough circles":
+                    // int and double parameter
+                    EnableInt(0, 255, "Diameter:");
+                    EnableDouble("Intensity:");
+                    FunctionExplanation_textBox.Text = "Finds partial circles with specified diameter.\r\n"
+                        + "Result intensity correlates to match quality.";
                     FunctionExplanation_textBox.Visible = true;
                     break;
 
