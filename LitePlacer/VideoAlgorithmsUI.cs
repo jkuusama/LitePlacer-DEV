@@ -221,6 +221,11 @@ namespace LitePlacer
             ClearFunctionParameters();
             Functions_dataGridView.CurrentCell = null;
             AlgorithmChange = false;
+            if (ProcessDisplay_checkBox.Checked)
+            {
+                UpdateVideoProcessing();
+            }
+
         }
 
         bool ChangeYwithX = false;
