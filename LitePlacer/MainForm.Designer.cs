@@ -8527,7 +8527,6 @@
         private System.Windows.Forms.Label label119;
         private System.Windows.Forms.Button PlaceOne_button;
         private System.Windows.Forms.Button TapeSet1_button;
-        private System.Windows.Forms.CheckBox ValidMeasurement_checkBox;
         private System.Windows.Forms.Button ManualNeedeChange_button;
         private System.Windows.Forms.Label label123;
         private System.Windows.Forms.TextBox ZTestTravel_textBox;
@@ -8882,6 +8881,7 @@
         private System.Windows.Forms.Label CadDataDelay_label;
         private System.Windows.Forms.Button MeasureAndSet_button;
         private System.Windows.Forms.Button EditTape_button;
+        public System.Windows.Forms.CheckBox ValidMeasurement_checkBox;
     }
 }
 

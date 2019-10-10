@@ -429,7 +429,7 @@ namespace LitePlacer
 
             if (Cnc.Connected)
             {
-                if (ControlBoardJustConnected())
+                if (Cnc.JustConnected())
                 {
                     Cnc.PumpDefaultSetting();
                     Cnc.VacuumDefaultSetting();
@@ -505,9 +505,9 @@ namespace LitePlacer
             if (Cnc.Connected)
             {
                 Cnc.PumpIsOn = true;        // so it will be turned off, no matter what we think the status
-                Cnc.PumpOff_NoWorkaround();
+                Cnc.PumpOff();
                 Cnc.VacuumDefaultSetting();
-                CNC_Write_m("{\"md\":\"\"}");  // motor power off
+                Cnc.MotorPowerOff();
             }
             Cnc.Close();
 
@@ -1392,7 +1392,6 @@ namespace LitePlacer
         }
 
         static bool EnterKeyHit = true;   // petegit: Why is this initialized with true???
-        static string Movestr;
 
         public void My_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1463,19 +1462,20 @@ namespace LitePlacer
                 return;
             }
 
+            string Speedstr;
+
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
             {
-                Movestr = "{\"gc\":\"G1 F" + AltJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
+                Speedstr = AltJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             }
             else if (System.Windows.Forms.Control.ModifierKeys == Keys.Control)
             {
-                Movestr = "{\"gc\":\"G1 F" + CtlrJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
+                Speedstr = CtlrJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
-                Movestr = "{\"gc\":\"G1 F" + NormalJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture) + " ";
+                Speedstr = NormalJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             }
-
 
             e.Handled  = true;
 
@@ -1492,49 +1492,45 @@ namespace LitePlacer
             if (e.KeyCode == Keys.NumPad1)
             {
                 JoggingBusy = true;
-                //DisplayText("up");
-                //return;
-                Cnc.RawWrite(Movestr + "X0 Y0\"}");
+                Cnc.Jog(Speedstr, "0", "0", "", "");
             }
             else if (e.KeyCode == Keys.NumPad2)
             {
                 JoggingBusy = true;
-                //DisplayText("down");
-                //return;
-                Cnc.RawWrite(Movestr + "Y0\"}");
+                Cnc.Jog(Speedstr, "", "0", "", "");
             }
             else if (e.KeyCode == Keys.NumPad3)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "Y0" + "X" + Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture), "0", "", "");
             }
             else if (e.KeyCode == Keys.NumPad4)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X0\"}");
+                Cnc.Jog(Speedstr, "0", "", "", "");
             }
             else if (e.KeyCode == Keys.NumPad6)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X" + Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture), "", "", "");
             }
             else if (e.KeyCode == Keys.NumPad7)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X0" + "Y" + Setting.General_MachineSizeY.ToString() + "\"}");
+                Cnc.Jog(Speedstr, "0", Setting.General_MachineSizeY.ToString(), "", "");
             }
             else if (e.KeyCode == Keys.NumPad8)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X0" + "Y" + Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, "", Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture), "", "");
             }
             else if (e.KeyCode == Keys.NumPad9)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "X" + Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture) 
-                    + "Y" + Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture),
+                    Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture), "", "");
             }
-           //     (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
+            //     (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
             else if (e.KeyCode == Keys.Add)
             {
                 JoggingBusy = true;
@@ -1551,32 +1547,28 @@ namespace LitePlacer
                     return;
                 }
                 Ztarget += Zadd;
-                Cnc.RawWrite(Movestr + "Z" + Ztarget.ToString(CultureInfo.InvariantCulture) + "\"}");
+                Cnc.Jog(Speedstr, "", "", "Z" + Ztarget.ToString(CultureInfo.InvariantCulture), "");
             }
             else if (e.KeyCode == Keys.Subtract)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "Z0\"}");
+                Cnc.Jog(Speedstr, "", "", "0", "");
             }
             else if (e.KeyCode == Keys.Divide)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "A0\"}");
+                Cnc.Jog(Speedstr, "", "", "", "0");
             }
             else if (e.KeyCode == Keys.Multiply)
             {
                 JoggingBusy = true;
-                Cnc.RawWrite(Movestr + "A10000\"}");  // should be enough
+                Cnc.Jog(Speedstr, "", "", "", "100000");  // should be enough
             }
             else
             {
                 Jog(sender, e);
             }
         }
-
-
-        // [DllImport("user32.dll")]
-        // private static extern int HideCaret(IntPtr hwnd);
 
         private void Jog(object sender, KeyEventArgs e)
         {
@@ -2026,7 +2018,7 @@ namespace LitePlacer
                 DisplayText("A value error", KnownColor.Red, true);
                 return;
             }
-            CNC_RawWrite("{\"gc\":\"G28.3 X" + Xstr + " Y" + Ystr + " Z" + Zstr + " A" + Astr + "\"}");
+            Cnc.SetPosition(X: Xstr, Y: Ystr, Z: Zstr, A: Astr);
             Thread.Sleep(50);
         }
 
@@ -2040,16 +2032,6 @@ namespace LitePlacer
         // =================================================================================
         // Different types of control hardware and settings
         // =================================================================================
-
-        private bool UpdateCNCBoardType_m()
-        {
-            DisplayText("Finding board type:");
-            if (!CNC_Write_m("{\"hp\":\"\"}"))
-            {
-                return false;
-            };
-            return true;
-        }
 
         // =================================================================================
         // Position confidence, motor power timer:
@@ -2432,18 +2414,13 @@ namespace LitePlacer
         }
         public int CNC_HomingTimeout { get; set; } = 20;  // in seconds
 
-        private bool CNC_RawWrite(string s)
-        {
-            // This for operations that cause conflicts with event firings. Caller does waiting, if needed.
-            return Cnc.RawWrite(s);
-        }
 
         bool CNC_BlockingWriteDone = false;
         bool CNC_WriteOk = true;
         private void CNC_BlockingWrite_thread(string cmd)
         {
             Cnc_ReadyEvent.Reset();
-            CNC_WriteOk = Cnc.Write(cmd);
+            CNC_WriteOk = Cnc.Write_m(cmd);
             Cnc_ReadyEvent.Wait();
             CNC_BlockingWriteDone = true;
         }
@@ -2479,7 +2456,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     CNC_BlockingWriteDone = true;
                     JoggingBusy = false;
-                    Cnc.Error();
+                    Cnc.RaiseError();
                     ValidMeasurement_checkBox.Checked = false;
                     return false;
                 }
@@ -2985,9 +2962,8 @@ namespace LitePlacer
             Ylist.Sort();
             X = Xlist[3];
             Y = Ylist[3];
-            // CNC_RawWrite("G28.3 X" + X.ToString("0.000") + " Y" + Y.ToString("0.000"));
-            CNC_RawWrite("{\"gc\":\"G28.3 X" + X.ToString("0.000", CultureInfo.InvariantCulture)
-                + " Y" + Y.ToString("0.000", CultureInfo.InvariantCulture) + "\"}");
+            Cnc.SetPosition(X: X.ToString("0.000", CultureInfo.InvariantCulture),
+                Y: Y.ToString("0.000", CultureInfo.InvariantCulture), Z: "", A: "");
             Thread.Sleep(50);
             Cnc.CurrentX = 0.0;
             Cnc.CurrentY = 0.0;
@@ -4294,7 +4270,7 @@ namespace LitePlacer
             }
             if (comboBoxSerialPorts.Items.Count == 0)
             {
-                labelSerialPortStatus.Text = "No serial ports found.\n\rIs TinyG powered on?";
+                labelSerialPortStatus.Text = "No serial ports found.\n\rIs control board powered on?";
             }
             else
             {
@@ -4366,7 +4342,7 @@ namespace LitePlacer
                     Cnc.ErrorState = false;
                     Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                     UpdateCncConnectionStatus();
-                    if (ControlBoardJustConnected())
+                    if (Cnc.JustConnected())
                     {
                         Cnc.PumpDefaultSetting();
                         Cnc.VacuumDefaultSetting();
@@ -4471,7 +4447,7 @@ namespace LitePlacer
 
         // Sends the calls that will result to messages that update the values shown on UI
 
-        private bool LoopTinyGParameters()
+        public bool LoopTinyGParameters()
         {
 
             foreach (var parameter in TinyGBoard.GetType().GetProperties())
@@ -4493,66 +4469,6 @@ namespace LitePlacer
             return true;
         }
 
-
-        private bool ControlBoardJustConnected()
-        {
-            // Called when control board conenction is estabished.
-            // First, find out the board type. Then, 
-            // for TinyG boards, read the parameter values stored on board.
-            // For qQuintic boards that dont' have on-board storage, write the values.
-
-            Thread.Sleep(200); // Give TinyG time to wake up
-            bool res = UpdateCNCBoardType_m();
-            if (!res)
-            {
-                return false;
-            }
-
-            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
-            {
-                CNC_RawWrite("\x11");  // Xon
-                Thread.Sleep(50);   // TinyG wakeup
-
-            }
-            // initial position
-            if (!CNC_Write_m("{sr:n}"))
-            {
-                return false;
-            }
-            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
-            {
-                DisplayText("Reading TinyG settings:");
-                if (!LoopTinyGParameters())
-                {
-                    return false;
-                }
-            }
-            else if (Cnc.Controlboard == CNC.ControlBoardType.qQuintic)
-            {
-                DisplayText("Writing qQuintic settings:");
-                if (!WriteqQuinticSettings())
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                DisplayText("Unknown board!");
-                return false;
-            }
-
-            // Do settings that need to be done always
-            Cnc.IgnoreError = true;
-            Cnc.ProbingMode(false);
-            //PumpDefaultSetting();
-            //VacuumDefaultSetting();
-            //Thread.Sleep(100);
-            //Vacuum_checkBox.Checked = true;
-            //Cnc.IgnoreError = false;
-            CNC_Write_m("{\"me\":\"\"}");  // motor power on
-            MotorPower_checkBox.Checked = true;
-            return true;
-        }
 
         // Called from CNC class when UI need updating
         public void ValueUpdater(string item, string value)
@@ -6145,7 +6061,7 @@ namespace LitePlacer
 
         private void reset_button_Click(object sender, EventArgs e)
         {
-            Cnc.Write("\x18");
+            Cnc.Write_m("\x18");
         }
 
 
@@ -10392,122 +10308,13 @@ namespace LitePlacer
 
         private void DemoWork()
         {
-            /*
-            double PCB_X = Setting.General_JigOffsetX + Setting.DownCam_NozzleOffsetX;
-            double PCB_Y = Setting.General_JigOffsetY + Setting.DownCam_NozzleOffsetY;
-            double HoleX;
-            double HoleY;
-            double PartX;
-            double PartY;
-            Random rnd = new Random();
-            int a;
-            int b;
-            NumberStyles style = NumberStyles.AllowDecimalPoint;
-            CultureInfo culture = CultureInfo.InvariantCulture;
-            string s = Tapes_dataGridView.Rows[0].Cells["FirstX_Column"].Value.ToString();
-            if (!double.TryParse(s, style, culture, out HoleX))
-            {
-                ShowMessageBox(
-                    "Bad X data at Tape 1",
-                    "Tape data error",
-                    MessageBoxButtons.OK
-                );
-                return;
-            }
-            s = Tapes_dataGridView.Rows[0].Cells["FirstY_Column"].Value.ToString();
-            if (!double.TryParse(s, style, culture, out HoleY))
-            {
-                ShowMessageBox(
-                    "Bad Y data at Tape 1",
-                    "Tape data error",
-                    MessageBoxButtons.OK
-                );
-                return;
-            }
-            */
-            // vacuum off, no UI update because of threading
-            CNC_RawWrite("{\"gc\":\"M09\"}");
-            Thread.Sleep(Setting.General_PickupReleaseTime);
 
-            // PumpOn, off main thread
-            CNC_RawWrite("{\"gc\":\"M03\"}");
-            Thread.Sleep(500);  // this much to develop vacuum
-
-            // BugWorkaround();
             while (DemoRunning)
             {
-                /*
-                // Simulate fast measurement. Last hole:
-                if (!CNC_XY_m(HoleX + 6 * 4.0, HoleY)) goto err;
-                Thread.Sleep(400);
-                if (!DemoRunning) return;
-                // First hole:
-                if (!CNC_XY_m(HoleX, HoleY)) goto err;
-                Thread.Sleep(400);
-                if (!DemoRunning) return;
-                // components
-                for (int i = 0; i < 6; i++)
-                {
-                    // Nozzle to part:
-                    PartX = HoleX + i * 4 - 2 + Setting.DownCam_NozzleOffsetX;
-                    PartY = HoleY + 3.5 + Setting.DownCam_NozzleOffsetY;
-                    if (!CNC_XY_m(PartX, PartY)) goto err;
-                    if (!DemoRunning) return;
-                    // Pick up
-                    if (!CNC_Z_m(Setting.General_ZtoPCB)) goto err;
-                    Thread.Sleep(Setting.General_PickupVacuumTime);
-                    if (!CNC_Z_m(0.0)) goto err;
-                    if (!DemoRunning) return;
-                    // goto position
-                    a = rnd.Next(10, 60);
-                    b = rnd.Next(10, 60);
-                    if (!CNC_XY_m(PCB_X + a, PCB_Y + b)) goto err;
-                    if (!DemoRunning) return;
-                    // place
-                    if (!CNC_Z_m(Setting.General_ZtoPCB - 0.5)) goto err;
-                    Thread.Sleep(Setting.General_PickupReleaseTime);
-                    if (!CNC_Z_m(0.0)) goto err;
-                    if (!DemoRunning) return;
-                }
-                */
-                if (!DemoRunning) goto demoend;
-                if (!Demo_Pickup(100, 100, 0, 20)) goto demoend;
-                if (!DemoRunning) goto demoend;
-                if (!Demo_Place(200, 200, 0, 20)) goto demoend;
-                if (!DemoRunning) goto demoend;
+
             }
-        demoend:
-            DemoRunning = false;
-            // vacuum off, no UI update because of threading
-            CNC_RawWrite("{\"gc\":\"M09\"}");
-            Thread.Sleep(Setting.General_PickupReleaseTime);
-            // pump off, off thread
-            CNC_RawWrite("{\"gc\":\"M05\"}");
-            Thread.Sleep(50);
         }
 
-
-        private bool Demo_Pickup(double X, double Y, double A, double Z)
-        {
-            if (!Nozzle.Move_m(X, Y, A)) return false;
-            if (!CNC_Z_m(Z)) return false;
-            // vacuum on, no UI update because of threading
-            CNC_RawWrite("{\"gc\":\"M08\"}");
-            Thread.Sleep(Setting.General_PickupVacuumTime);
-            if (!CNC_Z_m(0)) return false;
-            return true;
-        }
-
-        private bool Demo_Place(double X, double Y, double A, double Z)
-        {
-            if (!Nozzle.Move_m(X, Y, A)) return false;
-            if (!CNC_Z_m(Z)) return false;
-            // vacuum off, no UI update because of threading
-            CNC_RawWrite("{\"gc\":\"M09\"}");
-            Thread.Sleep(Setting.General_PickupReleaseTime);
-            if (!CNC_Z_m(0)) return false;
-            return true;
-        }
 
         // =================================================================================
         // Panelizing
@@ -12071,7 +11878,7 @@ namespace LitePlacer
             Cnc.VacuumOff();
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
             {
-                Cnc.PumpOff_NoWorkaround();
+                Cnc.PumpOff();
                 return;
             }
             if (!Nozzle_ProbeDown_m())
@@ -13984,116 +13791,8 @@ namespace LitePlacer
 
         private bool WriteqQuinticSettings()
         {
-            DisplayText("Writing settings to qQuintic board.");
-            DisplayText("Writing settings to qQuintic board.");
-            //if (!WriteSetting("st", TinyGBoard.st, false)) return false;
-            if (!WriteSetting("mt", qQuinticBoard.Sys_mt, false)) return false;
-            if (!WriteSetting("jv", qQuinticBoard.Sys_jv, false)) return false;
-            //if (!WriteSetting("js", qQuinticBoard.js, false)) return false;
-            if (!WriteSetting("tv", qQuinticBoard.Sys_tv, false)) return false;
-            if (!WriteSetting("qv", qQuinticBoard.Sys_qv, false)) return false;
-            if (!WriteSetting("sv", qQuinticBoard.Sys_sv, false)) return false;
-            if (!WriteSetting("si", qQuinticBoard.Sys_si, false)) return false;
-            if (!WriteSetting("gun", qQuinticBoard.Sys_gun, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("1ma", qQuinticBoard.Motor1ma, false)) return false;
-            if (!WriteSetting("1sa", qQuinticBoard.Motor1sa, false)) return false;
-            if (!WriteSetting("1tr", qQuinticBoard.Motor1tr, false)) return false;
-            if (!WriteSetting("1mi", qQuinticBoard.Motor1mi, false)) return false;
-            if (!WriteSetting("1po", qQuinticBoard.Motor1po, false)) return false;
-            if (!WriteSetting("1pm", qQuinticBoard.Motor1pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("2ma", qQuinticBoard.Motor2ma, false)) return false;
-            if (!WriteSetting("2sa", qQuinticBoard.Motor2sa, false)) return false;
-            if (!WriteSetting("2tr", qQuinticBoard.Motor2tr, false)) return false;
-            if (!WriteSetting("2mi", qQuinticBoard.Motor2mi, false)) return false;
-            if (!WriteSetting("2po", qQuinticBoard.Motor2po, false)) return false;
-            if (!WriteSetting("2pm", qQuinticBoard.Motor2pm, false)) return false;
-            if (!WriteSetting("3ma", qQuinticBoard.Motor3ma, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("3sa", qQuinticBoard.Motor3sa, false)) return false;
-            if (!WriteSetting("3tr", qQuinticBoard.Motor3tr, false)) return false;
-            if (!WriteSetting("3mi", qQuinticBoard.Motor3mi, false)) return false;
-            if (!WriteSetting("3po", qQuinticBoard.Motor3po, false)) return false;
-            if (!WriteSetting("3pm", qQuinticBoard.Motor3pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("4ma", qQuinticBoard.Motor4ma, false)) return false;
-            if (!WriteSetting("4sa", qQuinticBoard.Motor4sa, false)) return false;
-            if (!WriteSetting("4tr", qQuinticBoard.Motor4tr, false)) return false;
-            if (!WriteSetting("4mi", qQuinticBoard.Motor4mi, false)) return false;
-            if (!WriteSetting("4po", qQuinticBoard.Motor4po, false)) return false;
-            if (!WriteSetting("4pm", qQuinticBoard.Motor4pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("xam", qQuinticBoard.Xam, false)) return false;
-            if (!WriteSetting("xvm", qQuinticBoard.Xvm, false)) return false;
-            if (!WriteSetting("xfr", qQuinticBoard.Xfr, false)) return false;
-            if (!WriteSetting("xtn", qQuinticBoard.Xtn, false)) return false;
-            if (!WriteSetting("xtm", qQuinticBoard.Xtm, false)) return false;
-            if (!WriteSetting("xjm", qQuinticBoard.Xjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("xjh", qQuinticBoard.Xjh, false)) return false;
-            if (!WriteSetting("xsv", qQuinticBoard.Xsv, false)) return false;
-            if (!WriteSetting("xlv", qQuinticBoard.Xlv, false)) return false;
-            if (!WriteSetting("xlb", qQuinticBoard.Xlb, false)) return false;
-            if (!WriteSetting("xzb", qQuinticBoard.Xzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("yam", qQuinticBoard.Yam, false)) return false;
-            if (!WriteSetting("yvm", qQuinticBoard.Yvm, false)) return false;
-            if (!WriteSetting("yfr", qQuinticBoard.Yfr, false)) return false;
-            if (!WriteSetting("ytn", qQuinticBoard.Ytn, false)) return false;
-            if (!WriteSetting("ytm", qQuinticBoard.Ytm, false)) return false;
-            if (!WriteSetting("yjm", qQuinticBoard.Yjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("yjh", qQuinticBoard.Yjh, false)) return false;
-            if (!WriteSetting("ysv", qQuinticBoard.Ysv, false)) return false;
-            if (!WriteSetting("ylv", qQuinticBoard.Ylv, false)) return false;
-            if (!WriteSetting("ylb", qQuinticBoard.Ylb, false)) return false;
-            if (!WriteSetting("yzb", qQuinticBoard.Yzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("zam", qQuinticBoard.Zam, false)) return false;
-            if (!WriteSetting("zvm", qQuinticBoard.Zvm, false)) return false;
-            if (!WriteSetting("zfr", qQuinticBoard.Zfr, false)) return false;
-            if (!WriteSetting("ztn", qQuinticBoard.Ztn, false)) return false;
-            if (!WriteSetting("ztm", qQuinticBoard.Ztm, false)) return false;
-            if (!WriteSetting("zjm", qQuinticBoard.Zjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("zjh", qQuinticBoard.Zjh, false)) return false;
-            if (!WriteSetting("zsv", qQuinticBoard.Zsv, false)) return false;
-            if (!WriteSetting("zlv", qQuinticBoard.Zlv, false)) return false;
-            if (!WriteSetting("zlb", qQuinticBoard.Zlb, false)) return false;
-            if (!WriteSetting("zzb", qQuinticBoard.Zzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("aam", qQuinticBoard.Aam, false)) return false;
-            if (!WriteSetting("avm", qQuinticBoard.Avm, false)) return false;
-            if (!WriteSetting("afr", qQuinticBoard.Afr, false)) return false;
-            if (!WriteSetting("atn", qQuinticBoard.Atn, false)) return false;
-            if (!WriteSetting("atm", qQuinticBoard.Atm, false)) return false;
-            if (!WriteSetting("ajm", qQuinticBoard.Ajm, false)) return false;
-            if (!WriteSetting("ajh", qQuinticBoard.Ajh, false)) return false;
-            if (!WriteSetting("asv", qQuinticBoard.Asv, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("1pl", qQuinticBoard.Motor1pl, false)) return false;
-            if (!WriteSetting("2pl", qQuinticBoard.Motor2pl, false)) return false;
-            if (!WriteSetting("3pl", qQuinticBoard.Motor3pl, false)) return false;
-            if (!WriteSetting("4pl", qQuinticBoard.Motor4pl, false)) return false;
-            if (!WriteSetting("5pl", qQuinticBoard.Motor5pl, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("5ma", qQuinticBoard.Motor5ma, false)) return false;
-            if (!WriteSetting("5pm", qQuinticBoard.Motor5pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
-            if (!WriteSetting("xhi", qQuinticBoard.Xhi, false)) return false;
-            if (!WriteSetting("xhd", qQuinticBoard.Xhd, false)) return false;
-            if (!WriteSetting("yhi", qQuinticBoard.Yhi, false)) return false;
-            if (!WriteSetting("yhd", qQuinticBoard.Yhd, false)) return false;
-            if (!WriteSetting("zhi", qQuinticBoard.Zhi, false)) return false;
-            if (!WriteSetting("zhd", qQuinticBoard.Zhd, false)) return false;
-            if (!WriteSetting("ahi", qQuinticBoard.Ahi, false)) return false;
-            if (!WriteSetting("bhi", qQuinticBoard.Bhi, false)) return false;
-
-            // setup status message:
-            if (!CNC_Write_m("{sr:{posx:t,posy:t,posz:t,posa:t,stat:t,vel:t}}")) return false;
-
-            return true;
+            DisplayText("WriteqQuinticSettings() called, not valid!");
+            return false;
         }
 
 
@@ -14190,7 +13889,7 @@ namespace LitePlacer
 
         private void Ato0_button_Click(object sender, EventArgs e)
         {
-            CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
+            Cnc.SetPosition(X: "", Y: "", Z: "", A: "0");
         }
 
         private void MeasureAndSet_button_Click(object sender, EventArgs e)

@@ -21,11 +21,11 @@ Here is a template for that:
 
         public void ()
         {
-            if (Controlboard == ControlBoardType.Duet3HW)
+            if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.();
             }
-            else if (Controlboard == ControlBoardType.TinygHW)
+            else if (Controlboard == ControlBoardType.TinyG)
             {
                 TinyG.();
             }
@@ -42,9 +42,9 @@ namespace LitePlacer
 
     public class CNC
     {
-        static FormMain MainForm;
-        public TinyGclass TinyG;
-        public Duet3class Duet3;
+        public static FormMain MainForm;
+        private TinyGclass TinyG;
+        private Duet3class Duet3;
 
         public enum ControlBoardType { TinyG, Duet3, qQuintic, other, unknown };
         public ControlBoardType Controlboard { get; set; } = ControlBoardType.unknown;
@@ -81,6 +81,8 @@ namespace LitePlacer
         // =================================================================================
         // Square compensation, current position:
         #region Position
+
+        // Square correction:
         // The machine will be only approximately square. Fortunately, the squareness is easy to measure with camera.
         // User measures correction value, that we apply to movements and reads.
         // For example, correction value is +0.002, meaning that for every unit of +Y movement, 
@@ -130,6 +132,8 @@ namespace LitePlacer
             //MainForm.DisplayText("CNC.setCurrX: x= " + x.ToString() + ", CurrX= " + CurrX.ToString() + ", CurrY= " + CurrY.ToString());
         }
 
+
+
         private static double CurrY;
         public double CurrentY
         {
@@ -142,12 +146,15 @@ namespace LitePlacer
                 CurrY = value;
             }
         }
+
         public static void setCurrY(double y)
         {
             CurrY = y;
             CurrX = _trueX - CurrY * SquareCorrection;
             //MainForm.DisplayText("CNC.setCurrY: "+ y.ToString()+ " CurrX= " + CurrX.ToString());
         }
+
+
 
         private static double CurrZ;
         public double CurrentZ
@@ -166,6 +173,8 @@ namespace LitePlacer
             CurrZ = z;
         }
 
+
+
         private static double CurrA;
         public double CurrentA
         {
@@ -183,23 +192,442 @@ namespace LitePlacer
             CurrA = a;
         }
 
+
+
+        public void SetPosition(string X, string Y, string Z, string A)
+        {
+            if ((X + Y + Z + A) == "")
+            {
+                MainForm.DisplayText("*** Cnc.SetPosition(), no coordinates.", KnownColor.DarkRed, true);
+                return;
+            }
+
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.SetPosition(X, Y, Z, A);
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.SetPosition(X, Y, Z, A);
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.SetPosition(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
+        public void CancelJog()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.CancelJog();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.CancelJog();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.CancelJog(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
+        public void Jog(string Speed, string X, string Y, string Z, string A)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.Jog(Speed, X, Y, Z, A);
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.Jog(Speed, X, Y, Z, A);
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.Jog(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
         #endregion Position
-        // =================================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // =================================================================================
+        // Communications to hardware, status of the link
+        #region Communications
+
+        public bool Connected { get; set; }
+        public bool ErrorState { get; set; }
+
+        public void RaiseError()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.RaiseError();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.TinyG_RaiseError();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.RaiseError(), unknown board.", KnownColor.DarkRed, true);
+            }
+            ErrorState = true;
+            Connected = false;
+            // Cnc.Homing = false;
+            MainForm.ValidMeasurement_checkBox.Checked = false;
+            MainForm.UpdateCncConnectionStatus();
+        }
+
+
+
+        public void InterpretLine(string line)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.InterpretLine(line);
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.InterpretLine(line);
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.InterpretLine(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
+        public bool Connect(string port)
+        {
+            if (Duet3.Connect(port))
+            {
+                Controlboard = ControlBoardType.Duet3;
+                return true;
+            }
+
+            if (TinyG.Connect(port))
+            {
+                Controlboard = ControlBoardType.TinyG;
+                return true;
+            }
+
+            Controlboard = ControlBoardType.unknown;
+            MainForm.DisplayText("*** Cnc.Connect(), did not find a supported board.", KnownColor.DarkRed, true);
+            RaiseError();
+            return false;
+        }
+
+
+
+        public bool JustConnected()
+        {
+            // Called after a control board connection is estabished.
+            // Set sleep time according to slowest board supported.
+            // TinyG: 200 (ms)
+            // Duet 3: ??
+            Thread.Sleep(200);
+
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (!Duet3.JustConnected())
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (!TinyG.JustConnected())
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("**Unknown/unsupported control board.");
+                RaiseError();
+                return false;
+            }
+            // Do settings that need to be done always
+            return true;
+        }
+
+
+
+        public void Close()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.Close();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.Close();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.Close(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
+        // Sends a command to control board, doesn't return until the response is handled
+        public bool Write_m (string command, int Timeout = 250)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.Write_m(command, Timeout))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            };
+
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.Write_m(command, Timeout))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            };
+
+            MainForm.DisplayText("*** Cnc.Write(), unknown board.", KnownColor.DarkRed, true);
+            Connected = false;
+            ErrorState = true;
+            return false;
+        }
+
+
+        // For operations that cause conflicts with event firings or don't give response
+        // Caller does waiting, if needed.
+        public bool RawWrite(string command)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.RawWrite(command))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            };
+
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.RawWrite(command))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            };
+
+            MainForm.DisplayText("*** Cnc.RawWrite(), unknown board.", KnownColor.DarkRed, true);
+            Connected = false;
+            ErrorState = true;
+            return false;
+        }
+
+
+
+        // Write, that doesn't care what we think of the communication link status
+        public void ForceWrite(string command)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.ForceWrite(command);
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.ForceWrite(command);
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.ForceWrite(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+        #endregion Communications
+
+        // =================================================================================
+        // Hardware features: probing, pump, vacuum, motor power
+        #region Features
+
+        public void ProbingMode(bool set)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.ProbingMode(set);
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.ProbingMode(set);
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.ProbingMode(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+        public void MotorPowerOn()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.MotorPowerOn();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.MotorPowerOn();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.MotorPowerOn(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
+        public void MotorPowerOff()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.MotorPowerOff();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.MotorPowerOff();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.MotorPowerOff(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+        public bool VacuumIsOn = false;
+
+        public void VacuumDefaultSetting()
+        {
+            VacuumOff();
+        }
+
+        public void VacuumOn()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.VacuumOn();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.VacuumOn();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.VacuumOn(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+        public void VacuumOff()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.VacuumOff();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.VacuumOff();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.VacuumOff(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
+        public bool PumpIsOn { get; set; } = false;
+
+        public void PumpDefaultSetting()
+        {
+            PumpOff();
+        }
+
+
+        public void PumpOn()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.PumpOn();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.PumpOn();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.PumpOn(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+        public void PumpOff()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.PumpOff();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.PumpOff();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.PumpOff(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
+
+        #endregion Features
+
+        // =================================================================================
+        // Movement
+        #region Movement
+
+
+
+
+
+        #endregion Movement
+
+
+
+
+
         // =================================================================================
         // =================================================================================
         // Old code from this down:
@@ -217,108 +645,8 @@ namespace LitePlacer
             }
         }
 
-        public bool Connected { get; set; }
-        public bool ErrorState { get; set; }
-
-        public void Error()
-        {
-            ErrorState = true;
-            // Connected = false;
-            Homing = false;
-            _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus();
-        }
-
-        public void Close()
-        {
-            Com.Close();
-            ErrorState = false;
-            Connected = false;
-            Homing = false;
-            _readyEvent.Set();
-            MainForm.UpdateCncConnectionStatus();
-        }
 
         // =================================================================================
-        public bool Connect(String name)
-        {
-            // For now, just see that the port opens. 
-            // TODO: check that there isTinyG, not just any comm port.
-            // TODO: check/set default values
-
-            if (Com.IsOpen)
-            {
-                MainForm.DisplayText("Already connected to serial port " + name + ": already open");
-                Connected = true;
-                return true;
-            }
-            Com.Open(name);
-            ErrorState = false;
-            Homing = false;
-            _readyEvent.Set();
-            Connected = Com.IsOpen;
-            if (!Connected)
-            {
-                MainForm.DisplayText("Connecting to serial port " + name + " failed.");
-                Error();
-            }
-            else
-            {
-                MainForm.DisplayText("Connected to serial port " + name);
-            }
-            return Connected;
-        }
-
-        public bool Write(string command)
-        {
-            if (!Com.IsOpen)
-            {
-                MainForm.DisplayText("###" + command + " discarded, com not open (readyevent set)");
-                _readyEvent.Set();
-                Connected = false;
-                return false;
-            }
-            if (ErrorState)
-            {
-                MainForm.DisplayText("###" + command + " discarded, error state on (readyevent set)");
-                _readyEvent.Set();
-                return false;
-            }
-            _readyEvent.Reset();
-            bool res = Com.Write(command);
-            _readyEvent.Wait();
-            if (!res)
-            {
-                Error();
-            }
-            return res;
-        }
-
-        public bool RawWrite(string command)
-        {
-            if (!Com.IsOpen)
-            {
-                MainForm.DisplayText("###" + command + " discarded, com not open");
-                Connected = false;
-                return false;
-            }
-            if (ErrorState)
-            {
-                MainForm.DisplayText("###" + command + " discarded, error state on");
-                return false;
-            }
-            bool res = Com.Write(command);
-            if (!res)
-            {
-                Error();
-            }
-            return res;
-        }
-
-        public void ForceWrite(string command)
-        {
-            Com.Write(command);
-        }
 
  
         public void XY(double X, double Y)
@@ -556,7 +884,6 @@ namespace LitePlacer
             }
         }
 
-
         public void Z(double Z)
         {
             string command = "G0 Z" + Z.ToString(CultureInfo.InvariantCulture);
@@ -616,6 +943,7 @@ namespace LitePlacer
                 A_move(A);
             }
         }
+        
         private void A_move(double A)
         {
             string command;
@@ -634,559 +962,6 @@ namespace LitePlacer
 
         // =================================================================================
         public bool Homing { get; set; }
-        public bool IgnoreError { get; set; }
 
-        // =================================================================================
-        public void ProbingMode(bool set)
-        {
-            int wait = 250;
-            double b = MainForm.Setting.General_ZprobingHysteresis;
-            string backoff = b.ToString("0.00", CultureInfo.InvariantCulture);
-
-            if (Controlboard == ControlBoardType.TinyG)
-            {
-                if (set)
-                {
-                    MainForm.DisplayText("Probing mode on, TinyG");
-                    MainForm.CNC_Write_m("{\"zsn\",0}");
-                    Thread.Sleep(wait);
-                    MainForm.CNC_Write_m("{\"zsx\",1}");
-                    Thread.Sleep(wait);
-                    MainForm.CNC_Write_m("{\"zzb\"," + backoff + "}");
-                    Thread.Sleep(wait);
-                }
-                else
-                {
-                    MainForm.DisplayText("Probing mode off, TinyG");
-                    MainForm.CNC_Write_m("{\"zsn\",3}");
-                    Thread.Sleep(wait);
-                    MainForm.CNC_Write_m("{\"zsx\",2}");
-                    Thread.Sleep(wait);
-                    MainForm.CNC_Write_m("{\"zzb\",2}");
-                    Thread.Sleep(wait);
-                }
-            }
-            else if (Controlboard == ControlBoardType.qQuintic)
-            {
-                MainForm.DisplayText("Set probing mode, qQuintic -- SKIPPED --");
-                if (set)
-                {
-                    MainForm.DisplayText("Probing mode on, qQuintic");
-                }
-                else
-                {
-                    MainForm.DisplayText("Probing mode off, qQuintic");
-                }
-            }
-            else
-            {
-                MainForm.DisplayText("Set probing mode, unknown board!!", KnownColor.DarkRed, true);
-            }
-        }
-
-        // =================================================================================
-        public void MotorPowerOn()
-        {
-            if (Controlboard == ControlBoardType.TinyG)
-            {
-                MainForm.DisplayText("MotorPowerOn(), TinyG");
-                MainForm.CNC_Write_m("{\"me\":\"\"}");
-                MainForm.ResetMotorTimer();
-
-            }
-            else if (Controlboard == ControlBoardType.qQuintic)
-            {
-                MainForm.DisplayText("MotorPowerOn(), qQuintic  -- SKIPPED --");
-            }
-            else
-            {
-                MainForm.DisplayText("*** MotorPowerOn(), unknown board!!", KnownColor.DarkRed, true);
-            }
-        }
-
-        public void MotorPowerOff()
-        {
-            if (Controlboard == ControlBoardType.TinyG)
-            {
-                MainForm.DisplayText("MotorPowerOff(), TinyG");
-                MainForm.TimerDone = true;
-                MainForm.CNC_Write_m("{\"md\":\"\"}");
-            }
-            else if (Controlboard == ControlBoardType.qQuintic)
-            {
-                MainForm.DisplayText("MotorPowerOff(), qQuintic  -- SKIPPED --");
-            }
-            else
-            {
-                MainForm.DisplayText("*** MotorPowerOff(), unknown board!!", KnownColor.DarkRed, true);
-            }
-        }
-
-        // =================================================================================
-        private bool VacuumIsOn = false;
-
-        public void VacuumDefaultSetting()
-        {
-            //VacuumIsOn = true;      // force action
-            VacuumOff();
-        }
-
-        public void VacuumOn()
-        {
-            string command = "{\"gc\":\"M08\"}";
-            if (MainForm.Setting.General_VacuumOutputInverted)
-            {
-                command = "{\"gc\":\"M09\"}";
-            }
-            if (Controlboard == ControlBoardType.TinyG)
-            {
-                MainForm.DisplayText("VacuumOn(), TinyG");
-                if (!VacuumIsOn)
-                {
-                    if (RawWrite(command))
-                    {
-                        VacuumIsOn = true;
-                        Thread.Sleep(MainForm.Setting.General_PickupVacuumTime);
-                    }
-                }
-
-            }
-            else if (Controlboard == ControlBoardType.qQuintic)
-            {
-                MainForm.DisplayText("VacuumOn(), qQuintic  -- SKIPPED --");
-            }
-            else
-            {
-                MainForm.DisplayText("*** VacuumOn(), unknown board!!", KnownColor.DarkRed, true);
-            }
-            MainForm.Vacuum_checkBox.Checked = VacuumIsOn;
-        }
-
-        public void VacuumOff()
-        {
-            string command = "{\"gc\":\"M09\"}";
-            if (MainForm.Setting.General_VacuumOutputInverted)
-            {
-                command = "{\"gc\":\"M08\"}";
-            }
-            if (Controlboard == ControlBoardType.TinyG)
-            {
-                MainForm.DisplayText("VacuumOff(), TinyG");
-                if (VacuumIsOn)
-                {
-                    if (RawWrite(command))
-                    {
-                        VacuumIsOn = false;
-                        Thread.Sleep(MainForm.Setting.General_PickupReleaseTime);
-                    }
-                }
-            }
-            else if (Controlboard == ControlBoardType.qQuintic)
-            {
-                MainForm.DisplayText("VacuumOff(), qQuintic  -- SKIPPED --");
-            }
-            else
-            {
-                MainForm.DisplayText("*** VacuumOff(), unknown board!!", KnownColor.DarkRed, true);
-            }
-            MainForm.Vacuum_checkBox.Checked = VacuumIsOn;
-        }
-
-        // =================================================================================
-        public bool PumpIsOn { get; set; } = false;
-
-        public void PumpDefaultSetting()
-        {
-            //PumpIsOn = true;   // to force action
-            PumpOff();
-        }
-
-        private void BugWorkaround()
-        {
-            // see https://www.synthetos.com/topics/file-not-open-error/#post-7194
-            // Summary: In some cases, we need a dummy move.
-            MainForm.CNC_Z_m(CurrentZ - 0.01);
-            MainForm.CNC_Z_m(CurrentZ + 0.01);
-        }
-
-        public void PumpOn()
-        {
-            string command = "{\"gc\":\"M03\"}";
-            if (MainForm.Setting.General_PumpOutputInverted)
-            {
-                command = "{\"gc\":\"M05\"}";
-            }
-            if (Controlboard == ControlBoardType.TinyG)
-            {
-                MainForm.DisplayText("PumpOn(), TinyG");
-                if (!PumpIsOn)
-                {
-                    if (RawWrite(command))
-                    {
-                        BugWorkaround();
-                        Thread.Sleep(500);  // this much to develop vacuum
-                        PumpIsOn = true;
-                    }
-                }
-            }
-            else if (Controlboard == ControlBoardType.qQuintic)
-            {
-                MainForm.DisplayText("PumpOn(), qQuintic  -- SKIPPED --");
-            }
-            else
-            {
-                MainForm.DisplayText("PumpOn(), TinyG");
-            }
-            MainForm.Pump_checkBox.Checked = PumpIsOn;
-        }
-
-        public void PumpOff()
-        {
-            string command = "{\"gc\":\"M05\"}";
-            if (MainForm.Setting.General_PumpOutputInverted)
-            {
-                command = "{\"gc\":\"M03\"}";
-            }
-            if (Controlboard == ControlBoardType.TinyG)
-            {
-                MainForm.DisplayText("PumpOff(), TinyG");
-                if (PumpIsOn)
-                {
-                    if (RawWrite(command))
-                    {
-                        Thread.Sleep(50);
-                        BugWorkaround();
-                        PumpIsOn = false;
-                    }
-                }
-            }
-            else if (Controlboard == ControlBoardType.qQuintic)
-            {
-                MainForm.DisplayText("PumpOff(), qQuintic  -- SKIPPED --");
-            }
-            else
-            {
-                MainForm.DisplayText("PumpOff(), qQuintic  -- SKIPPED --");
-            }
-            MainForm.Pump_checkBox.Checked = PumpIsOn;
-        }
-
-        public void PumpOff_NoWorkaround()
-        // For error situations where we don't want to do the dance
-        {
-            string command = "{\"gc\":\"M05\"}";
-            if (MainForm.Setting.General_PumpOutputInverted)
-            {
-                command = "{\"gc\":\"M03\"}";
-            }
-            MainForm.DisplayText("PumpOff_NoWorkaround(), TinyG");
-            if (PumpIsOn)
-            {
-                if (RawWrite(command))
-                {
-                    Thread.Sleep(50);
-                    PumpIsOn = false;
-                }
-            }
-            else if (Controlboard == ControlBoardType.qQuintic)
-            {
-                MainForm.DisplayText("PumpOff_NoWorkaround(), qQuintic  -- SKIPPED --");
-            }
-            else
-            {
-                MainForm.DisplayText("PumpOff_NoWorkaround(), qQuintic  -- SKIPPED --");
-            }
-            MainForm.Pump_checkBox.Checked = PumpIsOn;
-        }
-
-        // =================================================================================
-        public void InterpretLine(string line)
-        {
-            // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
-            MainForm.DisplayText("<== " + line);
-
-            if (line.Contains("SYSTEM READY"))
-            {
-                Error();
-                MainForm.ShowMessageBox(
-                    "TinyG Reset.",
-                    "System Reset",
-                    MessageBoxButtons.OK);
-                MainForm.SetMotorPower_checkBox(false);
-                MainForm.UpdateCncConnectionStatus();
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"msg", StringComparison.Ordinal))
-            {
-                line = line.Substring(13);
-                int i = line.IndexOf('"');
-                line = line.Substring(0, i);
-                MainForm.ShowMessageBox(
-                    "TinyG Message:",
-                    line,
-                    MessageBoxButtons.OK);
-                return;
-            }
-
-
-            if (line.StartsWith("{\"er\":", StringComparison.Ordinal))
-            {
-                if (line.Contains("File not open") && IgnoreError)
-                {
-                    MainForm.DisplayText("### Ignored file not open error ###");
-                    return;
-                };
-                Error();
-                MainForm.ShowMessageBox(
-                    "TinyG error. Review situation and restart if needed.",
-                    "TinyG Error",
-                    MessageBoxButtons.OK);
-                return;
-            }
-
-
-            if (line.StartsWith("{\"r\":{}", StringComparison.Ordinal))
-            {
-                // ack for g code command
-                return;
-            }
-
-            /* Special homing handling is not needed in this firmware version
-            if (Homing)
-            {
-                if (line.StartsWith("{\"sr\":"))
-                {
-                    // Status report
-                    NewStatusReport(line);
-				}
-
-                if (line.Contains("\"home\":1"))
-                {
-                    _readyEvent.Set();
-                    MainForm.DisplayText("ReadyEvent home");
-                }
-                return; 
-            }
-            */
-
-            if (line.StartsWith("tinyg [mm] ok>", StringComparison.Ordinal))
-            {
-                // MainForm.DisplayText("ReadyEvent ok");
-                _readyEvent.Set();
-                return;
-            }
-
-
-            if (line.StartsWith("{\"sr\":", StringComparison.Ordinal))
-            {
-                // Status report
-                NewStatusReport(line);
-                if (line.Contains("\"stat\":3"))
-                {
-                    MainForm.DisplayText("ReadyEvent stat");
-                    MainForm.ResetMotorTimer();
-                    _readyEvent.Set();
-                }
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"sr\"", StringComparison.Ordinal))
-            {
-                // Status enquiry response, remove the wrapper:
-                line = line.Substring(5);
-                int i = line.IndexOf("}}", StringComparison.Ordinal);
-                line = line.Substring(0, i + 2);
-                NewStatusReport(line);
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent r:sr");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"me", StringComparison.Ordinal) || line.StartsWith("{\"r\":{\"md", StringComparison.Ordinal))
-            {
-                // response to motor power on/off commands
-                _readyEvent.Set();
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":", StringComparison.Ordinal))
-            {
-                // response to setting a setting or reading motor settings for saving them
-                ParameterValue(line);  // <========= causes UI update
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent r");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"sys\":", StringComparison.Ordinal))
-            {
-                // response to reading settings for saving them
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent sys group (depreciated)");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"x\":", StringComparison.Ordinal))
-            {
-                // response to reading settings for saving them
-                /*
-                // remove the wrapper: 
-                line = line.Substring(5);
-                int i = line.IndexOf("}}");
-                line = line.Substring(0, i + 2);
-                MainForm.TinyGSetting.TinyG_x = line; 
-                */
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent x group (depreciated)");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"y\":", StringComparison.Ordinal))
-            {
-                // response to reading settings for saving them
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent y group (depreciated)");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"z\":", StringComparison.Ordinal))
-            {
-                // response to reading settings for saving them
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent z group (depreciated)");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"a\":", StringComparison.Ordinal))
-            {
-                // response to reading settings for saving them
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent a group (depreciated)");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"1\":", StringComparison.Ordinal))
-            {
-                // response to reading settings for saving them
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m1 group (depreciated)");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"2\":", StringComparison.Ordinal))
-            {
-                // response to reading settings for saving them
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m2 group (depreciated)");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"3\":", StringComparison.Ordinal))
-            {
-                // response to reading settings for saving them
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m3 group (depreciated)");
-                return;
-            }
-
-            if (line.StartsWith("{\"r\":{\"4\":", StringComparison.Ordinal))
-            {
-                // response to reading settings for saving them
-                _readyEvent.Set();
-                MainForm.DisplayText("ReadyEvent m4 group (depreciated)");
-                return;
-            }
-
-        }  // end InterpretLine()
-
-        public void ParameterValue(string line)
-        {
-            // line format is {"r":{"<parameter>":<value>},"f":[<some numbers>]}
-            line = line.Substring(7);  // line: <parameter>":<value>},"f":[<some numbers>]}
-            string parameter = line.Split(':')[0];            // line: <parameter>"
-            parameter = parameter.Substring(0, parameter.Length - 1);     // remove the "
-            line = line.Substring(line.IndexOf(':') + 1);   //line: <value>},"f":[<some numbers>]}
-            line = line.Substring(0, line.IndexOf('}'));    // line is now the value
-            MainForm.ValueUpdater(parameter, line);
-
-        }
-        // =================================================================================
-        // TinyG JSON stuff
-        // =================================================================================
-
-        // =================================================================================
-        // Status report
-
-
-        [Serializable]
-        internal class StatusReport
-        {
-            public Sr sr { get; set; }
-        }
-
-        StatusReport Status { get; set; }
-        public void NewStatusReport(string line)
-        {
-            //MainForm.DisplayText("NewStatusReport: " + line);
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Status = serializer.Deserialize<StatusReport>(line);
-        }
-
-        [Serializable]
-        internal class Sr
-        {
-            // mpox, posy, ...: Position
-            // NOTE: Some firmware versions use mpox, mpoy,... some use posx, posy, ... 
-            // This should be reflected in the public variable names
-            private double _posx = 0;
-            public double posx // <======================== here
-            {
-                get { return _posx; }
-                set
-                {
-                    _posx = value;
-                    CNC.setCurrX(_posx);
-                    CNC.MainForm.ValueUpdater("posx", _posx.ToString("0.000", CultureInfo.InvariantCulture));
-                }
-            }
-
-            private double _posy = 0;
-            public double posy // <======================== and here
-            {
-                get { return _posy; }
-                set
-                {
-                    _posy = value;
-                    CNC.setCurrY(_posy);
-                    CNC.MainForm.ValueUpdater("posy", _posy.ToString("0.000", CultureInfo.InvariantCulture));
-                }
-            }
-
-            private double _posz = 0;
-            public double posz // <======================== and here
-            {
-                get { return _posz; }
-                set
-                {
-                    _posz = value;
-                    CNC.setCurrZ(_posz);
-                    CNC.MainForm.ValueUpdater("posz", _posz.ToString("0.000", CultureInfo.InvariantCulture));
-                }
-            }
-
-            private double _posa = 0;
-            public double posa // <======================== and here
-            {
-                get { return _posa; }
-                set
-                {
-                    _posa = value;
-                    CNC.setCurrA(_posa);
-                    CNC.MainForm.ValueUpdater("posa", _posa.ToString("0.000", CultureInfo.InvariantCulture));
-                }
-            }
-
-        }
     }  // end Class CNC
 }
