@@ -476,6 +476,42 @@ namespace LitePlacer
         // Hardware features: probing, pump, vacuum, motor power
         #region Features
 
+        public void DisableZswitches()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.DisableZswitches();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.DisableZswitches();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.DisableZswitches(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
+        public void EnableZswitches()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.EnableZswitches();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.EnableZswitches();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.EnableZswitches(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
         public void ProbingMode(bool set)
         {
             if (Controlboard == ControlBoardType.Duet3)
@@ -490,6 +526,42 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("*** Cnc.ProbingMode(), unknown board.", KnownColor.DarkRed, true);
             }
+        }
+
+
+
+        public bool Nozzle_ProbeDown()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.Nozzle_ProbeDown())
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            };
+
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.Nozzle_ProbeDown())
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            };
+
+            MainForm.DisplayText("*** Cnc.Nozzle_ProbeDown(), unknown board.", KnownColor.DarkRed, true);
+            Connected = false;
+            ErrorState = true;
+            return false;
         }
 
 
@@ -618,7 +690,39 @@ namespace LitePlacer
         // Movement
         #region Movement
 
+        public bool Home_m(string axis)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.Home_m(axis))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            };
 
+            if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.Home_m(axis))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            };
+
+            MainForm.DisplayText("*** Cnc.Home_m(), unknown board.", KnownColor.DarkRed, true);
+            Connected = false;
+            ErrorState = true;
+            return false;
+        }
 
 
 

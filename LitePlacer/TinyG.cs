@@ -284,6 +284,22 @@ namespace LitePlacer
         // Hardware features: probing, pump, vacuum, motor power
         #region Features
 
+        public void DisableZswitches()
+        {
+            Write_m("{\"zsn\":0}", 50);
+            Write_m("{\"zsx\":0}", 50);
+        }
+
+
+
+        public void EnableZswitches()
+        {
+            Write_m("{\"zsn\":3}", 50);
+            Write_m("{\"zsx\":2}", 50);
+        }
+
+
+
         public void ProbingMode(bool set)
         {
             int wait = 50;
@@ -293,26 +309,24 @@ namespace LitePlacer
             if (set)
             {
                 MainForm.DisplayText("Probing mode on, TinyG");
-                MainForm.CNC_Write_m("{\"zsn\",0}");
-                Thread.Sleep(wait);
-                MainForm.CNC_Write_m("{\"zsx\",1}");
-                Thread.Sleep(wait);
-                MainForm.CNC_Write_m("{\"zzb\"," + backoff + "}");
-                Thread.Sleep(wait);
+                Write_m("{\"zsn\",0}", wait);
+                Write_m("{\"zsx\",1}", wait);
+                Write_m("{\"zzb\"," + backoff + "}", wait);
             }
             else
             {
                 MainForm.DisplayText("Probing mode off, TinyG");
-                MainForm.CNC_Write_m("{\"zsn\",3}");
-                Thread.Sleep(wait);
-                MainForm.CNC_Write_m("{\"zsx\",2}");
-                Thread.Sleep(wait);
-                MainForm.CNC_Write_m("{\"zzb\",2}");
-                Thread.Sleep(wait);
+                Write_m("{\"zsn\",3}", wait);
+                Write_m("{\"zsx\",2}", wait);
+                Write_m("{\"zzb\",2}", wait);
             }
 
         }
 
+        public bool Nozzle_ProbeDown()
+        {
+            return Write_m("{\"gc\":\"G28.4 Z0\"}", 4000);
+        }
 
 
         public void MotorPowerOn()
@@ -428,9 +442,83 @@ namespace LitePlacer
             MainForm.Pump_checkBox.Checked = Cnc.PumpIsOn;
         }
 
-
-
         #endregion Features
+
+        // =================================================================================
+        // Movement
+        #region Movement
+
+        private bool HomingTimeout_m(out int TimeOut, string axis)
+        {
+            string speed = "0";
+            double size;
+            TimeOut = 0;
+            switch (axis)
+            {
+                case "X":
+                    speed = MainForm.xsv_maskedTextBox.Text;
+                    size = MainForm.Setting.General_MachineSizeX;
+                    break;
+
+                case "Y":
+                    speed = MainForm.ysv_maskedTextBox.Text;
+                    size = MainForm.Setting.General_MachineSizeY;
+                    break;
+
+                case "Z":
+                    speed = MainForm.zsv_maskedTextBox.Text;
+                    size = 100.0;
+                    break;
+
+                default:
+                    return false;
+            }
+
+            double MaxTime;
+            if (!double.TryParse(speed.Replace(',', '.'), out MaxTime))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data in " + axis + " homing speed",
+                    "Data error",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+
+            MaxTime = MaxTime / 60;  // Now in seconds/mm
+            MaxTime = (size / MaxTime) * 1.2 + 8;
+            // in seconds for the machine size and some (1.2 to allow acceleration, + 8 for the operarations at end stop
+            TimeOut = (int)MaxTime;
+            return true;
+        }
+
+
+
+        public bool Home_m(string axis)
+        {
+            int timeout;
+            if (!HomingTimeout_m(out timeout, axis))
+            {
+                return false;
+            }
+
+            MainForm.DisplayText("Homing axis " + axis + ", timeout value: " + timeout.ToString(CultureInfo.InvariantCulture));
+
+            if (!Write_m("{\"gc\":\"G28.2 " + axis + "0\"}", timeout))
+            {
+                MainForm.ShowMessageBox(
+                    "Homing operation mechanical step failed, CNC issue",
+                    "Homing failed",
+                    MessageBoxButtons.OK);
+                Cnc.Homing = false;
+                return false;
+            }
+            MainForm.DisplayText("Homing " + axis + " done.");
+            return true;
+        }
+
+
+
+        #endregion Movement
 
 
 

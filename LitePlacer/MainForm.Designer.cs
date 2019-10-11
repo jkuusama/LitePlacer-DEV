@@ -8360,7 +8360,6 @@
 		private System.Windows.Forms.MaskedTextBox ajm_maskedTextBox;
 		private System.Windows.Forms.Label label52;
 		private System.Windows.Forms.Label label73;
-		private System.Windows.Forms.MaskedTextBox xsv_maskedTextBox;
 		private System.Windows.Forms.Label label74;
 		private System.Windows.Forms.Label label75;
 		private System.Windows.Forms.MaskedTextBox xjh_maskedTextBox;
@@ -8380,13 +8379,11 @@
 		private System.Windows.Forms.Label Microsteps1_label;
 		private System.Windows.Forms.Label label25;
 		private System.Windows.Forms.Label label26;
-		private System.Windows.Forms.MaskedTextBox xvm_maskedTextBox;
 		private System.Windows.Forms.Label label27;
 		private System.Windows.Forms.Label label29;
 		private System.Windows.Forms.MaskedTextBox xjm_maskedTextBox;
 		private System.Windows.Forms.Label label30;
 		private System.Windows.Forms.Label label81;
-		private System.Windows.Forms.MaskedTextBox zsv_maskedTextBox;
 		private System.Windows.Forms.Label label82;
 		private System.Windows.Forms.Label label83;
 		private System.Windows.Forms.MaskedTextBox zjh_maskedTextBox;
@@ -8406,13 +8403,11 @@
 		private System.Windows.Forms.Label Microsteps3_label;
 		private System.Windows.Forms.Label label36;
 		private System.Windows.Forms.Label label37;
-		private System.Windows.Forms.MaskedTextBox zvm_maskedTextBox;
 		private System.Windows.Forms.Label label38;
 		private System.Windows.Forms.Label label40;
 		private System.Windows.Forms.MaskedTextBox zjm_maskedTextBox;
 		private System.Windows.Forms.Label label41;
 		private System.Windows.Forms.Label label77;
-		private System.Windows.Forms.MaskedTextBox ysv_maskedTextBox;
 		private System.Windows.Forms.Label label78;
 		private System.Windows.Forms.Label label79;
 		private System.Windows.Forms.MaskedTextBox yjh_maskedTextBox;
@@ -8432,7 +8427,6 @@
 		private System.Windows.Forms.Label Microsteps2_label;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.MaskedTextBox yvm_maskedTextBox;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.MaskedTextBox yjm_maskedTextBox;
@@ -8882,6 +8876,12 @@
         private System.Windows.Forms.Button MeasureAndSet_button;
         private System.Windows.Forms.Button EditTape_button;
         public System.Windows.Forms.CheckBox ValidMeasurement_checkBox;
+        public System.Windows.Forms.MaskedTextBox xsv_maskedTextBox;
+        public System.Windows.Forms.MaskedTextBox zsv_maskedTextBox;
+        public System.Windows.Forms.MaskedTextBox ysv_maskedTextBox;
+        private System.Windows.Forms.MaskedTextBox xvm_maskedTextBox;
+        private System.Windows.Forms.MaskedTextBox zvm_maskedTextBox;
+        private System.Windows.Forms.MaskedTextBox yvm_maskedTextBox;
     }
 }
 

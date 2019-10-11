@@ -2185,17 +2185,11 @@ namespace LitePlacer
 
         private bool Nozzle_ProbeDown_m()
         {
-            int timeout;
-            if (!HomingTimeout_m(out timeout, "Z"))
-            {
-                return false;
-            }
-            CNC_HomingTimeout = timeout;
-            DisplayText("Probing Z, timeout value: " + CNC_HomingTimeout.ToString(CultureInfo.InvariantCulture));
+            DisplayText("Probing Z: ");
 
             Cnc.ProbingMode(true);
             Cnc.Homing = true;
-            if (!CNC_Write_m("{\"gc\":\"G28.4 Z0\"}", 4000))
+            if (!Cnc.Nozzle_ProbeDown())
             {
                 Cnc.Homing = false;
                 Cnc.ProbingMode(false);
@@ -2326,74 +2320,7 @@ namespace LitePlacer
             CNC_XYA_m(Setting.General_ParkX, Setting.General_ParkY, 0.0);
         }
 
-        private bool HomingTimeout_m(out int TimeOut, string axis)
-        {
-            string speed = "0";
-            double size;
-            TimeOut = 0;
-            switch (axis)
-            {
-                case "X":
-                    speed = xsv_maskedTextBox.Text;
-                    size = Setting.General_MachineSizeX;
-                    break;
 
-                case "Y":
-                    speed = ysv_maskedTextBox.Text;
-                    size = Setting.General_MachineSizeY;
-                    break;
-
-                case "Z":
-                    speed = zsv_maskedTextBox.Text;
-                    size = 100.0;
-                    break;
-
-                default:
-                    return false;
-            }
-
-            double MaxTime;
-            if (!double.TryParse(speed.Replace(',', '.'), out MaxTime))
-            {
-                ShowMessageBox(
-                    "Bad data in " + axis + " homing speed",
-                    "Data error",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-
-            MaxTime = MaxTime / 60;  // Now in seconds/mm
-            MaxTime = (size / MaxTime) * 1.2 + 8; 
-            // in seconds for the machine size and some (1.2 to allow acceleration, + 8 for the operarations at end stop
-            TimeOut = (int)MaxTime;
-            return true;
-        }
-
-        private bool CNC_Home_m(string axis)
-        {
-            int timeout;
-            if (!HomingTimeout_m(out timeout, axis))
-            {
-                return false;
-            }
-            CNC_HomingTimeout = timeout;
-
-            DisplayText("Homing axis " + axis + ", timeout value: " + CNC_HomingTimeout.ToString(CultureInfo.InvariantCulture));
-
-            Cnc.Homing = true;
-            if (!CNC_Write_m("{\"gc\":\"G28.2 " + axis + "0\"}"))
-            {
-                ShowMessageBox(
-                    "Homing operation mechanical step failed, CNC issue",
-                    "Homing failed",
-                    MessageBoxButtons.OK);
-                Cnc.Homing = false;
-                return false;
-            }
-            Cnc.Homing = false;
-            DisplayText("Homing " + axis + " done.");
-            return true;
-        }
 
         // =================================================================================
         // CNC_Write_m
@@ -2976,7 +2903,7 @@ namespace LitePlacer
         private bool MechanicalHoming_m()
         {
             Cnc.ProbingMode(false);
-            if (!CNC_Home_m("Z"))
+            if (!Cnc.Home_m("Z"))
             {
                 return false;
             };
@@ -2985,11 +2912,11 @@ namespace LitePlacer
             {
                 return false;
             };
-            if (!CNC_Home_m("Y"))
+            if (!Cnc.Home_m("Y"))
             {
                 return false;
             };
-            if (!CNC_Home_m("X"))
+            if (!Cnc.Home_m("X"))
             {
                 return false;
             };
@@ -6129,25 +6056,25 @@ namespace LitePlacer
 
     private void HomeX_button_Click(object sender, EventArgs e)
         {
-            CNC_Home_m("X");
+            Cnc.Home_m("X");
         }
 
         private void HomeXY_button_Click(object sender, EventArgs e)
         {
-            if (!CNC_Home_m("X"))
+            if (!Cnc.Home_m("X"))
                 return;
-            CNC_Home_m("Y");
+            Cnc.Home_m("Y");
         }
 
         private void HomeY_button_Click(object sender, EventArgs e)
         {
-            CNC_Home_m("Y");
+            Cnc.Home_m("Y");
         }
 
         private void HomeZ_button_Click(object sender, EventArgs e)
         {
             Cnc.ProbingMode(false);
-            CNC_Home_m("Z");
+            Cnc.Home_m("Z");
         }
 
 
@@ -6210,11 +6137,11 @@ namespace LitePlacer
 
         private void Homebutton_Click(object sender, EventArgs e)
         {
-            if (!CNC_Home_m("Z"))
+            if (!Cnc.Home_m("Z"))
                 return;
-            if (!CNC_Home_m("X"))
+            if (!Cnc.Home_m("X"))
                 return;
-            if (!CNC_Home_m("Y"))
+            if (!Cnc.Home_m("Y"))
                 return;
             CNC_A_m(0);
         }
@@ -6341,7 +6268,7 @@ namespace LitePlacer
             CancelProbing_button.Visible = false;
             Zlb_label.Visible = false;
             Cnc.ProbingMode(false);
-            CNC_Home_m("Z");
+            Cnc.Home_m("Z");
             SetProbing_button.Enabled = true;
         }
 
@@ -6388,7 +6315,7 @@ namespace LitePlacer
                     Zlb_label.Visible = false;
                     CancelProbing_button.Visible = false;
                     SetProbing_button.Enabled = false;
-                    CNC_Home_m("Z");
+                    Cnc.Home_m("Z");
                     ZGuardOn();
                     SetProbing_button.Enabled = true;
                     ShowMessageBox(
@@ -8437,10 +8364,7 @@ namespace LitePlacer
         // =================================================================================
         private bool ChangeNozzleManually_m()
         {
-            CNC_Write_m("{\"zsn\":0}");
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zsx\":0}");
-            Thread.Sleep(50);
+            Cnc.DisableZswitches();
             Cnc.PumpOff();
             Cnc.MotorPowerOff();
             ShowMessageBox(
@@ -8452,10 +8376,7 @@ namespace LitePlacer
             Zhome_checkBox.Checked = true;
             Nozzle.Calibrated = false;
             ValidMeasurement_checkBox.Checked = false;
-            CNC_Write_m("{\"zsn\":3}");
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zsx\":2}");
-            Thread.Sleep(50);
+            Cnc.EnableZswitches();
             if (!MechanicalHoming_m())
             {
                 return false;
@@ -12628,10 +12549,7 @@ namespace LitePlacer
             }
             // disable z switches, otherwise you can't do setup 
             ZGuardOff();
-            CNC_Write_m("{\"zsn\":0}");
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zsx\":0}");
-            Thread.Sleep(50);
+            Cnc.DisableZswitches();
 
             NozzleChangeEnable_checkBox.Checked = Setting.Nozzles_Enabled;
             NozzleXYspeed_textBox.Text = Setting.Nozzles_XYspeed.ToString(CultureInfo.InvariantCulture);
@@ -12680,10 +12598,7 @@ namespace LitePlacer
         {
             ZGuardOn();
             // enable switches
-            CNC_Write_m("{\"zsn\":3}");
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zsx\":2}");
-            Thread.Sleep(50);
+            Cnc.EnableZswitches();
             // restore settings
             Cnc.SlowXY = NozzletabStore_slowXY;
             Cnc.SlowZ = NozzletabStore_slowZ;
@@ -13011,10 +12926,7 @@ namespace LitePlacer
             bool ok = true;
             // disable z switches 
             ZGuardOff();
-            CNC_Write_m("{\"zsn\":0}");
-            Thread.Sleep(50);
-            CNC_Write_m("{\"zsx\":0}");
-            Thread.Sleep(50);
+            Cnc.DisableZswitches();
 
             // Unload if needed
             if (Setting.Nozzles_current != 0)
@@ -13043,12 +12955,8 @@ namespace LitePlacer
 
             if (!AtNozzlesTab)
             {
-                // enable switches
                 ZGuardOn();
-                CNC_Write_m("{\"zsn\":3}");
-                Thread.Sleep(50);
-                CNC_Write_m("{\"zsx\":2}");
-                Thread.Sleep(50);
+                Cnc.EnableZswitches();
             }
 
             // restore cnc speed settings

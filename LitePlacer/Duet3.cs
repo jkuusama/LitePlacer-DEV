@@ -173,10 +173,34 @@ namespace LitePlacer
         // Hardware features: probing, pump, vacuum, motor power
         #region Features
 
+        public void DisableZswitches()
+        {
+
+        }
+
+
+
+        public void EnableZswitches()
+        {
+
+        }
+
+
+
+
         public void ProbingMode(bool set)
         {
 
         }
+
+
+        public bool Nozzle_ProbeDown()
+        {
+
+            return false;
+        }
+
+
 
         public void MotorPowerOn()
         {
@@ -274,10 +298,22 @@ namespace LitePlacer
             MainForm.Pump_checkBox.Checked = Cnc.PumpIsOn;
         }
 
-
-
-
         #endregion Features
+
+        // =================================================================================
+        // Movement
+        #region Movement
+
+        public bool Home_m(string axis)
+        {
+
+            return false;
+        }
+
+
+
+        #endregion Movement
+
 
 
 
