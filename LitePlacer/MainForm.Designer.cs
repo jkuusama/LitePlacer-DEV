@@ -7630,9 +7630,9 @@ namespace LitePlacer
             this.OmitNozzleCalibration_checkBox.AutoSize = true;
             this.OmitNozzleCalibration_checkBox.Location = new System.Drawing.Point(482, 584);
             this.OmitNozzleCalibration_checkBox.Name = "OmitNozzleCalibration_checkBox";
-            this.OmitNozzleCalibration_checkBox.Size = new System.Drawing.Size(156, 17);
+            this.OmitNozzleCalibration_checkBox.Size = new System.Drawing.Size(154, 17);
             this.OmitNozzleCalibration_checkBox.TabIndex = 80;
-            this.OmitNozzleCalibration_checkBox.Text = "Don\'t use Nozzle correction";
+            this.OmitNozzleCalibration_checkBox.Text = "Don\'t use nozzle correction";
             this.toolTip1.SetToolTip(this.OmitNozzleCalibration_checkBox, "Skips Nozzle correction phase.");
             this.OmitNozzleCalibration_checkBox.UseVisualStyleBackColor = true;
             this.OmitNozzleCalibration_checkBox.CheckedChanged += new System.EventHandler(this.OmitNozzleCalibration_checkBox_CheckedChanged);
