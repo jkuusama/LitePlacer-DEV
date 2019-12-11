@@ -3197,10 +3197,12 @@ namespace LitePlacer
             {
                 if (UpCamera.IsRunning())
                 {
+                    DisplayText("Robust switch: Closing up camera");
                     UpCamera.Close();
                 };
                 if (DownCamera.IsRunning())
                 {
+                    DisplayText("Robust switch: Closing down camera");
                     DownCamera.Close();
                 };
             }
@@ -3293,6 +3295,13 @@ namespace LitePlacer
             };
 
             UpCamera.Active = false;
+            if (UpCam_comboBox.SelectedIndex == 0)  // selected "none"
+            {
+                Setting.UpcamMoniker = "no_camera";
+                UpdateCameraCameraStatus_label();
+                return false;
+            };
+
             if (string.IsNullOrEmpty(Setting.UpcamMoniker))
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
@@ -3559,6 +3568,8 @@ namespace LitePlacer
         {
             List<string> Devices = UpCamera.GetDeviceList();
             UpCam_comboBox.Items.Clear();
+            UpCam_comboBox.Items.Add("-- none --");
+
             int d = Setting.UpCam_index;
             if (Devices.Count != 0)
             {
@@ -3672,6 +3683,12 @@ namespace LitePlacer
         {
             DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString(CultureInfo.InvariantCulture));
             Setting.UpCam_index = UpCam_comboBox.SelectedIndex;
+            if (UpCam_comboBox.SelectedIndex == 0)  // no up camera
+            {
+                Setting.UpcamMoniker = "no camera";
+                UpCamera.MonikerString = "no camera";
+                return;
+            }
             List<string> Monikers = UpCamera.GetMonikerStrings();
             Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];

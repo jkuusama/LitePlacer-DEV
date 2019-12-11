@@ -81,6 +81,7 @@ namespace LitePlacer
             {
                 if (!VideoSource.IsRunning)
                 {
+                    MainForm.DisplayText("Camera.Close: not running");
                     return;
                 }
                 VideoSource.SignalToStop();
@@ -89,6 +90,10 @@ namespace LitePlacer
                 VideoSource = null;
                 MainForm.DisplayText(Id + " stop: " + MonikerString);
                 MonikerString = "Stopped";
+            }
+            else
+            {
+                MainForm.DisplayText("Camera.Close: null source");
             }
         }
 
@@ -148,7 +153,7 @@ namespace LitePlacer
             }
             VideoCaptureDevice source = new VideoCaptureDevice(MonikerStr);
             int tries = 0;
-            while (tries < 4)
+            while (tries < 8)
             {
                 if (source == null)
                 {
@@ -182,7 +187,7 @@ namespace LitePlacer
                 // create the video source (check that the camera exists is already done
                 VideoSource = new VideoCaptureDevice(MonikerStr);
                 int tries = 0;
-                while (tries < 4)
+                while (tries < 8)
                 {
                     if (VideoSource != null)
                     {
@@ -190,18 +195,18 @@ namespace LitePlacer
                     }
                     else
                     {
-                        Thread.Sleep(10);
+                        Thread.Sleep(50);
                         tries++;
                     }
                 }
                 if (tries >= 4)
                 {
-                    MainForm.DisplayText("Could not get resolution info");
+                    MainForm.DisplayText("Could not get resolution info - no response");
                     return false;
                 }
                 if (VideoSource.VideoCapabilities.Length <= 0)
                 {
-                    MainForm.DisplayText("Could not get resolution info");
+                    MainForm.DisplayText("Could not get resolution info - null response");
                     return false;
                 }
 
