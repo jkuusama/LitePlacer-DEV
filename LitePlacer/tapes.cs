@@ -353,7 +353,7 @@ namespace LitePlacer
                 return false;
             }
             // Go there:
-            if (!MainForm.CNC_XY_m(X, Y))
+            if (!MainForm.CNC_XYA_m(X, Y, Cnc.CurrentA))
             {
                 return false;
             };
@@ -675,7 +675,7 @@ namespace LitePlacer
 				return false;
 			}
 			// Go there:
-            if (!MainForm.CNC_XY_m(NextX, NextY))
+            if (!MainForm.CNC_XYA_m(NextX, NextY, Cnc.CurrentA))
 			{
 				return false;
 			};

@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -246,6 +246,8 @@
             this.label94 = new System.Windows.Forms.Label();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.MoveTimeout_textBox = new System.Windows.Forms.TextBox();
+            this.label50 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.Motors_tabControl = new System.Windows.Forms.TabControl();
             this.X_tabPage = new System.Windows.Forms.TabPage();
@@ -425,7 +427,7 @@
             this.label61 = new System.Windows.Forms.Label();
             this.label72 = new System.Windows.Forms.Label();
             this.TestA_button = new System.Windows.Forms.Button();
-            this.Homebutton = new System.Windows.Forms.Button();
+            this.HomeXYZ_button = new System.Windows.Forms.Button();
             this.TestZ_button = new System.Windows.Forms.Button();
             this.HomeZ_button = new System.Windows.Forms.Button();
             this.HomeY_button = new System.Windows.Forms.Button();
@@ -495,6 +497,7 @@
             this.Down_button = new System.Windows.Forms.Button();
             this.Up_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label39 = new System.Windows.Forms.Label();
             this.ResetAllTapes_button = new System.Windows.Forms.Button();
             this.AbortPlacement_button = new System.Windows.Forms.Button();
             this.PausePlacement_button = new System.Windows.Forms.Button();
@@ -625,6 +628,7 @@
             this.CalibrateNozzles_button = new System.Windows.Forms.Button();
             this.NozzleChangeEnable_checkBox = new System.Windows.Forms.CheckBox();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.label28 = new System.Windows.Forms.Label();
             this.LastMoveFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
             this.Nozzle1stMoveSlackComp_checkBox = new System.Windows.Forms.CheckBox();
             this.FirstMoveFullSpeed_checkBox = new System.Windows.Forms.CheckBox();
@@ -695,6 +699,7 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.SlackCompensationDistance_textBox = new System.Windows.Forms.TextBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -2141,6 +2146,7 @@
             this.UpCam_comboBox.TabIndex = 208;
             this.toolTip1.SetToolTip(this.UpCam_comboBox, "List of USB cameras found on this computer.\r\nSelect up looking camera form this l" +
         "ist.\r\n");
+            this.UpCam_comboBox.SelectedIndexChanged += new System.EventHandler(this.UpCam_comboBox_SelectedIndexChanged);
             // 
             // UpCameraDesiredY_textBox
             // 
@@ -2426,6 +2432,7 @@
             this.DownCam_comboBox.TabIndex = 183;
             this.toolTip1.SetToolTip(this.DownCam_comboBox, "List of USB cameras found on this computer.\r\nSelect Down looking camera form this" +
         " list.");
+            this.DownCam_comboBox.SelectedIndexChanged += new System.EventHandler(this.DownCam_comboBox_SelectedIndexChanged);
             // 
             // label53
             // 
@@ -2755,7 +2762,7 @@
             // 
             // CameraSetupTest_button
             // 
-            this.CameraSetupTest_button.Location = new System.Drawing.Point(283, 553);
+            this.CameraSetupTest_button.Location = new System.Drawing.Point(755, 546);
             this.CameraSetupTest_button.Name = "CameraSetupTest_button";
             this.CameraSetupTest_button.Size = new System.Drawing.Size(84, 23);
             this.CameraSetupTest_button.TabIndex = 114;
@@ -3065,7 +3072,7 @@
             // ImageTest_checkBox
             // 
             this.ImageTest_checkBox.AutoSize = true;
-            this.ImageTest_checkBox.Location = new System.Drawing.Point(283, 579);
+            this.ImageTest_checkBox.Location = new System.Drawing.Point(755, 575);
             this.ImageTest_checkBox.Name = "ImageTest_checkBox";
             this.ImageTest_checkBox.Size = new System.Drawing.Size(61, 17);
             this.ImageTest_checkBox.TabIndex = 29;
@@ -3076,6 +3083,9 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.SlackCompensationDistance_textBox);
+            this.tabPageBasicSetup.Controls.Add(this.MoveTimeout_textBox);
+            this.tabPageBasicSetup.Controls.Add(this.label50);
             this.tabPageBasicSetup.Controls.Add(this.label7);
             this.tabPageBasicSetup.Controls.Add(this.Motors_tabControl);
             this.tabPageBasicSetup.Controls.Add(this.Ato0_button);
@@ -3145,7 +3155,7 @@
             this.tabPageBasicSetup.Controls.Add(this.label61);
             this.tabPageBasicSetup.Controls.Add(this.label72);
             this.tabPageBasicSetup.Controls.Add(this.TestA_button);
-            this.tabPageBasicSetup.Controls.Add(this.Homebutton);
+            this.tabPageBasicSetup.Controls.Add(this.HomeXYZ_button);
             this.tabPageBasicSetup.Controls.Add(this.TestZ_button);
             this.tabPageBasicSetup.Controls.Add(this.HomeZ_button);
             this.tabPageBasicSetup.Controls.Add(this.HomeY_button);
@@ -3170,6 +3180,23 @@
             this.tabPageBasicSetup.TabIndex = 1;
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
+            // 
+            // MoveTimeout_textBox
+            // 
+            this.MoveTimeout_textBox.Location = new System.Drawing.Point(166, 530);
+            this.MoveTimeout_textBox.Name = "MoveTimeout_textBox";
+            this.MoveTimeout_textBox.Size = new System.Drawing.Size(75, 20);
+            this.MoveTimeout_textBox.TabIndex = 118;
+            this.MoveTimeout_textBox.TextChanged += new System.EventHandler(this.MoveTimeout_textBox_TextChanged);
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(33, 533);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(127, 13);
+            this.label50.TabIndex = 117;
+            this.label50.Text = "Regular move timeout (s):";
             // 
             // label7
             // 
@@ -4870,7 +4897,7 @@
             // SlackCompensation_checkBox
             // 
             this.SlackCompensation_checkBox.AutoSize = true;
-            this.SlackCompensation_checkBox.Location = new System.Drawing.Point(1069, 168);
+            this.SlackCompensation_checkBox.Location = new System.Drawing.Point(1015, 167);
             this.SlackCompensation_checkBox.Name = "SlackCompensation_checkBox";
             this.SlackCompensation_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.SlackCompensation_checkBox.Size = new System.Drawing.Size(148, 17);
@@ -5134,16 +5161,16 @@
             this.TestA_button.UseVisualStyleBackColor = true;
             this.TestA_button.Click += new System.EventHandler(this.TestA_button_Click);
             // 
-            // Homebutton
+            // HomeXYZ_button
             // 
-            this.Homebutton.Location = new System.Drawing.Point(553, 208);
-            this.Homebutton.Name = "Homebutton";
-            this.Homebutton.Size = new System.Drawing.Size(75, 23);
-            this.Homebutton.TabIndex = 17;
-            this.Homebutton.Text = "Home XYZ";
-            this.toolTip1.SetToolTip(this.Homebutton, "Homes X, Y and Z axis, using limit switch only.");
-            this.Homebutton.UseVisualStyleBackColor = true;
-            this.Homebutton.Click += new System.EventHandler(this.Homebutton_Click);
+            this.HomeXYZ_button.Location = new System.Drawing.Point(553, 208);
+            this.HomeXYZ_button.Name = "HomeXYZ_button";
+            this.HomeXYZ_button.Size = new System.Drawing.Size(75, 23);
+            this.HomeXYZ_button.TabIndex = 17;
+            this.HomeXYZ_button.Text = "Home XYZ";
+            this.toolTip1.SetToolTip(this.HomeXYZ_button, "Homes X, Y and Z axis, using limit switch only.");
+            this.HomeXYZ_button.UseVisualStyleBackColor = true;
+            this.HomeXYZ_button.Click += new System.EventHandler(this.HomeXYZ_button_Click);
             // 
             // TestZ_button
             // 
@@ -5424,9 +5451,9 @@
             this.OmitNozzleCalibration_checkBox.AutoSize = true;
             this.OmitNozzleCalibration_checkBox.Location = new System.Drawing.Point(482, 584);
             this.OmitNozzleCalibration_checkBox.Name = "OmitNozzleCalibration_checkBox";
-            this.OmitNozzleCalibration_checkBox.Size = new System.Drawing.Size(156, 17);
+            this.OmitNozzleCalibration_checkBox.Size = new System.Drawing.Size(154, 17);
             this.OmitNozzleCalibration_checkBox.TabIndex = 80;
-            this.OmitNozzleCalibration_checkBox.Text = "Don\'t use Nozzle correction";
+            this.OmitNozzleCalibration_checkBox.Text = "Don\'t use nozzle correction";
             this.toolTip1.SetToolTip(this.OmitNozzleCalibration_checkBox, "Skips Nozzle correction phase.");
             this.OmitNozzleCalibration_checkBox.UseVisualStyleBackColor = true;
             this.OmitNozzleCalibration_checkBox.CheckedChanged += new System.EventHandler(this.OmitNozzleCalibration_checkBox_CheckedChanged);
@@ -5934,6 +5961,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label39);
             this.groupBox1.Controls.Add(this.ResetAllTapes_button);
             this.groupBox1.Controls.Add(this.AbortPlacement_button);
             this.groupBox1.Controls.Add(this.PausePlacement_button);
@@ -5955,6 +5983,15 @@
             this.groupBox1.TabIndex = 50;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Placement Operations";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(121, 124);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(80, 13);
+            this.label39.TabIndex = 38;
+            this.label39.Text = "Target position:";
             // 
             // ResetAllTapes_button
             // 
@@ -5992,7 +6029,7 @@
             // MachineCoords_label
             // 
             this.MachineCoords_label.AutoSize = true;
-            this.MachineCoords_label.Location = new System.Drawing.Point(121, 124);
+            this.MachineCoords_label.Location = new System.Drawing.Point(210, 124);
             this.MachineCoords_label.Name = "MachineCoords_label";
             this.MachineCoords_label.Size = new System.Drawing.Size(13, 13);
             this.MachineCoords_label.TabIndex = 34;
@@ -6142,14 +6179,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7037,7 +7074,7 @@
             // ProcessDisplay_checkBox
             // 
             this.ProcessDisplay_checkBox.AutoSize = true;
-            this.ProcessDisplay_checkBox.Location = new System.Drawing.Point(1120, 191);
+            this.ProcessDisplay_checkBox.Location = new System.Drawing.Point(1120, 193);
             this.ProcessDisplay_checkBox.Name = "ProcessDisplay_checkBox";
             this.ProcessDisplay_checkBox.Size = new System.Drawing.Size(101, 17);
             this.ProcessDisplay_checkBox.TabIndex = 209;
@@ -7122,7 +7159,7 @@
             this.Nozzles_tabPage.Padding = new System.Windows.Forms.Padding(3);
             this.Nozzles_tabPage.Size = new System.Drawing.Size(1245, 635);
             this.Nozzles_tabPage.TabIndex = 7;
-            this.Nozzles_tabPage.Text = "Nozzles Setup";
+            this.Nozzles_tabPage.Text = "Setup Nozzles Change";
             this.Nozzles_tabPage.UseVisualStyleBackColor = true;
             // 
             // DefaultNozzle_label
@@ -7349,6 +7386,7 @@
             // panel10
             // 
             this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel10.Controls.Add(this.label28);
             this.panel10.Controls.Add(this.LastMoveFullSpeed_checkBox);
             this.panel10.Controls.Add(this.Nozzle1stMoveSlackComp_checkBox);
             this.panel10.Controls.Add(this.FirstMoveFullSpeed_checkBox);
@@ -7368,6 +7406,15 @@
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(259, 221);
             this.panel10.TabIndex = 16;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(135, 113);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(20, 13);
+            this.label28.TabIndex = 32;
+            this.label28.Text = "ms";
             // 
             // LastMoveFullSpeed_checkBox
             // 
@@ -7930,9 +7977,9 @@
             this.MeasureAndSet_button.Name = "MeasureAndSet_button";
             this.MeasureAndSet_button.Size = new System.Drawing.Size(78, 46);
             this.MeasureAndSet_button.TabIndex = 266;
-            this.MeasureAndSet_button.Text = "Measure and Set";
+            this.MeasureAndSet_button.Text = "Measure and Set Zero";
             this.toolTip1.SetToolTip(this.MeasureAndSet_button, "Goes to zero, measures the position of home mark,\r\nand sets coordinates according" +
-        "ly. Fast way to correct\r\nany drift.\"");
+        "ly. Fast way to correct\r\nany drift.");
             this.MeasureAndSet_button.UseVisualStyleBackColor = true;
             this.MeasureAndSet_button.Click += new System.EventHandler(this.MeasureAndSet_button_Click);
             // 
@@ -8074,6 +8121,15 @@
             this.label165.Size = new System.Drawing.Size(70, 13);
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
+            // 
+            // SlackCompensationDistance_textBox
+            // 
+            this.SlackCompensationDistance_textBox.Location = new System.Drawing.Point(1169, 165);
+            this.SlackCompensationDistance_textBox.Name = "SlackCompensationDistance_textBox";
+            this.SlackCompensationDistance_textBox.Size = new System.Drawing.Size(48, 20);
+            this.SlackCompensationDistance_textBox.TabIndex = 119;
+            this.toolTip1.SetToolTip(this.SlackCompensationDistance_textBox, "Distance; on moves smaller than this, slack compensation is applied.");
+            this.SlackCompensationDistance_textBox.TextChanged += new System.EventHandler(this.SlackCompensationDistance_textBox_TextChanged);
             // 
             // FormMain
             // 
@@ -8332,7 +8388,7 @@
 		private System.Windows.Forms.Label label61;
 		private System.Windows.Forms.Label label72;
 		private System.Windows.Forms.Button TestA_button;
-		private System.Windows.Forms.Button Homebutton;
+		private System.Windows.Forms.Button HomeXYZ_button;
 		private System.Windows.Forms.Button TestZ_button;
 		private System.Windows.Forms.Button HomeZ_button;
 		private System.Windows.Forms.Button HomeY_button;
@@ -8882,6 +8938,11 @@
         private System.Windows.Forms.MaskedTextBox xvm_maskedTextBox;
         private System.Windows.Forms.MaskedTextBox zvm_maskedTextBox;
         private System.Windows.Forms.MaskedTextBox yvm_maskedTextBox;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.TextBox MoveTimeout_textBox;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.TextBox SlackCompensationDistance_textBox;
     }
 }
 

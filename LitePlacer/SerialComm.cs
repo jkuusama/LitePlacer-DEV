@@ -11,7 +11,7 @@ namespace LitePlacer
 {
 #pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
 
-    class SerialComm
+    public class SerialComm
     {
 
         SerialPort Port = new SerialPort();

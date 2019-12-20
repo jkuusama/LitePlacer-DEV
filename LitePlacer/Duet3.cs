@@ -5,78 +5,33 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Drawing;
 
 namespace LitePlacer
 {
     public class Duet3class
     {
-        private FormMain MainForm;
-        private CNC Cnc;
-        private SerialComm Com;
+        FormMain MainForm;
+        CNC Cnc;
+        SerialComm Com;
 
-        public Duet3class(FormMain MainF, CNC C)
+        public Duet3class(FormMain MainF, CNC C, SerialComm ser)
         {
             MainForm = MainF;
             Cnc = C;
-            Com = new SerialComm(C, MainF);
+            Com = ser;
         }
+
+
+        public int RegularMoveTimeout { get; set; } // in ms
 
         // =================================================================================
-        // Communications to hardware, status of the link
         #region Communications
 
-        public bool Connected { get; set; }
-        public bool ErrorState { get; set; }
-
-
-
-        public bool Connect(string name)
+        public bool CheckIdentity()
         {
-            if (Com.IsOpen)
-            {
-                MainForm.DisplayText("Already connected to serial port " + name + ": already open");
-                Cnc.Connected = true;
-            }
-            else
-            {
-                Com.Open(name);
-                if (!Com.IsOpen)
-                {
-                    MainForm.DisplayText("Connecting to serial port " + name + " failed.");
-                    RaiseError();
-                    return false;
-                }
-                else
-                {
-                    MainForm.DisplayText("Connected to serial port " + name);
-                }
-            }
-            // At this point, we are either connected to a board, or returned
-            // Is it a right board?
-            if (!CheckIdentity())
-            {
-                RaiseError();
-                return false;
-            }
-            Cnc.Connected = true;
-            Cnc.ErrorState = false;
-            MainForm.UpdateCncConnectionStatus();
-            return true;
-        }
-
-        // =========================
-        bool CheckIdentity()
-        {
-            MainForm.DisplayText("Finding board type:");
             string resp;
-            LineWanted = true;
-            Write_m("M115");
-            if (!ReadLine(out resp, 250))
-            {
-                MainForm.DisplayText("No success.");
-                return false;
-            }
+            resp = ReadLineDirectly("M115");
             if (resp.Contains("Duet 3"))
             {
                 MainForm.DisplayText("Duet 3 board found.");
@@ -88,24 +43,20 @@ namespace LitePlacer
 
         public bool JustConnected()
         {
-            return false;
+            return true;
         }
 
 
-
-        public void Close()
+        public string ReadLineDirectly(string command)
         {
-            Com.Close();
-            Cnc.ErrorState = false;
-            Cnc.Connected = false;
-            Cnc.Homing = false;
-            MainForm.UpdateCncConnectionStatus();
+            return "";
         }
 
 
         public bool Write_m(string command, int Timeout = 250)
         {
-                return false;
+            MainForm.DisplayText("Duet3 write not implemented!***", KnownColor.DarkRed, true);
+            return false;
         }
 
 
@@ -167,8 +118,35 @@ namespace LitePlacer
         }
 
 
+        public bool Home_m(string axis)
+        {
+            return false;
+        }
 
-        #endregion
+
+        public bool XYA(double X, double Y, double A, double speed, string MoveType)
+        {
+            return false;
+        }
+
+
+        public bool A(double A, double speed, string MoveType)
+        {
+            return false;
+        }
+
+
+        public bool Z(double Z, double speed, string MoveType)
+        {
+            return false;
+        }
+
+
+        #endregion Movement
+
+
+
+
         // =================================================================================
         // Hardware features: probing, pump, vacuum, motor power
         #region Features
@@ -302,30 +280,6 @@ namespace LitePlacer
 
         // =================================================================================
         // Movement
-        #region Movement
-
-        public bool Home_m(string axis)
-        {
-
-            return false;
-        }
-
-
-
-        #endregion Movement
-
-
-
-
-
-
-
-        // ===============================
-        public void RaiseError()
-        {
-            ErrorState = true;
-        }
-
 
 
         // ===============================
@@ -338,7 +292,7 @@ namespace LitePlacer
         {
             LineWanted = true;
             TimeOut = TimeOut / 5;
-            while (!LineWanted)
+            while (LineWanted)
             {
                 Thread.Sleep(5);
                 Application.DoEvents();

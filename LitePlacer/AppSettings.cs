@@ -48,6 +48,7 @@ namespace LitePlacer
         public decimal CNC_SmallMovementSpeed { get; set; } = 150;
         public double CNC_SquareCorrection { get; set; } = 0;
         public int CNC_ZspeedMax { get; set; } = 1000;
+        public double CNC_RegularMoveTimeout { get; set; } = 10.0;
 
         public bool DownCam_DrawBox { get; set; } = true;
         public bool DownCam_DrawCross { get; set; } = true;

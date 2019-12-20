@@ -17,7 +17,7 @@ CNC class handles communication with the control board. Most calls are just pass
     - else if board is Tinyg, call TinyG.routine
     - else report and return failure )
 
-Here is a template for that:
+Here are templates for that:
 
         public void ()
         {
@@ -35,6 +35,42 @@ Here is a template for that:
             }
         }
 
+        public bool ()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.())
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.())
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
+                Connected = false;
+                ErrorState = true;
+                return false;
+            }
+        }
+
+
 */
 
 namespace LitePlacer
@@ -46,7 +82,7 @@ namespace LitePlacer
         private TinyGclass TinyG;
         private Duet3class Duet3;
 
-        public enum ControlBoardType { TinyG, Duet3, qQuintic, other, unknown };
+        public enum ControlBoardType { TinyG, Duet3, other, unknown };
         public ControlBoardType Controlboard { get; set; } = ControlBoardType.unknown;
 
         public bool SlackCompensation { get; set; }
@@ -57,25 +93,45 @@ namespace LitePlacer
 
 
         public bool SlowXY { get; set; }
-        public double SlowSpeedXY { get; set; }
+        public double NozzleSpeedXY { get; set; }
 
         public bool SlowZ { get; set; }
-        public double SlowSpeedZ { get; set; }
+        public double NozzleSpeedZ { get; set; }
 
         public bool SlowA { get; set; }
-        public double SlowSpeedA { get; set; }
+        public double NozzleSpeedA { get; set; }
+
+        SerialComm Com;
 
 
         // =================================================================================
         public CNC(FormMain MainF)
         {
             MainForm = MainF;
-            Com = new SerialComm(this, MainF);  // ####
             SlowXY = false;
             SlowZ = false;
             SlowA = false;
-            TinyG = new TinyGclass(MainForm, this);
-            Duet3 = new Duet3class(MainForm, this);
+            Com = new SerialComm(this, MainF);
+            TinyG = new TinyGclass(MainForm, this, Com);
+            Duet3 = new Duet3class(MainForm, this, Com);
+        }
+
+        // =================================================================================
+        // Timeout
+        private double regTimeout = 10;
+
+        public double RegularMoveTimeout // in seconds
+        { 
+            get
+            {
+                return (regTimeout);
+            }
+            set
+            {
+                regTimeout = value;
+                TinyG.RegularMoveTimeout = (int)value*1000;  // in ms
+                Duet3.RegularMoveTimeout = (int)value * 1000;  // in ms
+            }
         }
 
         // =================================================================================
@@ -256,7 +312,6 @@ namespace LitePlacer
         #endregion Position
 
         // =================================================================================
-        // Communications to hardware, status of the link
         #region Communications
 
         public bool Connected { get; set; }
@@ -264,26 +319,12 @@ namespace LitePlacer
 
         public void RaiseError()
         {
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                Duet3.RaiseError();
-            }
-            else if (Controlboard == ControlBoardType.TinyG)
-            {
-                TinyG.TinyG_RaiseError();
-            }
-            else
-            {
-                MainForm.DisplayText("*** Cnc.RaiseError(), unknown board.", KnownColor.DarkRed, true);
-            }
             ErrorState = true;
             Connected = false;
-            // Cnc.Homing = false;
+            Com.Close();
             MainForm.ValidMeasurement_checkBox.Checked = false;
             MainForm.UpdateCncConnectionStatus();
         }
-
-
 
         public void InterpretLine(string line)
         {
@@ -298,23 +339,70 @@ namespace LitePlacer
             else
             {
                 MainForm.DisplayText("*** Cnc.InterpretLine(), unknown board.", KnownColor.DarkRed, true);
+                MainForm.DisplayText("Line: " + line, KnownColor.DarkRed, true);
             }
         }
 
 
+        bool OpenPort(string port)
+        {
+            if (Com.IsOpen)
+            {
+                MainForm.DisplayText("Already connected to serial port " + port + ": already open");
+                Connected = true;
+            }
+            else
+            {
+                Com.Open(port);
+                if (!Com.IsOpen)
+                {
+                    MainForm.DisplayText("Connecting to serial port " + port + " failed.");
+                    RaiseError();
+                    return false;
+                }
+                else
+                {
+                    MainForm.DisplayText("Connected to serial port " + port);
+                }
+            }
+            Connected = true;
+            return true;
+        }
 
         public bool Connect(string port)
         {
-            if (Duet3.Connect(port))
+            ErrorState = false;
+            Connected = false;
+
+            if (!OpenPort(port))
             {
-                Controlboard = ControlBoardType.Duet3;
+                return false;
+            }
+            Controlboard = ControlBoardType.Duet3;      // to direct InterpretLine to correct module
+            if (Duet3.CheckIdentity())
+            {
                 return true;
             }
-
-            if (TinyG.Connect(port))
+            else
             {
-                Controlboard = ControlBoardType.TinyG;
+                Com.Close();
+                Thread.Sleep(500);
+                Connected = false;
+            }
+
+            // Not Duet. TinyG?
+            if (!OpenPort(port))
+            {
+                return false;
+            }
+            Controlboard = ControlBoardType.TinyG;
+            if (TinyG.CheckIdentity())
+            {
                 return true;
+            }
+            else
+            {
+                Com.Close();
             }
 
             Controlboard = ControlBoardType.unknown;
@@ -363,18 +451,11 @@ namespace LitePlacer
 
         public void Close()
         {
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                Duet3.Close();
-            }
-            else if (Controlboard == ControlBoardType.TinyG)
-            {
-                TinyG.Close();
-            }
-            else
-            {
-                MainForm.DisplayText("*** Cnc.Close(), unknown board.", KnownColor.DarkRed, true);
-            }
+            Com.Close();
+            ErrorState = false;
+            Connected = false;
+            Homing = false;
+            MainForm.UpdateCncConnectionStatus();
         }
 
 
@@ -682,13 +763,28 @@ namespace LitePlacer
         }
 
 
-
-
         #endregion Features
+
 
         // =================================================================================
         // Movement
         #region Movement
+
+        private decimal SmallMoveSpeed_dec = 250;
+        private double SmallMoveSpeed = 250;
+
+        public decimal SmallMovementSpeed
+        {
+            get
+            {
+                return (SmallMoveSpeed_dec);
+            }
+            set
+            {
+                SmallMoveSpeed_dec = value;
+                SmallMoveSpeed = (double)value;
+            }
+        }
 
         public bool Home_m(string axis)
         {
@@ -724,6 +820,297 @@ namespace LitePlacer
             return false;
         }
 
+        // =================================================================================
+        // The execute_xxx pass the move commands to control board, with all the higer level logic
+        // already handled (such as speed in different situations, slack compensation, square compensation etc)
+
+
+        public bool Execute_XYA(double X, double Y, double A, double speed, string MoveType)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.XYA(X, Y, A, speed, MoveType))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.XYA(X, Y, A, speed, MoveType))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                Connected = false;
+                ErrorState = true;
+                MainForm.DisplayText("*** Cnc.Execute_XYA(), unknown board.", KnownColor.DarkRed, true);
+                return false;
+            }
+        }
+
+        public bool Execute_A(double A, double speed, string MoveType)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.A(A, speed, MoveType))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.A(A, speed, MoveType))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                Connected = false;
+                ErrorState = true;
+                MainForm.DisplayText("*** Cnc.Execute_A(), unknown board.", KnownColor.DarkRed, true);
+                return false;
+            }
+        }
+
+        public bool Execute_Z(double Z, double speed, string MoveType)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.Z(Z, speed, MoveType))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.Z(Z, speed, MoveType))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                Connected = false;
+                ErrorState = true;
+                MainForm.DisplayText("*** Cnc.Execute_Z(), unknown board.", KnownColor.DarkRed, true);
+                return false;
+            }
+        }
+
+
+        // =================================================================================
+        // Main XYA move command
+        public bool XYA(double X, double Y, double A)
+        {
+            bool CompensateXY = false;
+            bool CompensateA = false;
+
+            //if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
+            if (SlackCompensation)
+            {
+                CompensateXY = true;
+            }
+
+            if ((SlackCompensationA) && (CurrentA > Math.Abs(A - SlackCompensationDistanceA)))
+            {
+                CompensateA = true;
+            }
+
+            if ((!CompensateXY) && (!CompensateA))
+            {
+                return XYA_move(X, Y, A);
+            }
+            else if ((CompensateXY) && (!CompensateA))
+            {
+                if (!XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, A))
+                {
+                    return false;
+                }
+                return XYA_move(X, Y, A);
+            }
+            else if ((!CompensateXY) && (CompensateA))
+            {
+                if (!XYA_move(X, Y, A - SlackCompensationDistanceA))
+                {
+                    return false;
+                }
+                return A_move(A);
+            }
+            else
+            {
+                if (!XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, A - SlackCompensationDistanceA))
+                {
+                    return false;
+                }
+                return XYA_move(X, Y, A);
+            }
+        }
+
+
+
+        // =================================================================================
+        // Main A move command
+        public bool A(double A)
+        {
+            if (Math.Abs(A - CurrentA) < 0.01)
+            {
+                MainForm.DisplayText(" -- zero A movement command --");
+                _readyEvent.Set();
+                return true;   // already there
+            }
+            if ((SlackCompensationA) && (CurrentA > (A - SlackCompensationDistanceA)))
+            {
+                if (!A_move(A - SlackCompensationDistanceA))
+                {
+                    return false;
+                }
+                return A_move(A);
+            }
+            else
+            {
+                return A_move(A);
+            }
+        }
+
+        // =================================================================================
+        // Main Z move command
+        public bool Z(double Z)
+        {
+            double speed = 0;
+            string MoveType = "G0";
+            double dZ = Math.Abs(Z - CurrentZ);
+            if (dZ < 0.005)
+            {
+                MainForm.DisplayText(" -- zero Z movement command --");
+                return true;   // already there
+            }
+            if (SlowZ)
+            {
+                speed = NozzleSpeedZ;
+                MoveType = "G1";
+            }
+            return Execute_Z(Z, speed, MoveType);
+        }
+
+        // =================================================================================
+        // helper functions for XYA, XY A and Z moves
+
+
+        private bool XYA_move(double X, double Y, double Am)
+        {
+            // double speed = (double)Properties.Settings.Default.CNC_SmallMovementSpeed;
+            // string MoveType = "G0";
+            double dX = Math.Abs(X - CurrentX);
+            double dY = Math.Abs(Y - CurrentY);
+            double dA = Math.Abs(Am - CurrentA);
+            if ((dX < 0.001) && (dY < 0.001) && (dA < 0.01))
+            {
+                MainForm.DisplayText(" -- zero XYA movement command --", KnownColor.Gray);
+                return true;   // already there
+            }
+
+            // It doesn't hurt to do only A when needed, and because of TinyG bug, is a must:
+            if ((dX < 0.001) && (dY < 0.001))
+            {
+                return A_move(Am);
+            };
+            X = X + SquareCorrection * Y;
+            X = Math.Round(X, 3);
+            if ((dX < 1.0) && (dY < 1.0))
+            {
+                // small movement
+                // First do XY move, then A. This works always.
+                // (small moves and fast settings can sometimes cause problems)
+                if (!Execute_XYA(X, Y, CurrentA, SmallMoveSpeed, "G1"))
+                {
+                    return false;
+                }
+                return A_move(Am);
+            }
+            else
+            {
+                // normal case, large move
+                // Possibilities:
+                // SlowA, SlowXY
+                // SlowA, FastXY
+                // FastA, SlowXY
+                // Fast A, Fast XY
+                // To avoid side effects, we'll separate a and xy for first three cases.
+
+                // Normal case first:
+                if (!SlowA || !SlowXY)
+                {
+                    // Fast A, Fast XY
+                    return Execute_XYA(X, Y, Am, 0, "G0");  // on G0, speed doesn't matter
+                }
+
+                // Do A first, then XY
+                if (dA < 0.01)
+                {
+                    MainForm.DisplayText(" -- XYA command, A already there --", KnownColor.Gray);
+                }
+                else
+                {
+                    if (!A_move(Am))
+                    {
+                        return false;
+                    }
+                }
+                // A done, we know XY is slow and large
+                return Execute_XYA(X, Y, Am, NozzleSpeedXY, "G1");
+            }
+        }
+
+
+        private bool A_move(double A)
+        {
+            double dA = Math.Abs(A - CurrentA);
+            if (dA<0.01)
+            {
+                return (true);  // Already there
+            }
+            double speed = 0;
+            string MoveType = "G0";
+            if (SlowA)
+            {
+                speed = NozzleSpeedA;
+                MoveType = "G1";
+            }
+            return Execute_A(A, speed, MoveType);
+        }
 
 
         #endregion Movement
@@ -736,9 +1123,8 @@ namespace LitePlacer
         // =================================================================================
         // Old code from this down:
 
-        private SerialComm Com;
 
-        public string SmallMovementString { get; set; } = "G1 F200 ";
+        // public string SmallMovementString { get; set; } = "G1 F200 ";
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
         public ManualResetEventSlim ReadyEvent
@@ -753,316 +1139,6 @@ namespace LitePlacer
         // =================================================================================
 
  
-        public void XY(double X, double Y)
-        {
-            double dX = Math.Abs(X - CurrentX);
-            double dY = Math.Abs(Y - CurrentY);
-            if ((dX < 0.004) && (dY < 0.004))
-            {
-                MainForm.DisplayText(" -- zero XY movement command --", KnownColor.Gray);
-                MainForm.DisplayText("ReadyEvent: zero movement command", KnownColor.Gray);
-                _readyEvent.Set();
-                return;   // already there
-            }
-            //if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
-            if (SlackCompensation)
-            {
-                XY_move(X - SlackCompensationDistance, Y - SlackCompensationDistance);
-                XY_move(X, Y);
-            }
-            else
-            {
-                XY_move(X, Y);
-            }
-        }
-
-        private void XY_move(double X, double Y)
-        {
-            string command;
-            double dX = Math.Abs(X - CurrentX);
-            double dY = Math.Abs(Y - CurrentY);
-            if ((dX < 0.004) && (dY < 0.004))
-            {
-                MainForm.DisplayText(" -- zero XY movement command --", KnownColor.Gray);
-                MainForm.DisplayText("ReadyEvent: zero movement command", KnownColor.Gray);
-                _readyEvent.Set();
-                return;   // already there
-            }
-            X = X + SquareCorrection * Y;
-            X = Math.Round(X, 3);
-            if ((dX < 1) && (dY < 1))
-            {
-                // Small move
-                if (SlowXY)
-                {
-                    if ((double)MainForm.Setting.CNC_SmallMovementSpeed > SlowSpeedXY)
-                    {
-                        command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
-                                                       " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        command = "G1 F" + SlowSpeedXY.ToString(CultureInfo.InvariantCulture)
-                                + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                    }
-                }
-                else
-                {
-                    command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
-                                                   " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                }
-            }
-            else
-            {
-                // large move
-                if (SlowXY)
-                {
-                    command = "G1 F" + SlowSpeedXY.ToString(CultureInfo.InvariantCulture)
-                            + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                }
-            }
-            _readyEvent.Reset();
-            Com.Write("{\"gc\":\"" + command + "\"}");
-            _readyEvent.Wait();
-        }
-
-        public void XYA(double X, double Y, double Am)
-        {
-            bool CompensateXY = false;
-            bool CompensateA = false;
-
-            //if ((SlackCompensation) && ((CurrentX > X) || (CurrentY > Y)))
-            if (SlackCompensation)
-            {
-                CompensateXY = true;
-            }
-
-            if ((SlackCompensationA) && (CurrentA > (Am - SlackCompensationDistanceA)))
-            {
-                CompensateA = true;
-            }
-
-
-            if ((!CompensateXY) && (!CompensateA))
-            {
-                XYA_move(X, Y, Am);
-            }
-            else if ((CompensateXY) && (!CompensateA))
-            {
-                XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, Am);
-                XY_move(X, Y);
-            }
-            else if ((!CompensateXY) && (CompensateA))
-            {
-                XYA_move(X, Y, Am - SlackCompensationDistanceA);
-                A_move(Am);
-            }
-            else
-            {
-                XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, Am - SlackCompensationDistanceA);
-                XYA_move(X, Y, Am);
-            }
-        }
-
-        private void XYA_move(double X, double Y, double Am)
-        {
-            string command;
-            double dX = Math.Abs(X - CurrentX);
-            double dY = Math.Abs(Y - CurrentY);
-            double dA = Math.Abs(Am - CurrentA);
-            if ((dX < 0.004) && (dY < 0.004) && (dA < 0.01))
-            {
-                MainForm.DisplayText(" -- zero XYA movement command --", KnownColor.Gray);
-                MainForm.DisplayText("ReadyEvent: zero movement command", KnownColor.Gray);
-                _readyEvent.Set();
-                return;   // already there
-            }
-
-            X = X + SquareCorrection * Y;
-            if ((dX < 1.0) && (dY < 1.0))
-            {
-                // small movement
-                // First do XY move, then A. This works always.
-                // (small moves and fast settings can sometimes cause problems)
-                if ((dX < 0.004) && (dY < 0.004))
-                {
-                    MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
-                }
-                else
-                {
-                    if (SlowXY)
-                    {
-                        if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
-                        {
-                            command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
-                                                           " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                        }
-                        else
-                        {
-                            command = "G1 F" + SlowSpeedXY.ToString(CultureInfo.InvariantCulture)
-                                    + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                        }
-                    }
-                    else
-                    {
-                        command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
-                                                       " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                    }
-                    _readyEvent.Reset();
-                    Com.Write("{\"gc\":\"" + command + "\"}");
-                    _readyEvent.Wait();
-                }
-
-                // then A:
-                if (dA < 0.01)
-                {
-                    MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
-                }
-                else
-                {
-                    if (SlowA)
-                    {
-                        command = "G1 F" + SlowSpeedA.ToString(CultureInfo.InvariantCulture) + " A" + Am.ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        command = "G0 A" + Am.ToString(CultureInfo.InvariantCulture);
-                    }
-                    _readyEvent.Reset();
-                    Com.Write("{\"gc\":\"" + command + "\"}");
-                    _readyEvent.Wait();
-                }
-            }
-            else
-            {
-                // normal case, large move
-                // Possibilities:
-                // SlowA, SlowXY
-                // SlowA, FastXY
-                // FastA, SlowXY
-                // Fast A, Fast XY
-                // To avoid side effects, we'll separate a and xy for first three cases
-                if (SlowA || (!SlowA && SlowXY))
-                {
-                    // Do A first, then XY
-                    if (dA < 0.01)
-                    {
-                        MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
-                    }
-                    else
-                    {
-                        if (SlowA)
-                        {
-                            command = "G1 F" + SlowSpeedA.ToString(CultureInfo.InvariantCulture) + " A" + Am.ToString(CultureInfo.InvariantCulture);
-                        }
-                        else
-                        {
-                            command = "G0 A" + Am.ToString(CultureInfo.InvariantCulture);
-                        }
-                        _readyEvent.Reset();
-                        Com.Write("{\"gc\":\"" + command + "\"}");
-                        _readyEvent.Wait();
-                    }
-                    // A done, we know XY is slow and large
-                    command = "G1 F" + SlowSpeedXY.ToString(CultureInfo.InvariantCulture) +
-                                " X" + X.ToString(CultureInfo.InvariantCulture) +
-                                " Y" + Y.ToString(CultureInfo.InvariantCulture);
-                    _readyEvent.Reset();
-                    Com.Write("{\"gc\":\"" + command + "\"}");
-                    _readyEvent.Wait();
-                }
-                else
-                {
-                    // Fast A, Fast XY
-                    command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) +
-                                     " Y" + Y.ToString(CultureInfo.InvariantCulture) +
-                                     " A" + Am.ToString(CultureInfo.InvariantCulture);
-                    _readyEvent.Reset();
-                    Com.Write("{\"gc\":\"" + command + "\"}");
-                    _readyEvent.Wait();
-                }
-            }
-        }
-
-        public void Z(double Z)
-        {
-            string command = "G0 Z" + Z.ToString(CultureInfo.InvariantCulture);
-            double dZ = Math.Abs(Z - CurrentZ);
-            if (dZ < 0.005)
-            {
-                MainForm.DisplayText(" -- zero Z movement command --");
-                MainForm.DisplayText("ReadyEvent: zero movement command");
-                _readyEvent.Set();
-                return;   // already there
-            }
-            if (dZ < 1.1)
-            {
-                if (SlowZ)
-                {
-                    if ((double)MainForm.Setting.CNC_SmallMovementSpeed > SlowSpeedZ)
-                    {
-                        command = "G1 F" + SlowSpeedZ.ToString(CultureInfo.InvariantCulture) + " Z" + Z.ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        command = "G1 F" + MainForm.Setting.CNC_SmallMovementSpeed.ToString(CultureInfo.InvariantCulture) + " Z" + Z.ToString(CultureInfo.InvariantCulture);
-                    }
-                }
-            }
-            else
-            {
-                if (SlowZ)
-                {
-                    command = "G1 F" + SlowSpeedZ.ToString(CultureInfo.InvariantCulture) + " Z" + Z.ToString(CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    command = "G0 Z" + Z.ToString(CultureInfo.InvariantCulture);
-                }
-            }
-            _readyEvent.Reset();
-            Com.Write("{\"gc\":\"" + command + "\"}");
-            _readyEvent.Wait();
-        }
-
-        public void A(double A)
-        {
-            if (Math.Abs(A - CurrentA) < 0.01)
-            {
-                MainForm.DisplayText(" -- zero A movement command --");
-                _readyEvent.Set();
-                return;   // already there
-            }
-            if ((SlackCompensationA) && (CurrentA > (A - SlackCompensationDistanceA)))
-            {
-                A_move(A - SlackCompensationDistanceA);
-                A_move(A);
-            }
-            else
-            {
-                A_move(A);
-            }
-        }
-        
-        private void A_move(double A)
-        {
-            string command;
-            if (SlowA)
-            {
-                command = "G1 F" + SlowSpeedA.ToString(CultureInfo.InvariantCulture) + " A" + A.ToString(CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                command = "G0 A" + A.ToString(CultureInfo.InvariantCulture);
-            }
-            _readyEvent.Reset();
-            Com.Write("{\"gc\":\"" + command + "\"}");
-            _readyEvent.Wait();
-        }
 
         // =================================================================================
         public bool Homing { get; set; }

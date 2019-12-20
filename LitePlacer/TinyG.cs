@@ -10,75 +10,30 @@ namespace LitePlacer
 {
     public class TinyGclass
     {
-        private FormMain MainForm;
-        private CNC Cnc;
-        private SerialComm Com;
+        FormMain MainForm;
+        CNC Cnc;
+        SerialComm Com;
 
-        public TinyGclass(FormMain MainF, CNC C)
+        public TinyGclass(FormMain MainF, CNC C, SerialComm ser)
         {
             MainForm = MainF;
             Cnc = C;
-            Com = new SerialComm(C, MainF);
+            Com = ser;
         }
 
         static ManualResetEvent ReadyEvent = new ManualResetEvent(false);
 
-        // =================================================================================
-        // NOTE:
-        // Error handling and reporting happens on Cnc class.
-        // On bool routines that are expected to go through ok, error is reported by returning false.
-        // IF we must, we can call Cnc.RaiseError() directly. It will do upper level
-        // error handling and also call TinyG_RaiseError(). This will set error status for this file.
+        public int RegularMoveTimeout { get; set; } // in ms
 
         // =================================================================================
-        // Communications to hardware, status of the link
+
         #region Communications
 
-        public bool Connect(String port)
+        public bool CheckIdentity()
         {
-            if (Com.IsOpen)
-            {
-                MainForm.DisplayText("Already connected to serial port " + port + ": already open");
-                Cnc.Connected = true;
-                return true;
-            }
-            Com.Open(port);
-            if (!Com.IsOpen)
-            {
-                MainForm.DisplayText("Connecting to serial port " + port + " failed.");
-                Cnc.RaiseError();
-                return false;
-            }
-            else
-            {
-                MainForm.DisplayText("Connected to serial port " + port);
-            }
-            // At this point, we are either connected to a board, or returned
-            // Is it a right board?
-            if (!CheckIdentity())
-            {
-                return false;
-            }
-            Cnc.Connected = true;
-            Cnc.ErrorState = false;
-            MainForm.UpdateCncConnectionStatus();
-            return true;
-        }
-
-
-
-        bool CheckIdentity()
-        {
-            MainForm.DisplayText("Finding board type:");
             string resp;
-            LineWanted = true;
-            Write_m("M115");
-            if (!ReadLine(out resp, 250))
-            {
-                MainForm.DisplayText("No success.");
-                return false;
-            }
-            if (resp.Contains("\"r\":{ },"))
+            resp= ReadLineDirectly("M115");
+            if (resp.Contains("{\"r\":{}"))  
             {
                 MainForm.DisplayText("TinyG board found.");
                 return true;
@@ -86,12 +41,9 @@ namespace LitePlacer
             return false;
         }
 
-
-
         public bool JustConnected()
         {
             RawWrite("\x11");  // Xon
-            Thread.Sleep(50);   // TinyG wakeup
 
             // get initial position
             if (!Write_m("{sr:n}"))
@@ -99,7 +51,7 @@ namespace LitePlacer
                 return false;
             }
             MainForm.DisplayText("Reading TinyG settings:");
-            if (!MainForm.LoopTinyGParameters())
+            if (!LoopTinyGParameters())
             {
                 return false;
             }
@@ -145,14 +97,14 @@ namespace LitePlacer
         {
             if (!Com.IsOpen)
             {
-                MainForm.DisplayText("###" + cmd + " discarded, com not open (readyevent set)");
+                MainForm.DisplayText("### " + cmd + " discarded, com not open (readyevent set)");
                 ReadyEvent.Set();
                 Cnc.Connected = false;
                 return false;
             }
             if (Cnc.ErrorState)
             {
-                MainForm.DisplayText("###" + cmd + " discarded, error state on (readyevent set)");
+                MainForm.DisplayText("### " + cmd + " discarded, error state on (readyevent set)");
                 ReadyEvent.Set();
                 return false;
             }
@@ -160,6 +112,7 @@ namespace LitePlacer
             BlockingWriteDone = false;
             Thread t = new Thread(() => BlockingWrite_thread(cmd));
             t.IsBackground = true;
+            t.Name = "TinyGwrite";
             t.Start();
 
             Timeout = Timeout / 2;
@@ -240,12 +193,10 @@ namespace LitePlacer
         }
 
 
-
         public void CancelJog()
         {
             RawWrite("!%");
         }
-
 
 
         public void Jog(string Speed, string X, string Y, string Z, string A)
@@ -278,7 +229,130 @@ namespace LitePlacer
         }
 
 
-        #endregion
+
+        private bool HomingTimeout_m(out int TimeOut, string axis)
+        {
+            string SpeedStr = "0";
+            double size;
+            TimeOut = 0;
+            switch (axis)
+            {
+                case "X":
+                    SpeedStr = MainForm.xsv_maskedTextBox.Text;
+                    size = MainForm.Setting.General_MachineSizeX;
+                    break;
+
+                case "Y":
+                    SpeedStr = MainForm.ysv_maskedTextBox.Text;
+                    size = MainForm.Setting.General_MachineSizeY;
+                    break;
+
+                case "Z":
+                    SpeedStr = MainForm.zsv_maskedTextBox.Text;
+                    size = 100.0;
+                    break;
+
+                default:
+                    return false;
+            }
+
+            double Speed;
+            if (!double.TryParse(SpeedStr.Replace(',', '.'), out Speed))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data in " + axis + " homing speed",
+                    "Data error",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+
+            Speed = Speed / 60;  // Was mm/min, now in mm / second
+            Double MaxTime = (size / Speed) * 1.2 + 4;
+            // in seconds for the machine size and some (1.2 to allow acceleration, + 4 for the operarations at end stop
+            TimeOut = (int)MaxTime * 1000;  // to ms
+            return true;
+        }
+
+
+
+        public bool Home_m(string axis)
+        {
+            int timeout;
+            if (!HomingTimeout_m(out timeout, axis))
+            {
+                return false;
+            }
+
+            MainForm.DisplayText("Homing axis " + axis + ", timeout value: " + timeout.ToString(CultureInfo.InvariantCulture));
+
+            if (!Write_m("{\"gc\":\"G28.2 " + axis + "0\"}", timeout))
+            {
+                MainForm.ShowMessageBox(
+                    "Homing operation mechanical step failed, CNC issue",
+                    "Homing failed",
+                    MessageBoxButtons.OK);
+                Cnc.Homing = false;
+                return false;
+            }
+            MainForm.DisplayText("Homing " + axis + " done.");
+            return true;
+        }
+
+        public bool XYA(double X, double Y, double A, double speed, string MoveType)
+        {
+            string command;
+            if (MoveType == "G1")
+            {
+                command = "G1 F" + speed.ToString() +
+                    " X" + X.ToString(CultureInfo.InvariantCulture) +
+                    " Y" + Y.ToString(CultureInfo.InvariantCulture) +
+                    " A" + A.ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                command = "G0 " +
+                    " X" + X.ToString(CultureInfo.InvariantCulture) +
+                    " Y" + Y.ToString(CultureInfo.InvariantCulture) +
+                    " A" + A.ToString(CultureInfo.InvariantCulture);
+            }
+            return Write_m("{\"gc\":\"" + command + "\"}", RegularMoveTimeout);
+        }
+
+        public bool A(double A, double speed, string MoveType)
+        {
+            string command;
+            if (MoveType == "G1")
+            {
+                command = "G1 F" + speed.ToString() +
+                    " A" + A.ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                command = "G0 " +
+                    " A" + A.ToString(CultureInfo.InvariantCulture);
+            }
+            return Write_m("{\"gc\":\"" + command + "\"}", RegularMoveTimeout);
+        }
+
+        public bool Z(double Z, double speed, string MoveType)
+        {
+            string command;
+            if (MoveType == "G1")
+            {
+                command = "G1 F" + speed.ToString() +
+                    " Z" + Z.ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                command = "G0 " +
+                    " Z" + Z.ToString(CultureInfo.InvariantCulture);
+            }
+            return Write_m("{\"gc\":\"" + command + "\"}", RegularMoveTimeout);
+        }
+
+        #endregion Movement
+
+
 
         // =================================================================================
         // Hardware features: probing, pump, vacuum, motor power
@@ -286,53 +360,62 @@ namespace LitePlacer
 
         public void DisableZswitches()
         {
-            Write_m("{\"zsn\":0}", 50);
-            Write_m("{\"zsx\":0}", 50);
+            Write_m("{\"zsn\":0}", 100);
+            Thread.Sleep(50);
+            Write_m("{\"zsx\":0}", 100);
+            Thread.Sleep(50);
         }
 
 
 
         public void EnableZswitches()
         {
-            Write_m("{\"zsn\":3}", 50);
-            Write_m("{\"zsx\":2}", 50);
+            Write_m("{\"zsn\":3}", 100);
+            Thread.Sleep(50);
+            Write_m("{\"zsx\":2}", 100);
+            Thread.Sleep(50);
         }
 
 
 
         public void ProbingMode(bool set)
         {
-            int wait = 50;
             double b = MainForm.Setting.General_ZprobingHysteresis;
             string backoff = b.ToString("0.00", CultureInfo.InvariantCulture);
 
             if (set)
             {
                 MainForm.DisplayText("Probing mode on, TinyG");
-                Write_m("{\"zsn\",0}", wait);
-                Write_m("{\"zsx\",1}", wait);
-                Write_m("{\"zzb\"," + backoff + "}", wait);
+                Write_m("{\"zsn\",0}", 50);
+                Thread.Sleep(50);
+                Write_m("{\"zsx\",1}", 50);
+                Thread.Sleep(50);
+                Write_m("{\"zzb\"," + backoff + "}", 50);
+                Thread.Sleep(50);
             }
             else
             {
                 MainForm.DisplayText("Probing mode off, TinyG");
-                Write_m("{\"zsn\",3}", wait);
-                Write_m("{\"zsx\",2}", wait);
-                Write_m("{\"zzb\",2}", wait);
+                Write_m("{\"zsn\",3}", 50);
+                Thread.Sleep(50);
+                Write_m("{\"zsx\",2}", 50);
+                Thread.Sleep(50);
+                Write_m("{\"zzb\",2}", 50);
+                Thread.Sleep(50);
             }
 
         }
 
         public bool Nozzle_ProbeDown()
         {
-            return Write_m("{\"gc\":\"G28.4 Z0\"}", 4000);
+            return Write_m("{\"gc\":\"G28.4 Z0\"}", RegularMoveTimeout);
         }
 
 
         public void MotorPowerOn()
         {
             MainForm.DisplayText("MotorPowerOn(), TinyG");
-            MainForm.CNC_Write_m("{\"me\":\"\"}");
+            Write_m("{\"me\":\"\"}");
             MainForm.ResetMotorTimer();
         }
 
@@ -342,7 +425,7 @@ namespace LitePlacer
         {
             MainForm.DisplayText("MotorPowerOff(), TinyG");
             MainForm.TimerDone = true;
-            MainForm.CNC_Write_m("{\"md\":\"\"}");
+            Write_m("{\"md\":\"\"}");
         }
 
 
@@ -444,89 +527,35 @@ namespace LitePlacer
 
         #endregion Features
 
+
         // =================================================================================
-        // Movement
-        #region Movement
+        // Board settings
+        #region settings
 
-        private bool HomingTimeout_m(out int TimeOut, string axis)
+        public bool LoopTinyGParameters()
         {
-            string speed = "0";
-            double size;
-            TimeOut = 0;
-            switch (axis)
+
+            foreach (var parameter in MainForm.TinyGBoard.GetType().GetProperties())
             {
-                case "X":
-                    speed = MainForm.xsv_maskedTextBox.Text;
-                    size = MainForm.Setting.General_MachineSizeX;
-                    break;
-
-                case "Y":
-                    speed = MainForm.ysv_maskedTextBox.Text;
-                    size = MainForm.Setting.General_MachineSizeY;
-                    break;
-
-                case "Z":
-                    speed = MainForm.zsv_maskedTextBox.Text;
-                    size = 100.0;
-                    break;
-
-                default:
+                // The motor parameters are <motor number><parameter>, such as 1ma, 1sa, 1tr etc.
+                // These are not valid parameter names, so Motor1ma, motor1sa etc are used.
+                // to retrieve the values, we remove the "Motor"
+                string Name = parameter.Name;
+                if (Name.StartsWith("Motor", StringComparison.Ordinal))
+                {
+                    Name = Name.Substring(5);
+                }
+                if (!Write_m("{\"" + Name + "\":\"\"}"))
+                {
                     return false;
+                };
+                //Thread.Sleep(500);
             }
-
-            double MaxTime;
-            if (!double.TryParse(speed.Replace(',', '.'), out MaxTime))
-            {
-                MainForm.ShowMessageBox(
-                    "Bad data in " + axis + " homing speed",
-                    "Data error",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-
-            MaxTime = MaxTime / 60;  // Now in seconds/mm
-            MaxTime = (size / MaxTime) * 1.2 + 8;
-            // in seconds for the machine size and some (1.2 to allow acceleration, + 8 for the operarations at end stop
-            TimeOut = (int)MaxTime;
             return true;
         }
 
+        #endregion
 
-
-        public bool Home_m(string axis)
-        {
-            int timeout;
-            if (!HomingTimeout_m(out timeout, axis))
-            {
-                return false;
-            }
-
-            MainForm.DisplayText("Homing axis " + axis + ", timeout value: " + timeout.ToString(CultureInfo.InvariantCulture));
-
-            if (!Write_m("{\"gc\":\"G28.2 " + axis + "0\"}", timeout))
-            {
-                MainForm.ShowMessageBox(
-                    "Homing operation mechanical step failed, CNC issue",
-                    "Homing failed",
-                    MessageBoxButtons.OK);
-                Cnc.Homing = false;
-                return false;
-            }
-            MainForm.DisplayText("Homing " + axis + " done.");
-            return true;
-        }
-
-
-
-        #endregion Movement
-
-
-
-        // ===============================
-        public void TinyG_RaiseError()
-        {
-            ReadyEvent.Set();
-        }
 
         // ===============================
         // Read single line:
@@ -534,26 +563,16 @@ namespace LitePlacer
         private bool LineWanted = false;
         private string LineOut;
 
-        public bool ReadLine(out string line, int TimeOut)
+        public string ReadLineDirectly(string command)
         {
             LineWanted = true;
-            TimeOut = TimeOut / 5;
-            while (!LineWanted)
+            if (Write_m(command, 500))
             {
-                Thread.Sleep(5);
-                Application.DoEvents();
-                TimeOut--;
-                if (TimeOut < 0)
-                {
-                    LineWanted = false;
-                    line = "";
-                    return false;
-                }
+                return LineOut;
             }
-            line = LineOut;
-            return true;
+            LineWanted = false;
+            return "";
         }
-
 
 
         public void InterpretLine(string line)
@@ -566,6 +585,7 @@ namespace LitePlacer
             {
                 LineOut = line;
                 LineWanted = false;
+                ReadyEvent.Set();
                 return;
             }
 
