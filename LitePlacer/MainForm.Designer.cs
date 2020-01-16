@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -246,6 +246,7 @@
             this.label94 = new System.Windows.Forms.Label();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.SlackCompensationDistance_textBox = new System.Windows.Forms.TextBox();
             this.MoveTimeout_textBox = new System.Windows.Forms.TextBox();
             this.label50 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -614,15 +615,11 @@
             this.label151 = new System.Windows.Forms.Label();
             this.label150 = new System.Windows.Forms.Label();
             this.NozzlesParameters_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn55 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NozzleNumber_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VisionAlgorithm_column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.NozzleOverrideSize_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.NozzleMinSize_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NozzleMaxSize_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NozzleAlternative_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.NozzleUnload_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.gotoUnloadStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.getUnloadMovesFromLoadMovesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyMovesFromNozzle1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NozzlesStop_button = new System.Windows.Forms.Button();
             this.NozzlesSave_button = new System.Windows.Forms.Button();
             this.CalibrateNozzles_button = new System.Windows.Forms.Button();
@@ -659,6 +656,11 @@
             this.dataGridViewTextBoxColumn52 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn53 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn54 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NozzleUnload_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.gotoUnloadStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyMovesFromNozzle1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label59 = new System.Windows.Forms.Label();
             this.NoOfNozzles_UpDown = new System.Windows.Forms.NumericUpDown();
             this.label54 = new System.Windows.Forms.Label();
@@ -699,7 +701,6 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.SlackCompensationDistance_textBox = new System.Windows.Forms.TextBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -743,10 +744,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.Functions_dataGridView)).BeginInit();
             this.Nozzles_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesParameters_dataGridView)).BeginInit();
-            this.NozzleUnload_contextMenuStrip.SuspendLayout();
             this.panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ForceNozzle_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesUnload_dataGridView)).BeginInit();
+            this.NozzleUnload_contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).BeginInit();
             this.NozzleLoad_contextMenuStrip.SuspendLayout();
@@ -3180,6 +3181,15 @@
             this.tabPageBasicSetup.TabIndex = 1;
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
+            // 
+            // SlackCompensationDistance_textBox
+            // 
+            this.SlackCompensationDistance_textBox.Location = new System.Drawing.Point(1169, 165);
+            this.SlackCompensationDistance_textBox.Name = "SlackCompensationDistance_textBox";
+            this.SlackCompensationDistance_textBox.Size = new System.Drawing.Size(48, 20);
+            this.SlackCompensationDistance_textBox.TabIndex = 119;
+            this.toolTip1.SetToolTip(this.SlackCompensationDistance_textBox, "Distance; on moves smaller than this, slack compensation is applied.");
+            this.SlackCompensationDistance_textBox.TextChanged += new System.EventHandler(this.SlackCompensationDistance_textBox_TextChanged);
             // 
             // MoveTimeout_textBox
             // 
@@ -6179,14 +6189,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6406,7 +6416,7 @@
             this.tabControlPages.Controls.Add(this.Nozzles_tabPage);
             this.tabControlPages.Location = new System.Drawing.Point(3, 2);
             this.tabControlPages.Name = "tabControlPages";
-            this.tabControlPages.SelectedIndex = 0;
+            this.tabControlPages.SelectedIndex = 1;
             this.tabControlPages.Size = new System.Drawing.Size(1253, 661);
             this.tabControlPages.TabIndex = 3;
             this.tabControlPages.SelectedIndexChanged += new System.EventHandler(this.tabControlPages_SelectedIndexChanged);
@@ -7238,7 +7248,7 @@
             // label150
             // 
             this.label150.AutoSize = true;
-            this.label150.Location = new System.Drawing.Point(679, 304);
+            this.label150.Location = new System.Drawing.Point(621, 301);
             this.label150.Name = "label150";
             this.label150.Size = new System.Drawing.Size(94, 13);
             this.label150.TabIndex = 37;
@@ -7252,13 +7262,13 @@
             this.NozzlesParameters_dataGridView.AllowUserToResizeRows = false;
             this.NozzlesParameters_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.NozzlesParameters_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn55,
+            this.NozzleNumber_column,
+            this.VisionAlgorithm_column,
+            this.NozzleOverrideSize_column,
             this.NozzleMinSize_column,
-            this.NozzleMaxSize_column,
-            this.NozzleAlternative_column});
-            this.NozzlesParameters_dataGridView.ContextMenuStrip = this.NozzleUnload_contextMenuStrip;
+            this.NozzleMaxSize_column});
             this.NozzlesParameters_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.NozzlesParameters_dataGridView.Location = new System.Drawing.Point(665, 320);
+            this.NozzlesParameters_dataGridView.Location = new System.Drawing.Point(624, 320);
             this.NozzlesParameters_dataGridView.Name = "NozzlesParameters_dataGridView";
             this.NozzlesParameters_dataGridView.RowHeadersVisible = false;
             this.NozzlesParameters_dataGridView.RowHeadersWidth = 40;
@@ -7266,18 +7276,31 @@
             this.NozzlesParameters_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.NozzlesParameters_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.NozzlesParameters_dataGridView.ShowEditingIcon = false;
-            this.NozzlesParameters_dataGridView.Size = new System.Drawing.Size(283, 78);
+            this.NozzlesParameters_dataGridView.Size = new System.Drawing.Size(324, 78);
             this.NozzlesParameters_dataGridView.TabIndex = 36;
+            this.NozzlesParameters_dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.NozzlesParameters_dataGridView_CellValueChanged);
+            this.NozzlesParameters_dataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.NozzlesParameters_dataGridView_CurrentCellDirtyStateChanged);
             // 
-            // dataGridViewTextBoxColumn55
+            // NozzleNumber_column
             // 
-            this.dataGridViewTextBoxColumn55.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.dataGridViewTextBoxColumn55.HeaderText = "nozzle";
-            this.dataGridViewTextBoxColumn55.Name = "dataGridViewTextBoxColumn55";
-            this.dataGridViewTextBoxColumn55.ReadOnly = true;
-            this.dataGridViewTextBoxColumn55.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn55.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn55.Width = 60;
+            this.NozzleNumber_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NozzleNumber_column.HeaderText = "nozzle";
+            this.NozzleNumber_column.Name = "NozzleNumber_column";
+            this.NozzleNumber_column.ReadOnly = true;
+            this.NozzleNumber_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NozzleNumber_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.NozzleNumber_column.Width = 40;
+            // 
+            // VisionAlgorithm_column
+            // 
+            this.VisionAlgorithm_column.HeaderText = "Vision Algorithm";
+            this.VisionAlgorithm_column.Name = "VisionAlgorithm_column";
+            // 
+            // NozzleOverrideSize_column
+            // 
+            this.NozzleOverrideSize_column.HeaderText = "Override Size";
+            this.NozzleOverrideSize_column.Name = "NozzleOverrideSize_column";
+            this.NozzleOverrideSize_column.Width = 60;
             // 
             // NozzleMinSize_column
             // 
@@ -7296,50 +7319,6 @@
             this.NozzleMaxSize_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.NozzleMaxSize_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.NozzleMaxSize_column.Width = 60;
-            // 
-            // NozzleAlternative_column
-            // 
-            this.NozzleAlternative_column.HeaderText = "Use alt. functions";
-            this.NozzleAlternative_column.Name = "NozzleAlternative_column";
-            // 
-            // NozzleUnload_contextMenuStrip
-            // 
-            this.NozzleUnload_contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.NozzleUnload_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gotoUnloadStartToolStripMenuItem,
-            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem,
-            this.getUnloadMovesFromLoadMovesToolStripMenuItem,
-            this.copyMovesFromNozzle1ToolStripMenuItem});
-            this.NozzleUnload_contextMenuStrip.Name = "NozzleUnload_contextMenuStrip";
-            this.NozzleUnload_contextMenuStrip.Size = new System.Drawing.Size(352, 92);
-            // 
-            // gotoUnloadStartToolStripMenuItem
-            // 
-            this.gotoUnloadStartToolStripMenuItem.Name = "gotoUnloadStartToolStripMenuItem";
-            this.gotoUnloadStartToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
-            this.gotoUnloadStartToolStripMenuItem.Text = "Goto start position";
-            this.gotoUnloadStartToolStripMenuItem.Click += new System.EventHandler(this.gotoUnloadStartToolStripMenuItem_Click);
-            // 
-            // copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem
-            // 
-            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Name = "copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem";
-            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
-            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Text = "Copy unload start positions from Load end positions";
-            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Click += new System.EventHandler(this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem_Click);
-            // 
-            // getUnloadMovesFromLoadMovesToolStripMenuItem
-            // 
-            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Name = "getUnloadMovesFromLoadMovesToolStripMenuItem";
-            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
-            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Text = "get unload moves from load moves";
-            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Click += new System.EventHandler(this.getUnloadMovesFromLoadMovesToolStripMenuItem_Click);
-            // 
-            // copyMovesFromNozzle1ToolStripMenuItem
-            // 
-            this.copyMovesFromNozzle1ToolStripMenuItem.Name = "copyMovesFromNozzle1ToolStripMenuItem";
-            this.copyMovesFromNozzle1ToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
-            this.copyMovesFromNozzle1ToolStripMenuItem.Text = "Copy moves from nozzle 1";
-            this.copyMovesFromNozzle1ToolStripMenuItem.Click += new System.EventHandler(this.copyUnloadMovesFromNozzle1_ToolStripMenuItem_Click);
             // 
             // NozzlesStop_button
             // 
@@ -7641,7 +7620,7 @@
             // 
             // GetUnloadCoordinates_button
             // 
-            this.GetUnloadCoordinates_button.Location = new System.Drawing.Point(545, 294);
+            this.GetUnloadCoordinates_button.Location = new System.Drawing.Point(435, 291);
             this.GetUnloadCoordinates_button.Name = "GetUnloadCoordinates_button";
             this.GetUnloadCoordinates_button.Size = new System.Drawing.Size(108, 23);
             this.GetUnloadCoordinates_button.TabIndex = 7;
@@ -7690,7 +7669,7 @@
             this.NozzlesUnload_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.NozzlesUnload_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.NozzlesUnload_dataGridView.ShowEditingIcon = false;
-            this.NozzlesUnload_dataGridView.Size = new System.Drawing.Size(647, 249);
+            this.NozzlesUnload_dataGridView.Size = new System.Drawing.Size(603, 249);
             this.NozzlesUnload_dataGridView.TabIndex = 4;
             this.NozzlesUnload_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.NozzlesUnload_dataGridView_CellMouseDown);
             this.NozzlesUnload_dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.NozzlesUnload_dataGridView_CellMouseEnter);
@@ -7731,6 +7710,45 @@
             this.dataGridViewTextBoxColumn54.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn54.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dataGridViewTextBoxColumn54.Width = 56;
+            // 
+            // NozzleUnload_contextMenuStrip
+            // 
+            this.NozzleUnload_contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.NozzleUnload_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.gotoUnloadStartToolStripMenuItem,
+            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem,
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem,
+            this.copyMovesFromNozzle1ToolStripMenuItem});
+            this.NozzleUnload_contextMenuStrip.Name = "NozzleUnload_contextMenuStrip";
+            this.NozzleUnload_contextMenuStrip.Size = new System.Drawing.Size(352, 92);
+            // 
+            // gotoUnloadStartToolStripMenuItem
+            // 
+            this.gotoUnloadStartToolStripMenuItem.Name = "gotoUnloadStartToolStripMenuItem";
+            this.gotoUnloadStartToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
+            this.gotoUnloadStartToolStripMenuItem.Text = "Goto start position";
+            this.gotoUnloadStartToolStripMenuItem.Click += new System.EventHandler(this.gotoUnloadStartToolStripMenuItem_Click);
+            // 
+            // copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem
+            // 
+            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Name = "copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem";
+            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
+            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Text = "Copy unload start positions from Load end positions";
+            this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem.Click += new System.EventHandler(this.copyUnloadStartPositionsFromLoadEndPositionsToolStripMenuItem_Click);
+            // 
+            // getUnloadMovesFromLoadMovesToolStripMenuItem
+            // 
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Name = "getUnloadMovesFromLoadMovesToolStripMenuItem";
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Text = "get unload moves from load moves";
+            this.getUnloadMovesFromLoadMovesToolStripMenuItem.Click += new System.EventHandler(this.getUnloadMovesFromLoadMovesToolStripMenuItem_Click);
+            // 
+            // copyMovesFromNozzle1ToolStripMenuItem
+            // 
+            this.copyMovesFromNozzle1ToolStripMenuItem.Name = "copyMovesFromNozzle1ToolStripMenuItem";
+            this.copyMovesFromNozzle1ToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
+            this.copyMovesFromNozzle1ToolStripMenuItem.Text = "Copy moves from nozzle 1";
+            this.copyMovesFromNozzle1ToolStripMenuItem.Click += new System.EventHandler(this.copyUnloadMovesFromNozzle1_ToolStripMenuItem_Click);
             // 
             // label59
             // 
@@ -8122,15 +8140,6 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
-            // SlackCompensationDistance_textBox
-            // 
-            this.SlackCompensationDistance_textBox.Location = new System.Drawing.Point(1169, 165);
-            this.SlackCompensationDistance_textBox.Name = "SlackCompensationDistance_textBox";
-            this.SlackCompensationDistance_textBox.Size = new System.Drawing.Size(48, 20);
-            this.SlackCompensationDistance_textBox.TabIndex = 119;
-            this.toolTip1.SetToolTip(this.SlackCompensationDistance_textBox, "Distance; on moves smaller than this, slack compensation is applied.");
-            this.SlackCompensationDistance_textBox.TextChanged += new System.EventHandler(this.SlackCompensationDistance_textBox_TextChanged);
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -8259,11 +8268,11 @@
             this.Nozzles_tabPage.ResumeLayout(false);
             this.Nozzles_tabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesParameters_dataGridView)).EndInit();
-            this.NozzleUnload_contextMenuStrip.ResumeLayout(false);
             this.panel10.ResumeLayout(false);
             this.panel10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ForceNozzle_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesUnload_dataGridView)).EndInit();
+            this.NozzleUnload_contextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).EndInit();
             this.NozzleLoad_contextMenuStrip.ResumeLayout(false);
@@ -8745,10 +8754,6 @@
         private System.Windows.Forms.TextBox NozzleWarning_textBox;
         private System.Windows.Forms.Label label156;
         private System.Windows.Forms.Timer MotorPower_timer;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn55;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleAlternative_column;
         private System.Windows.Forms.Button GoX_button;
         private System.Windows.Forms.Button GoY_button;
         private System.Windows.Forms.Button GoA_button;
@@ -8943,6 +8948,11 @@
         private System.Windows.Forms.TextBox MoveTimeout_textBox;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.TextBox SlackCompensationDistance_textBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleNumber_column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn VisionAlgorithm_column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleOverrideSize_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
     }
 }
 
