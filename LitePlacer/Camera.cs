@@ -2247,7 +2247,9 @@ namespace LitePlacer
                     Candidates.Add(new Shapes.Shape()
                     {
                         Center = regt.Center,
-                        Angle = regt.Angle
+                        Angle = regt.Angle,
+                        Xsize = regt.LongsideLenght,
+                        Ysize=regt.ShortSideLenght
                     });
                 }
                 if (DisplayResults)
