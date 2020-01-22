@@ -207,25 +207,24 @@ namespace LitePlacer
             }
             else if (X != "")
             {
-                RawWrite("{\"gc\":\"G1 F" + Speed + " X" + "\"}");
+                RawWrite("{\"gc\":\"G1 F" + Speed + " X" + X + "\"}");
             }
             else if (Y != "")
             {
-                RawWrite("{\"gc\":\"G1 F" + Speed + " Y" + "\"}");
+                RawWrite("{\"gc\":\"G1 F" + Speed + " Y" + Y + "\"}");
             }
             else if (Z != "")
             {
-                RawWrite("{\"gc\":\"G1 F" + Speed + " Z" + "\"}");
+                RawWrite("{\"gc\":\"G1 F" + Speed + " Z" + Z + "\"}");
             }
             else if (A != "")
             {
-                RawWrite("{\"gc\":\"G1 F" + Speed + " A" + "\"}");
+                RawWrite("{\"gc\":\"G1 F" + Speed + " A" + A + "\"}");
             }
             else
             {
                 MainForm.DisplayText("***Jog, no axis", KnownColor.DarkRed, true);
             }
-
         }
 
 

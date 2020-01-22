@@ -1071,7 +1071,7 @@ namespace LitePlacer
                 // To avoid side effects, we'll separate a and xy for first three cases.
 
                 // Normal case first:
-                if (!SlowA || !SlowXY)
+                if (!SlowA && !SlowXY)
                 {
                     // Fast A, Fast XY
                     return Execute_XYA(X, Y, Am, 0, "G0");  // on G0, speed doesn't matter

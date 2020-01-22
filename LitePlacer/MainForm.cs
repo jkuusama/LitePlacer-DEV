@@ -297,6 +297,8 @@ namespace LitePlacer
             Cam_pictureBox.Parent = this;                   // position changes
             Cam_pictureBox.Location = locationOnForm;       // move it back
 
+            BasicSetupTab_Begin();      // Form comes up with basic setup tab, but the tab change event doesn't fire
+
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
