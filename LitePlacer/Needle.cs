@@ -21,10 +21,9 @@ namespace LitePlacer
             public double Y;
         }
 
-		public List<NozzlePoint> CalibrationPoints = new List<NozzlePoint>();   // what we use
-        // to calibrate nozzles, we can store and restore calibration points and their validity here.
-        public List<NozzlePoint>[] CalibrationPointsArr;
-        public bool[] CalibratedArr;
+        public List<List<NozzlePoint>> CalibrationData;  // calibration data for all nozzles:
+                // CalibrationPointsArr[nozzlenumber] is a list of the calibration points for this nozzle
+        public List<bool> Calibrated;  // if this particular nozzle is calibrated
 
 #pragma warning disable CA2235 // Mark all non-serializable fields
         private Camera Cam;
@@ -35,46 +34,34 @@ namespace LitePlacer
         public NozzleClass(Camera MyCam, CNC MyCnc, FormMain MainF)
         {
             MainForm = MainF;
-            Calibrated = false;
             Cam = MyCam;
             Cnc = MyCnc;
-            CalibrationPointsArr = new List<NozzlePoint>[MainForm.Setting.Nozzles_maximum];
-            CalibrationPoints.Clear();
-            CalibratedArr = new bool[MainForm.Setting.Nozzles_maximum];
+            CalibrationData = new List<List<NozzlePoint>>();
+            Calibrated = new List<bool>();
         }
 
         // =================================================================================
-        // store and restore
-
-        private object DeepClone(object obj)
+        // Create, add remove
+        // =================================================================================
+        public void BuildData()
         {
-            object objResult = null;
-            using (MemoryStream ms = new MemoryStream())
+            for (int i = 0; i < MainForm.Setting.Nozzles_count; i++)
             {
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(ms, obj);
-
-                ms.Position = 0;
-                objResult = bf.Deserialize(ms);
+                Add();
             }
-            return objResult;
         }
 
-        public void Store(int nozzle)
+        public void Add()
         {
-            MainForm.DisplayText("Stored calibration for nozzle " + nozzle.ToString(CultureInfo.InvariantCulture));
-            CalibrationPointsArr[nozzle] = (List<NozzlePoint>)DeepClone(CalibrationPoints);
-            CalibratedArr[nozzle] = Calibrated;
+            List<NozzlePoint> L = new List<NozzlePoint>();
+            CalibrationData.Add(L);
+            Calibrated.Add(false);
         }
 
-        public void UseCalibration(int nozzle)
+        public void Remove()
         {
-            if (CalibratedArr[nozzle])
-            {
-                MainForm.DisplayText("Using calibration for nozzle " + nozzle.ToString(CultureInfo.InvariantCulture));
-                CalibrationPoints = (List<NozzlePoint>)DeepClone(CalibrationPointsArr[nozzle]);
-            }
-            Calibrated = CalibratedArr[nozzle];
+            CalibrationData.RemoveAt(CalibrationData.Count - 1);
+            Calibrated.RemoveAt(Calibrated.Count - 1);
         }
 
         // =================================================================================
@@ -88,9 +75,9 @@ namespace LitePlacer
                 Stream stream = File.Open(filename, FileMode.Create);
                 BinaryFormatter formatter = new BinaryFormatter();
                 MainForm.DisplayText("Saving nozzle calibration data");
-                formatter.Serialize(stream, CalibrationPointsArr);
+                formatter.Serialize(stream, CalibrationData);
                 MainForm.DisplayText("Saving nozzle calibration validity data");
-                formatter.Serialize(stream, CalibratedArr);
+                formatter.Serialize(stream, Calibrated);
                 stream.Flush();
                 stream.Close();
                 return true;
@@ -102,6 +89,7 @@ namespace LitePlacer
                 return false;
             }
         }
+#pragma warning restore CA1031 // Do not catch general exception types
 
         public void LoadCalibration(string filename)
         {
@@ -112,38 +100,36 @@ namespace LitePlacer
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
                     MainForm.DisplayText("Loading nozzle calibration data");
-                    CalibrationPointsArr = (List<NozzlePoint>[])formatter.Deserialize(stream);
+                    CalibrationData = (List<List<NozzlePoint>>)formatter.Deserialize(stream);
                     MainForm.DisplayText("Loading nozzle calibration validity data");
-                    CalibratedArr = (bool[])formatter.Deserialize(stream);
+                    Calibrated = (List<bool>)formatter.Deserialize(stream);
                     stream.Flush();
                     stream.Close();
                 }
                 catch (Exception)
                 {
                     stream.Close();
-                    MainForm.DisplayText("No nozzle calibration data");
-                    for (int i = 0; i < CalibratedArr.Length; i++)
+                    MainForm.DisplayText("Loading nozzle calibration data failed");
+                    for (int i = 0; i < Calibrated.Count; i++)
                     {
-                        CalibratedArr[i] = false;
+                        Calibrated[i] = false;
                     }
                 }
             }
             else
             {
-                MainForm.DisplayText("No nozzle calibration data");
-                for (int i = 0; i < CalibratedArr.Length; i++)
+                MainForm.DisplayText("Nozzle calibration data file not found");
+                for (int i = 0; i < Calibrated.Count; i++)
                 {
-                    CalibratedArr[i] = false;
+                    Calibrated[i] = false;
                 }
             }
         }
 
 
         // =================================================================================
- 
-        public bool Calibrated { get; set; }
 
-        public bool CorrectedPosition_m(double angle, out double X, out double Y)
+        public bool GetPositionCorrection_m(double angle, out double X, out double Y)
         {
             if (MainForm.Setting.Placement_OmitNozzleCalibration)
             {
@@ -152,7 +138,7 @@ namespace LitePlacer
                 return true;
             };
 
-            if (!Calibrated)
+            if (!Calibrated[MainForm.Setting.Nozzles_current])
             {
                 DialogResult dialogResult = MainForm.ShowMessageBox(
                     "Nozzle not calibrated. Calibrate now?",
@@ -163,15 +149,18 @@ namespace LitePlacer
                     Y = 0.0;
                     return false;
                 };
+                // Do calibration: Save current position, ..
                 double CurrX = Cnc.CurrentX;
                 double CurrY = Cnc.CurrentY;
                 double CurrA = Cnc.CurrentA;
+                // calibrate, ..
                 if(!MainForm.CalibrateNozzle_m())
                 {
                     X = 0;
                     Y = 0;
                     return false;
                 }
+                // and return to the previous position
                 if (!MainForm.CNC_XYA_m(CurrX, CurrY, CurrA))
                 {
                     X = 0;
@@ -180,6 +169,7 @@ namespace LitePlacer
                 }
             };
 
+            // move angle to 0..360
             while (angle < 0)
             {
                 angle = angle + 360.0;
@@ -188,35 +178,36 @@ namespace LitePlacer
             {
                 angle = angle - 360.0;
             }
-            // since we are not going to check the last point (which is the cal. value for 360)
-            // in the for loop,we check that now
+            // If angle is 360, return the value for 0
             if (angle > 359.98)
             {
-                X = CalibrationPoints[0].X;
-                Y = CalibrationPoints[0].Y;
+                X = CalibrationData[MainForm.Setting.Nozzles_current][0].X;
+                Y = CalibrationData[MainForm.Setting.Nozzles_current][0].Y;
                 return true;
             };
 
-            for (int i = 0; i < CalibrationPoints.Count; i++)
+            List<NozzlePoint> Points = CalibrationData[MainForm.Setting.Nozzles_current];
+            for (int i = 0; i < Points.Count; i++)
             {
-                if (Math.Abs(angle - CalibrationPoints[i].Angle) < 1.0)
+                if (Math.Abs(angle - Points[i].Angle) < 1.0)
                 {
-                    // asked the exact calibrated value
-                    X = CalibrationPoints[i].X;
-                    Y = CalibrationPoints[i].Y;
+                    // we had a calibration value for exact angle asked
+                    X = Points[i].X;
+                    Y = -Points[i].Y;
 					return true;
                 }
-                if ((angle > CalibrationPoints[i].Angle)
+                if ((angle > Points[i].Angle)
                     &&
-                    (angle < CalibrationPoints[i + 1].Angle)
+                    (angle < Points[i + 1].Angle)
                     &&
-                    (Math.Abs(angle - CalibrationPoints[i + 1].Angle) > 1.0))
+                    (Math.Abs(angle - Points[i + 1].Angle) > 1.0))
                 {
-                    // angle is between CalibrationPoints[i] and CalibrationPoints[i+1], and is not == CalibrationPoints[i+1]
+                    // we are between points, and next point is not what was asked either: 
                     // linear interpolation:
-                    double fract = (angle - CalibrationPoints[i+1].Angle) / (CalibrationPoints[i+1].Angle - CalibrationPoints[i].Angle);
-                    X = CalibrationPoints[i].X + fract * (CalibrationPoints[i + 1].X - CalibrationPoints[i].X);
-                    Y = CalibrationPoints[i].Y + fract * (CalibrationPoints[i + 1].Y - CalibrationPoints[i].Y);
+                    double fract = (angle - Points[i+1].Angle) / (Points[i+1].Angle - Points[i].Angle);
+                    X = Points[i].X + fract * (Points[i + 1].X - Points[i].X);
+                    Y = Points[i].Y + fract * (Points[i + 1].Y - Points[i].Y);
+                    Y = -Y;
 					return true;
                 }
             }
@@ -232,23 +223,15 @@ namespace LitePlacer
 
         public bool Calibrate()
         {
-            // xxxx
-            CalibrationPoints.Clear();   // Presumably calibration is void no matter if we succeed here
-            Calibrated = false;
             if (!Cam.IsRunning())
             {
-                MainForm.ShowMessageBox(
-                    "Attempt to calibrate Nozzle, camera is not running.",
-                    "Camera not running",
-                    MessageBoxButtons.OK);
+                MainForm.DisplayText("Attempt to calibrate Nozzle, camera is not running. \n\r"
+                    + "Using old data, if it exsists.", System.Drawing.KnownColor.DarkRed, true);
                 return false;
             }
 
-            double X = 0;
-            double Y = 0;
-            double Maxdistance = MainForm.Setting.Nozzles_CalibrationDistance / MainForm.Setting.UpCam_XmmPerPixel;
-            // double radius = 0;
-            int res = 0;
+            Calibrated[MainForm.Setting.Nozzles_current] = false;
+            CalibrationData[MainForm.Setting.Nozzles_current].Clear();
             // I goes in .1 of degrees. Makes sense to have the increase so, that multiplies of 45 are hit
             for (int i = 0; i <= 3600; i = i + 225)
             {
@@ -260,8 +243,7 @@ namespace LitePlacer
                 }
                 for (int tries = 0; tries < 10; tries++)
                 {
-                    // res = Cam.GetSmallestCircle(out X, out Y, out radius, Maxdistance);
-                    if (res != 0)
+                    if (Cam.Measure(out Point.X, out Point.Y, out int err, true))
                     {
                         break;
                     }
@@ -276,27 +258,17 @@ namespace LitePlacer
                         return false;
                     }
                 }
-                if (res == 0)
-                {
-                    MainForm.ShowMessageBox(
-                        "Nozzle Calibration: Can't find Nozzle",
-                        "No Circle found",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-                Point.X = X * MainForm.Setting.UpCam_XmmPerPixel;
-                Point.Y = Y * MainForm.Setting.UpCam_YmmPerPixel;
-                // MainForm.DisplayText("A: " + Point.Angle.ToString("0.000") + ", X: " + Point.X.ToString("0.000") + ", Y: " + Point.Y.ToString("0.000"));
-                CalibrationPoints.Add(Point);
+                MainForm.DisplayText("A: " + Point.Angle.ToString("0.000") + ", X: " + Point.X.ToString("0.000") + ", Y: " + Point.Y.ToString("0.000"));
+                CalibrationData[MainForm.Setting.Nozzles_current].Add(Point);
             }
-            Calibrated = true;
-            if (MainForm.Setting.Nozzles_Enabled)
-            {
-                Store(MainForm.Setting.Nozzles_current);
-            };
-
+            Calibrated[MainForm.Setting.Nozzles_current] = true;
             return true;
         }
+
+
+        // =================================================================================
+        // Nozzle.Move(): Takes machine to position, where nozzle, whewn lowered down, eds up in the coordinates specified
+        // Correction is applied, if enabled.
 
         public bool Move_m(double X, double Y, double A)
         {
@@ -304,7 +276,7 @@ namespace LitePlacer
             double dY;
 			MainForm.DisplayText("Nozzle.Move_m(): X= " + X.ToString(CultureInfo.InvariantCulture)
                 + ", Y= " + Y.ToString(CultureInfo.InvariantCulture) + ", A= " + A.ToString(CultureInfo.InvariantCulture));
-			if (!CorrectedPosition_m(A, out dX, out dY))
+			if (!GetPositionCorrection_m(A, out dX, out dY))
 			{
 				return false;
 			};

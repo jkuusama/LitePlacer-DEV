@@ -41,6 +41,7 @@ namespace LitePlacer
 
         private void Algorithms_tabPage_Begin()
         {
+            VideoProcessingZguard_checkBox.Checked = false;
             SetDownCameraDefaults();
             SetUpCameraDefaults();
             if (UpCamera.Active)
@@ -51,6 +52,16 @@ namespace LitePlacer
             {
                 DownCam_radioButton.Checked = true;
             }
+            JigX_textBox.Text = Setting.General_JigOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
+            JigY_textBox.Text = Setting.General_JigOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
+            PickupCenterX_textBox.Text = Setting.General_PickupCenterX.ToString("0.00", CultureInfo.InvariantCulture);
+            PickupCenterY_textBox.Text = Setting.General_PickupCenterY.ToString("0.00", CultureInfo.InvariantCulture);
+            NozzleOffsetX_textBox.Text = Setting.DownCam_NozzleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
+            NozzleOffsetY_textBox.Text = Setting.DownCam_NozzleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
+            Z0toPCB_CamerasTab_label.Text = Setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) + " mm";
+            UpcamPositionX_textBox.Text = Setting.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
+            UpcamPositionY_textBox.Text = Setting.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
+
             AlgorithmsTab_RestoreBehaviour();
             ProcessDisplay_checkBox_Checked_Change();
         }
@@ -543,17 +554,13 @@ namespace LitePlacer
         private void Algorithm_Measure_button_Click(object sender, EventArgs e)
         {
             Camera cam = UpCamera;
-            double Xmult = Setting.UpCam_XmmPerPixel;
-            double Ymult = Setting.UpCam_YmmPerPixel;
             if (DownCam_radioButton.Checked)
             {
                 cam = DownCamera;
-                Xmult = Setting.DownCam_XmmPerPixel;
-                Ymult = Setting.DownCam_YmmPerPixel;
             }
             cam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
             cam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
-            cam.Measure(out double X, out double Y, out int err, Xmult, Ymult, true);
+            cam.Measure(out double X, out double Y, out int err, true);
         }
 
 

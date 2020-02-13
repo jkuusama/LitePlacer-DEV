@@ -2147,8 +2147,10 @@ namespace LitePlacer
         // ==========================================================================================================
         // Measure
         // ==========================================================================================================
+        public double XmmPerPixel;
+        public double YmmPerPixel;
 
-        private void DisplayShapes(List<Shapes.Shape> Shapes, int StartFrom, double XmmPerPixel, double YmmPerPixel)
+        private void DisplayShapes(List<Shapes.Shape> Shapes, int StartFrom, double XmmPpix, double YmmPpix)
         {
             if ((Shapes.Count - StartFrom) == 0)
             {
@@ -2168,13 +2170,13 @@ namespace LitePlacer
             for (int i = StartFrom; i < Shapes.Count; i++)
             {
                 Xpxls = String.Format("{0,6:0.0}", Shapes[i].Center.X - FrameCenterX);
-                Xmms = String.Format("{0,6:0.000}", (Shapes[i].Center.X - FrameCenterX) * XmmPerPixel);
+                Xmms = String.Format("{0,6:0.000}", (Shapes[i].Center.X - FrameCenterX) * XmmPpix);
                 Ypxls = String.Format("{0,6:0.0}", FrameCenterY - Shapes[i].Center.Y);
-                Ymms = String.Format("{0,6:0.000}", (FrameCenterY - Shapes[i].Center.Y) * YmmPerPixel);
+                Ymms = String.Format("{0,6:0.000}", (FrameCenterY - Shapes[i].Center.Y) * YmmPpix);
                 Xsize = String.Format("{0,5:0.0}", Shapes[i].Xsize);
                 Ysize = String.Format("{0,5:0.0}", Shapes[i].Ysize);
-                SizeXmm = String.Format("{0,5:0.00}", Shapes[i].Xsize * XmmPerPixel);
-                SizeYmm = String.Format("{0,5:0.00}", Shapes[i].Ysize * YmmPerPixel);
+                SizeXmm = String.Format("{0,5:0.00}", Shapes[i].Xsize * XmmPpix);
+                SizeYmm = String.Format("{0,5:0.00}", Shapes[i].Ysize * YmmPpix);
                 OutString = "pos: " + Xpxls + ", " + Ypxls + "px; " + Xmms + ", " + Ymms + "mm; " +
                     "size: " + Xsize + ", " + Ysize + "px; " + SizeXmm + ", " + SizeYmm + "mm";
                 MainForm.DisplayText(OutString);
@@ -2191,8 +2193,7 @@ namespace LitePlacer
             return Math.Sqrt(X * X + Y * Y);
         }
 
-        public bool Measure(out double Xresult, out double Yresult, out int err,
-                            double XmmPerPixel, double YmmPerPixel, bool DisplayResults = false )
+        public bool Measure(out double Xresult, out double Yresult, out int err, bool DisplayResults = false )
         {
             Xresult = 0.0;
             Yresult = 0.0;
@@ -2215,8 +2216,8 @@ namespace LitePlacer
             List<Shapes.Shape> Candidates = new List<Shapes.Shape>();
 
             double zoom = GetMeasurementZoom();
-            XmmPerPixel = XmmPerPixel / zoom;
-            YmmPerPixel = YmmPerPixel / zoom;
+            double XmmPpix = XmmPerPixel / zoom;
+            double YmmPpix = YmmPerPixel / zoom;
 
             if (MeasurementParameters.SearchRounds)
             {
@@ -2234,7 +2235,7 @@ namespace LitePlacer
                 if (DisplayResults)
                 {
                     MainForm.DisplayText("Circles:");
-                    DisplayShapes(Candidates, 0, XmmPerPixel, YmmPerPixel);
+                    DisplayShapes(Candidates, 0, XmmPpix, YmmPpix);
                 }
             }
             int count = Candidates.Count;
@@ -2255,7 +2256,7 @@ namespace LitePlacer
                 if (DisplayResults)
                 {
                     MainForm.DisplayText("Regtangles:");
-                    DisplayShapes(Candidates, count, XmmPerPixel, YmmPerPixel);
+                    DisplayShapes(Candidates, count, XmmPpix, YmmPpix);
                 }
             }
 
@@ -2274,7 +2275,7 @@ namespace LitePlacer
                 if (DisplayResults)
                 {
                     MainForm.DisplayText("Components:");
-                    DisplayShapes(Candidates, count, XmmPerPixel, YmmPerPixel);
+                    DisplayShapes(Candidates, count, XmmPpix, YmmPpix);
                 }
             }
 
@@ -2282,10 +2283,10 @@ namespace LitePlacer
             List<Shapes.Shape> FilteredForSize = new List<Shapes.Shape>();
             foreach (Shapes.Shape shape in Candidates)
             {
-                if (  ((shape.Xsize * XmmPerPixel) > MeasurementParameters.Xmin) &&
-                      ((shape.Xsize * XmmPerPixel) < MeasurementParameters.Xmax) &&
-                      ((shape.Ysize * YmmPerPixel) > MeasurementParameters.Ymin) &&
-                      ((shape.Ysize * YmmPerPixel) < MeasurementParameters.Ymax))
+                if (  ((shape.Xsize * XmmPpix) > MeasurementParameters.Xmin) &&
+                      ((shape.Xsize * XmmPpix) < MeasurementParameters.Xmax) &&
+                      ((shape.Ysize * YmmPpix) > MeasurementParameters.Ymin) &&
+                      ((shape.Ysize * YmmPpix) < MeasurementParameters.Ymax))
 
                 {
                     FilteredForSize.Add(shape);
@@ -2309,7 +2310,7 @@ namespace LitePlacer
             }
             if (DisplayResults)
             {
-                DisplayShapes(FilteredForSize, 0, XmmPerPixel, YmmPerPixel);
+                DisplayShapes(FilteredForSize, 0, XmmPpix, YmmPpix);
             };
 
             // Find closest to center
@@ -2341,8 +2342,8 @@ namespace LitePlacer
                 }
                 foreach (Shapes.Shape shape in FilteredForSize)
                 {
-                    double Xdist = Math.Abs((shape.Center.X - Xclosest) * XmmPerPixel);
-                    double Ydist = Math.Abs((shape.Center.Y - Yclosest) * YmmPerPixel);
+                    double Xdist = Math.Abs((shape.Center.X - Xclosest) * XmmPpix);
+                    double Ydist = Math.Abs((shape.Center.Y - Yclosest) * YmmPpix);
                     if ((Xdist < MeasurementParameters.XUniqueDistance) && (Ydist < MeasurementParameters.YUniqueDistance))
                     {
                         ResultCount++;
@@ -2354,8 +2355,8 @@ namespace LitePlacer
                     return false;
                 }
             }
-            Xresult = (FilteredForSize[ResultIndex].Center.X - FrameCenterX) * XmmPerPixel;
-            Yresult = (FrameCenterY - FilteredForSize[ResultIndex].Center.Y) * YmmPerPixel;
+            Xresult = (FilteredForSize[ResultIndex].Center.X - FrameCenterX) * XmmPpix;
+            Yresult = (FrameCenterY - FilteredForSize[ResultIndex].Center.Y) * YmmPpix;
 
             string result = "Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
                 ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture);
