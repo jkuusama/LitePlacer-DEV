@@ -12070,20 +12070,26 @@ namespace LitePlacer
             UpCamera.MeasurementParameters = Alg.MeasurementParameters;
 
             // Override size:
+            double SmaxSave = UpCamera.MeasurementParameters.Xmax;
+            double SminSave = UpCamera.MeasurementParameters.Xmin;
+            double YmaxSave = UpCamera.MeasurementParameters.Ymax;
+            double YminSave = UpCamera.MeasurementParameters.Ymin;
+            bool SizeOverride = false;
+            double Smin = 0.0;
+            double Smax = 0.0;
+
+
             DataGridViewCheckBoxCell cell = NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells
                 ["NozzleOverrideSize_column"] as DataGridViewCheckBoxCell;
             if (cell.Value != null)
             {
                 if (cell.Value.ToString().ToUpperInvariant() == "TRUE")
                 {
-                    if (!CheckSizeData_m(out double Smin, out double Smax))
+                    if (!CheckSizeData_m(out Smin, out Smax))
                     {
                         return false;
                     }
-                    UpCamera.MeasurementParameters.Xmax = Smax;
-                    UpCamera.MeasurementParameters.Xmin = Smin;
-                    UpCamera.MeasurementParameters.Ymax = Smax;
-                    UpCamera.MeasurementParameters.Ymin = Smin;
+                    SizeOverride = true;
                 }
             }
 
@@ -12113,7 +12119,21 @@ namespace LitePlacer
 
             // measure the values
             DisplayText("Measuring nozzle " + Setting.Nozzles_current.ToString());
-            result &= Nozzle.Calibrate();  
+            if (SizeOverride)
+            {
+                UpCamera.MeasurementParameters.Xmax = Smax;
+                UpCamera.MeasurementParameters.Xmin = Smin;
+                UpCamera.MeasurementParameters.Ymax = Smax;
+                UpCamera.MeasurementParameters.Ymin = Smin;
+            }
+            result &= Nozzle.Calibrate();
+            if (SizeOverride)
+            {
+                UpCamera.MeasurementParameters.Xmax = SmaxSave;
+                UpCamera.MeasurementParameters.Xmin = SminSave;
+                UpCamera.MeasurementParameters.Ymax = SmaxSave;
+                UpCamera.MeasurementParameters.Ymin = SminSave;
+            }
 
             // take Nozzle up
             result &= CNC_Z_m(0.0);
@@ -13578,6 +13598,11 @@ namespace LitePlacer
             {
                 ZGuardOn();
             }
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }	// end of: 	public partial class FormMain : Form

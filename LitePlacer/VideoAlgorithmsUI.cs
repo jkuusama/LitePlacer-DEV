@@ -44,13 +44,13 @@ namespace LitePlacer
             VideoProcessingZguard_checkBox.Checked = false;
             SetDownCameraDefaults();
             SetUpCameraDefaults();
-            if (UpCamera.Active)
+            if (DownCam_radioButton.Checked)
             {
-                UpCam_radioButton.Checked = true;
+                ChangeCamera(DownCamera);
             }
             else
             {
-                DownCam_radioButton.Checked = true;
+                ChangeCamera(UpCamera);
             }
             JigX_textBox.Text = Setting.General_JigOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
             JigY_textBox.Text = Setting.General_JigOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
@@ -83,6 +83,24 @@ namespace LitePlacer
             LoadVideoAlgorithms(VideoAlgorithms); // causes updating of Functions_dataGridView and Function parameters
         }
 
+        // camera change
+        private void ChangeCamera(Camera NewCam)
+        {
+            cam = NewCam;
+            SelectCamera(NewCam);
+            AlgorithmsTab_RestoreBehaviour();
+        }
+
+        private void DownCam_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeCamera(DownCamera);
+        }
+
+        private void UpCam_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeCamera(UpCamera);
+        }
+
         // =====================================================================================
         #region select, draw and find boxes
 
@@ -101,21 +119,6 @@ namespace LitePlacer
                 StopVideoProcessing();
             }
 
-        }
-
-        // camera change
-        private void DownCam_radioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            cam = DownCamera;
-            SelectCamera(DownCamera);
-            AlgorithmsTab_RestoreBehaviour();
-        }
-
-        private void UpCam_radioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            cam = UpCamera;
-            SelectCamera(UpCamera);
-            AlgorithmsTab_RestoreBehaviour();
         }
 
         // =====================================================================================
