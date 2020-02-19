@@ -4227,6 +4227,7 @@ namespace LitePlacer
             this.groupBox14.Controls.Add(this.UpCam_SnapshotToDisplay_button);
             this.groupBox14.Controls.Add(this.UpCam_SnapshotToHere_button);
             this.groupBox14.Controls.Add(this.UpCam_TakeSnapshot_button);
+            this.groupBox14.Enabled = false;
             this.groupBox14.Location = new System.Drawing.Point(295, 493);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Size = new System.Drawing.Size(255, 59);
@@ -4373,12 +4374,14 @@ namespace LitePlacer
             this.groupBox10.Controls.Add(this.UpCamComponentsMeasure_button);
             this.groupBox10.Controls.Add(this.UpCamComponentsToDisplay_button);
             this.groupBox10.Controls.Add(this.UpCamComponentsToHere_button);
+            this.groupBox10.Enabled = false;
             this.groupBox10.Location = new System.Drawing.Point(6, 472);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(255, 59);
             this.groupBox10.TabIndex = 126;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Components";
+            this.groupBox10.Visible = false;
             // 
             // UpCamComponents_dataGridView
             // 
@@ -6080,6 +6083,7 @@ namespace LitePlacer
             this.MotorPower_checkBox.Text = "Motor Power";
             this.toolTip1.SetToolTip(this.MotorPower_checkBox, "Motor power on/off \r\n(Motor power on holds machine position)");
             this.MotorPower_checkBox.UseVisualStyleBackColor = true;
+            this.MotorPower_checkBox.CheckedChanged += new System.EventHandler(this.MotorPower_checkBox_CheckedChanged);
             this.MotorPower_checkBox.Click += new System.EventHandler(this.MotorPower_checkBox_Click);
             // 
             // SetMark4_button
@@ -7626,9 +7630,9 @@ namespace LitePlacer
             this.OmitNozzleCalibration_checkBox.AutoSize = true;
             this.OmitNozzleCalibration_checkBox.Location = new System.Drawing.Point(482, 584);
             this.OmitNozzleCalibration_checkBox.Name = "OmitNozzleCalibration_checkBox";
-            this.OmitNozzleCalibration_checkBox.Size = new System.Drawing.Size(156, 17);
+            this.OmitNozzleCalibration_checkBox.Size = new System.Drawing.Size(154, 17);
             this.OmitNozzleCalibration_checkBox.TabIndex = 80;
-            this.OmitNozzleCalibration_checkBox.Text = "Don\'t use Nozzle correction";
+            this.OmitNozzleCalibration_checkBox.Text = "Don\'t use nozzle correction";
             this.toolTip1.SetToolTip(this.OmitNozzleCalibration_checkBox, "Skips Nozzle correction phase.");
             this.OmitNozzleCalibration_checkBox.UseVisualStyleBackColor = true;
             this.OmitNozzleCalibration_checkBox.CheckedChanged += new System.EventHandler(this.OmitNozzleCalibration_checkBox_CheckedChanged);

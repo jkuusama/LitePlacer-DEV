@@ -564,7 +564,7 @@ namespace LitePlacer
                 Cnc.PumpIsOn = true;        // so it will be turned off, no matter what we think the status
                 Cnc.PumpOff_NoWorkaround();
                 Cnc.VacuumDefaultSetting();
-                CNC_Write_m("{\"md\":\"\"}");  // motor power off
+                Cnc.MotorPowerOff();
             }
             Cnc.Close();
 
@@ -2140,6 +2140,7 @@ namespace LitePlacer
 
         private void OfferHoming()
         {
+            DisplayText("OfferHoming");
             PositionConfidence = false;
             DialogResult dialogResult = ShowMessageBox(
                 "Home machine now?",
@@ -2325,7 +2326,7 @@ namespace LitePlacer
                     }
                 }
                 DisplayText("Measuring nozzle, min. size " + MinSize.ToString(CultureInfo.InvariantCulture)
-                    + ", max. size" + MaxSize.ToString(CultureInfo.InvariantCulture));
+                    + ", max. size " + MaxSize.ToString(CultureInfo.InvariantCulture));
                 UpCamera.MaxSize = MaxSize / Setting.UpCam_XmmPerPixel;
                 UpCamera.MinSize = MinSize / Setting.UpCam_XmmPerPixel;
                 UpCamera.SizeLimited = true;
@@ -3196,10 +3197,12 @@ namespace LitePlacer
             {
                 if (UpCamera.IsRunning())
                 {
+                    DisplayText("Robust switch: Closing up camera");
                     UpCamera.Close();
                 };
                 if (DownCamera.IsRunning())
                 {
+                    DisplayText("Robust switch: Closing down camera");
                     DownCamera.Close();
                 };
             }
@@ -3292,6 +3295,13 @@ namespace LitePlacer
             };
 
             UpCamera.Active = false;
+            if (UpCam_comboBox.SelectedIndex == 0)  // selected "none"
+            {
+                Setting.UpcamMoniker = "no_camera";
+                UpdateCameraCameraStatus_label();
+                return false;
+            };
+
             if (string.IsNullOrEmpty(Setting.UpcamMoniker))
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
@@ -3558,6 +3568,8 @@ namespace LitePlacer
         {
             List<string> Devices = UpCamera.GetDeviceList();
             UpCam_comboBox.Items.Clear();
+            UpCam_comboBox.Items.Add("-- none --");
+
             int d = Setting.UpCam_index;
             if (Devices.Count != 0)
             {
@@ -3671,6 +3683,12 @@ namespace LitePlacer
         {
             DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString(CultureInfo.InvariantCulture));
             Setting.UpCam_index = UpCam_comboBox.SelectedIndex;
+            if (UpCam_comboBox.SelectedIndex == 0)  // no up camera
+            {
+                Setting.UpcamMoniker = "no camera";
+                UpCamera.MonikerString = "no camera";
+                return;
+            }
             List<string> Monikers = UpCamera.GetMonikerStrings();
             Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
@@ -5190,7 +5208,7 @@ namespace LitePlacer
                 Cnc.Controlboard = CNC.ControlBoardType.TinyG;
                 DisplayText("TinyG board found.");
             }
-            else if (value == "3")
+            else if (value == "\"gQuintic\"")
             {
                 Cnc.Controlboard = CNC.ControlBoardType.qQuintic;
                 DisplayText("qQuintic board found.");
@@ -6013,11 +6031,11 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_1sa), new[] { value }); return; }
 
-            if ((value == "0.90") || (value == "0.900"))
+            if (value.StartsWith("0.9", System.StringComparison.InvariantCulture))
             {
                 m1deg09_radioButton.Checked = true;
             }
-            else if ((value == "1.80") || (value == "1.800"))
+            else if (value.StartsWith("1.8", System.StringComparison.InvariantCulture))
             {
                 m1deg18_radioButton.Checked = true;
             }
@@ -6027,11 +6045,11 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_2sa), new[] { value }); return; }
 
-            if ((value == "0.90") || (value == "0.900"))
+            if (value.StartsWith("0.9", System.StringComparison.InvariantCulture))
             {
                 m2deg09_radioButton.Checked = true;
             }
-            else if ((value == "1.80") || (value == "1.800"))
+            else if (value.StartsWith("1.8", System.StringComparison.InvariantCulture))
             {
                 m2deg18_radioButton.Checked = true;
             }
@@ -6041,11 +6059,11 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_3sa), new[] { value }); return; }
 
-            if ((value == "0.90") || (value == "0.900"))
+            if (value.StartsWith("0.9", System.StringComparison.InvariantCulture))
             {
                 m3deg09_radioButton.Checked = true;
             }
-            else if ((value == "1.80") || (value == "1.800"))
+            else if (value.StartsWith("1.8", System.StringComparison.InvariantCulture))
             {
                 m3deg18_radioButton.Checked = true;
             }
@@ -6055,11 +6073,11 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_4sa), new[] { value }); return; }
 
-            if ((value == "0.90") || (value == "0.900"))
+            if (value.StartsWith("0.9", System.StringComparison.InvariantCulture))
             {
                 m4deg09_radioButton.Checked = true;
             }
-            else if ((value == "1.80") || (value == "1.800"))
+            else if (value.StartsWith("1.8", System.StringComparison.InvariantCulture))
             {
                 m4deg18_radioButton.Checked = true;
             }
@@ -6506,6 +6524,11 @@ namespace LitePlacer
             {
                 Cnc.MotorPowerOff();
             }
+        }
+
+
+        private void MotorPower_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
         }
 
         private void Pump_checkBox_Click(object sender, EventArgs e)
@@ -12393,8 +12416,6 @@ namespace LitePlacer
 
         private void Test3_button_Click(object sender, EventArgs e)
         {
-            Xmark = Cnc.CurrentX;
-            Ymark = Cnc.CurrentY;
             CNC_XY_m((Cnc.CurrentX + Setting.DownCam_NozzleOffsetX), (Cnc.CurrentY + Setting.DownCam_NozzleOffsetY));
             Nozzle_ProbeDown_m();
         }
@@ -12415,12 +12436,8 @@ namespace LitePlacer
         // =================================================================================
         // test 5 "Probe down";
 
-        private double Xmark;
-        private double Ymark;
         private void Test5_button_Click(object sender, EventArgs e)
         {
-            Xmark = Cnc.CurrentX;
-            Ymark = Cnc.CurrentY;
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
             {
                 return;
@@ -12435,7 +12452,6 @@ namespace LitePlacer
         {
             DisplayText("test 6: Nozzle up");
             CNC_Z_m(0);  // go up
-            CNC_XY_m(Xmark, Ymark);
         }
 
 
@@ -15323,7 +15339,7 @@ namespace LitePlacer
         private void AppBuiltInSettings_button_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = ShowMessageBox(
-                "Reset application settings top built in defaults?",
+                "Reset application settings to built in defaults?",
                 "Confirm Loading Built-In settings", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
             {
@@ -15537,6 +15553,7 @@ namespace LitePlacer
         {
             DisplayText("Writing settings to qQuintic board.");
             //if (!WriteSetting("st", TinyGBoard.st, false)) return false;
+            if (!WriteSetting("ej", "2", false)) return false;  // JSON/text response to auto
             if (!WriteSetting("mt", qQuinticBoard.Sys_mt, false)) return false;
             if (!WriteSetting("jv", qQuinticBoard.Sys_jv, false)) return false;
             //if (!WriteSetting("js", qQuinticBoard.js, false)) return false;
@@ -15545,74 +15562,74 @@ namespace LitePlacer
             if (!WriteSetting("sv", qQuinticBoard.Sys_sv, false)) return false;
             if (!WriteSetting("si", qQuinticBoard.Sys_si, false)) return false;
             if (!WriteSetting("gun", qQuinticBoard.Sys_gun, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("1ma", qQuinticBoard.Motor1ma, false)) return false;
             if (!WriteSetting("1sa", qQuinticBoard.Motor1sa, false)) return false;
             if (!WriteSetting("1tr", qQuinticBoard.Motor1tr, false)) return false;
             if (!WriteSetting("1mi", qQuinticBoard.Motor1mi, false)) return false;
             if (!WriteSetting("1po", qQuinticBoard.Motor1po, false)) return false;
             if (!WriteSetting("1pm", qQuinticBoard.Motor1pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("2ma", qQuinticBoard.Motor2ma, false)) return false;
             if (!WriteSetting("2sa", qQuinticBoard.Motor2sa, false)) return false;
             if (!WriteSetting("2tr", qQuinticBoard.Motor2tr, false)) return false;
             if (!WriteSetting("2mi", qQuinticBoard.Motor2mi, false)) return false;
             if (!WriteSetting("2po", qQuinticBoard.Motor2po, false)) return false;
             if (!WriteSetting("2pm", qQuinticBoard.Motor2pm, false)) return false;
+
             if (!WriteSetting("3ma", qQuinticBoard.Motor3ma, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
             if (!WriteSetting("3sa", qQuinticBoard.Motor3sa, false)) return false;
             if (!WriteSetting("3tr", qQuinticBoard.Motor3tr, false)) return false;
             if (!WriteSetting("3mi", qQuinticBoard.Motor3mi, false)) return false;
             if (!WriteSetting("3po", qQuinticBoard.Motor3po, false)) return false;
             if (!WriteSetting("3pm", qQuinticBoard.Motor3pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("4ma", qQuinticBoard.Motor4ma, false)) return false;
             if (!WriteSetting("4sa", qQuinticBoard.Motor4sa, false)) return false;
             if (!WriteSetting("4tr", qQuinticBoard.Motor4tr, false)) return false;
             if (!WriteSetting("4mi", qQuinticBoard.Motor4mi, false)) return false;
             if (!WriteSetting("4po", qQuinticBoard.Motor4po, false)) return false;
             if (!WriteSetting("4pm", qQuinticBoard.Motor4pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("xam", qQuinticBoard.Xam, false)) return false;
             if (!WriteSetting("xvm", qQuinticBoard.Xvm, false)) return false;
             if (!WriteSetting("xfr", qQuinticBoard.Xfr, false)) return false;
             if (!WriteSetting("xtn", qQuinticBoard.Xtn, false)) return false;
             if (!WriteSetting("xtm", qQuinticBoard.Xtm, false)) return false;
             if (!WriteSetting("xjm", qQuinticBoard.Xjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("xjh", qQuinticBoard.Xjh, false)) return false;
             if (!WriteSetting("xsv", qQuinticBoard.Xsv, false)) return false;
             if (!WriteSetting("xlv", qQuinticBoard.Xlv, false)) return false;
             if (!WriteSetting("xlb", qQuinticBoard.Xlb, false)) return false;
             if (!WriteSetting("xzb", qQuinticBoard.Xzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("yam", qQuinticBoard.Yam, false)) return false;
             if (!WriteSetting("yvm", qQuinticBoard.Yvm, false)) return false;
             if (!WriteSetting("yfr", qQuinticBoard.Yfr, false)) return false;
             if (!WriteSetting("ytn", qQuinticBoard.Ytn, false)) return false;
             if (!WriteSetting("ytm", qQuinticBoard.Ytm, false)) return false;
             if (!WriteSetting("yjm", qQuinticBoard.Yjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("yjh", qQuinticBoard.Yjh, false)) return false;
             if (!WriteSetting("ysv", qQuinticBoard.Ysv, false)) return false;
             if (!WriteSetting("ylv", qQuinticBoard.Ylv, false)) return false;
             if (!WriteSetting("ylb", qQuinticBoard.Ylb, false)) return false;
             if (!WriteSetting("yzb", qQuinticBoard.Yzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("zam", qQuinticBoard.Zam, false)) return false;
             if (!WriteSetting("zvm", qQuinticBoard.Zvm, false)) return false;
             if (!WriteSetting("zfr", qQuinticBoard.Zfr, false)) return false;
             if (!WriteSetting("ztn", qQuinticBoard.Ztn, false)) return false;
             if (!WriteSetting("ztm", qQuinticBoard.Ztm, false)) return false;
             if (!WriteSetting("zjm", qQuinticBoard.Zjm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("zjh", qQuinticBoard.Zjh, false)) return false;
             if (!WriteSetting("zsv", qQuinticBoard.Zsv, false)) return false;
             if (!WriteSetting("zlv", qQuinticBoard.Zlv, false)) return false;
             if (!WriteSetting("zlb", qQuinticBoard.Zlb, false)) return false;
             if (!WriteSetting("zzb", qQuinticBoard.Zzb, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("aam", qQuinticBoard.Aam, false)) return false;
             if (!WriteSetting("avm", qQuinticBoard.Avm, false)) return false;
             if (!WriteSetting("afr", qQuinticBoard.Afr, false)) return false;
@@ -15621,16 +15638,16 @@ namespace LitePlacer
             if (!WriteSetting("ajm", qQuinticBoard.Ajm, false)) return false;
             if (!WriteSetting("ajh", qQuinticBoard.Ajh, false)) return false;
             if (!WriteSetting("asv", qQuinticBoard.Asv, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("1pl", qQuinticBoard.Motor1pl, false)) return false;
             if (!WriteSetting("2pl", qQuinticBoard.Motor2pl, false)) return false;
             if (!WriteSetting("3pl", qQuinticBoard.Motor3pl, false)) return false;
             if (!WriteSetting("4pl", qQuinticBoard.Motor4pl, false)) return false;
             if (!WriteSetting("5pl", qQuinticBoard.Motor5pl, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("5ma", qQuinticBoard.Motor5ma, false)) return false;
             if (!WriteSetting("5pm", qQuinticBoard.Motor5pm, false)) return false;
-            if (!Cnc.RawWrite("%")) return false;
+
             if (!WriteSetting("xhi", qQuinticBoard.Xhi, false)) return false;
             if (!WriteSetting("xhd", qQuinticBoard.Xhd, false)) return false;
             if (!WriteSetting("yhi", qQuinticBoard.Yhi, false)) return false;
@@ -15804,6 +15821,7 @@ namespace LitePlacer
             }
             OpticalHoming_m();
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 
