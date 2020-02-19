@@ -664,6 +664,21 @@ namespace LitePlacer
         }
 
         // =================================================================================
+        // normal
+        private string VacuumOncommand = "{\"gc\":\"M08\"}";
+        private string VacuumOffcommand = "{\"gc\":\"M09\"}";
+        private string PumpOncommand = "{\"gc\":\"M03\"}";
+        private string PumpOffcommand = "{\"gc\":\"M05\"}";
+
+        /*
+      // for Alex
+       private string VacuumOncommand = "{\"gc\":\"M03\"}";
+       private string VacuumOffcommand = "{\"gc\":\"M05\"}";
+       private string PumpOncommand = "{\"gc\":\"M08\"}";
+       private string PumpOffcommand = "{\"gc\":\"M09\"}";
+       */
+
+
         private bool VacuumIsOn = false;
 
         public void VacuumDefaultSetting()
@@ -674,10 +689,10 @@ namespace LitePlacer
 
         public void VacuumOn()
         {
-            string command = "{\"gc\":\"M08\"}";
+            string command = VacuumOncommand;
             if (MainForm.Setting.General_VacuumOutputInverted)
             {
-                command = "{\"gc\":\"M09\"}";
+                command = VacuumOffcommand;
             }
             if (Controlboard == ControlBoardType.TinyG)
             {
@@ -705,10 +720,10 @@ namespace LitePlacer
 
         public void VacuumOff()
         {
-            string command = "{\"gc\":\"M09\"}";
+            string command = VacuumOffcommand;
             if (MainForm.Setting.General_VacuumOutputInverted)
             {
-                command = "{\"gc\":\"M08\"}";
+                command = VacuumOncommand;
             }
             if (Controlboard == ControlBoardType.TinyG)
             {
@@ -752,10 +767,10 @@ namespace LitePlacer
 
         public void PumpOn()
         {
-            string command = "{\"gc\":\"M03\"}";
+            string command = PumpOncommand;
             if (MainForm.Setting.General_PumpOutputInverted)
             {
-                command= "{\"gc\":\"M05\"}";
+                command = PumpOffcommand;
             }
             if (Controlboard == ControlBoardType.TinyG)
             {
@@ -783,10 +798,10 @@ namespace LitePlacer
 
         public void PumpOff()
         {
-            string command = "{\"gc\":\"M05\"}";
+            string command = PumpOffcommand;
             if (MainForm.Setting.General_PumpOutputInverted)
             {
-                command = "{\"gc\":\"M03\"}";
+                command = PumpOncommand;
             }
             if (Controlboard == ControlBoardType.TinyG)
             {
@@ -815,10 +830,10 @@ namespace LitePlacer
         public void PumpOff_NoWorkaround()
         // For error situations where we don't want to do the dance
         {
-            string command = "{\"gc\":\"M05\"}";
+            string command = PumpOffcommand;
             if (MainForm.Setting.General_PumpOutputInverted)
             {
-                command = "{\"gc\":\"M03\"}";
+                command = PumpOncommand;
             }
             MainForm.DisplayText("PumpOff_NoWorkaround(), TinyG");
             if (PumpIsOn)
