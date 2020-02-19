@@ -42,8 +42,8 @@ namespace LitePlacer
 #pragma warning disable CA1308 // Yes, we want to use lower case characters
     /*
     Note: For function success/failure, I use bool return code. (instead of C# exceptions; a philosophical debate, let's not go there too much.
-    Still, it should be mentioned that CA1031 is supressed: I think the right way is to tell the user and continue. For example: A save fails; tell the user, 
-    Let h** to free room on the disk, plug in tehe USB stick, whatever, and let h** to try again. 
+    Still, it should be mentioned that CA1031 is supressed: I think the right way is to tell the user and continue. For example: A save fails; tell the user,
+    Let h** to free room on the disk, plug in tehe USB stick, whatever, and let h** to try again.
 
     The naming convention is xxx_m() for functions that have already displayed an error message to user. If a function only
     calls _m functions, it can consider itself a _m function.
@@ -64,14 +64,14 @@ namespace LitePlacer
         AppSettings SettingsOps;
 
         // =================================================================================
-        // General and "global" functions 
+        // General and "global" functions
         // =================================================================================
         #region General
 
         // =================================================================================
-        // Note about thread guards: The prologue "if(InvokeRequired) {something long}" at a start of a function, 
+        // Note about thread guards: The prologue "if(InvokeRequired) {something long}" at a start of a function,
         // makes the function safe to call from another thread.
-        // See http://stackoverflow.com/questions/661561/how-to-update-the-gui-from-another-thread-in-c, 
+        // See http://stackoverflow.com/questions/661561/how-to-update-the-gui-from-another-thread-in-c,
         // "MajesticRa"'s answer near the bottom of first page
 
 
@@ -280,7 +280,7 @@ namespace LitePlacer
             if (UpdateAvailable(out UpdateText))
             {
                 ShowMessageBox(
-                    "There is software update available:\n\r" + UpdateText,
+                    "There is a software update available:\n\r" + UpdateText,
                     "Update available",
                     MessageBoxButtons.OK);
                 return true;
@@ -550,7 +550,7 @@ namespace LitePlacer
             if (!OK)
             {
                 DialogResult dialogResult = ShowMessageBox(
-                    "some data could not be saved (see log window). Quit anyway?",
+                    "Some data could not be saved (see log window). Quit anyway?",
                     "Data save problem", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                 {
@@ -668,12 +668,12 @@ namespace LitePlacer
         // Saving and restoring data tables (Note: Not job files)
         // =================================================================================
 
-        // Reading ver2 format allows changing the data grid itself at a software update, 
+        // Reading ver2 format allows changing the data grid itself at a software update,
         // adding and removing columns, and still read in a saved file from previous software version.
 
         public enum DataTableType { Tapes, ComponentData, VideoProcessing, PanelFiducials, Nozzles };
 
-        private int Ver2FormatID = 20000001;  // Just in case we need to identify the format we are using. 
+        private int Ver2FormatID = 20000001;  // Just in case we need to identify the format we are using.
         public bool LoadingDataGrid { get; set; } = false;  // to avoid problems with cell value changed event and unfilled grids
 
 
@@ -1128,7 +1128,7 @@ namespace LitePlacer
                     }
                     else
                     {
-                        // read in new format 
+                        // read in new format
                         DisplayText("Loading tapes with nozzles data");
                         LoadDataGrid(filename, Tapes_dataGridView, DataTableType.Tapes);
                     }
@@ -1472,7 +1472,7 @@ namespace LitePlacer
             }
             if (
                 ((Cnc.CurrentZ > 5) && ZguardIsOn())
-                && 
+                &&
                 !((e.KeyCode == Keys.F11) || (e.KeyCode == Keys.F12)))  // F11&F12: It is ok to move z manually
             {
                 DisplayText("Nozzle is down", KnownColor.DarkRed, true);
@@ -2999,7 +2999,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            // Measure 7 times, get median: 
+            // Measure 7 times, get median:
             List<double> Xlist = new List<double>();
             List<double> Ylist = new List<double>();
             int res;
@@ -3132,7 +3132,7 @@ namespace LitePlacer
 
         private void StartCameras()
         {
-            // Called at startup. 
+            // Called at startup.
             DownCamera.Active = false;
             UpCamera.Active = false;
             DownCamera.Close();
@@ -3533,7 +3533,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // get the devices         
+        // get the devices
         private void getDownCamList()
         {
             List<string> Devices = DownCamera.GetDeviceList();
@@ -4700,7 +4700,7 @@ namespace LitePlacer
         private bool ControlBoardJustConnected()
         {
             // Called when control board conenction is estabished.
-            // First, find out the board type. Then, 
+            // First, find out the board type. Then,
             // for TinyG boards, read the parameter values stored on board.
             // For qQuintic boards that dont' have on-board storage, write the values.
 
@@ -5440,7 +5440,7 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_xsv), new[] { value }); return; }
 
-            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures 
+            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures
             if (ind > 0)
             {
                 value = value.Substring(0, ind);
@@ -5453,7 +5453,7 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_ysv), new[] { value }); return; }
 
-            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures 
+            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures
             if (ind > 0)
             {
                 value = value.Substring(0, ind);
@@ -5466,7 +5466,7 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_zsv), new[] { value }); return; }
 
-            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures 
+            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures
             if (ind > 0)
             {
                 value = value.Substring(0, ind);
@@ -5740,7 +5740,7 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_xvm), new[] { value }); return; }
 
-            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures 
+            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures
             if (ind > 0)
             {
                 value = value.Substring(0, ind);
@@ -5754,7 +5754,7 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_yvm), new[] { value }); return; }
 
-            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures 
+            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures
             if (ind > 0)
             {
                 value = value.Substring(0, ind);
@@ -5768,7 +5768,7 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_zvm), new[] { value }); return; }
 
-            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures 
+            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures
             if (ind > 0)
             {
                 value = value.Substring(0, ind);
@@ -5782,7 +5782,7 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action<string>(Update_avm), new[] { value }); return; }
 
-            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures 
+            int ind = value.IndexOf('.');   // Cut off the decimal portion, otherwise convert fails in some non-US cultures
             if (ind > 0)
             {
                 value = value.Substring(0, ind);
@@ -7742,7 +7742,7 @@ namespace LitePlacer
 
             if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_MethodParametersColumn)
             {
-                // For method parameter, show the tape selection form if method is "place" 
+                // For method parameter, show the tape selection form if method is "place"
                 MakeJobDataDirty();
                 string TapeID;
                 int TapeNo;
@@ -8078,7 +8078,7 @@ namespace LitePlacer
             string[] Components;  // This array has the list of components to place:
             string NewID = "";
             bool RestoreRow = false;
-            // RestoreRow: If we'll replace the jobdata row with new data at the end. 
+            // RestoreRow: If we'll replace the jobdata row with new data at the end.
             // There isn't any new data, unless method is "?".
 
             // If the Method is "?", ask the user what to do:
@@ -8563,7 +8563,7 @@ namespace LitePlacer
                 return false;
             }
 
-            // Component is at CadData_GridView.Rows[CADdataRow]. 
+            // Component is at CadData_GridView.Rows[CADdataRow].
             // What to do to it is at  JobData_GridView.Rows[GroupRow].
 
             int time;
@@ -8644,7 +8644,7 @@ namespace LitePlacer
 
                 case "Fiducials":
                     return true;  // To next row...
-                // break; 
+                // break;
 
 
                 // Used this for debugging, but is unreachable now
@@ -9113,7 +9113,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // PutPartDown_m(): Puts part down at this position. 
+        // PutPartDown_m(): Puts part down at this position.
         // If placement Z isn't known already, updates the tape info.
         private bool PutPartDown_m(int TapeNum)
         {
@@ -9164,7 +9164,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // 
+        //
         private bool PutLoosePartDown_m(bool Probe)
         {
             if (Probe)
@@ -9199,7 +9199,7 @@ namespace LitePlacer
         // fine tuning of the position.
         // After done ENTER will trigger the final placement.
         //
-        // MethodeParameter: For Loose Part Assisted => stop distance above board in mm 
+        // MethodeParameter: For Loose Part Assisted => stop distance above board in mm
         // ====================================================================================
         private bool PutLoosePartDownAssisted_m(string MethodParameter)
         {
@@ -9238,7 +9238,7 @@ namespace LitePlacer
 
             ZGuardOff(); // Allow nozzle movment while nozzle is down
 
-            // Wait for enter key pressed. 
+            // Wait for enter key pressed.
             EnterKeyHit = false;
             do
             {
@@ -9290,7 +9290,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // Actual placement 
+        // Actual placement
         // =================================================================================
         private double LoosePartPickupZ = 0.0;
         private double LoosePartPlaceZ = 0.0;
@@ -9350,7 +9350,7 @@ namespace LitePlacer
                 return false;
             }
 
-            // ask for it 
+            // ask for it
             string ComponentType = CadData_GridView.Rows[CADdataRow].Cells["Value_Footprint"].Value.ToString();
             DialogResult dialogResult = ShowMessageBox(
                 "Put one " + ComponentType + " to the pickup location.",
@@ -9463,8 +9463,8 @@ namespace LitePlacer
 
         // ========================================================================================
         // PlacePart_m(): This routine places a single component.
-        // Component is at CadData_GridView.Rows[CADdataRow]. 
-        // Tape ID and method are at JobDataRow.Rows[JobDataRow]. 
+        // Component is at CadData_GridView.Rows[CADdataRow].
+        // Tape ID and method are at JobDataRow.Rows[JobDataRow].
         // It should go to X, Y, A
         // CAD data is validated already.
 
@@ -9589,7 +9589,7 @@ namespace LitePlacer
                 DownCamera.RotateSnapshot(A);
                 if (!CNC_XYA_m(X, Y, A))
                 {
-                    // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                    // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either.
                     DownCamera.Draw_Snapshot = false;
                     return false;
                 };
@@ -9623,7 +9623,7 @@ namespace LitePlacer
             DisplayText("PlacePart_m: goto placement position");
             if (!Nozzle.Move_m(X, Y, A))
             {
-                // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either.
                 DownCamera.Draw_Snapshot = false;
                 UpCamera.Draw_Snapshot = false;
                 return false;
@@ -9652,14 +9652,14 @@ namespace LitePlacer
                     // since for tape parts id contains the Tape index, we use here a fixed stop distance above board
                     if (!PutLoosePartDownAssisted_m("2.5"))
                     {
-                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either.
                         return false;
                     }
                     break;
                 case "LoosePart Assisted":
                     if (!PutLoosePartDownAssisted_m(id)) // id contains stop distance above board
                     {
-                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either.
                         return false;
                     }
                     break;
@@ -9670,7 +9670,7 @@ namespace LitePlacer
                     UpCamera.Draw_Snapshot = false;
                     if (!PutLoosePartDown_m(FirstInRow))
                     {
-                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either.
                         return false;
                     }
                     break;
@@ -9678,7 +9678,7 @@ namespace LitePlacer
                 default:
                     if (!PutPartDown_m(TapeNum))
                     {
-                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either.
                         DownCamera.Draw_Snapshot = false;
                         UpCamera.Draw_Snapshot = false;
                         return false;
@@ -9794,7 +9794,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // BuildMachineCoordinateData_m routine builds the machine coordinates data 
+        // BuildMachineCoordinateData_m routine builds the machine coordinates data
         // based on fiducials true (machine coord) location.
         // =================================================================================
 
@@ -10083,7 +10083,7 @@ namespace LitePlacer
                         return false;
                     }
                 }
-                // We could put the machine data in place at this point. However, 
+                // We could put the machine data in place at this point. However,
                 // we don't, as if the algorithms below are correct, the data will not change more than measurement error.
                 // During development, that is a good checkpoint.
             }
@@ -10245,7 +10245,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            // Done! 
+            // Done!
             ValidMeasurement_checkBox.Checked = true;
             return true;
         }// end BuildMachineCoordinateData_m
@@ -10390,7 +10390,7 @@ namespace LitePlacer
 
 
         // =================================================================================
-        // Checks what is needed to check before doing something for a single component selected at "CAD data" table. 
+        // Checks what is needed to check before doing something for a single component selected at "CAD data" table.
         // If succesful, sets X, Y to component machine coordinates.
         private bool PrepareSingleComponentOperation(out double X, out double Y)
         {
@@ -10921,7 +10921,7 @@ namespace LitePlacer
         // =================================================================================
 
         // =================================================================================
-        // FindDelimiter_m(): Tries to find the difference with comma and semicolon separated files  
+        // FindDelimiter_m(): Tries to find the difference with comma and semicolon separated files
         bool FindDelimiter_m(String Line, out char delimiter)
         {
             int commas = 0;
@@ -10975,7 +10975,7 @@ namespace LitePlacer
             int LineIndex = 0;
             int i;
 
-            // Parse header. 
+            // Parse header.
             string FirstLine = AllLines[0];
             if (FirstLine == "Altium Designer Pick and Place Locations")
             {
@@ -11299,7 +11299,7 @@ namespace LitePlacer
                 CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = Line[Y_Nominal_Index].Replace("mm", "");
                 CadData_GridView.Rows[Last].Cells["X_nominal"].Value = CadData_GridView.Rows[Last].Cells["X_nominal"].Value.ToString().Replace(",", ".");
                 CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = CadData_GridView.Rows[Last].Cells["Y_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
+                CadData_GridView.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later
                 CadData_GridView.Rows[Last].Cells["Y_Machine"].Value = "Nan";
                 CadData_GridView.Rows[Last].Cells["Rotation_machine"].Value = "Nan";
             }   // end "for each component..."
@@ -11321,7 +11321,7 @@ namespace LitePlacer
 
         // =================================================================================
         // HandleDuplicates():
-        // If the inout data has duplicate designators, like R1, R1, R1, this routine 
+        // If the inout data has duplicate designators, like R1, R1, R1, this routine
         // replaces them with R1_1, R1_2, R1_3 etc.
 
         public void HandleDuplicates(ref List<List<string>> DataLines, int ComponentIndex)
@@ -11704,12 +11704,12 @@ namespace LitePlacer
             // Rotation_Column: Which way the parts are rotated on the tape. if 0, parts form +Y oriented tape
             // correspont to 0deg. on the PCB, tape.e. the placement operation does not rotate them.
             Tapes_dataGridView.Rows[index].Cells["Rotation_Column"].Value = "0deg.";
-            // WidthColumn: sets the width of the tape and the distance from one part to next. 
+            // WidthColumn: sets the width of the tape and the distance from one part to next.
             // From EIA-481, we get the part location from the hole location.
             Tapes_dataGridView.Rows[index].Cells["Width_Column"].Value = "8/4mm";
             // Type_Column: used in hole recognition
             Tapes_dataGridView.Rows[index].Cells["Type_Column"].Value = "Paper (White)";
-            // NextPart_Column tells the part number of next part. 
+            // NextPart_Column tells the part number of next part.
             // NextX, NextY tell the approximate hole location for the next part. Incremented when a part is picked up.
             Tapes_dataGridView.Rows[index].Cells["NextPart_Column"].Value = "1";
             Tapes_dataGridView.Rows[index].Cells["Next_X_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
@@ -11788,8 +11788,8 @@ namespace LitePlacer
 
 
         // ==========================================================================================================
-        // Tapes_dataGridView_CellClick(): 
-        // If the click is on a button column, resets the tape. 
+        // Tapes_dataGridView_CellClick():
+        // If the click is on a button column, resets the tape.
         private void Tapes_dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // Ignore clicks that are not on button cell  Id_Column
@@ -11802,7 +11802,7 @@ namespace LitePlacer
         }
 
         // ==========================================================================================================
-        // SelectTape(): 
+        // SelectTape():
         // Displays a dialog with buttons for all defined tapes, returns the ID of the tape.
         // used in placement when the user selects the tape to be used in runtime.
         // In this case, we remove the regular Tapes_dataGridView_CellClick() handler; the TapeDialog
@@ -12105,8 +12105,8 @@ namespace LitePlacer
 
         private void Tapes_dataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
-            // This event handler manually raises the CellValueChanged event 
-            // by calling the CommitEdit method. 
+            // This event handler manually raises the CellValueChanged event
+            // by calling the CommitEdit method.
             if (Tapes_dataGridView.IsCurrentCellDirty)
             {
                 // This fires the cell value changed handler below
@@ -12243,7 +12243,7 @@ namespace LitePlacer
 
         private void LoadTrayFromFile(string FileName)
         {
-            // from: http://stackoverflow.com/questions/6336239/copy-datagridviews-rows-into-another-datagridview  
+            // from: http://stackoverflow.com/questions/6336239/copy-datagridviews-rows-into-another-datagridview
             DataGridView ClipBoard_dgw = new DataGridView();
             ClipBoard_dgw.AllowUserToAddRows = false;  // this prevents an empty row in the end
             foreach (DataGridViewColumn col in Tapes_dataGridView.Columns)
@@ -13497,7 +13497,7 @@ namespace LitePlacer
             };
             switch (Display_dataGridView.Rows[row].Cells[FunctCol].Value.ToString())
             {
-                // switch by the selected algorithm:  
+                // switch by the selected algorithm:
                 case "Blur":
                     ClearParameterValuesExcept(row, -1);
                     return;		// no parameters
@@ -14240,7 +14240,7 @@ namespace LitePlacer
             {
                 ZGuardOn();
             }
-            // disable z switches, otherwise you can't do setup 
+            // disable z switches, otherwise you can't do setup
             ZGuardOff();
             CNC_Write_m("{\"zsn\":0}");
             Thread.Sleep(50);
@@ -14664,7 +14664,7 @@ namespace LitePlacer
             CNC_timeout = Setting.Nozzles_Timeout;
 
             bool ok = true;
-            // disable z switches 
+            // disable z switches
             ZGuardOff();
             CNC_Write_m("{\"zsn\":0}");
             Thread.Sleep(50);
@@ -15827,7 +15827,7 @@ namespace LitePlacer
 
 
     // ===================================================================================
-    // allows addition of color info to displayText 
+    // allows addition of color info to displayText
     public static class RichTextBoxExtensions
     {
         public static void AppendText(this RichTextBox box, string text, Color color)
