@@ -425,6 +425,7 @@ namespace LitePlacer
             // ======== Setup operations that can cause visible reaction:
 
             StartingUp = false;
+            PositionConfidence = false;
             Cnc.Connect(Setting.CNC_SerialPort);  // This can raise error condition, needing the form up
             UpdateCncConnectionStatus();
 
@@ -1818,6 +1819,8 @@ namespace LitePlacer
                 return;
             }
 
+            if (!CheckPositionConfidence()) return;
+
             double Xmm, Ymm;
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Control)
             {
@@ -1839,6 +1842,8 @@ namespace LitePlacer
         // =================================================================================
         private void GoX_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             double X;
             double Y = Cnc.CurrentY;
             double A = Cnc.CurrentA;
@@ -1856,6 +1861,8 @@ namespace LitePlacer
 
         private void GoY_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             double X = Cnc.CurrentX;
             double Y;
             double A = Cnc.CurrentA;
@@ -1872,6 +1879,8 @@ namespace LitePlacer
 
         private void GoZ_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             double Z;
             if (!double.TryParse(GotoZ_textBox.Text.Replace(',', '.'), out Z))
             {
@@ -1886,6 +1895,8 @@ namespace LitePlacer
 
         private void GoA_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             double X = Cnc.CurrentX;
             double Y = Cnc.CurrentY;
             double A;
@@ -1902,6 +1913,8 @@ namespace LitePlacer
 
         private void Goto_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             double X;  // target coordinates
             double Y;
             double Z;
@@ -2256,8 +2269,23 @@ namespace LitePlacer
 
         // =================================================================================
         // Homing
+        // =================================================================================
 
-        private void OfferHoming()
+        // =======================
+        // CheckPositionConfidence() so that on buttons, we can do:
+        // if(!CheckPositionConfidence()) return; -- if position is lost and user doesn't want to homing, do nothing;
+
+        private bool CheckPositionConfidence()
+        {
+            if (PositionConfidence)
+            {
+                return true;
+            }
+            return OfferHoming();
+        }
+
+
+        private bool OfferHoming()
         {
             PositionConfidence = false;
             DialogResult dialogResult = ShowMessageBox(
@@ -2265,11 +2293,12 @@ namespace LitePlacer
                 "Home Now?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                DoHoming();
+                return DoHoming();
             }
             else
             {
                 OpticalHome_button.BackColor = Color.Red;
+                return false;
             }
         }
 
@@ -3595,12 +3624,16 @@ namespace LitePlacer
         // =================================================================================
         private void GotoPCB0_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             CNC_XYA_m(Setting.General_JigOffsetX, Setting.General_JigOffsetY, Cnc.CurrentA);
         }
 
         // =================================================================================
         private void SetPCB0_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             JigX_textBox.Text = Cnc.CurrentX.ToString("0.00", CultureInfo.InvariantCulture);
             Setting.General_JigOffsetX = Cnc.CurrentX;
             JigY_textBox.Text = Cnc.CurrentY.ToString("0.00", CultureInfo.InvariantCulture);
@@ -3662,12 +3695,16 @@ namespace LitePlacer
         // =================================================================================
         private void GotoPickupCenter_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             CNC_XYA_m(Setting.General_PickupCenterX, Setting.General_PickupCenterY, Cnc.CurrentA);
         }
 
         // =================================================================================
         private void SetPickupCenter_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             PickupCenterX_textBox.Text = Cnc.CurrentX.ToString("0.00", CultureInfo.InvariantCulture);
             Setting.General_PickupCenterX = Cnc.CurrentX;
             PickupCenterY_textBox.Text = Cnc.CurrentY.ToString("0.00", CultureInfo.InvariantCulture);
@@ -3740,6 +3777,8 @@ namespace LitePlacer
 
         private void Offset2Method_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             // Nozzle calibration button
             ZGuardOff();
             SelectCamera(DownCamera);
@@ -3852,6 +3891,8 @@ namespace LitePlacer
 
         private void SetUpCamPosition_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             UpcamPositionX_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
             Setting.UpCam_PositionX = Cnc.CurrentX;
             UpcamPositionY_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
@@ -3863,6 +3904,8 @@ namespace LitePlacer
 
         private void GotoUpCamPosition_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             CNC_XYA_m(Setting.UpCam_PositionX, Setting.UpCam_PositionY, Cnc.CurrentA);
         }
 
@@ -5592,6 +5635,8 @@ namespace LitePlacer
 
         private void Park_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             CNC_Park();
         }
 
@@ -6034,6 +6079,8 @@ namespace LitePlacer
 
         private void Bookmark1_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark1X = Cnc.CurrentX;
@@ -6046,6 +6093,8 @@ namespace LitePlacer
 
         private void Bookmark2_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark2X = Cnc.CurrentX;
@@ -6058,6 +6107,8 @@ namespace LitePlacer
 
         private void Bookmark3_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark3X = Cnc.CurrentX;
@@ -6070,6 +6121,8 @@ namespace LitePlacer
 
         private void Bookmark4_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark4X = Cnc.CurrentX;
@@ -6082,6 +6135,8 @@ namespace LitePlacer
 
         private void Bookmark5_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark5X = Cnc.CurrentX;
@@ -6094,6 +6149,8 @@ namespace LitePlacer
 
         private void Bookmark6_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark6X = Cnc.CurrentX;
@@ -7082,6 +7139,8 @@ namespace LitePlacer
 
         private void PlaceThese_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             this.ActiveControl = null; // User might need press enter during the process, which would run this again...
             if (!PrepareToPlace_m())
             {
@@ -7199,6 +7258,8 @@ namespace LitePlacer
         // and then that row is processed.
         private void PlaceOne_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             this.ActiveControl = null; // User might need press enter during the process, which would run this again...
 
             // Do we need to do something in the first place?
@@ -7574,6 +7635,8 @@ namespace LitePlacer
         // All rows:
         private void PlaceAll_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+            
             this.ActiveControl = null; // User might need press enter during the process, which would run this again...
 
             if (!PrepareToPlace_m())
@@ -9534,6 +9597,8 @@ namespace LitePlacer
 
         private void ManualNozzleChange_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             ChangeNozzleManually_m();
         }
 
@@ -9593,6 +9658,8 @@ namespace LitePlacer
         // =================================================================================
         private void ShowNominal_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             double X;
             double Y;
             double A;
@@ -9709,6 +9776,8 @@ namespace LitePlacer
             double Y;
             double A;
 
+            if (!CheckPositionConfidence()) return;
+
             if (!PrepareSingleComponentOperation(out X, out Y))
             {
                 return;
@@ -9745,6 +9814,8 @@ namespace LitePlacer
         // =================================================================================
         private void ReMeasure_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             ValidMeasurement_checkBox.Checked = false;
             ValidMeasurement_checkBox.Checked = BuildMachineCoordinateData_m();
             // CNC_Park();
@@ -9752,6 +9823,8 @@ namespace LitePlacer
 
         private void TestNozzleRecognition_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             double X = Cnc.CurrentX;
             double Y = Cnc.CurrentY;
             CalibrateNozzle_m();
@@ -10689,6 +10762,8 @@ namespace LitePlacer
 
         private void AddTape_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if (VideoAlgorithms.AllAlgorithms.Count < 2)
             {
                 ShowMessageBox(
@@ -10778,6 +10853,8 @@ namespace LitePlacer
 
         private void TapeGoTo_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if (Tapes_dataGridView.SelectedCells.Count != 1)
             {
                 return;
@@ -10798,6 +10875,8 @@ namespace LitePlacer
 
         private void TapeSet1_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if (Tapes_dataGridView.SelectedCells.Count != 1)
             {
                 return;
@@ -10896,6 +10975,8 @@ namespace LitePlacer
 
         private void SetPartNo_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             int no = 0;
             if (!int.TryParse(NextPart_TextBox.Text, out no))
             {
@@ -10909,6 +10990,8 @@ namespace LitePlacer
 
         private void Tape_GoToNext_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if (Tapes_dataGridView.SelectedCells.Count != 1)
             {
                 return;
@@ -10997,6 +11080,8 @@ namespace LitePlacer
 
         private void HoleTest_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             int PartNum = 0;
             int TapeNum = 0;
             if (UseCoordinatesDirectly(Tapes_dataGridView.CurrentCell.RowIndex))
@@ -11043,6 +11128,8 @@ namespace LitePlacer
 
     private void ShowPart_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             int PartNum = 0;
             int TapeNum = 0;
 
@@ -11399,8 +11486,8 @@ namespace LitePlacer
 
         private void Test1_button_Click(object sender, EventArgs e)
         {
-            double Xmark = Cnc.CurrentX;
-            double Ymark = Cnc.CurrentY;
+            if (!CheckPositionConfidence()) return;
+
             DisplayText("test 1: Pick up this (probing)");
             Cnc.PumpOn();
             Cnc.VacuumOff();
@@ -11415,7 +11502,6 @@ namespace LitePlacer
             }
             Cnc.VacuumOn();
             CNC_Z_m(0);  // pick up
-            //CNC_XYA_m(Xmark, Ymark, Cnc.CurrentA);
         }
 
         // =================================================================================
@@ -11424,6 +11510,8 @@ namespace LitePlacer
         // static int test2_state = 0;
         private void Test2_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             double Xmark = Cnc.CurrentX;
             double Ymark = Cnc.CurrentY;
             DisplayText("test 2: Place here (probing)");
@@ -11442,8 +11530,8 @@ namespace LitePlacer
 
         private void Test3_button_Click(object sender, EventArgs e)
         {
-            Xmark = Cnc.CurrentX;
-            Ymark = Cnc.CurrentY;
+            if (!CheckPositionConfidence()) return;
+
             CNC_XYA_m(  (Cnc.CurrentX + Setting.DownCam_NozzleOffsetX), 
                         (Cnc.CurrentY + Setting.DownCam_NozzleOffsetY), Cnc.CurrentA);
             Nozzle_ProbeDown_m();
@@ -11455,6 +11543,8 @@ namespace LitePlacer
 
         private void Test4_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             double xp = Setting.UpCam_PositionX;
             double xo = Setting.DownCam_NozzleOffsetX;
             double yp = Setting.UpCam_PositionY;
@@ -11465,12 +11555,10 @@ namespace LitePlacer
         // =================================================================================
         // test 5 "Probe down";
 
-        private double Xmark;
-        private double Ymark;
         private void Test5_button_Click(object sender, EventArgs e)
         {
-            Xmark = Cnc.CurrentX;
-            Ymark = Cnc.CurrentY;
+            if (!CheckPositionConfidence()) return;
+
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
             {
                 return;
@@ -12023,6 +12111,8 @@ namespace LitePlacer
 
         private void gotoStartPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if (ContextmenuLoadNozzle == 0)
             {
                 DisplayText("Goto load start - header click, ignored", KnownColor.DarkGreen);
@@ -12034,6 +12124,8 @@ namespace LitePlacer
 
         private void gotoUnloadStartToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if (ContextmenuUnloadNozzle == 0)
             {
                 DisplayText("Goto unload start - heaqder click, ignored", KnownColor.DarkGreen);
@@ -12233,6 +12325,8 @@ namespace LitePlacer
 
         private void CalibrateNozzles_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             // this is only called from nozzle tab page, so we want to leave with slack compensation off
             // We want to do moves to camera with slack compensation, if he user has it on
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
@@ -12305,6 +12399,8 @@ namespace LitePlacer
 
         private void CalibrateThis_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             CalibrateNozzle_m();
             CheckCalibrationErrors(Setting.Nozzles_current);
         }
@@ -12770,11 +12866,15 @@ namespace LitePlacer
 
         private void GetLoadCoordinates_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             GetCoordinates_button_Click(NozzlesLoad_dataGridView);
         }
 
         private void GetUnloadCoordinates_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             GetCoordinates_button_Click(NozzlesUnload_dataGridView);
         }
 
@@ -12841,6 +12941,12 @@ namespace LitePlacer
 
         public bool ChangeNozzle_m(int Nozzle)
         {
+
+            if (!PositionConfidence)
+            {
+                DisplayText("Nozzle change: Machine position is lost.", KnownColor.DarkRed, true);
+                return false;
+            }
 
             Nozzles_Stop = false;
             if (Nozzle == Setting.Nozzles_current)
@@ -12926,6 +13032,8 @@ namespace LitePlacer
 
         private bool m_NozzleGotoStart(DataGridView grid, int nozzle)
         {
+            if (!CheckPositionConfidence()) return false;
+
             double X;
             double Y;
             double Z;
@@ -13628,6 +13736,8 @@ namespace LitePlacer
 
         private void MeasureAndSet_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+
             if (!CNC_XYA_m(0.0, 0.0, Cnc.CurrentA))
             {
                 return;
