@@ -231,7 +231,7 @@ namespace LitePlacer
             if (UpdateAvailable(out UpdateText))
             {
                 ShowMessageBox(
-                    "There is software update available:\n\r" + UpdateText,
+                    "There is a software update available:\n\r" + UpdateText,
                     "Update available",
                     MessageBoxButtons.OK);
                 return true;
@@ -496,7 +496,7 @@ namespace LitePlacer
                 if (!OK)
                 {
                     DialogResult dialogResult = ShowMessageBox(
-                        "some data could not be saved (see log window). Quit anyway?",
+                        "Some data could not be saved (see log window). Quit anyway?",
                         "Data save problem", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.No)
                     {
