@@ -16,6 +16,7 @@ namespace LitePlacer
         public DataGridViewRow Row { get; set; }
         public int TapeRowNo { get; set; }
         public FormMain MainForm { get; set; }
+        public bool CreatingNew { get; set; }
         Camera Cam;
         CNC Cnc;
 
@@ -253,6 +254,11 @@ namespace LitePlacer
             MainForm.DownCameraRotationFollowsA = false;
             // Cam.DrawGrid = false;
             // Cam.DrawCross = DrawCross;
+            if (CreatingNew)
+            {
+                TapesDataGrid.Rows.RemoveAt(TapeRowNo);
+                MainForm.Update_GridView(TapesDataGrid);
+            }
             Close();
         }
 

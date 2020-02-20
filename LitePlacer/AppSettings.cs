@@ -111,6 +111,7 @@ namespace LitePlacer
         public bool General_VigorousHoming { get; set; } = false;
         public bool General_PumpOutputInverted { get; set; } = false;
         public bool General_VacuumOutputInverted { get; set; } = false;
+        public bool General_SafeFilesAtClosing { get; set; } = true;
 
         public bool Nozzles_AfullSpeed { get; set; } = true;
         public double Nozzles_Aspeed { get; set; } = 500;
@@ -224,7 +225,6 @@ namespace LitePlacer
                     {
                         throw new Exception($"Couldn't load {FileName}. File exists but is corrupt.");
                     }
-
                     return settings;
                 }
                 else
@@ -246,12 +246,22 @@ namespace LitePlacer
             }
             catch (Exception excep)
             {
-                MainForm.ShowMessageBox(
-                    "Problem loading application settings:\n" + excep.Message + "\nUsing built in defaults.",
-                    "Settings not loaded",
-                    MessageBoxButtons.OK);
                 MySettings s = new MySettings();
-                return s;
+
+                DialogResult dialogResult = MainForm.ShowMessageBox(
+                    "Problem loading application settings:\n" + excep.Message + 
+                    " \n\rExit program without saving any data? \n\r" +
+                   "If \"Yes\", you lose changes since last start.\n\r" +
+                   "If \"No\", continue with default settings. Your old settings will be\n\r" +
+                   "overwritten at program end.",
+                   "Data save problem", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No)
+                {
+                    return s;
+                }
+                s.General_SafeFilesAtClosing = false;
+                Application.Exit();
+                return s;    // to avoid compile error
             }
         }
 

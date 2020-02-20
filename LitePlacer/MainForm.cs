@@ -125,6 +125,8 @@ namespace LitePlacer
             path = path.Remove(i + 1);
 
             Setting = SettingsOps.Load(path + "LitePlacer.Appsettings");
+            Setting.General_SafeFilesAtClosing = true;
+
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
@@ -311,7 +313,7 @@ namespace LitePlacer
                 if (control is Button)
                 {
                     Button button = (Button)control;
-                    button.MouseDown += LogButtonClick; // MoseDown comes before mouse click, we want this to fire first)
+                    button.MouseDown += LogButtonClick; // MouseDown comes before mouse click, we want this to fire first)
                 }
                 else
                 {
@@ -324,7 +326,7 @@ namespace LitePlacer
         {
 
             Button button = sender as Button;
-            DisplayText(button.Text.ToString(CultureInfo.InvariantCulture), KnownColor.DarkGreen);
+            DisplayText("B: " + button.Text.ToString(CultureInfo.InvariantCulture), KnownColor.DarkGreen, true);
         }
         // ==============================================================================================
 
@@ -468,94 +470,97 @@ namespace LitePlacer
             Setting.General_CheckForUpdates = CheckForUpdate_checkBox.Checked;
             Setting.General_MuteLogging = DisableLog_checkBox.Checked;
 
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-
-            res = SaveTempCADdata();
-            OK = OK && res;
-
-            res = SaveTempJobData();
-            OK = OK && res;
-
-            res = SettingsOps.Save(Setting, path + "LitePlacer.Appsettings");
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.TapesData_v2", Tapes_dataGridView);
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.NozzlesParameters_v2", NozzlesParameters_dataGridView);
-            OK = OK && res;
-
-
-            DataGridViewCopy(Homing_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.HomingFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(Fiducials_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.FiducialsFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(Components_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.ComponentsFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(PaperTape_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.PaperTapeFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(BlackTape_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.BlackTapeFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(ClearTape_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.ClearTapeFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(DowncamSnapshot_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.SnapshotFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(Nozzle_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.NozzleFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(Nozzle2_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.Nozzle2Functions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(UpCamComponents_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            DataGridViewCopy(UpcamSnapshot_dataGridView, ref Temp_dataGridView, false);
-            res = SaveDataGrid(path + "LitePlacer.UpCamSnapshotFunctions_v2", Temp_dataGridView);
-            OK = OK && res;
-
-            res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
-            OK = OK && res;
-
-            res = BoardSettings.Save(TinyGBoard, qQuinticBoard, path + "LitePlacer.BoardSettings");
-            OK = OK && res;
-
-            if (!OK)
+            if (Setting.General_SafeFilesAtClosing)
             {
-                DialogResult dialogResult = ShowMessageBox(
-                    "Some data could not be saved (see log window). Quit anyway?",
-                    "Data save problem", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.No)
+                string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+                int i = path.LastIndexOf('\\');
+                path = path.Remove(i + 1);
+
+                res = SaveTempCADdata();
+                OK = OK && res;
+
+                res = SaveTempJobData();
+                OK = OK && res;
+
+                res = SettingsOps.Save(Setting, path + "LitePlacer.Appsettings");
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.TapesData_v2", Tapes_dataGridView);
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.NozzlesParameters_v2", NozzlesParameters_dataGridView);
+                OK = OK && res;
+
+
+                DataGridViewCopy(Homing_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.HomingFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(Fiducials_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.FiducialsFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(Components_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.ComponentsFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(PaperTape_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.PaperTapeFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(BlackTape_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.BlackTapeFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(ClearTape_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.ClearTapeFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(DowncamSnapshot_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.SnapshotFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(Nozzle_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.NozzleFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(Nozzle2_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.Nozzle2Functions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(UpCamComponents_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.UpCamComponentsFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                DataGridViewCopy(UpcamSnapshot_dataGridView, ref Temp_dataGridView, false);
+                res = SaveDataGrid(path + "LitePlacer.UpCamSnapshotFunctions_v2", Temp_dataGridView);
+                OK = OK && res;
+
+                res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
+                OK = OK && res;
+
+                res = BoardSettings.Save(TinyGBoard, qQuinticBoard, path + "LitePlacer.BoardSettings");
+                OK = OK && res;
+
+                if (!OK)
                 {
-                    e.Cancel = true;
-                    return;
+                    DialogResult dialogResult = ShowMessageBox(
+                        "Some data could not be saved (see log window). Quit anyway?",
+                        "Data save problem", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.No)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
                 }
             }
 
@@ -2145,13 +2150,13 @@ namespace LitePlacer
             DialogResult dialogResult = ShowMessageBox(
                 "Home machine now?",
                 "Home Now?", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.No)
+            if (dialogResult == DialogResult.Yes)
             {
-                OpticalHome_button.BackColor = Color.Red;
+                DoHoming();
             }
             else
             {
-                DoHoming();
+                OpticalHome_button.BackColor = Color.Red;
             }
         }
 
@@ -2520,7 +2525,7 @@ namespace LitePlacer
             if ((X < -3.0) || (X > Setting.General_MachineSizeX))
             {
                 ShowMessageBox(
-                    "Attempt to Move outside safe limits (X " + X.ToString("0.000", CultureInfo.InvariantCulture) + ")",
+                    "Attempt to Move outside machine limits (X " + X.ToString("0.000", CultureInfo.InvariantCulture) + ")",
                     "Limits corossed",
                     MessageBoxButtons.OK);
                 return false;
@@ -2533,7 +2538,7 @@ namespace LitePlacer
             if ((Y < -3.0) || (Y > Setting.General_MachineSizeY))
             {
                 ShowMessageBox(
-                    "Attempt to Move outside safe limits (Y " + Y.ToString("0.000", CultureInfo.InvariantCulture) + ")",
+                    "Attempt to Move outside machine limits (Y " + Y.ToString("0.000", CultureInfo.InvariantCulture) + ")",
                     "Limits corssed",
                     MessageBoxButtons.OK);
                 return false;
@@ -2995,7 +3000,7 @@ namespace LitePlacer
             DisplayText("Optical homing");
             SetHomingMeasurement();
             // Find within 20mm, goto within 0.05
-            if (!GoToFeatureLocation_m(FeatureType.Circle, 20.0, 0.05, out X, out Y))
+            if (!GoToFeatureLocation_m(FeatureType.Circle, 20.0, 0.053, out X, out Y))
             {
                 return false;
             }
@@ -3190,6 +3195,7 @@ namespace LitePlacer
                 {
                     DisplayText("UpCamera activated");
                 }
+                UpdateCameraCameraStatus_label();
                 return;
             };
 
@@ -3579,10 +3585,6 @@ namespace LitePlacer
                     DisplayText("Device " + i.ToString(CultureInfo.InvariantCulture) + ": " + Devices[i]);
                 }
             }
-            else
-            {
-                UpCam_comboBox.Items.Add("----");
-            }
             if ((Devices.Count > Setting.UpCam_index) && (Setting.UpCam_index > 0))
             {
                 DisplayText("UpCam_comboBox.SelectedIndex= " + Setting.UpCam_index.ToString(CultureInfo.InvariantCulture));
@@ -3689,7 +3691,9 @@ namespace LitePlacer
                 UpCamera.MonikerString = "no camera";
                 return;
             }
-            List<string> Monikers = UpCamera.GetMonikerStrings();
+            List<string> Monikers = new List<string>();
+            Monikers.Add("-no camera-");
+            Monikers.AddRange(UpCamera.GetMonikerStrings());
             Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.DesiredX = Setting.UpCam_DesiredX;
@@ -11662,7 +11666,7 @@ namespace LitePlacer
             }
         }
 
-        private void Invoke_TapeEditDialog(int row)
+        private void Invoke_TapeEditDialog(int row, bool CreatingNew)
         {
             DisplayText("Open edit tape dialog", KnownColor.DarkGreen);
             TapeEditForm TapeEditDialog = new TapeEditForm(Cnc, DownCamera);
@@ -11670,6 +11674,7 @@ namespace LitePlacer
             TapeEditDialog.TapeRowNo = TapesGridEditRow;
             TapeEditDialog.TapesDataGrid = Tapes_dataGridView;
             TapeEditDialog.Row = Tapes_dataGridView.Rows[row];
+            TapeEditDialog.CreatingNew = CreatingNew;
             AttachButtonLogging(TapeEditDialog.Controls);
             TapeEditDialog.Show(this);
         }
@@ -11680,7 +11685,7 @@ namespace LitePlacer
             {
                 return; // user clicked header or empty space
             }
-            Invoke_TapeEditDialog(TapesGridEditRow);
+            Invoke_TapeEditDialog(TapesGridEditRow, false);
         }
 
         // end edit dialog stuff
@@ -11743,7 +11748,7 @@ namespace LitePlacer
             Tapes_dataGridView.Rows[index].Cells["LastY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[index].Cells["RotationDirect_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             TapesGridEditRow = index;
-            Invoke_TapeEditDialog(index);
+            Invoke_TapeEditDialog(index, true);
         }
 
         private void TapeUp_button_Click(object sender, EventArgs e)
@@ -15827,9 +15832,9 @@ namespace LitePlacer
             }
         }
 
-        private void MeaseureAndSet_button_Click(object sender, EventArgs e)
+        private void MeasureAndSet_button_Click(object sender, EventArgs e)
         {
-            if (!CNC_XY_m(0.0,0.0))
+            if (!CNC_XY_m(0.40,0.40))
             {
                 return;
             }

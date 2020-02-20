@@ -9415,7 +9415,7 @@ namespace LitePlacer
             this.toolTip1.SetToolTip(this.MeaseureAndSet_button, "Goes to zero, measures the position of home mark,\r\nand sets coordinates according" +
         "ly. Fast way to correct \r\nany drift.");
             this.MeaseureAndSet_button.UseVisualStyleBackColor = true;
-            this.MeaseureAndSet_button.Click += new System.EventHandler(this.MeaseureAndSet_button_Click);
+            this.MeaseureAndSet_button.Click += new System.EventHandler(this.MeasureAndSet_button_Click);
             // 
             // TrueX_label
             // 
