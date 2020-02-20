@@ -2400,7 +2400,7 @@ namespace LitePlacer
             DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
             DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
 
-            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
+            if (!GoToFeatureLocation_m(0.05, out double X, out double Y))
             {
                 return false;
             }
@@ -3077,38 +3077,87 @@ namespace LitePlacer
 
         // =================================================================================
 
-        private void SetCurrentCameraParameters()
+        private void SetDownCameraParameters()
         {
-            Camera CurrentCam;
+            double val;
+            if (DownCamera.IsRunning())
+            {
+                UpCameraStatus_label.Text = "Not active";
+                DownCameraStatus_label.Text = "Active";
+                if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
+                {
+                    DownCamera.ZoomFactor = val;
+                    DownCamera.Zoom = UpCamZoom_checkBox.Checked;
+                }
+                else
+                {
+                    DownCamera.Zoom = false;
+                };
+            }
+            else
+            {
+                DownCameraStatus_label.Text = "Active";
+            }
+        }
+
+        private void SetUpCameraParameters()
+        {
+            double val;
             if (UpCamera.IsRunning())
             {
-                CurrentCam = UpCamera;
+                DownCameraStatus_label.Text = "Not active";
+                UpCameraStatus_label.Text = "Active";
+                if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
+                {
+                    UpCamera.ZoomFactor = val;
+                    UpCamera.Zoom = UpCamZoom_checkBox.Checked;
+                }
+                else
+                {
+                    UpCamera.Zoom = false;
+                };
+            }
+            else
+            {
+                UpCameraStatus_label.Text = "Active";
+            }
+        }
+
+        private void SetCurrentCameraParameters()
+        {
+            double val;
+            if (UpCamera.IsRunning())
+            {
+                DownCameraStatus_label.Text = "Not active";
+                UpCameraStatus_label.Text = "Active";
+                if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
+                {
+                    UpCamera.ZoomFactor = val;
+                    UpCamera.Zoom = UpCamZoom_checkBox.Checked;
+                }
+                else
+                {
+                    UpCamera.Zoom = false;
+                };
             }
             else if (DownCamera.IsRunning())
             {
-                CurrentCam = DownCamera;
+                UpCameraStatus_label.Text = "Not active";
+                DownCameraStatus_label.Text = "Active";
+                if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
+                {
+                    DownCamera.ZoomFactor = val;
+                    DownCamera.Zoom = UpCamZoom_checkBox.Checked;
+                }
+                else
+                {
+                    DownCamera.Zoom = false;
+                };
             }
             else
             {
                 return;
             };
-            double val;
-            if (UpCamera.IsRunning())
-            {
-                CurrentCam.Zoom = UpCamZoom_checkBox.Checked;
-                if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-                {
-                    UpCamera.ZoomFactor = val;
-                }
-            }
-            else
-            {
-                CurrentCam.Zoom = DownCamZoom_checkBox.Checked;
-                if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-                {
-                    DownCamera.ZoomFactor = val;
-                }
-            }
         }
 
         // =================================================================================
@@ -3137,7 +3186,7 @@ namespace LitePlacer
 
             if (DownCamera.IsRunning())
             {
-                SetCurrentCameraParameters();
+                SetDownCameraParameters();
             }
             else
             {
@@ -3174,7 +3223,7 @@ namespace LitePlacer
             SelectCamera(UpCamera);
             if (UpCamera.IsRunning())
             {
-                SetCurrentCameraParameters();
+                SetUpCameraParameters();
             }
             else
             {
@@ -3690,7 +3739,7 @@ namespace LitePlacer
             // Nozzle calibration button
             ZGuardOff();
             SelectCamera(DownCamera);
-            SetCurrentCameraParameters();
+            SetDownCameraParameters();
             switch (SetNozzleOffset_stage)
             {
                 case 0:
