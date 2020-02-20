@@ -113,7 +113,31 @@ namespace LitePlacer
                 FastParametersOk = false;
                 return false;
             }
-            int last = first + ComponentCount-1;
+            // get pitch
+            double pitch = 0;
+            if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString().Replace(',', '.'), out pitch))
+            {
+                MainForm.ShowMessageBox(
+                    "Bad data at Pitch column, tape ID: " + Grid.Rows[TapeNum].Cells["Id_Column"].Value.ToString(),
+                    "Data error",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            int last = first + ComponentCount - 1;
+            //adjust for which part to measure - make sure that the one selected is not indexed
+            //from the hole at the end of the cut tape strip, as that hole is often cut in half
+            if (pitch < 6) //really 4 or less
+            {
+                --last;
+            }
+            if (pitch < 3) //really 2 or less
+            {
+                --last;
+            }
+            if (last < first)
+            {
+                last = first;
+            }
             // measure holes
             double LastX = 0.0;
             double LastY = 0.0;
@@ -140,25 +164,17 @@ namespace LitePlacer
 
             FastXpos = FirstX;
             FastYpos = FirstY;
-            if (ComponentCount>1)
+            //test for a minimum of 2 complete holes - ie don't try to measure hold at the end of the tape, which is likely cut in half
+            //measure and divide to calculate pitch for these
+            if (last > first)
             {
-                // get pitch
-                double pitch = 0;
-                if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString().Replace(',', '.'), out pitch))
-                {
-                    MainForm.ShowMessageBox(
-                        "Bad data at Pitch column, tape ID: " + Grid.Rows[TapeNum].Cells["Id_Column"].Value.ToString(),
-                        "Data error",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
                 // if pitch == 2
                 if ((pitch < 2.01) && (pitch > 1.99))
                 {
                     int starthole = (first + 1) / 2;
                     int lasthole = (last + 1) / 2;
                     int HoleIncrements = lasthole - starthole;
-                    if (HoleIncrements==0)
+                    if (HoleIncrements == 0)
                     {
                         FastXstep = 0.0;
                         FastYstep = 0.0;
@@ -172,8 +188,42 @@ namespace LitePlacer
                 else
                 {
                     // normal case
-                    FastXstep = (LastX - FirstX) / (double)(ComponentCount - 1);
-                    FastYstep = (LastY - FirstY) / (double)(ComponentCount - 1);
+                    FastXstep = (LastX - FirstX) / (double)(last - first);
+                    FastYstep = (LastY - FirstY) / (double)(last - first);
+                }
+            }
+            //if we had more than one component but could not measure multiple holes, just use the canned values for pitch
+            else if (ComponentCount > 1)
+            {
+                switch (Grid.Rows[TapeNum].Cells["Orientation_Column"].Value.ToString())
+                {
+                    case "+Y":
+                        FastXstep = 0;
+                        FastYstep = pitch;
+                        break;
+
+                    case "+X":
+                        FastXstep = pitch;
+                        FastYstep = 0;
+                        break;
+
+                    case "-Y":
+                        FastXstep = 0;
+                        FastYstep = -pitch;
+                        break;
+
+                    case "-X":
+                        FastXstep = -pitch;
+                        FastYstep = 0;
+                        break;
+
+                    default:
+                        MainForm.ShowMessageBox(
+                            "Bad data at Tape #" + TapeNum.ToString(CultureInfo.InvariantCulture) + ", Orientation",
+                            "Tape data error",
+                            MessageBoxButtons.OK
+                        );
+                        return false;
                 }
             }
             else
@@ -182,6 +232,7 @@ namespace LitePlacer
                 FastYstep = 0.0;
             }
 
+            MainForm.DisplayText("Fast parameters:");
             MainForm.DisplayText("First X: " + FirstX.ToString(CultureInfo.InvariantCulture)
                 + ", Y: " + FirstY.ToString(CultureInfo.InvariantCulture));
             MainForm.DisplayText("Last X: " + LastX.ToString(CultureInfo.InvariantCulture)

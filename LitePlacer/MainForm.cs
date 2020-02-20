@@ -7454,22 +7454,28 @@ namespace LitePlacer
             int nozzle;
             // Check, that the row isn't placed already
             bool EverythingPlaced = true;
+            bool thisPlaced = true;
+            int placedCount = 0;
             if ((method == "Place Fast") || (method == "Place") || (method == "LoosePart") || (method == "LoosePart Assisted") || (method == "Place Assisted"))
             {
                 foreach (string component in Components)
                 {
-                    if (!AlreadyPlaced_m(component, ref EverythingPlaced))
+                    if (!AlreadyPlaced_m(component, ref thisPlaced))
                     {
                         return false;
                     }
-                    if (!EverythingPlaced)
+                    if (!thisPlaced)
                     {
-                        break;
+                        EverythingPlaced = false;
+                    }
+                    else
+                    {
+                        placedCount++;
                     }
                 }
                 if (EverythingPlaced)
                 {
-                    DisplayText("All components on row " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString() + " already placed.", KnownColor.DarkRed, true);
+                    DisplayText("All components on row " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString() + " already placed.", KnownColor.DarkRed);
                     return true;
                 }
             }
@@ -7520,6 +7526,14 @@ namespace LitePlacer
                         "Sloppy programmer error",
                         MessageBoxButtons.OK);
                     return false;
+                }
+                if (count <= placedCount)
+                {
+                    count = 1;
+                }
+                else
+                {
+                    count -= placedCount;
                 }
                 if (!Tapes.PrepareForFastPlacement_m(TapeID, count))
                 {
