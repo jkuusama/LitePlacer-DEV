@@ -128,6 +128,7 @@ namespace LitePlacer
 
             SettingsOps = new AppSettings(this);
             Setting = SettingsOps.Load(path + "LitePlacer.Appsettings");
+            Setting.General_SafeFilesAtClosing = true;
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
@@ -453,52 +454,55 @@ namespace LitePlacer
             Setting.General_CheckForUpdates = CheckForUpdate_checkBox.Checked;
             Setting.General_MuteLogging = DisableLog_checkBox.Checked;
 
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-
-            res = SaveTempCADdata();
-            OK = OK && res;
-
-            res = SaveTempJobData();
-            OK = OK && res;
-
-            res = SettingsOps.Save(Setting, path + "LitePlacer.Appsettings");
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.TapesData_v2", Tapes_dataGridView);
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
-            OK = OK && res;
-
-            res = SaveDataGrid(path + "LitePlacer.NozzlesVisionParameters_v2", NozzlesParameters_dataGridView);
-            OK = OK && res;
-
-            res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData_v2");
-            OK = OK && res;
-
-            res = SaveVideoAlgorithms(path + "LitePlacer.VideoAlgorithms", VideoAlgorithms);
-            OK = OK && res;
-
-            res = BoardSettings.Save(TinyGBoard, path + "LitePlacer.BoardSettings");
-            OK = OK && res;
-
-            if (!OK)
+            if (Setting.General_SafeFilesAtClosing)
             {
-                DialogResult dialogResult = ShowMessageBox(
-                    "some data could not be saved (see log window). Quit anyway?",
-                    "Data save problem", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.No)
+                string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+                int i = path.LastIndexOf('\\');
+                path = path.Remove(i + 1);
+
+                res = SaveTempCADdata();
+                OK = OK && res;
+
+                res = SaveTempJobData();
+                OK = OK && res;
+
+                res = SettingsOps.Save(Setting, path + "LitePlacer.Appsettings");
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.TapesData_v2", Tapes_dataGridView);
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
+                OK = OK && res;
+
+                res = SaveDataGrid(path + "LitePlacer.NozzlesVisionParameters_v2", NozzlesParameters_dataGridView);
+                OK = OK && res;
+
+                res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData_v2");
+                OK = OK && res;
+
+                res = SaveVideoAlgorithms(path + "LitePlacer.VideoAlgorithms", VideoAlgorithms);
+                OK = OK && res;
+
+                res = BoardSettings.Save(TinyGBoard, path + "LitePlacer.BoardSettings");
+                OK = OK && res;
+
+                if (!OK)
                 {
-                    e.Cancel = true;
-                    return;
+                    DialogResult dialogResult = ShowMessageBox(
+                        "some data could not be saved (see log window). Quit anyway?",
+                        "Data save problem", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.No)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
                 }
             }
 
