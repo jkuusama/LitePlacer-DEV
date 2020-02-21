@@ -5534,7 +5534,45 @@ namespace LitePlacer
         // =========================================================================
         #region Machine_Size
 
-        private void SizeXMax_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private bool SetXsize_m(double size)
+        {
+            if (StartingUp)
+            {
+                return true;
+            };
+
+            bool res = Cnc.SetMachineSizeX((int)Math.Round(size));
+            if (!res)
+            {
+                ShowMessageBox(
+                    "The new size was not written to control board. \n\r" +
+                    "Fix the communications and try again.",
+                    "Write failed",
+                    MessageBoxButtons.OK);
+            }
+            return res;
+        }
+
+        private bool SetYsize_m(double size)
+        {
+            if (StartingUp)
+            {
+                return true;
+            };
+
+            bool res = Cnc.SetMachineSizeY((int)Math.Round(size));
+            if (!res)
+            {
+                ShowMessageBox(
+                    "The new size was not written to control board. \n\r" +
+                    "Fix the communications and try again.",
+                    "Write failed",
+                    MessageBoxButtons.OK);
+            }
+            return res;
+        }
+
+    private void SizeXMax_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             SizeXMax_textBox.ForeColor = Color.Red;
             double val;
@@ -5542,9 +5580,16 @@ namespace LitePlacer
             {
                 if (double.TryParse(SizeXMax_textBox.Text.Replace(',', '.'), out val))
                 {
-                    Setting.General_MachineSizeX = val;
-                    SizeXMax_textBox.ForeColor = Color.Black;
-                    DownCamera.SideMarksX = Setting.General_MachineSizeX / 100;
+                    if (Setting.General_MachineSizeX == val)
+                    {
+                        return;
+                    };
+                    if (SetXsize_m(val))
+                    {
+                        Setting.General_MachineSizeX = val;
+                        SizeXMax_textBox.ForeColor = Color.Black;
+                        DownCamera.SideMarksX = Setting.General_MachineSizeX / 100;
+                    }
                 }
             }
         }
@@ -5554,10 +5599,16 @@ namespace LitePlacer
             double val;
             if (double.TryParse(SizeXMax_textBox.Text.Replace(',', '.'), out val))
             {
-                Setting.General_MachineSizeX = val;
                 SizeXMax_textBox.ForeColor = Color.Black;
-                DownCamera.SideMarksX = Setting.General_MachineSizeX / 100;
-
+                if (Setting.General_MachineSizeX == val)
+                {
+                    return;
+                };
+                if (SetXsize_m(val))
+                {
+                     Setting.General_MachineSizeX = val;
+                   DownCamera.SideMarksX = Setting.General_MachineSizeX / 100;
+                }
             }
         }
 
@@ -5569,9 +5620,16 @@ namespace LitePlacer
             {
                 if (double.TryParse(SizeYMax_textBox.Text.Replace(',', '.'), out val))
                 {
-                    Setting.General_MachineSizeY = val;
-                    SizeYMax_textBox.ForeColor = Color.Black;
-                    DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
+                    if (Setting.General_MachineSizeY == val)
+                    {
+                        return;
+                    };
+                    if (SetYsize_m(val))
+                    {
+                        Setting.General_MachineSizeY = val;
+                        SizeYMax_textBox.ForeColor = Color.Black;
+                        DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
+                    }
                 }
             }
         }
@@ -5581,9 +5639,16 @@ namespace LitePlacer
             double val;
             if (double.TryParse(SizeYMax_textBox.Text.Replace(',', '.'), out val))
             {
-                Setting.General_MachineSizeY = val;
                 SizeYMax_textBox.ForeColor = Color.Black;
-                DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
+                if (Setting.General_MachineSizeY == val)
+                {
+                    return;
+                };
+                if (SetYsize_m(val))
+                {
+                    Setting.General_MachineSizeY = val;
+                    DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
+                }
             }
         }
 

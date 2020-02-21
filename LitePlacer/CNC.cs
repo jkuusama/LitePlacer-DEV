@@ -557,6 +557,79 @@ namespace LitePlacer
         // Hardware features: probing, pump, vacuum, motor power
         #region Features
 
+        public bool SetMachineSizeX(int Xsize)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.SetMachineSizeX(Xsize))
+                {
+                    return true;
+                }
+                else
+                {
+                    // RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.SetMachineSizeX(Xsize))
+                {
+                    return true;
+                }
+                else
+                {
+                    // RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.SetMachineSizeX(), unknown board.", KnownColor.DarkRed, true);
+                Connected = false;
+                ErrorState = true;
+                return false;
+            }
+        }
+
+
+        public bool SetMachineSizeY(int Ysize)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.SetMachineSizeY(Ysize))
+                {
+                    return true;
+                }
+                else
+                {
+                    // RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.SetMachineSizeY(Ysize))
+                {
+                    return true;
+                }
+                else
+                {
+                    // RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.SetMachineSizeY(), unknown board.", KnownColor.DarkRed, true);
+                Connected = false;
+                ErrorState = true;
+                return false;
+            }
+        }
+
+        // =======================================
+
         public void DisableZswitches()
         {
             if (Controlboard == ControlBoardType.Duet3)

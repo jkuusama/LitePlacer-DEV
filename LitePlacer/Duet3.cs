@@ -151,6 +151,18 @@ namespace LitePlacer
         // Hardware features: probing, pump, vacuum, motor power
         #region Features
 
+        public bool SetMachineSizeX(int Xsize)
+        {
+            return false;
+        }
+
+        public bool SetMachineSizeY(int Xsize)
+        {
+            return false;
+        }
+
+
+
         public void DisableZswitches()
         {
 

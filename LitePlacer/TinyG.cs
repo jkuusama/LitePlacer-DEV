@@ -357,6 +357,22 @@ namespace LitePlacer
         // Hardware features: probing, pump, vacuum, motor power
         #region Features
 
+        public bool SetMachineSizeX(int Xsize)
+        {
+            bool res = Write_m("{\"xtm\":" + Xsize.ToString(CultureInfo.InvariantCulture) + "}", 100);
+            Thread.Sleep(50);
+            return res;
+        }
+
+        public bool SetMachineSizeY(int Ysize)
+        {
+            bool res = Write_m("{\"ytm\":" + Ysize.ToString(CultureInfo.InvariantCulture) + "}", 100);
+            Thread.Sleep(50);
+            return res;
+        }
+
+
+
         public void DisableZswitches()
         {
             Write_m("{\"zsn\":0}", 100);

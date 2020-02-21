@@ -131,6 +131,8 @@ namespace LitePlacer
 
         public bool ReceivingFrames { get; set; }
 
+        public bool Mirror { get; set; }    // If image is mirrored (On upcam, more logical)
+
         // =================================================================================================
         public void ListResolutions(string MonikerStr)
         {
@@ -494,7 +496,6 @@ namespace LitePlacer
             }
         }
 
-        public bool Mirror { get; set; }                    // If image is mirrored (On upcam, more logical)
         public int Threshold { get; set; }                  // Threshold for all the "draw" functions
         public bool GrayScale { get; set; }                 // If image is converted to grayscale 
         public bool Invert { get; set; }                    // If image is inverted (makes most sense on grayscale, looking for black stuff on light background)
@@ -682,7 +683,7 @@ namespace LitePlacer
 
             if (Mirror)
             {
-                frame = MirrorFunct(frame);
+                frame = MirrorFunct(frame, false, true);
             };
 
             if (DrawBox)
@@ -1691,9 +1692,9 @@ namespace LitePlacer
 
         // ==========================================================================================================
 
-        private Bitmap MirrorFunct(Bitmap frame)
+        private Bitmap MirrorFunct(Bitmap frame, bool X, bool Y)
         {
-            Mirror Mfilter = new Mirror(false, true);  // X, Y
+            Mirror Mfilter = new Mirror(X, Y);
             // apply the MirrFilter
             Mfilter.ApplyInPlace(frame);
             return (frame);

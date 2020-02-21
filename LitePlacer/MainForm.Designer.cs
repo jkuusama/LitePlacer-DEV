@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -705,8 +705,6 @@
             this.LastX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LastY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RotationDirect_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UpCameraMirrorX_checkBox = new System.Windows.Forms.CheckBox();
-            this.UpCameraMirrorY_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1748,8 +1746,6 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.UpCameraMirrorY_checkBox);
-            this.groupBox6.Controls.Add(this.UpCameraMirrorX_checkBox);
             this.groupBox6.Controls.Add(this.UpCamDrawSidemarks_checkBox);
             this.groupBox6.Controls.Add(this.label130);
             this.groupBox6.Controls.Add(this.UpCameraYmmPerPixel_textBox);
@@ -5640,14 +5636,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -8186,28 +8182,6 @@
             this.RotationDirect_Column.Name = "RotationDirect_Column";
             this.RotationDirect_Column.Width = 72;
             // 
-            // UpCameraMirrorX_checkBox
-            // 
-            this.UpCameraMirrorX_checkBox.AutoSize = true;
-            this.UpCameraMirrorX_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraMirrorX_checkBox.Location = new System.Drawing.Point(485, 95);
-            this.UpCameraMirrorX_checkBox.Name = "UpCameraMirrorX_checkBox";
-            this.UpCameraMirrorX_checkBox.Size = new System.Drawing.Size(62, 17);
-            this.UpCameraMirrorX_checkBox.TabIndex = 230;
-            this.UpCameraMirrorX_checkBox.Text = "Mirror X";
-            this.UpCameraMirrorX_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // UpCameraMirrorY_checkBox
-            // 
-            this.UpCameraMirrorY_checkBox.AutoSize = true;
-            this.UpCameraMirrorY_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraMirrorY_checkBox.Location = new System.Drawing.Point(485, 118);
-            this.UpCameraMirrorY_checkBox.Name = "UpCameraMirrorY_checkBox";
-            this.UpCameraMirrorY_checkBox.Size = new System.Drawing.Size(62, 17);
-            this.UpCameraMirrorY_checkBox.TabIndex = 231;
-            this.UpCameraMirrorY_checkBox.Text = "Mirror Y";
-            this.UpCameraMirrorY_checkBox.UseVisualStyleBackColor = true;
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -9027,8 +9001,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastX_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastY_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn RotationDirect_Column;
-        private System.Windows.Forms.CheckBox UpCameraMirrorY_checkBox;
-        private System.Windows.Forms.CheckBox UpCameraMirrorX_checkBox;
     }
 }
 
