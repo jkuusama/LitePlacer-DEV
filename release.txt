@@ -8,8 +8,10 @@ New Features, significant changes
 * All features from the main version included
 * Position validity (homed status) is now checked on operations that causes moves
   or needs valid position
+* Support setup of feeders (fixed pickup position) from areas where camera doesn't reach
 
 Bug Fixes 
 
 * All fixes from main version
+* Editing machine size now changes control board limits
 
