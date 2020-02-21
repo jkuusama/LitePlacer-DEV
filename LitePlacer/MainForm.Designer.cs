@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -113,29 +113,6 @@
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
-            this.SelectButton_Column = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Id_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextPart_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Orientation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Nozzle_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Capacity_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TrayID_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rotation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Type_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Width_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Pitch_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OffsetX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OffsetY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FirstX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FirstY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Z_Pickup_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Z_Place_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Next_X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Next_Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CoordinatesForParts_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.LastX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RotationDirect_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
             this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
             this.PartialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -704,6 +681,32 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.SelectButton_Column = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Id_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextPart_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Orientation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Nozzle_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Capacity_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrayID_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Rotation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Type_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Width_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Pitch_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OffsetX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OffsetY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FirstX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FirstY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Z_Pickup_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Z_Place_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Next_X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Next_Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CoordinatesForParts_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.UseNozzleCoordinates_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.LastX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RotationDirect_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UpCameraMirrorX_checkBox = new System.Windows.Forms.CheckBox();
+            this.UpCameraMirrorY_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -745,6 +748,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IntParameter_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Functions_dataGridView)).BeginInit();
+            this.panel1.SuspendLayout();
             this.Nozzles_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesParameters_dataGridView)).BeginInit();
             this.panel10.SuspendLayout();
@@ -1655,6 +1659,7 @@
             this.Next_X_Column,
             this.Next_Y_Column,
             this.CoordinatesForParts_Column,
+            this.UseNozzleCoordinates_Column,
             this.LastX_Column,
             this.LastY_column,
             this.RotationDirect_Column});
@@ -1670,190 +1675,6 @@
             this.Tapes_dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellValueChanged);
             this.Tapes_dataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.Tapes_dataGridView_CurrentCellDirtyStateChanged);
             this.Tapes_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Tapes_dataGridView_EditingControlShowing);
-            // 
-            // SelectButton_Column
-            // 
-            this.SelectButton_Column.HeaderText = "Select";
-            this.SelectButton_Column.Name = "SelectButton_Column";
-            this.SelectButton_Column.Text = "Reset";
-            this.SelectButton_Column.Width = 43;
-            // 
-            // Id_Column
-            // 
-            this.Id_Column.HeaderText = "ID";
-            this.Id_Column.Name = "Id_Column";
-            this.Id_Column.Width = 43;
-            // 
-            // NextPart_Column
-            // 
-            this.NextPart_Column.HeaderText = "Next";
-            this.NextPart_Column.Name = "NextPart_Column";
-            this.NextPart_Column.Width = 54;
-            // 
-            // Orientation_Column
-            // 
-            this.Orientation_Column.HeaderText = "Dir.";
-            this.Orientation_Column.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.Orientation_Column.Name = "Orientation_Column";
-            this.Orientation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Orientation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Orientation_Column.Width = 48;
-            // 
-            // Nozzle_Column
-            // 
-            this.Nozzle_Column.HeaderText = "Nozzle";
-            this.Nozzle_Column.Name = "Nozzle_Column";
-            this.Nozzle_Column.Width = 64;
-            // 
-            // Capacity_Column
-            // 
-            this.Capacity_Column.HeaderText = "Capacity";
-            this.Capacity_Column.Name = "Capacity_Column";
-            this.Capacity_Column.Visible = false;
-            this.Capacity_Column.Width = 73;
-            // 
-            // TrayID_Column
-            // 
-            this.TrayID_Column.HeaderText = "Tray";
-            this.TrayID_Column.Name = "TrayID_Column";
-            this.TrayID_Column.Width = 53;
-            // 
-            // Rotation_Column
-            // 
-            this.Rotation_Column.HeaderText = "Rot.";
-            this.Rotation_Column.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.Rotation_Column.Name = "Rotation_Column";
-            this.Rotation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Rotation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Rotation_Column.Width = 52;
-            // 
-            // Type_Column
-            // 
-            this.Type_Column.HeaderText = "Type";
-            this.Type_Column.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.Type_Column.Name = "Type_Column";
-            this.Type_Column.Width = 37;
-            // 
-            // Width_Column
-            // 
-            this.Width_Column.HeaderText = "Width";
-            this.Width_Column.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm",
-            "32/4mm",
-            "32/8mm",
-            "32/12mm",
-            "32/16mm",
-            "32/20mm",
-            "32/24mm",
-            "32/28mm",
-            "32/32mm",
-            "custom"});
-            this.Width_Column.Name = "Width_Column";
-            this.Width_Column.Width = 41;
-            // 
-            // Pitch_Column
-            // 
-            this.Pitch_Column.HeaderText = "Pitch";
-            this.Pitch_Column.Name = "Pitch_Column";
-            this.Pitch_Column.Width = 56;
-            // 
-            // OffsetX_Column
-            // 
-            this.OffsetX_Column.HeaderText = "Offset X";
-            this.OffsetX_Column.Name = "OffsetX_Column";
-            this.OffsetX_Column.Width = 65;
-            // 
-            // OffsetY_Column
-            // 
-            this.OffsetY_Column.HeaderText = "Offset Y";
-            this.OffsetY_Column.Name = "OffsetY_Column";
-            this.OffsetY_Column.Width = 65;
-            // 
-            // FirstX_Column
-            // 
-            this.FirstX_Column.HeaderText = "X";
-            this.FirstX_Column.Name = "FirstX_Column";
-            this.FirstX_Column.ReadOnly = true;
-            this.FirstX_Column.Width = 39;
-            // 
-            // FirstY_Column
-            // 
-            this.FirstY_Column.HeaderText = "Y";
-            this.FirstY_Column.Name = "FirstY_Column";
-            this.FirstY_Column.ReadOnly = true;
-            this.FirstY_Column.Width = 39;
-            // 
-            // Z_Pickup_Column
-            // 
-            this.Z_Pickup_Column.HeaderText = "Pickup Z";
-            this.Z_Pickup_Column.Name = "Z_Pickup_Column";
-            this.Z_Pickup_Column.Width = 69;
-            // 
-            // Z_Place_Column
-            // 
-            this.Z_Place_Column.HeaderText = "Place Z";
-            this.Z_Place_Column.Name = "Z_Place_Column";
-            this.Z_Place_Column.Width = 64;
-            // 
-            // Next_X_Column
-            // 
-            this.Next_X_Column.HeaderText = "Next X";
-            this.Next_X_Column.Name = "Next_X_Column";
-            this.Next_X_Column.ReadOnly = true;
-            this.Next_X_Column.Width = 60;
-            // 
-            // Next_Y_Column
-            // 
-            this.Next_Y_Column.HeaderText = "Next Y";
-            this.Next_Y_Column.Name = "Next_Y_Column";
-            this.Next_Y_Column.ReadOnly = true;
-            this.Next_Y_Column.Width = 60;
-            // 
-            // CoordinatesForParts_Column
-            // 
-            this.CoordinatesForParts_Column.HeaderText = "Coordinates for parts";
-            this.CoordinatesForParts_Column.Name = "CoordinatesForParts_Column";
-            this.CoordinatesForParts_Column.Width = 78;
-            // 
-            // LastX_Column
-            // 
-            this.LastX_Column.HeaderText = "Last X";
-            this.LastX_Column.Name = "LastX_Column";
-            this.LastX_Column.Width = 58;
-            // 
-            // LastY_column
-            // 
-            this.LastY_column.HeaderText = "Last Y";
-            this.LastY_column.Name = "LastY_column";
-            this.LastY_column.Width = 58;
-            // 
-            // RotationDirect_Column
-            // 
-            this.RotationDirect_Column.HeaderText = "Rotation";
-            this.RotationDirect_Column.Name = "RotationDirect_Column";
-            this.RotationDirect_Column.Width = 72;
             // 
             // Components_tabPage
             // 
@@ -1927,6 +1748,8 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.UpCameraMirrorY_checkBox);
+            this.groupBox6.Controls.Add(this.UpCameraMirrorX_checkBox);
             this.groupBox6.Controls.Add(this.UpCamDrawSidemarks_checkBox);
             this.groupBox6.Controls.Add(this.label130);
             this.groupBox6.Controls.Add(this.UpCameraYmmPerPixel_textBox);
@@ -5231,6 +5054,7 @@
             this.ManualNeedeChange_button.TabIndex = 72;
             this.ManualNeedeChange_button.Text = "Man. Nozzle change";
             this.ManualNeedeChange_button.UseVisualStyleBackColor = true;
+            this.ManualNeedeChange_button.Visible = false;
             this.ManualNeedeChange_button.Click += new System.EventHandler(this.ManualNozzleChange_button_Click);
             // 
             // ValidMeasurement_checkBox
@@ -5816,14 +5640,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -6051,41 +5875,11 @@
             // 
             // Algorithms_tabPage
             // 
-            this.Algorithms_tabPage.Controls.Add(this.NozzleOffset_label);
-            this.Algorithms_tabPage.Controls.Add(this.label101);
-            this.Algorithms_tabPage.Controls.Add(this.label100);
-            this.Algorithms_tabPage.Controls.Add(this.label55);
             this.Algorithms_tabPage.Controls.Add(this.ZUp_button);
             this.Algorithms_tabPage.Controls.Add(this.ZDown_button);
-            this.Algorithms_tabPage.Controls.Add(this.GotoUpCamPosition_button);
-            this.Algorithms_tabPage.Controls.Add(this.SetUpCamPosition_button);
-            this.Algorithms_tabPage.Controls.Add(this.label99);
-            this.Algorithms_tabPage.Controls.Add(this.label98);
-            this.Algorithms_tabPage.Controls.Add(this.UpcamPositionY_textBox);
-            this.Algorithms_tabPage.Controls.Add(this.UpcamPositionX_textBox);
-            this.Algorithms_tabPage.Controls.Add(this.NozzleOffsetY_textBox);
-            this.Algorithms_tabPage.Controls.Add(this.NozzleOffsetX_textBox);
-            this.Algorithms_tabPage.Controls.Add(this.PickupCenterY_textBox);
-            this.Algorithms_tabPage.Controls.Add(this.PickupCenterX_textBox);
-            this.Algorithms_tabPage.Controls.Add(this.JigY_textBox);
-            this.Algorithms_tabPage.Controls.Add(this.JigX_textBox);
             this.Algorithms_tabPage.Controls.Add(this.label149);
-            this.Algorithms_tabPage.Controls.Add(this.label148);
-            this.Algorithms_tabPage.Controls.Add(this.label146);
-            this.Algorithms_tabPage.Controls.Add(this.label143);
             this.Algorithms_tabPage.Controls.Add(this.Z0toPCB_CamerasTab_label);
             this.Algorithms_tabPage.Controls.Add(this.label120);
-            this.Algorithms_tabPage.Controls.Add(this.Offset2Method_button);
-            this.Algorithms_tabPage.Controls.Add(this.label115);
-            this.Algorithms_tabPage.Controls.Add(this.label114);
-            this.Algorithms_tabPage.Controls.Add(this.SetPickupCenter_button);
-            this.Algorithms_tabPage.Controls.Add(this.SetPCB0_button);
-            this.Algorithms_tabPage.Controls.Add(this.GotoPickupCenter_button);
-            this.Algorithms_tabPage.Controls.Add(this.GotoPCB0_button);
-            this.Algorithms_tabPage.Controls.Add(this.label95);
-            this.Algorithms_tabPage.Controls.Add(this.label96);
-            this.Algorithms_tabPage.Controls.Add(this.label93);
-            this.Algorithms_tabPage.Controls.Add(this.label94);
             this.Algorithms_tabPage.Controls.Add(this.VideoProcessingZguard_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.FunctionExplanation_textBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawDashedCross_checkBox);
@@ -6158,7 +5952,7 @@
             this.NozzleOffset_label.BackColor = System.Drawing.Color.White;
             this.NozzleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NozzleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NozzleOffset_label.Location = new System.Drawing.Point(6, 551);
+            this.NozzleOffset_label.Location = new System.Drawing.Point(3, 61);
             this.NozzleOffset_label.Name = "NozzleOffset_label";
             this.NozzleOffset_label.Size = new System.Drawing.Size(119, 20);
             this.NozzleOffset_label.TabIndex = 281;
@@ -6168,7 +5962,7 @@
             // 
             this.label101.AutoSize = true;
             this.label101.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label101.Location = new System.Drawing.Point(576, 495);
+            this.label101.Location = new System.Drawing.Point(567, 7);
             this.label101.Name = "label101";
             this.label101.Size = new System.Drawing.Size(50, 17);
             this.label101.TabIndex = 301;
@@ -6178,7 +5972,7 @@
             // 
             this.label100.AutoSize = true;
             this.label100.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label100.Location = new System.Drawing.Point(488, 495);
+            this.label100.Location = new System.Drawing.Point(479, 7);
             this.label100.Name = "label100";
             this.label100.Size = new System.Drawing.Size(67, 17);
             this.label100.TabIndex = 300;
@@ -6188,7 +5982,7 @@
             // 
             this.label55.AutoSize = true;
             this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label55.Location = new System.Drawing.Point(388, 495);
+            this.label55.Location = new System.Drawing.Point(379, 7);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(79, 17);
             this.label55.TabIndex = 299;
@@ -6218,7 +6012,7 @@
             // 
             // GotoUpCamPosition_button
             // 
-            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(416, 603);
+            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(407, 115);
             this.GotoUpCamPosition_button.Name = "GotoUpCamPosition_button";
             this.GotoUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
             this.GotoUpCamPosition_button.TabIndex = 288;
@@ -6228,7 +6022,7 @@
             // 
             // SetUpCamPosition_button
             // 
-            this.SetUpCamPosition_button.Location = new System.Drawing.Point(416, 522);
+            this.SetUpCamPosition_button.Location = new System.Drawing.Point(407, 34);
             this.SetUpCamPosition_button.Name = "SetUpCamPosition_button";
             this.SetUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
             this.SetUpCamPosition_button.TabIndex = 287;
@@ -6240,7 +6034,7 @@
             // label99
             // 
             this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(413, 580);
+            this.label99.Location = new System.Drawing.Point(404, 92);
             this.label99.Name = "label99";
             this.label99.Size = new System.Drawing.Size(17, 13);
             this.label99.TabIndex = 286;
@@ -6249,7 +6043,7 @@
             // label98
             // 
             this.label98.AutoSize = true;
-            this.label98.Location = new System.Drawing.Point(413, 554);
+            this.label98.Location = new System.Drawing.Point(404, 66);
             this.label98.Name = "label98";
             this.label98.Size = new System.Drawing.Size(17, 13);
             this.label98.TabIndex = 285;
@@ -6257,7 +6051,7 @@
             // 
             // UpcamPositionY_textBox
             // 
-            this.UpcamPositionY_textBox.Location = new System.Drawing.Point(436, 577);
+            this.UpcamPositionY_textBox.Location = new System.Drawing.Point(427, 89);
             this.UpcamPositionY_textBox.Name = "UpcamPositionY_textBox";
             this.UpcamPositionY_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpcamPositionY_textBox.TabIndex = 284;
@@ -6266,7 +6060,7 @@
             // 
             // UpcamPositionX_textBox
             // 
-            this.UpcamPositionX_textBox.Location = new System.Drawing.Point(436, 551);
+            this.UpcamPositionX_textBox.Location = new System.Drawing.Point(427, 63);
             this.UpcamPositionX_textBox.Name = "UpcamPositionX_textBox";
             this.UpcamPositionX_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpcamPositionX_textBox.TabIndex = 283;
@@ -6275,7 +6069,7 @@
             // 
             // NozzleOffsetY_textBox
             // 
-            this.NozzleOffsetY_textBox.Location = new System.Drawing.Point(117, 595);
+            this.NozzleOffsetY_textBox.Location = new System.Drawing.Point(114, 105);
             this.NozzleOffsetY_textBox.Name = "NozzleOffsetY_textBox";
             this.NozzleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
             this.NozzleOffsetY_textBox.TabIndex = 293;
@@ -6284,7 +6078,7 @@
             // 
             // NozzleOffsetX_textBox
             // 
-            this.NozzleOffsetX_textBox.Location = new System.Drawing.Point(28, 595);
+            this.NozzleOffsetX_textBox.Location = new System.Drawing.Point(25, 105);
             this.NozzleOffsetX_textBox.Name = "NozzleOffsetX_textBox";
             this.NozzleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
             this.NozzleOffsetX_textBox.TabIndex = 292;
@@ -6293,7 +6087,7 @@
             // 
             // PickupCenterY_textBox
             // 
-            this.PickupCenterY_textBox.Location = new System.Drawing.Point(597, 577);
+            this.PickupCenterY_textBox.Location = new System.Drawing.Point(588, 89);
             this.PickupCenterY_textBox.Name = "PickupCenterY_textBox";
             this.PickupCenterY_textBox.Size = new System.Drawing.Size(46, 20);
             this.PickupCenterY_textBox.TabIndex = 274;
@@ -6302,7 +6096,7 @@
             // 
             // PickupCenterX_textBox
             // 
-            this.PickupCenterX_textBox.Location = new System.Drawing.Point(597, 551);
+            this.PickupCenterX_textBox.Location = new System.Drawing.Point(588, 63);
             this.PickupCenterX_textBox.Name = "PickupCenterX_textBox";
             this.PickupCenterX_textBox.Size = new System.Drawing.Size(46, 20);
             this.PickupCenterX_textBox.TabIndex = 273;
@@ -6311,7 +6105,7 @@
             // 
             // JigY_textBox
             // 
-            this.JigY_textBox.Location = new System.Drawing.Point(515, 577);
+            this.JigY_textBox.Location = new System.Drawing.Point(506, 89);
             this.JigY_textBox.Name = "JigY_textBox";
             this.JigY_textBox.Size = new System.Drawing.Size(46, 20);
             this.JigY_textBox.TabIndex = 270;
@@ -6320,7 +6114,7 @@
             // 
             // JigX_textBox
             // 
-            this.JigX_textBox.Location = new System.Drawing.Point(515, 551);
+            this.JigX_textBox.Location = new System.Drawing.Point(506, 63);
             this.JigX_textBox.Name = "JigX_textBox";
             this.JigX_textBox.Size = new System.Drawing.Size(46, 20);
             this.JigX_textBox.TabIndex = 269;
@@ -6339,7 +6133,7 @@
             // label148
             // 
             this.label148.AutoSize = true;
-            this.label148.Location = new System.Drawing.Point(69, 599);
+            this.label148.Location = new System.Drawing.Point(66, 109);
             this.label148.Name = "label148";
             this.label148.Size = new System.Drawing.Size(23, 13);
             this.label148.TabIndex = 297;
@@ -6348,7 +6142,7 @@
             // label146
             // 
             this.label146.AutoSize = true;
-            this.label146.Location = new System.Drawing.Point(94, 599);
+            this.label146.Location = new System.Drawing.Point(91, 109);
             this.label146.Name = "label146";
             this.label146.Size = new System.Drawing.Size(17, 13);
             this.label146.TabIndex = 296;
@@ -6357,7 +6151,7 @@
             // label143
             // 
             this.label143.AutoSize = true;
-            this.label143.Location = new System.Drawing.Point(5, 599);
+            this.label143.Location = new System.Drawing.Point(2, 109);
             this.label143.Name = "label143";
             this.label143.Size = new System.Drawing.Size(17, 13);
             this.label143.TabIndex = 295;
@@ -6383,7 +6177,7 @@
             // 
             // Offset2Method_button
             // 
-            this.Offset2Method_button.Location = new System.Drawing.Point(6, 521);
+            this.Offset2Method_button.Location = new System.Drawing.Point(3, 31);
             this.Offset2Method_button.Name = "Offset2Method_button";
             this.Offset2Method_button.Size = new System.Drawing.Size(75, 23);
             this.Offset2Method_button.TabIndex = 282;
@@ -6396,7 +6190,7 @@
             // 
             this.label115.AutoSize = true;
             this.label115.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label115.Location = new System.Drawing.Point(6, 495);
+            this.label115.Location = new System.Drawing.Point(3, 5);
             this.label115.Name = "label115";
             this.label115.Size = new System.Drawing.Size(96, 17);
             this.label115.TabIndex = 280;
@@ -6405,7 +6199,7 @@
             // label114
             // 
             this.label114.AutoSize = true;
-            this.label114.Location = new System.Drawing.Point(6, 577);
+            this.label114.Location = new System.Drawing.Point(3, 87);
             this.label114.Name = "label114";
             this.label114.Size = new System.Drawing.Size(114, 13);
             this.label114.TabIndex = 279;
@@ -6413,7 +6207,7 @@
             // 
             // SetPickupCenter_button
             // 
-            this.SetPickupCenter_button.Location = new System.Drawing.Point(578, 522);
+            this.SetPickupCenter_button.Location = new System.Drawing.Point(569, 34);
             this.SetPickupCenter_button.Name = "SetPickupCenter_button";
             this.SetPickupCenter_button.Size = new System.Drawing.Size(65, 23);
             this.SetPickupCenter_button.TabIndex = 278;
@@ -6424,7 +6218,7 @@
             // 
             // SetPCB0_button
             // 
-            this.SetPCB0_button.Location = new System.Drawing.Point(496, 522);
+            this.SetPCB0_button.Location = new System.Drawing.Point(487, 34);
             this.SetPCB0_button.Name = "SetPCB0_button";
             this.SetPCB0_button.Size = new System.Drawing.Size(65, 23);
             this.SetPCB0_button.TabIndex = 277;
@@ -6435,7 +6229,7 @@
             // 
             // GotoPickupCenter_button
             // 
-            this.GotoPickupCenter_button.Location = new System.Drawing.Point(579, 603);
+            this.GotoPickupCenter_button.Location = new System.Drawing.Point(570, 115);
             this.GotoPickupCenter_button.Name = "GotoPickupCenter_button";
             this.GotoPickupCenter_button.Size = new System.Drawing.Size(65, 23);
             this.GotoPickupCenter_button.TabIndex = 276;
@@ -6445,7 +6239,7 @@
             // 
             // GotoPCB0_button
             // 
-            this.GotoPCB0_button.Location = new System.Drawing.Point(496, 603);
+            this.GotoPCB0_button.Location = new System.Drawing.Point(487, 115);
             this.GotoPCB0_button.Name = "GotoPCB0_button";
             this.GotoPCB0_button.Size = new System.Drawing.Size(65, 23);
             this.GotoPCB0_button.TabIndex = 275;
@@ -6456,7 +6250,7 @@
             // label95
             // 
             this.label95.AutoSize = true;
-            this.label95.Location = new System.Drawing.Point(574, 580);
+            this.label95.Location = new System.Drawing.Point(565, 92);
             this.label95.Name = "label95";
             this.label95.Size = new System.Drawing.Size(17, 13);
             this.label95.TabIndex = 272;
@@ -6465,7 +6259,7 @@
             // label96
             // 
             this.label96.AutoSize = true;
-            this.label96.Location = new System.Drawing.Point(574, 554);
+            this.label96.Location = new System.Drawing.Point(565, 66);
             this.label96.Name = "label96";
             this.label96.Size = new System.Drawing.Size(17, 13);
             this.label96.TabIndex = 271;
@@ -6474,7 +6268,7 @@
             // label93
             // 
             this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(493, 580);
+            this.label93.Location = new System.Drawing.Point(484, 92);
             this.label93.Name = "label93";
             this.label93.Size = new System.Drawing.Size(17, 13);
             this.label93.TabIndex = 268;
@@ -6483,7 +6277,7 @@
             // label94
             // 
             this.label94.AutoSize = true;
-            this.label94.Location = new System.Drawing.Point(493, 554);
+            this.label94.Location = new System.Drawing.Point(484, 66);
             this.label94.Name = "label94";
             this.label94.Size = new System.Drawing.Size(17, 13);
             this.label94.TabIndex = 267;
@@ -7149,9 +6943,39 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(3, 489);
+            this.panel1.Controls.Add(this.NozzleOffset_label);
+            this.panel1.Controls.Add(this.SetPickupCenter_button);
+            this.panel1.Controls.Add(this.label101);
+            this.panel1.Controls.Add(this.label94);
+            this.panel1.Controls.Add(this.NozzleOffsetY_textBox);
+            this.panel1.Controls.Add(this.label100);
+            this.panel1.Controls.Add(this.NozzleOffsetX_textBox);
+            this.panel1.Controls.Add(this.label93);
+            this.panel1.Controls.Add(this.label55);
+            this.panel1.Controls.Add(this.label148);
+            this.panel1.Controls.Add(this.label96);
+            this.panel1.Controls.Add(this.label146);
+            this.panel1.Controls.Add(this.label95);
+            this.panel1.Controls.Add(this.label143);
+            this.panel1.Controls.Add(this.GotoPCB0_button);
+            this.panel1.Controls.Add(this.GotoUpCamPosition_button);
+            this.panel1.Controls.Add(this.GotoPickupCenter_button);
+            this.panel1.Controls.Add(this.Offset2Method_button);
+            this.panel1.Controls.Add(this.label115);
+            this.panel1.Controls.Add(this.SetUpCamPosition_button);
+            this.panel1.Controls.Add(this.label114);
+            this.panel1.Controls.Add(this.SetPCB0_button);
+            this.panel1.Controls.Add(this.label99);
+            this.panel1.Controls.Add(this.JigX_textBox);
+            this.panel1.Controls.Add(this.label98);
+            this.panel1.Controls.Add(this.JigY_textBox);
+            this.panel1.Controls.Add(this.UpcamPositionY_textBox);
+            this.panel1.Controls.Add(this.PickupCenterX_textBox);
+            this.panel1.Controls.Add(this.UpcamPositionX_textBox);
+            this.panel1.Controls.Add(this.PickupCenterY_textBox);
+            this.panel1.Location = new System.Drawing.Point(6, 489);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(651, 143);
+            this.panel1.Size = new System.Drawing.Size(640, 143);
             this.panel1.TabIndex = 302;
             // 
             // Nozzles_tabPage
@@ -8172,6 +7996,218 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
+            // SelectButton_Column
+            // 
+            this.SelectButton_Column.HeaderText = "Select";
+            this.SelectButton_Column.Name = "SelectButton_Column";
+            this.SelectButton_Column.Text = "Reset";
+            this.SelectButton_Column.Width = 43;
+            // 
+            // Id_Column
+            // 
+            this.Id_Column.HeaderText = "ID";
+            this.Id_Column.Name = "Id_Column";
+            this.Id_Column.Width = 43;
+            // 
+            // NextPart_Column
+            // 
+            this.NextPart_Column.HeaderText = "Next";
+            this.NextPart_Column.Name = "NextPart_Column";
+            this.NextPart_Column.Width = 54;
+            // 
+            // Orientation_Column
+            // 
+            this.Orientation_Column.HeaderText = "Dir.";
+            this.Orientation_Column.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.Orientation_Column.Name = "Orientation_Column";
+            this.Orientation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Orientation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Orientation_Column.Width = 48;
+            // 
+            // Nozzle_Column
+            // 
+            this.Nozzle_Column.HeaderText = "Nozzle";
+            this.Nozzle_Column.Name = "Nozzle_Column";
+            this.Nozzle_Column.Width = 64;
+            // 
+            // Capacity_Column
+            // 
+            this.Capacity_Column.HeaderText = "Capacity";
+            this.Capacity_Column.Name = "Capacity_Column";
+            this.Capacity_Column.Visible = false;
+            this.Capacity_Column.Width = 73;
+            // 
+            // TrayID_Column
+            // 
+            this.TrayID_Column.HeaderText = "Tray";
+            this.TrayID_Column.Name = "TrayID_Column";
+            this.TrayID_Column.Width = 53;
+            // 
+            // Rotation_Column
+            // 
+            this.Rotation_Column.HeaderText = "Rot.";
+            this.Rotation_Column.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.Rotation_Column.Name = "Rotation_Column";
+            this.Rotation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Rotation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Rotation_Column.Width = 52;
+            // 
+            // Type_Column
+            // 
+            this.Type_Column.HeaderText = "Type";
+            this.Type_Column.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.Type_Column.Name = "Type_Column";
+            this.Type_Column.Width = 37;
+            // 
+            // Width_Column
+            // 
+            this.Width_Column.HeaderText = "Width";
+            this.Width_Column.Items.AddRange(new object[] {
+            "8/2mm",
+            "8/4mm",
+            "12/4mm",
+            "12/8mm",
+            "16/4mm",
+            "16/8mm",
+            "16/12mm",
+            "24/4mm",
+            "24/8mm",
+            "24/12mm",
+            "24/16mm",
+            "24/20mm",
+            "32/4mm",
+            "32/8mm",
+            "32/12mm",
+            "32/16mm",
+            "32/20mm",
+            "32/24mm",
+            "32/28mm",
+            "32/32mm",
+            "custom"});
+            this.Width_Column.Name = "Width_Column";
+            this.Width_Column.Width = 41;
+            // 
+            // Pitch_Column
+            // 
+            this.Pitch_Column.HeaderText = "Pitch";
+            this.Pitch_Column.Name = "Pitch_Column";
+            this.Pitch_Column.Width = 56;
+            // 
+            // OffsetX_Column
+            // 
+            this.OffsetX_Column.HeaderText = "Offset X";
+            this.OffsetX_Column.Name = "OffsetX_Column";
+            this.OffsetX_Column.Width = 70;
+            // 
+            // OffsetY_Column
+            // 
+            this.OffsetY_Column.HeaderText = "Offset Y";
+            this.OffsetY_Column.Name = "OffsetY_Column";
+            this.OffsetY_Column.Width = 70;
+            // 
+            // FirstX_Column
+            // 
+            this.FirstX_Column.HeaderText = "X";
+            this.FirstX_Column.Name = "FirstX_Column";
+            this.FirstX_Column.ReadOnly = true;
+            this.FirstX_Column.Width = 39;
+            // 
+            // FirstY_Column
+            // 
+            this.FirstY_Column.HeaderText = "Y";
+            this.FirstY_Column.Name = "FirstY_Column";
+            this.FirstY_Column.ReadOnly = true;
+            this.FirstY_Column.Width = 39;
+            // 
+            // Z_Pickup_Column
+            // 
+            this.Z_Pickup_Column.HeaderText = "Pickup Z";
+            this.Z_Pickup_Column.Name = "Z_Pickup_Column";
+            this.Z_Pickup_Column.Width = 75;
+            // 
+            // Z_Place_Column
+            // 
+            this.Z_Place_Column.HeaderText = "Place Z";
+            this.Z_Place_Column.Name = "Z_Place_Column";
+            this.Z_Place_Column.Width = 69;
+            // 
+            // Next_X_Column
+            // 
+            this.Next_X_Column.HeaderText = "Next X";
+            this.Next_X_Column.Name = "Next_X_Column";
+            this.Next_X_Column.ReadOnly = true;
+            this.Next_X_Column.Width = 64;
+            // 
+            // Next_Y_Column
+            // 
+            this.Next_Y_Column.HeaderText = "Next Y";
+            this.Next_Y_Column.Name = "Next_Y_Column";
+            this.Next_Y_Column.ReadOnly = true;
+            this.Next_Y_Column.Width = 64;
+            // 
+            // CoordinatesForParts_Column
+            // 
+            this.CoordinatesForParts_Column.HeaderText = "Coordinates for parts";
+            this.CoordinatesForParts_Column.Name = "CoordinatesForParts_Column";
+            this.CoordinatesForParts_Column.Width = 78;
+            // 
+            // UseNozzleCoordinates_Column
+            // 
+            this.UseNozzleCoordinates_Column.HeaderText = "Coordinates are for Nozzle";
+            this.UseNozzleCoordinates_Column.Name = "UseNozzleCoordinates_Column";
+            this.UseNozzleCoordinates_Column.Width = 81;
+            // 
+            // LastX_Column
+            // 
+            this.LastX_Column.HeaderText = "Last X";
+            this.LastX_Column.Name = "LastX_Column";
+            this.LastX_Column.Width = 58;
+            // 
+            // LastY_column
+            // 
+            this.LastY_column.HeaderText = "Last Y";
+            this.LastY_column.Name = "LastY_column";
+            this.LastY_column.Width = 58;
+            // 
+            // RotationDirect_Column
+            // 
+            this.RotationDirect_Column.HeaderText = "Rotation";
+            this.RotationDirect_Column.Name = "RotationDirect_Column";
+            this.RotationDirect_Column.Width = 72;
+            // 
+            // UpCameraMirrorX_checkBox
+            // 
+            this.UpCameraMirrorX_checkBox.AutoSize = true;
+            this.UpCameraMirrorX_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraMirrorX_checkBox.Location = new System.Drawing.Point(485, 95);
+            this.UpCameraMirrorX_checkBox.Name = "UpCameraMirrorX_checkBox";
+            this.UpCameraMirrorX_checkBox.Size = new System.Drawing.Size(62, 17);
+            this.UpCameraMirrorX_checkBox.TabIndex = 230;
+            this.UpCameraMirrorX_checkBox.Text = "Mirror X";
+            this.UpCameraMirrorX_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // UpCameraMirrorY_checkBox
+            // 
+            this.UpCameraMirrorY_checkBox.AutoSize = true;
+            this.UpCameraMirrorY_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraMirrorY_checkBox.Location = new System.Drawing.Point(485, 118);
+            this.UpCameraMirrorY_checkBox.Name = "UpCameraMirrorY_checkBox";
+            this.UpCameraMirrorY_checkBox.Size = new System.Drawing.Size(62, 17);
+            this.UpCameraMirrorY_checkBox.TabIndex = 231;
+            this.UpCameraMirrorY_checkBox.Text = "Mirror Y";
+            this.UpCameraMirrorY_checkBox.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -8297,6 +8333,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.IntParameter_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Functions_dataGridView)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.Nozzles_tabPage.ResumeLayout(false);
             this.Nozzles_tabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesParameters_dataGridView)).EndInit();
@@ -8759,29 +8797,6 @@
         private System.Windows.Forms.Label label157;
         private System.Windows.Forms.Button ResetSelectedPlaceZs_button;
         private System.Windows.Forms.Button ResetSelectedZs_button;
-        private System.Windows.Forms.DataGridViewButtonColumn SelectButton_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NextPart_Column;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Orientation_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Nozzle_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Capacity_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TrayID_Column;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Rotation_Column;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Type_Column;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Width_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Pitch_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetX_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetY_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FirstX_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FirstY_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Z_Pickup_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Z_Place_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Next_X_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Next_Y_Column;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn CoordinatesForParts_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastX_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastY_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RotationDirect_Column;
         private System.Windows.Forms.Button ClearPlaced_button;
         private System.Windows.Forms.TextBox Hysteresis_textBox;
         private System.Windows.Forms.Label label136;
@@ -8988,6 +9003,32 @@
         private System.Windows.Forms.Label label94;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.DataGridViewButtonColumn SelectButton_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NextPart_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Orientation_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Nozzle_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Capacity_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TrayID_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Rotation_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Type_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Width_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Pitch_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetX_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OffsetY_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FirstX_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FirstY_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z_Pickup_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z_Place_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Next_X_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Next_Y_Column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn CoordinatesForParts_Column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn UseNozzleCoordinates_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastX_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastY_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RotationDirect_Column;
+        private System.Windows.Forms.CheckBox UpCameraMirrorY_checkBox;
+        private System.Windows.Forms.CheckBox UpCameraMirrorX_checkBox;
     }
 }
 

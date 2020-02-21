@@ -79,6 +79,7 @@
             this.ResetPlacementZ_button = new System.Windows.Forms.Button();
             this.ResetTrayID_button = new System.Windows.Forms.Button();
             this.CoordinatesForParts_checkBox = new System.Windows.Forms.CheckBox();
+            this.UseNozzleCoordinates_checkBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.Nozzle_numericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -404,7 +405,7 @@
             // LastY_label
             // 
             this.LastY_label.AutoSize = true;
-            this.LastY_label.Location = new System.Drawing.Point(67, 261);
+            this.LastY_label.Location = new System.Drawing.Point(67, 293);
             this.LastY_label.Name = "LastY_label";
             this.LastY_label.Size = new System.Drawing.Size(37, 13);
             this.LastY_label.TabIndex = 33;
@@ -414,7 +415,7 @@
             // LastY_textBox
             // 
             this.LastY_textBox.Enabled = false;
-            this.LastY_textBox.Location = new System.Drawing.Point(70, 277);
+            this.LastY_textBox.Location = new System.Drawing.Point(70, 309);
             this.LastY_textBox.Name = "LastY_textBox";
             this.LastY_textBox.Size = new System.Drawing.Size(48, 20);
             this.LastY_textBox.TabIndex = 32;
@@ -424,7 +425,7 @@
             // LastX_label
             // 
             this.LastX_label.AutoSize = true;
-            this.LastX_label.Location = new System.Drawing.Point(13, 261);
+            this.LastX_label.Location = new System.Drawing.Point(13, 293);
             this.LastX_label.Name = "LastX_label";
             this.LastX_label.Size = new System.Drawing.Size(37, 13);
             this.LastX_label.TabIndex = 31;
@@ -434,7 +435,7 @@
             // LastX_textBox
             // 
             this.LastX_textBox.Enabled = false;
-            this.LastX_textBox.Location = new System.Drawing.Point(16, 277);
+            this.LastX_textBox.Location = new System.Drawing.Point(16, 309);
             this.LastX_textBox.Name = "LastX_textBox";
             this.LastX_textBox.Size = new System.Drawing.Size(48, 20);
             this.LastX_textBox.TabIndex = 30;
@@ -517,7 +518,7 @@
             // GetLastPosition_button
             // 
             this.GetLastPosition_button.Enabled = false;
-            this.GetLastPosition_button.Location = new System.Drawing.Point(16, 303);
+            this.GetLastPosition_button.Location = new System.Drawing.Point(16, 335);
             this.GetLastPosition_button.Name = "GetLastPosition_button";
             this.GetLastPosition_button.Size = new System.Drawing.Size(102, 23);
             this.GetLastPosition_button.TabIndex = 38;
@@ -612,17 +613,30 @@
             this.CoordinatesForParts_checkBox.AutoSize = true;
             this.CoordinatesForParts_checkBox.Location = new System.Drawing.Point(16, 241);
             this.CoordinatesForParts_checkBox.Name = "CoordinatesForParts_checkBox";
-            this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(139, 17);
+            this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(141, 17);
             this.CoordinatesForParts_checkBox.TabIndex = 50;
-            this.CoordinatesForParts_checkBox.Text = "Use coordinates directly";
+            this.CoordinatesForParts_checkBox.Text = "Coordinates are for parts";
+            this.toolTip1.SetToolTip(this.CoordinatesForParts_checkBox, "Point camera to parts directly\r\n(Not checked: Camera points to tape hole)");
             this.CoordinatesForParts_checkBox.UseVisualStyleBackColor = true;
             this.CoordinatesForParts_checkBox.CheckedChanged += new System.EventHandler(this.CoordinatesForParts_checkBox_CheckedChanged);
+            // 
+            // UseNozzleCoordinates_checkBox
+            // 
+            this.UseNozzleCoordinates_checkBox.AutoSize = true;
+            this.UseNozzleCoordinates_checkBox.Location = new System.Drawing.Point(16, 264);
+            this.UseNozzleCoordinates_checkBox.Name = "UseNozzleCoordinates_checkBox";
+            this.UseNozzleCoordinates_checkBox.Size = new System.Drawing.Size(148, 17);
+            this.UseNozzleCoordinates_checkBox.TabIndex = 53;
+            this.UseNozzleCoordinates_checkBox.Text = "Coordinates are for nozzle";
+            this.toolTip1.SetToolTip(this.UseNozzleCoordinates_checkBox, "Jog nozzle to the right position, check this box");
+            this.UseNozzleCoordinates_checkBox.UseVisualStyleBackColor = true;
             // 
             // TapeEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(456, 464);
+            this.Controls.Add(this.UseNozzleCoordinates_checkBox);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.RotationDirect_textBox);
             this.Controls.Add(this.CoordinatesForParts_checkBox);
@@ -732,5 +746,6 @@
         private System.Windows.Forms.CheckBox CoordinatesForParts_checkBox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox RotationDirect_textBox;
+        private System.Windows.Forms.CheckBox UseNozzleCoordinates_checkBox;
     }
 }

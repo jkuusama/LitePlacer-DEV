@@ -1091,6 +1091,7 @@ namespace LitePlacer
                             }
                             Tapes_dataGridView.Rows[i].Cells["RotationDirect_Column"].Value = "0.00";
                             Tapes_dataGridView.Rows[i].Cells["CoordinatesForParts_Column"].Value = false;
+                            Tapes_dataGridView.Rows[i].Cells["UseNozzleCoordinates_Column"].Value = false;
                         }
                         LoadingDataGrid = false;
                     }
@@ -1175,6 +1176,7 @@ namespace LitePlacer
                     }
                     Tapes_dataGridView.Rows[i].Cells["RotationDirect_Column"].Value = "0.00";
                     Tapes_dataGridView.Rows[i].Cells["CoordinatesForParts_Column"].Value = false;
+                    Tapes_dataGridView.Rows[i].Cells["UseNozzleCoordinates_Column"].Value = false;
                 }
                 LoadingDataGrid = false;
             }
@@ -8314,6 +8316,19 @@ namespace LitePlacer
             return false;
         }
 
+        public bool UseNozzleCoordinates(int TapeNum)
+        {
+            DataGridViewCheckBoxCell cell = Tapes_dataGridView.Rows[TapeNum].Cells["UseNozzleCoordinates_Column"] as DataGridViewCheckBoxCell;
+            if (cell.Value != null)
+            {
+                if (cell.Value.ToString() == "True")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool FindPartWithDirectCoordinates_m(int TapeNum, out double X, out double Y, out double A, out bool increment)
         {
             X = 0.0;
@@ -8418,6 +8433,7 @@ namespace LitePlacer
             double Y;
             double A;
             bool increment;
+
             if (!FindPartWithDirectCoordinates_m(TapeNum, out X, out Y, out A, out increment))
             {
                 return false;
@@ -8427,9 +8443,19 @@ namespace LitePlacer
                 + ", Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture)
                 + ", A: " + A.ToString("0.000", CultureInfo.InvariantCulture));
 
-            if (!Nozzle.Move_m(X, Y, A))
+            if (UseNozzleCoordinates(TapeNum))
             {
-                return false;
+                if (!CNC_XYA_m(X, Y, A))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (!Nozzle.Move_m(X, Y, A))
+                {
+                    return false;
+                }
             }
             if (!PickUpThis_m(TapeNum))
             {
@@ -10827,6 +10853,7 @@ namespace LitePlacer
             // automatic feeder), orientation does not apply, rotation is used and manually set A correction is also used (it is
             // almost impossible to mount feeders or part holders exactly perpedicular).
             Tapes_dataGridView.Rows[index].Cells["CoordinatesForParts_Column"].Value = false;
+            Tapes_dataGridView.Rows[index].Cells["UseNozzleCoordinates_Column"].Value = false;
             Tapes_dataGridView.Rows[index].Cells["LastX_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[index].Cells["LastY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[index].Cells["RotationDirect_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);

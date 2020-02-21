@@ -203,7 +203,23 @@ namespace LitePlacer
                 EnableLastItems();
             }
 
-            // add videoalgorithms to the election box
+            if (Row.Cells["UseNozzleCoordinates_Column"].Value != null)
+            {
+                if (Row.Cells["UseNozzleCoordinates_Column"].Value.ToString() == "True")
+                {
+                    UseNozzleCoordinates_checkBox.Checked = true;
+                }
+                else
+                {
+                    CoordinatesForParts_checkBox.Checked = false;
+                }
+            }
+            else
+            {
+                CoordinatesForParts_checkBox.Checked = false;
+            }
+
+            // add videoalgorithms to the selection box
             Type_comboBox.Items.Clear();
             string CurrentAlg = Row.Cells["Type_Column"].Value.ToString();
             int CurrentItem = 0;
@@ -253,8 +269,9 @@ namespace LitePlacer
             Row.Cells["FirstY_Column"].Value = FirstY_textBox.Text;
             Row.Cells["Z_Pickup_Column"].Value = PickupZ_textBox.Text;
             Row.Cells["Z_Place_Column"].Value = PlacementZ_textBox.Text;
-            Row.Cells["TrayID_Column"].Value = TrayID_textBox.Text; 
+            Row.Cells["TrayID_Column"].Value = TrayID_textBox.Text;
             Row.Cells["CoordinatesForParts_Column"].Value = CoordinatesForParts_checkBox.Checked;
+            Row.Cells["UseNozzleCoordinates_Column"].Value = UseNozzleCoordinates_checkBox.Checked;
             Row.Cells["RotationDirect_Column"].Value = RotationDirect_textBox.Text;
             Row.Cells["LastX_Column"].Value = LastX_textBox.Text;
             Row.Cells["LastY_Column"].Value = LastY_textBox.Text;

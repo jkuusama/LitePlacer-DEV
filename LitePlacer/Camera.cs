@@ -1693,7 +1693,7 @@ namespace LitePlacer
 
         private Bitmap MirrorFunct(Bitmap frame)
         {
-            Mirror Mfilter = new Mirror(false, true);
+            Mirror Mfilter = new Mirror(false, true);  // X, Y
             // apply the MirrFilter
             Mfilter.ApplyInPlace(frame);
             return (frame);
