@@ -74,12 +74,12 @@
             this.GetPlacementZ_button = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.RotationDirect_textBox = new System.Windows.Forms.TextBox();
+            this.CoordinatesForParts_checkBox = new System.Windows.Forms.CheckBox();
+            this.UseNozzleCoordinates_checkBox = new System.Windows.Forms.CheckBox();
             this.TapeEditCancel_button = new System.Windows.Forms.Button();
             this.ResetPickupZ_button = new System.Windows.Forms.Button();
             this.ResetPlacementZ_button = new System.Windows.Forms.Button();
             this.ResetTrayID_button = new System.Windows.Forms.Button();
-            this.CoordinatesForParts_checkBox = new System.Windows.Forms.CheckBox();
-            this.UseNozzleCoordinates_checkBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.Nozzle_numericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -192,8 +192,7 @@
             this.TapePitch_textBox.Name = "TapePitch_textBox";
             this.TapePitch_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapePitch_textBox.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.TapePitch_textBox, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
-        " part holder or somethign like that,\r\nyou can set a non-standard measures here.");
+            this.toolTip1.SetToolTip(this.TapePitch_textBox, resources.GetString("TapePitch_textBox.ToolTip"));
             this.TapePitch_textBox.TextChanged += new System.EventHandler(this.TapePitch_textBox_TextChanged);
             // 
             // label5
@@ -212,11 +211,10 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(16, 100);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 13);
+            this.label6.Size = new System.Drawing.Size(52, 13);
             this.label6.TabIndex = 13;
-            this.label6.Text = "Part Pitch";
-            this.toolTip1.SetToolTip(this.label6, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
-        " part holder or somethign like that,\r\nyou can set a non-standard measures here.");
+            this.label6.Text = "Part pitch";
+            this.toolTip1.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
             // 
             // Nozzle_numericUpDown
             // 
@@ -305,6 +303,7 @@
             this.Capacity_textBox.Name = "Capacity_textBox";
             this.Capacity_textBox.Size = new System.Drawing.Size(48, 20);
             this.Capacity_textBox.TabIndex = 20;
+            this.Capacity_textBox.Text = "1";
             this.toolTip1.SetToolTip(this.Capacity_textBox, "How many parts on a strip\r\n0: You are prompted to place a part at the location\r\n<" +
         "0: Infinite (feeder)");
             this.Capacity_textBox.Visible = false;
@@ -333,7 +332,7 @@
             this.Type_comboBox.Name = "Type_comboBox";
             this.Type_comboBox.Size = new System.Drawing.Size(114, 21);
             this.Type_comboBox.TabIndex = 22;
-            this.toolTip1.SetToolTip(this.Type_comboBox, "What optical filter set is used");
+            this.toolTip1.SetToolTip(this.Type_comboBox, "What vision algorithm is used");
             // 
             // label11
             // 
@@ -361,6 +360,7 @@
             this.NextPart_textBox.Name = "NextPart_textBox";
             this.NextPart_textBox.Size = new System.Drawing.Size(48, 20);
             this.NextPart_textBox.TabIndex = 24;
+            this.NextPart_textBox.Text = "1";
             this.toolTip1.SetToolTip(this.NextPart_textBox, "Number of next part used for placement");
             this.NextPart_textBox.TextChanged += new System.EventHandler(this.NextPart_textBox_TextChanged);
             // 
@@ -502,7 +502,7 @@
             this.TrayID_textBox.Name = "TrayID_textBox";
             this.TrayID_textBox.Size = new System.Drawing.Size(100, 20);
             this.TrayID_textBox.TabIndex = 47;
-            this.toolTip1.SetToolTip(this.TrayID_textBox, "Name of the tape (ex: 0805, 10k)");
+            this.toolTip1.SetToolTip(this.TrayID_textBox, "Optional");
             // 
             // GetFirstPosition_button
             // 
@@ -534,7 +534,7 @@
             this.GetPickupZ_button.Size = new System.Drawing.Size(47, 23);
             this.GetPickupZ_button.TabIndex = 44;
             this.GetPickupZ_button.Text = "Get";
-            this.toolTip1.SetToolTip(this.GetPickupZ_button, "move current Z position to the boxes");
+            this.toolTip1.SetToolTip(this.GetPickupZ_button, "move current Z position to the box");
             this.GetPickupZ_button.UseVisualStyleBackColor = true;
             this.GetPickupZ_button.Click += new System.EventHandler(this.GetPickupZ_button_Click);
             // 
@@ -545,7 +545,7 @@
             this.GetPlacementZ_button.Size = new System.Drawing.Size(47, 23);
             this.GetPlacementZ_button.TabIndex = 46;
             this.GetPlacementZ_button.Text = "Get";
-            this.toolTip1.SetToolTip(this.GetPlacementZ_button, "move current Z position to the boxes");
+            this.toolTip1.SetToolTip(this.GetPlacementZ_button, "move current Z position to the box");
             this.GetPlacementZ_button.UseVisualStyleBackColor = true;
             this.GetPlacementZ_button.Click += new System.EventHandler(this.GetPlacementZ_button_Click);
             // 
@@ -565,8 +565,35 @@
             this.RotationDirect_textBox.Name = "RotationDirect_textBox";
             this.RotationDirect_textBox.Size = new System.Drawing.Size(48, 20);
             this.RotationDirect_textBox.TabIndex = 51;
+            this.RotationDirect_textBox.Text = "0.0";
             this.toolTip1.SetToolTip(this.RotationDirect_textBox, "Location of last hole/alingment mark/part");
             this.RotationDirect_textBox.TextChanged += new System.EventHandler(this.ACorrection_textBox_TextChanged);
+            // 
+            // CoordinatesForParts_checkBox
+            // 
+            this.CoordinatesForParts_checkBox.AutoSize = true;
+            this.CoordinatesForParts_checkBox.Location = new System.Drawing.Point(16, 241);
+            this.CoordinatesForParts_checkBox.Name = "CoordinatesForParts_checkBox";
+            this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(141, 17);
+            this.CoordinatesForParts_checkBox.TabIndex = 50;
+            this.CoordinatesForParts_checkBox.Text = "Coordinates are for parts";
+            this.toolTip1.SetToolTip(this.CoordinatesForParts_checkBox, "Parts are picked from position shown in camera view,\r\nvision regocnition is not u" +
+        "sed");
+            this.CoordinatesForParts_checkBox.UseVisualStyleBackColor = true;
+            this.CoordinatesForParts_checkBox.CheckedChanged += new System.EventHandler(this.CoordinatesForParts_checkBox_CheckedChanged);
+            // 
+            // UseNozzleCoordinates_checkBox
+            // 
+            this.UseNozzleCoordinates_checkBox.AutoSize = true;
+            this.UseNozzleCoordinates_checkBox.Location = new System.Drawing.Point(16, 264);
+            this.UseNozzleCoordinates_checkBox.Name = "UseNozzleCoordinates_checkBox";
+            this.UseNozzleCoordinates_checkBox.Size = new System.Drawing.Size(148, 17);
+            this.UseNozzleCoordinates_checkBox.TabIndex = 53;
+            this.UseNozzleCoordinates_checkBox.Text = "Coordinates are for nozzle";
+            this.toolTip1.SetToolTip(this.UseNozzleCoordinates_checkBox, "To pck up from the current nozzle position: \r\nJog nozzle to the right position, c" +
+        "heck this box\r\nTo use feeders (pick up always from same spot),\r\nset Part Pitch t" +
+        "o 0.");
+            this.UseNozzleCoordinates_checkBox.UseVisualStyleBackColor = true;
             // 
             // TapeEditCancel_button
             // 
@@ -607,29 +634,6 @@
             this.ResetTrayID_button.Text = "Reset";
             this.ResetTrayID_button.UseVisualStyleBackColor = true;
             this.ResetTrayID_button.Click += new System.EventHandler(this.ResetTrayID_button_Click);
-            // 
-            // CoordinatesForParts_checkBox
-            // 
-            this.CoordinatesForParts_checkBox.AutoSize = true;
-            this.CoordinatesForParts_checkBox.Location = new System.Drawing.Point(16, 241);
-            this.CoordinatesForParts_checkBox.Name = "CoordinatesForParts_checkBox";
-            this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(141, 17);
-            this.CoordinatesForParts_checkBox.TabIndex = 50;
-            this.CoordinatesForParts_checkBox.Text = "Coordinates are for parts";
-            this.toolTip1.SetToolTip(this.CoordinatesForParts_checkBox, "Point camera to parts directly\r\n(Not checked: Camera points to tape hole)");
-            this.CoordinatesForParts_checkBox.UseVisualStyleBackColor = true;
-            this.CoordinatesForParts_checkBox.CheckedChanged += new System.EventHandler(this.CoordinatesForParts_checkBox_CheckedChanged);
-            // 
-            // UseNozzleCoordinates_checkBox
-            // 
-            this.UseNozzleCoordinates_checkBox.AutoSize = true;
-            this.UseNozzleCoordinates_checkBox.Location = new System.Drawing.Point(16, 264);
-            this.UseNozzleCoordinates_checkBox.Name = "UseNozzleCoordinates_checkBox";
-            this.UseNozzleCoordinates_checkBox.Size = new System.Drawing.Size(148, 17);
-            this.UseNozzleCoordinates_checkBox.TabIndex = 53;
-            this.UseNozzleCoordinates_checkBox.Text = "Coordinates are for nozzle";
-            this.toolTip1.SetToolTip(this.UseNozzleCoordinates_checkBox, "Jog nozzle to the right position, check this box");
-            this.UseNozzleCoordinates_checkBox.UseVisualStyleBackColor = true;
             // 
             // TapeEditForm
             // 

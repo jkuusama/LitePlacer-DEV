@@ -248,31 +248,113 @@ namespace LitePlacer
             GetLastPosition_button.Enabled = CoordinatesForParts_checkBox.Checked;
             LastX_label.Enabled = CoordinatesForParts_checkBox.Checked;
             LastY_label.Enabled = CoordinatesForParts_checkBox.Checked;
-            Cam.DrawGrid = CoordinatesForParts_checkBox.Checked;
+            // Cam.DrawGrid = CoordinatesForParts_checkBox.Checked;
         }
 
         // =================================================================================
+        private void ValidateError(string item)
+        {
+            MainForm.ShowMessageBox(
+                "Invalid data at " + item,
+                "Data error",
+                MessageBoxButtons.OK);
+
+        }
+
         private void TapeEditOK_button_Click(object sender, EventArgs e)
         {
+            // Check that everythign has valid data
+            if (String.IsNullOrWhiteSpace(ID_textBox.Text))
+            {
+                ValidateError("ID");
+                return;
+            }
+            if (!ValidateInt(NextPart_textBox))
+            {
+                ValidateError("Next part");
+                return;
+            }
+            if (!ValidateInt(Capacity_textBox))
+            {
+                ValidateError("Capacity");
+                return;
+            }
+            if (!ValidateDouble(TapePitch_textBox))
+            {
+                ValidateError("Part pitch");
+                return;
+            }
+            if (!ValidateDouble(TapeOffsetX_textBox))
+            {
+                ValidateError("Offset X");
+                return;
+            }
+            if (!ValidateDouble(TapeOffsetY_textBox))
+            {
+                ValidateError("Offset Y");
+                return;
+            }
+            if (!ValidateDouble(FirstX_textBox))
+            {
+                ValidateError("First X");
+                return;
+            }
+            if (!ValidateDouble(FirstY_textBox))
+            {
+                ValidateError("First Y");
+                return;
+            }
+            if (!ValidateDouble(RotationDirect_textBox))
+            {
+                ValidateError("Rotation");
+                return;
+            }
+            if (PickupZ_textBox.Text != "--")
+            {
+                if (!ValidateDouble(PickupZ_textBox))
+                {
+                    ValidateError("Pickup Z");
+                    return;
+                }
+            }
+            if (PlacementZ_textBox.Text != "--")
+            {
+                if (!ValidateDouble(PlacementZ_textBox))
+                {
+                    ValidateError("Placement Z");
+                    return;
+                }
+            }
+            if (!ValidateDouble(LastX_textBox) && LastX_textBox.Enabled)
+            {
+                ValidateError("Last X");
+                return;
+            }
+            if (!ValidateDouble(LastY_textBox) && LastY_textBox.Enabled)
+            {
+                ValidateError("Last Y");
+                return;
+            }
+            // Ok, we can close
             Row.Cells["Id_Column"].Value = ID_textBox.Text;
-            Row.Cells["Rotation_Column"].Value = TapeRotation_comboBox.SelectedItem;
             Row.Cells["Orientation_Column"].Value = TapeOrientation_comboBox.SelectedItem;
+            Row.Cells["Rotation_Column"].Value = TapeRotation_comboBox.SelectedItem;
             Row.Cells["Nozzle_Column"].Value = Nozzle_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
+            Row.Cells["NextPart_Column"].Value = NextPart_textBox.Text;
+            Row.Cells["Capacity_Column"].Value = Capacity_textBox.Text;
             Row.Cells["Width_Column"].Value = TapeWidth_comboBox.Text;
+            Row.Cells["Type_Column"].Value = Type_comboBox.Text; 
+            Row.Cells["TrayID_Column"].Value = TrayID_textBox.Text;
             Row.Cells["Pitch_Column"].Value = TapePitch_textBox.Text;
             Row.Cells["OffsetX_Column"].Value = TapeOffsetX_textBox.Text;
             Row.Cells["OffsetY_Column"].Value = TapeOffsetY_textBox.Text;
-            Row.Cells["Capacity_Column"].Value = Capacity_textBox.Text;
-            Row.Cells["Type_Column"].Value = Type_comboBox.Text; 
-            Row.Cells["NextPart_Column"].Value = NextPart_textBox.Text;
             Row.Cells["FirstX_Column"].Value = FirstX_textBox.Text;
             Row.Cells["FirstY_Column"].Value = FirstY_textBox.Text;
+            Row.Cells["RotationDirect_Column"].Value = RotationDirect_textBox.Text;
             Row.Cells["Z_Pickup_Column"].Value = PickupZ_textBox.Text;
             Row.Cells["Z_Place_Column"].Value = PlacementZ_textBox.Text;
-            Row.Cells["TrayID_Column"].Value = TrayID_textBox.Text;
             Row.Cells["CoordinatesForParts_Column"].Value = CoordinatesForParts_checkBox.Checked;
             Row.Cells["UseNozzleCoordinates_Column"].Value = UseNozzleCoordinates_checkBox.Checked;
-            Row.Cells["RotationDirect_Column"].Value = RotationDirect_textBox.Text;
             Row.Cells["LastX_Column"].Value = LastX_textBox.Text;
             Row.Cells["LastY_Column"].Value = LastY_textBox.Text;
             MainForm.Update_GridView(TapesDataGrid);
@@ -313,29 +395,33 @@ namespace LitePlacer
             TapePitch_textBox.ForeColor = Color.Black;
         }
 
-        private void ValidateDouble(TextBox box)
+        private bool ValidateDouble(TextBox box)
         {
             double val;
             if (double.TryParse(box.Text.Replace(',', '.'), out val))
             {
                 box.ForeColor = Color.Black;
+                return true;
             }
             else
             {
                 box.ForeColor = Color.Red;
+                return false;
             }
         }
 
-        private void ValidateInt(TextBox box)
+        private bool ValidateInt(TextBox box)
         {
             int val;
             if (int.TryParse(box.Text, out val))
             {
                 box.ForeColor = Color.Black;
+                return true;
             }
             else
             {
                 box.ForeColor = Color.Red;
+                return false;
             }
         }
 
