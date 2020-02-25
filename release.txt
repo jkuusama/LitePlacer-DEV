@@ -14,4 +14,5 @@ Bug Fixes
 
 * All fixes from main version
 * Editing machine size now changes control board limits
+* Tape data validity is checked before exit from tape setup dialog
 
