@@ -30,8 +30,8 @@ namespace LitePlacer
 
         public bool CheckIdentity()
         {
-            string resp;
-            resp = ReadLineDirectly("M115");
+            Write_m("M115");
+            string resp = ReadLine();
             if (resp.Contains("Duet 3"))
             {
                 MainForm.DisplayText("Duet 3 board found.");
@@ -47,40 +47,120 @@ namespace LitePlacer
         }
 
 
-        public string ReadLineDirectly(string command)
+        // ===================================================================
+        // Read & write
+        // ===================================================================
+
+        private bool LineAvailable = false;
+        private string ReceivedLine = "";
+
+        // so that we don't need to write lock... so many times
+        private void ClearReceivedLine()
         {
-            return "";
+            lock (ReceivedLine)
+            {
+                ReceivedLine = "";
+            }
+        }
+
+        // ===================================================================
+        // Write_m
+        // Normal write, waits until there is response available
+
+        public bool Write_m(string cmd, int Timeout = 250)
+        {
+            if (!Com.IsOpen)
+            {
+                MainForm.DisplayText("###" + cmd + " discarded, com not open");
+                ClearReceivedLine();
+                return false;
+            }
+            if (Cnc.ErrorState)
+            {
+                MainForm.DisplayText("###" + cmd + " discarded, error state on");
+                ClearReceivedLine();
+                return false;
+            }
+
+            LineAvailable = false;
+            Timeout = Timeout / 2;
+            int i = 0;
+            bool WriteOk = Com.Write(cmd);
+            while (!LineAvailable)
+            {
+                Thread.Sleep(2);
+                Application.DoEvents();
+                i++;
+                if (i > Timeout)
+                {
+                    MainForm.ShowMessageBox(
+                        "Duet3.Write_m: Timeout on command " + cmd,
+                        "Timeout",
+                        MessageBoxButtons.OK);
+                    ClearReceivedLine();
+                    return false;
+                }
+            }
+            return WriteOk;
         }
 
 
-        public bool Write_m(string command, int Timeout = 250)
+        // ===================================================================
+        // ReadLine
+        // Normal read, assumes there is response available
+        public string ReadLine()
         {
-            MainForm.DisplayText("Duet3 write not implemented!***", KnownColor.DarkRed, true);
-            return false;
+            string line;
+            lock (ReceivedLine)
+            {
+                line = ReceivedLine;
+            }
+            return line;
         }
 
 
+        // ===================================================================
 
-        // For operations that cause conflicts with event firings or don't give response
+        public void LineReceived(string line)
+        {
+            // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
+            MainForm.DisplayText("<== " + line);
+            if (line == "ok\n")
+            {
+                return;
+            }
+            lock (ReceivedLine)
+            {
+                ReceivedLine = line;
+                LineAvailable = true;
+            }
+        }
+
+
+        // ===================================================================
+        // For operations that don't give response
         // Caller does waiting, if needed.
         public bool RawWrite(string command)
         {
-
-            return false;
+            if (!Com.IsOpen)
+            {
+                MainForm.DisplayText("###" + command + " discarded, com not open");
+                return false;
+            }
+            if (Cnc.ErrorState)
+            {
+                MainForm.DisplayText("###" + command + " discarded, error state on");
+                return false;
+            }
+            return Com.Write(command);
         }
 
-
-        // Write, that doesn't care what we think of the communication link status
-        public void ForceWrite(string command)
-        {
-            Com.Write(command);
-        }
 
         #endregion Communications
 
-        // =================================================================================
-        // Movement, position:
-        #region Movement
+            // =================================================================================
+            // Movement, position:
+            #region Movement
 
         public void SetPosition(string Xstr, string Ystr, string Zstr, string Astr)
         {
@@ -290,52 +370,6 @@ namespace LitePlacer
 
         #endregion Features
 
-        // =================================================================================
-        // Movement
 
-
-        // ===============================
-        // Read single line:
-
-        private bool LineWanted = false;
-        private string LineOut;
-
-        public bool ReadLine(out string line, int TimeOut)
-        {
-            LineWanted = true;
-            TimeOut = TimeOut / 5;
-            while (LineWanted)
-            {
-                Thread.Sleep(5);
-                Application.DoEvents();
-                TimeOut--;
-                if (TimeOut < 0)
-                {
-                    LineWanted = false;
-                    line = "";
-                    return false;
-                }
-            }
-            line = LineOut;
-            return true;
-        }
-
-
-
-        public void InterpretLine(string line)
-        {
-            // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
-            MainForm.DisplayText("<== " + line);
-
-            // In some cases, the caller wants to look at the line directly:
-            if (LineWanted)
-            {
-                LineOut = line;
-                LineWanted = false;
-                return;
-            }
-
-
-        }
     }
 }

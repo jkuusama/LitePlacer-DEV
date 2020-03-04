@@ -330,7 +330,7 @@ namespace LitePlacer
         {
             if (Controlboard == ControlBoardType.Duet3)
             {
-                Duet3.InterpretLine(line);
+                Duet3.LineReceived(line);
             }
             else if (Controlboard == ControlBoardType.TinyG)
             {
@@ -534,22 +534,14 @@ namespace LitePlacer
 
 
 
-        // Write, that doesn't care what we think of the communication link status
+        // ===================================================================
+        // Write, that doesn't care what we think of the board or communication link status
         public void ForceWrite(string command)
         {
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                Duet3.ForceWrite(command);
-            }
-            else if (Controlboard == ControlBoardType.TinyG)
-            {
-                TinyG.ForceWrite(command);
-            }
-            else
-            {
-                MainForm.DisplayText("*** Cnc.ForceWrite(), unknown board.", KnownColor.DarkRed, true);
-            }
+            Com.Write(command);
         }
+
+
 
         #endregion Communications
 

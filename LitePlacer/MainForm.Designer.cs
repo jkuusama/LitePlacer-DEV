@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -113,6 +113,30 @@
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
             this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
+            this.SelectButton_Column = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Id_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NextPart_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Orientation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Nozzle_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Capacity_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrayID_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Rotation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Type_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Width_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Pitch_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OffsetX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OffsetY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FirstX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FirstY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Z_Pickup_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Z_Place_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Next_X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Next_Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CoordinatesForParts_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.UseNozzleCoordinates_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.LastX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RotationDirect_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
             this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
             this.PartialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -192,7 +216,7 @@
             this.MoveTimeout_textBox = new System.Windows.Forms.TextBox();
             this.label50 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.Motors_tabControl = new System.Windows.Forms.TabControl();
+            this.TinyGMotors_tabControl = new System.Windows.Forms.TabControl();
             this.X_tabPage = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tr1_textBox = new System.Windows.Forms.TextBox();
@@ -486,41 +510,11 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
-            this.NozzleOffset_label = new System.Windows.Forms.Label();
-            this.label101 = new System.Windows.Forms.Label();
-            this.label100 = new System.Windows.Forms.Label();
-            this.label55 = new System.Windows.Forms.Label();
             this.ZUp_button = new System.Windows.Forms.Button();
             this.ZDown_button = new System.Windows.Forms.Button();
-            this.GotoUpCamPosition_button = new System.Windows.Forms.Button();
-            this.SetUpCamPosition_button = new System.Windows.Forms.Button();
-            this.label99 = new System.Windows.Forms.Label();
-            this.label98 = new System.Windows.Forms.Label();
-            this.UpcamPositionY_textBox = new System.Windows.Forms.TextBox();
-            this.UpcamPositionX_textBox = new System.Windows.Forms.TextBox();
-            this.NozzleOffsetY_textBox = new System.Windows.Forms.TextBox();
-            this.NozzleOffsetX_textBox = new System.Windows.Forms.TextBox();
-            this.PickupCenterY_textBox = new System.Windows.Forms.TextBox();
-            this.PickupCenterX_textBox = new System.Windows.Forms.TextBox();
-            this.JigY_textBox = new System.Windows.Forms.TextBox();
-            this.JigX_textBox = new System.Windows.Forms.TextBox();
             this.label149 = new System.Windows.Forms.Label();
-            this.label148 = new System.Windows.Forms.Label();
-            this.label146 = new System.Windows.Forms.Label();
-            this.label143 = new System.Windows.Forms.Label();
             this.Z0toPCB_CamerasTab_label = new System.Windows.Forms.Label();
             this.label120 = new System.Windows.Forms.Label();
-            this.Offset2Method_button = new System.Windows.Forms.Button();
-            this.label115 = new System.Windows.Forms.Label();
-            this.label114 = new System.Windows.Forms.Label();
-            this.SetPickupCenter_button = new System.Windows.Forms.Button();
-            this.SetPCB0_button = new System.Windows.Forms.Button();
-            this.GotoPickupCenter_button = new System.Windows.Forms.Button();
-            this.GotoPCB0_button = new System.Windows.Forms.Button();
-            this.label95 = new System.Windows.Forms.Label();
-            this.label96 = new System.Windows.Forms.Label();
-            this.label93 = new System.Windows.Forms.Label();
-            this.label94 = new System.Windows.Forms.Label();
             this.VideoProcessingZguard_checkBox = new System.Windows.Forms.CheckBox();
             this.FunctionExplanation_textBox = new System.Windows.Forms.TextBox();
             this.DrawDashedCross_checkBox = new System.Windows.Forms.CheckBox();
@@ -583,6 +577,36 @@
             this.ColorHelp_label = new System.Windows.Forms.Label();
             this.Color_Box = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.NozzleOffset_label = new System.Windows.Forms.Label();
+            this.SetPickupCenter_button = new System.Windows.Forms.Button();
+            this.label101 = new System.Windows.Forms.Label();
+            this.label94 = new System.Windows.Forms.Label();
+            this.NozzleOffsetY_textBox = new System.Windows.Forms.TextBox();
+            this.label100 = new System.Windows.Forms.Label();
+            this.NozzleOffsetX_textBox = new System.Windows.Forms.TextBox();
+            this.label93 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.label148 = new System.Windows.Forms.Label();
+            this.label96 = new System.Windows.Forms.Label();
+            this.label146 = new System.Windows.Forms.Label();
+            this.label95 = new System.Windows.Forms.Label();
+            this.label143 = new System.Windows.Forms.Label();
+            this.GotoPCB0_button = new System.Windows.Forms.Button();
+            this.GotoUpCamPosition_button = new System.Windows.Forms.Button();
+            this.GotoPickupCenter_button = new System.Windows.Forms.Button();
+            this.Offset2Method_button = new System.Windows.Forms.Button();
+            this.label115 = new System.Windows.Forms.Label();
+            this.SetUpCamPosition_button = new System.Windows.Forms.Button();
+            this.label114 = new System.Windows.Forms.Label();
+            this.SetPCB0_button = new System.Windows.Forms.Button();
+            this.label99 = new System.Windows.Forms.Label();
+            this.JigX_textBox = new System.Windows.Forms.TextBox();
+            this.label98 = new System.Windows.Forms.Label();
+            this.JigY_textBox = new System.Windows.Forms.TextBox();
+            this.UpcamPositionY_textBox = new System.Windows.Forms.TextBox();
+            this.PickupCenterX_textBox = new System.Windows.Forms.TextBox();
+            this.UpcamPositionX_textBox = new System.Windows.Forms.TextBox();
+            this.PickupCenterY_textBox = new System.Windows.Forms.TextBox();
             this.Nozzles_tabPage = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.DefaultNozzle_label = new System.Windows.Forms.Label();
@@ -681,30 +705,13 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.SelectButton_Column = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Id_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NextPart_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Orientation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Nozzle_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Capacity_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TrayID_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rotation_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Type_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Width_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Pitch_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OffsetX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OffsetY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FirstX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FirstY_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Z_Pickup_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Z_Place_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Next_X_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Next_Y_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CoordinatesForParts_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.UseNozzleCoordinates_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.LastX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RotationDirect_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label153 = new System.Windows.Forms.Label();
+            this.label147 = new System.Windows.Forms.Label();
+            this.label154 = new System.Windows.Forms.Label();
+            this.label177 = new System.Windows.Forms.Label();
+            this.label178 = new System.Windows.Forms.Label();
+            this.label179 = new System.Windows.Forms.Label();
+            this.label180 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -716,7 +723,7 @@
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Temp_dataGridView)).BeginInit();
             this.tabPageBasicSetup.SuspendLayout();
-            this.Motors_tabControl.SuspendLayout();
+            this.TinyGMotors_tabControl.SuspendLayout();
             this.X_tabPage.SuspendLayout();
             this.panel4.SuspendLayout();
             this.Y_tabPage.SuspendLayout();
@@ -1674,6 +1681,196 @@
             this.Tapes_dataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.Tapes_dataGridView_CurrentCellDirtyStateChanged);
             this.Tapes_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Tapes_dataGridView_EditingControlShowing);
             // 
+            // SelectButton_Column
+            // 
+            this.SelectButton_Column.HeaderText = "Select";
+            this.SelectButton_Column.Name = "SelectButton_Column";
+            this.SelectButton_Column.Text = "Reset";
+            this.SelectButton_Column.Width = 43;
+            // 
+            // Id_Column
+            // 
+            this.Id_Column.HeaderText = "ID";
+            this.Id_Column.Name = "Id_Column";
+            this.Id_Column.Width = 43;
+            // 
+            // NextPart_Column
+            // 
+            this.NextPart_Column.HeaderText = "Next";
+            this.NextPart_Column.Name = "NextPart_Column";
+            this.NextPart_Column.Width = 54;
+            // 
+            // Orientation_Column
+            // 
+            this.Orientation_Column.HeaderText = "Dir.";
+            this.Orientation_Column.Items.AddRange(new object[] {
+            "+X",
+            "-X",
+            "+Y",
+            "-Y"});
+            this.Orientation_Column.Name = "Orientation_Column";
+            this.Orientation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Orientation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Orientation_Column.Width = 48;
+            // 
+            // Nozzle_Column
+            // 
+            this.Nozzle_Column.HeaderText = "Nozzle";
+            this.Nozzle_Column.Name = "Nozzle_Column";
+            this.Nozzle_Column.Width = 64;
+            // 
+            // Capacity_Column
+            // 
+            this.Capacity_Column.HeaderText = "Capacity";
+            this.Capacity_Column.Name = "Capacity_Column";
+            this.Capacity_Column.Visible = false;
+            this.Capacity_Column.Width = 73;
+            // 
+            // TrayID_Column
+            // 
+            this.TrayID_Column.HeaderText = "Tray";
+            this.TrayID_Column.Name = "TrayID_Column";
+            this.TrayID_Column.Width = 53;
+            // 
+            // Rotation_Column
+            // 
+            this.Rotation_Column.HeaderText = "Rot.";
+            this.Rotation_Column.Items.AddRange(new object[] {
+            "0deg.",
+            "90deg.",
+            "180deg.",
+            "270deg."});
+            this.Rotation_Column.Name = "Rotation_Column";
+            this.Rotation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Rotation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Rotation_Column.Width = 52;
+            // 
+            // Type_Column
+            // 
+            this.Type_Column.HeaderText = "Type";
+            this.Type_Column.Items.AddRange(new object[] {
+            "Paper (White)",
+            "Black Plastic",
+            "Clear Plastic"});
+            this.Type_Column.Name = "Type_Column";
+            this.Type_Column.Width = 37;
+            // 
+            // Width_Column
+            // 
+            this.Width_Column.HeaderText = "Width";
+            this.Width_Column.Items.AddRange(new object[] {
+            "8/2mm",
+            "8/4mm",
+            "12/4mm",
+            "12/8mm",
+            "16/4mm",
+            "16/8mm",
+            "16/12mm",
+            "24/4mm",
+            "24/8mm",
+            "24/12mm",
+            "24/16mm",
+            "24/20mm",
+            "32/4mm",
+            "32/8mm",
+            "32/12mm",
+            "32/16mm",
+            "32/20mm",
+            "32/24mm",
+            "32/28mm",
+            "32/32mm",
+            "custom"});
+            this.Width_Column.Name = "Width_Column";
+            this.Width_Column.Width = 41;
+            // 
+            // Pitch_Column
+            // 
+            this.Pitch_Column.HeaderText = "Pitch";
+            this.Pitch_Column.Name = "Pitch_Column";
+            this.Pitch_Column.Width = 56;
+            // 
+            // OffsetX_Column
+            // 
+            this.OffsetX_Column.HeaderText = "Offset X";
+            this.OffsetX_Column.Name = "OffsetX_Column";
+            this.OffsetX_Column.Width = 65;
+            // 
+            // OffsetY_Column
+            // 
+            this.OffsetY_Column.HeaderText = "Offset Y";
+            this.OffsetY_Column.Name = "OffsetY_Column";
+            this.OffsetY_Column.Width = 65;
+            // 
+            // FirstX_Column
+            // 
+            this.FirstX_Column.HeaderText = "X";
+            this.FirstX_Column.Name = "FirstX_Column";
+            this.FirstX_Column.ReadOnly = true;
+            this.FirstX_Column.Width = 39;
+            // 
+            // FirstY_Column
+            // 
+            this.FirstY_Column.HeaderText = "Y";
+            this.FirstY_Column.Name = "FirstY_Column";
+            this.FirstY_Column.ReadOnly = true;
+            this.FirstY_Column.Width = 39;
+            // 
+            // Z_Pickup_Column
+            // 
+            this.Z_Pickup_Column.HeaderText = "Pickup Z";
+            this.Z_Pickup_Column.Name = "Z_Pickup_Column";
+            this.Z_Pickup_Column.Width = 69;
+            // 
+            // Z_Place_Column
+            // 
+            this.Z_Place_Column.HeaderText = "Place Z";
+            this.Z_Place_Column.Name = "Z_Place_Column";
+            this.Z_Place_Column.Width = 64;
+            // 
+            // Next_X_Column
+            // 
+            this.Next_X_Column.HeaderText = "Next X";
+            this.Next_X_Column.Name = "Next_X_Column";
+            this.Next_X_Column.ReadOnly = true;
+            this.Next_X_Column.Width = 60;
+            // 
+            // Next_Y_Column
+            // 
+            this.Next_Y_Column.HeaderText = "Next Y";
+            this.Next_Y_Column.Name = "Next_Y_Column";
+            this.Next_Y_Column.ReadOnly = true;
+            this.Next_Y_Column.Width = 60;
+            // 
+            // CoordinatesForParts_Column
+            // 
+            this.CoordinatesForParts_Column.HeaderText = "Coordinates for parts";
+            this.CoordinatesForParts_Column.Name = "CoordinatesForParts_Column";
+            this.CoordinatesForParts_Column.Width = 78;
+            // 
+            // UseNozzleCoordinates_Column
+            // 
+            this.UseNozzleCoordinates_Column.HeaderText = "Coordinates are for Nozzle";
+            this.UseNozzleCoordinates_Column.Name = "UseNozzleCoordinates_Column";
+            this.UseNozzleCoordinates_Column.Width = 81;
+            // 
+            // LastX_Column
+            // 
+            this.LastX_Column.HeaderText = "Last X";
+            this.LastX_Column.Name = "LastX_Column";
+            this.LastX_Column.Width = 58;
+            // 
+            // LastY_column
+            // 
+            this.LastY_column.HeaderText = "Last Y";
+            this.LastY_column.Name = "LastY_column";
+            this.LastY_column.Width = 58;
+            // 
+            // RotationDirect_Column
+            // 
+            this.RotationDirect_Column.HeaderText = "Rotation";
+            this.RotationDirect_Column.Name = "RotationDirect_Column";
+            this.RotationDirect_Column.Width = 72;
+            // 
             // Components_tabPage
             // 
             this.Components_tabPage.Controls.Add(this.ComponentData_dataGridView);
@@ -2530,11 +2727,18 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.label180);
+            this.tabPageBasicSetup.Controls.Add(this.label179);
+            this.tabPageBasicSetup.Controls.Add(this.label178);
+            this.tabPageBasicSetup.Controls.Add(this.label177);
+            this.tabPageBasicSetup.Controls.Add(this.label154);
+            this.tabPageBasicSetup.Controls.Add(this.label147);
+            this.tabPageBasicSetup.Controls.Add(this.label153);
             this.tabPageBasicSetup.Controls.Add(this.SlackCompensationDistance_textBox);
             this.tabPageBasicSetup.Controls.Add(this.MoveTimeout_textBox);
             this.tabPageBasicSetup.Controls.Add(this.label50);
             this.tabPageBasicSetup.Controls.Add(this.label7);
-            this.tabPageBasicSetup.Controls.Add(this.Motors_tabControl);
+            this.tabPageBasicSetup.Controls.Add(this.TinyGMotors_tabControl);
             this.tabPageBasicSetup.Controls.Add(this.Ato0_button);
             this.tabPageBasicSetup.Controls.Add(this.VacuumInvert_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.PumpInvert_checkBox);
@@ -2620,6 +2824,7 @@
             this.tabPageBasicSetup.Controls.Add(this.buttonConnectSerial);
             this.tabPageBasicSetup.Controls.Add(this.label2);
             this.tabPageBasicSetup.Controls.Add(this.comboBoxSerialPorts);
+            this.tabPageBasicSetup.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.tabPageBasicSetup.Location = new System.Drawing.Point(4, 22);
             this.tabPageBasicSetup.Name = "tabPageBasicSetup";
             this.tabPageBasicSetup.Padding = new System.Windows.Forms.Padding(3);
@@ -2639,7 +2844,7 @@
             // 
             // MoveTimeout_textBox
             // 
-            this.MoveTimeout_textBox.Location = new System.Drawing.Point(166, 530);
+            this.MoveTimeout_textBox.Location = new System.Drawing.Point(152, 546);
             this.MoveTimeout_textBox.Name = "MoveTimeout_textBox";
             this.MoveTimeout_textBox.Size = new System.Drawing.Size(75, 20);
             this.MoveTimeout_textBox.TabIndex = 118;
@@ -2648,7 +2853,7 @@
             // label50
             // 
             this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(33, 533);
+            this.label50.Location = new System.Drawing.Point(19, 549);
             this.label50.Name = "label50";
             this.label50.Size = new System.Drawing.Size(127, 13);
             this.label50.TabIndex = 117;
@@ -2657,25 +2862,25 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(27, 134);
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(13, 150);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(136, 24);
+            this.label7.Size = new System.Drawing.Size(109, 20);
             this.label7.TabIndex = 116;
-            this.label7.Text = "Motors setup:";
+            this.label7.Text = "Motors Setup:";
             // 
-            // Motors_tabControl
+            // TinyGMotors_tabControl
             // 
-            this.Motors_tabControl.Controls.Add(this.X_tabPage);
-            this.Motors_tabControl.Controls.Add(this.Y_tabPage);
-            this.Motors_tabControl.Controls.Add(this.Z_tabPage);
-            this.Motors_tabControl.Controls.Add(this.A_tabPage);
-            this.Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Motors_tabControl.Location = new System.Drawing.Point(31, 161);
-            this.Motors_tabControl.Name = "Motors_tabControl";
-            this.Motors_tabControl.SelectedIndex = 0;
-            this.Motors_tabControl.Size = new System.Drawing.Size(325, 362);
-            this.Motors_tabControl.TabIndex = 115;
+            this.TinyGMotors_tabControl.Controls.Add(this.X_tabPage);
+            this.TinyGMotors_tabControl.Controls.Add(this.Y_tabPage);
+            this.TinyGMotors_tabControl.Controls.Add(this.Z_tabPage);
+            this.TinyGMotors_tabControl.Controls.Add(this.A_tabPage);
+            this.TinyGMotors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TinyGMotors_tabControl.Location = new System.Drawing.Point(17, 177);
+            this.TinyGMotors_tabControl.Name = "TinyGMotors_tabControl";
+            this.TinyGMotors_tabControl.SelectedIndex = 0;
+            this.TinyGMotors_tabControl.Size = new System.Drawing.Size(325, 362);
+            this.TinyGMotors_tabControl.TabIndex = 115;
             // 
             // X_tabPage
             // 
@@ -2696,10 +2901,10 @@
             this.X_tabPage.Controls.Add(this.Xhome_checkBox);
             this.X_tabPage.Controls.Add(this.Xlim_checkBox);
             this.X_tabPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.X_tabPage.Location = new System.Drawing.Point(4, 33);
+            this.X_tabPage.Location = new System.Drawing.Point(4, 29);
             this.X_tabPage.Name = "X_tabPage";
             this.X_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.X_tabPage.Size = new System.Drawing.Size(317, 325);
+            this.X_tabPage.Size = new System.Drawing.Size(317, 329);
             this.X_tabPage.TabIndex = 0;
             this.X_tabPage.Text = "X";
             this.X_tabPage.UseVisualStyleBackColor = true;
@@ -3784,7 +3989,7 @@
             // 
             // Ato0_button
             // 
-            this.Ato0_button.Location = new System.Drawing.Point(726, 153);
+            this.Ato0_button.Location = new System.Drawing.Point(375, 293);
             this.Ato0_button.Name = "Ato0_button";
             this.Ato0_button.Size = new System.Drawing.Size(75, 23);
             this.Ato0_button.TabIndex = 114;
@@ -3796,7 +4001,7 @@
             // VacuumInvert_checkBox
             // 
             this.VacuumInvert_checkBox.AutoSize = true;
-            this.VacuumInvert_checkBox.Location = new System.Drawing.Point(779, 35);
+            this.VacuumInvert_checkBox.Location = new System.Drawing.Point(793, 74);
             this.VacuumInvert_checkBox.Name = "VacuumInvert_checkBox";
             this.VacuumInvert_checkBox.Size = new System.Drawing.Size(52, 17);
             this.VacuumInvert_checkBox.TabIndex = 113;
@@ -3808,7 +4013,7 @@
             // PumpInvert_checkBox
             // 
             this.PumpInvert_checkBox.AutoSize = true;
-            this.PumpInvert_checkBox.Location = new System.Drawing.Point(779, 15);
+            this.PumpInvert_checkBox.Location = new System.Drawing.Point(793, 54);
             this.PumpInvert_checkBox.Name = "PumpInvert_checkBox";
             this.PumpInvert_checkBox.Size = new System.Drawing.Size(52, 17);
             this.PumpInvert_checkBox.TabIndex = 112;
@@ -3819,7 +4024,7 @@
             // 
             // BoardSettingsLoad_button
             // 
-            this.BoardSettingsLoad_button.Location = new System.Drawing.Point(514, 64);
+            this.BoardSettingsLoad_button.Location = new System.Drawing.Point(521, 79);
             this.BoardSettingsLoad_button.Name = "BoardSettingsLoad_button";
             this.BoardSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
             this.BoardSettingsLoad_button.TabIndex = 111;
@@ -3830,7 +4035,7 @@
             // 
             // BoardSettingsSave_button
             // 
-            this.BoardSettingsSave_button.Location = new System.Drawing.Point(514, 35);
+            this.BoardSettingsSave_button.Location = new System.Drawing.Point(521, 50);
             this.BoardSettingsSave_button.Name = "BoardSettingsSave_button";
             this.BoardSettingsSave_button.Size = new System.Drawing.Size(75, 23);
             this.BoardSettingsSave_button.TabIndex = 110;
@@ -3841,7 +4046,7 @@
             // 
             // BoardBuiltInSettings_button
             // 
-            this.BoardBuiltInSettings_button.Location = new System.Drawing.Point(599, 35);
+            this.BoardBuiltInSettings_button.Location = new System.Drawing.Point(606, 50);
             this.BoardBuiltInSettings_button.Name = "BoardBuiltInSettings_button";
             this.BoardBuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
             this.BoardBuiltInSettings_button.TabIndex = 109;
@@ -3853,7 +4058,7 @@
             // 
             // AppSettingsLoad_button
             // 
-            this.AppSettingsLoad_button.Location = new System.Drawing.Point(264, 64);
+            this.AppSettingsLoad_button.Location = new System.Drawing.Point(271, 79);
             this.AppSettingsLoad_button.Name = "AppSettingsLoad_button";
             this.AppSettingsLoad_button.Size = new System.Drawing.Size(75, 23);
             this.AppSettingsLoad_button.TabIndex = 108;
@@ -3864,7 +4069,7 @@
             // 
             // AppSettingsSave_button
             // 
-            this.AppSettingsSave_button.Location = new System.Drawing.Point(264, 35);
+            this.AppSettingsSave_button.Location = new System.Drawing.Point(271, 50);
             this.AppSettingsSave_button.Name = "AppSettingsSave_button";
             this.AppSettingsSave_button.Size = new System.Drawing.Size(75, 23);
             this.AppSettingsSave_button.TabIndex = 107;
@@ -3876,23 +4081,23 @@
             // Board_label
             // 
             this.Board_label.AutoSize = true;
-            this.Board_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Board_label.Location = new System.Drawing.Point(510, 7);
+            this.Board_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Board_label.Location = new System.Drawing.Point(517, 22);
             this.Board_label.Name = "Board_label";
-            this.Board_label.Size = new System.Drawing.Size(158, 18);
+            this.Board_label.Size = new System.Drawing.Size(174, 20);
             this.Board_label.TabIndex = 106;
-            this.Board_label.Text = "Control Board Settings";
+            this.Board_label.Text = "Control Board Settings:";
             this.toolTip1.SetToolTip(this.Board_label, "Connection status");
             // 
             // label159
             // 
             this.label159.AutoSize = true;
-            this.label159.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label159.Location = new System.Drawing.Point(260, 7);
+            this.label159.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label159.Location = new System.Drawing.Point(267, 22);
             this.label159.Name = "label159";
-            this.label159.Size = new System.Drawing.Size(136, 18);
+            this.label159.Size = new System.Drawing.Size(154, 20);
             this.label159.TabIndex = 105;
-            this.label159.Text = "Application Settings";
+            this.label159.Text = "Application Settings:";
             this.toolTip1.SetToolTip(this.label159, "Connection status");
             // 
             // NozzleBelowPCB_textBox
@@ -3952,7 +4157,7 @@
             // MouseScroll_checkBox
             // 
             this.MouseScroll_checkBox.AutoSize = true;
-            this.MouseScroll_checkBox.Location = new System.Drawing.Point(1034, 376);
+            this.MouseScroll_checkBox.Location = new System.Drawing.Point(1056, 413);
             this.MouseScroll_checkBox.Name = "MouseScroll_checkBox";
             this.MouseScroll_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.MouseScroll_checkBox.Size = new System.Drawing.Size(183, 17);
@@ -3964,7 +4169,7 @@
             // NumPadJog_checkBox
             // 
             this.NumPadJog_checkBox.AutoSize = true;
-            this.NumPadJog_checkBox.Location = new System.Drawing.Point(1033, 353);
+            this.NumPadJog_checkBox.Location = new System.Drawing.Point(1055, 390);
             this.NumPadJog_checkBox.Name = "NumPadJog_checkBox";
             this.NumPadJog_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.NumPadJog_checkBox.Size = new System.Drawing.Size(184, 17);
@@ -4123,7 +4328,7 @@
             // 
             // AltJogSpeed_numericUpDown
             // 
-            this.AltJogSpeed_numericUpDown.Location = new System.Drawing.Point(1159, 327);
+            this.AltJogSpeed_numericUpDown.Location = new System.Drawing.Point(1181, 364);
             this.AltJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
             20000,
             0,
@@ -4142,7 +4347,7 @@
             // 
             // NormalJogSpeed_numericUpDown
             // 
-            this.NormalJogSpeed_numericUpDown.Location = new System.Drawing.Point(1159, 301);
+            this.NormalJogSpeed_numericUpDown.Location = new System.Drawing.Point(1181, 338);
             this.NormalJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -4161,7 +4366,7 @@
             // 
             // CtlrJogSpeed_numericUpDown
             // 
-            this.CtlrJogSpeed_numericUpDown.Location = new System.Drawing.Point(1159, 275);
+            this.CtlrJogSpeed_numericUpDown.Location = new System.Drawing.Point(1181, 312);
             this.CtlrJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
             4000,
             0,
@@ -4181,7 +4386,7 @@
             // label134
             // 
             this.label134.AutoSize = true;
-            this.label134.Location = new System.Drawing.Point(1080, 329);
+            this.label134.Location = new System.Drawing.Point(1102, 366);
             this.label134.Name = "label134";
             this.label134.Size = new System.Drawing.Size(73, 13);
             this.label134.TabIndex = 91;
@@ -4191,7 +4396,7 @@
             // label133
             // 
             this.label133.AutoSize = true;
-            this.label133.Location = new System.Drawing.Point(1110, 303);
+            this.label133.Location = new System.Drawing.Point(1132, 340);
             this.label133.Name = "label133";
             this.label133.Size = new System.Drawing.Size(43, 13);
             this.label133.TabIndex = 89;
@@ -4201,7 +4406,7 @@
             // label132
             // 
             this.label132.AutoSize = true;
-            this.label132.Location = new System.Drawing.Point(1019, 255);
+            this.label132.Location = new System.Drawing.Point(1041, 292);
             this.label132.Name = "label132";
             this.label132.Size = new System.Drawing.Size(158, 13);
             this.label132.TabIndex = 88;
@@ -4211,7 +4416,7 @@
             // label131
             // 
             this.label131.AutoSize = true;
-            this.label131.Location = new System.Drawing.Point(1073, 277);
+            this.label131.Location = new System.Drawing.Point(1095, 314);
             this.label131.Name = "label131";
             this.label131.Size = new System.Drawing.Size(80, 13);
             this.label131.TabIndex = 86;
@@ -4220,7 +4425,7 @@
             // 
             // ShadeGuard_textBox
             // 
-            this.ShadeGuard_textBox.Location = new System.Drawing.Point(560, 350);
+            this.ShadeGuard_textBox.Location = new System.Drawing.Point(689, 265);
             this.ShadeGuard_textBox.Name = "ShadeGuard_textBox";
             this.ShadeGuard_textBox.Size = new System.Drawing.Size(75, 20);
             this.ShadeGuard_textBox.TabIndex = 85;
@@ -4229,7 +4434,7 @@
             // label126
             // 
             this.label126.AutoSize = true;
-            this.label126.Location = new System.Drawing.Point(475, 353);
+            this.label126.Location = new System.Drawing.Point(686, 247);
             this.label126.Name = "label126";
             this.label126.Size = new System.Drawing.Size(79, 13);
             this.label126.TabIndex = 84;
@@ -4238,7 +4443,7 @@
             // label123
             // 
             this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(703, 306);
+            this.label123.Location = new System.Drawing.Point(601, 251);
             this.label123.Name = "label123";
             this.label123.Size = new System.Drawing.Size(70, 13);
             this.label123.TabIndex = 83;
@@ -4246,7 +4451,7 @@
             // 
             // ZTestTravel_textBox
             // 
-            this.ZTestTravel_textBox.Location = new System.Drawing.Point(779, 303);
+            this.ZTestTravel_textBox.Location = new System.Drawing.Point(601, 267);
             this.ZTestTravel_textBox.Name = "ZTestTravel_textBox";
             this.ZTestTravel_textBox.Size = new System.Drawing.Size(75, 20);
             this.ZTestTravel_textBox.TabIndex = 82;
@@ -4254,7 +4459,7 @@
             // 
             // VacuumRelease_textBox
             // 
-            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1158, 37);
+            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1166, 76);
             this.VacuumRelease_textBox.Name = "VacuumRelease_textBox";
             this.VacuumRelease_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumRelease_textBox.TabIndex = 81;
@@ -4266,7 +4471,7 @@
             // label119
             // 
             this.label119.AutoSize = true;
-            this.label119.Location = new System.Drawing.Point(1018, 40);
+            this.label119.Location = new System.Drawing.Point(1026, 79);
             this.label119.Name = "label119";
             this.label119.Size = new System.Drawing.Size(130, 13);
             this.label119.TabIndex = 80;
@@ -4274,7 +4479,7 @@
             // 
             // VacuumTime_textBox
             // 
-            this.VacuumTime_textBox.Location = new System.Drawing.Point(1158, 13);
+            this.VacuumTime_textBox.Location = new System.Drawing.Point(1166, 52);
             this.VacuumTime_textBox.Name = "VacuumTime_textBox";
             this.VacuumTime_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumTime_textBox.TabIndex = 79;
@@ -4286,7 +4491,7 @@
             // label118
             // 
             this.label118.AutoSize = true;
-            this.label118.Location = new System.Drawing.Point(1018, 17);
+            this.label118.Location = new System.Drawing.Point(1026, 56);
             this.label118.Name = "label118";
             this.label118.Size = new System.Drawing.Size(128, 13);
             this.label118.TabIndex = 78;
@@ -4344,7 +4549,7 @@
             // label152
             // 
             this.label152.AutoSize = true;
-            this.label152.Location = new System.Drawing.Point(1094, 460);
+            this.label152.Location = new System.Drawing.Point(1195, 457);
             this.label152.Name = "label152";
             this.label152.Size = new System.Drawing.Size(35, 13);
             this.label152.TabIndex = 70;
@@ -4377,7 +4582,7 @@
             // 
             // TestXYA_button
             // 
-            this.TestXYA_button.Location = new System.Drawing.Point(601, 255);
+            this.TestXYA_button.Location = new System.Drawing.Point(770, 206);
             this.TestXYA_button.Name = "TestXYA_button";
             this.TestXYA_button.Size = new System.Drawing.Size(75, 23);
             this.TestXYA_button.TabIndex = 56;
@@ -4428,7 +4633,7 @@
             // 
             // SizeYMax_textBox
             // 
-            this.SizeYMax_textBox.Location = new System.Drawing.Point(1141, 108);
+            this.SizeYMax_textBox.Location = new System.Drawing.Point(399, 431);
             this.SizeYMax_textBox.Name = "SizeYMax_textBox";
             this.SizeYMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeYMax_textBox.TabIndex = 44;
@@ -4446,7 +4651,7 @@
             // 
             // SizeXMax_textBox
             // 
-            this.SizeXMax_textBox.Location = new System.Drawing.Point(1141, 82);
+            this.SizeXMax_textBox.Location = new System.Drawing.Point(399, 405);
             this.SizeXMax_textBox.Name = "SizeXMax_textBox";
             this.SizeXMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeXMax_textBox.TabIndex = 42;
@@ -4456,7 +4661,7 @@
             // 
             // ParkLocationY_textBox
             // 
-            this.ParkLocationY_textBox.Location = new System.Drawing.Point(1141, 429);
+            this.ParkLocationY_textBox.Location = new System.Drawing.Point(534, 429);
             this.ParkLocationY_textBox.Name = "ParkLocationY_textBox";
             this.ParkLocationY_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationY_textBox.TabIndex = 39;
@@ -4466,7 +4671,7 @@
             // 
             // ParkLocationX_textBox
             // 
-            this.ParkLocationX_textBox.Location = new System.Drawing.Point(1141, 403);
+            this.ParkLocationX_textBox.Location = new System.Drawing.Point(534, 403);
             this.ParkLocationX_textBox.Name = "ParkLocationX_textBox";
             this.ParkLocationX_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationX_textBox.TabIndex = 37;
@@ -4476,7 +4681,7 @@
             // 
             // TestYX_button
             // 
-            this.TestYX_button.Location = new System.Drawing.Point(498, 255);
+            this.TestYX_button.Location = new System.Drawing.Point(689, 206);
             this.TestYX_button.Name = "TestYX_button";
             this.TestYX_button.Size = new System.Drawing.Size(75, 23);
             this.TestYX_button.TabIndex = 55;
@@ -4499,7 +4704,7 @@
             // MotorPower_checkBox
             // 
             this.MotorPower_checkBox.AutoSize = true;
-            this.MotorPower_checkBox.Location = new System.Drawing.Point(848, 55);
+            this.MotorPower_checkBox.Location = new System.Drawing.Point(253, 548);
             this.MotorPower_checkBox.Name = "MotorPower_checkBox";
             this.MotorPower_checkBox.Size = new System.Drawing.Size(86, 17);
             this.MotorPower_checkBox.TabIndex = 54;
@@ -4544,16 +4749,17 @@
             // label113
             // 
             this.label113.AutoSize = true;
-            this.label113.Location = new System.Drawing.Point(1061, 68);
+            this.label113.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label113.Location = new System.Drawing.Point(352, 382);
             this.label113.Name = "label113";
-            this.label113.Size = new System.Drawing.Size(74, 13);
+            this.label113.Size = new System.Drawing.Size(108, 20);
             this.label113.TabIndex = 48;
             this.label113.Text = "Machine Size:";
             // 
             // label102
             // 
             this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(1095, 111);
+            this.label102.Location = new System.Drawing.Point(353, 434);
             this.label102.Name = "label102";
             this.label102.Size = new System.Drawing.Size(40, 13);
             this.label102.TabIndex = 45;
@@ -4573,7 +4779,7 @@
             // label107
             // 
             this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(1095, 85);
+            this.label107.Location = new System.Drawing.Point(353, 408);
             this.label107.Name = "label107";
             this.label107.Size = new System.Drawing.Size(40, 13);
             this.label107.TabIndex = 43;
@@ -4582,25 +4788,25 @@
             // label92
             // 
             this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(1049, 432);
+            this.label92.Location = new System.Drawing.Point(511, 432);
             this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(86, 13);
+            this.label92.Size = new System.Drawing.Size(17, 13);
             this.label92.TabIndex = 40;
-            this.label92.Text = "Park Location Y:";
+            this.label92.Text = "Y:";
             // 
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(1049, 406);
+            this.label61.Location = new System.Drawing.Point(511, 406);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(86, 13);
+            this.label61.Size = new System.Drawing.Size(17, 13);
             this.label61.TabIndex = 38;
-            this.label61.Text = "Park Location X:";
+            this.label61.Text = "X:";
             // 
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(723, 208);
+            this.label72.Location = new System.Drawing.Point(361, 319);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(89, 13);
             this.label72.TabIndex = 36;
@@ -4608,7 +4814,7 @@
             // 
             // TestA_button
             // 
-            this.TestA_button.Location = new System.Drawing.Point(726, 179);
+            this.TestA_button.Location = new System.Drawing.Point(512, 293);
             this.TestA_button.Name = "TestA_button";
             this.TestA_button.Size = new System.Drawing.Size(75, 23);
             this.TestA_button.TabIndex = 35;
@@ -4619,18 +4825,19 @@
             // 
             // HomeXYZ_button
             // 
-            this.HomeXYZ_button.Location = new System.Drawing.Point(553, 208);
+            this.HomeXYZ_button.Location = new System.Drawing.Point(234, 165);
             this.HomeXYZ_button.Name = "HomeXYZ_button";
             this.HomeXYZ_button.Size = new System.Drawing.Size(75, 23);
             this.HomeXYZ_button.TabIndex = 17;
             this.HomeXYZ_button.Text = "Home XYZ";
             this.toolTip1.SetToolTip(this.HomeXYZ_button, "Homes X, Y and Z axis, using limit switch only.");
             this.HomeXYZ_button.UseVisualStyleBackColor = true;
+            this.HomeXYZ_button.Visible = false;
             this.HomeXYZ_button.Click += new System.EventHandler(this.HomeXYZ_button_Click);
             // 
             // TestZ_button
             // 
-            this.TestZ_button.Location = new System.Drawing.Point(601, 179);
+            this.TestZ_button.Location = new System.Drawing.Point(512, 264);
             this.TestZ_button.Name = "TestZ_button";
             this.TestZ_button.Size = new System.Drawing.Size(75, 23);
             this.TestZ_button.TabIndex = 34;
@@ -4641,7 +4848,7 @@
             // 
             // HomeZ_button
             // 
-            this.HomeZ_button.Location = new System.Drawing.Point(601, 153);
+            this.HomeZ_button.Location = new System.Drawing.Point(375, 264);
             this.HomeZ_button.Name = "HomeZ_button";
             this.HomeZ_button.Size = new System.Drawing.Size(75, 23);
             this.HomeZ_button.TabIndex = 33;
@@ -4652,7 +4859,7 @@
             // 
             // HomeY_button
             // 
-            this.HomeY_button.Location = new System.Drawing.Point(498, 153);
+            this.HomeY_button.Location = new System.Drawing.Point(375, 235);
             this.HomeY_button.Name = "HomeY_button";
             this.HomeY_button.Size = new System.Drawing.Size(75, 23);
             this.HomeY_button.TabIndex = 32;
@@ -4663,18 +4870,19 @@
             // 
             // HomeXY_button
             // 
-            this.HomeXY_button.Location = new System.Drawing.Point(452, 209);
+            this.HomeXY_button.Location = new System.Drawing.Point(244, 161);
             this.HomeXY_button.Name = "HomeXY_button";
             this.HomeXY_button.Size = new System.Drawing.Size(75, 23);
             this.HomeXY_button.TabIndex = 31;
             this.HomeXY_button.Text = "Home XY";
             this.toolTip1.SetToolTip(this.HomeXY_button, "Homes X and Y axis, using limit switch only.");
             this.HomeXY_button.UseVisualStyleBackColor = true;
+            this.HomeXY_button.Visible = false;
             this.HomeXY_button.Click += new System.EventHandler(this.HomeXY_button_Click);
             // 
             // HomeX_button
             // 
-            this.HomeX_button.Location = new System.Drawing.Point(402, 154);
+            this.HomeX_button.Location = new System.Drawing.Point(375, 206);
             this.HomeX_button.Name = "HomeX_button";
             this.HomeX_button.Size = new System.Drawing.Size(75, 23);
             this.HomeX_button.TabIndex = 30;
@@ -4685,7 +4893,7 @@
             // 
             // AppBuiltInSettings_button
             // 
-            this.AppBuiltInSettings_button.Location = new System.Drawing.Point(345, 34);
+            this.AppBuiltInSettings_button.Location = new System.Drawing.Point(352, 49);
             this.AppBuiltInSettings_button.Name = "AppBuiltInSettings_button";
             this.AppBuiltInSettings_button.Size = new System.Drawing.Size(111, 23);
             this.AppBuiltInSettings_button.TabIndex = 29;
@@ -4697,7 +4905,7 @@
             // Vacuum_checkBox
             // 
             this.Vacuum_checkBox.AutoSize = true;
-            this.Vacuum_checkBox.Location = new System.Drawing.Point(848, 35);
+            this.Vacuum_checkBox.Location = new System.Drawing.Point(856, 74);
             this.Vacuum_checkBox.Name = "Vacuum_checkBox";
             this.Vacuum_checkBox.Size = new System.Drawing.Size(159, 17);
             this.Vacuum_checkBox.TabIndex = 26;
@@ -4709,7 +4917,7 @@
             // Pump_checkBox
             // 
             this.Pump_checkBox.AutoSize = true;
-            this.Pump_checkBox.Location = new System.Drawing.Point(848, 15);
+            this.Pump_checkBox.Location = new System.Drawing.Point(856, 54);
             this.Pump_checkBox.Name = "Pump_checkBox";
             this.Pump_checkBox.Size = new System.Drawing.Size(70, 17);
             this.Pump_checkBox.TabIndex = 25;
@@ -4720,7 +4928,7 @@
             // 
             // TestXY_button
             // 
-            this.TestXY_button.Location = new System.Drawing.Point(402, 255);
+            this.TestXY_button.Location = new System.Drawing.Point(608, 206);
             this.TestXY_button.Name = "TestXY_button";
             this.TestXY_button.Size = new System.Drawing.Size(75, 23);
             this.TestXY_button.TabIndex = 24;
@@ -4731,7 +4939,7 @@
             // 
             // TestY_button
             // 
-            this.TestY_button.Location = new System.Drawing.Point(498, 179);
+            this.TestY_button.Location = new System.Drawing.Point(512, 235);
             this.TestY_button.Name = "TestY_button";
             this.TestY_button.Size = new System.Drawing.Size(75, 23);
             this.TestY_button.TabIndex = 23;
@@ -4742,7 +4950,7 @@
             // 
             // TestX_button
             // 
-            this.TestX_button.Location = new System.Drawing.Point(402, 180);
+            this.TestX_button.Location = new System.Drawing.Point(512, 206);
             this.TestX_button.Name = "TestX_button";
             this.TestX_button.Size = new System.Drawing.Size(75, 23);
             this.TestX_button.TabIndex = 22;
@@ -4754,7 +4962,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 72);
+            this.label3.Location = new System.Drawing.Point(17, 111);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 13);
             this.label3.TabIndex = 5;
@@ -4762,7 +4970,7 @@
             // 
             // ButtonRefreshPortList
             // 
-            this.ButtonRefreshPortList.Location = new System.Drawing.Point(156, 13);
+            this.ButtonRefreshPortList.Location = new System.Drawing.Point(162, 52);
             this.ButtonRefreshPortList.Name = "ButtonRefreshPortList";
             this.ButtonRefreshPortList.Size = new System.Drawing.Size(75, 23);
             this.ButtonRefreshPortList.TabIndex = 4;
@@ -4775,7 +4983,7 @@
             // 
             this.labelSerialPortStatus.AutoSize = true;
             this.labelSerialPortStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSerialPortStatus.Location = new System.Drawing.Point(72, 69);
+            this.labelSerialPortStatus.Location = new System.Drawing.Point(78, 108);
             this.labelSerialPortStatus.Name = "labelSerialPortStatus";
             this.labelSerialPortStatus.Size = new System.Drawing.Size(138, 32);
             this.labelSerialPortStatus.TabIndex = 3;
@@ -4784,7 +4992,7 @@
             // 
             // buttonConnectSerial
             // 
-            this.buttonConnectSerial.Location = new System.Drawing.Point(75, 41);
+            this.buttonConnectSerial.Location = new System.Drawing.Point(81, 80);
             this.buttonConnectSerial.Name = "buttonConnectSerial";
             this.buttonConnectSerial.Size = new System.Drawing.Size(75, 23);
             this.buttonConnectSerial.TabIndex = 2;
@@ -4797,7 +5005,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 17);
+            this.label2.Location = new System.Drawing.Point(17, 56);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 1;
@@ -4807,7 +5015,7 @@
             // 
             this.comboBoxSerialPorts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSerialPorts.FormattingEnabled = true;
-            this.comboBoxSerialPorts.Location = new System.Drawing.Point(75, 14);
+            this.comboBoxSerialPorts.Location = new System.Drawing.Point(81, 53);
             this.comboBoxSerialPorts.Name = "comboBoxSerialPorts";
             this.comboBoxSerialPorts.Size = new System.Drawing.Size(75, 21);
             this.comboBoxSerialPorts.TabIndex = 0;
@@ -5636,14 +5844,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -5942,48 +6150,6 @@
             this.Algorithms_tabPage.Text = "Setup Video Processing";
             this.Algorithms_tabPage.UseVisualStyleBackColor = true;
             // 
-            // NozzleOffset_label
-            // 
-            this.NozzleOffset_label.AutoSize = true;
-            this.NozzleOffset_label.BackColor = System.Drawing.Color.White;
-            this.NozzleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NozzleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NozzleOffset_label.Location = new System.Drawing.Point(3, 61);
-            this.NozzleOffset_label.Name = "NozzleOffset_label";
-            this.NozzleOffset_label.Size = new System.Drawing.Size(119, 20);
-            this.NozzleOffset_label.TabIndex = 281;
-            this.NozzleOffset_label.Text = "Instructions here";
-            // 
-            // label101
-            // 
-            this.label101.AutoSize = true;
-            this.label101.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label101.Location = new System.Drawing.Point(567, 7);
-            this.label101.Name = "label101";
-            this.label101.Size = new System.Drawing.Size(50, 17);
-            this.label101.TabIndex = 301;
-            this.label101.Text = "Pickup";
-            // 
-            // label100
-            // 
-            this.label100.AutoSize = true;
-            this.label100.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label100.Location = new System.Drawing.Point(479, 7);
-            this.label100.Name = "label100";
-            this.label100.Size = new System.Drawing.Size(67, 17);
-            this.label100.TabIndex = 300;
-            this.label100.Text = "PCB zero";
-            // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label55.Location = new System.Drawing.Point(379, 7);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(79, 17);
-            this.label55.TabIndex = 299;
-            this.label55.Text = "Up Camera";
-            // 
             // ZUp_button
             // 
             this.ZUp_button.Location = new System.Drawing.Point(189, 521);
@@ -6006,117 +6172,6 @@
             this.ZDown_button.UseVisualStyleBackColor = true;
             this.ZDown_button.Click += new System.EventHandler(this.ZDown_button_Click);
             // 
-            // GotoUpCamPosition_button
-            // 
-            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(407, 115);
-            this.GotoUpCamPosition_button.Name = "GotoUpCamPosition_button";
-            this.GotoUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
-            this.GotoUpCamPosition_button.TabIndex = 288;
-            this.GotoUpCamPosition_button.Text = "Go there";
-            this.GotoUpCamPosition_button.UseVisualStyleBackColor = true;
-            this.GotoUpCamPosition_button.Click += new System.EventHandler(this.GotoUpCamPosition_button_Click);
-            // 
-            // SetUpCamPosition_button
-            // 
-            this.SetUpCamPosition_button.Location = new System.Drawing.Point(407, 34);
-            this.SetUpCamPosition_button.Name = "SetUpCamPosition_button";
-            this.SetUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
-            this.SetUpCamPosition_button.TabIndex = 287;
-            this.SetUpCamPosition_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetUpCamPosition_button, "Sets Up camera location");
-            this.SetUpCamPosition_button.UseVisualStyleBackColor = true;
-            this.SetUpCamPosition_button.Click += new System.EventHandler(this.SetUpCamPosition_button_Click);
-            // 
-            // label99
-            // 
-            this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(404, 92);
-            this.label99.Name = "label99";
-            this.label99.Size = new System.Drawing.Size(17, 13);
-            this.label99.TabIndex = 286;
-            this.label99.Text = "Y:";
-            // 
-            // label98
-            // 
-            this.label98.AutoSize = true;
-            this.label98.Location = new System.Drawing.Point(404, 66);
-            this.label98.Name = "label98";
-            this.label98.Size = new System.Drawing.Size(17, 13);
-            this.label98.TabIndex = 285;
-            this.label98.Text = "X:";
-            // 
-            // UpcamPositionY_textBox
-            // 
-            this.UpcamPositionY_textBox.Location = new System.Drawing.Point(427, 89);
-            this.UpcamPositionY_textBox.Name = "UpcamPositionY_textBox";
-            this.UpcamPositionY_textBox.Size = new System.Drawing.Size(46, 20);
-            this.UpcamPositionY_textBox.TabIndex = 284;
-            this.UpcamPositionY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionY_textBox_KeyPress);
-            this.UpcamPositionY_textBox.Leave += new System.EventHandler(this.UpcamPositionY_textBox_Leave);
-            // 
-            // UpcamPositionX_textBox
-            // 
-            this.UpcamPositionX_textBox.Location = new System.Drawing.Point(427, 63);
-            this.UpcamPositionX_textBox.Name = "UpcamPositionX_textBox";
-            this.UpcamPositionX_textBox.Size = new System.Drawing.Size(46, 20);
-            this.UpcamPositionX_textBox.TabIndex = 283;
-            this.UpcamPositionX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionX_textBox_KeyPress);
-            this.UpcamPositionX_textBox.Leave += new System.EventHandler(this.UpcamPositionX_textBox_Leave);
-            // 
-            // NozzleOffsetY_textBox
-            // 
-            this.NozzleOffsetY_textBox.Location = new System.Drawing.Point(114, 105);
-            this.NozzleOffsetY_textBox.Name = "NozzleOffsetY_textBox";
-            this.NozzleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
-            this.NozzleOffsetY_textBox.TabIndex = 293;
-            this.NozzleOffsetY_textBox.Text = "6.99";
-            this.toolTip1.SetToolTip(this.NozzleOffsetY_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
-            // 
-            // NozzleOffsetX_textBox
-            // 
-            this.NozzleOffsetX_textBox.Location = new System.Drawing.Point(25, 105);
-            this.NozzleOffsetX_textBox.Name = "NozzleOffsetX_textBox";
-            this.NozzleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
-            this.NozzleOffsetX_textBox.TabIndex = 292;
-            this.NozzleOffsetX_textBox.Text = "42.88";
-            this.toolTip1.SetToolTip(this.NozzleOffsetX_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
-            // 
-            // PickupCenterY_textBox
-            // 
-            this.PickupCenterY_textBox.Location = new System.Drawing.Point(588, 89);
-            this.PickupCenterY_textBox.Name = "PickupCenterY_textBox";
-            this.PickupCenterY_textBox.Size = new System.Drawing.Size(46, 20);
-            this.PickupCenterY_textBox.TabIndex = 274;
-            this.PickupCenterY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PickupCenterY_textBox_KeyPress);
-            this.PickupCenterY_textBox.Leave += new System.EventHandler(this.PickupCenterY_textBox_Leave);
-            // 
-            // PickupCenterX_textBox
-            // 
-            this.PickupCenterX_textBox.Location = new System.Drawing.Point(588, 63);
-            this.PickupCenterX_textBox.Name = "PickupCenterX_textBox";
-            this.PickupCenterX_textBox.Size = new System.Drawing.Size(46, 20);
-            this.PickupCenterX_textBox.TabIndex = 273;
-            this.PickupCenterX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PickupCenterX_textBox_KeyPress);
-            this.PickupCenterX_textBox.Leave += new System.EventHandler(this.PickupCenterX_textBox_Leave);
-            // 
-            // JigY_textBox
-            // 
-            this.JigY_textBox.Location = new System.Drawing.Point(506, 89);
-            this.JigY_textBox.Name = "JigY_textBox";
-            this.JigY_textBox.Size = new System.Drawing.Size(46, 20);
-            this.JigY_textBox.TabIndex = 270;
-            this.JigY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JigY_textBox_KeyPress);
-            this.JigY_textBox.Leave += new System.EventHandler(this.JigY_textBox_Leave);
-            // 
-            // JigX_textBox
-            // 
-            this.JigX_textBox.Location = new System.Drawing.Point(506, 63);
-            this.JigX_textBox.Name = "JigX_textBox";
-            this.JigX_textBox.Size = new System.Drawing.Size(46, 20);
-            this.JigX_textBox.TabIndex = 269;
-            this.JigX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JigX_textBox_KeyPress);
-            this.JigX_textBox.Leave += new System.EventHandler(this.JigX_textBox_Leave);
-            // 
             // label149
             // 
             this.label149.AutoSize = true;
@@ -6125,33 +6180,6 @@
             this.label149.Size = new System.Drawing.Size(23, 13);
             this.label149.TabIndex = 298;
             this.label149.Text = "mm";
-            // 
-            // label148
-            // 
-            this.label148.AutoSize = true;
-            this.label148.Location = new System.Drawing.Point(66, 109);
-            this.label148.Name = "label148";
-            this.label148.Size = new System.Drawing.Size(23, 13);
-            this.label148.TabIndex = 297;
-            this.label148.Text = "mm";
-            // 
-            // label146
-            // 
-            this.label146.AutoSize = true;
-            this.label146.Location = new System.Drawing.Point(91, 109);
-            this.label146.Name = "label146";
-            this.label146.Size = new System.Drawing.Size(17, 13);
-            this.label146.TabIndex = 296;
-            this.label146.Text = "Y:";
-            // 
-            // label143
-            // 
-            this.label143.AutoSize = true;
-            this.label143.Location = new System.Drawing.Point(2, 109);
-            this.label143.Name = "label143";
-            this.label143.Size = new System.Drawing.Size(17, 13);
-            this.label143.TabIndex = 295;
-            this.label143.Text = "X:";
             // 
             // Z0toPCB_CamerasTab_label
             // 
@@ -6170,114 +6198,6 @@
             this.label120.Size = new System.Drawing.Size(59, 13);
             this.label120.TabIndex = 289;
             this.label120.Text = "Z0 to PCB:";
-            // 
-            // Offset2Method_button
-            // 
-            this.Offset2Method_button.Location = new System.Drawing.Point(3, 31);
-            this.Offset2Method_button.Name = "Offset2Method_button";
-            this.Offset2Method_button.Size = new System.Drawing.Size(75, 23);
-            this.Offset2Method_button.TabIndex = 282;
-            this.Offset2Method_button.Tag = "Runs the Nozzle calibration routine";
-            this.Offset2Method_button.Text = "Start";
-            this.Offset2Method_button.UseVisualStyleBackColor = true;
-            this.Offset2Method_button.Click += new System.EventHandler(this.Offset2Method_button_Click);
-            // 
-            // label115
-            // 
-            this.label115.AutoSize = true;
-            this.label115.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label115.Location = new System.Drawing.Point(3, 5);
-            this.label115.Name = "label115";
-            this.label115.Size = new System.Drawing.Size(96, 17);
-            this.label115.TabIndex = 280;
-            this.label115.Text = "Nozzle Setup:";
-            // 
-            // label114
-            // 
-            this.label114.AutoSize = true;
-            this.label114.Location = new System.Drawing.Point(3, 87);
-            this.label114.Name = "label114";
-            this.label114.Size = new System.Drawing.Size(114, 13);
-            this.label114.TabIndex = 279;
-            this.label114.Text = "Nozzle Nominal Offset:";
-            // 
-            // SetPickupCenter_button
-            // 
-            this.SetPickupCenter_button.Location = new System.Drawing.Point(569, 34);
-            this.SetPickupCenter_button.Name = "SetPickupCenter_button";
-            this.SetPickupCenter_button.Size = new System.Drawing.Size(65, 23);
-            this.SetPickupCenter_button.TabIndex = 278;
-            this.SetPickupCenter_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetPickupCenter_button, "Sets manual pick up postion");
-            this.SetPickupCenter_button.UseVisualStyleBackColor = true;
-            this.SetPickupCenter_button.Click += new System.EventHandler(this.SetPickupCenter_button_Click);
-            // 
-            // SetPCB0_button
-            // 
-            this.SetPCB0_button.Location = new System.Drawing.Point(487, 34);
-            this.SetPCB0_button.Name = "SetPCB0_button";
-            this.SetPCB0_button.Size = new System.Drawing.Size(65, 23);
-            this.SetPCB0_button.TabIndex = 277;
-            this.SetPCB0_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetPCB0_button, "Sets PCB jig lower left location");
-            this.SetPCB0_button.UseVisualStyleBackColor = true;
-            this.SetPCB0_button.Click += new System.EventHandler(this.SetPCB0_button_Click);
-            // 
-            // GotoPickupCenter_button
-            // 
-            this.GotoPickupCenter_button.Location = new System.Drawing.Point(570, 115);
-            this.GotoPickupCenter_button.Name = "GotoPickupCenter_button";
-            this.GotoPickupCenter_button.Size = new System.Drawing.Size(65, 23);
-            this.GotoPickupCenter_button.TabIndex = 276;
-            this.GotoPickupCenter_button.Text = "Go there";
-            this.GotoPickupCenter_button.UseVisualStyleBackColor = true;
-            this.GotoPickupCenter_button.Click += new System.EventHandler(this.GotoPickupCenter_button_Click);
-            // 
-            // GotoPCB0_button
-            // 
-            this.GotoPCB0_button.Location = new System.Drawing.Point(487, 115);
-            this.GotoPCB0_button.Name = "GotoPCB0_button";
-            this.GotoPCB0_button.Size = new System.Drawing.Size(65, 23);
-            this.GotoPCB0_button.TabIndex = 275;
-            this.GotoPCB0_button.Text = "Go there";
-            this.GotoPCB0_button.UseVisualStyleBackColor = true;
-            this.GotoPCB0_button.Click += new System.EventHandler(this.GotoPCB0_button_Click);
-            // 
-            // label95
-            // 
-            this.label95.AutoSize = true;
-            this.label95.Location = new System.Drawing.Point(565, 92);
-            this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(17, 13);
-            this.label95.TabIndex = 272;
-            this.label95.Text = "Y:";
-            // 
-            // label96
-            // 
-            this.label96.AutoSize = true;
-            this.label96.Location = new System.Drawing.Point(565, 66);
-            this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(17, 13);
-            this.label96.TabIndex = 271;
-            this.label96.Text = "X:";
-            // 
-            // label93
-            // 
-            this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(484, 92);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(17, 13);
-            this.label93.TabIndex = 268;
-            this.label93.Text = "Y:";
-            // 
-            // label94
-            // 
-            this.label94.AutoSize = true;
-            this.label94.Location = new System.Drawing.Point(484, 66);
-            this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(17, 13);
-            this.label94.TabIndex = 267;
-            this.label94.Text = "X:";
             // 
             // VideoProcessingZguard_checkBox
             // 
@@ -6573,12 +6493,12 @@
             this.label170.AutoSize = true;
             this.label170.Location = new System.Drawing.Point(1073, 524);
             this.label170.Name = "label170";
-            this.label170.Size = new System.Drawing.Size(87, 13);
+            this.label170.Size = new System.Drawing.Size(89, 13);
             this.label170.TabIndex = 236;
-            this.label170.Text = "Unique distance:";
-            this.toolTip1.SetToolTip(this.label170, "Measurement takes the closest feature from the intial location.\r\nOnce this is det" +
-        "ermined, the result must be unique; no other\r\nvalid results can occur within thi" +
-        "s distacnce.");
+            this.label170.Text = "Discard distance:";
+            this.toolTip1.SetToolTip(this.label170, "Measurement searces the feature from the intial location.\r\nThe result must be uni" +
+        "que. Features outside this distance\r\nare discarded. Also, no other valid results" +
+        " can occur within \r\nthis distacnce.");
             // 
             // AlgorithmsLoad_button
             // 
@@ -6973,6 +6893,294 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(640, 143);
             this.panel1.TabIndex = 302;
+            // 
+            // NozzleOffset_label
+            // 
+            this.NozzleOffset_label.AutoSize = true;
+            this.NozzleOffset_label.BackColor = System.Drawing.Color.White;
+            this.NozzleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.NozzleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NozzleOffset_label.Location = new System.Drawing.Point(3, 61);
+            this.NozzleOffset_label.Name = "NozzleOffset_label";
+            this.NozzleOffset_label.Size = new System.Drawing.Size(119, 20);
+            this.NozzleOffset_label.TabIndex = 281;
+            this.NozzleOffset_label.Text = "Instructions here";
+            // 
+            // SetPickupCenter_button
+            // 
+            this.SetPickupCenter_button.Location = new System.Drawing.Point(569, 34);
+            this.SetPickupCenter_button.Name = "SetPickupCenter_button";
+            this.SetPickupCenter_button.Size = new System.Drawing.Size(65, 23);
+            this.SetPickupCenter_button.TabIndex = 278;
+            this.SetPickupCenter_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetPickupCenter_button, "Sets manual pick up postion");
+            this.SetPickupCenter_button.UseVisualStyleBackColor = true;
+            this.SetPickupCenter_button.Click += new System.EventHandler(this.SetPickupCenter_button_Click);
+            // 
+            // label101
+            // 
+            this.label101.AutoSize = true;
+            this.label101.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label101.Location = new System.Drawing.Point(567, 7);
+            this.label101.Name = "label101";
+            this.label101.Size = new System.Drawing.Size(50, 17);
+            this.label101.TabIndex = 301;
+            this.label101.Text = "Pickup";
+            // 
+            // label94
+            // 
+            this.label94.AutoSize = true;
+            this.label94.Location = new System.Drawing.Point(484, 66);
+            this.label94.Name = "label94";
+            this.label94.Size = new System.Drawing.Size(17, 13);
+            this.label94.TabIndex = 267;
+            this.label94.Text = "X:";
+            // 
+            // NozzleOffsetY_textBox
+            // 
+            this.NozzleOffsetY_textBox.Location = new System.Drawing.Point(114, 105);
+            this.NozzleOffsetY_textBox.Name = "NozzleOffsetY_textBox";
+            this.NozzleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
+            this.NozzleOffsetY_textBox.TabIndex = 293;
+            this.NozzleOffsetY_textBox.Text = "6.99";
+            this.toolTip1.SetToolTip(this.NozzleOffsetY_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
+            // 
+            // label100
+            // 
+            this.label100.AutoSize = true;
+            this.label100.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label100.Location = new System.Drawing.Point(479, 7);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(67, 17);
+            this.label100.TabIndex = 300;
+            this.label100.Text = "PCB zero";
+            // 
+            // NozzleOffsetX_textBox
+            // 
+            this.NozzleOffsetX_textBox.Location = new System.Drawing.Point(25, 105);
+            this.NozzleOffsetX_textBox.Name = "NozzleOffsetX_textBox";
+            this.NozzleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
+            this.NozzleOffsetX_textBox.TabIndex = 292;
+            this.NozzleOffsetX_textBox.Text = "42.88";
+            this.toolTip1.SetToolTip(this.NozzleOffsetX_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
+            // 
+            // label93
+            // 
+            this.label93.AutoSize = true;
+            this.label93.Location = new System.Drawing.Point(484, 92);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(17, 13);
+            this.label93.TabIndex = 268;
+            this.label93.Text = "Y:";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label55.Location = new System.Drawing.Point(379, 7);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(79, 17);
+            this.label55.TabIndex = 299;
+            this.label55.Text = "Up Camera";
+            // 
+            // label148
+            // 
+            this.label148.AutoSize = true;
+            this.label148.Location = new System.Drawing.Point(66, 109);
+            this.label148.Name = "label148";
+            this.label148.Size = new System.Drawing.Size(23, 13);
+            this.label148.TabIndex = 297;
+            this.label148.Text = "mm";
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(565, 66);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(17, 13);
+            this.label96.TabIndex = 271;
+            this.label96.Text = "X:";
+            // 
+            // label146
+            // 
+            this.label146.AutoSize = true;
+            this.label146.Location = new System.Drawing.Point(91, 109);
+            this.label146.Name = "label146";
+            this.label146.Size = new System.Drawing.Size(17, 13);
+            this.label146.TabIndex = 296;
+            this.label146.Text = "Y:";
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Location = new System.Drawing.Point(565, 92);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(17, 13);
+            this.label95.TabIndex = 272;
+            this.label95.Text = "Y:";
+            // 
+            // label143
+            // 
+            this.label143.AutoSize = true;
+            this.label143.Location = new System.Drawing.Point(2, 109);
+            this.label143.Name = "label143";
+            this.label143.Size = new System.Drawing.Size(17, 13);
+            this.label143.TabIndex = 295;
+            this.label143.Text = "X:";
+            // 
+            // GotoPCB0_button
+            // 
+            this.GotoPCB0_button.Location = new System.Drawing.Point(487, 115);
+            this.GotoPCB0_button.Name = "GotoPCB0_button";
+            this.GotoPCB0_button.Size = new System.Drawing.Size(65, 23);
+            this.GotoPCB0_button.TabIndex = 275;
+            this.GotoPCB0_button.Text = "Go there";
+            this.GotoPCB0_button.UseVisualStyleBackColor = true;
+            this.GotoPCB0_button.Click += new System.EventHandler(this.GotoPCB0_button_Click);
+            // 
+            // GotoUpCamPosition_button
+            // 
+            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(407, 115);
+            this.GotoUpCamPosition_button.Name = "GotoUpCamPosition_button";
+            this.GotoUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
+            this.GotoUpCamPosition_button.TabIndex = 288;
+            this.GotoUpCamPosition_button.Text = "Go there";
+            this.GotoUpCamPosition_button.UseVisualStyleBackColor = true;
+            this.GotoUpCamPosition_button.Click += new System.EventHandler(this.GotoUpCamPosition_button_Click);
+            // 
+            // GotoPickupCenter_button
+            // 
+            this.GotoPickupCenter_button.Location = new System.Drawing.Point(570, 115);
+            this.GotoPickupCenter_button.Name = "GotoPickupCenter_button";
+            this.GotoPickupCenter_button.Size = new System.Drawing.Size(65, 23);
+            this.GotoPickupCenter_button.TabIndex = 276;
+            this.GotoPickupCenter_button.Text = "Go there";
+            this.GotoPickupCenter_button.UseVisualStyleBackColor = true;
+            this.GotoPickupCenter_button.Click += new System.EventHandler(this.GotoPickupCenter_button_Click);
+            // 
+            // Offset2Method_button
+            // 
+            this.Offset2Method_button.Location = new System.Drawing.Point(3, 31);
+            this.Offset2Method_button.Name = "Offset2Method_button";
+            this.Offset2Method_button.Size = new System.Drawing.Size(75, 23);
+            this.Offset2Method_button.TabIndex = 282;
+            this.Offset2Method_button.Tag = "Runs the Nozzle calibration routine";
+            this.Offset2Method_button.Text = "Start";
+            this.Offset2Method_button.UseVisualStyleBackColor = true;
+            this.Offset2Method_button.Click += new System.EventHandler(this.Offset2Method_button_Click);
+            // 
+            // label115
+            // 
+            this.label115.AutoSize = true;
+            this.label115.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label115.Location = new System.Drawing.Point(3, 5);
+            this.label115.Name = "label115";
+            this.label115.Size = new System.Drawing.Size(96, 17);
+            this.label115.TabIndex = 280;
+            this.label115.Text = "Nozzle Setup:";
+            // 
+            // SetUpCamPosition_button
+            // 
+            this.SetUpCamPosition_button.Location = new System.Drawing.Point(407, 34);
+            this.SetUpCamPosition_button.Name = "SetUpCamPosition_button";
+            this.SetUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
+            this.SetUpCamPosition_button.TabIndex = 287;
+            this.SetUpCamPosition_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetUpCamPosition_button, "Sets Up camera location");
+            this.SetUpCamPosition_button.UseVisualStyleBackColor = true;
+            this.SetUpCamPosition_button.Click += new System.EventHandler(this.SetUpCamPosition_button_Click);
+            // 
+            // label114
+            // 
+            this.label114.AutoSize = true;
+            this.label114.Location = new System.Drawing.Point(3, 87);
+            this.label114.Name = "label114";
+            this.label114.Size = new System.Drawing.Size(114, 13);
+            this.label114.TabIndex = 279;
+            this.label114.Text = "Nozzle Nominal Offset:";
+            // 
+            // SetPCB0_button
+            // 
+            this.SetPCB0_button.Location = new System.Drawing.Point(487, 34);
+            this.SetPCB0_button.Name = "SetPCB0_button";
+            this.SetPCB0_button.Size = new System.Drawing.Size(65, 23);
+            this.SetPCB0_button.TabIndex = 277;
+            this.SetPCB0_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetPCB0_button, "Sets PCB jig lower left location");
+            this.SetPCB0_button.UseVisualStyleBackColor = true;
+            this.SetPCB0_button.Click += new System.EventHandler(this.SetPCB0_button_Click);
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(404, 92);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(17, 13);
+            this.label99.TabIndex = 286;
+            this.label99.Text = "Y:";
+            // 
+            // JigX_textBox
+            // 
+            this.JigX_textBox.Location = new System.Drawing.Point(506, 63);
+            this.JigX_textBox.Name = "JigX_textBox";
+            this.JigX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.JigX_textBox.TabIndex = 269;
+            this.JigX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JigX_textBox_KeyPress);
+            this.JigX_textBox.Leave += new System.EventHandler(this.JigX_textBox_Leave);
+            // 
+            // label98
+            // 
+            this.label98.AutoSize = true;
+            this.label98.Location = new System.Drawing.Point(404, 66);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(17, 13);
+            this.label98.TabIndex = 285;
+            this.label98.Text = "X:";
+            // 
+            // JigY_textBox
+            // 
+            this.JigY_textBox.Location = new System.Drawing.Point(506, 89);
+            this.JigY_textBox.Name = "JigY_textBox";
+            this.JigY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.JigY_textBox.TabIndex = 270;
+            this.JigY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JigY_textBox_KeyPress);
+            this.JigY_textBox.Leave += new System.EventHandler(this.JigY_textBox_Leave);
+            // 
+            // UpcamPositionY_textBox
+            // 
+            this.UpcamPositionY_textBox.Location = new System.Drawing.Point(427, 89);
+            this.UpcamPositionY_textBox.Name = "UpcamPositionY_textBox";
+            this.UpcamPositionY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.UpcamPositionY_textBox.TabIndex = 284;
+            this.UpcamPositionY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionY_textBox_KeyPress);
+            this.UpcamPositionY_textBox.Leave += new System.EventHandler(this.UpcamPositionY_textBox_Leave);
+            // 
+            // PickupCenterX_textBox
+            // 
+            this.PickupCenterX_textBox.Location = new System.Drawing.Point(588, 63);
+            this.PickupCenterX_textBox.Name = "PickupCenterX_textBox";
+            this.PickupCenterX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.PickupCenterX_textBox.TabIndex = 273;
+            this.PickupCenterX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PickupCenterX_textBox_KeyPress);
+            this.PickupCenterX_textBox.Leave += new System.EventHandler(this.PickupCenterX_textBox_Leave);
+            // 
+            // UpcamPositionX_textBox
+            // 
+            this.UpcamPositionX_textBox.Location = new System.Drawing.Point(427, 63);
+            this.UpcamPositionX_textBox.Name = "UpcamPositionX_textBox";
+            this.UpcamPositionX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.UpcamPositionX_textBox.TabIndex = 283;
+            this.UpcamPositionX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpcamPositionX_textBox_KeyPress);
+            this.UpcamPositionX_textBox.Leave += new System.EventHandler(this.UpcamPositionX_textBox_Leave);
+            // 
+            // PickupCenterY_textBox
+            // 
+            this.PickupCenterY_textBox.Location = new System.Drawing.Point(588, 89);
+            this.PickupCenterY_textBox.Name = "PickupCenterY_textBox";
+            this.PickupCenterY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.PickupCenterY_textBox.TabIndex = 274;
+            this.PickupCenterY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PickupCenterY_textBox_KeyPress);
+            this.PickupCenterY_textBox.Leave += new System.EventHandler(this.PickupCenterY_textBox_Leave);
             // 
             // Nozzles_tabPage
             // 
@@ -7992,195 +8200,81 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
-            // SelectButton_Column
+            // label153
             // 
-            this.SelectButton_Column.HeaderText = "Select";
-            this.SelectButton_Column.Name = "SelectButton_Column";
-            this.SelectButton_Column.Text = "Reset";
-            this.SelectButton_Column.Width = 43;
+            this.label153.AutoSize = true;
+            this.label153.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label153.Location = new System.Drawing.Point(18, 22);
+            this.label153.Name = "label153";
+            this.label153.Size = new System.Drawing.Size(94, 20);
+            this.label153.TabIndex = 121;
+            this.label153.Text = "Connection:";
+            this.toolTip1.SetToolTip(this.label153, "Connection status");
             // 
-            // Id_Column
+            // label147
             // 
-            this.Id_Column.HeaderText = "ID";
-            this.Id_Column.Name = "Id_Column";
-            this.Id_Column.Width = 43;
+            this.label147.AutoSize = true;
+            this.label147.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label147.Location = new System.Drawing.Point(371, 163);
+            this.label147.Name = "label147";
+            this.label147.Size = new System.Drawing.Size(89, 40);
+            this.label147.TabIndex = 122;
+            this.label147.Text = "Mechanical\r\nHoming:";
+            this.toolTip1.SetToolTip(this.label147, "Connection status");
             // 
-            // NextPart_Column
+            // label154
             // 
-            this.NextPart_Column.HeaderText = "Next";
-            this.NextPart_Column.Name = "NextPart_Column";
-            this.NextPart_Column.Width = 54;
+            this.label154.AutoSize = true;
+            this.label154.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label154.Location = new System.Drawing.Point(789, 22);
+            this.label154.Name = "label154";
+            this.label154.Size = new System.Drawing.Size(72, 20);
+            this.label154.TabIndex = 123;
+            this.label154.Text = "Vacuum:";
+            this.toolTip1.SetToolTip(this.label154, "Connection status");
             // 
-            // Orientation_Column
+            // label177
             // 
-            this.Orientation_Column.HeaderText = "Dir.";
-            this.Orientation_Column.Items.AddRange(new object[] {
-            "+X",
-            "-X",
-            "+Y",
-            "-Y"});
-            this.Orientation_Column.Name = "Orientation_Column";
-            this.Orientation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Orientation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Orientation_Column.Width = 48;
+            this.label177.AutoSize = true;
+            this.label177.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label177.Location = new System.Drawing.Point(1004, 452);
+            this.label177.Name = "label177";
+            this.label177.Size = new System.Drawing.Size(93, 20);
+            this.label177.TabIndex = 124;
+            this.label177.Text = "Bookmarks:";
+            this.toolTip1.SetToolTip(this.label177, "Connection status");
             // 
-            // Nozzle_Column
+            // label178
             // 
-            this.Nozzle_Column.HeaderText = "Nozzle";
-            this.Nozzle_Column.Name = "Nozzle_Column";
-            this.Nozzle_Column.Width = 64;
+            this.label178.AutoSize = true;
+            this.label178.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label178.Location = new System.Drawing.Point(510, 163);
+            this.label178.Name = "label178";
+            this.label178.Size = new System.Drawing.Size(83, 40);
+            this.label178.TabIndex = 125;
+            this.label178.Text = "Movement\r\nTest:";
+            this.toolTip1.SetToolTip(this.label178, "Connection status");
             // 
-            // Capacity_Column
+            // label179
             // 
-            this.Capacity_Column.HeaderText = "Capacity";
-            this.Capacity_Column.Name = "Capacity_Column";
-            this.Capacity_Column.Visible = false;
-            this.Capacity_Column.Width = 73;
+            this.label179.AutoSize = true;
+            this.label179.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label179.Location = new System.Drawing.Point(510, 380);
+            this.label179.Name = "label179";
+            this.label179.Size = new System.Drawing.Size(104, 20);
+            this.label179.TabIndex = 126;
+            this.label179.Text = "Park location:";
             // 
-            // TrayID_Column
+            // label180
             // 
-            this.TrayID_Column.HeaderText = "Tray";
-            this.TrayID_Column.Name = "TrayID_Column";
-            this.TrayID_Column.Width = 53;
-            // 
-            // Rotation_Column
-            // 
-            this.Rotation_Column.HeaderText = "Rot.";
-            this.Rotation_Column.Items.AddRange(new object[] {
-            "0deg.",
-            "90deg.",
-            "180deg.",
-            "270deg."});
-            this.Rotation_Column.Name = "Rotation_Column";
-            this.Rotation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Rotation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Rotation_Column.Width = 52;
-            // 
-            // Type_Column
-            // 
-            this.Type_Column.HeaderText = "Type";
-            this.Type_Column.Items.AddRange(new object[] {
-            "Paper (White)",
-            "Black Plastic",
-            "Clear Plastic"});
-            this.Type_Column.Name = "Type_Column";
-            this.Type_Column.Width = 37;
-            // 
-            // Width_Column
-            // 
-            this.Width_Column.HeaderText = "Width";
-            this.Width_Column.Items.AddRange(new object[] {
-            "8/2mm",
-            "8/4mm",
-            "12/4mm",
-            "12/8mm",
-            "16/4mm",
-            "16/8mm",
-            "16/12mm",
-            "24/4mm",
-            "24/8mm",
-            "24/12mm",
-            "24/16mm",
-            "24/20mm",
-            "32/4mm",
-            "32/8mm",
-            "32/12mm",
-            "32/16mm",
-            "32/20mm",
-            "32/24mm",
-            "32/28mm",
-            "32/32mm",
-            "custom"});
-            this.Width_Column.Name = "Width_Column";
-            this.Width_Column.Width = 41;
-            // 
-            // Pitch_Column
-            // 
-            this.Pitch_Column.HeaderText = "Pitch";
-            this.Pitch_Column.Name = "Pitch_Column";
-            this.Pitch_Column.Width = 56;
-            // 
-            // OffsetX_Column
-            // 
-            this.OffsetX_Column.HeaderText = "Offset X";
-            this.OffsetX_Column.Name = "OffsetX_Column";
-            this.OffsetX_Column.Width = 70;
-            // 
-            // OffsetY_Column
-            // 
-            this.OffsetY_Column.HeaderText = "Offset Y";
-            this.OffsetY_Column.Name = "OffsetY_Column";
-            this.OffsetY_Column.Width = 70;
-            // 
-            // FirstX_Column
-            // 
-            this.FirstX_Column.HeaderText = "X";
-            this.FirstX_Column.Name = "FirstX_Column";
-            this.FirstX_Column.ReadOnly = true;
-            this.FirstX_Column.Width = 39;
-            // 
-            // FirstY_Column
-            // 
-            this.FirstY_Column.HeaderText = "Y";
-            this.FirstY_Column.Name = "FirstY_Column";
-            this.FirstY_Column.ReadOnly = true;
-            this.FirstY_Column.Width = 39;
-            // 
-            // Z_Pickup_Column
-            // 
-            this.Z_Pickup_Column.HeaderText = "Pickup Z";
-            this.Z_Pickup_Column.Name = "Z_Pickup_Column";
-            this.Z_Pickup_Column.Width = 75;
-            // 
-            // Z_Place_Column
-            // 
-            this.Z_Place_Column.HeaderText = "Place Z";
-            this.Z_Place_Column.Name = "Z_Place_Column";
-            this.Z_Place_Column.Width = 69;
-            // 
-            // Next_X_Column
-            // 
-            this.Next_X_Column.HeaderText = "Next X";
-            this.Next_X_Column.Name = "Next_X_Column";
-            this.Next_X_Column.ReadOnly = true;
-            this.Next_X_Column.Width = 64;
-            // 
-            // Next_Y_Column
-            // 
-            this.Next_Y_Column.HeaderText = "Next Y";
-            this.Next_Y_Column.Name = "Next_Y_Column";
-            this.Next_Y_Column.ReadOnly = true;
-            this.Next_Y_Column.Width = 64;
-            // 
-            // CoordinatesForParts_Column
-            // 
-            this.CoordinatesForParts_Column.HeaderText = "Coordinates for parts";
-            this.CoordinatesForParts_Column.Name = "CoordinatesForParts_Column";
-            this.CoordinatesForParts_Column.Width = 78;
-            // 
-            // UseNozzleCoordinates_Column
-            // 
-            this.UseNozzleCoordinates_Column.HeaderText = "Coordinates are for Nozzle";
-            this.UseNozzleCoordinates_Column.Name = "UseNozzleCoordinates_Column";
-            this.UseNozzleCoordinates_Column.Width = 81;
-            // 
-            // LastX_Column
-            // 
-            this.LastX_Column.HeaderText = "Last X";
-            this.LastX_Column.Name = "LastX_Column";
-            this.LastX_Column.Width = 58;
-            // 
-            // LastY_column
-            // 
-            this.LastY_column.HeaderText = "Last Y";
-            this.LastY_column.Name = "LastY_column";
-            this.LastY_column.Width = 58;
-            // 
-            // RotationDirect_Column
-            // 
-            this.RotationDirect_Column.HeaderText = "Rotation";
-            this.RotationDirect_Column.Name = "RotationDirect_Column";
-            this.RotationDirect_Column.Width = 72;
+            this.label180.AutoSize = true;
+            this.label180.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label180.Location = new System.Drawing.Point(1040, 267);
+            this.label180.Name = "label180";
+            this.label180.Size = new System.Drawing.Size(69, 20);
+            this.label180.TabIndex = 127;
+            this.label180.Text = "Jogging:";
+            this.toolTip1.SetToolTip(this.label180, "Connection status");
             // 
             // FormMain
             // 
@@ -8263,7 +8357,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Temp_dataGridView)).EndInit();
             this.tabPageBasicSetup.ResumeLayout(false);
             this.tabPageBasicSetup.PerformLayout();
-            this.Motors_tabControl.ResumeLayout(false);
+            this.TinyGMotors_tabControl.ResumeLayout(false);
             this.X_tabPage.ResumeLayout(false);
             this.X_tabPage.PerformLayout();
             this.panel4.ResumeLayout(false);
@@ -8912,7 +9006,7 @@
         private System.Windows.Forms.Label label121;
         private System.Windows.Forms.TextBox DownCameraYmmPerPixel_textBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TabControl Motors_tabControl;
+        private System.Windows.Forms.TabControl TinyGMotors_tabControl;
         private System.Windows.Forms.TabPage X_tabPage;
         private System.Windows.Forms.TabPage Y_tabPage;
         private System.Windows.Forms.TabPage Z_tabPage;
@@ -9001,6 +9095,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastX_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastY_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn RotationDirect_Column;
+        private System.Windows.Forms.Label label179;
+        private System.Windows.Forms.Label label178;
+        private System.Windows.Forms.Label label177;
+        private System.Windows.Forms.Label label154;
+        private System.Windows.Forms.Label label147;
+        private System.Windows.Forms.Label label153;
+        private System.Windows.Forms.Label label180;
     }
 }
 

@@ -2435,7 +2435,7 @@ namespace LitePlacer
             DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
             DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
 
-            if (!GoToFeatureLocation_m(0.05, out double X, out double Y))
+            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
             {
                 return false;
             }

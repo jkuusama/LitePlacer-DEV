@@ -156,14 +156,6 @@ namespace LitePlacer
         }
 
 
-
-        // Write, that doesn't care what we think of the communication link status
-        public void ForceWrite(string command)
-        {
-            Com.Write(command);
-        }
-
-
         #endregion Communications
 
         // =================================================================================
