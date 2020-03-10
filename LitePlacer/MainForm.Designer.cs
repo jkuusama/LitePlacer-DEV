@@ -7773,6 +7773,7 @@ namespace LitePlacer
             this.ManualNeedeChange_button.TabIndex = 72;
             this.ManualNeedeChange_button.Text = "Man. Nozzle change";
             this.ManualNeedeChange_button.UseVisualStyleBackColor = true;
+            this.ManualNeedeChange_button.Visible = false;
             this.ManualNeedeChange_button.Click += new System.EventHandler(this.ManualNozzleChange_button_Click);
             // 
             // ValidMeasurement_checkBox

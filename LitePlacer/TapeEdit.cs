@@ -226,13 +226,13 @@ namespace LitePlacer
             Row.Cells["Rotation_Column"].Value = TapeRotation_comboBox.SelectedItem;
             Row.Cells["Orientation_Column"].Value = TapeOrientation_comboBox.SelectedItem;
             Row.Cells["Nozzle_Column"].Value = Nozzle_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
+            Row.Cells["NextPart_Column"].Value = NextPart_textBox.Text;
+            Row.Cells["Capacity_Column"].Value = Capacity_textBox.Text;
             Row.Cells["Width_Column"].Value = TapeWidth_comboBox.Text;
             Row.Cells["Pitch_Column"].Value = TapePitch_textBox.Text;
             Row.Cells["OffsetX_Column"].Value = TapeOffsetX_textBox.Text;
             Row.Cells["OffsetY_Column"].Value = TapeOffsetY_textBox.Text;
-            Row.Cells["Capacity_Column"].Value = Capacity_textBox.Text;
             Row.Cells["Type_Column"].Value = Type_comboBox.Text; 
-            Row.Cells["NextPart_Column"].Value = NextPart_textBox.Text;
             Row.Cells["FirstX_Column"].Value = FirstX_textBox.Text;
             Row.Cells["FirstY_Column"].Value = FirstY_textBox.Text;
             Row.Cells["Z_Pickup_Column"].Value = PickupZ_textBox.Text;

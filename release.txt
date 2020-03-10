@@ -1,20 +1,10 @@
-Build date mm/dd/2020
+Build date 03/07/2020
 
 New Features, significant changes
 
-* Place fast now calculates parts remaining to be placed, not
-  total number of parts (thanks to nkofl)
-* Place fast now uses second to last hole in measurement, as
-  ther last hole might not be whole (thanks to nkofl)
-* "none" can be selected for up camera
+* 
 
 
 Bug Fixes
 
-* Waits for quaranteed serial port close in closing the program (thanks to JonathanNorton)
-* Catches existing but corrupted setting file (thanks to JonathanNorton)
-* Fixed weird behaviour of camera image when edit tape dialog is up.
-* Removed move to stored position from test buttons
-* Pressing cancel in tape edit dialog doesn't create a dummy tape
-* Camera status did not update when keep active was selected
-* Several typo fixes and internal changes
+* typo fix

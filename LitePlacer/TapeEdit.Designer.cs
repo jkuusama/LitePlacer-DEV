@@ -304,6 +304,7 @@
             this.Capacity_textBox.Name = "Capacity_textBox";
             this.Capacity_textBox.Size = new System.Drawing.Size(48, 20);
             this.Capacity_textBox.TabIndex = 20;
+            this.Capacity_textBox.Text = "1";
             this.toolTip1.SetToolTip(this.Capacity_textBox, "How many parts on a strip\r\n0: You are prompted to place a part at the location\r\n<" +
         "0: Infinite (feeder)");
             this.Capacity_textBox.Visible = false;
@@ -332,7 +333,7 @@
             this.Type_comboBox.Name = "Type_comboBox";
             this.Type_comboBox.Size = new System.Drawing.Size(114, 21);
             this.Type_comboBox.TabIndex = 22;
-            this.toolTip1.SetToolTip(this.Type_comboBox, "What optical filter set is used");
+            this.toolTip1.SetToolTip(this.Type_comboBox, "What vision algorithm is used");
             // 
             // label11
             // 
@@ -360,6 +361,7 @@
             this.NextPart_textBox.Name = "NextPart_textBox";
             this.NextPart_textBox.Size = new System.Drawing.Size(48, 20);
             this.NextPart_textBox.TabIndex = 24;
+            this.NextPart_textBox.Text = "1";
             this.toolTip1.SetToolTip(this.NextPart_textBox, "Number of next part used for placement");
             this.NextPart_textBox.TextChanged += new System.EventHandler(this.NextPart_textBox_TextChanged);
             // 
@@ -501,7 +503,7 @@
             this.TrayID_textBox.Name = "TrayID_textBox";
             this.TrayID_textBox.Size = new System.Drawing.Size(100, 20);
             this.TrayID_textBox.TabIndex = 47;
-            this.toolTip1.SetToolTip(this.TrayID_textBox, "Name of the tape (ex: 0805, 10k)");
+            this.toolTip1.SetToolTip(this.TrayID_textBox, "Optional value");
             // 
             // GetFirstPosition_button
             // 
@@ -533,7 +535,7 @@
             this.GetPickupZ_button.Size = new System.Drawing.Size(47, 23);
             this.GetPickupZ_button.TabIndex = 44;
             this.GetPickupZ_button.Text = "Get";
-            this.toolTip1.SetToolTip(this.GetPickupZ_button, "move current Z position to the boxes");
+            this.toolTip1.SetToolTip(this.GetPickupZ_button, "move current Z position to the box");
             this.GetPickupZ_button.UseVisualStyleBackColor = true;
             this.GetPickupZ_button.Click += new System.EventHandler(this.GetPickupZ_button_Click);
             // 
@@ -544,7 +546,7 @@
             this.GetPlacementZ_button.Size = new System.Drawing.Size(47, 23);
             this.GetPlacementZ_button.TabIndex = 46;
             this.GetPlacementZ_button.Text = "Get";
-            this.toolTip1.SetToolTip(this.GetPlacementZ_button, "move current Z position to the boxes");
+            this.toolTip1.SetToolTip(this.GetPlacementZ_button, "move current Z position to the box");
             this.GetPlacementZ_button.UseVisualStyleBackColor = true;
             this.GetPlacementZ_button.Click += new System.EventHandler(this.GetPlacementZ_button_Click);
             // 
