@@ -30,8 +30,7 @@ namespace LitePlacer
 
         public bool CheckIdentity()
         {
-            Write_m("M115");
-            string resp = ReadLine();
+            string resp = GetResponse_m("M115");
             if (resp.Contains("Duet 3"))
             {
                 MainForm.DisplayText("Duet 3 board found.");
@@ -43,6 +42,10 @@ namespace LitePlacer
 
         public bool JustConnected()
         {
+            if (!MainForm.SetDuet3XmotorParameters()) return false;
+            if (!MainForm.SetDuet3YmotorParameters()) return false;
+            if (!MainForm.SetDuet3ZmotorParameters()) return false;
+            if (!MainForm.SetDuet3AmotorParameters()) return false;
             return true;
         }
 
@@ -53,6 +56,7 @@ namespace LitePlacer
 
         private bool LineAvailable = false;
         private string ReceivedLine = "";
+        private bool WriteBusy = false;
 
         // so that we don't need to write lock... so many times
         private void ClearReceivedLine()
@@ -65,7 +69,7 @@ namespace LitePlacer
 
         // ===================================================================
         // Write_m
-        // Normal write, waits until there is response available
+        // Normal write, waits until "ok" response is received
 
         public bool Write_m(string cmd, int Timeout = 250)
         {
@@ -82,11 +86,11 @@ namespace LitePlacer
                 return false;
             }
 
-            LineAvailable = false;
             Timeout = Timeout / 2;
             int i = 0;
+            WriteBusy = true;
             bool WriteOk = Com.Write(cmd);
-            while (!LineAvailable)
+            while (WriteBusy)
             {
                 Thread.Sleep(2);
                 Application.DoEvents();
@@ -106,11 +110,44 @@ namespace LitePlacer
 
 
         // ===================================================================
-        // ReadLine
-        // Normal read, assumes there is response available
-        public string ReadLine()
+        // GetResponse
+        // Writes a command, returns a response. Failed write returns empty response.
+        public string GetResponse_m(string cmd, int Timeout = 250)
         {
             string line;
+
+            if (!Com.IsOpen)
+            {
+                MainForm.DisplayText("###" + cmd + " discarded, com not open");
+                ClearReceivedLine();
+                return "";
+            }
+            if (Cnc.ErrorState)
+            {
+                MainForm.DisplayText("###" + cmd + " discarded, error state on");
+                ClearReceivedLine();
+                return "";
+            }
+
+            Timeout = Timeout / 2;
+            int i = 0;
+            LineAvailable = false;
+            Com.Write(cmd);
+            while (!LineAvailable)
+            {
+                Thread.Sleep(2);
+                Application.DoEvents();
+                i++;
+                if (i > Timeout)
+                {
+                    MainForm.ShowMessageBox(
+                        "Duet3.Write_m: Timeout on command " + cmd,
+                        "Timeout",
+                        MessageBoxButtons.OK);
+                    ClearReceivedLine();
+                    return "";
+                }
+            }
             lock (ReceivedLine)
             {
                 line = ReceivedLine;
@@ -127,6 +164,7 @@ namespace LitePlacer
             MainForm.DisplayText("<== " + line);
             if (line == "ok\n")
             {
+                WriteBusy = false;
                 return;
             }
             lock (ReceivedLine)

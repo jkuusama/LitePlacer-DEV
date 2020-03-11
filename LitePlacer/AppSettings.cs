@@ -29,7 +29,7 @@ namespace LitePlacer
     // The settings
     // =================================================================================
 
-    public class MySettings
+    public partial class MySettings
     {
         public bool Cam_ShowPixels { get; set; } = false;
         public bool Cameras_KeepActive { get; set; } = false;

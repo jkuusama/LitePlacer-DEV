@@ -80,7 +80,7 @@ namespace LitePlacer
     {
         public static FormMain MainForm;
         private TinyGclass TinyG;
-        private Duet3class Duet3;
+        public Duet3class Duet3;
 
         public enum ControlBoardType { TinyG, Duet3, other, unknown };
         public ControlBoardType Controlboard { get; set; } = ControlBoardType.unknown;
@@ -100,6 +100,8 @@ namespace LitePlacer
 
         public bool SlowA { get; set; }
         public double NozzleSpeedA { get; set; }
+
+        public bool Homing { get; set; }
 
         SerialComm Com;
 
@@ -374,13 +376,19 @@ namespace LitePlacer
             ErrorState = false;
             Connected = false;
 
+            MainForm.Motors_label.Text = "No board.";
+            MainForm.TinyGMotors_tabControl.Visible = false;
+            MainForm.Duet3Motors_tabControl.Visible = false;
+
             if (!OpenPort(port))
             {
                 return false;
             }
-            Controlboard = ControlBoardType.Duet3;      // to direct InterpretLine to correct module
+            Controlboard = ControlBoardType.Duet3;      // to direct the response to correct module
             if (Duet3.CheckIdentity())
             {
+                MainForm.Motors_label.Text = "Motors setup (Duet3 board):";
+                MainForm.Duet3Motors_tabControl.Visible = true;
                 return true;
             }
             else
@@ -398,6 +406,8 @@ namespace LitePlacer
             Controlboard = ControlBoardType.TinyG;
             if (TinyG.CheckIdentity())
             {
+                MainForm.Motors_label.Text = "Motors setup (TinyG board):";
+                MainForm.TinyGMotors_tabControl.Visible = true;
                 return true;
             }
             else
@@ -1053,7 +1063,6 @@ namespace LitePlacer
             if (Math.Abs(A - CurrentA) < 0.01)
             {
                 MainForm.DisplayText(" -- zero A movement command --");
-                _readyEvent.Set();
                 return true;   // already there
             }
             if ((SlackCompensationA) && (CurrentA > (A - SlackCompensationDistanceA)))
@@ -1180,33 +1189,11 @@ namespace LitePlacer
 
         #endregion Movement
 
-
-
-
-
-        // =================================================================================
-        // =================================================================================
-        // Old code from this down:
-
-
-        // public string SmallMovementString { get; set; } = "G1 F200 ";
-
-        static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
-        public ManualResetEventSlim ReadyEvent
-        {
-            get
-            {
-                return _readyEvent;
-            }
-        }
-
-
         // =================================================================================
 
  
 
         // =================================================================================
-        public bool Homing { get; set; }
 
     }  // end Class CNC
 }
