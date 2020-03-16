@@ -484,7 +484,7 @@ namespace LitePlacer
                 res = SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
                 OK = OK && res;
 
-                res = SaveDataGrid(path + "LitePlacer.NozzlesVisionParameters_v2", NozzlesParameters_dataGridView);
+                res = SaveDataGrid(path + "LitePlacer.NozzlesVisionParameters_v21", NozzlesParameters_dataGridView);
                 OK = OK && res;
 
                 res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData_v2");
@@ -10562,7 +10562,7 @@ namespace LitePlacer
             path = path.Remove(ind + 1);
             LoadDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView, DataTableType.Nozzles);
             LoadDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView, DataTableType.Nozzles);
-            LoadDataGrid(path + "LitePlacer.NozzlesVisionParameters_v2", NozzlesParameters_dataGridView, DataTableType.Nozzles);
+            LoadDataGrid(path + "LitePlacer.NozzlesVisionParameters_v21", NozzlesParameters_dataGridView, DataTableType.Nozzles);
             Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData_v2");
             FillNozzlesParameters_dataGridView();
         }
@@ -10671,7 +10671,7 @@ namespace LitePlacer
             path = path.Remove(i + 1);
             SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
             SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
-            SaveDataGrid(path + "LitePlacer.NozzlesVisionParameters_v2", NozzlesParameters_dataGridView);
+            SaveDataGrid(path + "LitePlacer.NozzlesVisionParameters_v21", NozzlesParameters_dataGridView);
             Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData_v2");
         }
 
@@ -10684,8 +10684,11 @@ namespace LitePlacer
 
         // ==========================================================================================================
         // Datagirds
-        void AddNozzleAlgoritmNames(int col)
+        void AddNozzleAlgorithmNames(int col)
         {
+            NozzlesParameters_dataGridView.Rows.Add(new DataGridViewRow());
+            NozzlesParameters_dataGridView.Rows[col].Cells["NozzleNumber_column"].Value = (col+1).ToString();
+
             string AlgName = "";
             if (NozzlesParameters_dataGridView.Rows[col].Cells["VisionAlgorithm_column"].Value != null)
             {
@@ -10708,17 +10711,12 @@ namespace LitePlacer
             }
             else
             {
-                if (AlgName == "-- not set --")
-                {
-                    DisplayText("Warning: Nozzle algorithm for nozzle " + col.ToString()
-                        + " not set", KnownColor.DarkRed, true);
-                }
-                else
+                if ((AlgName != "-- not set --")&& (AlgName != ""))
                 {
                     DisplayText("Warning: Stored nozzle video algorithm name \"" + AlgName
                         + "\" does not exist", KnownColor.DarkRed, true);
-                    NozzlesParameters_dataGridView.Rows[col].Cells["VisionAlgorithm_column"].Value = "-- not set --";
                 }
+                NozzlesParameters_dataGridView.Rows[col].Cells["VisionAlgorithm_column"].Value = "-- not set --";
             }
         }
 
@@ -10726,11 +10724,10 @@ namespace LitePlacer
         {
             for (int i = 0; i < Setting.Nozzles_count; i++)
             {
-                // numbere the rows
+                // number the rows
                 NozzlesLoad_dataGridView.Rows[i].Cells[0].Value = (i + 1).ToString();
                 NozzlesUnload_dataGridView.Rows[i].Cells[0].Value = (i + 1).ToString();
-                NozzlesParameters_dataGridView.Rows[i].Cells[0].Value = (i + 1).ToString();
-                AddNozzleAlgoritmNames(i);
+                AddNozzleAlgorithmNames(i);
             }
         }
 
@@ -10857,7 +10854,7 @@ namespace LitePlacer
             NozzlesLoad_dataGridView.Rows.Insert(RowNo);
             NozzlesUnload_dataGridView.Rows.Insert(RowNo);
             NozzlesParameters_dataGridView.Rows.Insert(RowNo);
-            AddNozzleAlgoritmNames(RowNo);
+            AddNozzleAlgorithmNames(RowNo);
             RowNo++;
             NozzlesLoad_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString(CultureInfo.InvariantCulture);
             NozzlesUnload_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString(CultureInfo.InvariantCulture);
