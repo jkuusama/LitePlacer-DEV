@@ -31,15 +31,20 @@ namespace LitePlacer
 		// ClearAll(): Resets TapeNumber positions and pickup/place Z's.
 		public void ClearAll()
 		{
-			for (int tape = 0; tape < Grid.Rows.Count; tape++)
-			{
-				Grid.Rows[tape].Cells["NextPart_Column"].Value = "1";
-				Grid.Rows[tape].Cells["Z_Pickup_Column"].Value = "--";
-				Grid.Rows[tape].Cells["Z_Place_Column"].Value = "--";
-				Grid.Rows[tape].Cells["Next_X_Column"].Value = Grid.Rows[tape].Cells["FirstX_Column"].Value;
-				Grid.Rows[tape].Cells["Next_Y_Column"].Value = Grid.Rows[tape].Cells["FirstY_Column"].Value;
-			}
-		}
+            DialogResult dialogResult = MainForm.ShowMessageBox(
+                "All tape locations will be reset to 1. Are you sure?",
+                "Reset counts?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                for (int tape = 0; tape < Grid.Rows.Count; tape++)
+                {
+                    Grid.Rows[tape].Cells["NextPart_Column"].Value = "1";
+                    Grid.Rows[tape].Cells["Next_X_Column"].Value = Grid.Rows[tape].Cells["FirstX_Column"].Value;
+                    Grid.Rows[tape].Cells["Next_Y_Column"].Value = Grid.Rows[tape].Cells["FirstY_Column"].Value;
+                }
+            }
+
+        }
 
 		// ========================================================================================
 		// Reset(): Resets one tape position and pickup/place Z's.

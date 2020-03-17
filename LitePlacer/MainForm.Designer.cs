@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -1216,6 +1216,8 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.ResetAllTapes_button);
+            this.Tapes_tabPage.Controls.Add(this.ResetOneTape_button);
             this.Tapes_tabPage.Controls.Add(this.EditTape_button);
             this.Tapes_tabPage.Controls.Add(this.label158);
             this.Tapes_tabPage.Controls.Add(this.label157);
@@ -1270,7 +1272,7 @@
             // label158
             // 
             this.label158.AutoSize = true;
-            this.label158.Location = new System.Drawing.Point(1155, 472);
+            this.label158.Location = new System.Drawing.Point(1155, 526);
             this.label158.Name = "label158";
             this.label158.Size = new System.Drawing.Size(77, 13);
             this.label158.TabIndex = 95;
@@ -1287,7 +1289,7 @@
             // 
             // ResetSelectedPlaceZs_button
             // 
-            this.ResetSelectedPlaceZs_button.Location = new System.Drawing.Point(1158, 517);
+            this.ResetSelectedPlaceZs_button.Location = new System.Drawing.Point(1158, 571);
             this.ResetSelectedPlaceZs_button.Name = "ResetSelectedPlaceZs_button";
             this.ResetSelectedPlaceZs_button.Size = new System.Drawing.Size(75, 23);
             this.ResetSelectedPlaceZs_button.TabIndex = 93;
@@ -1298,7 +1300,7 @@
             // 
             // ResetSelectedZs_button
             // 
-            this.ResetSelectedZs_button.Location = new System.Drawing.Point(1158, 488);
+            this.ResetSelectedZs_button.Location = new System.Drawing.Point(1158, 542);
             this.ResetSelectedZs_button.Name = "ResetSelectedZs_button";
             this.ResetSelectedZs_button.Size = new System.Drawing.Size(75, 23);
             this.ResetSelectedZs_button.TabIndex = 92;
@@ -6605,7 +6607,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.ResetOneTape_button);
             this.groupBox2.Controls.Add(this.PasteRow_button);
             this.groupBox2.Controls.Add(this.CopyRow_button);
             this.groupBox2.Controls.Add(this.NewRow_button);
@@ -6622,12 +6623,13 @@
             // 
             // ResetOneTape_button
             // 
-            this.ResetOneTape_button.Location = new System.Drawing.Point(7, 194);
+            this.ResetOneTape_button.Location = new System.Drawing.Point(1158, 600);
             this.ResetOneTape_button.Name = "ResetOneTape_button";
-            this.ResetOneTape_button.Size = new System.Drawing.Size(109, 23);
+            this.ResetOneTape_button.Size = new System.Drawing.Size(75, 23);
             this.ResetOneTape_button.TabIndex = 25;
-            this.ResetOneTape_button.Text = "Reset Tape(s)";
-            this.toolTip1.SetToolTip(this.ResetOneTape_button, "Resets the  tape pickup locations for \r\nthe components on selected rows to 1.");
+            this.ResetOneTape_button.Text = "Reset Count";
+            this.toolTip1.SetToolTip(this.ResetOneTape_button, "Resets thew next part number of the selected tape(s) to 1.\r\nUse when you reload t" +
+        "he tape.");
             this.ResetOneTape_button.UseVisualStyleBackColor = true;
             this.ResetOneTape_button.Click += new System.EventHandler(this.ResetOneTape_button_Click);
             // 
@@ -6709,7 +6711,6 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label39);
-            this.groupBox1.Controls.Add(this.ResetAllTapes_button);
             this.groupBox1.Controls.Add(this.AbortPlacement_button);
             this.groupBox1.Controls.Add(this.PausePlacement_button);
             this.groupBox1.Controls.Add(this.MachineCoords_label);
@@ -6742,18 +6743,18 @@
             // 
             // ResetAllTapes_button
             // 
-            this.ResetAllTapes_button.Location = new System.Drawing.Point(6, 48);
+            this.ResetAllTapes_button.Location = new System.Drawing.Point(1155, 464);
             this.ResetAllTapes_button.Name = "ResetAllTapes_button";
-            this.ResetAllTapes_button.Size = new System.Drawing.Size(109, 23);
+            this.ResetAllTapes_button.Size = new System.Drawing.Size(77, 23);
             this.ResetAllTapes_button.TabIndex = 37;
-            this.ResetAllTapes_button.Text = "Reset All Tapes";
+            this.ResetAllTapes_button.Text = "R. counts";
             this.toolTip1.SetToolTip(this.ResetAllTapes_button, "Reset all tape loacations to 1");
             this.ResetAllTapes_button.UseVisualStyleBackColor = true;
             this.ResetAllTapes_button.Click += new System.EventHandler(this.ResetAllTapes_button_Click);
             // 
             // AbortPlacement_button
             // 
-            this.AbortPlacement_button.Location = new System.Drawing.Point(6, 106);
+            this.AbortPlacement_button.Location = new System.Drawing.Point(6, 77);
             this.AbortPlacement_button.Name = "AbortPlacement_button";
             this.AbortPlacement_button.Size = new System.Drawing.Size(109, 23);
             this.AbortPlacement_button.TabIndex = 36;
@@ -6764,7 +6765,7 @@
             // 
             // PausePlacement_button
             // 
-            this.PausePlacement_button.Location = new System.Drawing.Point(6, 77);
+            this.PausePlacement_button.Location = new System.Drawing.Point(6, 48);
             this.PausePlacement_button.Name = "PausePlacement_button";
             this.PausePlacement_button.Size = new System.Drawing.Size(109, 23);
             this.PausePlacement_button.TabIndex = 35;
@@ -6926,14 +6927,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
