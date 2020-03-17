@@ -79,7 +79,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(931, 668);
+            this.ClientSize = new System.Drawing.Size(1234, 836);
             this.Controls.Add(this.UpdateJobData_checkBox);
             this.Controls.Add(this.Ignore_button);
             this.Controls.Add(this.label1);
@@ -88,6 +88,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select Tape";
             this.Load += new System.EventHandler(this.TapeSelectionForm_Load);
+            this.Resize += new System.EventHandler(this.TapeSelectionForm_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 

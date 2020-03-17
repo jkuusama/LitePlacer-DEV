@@ -19,13 +19,10 @@ namespace LitePlacer
         public string Nozzle { get; set; }
         public string HeaderString { get; set; } = "";
 
-        //const int ButtonWidth = 75;
-        //const int ButtonHeight = 23;
-        // const int SideGap = 12;
-        // const int ButtonGap = 6;
-        // Size ButtonSize = new Size(ButtonWidth, ButtonHeight);
-
         private Size GridSizeSave= new Size();
+		private int GridSizeXtrim = 40;
+		private int GridSizeYtrim = 110;
+
 
 		public TapeSelectionForm(DataGridView grd, FormMain MainF)
 		{
@@ -34,7 +31,6 @@ namespace LitePlacer
 			Grid = grd;
             GridSizeSave = Grid.Size;
             Nozzle = MainForm.Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
-            // this.Size = new Size(10 * ButtonWidth + 9*ButtonGap + 2 * SideGap+20, 133);  // 20?? 404; 480
             this.Controls.Add(Grid);
 			for (int i = 0; i < Grid.RowCount; i++)
 			{
@@ -42,9 +38,14 @@ namespace LitePlacer
 			}
 			Grid.Columns["SelectButton_Column"].Visible = true;
 			Grid.Location = new Point(15, 59);
-			Grid.Size = new Size(800, 480);
+			ResizeGrid();
 			// Add a CellClick handler to handle clicks in the button column.
 			Grid.CellClick += new DataGridViewCellEventHandler(Grid_CellClick);
+		}
+
+		private void ResizeGrid()
+		{
+			Grid.Size = new Size(this.Size.Width - GridSizeXtrim, this.Size.Height - GridSizeYtrim);
 		}
 
 		private void CloseForm()
@@ -100,5 +101,10 @@ namespace LitePlacer
 			ID = "Ignore";
 			CloseForm();
         }
+
+		private void TapeSelectionForm_Resize(object sender, EventArgs e)
+		{
+			ResizeGrid();
+		}
 	}
 }
