@@ -17,4 +17,3 @@ Bug Fixes
 * Tape data validity is checked before exit from tape setup dialog
 * In tape selection window, the grid now fills the space better and scales with the window
 * Reset tape counts moved to tapes tab, added confirmation for all counts reset
-
