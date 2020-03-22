@@ -521,14 +521,16 @@ namespace LitePlacer
             if (DownCamera.IsRunning())
             {
                 DownCamera.Close();
-                Thread.Sleep(200);   // camera feed needs a frame to close.
             }
             if (UpCamera.IsRunning())
             {
                 UpCamera.Close();
-                Thread.Sleep(200);   // camera feed needs a frame to close.
             }
-            Thread.Sleep(200);
+            for (int i = 0; i < 200; i++)
+            {
+                Thread.Sleep(2);
+                Application.DoEvents();
+            }
             Environment.Exit(0);    // kills all processes and threads (solves exit during startup issue)
         }
 
@@ -12501,7 +12503,6 @@ namespace LitePlacer
 
         }
 
- 
     }	// end of: 	public partial class FormMain : Form
 
 
