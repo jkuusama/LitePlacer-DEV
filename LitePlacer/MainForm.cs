@@ -9446,6 +9446,22 @@ namespace LitePlacer
         // =================================================================================
         // tape parameters edit dialog
 
+        private int TapesGridEditRow = 0;
+        private int TapesGridEnterRow = 0;
+
+        private void Tapes_dataGridView_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            TapesGridEnterRow = e.RowIndex;
+        }
+
+        private void Tapes_dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                TapesGridEditRow = TapesGridEnterRow;
+            }
+        }
+
         private void Invoke_TapeEditDialog(int row, bool CreatingNew)
         {
             DisplayText("Open edit tape dialog", KnownColor.DarkGreen, true);
@@ -9456,6 +9472,7 @@ namespace LitePlacer
             TapeEditDialog.Row = Tapes_dataGridView.Rows[row];
             TapeEditDialog.CreatingNew = CreatingNew;
             AttachButtonLogging(TapeEditDialog.Controls);
+            TapeEditDialog.StartPosition = FormStartPosition.CenterParent;
             TapeEditDialog.Show(this);
         }
 
@@ -9467,6 +9484,15 @@ namespace LitePlacer
                 return;
             };
             Invoke_TapeEditDialog(Tapes_dataGridView.CurrentCell.RowIndex, false);
+        }
+
+        private void EditTape_MenuItemClick(object sender, EventArgs e)
+        {
+            if (TapesGridEditRow < 0)
+            {
+                return; // user clicked header or empty space
+            }
+            Invoke_TapeEditDialog(TapesGridEditRow, false);
         }
 
         // end edit dialog stuff
