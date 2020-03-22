@@ -1,7 +1,4 @@
-﻿#define TINYG_SHORTUNITS
-// Some firmware versions use units in millions, some don't. If not, comment out the above line.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

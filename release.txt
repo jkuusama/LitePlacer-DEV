@@ -16,4 +16,4 @@ Bug Fixes
 * Editing machine size now changes control board limits
 * Tape data validity is checked before exit from tape setup dialog
 * In tape selection window, the grid now fills the space better and scales with the window
-* Reset tape counts moved to tapes tab, added confirmation for all counts reset
+* Reset tape counts moved to tapes tab, added confirmation before reset all counts 

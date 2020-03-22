@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿#define TINYG_SHORTUNITS
+// Some firmware versions use units in millions, some don't. If not, comment out the above line.
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

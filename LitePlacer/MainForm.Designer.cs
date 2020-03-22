@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -65,6 +65,8 @@
             this.Bookmark5_button = new System.Windows.Forms.Button();
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.ResetAllTapes_button = new System.Windows.Forms.Button();
+            this.ResetOneTape_button = new System.Windows.Forms.Button();
             this.EditTape_button = new System.Windows.Forms.Button();
             this.label158 = new System.Windows.Forms.Label();
             this.label157 = new System.Windows.Forms.Label();
@@ -543,7 +545,6 @@
             this.JobOffsetX_textBox = new System.Windows.Forms.TextBox();
             this.label60 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ResetOneTape_button = new System.Windows.Forms.Button();
             this.PasteRow_button = new System.Windows.Forms.Button();
             this.CopyRow_button = new System.Windows.Forms.Button();
             this.NewRow_button = new System.Windows.Forms.Button();
@@ -553,7 +554,6 @@
             this.Up_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label39 = new System.Windows.Forms.Label();
-            this.ResetAllTapes_button = new System.Windows.Forms.Button();
             this.AbortPlacement_button = new System.Windows.Forms.Button();
             this.PausePlacement_button = new System.Windows.Forms.Button();
             this.MachineCoords_label = new System.Windows.Forms.Label();
@@ -1257,6 +1257,29 @@
             this.Tapes_tabPage.TabIndex = 6;
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // ResetAllTapes_button
+            // 
+            this.ResetAllTapes_button.Location = new System.Drawing.Point(1155, 464);
+            this.ResetAllTapes_button.Name = "ResetAllTapes_button";
+            this.ResetAllTapes_button.Size = new System.Drawing.Size(77, 23);
+            this.ResetAllTapes_button.TabIndex = 37;
+            this.ResetAllTapes_button.Text = "R. counts";
+            this.toolTip1.SetToolTip(this.ResetAllTapes_button, "Reset all tape loacations to 1");
+            this.ResetAllTapes_button.UseVisualStyleBackColor = true;
+            this.ResetAllTapes_button.Click += new System.EventHandler(this.ResetAllTapes_button_Click);
+            // 
+            // ResetOneTape_button
+            // 
+            this.ResetOneTape_button.Location = new System.Drawing.Point(1158, 600);
+            this.ResetOneTape_button.Name = "ResetOneTape_button";
+            this.ResetOneTape_button.Size = new System.Drawing.Size(75, 23);
+            this.ResetOneTape_button.TabIndex = 25;
+            this.ResetOneTape_button.Text = "Reset Count";
+            this.toolTip1.SetToolTip(this.ResetOneTape_button, "Resets thew next part number of the selected tape(s) to 1.\r\nUse when you reload t" +
+        "he tape.");
+            this.ResetOneTape_button.UseVisualStyleBackColor = true;
+            this.ResetOneTape_button.Click += new System.EventHandler(this.ResetOneTape_button_Click);
             // 
             // EditTape_button
             // 
@@ -6621,18 +6644,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Row Operations";
             // 
-            // ResetOneTape_button
-            // 
-            this.ResetOneTape_button.Location = new System.Drawing.Point(1158, 600);
-            this.ResetOneTape_button.Name = "ResetOneTape_button";
-            this.ResetOneTape_button.Size = new System.Drawing.Size(75, 23);
-            this.ResetOneTape_button.TabIndex = 25;
-            this.ResetOneTape_button.Text = "Reset Count";
-            this.toolTip1.SetToolTip(this.ResetOneTape_button, "Resets thew next part number of the selected tape(s) to 1.\r\nUse when you reload t" +
-        "he tape.");
-            this.ResetOneTape_button.UseVisualStyleBackColor = true;
-            this.ResetOneTape_button.Click += new System.EventHandler(this.ResetOneTape_button_Click);
-            // 
             // PasteRow_button
             // 
             this.PasteRow_button.Location = new System.Drawing.Point(6, 164);
@@ -6740,17 +6751,6 @@
             this.label39.Size = new System.Drawing.Size(80, 13);
             this.label39.TabIndex = 38;
             this.label39.Text = "Target position:";
-            // 
-            // ResetAllTapes_button
-            // 
-            this.ResetAllTapes_button.Location = new System.Drawing.Point(1155, 464);
-            this.ResetAllTapes_button.Name = "ResetAllTapes_button";
-            this.ResetAllTapes_button.Size = new System.Drawing.Size(77, 23);
-            this.ResetAllTapes_button.TabIndex = 37;
-            this.ResetAllTapes_button.Text = "R. counts";
-            this.toolTip1.SetToolTip(this.ResetAllTapes_button, "Reset all tape loacations to 1");
-            this.ResetAllTapes_button.UseVisualStyleBackColor = true;
-            this.ResetAllTapes_button.Click += new System.EventHandler(this.ResetAllTapes_button_Click);
             // 
             // AbortPlacement_button
             // 
@@ -6927,14 +6927,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
