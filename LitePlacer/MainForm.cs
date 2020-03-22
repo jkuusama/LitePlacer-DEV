@@ -9654,9 +9654,9 @@ namespace LitePlacer
 
         private void ResetOneTape_button_Click(object sender, EventArgs e)
         {
-            for (int CurrentRow = 0; CurrentRow < JobData_GridView.RowCount; CurrentRow++)
+            for (int CurrentRow = 0; CurrentRow < Tapes_dataGridView.RowCount; CurrentRow++)
             {
-                DataGridViewRow Row = JobData_GridView.Rows[CurrentRow];
+                DataGridViewRow Row = Tapes_dataGridView.Rows[CurrentRow];
                 bool DoRow = false;
                 foreach (DataGridViewCell oneCell in Row.Cells)
                 {
@@ -9672,14 +9672,9 @@ namespace LitePlacer
                     continue;
                 };
                 // Reset this component's tape:
-                string ID = JobData_GridView.Rows[CurrentRow].Cells[3].Value.ToString();
-                int TapeNo = 0;
-                if (Tapes.IdValidates_m(ID, out TapeNo))
-                {
-                    // fix #22 reset next coordinates
-                    Tapes.Reset(TapeNo);
-                }
+                Tapes.Reset(Row.Index);
             }
+            Update_GridView(Tapes_dataGridView);
         }
 
         private void ResetAllTapes_button_Click(object sender, EventArgs e)
