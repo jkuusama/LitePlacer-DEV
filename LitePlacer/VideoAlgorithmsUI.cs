@@ -307,6 +307,15 @@ namespace LitePlacer
         // ==================
         // Button clicks
 
+        private void AddAlgorithm(string NewName)
+        {
+            DisplayText("Add algorithm " + NewName);
+            VideoAlgorithmsCollection.FullAlgorithmDescription Alg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+            Alg.Name = NewName;
+            VideoAlgorithms.AllAlgorithms.Add(Alg);
+            Algorithm_comboBox.Items.Add(NewName);
+        }
+
         private void AddAlgorithm_button_Click(object sender, EventArgs e)
         {
             string NewName = GetName("", false);
@@ -315,11 +324,7 @@ namespace LitePlacer
                 DisplayText("Add algorithm canceled");
                 return;
             }
-            DisplayText("Add algorithm " + NewName);
-            VideoAlgorithmsCollection.FullAlgorithmDescription Alg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
-            Alg.Name = NewName;
-            VideoAlgorithms.AllAlgorithms.Add(Alg);
-            Algorithm_comboBox.Items.Add(NewName);
+            AddAlgorithm(NewName);
             Algorithm_comboBox.SelectedIndex = Algorithm_comboBox.Items.Count - 1;
         }
 

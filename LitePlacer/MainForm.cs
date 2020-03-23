@@ -1102,32 +1102,60 @@ namespace LitePlacer
                         DisplayText("Loading tapes with nozzles data");
                         LoadDataGrid(filename, Tapes_dataGridView, DataTableType.Tapes);
                         // build type combobox and set values
-                        string WarningMessage = "";
+                        bool YesToAll = false;
+                        bool NoToAll = false;
+                        bool Create;
+                        bool Exists;
                         for (int i = 0; i < Tapes_dataGridView.Rows.Count; i++)
                         {
                             string AlgName = Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString();  // value is correct, cell content is not
-
+                            // Does the algorithm exist?
+                            if (VideoAlgorithms.AlgorithmExists(AlgName))
+                            {
+                                Create = false;
+                                Exists = true;
+                            }
+                            else
+                            {
+                                // Algorithm doesn't exist. Do we need to create it?
+                                if (YesToAll)
+                                {
+                                    Create = true;
+                                    Exists = false;
+                                }
+                                else if (NoToAll)
+                                {
+                                    Create = false;
+                                    Exists = false;
+                                }
+                                else
+                                {
+                                    // ask.
+                                    Create = AskToCreate(AlgName, out YesToAll, out NoToAll);
+                                    Exists = false;
+                                }
+                            };
+                            if (Create)
+                            {
+                                AddAlgorithm(AlgName);
+                                Exists = true;
+                            }
+                            // Build the selection box
                             Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = null;
                             DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
                             BuildAlgorithmsCombox(out c);
                             Tapes_dataGridView.Rows[i].Cells["Type_Column"] = c;
-                            // Does the saved algorithm stil exist?
-                            if (VideoAlgorithms.AlgorithmExists(AlgName))
+                            if (Exists)
                             {
                                 Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = AlgName;
                             }
                             else
                             {
-                                WarningMessage = WarningMessage + "Algorithm " + AlgName + ", used on tape " +
-                                   Tapes_dataGridView.Rows[i].Cells["Id_Column"].Value.ToString() + ", does not exist.\n\r";
+                                // The algorithm didn't exist and didn't get created. Select homing
                                 Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
                             }
                         }
-                        if (WarningMessage!="")
-                        {
-                            ShowMessageBox(WarningMessage, "Algorithm missing", MessageBoxButtons.OK);
-                        }
-
+                        Update_GridView(Tapes_dataGridView);
                     }
                 }
             }
@@ -1144,6 +1172,28 @@ namespace LitePlacer
                 MessageBox.Show(excep.Message);
             }
         }
+
+        private bool AskToCreate(string AlgName, out bool YesToAll, out bool NoToAll)
+        {
+            YesToAll = false;
+            NoToAll = false;
+            bool RetVal = false;
+            using (var form = new AskToCreate_Form())
+            {
+                form.Message_label.Text = "Video algorithm \""
+                    + AlgName + "\" does not exist.\n\rCreate an empty algorithm with that name?";
+                form.StartPosition = FormStartPosition.CenterParent;
+                form.ShowDialog();
+                YesToAll = form.YesToAll;
+                NoToAll = form.NoToAll;
+                if (form.YesToAll || form.Yes)
+                {
+                    RetVal = true;
+                }
+            }
+            return RetVal;
+        }
+
 
         private void ReadV1TapesFile(string filename)
         {
