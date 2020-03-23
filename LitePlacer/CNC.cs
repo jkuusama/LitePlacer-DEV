@@ -376,7 +376,7 @@ namespace LitePlacer
             ErrorState = false;
             Connected = false;
 
-            MainForm.Motors_label.Text = "COntrol board not connected.";
+            MainForm.Motors_label.Text = "Control board not connected.";
             MainForm.TinyGMotors_tabControl.Visible = false;
             MainForm.Duet3Motors_tabControl.Visible = false;
 
