@@ -331,10 +331,23 @@ namespace LitePlacer
         private void RemoveAlgorithm_button_Click(object sender, EventArgs e)
         {
             int pos = 0;
-            if (!FindLocation(Algorithm_comboBox.SelectedItem.ToString(), out pos))
+            string Alg = Algorithm_comboBox.SelectedItem.ToString();
+            if (!FindLocation(Alg, out pos))
             {
                 DisplayText("Remove algorithm, algorithm not found!");
                 return;
+            }
+            bool AlgInUse = AlgorithmUsed(Alg);
+            if (AlgInUse)
+            {
+                DialogResult dialogResult = ShowMessageBox(
+                    "Algorithm " + Alg + " is in use (see log window). Remove anyway?" +
+                    "\r\n(Used instances are replaced with Homing)",
+                    "OK to remove algorithm?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No)
+                {
+                    return;
+                };
             }
             VideoAlgorithms.AllAlgorithms.RemoveAt(pos);
             Algorithm_comboBox.Items.RemoveAt(Algorithm_comboBox.SelectedIndex);
@@ -344,6 +357,10 @@ namespace LitePlacer
             Functions_dataGridView.CurrentCell = null;
             AlgorithmChange = false;
             UpdateVideoProcessing();
+            if (AlgInUse)
+            {
+                RemoveAlgorithmFromUse(Alg);
+            }
         }
 
         private void DuplicateAlgorithm_button_Click(object sender, EventArgs e)
@@ -450,6 +467,89 @@ namespace LitePlacer
                 StopVideoProcessing();
             }
         }
+
+
+
+        // =====================================================================================
+        // Check if Algorithm is used somewhere
+        private bool AlgorithmUsed(string Alg)
+        {
+            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            {
+                if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value != null)
+                {
+                    if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() == Alg)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            {
+                if (Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value != null)
+                {
+                    if (Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString() == Alg)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            {
+                if (NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value != null)
+                {
+                    if (NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value.ToString() == Alg)
+                    {
+                        return true;
+                    }
+
+                }
+            }
+            return false;
+        }
+
+        // =====================================================================================
+        // And if algorithm was in use and was deleted, we need to replace it with the (always existing) homing
+        private void RemoveAlgorithmFromUse(string Alg)
+        {
+            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            {
+                if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value != null)
+                {
+                    if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() == Alg)
+                    {
+                        JobData_GridView.Rows[i].Cells["GroupMethod"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                    }
+                }
+            }
+
+            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            {
+                if (Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value != null)
+                {
+                    if (Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString() == Alg)
+                    {
+                        Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                    }
+                }
+            }
+
+            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            {
+                if (NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value != null)
+                {
+                    if (NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value.ToString() == Alg)
+                    {
+                        NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                    }
+
+                }
+            }
+        }
+
+
 
         #endregion Current video algorithm
         // =====================================================================================
