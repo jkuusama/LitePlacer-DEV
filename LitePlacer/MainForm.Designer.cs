@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -139,6 +139,8 @@
             this.LastX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LastY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RotationDirect_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tapes_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Components_tabPage = new System.Windows.Forms.TabPage();
             this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
             this.PartialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -793,11 +795,10 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.Tapes_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
+            this.Tapes_contextMenuStrip.SuspendLayout();
             this.Components_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
             this.tabPageSetupCameras.SuspendLayout();
@@ -851,7 +852,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).BeginInit();
             this.NozzleLoad_contextMenuStrip.SuspendLayout();
-            this.Tapes_contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // Park_button
@@ -1267,7 +1267,7 @@
             this.ResetAllTapes_button.Name = "ResetAllTapes_button";
             this.ResetAllTapes_button.Size = new System.Drawing.Size(77, 23);
             this.ResetAllTapes_button.TabIndex = 37;
-            this.ResetAllTapes_button.Text = "R. counts";
+            this.ResetAllTapes_button.Text = "Reset Next";
             this.toolTip1.SetToolTip(this.ResetAllTapes_button, "Reset all tape loacations to 1");
             this.ResetAllTapes_button.UseVisualStyleBackColor = true;
             this.ResetAllTapes_button.Click += new System.EventHandler(this.ResetAllTapes_button_Click);
@@ -1278,7 +1278,7 @@
             this.ResetOneTape_button.Name = "ResetOneTape_button";
             this.ResetOneTape_button.Size = new System.Drawing.Size(75, 23);
             this.ResetOneTape_button.TabIndex = 25;
-            this.ResetOneTape_button.Text = "Reset Count";
+            this.ResetOneTape_button.Text = "Reset Next";
             this.toolTip1.SetToolTip(this.ResetOneTape_button, "Resets thew next part number of the selected tape(s) to 1.\r\nUse when you reload t" +
         "he tape.");
             this.ResetOneTape_button.UseVisualStyleBackColor = true;
@@ -1502,9 +1502,9 @@
             // 
             // ShowPart_button
             // 
-            this.ShowPart_button.Location = new System.Drawing.Point(392, 571);
+            this.ShowPart_button.Location = new System.Drawing.Point(535, 516);
             this.ShowPart_button.Name = "ShowPart_button";
-            this.ShowPart_button.Size = new System.Drawing.Size(75, 23);
+            this.ShowPart_button.Size = new System.Drawing.Size(100, 23);
             this.ShowPart_button.TabIndex = 52;
             this.ShowPart_button.Text = "Show part";
             this.toolTip1.SetToolTip(this.ShowPart_button, "Resets pickup and placement heights.");
@@ -1516,7 +1516,7 @@
             // label129
             // 
             this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(391, 500);
+            this.label129.Location = new System.Drawing.Point(559, 445);
             this.label129.Name = "label129";
             this.label129.Size = new System.Drawing.Size(76, 13);
             this.label129.TabIndex = 51;
@@ -1524,9 +1524,9 @@
             // 
             // HoleTest_button
             // 
-            this.HoleTest_button.Location = new System.Drawing.Point(392, 542);
+            this.HoleTest_button.Location = new System.Drawing.Point(535, 487);
             this.HoleTest_button.Name = "HoleTest_button";
-            this.HoleTest_button.Size = new System.Drawing.Size(75, 23);
+            this.HoleTest_button.Size = new System.Drawing.Size(100, 23);
             this.HoleTest_button.TabIndex = 50;
             this.HoleTest_button.Text = "Show hole";
             this.toolTip1.SetToolTip(this.HoleTest_button, "Resets pickup and placement heights.");
@@ -1536,7 +1536,7 @@
             // label128
             // 
             this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(392, 519);
+            this.label128.Location = new System.Drawing.Point(533, 464);
             this.label128.Name = "label128";
             this.label128.Size = new System.Drawing.Size(39, 13);
             this.label128.TabIndex = 49;
@@ -1544,31 +1544,32 @@
             // 
             // HoleTest_maskedTextBox
             // 
-            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(435, 516);
+            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(578, 461);
             this.HoleTest_maskedTextBox.Mask = "999";
             this.HoleTest_maskedTextBox.Name = "HoleTest_maskedTextBox";
             this.HoleTest_maskedTextBox.PromptChar = ' ';
             this.HoleTest_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.HoleTest_maskedTextBox.Size = new System.Drawing.Size(32, 20);
+            this.HoleTest_maskedTextBox.Size = new System.Drawing.Size(57, 20);
             this.HoleTest_maskedTextBox.TabIndex = 48;
             this.HoleTest_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.HoleTest_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
             // 
             // ReloadTray_button
             // 
-            this.ReloadTray_button.Location = new System.Drawing.Point(571, 542);
+            this.ReloadTray_button.Location = new System.Drawing.Point(535, 600);
             this.ReloadTray_button.Name = "ReloadTray_button";
-            this.ReloadTray_button.Size = new System.Drawing.Size(75, 23);
+            this.ReloadTray_button.Size = new System.Drawing.Size(100, 23);
             this.ReloadTray_button.TabIndex = 47;
-            this.ReloadTray_button.Text = "Reload Tray";
+            this.ReloadTray_button.Text = "Reset Nexts";
+            this.toolTip1.SetToolTip(this.ReloadTray_button, "Resets the \"next\" part number to 1 on this tray");
             this.ReloadTray_button.UseVisualStyleBackColor = true;
             this.ReloadTray_button.Click += new System.EventHandler(this.ReloadTray_button_Click);
             // 
             // ReplaceTray_button
             // 
-            this.ReplaceTray_button.Location = new System.Drawing.Point(490, 542);
+            this.ReplaceTray_button.Location = new System.Drawing.Point(429, 600);
             this.ReplaceTray_button.Name = "ReplaceTray_button";
-            this.ReplaceTray_button.Size = new System.Drawing.Size(75, 23);
+            this.ReplaceTray_button.Size = new System.Drawing.Size(100, 23);
             this.ReplaceTray_button.TabIndex = 46;
             this.ReplaceTray_button.Text = "Replc. Tray";
             this.ReplaceTray_button.UseVisualStyleBackColor = true;
@@ -1576,9 +1577,9 @@
             // 
             // LoadTray_button
             // 
-            this.LoadTray_button.Location = new System.Drawing.Point(571, 513);
+            this.LoadTray_button.Location = new System.Drawing.Point(535, 571);
             this.LoadTray_button.Name = "LoadTray_button";
-            this.LoadTray_button.Size = new System.Drawing.Size(75, 23);
+            this.LoadTray_button.Size = new System.Drawing.Size(100, 23);
             this.LoadTray_button.TabIndex = 45;
             this.LoadTray_button.Text = "Load Tray";
             this.LoadTray_button.UseVisualStyleBackColor = true;
@@ -1586,9 +1587,9 @@
             // 
             // SaveTray_button
             // 
-            this.SaveTray_button.Location = new System.Drawing.Point(490, 513);
+            this.SaveTray_button.Location = new System.Drawing.Point(429, 571);
             this.SaveTray_button.Name = "SaveTray_button";
-            this.SaveTray_button.Size = new System.Drawing.Size(75, 23);
+            this.SaveTray_button.Size = new System.Drawing.Size(100, 23);
             this.SaveTray_button.TabIndex = 44;
             this.SaveTray_button.Text = "Save Tray";
             this.SaveTray_button.UseVisualStyleBackColor = true;
@@ -1988,6 +1989,21 @@
             this.RotationDirect_Column.HeaderText = "Rotation";
             this.RotationDirect_Column.Name = "RotationDirect_Column";
             this.RotationDirect_Column.Width = 72;
+            // 
+            // Tapes_contextMenuStrip
+            // 
+            this.Tapes_contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.Tapes_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem});
+            this.Tapes_contextMenuStrip.Name = "Tapes_contextMenuStrip";
+            this.Tapes_contextMenuStrip.Size = new System.Drawing.Size(95, 26);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.EditTape_MenuItemClick);
             // 
             // Components_tabPage
             // 
@@ -6934,14 +6950,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9291,21 +9307,6 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
-            // Tapes_contextMenuStrip
-            // 
-            this.Tapes_contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.Tapes_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editToolStripMenuItem});
-            this.Tapes_contextMenuStrip.Name = "Tapes_contextMenuStrip";
-            this.Tapes_contextMenuStrip.Size = new System.Drawing.Size(95, 26);
-            // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.EditTape_MenuItemClick);
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -9375,6 +9376,7 @@
             this.Tapes_tabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).EndInit();
+            this.Tapes_contextMenuStrip.ResumeLayout(false);
             this.Components_tabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
             this.tabPageSetupCameras.ResumeLayout(false);
@@ -9453,7 +9455,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).EndInit();
             this.NozzleLoad_contextMenuStrip.ResumeLayout(false);
-            this.Tapes_contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

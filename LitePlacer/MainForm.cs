@@ -1180,8 +1180,8 @@ namespace LitePlacer
             bool RetVal = false;
             using (var form = new AskToCreate_Form())
             {
-                form.Message_label.Text = "Video algorithm \""
-                    + AlgName + "\" does not exist.\n\rCreate an empty algorithm with that name?";
+                form.Message_TextBox.Text = "Video algorithm \""
+                    + AlgName + "\" does not exist.\r\nCreate an empty algorithm with that name?";
                 form.StartPosition = FormStartPosition.CenterParent;
                 form.ShowDialog();
                 YesToAll = form.YesToAll;
@@ -10220,7 +10220,7 @@ namespace LitePlacer
 
         private void ReplaceTray_button_Click(object sender, EventArgs e)
         {
-            TapesAll_openFileDialog.Filter = "LitePlacer Tapes files (*.tapes)|*.tapes|All files (*.*)|*.*";
+            TapesAll_openFileDialog.Filter = "LitePlacer tape files| *.tapes_v2; *.tapes | All files | *.* ";;
 
             if (TapesAll_openFileDialog.ShowDialog() != DialogResult.OK)
             {
