@@ -1100,62 +1100,7 @@ namespace LitePlacer
                     {
                         // read in new format 
                         DisplayText("Loading tapes with nozzles data");
-                        LoadDataGrid(filename, Tapes_dataGridView, DataTableType.Tapes);
-                        // build type combobox and set values
-                        bool YesToAll = false;
-                        bool NoToAll = false;
-                        bool Create;
-                        bool Exists;
-                        for (int i = 0; i < Tapes_dataGridView.Rows.Count; i++)
-                        {
-                            string AlgName = Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString();  // value is correct, cell content is not
-                            // Does the algorithm exist?
-                            if (VideoAlgorithms.AlgorithmExists(AlgName))
-                            {
-                                Create = false;
-                                Exists = true;
-                            }
-                            else
-                            {
-                                // Algorithm doesn't exist. Do we need to create it?
-                                if (YesToAll)
-                                {
-                                    Create = true;
-                                    Exists = false;
-                                }
-                                else if (NoToAll)
-                                {
-                                    Create = false;
-                                    Exists = false;
-                                }
-                                else
-                                {
-                                    // ask.
-                                    Create = AskToCreate(AlgName, out YesToAll, out NoToAll);
-                                    Exists = false;
-                                }
-                            };
-                            if (Create)
-                            {
-                                AddAlgorithm(AlgName);
-                                Exists = true;
-                            }
-                            // Build the selection box
-                            Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = null;
-                            DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
-                            BuildAlgorithmsCombox(out c);
-                            Tapes_dataGridView.Rows[i].Cells["Type_Column"] = c;
-                            if (Exists)
-                            {
-                                Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = AlgName;
-                            }
-                            else
-                            {
-                                // The algorithm didn't exist and didn't get created. Select homing
-                                Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
-                            }
-                        }
-                        Update_GridView(Tapes_dataGridView);
+                        LoadTapesFromFile(filename, Tapes_dataGridView);
                     }
                 }
             }
@@ -1194,6 +1139,66 @@ namespace LitePlacer
             return RetVal;
         }
 
+
+        private void LoadTapesFromFile(string Filename, System.Windows.Forms.DataGridView Grid)
+        {
+            LoadDataGrid(Filename, Grid, DataTableType.Tapes);
+            // build type combobox and set values
+            bool YesToAll = false;
+            bool NoToAll = false;
+            bool Create;
+            bool Exists;
+            for (int i = 0; i < Grid.Rows.Count; i++)
+            {
+                string AlgName = Grid.Rows[i].Cells["Type_Column"].Value.ToString();  // value is correct, cell content is not
+                                                                                                    // Does the algorithm exist?
+                if (VideoAlgorithms.AlgorithmExists(AlgName))
+                {
+                    Create = false;
+                    Exists = true;
+                }
+                else
+                {
+                    // Algorithm doesn't exist. Do we need to create it?
+                    if (YesToAll)
+                    {
+                        Create = true;
+                        Exists = false;
+                    }
+                    else if (NoToAll)
+                    {
+                        Create = false;
+                        Exists = false;
+                    }
+                    else
+                    {
+                        // ask.
+                        Create = AskToCreate(AlgName, out YesToAll, out NoToAll);
+                        Exists = false;
+                    }
+                };
+                if (Create)
+                {
+                    AddAlgorithm(AlgName);
+                    Exists = true;
+                }
+                // Build the selection box
+                Grid.Rows[i].Cells["Type_Column"].Value = null;
+                DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                BuildAlgorithmsCombox(out c);
+                Grid.Rows[i].Cells["Type_Column"] = c;
+                if (Exists)
+                {
+                    Grid.Rows[i].Cells["Type_Column"].Value = AlgName;
+                }
+                else
+                {
+                    // The algorithm didn't exist and didn't get created. Select homing
+                    Grid.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                }
+            }
+            Update_GridView(Grid);
+        }
 
         private void ReadV1TapesFile(string filename)
         {
@@ -10148,7 +10153,7 @@ namespace LitePlacer
             {
                 ClipBoard_dgw.Columns.Add(col.Clone() as DataGridViewColumn);
             }
-            LoadDataGrid(FileName, ClipBoard_dgw, DataTableType.Tapes);
+            LoadTapesFromFile(FileName, ClipBoard_dgw);
             DataGridViewRow NewRow = new DataGridViewRow();
             foreach (DataGridViewRow row in ClipBoard_dgw.Rows)
             {
