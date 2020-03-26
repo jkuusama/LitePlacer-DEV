@@ -155,8 +155,8 @@ namespace LitePlacer
         private void LoadVideoAlgorithms(VideoAlgorithmsCollection Collection)
         {
             AlgorithmChange = true;
-            string path = Application.StartupPath + '\\';
-            string FileName = path + "LitePlacer.VideoAlgorithms";
+            string path = GetPath();
+            string FileName = path + VIDEOALGORITHMS_DATAFILE;
             if (File.Exists(FileName))
             {
                 DisplayText("LoadVideoAlgorithms from " + FileName);
@@ -214,8 +214,8 @@ namespace LitePlacer
 
         private void AlgorithmsSave_button_Click(object sender, EventArgs e)
         {
-            string path = Application.StartupPath + '\\';
-            SaveVideoAlgorithms(path + "LitePlacer.VideoAlgorithms", VideoAlgorithms);
+            string path = GetPath();
+            SaveVideoAlgorithms(path + VIDEOALGORITHMS_DATAFILE, VideoAlgorithms);
         }
 
         #endregion Algorithms Load and Save

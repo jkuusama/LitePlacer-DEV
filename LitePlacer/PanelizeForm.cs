@@ -28,6 +28,9 @@ namespace LitePlacer
         private double YIncrement = double.NaN;
         // =================================================================================
 
+        public const string PANELFIDUCIALS_DATAFILE = "LitePlacer.PanelFids";
+
+
         public PanelizeForm(FormMain MainF)
         {
             MainForm = MainF;
@@ -36,10 +39,8 @@ namespace LitePlacer
 
         private void PanelizeForm_Load(object sender, EventArgs e)
         {
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-            MainForm.LoadDataGrid(path + "LitePlacer.PanelFids", PanelFiducials_dataGridView, FormMain.DataTableType.PanelFiducials);
+            string path = MainForm.GetPath();
+            MainForm.LoadDataGrid(path + PANELFIDUCIALS_DATAFILE, PanelFiducials_dataGridView, FormMain.DataTableType.PanelFiducials);
 
             XFirstOffset = MainForm.Setting.Panel_XFirstOffset;
             XFirstOffset_textBox.Text = XFirstOffset.ToString("0.00", CultureInfo.InvariantCulture);
@@ -70,10 +71,8 @@ namespace LitePlacer
                 return;
             }
             OK = true;
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-            MainForm.SaveDataGrid(path + "LitePlacer.PanelFids", PanelFiducials_dataGridView);
+            string path = MainForm.GetPath();
+            MainForm.SaveDataGrid(path + PANELFIDUCIALS_DATAFILE, PanelFiducials_dataGridView);
             MainForm.Setting.Panel_XFirstOffset = XFirstOffset;
             MainForm.Setting.Panel_YFirstOffset = YFirstOffset;
             MainForm.Setting.Panel_XRepeats = XRepeats;

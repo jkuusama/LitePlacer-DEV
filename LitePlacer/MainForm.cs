@@ -93,14 +93,32 @@ namespace LitePlacer
         public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
 
         // =================================================================================
-
         // We need "goto" to different features, currently circles, rectangles or both
         public enum FeatureType { Circle, Rectangle, Both };
 
+        // =================================================================================
+        // File names
+        public const string VIDEOALGORITHMS_DATAFILE = "LitePlacer.VideoAlgorithms";
+        public const string APPLICATIONSETTINGS_DATAFILE = "LitePlacer.Appsettings";
+        public const string TAPES_DATAFILE = "LitePlacer.TapesData_v2";
+        public const string NOZZLES_CALIBRATION_DATAFILE = "LitePlacer.NozzlesCalibrationData_v2";
+        public const string NOZZLES_LOAD_DATAFILE = "LitePlacer.NozzlesLoadData_v2";
+        public const string NOZZLES_UNLOAD_DATAFILE = "LitePlacer.NozzlesLoadData_v2";
+        public const string NOZZLES_VISIONPARAMETERS_DATAFILE = "LitePlacer.NozzlesLoadData_v2";
+        public const string BOARDSETTINGS_DATAFILE = "LitePlacer.BoardSettings";
+
+
+        public string GetPath()
+        {
+            return Application.StartupPath + '\\';
+        }
+
+        // =================================================================================
+        // Startup
+        // =================================================================================
         public FormMain()
         {
             Font = new Font(Font.Name, 8.25f * 96f / CreateGraphics().DpiX, Font.Style, Font.Unit, Font.GdiCharSet, Font.GdiVerticalFont);
-
             InitializeComponent();
             this.MouseWheel += new MouseEventHandler(MouseWheel_event);
         }
@@ -108,6 +126,7 @@ namespace LitePlacer
         // =================================================================================
         public bool StartingUp { get; set; } = false; // we want to react to some changes, but not during startup data load (which counts as a change)
 
+        // =================================================================================
         private void Form1_Load(object sender, EventArgs e)
         {
             StartingUp = true;
@@ -116,12 +135,10 @@ namespace LitePlacer
             DisplayText("Application Start", KnownColor.Black, true);
             DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
 
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
+            string path = GetPath();
 
             SettingsOps = new AppSettings(this);
-            Setting = SettingsOps.Load(path + "LitePlacer.Appsettings");
+            Setting = SettingsOps.Load(path + APPLICATIONSETTINGS_DATAFILE);
             Setting.General_SafeFilesAtClosing = true;
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
@@ -144,12 +161,6 @@ namespace LitePlacer
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(My_KeyDown);
             this.KeyUp += new KeyEventHandler(My_KeyUp);
-
-            // The components tab is more a distraction than useful.
-            // To add data, comment out the next line.
-            tabControlPages.TabPages.Remove(Components_tabPage);
-            // and uncomment this:
-            // LoadDataGrid(path + "LitePlacer.ComponentData", ComponentData_dataGridView);
 
             Bookmark1_button.Text = Setting.General_Mark1Name;
             Bookmark2_button.Text = Setting.General_Mark2Name;
@@ -174,114 +185,11 @@ namespace LitePlacer
         }
 
         // ==============================================================================================
-        // New software release checks
-
-        private string BuildDate()
-        {
-            // see http://stackoverflow.com/questions/1600962/displaying-the-build-date
-            var version = Assembly.GetEntryAssembly().GetName().Version;
-            var buildDateTime = new DateTime(2000, 1, 1).Add(new TimeSpan(
-            TimeSpan.TicksPerDay * version.Build + // days since 1 January 2000
-            TimeSpan.TicksPerSecond * 2 * version.Revision)); // seconds since midnight, (multiply by 2 to get original)
-            return buildDateTime.ToString(CultureInfo.InvariantCulture);
-        }
-
-        private bool UpdateAvailable(out string UpdateDescription)
-        {
-            try
-            {
-                var url = "http://www.liteplacer.com/Downloads/release.txt";
-                UpdateDescription = (new WebClient()).DownloadString(url);
-                string UpdateDate = "";
-                for (int i = 0; i < UpdateDescription.Length; i++)
-                {
-                    if (UpdateDescription[i] == '\n')
-                    {
-                        break;
-                    }
-                    UpdateDate += UpdateDescription[i];
-                }
-                UpdateDate = UpdateDate.Trim();
-                string BuildDateText = BuildDate();
-                BuildDateText = "Build date " + BuildDate().Substring(0, BuildDateText.IndexOf(' '));
-                if (UpdateDate != BuildDateText)
-                {
-                    return true;
-                }
-            }
-            catch
-            {
-                DisplayText("Could not read http://www.liteplacer.com/Downloads/release.txt, update info not available.");
-                UpdateDescription = "";
-                return false;
-            }
-            return false;
-        }
-
-        private bool CheckForUpdate()
-        {
-            string UpdateText;
-            if (UpdateAvailable(out UpdateText))
-            {
-                ShowMessageBox(
-                    "There is a software update available:\n\r" + UpdateText,
-                    "Update available",
-                    MessageBoxButtons.OK);
-                return true;
-            }
-            return false;
-        }
-
-        private void CheckNow_button_Click(object sender, EventArgs e)
-        {
-            if (!CheckForUpdate())
-            {
-                ShowMessageBox(
-                    "The software is up to date",
-                    "Up to date",
-                    MessageBoxButtons.OK);
-            }
-        }
-
-        // ==============================================================================================
-        // For diagnostics, log button presses. (Customers tend to send log window contents,
-        // but the window does not log user actions without this.)
-        // http://stackoverflow.com/questions/17949390/log-all-button-clicks-in-win-forms-app
-
-        public void AttachButtonLogging(System.Windows.Forms.Control.ControlCollection controls)
-        {
-            foreach (var control in controls.Cast<System.Windows.Forms.Control>())
-            {
-                if (control is Button)
-                {
-                    Button button = (Button)control;
-                    button.MouseDown += LogButtonClick; // MouseDown comes before mouse click, we want this to fire first)
-                }
-                else
-                {
-                    AttachButtonLogging(control.Controls);
-                }
-            }
-        }
-
-        private void LogButtonClick(object sender, EventArgs eventArgs)
-        {
-
-            Button button = sender as Button;
-            DisplayText("B: " + button.Text.ToString(CultureInfo.InvariantCulture), KnownColor.DarkGreen, true);
-        }
-        // ==============================================================================================
-
-        private string LastTabPage = "";
-
-        // ==============================================================================================
         private void FormMain_Shown(object sender, EventArgs e)
         {
             // ======== General form setup:
 
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
+            string path = GetPath();
 
             // For ease of design, the picture box is drawn on a setup Cameras tab. 
             // We want it to be owned by main form (not by tab) and visible when needed.
@@ -293,7 +201,7 @@ namespace LitePlacer
 
             // At design time, I can't draw items on top of each other. I draw them at a convenient location; this
             // moves motor control boxes to correct place
-            TinyGMotors_tabControl.Location = new System.Drawing.Point(17, 177); 
+            TinyGMotors_tabControl.Location = new System.Drawing.Point(17, 177);
             Duet3Motors_tabControl.Location = new System.Drawing.Point(17, 177);
 
 
@@ -412,11 +320,11 @@ namespace LitePlacer
 
             // ======== Tape Positions tab:
 
-            LoadTapesTable(path + "LitePlacer.TapesData_v2");
+            LoadTapesTable(path + TAPES_DATAFILE);
 
             // ======== Nozzles Setup tab:
 
-            Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData");
+            Nozzle.LoadCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
             ContextmenuLoadNozzle = Setting.Nozzles_default;
             ContextmenuUnloadNozzle = Setting.Nozzles_default;
             Nozzles_initialize();   // must be after Nozzle.LoadCalibration
@@ -444,7 +352,8 @@ namespace LitePlacer
         }
 
         // =================================================================================
-
+        // Close
+        // =================================================================================
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             bool OK = true;
@@ -456,9 +365,7 @@ namespace LitePlacer
 
             if (Setting.General_SafeFilesAtClosing)
             {
-                string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-                int i = path.LastIndexOf('\\');
-                path = path.Remove(i + 1);
+                string path = GetPath();
 
                 res = SaveTempCADdata();
                 OK = OK && res;
@@ -466,31 +373,28 @@ namespace LitePlacer
                 res = SaveTempJobData();
                 OK = OK && res;
 
-                res = SettingsOps.Save(Setting, path + "LitePlacer.Appsettings");
+                res = SettingsOps.Save(Setting, path + APPLICATIONSETTINGS_DATAFILE);
                 OK = OK && res;
 
-                res = SaveDataGrid(path + "LitePlacer.ComponentData_v2", ComponentData_dataGridView);
+                res = SaveDataGrid(path + TAPES_DATAFILE, Tapes_dataGridView);
                 OK = OK && res;
 
-                res = SaveDataGrid(path + "LitePlacer.TapesData_v2", Tapes_dataGridView);
+                res = SaveDataGrid(path + NOZZLES_LOAD_DATAFILE, NozzlesLoad_dataGridView);
                 OK = OK && res;
 
-                res = SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
+                res = SaveDataGrid(path + NOZZLES_UNLOAD_DATAFILE, NozzlesUnload_dataGridView);
                 OK = OK && res;
 
-                res = SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
+                res = SaveDataGrid(path + NOZZLES_VISIONPARAMETERS_DATAFILE, NozzlesParameters_dataGridView);
                 OK = OK && res;
 
-                res = SaveDataGrid(path + "LitePlacer.NozzlesVisionParameters_v21", NozzlesParameters_dataGridView);
+                res = Nozzle.SaveCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
                 OK = OK && res;
 
-                res = Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData_v2");
+                res = SaveVideoAlgorithms(path + VIDEOALGORITHMS_DATAFILE, VideoAlgorithms);
                 OK = OK && res;
 
-                res = SaveVideoAlgorithms(path + "LitePlacer.VideoAlgorithms", VideoAlgorithms);
-                OK = OK && res;
-
-                res = BoardSettings.Save(TinyGBoard, path + "LitePlacer.BoardSettings");
+                res = BoardSettings.Save(TinyGBoard, path + BOARDSETTINGS_DATAFILE);
                 OK = OK && res;
 
                 if (!OK)
@@ -531,6 +435,104 @@ namespace LitePlacer
             Environment.Exit(0);    // kills all processes and threads (solves exit during startup issue)
         }
 
+        // ==============================================================================================
+        // New software release checks
+
+        private string BuildDate()
+        {
+            // see http://stackoverflow.com/questions/1600962/displaying-the-build-date
+            var version = Assembly.GetEntryAssembly().GetName().Version;
+            var buildDateTime = new DateTime(2000, 1, 1).Add(new TimeSpan(
+            TimeSpan.TicksPerDay * version.Build + // days since 1 January 2000
+            TimeSpan.TicksPerSecond * 2 * version.Revision)); // seconds since midnight, (multiply by 2 to get original)
+            return buildDateTime.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private bool UpdateAvailable(out string UpdateDescription)
+        {
+            try
+            {
+                var url = "http://www.liteplacer.com/Downloads/release.txt";
+                UpdateDescription = (new WebClient()).DownloadString(url);
+                string UpdateDate = "";
+                for (int i = 0; i < UpdateDescription.Length; i++)
+                {
+                    if (UpdateDescription[i] == '\n')
+                    {
+                        break;
+                    }
+                    UpdateDate += UpdateDescription[i];
+                }
+                UpdateDate = UpdateDate.Trim();
+                string BuildDateText = BuildDate();
+                BuildDateText = "Build date " + BuildDate().Substring(0, BuildDateText.IndexOf(' '));
+                if (UpdateDate != BuildDateText)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                DisplayText("Could not read http://www.liteplacer.com/Downloads/release.txt, update info not available.");
+                UpdateDescription = "";
+                return false;
+            }
+            return false;
+        }
+
+        private bool CheckForUpdate()
+        {
+            string UpdateText;
+            if (UpdateAvailable(out UpdateText))
+            {
+                ShowMessageBox(
+                    "There is a software update available:\n\r" + UpdateText,
+                    "Update available",
+                    MessageBoxButtons.OK);
+                return true;
+            }
+            return false;
+        }
+
+        private void CheckNow_button_Click(object sender, EventArgs e)
+        {
+            if (!CheckForUpdate())
+            {
+                ShowMessageBox(
+                    "The software is up to date",
+                    "Up to date",
+                    MessageBoxButtons.OK);
+            }
+        }
+
+        // ==============================================================================================
+        // For diagnostics, log button presses. (Customers tend to send log window contents,
+        // but the window does not log user actions without this.)
+        // http://stackoverflow.com/questions/17949390/log-all-button-clicks-in-win-forms-app
+
+        public void AttachButtonLogging(System.Windows.Forms.Control.ControlCollection controls)
+        {
+            foreach (var control in controls.Cast<System.Windows.Forms.Control>())
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    button.MouseDown += LogButtonClick; // MouseDown comes before mouse click, we want this to fire first)
+                }
+                else
+                {
+                    AttachButtonLogging(control.Controls);
+                }
+            }
+        }
+
+        private void LogButtonClick(object sender, EventArgs eventArgs)
+        {
+
+            Button button = sender as Button;
+            DisplayText("B: " + button.Text.ToString(CultureInfo.InvariantCulture), KnownColor.DarkGreen, true);
+        }
+        // ==============================================================================================
         // =================================================================================
         // Get and save settings from old version if necessary
         // http://blog.johnsworkshop.net/automatically-upgrading-user-settings-after-an-application-version-change/
@@ -558,6 +560,8 @@ namespace LitePlacer
         }
         */
         // =================================================================================
+
+        private string LastTabPage = "";
 
         private void tabControlPages_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -639,7 +643,7 @@ namespace LitePlacer
         // Reading ver2 format allows changing the data grid itself at a software update, 
         // adding and removing columns, and still read in a saved file from previous software version.
 
-        public enum DataTableType { Tapes, ComponentData, VideoProcessing, PanelFiducials, Nozzles };
+        public enum DataTableType { Tapes, VideoProcessing, PanelFiducials, Nozzles };
 
         private int Ver2FormatID = 20000001;  // Just in case we need to identify the format we are using. 
         public bool LoadingDataGrid = false;  // to avoid problems with cell value changed event and unfilled grids
@@ -862,12 +866,6 @@ namespace LitePlacer
                     Headers.Add("Next_X_Column");
                     Headers.Add("Next_Y_Column");
                     break;
-
-                case DataTableType.ComponentData:
-                    Headers.Add("PartialName_column");
-                    Headers.Add("SizeX_column");
-                    Headers.Add("SizeY_column");
-                break;
 
                 case DataTableType.VideoProcessing:
                     Headers.Add("Funct_column");
@@ -6758,8 +6756,6 @@ namespace LitePlacer
                 case "Locate":
                     // Shows the component and its footprint(if known)...
                     CNC_XYA_m(X_machine, Y_machine, Cnc.CurrentA);
-                    if (!ShowFootPrint_m(CADdataRow))
-                        return false;
 
                     // ... either for the time specified in method parameter
                     if (int.TryParse(JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(), out time))
@@ -8601,63 +8597,6 @@ namespace LitePlacer
 
 
         // =================================================================================
-        private bool ShowFootPrint_m(int Row)
-        {
-            // Turns on drawing a box of component outline to Downcamera image, if component size is known
-            string FootPrint = CadData_GridView.Rows[Row].Cells["Value_Footprint"].Value.ToString();
-            double sizeX = 0.0;
-            double sizeY = 0.0;
-            bool found = false;
-
-            foreach (DataGridViewRow SizeRow in ComponentData_dataGridView.Rows)
-            {
-                if (SizeRow.Cells["PartialName_column"].Value != null)
-                {
-                    if (FootPrint.Contains(SizeRow.Cells["PartialName_column"].Value.ToString()))
-                    {
-                        if (!double.TryParse(SizeRow.Cells["SizeX_column"].Value.ToString().Replace(',', '.'), out sizeX))
-                        {
-                            ShowMessageBox(
-                                "Bad data at " + SizeRow.Cells["PartialName_column"].Value.ToString() + ", SizeX",
-                                "Sloppy programmer error",
-                                MessageBoxButtons.OK);
-                            return false;
-                        }
-                        if (!double.TryParse(SizeRow.Cells["SizeY_column"].Value.ToString().Replace(',', '.'), out sizeY))
-                        {
-                            ShowMessageBox(
-                                "Bad data at " + SizeRow.Cells["PartialName_column"].Value.ToString() + ", SizeY",
-                                "Sloppy programmer error",
-                                MessageBoxButtons.OK);
-                            return false;
-                        }
-                        found = true;
-                        break;
-                    }
-                }
-            }
-            if (!found)
-            {
-                return true;  // ok if there is no data on component
-            }
-
-            double rot;
-            if (!double.TryParse(CadData_GridView.Rows[Row].Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out rot))
-            {
-                ShowMessageBox(
-                    "Bad data at Rotation, machine",
-                    "Sloppy programmer error",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-
-            DownCamera.BoxSizeX = (int)Math.Round((sizeX) / Setting.DownCam_XmmPerPixel);
-            DownCamera.BoxSizeY = (int)Math.Round((sizeY) / Setting.DownCam_YmmPerPixel);
-            DownCamera.BoxRotationDeg = rot;
-            DownCamera.DrawBox = true;
-            return true;
-        }
-
         private void Demo_button_Click(object sender, EventArgs e)
         {
             DemoThread = new Thread(() => DemoWork());
@@ -10632,13 +10571,11 @@ namespace LitePlacer
             Nozzle.BuildData();
             NoOfNozzles_UpDown.Value = Setting.Nozzles_count;
             // fill values
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int ind = path.LastIndexOf('\\');
-            path = path.Remove(ind + 1);
-            LoadDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView, DataTableType.Nozzles);
-            LoadDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView, DataTableType.Nozzles);
-            LoadDataGrid(path + "LitePlacer.NozzlesVisionParameters_v21", NozzlesParameters_dataGridView, DataTableType.Nozzles);
-            Nozzle.LoadCalibration(path + "LitePlacer.NozzlesCalibrationData_v2");
+            string path = GetPath();
+            LoadDataGrid(path + NOZZLES_LOAD_DATAFILE, NozzlesLoad_dataGridView, DataTableType.Nozzles);
+            LoadDataGrid(path + NOZZLES_UNLOAD_DATAFILE, NozzlesUnload_dataGridView, DataTableType.Nozzles);
+            LoadDataGrid(path + NOZZLES_VISIONPARAMETERS_DATAFILE, NozzlesParameters_dataGridView, DataTableType.Nozzles);
+            Nozzle.LoadCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
             FillNozzlesParameters_dataGridView();
         }
 
@@ -10741,13 +10678,11 @@ namespace LitePlacer
 
         private void NozzlesSave_button_Click(object sender, EventArgs e)
         {
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-            SaveDataGrid(path + "LitePlacer.NozzlesLoadData_v2", NozzlesLoad_dataGridView);
-            SaveDataGrid(path + "LitePlacer.NozzlesUnLoadData_v2", NozzlesUnload_dataGridView);
-            SaveDataGrid(path + "LitePlacer.NozzlesVisionParameters_v21", NozzlesParameters_dataGridView);
-            Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData_v2");
+            string path = GetPath();
+            SaveDataGrid(path + NOZZLES_LOAD_DATAFILE, NozzlesLoad_dataGridView);
+            SaveDataGrid(path + NOZZLES_UNLOAD_DATAFILE, NozzlesUnload_dataGridView);
+            SaveDataGrid(path + NOZZLES_VISIONPARAMETERS_DATAFILE, NozzlesParameters_dataGridView);
+            Nozzle.SaveCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
         }
 
         private bool Nozzles_Stop = false;
@@ -10944,6 +10879,7 @@ namespace LitePlacer
             NozzlesUnload_dataGridView.Rows.RemoveAt(NozzlesUnload_dataGridView.Rows.Count - 1);
             NozzlesParameters_dataGridView.Rows.RemoveAt(NozzlesParameters_dataGridView.Rows.Count - 1);
             ResizeNozzleTables();
+            Nozzle.Remove();
         }
 
 
@@ -11137,10 +11073,8 @@ namespace LitePlacer
                     return;
                 }
             }
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
-            Nozzle.SaveCalibration(path + "LitePlacer.NozzlesCalibrationData");
+            string path = GetPath();
+            Nozzle.SaveCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
             for (int nozzle = 1; nozzle <= Setting.Nozzles_count; nozzle++)
             {
                 CheckCalibrationErrors(nozzle);
@@ -11151,7 +11085,7 @@ namespace LitePlacer
         private void CalData_button_Click(object sender, EventArgs e)
         {
             DisplayText("Nozzles calibration data:");
-            for (int i = 1; i <= 6; i++)
+            for (int i = 1; i <= Setting.Nozzles_count; i++)
             {
                 if (Nozzle.Calibrated[i])
                 {
@@ -12176,12 +12110,10 @@ namespace LitePlacer
 
         private void AppSettingsSave_button_Click(object sender, EventArgs e)
         {
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
+            string path = GetPath();
 
             AppSettings_saveFileDialog.Filter = "All files (*.*)|*.*";
-            AppSettings_saveFileDialog.FileName = "LitePlacer.Appsettings";
+            AppSettings_saveFileDialog.FileName = APPLICATIONSETTINGS_DATAFILE;
             AppSettings_saveFileDialog.InitialDirectory = path;
 
             if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -12193,12 +12125,10 @@ namespace LitePlacer
 
         private void AppSettingsLoad_button_Click(object sender, EventArgs e)
         {
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
+            string path = GetPath();
 
             AppSettings_openFileDialog.Filter = "All files (*.*)|*.*";
-            AppSettings_openFileDialog.FileName = "LitePlacer.Appsettings";
+            AppSettings_openFileDialog.FileName = APPLICATIONSETTINGS_DATAFILE;
             AppSettings_openFileDialog.InitialDirectory = path;
 
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
@@ -12228,12 +12158,10 @@ namespace LitePlacer
 
         private void BoardSettingsSave_button_Click(object sender, EventArgs e)
         {
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
+            string path = GetPath();
 
-            AppSettings_saveFileDialog.Filter = "All files (*.*)|*.*";
-            AppSettings_saveFileDialog.FileName = "LitePlacer.BoardSettings";
+            AppSettings_saveFileDialog.Filter = "LitePlacer datafiles (LitePlacer.*)|LitePlacer.*|All files (*.*)|*.*";
+            AppSettings_saveFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_saveFileDialog.InitialDirectory = path;
 
             if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -12245,12 +12173,10 @@ namespace LitePlacer
 
         private void BoardSettingsLoad_button_Click(object sender, EventArgs e)
         {
-            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
-            int i = path.LastIndexOf('\\');
-            path = path.Remove(i + 1);
+            string path = GetPath();
 
-            AppSettings_openFileDialog.Filter = "All files (*.*)|*.*";
-            AppSettings_openFileDialog.FileName = "LitePlacer.BoardSettings";
+            AppSettings_openFileDialog.Filter = "LitePlacer datafiles (LitePlacer.*)|LitePlacer.*|All files (*.*)|*.*";
+            AppSettings_openFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_openFileDialog.InitialDirectory = path;
 
             TinyGSettings tg = TinyGBoard;

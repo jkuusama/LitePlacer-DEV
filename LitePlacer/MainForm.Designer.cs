@@ -141,11 +141,6 @@
             this.RotationDirect_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Components_tabPage = new System.Windows.Forms.TabPage();
-            this.ComponentData_dataGridView = new System.Windows.Forms.DataGridView();
-            this.PartialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SizeX = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SizeY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -799,8 +794,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
-            this.Components_tabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).BeginInit();
             this.tabPageSetupCameras.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
             this.groupBox6.SuspendLayout();
@@ -2004,45 +1997,6 @@
             this.editToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.EditTape_MenuItemClick);
-            // 
-            // Components_tabPage
-            // 
-            this.Components_tabPage.Controls.Add(this.ComponentData_dataGridView);
-            this.Components_tabPage.Location = new System.Drawing.Point(4, 22);
-            this.Components_tabPage.Name = "Components_tabPage";
-            this.Components_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Components_tabPage.Size = new System.Drawing.Size(1245, 635);
-            this.Components_tabPage.TabIndex = 3;
-            this.Components_tabPage.Text = "Component Data";
-            this.Components_tabPage.UseVisualStyleBackColor = true;
-            // 
-            // ComponentData_dataGridView
-            // 
-            this.ComponentData_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ComponentData_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.PartialName,
-            this.SizeX,
-            this.SizeY});
-            this.ComponentData_dataGridView.Location = new System.Drawing.Point(24, 31);
-            this.ComponentData_dataGridView.Name = "ComponentData_dataGridView";
-            this.ComponentData_dataGridView.Size = new System.Drawing.Size(495, 583);
-            this.ComponentData_dataGridView.TabIndex = 0;
-            // 
-            // PartialName
-            // 
-            this.PartialName.HeaderText = "String in Component Name";
-            this.PartialName.Name = "PartialName";
-            this.PartialName.Width = 250;
-            // 
-            // SizeX
-            // 
-            this.SizeX.HeaderText = "X, mm";
-            this.SizeX.Name = "SizeX";
-            // 
-            // SizeY
-            // 
-            this.SizeY.HeaderText = "Y, mm";
-            this.SizeY.Name = "SizeY";
             // 
             // tabPageSetupCameras
             // 
@@ -7172,7 +7126,6 @@
             this.tabControlPages.Controls.Add(this.tabPageBasicSetup);
             this.tabControlPages.Controls.Add(this.tabPageSetupCameras);
             this.tabControlPages.Controls.Add(this.Algorithms_tabPage);
-            this.tabControlPages.Controls.Add(this.Components_tabPage);
             this.tabControlPages.Controls.Add(this.Tapes_tabPage);
             this.tabControlPages.Controls.Add(this.Nozzles_tabPage);
             this.tabControlPages.Location = new System.Drawing.Point(3, 2);
@@ -9377,8 +9330,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).EndInit();
             this.Tapes_contextMenuStrip.ResumeLayout(false);
-            this.Components_tabPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ComponentData_dataGridView)).EndInit();
             this.tabPageSetupCameras.ResumeLayout(false);
             this.tabPageSetupCameras.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
@@ -9499,11 +9450,6 @@
 		private System.Windows.Forms.Button AddTape_button;
 		private System.Windows.Forms.Label label109;
 		private System.Windows.Forms.DataGridView Tapes_dataGridView;
-		private System.Windows.Forms.TabPage Components_tabPage;
-		private System.Windows.Forms.DataGridView ComponentData_dataGridView;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PartialName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SizeX;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SizeY;
 		private System.Windows.Forms.TabPage tabPageSetupCameras;
 		private System.Windows.Forms.Button CameraSetupTest_button;
 		private System.Windows.Forms.CheckBox ImageTest_checkBox;
