@@ -9706,13 +9706,11 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            int no = 0;
-            if (!int.TryParse(NextPart_TextBox.Text, out no))
+            DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
+            if (!int.TryParse(Row.Cells["NextPart_Column"].Value.ToString(), out _))
             {
                 return;
             }
-            DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
-            Row.Cells["NextPart_Column"].Value = no.ToString(CultureInfo.InvariantCulture);
             Row.Cells["Next_X_Column"].Value = Cnc.CurrentX.ToString(CultureInfo.InvariantCulture);
             Row.Cells["Next_Y_Column"].Value = Cnc.CurrentY.ToString(CultureInfo.InvariantCulture);
         }
