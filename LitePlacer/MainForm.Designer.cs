@@ -1495,7 +1495,7 @@
             // 
             // ShowPart_button
             // 
-            this.ShowPart_button.Location = new System.Drawing.Point(535, 516);
+            this.ShowPart_button.Location = new System.Drawing.Point(290, 600);
             this.ShowPart_button.Name = "ShowPart_button";
             this.ShowPart_button.Size = new System.Drawing.Size(100, 23);
             this.ShowPart_button.TabIndex = 52;
@@ -1509,7 +1509,7 @@
             // label129
             // 
             this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(559, 445);
+            this.label129.Location = new System.Drawing.Point(314, 529);
             this.label129.Name = "label129";
             this.label129.Size = new System.Drawing.Size(76, 13);
             this.label129.TabIndex = 51;
@@ -1517,7 +1517,7 @@
             // 
             // HoleTest_button
             // 
-            this.HoleTest_button.Location = new System.Drawing.Point(535, 487);
+            this.HoleTest_button.Location = new System.Drawing.Point(290, 571);
             this.HoleTest_button.Name = "HoleTest_button";
             this.HoleTest_button.Size = new System.Drawing.Size(100, 23);
             this.HoleTest_button.TabIndex = 50;
@@ -1529,7 +1529,7 @@
             // label128
             // 
             this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(533, 464);
+            this.label128.Location = new System.Drawing.Point(288, 548);
             this.label128.Name = "label128";
             this.label128.Size = new System.Drawing.Size(39, 13);
             this.label128.TabIndex = 49;
@@ -1537,7 +1537,7 @@
             // 
             // HoleTest_maskedTextBox
             // 
-            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(578, 461);
+            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(333, 545);
             this.HoleTest_maskedTextBox.Mask = "999";
             this.HoleTest_maskedTextBox.Name = "HoleTest_maskedTextBox";
             this.HoleTest_maskedTextBox.PromptChar = ' ';

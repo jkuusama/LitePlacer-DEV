@@ -45,7 +45,7 @@ namespace LitePlacer
         // =================================================================================
         public void BuildData()
         {
-            for (int i = 0; i < MainForm.Setting.Nozzles_count; i++)
+            for (int i = 0; i <= MainForm.Setting.Nozzles_count; i++)
             {
                 Add();
             }
