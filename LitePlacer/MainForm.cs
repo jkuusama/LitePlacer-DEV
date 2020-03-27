@@ -12108,8 +12108,11 @@ namespace LitePlacer
 
         private void AppSettingsSave_button_Click(object sender, EventArgs e)
         {
+            if (StartingUp)
+            {
+                return;
+            }
             string path = GetPath();
-
             AppSettings_saveFileDialog.Filter = "All files (*.*)|*.*";
             AppSettings_saveFileDialog.FileName = APPLICATIONSETTINGS_DATAFILE;
             AppSettings_saveFileDialog.InitialDirectory = path;
@@ -12123,8 +12126,18 @@ namespace LitePlacer
 
         private void AppSettingsLoad_button_Click(object sender, EventArgs e)
         {
+            if (StartingUp)
+            {
+                return;
+            }
+            DialogResult dialogResult = ShowMessageBox(
+                "New set of settings will be loaded and the program will close. You need to restart manually.\n\rContinue?",
+                "Confirm loading new settings", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No)
+            {
+                return;
+            };
             string path = GetPath();
-
             AppSettings_openFileDialog.Filter = "All files (*.*)|*.*";
             AppSettings_openFileDialog.FileName = APPLICATIONSETTINGS_DATAFILE;
             AppSettings_openFileDialog.InitialDirectory = path;
@@ -12138,6 +12151,10 @@ namespace LitePlacer
 
         private void AppBuiltInSettings_button_Click(object sender, EventArgs e)
         {
+            if (StartingUp)
+            {
+                return;
+            }
             DialogResult dialogResult = ShowMessageBox(
                 "Reset application settings top built in defaults?",
                 "Confirm Loading Built-In settings", MessageBoxButtons.YesNo);
@@ -12156,8 +12173,11 @@ namespace LitePlacer
 
         private void BoardSettingsSave_button_Click(object sender, EventArgs e)
         {
+            if (StartingUp)
+            {
+                return;
+            }
             string path = GetPath();
-
             AppSettings_saveFileDialog.Filter = "LitePlacer datafiles (LitePlacer.*)|LitePlacer.*|All files (*.*)|*.*";
             AppSettings_saveFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_saveFileDialog.InitialDirectory = path;
@@ -12171,8 +12191,11 @@ namespace LitePlacer
 
         private void BoardSettingsLoad_button_Click(object sender, EventArgs e)
         {
+            if (StartingUp)
+            {
+                return;
+            }
             string path = GetPath();
-
             AppSettings_openFileDialog.Filter = "LitePlacer datafiles (LitePlacer.*)|LitePlacer.*|All files (*.*)|*.*";
             AppSettings_openFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_openFileDialog.InitialDirectory = path;
@@ -12193,6 +12216,11 @@ namespace LitePlacer
 
         private void BoardBuiltInSettings_button_Click(object sender, EventArgs e)
         {
+            if (StartingUp)
+            {
+                return;
+            }
+            string path = GetPath();
             TinyGBoard = new TinyGSettings();
             WriteAllBoardSettings_m();
         }
@@ -12200,6 +12228,11 @@ namespace LitePlacer
 
         private void WriteAllBoardSettings_m()
         {
+            if (StartingUp)
+            {
+                return;
+            }
+            string path = GetPath();
             bool res = true;
             DialogResult dialogResult;
             if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
