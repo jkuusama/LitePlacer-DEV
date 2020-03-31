@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -65,10 +65,15 @@
             this.Bookmark5_button = new System.Windows.Forms.Button();
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.label225 = new System.Windows.Forms.Label();
+            this.label67 = new System.Windows.Forms.Label();
+            this.label62 = new System.Windows.Forms.Label();
+            this.TapeUp_button = new System.Windows.Forms.Button();
+            this.TapeDown_button = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
+            this.EditTape_button = new System.Windows.Forms.Button();
             this.ResetAllTapes_button = new System.Windows.Forms.Button();
             this.ResetOneTape_button = new System.Windows.Forms.Button();
-            this.EditTape_button = new System.Windows.Forms.Button();
             this.label158 = new System.Windows.Forms.Label();
             this.label157 = new System.Windows.Forms.Label();
             this.ResetSelectedPlaceZs_button = new System.Windows.Forms.Button();
@@ -107,8 +112,6 @@
             this.Tape_GoToNext_button = new System.Windows.Forms.Button();
             this.SetPartNo_button = new System.Windows.Forms.Button();
             this.TapeGoTo_button = new System.Windows.Forms.Button();
-            this.TapeDown_button = new System.Windows.Forms.Button();
-            this.TapeUp_button = new System.Windows.Forms.Button();
             this.DeleteTape_button = new System.Windows.Forms.Button();
             this.AddTape_button = new System.Windows.Forms.Button();
             this.label109 = new System.Windows.Forms.Label();
@@ -788,9 +791,6 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.label62 = new System.Windows.Forms.Label();
-            this.label67 = new System.Windows.Forms.Label();
-            this.label225 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1256,6 +1256,55 @@
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
             // 
+            // label225
+            // 
+            this.label225.AutoSize = true;
+            this.label225.Location = new System.Drawing.Point(103, 503);
+            this.label225.Name = "label225";
+            this.label225.Size = new System.Drawing.Size(37, 13);
+            this.label225.TabIndex = 100;
+            this.label225.Text = "Holes:";
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Location = new System.Drawing.Point(481, 503);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(50, 13);
+            this.label67.TabIndex = 99;
+            this.label67.Text = "All tapes:";
+            // 
+            // label62
+            // 
+            this.label62.AutoSize = true;
+            this.label62.Location = new System.Drawing.Point(571, 503);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(54, 13);
+            this.label62.TabIndex = 98;
+            this.label62.Text = "One tape:";
+            // 
+            // TapeUp_button
+            // 
+            this.TapeUp_button.Location = new System.Drawing.Point(574, 548);
+            this.TapeUp_button.Name = "TapeUp_button";
+            this.TapeUp_button.Size = new System.Drawing.Size(32, 23);
+            this.TapeUp_button.TabIndex = 19;
+            this.TapeUp_button.Text = "▲";
+            this.toolTip1.SetToolTip(this.TapeUp_button, "Moves the selected tape definition up on the table.");
+            this.TapeUp_button.UseVisualStyleBackColor = true;
+            this.TapeUp_button.Click += new System.EventHandler(this.TapeUp_button_Click);
+            // 
+            // TapeDown_button
+            // 
+            this.TapeDown_button.Location = new System.Drawing.Point(617, 548);
+            this.TapeDown_button.Name = "TapeDown_button";
+            this.TapeDown_button.Size = new System.Drawing.Size(32, 23);
+            this.TapeDown_button.TabIndex = 20;
+            this.TapeDown_button.Text = "▼";
+            this.toolTip1.SetToolTip(this.TapeDown_button, "Moves the selected tape definition down on the table.");
+            this.TapeDown_button.UseVisualStyleBackColor = true;
+            this.TapeDown_button.Click += new System.EventHandler(this.TapeDown_button_Click);
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -1264,6 +1313,17 @@
             this.label7.Size = new System.Drawing.Size(36, 13);
             this.label7.TabIndex = 97;
             this.label7.Text = "Trays:";
+            // 
+            // EditTape_button
+            // 
+            this.EditTape_button.Location = new System.Drawing.Point(574, 519);
+            this.EditTape_button.Name = "EditTape_button";
+            this.EditTape_button.Size = new System.Drawing.Size(75, 23);
+            this.EditTape_button.TabIndex = 96;
+            this.EditTape_button.Text = "Edit";
+            this.toolTip1.SetToolTip(this.EditTape_button, "Edit the selected tape definition");
+            this.EditTape_button.UseVisualStyleBackColor = true;
+            this.EditTape_button.Click += new System.EventHandler(this.EditTape_button_Click);
             // 
             // ResetAllTapes_button
             // 
@@ -1287,17 +1347,6 @@
         "he tape.");
             this.ResetOneTape_button.UseVisualStyleBackColor = true;
             this.ResetOneTape_button.Click += new System.EventHandler(this.ResetOneTape_button_Click);
-            // 
-            // EditTape_button
-            // 
-            this.EditTape_button.Location = new System.Drawing.Point(574, 519);
-            this.EditTape_button.Name = "EditTape_button";
-            this.EditTape_button.Size = new System.Drawing.Size(75, 23);
-            this.EditTape_button.TabIndex = 96;
-            this.EditTape_button.Text = "Edit";
-            this.toolTip1.SetToolTip(this.EditTape_button, "Edit the selected tape definition");
-            this.EditTape_button.UseVisualStyleBackColor = true;
-            this.EditTape_button.Click += new System.EventHandler(this.EditTape_button_Click);
             // 
             // label158
             // 
@@ -1673,28 +1722,6 @@
             this.toolTip1.SetToolTip(this.TapeGoTo_button, "Moves the machine on hole 1 on the selected tape.");
             this.TapeGoTo_button.UseVisualStyleBackColor = true;
             this.TapeGoTo_button.Click += new System.EventHandler(this.TapeGoTo_button_Click);
-            // 
-            // TapeDown_button
-            // 
-            this.TapeDown_button.Location = new System.Drawing.Point(617, 548);
-            this.TapeDown_button.Name = "TapeDown_button";
-            this.TapeDown_button.Size = new System.Drawing.Size(32, 23);
-            this.TapeDown_button.TabIndex = 20;
-            this.TapeDown_button.Text = "▼";
-            this.toolTip1.SetToolTip(this.TapeDown_button, "Moves the selected tape definition down on the table.");
-            this.TapeDown_button.UseVisualStyleBackColor = true;
-            this.TapeDown_button.Click += new System.EventHandler(this.TapeDown_button_Click);
-            // 
-            // TapeUp_button
-            // 
-            this.TapeUp_button.Location = new System.Drawing.Point(574, 548);
-            this.TapeUp_button.Name = "TapeUp_button";
-            this.TapeUp_button.Size = new System.Drawing.Size(32, 23);
-            this.TapeUp_button.TabIndex = 19;
-            this.TapeUp_button.Text = "▲";
-            this.toolTip1.SetToolTip(this.TapeUp_button, "Moves the selected tape definition up on the table.");
-            this.TapeUp_button.UseVisualStyleBackColor = true;
-            this.TapeUp_button.Click += new System.EventHandler(this.TapeUp_button_Click);
             // 
             // DeleteTape_button
             // 
@@ -3930,9 +3957,9 @@
             this.Motors_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Motors_label.Location = new System.Drawing.Point(13, 150);
             this.Motors_label.Name = "Motors_label";
-            this.Motors_label.Size = new System.Drawing.Size(109, 20);
+            this.Motors_label.Size = new System.Drawing.Size(215, 20);
             this.Motors_label.TabIndex = 116;
-            this.Motors_label.Text = "Motors Setup:";
+            this.Motors_label.Text = "Control board not connected.";
             // 
             // TinyGMotors_tabControl
             // 
@@ -6886,14 +6913,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9241,33 +9268,6 @@
             this.label165.Size = new System.Drawing.Size(70, 13);
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
-            // 
-            // label62
-            // 
-            this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(571, 503);
-            this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(54, 13);
-            this.label62.TabIndex = 98;
-            this.label62.Text = "One tape:";
-            // 
-            // label67
-            // 
-            this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(481, 503);
-            this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(50, 13);
-            this.label67.TabIndex = 99;
-            this.label67.Text = "All tapes:";
-            // 
-            // label225
-            // 
-            this.label225.AutoSize = true;
-            this.label225.Location = new System.Drawing.Point(103, 503);
-            this.label225.Name = "label225";
-            this.label225.Size = new System.Drawing.Size(37, 13);
-            this.label225.TabIndex = 100;
-            this.label225.Text = "Holes:";
             // 
             // FormMain
             // 

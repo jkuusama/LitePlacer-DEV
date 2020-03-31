@@ -22,5 +22,5 @@ Bug Fixes
 
 Known issues
 
-* The application does not automatically restart when loading new settings from file. (there is a dialog, though)
+* The application does not automatically restart when loading new settings from file. (there is now a dialog, though)
 * Place fast sometimes uses last hole (which might not be whole), not the second to last as excpected

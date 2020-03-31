@@ -103,8 +103,8 @@ namespace LitePlacer
         public const string TAPES_DATAFILE = "LitePlacer.TapesData_v2";
         public const string NOZZLES_CALIBRATION_DATAFILE = "LitePlacer.NozzlesCalibrationData_v2";
         public const string NOZZLES_LOAD_DATAFILE = "LitePlacer.NozzlesLoadData_v2";
-        public const string NOZZLES_UNLOAD_DATAFILE = "LitePlacer.NozzlesLoadData_v2";
-        public const string NOZZLES_VISIONPARAMETERS_DATAFILE = "LitePlacer.NozzlesLoadData_v2";
+        public const string NOZZLES_UNLOAD_DATAFILE = "LitePlacer.NozzlesUnLoadData_v2";
+        public const string NOZZLES_VISIONPARAMETERS_DATAFILE = "LitePlacer.NozzlesVisionParameters_v21";
         public const string BOARDSETTINGS_DATAFILE = "LitePlacer.BoardSettings";
 
 
@@ -797,8 +797,10 @@ namespace LitePlacer
                         bw.Write(column.Name);
                     }
 
+                    int loopcount = 0;
                     foreach (DataGridViewRow dgvR in dgv.Rows)
                     {
+                        loopcount++;
                         for (int j = 0; j < dgv.Columns.Count; ++j)
                         {
                             object val = dgvR.Cells[j].Value;
@@ -10566,7 +10568,6 @@ namespace LitePlacer
             // build tables
             BuildNozzleTable(NozzlesLoad_dataGridView);
             BuildNozzleTable(NozzlesUnload_dataGridView);
-            Nozzle.BuildData();
             NoOfNozzles_UpDown.Value = Setting.Nozzles_count;
             // fill values
             string path = GetPath();
@@ -10574,7 +10575,81 @@ namespace LitePlacer
             LoadDataGrid(path + NOZZLES_UNLOAD_DATAFILE, NozzlesUnload_dataGridView, DataTableType.Nozzles);
             LoadDataGrid(path + NOZZLES_VISIONPARAMETERS_DATAFILE, NozzlesParameters_dataGridView, DataTableType.Nozzles);
             Nozzle.LoadCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
+            AdjustNozzleDataSizes();
             FillNozzlesParameters_dataGridView();
+        }
+
+
+        private void AdjustNozzleDataSizes()
+        {
+            int UnloadCount = NozzlesUnload_dataGridView.Rows.Count;
+            int LoadCount = NozzlesLoad_dataGridView.Rows.Count;
+            int ParameterCount = NozzlesParameters_dataGridView.Rows.Count;
+            int CalibrationCount = Nozzle.CalibrationData.Count;
+            int CalibratedCount = Nozzle.Calibrated.Count;
+            bool CountOk = (UnloadCount == Setting.Nozzles_count) && (LoadCount == Setting.Nozzles_count) &&
+                (ParameterCount == Setting.Nozzles_count) && (CalibrationCount == Setting.Nozzles_count) &&
+                (CalibratedCount == Setting.Nozzles_count);
+
+            if (CountOk)
+            {
+                return;
+            }
+            bool SaveStarting = StartingUp;
+            StartingUp = false;
+            DialogResult dialogResult = ShowMessageBox(
+                "Nozzle data sizes on disk don't match nozzle count in program settings!!\n\r" +
+                "Nozzle count = " + Setting.Nozzles_count.ToString() + "\n\r" +
+                "Count of load moves = " + LoadCount.ToString() + "\n\r" +
+                "Count of unload moves = " + UnloadCount.ToString() + "\n\r" +
+                "Count of vision parameters = " + ParameterCount.ToString() + "\n\r" +
+                "Count of calibration data = " + CalibrationCount.ToString() + "\n\r" +
+                "Count of calibration validity data = " + CalibratedCount.ToString() + "\n\r" + "\n\r" +
+                "If you didn't excpect this:" + "\n\r" +
+                "Before clicking OK, take a backup copy of your LitePlacer directory!" + "\n\r" +
+                "After clicking OK, the data size is adjusted to stored nozzle count," + "\n\r" +
+                "resulting to possible loss of data." + "\n\r" +
+                "Clicking Cancel will exit without changes.",
+                "Adjust nozzle data sizes?", MessageBoxButtons.OKCancel);
+            if (dialogResult == DialogResult.Cancel)
+            {
+                Environment.Exit(0);
+            };
+            StartingUp = SaveStarting;
+            AdjustNozzleGrid(NozzlesUnload_dataGridView);
+            AdjustNozzleGrid(NozzlesLoad_dataGridView);
+            AdjustNozzleGrid(NozzlesParameters_dataGridView);
+            AdjustCalibrationCount();
+        }
+
+        private void AdjustNozzleGrid(DataGridView Grid)
+        {
+            // add
+            while (Grid.Rows.Count < Setting.Nozzles_count)
+            {
+                Grid.Rows.Insert(Grid.Rows.Count);
+                Nozzle.Add();
+            }
+            // or remove
+            if (Grid.Rows.Count > Setting.Nozzles_count)
+            {
+                Grid.RowCount = Setting.Nozzles_count;
+            }
+        }
+
+        private void AdjustCalibrationCount()
+        {
+            // Note: This doesn't catch if CalibrationData and Calibrated are different sizes.
+            // add
+            while (Nozzle.CalibrationData.Count < Setting.Nozzles_count)
+            {
+                Nozzle.Add();
+            }
+            // or remove
+            while (Nozzle.CalibrationData.Count > Setting.Nozzles_count)
+            {
+                Nozzle.Remove();
+            }
         }
 
         // ==========================================================================================================
@@ -10694,7 +10769,7 @@ namespace LitePlacer
         // Datagirds
         void AddNozzleAlgorithmNames(int col)
         {
-            NozzlesParameters_dataGridView.Rows.Add(new DataGridViewRow());
+            // NozzlesParameters_dataGridView.Rows.Add(new DataGridViewRow());
             NozzlesParameters_dataGridView.Rows[col].Cells["NozzleNumber_column"].Value = (col+1).ToString();
 
             string AlgName = "";
