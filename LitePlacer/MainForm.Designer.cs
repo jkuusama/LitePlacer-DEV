@@ -694,7 +694,7 @@
             this.UpcamPositionX_textBox = new System.Windows.Forms.TextBox();
             this.PickupCenterY_textBox = new System.Windows.Forms.TextBox();
             this.Nozzles_tabPage = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.NozzeTip_textBox = new System.Windows.Forms.TextBox();
             this.DefaultNozzle_label = new System.Windows.Forms.Label();
             this.label139 = new System.Windows.Forms.Label();
             this.NozzleWarning_textBox = new System.Windows.Forms.TextBox();
@@ -8257,7 +8257,7 @@
             // 
             // Nozzles_tabPage
             // 
-            this.Nozzles_tabPage.Controls.Add(this.textBox1);
+            this.Nozzles_tabPage.Controls.Add(this.NozzeTip_textBox);
             this.Nozzles_tabPage.Controls.Add(this.DefaultNozzle_label);
             this.Nozzles_tabPage.Controls.Add(this.label139);
             this.Nozzles_tabPage.Controls.Add(this.NozzleWarning_textBox);
@@ -8296,15 +8296,16 @@
             this.Nozzles_tabPage.Text = "Setup Nozzles";
             this.Nozzles_tabPage.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // NozzeTip_textBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(624, 495);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(183, 118);
-            this.textBox1.TabIndex = 45;
-            this.textBox1.Text = "Nominal nozzle tip sizes (diameter):\r\n(in / out)\r\n#1: 0.5 / 1.0\r\n#2: 0.8 / 1.5\r\n#" +
-    "3: 1.4 / 2.2\r\n#4: 2.4 / 4.0 \r\n#5: 4.0 / 6.2\r\n#6: 7.5 / 9.0";
+            this.NozzeTip_textBox.Location = new System.Drawing.Point(765, 498);
+            this.NozzeTip_textBox.Multiline = true;
+            this.NozzeTip_textBox.Name = "NozzeTip_textBox";
+            this.NozzeTip_textBox.Size = new System.Drawing.Size(183, 127);
+            this.NozzeTip_textBox.TabIndex = 45;
+            this.NozzeTip_textBox.Text = "Nominal nozzle tip sizes (diameter):\r\n(in / out)\r\n#1: 0.5 / 1.0\r\n#2: 0.8 / 1.5\r\n#" +
+    "3: 1.4 / 2.2\r\n#4: 2.4 / 4.0 \r\n#5: 4.0 / 6.2\r\n#6: 7.5 / 9.0\r\n(F1 toggles visibili" +
+    "ty of this box)";
             // 
             // DefaultNozzle_label
             // 
@@ -10063,7 +10064,7 @@
         private System.Windows.Forms.Label label96;
         private System.Windows.Forms.Label label93;
         private System.Windows.Forms.Label label94;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox NozzeTip_textBox;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label179;
         private System.Windows.Forms.Label label178;

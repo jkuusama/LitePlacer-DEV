@@ -1502,6 +1502,11 @@ namespace LitePlacer
                 return;
             }
 
+            if ((e.KeyCode == Keys.F1) && (tabControlPages.SelectedTab.Name == "Nozzles_tabPage"))
+            {
+                NozzeTip_textBox.Visible = !NozzeTip_textBox.Visible;
+            }
+
             if (!JoggingKeys.Contains(e.KeyCode))
             {
                 return;
@@ -10669,6 +10674,7 @@ namespace LitePlacer
 
         private void Nozzles_tabPage_Begin()
         {
+            NozzeTip_textBox.Visible = true;
             FillNozzlesParameters_dataGridView();   // algorithm list may have changed
             if (NozzleZGuard_checkBox.Checked)
             {

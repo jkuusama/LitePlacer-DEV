@@ -1186,7 +1186,7 @@ namespace LitePlacer
             CommasToPoints(Xmin_textBox);
             if (double.TryParse(Xmin_textBox.Text, out val))
             {
-                if (val > 0.0)
+                if (val >= 0.0)
                 {
                     if (ChangeYwithX)
                     {
@@ -1208,7 +1208,7 @@ namespace LitePlacer
             CommasToPoints(Xmax_textBox);
             if (double.TryParse(Xmax_textBox.Text, out val))
             {
-                if (val > 0.0)
+                if (val >= 0.0)
                 {
                     if (ChangeYwithX)
                     {
@@ -1228,7 +1228,7 @@ namespace LitePlacer
             CommasToPoints(Ymin_textBox);
             if (double.TryParse(Ymin_textBox.Text, out val))
             {
-                if (val > 0.0)
+                if (val >= 0.0)
                 {
                     Ymin_textBox.ForeColor = Color.Black;
                     VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymin = val;
@@ -1244,7 +1244,7 @@ namespace LitePlacer
             CommasToPoints(Ymax_textBox);
             if (double.TryParse(Ymax_textBox.Text, out val))
             {
-                if (val > 0.0)
+                if (val >= 0.0)
                 {
                     Ymax_textBox.ForeColor = Color.Black;
                     VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymax = val;
@@ -1261,7 +1261,7 @@ namespace LitePlacer
             CommasToPoints(XmaxDistance_textBox);
             if (double.TryParse(XmaxDistance_textBox.Text, out val))
             {
-                if (val > 0.0)
+                if (val >= 0.0)
                 {
                     if (ChangeYwithX)
                     {
@@ -1283,7 +1283,7 @@ namespace LitePlacer
             CommasToPoints(YmaxDistance_textBox);
             if (double.TryParse(YmaxDistance_textBox.Text, out val))
             {
-                if (val > 0.0)
+                if (val >= 0.0)
                 {
                     YmaxDistance_textBox.ForeColor = Color.Black;
                     VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YUniqueDistance = val;
