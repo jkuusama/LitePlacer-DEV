@@ -1178,24 +1178,29 @@ namespace LitePlacer
             box.SelectionStart = pos;
         }
 
+
+
         private void Xmin_textBox_TextChanged(object sender, EventArgs e)
         {
             double val = 0.0;
             CommasToPoints(Xmin_textBox);
             if (double.TryParse(Xmin_textBox.Text, out val))
             {
-                if (ChangeYwithX)
+                if (val > 0.0)
                 {
-                    Ymin_textBox.Text = Xmin_textBox.Text;
+                    if (ChangeYwithX)
+                    {
+                        Ymin_textBox.Text = Xmin_textBox.Text;
+                    }
+                    Xmin_textBox.ForeColor = Color.Black;
+                    VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmin = val;
+                    return;
                 }
-                Xmin_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmin = val;
             }
-            else
-            {
-                Xmin_textBox.ForeColor = Color.Red;
-            }
+            Xmin_textBox.ForeColor = Color.Red;
         }
+
+
 
         private void Xmax_textBox_TextChanged(object sender, EventArgs e)
         {
@@ -1203,17 +1208,18 @@ namespace LitePlacer
             CommasToPoints(Xmax_textBox);
             if (double.TryParse(Xmax_textBox.Text, out val))
             {
-                if (ChangeYwithX)
+                if (val > 0.0)
                 {
-                    Ymax_textBox.Text = Xmax_textBox.Text;
+                    if (ChangeYwithX)
+                    {
+                        Ymax_textBox.Text = Xmax_textBox.Text;
+                    }
+                    Xmax_textBox.ForeColor = Color.Black;
+                    VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmax = val;
+                    return;
                 }
-                Xmax_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmax = val;
             }
-            else
-            {
-                Xmax_textBox.ForeColor = Color.Red;
-            }
+            Xmax_textBox.ForeColor = Color.Red;
         }
 
         private void Ymin_textBox_TextChanged(object sender, EventArgs e)
@@ -1222,13 +1228,14 @@ namespace LitePlacer
             CommasToPoints(Ymin_textBox);
             if (double.TryParse(Ymin_textBox.Text, out val))
             {
-                Ymin_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymin = val;
+                if (val > 0.0)
+                {
+                    Ymin_textBox.ForeColor = Color.Black;
+                    VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymin = val;
+                    return;
+                }
             }
-            else
-            {
-                Ymin_textBox.ForeColor = Color.Red;
-            }
+            Ymin_textBox.ForeColor = Color.Red;
         }
 
         private void Ymax_textBox_TextChanged(object sender, EventArgs e)
@@ -1237,14 +1244,16 @@ namespace LitePlacer
             CommasToPoints(Ymax_textBox);
             if (double.TryParse(Ymax_textBox.Text, out val))
             {
-                Ymax_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymax = val;
+                if (val > 0.0)
+                {
+                    Ymax_textBox.ForeColor = Color.Black;
+                    VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymax = val;
+                    return;
+                }
             }
-            else
-            {
-                Ymax_textBox.ForeColor = Color.Red;
-            }
+            Ymax_textBox.ForeColor = Color.Red;
         }
+
 
         private void XmaxDistance_textBox_TextChanged(object sender, EventArgs e)
         {
@@ -1252,18 +1261,21 @@ namespace LitePlacer
             CommasToPoints(XmaxDistance_textBox);
             if (double.TryParse(XmaxDistance_textBox.Text, out val))
             {
-                if (ChangeYwithX)
+                if (val > 0.0)
                 {
-                    YmaxDistance_textBox.Text = XmaxDistance_textBox.Text;
+                    if (ChangeYwithX)
+                    {
+                        YmaxDistance_textBox.Text = XmaxDistance_textBox.Text;
+                    }
+                    XmaxDistance_textBox.ForeColor = Color.Black;
+                    VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.XUniqueDistance = val;
+                    return;
                 }
-                XmaxDistance_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.XUniqueDistance = val;
             }
-            else
-            {
-                XmaxDistance_textBox.ForeColor = Color.Red;
-            }
+            XmaxDistance_textBox.ForeColor = Color.Red;
         }
+
+
 
         private void YmaxDistance_textBox_TextChanged(object sender, EventArgs e)
         {
@@ -1271,17 +1283,17 @@ namespace LitePlacer
             CommasToPoints(YmaxDistance_textBox);
             if (double.TryParse(YmaxDistance_textBox.Text, out val))
             {
-                YmaxDistance_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YUniqueDistance = val;
+                if (val > 0.0)
+                {
+                    YmaxDistance_textBox.ForeColor = Color.Black;
+                    VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YUniqueDistance = val;
+                    return;
+                }
             }
-            else
-            {
-                YmaxDistance_textBox.ForeColor = Color.Red;
-            }
+            YmaxDistance_textBox.ForeColor = Color.Red;
         }
         #endregion search, size and distance
         // =====================================================================================
-
     }
 
 }

@@ -7284,11 +7284,11 @@
             // 
             this.FunctionExplanation_textBox.BackColor = System.Drawing.SystemColors.Window;
             this.FunctionExplanation_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.FunctionExplanation_textBox.Location = new System.Drawing.Point(1068, 281);
+            this.FunctionExplanation_textBox.Location = new System.Drawing.Point(1032, 279);
             this.FunctionExplanation_textBox.Multiline = true;
             this.FunctionExplanation_textBox.Name = "FunctionExplanation_textBox";
             this.FunctionExplanation_textBox.ReadOnly = true;
-            this.FunctionExplanation_textBox.Size = new System.Drawing.Size(171, 127);
+            this.FunctionExplanation_textBox.Size = new System.Drawing.Size(198, 127);
             this.FunctionExplanation_textBox.TabIndex = 265;
             // 
             // DrawDashedCross_checkBox
@@ -7582,7 +7582,7 @@
             // 
             // B_numericUpDown
             // 
-            this.B_numericUpDown.Location = new System.Drawing.Point(1001, 466);
+            this.B_numericUpDown.Location = new System.Drawing.Point(965, 464);
             this.B_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -7601,7 +7601,7 @@
             // 
             // G_numericUpDown
             // 
-            this.G_numericUpDown.Location = new System.Drawing.Point(1001, 427);
+            this.G_numericUpDown.Location = new System.Drawing.Point(965, 425);
             this.G_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -7630,7 +7630,7 @@
             // 
             // R_numericUpDown
             // 
-            this.R_numericUpDown.Location = new System.Drawing.Point(1001, 388);
+            this.R_numericUpDown.Location = new System.Drawing.Point(965, 386);
             this.R_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -7659,7 +7659,7 @@
             // RGBParameter_label
             // 
             this.RGBParameter_label.AutoSize = true;
-            this.RGBParameter_label.Location = new System.Drawing.Point(998, 359);
+            this.RGBParameter_label.Location = new System.Drawing.Point(962, 357);
             this.RGBParameter_label.Name = "RGBParameter_label";
             this.RGBParameter_label.Size = new System.Drawing.Size(13, 13);
             this.RGBParameter_label.TabIndex = 229;
@@ -7668,7 +7668,7 @@
             // 
             // IntParameter_numericUpDown
             // 
-            this.IntParameter_numericUpDown.Location = new System.Drawing.Point(1001, 281);
+            this.IntParameter_numericUpDown.Location = new System.Drawing.Point(965, 279);
             this.IntParameter_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -7688,7 +7688,7 @@
             // B_label
             // 
             this.B_label.AutoSize = true;
-            this.B_label.Location = new System.Drawing.Point(998, 450);
+            this.B_label.Location = new System.Drawing.Point(962, 448);
             this.B_label.Name = "B_label";
             this.B_label.Size = new System.Drawing.Size(14, 13);
             this.B_label.TabIndex = 226;
@@ -7698,7 +7698,7 @@
             // G_label
             // 
             this.G_label.AutoSize = true;
-            this.G_label.Location = new System.Drawing.Point(998, 411);
+            this.G_label.Location = new System.Drawing.Point(962, 409);
             this.G_label.Name = "G_label";
             this.G_label.Size = new System.Drawing.Size(15, 13);
             this.G_label.TabIndex = 225;
@@ -7708,7 +7708,7 @@
             // R_label
             // 
             this.R_label.AutoSize = true;
-            this.R_label.Location = new System.Drawing.Point(998, 372);
+            this.R_label.Location = new System.Drawing.Point(962, 370);
             this.R_label.Name = "R_label";
             this.R_label.Size = new System.Drawing.Size(15, 13);
             this.R_label.TabIndex = 224;
@@ -7718,7 +7718,7 @@
             // DoubleParameter_label
             // 
             this.DoubleParameter_label.AutoSize = true;
-            this.DoubleParameter_label.Location = new System.Drawing.Point(998, 310);
+            this.DoubleParameter_label.Location = new System.Drawing.Point(962, 308);
             this.DoubleParameter_label.Name = "DoubleParameter_label";
             this.DoubleParameter_label.Size = new System.Drawing.Size(13, 13);
             this.DoubleParameter_label.TabIndex = 223;
@@ -7727,7 +7727,7 @@
             // 
             // DoubleParameter_textBox
             // 
-            this.DoubleParameter_textBox.Location = new System.Drawing.Point(998, 326);
+            this.DoubleParameter_textBox.Location = new System.Drawing.Point(962, 324);
             this.DoubleParameter_textBox.Name = "DoubleParameter_textBox";
             this.DoubleParameter_textBox.Size = new System.Drawing.Size(48, 20);
             this.DoubleParameter_textBox.TabIndex = 222;
@@ -7737,7 +7737,7 @@
             // IntParameter_label
             // 
             this.IntParameter_label.AutoSize = true;
-            this.IntParameter_label.Location = new System.Drawing.Point(998, 265);
+            this.IntParameter_label.Location = new System.Drawing.Point(962, 263);
             this.IntParameter_label.Name = "IntParameter_label";
             this.IntParameter_label.Size = new System.Drawing.Size(13, 13);
             this.IntParameter_label.TabIndex = 221;
@@ -7748,7 +7748,7 @@
             // 
             this.label137.AutoSize = true;
             this.label137.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label137.Location = new System.Drawing.Point(995, 244);
+            this.label137.Location = new System.Drawing.Point(959, 242);
             this.label137.Name = "label137";
             this.label137.Size = new System.Drawing.Size(107, 13);
             this.label137.TabIndex = 220;
@@ -7762,11 +7762,12 @@
             this.dataGridViewComboBoxColumn1,
             this.dataGridViewCheckBoxColumn1});
             this.Functions_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Functions_dataGridView.Location = new System.Drawing.Point(739, 260);
+            this.Functions_dataGridView.Location = new System.Drawing.Point(742, 260);
             this.Functions_dataGridView.MultiSelect = false;
             this.Functions_dataGridView.Name = "Functions_dataGridView";
+            this.Functions_dataGridView.RowHeadersVisible = false;
             this.Functions_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Functions_dataGridView.Size = new System.Drawing.Size(253, 226);
+            this.Functions_dataGridView.Size = new System.Drawing.Size(213, 226);
             this.Functions_dataGridView.TabIndex = 219;
             this.Functions_dataGridView.TabStop = false;
             this.Functions_dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Functions_dataGridView_CellValueChanged);
@@ -7776,12 +7777,14 @@
             // 
             // dataGridViewComboBoxColumn1
             // 
+            this.dataGridViewComboBoxColumn1.FillWeight = 43.2F;
             this.dataGridViewComboBoxColumn1.HeaderText = "Function";
             this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
             this.dataGridViewComboBoxColumn1.Width = 150;
             // 
             // dataGridViewCheckBoxColumn1
             // 
+            this.dataGridViewCheckBoxColumn1.FillWeight = 156.8F;
             this.dataGridViewCheckBoxColumn1.HeaderText = "Enabled";
             this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
             this.dataGridViewCheckBoxColumn1.Width = 60;
@@ -7908,7 +7911,7 @@
             // ColorHelp_label
             // 
             this.ColorHelp_label.AutoSize = true;
-            this.ColorHelp_label.Location = new System.Drawing.Point(1066, 450);
+            this.ColorHelp_label.Location = new System.Drawing.Point(1030, 448);
             this.ColorHelp_label.Name = "ColorHelp_label";
             this.ColorHelp_label.Size = new System.Drawing.Size(176, 13);
             this.ColorHelp_label.TabIndex = 206;
@@ -7918,7 +7921,7 @@
             // 
             // Color_Box
             // 
-            this.Color_Box.Location = new System.Drawing.Point(1069, 427);
+            this.Color_Box.Location = new System.Drawing.Point(1033, 425);
             this.Color_Box.Name = "Color_Box";
             this.Color_Box.ReadOnly = true;
             this.Color_Box.Size = new System.Drawing.Size(21, 20);
