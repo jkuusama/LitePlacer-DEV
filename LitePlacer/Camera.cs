@@ -2207,7 +2207,7 @@ namespace LitePlacer
             if ((!MeasurementParameters.SearchRounds) && (!MeasurementParameters.SearchRectangles)
                 && (!MeasurementParameters.SearchComponents))
             {
-                MainForm.DisplayText("Nothing to search for", KnownColor.Red, true);
+                MainForm.DisplayText("Nothing to search for. Check some of the \"Features to search for\" boxes.", KnownColor.Red, true);
                 return false;
             }
 
