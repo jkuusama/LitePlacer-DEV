@@ -314,6 +314,16 @@ namespace LitePlacer
             Alg.Name = NewName;
             VideoAlgorithms.AllAlgorithms.Add(Alg);
             Algorithm_comboBox.Items.Add(NewName);
+            // tapes grid
+            for (int i = 0; i < Tapes_dataGridView.RowCount; i++)
+            {
+                string OrgValue = Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString();
+                // rebuild the selection cell
+                DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                BuildAlgorithmsCombox(out c);
+                Tapes_dataGridView.Rows[i].Cells["Type_Column"] = c;
+                Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = OrgValue;
+            }
         }
 
         private void AddAlgorithm_button_Click(object sender, EventArgs e)
@@ -485,7 +495,7 @@ namespace LitePlacer
                 }
             }
 
-            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            for (int i = 0; i < Tapes_dataGridView.RowCount; i++)
             {
                 if (Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value != null)
                 {
@@ -497,7 +507,7 @@ namespace LitePlacer
                 }
             }
 
-            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            for (int i = 0; i < NozzlesParameters_dataGridView.RowCount; i++)
             {
                 if (NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value != null)
                 {
@@ -516,29 +526,38 @@ namespace LitePlacer
         // And if algorithm was in use and was deleted, we need to replace it with the (always existing) homing
         private void RemoveAlgorithmFromUse(string Alg)
         {
+            // Job data
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
-                if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value != null)
+                if (JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value != null)
                 {
-                    if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() == Alg)
+                    if (JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value.ToString() == Alg)
                     {
-                        JobData_GridView.Rows[i].Cells["GroupMethod"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
+                        JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                     }
                 }
             }
 
-            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            // Tapes grid
+            for (int i = 0; i < Tapes_dataGridView.RowCount; i++)
             {
-                if (Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value != null)
+                string OrgValue = Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString();
+                // rebuild the selection cell
+                DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                BuildAlgorithmsCombox(out c);
+                Tapes_dataGridView.Rows[i].Cells["Type_Column"] = c;
+                if (OrgValue == Alg)
                 {
-                    if (Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString() == Alg)
-                    {
-                        Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
-                    }
+                    Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
+                }
+                else
+                {
+                    Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = OrgValue;
                 }
             }
 
-            for (int i = 0; i < JobData_GridView.RowCount; i++)
+            // Nozzles
+            for (int i = 0; i < NozzlesParameters_dataGridView.RowCount; i++)
             {
                 if (NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value != null)
                 {
@@ -683,7 +702,7 @@ namespace LitePlacer
         public void BuildAlgorithmsCombox(out DataGridViewComboBoxCell Cout)
         {
             DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
-            for (int i = 1; i < VideoAlgorithms.AllAlgorithms.Count; i++)
+            for (int i = 0; i < VideoAlgorithms.AllAlgorithms.Count; i++)
             {
                 c.Items.Add(VideoAlgorithms.AllAlgorithms[i].Name);
             }
