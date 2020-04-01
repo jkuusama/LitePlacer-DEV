@@ -89,7 +89,7 @@ namespace LitePlacer
                 return MessageBox.Show(this, message, header, buttons);
            }
             return DialogResult.Cancel;
-        }
+       }
         public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
 
         // =================================================================================
@@ -1194,7 +1194,7 @@ namespace LitePlacer
                 else
                 {
                     // The algorithm didn't exist and didn't get created. Select homing
-                    Grid.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                    Grid.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                 }
             }
             Update_GridView(Grid);
@@ -5224,12 +5224,7 @@ namespace LitePlacer
                 {
                     // If not, build job data ourselves.
                     FillJobData_GridView();
-                    int FidRow;      // don't care of the result, just trying to find fids
-                    if (FindFiducials_m(out FidRow))
-                    {
-                        FillDefaultJobValues();
-                        FillFiducialComboBox(FidRow);
-                    }
+                    FillDefaultJobValues();
                     JobFileName_label.Text = "--";
                     JobFilePath_label.Text = "--";
                 }
@@ -5570,9 +5565,6 @@ namespace LitePlacer
                 JobData_GridView.Rows[Last].Cells["GroupMethod"].Value = Line[2];
                 if (Line[2] == "Fiducials")
                 {
-                    DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
-                    BuildAlgorithmsCombox(out c);
-                    JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"] = c;
                     // Does the saved algorithm stil exist?
                     string AlgName = Line[3];
                     if (VideoAlgorithms.AlgorithmExists(AlgName))
@@ -5582,7 +5574,7 @@ namespace LitePlacer
                     else
                     {
                         WarningMessage = WarningMessage + "Algorithm " + AlgName + " used on file does not exist.\n\r";
-                        JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                        JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = "--";
                     }
                 }
                 else
@@ -5657,9 +5649,8 @@ namespace LitePlacer
         {
             foreach (DataGridViewRow JobRow in JobData_GridView.Rows)
             {
-                if (JobRow.Cells["GroupMethod"].Value.ToString() == "?")
+                if (JobRow.Cells["GroupMethod"].Value.ToString() != "Fiducials")
                 {
-                    // it is not fiducials row
                     JobRow.Cells["GroupMethod"].Value = "Place Fast";
                     if (Setting.Nozzles_Enabled)
                     {
@@ -5747,11 +5738,6 @@ namespace LitePlacer
         {
             // TO DO: Error checking here
             FillJobData_GridView();
-            int FidRow;
-            if (FindFiducials_m(out FidRow))
-            {
-                FillFiducialComboBox(FidRow);
-            }
             JobFileName_label.Text = "--";
             JobFilePath_label.Text = "--";
 
@@ -5785,16 +5771,6 @@ namespace LitePlacer
         // =================================================================================
         // JobData editing
         // =================================================================================
-        private void FillFiducialComboBox(int RowIndex)
-        {
-            JobData_GridView.Rows[RowIndex].Cells["MethodParamAllComponents"].Value = null;
-            DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
-            BuildAlgorithmsCombox(out c);
-            JobData_GridView.Rows[RowIndex].Cells["MethodParamAllComponents"] = c;
-            JobData_GridView.Rows[RowIndex].Cells["MethodParamAllComponents"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
-        }
-
-
         private void JobData_GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             MakeJobDataDirty();
@@ -5821,13 +5797,11 @@ namespace LitePlacer
                     foreach (DataGridViewCell cell in JobData_GridView.SelectedCells)
                     {
                         JobData_GridView.Rows[cell.RowIndex].Cells["GroupMethod"].Value = SelectedMethod;
-                        JobData_GridView.Rows[cell.RowIndex].Cells["MethodParamAllComponents"].Value = null;
-                        DataGridViewTextBoxCell s = new DataGridViewTextBoxCell();
-                        s.Value = "--";
-                        JobData_GridView.Rows[cell.RowIndex].Cells["MethodParamAllComponents"] = s;
+                        JobData_GridView.Rows[cell.RowIndex].Cells["MethodParamAllComponents"].Value = "--";
                         if (SelectedMethod== "Fiducials")
                         {
-                            FillFiducialComboBox(cell.RowIndex);
+                            string FidAlg = SelectFiducialAlgorithm("--");
+                            JobData_GridView.Rows[cell.RowIndex].Cells["MethodParamAllComponents"].Value = FidAlg;
                         }
                     }
                 }
@@ -5858,10 +5832,14 @@ namespace LitePlacer
                         JobData_GridView.Rows[row].Cells["JobDataNozzle_Column"].Value = 
                             Tapes_dataGridView.Rows[TapeNo].Cells["Nozzle_Column"].Value.ToString();
                     }
-                    Update_GridView(JobData_GridView);
-                    return;
+                }
+                if (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Fiducials")
+                {
+                    JobData_GridView.Rows[row].Cells["MethodParamAllComponents"].Value = 
+                        SelectFiducialAlgorithm(JobData_GridView.Rows[row].Cells["MethodParamAllComponents"].Value.ToString());
                 }
             }
+            Update_GridView(JobData_GridView);
         }
 
         // If components are edited, update count automatically
@@ -5880,6 +5858,16 @@ namespace LitePlacer
             }
         }
 
+        public string SelectFiducialAlgorithm_FormResult = "--";
+
+        private string SelectFiducialAlgorithm(string IntialValue)
+        {
+            SelectFiducialAlgorithm_FormResult = IntialValue;
+            SelectFiducialAlgorithm_Form SelectForm = new SelectFiducialAlgorithm_Form(this);
+            SelectForm.StartPosition = FormStartPosition.CenterParent;
+            SelectForm.ShowDialog(this);
+            return SelectFiducialAlgorithm_FormResult;
+        }
 
         // =================================================================================
         // Do someting to a group of components:
@@ -8639,6 +8627,7 @@ namespace LitePlacer
             PanelizeForm PanelizeDialog = new PanelizeForm(this);
             PanelizeDialog.CadData = CadData_GridView;
             PanelizeDialog.JobData = JobData_GridView;
+            PanelizeDialog.StartPosition = FormStartPosition.CenterParent;
             PanelizeDialog.ShowDialog(this);
             if (PanelizeDialog.OK == true)
             {
@@ -9549,7 +9538,7 @@ namespace LitePlacer
             DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
             BuildAlgorithmsCombox(out c);
             Tapes_dataGridView.Rows[index].Cells["Type_Column"] = c;
-            Tapes_dataGridView.Rows[index].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+            Tapes_dataGridView.Rows[index].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
             // Tapes_dataGridView.Rows[index].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
             // NextPart_Column tells the part number of next part. 
             // NextX, NextY tell the approximate hole location for the next part. Incremented when a part is picked up.

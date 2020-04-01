@@ -451,6 +451,10 @@ namespace LitePlacer
 
         public void ClearDisplayFunctionsList()
         {
+            if (DisplayFunctions.Count == 0)
+            {
+                return;
+            }
             // Stop video
             bool pause = PauseProcessing;
             int tries = 0;

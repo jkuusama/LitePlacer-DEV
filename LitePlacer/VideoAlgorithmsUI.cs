@@ -337,6 +337,11 @@ namespace LitePlacer
                 DisplayText("Remove algorithm, algorithm not found!");
                 return;
             }
+            if (pos == 0)
+            {
+                DisplayText("Homing cannot be removed.");
+                return;
+            }
             bool AlgInUse = AlgorithmUsed(Alg);
             if (AlgInUse)
             {
@@ -374,7 +379,7 @@ namespace LitePlacer
             DisplayText("Duplicate algorithm " + VideoAlgorithms.AllAlgorithms[loc].Name);
             VideoAlgorithmsCollection.FullAlgorithmDescription Alg =
                 DeepClone<VideoAlgorithmsCollection.FullAlgorithmDescription>(VideoAlgorithms.AllAlgorithms[loc]);
-            Alg.Name = VideoAlgorithms.AllAlgorithms[loc].Name + "(duplicate)";
+            Alg.Name = VideoAlgorithms.AllAlgorithms[loc].Name + " (duplicate)";
             VideoAlgorithms.AllAlgorithms.Add(Alg);
             Algorithm_comboBox.Items.Add(Alg.Name);
             Algorithm_comboBox.SelectedIndex = Algorithm_comboBox.Items.Count - 1;
@@ -415,14 +420,7 @@ namespace LitePlacer
             {
                 if (row.Cells["GroupMethod"].Value.ToString() == "Fiducials")
                 {
-                    if (row.Cells["MethodParamAllComponents"].Value.ToString() == OldName)
-                    {
-                        row.Cells["MethodParamAllComponents"].Value = null;
-                        DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
-                        BuildAlgorithmsCombox(out c);
-                        row.Cells["MethodParamAllComponents"] = c;
-                        row.Cells["MethodParamAllComponents"].Value = NewName;
-                    }
+                    row.Cells["MethodParamAllComponents"].Value = NewName;
                 }
             }
             // Tapes data table
@@ -474,13 +472,15 @@ namespace LitePlacer
         // Check if Algorithm is used somewhere
         private bool AlgorithmUsed(string Alg)
         {
+            bool ret = false;
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
-                if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value != null)
+                if (JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value != null)
                 {
-                    if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() == Alg)
+                    if (JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value.ToString() == Alg)
                     {
-                        return true;
+                        DisplayText("Algorithm \"" + Alg + "\" used in Job data, row " + (i+1).ToString());
+                        ret = true;
                     }
                 }
             }
@@ -491,7 +491,8 @@ namespace LitePlacer
                 {
                     if (Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString() == Alg)
                     {
-                        return true;
+                        DisplayText("Algorithm \"" + Alg + "\" used in Tapes data, row " + (i + 1).ToString());
+                        ret = true;
                     }
                 }
             }
@@ -502,12 +503,13 @@ namespace LitePlacer
                 {
                     if (NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value.ToString() == Alg)
                     {
-                        return true;
+                        DisplayText("Algorithm \"" + Alg + "\" used in Nozzles setup, row " + (i + 1).ToString());
+                        ret = true;
                     }
 
                 }
             }
-            return false;
+            return ret;
         }
 
         // =====================================================================================
@@ -520,7 +522,7 @@ namespace LitePlacer
                 {
                     if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() == Alg)
                     {
-                        JobData_GridView.Rows[i].Cells["GroupMethod"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                        JobData_GridView.Rows[i].Cells["GroupMethod"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                     }
                 }
             }
@@ -531,7 +533,7 @@ namespace LitePlacer
                 {
                     if (Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value.ToString() == Alg)
                     {
-                        Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                        Tapes_dataGridView.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                     }
                 }
             }
@@ -542,7 +544,7 @@ namespace LitePlacer
                 {
                     if (NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value.ToString() == Alg)
                     {
-                        NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value = VideoAlgorithms.AllAlgorithms[1].Name;
+                        NozzlesParameters_dataGridView.Rows[i].Cells["VisionAlgorithm_column"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                     }
 
                 }
