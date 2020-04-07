@@ -30,7 +30,7 @@ namespace LitePlacer
 
         public bool CheckIdentity()
         {
-            string resp = GetResponse_m("M115");
+            string resp = GetResponse_m("M115", 200, false);
             if (resp.Contains("Duet 3"))
             {
                 MainForm.DisplayText("Duet 3 board found.");
@@ -112,19 +112,25 @@ namespace LitePlacer
         // ===================================================================
         // GetResponse
         // Writes a command, returns a response. Failed write returns empty response.
-        public string GetResponse_m(string cmd, int Timeout = 250)
+        public string GetResponse_m(string cmd, int Timeout = 250, bool report = true)
         {
             string line;
 
             if (!Com.IsOpen)
             {
-                MainForm.DisplayText("###" + cmd + " discarded, com not open");
+                if (report)
+                {
+                    MainForm.DisplayText("###" + cmd + " discarded, com not open");
+                }
                 ClearReceivedLine();
                 return "";
             }
             if (Cnc.ErrorState)
             {
-                MainForm.DisplayText("###" + cmd + " discarded, error state on");
+                if (report)
+                {
+                    MainForm.DisplayText("###" + cmd + " discarded, error state on");
+                }
                 ClearReceivedLine();
                 return "";
             }
@@ -140,10 +146,13 @@ namespace LitePlacer
                 i++;
                 if (i > Timeout)
                 {
-                    MainForm.ShowMessageBox(
-                        "Duet3.Write_m: Timeout on command " + cmd,
-                        "Timeout",
-                        MessageBoxButtons.OK);
+                    if (report)
+                    {
+                        MainForm.ShowMessageBox(
+                            "Duet3.Write_m: Timeout on command " + cmd,
+                            "Timeout",
+                            MessageBoxButtons.OK);
+                    }
                     ClearReceivedLine();
                     return "";
                 }

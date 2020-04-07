@@ -32,7 +32,7 @@ namespace LitePlacer
         public bool CheckIdentity()
         {
             string resp;
-            resp= ReadLineDirectly("M115");
+            resp= ReadLineDirectly("M115", false);
             if (resp.Contains("{\"r\":{}"))  
             {
                 MainForm.DisplayText("TinyG board found.");
@@ -93,18 +93,24 @@ namespace LitePlacer
             BlockingWriteDone = true;
         }
 
-        public bool Write_m(string cmd, int Timeout=250)
+        public bool Write_m(string cmd, int Timeout= 250, bool report = true)
         {
             if (!Com.IsOpen)
             {
-                MainForm.DisplayText("### " + cmd + " discarded, com not open (readyevent set)");
+                if (report)
+                {
+                    MainForm.DisplayText("### " + cmd + " discarded, com not open (readyevent set)");
+                }
                 ReadyEvent.Set();
                 Cnc.Connected = false;
                 return false;
             }
             if (Cnc.ErrorState)
             {
-                MainForm.DisplayText("### " + cmd + " discarded, error state on (readyevent set)");
+                if (report)
+                {
+                    MainForm.DisplayText("### " + cmd + " discarded, error state on (readyevent set)");
+                }
                 ReadyEvent.Set();
                 return false;
             }
@@ -125,10 +131,13 @@ namespace LitePlacer
                 if (i > Timeout)
                 {
                     ReadyEvent.Set();  // terminates the CNC_BlockingWrite_thread
-                    MainForm.ShowMessageBox(
-                        "TinyG.Write_m: Timeout on command " + cmd,
-                        "Timeout",
-                        MessageBoxButtons.OK);
+                    if (report)
+                    {
+                        MainForm.ShowMessageBox(
+                            "TinyG.Write_m: Timeout on command " + cmd,
+                            "Timeout",
+                            MessageBoxButtons.OK);
+                    }
                     BlockingWriteDone = true;
                     return false;
                 }
@@ -570,10 +579,10 @@ namespace LitePlacer
         private bool LineWanted = false;
         private string LineOut;
 
-        public string ReadLineDirectly(string command)
+        public string ReadLineDirectly(string command, bool report=true)
         {
             LineWanted = true;
-            if (Write_m(command, 500))
+            if (Write_m(command, 250, report))
             {
                 return LineOut;
             }
