@@ -706,6 +706,7 @@
             this.label150 = new System.Windows.Forms.Label();
             this.NozzlesParameters_dataGridView = new System.Windows.Forms.DataGridView();
             this.NozzleNumber_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NozzleCalibrated_Column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.VisionAlgorithm_column = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.NozzleOverrideSize_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.NozzleMinSize_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -8383,7 +8384,7 @@
             // label150
             // 
             this.label150.AutoSize = true;
-            this.label150.Location = new System.Drawing.Point(621, 301);
+            this.label150.Location = new System.Drawing.Point(561, 296);
             this.label150.Name = "label150";
             this.label150.Size = new System.Drawing.Size(94, 13);
             this.label150.TabIndex = 37;
@@ -8398,12 +8399,13 @@
             this.NozzlesParameters_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.NozzlesParameters_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NozzleNumber_column,
+            this.NozzleCalibrated_Column,
             this.VisionAlgorithm_column,
             this.NozzleOverrideSize_column,
             this.NozzleMinSize_column,
             this.NozzleMaxSize_column});
             this.NozzlesParameters_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.NozzlesParameters_dataGridView.Location = new System.Drawing.Point(624, 320);
+            this.NozzlesParameters_dataGridView.Location = new System.Drawing.Point(564, 320);
             this.NozzlesParameters_dataGridView.Name = "NozzlesParameters_dataGridView";
             this.NozzlesParameters_dataGridView.RowHeadersVisible = false;
             this.NozzlesParameters_dataGridView.RowHeadersWidth = 40;
@@ -8411,7 +8413,7 @@
             this.NozzlesParameters_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.NozzlesParameters_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.NozzlesParameters_dataGridView.ShowEditingIcon = false;
-            this.NozzlesParameters_dataGridView.Size = new System.Drawing.Size(324, 78);
+            this.NozzlesParameters_dataGridView.Size = new System.Drawing.Size(384, 78);
             this.NozzlesParameters_dataGridView.TabIndex = 36;
             // 
             // NozzleNumber_column
@@ -8423,6 +8425,12 @@
             this.NozzleNumber_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.NozzleNumber_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.NozzleNumber_column.Width = 40;
+            // 
+            // NozzleCalibrated_Column
+            // 
+            this.NozzleCalibrated_Column.HeaderText = "Calibrated";
+            this.NozzleCalibrated_Column.Name = "NozzleCalibrated_Column";
+            this.NozzleCalibrated_Column.Width = 60;
             // 
             // VisionAlgorithm_column
             // 
@@ -8753,7 +8761,7 @@
             // 
             // GetUnloadCoordinates_button
             // 
-            this.GetUnloadCoordinates_button.Location = new System.Drawing.Point(501, 291);
+            this.GetUnloadCoordinates_button.Location = new System.Drawing.Point(435, 291);
             this.GetUnloadCoordinates_button.Name = "GetUnloadCoordinates_button";
             this.GetUnloadCoordinates_button.Size = new System.Drawing.Size(108, 23);
             this.GetUnloadCoordinates_button.TabIndex = 7;
@@ -8802,7 +8810,7 @@
             this.NozzlesUnload_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.NozzlesUnload_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.NozzlesUnload_dataGridView.ShowEditingIcon = false;
-            this.NozzlesUnload_dataGridView.Size = new System.Drawing.Size(603, 249);
+            this.NozzlesUnload_dataGridView.Size = new System.Drawing.Size(537, 249);
             this.NozzlesUnload_dataGridView.TabIndex = 4;
             this.NozzlesUnload_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.NozzlesUnload_dataGridView_CellMouseDown);
             this.NozzlesUnload_dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.NozzlesUnload_dataGridView_CellMouseEnter);
@@ -9845,7 +9853,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn52;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn53;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn54;
-        private System.Windows.Forms.DataGridView NozzlesParameters_dataGridView;
         private System.Windows.Forms.Label label150;
         private System.Windows.Forms.Label label151;
         private System.Windows.Forms.Button CalData_button;
@@ -10023,11 +10030,6 @@
         private System.Windows.Forms.TextBox MoveTimeout_textBox;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.TextBox SlackCompensationDistance_textBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleNumber_column;
-        private System.Windows.Forms.DataGridViewComboBoxColumn VisionAlgorithm_column;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleOverrideSize_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
         private System.Windows.Forms.CheckBox VideoProcessingZguard_checkBox;
         private System.Windows.Forms.Label NozzleOffset_label;
         private System.Windows.Forms.Label label101;
@@ -10186,6 +10188,13 @@
         private System.Windows.Forms.Label label225;
         private System.Windows.Forms.Label label67;
         private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleNumber_column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleCalibrated_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn VisionAlgorithm_column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleOverrideSize_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
+        public System.Windows.Forms.DataGridView NozzlesParameters_dataGridView;
     }
 }
 

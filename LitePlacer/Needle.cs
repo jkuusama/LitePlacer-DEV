@@ -214,6 +214,18 @@ namespace LitePlacer
         }
 
 
+        // =================================================================================
+        public void SetCalibrated(bool val)
+        {
+            Calibrated[MainForm.Setting.Nozzles_current] = val;
+            MainForm.NozzlesParameters_dataGridView.Rows[MainForm.Setting.Nozzles_current - 1].Cells["NozzleCalibrated_Column"].Value = val;
+            MainForm.Update_GridView(MainForm.NozzlesParameters_dataGridView);
+            if (!val)
+            {
+                CalibrationData[MainForm.Setting.Nozzles_current].Clear();
+            }
+        }
+
         public bool Calibrate()
         {
             if (!Cam.IsRunning())
@@ -222,9 +234,7 @@ namespace LitePlacer
                     + "Using old data, if it exsists.", System.Drawing.KnownColor.DarkRed, true);
                 return false;
             }
-
-            Calibrated[MainForm.Setting.Nozzles_current] = false;
-            CalibrationData[MainForm.Setting.Nozzles_current].Clear();
+            SetCalibrated(false);
             // I goes in .1 of degrees. Makes sense to have the increase so, that multiplies of 45 are hit
             for (int i = 0; i <= 3600; i = i + 225)
             {
@@ -254,7 +264,7 @@ namespace LitePlacer
                 MainForm.DisplayText("A: " + Point.Angle.ToString("0.000") + ", X: " + Point.X.ToString("0.000") + ", Y: " + Point.Y.ToString("0.000"));
                 CalibrationData[MainForm.Setting.Nozzles_current].Add(Point);
             }
-            Calibrated[MainForm.Setting.Nozzles_current] = true;
+            SetCalibrated(true);
             return true;
         }
 

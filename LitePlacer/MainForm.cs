@@ -54,7 +54,7 @@ namespace LitePlacer
         public CNC Cnc { get; set; }
         Camera DownCamera;
         Camera UpCamera;
-        NozzleClass Nozzle;
+        NozzleCalibrationClass Nozzle;
         TapesClass Tapes;
         public MySettings Setting { get; set; }
         public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
@@ -101,7 +101,7 @@ namespace LitePlacer
         public const string VIDEOALGORITHMS_DATAFILE = "LitePlacer.VideoAlgorithms";
         public const string APPLICATIONSETTINGS_DATAFILE = "LitePlacer.Appsettings";
         public const string TAPES_DATAFILE = "LitePlacer.TapesData_v2";
-        public const string NOZZLES_CALIBRATION_DATAFILE = "LitePlacer.NozzlesCalibrationData_v2";
+        public const string NOZZLES_CALIBRATION_DATAFILE = "LitePlacer.NozzlesCalibrationData_v3";
         public const string NOZZLES_LOAD_DATAFILE = "LitePlacer.NozzlesLoadData_v2";
         public const string NOZZLES_UNLOAD_DATAFILE = "LitePlacer.NozzlesUnLoadData_v2";
         public const string NOZZLES_VISIONPARAMETERS_DATAFILE = "LitePlacer.NozzlesVisionParameters_v21";
@@ -147,7 +147,7 @@ namespace LitePlacer
             CNC.SquareCorrection = Setting.CNC_SquareCorrection;
             DownCamera = new Camera(this);
             UpCamera = new Camera(this);
-            Nozzle = new NozzleClass(UpCamera, Cnc, this);
+            Nozzle = new NozzleCalibrationClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Nozzle, DownCamera, Cnc, this);
             BoardSettings.MainForm = this;
 
@@ -324,9 +324,6 @@ namespace LitePlacer
 
             // ======== Nozzles Setup tab:
 
-            Nozzle.LoadCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
-            ContextmenuLoadNozzle = Setting.Nozzles_default;
-            ContextmenuUnloadNozzle = Setting.Nozzles_default;
             Nozzles_initialize();   // must be after Nozzle.LoadCalibration
 
             // ======== Setup operations that can cause visible reaction:
@@ -388,7 +385,7 @@ namespace LitePlacer
                 res = SaveDataGrid(path + NOZZLES_VISIONPARAMETERS_DATAFILE, NozzlesParameters_dataGridView);
                 OK = OK && res;
 
-                res = Nozzle.SaveCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
+                res = Nozzle.SaveNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
                 OK = OK && res;
 
                 res = SaveVideoAlgorithms(path + VIDEOALGORITHMS_DATAFILE, VideoAlgorithms);
@@ -6799,7 +6796,9 @@ namespace LitePlacer
             Cnc.MotorPowerOn();
             Zlim_checkBox.Checked = true;
             Zhome_checkBox.Checked = true;
-            Nozzle.Calibrated[Setting.Nozzles_current] = false;
+            Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current-1].Calibrated = false;
+            NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells["NozzleCalibrated_Column"].Value = false;
+            Update_GridView(NozzlesParameters_dataGridView);
             ValidMeasurement_checkBox.Checked = false;
             Cnc.EnableZswitches();
             if (!MechanicalHoming_m())
@@ -10558,6 +10557,8 @@ namespace LitePlacer
  
         private void Nozzles_initialize()
         {
+            ContextmenuLoadNozzle = Setting.Nozzles_default;
+            ContextmenuUnloadNozzle = Setting.Nozzles_default;
             DisplayText("Loading nozzles data");
             // build tables
             BuildNozzleTable(NozzlesLoad_dataGridView);
@@ -10568,7 +10569,7 @@ namespace LitePlacer
             LoadDataGrid(path + NOZZLES_LOAD_DATAFILE, NozzlesLoad_dataGridView, DataTableType.Nozzles);
             LoadDataGrid(path + NOZZLES_UNLOAD_DATAFILE, NozzlesUnload_dataGridView, DataTableType.Nozzles);
             LoadDataGrid(path + NOZZLES_VISIONPARAMETERS_DATAFILE, NozzlesParameters_dataGridView, DataTableType.Nozzles);
-            Nozzle.LoadCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
+            Nozzle.LoadNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
             AdjustNozzleDataSizes();
             FillNozzlesParameters_dataGridView();
         }
@@ -10579,12 +10580,9 @@ namespace LitePlacer
             int UnloadCount = NozzlesUnload_dataGridView.Rows.Count;
             int LoadCount = NozzlesLoad_dataGridView.Rows.Count;
             int ParameterCount = NozzlesParameters_dataGridView.Rows.Count;
-            int CalibrationCount = Nozzle.CalibrationData.Count;
-            int CalibratedCount = Nozzle.Calibrated.Count;
+            int CalibrationCount = Nozzle.NozzleDataAllNozzles.Count;
             bool CountOk = (UnloadCount == Setting.Nozzles_count) && (LoadCount == Setting.Nozzles_count) &&
-                (ParameterCount == Setting.Nozzles_count) && (CalibrationCount == Setting.Nozzles_count) &&
-                (CalibratedCount == Setting.Nozzles_count);
-
+                (ParameterCount == Setting.Nozzles_count) && (CalibrationCount == Setting.Nozzles_count);
             if (CountOk)
             {
                 return;
@@ -10598,7 +10596,6 @@ namespace LitePlacer
                 "Count of unload moves = " + UnloadCount.ToString() + "\n\r" +
                 "Count of vision parameters = " + ParameterCount.ToString() + "\n\r" +
                 "Count of calibration data = " + CalibrationCount.ToString() + "\n\r" +
-                "Count of calibration validity data = " + CalibratedCount.ToString() + "\n\r" + "\n\r" +
                 "If you didn't excpect this:" + "\n\r" +
                 "Before clicking OK, take a backup copy of your LitePlacer directory!" + "\n\r" +
                 "After clicking OK, the data size is adjusted to stored nozzle count," + "\n\r" +
@@ -10613,7 +10610,7 @@ namespace LitePlacer
             AdjustNozzleGrid(NozzlesUnload_dataGridView);
             AdjustNozzleGrid(NozzlesLoad_dataGridView);
             AdjustNozzleGrid(NozzlesParameters_dataGridView);
-            AdjustCalibrationCount();
+            Nozzle.AdjustNozzleCalibrationDataCount();
         }
 
         private void AdjustNozzleGrid(DataGridView Grid)
@@ -10622,27 +10619,11 @@ namespace LitePlacer
             while (Grid.Rows.Count < Setting.Nozzles_count)
             {
                 Grid.Rows.Insert(Grid.Rows.Count);
-                Nozzle.Add();
             }
             // or remove
             if (Grid.Rows.Count > Setting.Nozzles_count)
             {
                 Grid.RowCount = Setting.Nozzles_count;
-            }
-        }
-
-        private void AdjustCalibrationCount()
-        {
-            // Note: This doesn't catch if CalibrationData and Calibrated are different sizes.
-            // add
-            while (Nozzle.CalibrationData.Count < Setting.Nozzles_count)
-            {
-                Nozzle.Add();
-            }
-            // or remove
-            while (Nozzle.CalibrationData.Count > Setting.Nozzles_count)
-            {
-                Nozzle.Remove();
             }
         }
 
@@ -10750,7 +10731,7 @@ namespace LitePlacer
             SaveDataGrid(path + NOZZLES_LOAD_DATAFILE, NozzlesLoad_dataGridView);
             SaveDataGrid(path + NOZZLES_UNLOAD_DATAFILE, NozzlesUnload_dataGridView);
             SaveDataGrid(path + NOZZLES_VISIONPARAMETERS_DATAFILE, NozzlesParameters_dataGridView);
-            Nozzle.SaveCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
+            Nozzle.SaveNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
         }
 
         private bool Nozzles_Stop = false;
@@ -10938,7 +10919,7 @@ namespace LitePlacer
             NozzlesUnload_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString(CultureInfo.InvariantCulture);
             NozzlesParameters_dataGridView.Rows[RowNo - 1].Cells[Nozzledata_NozzleNoColumn].Value = RowNo.ToString(CultureInfo.InvariantCulture);
             ResizeNozzleTables();
-            Nozzle.Add();
+            Nozzle.AdjustNozzleCalibrationDataCount();
         }
 
         private void RemoveNozzle()
@@ -10947,7 +10928,7 @@ namespace LitePlacer
             NozzlesUnload_dataGridView.Rows.RemoveAt(NozzlesUnload_dataGridView.Rows.Count - 1);
             NozzlesParameters_dataGridView.Rows.RemoveAt(NozzlesParameters_dataGridView.Rows.Count - 1);
             ResizeNozzleTables();
-            Nozzle.Remove();
+            Nozzle.AdjustNozzleCalibrationDataCount();
         }
 
 
@@ -11093,7 +11074,7 @@ namespace LitePlacer
             {
                 SelectCamera(DownCamera);
             }
-            List<NozzleClass.NozzlePoint> Points = Nozzle.CalibrationData[Setting.Nozzles_current];
+            NozzleCalibrationClass.CalibrationPointsList Points = Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current - 1].CalibrationPoints;
             if (result)
             {
                 for (int i = 0; i < Points.Count; i++)
@@ -11142,7 +11123,7 @@ namespace LitePlacer
                 }
             }
             string path = GetPath();
-            Nozzle.SaveCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
+            Nozzle.SaveNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
             for (int nozzle = 1; nozzle <= Setting.Nozzles_count; nozzle++)
             {
                 CheckCalibrationErrors(nozzle);
@@ -11152,24 +11133,24 @@ namespace LitePlacer
 
         private void CalData_button_Click(object sender, EventArgs e)
         {
-            DisplayText("Nozzles calibration data:");
-            for (int i = 1; i <= Setting.Nozzles_count; i++)
+            DisplayText("Nozzles calibration data:"); 
+            for (int i = 0; i < Setting.Nozzles_count; i++)
             {
-                if (Nozzle.Calibrated[i])
+                if (Nozzle.NozzleDataAllNozzles[i].Calibrated)
                 {
-                    DisplayText("Nozzle " + i.ToString(CultureInfo.InvariantCulture) + " is calibrated:");
+                    DisplayText("Nozzle " + (i + 1).ToString(CultureInfo.InvariantCulture) + " is calibrated:");
                 }
                 else
                 {
-                    DisplayText("Nozzle " + i.ToString(CultureInfo.InvariantCulture) + " is not calibrated:");
+                    DisplayText("Nozzle " + (i + 1).ToString(CultureInfo.InvariantCulture) + " is not calibrated:");
                 }
-                if (Nozzle.CalibrationData[i] == null)
+                if (Nozzle.NozzleDataAllNozzles[i].CalibrationPoints.Count == 0)
                 {
                     DisplayText("No calibration data");
                 }
                 else
                 {
-                    foreach (NozzleClass.NozzlePoint p in Nozzle.CalibrationData[i])
+                    foreach (NozzleCalibrationClass.NozzlePoint p in Nozzle.NozzleDataAllNozzles[i].CalibrationPoints)
                     {
                         DisplayText("A: " + p.Angle.ToString("0.000", CultureInfo.InvariantCulture)
                             + ", X: " + p.X.ToString("0.000", CultureInfo.InvariantCulture)
@@ -11177,12 +11158,20 @@ namespace LitePlacer
                     }
                 }
             }
-            DisplayText("Currently used:");
-            foreach (NozzleClass.NozzlePoint p in Nozzle.CalibrationData[Setting.Nozzles_current])
+            DisplayText("Currently used nozzle is " + Setting.Nozzles_current.ToString() + ":");
+            if (Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current].Calibrated)
             {
-                DisplayText("A: " + p.Angle.ToString("0.000", CultureInfo.InvariantCulture)
-                    + ", X: " + p.X.ToString("0.000", CultureInfo.InvariantCulture)
-                    + ", Y: " + p.Y.ToString("0.000", CultureInfo.InvariantCulture));
+                DisplayText("Not calibrated");
+            }
+            else
+            {
+                DisplayText("Calibration values:");
+                foreach (NozzleCalibrationClass.NozzlePoint p in Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current].CalibrationPoints)
+                {
+                    DisplayText("A: " + p.Angle.ToString("0.000", CultureInfo.InvariantCulture)
+                        + ", X: " + p.X.ToString("0.000", CultureInfo.InvariantCulture)
+                        + ", Y: " + p.Y.ToString("0.000", CultureInfo.InvariantCulture));
+                }
             }
         }
 
@@ -11202,7 +11191,7 @@ namespace LitePlacer
                 DisplayText("Bad data in warning treshold");
                 return;
             }
-            foreach (NozzleClass.NozzlePoint p in Nozzle.CalibrationData[Setting.Nozzles_current])
+            foreach (NozzleCalibrationClass.NozzlePoint p in Nozzle.NozzleDataAllNozzles[nozzle-1].CalibrationPoints)
             {
                 if ((Math.Abs(p.X) > Math.Abs(val)) || (Math.Abs(p.Y) > Math.Abs(val)))
                 {
@@ -12138,6 +12127,8 @@ namespace LitePlacer
             {
                 NoOfNozzles_UpDown.Value = Setting.Nozzles_maximum;
             }
+            Setting.Nozzles_count = (int)NoOfNozzles_UpDown.Value;
+            ForceNozzle_numericUpDown.Maximum = Setting.Nozzles_count;
             while (NoOfNozzles_UpDown.Value > NozzlesLoad_dataGridView.RowCount)
             {
                 AddNozzle();
@@ -12150,8 +12141,6 @@ namespace LitePlacer
                 }
             }
 
-            Setting.Nozzles_count = (int)NoOfNozzles_UpDown.Value;
-            ForceNozzle_numericUpDown.Maximum = Setting.Nozzles_count;
             if (Setting.Nozzles_count == 0)
             {
                 NozzleChangeEnable_checkBox.Checked = false;

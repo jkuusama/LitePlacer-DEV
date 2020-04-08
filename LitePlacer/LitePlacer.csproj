@@ -169,6 +169,7 @@
     <Compile Include="AskToCreate.Designer.cs">
       <DependentUpon>AskToCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Nozzle.cs" />
     <Compile Include="SelectFiducialAlgorithm_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,7 +188,6 @@
     <Compile Include="MethodSelectionForm.Designer.cs">
       <DependentUpon>MethodSelectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Needle.cs" />
     <Compile Include="PanelizeForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -13,12 +13,12 @@ namespace LitePlacer
 	class TapesClass
 	{
         private DataGridView Grid;
-        private NozzleClass Nozzle;
+        private NozzleCalibrationClass Nozzle;
 		private FormMain MainForm;
 		private Camera DownCamera;
 		private CNC Cnc;
 
-        public TapesClass(DataGridView grd, NozzleClass ndl, Camera cam, CNC c, FormMain MainF)
+        public TapesClass(DataGridView grd, NozzleCalibrationClass ndl, Camera cam, CNC c, FormMain MainF)
 		{
             Grid = grd;
 			Nozzle = ndl;
