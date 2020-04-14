@@ -3858,7 +3858,7 @@ namespace LitePlacer
                     NozzleOffsetMarkX = Cnc.CurrentX;
                     NozzleOffsetMarkY = Cnc.CurrentY;
                     CNC_Z_m(0);
-                    CNC_XYA_m(Cnc.CurrentX - 75.0, Cnc.CurrentY - 29.0, Cnc.CurrentA);
+                    CNC_XYA_m(Cnc.CurrentX - Setting.DownCam_NozzleOffsetX, Cnc.CurrentY - Setting.DownCam_NozzleOffsetY, Cnc.CurrentA);
                     DownCamera.DrawCross = true;
                     NozzleOffset_label.Text = "Jog camera above the same point, \n\rthen click \"Next\"";
                     break;
@@ -3875,6 +3875,7 @@ namespace LitePlacer
                         "Now, jog the Nozzle above the up camera,\n\rtake Nozzle down, jog it to the image center\n\rand set Up Camera location",
                         "Done here",
                         MessageBoxButtons.OK);
+                    UpCam_radioButton.Checked = true;
                     SelectCamera(UpCamera);
                     // SetNozzleMeasurement();
                     Offset2Method_button.Text = "Start";

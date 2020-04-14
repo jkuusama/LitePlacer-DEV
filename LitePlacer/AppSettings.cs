@@ -57,8 +57,8 @@ namespace LitePlacer
         public int DownCam_index { get; set; } = -1;
         public bool Downcam_InvertedHomeMark { get; set; } = false;
         public int DownCam_MeasurementDelay { get; set; } = 100;
-        public double DownCam_NozzleOffsetX { get; set; } = 75;
-        public double DownCam_NozzleOffsetY { get; set; } = 29;
+        public double DownCam_NozzleOffsetX { get; set; } = 84;
+        public double DownCam_NozzleOffsetY { get; set; } = 27;
         public System.Drawing.Color DownCam_SnapshotColor { get; set; } = System.Drawing.Color.White;
         public double DownCam_XmmPerPixel { get; set; } = 0.1;
         public double DownCam_YmmPerPixel { get; set; } = 0.1;
