@@ -10630,9 +10630,6 @@ namespace LitePlacer
         // ==========================================================================================================
         // tab page enter/leave
 
-        private bool NozzletabStore_slowXY = false;
-        private bool NozzletabStore_slowZ = false;
-        private bool NozzletabStore_slowA = false;
         private double NozzletabStore_XYspeed = 500.0;
         private double NozzletabStore_Zspeed = 500.0;
         private double NozzletabStore_Aspeed = 500.0;
@@ -10676,9 +10673,6 @@ namespace LitePlacer
             // For setup and testing, we want all operations (including jog and go button) to obey speed settings.
             // We don't want to disturb other operations, so we'll store the current state at page enter and restore at page leave.
             // store cnc speed settings
-            NozzletabStore_slowXY = Cnc.SlowXY;
-            NozzletabStore_slowZ = Cnc.SlowZ;
-            NozzletabStore_slowA = Cnc.SlowA;
             NozzletabStore_XYspeed = Cnc.NozzleSpeedXY;
             NozzletabStore_Zspeed = Cnc.NozzleSpeedZ;
             NozzletabStore_Aspeed = Cnc.NozzleSpeedA;
@@ -10707,9 +10701,9 @@ namespace LitePlacer
             // enable switches
             Cnc.EnableZswitches();
             // restore settings
-            Cnc.SlowXY = NozzletabStore_slowXY;
-            Cnc.SlowZ = NozzletabStore_slowZ;
-            Cnc.SlowA = NozzletabStore_slowA;
+            Cnc.SlowXY = false;
+            Cnc.SlowZ = false;
+            Cnc.SlowA = false;
             Cnc.NozzleSpeedXY = NozzletabStore_XYspeed;
             Cnc.NozzleSpeedZ = NozzletabStore_Zspeed;
             Cnc.NozzleSpeedA = NozzletabStore_Aspeed;
@@ -11159,14 +11153,14 @@ namespace LitePlacer
                 }
             }
             DisplayText("Currently used nozzle is " + Setting.Nozzles_current.ToString() + ":");
-            if (Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current].Calibrated)
+            if (Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current-1].Calibrated)
             {
                 DisplayText("Not calibrated");
             }
             else
             {
                 DisplayText("Calibration values:");
-                foreach (NozzleCalibrationClass.NozzlePoint p in Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current].CalibrationPoints)
+                foreach (NozzleCalibrationClass.NozzlePoint p in Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current-1].CalibrationPoints)
                 {
                     DisplayText("A: " + p.Angle.ToString("0.000", CultureInfo.InvariantCulture)
                         + ", X: " + p.X.ToString("0.000", CultureInfo.InvariantCulture)
