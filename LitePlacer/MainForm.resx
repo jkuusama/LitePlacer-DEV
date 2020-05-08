@@ -479,7 +479,7 @@ F6: Right         Alt:              10 mm
 F7: Back          Alt+Ctrl:     4 mm
 F8: Front         Shift:           1 mm
 F9: CCW         None:          0.1 mm
-F10: CW          Ctrl:             0.01 mm 
+F10: CW          Ctrl:             0.01 mm /0.05 deg.
 F11: Up
 F12: Down</value>
   </data>

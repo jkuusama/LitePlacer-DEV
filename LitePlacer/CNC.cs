@@ -1060,7 +1060,7 @@ namespace LitePlacer
         // Main A move command
         public bool A(double A)
         {
-            if (Math.Abs(A - CurrentA) < 0.01)
+            if (Math.Abs(A - CurrentA) < 0.005)
             {
                 MainForm.DisplayText(" -- zero A movement command --");
                 return true;   // already there
