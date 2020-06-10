@@ -11126,6 +11126,19 @@ namespace LitePlacer
             Cnc.SlackCompensation = false;
         }
 
+        private void CalibrateThis_button_Click(object sender, EventArgs e)
+        {
+            if (!CheckPositionConfidence()) return;
+
+            // We want to do moves to camera with slack compensation, if he user has it on
+            Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
+            CalibrateNozzle_m();
+            Cnc.SlackCompensation = false;
+
+            CheckCalibrationErrors(Setting.Nozzles_current);
+        }
+
+
         private void CalData_button_Click(object sender, EventArgs e)
         {
             DisplayText("Nozzles calibration data:"); 
@@ -11169,15 +11182,6 @@ namespace LitePlacer
                 }
             }
         }
-
-        private void CalibrateThis_button_Click(object sender, EventArgs e)
-        {
-            if (!CheckPositionConfidence()) return;
-
-            CalibrateNozzle_m();
-            CheckCalibrationErrors(Setting.Nozzles_current);
-        }
-
         private void CheckCalibrationErrors(int nozzle)
         {
             double val;
