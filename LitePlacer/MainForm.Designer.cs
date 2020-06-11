@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -596,6 +596,10 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.NoOfNozzlesOnVideoSetup_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label226 = new System.Windows.Forms.Label();
+            this.ChangeNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
             this.ZUp_button = new System.Windows.Forms.Button();
             this.ZDown_button = new System.Windows.Forms.Button();
             this.label149 = new System.Windows.Forms.Label();
@@ -792,6 +796,7 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.CalibrateNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -831,6 +836,8 @@
             this.RunJob_contextMenuStrip.SuspendLayout();
             this.tabControlPages.SuspendLayout();
             this.Algorithms_tabPage.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzlesOnVideoSetup_numericUpDown)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.G_numericUpDown)).BeginInit();
@@ -1439,13 +1446,13 @@
             this.SelectButtonColumn.HeaderText = "Select";
             this.SelectButtonColumn.Name = "SelectButtonColumn";
             this.SelectButtonColumn.Text = "Reset";
-            this.SelectButtonColumn.Width = 43;
+            this.SelectButtonColumn.Width = 41;
             // 
             // IdColumn
             // 
             this.IdColumn.HeaderText = "ID";
             this.IdColumn.Name = "IdColumn";
-            this.IdColumn.Width = 43;
+            this.IdColumn.Width = 41;
             // 
             // OrientationColumn
             // 
@@ -1458,7 +1465,7 @@
             this.OrientationColumn.Name = "OrientationColumn";
             this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.OrientationColumn.Width = 48;
+            this.OrientationColumn.Width = 46;
             // 
             // RotationColumn
             // 
@@ -1471,19 +1478,19 @@
             this.RotationColumn.Name = "RotationColumn";
             this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.RotationColumn.Width = 52;
+            this.RotationColumn.Width = 50;
             // 
             // NozzleColumn
             // 
             this.NozzleColumn.HeaderText = "Nozzle";
             this.NozzleColumn.Name = "NozzleColumn";
-            this.NozzleColumn.Width = 64;
+            this.NozzleColumn.Width = 62;
             // 
             // WidthColumn
             // 
             this.WidthColumn.HeaderText = "Width";
             this.WidthColumn.Name = "WidthColumn";
-            this.WidthColumn.Width = 60;
+            this.WidthColumn.Width = 58;
             // 
             // CapacityColumn
             // 
@@ -1500,59 +1507,59 @@
             "Black Plastic",
             "Clear Plastic"});
             this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.Width = 37;
+            this.TypeColumn.Width = 35;
             // 
             // Tray_Column
             // 
             this.Tray_Column.HeaderText = "Tray";
             this.Tray_Column.Name = "Tray_Column";
-            this.Tray_Column.Width = 53;
+            this.Tray_Column.Width = 51;
             // 
             // Next_Column
             // 
             this.Next_Column.HeaderText = "Next";
             this.Next_Column.Name = "Next_Column";
-            this.Next_Column.Width = 54;
+            this.Next_Column.Width = 52;
             // 
             // X_Column
             // 
             this.X_Column.HeaderText = "X";
             this.X_Column.Name = "X_Column";
             this.X_Column.ReadOnly = true;
-            this.X_Column.Width = 39;
+            this.X_Column.Width = 37;
             // 
             // Y_Column
             // 
             this.Y_Column.HeaderText = "Y";
             this.Y_Column.Name = "Y_Column";
             this.Y_Column.ReadOnly = true;
-            this.Y_Column.Width = 39;
+            this.Y_Column.Width = 37;
             // 
             // PickupZ_Column
             // 
             this.PickupZ_Column.HeaderText = "Pickup Z";
             this.PickupZ_Column.Name = "PickupZ_Column";
-            this.PickupZ_Column.Width = 75;
+            this.PickupZ_Column.Width = 73;
             // 
             // PlaceZ_Column
             // 
             this.PlaceZ_Column.HeaderText = "PlaceZ";
             this.PlaceZ_Column.Name = "PlaceZ_Column";
-            this.PlaceZ_Column.Width = 66;
+            this.PlaceZ_Column.Width = 64;
             // 
             // NextX_Column
             // 
             this.NextX_Column.HeaderText = "Next X";
             this.NextX_Column.Name = "NextX_Column";
             this.NextX_Column.ReadOnly = true;
-            this.NextX_Column.Width = 64;
+            this.NextX_Column.Width = 62;
             // 
             // NextY_column
             // 
             this.NextY_column.HeaderText = "Next Y";
             this.NextY_column.Name = "NextY_column";
             this.NextY_column.ReadOnly = true;
-            this.NextY_column.Width = 64;
+            this.NextY_column.Width = 62;
             // 
             // ShowPart_button
             // 
@@ -1807,7 +1814,7 @@
             this.Id_Column.Frozen = true;
             this.Id_Column.HeaderText = "ID";
             this.Id_Column.Name = "Id_Column";
-            this.Id_Column.Width = 43;
+            this.Id_Column.Width = 41;
             // 
             // SelectButton_Column
             // 
@@ -1820,7 +1827,7 @@
             // 
             this.NextPart_Column.HeaderText = "Next";
             this.NextPart_Column.Name = "NextPart_Column";
-            this.NextPart_Column.Width = 54;
+            this.NextPart_Column.Width = 52;
             // 
             // Orientation_Column
             // 
@@ -1833,13 +1840,13 @@
             this.Orientation_Column.Name = "Orientation_Column";
             this.Orientation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Orientation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Orientation_Column.Width = 48;
+            this.Orientation_Column.Width = 46;
             // 
             // Nozzle_Column
             // 
             this.Nozzle_Column.HeaderText = "Nozzle";
             this.Nozzle_Column.Name = "Nozzle_Column";
-            this.Nozzle_Column.Width = 64;
+            this.Nozzle_Column.Width = 62;
             // 
             // Capacity_Column
             // 
@@ -1852,7 +1859,7 @@
             // 
             this.TrayID_Column.HeaderText = "Tray";
             this.TrayID_Column.Name = "TrayID_Column";
-            this.TrayID_Column.Width = 53;
+            this.TrayID_Column.Width = 51;
             // 
             // Rotation_Column
             // 
@@ -1865,7 +1872,7 @@
             this.Rotation_Column.Name = "Rotation_Column";
             this.Rotation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Rotation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Rotation_Column.Width = 52;
+            this.Rotation_Column.Width = 50;
             // 
             // Type_Column
             // 
@@ -1875,7 +1882,7 @@
             "Black Plastic",
             "Clear Plastic"});
             this.Type_Column.Name = "Type_Column";
-            this.Type_Column.Width = 37;
+            this.Type_Column.Width = 35;
             // 
             // Width_Column
             // 
@@ -1903,95 +1910,95 @@
             "32/32mm",
             "custom"});
             this.Width_Column.Name = "Width_Column";
-            this.Width_Column.Width = 41;
+            this.Width_Column.Width = 39;
             // 
             // Pitch_Column
             // 
             this.Pitch_Column.HeaderText = "Pitch";
             this.Pitch_Column.Name = "Pitch_Column";
-            this.Pitch_Column.Width = 56;
+            this.Pitch_Column.Width = 54;
             // 
             // OffsetX_Column
             // 
             this.OffsetX_Column.HeaderText = "Offset X";
             this.OffsetX_Column.Name = "OffsetX_Column";
-            this.OffsetX_Column.Width = 65;
+            this.OffsetX_Column.Width = 63;
             // 
             // OffsetY_Column
             // 
             this.OffsetY_Column.HeaderText = "Offset Y";
             this.OffsetY_Column.Name = "OffsetY_Column";
-            this.OffsetY_Column.Width = 65;
+            this.OffsetY_Column.Width = 63;
             // 
             // FirstX_Column
             // 
             this.FirstX_Column.HeaderText = "X";
             this.FirstX_Column.Name = "FirstX_Column";
             this.FirstX_Column.ReadOnly = true;
-            this.FirstX_Column.Width = 39;
+            this.FirstX_Column.Width = 37;
             // 
             // FirstY_Column
             // 
             this.FirstY_Column.HeaderText = "Y";
             this.FirstY_Column.Name = "FirstY_Column";
             this.FirstY_Column.ReadOnly = true;
-            this.FirstY_Column.Width = 39;
+            this.FirstY_Column.Width = 37;
             // 
             // Z_Pickup_Column
             // 
             this.Z_Pickup_Column.HeaderText = "Pickup Z";
             this.Z_Pickup_Column.Name = "Z_Pickup_Column";
-            this.Z_Pickup_Column.Width = 69;
+            this.Z_Pickup_Column.Width = 67;
             // 
             // Z_Place_Column
             // 
             this.Z_Place_Column.HeaderText = "Place Z";
             this.Z_Place_Column.Name = "Z_Place_Column";
-            this.Z_Place_Column.Width = 64;
+            this.Z_Place_Column.Width = 62;
             // 
             // Next_X_Column
             // 
             this.Next_X_Column.HeaderText = "Next X";
             this.Next_X_Column.Name = "Next_X_Column";
             this.Next_X_Column.ReadOnly = true;
-            this.Next_X_Column.Width = 60;
+            this.Next_X_Column.Width = 58;
             // 
             // Next_Y_Column
             // 
             this.Next_Y_Column.HeaderText = "Next Y";
             this.Next_Y_Column.Name = "Next_Y_Column";
             this.Next_Y_Column.ReadOnly = true;
-            this.Next_Y_Column.Width = 60;
+            this.Next_Y_Column.Width = 58;
             // 
             // CoordinatesForParts_Column
             // 
             this.CoordinatesForParts_Column.HeaderText = "Coordinates for parts";
             this.CoordinatesForParts_Column.Name = "CoordinatesForParts_Column";
-            this.CoordinatesForParts_Column.Width = 78;
+            this.CoordinatesForParts_Column.Width = 76;
             // 
             // UseNozzleCoordinates_Column
             // 
             this.UseNozzleCoordinates_Column.HeaderText = "Coordinates are for Nozzle";
             this.UseNozzleCoordinates_Column.Name = "UseNozzleCoordinates_Column";
-            this.UseNozzleCoordinates_Column.Width = 81;
+            this.UseNozzleCoordinates_Column.Width = 79;
             // 
             // LastX_Column
             // 
             this.LastX_Column.HeaderText = "Last X";
             this.LastX_Column.Name = "LastX_Column";
-            this.LastX_Column.Width = 58;
+            this.LastX_Column.Width = 56;
             // 
             // LastY_column
             // 
             this.LastY_column.HeaderText = "Last Y";
             this.LastY_column.Name = "LastY_column";
-            this.LastY_column.Width = 58;
+            this.LastY_column.Width = 56;
             // 
             // RotationDirect_Column
             // 
             this.RotationDirect_Column.HeaderText = "Rotation";
             this.RotationDirect_Column.Name = "RotationDirect_Column";
-            this.RotationDirect_Column.Width = 72;
+            this.RotationDirect_Column.Width = 70;
             // 
             // Tapes_contextMenuStrip
             // 
@@ -6914,14 +6921,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7037,7 +7044,7 @@
             this.Placed_column.HeaderText = "Placed";
             this.Placed_column.Name = "Placed_column";
             this.Placed_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Placed_column.Width = 65;
+            this.Placed_column.Width = 63;
             // 
             // X_nominal
             // 
@@ -7148,6 +7155,7 @@
             // 
             // Algorithms_tabPage
             // 
+            this.Algorithms_tabPage.Controls.Add(this.groupBox7);
             this.Algorithms_tabPage.Controls.Add(this.ZUp_button);
             this.Algorithms_tabPage.Controls.Add(this.ZDown_button);
             this.Algorithms_tabPage.Controls.Add(this.label149);
@@ -7218,6 +7226,55 @@
             this.Algorithms_tabPage.TabIndex = 8;
             this.Algorithms_tabPage.Text = "Setup Video Processing";
             this.Algorithms_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.CalibrateNozzleOnVideoSetup_button);
+            this.groupBox7.Controls.Add(this.NoOfNozzlesOnVideoSetup_numericUpDown);
+            this.groupBox7.Controls.Add(this.label226);
+            this.groupBox7.Controls.Add(this.ChangeNozzleOnVideoSetup_button);
+            this.groupBox7.Location = new System.Drawing.Point(982, 6);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(248, 100);
+            this.groupBox7.TabIndex = 306;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Nozzle Change and Calibration";
+            // 
+            // NoOfNozzlesOnVideoSetup_numericUpDown
+            // 
+            this.NoOfNozzlesOnVideoSetup_numericUpDown.Location = new System.Drawing.Point(138, 24);
+            this.NoOfNozzlesOnVideoSetup_numericUpDown.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.NoOfNozzlesOnVideoSetup_numericUpDown.Name = "NoOfNozzlesOnVideoSetup_numericUpDown";
+            this.NoOfNozzlesOnVideoSetup_numericUpDown.Size = new System.Drawing.Size(34, 20);
+            this.NoOfNozzlesOnVideoSetup_numericUpDown.TabIndex = 303;
+            this.NoOfNozzlesOnVideoSetup_numericUpDown.Value = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+            // 
+            // label226
+            // 
+            this.label226.AutoSize = true;
+            this.label226.Location = new System.Drawing.Point(178, 26);
+            this.label226.Name = "label226";
+            this.label226.Size = new System.Drawing.Size(69, 13);
+            this.label226.TabIndex = 305;
+            this.label226.Text = "(0=unloaded)";
+            // 
+            // ChangeNozzleOnVideoSetup_button
+            // 
+            this.ChangeNozzleOnVideoSetup_button.Location = new System.Drawing.Point(6, 21);
+            this.ChangeNozzleOnVideoSetup_button.Name = "ChangeNozzleOnVideoSetup_button";
+            this.ChangeNozzleOnVideoSetup_button.Size = new System.Drawing.Size(108, 23);
+            this.ChangeNozzleOnVideoSetup_button.TabIndex = 304;
+            this.ChangeNozzleOnVideoSetup_button.Text = "Change";
+            this.ChangeNozzleOnVideoSetup_button.UseVisualStyleBackColor = true;
+            this.ChangeNozzleOnVideoSetup_button.Click += new System.EventHandler(this.ChangeNozzleOnVideoSetup_button_Click);
             // 
             // ZUp_button
             // 
@@ -7296,7 +7353,7 @@
             // 
             this.DrawDashedCross_checkBox.AutoSize = true;
             this.DrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawDashedCross_checkBox.Location = new System.Drawing.Point(956, 26);
+            this.DrawDashedCross_checkBox.Location = new System.Drawing.Point(850, 129);
             this.DrawDashedCross_checkBox.Name = "DrawDashedCross_checkBox";
             this.DrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
             this.DrawDashedCross_checkBox.TabIndex = 259;
@@ -7308,7 +7365,7 @@
             // 
             this.DrawGrid_checkBox.AutoSize = true;
             this.DrawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawGrid_checkBox.Location = new System.Drawing.Point(956, 49);
+            this.DrawGrid_checkBox.Location = new System.Drawing.Point(853, 110);
             this.DrawGrid_checkBox.Name = "DrawGrid_checkBox";
             this.DrawGrid_checkBox.Size = new System.Drawing.Size(73, 17);
             this.DrawGrid_checkBox.TabIndex = 264;
@@ -9281,6 +9338,16 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
+            // CalibrateNozzleOnVideoSetup_button
+            // 
+            this.CalibrateNozzleOnVideoSetup_button.Location = new System.Drawing.Point(6, 50);
+            this.CalibrateNozzleOnVideoSetup_button.Name = "CalibrateNozzleOnVideoSetup_button";
+            this.CalibrateNozzleOnVideoSetup_button.Size = new System.Drawing.Size(108, 23);
+            this.CalibrateNozzleOnVideoSetup_button.TabIndex = 306;
+            this.CalibrateNozzleOnVideoSetup_button.Text = "Calibrate current";
+            this.CalibrateNozzleOnVideoSetup_button.UseVisualStyleBackColor = true;
+            this.CalibrateNozzleOnVideoSetup_button.Click += new System.EventHandler(this.CalibrateNozzleOnVideoSetup_button_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -9407,6 +9474,9 @@
             this.tabControlPages.ResumeLayout(false);
             this.Algorithms_tabPage.ResumeLayout(false);
             this.Algorithms_tabPage.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzlesOnVideoSetup_numericUpDown)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).EndInit();
@@ -10195,6 +10265,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
         public System.Windows.Forms.DataGridView NozzlesParameters_dataGridView;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.NumericUpDown NoOfNozzlesOnVideoSetup_numericUpDown;
+        private System.Windows.Forms.Label label226;
+        private System.Windows.Forms.Button ChangeNozzleOnVideoSetup_button;
+        private System.Windows.Forms.Button CalibrateNozzleOnVideoSetup_button;
     }
 }
 
