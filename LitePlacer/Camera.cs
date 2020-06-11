@@ -2370,7 +2370,15 @@ namespace LitePlacer
                 if (DisplayResults)
                 {
                     MainForm.DisplayText(result);
-                    MainForm.DisplayText("Result is unique.");
+                    if (FilteredForSize.Count > 1)
+                    {
+                        MainForm.DisplayText("Result is unique, after filtered for distance.");
+
+                    }
+                    else
+                    {
+                        MainForm.DisplayText("Result is unique.");
+                    }
                 }
                 else
                 {

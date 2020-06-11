@@ -318,6 +318,9 @@ namespace LitePlacer
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
             StartCameras();
 
+            // ======== Setup vision processing tab:
+            NoOfNozzlesOnVideoSetup_numericUpDown.Maximum = Setting.Nozzles_count;
+
             // ======== Tape Positions tab:
 
             LoadTapesTable(path + TAPES_DATAFILE);
@@ -330,6 +333,7 @@ namespace LitePlacer
 
             StartingUp = false;
             PositionConfidence = false;
+            OpticalHome_button.BackColor = Color.Red;
             Cnc.Connect(Setting.CNC_SerialPort);  // This can raise error condition, needing the form up
             UpdateCncConnectionStatus();
 
@@ -2348,6 +2352,7 @@ namespace LitePlacer
         private bool OfferHoming()
         {
             PositionConfidence = false;
+            OpticalHome_button.BackColor = Color.Red;
             DialogResult dialogResult = ShowMessageBox(
                 "Home machine now?",
                 "Home Now?", MessageBoxButtons.YesNo);
@@ -2357,7 +2362,6 @@ namespace LitePlacer
             }
             else
             {
-                OpticalHome_button.BackColor = Color.Red;
                 return false;
             }
         }
@@ -2365,8 +2369,8 @@ namespace LitePlacer
         private bool DoHoming()
         {
             PositionConfidence = false;
-            ValidMeasurement_checkBox.Checked = false;
             OpticalHome_button.BackColor = Color.Red;
+            ValidMeasurement_checkBox.Checked = false;
             MeasureAndSet_button.Enabled = false;
             if (!MechanicalHoming_m())
             {
@@ -4078,6 +4082,7 @@ namespace LitePlacer
                 labelSerialPortStatus.ForeColor = Color.Red;
                 ValidMeasurement_checkBox.Checked = false;
                 PositionConfidence = false;
+                OpticalHome_button.BackColor = Color.Red;
             }
             else if (Cnc.Connected)
             {
@@ -4088,6 +4093,7 @@ namespace LitePlacer
             else
             {
                 PositionConfidence = false;
+                OpticalHome_button.BackColor = Color.Red;
                 buttonConnectSerial.Text = "Connect";
                 labelSerialPortStatus.Text = "Not connected";
                 labelSerialPortStatus.ForeColor = Color.Red;
@@ -11096,6 +11102,7 @@ namespace LitePlacer
 
             // this is only called from nozzle tab page, so we want to leave with slack compensation off
             // We want to do moves to camera with slack compensation, if he user has it on
+            bool compSave = Cnc.SlackCompensation;
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
 
             Nozzles_Stop = false;
@@ -11103,17 +11110,17 @@ namespace LitePlacer
             {
                 if (!ChangeNozzle_m(nozzle))
                 {
-                    Cnc.SlackCompensation = false;
+                    Cnc.SlackCompensation = compSave;
                     return;
                 }
                 if (Nozzles_Stop)
                 {
-                    Cnc.SlackCompensation = false;
+                    Cnc.SlackCompensation = compSave;
                     return;
                 }
                 if (!CalibrateNozzle_m())
                 {
-                    Cnc.SlackCompensation = false;
+                    Cnc.SlackCompensation = compSave;
                     return;
                 }
             }
@@ -11123,17 +11130,21 @@ namespace LitePlacer
             {
                 CheckCalibrationErrors(nozzle);
             }
-            Cnc.SlackCompensation = false;
+            Cnc.SlackCompensation = compSave;
         }
 
         private void CalibrateThis_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
 
-            // We want to do moves to camera with slack compensation, if he user has it on
+            // We want to do moves to camera with normal speed and slack compensation
+            bool SlowSave = Cnc.SlowXY;
+            Cnc.SlowXY = false;
+            bool compSave = Cnc.SlackCompensation;
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
             CalibrateNozzle_m();
-            Cnc.SlackCompensation = false;
+            Cnc.SlowXY = SlowSave;
+            Cnc.SlackCompensation = compSave;
 
             CheckCalibrationErrors(Setting.Nozzles_current);
         }
@@ -12122,12 +12133,13 @@ namespace LitePlacer
                 return;
             }
 
-            if (NoOfNozzles_UpDown.Value > Setting.Nozzles_maximum)
+            if (NoOfNozzles_UpDown.Value > Setting.Nozzles_maximum) 
             {
                 NoOfNozzles_UpDown.Value = Setting.Nozzles_maximum;
             }
             Setting.Nozzles_count = (int)NoOfNozzles_UpDown.Value;
             ForceNozzle_numericUpDown.Maximum = Setting.Nozzles_count;
+            NoOfNozzlesOnVideoSetup_numericUpDown.Maximum = Setting.Nozzles_count;
             while (NoOfNozzles_UpDown.Value > NozzlesLoad_dataGridView.RowCount)
             {
                 AddNozzle();
@@ -12591,6 +12603,15 @@ namespace LitePlacer
 
         }
 
+        private void ChangeNozzleOnVideoSetup_button_Click(object sender, EventArgs e)
+        {
+            ChangeNozzle_m((int)NoOfNozzlesOnVideoSetup_numericUpDown.Value);
+        }
+
+        private void CalibrateNozzleOnVideoSetup_button_Click(object sender, EventArgs e)
+        {
+            CalibrateThis_button_Click(sender, e);      // does the same as the similar button on nozzle setup tab
+        }
     }	// end of: 	public partial class FormMain : Form
 
 
