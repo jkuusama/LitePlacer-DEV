@@ -3085,10 +3085,10 @@ namespace LitePlacer
 
             f = Setting.UpCam_XmmPerPixel * UpCamera.BoxSizeX;
             UpCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture);
+            UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             f = Setting.UpCam_YmmPerPixel * UpCamera.BoxSizeY;
             UpCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.000", CultureInfo.InvariantCulture);
+            UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
 
             getDownCamList();
             getUpCamList();
@@ -3365,7 +3365,7 @@ namespace LitePlacer
                 DownCameraXmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.DownCam_XmmPerPixel = val;
                 DownCamera.XmmPerPixel = val;
-                DownCameraBoxX_textBox.Text = (val * DownCamera.BoxSizeX).ToString("0.00", CultureInfo.InvariantCulture);
+                DownCameraBoxX_textBox.Text = (val * DownCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
             }
             else
             {
@@ -3407,7 +3407,7 @@ namespace LitePlacer
             {
                 DownCameraYmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.DownCam_YmmPerPixel = val;
-                DownCameraBoxY_textBox.Text = (val * DownCamera.BoxSizeY).ToString("0.00", CultureInfo.InvariantCulture);
+                DownCameraBoxY_textBox.Text = (val * DownCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
             }
             else
             {
@@ -3450,7 +3450,7 @@ namespace LitePlacer
                 UpCameraXmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.UpCam_XmmPerPixel = val;
                 UpCamera.XmmPerPixel = val;
-                UpCameraBoxX_textBox.Text = (val * UpCamera.BoxSizeX).ToString("0.00", CultureInfo.InvariantCulture);
+                UpCameraBoxX_textBox.Text = (val * UpCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
             }
             else
             {
@@ -3493,7 +3493,7 @@ namespace LitePlacer
                 UpCameraYmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.UpCam_YmmPerPixel = val;
                 UpCamera.YmmPerPixel = val;
-                UpCameraBoxY_textBox.Text = (val * UpCamera.BoxSizeY).ToString("0.00", CultureInfo.InvariantCulture);
+                UpCameraBoxY_textBox.Text = (val * UpCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
             }
             else
             {
