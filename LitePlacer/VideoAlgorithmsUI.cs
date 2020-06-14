@@ -93,12 +93,20 @@ namespace LitePlacer
 
         private void DownCam_radioButton_CheckedChanged(object sender, EventArgs e)
         {
-            ChangeCamera(DownCamera);
+            // Both radiobuttons CheckedChanged events fire; we need to react only once
+            if (DownCam_radioButton.Checked)
+            {
+                ChangeCamera(DownCamera);
+            }
+            else
+            {
+                ChangeCamera(UpCamera);
+            }
         }
 
         private void UpCam_radioButton_CheckedChanged(object sender, EventArgs e)
         {
-            ChangeCamera(UpCamera);
+            // ChangeCamera(UpCamera);
         }
 
         // =====================================================================================
