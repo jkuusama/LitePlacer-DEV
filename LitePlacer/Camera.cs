@@ -83,11 +83,22 @@ namespace LitePlacer
                 {
                     return;
                 }
+                MainForm.DisplayText("Stopping " + Id + ": " + MonikerString);
                 VideoSource.SignalToStop();
-                VideoSource.WaitForStop();  // problem?
+                VideoSource.WaitForStop();  // problem? 
+                int i = 0;
+                while (VideoSource.IsRunning && i<10)
+                {
+                    VideoSource.Stop();
+                    Thread.Sleep(20);
+                    Application.DoEvents();
+                }
+                if (i<=10)
+                {
+                    MainForm.DisplayText("*** "+ Id + " refuses to stop! ***" + MonikerString, KnownColor.DarkRed, true);
+                }
                 VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
                 VideoSource = null;
-                MainForm.DisplayText(Id + " stop: " + MonikerString);
                 MonikerString = "Stopped";
             }
         }
