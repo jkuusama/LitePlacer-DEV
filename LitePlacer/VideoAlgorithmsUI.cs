@@ -62,7 +62,6 @@ namespace LitePlacer
             UpcamPositionX_textBox.Text = Setting.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
             UpcamPositionY_textBox.Text = Setting.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
 
-            AlgorithmsTab_RestoreBehaviour();
             ProcessDisplay_checkBox_Checked_Change();
         }
 
@@ -93,6 +92,10 @@ namespace LitePlacer
 
         private void DownCam_radioButton_CheckedChanged(object sender, EventArgs e)
         {
+            if (StartingUp)
+            {
+                return;
+            }
             // Both radiobuttons CheckedChanged events fire; we need to react only once
             if (DownCam_radioButton.Checked)
             {

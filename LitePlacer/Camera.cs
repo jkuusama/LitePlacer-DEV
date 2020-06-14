@@ -93,7 +93,7 @@ namespace LitePlacer
                     Thread.Sleep(20);
                     Application.DoEvents();
                 }
-                if (i<=10)
+                if (i>=10)
                 {
                     MainForm.DisplayText("*** "+ Id + " refuses to stop! ***" + MonikerString, KnownColor.DarkRed, true);
                 }
