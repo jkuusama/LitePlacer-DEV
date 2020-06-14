@@ -10,6 +10,7 @@ New Features, significant changes
   or needs valid position
 * Supports setup of feeders (fixed pickup position) from areas where camera doesn't reach
 * Several appearance and internal code changes
+* ctrl+click bookmark button now sets bookmark
 
 Bug Fixes 
 
@@ -19,6 +20,7 @@ Bug Fixes
 * In tape selection window, the grid now fills the space better and scales with the window
 * Reset tape counts moved to tapes tab, added confirmation before reset all counts 
 * More reliable camera close on exit
+* Improved camera switch, removed double operations
 
 Known issues
 

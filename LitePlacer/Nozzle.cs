@@ -176,7 +176,7 @@ namespace LitePlacer
                 return true;
             };
 
-            if(NozzleDataAllNozzles[MainForm.Setting.Nozzles_current-1].Calibrated)
+            if(!NozzleDataAllNozzles[MainForm.Setting.Nozzles_current-1].Calibrated)
             {
                 DialogResult dialogResult = MainForm.ShowMessageBox(
                     "Nozzle not calibrated. Calibrate now?",

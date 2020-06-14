@@ -2832,7 +2832,18 @@ namespace LitePlacer
                 }
                 return;
             };
-
+            if (cam.IsRunning())
+            {
+                if (cam == DownCamera)
+                {
+                    DisplayText("DownCamera already running.");
+                }
+                else
+                {
+                    DisplayText("UpCamera already running.");
+                }
+                return;
+            };
             if (Setting.Cameras_RobustSwitch)
             {
                 if (UpCamera.IsRunning())
@@ -3796,45 +3807,33 @@ namespace LitePlacer
             CNC_Z_m(0);
         }
 
-        private void NozzleOffsetX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(NozzleOffsetX_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.DownCam_NozzleOffsetX = val;
-                }
-            }
-        }
-
-        private void NozzleOffsetX_textBox_Leave(object sender, EventArgs e)
+        private void NozzleOffsetX_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(NozzleOffsetX_textBox.Text.Replace(',', '.'), out val))
             {
+                NozzleOffsetX_textBox.ForeColor = Color.Black;
                 Setting.DownCam_NozzleOffsetX = val;
+                DisplayText("DownCam_NozzleOffsetX= " + val.ToString("0.000", CultureInfo.InvariantCulture));
             }
-        }
-
-        private void NozzleOffsetY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
+            else
             {
-                if (double.TryParse(NozzleOffsetY_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.DownCam_NozzleOffsetY = val;
-                }
+                NozzleOffsetX_textBox.ForeColor = Color.Red;
             }
         }
 
-        private void NozzleOffsetY_textBox_Leave(object sender, EventArgs e)
+        private void NozzleOffsetY_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(NozzleOffsetY_textBox.Text.Replace(',', '.'), out val))
             {
+                NozzleOffsetY_textBox.ForeColor = Color.Black;
                 Setting.DownCam_NozzleOffsetY = val;
+                DisplayText("DownCam_NozzleOffsetY= " + val.ToString("0.000", CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                NozzleOffsetY_textBox.ForeColor = Color.Red;
             }
         }
 
@@ -10989,8 +10988,12 @@ namespace LitePlacer
             }
 
             DisplayText("calibrating nozzle " + Setting.Nozzles_current);
-            // find the algorithm:
-            
+            // Invalidate the calibration:
+            Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current - 1].Calibrated = false;
+            NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells["NozzleCalibrated_Column"].Value = false;
+            Update_GridView(NozzlesParameters_dataGridView);
+
+            // find the algorithm:            
             VideoAlgorithmsCollection.FullAlgorithmDescription Alg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
             string AlgName = NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells["VisionAlgorithm_column"].Value.ToString();
             if (!VideoAlgorithms.FindAlgorithm(AlgName, out Alg))
@@ -11084,6 +11087,10 @@ namespace LitePlacer
                         ", X: " + Points[i].X.ToString("0.000", CultureInfo.InvariantCulture) +
                         ", Y: " + Points[i].Y.ToString("0.000", CultureInfo.InvariantCulture));
                 }
+                Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current - 1].Calibrated = true;
+                NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells["NozzleCalibrated_Column"].Value = true;
+                Update_GridView(NozzlesParameters_dataGridView);
+
             }
             else
             {
@@ -11102,25 +11109,20 @@ namespace LitePlacer
 
             // this is only called from nozzle tab page, so we want to leave with slack compensation off
             // We want to do moves to camera with slack compensation, if he user has it on
-            bool compSave = Cnc.SlackCompensation;
-            Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
 
             Nozzles_Stop = false;
             for (int nozzle = 1; nozzle <= Setting.Nozzles_count; nozzle++)
             {
                 if (!ChangeNozzle_m(nozzle))
                 {
-                    Cnc.SlackCompensation = compSave;
                     return;
                 }
                 if (Nozzles_Stop)
                 {
-                    Cnc.SlackCompensation = compSave;
                     return;
                 }
-                if (!CalibrateNozzle_m())
+                if (!CalibrateCurrentNozzle())
                 {
-                    Cnc.SlackCompensation = compSave;
                     return;
                 }
             }
@@ -11130,22 +11132,28 @@ namespace LitePlacer
             {
                 CheckCalibrationErrors(nozzle);
             }
-            Cnc.SlackCompensation = compSave;
         }
 
-        private void CalibrateThis_button_Click(object sender, EventArgs e)
+        private bool CalibrateCurrentNozzle()
         {
-            if (!CheckPositionConfidence()) return;
+            if (!CheckPositionConfidence()) return false;
 
             // We want to do moves to camera with normal speed and slack compensation
             bool SlowSave = Cnc.SlowXY;
             Cnc.SlowXY = false;
             bool compSave = Cnc.SlackCompensation;
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
-            CalibrateNozzle_m();
+            bool res = CalibrateNozzle_m();
             Cnc.SlowXY = SlowSave;
             Cnc.SlackCompensation = compSave;
 
+            CheckCalibrationErrors(Setting.Nozzles_current);
+            return res;
+        }
+
+        private void CalibrateThis_button_Click(object sender, EventArgs e)
+        {
+            CalibrateCurrentNozzle();
             CheckCalibrationErrors(Setting.Nozzles_current);
         }
 
@@ -11178,7 +11186,7 @@ namespace LitePlacer
                 }
             }
             DisplayText("Currently used nozzle is " + Setting.Nozzles_current.ToString() + ":");
-            if (Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current-1].Calibrated)
+            if (!Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current-1].Calibrated)
             {
                 DisplayText("Not calibrated");
             }
@@ -12611,6 +12619,11 @@ namespace LitePlacer
         private void CalibrateNozzleOnVideoSetup_button_Click(object sender, EventArgs e)
         {
             CalibrateThis_button_Click(sender, e);      // does the same as the similar button on nozzle setup tab
+        }
+
+        private void Bookmark1_button_MouseClick(object sender, MouseEventArgs e)
+        {
+
         }
     }	// end of: 	public partial class FormMain : Form
 
