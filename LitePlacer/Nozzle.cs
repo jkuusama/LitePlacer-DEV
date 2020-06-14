@@ -220,7 +220,7 @@ namespace LitePlacer
             if (angle > 359.98)
             {
                 X = NozzleDataAllNozzles[MainForm.Setting.Nozzles_current - 1].CalibrationPoints[0].X;
-                Y = NozzleDataAllNozzles[MainForm.Setting.Nozzles_current - 1].CalibrationPoints[0].Y;
+                Y = -NozzleDataAllNozzles[MainForm.Setting.Nozzles_current - 1].CalibrationPoints[0].Y;
                 return true;
             };
             List<NozzlePoint> Points = NozzleDataAllNozzles[MainForm.Setting.Nozzles_current - 1].CalibrationPoints;
