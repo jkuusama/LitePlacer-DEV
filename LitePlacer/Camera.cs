@@ -245,6 +245,10 @@ namespace LitePlacer
                 {
                     // VideoSource.Start() checks running status, is safe to call multiple times
                     tries++;
+                    if (VideoSource==null)
+                    {
+                        break;      // this can happen if changing tabs too fast. TODO: True guard for operations during camera switch/start
+                    }
                     VideoSource.Start();
                     if (!ReceivingFrames)
                     {

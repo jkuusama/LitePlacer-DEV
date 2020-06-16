@@ -3205,7 +3205,7 @@ namespace LitePlacer
             }
             else
             {
-                DownCameraStatus_label.Text = "Active";
+                DownCameraStatus_label.Text = "Not active";
             }
         }
 
@@ -3228,7 +3228,7 @@ namespace LitePlacer
             }
             else
             {
-                UpCameraStatus_label.Text = "Active";
+                UpCameraStatus_label.Text = "Not active";
             }
         }
 
