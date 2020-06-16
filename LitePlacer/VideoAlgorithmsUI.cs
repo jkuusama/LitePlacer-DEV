@@ -41,6 +41,7 @@ namespace LitePlacer
 
         private void Algorithms_tabPage_Begin()
         {
+            DisplayText("Setup Video Processing tab begin");
             VideoProcessingZguard_checkBox.Checked = false;
             SetDownCameraDefaults();
             SetUpCameraDefaults();

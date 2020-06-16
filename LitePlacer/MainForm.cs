@@ -3060,6 +3060,7 @@ namespace LitePlacer
         // =================================================================================
         private void tabPageSetupCameras_Begin()
         {
+            DisplayText("Setup Cameras tab begin");
             SetDownCameraDefaults();
             DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString(CultureInfo.InvariantCulture);
@@ -3983,6 +3984,7 @@ namespace LitePlacer
         private void BasicSetupTab_Begin()
         {
             // SetDownCameraDefaults();
+            DisplayText("Basic Setup tab begin");
 
             UpCamera.Active = false;
             DownCamera.Active = false;
@@ -5060,6 +5062,7 @@ namespace LitePlacer
 
         private void RunJob_tabPage_Begin()
         {
+            DisplayText("Run Job tab begin");
             SetDownCameraDefaults();
             SelectCamera(DownCamera);
             if (!DownCamera.IsRunning())
@@ -8236,17 +8239,17 @@ namespace LitePlacer
             Loc.W = 1.0;
             Loc = transform.TransformPoint(Loc);
             Loc = Loc.NormalizeHomogeneous();
-            DisplayText("Transform:");
-            DisplayText("dX= " + (Loc.X).ToString(CultureInfo.InvariantCulture));
-            DisplayText("dY= " + Loc.Y.ToString(CultureInfo.InvariantCulture));
+            DisplayText("Transform results:");
+            DisplayText("Xorigin= " + (Loc.X).ToString(CultureInfo.InvariantCulture));
+            DisplayText("Yorigin= " + Loc.Y.ToString(CultureInfo.InvariantCulture));
             // We do need rotation. Find out by rotatíng a unit vector:
             Loc2.X = 1.0;
             Loc2.Y = 0.0;
             Loc2.W = 1.0;
             Loc2 = transform.TransformPoint(Loc2);
             Loc2 = Loc2.NormalizeHomogeneous();
-            DisplayText("dX= " + Loc2.X.ToString(CultureInfo.InvariantCulture));
-            DisplayText("dY= " + Loc2.Y.ToString(CultureInfo.InvariantCulture));
+            // DisplayText("dX= " + Loc2.X.ToString(CultureInfo.InvariantCulture));
+            // DisplayText("dY= " + Loc2.Y.ToString(CultureInfo.InvariantCulture));
             double angle = Math.Asin(Loc2.Y - Loc.Y) * 180.0 / Math.PI; // in degrees
             DisplayText("angle= " + angle.ToString(CultureInfo.InvariantCulture));
 
@@ -8320,7 +8323,7 @@ namespace LitePlacer
             if (!DataOk)
             {
                 DisplayText(" ** A fiducial moved more than 0.4mm from its measured location");
-                DisplayText(" ** when applied the same calculations than regular componets.");
+                DisplayText(" ** when applied the same calculations than regular components.");
                 DisplayText(" ** (Maybe the camera picked a via instead of a fiducial?)");
                 DisplayText(" ** Placement data is likely not good.");
                 DialogResult dialogResult = ShowMessageBox(
@@ -9311,6 +9314,7 @@ namespace LitePlacer
 
         private void Tapes_tabPage_Begin()
         {
+            DisplayText("Setup Tapes tab begin");
             foreach (DataGridViewRow row in Tapes_dataGridView.Rows)
             {
                 row.HeaderCell.Value = row.Index.ToString(CultureInfo.InvariantCulture);
@@ -10647,6 +10651,7 @@ namespace LitePlacer
 
         private void Nozzles_tabPage_Begin()
         {
+            DisplayText("Setup Nozzles tab begin");
             NozzeTip_textBox.Visible = true;
             FillNozzlesParameters_dataGridView();   // algorithm list may have changed
             if (NozzleZGuard_checkBox.Checked)
