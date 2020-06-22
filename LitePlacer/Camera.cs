@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Drawing;
 using System.Threading;
 using System.Drawing.Imaging;
+using System.Diagnostics;
 
 using AForge;
 using AForge.Video;
@@ -2218,6 +2219,8 @@ namespace LitePlacer
             Xresult = 0.0;
             Yresult = 0.0;
             err = 0;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             if ((!MeasurementParameters.SearchRounds) && (!MeasurementParameters.SearchRectangles)
                 && (!MeasurementParameters.SearchComponents))
@@ -2229,10 +2232,13 @@ namespace LitePlacer
             Bitmap image = GetMeasurementFrame();
 
             // Find candidates:
+            stopwatch.Stop();   // Don't time diagnostic messages
             if (DisplayResults)
             {
                 MainForm.DisplayText("Result candidates:");
             }
+            stopwatch.Start();
+
             List<Shapes.Shape> Candidates = new List<Shapes.Shape>();
 
             double zoom = GetMeasurementZoom();
@@ -2252,11 +2258,14 @@ namespace LitePlacer
                         Ysize = circle.Radius * 2.0
                     });
                 }
+                stopwatch.Stop();
                 if (DisplayResults)
                 {
                     MainForm.DisplayText("Circles:");
                     DisplayShapes(Candidates, 0, XmmPpix, YmmPpix);
                 }
+                stopwatch.Start();
+
             }
             int count = Candidates.Count;
 
@@ -2273,11 +2282,13 @@ namespace LitePlacer
                         Ysize=regt.ShortSideLenght
                     });
                 }
+                stopwatch.Stop();
                 if (DisplayResults)
                 {
                     MainForm.DisplayText("Regtangles:");
                     DisplayShapes(Candidates, count, XmmPpix, YmmPpix);
                 }
+                stopwatch.Start();
             }
 
             count = Candidates.Count;
@@ -2292,11 +2303,14 @@ namespace LitePlacer
                         Angle = comp.Angle
                     });
                 }
+
+                stopwatch.Stop();
                 if (DisplayResults)
                 {
                     MainForm.DisplayText("Components:");
                     DisplayShapes(Candidates, count, XmmPpix, YmmPpix);
                 }
+                stopwatch.Start();
             }
 
             // Filter for size
@@ -2312,10 +2326,13 @@ namespace LitePlacer
                     FilteredForSize.Add(shape);
                 }
             }
+            stopwatch.Stop();
             if (DisplayResults)
             {
                 MainForm.DisplayText("Filtered for size, results:");
             }
+            stopwatch.Start();
+
             if (FilteredForSize.Count == 0)
             {
                 if (DisplayResults)
@@ -2328,10 +2345,12 @@ namespace LitePlacer
                 }
                 return false;
             }
+            stopwatch.Stop();
             if (DisplayResults)
             {
                 DisplayShapes(FilteredForSize, 0, XmmPpix, YmmPpix);
             };
+            stopwatch.Start();
 
             // Find closest to center
             int ResultIndex = 0;
@@ -2378,43 +2397,28 @@ namespace LitePlacer
             Xresult = (FilteredForSize[ResultIndex].Center.X - FrameCenterX) * XmmPpix;
             Yresult = (FrameCenterY - FilteredForSize[ResultIndex].Center.Y) * YmmPpix;
 
-            string result = "Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
-                ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture);
-            if (ResultCount == 1)
+            stopwatch.Stop();
+            if (DisplayResults)
             {
-                if (DisplayResults)
+                string result = "Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
+                    ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture);
+                MainForm.DisplayText(result);
+                if (ResultCount == 1)
                 {
-                    MainForm.DisplayText(result);
-                    if (FilteredForSize.Count > 1)
-                    {
-                        MainForm.DisplayText("Result is unique, after filtered for distance.");
-
-                    }
-                    else
-                    {
-                        MainForm.DisplayText("Result is unique.");
-                    }
+                    MainForm.DisplayText("Result is unique.");
                 }
                 else
                 {
-                    MainForm.DisplayText("Camera Measure(): " + result + ", unique");
-                }
-            }
-            else
-            {
-                if (DisplayResults)
-                {
-                    MainForm.DisplayText(result);
                     MainForm.DisplayText("Result is NOT unique! There are " + (ResultCount - 1).ToString() + " other possible results."
                         , KnownColor.DarkRed, true);
                 }
-                else
-                {
-                    MainForm.DisplayText("Camera Measure(): " + result + ", not unique");
-                }
-
 
             }
+            if (DisplayResults)
+            {
+                MainForm.DisplayText("Camera Measure(): Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
+            }
+
             err = ResultCount;
             if (err==1)
             {
@@ -2422,6 +2426,7 @@ namespace LitePlacer
             }
             else
             {
+                MainForm.DisplayText("Camera Measure(): result not unique");
                 return false;
             }
         }
