@@ -674,42 +674,25 @@ namespace LitePlacer
                     {
                         f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
                     }
+
+                    if (FindCircles)
+                    {
+                        DrawCirclesFunct(frame);
+                    }
+                    if (FindRectangles)
+                    {
+                        frame = DrawRectanglesFunct(frame);
+                    }
+                    if (FindComponent)
+                    {
+                        frame = DrawComponentsFunct(frame);
+                    }
                 }
             }
-            catch(System.InvalidOperationException)
+            catch (System.InvalidOperationException)
             {
                 // No need to do anything, next frame fixes it
             }
-
-            if (FindCircles)
-            {
-                DrawCirclesFunct(frame);
-            };
-
-            if (FindRectangles)
-            {
-                frame = DrawRectanglesFunct(frame);
-            };
-
-            if (FindComponent)
-            {
-                frame = DrawComponentsFunct(frame);
-            };
-
-            if (Draw_Snapshot)
-            {
-                frame = Draw_SnapshotFunct(frame);
-            };
-
-            if (Mirror)
-            {
-                frame = MirrorFunct(frame, false, true);
-            };
-
-            if (DrawBox)
-            {
-                DrawBoxFunct(frame);
-            };
 
             if (Zoom)
             {
