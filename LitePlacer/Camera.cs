@@ -1581,7 +1581,14 @@ namespace LitePlacer
                     //if (true)
                     {
                         List<IntPoint> corners = PointsCloud.FindQuadrilateralCorners(edgePoints);
-                        Rectangles.Add(new Shapes.Rectangle(corners));
+                        // In some cases, the bitmap edges count as a rectangle. That should be ignored:
+                        if ( !( (corners[2].X==(bitmap.Size.Width-1)) && 
+                                (corners[2].Y == (bitmap.Size.Height - 1))
+                              )
+                            )
+                        {
+                            Rectangles.Add(new Shapes.Rectangle(corners));
+                        }
                     }
                 }
             }

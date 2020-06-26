@@ -477,7 +477,6 @@ namespace LitePlacer
             if (ProcessDisplay_checkBox.Checked)
             {
                 UpdateVideoProcessing();
-
             }
             else
             {
