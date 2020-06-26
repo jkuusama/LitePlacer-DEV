@@ -118,10 +118,6 @@ namespace LitePlacer
 
         private void AlgorithmsTab_RestoreBehaviour()
         {
-            // called on tab load and camera change
-            FindCircles_checkBox.Checked = cam.FindCircles;
-            FindRectangles_checkBox.Checked = cam.FindRectangles;
-            FindComponents_checkBox.Checked = cam.FindComponent;
             if (ProcessDisplay_checkBox.Checked)
             {
                 UpdateVideoProcessing();
@@ -481,6 +477,7 @@ namespace LitePlacer
             if (ProcessDisplay_checkBox.Checked)
             {
                 UpdateVideoProcessing();
+
             }
             else
             {
@@ -1096,14 +1093,16 @@ namespace LitePlacer
             }
             // Pass CurrentAlgorithm to camera
             DisplayText("UpdateVideoProcessing()");
+            Camera cam = new Camera(this);
             if (DownCam_radioButton.Checked)
             {
                 DownCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
             }
-            if (UpCam_radioButton.Checked)
+            else
             {
                 UpCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
             }
+            UpdateSearchFunctions();
         }
 
         private void StopVideoProcessing()
@@ -1172,21 +1171,40 @@ namespace LitePlacer
         // =====================================================================================
         #region search, size and distance
 
-        // =====================================================================================
+        private void UpdateSearchFunctions()
+        {
+            Camera cam = new Camera(this);
+            if (DownCam_radioButton.Checked)
+            {
+                cam = DownCamera;
+            }
+            else
+            {
+                cam = UpCamera;
+            }
+            cam.FindCircles = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRounds;
+            cam.FindRectangles = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRectangles;
+            cam.FindComponent = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponents;
+        }
+
+
         // search boxes
         private void SearchRound_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRounds = SearchRound_checkBox.Checked;
+            UpdateSearchFunctions();
         }
 
         private void SearchRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRectangles = SearchRectangles_checkBox.Checked;
+            UpdateSearchFunctions();
         }
 
         private void SearchComponents_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponents = SearchComponents_checkBox.Checked;
+            UpdateSearchFunctions();
         }
 
         private void ShowPixels_checkBox_CheckedChanged(object sender, EventArgs e)
