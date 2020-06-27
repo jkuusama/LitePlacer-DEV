@@ -113,8 +113,6 @@ namespace LitePlacer
             // ChangeCamera(UpCamera);
         }
 
-        // =====================================================================================
-        #region select, draw and find boxes
 
         private void AlgorithmsTab_RestoreBehaviour()
         {
@@ -129,24 +127,6 @@ namespace LitePlacer
 
         }
 
-        // =====================================================================================
-        // find boxes
-        private void FindCircles_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            cam.FindCircles = FindCircles_checkBox.Checked;
-        }
-
-        private void FindRectangles_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            cam.FindRectangles = FindRectangles_checkBox.Checked;
-        }
-
-        private void FindComponents_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            cam.FindComponent = FindComponents_checkBox.Checked;
-        }
-
-        #endregion select, draw and find boxes
         // =====================================================================================
 
         // =====================================================================================

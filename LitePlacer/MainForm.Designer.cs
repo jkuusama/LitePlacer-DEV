@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -596,25 +596,28 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.CalibrateNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
-            this.NoOfNozzlesOnVideoSetup_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label226 = new System.Windows.Forms.Label();
+            this.AdvancedProcessing_tabControl = new System.Windows.Forms.TabControl();
+            this.NozzleCalibration_tabPage = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.ChangeNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
+            this.CalibrateNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
+            this.label226 = new System.Windows.Forms.Label();
+            this.NoOfNozzlesOnVideoSetup_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.HideAdvanced_tabPage = new System.Windows.Forms.TabPage();
+            this.SpecialProcessing_button = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.UpCam_radioButton = new System.Windows.Forms.RadioButton();
+            this.DownCam_radioButton = new System.Windows.Forms.RadioButton();
             this.ZUp_button = new System.Windows.Forms.Button();
             this.ZDown_button = new System.Windows.Forms.Button();
             this.label149 = new System.Windows.Forms.Label();
             this.Z0toPCB_CamerasTab_label = new System.Windows.Forms.Label();
             this.label120 = new System.Windows.Forms.Label();
             this.VideoProcessingZguard_checkBox = new System.Windows.Forms.CheckBox();
+            this.FunctionExplanation_textBox = new System.Windows.Forms.TextBox();
             this.DrawDashedCross_checkBox = new System.Windows.Forms.CheckBox();
             this.DrawGrid_checkBox = new System.Windows.Forms.CheckBox();
-            this.FindComponents_checkBox = new System.Windows.Forms.CheckBox();
-            this.FindRectangles_checkBox = new System.Windows.Forms.CheckBox();
-            this.FindCircles_checkBox = new System.Windows.Forms.CheckBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.DownCam_radioButton = new System.Windows.Forms.RadioButton();
-            this.UpCam_radioButton = new System.Windows.Forms.RadioButton();
             this.Algorithm_Measure_button = new System.Windows.Forms.Button();
             this.SearchComponents_checkBox = new System.Windows.Forms.CheckBox();
             this.SearchRectangles_checkBox = new System.Windows.Forms.CheckBox();
@@ -796,8 +799,6 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.FunctionExplanation_textBox = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -837,9 +838,11 @@
             this.RunJob_contextMenuStrip.SuspendLayout();
             this.tabControlPages.SuspendLayout();
             this.Algorithms_tabPage.SuspendLayout();
-            this.groupBox7.SuspendLayout();
+            this.AdvancedProcessing_tabControl.SuspendLayout();
+            this.NozzleCalibration_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzlesOnVideoSetup_numericUpDown)).BeginInit();
-            this.groupBox4.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.G_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).BeginInit();
@@ -1165,7 +1168,6 @@
         "ark here.\r\n");
             this.Bookmark1_button.UseVisualStyleBackColor = true;
             this.Bookmark1_button.Click += new System.EventHandler(this.Bookmark1_button_Click);
-            this.Bookmark1_button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Bookmark1_button_MouseClick);
             // 
             // Bookmark2_button
             // 
@@ -6983,14 +6985,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7236,7 +7238,9 @@
             // 
             // Algorithms_tabPage
             // 
-            this.Algorithms_tabPage.Controls.Add(this.groupBox7);
+            this.Algorithms_tabPage.Controls.Add(this.AdvancedProcessing_tabControl);
+            this.Algorithms_tabPage.Controls.Add(this.SpecialProcessing_button);
+            this.Algorithms_tabPage.Controls.Add(this.tabControl1);
             this.Algorithms_tabPage.Controls.Add(this.ZUp_button);
             this.Algorithms_tabPage.Controls.Add(this.ZDown_button);
             this.Algorithms_tabPage.Controls.Add(this.label149);
@@ -7246,10 +7250,6 @@
             this.Algorithms_tabPage.Controls.Add(this.FunctionExplanation_textBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawDashedCross_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawGrid_checkBox);
-            this.Algorithms_tabPage.Controls.Add(this.FindComponents_checkBox);
-            this.Algorithms_tabPage.Controls.Add(this.FindRectangles_checkBox);
-            this.Algorithms_tabPage.Controls.Add(this.FindCircles_checkBox);
-            this.Algorithms_tabPage.Controls.Add(this.groupBox4);
             this.Algorithms_tabPage.Controls.Add(this.Algorithm_Measure_button);
             this.Algorithms_tabPage.Controls.Add(this.SearchComponents_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.SearchRectangles_checkBox);
@@ -7308,23 +7308,55 @@
             this.Algorithms_tabPage.Text = "Setup Video Processing";
             this.Algorithms_tabPage.UseVisualStyleBackColor = true;
             // 
-            // groupBox7
+            // AdvancedProcessing_tabControl
             // 
-            this.groupBox7.Controls.Add(this.textBox1);
-            this.groupBox7.Controls.Add(this.CalibrateNozzleOnVideoSetup_button);
-            this.groupBox7.Controls.Add(this.NoOfNozzlesOnVideoSetup_numericUpDown);
-            this.groupBox7.Controls.Add(this.label226);
-            this.groupBox7.Controls.Add(this.ChangeNozzleOnVideoSetup_button);
-            this.groupBox7.Location = new System.Drawing.Point(982, 6);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(248, 160);
-            this.groupBox7.TabIndex = 306;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Nozzle Change and Calibration";
+            this.AdvancedProcessing_tabControl.Controls.Add(this.NozzleCalibration_tabPage);
+            this.AdvancedProcessing_tabControl.Controls.Add(this.HideAdvanced_tabPage);
+            this.AdvancedProcessing_tabControl.Location = new System.Drawing.Point(823, 7);
+            this.AdvancedProcessing_tabControl.Name = "AdvancedProcessing_tabControl";
+            this.AdvancedProcessing_tabControl.SelectedIndex = 0;
+            this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(416, 175);
+            this.AdvancedProcessing_tabControl.TabIndex = 308;
+            this.AdvancedProcessing_tabControl.Visible = false;
+            // 
+            // NozzleCalibration_tabPage
+            // 
+            this.NozzleCalibration_tabPage.Controls.Add(this.textBox1);
+            this.NozzleCalibration_tabPage.Controls.Add(this.ChangeNozzleOnVideoSetup_button);
+            this.NozzleCalibration_tabPage.Controls.Add(this.CalibrateNozzleOnVideoSetup_button);
+            this.NozzleCalibration_tabPage.Controls.Add(this.label226);
+            this.NozzleCalibration_tabPage.Controls.Add(this.NoOfNozzlesOnVideoSetup_numericUpDown);
+            this.NozzleCalibration_tabPage.Location = new System.Drawing.Point(4, 22);
+            this.NozzleCalibration_tabPage.Name = "NozzleCalibration_tabPage";
+            this.NozzleCalibration_tabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.NozzleCalibration_tabPage.Size = new System.Drawing.Size(408, 149);
+            this.NozzleCalibration_tabPage.TabIndex = 0;
+            this.NozzleCalibration_tabPage.Text = "Nozzle Calibration";
+            this.NozzleCalibration_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(6, 64);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(183, 73);
+            this.textBox1.TabIndex = 307;
+            this.textBox1.Text = "Nominal nozzle tip sizes (diameter):\r\n(in / out)\r\n#1: 0.5 / 1.0       #4: 2.4 / 4" +
+    ".0 \r\n#2: 0.8 / 1.5       #5: 4.0 / 6.2\r\n#3: 1.4 / 2.2       #6: 7.5 / 9.0";
+            // 
+            // ChangeNozzleOnVideoSetup_button
+            // 
+            this.ChangeNozzleOnVideoSetup_button.Location = new System.Drawing.Point(6, 6);
+            this.ChangeNozzleOnVideoSetup_button.Name = "ChangeNozzleOnVideoSetup_button";
+            this.ChangeNozzleOnVideoSetup_button.Size = new System.Drawing.Size(108, 23);
+            this.ChangeNozzleOnVideoSetup_button.TabIndex = 304;
+            this.ChangeNozzleOnVideoSetup_button.Text = "Change";
+            this.ChangeNozzleOnVideoSetup_button.UseVisualStyleBackColor = true;
+            this.ChangeNozzleOnVideoSetup_button.Click += new System.EventHandler(this.ChangeNozzleOnVideoSetup_button_Click);
             // 
             // CalibrateNozzleOnVideoSetup_button
             // 
-            this.CalibrateNozzleOnVideoSetup_button.Location = new System.Drawing.Point(6, 50);
+            this.CalibrateNozzleOnVideoSetup_button.Location = new System.Drawing.Point(6, 35);
             this.CalibrateNozzleOnVideoSetup_button.Name = "CalibrateNozzleOnVideoSetup_button";
             this.CalibrateNozzleOnVideoSetup_button.Size = new System.Drawing.Size(108, 23);
             this.CalibrateNozzleOnVideoSetup_button.TabIndex = 306;
@@ -7332,9 +7364,18 @@
             this.CalibrateNozzleOnVideoSetup_button.UseVisualStyleBackColor = true;
             this.CalibrateNozzleOnVideoSetup_button.Click += new System.EventHandler(this.CalibrateNozzleOnVideoSetup_button_Click);
             // 
+            // label226
+            // 
+            this.label226.AutoSize = true;
+            this.label226.Location = new System.Drawing.Point(178, 11);
+            this.label226.Name = "label226";
+            this.label226.Size = new System.Drawing.Size(69, 13);
+            this.label226.TabIndex = 305;
+            this.label226.Text = "(0=unloaded)";
+            // 
             // NoOfNozzlesOnVideoSetup_numericUpDown
             // 
-            this.NoOfNozzlesOnVideoSetup_numericUpDown.Location = new System.Drawing.Point(138, 24);
+            this.NoOfNozzlesOnVideoSetup_numericUpDown.Location = new System.Drawing.Point(138, 9);
             this.NoOfNozzlesOnVideoSetup_numericUpDown.Maximum = new decimal(new int[] {
             10,
             0,
@@ -7349,24 +7390,70 @@
             0,
             0});
             // 
-            // label226
+            // HideAdvanced_tabPage
             // 
-            this.label226.AutoSize = true;
-            this.label226.Location = new System.Drawing.Point(178, 26);
-            this.label226.Name = "label226";
-            this.label226.Size = new System.Drawing.Size(69, 13);
-            this.label226.TabIndex = 305;
-            this.label226.Text = "(0=unloaded)";
+            this.HideAdvanced_tabPage.Location = new System.Drawing.Point(4, 22);
+            this.HideAdvanced_tabPage.Name = "HideAdvanced_tabPage";
+            this.HideAdvanced_tabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.HideAdvanced_tabPage.Size = new System.Drawing.Size(411, 149);
+            this.HideAdvanced_tabPage.TabIndex = 1;
+            this.HideAdvanced_tabPage.Text = "Hide Advanced Controls";
+            this.HideAdvanced_tabPage.UseVisualStyleBackColor = true;
+            this.HideAdvanced_tabPage.Enter += new System.EventHandler(this.HideAdvanced_tabPage_Enter);
             // 
-            // ChangeNozzleOnVideoSetup_button
+            // SpecialProcessing_button
             // 
-            this.ChangeNozzleOnVideoSetup_button.Location = new System.Drawing.Point(6, 21);
-            this.ChangeNozzleOnVideoSetup_button.Name = "ChangeNozzleOnVideoSetup_button";
-            this.ChangeNozzleOnVideoSetup_button.Size = new System.Drawing.Size(108, 23);
-            this.ChangeNozzleOnVideoSetup_button.TabIndex = 304;
-            this.ChangeNozzleOnVideoSetup_button.Text = "Change";
-            this.ChangeNozzleOnVideoSetup_button.UseVisualStyleBackColor = true;
-            this.ChangeNozzleOnVideoSetup_button.Click += new System.EventHandler(this.ChangeNozzleOnVideoSetup_button_Click);
+            this.SpecialProcessing_button.Location = new System.Drawing.Point(1120, 15);
+            this.SpecialProcessing_button.Name = "SpecialProcessing_button";
+            this.SpecialProcessing_button.Size = new System.Drawing.Size(110, 23);
+            this.SpecialProcessing_button.TabIndex = 0;
+            this.SpecialProcessing_button.Text = "Special Options";
+            this.SpecialProcessing_button.UseVisualStyleBackColor = true;
+            this.SpecialProcessing_button.Click += new System.EventHandler(this.SpecialProcessing_button_Click);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Location = new System.Drawing.Point(658, 6);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(156, 79);
+            this.tabControl1.TabIndex = 307;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.UpCam_radioButton);
+            this.tabPage7.Controls.Add(this.DownCam_radioButton);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(148, 53);
+            this.tabPage7.TabIndex = 0;
+            this.tabPage7.Text = "Select Camera to View:";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // UpCam_radioButton
+            // 
+            this.UpCam_radioButton.AutoSize = true;
+            this.UpCam_radioButton.Location = new System.Drawing.Point(3, 26);
+            this.UpCam_radioButton.Name = "UpCam_radioButton";
+            this.UpCam_radioButton.Size = new System.Drawing.Size(114, 17);
+            this.UpCam_radioButton.TabIndex = 0;
+            this.UpCam_radioButton.TabStop = true;
+            this.UpCam_radioButton.Text = "Up looking camera";
+            this.UpCam_radioButton.UseVisualStyleBackColor = true;
+            this.UpCam_radioButton.CheckedChanged += new System.EventHandler(this.UpCam_radioButton_CheckedChanged);
+            // 
+            // DownCam_radioButton
+            // 
+            this.DownCam_radioButton.AutoSize = true;
+            this.DownCam_radioButton.Location = new System.Drawing.Point(3, 3);
+            this.DownCam_radioButton.Name = "DownCam_radioButton";
+            this.DownCam_radioButton.Size = new System.Drawing.Size(128, 17);
+            this.DownCam_radioButton.TabIndex = 1;
+            this.DownCam_radioButton.TabStop = true;
+            this.DownCam_radioButton.Text = "Down looking camera";
+            this.DownCam_radioButton.UseVisualStyleBackColor = true;
+            this.DownCam_radioButton.CheckedChanged += new System.EventHandler(this.DownCam_radioButton_CheckedChanged);
             // 
             // ZUp_button
             // 
@@ -7430,11 +7517,22 @@
             this.VideoProcessingZguard_checkBox.UseVisualStyleBackColor = true;
             this.VideoProcessingZguard_checkBox.CheckedChanged += new System.EventHandler(this.VideoProcessingZguard_checkBox_CheckedChanged);
             // 
+            // FunctionExplanation_textBox
+            // 
+            this.FunctionExplanation_textBox.BackColor = System.Drawing.SystemColors.Window;
+            this.FunctionExplanation_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.FunctionExplanation_textBox.Location = new System.Drawing.Point(1032, 279);
+            this.FunctionExplanation_textBox.Multiline = true;
+            this.FunctionExplanation_textBox.Name = "FunctionExplanation_textBox";
+            this.FunctionExplanation_textBox.ReadOnly = true;
+            this.FunctionExplanation_textBox.Size = new System.Drawing.Size(198, 127);
+            this.FunctionExplanation_textBox.TabIndex = 265;
+            // 
             // DrawDashedCross_checkBox
             // 
             this.DrawDashedCross_checkBox.AutoSize = true;
             this.DrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawDashedCross_checkBox.Location = new System.Drawing.Point(850, 129);
+            this.DrawDashedCross_checkBox.Location = new System.Drawing.Point(593, 431);
             this.DrawDashedCross_checkBox.Name = "DrawDashedCross_checkBox";
             this.DrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
             this.DrawDashedCross_checkBox.TabIndex = 259;
@@ -7446,7 +7544,7 @@
             // 
             this.DrawGrid_checkBox.AutoSize = true;
             this.DrawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawGrid_checkBox.Location = new System.Drawing.Point(853, 110);
+            this.DrawGrid_checkBox.Location = new System.Drawing.Point(594, 409);
             this.DrawGrid_checkBox.Name = "DrawGrid_checkBox";
             this.DrawGrid_checkBox.Size = new System.Drawing.Size(73, 17);
             this.DrawGrid_checkBox.TabIndex = 264;
@@ -7454,84 +7552,6 @@
             this.toolTip1.SetToolTip(this.DrawGrid_checkBox, "Draws a box on the image\r\n(Used to set camera scale)\r\n");
             this.DrawGrid_checkBox.UseVisualStyleBackColor = true;
             this.DrawGrid_checkBox.Visible = false;
-            // 
-            // FindComponents_checkBox
-            // 
-            this.FindComponents_checkBox.AutoSize = true;
-            this.FindComponents_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindComponents_checkBox.Location = new System.Drawing.Point(831, 72);
-            this.FindComponents_checkBox.Name = "FindComponents_checkBox";
-            this.FindComponents_checkBox.Size = new System.Drawing.Size(108, 17);
-            this.FindComponents_checkBox.TabIndex = 262;
-            this.FindComponents_checkBox.Text = "Find Components";
-            this.toolTip1.SetToolTip(this.FindComponents_checkBox, "Tries to find component shapes on the image,\r\nusing video processing from the tab" +
-        "le below.");
-            this.FindComponents_checkBox.UseVisualStyleBackColor = true;
-            this.FindComponents_checkBox.Visible = false;
-            this.FindComponents_checkBox.CheckedChanged += new System.EventHandler(this.FindComponents_checkBox_CheckedChanged);
-            // 
-            // FindRectangles_checkBox
-            // 
-            this.FindRectangles_checkBox.AutoSize = true;
-            this.FindRectangles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindRectangles_checkBox.Location = new System.Drawing.Point(831, 49);
-            this.FindRectangles_checkBox.Name = "FindRectangles_checkBox";
-            this.FindRectangles_checkBox.Size = new System.Drawing.Size(101, 17);
-            this.FindRectangles_checkBox.TabIndex = 261;
-            this.FindRectangles_checkBox.Text = "Find Rectangles";
-            this.toolTip1.SetToolTip(this.FindRectangles_checkBox, "Tries to find rectangels on the image,\r\nusing video processing from the table bel" +
-        "ow.");
-            this.FindRectangles_checkBox.UseVisualStyleBackColor = true;
-            this.FindRectangles_checkBox.CheckedChanged += new System.EventHandler(this.FindRectangles_checkBox_CheckedChanged);
-            // 
-            // FindCircles_checkBox
-            // 
-            this.FindCircles_checkBox.AutoSize = true;
-            this.FindCircles_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FindCircles_checkBox.Location = new System.Drawing.Point(831, 26);
-            this.FindCircles_checkBox.Name = "FindCircles_checkBox";
-            this.FindCircles_checkBox.Size = new System.Drawing.Size(79, 17);
-            this.FindCircles_checkBox.TabIndex = 260;
-            this.FindCircles_checkBox.Text = "Find Circles";
-            this.toolTip1.SetToolTip(this.FindCircles_checkBox, "Tries to find circles on the image,\r\nusing video processing from the table below." +
-        "");
-            this.FindCircles_checkBox.UseVisualStyleBackColor = true;
-            this.FindCircles_checkBox.CheckedChanged += new System.EventHandler(this.FindCircles_checkBox_CheckedChanged);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.DownCam_radioButton);
-            this.groupBox4.Controls.Add(this.UpCam_radioButton);
-            this.groupBox4.Location = new System.Drawing.Point(656, 6);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(152, 67);
-            this.groupBox4.TabIndex = 256;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Select Camera to View:";
-            // 
-            // DownCam_radioButton
-            // 
-            this.DownCam_radioButton.AutoSize = true;
-            this.DownCam_radioButton.Location = new System.Drawing.Point(6, 19);
-            this.DownCam_radioButton.Name = "DownCam_radioButton";
-            this.DownCam_radioButton.Size = new System.Drawing.Size(128, 17);
-            this.DownCam_radioButton.TabIndex = 1;
-            this.DownCam_radioButton.TabStop = true;
-            this.DownCam_radioButton.Text = "Down looking camera";
-            this.DownCam_radioButton.UseVisualStyleBackColor = true;
-            this.DownCam_radioButton.CheckedChanged += new System.EventHandler(this.DownCam_radioButton_CheckedChanged);
-            // 
-            // UpCam_radioButton
-            // 
-            this.UpCam_radioButton.AutoSize = true;
-            this.UpCam_radioButton.Location = new System.Drawing.Point(6, 42);
-            this.UpCam_radioButton.Name = "UpCam_radioButton";
-            this.UpCam_radioButton.Size = new System.Drawing.Size(114, 17);
-            this.UpCam_radioButton.TabIndex = 0;
-            this.UpCam_radioButton.TabStop = true;
-            this.UpCam_radioButton.Text = "Up looking camera";
-            this.UpCam_radioButton.UseVisualStyleBackColor = true;
-            this.UpCam_radioButton.CheckedChanged += new System.EventHandler(this.UpCam_radioButton_CheckedChanged);
             // 
             // Algorithm_Measure_button
             // 
@@ -9439,27 +9459,6 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
-            // FunctionExplanation_textBox
-            // 
-            this.FunctionExplanation_textBox.BackColor = System.Drawing.SystemColors.Window;
-            this.FunctionExplanation_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.FunctionExplanation_textBox.Location = new System.Drawing.Point(1032, 279);
-            this.FunctionExplanation_textBox.Multiline = true;
-            this.FunctionExplanation_textBox.Name = "FunctionExplanation_textBox";
-            this.FunctionExplanation_textBox.ReadOnly = true;
-            this.FunctionExplanation_textBox.Size = new System.Drawing.Size(198, 127);
-            this.FunctionExplanation_textBox.TabIndex = 265;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(6, 79);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(183, 73);
-            this.textBox1.TabIndex = 307;
-            this.textBox1.Text = "Nominal nozzle tip sizes (diameter):\r\n(in / out)\r\n#1: 0.5 / 1.0       #4: 2.4 / 4" +
-    ".0 \r\n#2: 0.8 / 1.5       #5: 4.0 / 6.2\r\n#3: 1.4 / 2.2       #6: 7.5 / 9.0";
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -9586,11 +9585,13 @@
             this.tabControlPages.ResumeLayout(false);
             this.Algorithms_tabPage.ResumeLayout(false);
             this.Algorithms_tabPage.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
+            this.AdvancedProcessing_tabControl.ResumeLayout(false);
+            this.NozzleCalibration_tabPage.ResumeLayout(false);
+            this.NozzleCalibration_tabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzlesOnVideoSetup_numericUpDown)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.G_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).EndInit();
@@ -10171,10 +10172,6 @@
         private System.Windows.Forms.CheckBox ShowPixels_checkBox;
         private System.Windows.Forms.CheckBox DrawDashedCross_checkBox;
         private System.Windows.Forms.CheckBox DrawGrid_checkBox;
-        private System.Windows.Forms.CheckBox FindComponents_checkBox;
-        private System.Windows.Forms.CheckBox FindRectangles_checkBox;
-        private System.Windows.Forms.CheckBox FindCircles_checkBox;
-        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.RadioButton DownCam_radioButton;
         private System.Windows.Forms.RadioButton UpCam_radioButton;
         private System.Windows.Forms.GroupBox groupBox6;
@@ -10376,13 +10373,18 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
         public System.Windows.Forms.DataGridView NozzlesParameters_dataGridView;
-        private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.NumericUpDown NoOfNozzlesOnVideoSetup_numericUpDown;
         private System.Windows.Forms.Label label226;
         private System.Windows.Forms.Button ChangeNozzleOnVideoSetup_button;
         private System.Windows.Forms.Button CalibrateNozzleOnVideoSetup_button;
         private System.Windows.Forms.TextBox FunctionExplanation_textBox;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.TabControl AdvancedProcessing_tabControl;
+        private System.Windows.Forms.TabPage NozzleCalibration_tabPage;
+        private System.Windows.Forms.TabPage HideAdvanced_tabPage;
+        private System.Windows.Forms.Button SpecialProcessing_button;
     }
 }
 

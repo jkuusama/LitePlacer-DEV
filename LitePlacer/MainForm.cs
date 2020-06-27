@@ -12626,9 +12626,17 @@ namespace LitePlacer
             CalibrateThis_button_Click(sender, e);      // does the same as the similar button on nozzle setup tab
         }
 
-        private void Bookmark1_button_MouseClick(object sender, MouseEventArgs e)
+        private void HideAdvanced_tabPage_Enter(object sender, EventArgs e)
         {
+            SpecialProcessing_button.Visible = true;
+            AdvancedProcessing_tabControl.Visible = false;
+        }
 
+        private void SpecialProcessing_button_Click(object sender, EventArgs e)
+        {
+            SpecialProcessing_button.Visible = false;
+            AdvancedProcessing_tabControl.SelectedTab = NozzleCalibration_tabPage;
+            AdvancedProcessing_tabControl.Visible = true;
         }
     }	// end of: 	public partial class FormMain : Form
 

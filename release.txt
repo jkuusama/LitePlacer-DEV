@@ -21,6 +21,7 @@ Bug Fixes
 * Reset tape counts moved to tapes tab, added confirmation before reset all counts 
 * More reliable camera close on exit
 * Improved camera switch, removed double operations
+* improved nozle calibration and runout compensation
 
 Known issues
 
