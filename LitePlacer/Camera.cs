@@ -699,6 +699,11 @@ namespace LitePlacer
                 ZoomFunct(ref frame, ZoomFactor);
             };
 
+            if (DrawBox)
+            {
+                DrawBoxFunct(ref frame);
+            };
+
             if (DrawCross)
             {
                 DrawCrossFunct(ref frame);
@@ -1944,7 +1949,7 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void DrawBoxFunct(Bitmap img)
+        private void DrawBoxFunct(ref Bitmap img)
         {
             Pen pen = new Pen(Color.Red, 1);
             Graphics g = Graphics.FromImage(img);
