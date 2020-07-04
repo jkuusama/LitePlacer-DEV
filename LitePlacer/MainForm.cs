@@ -1,4 +1,6 @@
-﻿using System;
+﻿    // Processing tables branch
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -47,7 +49,6 @@ namespace LitePlacer
     calls _m functions, it can consider itself a _m function.
     */
 
-    // Processing tables branch
 
     public partial class FormMain : Form
     {

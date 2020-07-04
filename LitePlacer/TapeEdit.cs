@@ -178,12 +178,14 @@ namespace LitePlacer
             }
             MainForm.DownCameraRotationFollowsA = true;
             DrawCross = Cam.DrawCross;
-            Cam.DrawCross = false;
             if (Row.Cells["CoordinatesForParts_Column"].Value != null)
             {
                 if (Row.Cells["CoordinatesForParts_Column"].Value.ToString() == "True")
                 {
                     CoordinatesForParts_checkBox.Checked = true;
+                    DrawGrid_checkBox.Enabled = true;
+                    DrawGrid_checkBox.Checked = false;
+                    Cam.DrawGrid = false;
                     double val;
                     if (double.TryParse(RotationDirect_textBox.Text.Replace(',', '.'), out val))
                     {
@@ -194,12 +196,16 @@ namespace LitePlacer
                 else
                 {
                     CoordinatesForParts_checkBox.Checked = false;
+                    DrawGrid_checkBox.Enabled = false;
+                    DrawGrid_checkBox.Checked = false;
                     EnableLastItems();
                 }
             }
             else
             {
                 CoordinatesForParts_checkBox.Checked = false;
+                DrawGrid_checkBox.Enabled = false;
+                DrawGrid_checkBox.Checked = false;
                 EnableLastItems();
             }
 
@@ -521,6 +527,17 @@ namespace LitePlacer
         private void CoordinatesForParts_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             EnableLastItems();
+            if (CoordinatesForParts_checkBox.Checked)
+            {
+                DrawGrid_checkBox.Enabled = true;
+                Cam.DrawGrid = DrawGrid_checkBox.Checked;
+            }
+            else
+            {
+                DrawGrid_checkBox.Enabled = false;
+                Cam.DrawGrid = false;
+                Cam.DrawCross = DrawCross;
+            }
         }
 
         private void ACorrection_textBox_TextChanged(object sender, EventArgs e)
@@ -541,6 +558,15 @@ namespace LitePlacer
         private void GetACorrection_button_Click(object sender, EventArgs e)
         {
             RotationDirect_textBox.Text = Cnc.CurrentA.ToString("0.000", CultureInfo.InvariantCulture);
+        }
+
+        private void DrawGrid_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Cam.DrawGrid = DrawGrid_checkBox.Checked;
+            if (!Cam.DrawGrid)
+            {
+                Cam.DrawCross = DrawCross;
+            }
         }
     }
 }
