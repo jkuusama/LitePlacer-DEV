@@ -15840,7 +15840,6 @@ namespace LitePlacer
             }
             OpticalHoming_m();
         }
-
     }	// end of: 	public partial class FormMain : Form
 
 
