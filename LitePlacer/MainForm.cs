@@ -2875,6 +2875,7 @@ namespace LitePlacer
 
 
         // =================================================================================
+
         private bool StartDownCamera_m()
         {
             UpCamera.Active = false;
@@ -3125,10 +3126,9 @@ namespace LitePlacer
                 DownCam_comboBox.Items.Add("----");
                 DownCameraStatus_label.Text = "No Cam";
             }
-            if (
-                (Devices.Count > Setting.DownCam_index) && (Setting.DownCam_index > 0))
+            if (DownCam_comboBox.Items.Contains(Setting.Downcam_Name))
             {
-                DownCam_comboBox.SelectedIndex = Setting.DownCam_index;
+                DownCam_comboBox.SelectedItem = Setting.Downcam_Name;
             }
             else
             {
@@ -3151,10 +3151,9 @@ namespace LitePlacer
                     DisplayText("Device " + i.ToString(CultureInfo.InvariantCulture) + ": " + Devices[i]);
                 }
             }
-            if ((Devices.Count > Setting.UpCam_index) && (Setting.UpCam_index > 0))   // default to first:
+            if (UpCam_comboBox.Items.Contains(Setting.Upcam_Name))
             {
-                DisplayText("UpCam_comboBox.SelectedIndex= " + Setting.UpCam_index.ToString());
-                UpCam_comboBox.SelectedIndex = Setting.UpCam_index;
+                UpCam_comboBox.SelectedItem = Setting.Upcam_Name;
             }
             else
             {
@@ -3273,8 +3272,6 @@ namespace LitePlacer
 
         private void DownCam_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString(CultureInfo.InvariantCulture));
-            Setting.DownCam_index = DownCam_comboBox.SelectedIndex;
             List<string> Monikers = DownCamera.GetMonikerStrings();
             if (Monikers.Count == 0)
             {
@@ -3283,6 +3280,7 @@ namespace LitePlacer
                 DownCamera.MonikerString = "-no camera-";
                 return;
             }
+            Setting.Downcam_Name = DownCam_comboBox.SelectedItem.ToString();
             Setting.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
        }
@@ -3309,8 +3307,6 @@ namespace LitePlacer
         // ====
         private void UpCam_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString(CultureInfo.InvariantCulture));
-            Setting.UpCam_index = UpCam_comboBox.SelectedIndex;
             List<string> Monikers = new List<string>();
             Monikers.Add("-no camera-");
             Monikers.AddRange(UpCamera.GetMonikerStrings());
@@ -3321,6 +3317,7 @@ namespace LitePlacer
                 UpCamera.MonikerString = "-no camera-";
                 return;
             }
+            Setting.Upcam_Name = UpCam_comboBox.SelectedItem.ToString();
             Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
         }
