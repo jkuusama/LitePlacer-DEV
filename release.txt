@@ -1,10 +1,11 @@
-Build date 03/07/2020
+Build date 07/05/2020
 
 New Features, significant changes
 
-* 
-
+---
 
 Bug Fixes
 
-* typo fix
+* Grid drawing in tape assignment can now be selected
+* Up camera assignment was forgotten in most cases
+* Minor typo fix
