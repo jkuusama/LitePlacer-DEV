@@ -1,3 +1,5 @@
+    // BugFix branch
+
 #define TINYG_SHORTUNITS
 // Some firmvare versions use units in millions, some don't. If not, comment out the above line.
 
@@ -48,7 +50,6 @@ namespace LitePlacer
     The naming convention is xxx_m() for functions that have already displayed an error message to user. If a function only
     calls _m functions, it can consider itself a _m function.
     */
-    // BugFix
 
     public partial class FormMain : Form
     {
@@ -3557,10 +3558,10 @@ namespace LitePlacer
                 DownCam_comboBox.Items.Add("----");
                 CameraStatus_label.Text = "No Cam";
             }
-            if (
-                (Devices.Count > Setting.DownCam_index) && (Setting.DownCam_index > 0))
+
+            if (DownCam_comboBox.Items.Contains(Setting.Downcam_Name))
             {
-                DownCam_comboBox.SelectedIndex = Setting.DownCam_index;
+                DownCam_comboBox.SelectedItem = Setting.Downcam_Name;
             }
             else
             {
@@ -3576,7 +3577,6 @@ namespace LitePlacer
             UpCam_comboBox.Items.Clear();
             UpCam_comboBox.Items.Add("-- none --");
 
-            int d = Setting.UpCam_index;
             if (Devices.Count != 0)
             {
                 for (int i = 0; i < Devices.Count; i++)
@@ -3585,17 +3585,15 @@ namespace LitePlacer
                     DisplayText("Device " + i.ToString(CultureInfo.InvariantCulture) + ": " + Devices[i]);
                 }
             }
-            if ((Devices.Count > Setting.UpCam_index) && (Setting.UpCam_index > 0))
+            if (UpCam_comboBox.Items.Contains(Setting.Upcam_Name))
             {
-                DisplayText("UpCam_comboBox.SelectedIndex= " + Setting.UpCam_index.ToString(CultureInfo.InvariantCulture));
-                UpCam_comboBox.SelectedIndex = Setting.UpCam_index;
+                UpCam_comboBox.SelectedItem = Setting.Upcam_Name;
             }
             else
             {
                 DisplayText("UpCam_comboBox.SelectedIndex= 0");
                 UpCam_comboBox.SelectedIndex = 0;  // default to first
             }
-
         }
 
 
@@ -3656,13 +3654,23 @@ namespace LitePlacer
 
         // =================================================================================
 
-        private void ConnectDownCamera_button_Click(object sender, EventArgs e)
+        private void DownCam_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayText("DownCam_comboBox.SelectedIndex= " + DownCam_comboBox.SelectedIndex.ToString(CultureInfo.InvariantCulture));
-            Setting.DownCam_index = DownCam_comboBox.SelectedIndex;
             List<string> Monikers = DownCamera.GetMonikerStrings();
+            if (Monikers.Count == 0)
+            {
+                DisplayTxt("No cameras");
+                Setting.DowncamMoniker = "-no camera-";
+                DownCamera.MonikerString = "-no camera-";
+                return;
+            }
+            Setting.Downcam_Name = DownCam_comboBox.SelectedItem.ToString();
             Setting.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
+        }
+
+        private void ConnectDownCamera_button_Click(object sender, EventArgs e)
+        {
             DownCamera.DesiredX = Setting.DownCam_DesiredX;
             DownCamera.DesiredY = Setting.DownCam_DesiredY;
             SelectCamera(DownCamera);
@@ -3681,21 +3689,26 @@ namespace LitePlacer
         }
 
         // ====
-        private void ConnectUpCamera_button_Click(object sender, EventArgs e)
+        private void UpCam_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayText("UpCam_comboBox.SelectedIndex= " + UpCam_comboBox.SelectedIndex.ToString(CultureInfo.InvariantCulture));
-            Setting.UpCam_index = UpCam_comboBox.SelectedIndex;
-            if (UpCam_comboBox.SelectedIndex == 0)  // no up camera
-            {
-                Setting.UpcamMoniker = "no camera";
-                UpCamera.MonikerString = "no camera";
-                return;
-            }
             List<string> Monikers = new List<string>();
             Monikers.Add("-no camera-");
             Monikers.AddRange(UpCamera.GetMonikerStrings());
+            if (Monikers.Count == 1)
+            {
+                DisplayTxt("No cameras");
+                Setting.UpcamMoniker = "-no camera-";
+                UpCamera.MonikerString = "-no camera-";
+                return;
+            }
+            Setting.Upcam_Name = UpCam_comboBox.SelectedItem.ToString();
             Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
+        }
+
+
+        private void ConnectUpCamera_button_Click(object sender, EventArgs e)
+        {
             UpCamera.DesiredX = Setting.UpCam_DesiredX;
             UpCamera.DesiredY = Setting.UpCam_DesiredY;
             SelectCamera(UpCamera);
@@ -15840,6 +15853,7 @@ namespace LitePlacer
             }
             OpticalHoming_m();
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

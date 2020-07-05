@@ -48,19 +48,6 @@ namespace LitePlacer
         public double CNC_SquareCorrection { get; set; } = 0;
         public int CNC_ZspeedMax { get; set; } = 1000;
 
-        public bool DownCam_DrawTicks { get; set; } = true;
-        public int DownCam_index { get; set; } = -1;
-        public bool Downcam_InvertedHomeMark { get; set; } = false;
-        public int DownCam_MeasurementDelay { get; set; } = 100;
-        public double DownCam_NozzleOffsetX { get; set; } = 75;
-        public double DownCam_NozzleOffsetY { get; set; } = 29;
-        public System.Drawing.Color DownCam_SnapshotColor { get; set; } = System.Drawing.Color.White;
-        public double DownCam_XmmPerPixel { get; set; } = 0.1;
-        public double DownCam_YmmPerPixel { get; set; } = 0.1;
-        public bool DownCam_Zoom { get; set; } = false;
-        public double DownCam_Zoomfactor { get; set; } = 1.5;
-        public string DowncamMoniker { get; set; } = "";
-
         public bool General_ShowPixels { get; set; } = false;
         public double General_BelowPCB_Allowance { get; set; } = 3;
         public bool General_CheckForUpdates { get; set; } = false;
@@ -149,7 +136,21 @@ namespace LitePlacer
         public bool Placement_SkipMeasurements { get; set; } = false;
         public bool Placement_UpdateJobGridAtRuntime { get; set; } = false;
 
-        public int UpCam_index { get; set; } = -1;
+        public bool DownCam_DrawTicks { get; set; } = true;
+        public bool Downcam_InvertedHomeMark { get; set; } = false;
+        public int DownCam_MeasurementDelay { get; set; } = 100;
+        public double DownCam_NozzleOffsetX { get; set; } = 75;
+        public double DownCam_NozzleOffsetY { get; set; } = 29;
+        public System.Drawing.Color DownCam_SnapshotColor { get; set; } = System.Drawing.Color.White;
+        public double DownCam_XmmPerPixel { get; set; } = 0.1;
+        public double DownCam_YmmPerPixel { get; set; } = 0.1;
+        public bool DownCam_Zoom { get; set; } = false;
+        public double DownCam_Zoomfactor { get; set; } = 1.5;
+        public string DowncamMoniker { get; set; } = "";
+        public string Downcam_Name { get; set; } = "";
+        public int DownCam_DesiredX { get; set; } = 1280;
+        public int DownCam_DesiredY { get; set; } = 1024;
+
         public int UpCam_MeasurementDelay { get; set; } = 100;
         public double UpCam_PositionX { get; set; } = 2;
         public double UpCam_PositionY { get; set; } = 3;
@@ -159,10 +160,9 @@ namespace LitePlacer
         public bool UpCam_Zoom { get; set; } = false;
         public double UpCam_Zoomfactor { get; set; } = 1.5;
         public string UpcamMoniker { get; set; } = "";
-        public int DownCam_DesiredX { get; set; } = 640;
-        public int DownCam_DesiredY { get; set; } = 480;
-        public int UpCam_DesiredX { get; set; } = 640;
-        public int UpCam_DesiredY { get; set; } = 480;
+        public string Upcam_Name { get; set; } = "";
+        public int UpCam_DesiredX { get; set; } = 1280;
+        public int UpCam_DesiredY { get; set; } = 1024;
     }
 
     // =================================================================================
