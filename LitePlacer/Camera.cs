@@ -694,6 +694,11 @@ namespace LitePlacer
                 // No need to do anything, next frame fixes it
             }
 
+            if (Mirror)
+            {
+                frame = MirrorFunct(ref frame);
+            };
+
             if (Zoom)
             {
                 ZoomFunct(ref frame, ZoomFactor);
@@ -1707,9 +1712,9 @@ namespace LitePlacer
 
         // ==========================================================================================================
 
-        private Bitmap MirrorFunct(Bitmap frame, bool X, bool Y)
+        private Bitmap MirrorFunct(ref Bitmap frame)
         {
-            Mirror Mfilter = new Mirror(X, Y);
+            Mirror Mfilter = new Mirror(false, true);
             // apply the MirrFilter
             Mfilter.ApplyInPlace(frame);
             return (frame);
