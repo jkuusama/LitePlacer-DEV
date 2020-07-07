@@ -80,14 +80,16 @@
             this.ResetPickupZ_button = new System.Windows.Forms.Button();
             this.ResetPlacementZ_button = new System.Windows.Forms.Button();
             this.ResetTrayID_button = new System.Windows.Forms.Button();
+            this.DrawGrid_checkBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.Nozzle_numericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // TapeEditOK_button
             // 
-            this.TapeEditOK_button.Location = new System.Drawing.Point(124, 419);
+            this.TapeEditOK_button.Location = new System.Drawing.Point(165, 516);
+            this.TapeEditOK_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TapeEditOK_button.Name = "TapeEditOK_button";
-            this.TapeEditOK_button.Size = new System.Drawing.Size(75, 23);
+            this.TapeEditOK_button.Size = new System.Drawing.Size(100, 28);
             this.TapeEditOK_button.TabIndex = 0;
             this.TapeEditOK_button.Text = "OK";
             this.TapeEditOK_button.UseVisualStyleBackColor = true;
@@ -95,18 +97,20 @@
             // 
             // ID_textBox
             // 
-            this.ID_textBox.Location = new System.Drawing.Point(16, 26);
+            this.ID_textBox.Location = new System.Drawing.Point(21, 32);
+            this.ID_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ID_textBox.Name = "ID_textBox";
-            this.ID_textBox.Size = new System.Drawing.Size(100, 20);
+            this.ID_textBox.Size = new System.Drawing.Size(132, 22);
             this.ID_textBox.TabIndex = 1;
             this.toolTip1.SetToolTip(this.ID_textBox, "Name of the tape (ex: 0805, 10k)");
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 10);
+            this.label1.Location = new System.Drawing.Point(17, 12);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(18, 13);
+            this.label1.Size = new System.Drawing.Size(21, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "ID";
             this.toolTip1.SetToolTip(this.label1, "Name of the tape (ex: 0805, 10k)");
@@ -119,9 +123,10 @@
             "-X",
             "+Y",
             "-Y"});
-            this.TapeOrientation_comboBox.Location = new System.Drawing.Point(122, 25);
+            this.TapeOrientation_comboBox.Location = new System.Drawing.Point(163, 31);
+            this.TapeOrientation_comboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TapeOrientation_comboBox.Name = "TapeOrientation_comboBox";
-            this.TapeOrientation_comboBox.Size = new System.Drawing.Size(61, 21);
+            this.TapeOrientation_comboBox.Size = new System.Drawing.Size(80, 24);
             this.TapeOrientation_comboBox.TabIndex = 3;
             this.toolTip1.SetToolTip(this.TapeOrientation_comboBox, "Which way the part count increases.\r\n+Y: Tape holes on right\r\n-Y: Tape holes on l" +
         "eft\r\n+X: Tape holes down\r\n-X: Tape holes up");
@@ -129,9 +134,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(119, 10);
+            this.label2.Location = new System.Drawing.Point(159, 12);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.Size = new System.Drawing.Size(78, 17);
             this.label2.TabIndex = 4;
             this.label2.Text = "Orientation";
             this.toolTip1.SetToolTip(this.label2, "Which way the part count increases.\r\n+Y: Tape holes on right\r\n-Y: Tape holes on l" +
@@ -145,9 +151,10 @@
             "90deg.",
             "180deg.",
             "270deg."});
-            this.TapeRotation_comboBox.Location = new System.Drawing.Point(189, 26);
+            this.TapeRotation_comboBox.Location = new System.Drawing.Point(252, 32);
+            this.TapeRotation_comboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TapeRotation_comboBox.Name = "TapeRotation_comboBox";
-            this.TapeRotation_comboBox.Size = new System.Drawing.Size(61, 21);
+            this.TapeRotation_comboBox.Size = new System.Drawing.Size(80, 24);
             this.TapeRotation_comboBox.TabIndex = 5;
             this.toolTip1.SetToolTip(this.TapeRotation_comboBox, "Manufactures put parts on tapes rotated in any which way.\r\nPart on a tape in +Y o" +
         "rientation (holes to right) and with 0 deg.\r\nrotation in the CAD data, is rotate" +
@@ -156,9 +163,10 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(186, 10);
+            this.label3.Location = new System.Drawing.Point(248, 12);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(47, 13);
+            this.label3.Size = new System.Drawing.Size(61, 17);
             this.label3.TabIndex = 6;
             this.label3.Text = "Rotation";
             this.toolTip1.SetToolTip(this.label3, "Manufactures put parts on tapes rotated in any which way.\r\nPart on a tape in +Y o" +
@@ -168,9 +176,10 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(255, 10);
+            this.label4.Location = new System.Drawing.Point(340, 12);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(39, 13);
+            this.label4.Size = new System.Drawing.Size(51, 17);
             this.label4.TabIndex = 8;
             this.label4.Text = "Nozzle";
             this.toolTip1.SetToolTip(this.label4, "Manufactures put parts on tapes rotated in any which way.\r\nPart on a tape in +Y o" +
@@ -179,18 +188,20 @@
             // 
             // TapeOffsetX_textBox
             // 
-            this.TapeOffsetX_textBox.Location = new System.Drawing.Point(73, 116);
+            this.TapeOffsetX_textBox.Location = new System.Drawing.Point(97, 143);
+            this.TapeOffsetX_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TapeOffsetX_textBox.Name = "TapeOffsetX_textBox";
-            this.TapeOffsetX_textBox.Size = new System.Drawing.Size(48, 20);
+            this.TapeOffsetX_textBox.Size = new System.Drawing.Size(63, 22);
             this.TapeOffsetX_textBox.TabIndex = 9;
             this.toolTip1.SetToolTip(this.TapeOffsetX_textBox, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
         " part holder or somethign like that,\r\nyou can set a non-standard measures here.");
             // 
             // TapePitch_textBox
             // 
-            this.TapePitch_textBox.Location = new System.Drawing.Point(19, 116);
+            this.TapePitch_textBox.Location = new System.Drawing.Point(25, 143);
+            this.TapePitch_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TapePitch_textBox.Name = "TapePitch_textBox";
-            this.TapePitch_textBox.Size = new System.Drawing.Size(48, 20);
+            this.TapePitch_textBox.Size = new System.Drawing.Size(63, 22);
             this.TapePitch_textBox.TabIndex = 10;
             this.toolTip1.SetToolTip(this.TapePitch_textBox, resources.GetString("TapePitch_textBox.ToolTip"));
             this.TapePitch_textBox.TextChanged += new System.EventHandler(this.TapePitch_textBox_TextChanged);
@@ -198,9 +209,10 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(70, 100);
+            this.label5.Location = new System.Drawing.Point(93, 123);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 13);
+            this.label5.Size = new System.Drawing.Size(59, 17);
             this.label5.TabIndex = 12;
             this.label5.Text = "Offset X";
             this.toolTip1.SetToolTip(this.label5, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
@@ -209,23 +221,25 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 100);
+            this.label6.Location = new System.Drawing.Point(21, 123);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 13);
+            this.label6.Size = new System.Drawing.Size(68, 17);
             this.label6.TabIndex = 13;
             this.label6.Text = "Part pitch";
             this.toolTip1.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
             // 
             // Nozzle_numericUpDown
             // 
-            this.Nozzle_numericUpDown.Location = new System.Drawing.Point(256, 26);
+            this.Nozzle_numericUpDown.Location = new System.Drawing.Point(341, 32);
+            this.Nozzle_numericUpDown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Nozzle_numericUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.Nozzle_numericUpDown.Name = "Nozzle_numericUpDown";
-            this.Nozzle_numericUpDown.Size = new System.Drawing.Size(37, 20);
+            this.Nozzle_numericUpDown.Size = new System.Drawing.Size(49, 22);
             this.Nozzle_numericUpDown.TabIndex = 7;
             this.toolTip1.SetToolTip(this.Nozzle_numericUpDown, "Which nozzle to use for these parts");
             this.Nozzle_numericUpDown.Value = new decimal(new int[] {
@@ -260,18 +274,20 @@
             "32/28mm",
             "32/32mm",
             "custom"});
-            this.TapeWidth_comboBox.Location = new System.Drawing.Point(16, 73);
+            this.TapeWidth_comboBox.Location = new System.Drawing.Point(21, 90);
+            this.TapeWidth_comboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TapeWidth_comboBox.Name = "TapeWidth_comboBox";
-            this.TapeWidth_comboBox.Size = new System.Drawing.Size(77, 21);
+            this.TapeWidth_comboBox.Size = new System.Drawing.Size(101, 24);
             this.TapeWidth_comboBox.TabIndex = 11;
             this.toolTip1.SetToolTip(this.TapeWidth_comboBox, "Select a standard size");
             this.TapeWidth_comboBox.SelectedIndexChanged += new System.EventHandler(this.TapeWidth_comboBox_SelectedIndexChanged);
             // 
             // TapeOffsetY_textBox
             // 
-            this.TapeOffsetY_textBox.Location = new System.Drawing.Point(127, 116);
+            this.TapeOffsetY_textBox.Location = new System.Drawing.Point(169, 143);
+            this.TapeOffsetY_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TapeOffsetY_textBox.Name = "TapeOffsetY_textBox";
-            this.TapeOffsetY_textBox.Size = new System.Drawing.Size(48, 20);
+            this.TapeOffsetY_textBox.Size = new System.Drawing.Size(63, 22);
             this.TapeOffsetY_textBox.TabIndex = 14;
             this.toolTip1.SetToolTip(this.TapeOffsetY_textBox, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
         " part holder or somethign like that,\r\nyou can set a non-standard measures here.");
@@ -279,9 +295,10 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(124, 100);
+            this.label7.Location = new System.Drawing.Point(165, 123);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(45, 13);
+            this.label7.Size = new System.Drawing.Size(59, 17);
             this.label7.TabIndex = 15;
             this.label7.Text = "Offset Y";
             this.toolTip1.SetToolTip(this.label7, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
@@ -290,18 +307,20 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(16, 57);
+            this.label8.Location = new System.Drawing.Point(21, 70);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(63, 13);
+            this.label8.Size = new System.Drawing.Size(81, 17);
             this.label8.TabIndex = 17;
             this.label8.Text = "Tape Width";
             this.toolTip1.SetToolTip(this.label8, "Select a standard size");
             // 
             // Capacity_textBox
             // 
-            this.Capacity_textBox.Location = new System.Drawing.Point(379, 25);
+            this.Capacity_textBox.Location = new System.Drawing.Point(505, 31);
+            this.Capacity_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Capacity_textBox.Name = "Capacity_textBox";
-            this.Capacity_textBox.Size = new System.Drawing.Size(48, 20);
+            this.Capacity_textBox.Size = new System.Drawing.Size(63, 22);
             this.Capacity_textBox.TabIndex = 20;
             this.Capacity_textBox.Text = "1";
             this.toolTip1.SetToolTip(this.Capacity_textBox, "How many parts on a strip\r\n0: You are prompted to place a part at the location\r\n<" +
@@ -312,9 +331,10 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(376, 9);
+            this.label10.Location = new System.Drawing.Point(501, 11);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(48, 13);
+            this.label10.Size = new System.Drawing.Size(62, 17);
             this.label10.TabIndex = 21;
             this.label10.Text = "Capacity";
             this.toolTip1.SetToolTip(this.label10, "How many parts on a strip\r\n0: You are prompted to place a part at the location\r\n<" +
@@ -328,18 +348,20 @@
             "Paper (White)",
             "Black Plastic",
             "Clear Plastic"});
-            this.Type_comboBox.Location = new System.Drawing.Point(122, 73);
+            this.Type_comboBox.Location = new System.Drawing.Point(163, 90);
+            this.Type_comboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Type_comboBox.Name = "Type_comboBox";
-            this.Type_comboBox.Size = new System.Drawing.Size(114, 21);
+            this.Type_comboBox.Size = new System.Drawing.Size(151, 24);
             this.Type_comboBox.TabIndex = 22;
             this.toolTip1.SetToolTip(this.Type_comboBox, "What vision algorithm is used");
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(119, 57);
+            this.label11.Location = new System.Drawing.Point(159, 70);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(31, 13);
+            this.label11.Size = new System.Drawing.Size(40, 17);
             this.label11.TabIndex = 23;
             this.label11.Text = "Type";
             this.toolTip1.SetToolTip(this.label11, "What optical filter set is used");
@@ -347,18 +369,20 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(310, 9);
+            this.label12.Location = new System.Drawing.Point(413, 11);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(50, 13);
+            this.label12.Size = new System.Drawing.Size(65, 17);
             this.label12.TabIndex = 25;
             this.label12.Text = "Next part";
             this.toolTip1.SetToolTip(this.label12, "Number of next part used for placement");
             // 
             // NextPart_textBox
             // 
-            this.NextPart_textBox.Location = new System.Drawing.Point(313, 25);
+            this.NextPart_textBox.Location = new System.Drawing.Point(417, 31);
+            this.NextPart_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.NextPart_textBox.Name = "NextPart_textBox";
-            this.NextPart_textBox.Size = new System.Drawing.Size(48, 20);
+            this.NextPart_textBox.Size = new System.Drawing.Size(63, 22);
             this.NextPart_textBox.TabIndex = 24;
             this.NextPart_textBox.Text = "1";
             this.toolTip1.SetToolTip(this.NextPart_textBox, "Number of next part used for placement");
@@ -367,18 +391,20 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(67, 154);
+            this.label13.Location = new System.Drawing.Point(89, 190);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(36, 13);
+            this.label13.Size = new System.Drawing.Size(48, 17);
             this.label13.TabIndex = 29;
             this.label13.Text = "First Y";
             this.toolTip1.SetToolTip(this.label13, "Location of first hole/alingment mark/part");
             // 
             // FirstY_textBox
             // 
-            this.FirstY_textBox.Location = new System.Drawing.Point(70, 170);
+            this.FirstY_textBox.Location = new System.Drawing.Point(93, 209);
+            this.FirstY_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.FirstY_textBox.Name = "FirstY_textBox";
-            this.FirstY_textBox.Size = new System.Drawing.Size(48, 20);
+            this.FirstY_textBox.Size = new System.Drawing.Size(63, 22);
             this.FirstY_textBox.TabIndex = 28;
             this.toolTip1.SetToolTip(this.FirstY_textBox, "Location of first hole/alingment mark/part");
             this.FirstY_textBox.TextChanged += new System.EventHandler(this.FirstY_textBox_TextChanged);
@@ -386,18 +412,20 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(13, 154);
+            this.label14.Location = new System.Drawing.Point(17, 190);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(36, 13);
+            this.label14.Size = new System.Drawing.Size(48, 17);
             this.label14.TabIndex = 27;
             this.label14.Text = "First X";
             this.toolTip1.SetToolTip(this.label14, "Location of first hole/alingment mark/part");
             // 
             // FirstX_textBox
             // 
-            this.FirstX_textBox.Location = new System.Drawing.Point(16, 170);
+            this.FirstX_textBox.Location = new System.Drawing.Point(21, 209);
+            this.FirstX_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.FirstX_textBox.Name = "FirstX_textBox";
-            this.FirstX_textBox.Size = new System.Drawing.Size(48, 20);
+            this.FirstX_textBox.Size = new System.Drawing.Size(63, 22);
             this.FirstX_textBox.TabIndex = 26;
             this.toolTip1.SetToolTip(this.FirstX_textBox, "Location of first hole/alingment mark/part");
             this.FirstX_textBox.TextChanged += new System.EventHandler(this.FirstX_textBox_TextChanged);
@@ -405,9 +433,10 @@
             // LastY_label
             // 
             this.LastY_label.AutoSize = true;
-            this.LastY_label.Location = new System.Drawing.Point(67, 293);
+            this.LastY_label.Location = new System.Drawing.Point(88, 400);
+            this.LastY_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LastY_label.Name = "LastY_label";
-            this.LastY_label.Size = new System.Drawing.Size(37, 13);
+            this.LastY_label.Size = new System.Drawing.Size(48, 17);
             this.LastY_label.TabIndex = 33;
             this.LastY_label.Text = "Last Y";
             this.toolTip1.SetToolTip(this.LastY_label, "Location of last hole/alingment mark/part");
@@ -415,9 +444,10 @@
             // LastY_textBox
             // 
             this.LastY_textBox.Enabled = false;
-            this.LastY_textBox.Location = new System.Drawing.Point(70, 309);
+            this.LastY_textBox.Location = new System.Drawing.Point(92, 419);
+            this.LastY_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LastY_textBox.Name = "LastY_textBox";
-            this.LastY_textBox.Size = new System.Drawing.Size(48, 20);
+            this.LastY_textBox.Size = new System.Drawing.Size(63, 22);
             this.LastY_textBox.TabIndex = 32;
             this.toolTip1.SetToolTip(this.LastY_textBox, "Location of last hole/alingment mark/part");
             this.LastY_textBox.TextChanged += new System.EventHandler(this.LastY_textBox_TextChanged);
@@ -425,9 +455,10 @@
             // LastX_label
             // 
             this.LastX_label.AutoSize = true;
-            this.LastX_label.Location = new System.Drawing.Point(13, 293);
+            this.LastX_label.Location = new System.Drawing.Point(16, 400);
+            this.LastX_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LastX_label.Name = "LastX_label";
-            this.LastX_label.Size = new System.Drawing.Size(37, 13);
+            this.LastX_label.Size = new System.Drawing.Size(48, 17);
             this.LastX_label.TabIndex = 31;
             this.LastX_label.Text = "Last X";
             this.toolTip1.SetToolTip(this.LastX_label, "Location of last hole/alingment mark/part");
@@ -435,9 +466,10 @@
             // LastX_textBox
             // 
             this.LastX_textBox.Enabled = false;
-            this.LastX_textBox.Location = new System.Drawing.Point(16, 309);
+            this.LastX_textBox.Location = new System.Drawing.Point(20, 419);
+            this.LastX_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LastX_textBox.Name = "LastX_textBox";
-            this.LastX_textBox.Size = new System.Drawing.Size(48, 20);
+            this.LastX_textBox.Size = new System.Drawing.Size(63, 22);
             this.LastX_textBox.TabIndex = 30;
             this.toolTip1.SetToolTip(this.LastX_textBox, "Location of last hole/alingment mark/part");
             this.LastX_textBox.TextChanged += new System.EventHandler(this.LastX_textBox_TextChanged);
@@ -445,9 +477,10 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(364, 154);
+            this.label17.Location = new System.Drawing.Point(485, 190);
+            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(67, 13);
+            this.label17.Size = new System.Drawing.Size(87, 17);
             this.label17.TabIndex = 42;
             this.label17.Text = "Placement Z";
             this.toolTip1.SetToolTip(this.label17, "Z values used in pickup and placement.\r\nIf reset, values are measured when first " +
@@ -455,9 +488,10 @@
             // 
             // PlacementZ_textBox
             // 
-            this.PlacementZ_textBox.Location = new System.Drawing.Point(367, 170);
+            this.PlacementZ_textBox.Location = new System.Drawing.Point(489, 209);
+            this.PlacementZ_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PlacementZ_textBox.Name = "PlacementZ_textBox";
-            this.PlacementZ_textBox.Size = new System.Drawing.Size(48, 20);
+            this.PlacementZ_textBox.Size = new System.Drawing.Size(63, 22);
             this.PlacementZ_textBox.TabIndex = 41;
             this.toolTip1.SetToolTip(this.PlacementZ_textBox, "Z values used in pickup and placement.\r\nIf reset, values are measured when first " +
         "needed.\r\n");
@@ -466,9 +500,10 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(310, 154);
+            this.label18.Location = new System.Drawing.Point(413, 190);
+            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(50, 13);
+            this.label18.Size = new System.Drawing.Size(63, 17);
             this.label18.TabIndex = 40;
             this.label18.Text = "Pickup Z";
             this.toolTip1.SetToolTip(this.label18, "Z values used in pickup and placement.\r\nIf reset, values are measured when first " +
@@ -476,9 +511,10 @@
             // 
             // PickupZ_textBox
             // 
-            this.PickupZ_textBox.Location = new System.Drawing.Point(313, 170);
+            this.PickupZ_textBox.Location = new System.Drawing.Point(417, 209);
+            this.PickupZ_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PickupZ_textBox.Name = "PickupZ_textBox";
-            this.PickupZ_textBox.Size = new System.Drawing.Size(48, 20);
+            this.PickupZ_textBox.Size = new System.Drawing.Size(63, 22);
             this.PickupZ_textBox.TabIndex = 39;
             this.toolTip1.SetToolTip(this.PickupZ_textBox, "Z values used in pickup and placement.\r\nIf reset, values are measured when first " +
         "needed.\r\n");
@@ -487,9 +523,10 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(310, 57);
+            this.label19.Location = new System.Drawing.Point(413, 70);
+            this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(42, 13);
+            this.label19.Size = new System.Drawing.Size(54, 17);
             this.label19.TabIndex = 48;
             this.label19.Text = "Tray ID";
             this.toolTip1.SetToolTip(this.label19, "Name of tray (--: not part of a tray)\r\n\r\nTray is a collection of tapes, usually o" +
@@ -498,17 +535,19 @@
             // 
             // TrayID_textBox
             // 
-            this.TrayID_textBox.Location = new System.Drawing.Point(313, 73);
+            this.TrayID_textBox.Location = new System.Drawing.Point(417, 90);
+            this.TrayID_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TrayID_textBox.Name = "TrayID_textBox";
-            this.TrayID_textBox.Size = new System.Drawing.Size(100, 20);
+            this.TrayID_textBox.Size = new System.Drawing.Size(132, 22);
             this.TrayID_textBox.TabIndex = 47;
             this.toolTip1.SetToolTip(this.TrayID_textBox, "Optional");
             // 
             // GetFirstPosition_button
             // 
-            this.GetFirstPosition_button.Location = new System.Drawing.Point(48, 196);
+            this.GetFirstPosition_button.Location = new System.Drawing.Point(64, 241);
+            this.GetFirstPosition_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GetFirstPosition_button.Name = "GetFirstPosition_button";
-            this.GetFirstPosition_button.Size = new System.Drawing.Size(102, 23);
+            this.GetFirstPosition_button.Size = new System.Drawing.Size(136, 28);
             this.GetFirstPosition_button.TabIndex = 36;
             this.GetFirstPosition_button.Text = "Get current ";
             this.toolTip1.SetToolTip(this.GetFirstPosition_button, "move current X and Y position to the boxes");
@@ -518,9 +557,10 @@
             // GetLastPosition_button
             // 
             this.GetLastPosition_button.Enabled = false;
-            this.GetLastPosition_button.Location = new System.Drawing.Point(16, 335);
+            this.GetLastPosition_button.Location = new System.Drawing.Point(20, 451);
+            this.GetLastPosition_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GetLastPosition_button.Name = "GetLastPosition_button";
-            this.GetLastPosition_button.Size = new System.Drawing.Size(102, 23);
+            this.GetLastPosition_button.Size = new System.Drawing.Size(136, 28);
             this.GetLastPosition_button.TabIndex = 38;
             this.GetLastPosition_button.Text = "Get current ";
             this.toolTip1.SetToolTip(this.GetLastPosition_button, "move current X and Y position to the boxes");
@@ -529,9 +569,10 @@
             // 
             // GetPickupZ_button
             // 
-            this.GetPickupZ_button.Location = new System.Drawing.Point(313, 225);
+            this.GetPickupZ_button.Location = new System.Drawing.Point(417, 277);
+            this.GetPickupZ_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GetPickupZ_button.Name = "GetPickupZ_button";
-            this.GetPickupZ_button.Size = new System.Drawing.Size(47, 23);
+            this.GetPickupZ_button.Size = new System.Drawing.Size(63, 28);
             this.GetPickupZ_button.TabIndex = 44;
             this.GetPickupZ_button.Text = "Get";
             this.toolTip1.SetToolTip(this.GetPickupZ_button, "move current Z position to the box");
@@ -540,9 +581,10 @@
             // 
             // GetPlacementZ_button
             // 
-            this.GetPlacementZ_button.Location = new System.Drawing.Point(368, 225);
+            this.GetPlacementZ_button.Location = new System.Drawing.Point(491, 277);
+            this.GetPlacementZ_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GetPlacementZ_button.Name = "GetPlacementZ_button";
-            this.GetPlacementZ_button.Size = new System.Drawing.Size(47, 23);
+            this.GetPlacementZ_button.Size = new System.Drawing.Size(63, 28);
             this.GetPlacementZ_button.TabIndex = 46;
             this.GetPlacementZ_button.Text = "Get";
             this.toolTip1.SetToolTip(this.GetPlacementZ_button, "move current Z position to the box");
@@ -552,18 +594,20 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(124, 154);
+            this.label9.Location = new System.Drawing.Point(165, 190);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(47, 13);
+            this.label9.Size = new System.Drawing.Size(61, 17);
             this.label9.TabIndex = 52;
             this.label9.Text = "Rotation";
             this.toolTip1.SetToolTip(this.label9, "Location of last hole/alingment mark/part");
             // 
             // RotationDirect_textBox
             // 
-            this.RotationDirect_textBox.Location = new System.Drawing.Point(124, 170);
+            this.RotationDirect_textBox.Location = new System.Drawing.Point(165, 209);
+            this.RotationDirect_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RotationDirect_textBox.Name = "RotationDirect_textBox";
-            this.RotationDirect_textBox.Size = new System.Drawing.Size(48, 20);
+            this.RotationDirect_textBox.Size = new System.Drawing.Size(63, 22);
             this.RotationDirect_textBox.TabIndex = 51;
             this.RotationDirect_textBox.Text = "0.0";
             this.toolTip1.SetToolTip(this.RotationDirect_textBox, "Location of last hole/alingment mark/part");
@@ -572,9 +616,10 @@
             // CoordinatesForParts_checkBox
             // 
             this.CoordinatesForParts_checkBox.AutoSize = true;
-            this.CoordinatesForParts_checkBox.Location = new System.Drawing.Point(16, 241);
+            this.CoordinatesForParts_checkBox.Location = new System.Drawing.Point(21, 297);
+            this.CoordinatesForParts_checkBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CoordinatesForParts_checkBox.Name = "CoordinatesForParts_checkBox";
-            this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(141, 17);
+            this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(188, 21);
             this.CoordinatesForParts_checkBox.TabIndex = 50;
             this.CoordinatesForParts_checkBox.Text = "Coordinates are for parts";
             this.toolTip1.SetToolTip(this.CoordinatesForParts_checkBox, "Parts are picked from position shown in camera view,\r\nvision regocnition is not u" +
@@ -585,9 +630,10 @@
             // UseNozzleCoordinates_checkBox
             // 
             this.UseNozzleCoordinates_checkBox.AutoSize = true;
-            this.UseNozzleCoordinates_checkBox.Location = new System.Drawing.Point(16, 264);
+            this.UseNozzleCoordinates_checkBox.Location = new System.Drawing.Point(21, 358);
+            this.UseNozzleCoordinates_checkBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.UseNozzleCoordinates_checkBox.Name = "UseNozzleCoordinates_checkBox";
-            this.UseNozzleCoordinates_checkBox.Size = new System.Drawing.Size(148, 17);
+            this.UseNozzleCoordinates_checkBox.Size = new System.Drawing.Size(197, 21);
             this.UseNozzleCoordinates_checkBox.TabIndex = 53;
             this.UseNozzleCoordinates_checkBox.Text = "Coordinates are for nozzle";
             this.toolTip1.SetToolTip(this.UseNozzleCoordinates_checkBox, "To pck up from the current nozzle position: \r\nJog nozzle to the right position, c" +
@@ -597,9 +643,10 @@
             // 
             // TapeEditCancel_button
             // 
-            this.TapeEditCancel_button.Location = new System.Drawing.Point(259, 419);
+            this.TapeEditCancel_button.Location = new System.Drawing.Point(345, 516);
+            this.TapeEditCancel_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TapeEditCancel_button.Name = "TapeEditCancel_button";
-            this.TapeEditCancel_button.Size = new System.Drawing.Size(75, 23);
+            this.TapeEditCancel_button.Size = new System.Drawing.Size(100, 28);
             this.TapeEditCancel_button.TabIndex = 16;
             this.TapeEditCancel_button.Text = "Cancel";
             this.TapeEditCancel_button.UseVisualStyleBackColor = true;
@@ -607,9 +654,10 @@
             // 
             // ResetPickupZ_button
             // 
-            this.ResetPickupZ_button.Location = new System.Drawing.Point(313, 196);
+            this.ResetPickupZ_button.Location = new System.Drawing.Point(417, 241);
+            this.ResetPickupZ_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ResetPickupZ_button.Name = "ResetPickupZ_button";
-            this.ResetPickupZ_button.Size = new System.Drawing.Size(48, 23);
+            this.ResetPickupZ_button.Size = new System.Drawing.Size(64, 28);
             this.ResetPickupZ_button.TabIndex = 43;
             this.ResetPickupZ_button.Text = "Reset";
             this.ResetPickupZ_button.UseVisualStyleBackColor = true;
@@ -617,9 +665,10 @@
             // 
             // ResetPlacementZ_button
             // 
-            this.ResetPlacementZ_button.Location = new System.Drawing.Point(368, 196);
+            this.ResetPlacementZ_button.Location = new System.Drawing.Point(491, 241);
+            this.ResetPlacementZ_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ResetPlacementZ_button.Name = "ResetPlacementZ_button";
-            this.ResetPlacementZ_button.Size = new System.Drawing.Size(48, 23);
+            this.ResetPlacementZ_button.Size = new System.Drawing.Size(64, 28);
             this.ResetPlacementZ_button.TabIndex = 45;
             this.ResetPlacementZ_button.Text = "Reset";
             this.ResetPlacementZ_button.UseVisualStyleBackColor = true;
@@ -627,19 +676,33 @@
             // 
             // ResetTrayID_button
             // 
-            this.ResetTrayID_button.Location = new System.Drawing.Point(313, 99);
+            this.ResetTrayID_button.Location = new System.Drawing.Point(417, 122);
+            this.ResetTrayID_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ResetTrayID_button.Name = "ResetTrayID_button";
-            this.ResetTrayID_button.Size = new System.Drawing.Size(48, 23);
+            this.ResetTrayID_button.Size = new System.Drawing.Size(64, 28);
             this.ResetTrayID_button.TabIndex = 49;
             this.ResetTrayID_button.Text = "Reset";
             this.ResetTrayID_button.UseVisualStyleBackColor = true;
             this.ResetTrayID_button.Click += new System.EventHandler(this.ResetTrayID_button_Click);
             // 
+            // DrawGrid_checkBox
+            // 
+            this.DrawGrid_checkBox.AutoSize = true;
+            this.DrawGrid_checkBox.Location = new System.Drawing.Point(21, 326);
+            this.DrawGrid_checkBox.Margin = new System.Windows.Forms.Padding(4);
+            this.DrawGrid_checkBox.Name = "DrawGrid_checkBox";
+            this.DrawGrid_checkBox.Size = new System.Drawing.Size(93, 21);
+            this.DrawGrid_checkBox.TabIndex = 54;
+            this.DrawGrid_checkBox.Text = "Draw Grid";
+            this.DrawGrid_checkBox.UseVisualStyleBackColor = true;
+            this.DrawGrid_checkBox.CheckedChanged += new System.EventHandler(this.DrawGrid_checkBox_CheckedChanged);
+            // 
             // TapeEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 464);
+            this.ClientSize = new System.Drawing.Size(608, 571);
+            this.Controls.Add(this.DrawGrid_checkBox);
             this.Controls.Add(this.UseNozzleCoordinates_checkBox);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.RotationDirect_textBox);
@@ -690,6 +753,7 @@
             this.Controls.Add(this.ID_textBox);
             this.Controls.Add(this.TapeEditOK_button);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "TapeEditForm";
             this.Text = "Edit Tape Parameters";
             this.Load += new System.EventHandler(this.TapeEditForm_Load);
@@ -751,5 +815,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox RotationDirect_textBox;
         private System.Windows.Forms.CheckBox UseNozzleCoordinates_checkBox;
+        private System.Windows.Forms.CheckBox DrawGrid_checkBox;
     }
 }
