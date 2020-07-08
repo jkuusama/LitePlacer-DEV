@@ -3866,25 +3866,30 @@ namespace LitePlacer
                     break;
 
                 case 2:
-                    SetNozzleOffset_stage = 0;
                     Setting.DownCam_NozzleOffsetX = NozzleOffsetMarkX - Cnc.CurrentX;
                     Setting.DownCam_NozzleOffsetY = NozzleOffsetMarkY - Cnc.CurrentY;
                     NozzleOffsetX_textBox.Text = Setting.DownCam_NozzleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
                     NozzleOffsetY_textBox.Text = Setting.DownCam_NozzleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
-                    NozzleOffset_label.Visible = false;
-                    NozzleOffset_label.Text = "   ";
                     ShowMessageBox(
                         "Now, jog the Nozzle above the up camera,\n\rtake Nozzle down, jog it to the image center\n\rand set Up Camera location",
                         "Done here",
                         MessageBoxButtons.OK);
                     UpCam_radioButton.Checked = true;
+                    ResetNozzleOffsetStateMachine();
                     SelectCamera(UpCamera);
                     // SetNozzleMeasurement();
-                    Offset2Method_button.Text = "Start";
                     CNC_Z_m(0.0);
                     ZGuardOn();
                     break;
             }
+        }
+
+        private void ResetNozzleOffsetStateMachine()
+        {
+            Offset2Method_button.Text = "Start";
+            SetNozzleOffset_stage = 0;
+            NozzleOffset_label.Visible = false;
+            NozzleOffset_label.Text = "   ";
         }
 
 
@@ -4068,6 +4073,7 @@ namespace LitePlacer
         {
             Cnc.ErrorState = true;
             UpdateCncConnectionStatus();
+            ResetNozzleOffsetStateMachine();
         }
 
         public void UpdateCncConnectionStatus()
