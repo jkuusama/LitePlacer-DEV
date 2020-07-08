@@ -11163,7 +11163,7 @@ namespace LitePlacer
 
         private void CalData_button_Click(object sender, EventArgs e)
         {
-            DisplayText("Nozzles calibration data:"); 
+            DisplayText("Nozzles calibration data:");
             for (int i = 0; i < Setting.Nozzles_count; i++)
             {
                 if (Nozzle.NozzleDataAllNozzles[i].Calibrated)
@@ -11189,21 +11189,32 @@ namespace LitePlacer
                 }
             }
             DisplayText("Currently used nozzle is " + Setting.Nozzles_current.ToString() + ":");
-            if (!Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current-1].Calibrated)
+            if (Setting.Nozzles_current == 0)
             {
-                DisplayText("Not calibrated");
+                {
+                    DisplayText("No nozzle loaded");
+                }
             }
             else
             {
-                DisplayText("Calibration values:");
-                foreach (NozzleCalibrationClass.NozzlePoint p in Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current-1].CalibrationPoints)
+                if (!Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current - 1].Calibrated)
                 {
-                    DisplayText("A: " + p.Angle.ToString("0.000", CultureInfo.InvariantCulture)
-                        + ", X: " + p.X.ToString("0.000", CultureInfo.InvariantCulture)
-                        + ", Y: " + p.Y.ToString("0.000", CultureInfo.InvariantCulture));
+                    DisplayText("Not calibrated");
+                }
+                else
+                {
+                    DisplayText("Calibration values:");
+                    foreach (NozzleCalibrationClass.NozzlePoint p in Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current - 1].CalibrationPoints)
+                    {
+                        DisplayText("A: " + p.Angle.ToString("0.000", CultureInfo.InvariantCulture)
+                            + ", X: " + p.X.ToString("0.000", CultureInfo.InvariantCulture)
+                            + ", Y: " + p.Y.ToString("0.000", CultureInfo.InvariantCulture));
+                    }
                 }
             }
         }
+
+
         private void CheckCalibrationErrors(int nozzle)
         {
             double val;

@@ -24,6 +24,7 @@ using AForge;
 using AForge.Video;
 using Newtonsoft.Json;
 
+// To add a function: Add its name to the list of KnownFunctions below, and read more at SetFunctionDefaultParameters() 
 
 namespace LitePlacer
 {
@@ -32,6 +33,9 @@ namespace LitePlacer
         enum Functions_dataGridViewColumns : int { FunctionColumn, ActiveColumn };
         public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", "Grayscale", "Edge detect",
                 "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles"};
+        
+        //public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", "Grayscale", "Edge detect",
+        //        "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles", "Filter blobs"};
 
         public VideoAlgorithmsCollection VideoAlgorithms;
 
@@ -820,6 +824,12 @@ namespace LitePlacer
 
         // =====================================================================================
         // Functions parameters 
+        // =====================================================================================
+
+        // To add a function to UI: Add its name and default parameters to the case clause in function SetFunctionDefaultParameters().
+        // Enable the required parameters in UpdateParameterTargets)( and write the explanatiopn text there.
+        // Add the function to Camera.cs, section "Functions compatible with lists:"
+
 
         private void SetFunctionDefaultParameters(string FunctionName)
         {
@@ -828,6 +838,10 @@ namespace LitePlacer
             switch (FunctionName)
             {
                 // switch by the selected algorithm:  
+                case "Filter blobs":
+                    funct.parameterDouble = 10.0;
+                    break;
+
                 case "Blur":
                     break;		// no parameters
 
