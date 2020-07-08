@@ -2288,10 +2288,12 @@ namespace LitePlacer
         {
             return _Zguard;
         }
+
         private void ZGuardOn()
         {
             _Zguard = true;
         }
+
         private void ZGuardOff()
         {
             _Zguard = false;
@@ -3796,13 +3798,11 @@ namespace LitePlacer
 
         private void ZDown_button_Click(object sender, EventArgs e)
         {
-            ZGuardOff();
             CNC_Z_m(Setting.General_ZtoPCB);
         }
 
         private void ZUp_button_Click(object sender, EventArgs e)
         {
-            ZGuardOn();
             CNC_Z_m(0);
         }
 
