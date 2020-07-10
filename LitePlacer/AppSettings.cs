@@ -115,9 +115,9 @@ namespace LitePlacer
         public bool Nozzles_LastMoveFullSpeed { get; set; } = false;
         public int Nozzles_maximum { get; set; } = 10;
         public int Nozzles_Timeout { get; set; } = 5000;
-        public bool Nozzles_XYfullSpeed { get; set; } = true;
+        public bool Nozzles_XYfullSpeed { get; set; } = false;
         public double Nozzles_XYspeed { get; set; } = 500;
-        public bool Nozzles_ZfullSpeed { get; set; } = true;
+        public bool Nozzles_ZfullSpeed { get; set; } = false;
         public double Nozzles_Zspeed { get; set; } = 500;
         public double Nozzles_WarningTreshold { get; set; } = 1.0;
 
