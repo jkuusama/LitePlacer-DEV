@@ -657,7 +657,10 @@ namespace LitePlacer
             // Re-arranges functions in the UI
             AForgeFunctionDefinition funct = VideoAlgorithms.CurrentAlgorithm.FunctionList[OldPos];
             VideoAlgorithms.CurrentAlgorithm.FunctionList.RemoveAt(OldPos);
-            VideoAlgorithms.CurrentAlgorithm.FunctionList.Insert(NewPos, funct);
+            if(VideoAlgorithms.CurrentAlgorithm.FunctionList.Count <= NewPos)
+                VideoAlgorithms.CurrentAlgorithm.FunctionList.Add(funct);
+            else
+                VideoAlgorithms.CurrentAlgorithm.FunctionList.Insert(NewPos, funct);
             int col = Functions_dataGridView.CurrentCell.ColumnIndex;
             AlgorithmChange = true;
             FillFunctionTable(VideoAlgorithms.CurrentAlgorithm.Name);
