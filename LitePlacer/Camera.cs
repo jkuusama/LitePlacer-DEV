@@ -2131,7 +2131,7 @@ namespace LitePlacer
             {
                 foreach (AForgeFunction f in MeasurementFunctions)
                 {
-                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
+                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
                 }
             }
             return TemporaryFrame;
