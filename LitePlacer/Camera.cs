@@ -672,7 +672,7 @@ namespace LitePlacer
                 {
                     foreach (AForgeFunction f in DisplayFunctions)
                     {
-                        f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
+                        f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
                     }
 
                     if (FindCircles)
