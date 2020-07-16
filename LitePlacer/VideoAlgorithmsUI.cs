@@ -1144,13 +1144,13 @@ namespace LitePlacer
 
         private void G_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            VideoAlgorithms.CurrentFunction_NewR((int)G_numericUpDown.Value);
+            VideoAlgorithms.CurrentFunction_NewG((int)G_numericUpDown.Value);
             UpdateVideoProcessing();
         }
 
         private void B_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            VideoAlgorithms.CurrentFunction_NewR((int)B_numericUpDown.Value);
+            VideoAlgorithms.CurrentFunction_NewB((int)B_numericUpDown.Value);
             UpdateVideoProcessing();
         }
 
