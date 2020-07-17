@@ -191,6 +191,48 @@ namespace LitePlacer
             {
                 MainForm.DisplayText(cam + " start, moniker= " + MonikerStr);
 
+                ////experimental: disable camera autosettings and set fixed values for consistent color and brightness
+                object tempSourceObject = null;
+                try
+                {
+                    tempSourceObject = FilterInfo.CreateFilter(MonikerStr);
+                    if (tempSourceObject is AForge.Video.DirectShow.Internals.IAMVideoProcAmp)
+                    {
+                        AForge.Video.DirectShow.Internals.IAMVideoProcAmp pCamControl = (AForge.Video.DirectShow.Internals.IAMVideoProcAmp)tempSourceObject;
+                        int hr = 0; VideoProcAmpFlags videoFlag = VideoProcAmpFlags.Manual;
+                        int pMin = 0, pMax = 0, pSteppingDelta = 0, pDefault = 0;
+
+                        //set Brightness to default
+                        hr &= pCamControl.GetRange(VideoProcAmpProperty.Brightness, out pMin, out pMax, out pSteppingDelta,
+                            out pDefault, out videoFlag);
+                        hr &= pCamControl.Set(VideoProcAmpProperty.Brightness, pDefault, VideoProcAmpFlags.Manual);
+
+                        //set whitebalance to max, due to cold LED-Ring-Light
+                        hr &= pCamControl.GetRange(VideoProcAmpProperty.WhiteBalance, out pMin, out pMax, out pSteppingDelta,
+                            out pDefault, out videoFlag);
+                        hr &= pCamControl.Set(VideoProcAmpProperty.WhiteBalance, pMax, VideoProcAmpFlags.Manual);
+
+                        //set sharpness to min, for less noise and smoother picture
+                        hr &= pCamControl.GetRange(VideoProcAmpProperty.Sharpness, out pMin, out pMax, out pSteppingDelta,
+                            out pDefault, out videoFlag);
+                        hr &= pCamControl.Set(VideoProcAmpProperty.Sharpness, pMin, VideoProcAmpFlags.Manual);
+
+                        if (hr != 0)
+                            MainForm.DisplayText("video settings not adjusted: " + hr.ToString());
+                        else
+                            MainForm.DisplayText("video settings adjusted");
+                    }
+                    else
+                        MainForm.DisplayText("Camera doesnt support video settings");
+                }
+                catch
+                {
+                    MainForm.DisplayText("Failed creating device object for video settings");
+                }
+                if (tempSourceObject != null)
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(tempSourceObject);
+                ////: experimental
+                
                 // enumerate video devices
                 FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
                 // create the video source (check that the camera exists is already done
@@ -2131,7 +2173,7 @@ namespace LitePlacer
             {
                 foreach (AForgeFunction f in MeasurementFunctions)
                 {
-                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
+                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
                 }
             }
             return TemporaryFrame;

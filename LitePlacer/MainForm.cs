@@ -23,7 +23,7 @@ using System.Windows.Media;
 using System.Windows.Input;
 using System.Net;
 
-using MathNet.Numerics;
+//using MathNet.Numerics;
 using HomographyEstimation;
 
 using AForge;
@@ -2820,11 +2820,11 @@ namespace LitePlacer
                 DisplayText("Selecting, no camera");
                 return;
             }
+            DownCamera.Active = false;
+            UpCamera.Active = false;
+            cam.Active = true;
             if (KeepActive_checkBox.Checked)
             {
-                DownCamera.Active = false;
-                UpCamera.Active = false;
-                cam.Active = true;
                 if (cam == DownCamera)
                 {
                     DisplayText("DownCamera activated");
@@ -3078,16 +3078,8 @@ namespace LitePlacer
             UpCamDrawCross_checkBox.Checked = UpCamera.DrawCross;
             UpCamDrawBox_checkBox.Checked = UpCamera.DrawBox;
 
-            if (DownCamera.Active)
-            {
-                DownCameraStatus_label.Text = "Active";
-                UpCameraStatus_label.Text = "Not Active";
-            }
-            else
-            {
-                DownCameraStatus_label.Text = "Not Active";
-                UpCameraStatus_label.Text = "Active";
-            }
+            DownCameraStatus_label.Text = DownCamera.Active ? "Active" : "Not Active";
+            UpCameraStatus_label.Text = UpCamera.Active ? "Active" : "Not Active";
 
             NozzleOffset_label.Visible = false;
 
@@ -10502,14 +10494,17 @@ namespace LitePlacer
  
         private void PickColor(int X, int Y)
         {
+            Bitmap img = new Bitmap(Cam_pictureBox.Width, Cam_pictureBox.Height);
+            Cam_pictureBox.DrawToBitmap(img, new Rectangle(new System.Drawing.Point(0, 0), img.Size));
+
             if (X < 2)
                 X = 2;
-            if (X > (Cam_pictureBox.Width - 2))
-                X = Cam_pictureBox.Width - 2;
+            if (X > (img.Width - 2))
+                X = img.Width - 2;
             if (Y < 2)
                 Y = 2;
-            if (Y > (Cam_pictureBox.Height - 2))
-                X = Cam_pictureBox.Height - 2;
+            if (Y > (img.Height - 2))
+                X = img.Height - 2;
 
             int Rsum = 0;
             int Gsum = 0;
@@ -10519,7 +10514,6 @@ namespace LitePlacer
             byte B = 0;
             Color pixelColor;
             int deb = 0;
-            Bitmap img = (Bitmap)Cam_pictureBox.Image;
             if (img!=null)
             {
                 for (int ix = X - 2; ix <= X + 2; ix++)
