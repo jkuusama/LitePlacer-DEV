@@ -16,9 +16,7 @@ using AForge.Video.DirectShow;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
-
-
-
+using System.Drawing.Text;
 
 namespace LitePlacer
 {
@@ -671,8 +669,11 @@ namespace LitePlacer
         // ==========================================================================================================
         // ==========================================================================================================
 
-        Bitmap frame;
-        int CollectorCount = 0;
+        volatile int CollectorCount = 0;
+        //manually keeping track on how many threads are running, so Threadpool doesnt queue up to many
+        volatile int runningThreads = 0;
+        //maximum number of Threads set to number of logical Cores
+        readonly int maxThreads = Environment.ProcessorCount;
 
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
@@ -704,8 +705,19 @@ namespace LitePlacer
             // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
             lock (ProtectedPictureBox._locker)
             {
-                frame = (Bitmap)eventArgs.Frame.Clone();
+                //image processing now utilizes full processor power
+                //new frames get dropped if maximum capacity is reach, leading to minimal frame latency
+                if (runningThreads < maxThreads)
+                {
+                    runningThreads++;
+                    ThreadPool.QueueUserWorkItem(processNewFrame, eventArgs.Frame.Clone());
+                }
             }
+        }
+
+        private void processNewFrame(object frameObject)
+        {
+            Bitmap frame = (Bitmap)frameObject;
 
             // Even with safeguards, changing DisplayFunctions can cause errors. 
             try
@@ -795,6 +807,7 @@ namespace LitePlacer
             {
                 CollectorCount++;
             }
+            runningThreads--;
         } // end Video_NewFrame
 
         // see http://www.codeproject.com/Questions/689320/object-is-currently-in-use-elsewhere about the locker
