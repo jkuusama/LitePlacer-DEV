@@ -8164,11 +8164,15 @@ namespace LitePlacer
                     DialogResult dialogResult = ShowMessageBox(
                         "Fiducial location OK?",
                         "Confirm Fiducial",
-                        MessageBoxButtons.OKCancel
+                        MessageBoxButtons.YesNoCancel
                     );
                     if (dialogResult == DialogResult.Cancel)
                     {
                         return false;
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        i--;
                     }
                 }
                 // We could put the machine data in place at this point. However, 
