@@ -674,6 +674,8 @@ namespace LitePlacer
         volatile int runningThreads = 0;
         //maximum number of Threads set to number of logical Cores
         readonly int maxThreads = Environment.ProcessorCount;
+        //if Threadpool fails, fall back to singlethread
+        bool multithreaded = true;
 
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
@@ -703,16 +705,30 @@ namespace LitePlacer
 
 
             // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
-            lock (ProtectedPictureBox._locker)
-            {
-                //image processing now utilizes full processor power
-                //new frames get dropped if maximum capacity is reach, leading to minimal frame latency
-                if (runningThreads < maxThreads)
+            /*lock (ProtectedPictureBox._locker)
+            {*/
+                //do multithread by default, fall back to singlethread if Threadpool fails
+                //new frames get dropped if maximum processing capacity is reached
+                if (multithreaded)
                 {
-                    runningThreads++;
-                    ThreadPool.QueueUserWorkItem(processNewFrame, eventArgs.Frame.Clone());
+                    try
+                    {
+                        if (runningThreads < maxThreads)
+                        {
+                            runningThreads++;
+                            ThreadPool.QueueUserWorkItem(processNewFrame, eventArgs.Frame.Clone());
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        multithreaded = false;
+                    }
                 }
-            }
+                else
+                {
+                    processNewFrame(eventArgs.Frame.Clone());
+                }                
+            //}
         }
 
         private void processNewFrame(object frameObject)
