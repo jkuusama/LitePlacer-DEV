@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace LitePlacer
 {
-    public partial class FiducialAutoForm : Form
+    public partial class FiducialMessageBox : Form
     {
         public enum FiducialAutoResult
         {
@@ -21,12 +21,12 @@ namespace LitePlacer
 
         new public FiducialAutoResult DialogResult { get => dialogResult; set => dialogResult = value; }
 
-        public FiducialAutoForm()
+        public FiducialMessageBox()
         {
             InitializeComponent();
         }
 
-        public FiducialAutoForm(bool validMeasuredLocation)
+        public FiducialMessageBox(bool validMeasuredLocation)
         {
             InitializeComponent();
             if (!validMeasuredLocation)
