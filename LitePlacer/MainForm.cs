@@ -8158,20 +8158,21 @@ namespace LitePlacer
                     // ask user if location is ok, if it should retry MeasureFiducial_m, cancel or use the manually adjusted CNC Position
                     // This section runs a custom Dialog Box Topmost in a separate Thread to keep the Main UI responsive to
                     // mouse clicks and keydowns, so the user can move the maschine to a manual Fiducial position
-                    FiducialAutoForm messageBox = new FiducialAutoForm(measuredLocationValid);
+                    FiducialMessageBox messageBox = new FiducialMessageBox(measuredLocationValid);
                     messageBox.Show();
                     while (!messageBox.dialogFinished)
                     {
                         Application.DoEvents();
+                        Thread.Sleep(10);
                     }
                     // Get result
-                    FiducialAutoForm.FiducialAutoResult dialogResult = messageBox.DialogResult;
-                    if (dialogResult == FiducialAutoForm.FiducialAutoResult.OK)
+                    FiducialMessageBox.FiducialAutoResult dialogResult = messageBox.DialogResult;
+                    if (dialogResult == FiducialMessageBox.FiducialAutoResult.OK)
                     {
                         break;
                     }                    
-                    else if (dialogResult == FiducialAutoForm.FiducialAutoResult.Retry) { }
-                    else if (dialogResult == FiducialAutoForm.FiducialAutoResult.Manual)
+                    else if (dialogResult == FiducialMessageBox.FiducialAutoResult.Retry) { }
+                    else if (dialogResult == FiducialMessageBox.FiducialAutoResult.Manual)
                     {
                         Fiducials[i].X_machine = Cnc.CurrentX;
                         Fiducials[i].Y_machine = Cnc.CurrentY;
