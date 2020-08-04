@@ -17,6 +17,8 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
 using System.Drawing.Text;
+using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace LitePlacer
 {
@@ -675,7 +677,8 @@ namespace LitePlacer
         //maximum number of Threads set to number of logical Cores
         readonly int maxThreads = Environment.ProcessorCount;
         //if Threadpool fails, fall back to singlethread
-        bool multithreaded = true;
+        bool multithreaded = false;
+        BackgroundWorker backgroundWorker;
 
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
@@ -703,7 +706,6 @@ namespace LitePlacer
                 return;
             }
 
-
             // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
             /*lock (ProtectedPictureBox._locker)
             {*/
@@ -726,11 +728,17 @@ namespace LitePlacer
                 }
                 else
                 {
-                    processNewFrame(eventArgs.Frame.Clone());
+                    if (backgroundWorker == null)
+                    {
+                        backgroundWorker = new BackgroundWorker();
+                        backgroundWorker.DoWork += new DoWorkEventHandler(processNewFrame);
+                    }
+                    if (!backgroundWorker.IsBusy)
+                        backgroundWorker.RunWorkerAsync(eventArgs.Frame.Clone());
                 }                
             //}
         }
-
+        private void processNewFrame(object frameObject, DoWorkEventArgs e) { processNewFrame(e.Argument); }
         private void processNewFrame(object frameObject)
         {
             Bitmap frame = (Bitmap)frameObject;
