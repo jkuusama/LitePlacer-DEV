@@ -676,6 +676,7 @@ namespace LitePlacer
         readonly int maxThreads = Environment.ProcessorCount;
         //if Threadpool fails, fall back to singlethread
         bool multithreaded = true;
+        BackgroundWorker backgroundWorker;
 
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
@@ -726,11 +727,18 @@ namespace LitePlacer
                 }
                 else
                 {
-                    processNewFrame(eventArgs.Frame.Clone());
+                    if (backgroundWorker == null)
+                    {
+                        backgroundWorker = new BackgroundWorker();
+                        backgroundWorker.DoWork += new DoWorkEventHandler(processNewFrame);
+                    }
+                    if (!backgroundWorker.IsBusy)
+                        backgroundWorker.RunWorkerAsync(eventArgs.Frame.Clone());
                 }                
             //}
         }
 
+        private void processNewFrame(object sender, DoWorkEventArgs e) { processNewFrame(e.Argument); }
         private void processNewFrame(object frameObject)
         {
             Bitmap frame = (Bitmap)frameObject;
