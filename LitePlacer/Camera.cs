@@ -738,7 +738,7 @@ namespace LitePlacer
                 }                
             //}
         }
-        private void processNewFrame(object frameObject, DoWorkEventArgs e) { processNewFrame(e.Argument); }
+        private void processNewFrame(object sender, DoWorkEventArgs e) { processNewFrame(e.Argument); }
         private void processNewFrame(object frameObject)
         {
             Bitmap frame = (Bitmap)frameObject;
