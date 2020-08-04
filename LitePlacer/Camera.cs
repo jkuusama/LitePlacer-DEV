@@ -677,7 +677,7 @@ namespace LitePlacer
         //maximum number of Threads set to number of logical Cores
         readonly int maxThreads = Environment.ProcessorCount;
         //if Threadpool fails, fall back to singlethread
-        bool multithreaded = false;
+        bool multithreaded = true;
         BackgroundWorker backgroundWorker;
 
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
