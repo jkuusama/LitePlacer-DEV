@@ -8002,10 +8002,6 @@ namespace LitePlacer
 
             if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
             {
-                ShowMessageBox(
-                    "Finding fiducial: Can't regognize fiducial " + fid.Designator,
-                    "No Fiducial found",
-                    MessageBoxButtons.OK);
                 return false;
             }
             fid.X_machine = Cnc.CurrentX + X;
@@ -8154,27 +8150,39 @@ namespace LitePlacer
                 }
                 Fiducials[i].X_nominal = X_nom;
                 Fiducials[i].Y_nominal = Y_nom;
-                // And measure it's true location:
-                if (!MeasureFiducial_m(ref Fiducials[i]))
+                // As long as the position is neither confirmed nor canceled
+                while (true)
                 {
-                    return false;
-                }
-                if (Setting.Placement_FiducialConfirmation)
-                {
-                    DialogResult dialogResult = ShowMessageBox(
-                        "Fiducial location OK?",
-                        "Confirm Fiducial",
-                        MessageBoxButtons.YesNoCancel
-                    );
-                    if (dialogResult == DialogResult.Cancel)
+                    // measure and move to it's true location:
+                    bool measuredLocationValid = MeasureFiducial_m(ref Fiducials[i]);
+                    // ask user if location is ok, if it should retry MeasureFiducial_m, cancel or use the manually adjusted CNC Position
+                    // This section runs a custom Dialog Box Topmost in a separate Thread to keep the Main UI responsive to
+                    // mouse clicks and keydowns, so the user can move the maschine to a manual Fiducial position
+                    FiducialAutoForm messageBox = new FiducialAutoForm(measuredLocationValid);
+                    messageBox.Show();
+                    while (!messageBox.dialogFinished)
+                    {
+                        Application.DoEvents();
+                    }
+                    // Get result
+                    FiducialAutoForm.FiducialAutoResult dialogResult = messageBox.DialogResult;
+                    if (dialogResult == FiducialAutoForm.FiducialAutoResult.OK)
+                    {
+                        break;
+                    }                    
+                    else if (dialogResult == FiducialAutoForm.FiducialAutoResult.Retry) { }
+                    else if (dialogResult == FiducialAutoForm.FiducialAutoResult.Manual)
+                    {
+                        Fiducials[i].X_machine = Cnc.CurrentX;
+                        Fiducials[i].Y_machine = Cnc.CurrentY;
+                        break;
+                    }
+                    else
                     {
                         return false;
                     }
-                    else if (dialogResult == DialogResult.No)
-                    {
-                        i--;
-                    }
                 }
+
                 // We could put the machine data in place at this point. However, 
                 // we don't, as if the algorithms below are correct, the data will not change more than measurement error.
                 // During development, that is a good checkpoint.
