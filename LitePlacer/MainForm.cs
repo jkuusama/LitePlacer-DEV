@@ -2672,7 +2672,7 @@ namespace LitePlacer
         // Measurement is already set up
         // =====================================================================
 
-        public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y)
+        public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y, int measureTries = 8, int moveTries = 8)
         {
             DisplayText("GoToFeatureLocation_m()");
             SelectCamera(DownCamera);
@@ -2691,7 +2691,7 @@ namespace LitePlacer
             do
             {
                 // Measure location
-                for (tries = 0; tries < 8; tries++)
+                for (tries = 0; tries < measureTries; tries++)
                 {
                     if (DownCamera.Measure(out X, out Y, out res, false))
                     {
@@ -2700,7 +2700,7 @@ namespace LitePlacer
                     Thread.Sleep(80); // next frame + vibration damping
                     if (tries >= 7)
                     {
-                        DisplayText("Failed in 8 tries.");
+                        DisplayText("Failed in " + measureTries.ToString() + " tries.");
                         ShowMessageBox(
                             "Optical positioning: Can't find Feature",
                             "No found",
@@ -2722,12 +2722,12 @@ namespace LitePlacer
                 }
                 count++;
             }  // repeat this until we didn't need to move
-            while ((count < 8)
+            while ((count < moveTries)
                 && ((Math.Abs(X) > MoveTolerance)
                 || (Math.Abs(Y) > MoveTolerance)));
 
             // DownCamera.PauseProcessing = ProcessingStateSave;
-            if (count >= 7)
+            if (count >= moveTries - 1)
             {
                 ShowMessageBox(
                     "Optical positioning: Process is unstable, result is unreliable.",
@@ -8000,7 +8000,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
+            if (!GoToFeatureLocation_m(0.1, out double X, out double Y, 4, 4))
             {
                 return false;
             }
@@ -12315,6 +12315,12 @@ namespace LitePlacer
                 }
                 TinyGBoard = tg;
                 WriteAllBoardSettings_m();
+                //Disable MotorPower_timer when all motors are set to allways on
+                if(TinyGBoard.Motor1pm == "1" && TinyGBoard.Motor2pm == "1" &&
+                    TinyGBoard.Motor3pm == "1" && TinyGBoard.Motor4pm == "1")
+                {
+                    MotorPower_timer.Enabled = false;
+                }
             }
         }
 

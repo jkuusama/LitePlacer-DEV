@@ -54,10 +54,14 @@ namespace LitePlacer
 
         public void UpdateNozzleGridView()
         {
-            for (int i = 0; i < MainForm.Setting.Nozzles_count; i++)
+            if (MainForm.Setting.Nozzles_count <= MainForm.NozzlesParameters_dataGridView.Rows.Count &&
+                MainForm.Setting.Nozzles_count <= NozzleDataAllNozzles.Count)
             {
-                MainForm.NozzlesParameters_dataGridView.Rows[i].Cells["NozzleCalibrated_Column"].Value =
-                    NozzleDataAllNozzles[i].Calibrated;
+                for (int i = 0; i < MainForm.Setting.Nozzles_count; i++)
+                {
+                    MainForm.NozzlesParameters_dataGridView.Rows[i].Cells["NozzleCalibrated_Column"].Value =
+                        NozzleDataAllNozzles[i].Calibrated;
+                }
             }
             MainForm.Update_GridView(MainForm.NozzlesParameters_dataGridView);
         }
