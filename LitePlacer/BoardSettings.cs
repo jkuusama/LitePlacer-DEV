@@ -2403,7 +2403,13 @@ namespace LitePlacer
         public string Zsx { get; set; } = "0";   // z switch max [0=off,1=homing,2=limit,3=limit+homing];
         public string Asn { get; set; } = "0";   // a switch min [0=off,1=homing,2=limit,3=limit+homing];
         public string Asx { get; set; } = "0";   // a switch max [0=off,1=homing,2=limit,3=limit+homing];
+
+        public bool powerSaveEnabled()
+        {
+            return Motor1pm != "1" || Motor2pm != "1" ||
+                    Motor3pm != "1" || Motor4pm != "1";
         }
+    }
 
 
     // =================================================================================

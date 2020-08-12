@@ -348,7 +348,10 @@ namespace LitePlacer
                 }
             }
 
-            MotorPower_timer.Enabled = true;
+            if (TinyGBoard != null)
+                MotorPower_timer.Enabled = TinyGBoard.powerSaveEnabled();
+            else  
+                MotorPower_timer.Enabled = true;
             DisableLog_checkBox.Checked = Setting.General_MuteLogging;
             DisplayText("Startup completed.");
         }
@@ -12315,12 +12318,6 @@ namespace LitePlacer
                 }
                 TinyGBoard = tg;
                 WriteAllBoardSettings_m();
-                //Disable MotorPower_timer when all motors are set to allways on
-                if(TinyGBoard.Motor1pm == "1" && TinyGBoard.Motor2pm == "1" &&
-                    TinyGBoard.Motor3pm == "1" && TinyGBoard.Motor4pm == "1")
-                {
-                    MotorPower_timer.Enabled = false;
-                }
             }
         }
 
