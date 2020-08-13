@@ -5698,6 +5698,8 @@ namespace LitePlacer
 
         private void PasteRow_button_Click(object sender, EventArgs e)
         {
+            if (ClipBoardRow == null)
+                return;
             MakeJobDataDirty();
             for (int i = 0; i < JobData_GridView.ColumnCount; i++)
             {
