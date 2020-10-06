@@ -415,7 +415,7 @@ namespace LitePlacer
             };
 
             // get hole exact location:
-            if (!MainForm.GoToFeatureLocation_m(0.2, out X, out Y))
+            if (!MainForm.GoToFeatureLocation_m(0.2, out X, out Y, out double Atmp))
             {
                 MainForm.ShowMessageBox(
                     "Can't find tape hole",
@@ -736,10 +736,11 @@ namespace LitePlacer
 				return false;
 			};
 
-			// Get hole exact location:
+            // Get hole exact location:
             // We want to find the hole less than 2mm from where we think it should be. (Otherwise there is a risk
-			// of picking a wrong hole.)
-            if (!MainForm.GoToFeatureLocation_m(0.5, out HoleX, out HoleY))
+            // of picking a wrong hole.)
+            double ComponentA = 0;
+            if (!MainForm.GoToFeatureLocation_m(0.5, out HoleX, out HoleY, out ComponentA))
 			{
 				MainForm.ShowMessageBox(
 					"Can't find tape hole",
@@ -766,9 +767,10 @@ namespace LitePlacer
                     MessageBoxButtons.OK
                 );
             }
+            A -= ComponentA;
 
-			// Now, PartX, PartY, A tell the position of the part. Take Nozzle there:
-			if (!Nozzle.Move_m(PartX, PartY, A))
+            // Now, PartX, PartY, A tell the position of the part. Take Nozzle there:
+            if (!Nozzle.Move_m(PartX, PartY, A))
 			{
 				return false;
 			}

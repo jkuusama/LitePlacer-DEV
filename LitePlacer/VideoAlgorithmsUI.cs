@@ -684,7 +684,7 @@ namespace LitePlacer
             }
             cam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
             cam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
-            cam.Measure(out double X, out double Y, out int err, true);
+            cam.Measure(out double X, out double Y, out double Atmp, out int err, true);
         }
 
 

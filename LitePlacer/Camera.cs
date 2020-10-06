@@ -1215,14 +1215,14 @@ namespace LitePlacer
             {
                 if ((blob.Rectangle.Height > 400) && (blob.Rectangle.Width > 600))
                 {
-                    break;  // The whole image could be a blob, discard that
+                    continue;  // The whole image could be a blob, discard that
                 }
 
                 List<IntPoint> edgePoints = GetBlobsOutline(blobCounter, blob);     // get edge points
                 List<IntPoint> OutlineRaw = GetConvexHull(edgePoints);                 // convert to convex hull
                 if (OutlineRaw.Count < 3)
                 {
-                    break;
+                    continue;
                 }
                 // add start point to list, so we get line segments
                 OutlineRaw.Add(OutlineRaw[0]);
@@ -2264,6 +2264,7 @@ namespace LitePlacer
             string Ymms;
             string Xsize;
             string Ysize;
+            string Angle;
             string SizeXmm;
             string SizeYmm;
 
@@ -2275,10 +2276,13 @@ namespace LitePlacer
                 Ymms = String.Format("{0,6:0.000}", (FrameCenterY - Shapes[i].Center.Y) * YmmPpix);
                 Xsize = String.Format("{0,5:0.0}", Shapes[i].Xsize);
                 Ysize = String.Format("{0,5:0.0}", Shapes[i].Ysize);
+                Angle = String.Format("{0,5:0.0}", Shapes[i].Angle);
                 SizeXmm = String.Format("{0,5:0.00}", Shapes[i].Xsize * XmmPpix);
                 SizeYmm = String.Format("{0,5:0.00}", Shapes[i].Ysize * YmmPpix);
                 OutString = "pos: " + Xpxls + ", " + Ypxls + "px; " + Xmms + ", " + Ymms + "mm; " +
                     "size: " + Xsize + ", " + Ysize + "px; " + SizeXmm + ", " + SizeYmm + "mm";
+                if (true)
+                    OutString += "; angle: " + Angle + "°";
                 MainForm.DisplayText(OutString);
             }
         }
@@ -2293,10 +2297,11 @@ namespace LitePlacer
             return Math.Sqrt(X * X + Y * Y);
         }
 
-        public bool Measure(out double Xresult, out double Yresult, out int err, bool DisplayResults = false )
+        public bool Measure(out double Xresult, out double Yresult, out double Aresult, out int err, bool DisplayResults = false )
         {
             Xresult = 0.0;
             Yresult = 0.0;
+            Aresult = 0.0;
             err = 0;
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -2374,12 +2379,22 @@ namespace LitePlacer
             if (MeasurementParameters.SearchComponents)
             {
                 List<Shapes.Component> Components = FindComponentsFunct(image);
+
                 foreach (Shapes.Component comp in Components)
                 {
+                    //workaround for quadratic components
+                    while (comp.BoundingBox.Angle >= 45)
+                        comp.BoundingBox.Angle -= 90;
+                    while (comp.BoundingBox.Angle <= -45)
+                        comp.BoundingBox.Angle += 90;
+
                     Candidates.Add(new Shapes.Shape()
                     {
-                        Center = comp.Center,
-                        Angle = comp.Angle
+                        Center = comp.BoundingBox.Center,
+                        Angle = comp.BoundingBox.Angle,
+                        Xsize = comp.BoundingBox.LongsideLenght,
+                        Ysize = comp.BoundingBox.ShortSideLenght,
+                        
                     });
                 }
 
@@ -2475,6 +2490,7 @@ namespace LitePlacer
             }
             Xresult = (FilteredForSize[ResultIndex].Center.X - FrameCenterX) * XmmPpix;
             Yresult = (FrameCenterY - FilteredForSize[ResultIndex].Center.Y) * YmmPpix;
+            Aresult = FilteredForSize[ResultIndex].Angle;
 
             stopwatch.Stop();
             if (DisplayResults)
