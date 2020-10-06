@@ -7572,7 +7572,7 @@
             this.SearchComponents_checkBox.TabIndex = 253;
             this.SearchComponents_checkBox.Text = "Components";
             this.SearchComponents_checkBox.UseVisualStyleBackColor = true;
-            this.SearchComponents_checkBox.Visible = false;
+            this.SearchComponents_checkBox.Visible = true;
             this.SearchComponents_checkBox.CheckedChanged += new System.EventHandler(this.SearchComponents_checkBox_CheckedChanged);
             // 
             // SearchRectangles_checkBox
