@@ -2503,7 +2503,7 @@ namespace LitePlacer
             DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
             DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
 
-            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
+            if (!GoToFeatureLocation_m(0.1, out double X, out double Y, out double Atmp))
             {
                 return false;
             }
@@ -2517,7 +2517,7 @@ namespace LitePlacer
             do
             {
                 Tries++;
-                DownCamera.Measure(out X, out Y, out res, false);
+                DownCamera.Measure(out X, out Y, out Atmp, out res, false);
                 if (res == 1)
                 {
                     Successes++;
@@ -2675,12 +2675,13 @@ namespace LitePlacer
         // Measurement is already set up
         // =====================================================================
 
-        public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y, int measureTries = 8, int moveTries = 8)
+        public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y, out double A, int measureTries = 8, int moveTries = 8)
         {
             DisplayText("GoToFeatureLocation_m()");
             SelectCamera(DownCamera);
             X = 100;
             Y = 100;
+            A = 0;
             if (!DownCamera.IsRunning())
             {
                 DisplayText("***Camera not running", KnownColor.Red, true);
@@ -2696,7 +2697,7 @@ namespace LitePlacer
                 // Measure location
                 for (tries = 0; tries < measureTries; tries++)
                 {
-                    if (DownCamera.Measure(out X, out Y, out res, false))
+                    if (DownCamera.Measure(out X, out Y, out A, out res, false))
                     {
                         break;
                     }
@@ -8005,7 +8006,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!GoToFeatureLocation_m(0.1, out double X, out double Y, 4, 4))
+            if (!GoToFeatureLocation_m(0.1, out double X, out double Y, out double Atmp, 4, 4))
             {
                 return false;
             }
