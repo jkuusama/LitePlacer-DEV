@@ -237,7 +237,7 @@ namespace LitePlacer
                 }
                 else
                 {
-                    DialogResult dialogResult = MainForm.ShowMessageBox(
+                    DialogResult dialogResult = MessageBox.Show(
                        "SAVED SETTINGS FILE NOT FOUND. \n\n" +
                        "If this is the first time you are running this program, this is expected. " +
                        "Click OK, startup continues and the program uses built-in default values.\n\n" +
@@ -256,7 +256,7 @@ namespace LitePlacer
             {
                 MySettings s = new MySettings();
 
-                DialogResult dialogResult = MainForm.ShowMessageBox(
+                DialogResult dialogResult = MessageBox.Show(
                     "Problem loading application settings:\n" + excep.Message +
                     " \n\rExit program without saving any data? \n\r" +
                    "If \"Yes\", you lose changes since last start.\n\r" +
