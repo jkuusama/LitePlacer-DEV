@@ -32,7 +32,7 @@ using AForge.Video.DirectShow;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 
 
 namespace LitePlacer
