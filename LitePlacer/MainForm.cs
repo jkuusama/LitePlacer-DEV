@@ -1,4 +1,4 @@
-    // BugFix branch
+// BugFix branch
 
 #define TINYG_SHORTUNITS
 // Some firmvare versions use units in millions, some don't. If not, comment out the above line.
@@ -22,8 +22,6 @@ using System.Web.Script.Serialization;
 using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using System.Windows.Media;
-using System.Windows.Input;
 using System.Net;
 
 using MathNet.Numerics;
