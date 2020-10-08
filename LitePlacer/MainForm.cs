@@ -9057,26 +9057,26 @@ namespace LitePlacer
                         }
                     }
                 }
-                CadData_GridView.Rows.Add();
-                int Last = CadData_GridView.RowCount - 1;
-                CadData_GridView.Rows[Last].Cells["Component"].Value = Line[ComponentIndex];
-                CadData_GridView.Rows[Last].Cells["Value_Footprint"].Value = Line[ValueIndex] + "  |  " + Line[FootPrintIndex];
-                CadData_GridView.Rows[Last].Cells["Rotation"].Value = Line[RotationIndex];
+                int Last = CadData_GridView.Rows.Add();
+                DataGridViewRow currentRow = CadData_GridView.Rows[Last];
+                currentRow.Cells["Component"].Value = Line[ComponentIndex];
+                currentRow.Cells["Value_Footprint"].Value = Line[ValueIndex] + "  |  " + Line[FootPrintIndex];
+                currentRow.Cells["Rotation"].Value = Line[RotationIndex];
 
                 if (PlacedDataPresent)
 	            {
                     if ((Line[PlacedIndex]=="True")||(Line[PlacedIndex]=="true"))
                     {
-                        CadData_GridView.Rows[Last].Cells["Placed_column"].Value = true;
+                        currentRow.Cells["Placed_column"].Value = true;
                     }
 		            else
 	                {
-                        CadData_GridView.Rows[Last].Cells["Placed_column"].Value = false;
+                        currentRow.Cells["Placed_column"].Value = false;
 	                }
 	            }
 		        else
 	            {
-                    CadData_GridView.Rows[Last].Cells["Placed_column"].Value = false;
+                    currentRow.Cells["Placed_column"].Value = false;
 	            }
 
                 if (LayerDataPresent)
@@ -9085,14 +9085,14 @@ namespace LitePlacer
                     {
                         if (Line[X_Nominal_Index].StartsWith("-", StringComparison.Ordinal))
                         {
-                            CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "").Replace("-", "");
+                            currentRow.Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "").Replace("-", "");
                         }
                         else
                         {
-                            CadData_GridView.Rows[Last].Cells["X_nominal"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
+                            currentRow.Cells["X_nominal"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
                         }
                         double rot;
-                        if (!double.TryParse(CadData_GridView.Rows[Last].Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot))
+                        if (!double.TryParse(currentRow.Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot))
                         {
                             ShowMessageBox(
                                 "Bad data at Rotation",
@@ -9101,23 +9101,23 @@ namespace LitePlacer
                             return false;
                         }
                         rot = -rot + 180;
-                        CadData_GridView.Rows[Last].Cells["Rotation"].Value = rot.ToString(CultureInfo.InvariantCulture);
+                        currentRow.Cells["Rotation"].Value = rot.ToString(CultureInfo.InvariantCulture);
                     }
                     else
                     {
-                        CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
+                        currentRow.Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
                     }
                 }
                 else
                 {
-                    CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
+                    currentRow.Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
                 }
-                CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = Line[Y_Nominal_Index].Replace("mm", "");
-                CadData_GridView.Rows[Last].Cells["X_nominal"].Value = CadData_GridView.Rows[Last].Cells["X_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = CadData_GridView.Rows[Last].Cells["Y_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
-                CadData_GridView.Rows[Last].Cells["Y_Machine"].Value = "Nan";
-                CadData_GridView.Rows[Last].Cells["Rotation_machine"].Value = "Nan";
+                currentRow.Cells["Y_nominal"].Value = Line[Y_Nominal_Index].Replace("mm", "");
+                currentRow.Cells["X_nominal"].Value = currentRow.Cells["X_nominal"].Value.ToString().Replace(",", ".");
+                currentRow.Cells["Y_nominal"].Value = currentRow.Cells["Y_nominal"].Value.ToString().Replace(",", ".");
+                currentRow.Cells["X_Machine"].Value = "Nan";   // will be set later 
+                currentRow.Cells["Y_Machine"].Value = "Nan";
+                currentRow.Cells["Rotation_machine"].Value = "Nan";
             }   // end "for each component..."
 
             // Disable manual sorting
