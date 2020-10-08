@@ -131,7 +131,8 @@ namespace LitePlacer
         private void Form1_Load(object sender, EventArgs e)
         {
             StartingUp = true;
-            this.Size = new Size(1280, 900);
+            //this.Size = new Size(1280, 900);
+            Dump_tabPage.Parent = null;
 
             DisplayText("Application Start", KnownColor.Black, true);
             DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
@@ -3634,19 +3635,6 @@ namespace LitePlacer
         {
             DownCamera.DrawSidemarks = DownCamDrawSidemarks_checkBox.Checked;
             Setting.DownCam_DrawSidemarks = DownCamDrawSidemarks_checkBox.Checked;
-        }
-
-        // =================================================================================
-        private void ImageTest_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ImageTest_checkBox.Checked)
-            {
-                DownCamera.TestAlgorithm = true;
-            }
-            else
-            {
-                DownCamera.TestAlgorithm = false;
-            }
         }
 
         // =================================================================================
