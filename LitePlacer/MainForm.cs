@@ -32,7 +32,7 @@ using AForge.Video.DirectShow;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 
 
 namespace LitePlacer
@@ -348,7 +348,10 @@ namespace LitePlacer
                 }
             }
 
-            MotorPower_timer.Enabled = true;
+            if (TinyGBoard != null)
+                MotorPower_timer.Enabled = TinyGBoard.powerSaveEnabled();
+            else  
+                MotorPower_timer.Enabled = true;
             DisableLog_checkBox.Checked = Setting.General_MuteLogging;
             DisplayText("Startup completed.");
         }
@@ -2500,7 +2503,7 @@ namespace LitePlacer
             DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
             DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
 
-            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
+            if (!GoToFeatureLocation_m(0.1, out double X, out double Y, out double Atmp))
             {
                 return false;
             }
@@ -2514,7 +2517,7 @@ namespace LitePlacer
             do
             {
                 Tries++;
-                DownCamera.Measure(out X, out Y, out res, false);
+                DownCamera.Measure(out X, out Y, out Atmp, out res, false);
                 if (res == 1)
                 {
                     Successes++;
@@ -2672,12 +2675,13 @@ namespace LitePlacer
         // Measurement is already set up
         // =====================================================================
 
-        public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y)
+        public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y, out double A, int measureTries = 8, int moveTries = 8)
         {
             DisplayText("GoToFeatureLocation_m()");
             SelectCamera(DownCamera);
             X = 100;
             Y = 100;
+            A = 0;
             if (!DownCamera.IsRunning())
             {
                 DisplayText("***Camera not running", KnownColor.Red, true);
@@ -2691,16 +2695,16 @@ namespace LitePlacer
             do
             {
                 // Measure location
-                for (tries = 0; tries < 8; tries++)
+                for (tries = 0; tries < measureTries; tries++)
                 {
-                    if (DownCamera.Measure(out X, out Y, out res, false))
+                    if (DownCamera.Measure(out X, out Y, out A, out res, false))
                     {
                         break;
                     }
                     Thread.Sleep(80); // next frame + vibration damping
                     if (tries >= 7)
                     {
-                        DisplayText("Failed in 8 tries.");
+                        DisplayText("Failed in " + measureTries.ToString() + " tries.");
                         ShowMessageBox(
                             "Optical positioning: Can't find Feature",
                             "No found",
@@ -2722,12 +2726,12 @@ namespace LitePlacer
                 }
                 count++;
             }  // repeat this until we didn't need to move
-            while ((count < 8)
+            while ((count < moveTries)
                 && ((Math.Abs(X) > MoveTolerance)
                 || (Math.Abs(Y) > MoveTolerance)));
 
             // DownCamera.PauseProcessing = ProcessingStateSave;
-            if (count >= 7)
+            if (count >= moveTries - 1)
             {
                 ShowMessageBox(
                     "Optical positioning: Process is unstable, result is unreliable.",
@@ -5695,6 +5699,8 @@ namespace LitePlacer
 
         private void PasteRow_button_Click(object sender, EventArgs e)
         {
+            if (ClipBoardRow == null)
+                return;
             MakeJobDataDirty();
             for (int i = 0; i < JobData_GridView.ColumnCount; i++)
             {
@@ -8000,12 +8006,8 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
+            if (!GoToFeatureLocation_m(0.1, out double X, out double Y, out double Atmp, 4, 4))
             {
-                ShowMessageBox(
-                    "Finding fiducial: Can't regognize fiducial " + fid.Designator,
-                    "No Fiducial found",
-                    MessageBoxButtons.OK);
                 return false;
             }
             fid.X_machine = Cnc.CurrentX + X;
@@ -8154,23 +8156,40 @@ namespace LitePlacer
                 }
                 Fiducials[i].X_nominal = X_nom;
                 Fiducials[i].Y_nominal = Y_nom;
-                // And measure it's true location:
-                if (!MeasureFiducial_m(ref Fiducials[i]))
+                // As long as the position is neither confirmed nor canceled
+                while (true)
                 {
-                    return false;
-                }
-                if (Setting.Placement_FiducialConfirmation)
-                {
-                    DialogResult dialogResult = ShowMessageBox(
-                        "Fiducial location OK?",
-                        "Confirm Fiducial",
-                        MessageBoxButtons.OKCancel
-                    );
-                    if (dialogResult == DialogResult.Cancel)
+                    // measure and move to it's true location:
+                    bool measuredLocationValid = MeasureFiducial_m(ref Fiducials[i]);
+                    // ask user if location is ok, if it should retry MeasureFiducial_m, cancel or use the manually adjusted CNC Position
+                    // This section runs a custom Dialog Box Topmost in a separate Thread to keep the Main UI responsive to
+                    // mouse clicks and keydowns, so the user can move the maschine to a manual Fiducial position
+                    FiducialMessageBox messageBox = new FiducialMessageBox(measuredLocationValid);
+                    messageBox.Show();
+                    while (!messageBox.dialogFinished)
+                    {
+                        Application.DoEvents();
+                        Thread.Sleep(10);
+                    }
+                    // Get result
+                    FiducialMessageBox.FiducialAutoResult dialogResult = messageBox.DialogResult;
+                    if (dialogResult == FiducialMessageBox.FiducialAutoResult.OK)
+                    {
+                        break;
+                    }                    
+                    else if (dialogResult == FiducialMessageBox.FiducialAutoResult.Retry) { }
+                    else if (dialogResult == FiducialMessageBox.FiducialAutoResult.Manual)
+                    {
+                        Fiducials[i].X_machine = Cnc.CurrentX;
+                        Fiducials[i].Y_machine = Cnc.CurrentY;
+                        break;
+                    }
+                    else
                     {
                         return false;
                     }
                 }
+
                 // We could put the machine data in place at this point. However, 
                 // we don't, as if the algorithms below are correct, the data will not change more than measurement error.
                 // During development, that is a good checkpoint.

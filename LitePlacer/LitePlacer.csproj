@@ -126,7 +126,7 @@
       <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
     <Reference Include="HomographyEstimation">
-      <HintPath>..\packages\HomographyEstimation\HomographyEstimation.dll</HintPath>
+      <HintPath>..\..\HomographyEstimation\HomographyEstimation.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.8.0\lib\net40\MathNet.Numerics.dll</HintPath>
@@ -162,6 +162,12 @@
     <Compile Include="BoardSettings.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="CNC.cs" />
+    <Compile Include="FiducialMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FiducialMessageBox.Designer.cs">
+      <DependentUpon>FiducialMessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Duet3.cs" />
     <Compile Include="AskToCreate.cs">
       <SubType>Form</SubType>
@@ -169,6 +175,7 @@
     <Compile Include="AskToCreate.Designer.cs">
       <DependentUpon>AskToCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="IAMVideoProcAmp.cs" />
     <Compile Include="Nozzle.cs" />
     <Compile Include="SelectFiducialAlgorithm_Form.cs">
       <SubType>Form</SubType>
@@ -218,11 +225,15 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="VideoProcAmpProperty.cs" />
     <EmbeddedResource Include="AlgorithmName.resx">
       <DependentUpon>AlgorithmName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AskToCreate.resx">
       <DependentUpon>AskToCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FiducialMessageBox.resx">
+      <DependentUpon>FiducialMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectFiducialAlgorithm_Form.resx">
       <DependentUpon>SelectFiducialAlgorithm_Form.cs</DependentUpon>

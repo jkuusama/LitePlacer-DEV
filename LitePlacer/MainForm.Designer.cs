@@ -6704,7 +6704,7 @@
             // 
             // PasteRow_button
             // 
-            this.PasteRow_button.Location = new System.Drawing.Point(6, 164);
+            this.PasteRow_button.Location = new System.Drawing.Point(6, 135);
             this.PasteRow_button.Name = "PasteRow_button";
             this.PasteRow_button.Size = new System.Drawing.Size(110, 23);
             this.PasteRow_button.TabIndex = 24;
@@ -6714,7 +6714,7 @@
             // 
             // CopyRow_button
             // 
-            this.CopyRow_button.Location = new System.Drawing.Point(6, 135);
+            this.CopyRow_button.Location = new System.Drawing.Point(6, 106);
             this.CopyRow_button.Name = "CopyRow_button";
             this.CopyRow_button.Size = new System.Drawing.Size(110, 23);
             this.CopyRow_button.TabIndex = 23;
@@ -6724,7 +6724,7 @@
             // 
             // NewRow_button
             // 
-            this.NewRow_button.Location = new System.Drawing.Point(6, 77);
+            this.NewRow_button.Location = new System.Drawing.Point(6, 48);
             this.NewRow_button.Name = "NewRow_button";
             this.NewRow_button.Size = new System.Drawing.Size(110, 23);
             this.NewRow_button.TabIndex = 22;
@@ -6746,7 +6746,7 @@
             // 
             // DeleteComponentGroup_button
             // 
-            this.DeleteComponentGroup_button.Location = new System.Drawing.Point(6, 106);
+            this.DeleteComponentGroup_button.Location = new System.Drawing.Point(6, 77);
             this.DeleteComponentGroup_button.Name = "DeleteComponentGroup_button";
             this.DeleteComponentGroup_button.Size = new System.Drawing.Size(110, 23);
             this.DeleteComponentGroup_button.TabIndex = 16;
@@ -6757,11 +6757,11 @@
             // 
             // Down_button
             // 
-            this.Down_button.Location = new System.Drawing.Point(6, 48);
+            this.Down_button.Location = new System.Drawing.Point(66, 19);
             this.Down_button.Name = "Down_button";
-            this.Down_button.Size = new System.Drawing.Size(110, 23);
+            this.Down_button.Size = new System.Drawing.Size(50, 23);
             this.Down_button.TabIndex = 15;
-            this.Down_button.Text = "Move Down";
+            this.Down_button.Text = "▼";
             this.toolTip1.SetToolTip(this.Down_button, "Moves selected row down");
             this.Down_button.UseVisualStyleBackColor = true;
             this.Down_button.Click += new System.EventHandler(this.Down_button_Click);
@@ -6770,9 +6770,9 @@
             // 
             this.Up_button.Location = new System.Drawing.Point(6, 19);
             this.Up_button.Name = "Up_button";
-            this.Up_button.Size = new System.Drawing.Size(110, 23);
+            this.Up_button.Size = new System.Drawing.Size(50, 23);
             this.Up_button.TabIndex = 14;
-            this.Up_button.Text = "Move Up";
+            this.Up_button.Text = "▲";
             this.toolTip1.SetToolTip(this.Up_button, "Moves selected row up");
             this.Up_button.UseVisualStyleBackColor = true;
             this.Up_button.Click += new System.EventHandler(this.Up_button_Click);
@@ -7572,7 +7572,7 @@
             this.SearchComponents_checkBox.TabIndex = 253;
             this.SearchComponents_checkBox.Text = "Components";
             this.SearchComponents_checkBox.UseVisualStyleBackColor = true;
-            this.SearchComponents_checkBox.Visible = false;
+            this.SearchComponents_checkBox.Visible = true;
             this.SearchComponents_checkBox.CheckedChanged += new System.EventHandler(this.SearchComponents_checkBox_CheckedChanged);
             // 
             // SearchRectangles_checkBox
@@ -7953,11 +7953,11 @@
             // 
             // MoveDown_button
             // 
-            this.MoveDown_button.Location = new System.Drawing.Point(658, 347);
+            this.MoveDown_button.Location = new System.Drawing.Point(698, 318);
             this.MoveDown_button.Name = "MoveDown_button";
-            this.MoveDown_button.Size = new System.Drawing.Size(75, 23);
+            this.MoveDown_button.Size = new System.Drawing.Size(35, 23);
             this.MoveDown_button.TabIndex = 218;
-            this.MoveDown_button.Text = "Move Down";
+            this.MoveDown_button.Text = "▼";
             this.MoveDown_button.UseVisualStyleBackColor = true;
             this.MoveDown_button.Click += new System.EventHandler(this.MoveDown_button_Click);
             // 
@@ -7965,9 +7965,9 @@
             // 
             this.MoveUp_button.Location = new System.Drawing.Point(658, 318);
             this.MoveUp_button.Name = "MoveUp_button";
-            this.MoveUp_button.Size = new System.Drawing.Size(75, 23);
+            this.MoveUp_button.Size = new System.Drawing.Size(35, 23);
             this.MoveUp_button.TabIndex = 217;
-            this.MoveUp_button.Text = "Move Up";
+            this.MoveUp_button.Text = "▲";
             this.MoveUp_button.UseVisualStyleBackColor = true;
             this.MoveUp_button.Click += new System.EventHandler(this.MoveUp_button_Click);
             // 
