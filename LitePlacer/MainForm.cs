@@ -1,7 +1,7 @@
 // BugFix branch
 
 #define TINYG_SHORTUNITS
-// Some firmvare versions use units in millions, some don't. If not, comment out the above line.
+// Some TinyG firmvare versions use units in millions, some don't. If not, comment out the above line.
 
 using System;
 using System.Collections.Generic;
