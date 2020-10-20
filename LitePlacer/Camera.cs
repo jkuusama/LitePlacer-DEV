@@ -131,6 +131,8 @@ namespace LitePlacer
             }
         }
 
+        public double XmmPerPixel { get; set; }
+        public double YmmPerPixel { get; set; }
         public int FrameCenterX { get; set; }
         public int FrameCenterY { get; set; }
         public int FrameSizeX { get; set; }
@@ -142,8 +144,9 @@ namespace LitePlacer
         public string Id { get; set; } = "unconnected";
 
         public bool ReceivingFrames { get; set; }
-
-        public bool Mirror { get; set; }    // If image is mirrored (On upcam, more logical)
+        public bool MirrorX { get; set; }    // Mirror around X-Axis
+        public bool MirrorY { get; set; }    // Mirror around Y-Axis
+        public bool FixedPhysLocation { get; set; }
 
         // =================================================================================================
         public void ListResolutions(string MonikerStr)
@@ -563,6 +566,7 @@ namespace LitePlacer
         public bool Invert { get; set; }                    // If image is inverted (makes most sense on grayscale, looking for black stuff on light background)
         public bool DrawCross { get; set; }         // If crosshair cursor is drawn
         public bool DrawArrow { get; set; }         // If arrow is drawn
+        public bool Overlay { get; set; }           // overlay process picture with original
         public double ArrowAngle { get; set; }      // to which angle
         public bool DrawSidemarks { get; set; }     // If marks on the side of the image are drawn
         public double SideMarksX { get; set; }      // How many marks on top and bottom (X) and sides (Y)
@@ -650,13 +654,13 @@ namespace LitePlacer
 
         // =========================================================
         // Convert list of AForge.NET's points to array of .NET points
-        private System.Drawing.Point[] ToPointsArray(List<IntPoint> points)
+        private System.Drawing.Point[] ToPointsArray(List<AForge.Point> points)
         {
             System.Drawing.Point[] array = new System.Drawing.Point[points.Count];
 
             for (int i = 0, n = points.Count; i < n; i++)
             {
-                array[i] = new System.Drawing.Point(points[i].X, points[i].Y);
+                array[i] = new System.Drawing.Point((int)points[i].X, (int)points[i].Y);
             }
 
             return array;
@@ -684,15 +688,32 @@ namespace LitePlacer
         {
             ReceivingFrames = true;
 
+            //Picture origin is up left, machine origin is down left
+            //We mirror the picture origin to machine origin
+            if (!MirrorX || !MirrorY)
+            {
+                Mirror Mfilter = new Mirror(!MirrorX, MirrorY);
+                // apply the MirrFilter
+                Mfilter.ApplyInPlace(eventArgs.Frame);
+            };
+
             // Take a copy for measurements, if needed:
             if (CopyFrame)
             {
-                if (TemporaryFrame != null)
-                {
-                    TemporaryFrame.Dispose();
+                if (secondFrame)
+                { 
+                    if (TemporaryFrame != null)
+                    {
+                        TemporaryFrame.Dispose();
+                    }
+                    TemporaryFrame = (Bitmap)eventArgs.Frame.Clone();
+                    CopyFrame = false;
+                    secondFrame = false;
                 }
-                TemporaryFrame = (Bitmap)eventArgs.Frame.Clone();
-                CopyFrame = false;
+                else
+                {
+                    secondFrame = true;
+                }
             };
 
             if (PauseProcessing)
@@ -743,6 +764,17 @@ namespace LitePlacer
         {
             Bitmap frame = (Bitmap)frameObject;
 
+            if (Zoom)
+            {
+                ZoomFunct(ref frame, ZoomFactor);
+            };
+
+            Bitmap origFrame = null;
+            if (Overlay)
+            {
+                origFrame = (Bitmap)frame.Clone();
+            }
+
             // Even with safeguards, changing DisplayFunctions can cause errors. 
             try
             {
@@ -750,6 +782,8 @@ namespace LitePlacer
                 {
                     foreach (AForgeFunction f in DisplayFunctions)
                     {
+                        if(f.func == Meas_ZoomFunc && origFrame != null)
+                            f.func(ref origFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
                         f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
                     }
 
@@ -772,19 +806,14 @@ namespace LitePlacer
                 // No need to do anything, next frame fixes it
             }
 
-            if (Mirror)
-            {
-                frame = MirrorFunct(ref frame);
-            };
-
-            if (Zoom)
-            {
-                ZoomFunct(ref frame, ZoomFactor);
-            };
-
             if (DrawBox)
             {
                 DrawBoxFunct(ref frame);
+            };
+
+            if (DrawGrid)
+            {
+                DrawGridFunct(frame);
             };
 
             if (DrawCross)
@@ -802,16 +831,31 @@ namespace LitePlacer
                 DrawDashedCrossFunct(frame);
             };
 
-            if (DrawGrid)
-            {
-                DrawGridFunct(frame);
-            };
-
             if (DrawArrow)
             {
                 DrawArrowFunct(frame);
             };
 
+            if (Overlay && origFrame != null)
+            {
+                using (Graphics bitmapGraphics = Graphics.FromImage(origFrame))
+                {
+                    ColorMatrix matrix = new ColorMatrix();
+                    matrix.Matrix33 = 128.0f / 255.0f;
+                    ImageAttributes attributes = new ImageAttributes();
+                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    bitmapGraphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                    bitmapGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.GammaCorrected;
+
+                    bitmapGraphics.DrawImage(frame, new Rectangle(0, 0, frame.Width, frame.Height), 0, 0, frame.Width, frame.Height, GraphicsUnit.Pixel, attributes);
+                    frame.Dispose();
+                    frame = origFrame;
+                }
+            }
+
+            //Mirror Y for Display only
+            Mirror Mfilter = new Mirror(true, false);
+            Mfilter.ApplyInPlace(frame);
             lock (ProtectedPictureBox._locker)
             {
                 if (ImageBox.Image != null)
@@ -1115,12 +1159,22 @@ namespace LitePlacer
         }
 
         // ===========
-        private List<IntPoint> ScaleOutline(Double scale, List<IntPoint> Outline)
+        private List<IntPoint> ScaleOutline(double scale, List<IntPoint> Outline)
         {
             List<IntPoint> Result = new List<IntPoint>();
             foreach (var p in Outline)
             {
                 Result.Add(new IntPoint((int)(p.X * scale), (int)(p.Y * scale)));
+            }
+            return Result;
+        }
+        // ===========
+        private List<AForge.Point> ScaleOutline(double scale, List<AForge.Point> Outline)
+        {
+            List<AForge.Point> Result = new List<AForge.Point>();
+            foreach (var p in Outline)
+            {
+                Result.Add(new AForge.Point((float)(p.X * scale), (float)(p.Y * scale)));
             }
             return Result;
         }
@@ -1213,7 +1267,7 @@ namespace LitePlacer
             Blob[] blobs = blobCounter.GetObjectsInformation(); // Get blobs
             foreach (Blob blob in blobs)
             {
-                if ((blob.Rectangle.Height > 400) && (blob.Rectangle.Width > 600))
+                if ((blob.Rectangle.Height > (bitmap.Height - 10)) && (blob.Rectangle.Width > (bitmap.Width - 10)))
                 {
                     continue;  // The whole image could be a blob, discard that
                 }
@@ -1229,7 +1283,7 @@ namespace LitePlacer
                 // We are dealing with small objects, one pixel is coarse. Therefore, all calculations are done
                 // on a scaled outline, scaling back after finding the rectangle. (This is because AForge uses IntPoints.)
                 List<IntPoint> Outline = ScaleOutline(1.0, OutlineRaw);
-                List<IntPoint> Box = GetMinimumBoundingRectangle(Outline);    // get bounding rectangle
+                List<AForge.Point> Box = GetMinimumBoundingRectangle(Outline).Select(s => (AForge.Point)s).ToList();    // get bounding rectangle
                 //Box= ScaleOutline(0.001, Box);  // scale back
                 if (Box.Count != 4)
                 {
@@ -1249,10 +1303,41 @@ namespace LitePlacer
             List<Shapes.Component> Components = FindComponentsFunct(bitmap);
             Graphics g = Graphics.FromImage(bitmap);
             Pen OrangePen = new Pen(Color.DarkOrange, 3);
-            for (int i = 0, n = Components.Count; i < n; i++)
+            double zoom = GetMeasurementZoom();
+            double XmmPpix = XmmPerPixel / zoom;
+            double YmmPpix = YmmPerPixel / zoom;
+            for (int i = Components.Count-1; i >= 0; i--)
             {
-                g.DrawPolygon(OrangePen, ToPointsArray(Components[i].BoundingBox.Corners));
+                Shapes.Component component = Components[i];
+                if (((component.BoundingBox.LongsideLenght * XmmPpix) <= MeasurementParameters.Xmin) ||
+                      ((component.BoundingBox.LongsideLenght * XmmPpix) >= MeasurementParameters.Xmax) ||
+                      ((component.BoundingBox.ShortSideLenght * YmmPpix) <= MeasurementParameters.Ymin) ||
+                      ((component.BoundingBox.ShortSideLenght * YmmPpix) >= MeasurementParameters.Ymax))
+
+                {
+                    Components.Remove(component);
+                }
             }
+
+            if(Components.Count == 1)
+            {
+                Shapes.Component component = Components[0];
+                MainForm.DisplayBigText( string.Format("{0,5:0.000}", (component.BoundingBox.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (component.BoundingBox.Center.Y - FrameCenterY) * YmmPpix));
+            }
+            else
+            {
+                MainForm.DisplayBigText("No Unique Position");
+            }
+
+            foreach (Shapes.Component component in Components)
+            {
+                g.DrawPolygon(OrangePen, ToPointsArray(component.BoundingBox.Corners));
+                int crossSize = 300;
+                AForge.Point center = component.BoundingBox.Center;
+                g.DrawLine(OrangePen, center.X - crossSize, center.Y, center.X + crossSize, center.Y);
+                g.DrawLine(OrangePen, center.X, center.Y - crossSize, center.X, center.Y + crossSize);
+            }
+            
             g.Dispose();
             OrangePen.Dispose();
             return (bitmap);
@@ -1342,12 +1427,12 @@ namespace LitePlacer
                 // p'y = sin(theta) * (px-ox) + cos(theta) * (py-oy) + oy
                 // cos90 = 0, sin90= 1 => 
                 // p'x= -(py-oy) + ox= oy-py+ox, p'y= (px-ox)+ oy
-                NormalStart.X = LongestCenter.Y - Longest.Start.Y + LongestCenter.X;
-                NormalStart.Y = (Longest.Start.X - LongestCenter.X) + LongestCenter.Y;
+                NormalStart.X = Longest.Start.Y - LongestCenter.Y + LongestCenter.X;
+                NormalStart.Y = Longest.Start.X - LongestCenter.X + LongestCenter.Y;
                 // cos-90=0, sin-90= -1 =>
                 // p'x= (py-oy) + ox
                 // p'y= -(px-ox)+oy= ox-px+oy
-                NormalEnd.X = (Longest.Start.Y - LongestCenter.Y) + LongestCenter.X;
+                NormalEnd.X = LongestCenter.Y - Longest.Start.Y + LongestCenter.X;
                 NormalEnd.Y = LongestCenter.X - Longest.Start.X + LongestCenter.Y;
                 // Make line out of the points
                 Line Normal = Line.FromPoints(NormalStart, NormalEnd);
@@ -1520,7 +1605,11 @@ namespace LitePlacer
                 {
                     if (radius > 2)  // Filter out some noise
                     {
-                        Circles.Add(new Shapes.Circle(center, radius));
+                        double dRadius = radius;
+                        AForge.DoublePoint dCenter = center;
+                        CircleOptimizer circleOptimizer = new CircleOptimizer();
+                        circleOptimizer.optimize(edgePoints, ref dCenter, ref dRadius);
+                        Circles.Add(new Shapes.Circle((AForge.Point)dCenter, dRadius));
                     }
                 }
             }
@@ -1531,6 +1620,31 @@ namespace LitePlacer
         private void DrawCirclesFunct(Bitmap bitmap)
         {
             List<Shapes.Circle> Circles = FindCirclesFunct(bitmap);
+            double zoom = GetMeasurementZoom();
+            double XmmPpix = XmmPerPixel / zoom;
+            double YmmPpix = YmmPerPixel / zoom;
+            for (int i = Circles.Count - 1; i >= 0; i--)
+            {
+                Shapes.Circle circle = Circles[i];
+                if (((circle.Radius * 2.0 * XmmPpix) <= MeasurementParameters.Xmin) ||
+                      ((circle.Radius * 2.0 * XmmPpix) >= MeasurementParameters.Xmax) ||
+                      ((circle.Radius * 2.0 * YmmPpix) <= MeasurementParameters.Ymin) ||
+                      ((circle.Radius * 2.0 * YmmPpix) >= MeasurementParameters.Ymax))
+
+                {
+                    Circles.Remove(circle);
+                }
+            }
+
+            if (Circles.Count == 1)
+            {
+                Shapes.Circle circle = Circles[0];
+                MainForm.DisplayBigText(string.Format("{0,5:0.000}", (circle.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (circle.Center.Y - FrameCenterY) * YmmPpix));
+            }
+            else
+            {
+                MainForm.DisplayBigText("No Unique Position");
+            }
 
             if (Circles.Count == 0)
             {
@@ -1676,7 +1790,7 @@ namespace LitePlacer
                               )
                             )
                         {
-                            Rectangles.Add(new Shapes.Rectangle(corners));
+                            Rectangles.Add( new Shapes.Rectangle(corners.Select(s => (AForge.Point)s).ToList()) );
                         }
                     }
                 }
@@ -1724,14 +1838,14 @@ namespace LitePlacer
                 return 0;
             }
             int closest = 0;
-            float X = (Rectangles[0].Center.X - FrameCenterX);
-            float Y = (Rectangles[0].Center.Y - FrameCenterY);
+            float X = Rectangles[0].Center.X - (float)FrameCenterX;
+            float Y = Rectangles[0].Center.Y - (float)FrameCenterY;
             float dist = X * X + Y * Y;  // we are interested only which one is closest, don't neet to take square roots to get distance right
             float dX, dY;
             for (int i = 0; i < Rectangles.Count; i++)
             {
-                dX = Rectangles[i].Center.X - FrameCenterX;
-                dY = Rectangles[i].Center.Y - FrameCenterY;
+                dX = Rectangles[i].Center.X - (float)FrameCenterX;
+                dY = Rectangles[i].Center.Y - (float)FrameCenterY;
                 if ((dX * dX + dY * dY) < dist)
                 {
                     dist = dX * dX + dY * dY;
@@ -1787,19 +1901,6 @@ namespace LitePlacer
             return (GoodRectangles);
         }
 
-
-
-        // ==========================================================================================================
-
-        private Bitmap MirrorFunct(ref Bitmap frame)
-        {
-            Mirror Mfilter = new Mirror(false, true);
-            // apply the MirrFilter
-            Mfilter.ApplyInPlace(frame);
-            return (frame);
-        }
-
-
         // =========================================================
         private Bitmap TestAlgorithmFunct(Bitmap frame)
         {
@@ -1844,7 +1945,7 @@ namespace LitePlacer
 
         private void DrawGridFunct(Bitmap img)
         {
-            Pen RedPen = new Pen(Color.Red, 1);
+            Pen YellowPen = new Pen(Color.Yellow, 1);
             Pen GreenPen = new Pen(Color.Green, 1);
             Pen BluePen = new Pen(Color.Blue, 1);
             Graphics g = Graphics.FromImage(img);
@@ -1857,10 +1958,10 @@ namespace LitePlacer
                 // FrameCenterX, 0 to FrameCenterX, FrameSizeY
                 RotateByFrameCenter(FrameCenterX + i, 0, out x1, out y1);
                 RotateByFrameCenter(FrameCenterX + i, FrameSizeY, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
+                g.DrawLine(YellowPen, x1, y1, x2, y2);
                 RotateByFrameCenter(FrameCenterX - i, 0, out x1, out y1);
                 RotateByFrameCenter(FrameCenterX - i, FrameSizeY, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
+                g.DrawLine(YellowPen, x1, y1, x2, y2);
                 i = i + step;
                 RotateByFrameCenter(FrameCenterX + i, 0, out x1, out y1);
                 RotateByFrameCenter(FrameCenterX + i, FrameSizeY, out x2, out y2);
@@ -1884,10 +1985,10 @@ namespace LitePlacer
                 // 0, FrameCenterY to FrameSizeX, FrameCenterY
                 RotateByFrameCenter(0, FrameCenterY + i, out x1, out y1);
                 RotateByFrameCenter(FrameSizeX, FrameCenterY + i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
+                g.DrawLine(YellowPen, x1, y1, x2, y2);
                 RotateByFrameCenter(0, FrameCenterY - i, out x1, out y1);
                 RotateByFrameCenter(FrameSizeX, FrameCenterY - i, out x2, out y2);
-                g.DrawLine(RedPen, x1, y1, x2, y2);
+                g.DrawLine(YellowPen, x1, y1, x2, y2);
                 i = i + step;
                 RotateByFrameCenter(0, FrameCenterY + i, out x1, out y1);
                 RotateByFrameCenter(FrameSizeX, FrameCenterY + i, out x2, out y2);
@@ -1905,7 +2006,7 @@ namespace LitePlacer
                 i = i + step;
             }
 
-            RedPen.Dispose();
+            YellowPen.Dispose();
             GreenPen.Dispose();
             BluePen.Dispose();
             g.Dispose();
@@ -2167,7 +2268,9 @@ namespace LitePlacer
 
         // ==========================================================================================================
         // Measurements are done by taking one frame and processing that:
-        private bool CopyFrame = false;     // Tells we need to take a frame from the stream 
+        // volatile to avoid multithread bugs
+        private volatile bool CopyFrame = false;     // Tells we need to take a frame from the stream 
+        private volatile bool secondFrame = false;          //throw away first TemporaryFrame to avoid movement artifacts
         private Bitmap TemporaryFrame;      // The frame is stored here.
 
         // The caller builds the MeasurementFunctions list:
@@ -2247,8 +2350,6 @@ namespace LitePlacer
         // ==========================================================================================================
         // Measure
         // ==========================================================================================================
-        public double XmmPerPixel;
-        public double YmmPerPixel;
 
         private void DisplayShapes(List<Shapes.Shape> Shapes, int StartFrom, double XmmPpix, double YmmPpix)
         {
@@ -2272,8 +2373,8 @@ namespace LitePlacer
             {
                 Xpxls = String.Format("{0,6:0.0}", Shapes[i].Center.X - FrameCenterX);
                 Xmms = String.Format("{0,6:0.000}", (Shapes[i].Center.X - FrameCenterX) * XmmPpix);
-                Ypxls = String.Format("{0,6:0.0}", FrameCenterY - Shapes[i].Center.Y);
-                Ymms = String.Format("{0,6:0.000}", (FrameCenterY - Shapes[i].Center.Y) * YmmPpix);
+                Ypxls = String.Format("{0,6:0.0}", Shapes[i].Center.Y - FrameCenterY);
+                Ymms = String.Format("{0,6:0.000}", (Shapes[i].Center.Y - FrameCenterY) * YmmPpix);
                 Xsize = String.Format("{0,5:0.0}", Shapes[i].Xsize);
                 Ysize = String.Format("{0,5:0.0}", Shapes[i].Ysize);
                 Angle = String.Format("{0,5:0.0}", Shapes[i].Angle);
@@ -2292,7 +2393,7 @@ namespace LitePlacer
         private double DistanceToCenter(Shapes.Shape shape)
         {
             double X = shape.Center.X - FrameCenterX;
-            double Y = FrameCenterY - shape.Center.Y;
+            double Y = shape.Center.Y - FrameCenterY;
 
             return Math.Sqrt(X * X + Y * Y);
         }
@@ -2382,7 +2483,35 @@ namespace LitePlacer
 
                 foreach (Shapes.Component comp in Components)
                 {
-                    //workaround for quadratic components
+                    if (comp.BoundingBox.Corners.Count != 4)
+                        continue;
+
+                    //workaround for correct and consistent angle
+                    AForge.Point longestSide1 = comp.BoundingBox.Corners[3], longestSide2 = comp.BoundingBox.Corners[0];
+                    double longestLength = comp.BoundingBox.Corners[3].DistanceTo(comp.BoundingBox.Corners[0]);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        double thisLength = comp.BoundingBox.Corners[i].DistanceTo(comp.BoundingBox.Corners[i+1]);
+                        if(thisLength > longestLength)
+                        {
+                            longestLength = thisLength;
+                            longestSide1 = comp.BoundingBox.Corners[i];
+                            longestSide2 = comp.BoundingBox.Corners[i + 1];
+                        }
+                    }
+                    if (longestSide1.X == longestSide2.X)
+                    {
+                        comp.BoundingBox.Angle = 0;
+                    }
+                    else if (longestSide1.X < longestSide2.X)
+                    {
+                        comp.BoundingBox.Angle = Math.Atan2(longestSide2.Y - longestSide1.Y, longestSide2.X - longestSide1.X) / Math.PI * 180;
+                    }
+                    else
+                    {
+                        comp.BoundingBox.Angle = Math.Atan2(longestSide1.Y - longestSide2.Y, longestSide1.X - longestSide2.X) / Math.PI * 180;
+                    }
+
                     while (comp.BoundingBox.Angle >= 45)
                         comp.BoundingBox.Angle -= 90;
                     while (comp.BoundingBox.Angle <= -45)
@@ -2393,8 +2522,7 @@ namespace LitePlacer
                         Center = comp.BoundingBox.Center,
                         Angle = comp.BoundingBox.Angle,
                         Xsize = comp.BoundingBox.LongsideLenght,
-                        Ysize = comp.BoundingBox.ShortSideLenght,
-                        
+                        Ysize = comp.BoundingBox.ShortSideLenght
                     });
                 }
 
@@ -2489,7 +2617,7 @@ namespace LitePlacer
                 }
             }
             Xresult = (FilteredForSize[ResultIndex].Center.X - FrameCenterX) * XmmPpix;
-            Yresult = (FrameCenterY - FilteredForSize[ResultIndex].Center.Y) * YmmPpix;
+            Yresult = (FilteredForSize[ResultIndex].Center.Y - FrameCenterY) * YmmPpix;
             Aresult = FilteredForSize[ResultIndex].Angle;
 
             stopwatch.Stop();

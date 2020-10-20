@@ -28,8 +28,24 @@ namespace LitePlacer
 		{
             MainForm = MainF;
             InitializeComponent();
-			Grid = grd;
-            GridSizeSave = Grid.Size;
+			Grid = this.Tapes_dataGridView;
+            foreach (DataGridViewColumn column in grd.Columns)
+            {
+				DataGridViewColumn tmp = (DataGridViewColumn)column.Clone();
+				tmp.Frozen = false;
+				Grid.Columns.Add(tmp);
+			}
+			foreach (DataGridViewRow row in grd.Rows)
+			{
+				int index = Grid.Rows.Add((DataGridViewRow)row.Clone());
+                foreach (DataGridViewCell cell in Grid.Rows[index].Cells)
+                {
+					cell.Value = row.Cells[cell.OwningColumn.Name].Value;
+                }
+			}
+			MainForm.Update_GridView(Grid);
+			//Grid = grd;
+			GridSizeSave = Grid.Size;
             Nozzle = MainForm.Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
             this.Controls.Add(Grid);
 			for (int i = 0; i < Grid.RowCount; i++)

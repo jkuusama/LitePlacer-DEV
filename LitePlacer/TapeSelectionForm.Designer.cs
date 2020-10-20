@@ -32,6 +32,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.Ignore_button = new System.Windows.Forms.Button();
             this.UpdateJobData_checkBox = new System.Windows.Forms.CheckBox();
+            this.Tapes_dataGridView = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // AbortJob_button
@@ -75,11 +77,27 @@
             this.UpdateJobData_checkBox.UseVisualStyleBackColor = true;
             this.UpdateJobData_checkBox.CheckedChanged += new System.EventHandler(this.UpdateJobData_checkBox_CheckedChanged);
             // 
+            // Tapes_dataGridView
+            // 
+            this.Tapes_dataGridView.AllowUserToAddRows = false;
+            this.Tapes_dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.Tapes_dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.Tapes_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Tapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.Tapes_dataGridView.Location = new System.Drawing.Point(15, 59);
+            this.Tapes_dataGridView.Name = "Tapes_dataGridView";
+            this.Tapes_dataGridView.RowHeadersVisible = false;
+            this.Tapes_dataGridView.RowHeadersWidth = 50;
+            this.Tapes_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.Tapes_dataGridView.Size = new System.Drawing.Size(1218, 775);
+            this.Tapes_dataGridView.TabIndex = 16;
+            // 
             // TapeSelectionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1234, 836);
+            this.Controls.Add(this.Tapes_dataGridView);
             this.Controls.Add(this.UpdateJobData_checkBox);
             this.Controls.Add(this.Ignore_button);
             this.Controls.Add(this.label1);
@@ -89,6 +107,7 @@
             this.Text = "Select Tape";
             this.Load += new System.EventHandler(this.TapeSelectionForm_Load);
             this.Resize += new System.EventHandler(this.TapeSelectionForm_Resize);
+            ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -100,6 +119,6 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Button Ignore_button;
         private System.Windows.Forms.CheckBox UpdateJobData_checkBox;
-
-	}
+        private System.Windows.Forms.DataGridView Tapes_dataGridView;
+    }
 }

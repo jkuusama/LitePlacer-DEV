@@ -143,6 +143,8 @@ namespace LitePlacer
         // public int DownCam_index { get; set; } = -1;
         public bool Downcam_InvertedHomeMark { get; set; } = false;
         public int DownCam_MeasurementDelay { get; set; } = 100;
+        public bool DownCam_MirrorX { get; set; } = false;
+        public bool DownCam_MirrorY { get; set; } = false;
         public double DownCam_NozzleOffsetX { get; set; } = 84;
         public double DownCam_NozzleOffsetY { get; set; } = 27;
         public System.Drawing.Color DownCam_SnapshotColor { get; set; } = System.Drawing.Color.White;
@@ -154,12 +156,15 @@ namespace LitePlacer
         public string Downcam_Name { get; set; } = "";
         public int DownCam_DesiredX { get; set; } = 1280;
         public int DownCam_DesiredY { get; set; } = 1024;
+        public bool DownCam_FixedPhysLocation { get; set; } = false;
 
         public bool UpCam_DrawBox { get; set; } = true;
         public bool UpCam_DrawCross { get; set; } = true;
         public bool UpCam_DrawSidemarks { get; set; } = true;
         // public int UpCam_index { get; set; } = -1;
         public int UpCam_MeasurementDelay { get; set; } = 100;
+        public bool UpCam_MirrorX { get; set; } = false;
+        public bool UpCam_MirrorY { get; set; } = false;
         public double UpCam_PositionX { get; set; } = 2;
         public double UpCam_PositionY { get; set; } = 3;
         public System.Drawing.Color UpCam_SnapshotColor { get; set; } = System.Drawing.Color.White;
@@ -171,6 +176,7 @@ namespace LitePlacer
         public string Upcam_Name { get; set; } = "";
         public int UpCam_DesiredX { get; set; } = 1280;
         public int UpCam_DesiredY { get; set; } = 1024;
+        public bool UpCam_FixedPhysLocation { get; set; } = true;
     }
 
     // =================================================================================

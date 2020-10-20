@@ -224,7 +224,7 @@ namespace LitePlacer
             if (angle > 359.98)
             {
                 X = NozzleDataAllNozzles[MainForm.Setting.Nozzles_current - 1].CalibrationPoints[0].X;
-                Y = -NozzleDataAllNozzles[MainForm.Setting.Nozzles_current - 1].CalibrationPoints[0].Y;
+                Y = NozzleDataAllNozzles[MainForm.Setting.Nozzles_current - 1].CalibrationPoints[0].Y;
                 return true;
             };
             List<NozzlePoint> Points = NozzleDataAllNozzles[MainForm.Setting.Nozzles_current - 1].CalibrationPoints;
@@ -234,7 +234,7 @@ namespace LitePlacer
                 {
                     // we had a calibration value for exact angle asked
                     X = Points[i].X;
-                    Y = -Points[i].Y;
+                    Y = Points[i].Y;
                     return true;
                 }
                 if ((angle > Points[i].Angle)
@@ -245,10 +245,9 @@ namespace LitePlacer
                 {
                     // we are between points, and next point is not what was asked either: 
                     // linear interpolation:
-                    double fract = (angle - Points[i + 1].Angle) / (Points[i + 1].Angle - Points[i].Angle);
+                    double fract = (angle - Points[i].Angle) / (Points[i + 1].Angle - Points[i].Angle);
                     X = Points[i].X + fract * (Points[i + 1].X - Points[i].X);
                     Y = Points[i].Y + fract * (Points[i + 1].Y - Points[i].Y);
-                    Y = -Y;
                     return true;
                 }
             }
@@ -294,6 +293,8 @@ namespace LitePlacer
                 {
                     if (Cam.Measure(out Point.X, out Point.Y, out double Atmp, out int err, true))
                     {
+                        Point.X = -Point.X;
+                        Point.Y = -Point.Y;
                         break;
                     }
                     if (tries >= 9)

@@ -133,6 +133,9 @@
             this.UpCameraYmmPerPixel_textBox = new System.Windows.Forms.TextBox();
             this.UpCameraXmmPerPixel_textBox = new System.Windows.Forms.TextBox();
             this.UpCamDrawBox_checkBox = new System.Windows.Forms.CheckBox();
+            this.UpCamFixedPhysLoc_checkBox = new System.Windows.Forms.CheckBox();
+            this.UpCameraMirrorY_checkBox = new System.Windows.Forms.CheckBox();
+            this.UpCameraMirrorX_checkBox = new System.Windows.Forms.CheckBox();
             this.UpCamDrawCross_checkBox = new System.Windows.Forms.CheckBox();
             this.UpCamListResolutions_button = new System.Windows.Forms.Button();
             this.label106 = new System.Windows.Forms.Label();
@@ -163,6 +166,9 @@
             this.DownCameraYmmPerPixel_textBox = new System.Windows.Forms.TextBox();
             this.DownCameraXmmPerPixel_textBox = new System.Windows.Forms.TextBox();
             this.DownCamDrawBox_checkBox = new System.Windows.Forms.CheckBox();
+            this.DownCamFixedPhysLoc_checkBox = new System.Windows.Forms.CheckBox();
+            this.DownCameraMirrorY_checkBox = new System.Windows.Forms.CheckBox();
+            this.DownCameraMirrorX_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCamDrawCross_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCam_comboBox = new System.Windows.Forms.ComboBox();
             this.label53 = new System.Windows.Forms.Label();
@@ -484,6 +490,7 @@
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.UseUpcam_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label39 = new System.Windows.Forms.Label();
             this.AbortPlacement_button = new System.Windows.Forms.Button();
@@ -583,6 +590,9 @@
             this.ComponentList = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
+            this.MeasuredPosition_label = new System.Windows.Forms.Label();
+            this.GotoFeature_button = new System.Windows.Forms.Button();
+            this.OverlayPictures_checkBox = new System.Windows.Forms.CheckBox();
             this.AdvancedProcessing_tabControl = new System.Windows.Forms.TabControl();
             this.NozzleCalibration_tabPage = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -655,6 +665,7 @@
             this.ColorHelp_label = new System.Windows.Forms.Label();
             this.Color_Box = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.GotoUpCamPositionCal_button = new System.Windows.Forms.Button();
             this.NozzleOffset_label = new System.Windows.Forms.Label();
             this.SetPickupCenter_button = new System.Windows.Forms.Button();
             this.label101 = new System.Windows.Forms.Label();
@@ -756,6 +767,7 @@
             this.gotoLoadStartPositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyMovesFromNozzle1ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.Dump_tabPage = new System.Windows.Forms.TabPage();
+            this.TrueX_label = new System.Windows.Forms.Label();
             this.CadDataDelay_label = new System.Windows.Forms.Label();
             this.StopDemo_button = new System.Windows.Forms.Button();
             this.Demo_button = new System.Windows.Forms.Button();
@@ -809,7 +821,6 @@
             this.label165 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.TrueX_label = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -1963,6 +1974,9 @@
             this.groupBox6.Controls.Add(this.UpCameraYmmPerPixel_textBox);
             this.groupBox6.Controls.Add(this.UpCameraXmmPerPixel_textBox);
             this.groupBox6.Controls.Add(this.UpCamDrawBox_checkBox);
+            this.groupBox6.Controls.Add(this.UpCamFixedPhysLoc_checkBox);
+            this.groupBox6.Controls.Add(this.UpCameraMirrorY_checkBox);
+            this.groupBox6.Controls.Add(this.UpCameraMirrorX_checkBox);
             this.groupBox6.Controls.Add(this.UpCamDrawCross_checkBox);
             this.groupBox6.Controls.Add(this.UpCamListResolutions_button);
             this.groupBox6.Controls.Add(this.label106);
@@ -1984,9 +1998,9 @@
             this.groupBox6.Controls.Add(this.label163);
             this.groupBox6.Controls.Add(this.UpCameraBoxY_textBox);
             this.groupBox6.Controls.Add(this.label103);
-            this.groupBox6.Location = new System.Drawing.Point(652, 184);
+            this.groupBox6.Location = new System.Drawing.Point(652, 216);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(587, 176);
+            this.groupBox6.Size = new System.Drawing.Size(587, 195);
             this.groupBox6.TabIndex = 227;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Up Looking Camera";
@@ -2045,6 +2059,42 @@
             this.UpCamDrawBox_checkBox.Text = "Draw Box";
             this.UpCamDrawBox_checkBox.UseVisualStyleBackColor = true;
             this.UpCamDrawBox_checkBox.CheckedChanged += new System.EventHandler(this.UpCamDrawBox_checkBox_CheckedChanged);
+            // 
+            // UpCamFixedPhysLoc_checkBox
+            // 
+            this.UpCamFixedPhysLoc_checkBox.AutoSize = true;
+            this.UpCamFixedPhysLoc_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamFixedPhysLoc_checkBox.Location = new System.Drawing.Point(374, 166);
+            this.UpCamFixedPhysLoc_checkBox.Name = "UpCamFixedPhysLoc_checkBox";
+            this.UpCamFixedPhysLoc_checkBox.Size = new System.Drawing.Size(130, 17);
+            this.UpCamFixedPhysLoc_checkBox.TabIndex = 207;
+            this.UpCamFixedPhysLoc_checkBox.Text = "Fixed physical location";
+            this.UpCamFixedPhysLoc_checkBox.UseVisualStyleBackColor = true;
+            this.UpCamFixedPhysLoc_checkBox.CheckedChanged += new System.EventHandler(this.UpCamFixedPhysLoc_checkBox_CheckedChanged);
+            // 
+            // UpCameraMirrorY_checkBox
+            // 
+            this.UpCameraMirrorY_checkBox.AutoSize = true;
+            this.UpCameraMirrorY_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraMirrorY_checkBox.Location = new System.Drawing.Point(485, 120);
+            this.UpCameraMirrorY_checkBox.Name = "UpCameraMirrorY_checkBox";
+            this.UpCameraMirrorY_checkBox.Size = new System.Drawing.Size(62, 17);
+            this.UpCameraMirrorY_checkBox.TabIndex = 207;
+            this.UpCameraMirrorY_checkBox.Text = "Mirror Y";
+            this.UpCameraMirrorY_checkBox.UseVisualStyleBackColor = true;
+            this.UpCameraMirrorY_checkBox.CheckedChanged += new System.EventHandler(this.UpCamMirrorY_checkBox_CheckedChanged);
+            // 
+            // UpCameraMirrorX_checkBox
+            // 
+            this.UpCameraMirrorX_checkBox.AutoSize = true;
+            this.UpCameraMirrorX_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraMirrorX_checkBox.Location = new System.Drawing.Point(485, 95);
+            this.UpCameraMirrorX_checkBox.Name = "UpCameraMirrorX_checkBox";
+            this.UpCameraMirrorX_checkBox.Size = new System.Drawing.Size(62, 17);
+            this.UpCameraMirrorX_checkBox.TabIndex = 207;
+            this.UpCameraMirrorX_checkBox.Text = "Mirror X";
+            this.UpCameraMirrorX_checkBox.UseVisualStyleBackColor = true;
+            this.UpCameraMirrorX_checkBox.CheckedChanged += new System.EventHandler(this.UpCamMirrorX_checkBox_CheckedChanged);
             // 
             // UpCamDrawCross_checkBox
             // 
@@ -2286,7 +2336,7 @@
             // 
             this.RobustFast_checkBox.AutoSize = true;
             this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RobustFast_checkBox.Location = new System.Drawing.Point(750, 378);
+            this.RobustFast_checkBox.Location = new System.Drawing.Point(750, 417);
             this.RobustFast_checkBox.Name = "RobustFast_checkBox";
             this.RobustFast_checkBox.Size = new System.Drawing.Size(130, 17);
             this.RobustFast_checkBox.TabIndex = 195;
@@ -2299,7 +2349,7 @@
             // 
             this.KeepActive_checkBox.AutoSize = true;
             this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KeepActive_checkBox.Location = new System.Drawing.Point(906, 378);
+            this.KeepActive_checkBox.Location = new System.Drawing.Point(906, 417);
             this.KeepActive_checkBox.Name = "KeepActive_checkBox";
             this.KeepActive_checkBox.Size = new System.Drawing.Size(83, 17);
             this.KeepActive_checkBox.TabIndex = 196;
@@ -2312,7 +2362,7 @@
             // 
             this.label135.AutoSize = true;
             this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label135.Location = new System.Drawing.Point(653, 379);
+            this.label135.Location = new System.Drawing.Point(653, 418);
             this.label135.Name = "label135";
             this.label135.Size = new System.Drawing.Size(78, 13);
             this.label135.TabIndex = 197;
@@ -2326,6 +2376,9 @@
             this.groupBox5.Controls.Add(this.DownCameraYmmPerPixel_textBox);
             this.groupBox5.Controls.Add(this.DownCameraXmmPerPixel_textBox);
             this.groupBox5.Controls.Add(this.DownCamDrawBox_checkBox);
+            this.groupBox5.Controls.Add(this.DownCamFixedPhysLoc_checkBox);
+            this.groupBox5.Controls.Add(this.DownCameraMirrorY_checkBox);
+            this.groupBox5.Controls.Add(this.DownCameraMirrorX_checkBox);
             this.groupBox5.Controls.Add(this.DownCamDrawCross_checkBox);
             this.groupBox5.Controls.Add(this.DownCam_comboBox);
             this.groupBox5.Controls.Add(this.label53);
@@ -2349,7 +2402,7 @@
             this.groupBox5.Controls.Add(this.DownCamListResolutions_button);
             this.groupBox5.Location = new System.Drawing.Point(652, 6);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(587, 172);
+            this.groupBox5.Size = new System.Drawing.Size(587, 195);
             this.groupBox5.TabIndex = 145;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Down Looking Camera";
@@ -2408,6 +2461,42 @@
             this.DownCamDrawBox_checkBox.Text = "Draw Box";
             this.DownCamDrawBox_checkBox.UseVisualStyleBackColor = true;
             this.DownCamDrawBox_checkBox.CheckedChanged += new System.EventHandler(this.DownCamDrawBox_checkBox_CheckedChanged);
+            // 
+            // DownCamFixedPhysLoc_checkBox
+            // 
+            this.DownCamFixedPhysLoc_checkBox.AutoSize = true;
+            this.DownCamFixedPhysLoc_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamFixedPhysLoc_checkBox.Location = new System.Drawing.Point(374, 168);
+            this.DownCamFixedPhysLoc_checkBox.Name = "DownCamFixedPhysLoc_checkBox";
+            this.DownCamFixedPhysLoc_checkBox.Size = new System.Drawing.Size(130, 17);
+            this.DownCamFixedPhysLoc_checkBox.TabIndex = 207;
+            this.DownCamFixedPhysLoc_checkBox.Text = "Fixed physical location";
+            this.DownCamFixedPhysLoc_checkBox.UseVisualStyleBackColor = true;
+            this.DownCamFixedPhysLoc_checkBox.CheckedChanged += new System.EventHandler(this.DownCamFixedPhysLoc_checkBox_CheckedChanged);
+            // 
+            // DownCameraMirrorY_checkBox
+            // 
+            this.DownCameraMirrorY_checkBox.AutoSize = true;
+            this.DownCameraMirrorY_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraMirrorY_checkBox.Location = new System.Drawing.Point(485, 122);
+            this.DownCameraMirrorY_checkBox.Name = "DownCameraMirrorY_checkBox";
+            this.DownCameraMirrorY_checkBox.Size = new System.Drawing.Size(62, 17);
+            this.DownCameraMirrorY_checkBox.TabIndex = 207;
+            this.DownCameraMirrorY_checkBox.Text = "Mirror Y";
+            this.DownCameraMirrorY_checkBox.UseVisualStyleBackColor = true;
+            this.DownCameraMirrorY_checkBox.CheckedChanged += new System.EventHandler(this.DownCamMirrorY_checkBox_CheckedChanged);
+            // 
+            // DownCameraMirrorX_checkBox
+            // 
+            this.DownCameraMirrorX_checkBox.AutoSize = true;
+            this.DownCameraMirrorX_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraMirrorX_checkBox.Location = new System.Drawing.Point(485, 97);
+            this.DownCameraMirrorX_checkBox.Name = "DownCameraMirrorX_checkBox";
+            this.DownCameraMirrorX_checkBox.Size = new System.Drawing.Size(62, 17);
+            this.DownCameraMirrorX_checkBox.TabIndex = 207;
+            this.DownCameraMirrorX_checkBox.Text = "Mirror X";
+            this.DownCameraMirrorX_checkBox.UseVisualStyleBackColor = true;
+            this.DownCameraMirrorX_checkBox.CheckedChanged += new System.EventHandler(this.DownCamMirrorX_checkBox_CheckedChanged);
             // 
             // DownCamDrawCross_checkBox
             // 
@@ -6055,6 +6144,7 @@
             // 
             // panel7
             // 
+            this.panel7.Controls.Add(this.UseUpcam_checkBox);
             this.panel7.Controls.Add(this.groupBox1);
             this.panel7.Controls.Add(this.TestNozzleRecognition_button);
             this.panel7.Controls.Add(this.label57);
@@ -6074,6 +6164,16 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(640, 143);
             this.panel7.TabIndex = 85;
+            // 
+            // UseUpcam_checkBox
+            // 
+            this.UseUpcam_checkBox.AutoSize = true;
+            this.UseUpcam_checkBox.Location = new System.Drawing.Point(479, 39);
+            this.UseUpcam_checkBox.Name = "UseUpcam_checkBox";
+            this.UseUpcam_checkBox.Size = new System.Drawing.Size(82, 17);
+            this.UseUpcam_checkBox.TabIndex = 82;
+            this.UseUpcam_checkBox.Text = "Use Upcam";
+            this.UseUpcam_checkBox.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -7170,6 +7270,9 @@
             // 
             // Algorithms_tabPage
             // 
+            this.Algorithms_tabPage.Controls.Add(this.MeasuredPosition_label);
+            this.Algorithms_tabPage.Controls.Add(this.GotoFeature_button);
+            this.Algorithms_tabPage.Controls.Add(this.OverlayPictures_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.AdvancedProcessing_tabControl);
             this.Algorithms_tabPage.Controls.Add(this.SpecialProcessing_button);
             this.Algorithms_tabPage.Controls.Add(this.tabControl1);
@@ -7237,6 +7340,37 @@
             this.Algorithms_tabPage.TabIndex = 8;
             this.Algorithms_tabPage.Text = "Setup Video Processing";
             this.Algorithms_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // MeasuredPosition_label
+            // 
+            this.MeasuredPosition_label.AutoSize = true;
+            this.MeasuredPosition_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MeasuredPosition_label.Location = new System.Drawing.Point(988, 605);
+            this.MeasuredPosition_label.Name = "MeasuredPosition_label";
+            this.MeasuredPosition_label.Size = new System.Drawing.Size(264, 31);
+            this.MeasuredPosition_label.TabIndex = 311;
+            this.MeasuredPosition_label.Text = "No Unique Position";
+            // 
+            // GotoFeature_button
+            // 
+            this.GotoFeature_button.Location = new System.Drawing.Point(658, 464);
+            this.GotoFeature_button.Name = "GotoFeature_button";
+            this.GotoFeature_button.Size = new System.Drawing.Size(75, 23);
+            this.GotoFeature_button.TabIndex = 310;
+            this.GotoFeature_button.Text = "Goto Feature";
+            this.GotoFeature_button.UseVisualStyleBackColor = true;
+            this.GotoFeature_button.Click += new System.EventHandler(this.GotoFeature_button_Click);
+            // 
+            // OverlayPictures_checkBox
+            // 
+            this.OverlayPictures_checkBox.AutoSize = true;
+            this.OverlayPictures_checkBox.Location = new System.Drawing.Point(1121, 217);
+            this.OverlayPictures_checkBox.Name = "OverlayPictures_checkBox";
+            this.OverlayPictures_checkBox.Size = new System.Drawing.Size(103, 17);
+            this.OverlayPictures_checkBox.TabIndex = 309;
+            this.OverlayPictures_checkBox.Text = "Overlay Pictures";
+            this.OverlayPictures_checkBox.UseVisualStyleBackColor = true;
+            this.OverlayPictures_checkBox.CheckedChanged += new System.EventHandler(this.OverlayPictures_checkBox_CheckedChanged);
             // 
             // AdvancedProcessing_tabControl
             // 
@@ -7460,7 +7594,7 @@
             // 
             // Algorithm_Measure_button
             // 
-            this.Algorithm_Measure_button.Location = new System.Drawing.Point(658, 463);
+            this.Algorithm_Measure_button.Location = new System.Drawing.Point(658, 438);
             this.Algorithm_Measure_button.Name = "Algorithm_Measure_button";
             this.Algorithm_Measure_button.Size = new System.Drawing.Size(75, 23);
             this.Algorithm_Measure_button.TabIndex = 254;
@@ -7998,6 +8132,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.GotoUpCamPositionCal_button);
             this.panel1.Controls.Add(this.NozzleOffset_label);
             this.panel1.Controls.Add(this.SetPickupCenter_button);
             this.panel1.Controls.Add(this.label101);
@@ -8032,6 +8167,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(640, 143);
             this.panel1.TabIndex = 302;
+            // 
+            // GotoUpCamPositionCal_button
+            // 
+            this.GotoUpCamPositionCal_button.Location = new System.Drawing.Point(316, 115);
+            this.GotoUpCamPositionCal_button.Name = "GotoUpCamPositionCal_button";
+            this.GotoUpCamPositionCal_button.Size = new System.Drawing.Size(85, 23);
+            this.GotoUpCamPositionCal_button.TabIndex = 302;
+            this.GotoUpCamPositionCal_button.Text = "Go there Cal.";
+            this.GotoUpCamPositionCal_button.UseVisualStyleBackColor = true;
+            this.GotoUpCamPositionCal_button.Click += new System.EventHandler(this.GotoUpCamPositionCal_button_Click);
             // 
             // NozzleOffset_label
             // 
@@ -9111,6 +9256,17 @@
             this.Dump_tabPage.Text = "Dump_tabPage";
             this.Dump_tabPage.UseVisualStyleBackColor = true;
             // 
+            // TrueX_label
+            // 
+            this.TrueX_label.AutoSize = true;
+            this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TrueX_label.Location = new System.Drawing.Point(9, 230);
+            this.TrueX_label.Name = "TrueX_label";
+            this.TrueX_label.Size = new System.Drawing.Size(31, 9);
+            this.TrueX_label.TabIndex = 271;
+            this.TrueX_label.Text = "000.000";
+            this.TrueX_label.Visible = false;
+            // 
             // CadDataDelay_label
             // 
             this.CadDataDelay_label.AutoSize = true;
@@ -9677,17 +9833,6 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1272, 869);
             this.tableLayoutPanel2.TabIndex = 0;
-            // 
-            // TrueX_label
-            // 
-            this.TrueX_label.AutoSize = true;
-            this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrueX_label.Location = new System.Drawing.Point(9, 230);
-            this.TrueX_label.Name = "TrueX_label";
-            this.TrueX_label.Size = new System.Drawing.Size(31, 9);
-            this.TrueX_label.TabIndex = 271;
-            this.TrueX_label.Text = "000.000";
-            this.TrueX_label.Visible = false;
             // 
             // FormMain
             // 
@@ -10602,6 +10747,17 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label TrueX_label;
+        private System.Windows.Forms.CheckBox OverlayPictures_checkBox;
+        private System.Windows.Forms.Button GotoFeature_button;
+        private System.Windows.Forms.Button GotoUpCamPositionCal_button;
+        private System.Windows.Forms.CheckBox UseUpcam_checkBox;
+        private System.Windows.Forms.Label MeasuredPosition_label;
+        private System.Windows.Forms.CheckBox UpCameraMirrorY_checkBox;
+        private System.Windows.Forms.CheckBox UpCameraMirrorX_checkBox;
+        private System.Windows.Forms.CheckBox DownCameraMirrorY_checkBox;
+        private System.Windows.Forms.CheckBox DownCameraMirrorX_checkBox;
+        private System.Windows.Forms.CheckBox UpCamFixedPhysLoc_checkBox;
+        private System.Windows.Forms.CheckBox DownCamFixedPhysLoc_checkBox;
     }
 }
 

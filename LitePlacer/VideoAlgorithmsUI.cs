@@ -41,7 +41,7 @@ namespace LitePlacer
 
         // =====================================================================================
         // interface to main form:
-        Camera cam;
+        Camera selectedCam;
 
         private void Algorithms_tabPage_Begin()
         {
@@ -90,7 +90,6 @@ namespace LitePlacer
         // camera change
         private void ChangeCamera(Camera NewCam)
         {
-            cam = NewCam;
             SelectCamera(NewCam);
             AlgorithmsTab_RestoreBehaviour();
         }
@@ -451,6 +450,11 @@ namespace LitePlacer
 
         }
 
+        private void OverlayPictures_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            selectedCam.Overlay = OverlayPictures_checkBox.Checked;
+        }
+
         private void ProcessDisplay_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             ProcessDisplay_checkBox_Checked_Change();
@@ -458,6 +462,7 @@ namespace LitePlacer
 
         private void ProcessDisplay_checkBox_Checked_Change()
         {
+            selectedCam.Overlay = OverlayPictures_checkBox.Checked;
             if (ProcessDisplay_checkBox.Checked)
             {
                 UpdateVideoProcessing();
@@ -687,6 +692,18 @@ namespace LitePlacer
             cam.Measure(out double X, out double Y, out double Atmp, out int err, true);
         }
 
+        // ===================
+        private void GotoFeature_button_Click(object sender, EventArgs e)
+        {
+            Camera cam = UpCamera;
+            if (DownCam_radioButton.Checked)
+            {
+                cam = DownCamera;
+            }
+            cam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
+            cam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
+            GoToFeatureLocation_m(cam, 0.005, out double Xtmp, out double Ytmp, out double Atmp, 4, 1);
+        }
 
         // =====================================================================================
         // Functions_dataGridView 

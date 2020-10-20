@@ -177,6 +177,7 @@
     </Compile>
     <Compile Include="IAMVideoProcAmp.cs" />
     <Compile Include="Nozzle.cs" />
+    <Compile Include="Optimizer.cs" />
     <Compile Include="SelectFiducialAlgorithm_Form.cs">
       <SubType>Form</SubType>
     </Compile>

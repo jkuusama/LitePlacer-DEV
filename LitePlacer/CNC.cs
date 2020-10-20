@@ -1030,6 +1030,10 @@ namespace LitePlacer
             }
             else if ((CompensateXY) && (!CompensateA))
             {
+                if (!XYA_move(X + SlackCompensationDistance, Y + SlackCompensationDistance, A))
+                {
+                    return false;
+                }
                 if (!XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, A))
                 {
                     return false;
@@ -1046,6 +1050,10 @@ namespace LitePlacer
             }
             else
             {
+                if (!XYA_move(X + SlackCompensationDistance, Y + SlackCompensationDistance, A - SlackCompensationDistanceA))
+                {
+                    return false;
+                }
                 if (!XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, A - SlackCompensationDistanceA))
                 {
                     return false;

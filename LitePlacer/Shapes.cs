@@ -44,11 +44,11 @@ namespace LitePlacer
 
         public class Rectangle : Shape
         {
-            public List<IntPoint> Corners { get; set; }
+            public List<Point> Corners { get; set; }
             public double LongsideLenght { get; }
             public double ShortSideLenght { get; }
 
-            public Rectangle(List<IntPoint> corners)
+            public Rectangle(List<Point> corners)
             {
                 Corners = corners;
                 AForge.Point C = new AForge.Point();
@@ -113,9 +113,9 @@ namespace LitePlacer
         {
 			public double Radius { get; set; }
 
-			public Circle(AForge.Point centr, double r)
+			public Circle(AForge.Point center, double r)
 			{
-                Center = centr;
+                Center = center;
                 Radius = r;
 			}
 		}
@@ -125,7 +125,7 @@ namespace LitePlacer
         {
             public Rectangle BoundingBox { get; set; }
 
-            public Component(List<IntPoint> corners)
+            public Component(List<Point> corners)
             {
                 BoundingBox = new Rectangle(corners);
             }
