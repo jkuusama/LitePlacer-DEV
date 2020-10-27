@@ -1030,10 +1030,6 @@ namespace LitePlacer
             }
             else if ((CompensateXY) && (!CompensateA))
             {
-                if (!XYA_move(X + SlackCompensationDistance, Y + SlackCompensationDistance, A))
-                {
-                    return false;
-                }
                 if (!XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, A))
                 {
                     return false;
@@ -1050,10 +1046,6 @@ namespace LitePlacer
             }
             else
             {
-                if (!XYA_move(X + SlackCompensationDistance, Y + SlackCompensationDistance, A - SlackCompensationDistanceA))
-                {
-                    return false;
-                }
                 if (!XYA_move(X - SlackCompensationDistance, Y - SlackCompensationDistance, A - SlackCompensationDistanceA))
                 {
                     return false;
@@ -1131,7 +1123,7 @@ namespace LitePlacer
             };
             X = X + SquareCorrection * Y;
             X = Math.Round(X, 3);
-            if ((dX < 1.0) && (dY < 1.0))
+            if ((dX < 2.0) && (dY < 2.0))
             {
                 // small movement
                 // First do XY move, then A. This works always.

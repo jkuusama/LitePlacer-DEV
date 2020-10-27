@@ -2715,74 +2715,79 @@ namespace LitePlacer
             X = 100;
             Y = 100;
             A = 0;
+
+            if(moveTries < 1 || measureTries < 2)
+            {
+                return false;
+            }
+
             if (!cam.IsRunning())
             {
                 DisplayText("Camera not running", KnownColor.Red, true);
                 return false;
             }
-            int count = 0;
-            int res = 0;
-            int tries = 0;
-            // bool ProcessingStateSave = DownCamera.PauseProcessing;
-            // DownCamera.PauseProcessing = true;
-            do
+
+            for (int i = 1; i <= moveTries; i++)
             {
                 // Measure location
-                for (tries = 0; tries < measureTries; tries++)
+                int tries;
+                for (tries = 1; tries <= measureTries; tries++)
                 {
-                    if (cam.Measure(out X, out Y, out A, out res, false))
+                    if (cam.Measure(out X, out Y, out A, out int res, false))
                     {
                         break;
                     }
-                    Thread.Sleep(100); // next frame + vibration damping
-                    if (tries >= measureTries-1)
-                    {
-                        DisplayText("Failed in " + measureTries.ToString() + " tries.");
-                        ShowMessageBox(
-                            "Optical positioning: Can't find Feature",
-                            "No found",
-                            MessageBoxButtons.OK);
-                        // DownCamera.PauseProcessing = ProcessingStateSave;
-                        return false;
-                    }
                 }
-                DisplayText("Optical positioning, round " + count.ToString(CultureInfo.InvariantCulture)
-                    + ", dX= " + X.ToString(CultureInfo.InvariantCulture) + ", dY= " + Y.ToString(CultureInfo.InvariantCulture)
-                    + ", tries= " + tries.ToString(CultureInfo.InvariantCulture));
-                // If we are further than move tolerance, go there
-                if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance))
+
+                if (tries > measureTries)
                 {
-                    if(cam.FixedPhysLocation)
-                    {
-                        //fixed camera:
-                        //move feature to camera
-                        //not fixed camera:
-                        //move camera to feature
-                        X = -X;
-                        Y = -Y;
-                    }
-                    
+                    DisplayText("Failed in " + measureTries.ToString() + " tries.");
+                    ShowMessageBox(
+                        "Optical positioning: Can't find Feature",
+                        "No found",
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+                else
+                {
+                    DisplayText("Optical positioning, round " + i.ToString()
+                       + ", dX= " + X.ToString(CultureInfo.InvariantCulture) + ", dY= " + Y.ToString(CultureInfo.InvariantCulture)
+                       + ", tries= " + tries.ToString());
+                }
+
+                if (cam.FixedPhysLocation)
+                {
+                    //fixed camera:
+                    //move feature to camera
+                    //not fixed camera:
+                    //move camera to feature
+                    X = -X;
+                    Y = -Y;
+                }
+
+                // If we are further than move tolerance, go there
+                if ( new DoublePoint(X, Y).DistanceTo(new DoublePoint(0,0)) > MoveTolerance )
+                {
                     if (!CNC_XYA_m(Cnc.CurrentX + X, Cnc.CurrentY + Y, Cnc.CurrentA))
                     {
                         return false;
                     }
+                    Thread.Sleep(100); // vibration damping
                 }
-                count++;
-            }  // repeat this until we didn't need to move
-            while ((count < moveTries)
-                && ((Math.Abs(X) > MoveTolerance)
-                || (Math.Abs(Y) > MoveTolerance)));
+                else
+                {
+                    return true;
+                }
+            }
 
-            // DownCamera.PauseProcessing = ProcessingStateSave;
-            if (count >= moveTries - 1 && moveTries > 1)
+            if (moveTries > 1)
             {
                 ShowMessageBox(
                     "Optical positioning: Process is unstable, result is unreliable.",
                     "Count exeeded",
                     MessageBoxButtons.OK);
-                return false;
             }
-            return true;
+            return false;
         }
 
         #endregion CNC interface functions
@@ -7786,8 +7791,7 @@ namespace LitePlacer
             if ( (Method == "UpCam Snapshot" || (Method == "Place Assisted")) && UseUpcam_checkBox.Checked)
             {
                 DisplayText("PlacePart_m: take Upcam snapshot");
-                double dX=0, dY=0;
-                Nozzle.GetPositionCorrection_m(A, out dX, out dY);
+                Nozzle.GetPositionCorrection_m(A, out double dX, out double dY);
                 // Take part to upcam
                 if (!CNC_XYA_m(Setting.UpCam_PositionX + dX, Setting.UpCam_PositionY + dY, A))
                 {
@@ -7800,14 +7804,37 @@ namespace LitePlacer
                 double aStart = Cnc.CurrentA;
                 double xStart = Cnc.CurrentX;
                 double yStart = Cnc.CurrentY;
-                // take snapshot
+
                 SelectCamera(UpCamera);
                 UpCamera.DrawGrid = true;
-                UpCamera.DrawCross = true;
+                UpCamera.DrawCross = false;
                 UpCamera.Overlay = false;
                 UpCamera.ClearDisplayFunctionsList();
+
+                bool withVideoAlgorithm = false;
+                void GotoFeature_Click(object sender, EventArgs e)
+                {
+                    if (UpCamera.Measure(out double tmpX, out double tmpY, out double tmpA, out int res, false))
+                    {
+                        if (UpCamera.FixedPhysLocation)
+                            CNC_XYA_m(Cnc.CurrentX - tmpX, Cnc.CurrentY - tmpY, Cnc.CurrentA);
+                        else
+                            CNC_XYA_m(Cnc.CurrentX + tmpX, Cnc.CurrentY + tmpY, Cnc.CurrentA);
+                    }
+                }
+                if (VideoAlgorithms.AllAlgorithms.Exists(s => s.Name == "UpCam Component"))
+                {
+                    withVideoAlgorithm = true;
+                    VideoAlgorithmsCollection.FullAlgorithmDescription algorithmDescription = VideoAlgorithms.AllAlgorithms.Where(s => s.Name == "UpCam Component").ToList()[0];
+                    UpCamera.BuildMeasurementFunctionsList(algorithmDescription.FunctionList);
+                    UpCamera.MeasurementParameters = algorithmDescription.MeasurementParameters;
+                    GotoFeatureJob_button.Click += GotoFeature_Click;
+                }
+
+                UpCamera.BoxRotationDeg = A;
                 EnterKeyHit = false;
                 ZGuardOff();
+                GotoFeatureJob_button.Enabled = withVideoAlgorithm;
                 do
                 {
                     Application.DoEvents();
@@ -7826,7 +7853,15 @@ namespace LitePlacer
                         return false;
                     }
                 } while (!EnterKeyHit);
+                GotoFeatureJob_button.Enabled = false;
                 ZGuardOn();
+                UpCamera.ClearDisplayFunctionsList();
+                UpCamera.BoxRotationDeg = 0;
+                if(withVideoAlgorithm)
+                {
+                    GotoFeatureJob_button.Click -= GotoFeature_Click;
+                }
+
                 A += Cnc.CurrentA - aStart;
                 X += Cnc.CurrentX - xStart;
                 Y += Cnc.CurrentY - yStart;
@@ -8350,24 +8385,23 @@ namespace LitePlacer
 
             // Find the homographic tranformation from CAD data (fiducials.nominal) to measured machine coordinates
             // (fiducials.machine):
-            Transform transform = new Transform();
             int num_corr_points = Fiducials.Length;
             // Special case for 2 fiducials: Inject 3rd bogus fiducal, see below
             if (Fiducials.Length == 2)
             {
                 num_corr_points = 3;
             }
-            HomographyEstimation.Point[] nominals = new HomographyEstimation.Point[num_corr_points];
-            HomographyEstimation.Point[] measured = new HomographyEstimation.Point[num_corr_points];
+            double[] nominalsX = new double[num_corr_points];
+            double[] nominalsY = new double[num_corr_points];
+            double[] measuredX = new double[num_corr_points];
+            double[] measuredY = new double[num_corr_points];
             // build point data arrays:
             for (int i = 0; i < Fiducials.Length; i++)
             {
-                nominals[i].X = Fiducials[i].X_nominal;
-                nominals[i].Y = Fiducials[i].Y_nominal;
-                nominals[i].W = 1.0;
-                measured[i].X = Fiducials[i].X_machine;
-                measured[i].Y = Fiducials[i].Y_machine;
-                measured[i].W = 1.0;
+                nominalsX[i] = Fiducials[i].X_nominal;
+                nominalsY[i] = Fiducials[i].Y_nominal;
+                measuredX[i] = Fiducials[i].X_machine;
+                measuredY[i] = Fiducials[i].Y_machine;
             }
 
             // Special case for 2 fiducials: Inject 3rd bogus fiducal
@@ -8376,21 +8410,20 @@ namespace LitePlacer
             // solution space to a similarity transform
             if (Fiducials.Length == 2)
             {
-                double deltaXnominal = nominals[1].X - nominals[0].X;
-                double deltaYnominal = nominals[1].Y - nominals[0].Y;
-                nominals[2].X = nominals[0].X - deltaYnominal;
-                nominals[2].Y = nominals[0].Y + deltaXnominal;
-                nominals[2].W = 1.0;
+                double deltaXnominal = nominalsX[1] - nominalsX[0];
+                double deltaYnominal = nominalsY[1] - nominalsY[0];
+                nominalsX[2] = nominalsX[0] - deltaYnominal;
+                nominalsY[2] = nominalsY[0] + deltaXnominal;
 
-                double deltaXmeasured = measured[1].X - measured[0].X;
-                double deltaYmeasured = measured[1].Y - measured[0].Y;
-                measured[2].X = measured[0].X - deltaYmeasured;
-                measured[2].Y = measured[0].Y + deltaXmeasured;
-                measured[2].W = 1.0;
+                double deltaXmeasured = measuredX[1] - measuredX[0];
+                double deltaYmeasured = measuredY[1] - measuredY[0];
+                measuredX[2] = measuredX[0] - deltaYmeasured;
+                measuredY[2] = measuredY[0] + deltaXmeasured;
             }
 
             // find the tranformation
-            bool res = transform.Estimate(nominals, measured, ErrorMetric.Transfer, 450, 450);  // the PCBs are smaller than 450mm
+            homographyOptimizer homographyOptimizer = new homographyOptimizer();
+            bool res = homographyOptimizer.optimize(nominalsX, nominalsY, measuredX, measuredY);  // the PCBs are smaller than 450mm
             if (!res)
             {
                 ShowMessageBox(
@@ -8401,21 +8434,17 @@ namespace LitePlacer
             }
             // Analyze the transform: Displacement is for debug. We could also calculate X & Y stretch and shear, but why bother.
             // Find out the displacement in the transform (where nominal origin ends up):
-            HomographyEstimation.Point Loc, Loc2;
-            Loc.X = 0.0;
-            Loc.Y = 0.0;
-            Loc.W = 1.0;
-            Loc = transform.TransformPoint(Loc);
-            Loc = Loc.NormalizeHomogeneous();
+            AForge.DoublePoint Loc, Loc2;
+            Loc.X = 0.0f;
+            Loc.Y = 0.0f;
+            Loc = homographyOptimizer.transformPoint(Loc);
             DisplayText("Transform results:");
-            DisplayText("Xorigin= " + (Loc.X).ToString(CultureInfo.InvariantCulture));
+            DisplayText("Xorigin= " + Loc.X.ToString(CultureInfo.InvariantCulture));
             DisplayText("Yorigin= " + Loc.Y.ToString(CultureInfo.InvariantCulture));
             // We do need rotation. Find out by rotatíng a unit vector:
-            Loc2.X = 1.0;
-            Loc2.Y = 0.0;
-            Loc2.W = 1.0;
-            Loc2 = transform.TransformPoint(Loc2);
-            Loc2 = Loc2.NormalizeHomogeneous();
+            Loc2.X = 1.0f;
+            Loc2.Y = 0.0f;
+            Loc2 = homographyOptimizer.transformPoint(Loc2);
             // DisplayText("dX= " + Loc2.X.ToString(CultureInfo.InvariantCulture));
             // DisplayText("dY= " + Loc2.Y.ToString(CultureInfo.InvariantCulture));
             double angle = Math.Asin(Loc2.Y - Loc.Y) * 180.0 / Math.PI; // in degrees
@@ -8425,23 +8454,28 @@ namespace LitePlacer
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
                 // build a point from CAD data values
-                Loc.X = 0.0;
+                Loc.X = 0.0f;
                 if (double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out double tempD))
                 {
                     Loc.X = tempD;
                 }
-                Loc.Y = 0.0;
+                Loc.Y = 0.0f;
                 if (double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out tempD))
                 {
                     Loc.Y = tempD;
                 }
-                Loc.W = 1;
                 // transform it
-                Loc = transform.TransformPoint(Loc);
-                Loc = Loc.NormalizeHomogeneous();
+                Loc = homographyOptimizer.transformPoint(Loc);
                 // store calculated location values
                 Row.Cells["X_machine"].Value = Loc.X.ToString("0.000", CultureInfo.InvariantCulture);
                 Row.Cells["Y_machine"].Value = Loc.Y.ToString("0.000", CultureInfo.InvariantCulture);
+
+                AForge.DoublePoint Loc3 = Loc - new DoublePoint(0.5, 0);
+                AForge.DoublePoint Loc4 = Loc + new DoublePoint(0.5, 0);
+                Loc3 = homographyOptimizer.transformPoint(Loc3);
+                Loc4 = homographyOptimizer.transformPoint(Loc4);
+                angle = Math.Atan2(Loc4.Y - Loc3.Y, Loc4.X - Loc3.X) * 180.0 / Math.PI;
+
                 // handle rotation
                 double rot = 0.0;
                 if (double.TryParse(Row.Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot))
@@ -8469,11 +8503,9 @@ namespace LitePlacer
             double dx, dy;
             for (int i = 0; i < Fiducials.Length; i++)
             {
-                Loc.X = Fiducials[i].X_nominal;
+                Loc.X = (float)Fiducials[i].X_nominal;
                 Loc.Y = Fiducials[i].Y_nominal;
-                Loc.W = 1.0;
-                Loc = transform.TransformPoint(Loc);
-                Loc = Loc.NormalizeHomogeneous();
+                Loc = homographyOptimizer.transformPoint(Loc);
                 dx = Math.Abs(Loc.X - Fiducials[i].X_machine);
                 dy = Math.Abs(Loc.Y - Fiducials[i].Y_machine);
                 DisplayText(Fiducials[i].Designator +
@@ -10707,7 +10739,6 @@ namespace LitePlacer
             R_numericUpDown.Value = R;
             G_numericUpDown.Value = G;
             B_numericUpDown.Value = B;
-            Color_Box.BackColor = Color.FromArgb(R, G, B);
         }
 
         #endregion
@@ -12818,6 +12849,24 @@ namespace LitePlacer
             SpecialProcessing_button.Visible = false;
             AdvancedProcessing_tabControl.SelectedTab = NozzleCalibration_tabPage;
             AdvancedProcessing_tabControl.Visible = true;
+        }
+
+        AForge.Point featureLocation = new AForge.Point();
+        float featureRotation = 0;
+
+        private void SaveFeatureLoc_button_Click(object sender, EventArgs e)
+        {
+            if(!selectedCam.Measure(out double xPos, out double yPos, out double aTmp, out int err, true))
+            {
+                return;
+            }
+            featureLocation = new AForge.Point((float)(xPos + Cnc.CurrentX), (float)(yPos + Cnc.CurrentY));
+            featureRotation = (float)aTmp;
+        }
+
+        private void GotoFeatureLoc_button_Click(object sender, EventArgs e)
+        {
+            CNC_XYA_m(featureLocation.X, featureLocation.Y, featureRotation);
         }
     }	// end of: 	public partial class FormMain : Form
 

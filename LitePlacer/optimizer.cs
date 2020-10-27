@@ -46,7 +46,6 @@ namespace LitePlacer
 
     class homographyOptimizer
     {
-        private int homographyPow = 1;
         private Vector<double> nomX;
         private Vector<double> nomY;
         private Vector<double> measuredX;
@@ -77,11 +76,9 @@ namespace LitePlacer
             //try to use the maximum possible potency for this number of fiducials
             double bestError = double.MaxValue;
             NonlinearMinimizationResult bestResult = null;
-            for (int i = 1; i < 12; i++)
+            for (int pow = 1; pow < 12; pow++)
             {
-                homographyPow = i;
-
-                int pCount = 1 + 2 * homographyPow;
+                int pCount = 1 + 2 * pow;
                 pX = new DenseVector(pCount);
                 pX[1] = 1.0;
 
@@ -101,7 +98,7 @@ namespace LitePlacer
                 }
                 else
                 {
-                    pX = result.MinimizingPoint; //if performance gets worse due to too many parameters, take previous reulst
+                    pX = bestResult.MinimizingPoint; //if performance gets worse due to too many parameters, take previous reulst
                     break;
                 }
             }
@@ -115,13 +112,11 @@ namespace LitePlacer
 
             bestError = double.MaxValue;
             bestResult = null;
-            for (int i = 1; i < 12; i++)
+            for (int pow = 1; pow < 12; pow++)
             {
-                homographyPow = i;
-
-                int pCount = 1 + 2 * homographyPow;
+                int pCount = 1 + 2 * pow;
                 pY = new DenseVector(pCount);
-                pY[homographyPow + 1] = 1.0;
+                pY[pow + 1] = 1.0;
 
                 IObjectiveModel obj = ObjectiveFunction.NonlinearModel(homographyFunction, homographyDerivation, nomY, measuredY);
                 LevenbergMarquardtMinimizer solver = new LevenbergMarquardtMinimizer(maximumIterations: 10000);
@@ -132,14 +127,14 @@ namespace LitePlacer
                     bestResult = result;
                     bestError = error;
                 }
-                else if (error < bestError && Math.Abs(result.MinimizingPoint[homographyPow + 1] - 1) < 0.1)
+                else if (error < bestError && Math.Abs(result.MinimizingPoint[pow + 1] - 1) < 0.1)
                 {
                     bestResult = result;
                     bestError = error;
                 }
                 else
                 {
-                    pY = result.MinimizingPoint;
+                    pY = bestResult.MinimizingPoint;
                     break;
                 }
             }
@@ -159,26 +154,27 @@ namespace LitePlacer
         /// </summary>
         /// <param name="nominalPos"></param>
         /// <returns>calculated position</returns>
-        public AForge.Point transformPoint(AForge.Point nominalPos)
+        public AForge.DoublePoint transformPoint(AForge.DoublePoint nominalPos)
         {
             if (pX == null || pY == null)
                 return nominalPos;
-            AForge.Point measuredPos = new AForge.Point();
-            measuredPos.X = (float)GetValue(pX, nominalPos.X, nominalPos.Y);
-            measuredPos.Y = (float)GetValue(pY, nominalPos.X, nominalPos.Y);
+            AForge.DoublePoint measuredPos = new AForge.DoublePoint();
+            measuredPos.X = GetValue(pX, nominalPos.X, nominalPos.Y);
+            measuredPos.Y = GetValue(pY, nominalPos.X, nominalPos.Y);
             return measuredPos;
         }
 
         private double GetValue(Vector<double> p, double a, double b)
         {
+            int pow = (p.Count - 1) / 2;
             double y = p[0];
-            for (int j = 1; j <= homographyPow; j++)
+            for (int j = 1; j <= pow; j++)
             {
                 y += Math.Pow(a, j) * p[0 + j];
             }
-            for (int j = 1; j <= homographyPow; j++)
+            for (int j = 1; j <= pow; j++)
             {
-                y += Math.Pow(b, j) * p[homographyPow + j];
+                y += Math.Pow(b, j) * p[pow + j];
             }
             return y;
         }
@@ -195,17 +191,18 @@ namespace LitePlacer
 
         private Matrix<double> homographyDerivation(Vector<double> p, Vector<double> x)
         {
+            int pow = (p.Count - 1) / 2;
             var prime = Matrix<double>.Build.Dense(x.Count, p.Count);
             for (int i = 0; i < x.Count; i++)
             {
                 prime[i, 0] = 1;
-                for (int j = 1; j <= homographyPow; j++)
+                for (int j = 1; j <= pow; j++)
                 {
                     prime[i, 0 + j] = Math.Pow(nomX[i], j);
                 }
-                for (int j = 1; j <= homographyPow; j++)
+                for (int j = 1; j <= pow; j++)
                 {
-                    prime[i, homographyPow + j] = Math.Pow(nomY[i], j);
+                    prime[i, pow + j] = Math.Pow(nomY[i], j);
                 }
             }
             return prime;

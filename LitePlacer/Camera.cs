@@ -1278,12 +1278,51 @@ namespace LitePlacer
                 {
                     continue;
                 }
-                // add start point to list, so we get line segments
-                OutlineRaw.Add(OutlineRaw[0]);
+                
                 // We are dealing with small objects, one pixel is coarse. Therefore, all calculations are done
                 // on a scaled outline, scaling back after finding the rectangle. (This is because AForge uses IntPoints.)
-                List<IntPoint> Outline = ScaleOutline(1.0, OutlineRaw);
+                List<IntPoint> Outline = OutlineRaw;
+
+                // add start point to list, so we get line segments
+                Outline.Add(Outline[0]);
                 List<AForge.Point> Box = GetMinimumBoundingRectangle(Outline).Select(s => (AForge.Point)s).ToList();    // get bounding rectangle
+
+                //workaround for correct and consistent angle
+                List<AForge.Point> anglePoints = OutlineRaw.Select(s => (AForge.Point)s).ToList();
+
+                double angle = 0;
+                List<double[]> angle_length = new List<double[]>(anglePoints.Count);
+                for (int i = 0, j = 1; i < (anglePoints.Count - 0); i++, j = j < (anglePoints.Count - 1) ? j + 1 : 0)
+                {
+                    double tmpAngle;
+                    if (anglePoints[i].X == anglePoints[j].X)
+                    {
+                        tmpAngle = 0;
+                    }
+                    else if (anglePoints[i].X < anglePoints[j].X)
+                    {
+                        tmpAngle = Math.Atan2(anglePoints[j].Y - anglePoints[i].Y, anglePoints[j].X - anglePoints[i].X) / Math.PI * 180;
+                    }
+                    else
+                    {
+                        tmpAngle = Math.Atan2(anglePoints[i].Y - anglePoints[j].Y, anglePoints[i].X - anglePoints[j].X) / Math.PI * 180;
+                    }
+
+                    while (tmpAngle >= 45)
+                        tmpAngle -= 90;
+                    while (tmpAngle <= -45)
+                        tmpAngle += 90;
+
+                    angle_length.Add(new double[] { tmpAngle, anglePoints[i].DistanceTo(anglePoints[j]) });
+                }
+                //average angles of 4 longest sides
+                angle_length = angle_length.OrderByDescending(s => s[1]).ToList();
+                for (int i = 0; i < 4; i++)
+                {
+                    angle += angle_length[i][0];
+                }
+                angle = angle / 4.0;
+
                 //Box= ScaleOutline(0.001, Box);  // scale back
                 if (Box.Count != 4)
                 {
@@ -1291,7 +1330,90 @@ namespace LitePlacer
                 }
                 else
                 {
-                    Components.Add(new Shapes.Component(Box));
+                    Components.Add(new Shapes.Component(Box, blob.CenterOfGravity, angle));
+                }
+            }
+            return Components;
+        }
+
+        // ===========
+        private List<Shapes.Component> FindComponentsNewFunct(Bitmap bitmap)
+        {
+            // Locating objects
+            BlobCounter blobCounter = new BlobCounter();
+            blobCounter.FilterBlobs = true;
+            blobCounter.MinHeight = 8;
+            blobCounter.MinWidth = 8;
+            blobCounter.ProcessImage(bitmap);
+            List<Shapes.Component> Components = new List<Shapes.Component>();
+
+            Blob[] blobs = blobCounter.GetObjectsInformation(); // Get blobs
+            foreach (Blob blob in blobs)
+            {
+                if ((blob.Rectangle.Height > (bitmap.Height - 10)) && (blob.Rectangle.Width > (bitmap.Width - 10)))
+                {
+                    continue;  // The whole image could be a blob, discard that
+                }
+
+                List<IntPoint> edgePoints = GetBlobsOutline(blobCounter, blob);     // get edge points
+                List<IntPoint> OutlineRaw = GetConvexHull(edgePoints);                 // convert to convex hull
+                if (OutlineRaw.Count < 3)
+                {
+                    continue;
+                }
+
+                // We are dealing with small objects, one pixel is coarse. Therefore, all calculations are done
+                // on a scaled outline, scaling back after finding the rectangle. (This is because AForge uses IntPoints.)
+                List<IntPoint> Outline = OutlineRaw;
+
+                // add start point to list, so we get line segments
+                Outline.Add(Outline[0]);
+                List<AForge.Point> Box = GetMinimumBoundingRectangle(Outline).Select(s => (AForge.Point)s).ToList();    // get bounding rectangle
+
+                //workaround for correct and consistent angle
+                List<AForge.Point> anglePoints = OutlineRaw.Select(s => (AForge.Point)s).ToList();
+
+                double angle = 0;
+                List<double[]> angle_length = new List<double[]>(anglePoints.Count);
+                for (int i = 0, j = 1; i < (anglePoints.Count - 0); i++, j = j < (anglePoints.Count - 1) ? j + 1 : 0)
+                {
+                    double tmpAngle;
+                    if (anglePoints[i].X == anglePoints[j].X)
+                    {
+                        tmpAngle = 0;
+                    }
+                    else if (anglePoints[i].X < anglePoints[j].X)
+                    {
+                        tmpAngle = Math.Atan2(anglePoints[j].Y - anglePoints[i].Y, anglePoints[j].X - anglePoints[i].X) / Math.PI * 180;
+                    }
+                    else
+                    {
+                        tmpAngle = Math.Atan2(anglePoints[i].Y - anglePoints[j].Y, anglePoints[i].X - anglePoints[j].X) / Math.PI * 180;
+                    }
+
+                    while (tmpAngle >= 45)
+                        tmpAngle -= 90;
+                    while (tmpAngle <= -45)
+                        tmpAngle += 90;
+
+                    angle_length.Add(new double[] { tmpAngle, anglePoints[i].DistanceTo(anglePoints[j]) });
+                }
+                //average angles of 4 longest sides
+                angle_length = angle_length.OrderByDescending(s => s[1]).ToList();
+                for (int i = 0; i < 4; i++)
+                {
+                    angle += angle_length[i][0];
+                }
+                angle = angle / 4.0;
+
+                //Box= ScaleOutline(0.001, Box);  // scale back
+                if (Box.Count != 4)
+                {
+                    MainForm.DisplayText("Rectangle with " + Box.Count.ToString() + "corners (BoxToComponent)", KnownColor.Red, true);
+                }
+                else
+                {
+                    Components.Add(new Shapes.Component(Box, blob.CenterOfGravity, angle));
                 }
             }
             return Components;
@@ -1322,7 +1444,8 @@ namespace LitePlacer
             if(Components.Count == 1)
             {
                 Shapes.Component component = Components[0];
-                MainForm.DisplayBigText( string.Format("{0,5:0.000}", (component.BoundingBox.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (component.BoundingBox.Center.Y - FrameCenterY) * YmmPpix));
+                MainForm.DisplayBigText( string.Format("{0,5:0.000}", (component.BoundingBox.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (component.BoundingBox.Center.Y - FrameCenterY) * YmmPpix) +
+                    "  " + string.Format("{0,5:0.00}", component.BoundingBox.Angle));
             }
             else
             {
@@ -2155,17 +2278,23 @@ namespace LitePlacer
 
         private void DrawArrowFunct(Bitmap img)
         {
-            Pen pen = new Pen(Color.Blue, 3);
+            Pen pen = new Pen(Color.Green, 3);
             Graphics g = Graphics.FromImage(img);
             double length = 60;
-            double angle1 = (Math.PI / -180.0) * (ArrowAngle + 90); // to radians, -180 to get ccw, +90 to start from up
-            double angle2 = (Math.PI / -180.0) * (ArrowAngle - 90); // to radians, -180 to get ccw, -90 to draw from center away
-            //Draw end
-            g.DrawLine(pen, FrameCenterX, FrameCenterY, (int)(FrameCenterX + Math.Cos(angle2) * length), (int)(FrameCenterY + Math.Sin(angle2) * length));
-            // draw head
+            float detailLength = (float)(0.65 * length);
+            double angle = Math.PI / 180.0 * (ArrowAngle); // to radians, -180 to get ccw, +90 to start from up
+
             System.Drawing.Drawing2D.AdjustableArrowCap bigArrow = new System.Drawing.Drawing2D.AdjustableArrowCap(6, 6);
+            
+            g.DrawLine(pen, FrameCenterX, FrameCenterY, FrameCenterX + (int)(detailLength), FrameCenterY);
+            g.DrawArc(pen, FrameCenterX - detailLength, FrameCenterY - detailLength, detailLength * 2.0f, detailLength * 2.0f, 0.0f, (float)ArrowAngle);
+
+            pen.Dispose();
+            pen = new Pen(Color.Blue, 3);
+            g.DrawLine(pen, FrameCenterX, FrameCenterY, (int)(FrameCenterX + Math.Cos(angle + Math.PI) * length), (int)(FrameCenterY + Math.Sin(angle + Math.PI) * length));
             pen.CustomEndCap = bigArrow;
-            g.DrawLine(pen, FrameCenterX, FrameCenterY, (int)(FrameCenterX + Math.Cos(angle1) * length), (int)(FrameCenterY + Math.Sin(angle1) * length));
+            g.DrawLine(pen, FrameCenterX, FrameCenterY, (int)(FrameCenterX + Math.Cos(angle) * length), (int)(FrameCenterY + Math.Sin(angle) * length));
+
             pen.Dispose();
             g.Dispose();
         }
@@ -2485,37 +2614,6 @@ namespace LitePlacer
                 {
                     if (comp.BoundingBox.Corners.Count != 4)
                         continue;
-
-                    //workaround for correct and consistent angle
-                    AForge.Point longestSide1 = comp.BoundingBox.Corners[3], longestSide2 = comp.BoundingBox.Corners[0];
-                    double longestLength = comp.BoundingBox.Corners[3].DistanceTo(comp.BoundingBox.Corners[0]);
-                    for (int i = 0; i < 3; i++)
-                    {
-                        double thisLength = comp.BoundingBox.Corners[i].DistanceTo(comp.BoundingBox.Corners[i+1]);
-                        if(thisLength > longestLength)
-                        {
-                            longestLength = thisLength;
-                            longestSide1 = comp.BoundingBox.Corners[i];
-                            longestSide2 = comp.BoundingBox.Corners[i + 1];
-                        }
-                    }
-                    if (longestSide1.X == longestSide2.X)
-                    {
-                        comp.BoundingBox.Angle = 0;
-                    }
-                    else if (longestSide1.X < longestSide2.X)
-                    {
-                        comp.BoundingBox.Angle = Math.Atan2(longestSide2.Y - longestSide1.Y, longestSide2.X - longestSide1.X) / Math.PI * 180;
-                    }
-                    else
-                    {
-                        comp.BoundingBox.Angle = Math.Atan2(longestSide1.Y - longestSide2.Y, longestSide1.X - longestSide2.X) / Math.PI * 180;
-                    }
-
-                    while (comp.BoundingBox.Angle >= 45)
-                        comp.BoundingBox.Angle -= 90;
-                    while (comp.BoundingBox.Angle <= -45)
-                        comp.BoundingBox.Angle += 90;
 
                     Candidates.Add(new Shapes.Shape()
                     {

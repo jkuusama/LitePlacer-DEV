@@ -129,6 +129,17 @@ namespace LitePlacer
             {
                 BoundingBox = new Rectangle(corners);
             }
+            public Component(List<Point> corners, Point center)
+            {
+                BoundingBox = new Rectangle(corners);
+                BoundingBox.Center = center;
+            }
+            public Component(List<Point> corners, Point center, double angle)
+            {
+                BoundingBox = new Rectangle(corners);
+                BoundingBox.Center = center;
+                BoundingBox.Angle = angle;
+            }
         }
 
     }

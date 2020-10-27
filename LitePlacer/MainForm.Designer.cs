@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -492,6 +492,7 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.UseUpcam_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.GotoFeatureJob_button = new System.Windows.Forms.Button();
             this.label39 = new System.Windows.Forms.Label();
             this.AbortPlacement_button = new System.Windows.Forms.Button();
             this.PausePlacement_button = new System.Windows.Forms.Button();
@@ -590,6 +591,8 @@
             this.ComponentList = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
+            this.GotoFeatureLoc_button = new System.Windows.Forms.Button();
+            this.SaveFeatureLoc_button = new System.Windows.Forms.Button();
             this.MeasuredPosition_label = new System.Windows.Forms.Label();
             this.GotoFeature_button = new System.Windows.Forms.Button();
             this.OverlayPictures_checkBox = new System.Windows.Forms.CheckBox();
@@ -662,8 +665,6 @@
             this.ProcessDisplay_checkBox = new System.Windows.Forms.CheckBox();
             this.label166 = new System.Windows.Forms.Label();
             this.Algorithm_comboBox = new System.Windows.Forms.ComboBox();
-            this.ColorHelp_label = new System.Windows.Forms.Label();
-            this.Color_Box = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.GotoUpCamPositionCal_button = new System.Windows.Forms.Button();
             this.NozzleOffset_label = new System.Windows.Forms.Label();
@@ -6177,6 +6178,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.GotoFeatureJob_button);
             this.groupBox1.Controls.Add(this.label39);
             this.groupBox1.Controls.Add(this.AbortPlacement_button);
             this.groupBox1.Controls.Add(this.PausePlacement_button);
@@ -6198,6 +6200,16 @@
             this.groupBox1.TabIndex = 50;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Placement Operations";
+            // 
+            // GotoFeatureJob_button
+            // 
+            this.GotoFeatureJob_button.Enabled = false;
+            this.GotoFeatureJob_button.Location = new System.Drawing.Point(6, 106);
+            this.GotoFeatureJob_button.Name = "GotoFeatureJob_button";
+            this.GotoFeatureJob_button.Size = new System.Drawing.Size(109, 23);
+            this.GotoFeatureJob_button.TabIndex = 311;
+            this.GotoFeatureJob_button.Text = "Goto Feature";
+            this.GotoFeatureJob_button.UseVisualStyleBackColor = true;
             // 
             // label39
             // 
@@ -7176,14 +7188,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -7270,6 +7282,8 @@
             // 
             // Algorithms_tabPage
             // 
+            this.Algorithms_tabPage.Controls.Add(this.GotoFeatureLoc_button);
+            this.Algorithms_tabPage.Controls.Add(this.SaveFeatureLoc_button);
             this.Algorithms_tabPage.Controls.Add(this.MeasuredPosition_label);
             this.Algorithms_tabPage.Controls.Add(this.GotoFeature_button);
             this.Algorithms_tabPage.Controls.Add(this.OverlayPictures_checkBox);
@@ -7330,8 +7344,6 @@
             this.Algorithms_tabPage.Controls.Add(this.ProcessDisplay_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.label166);
             this.Algorithms_tabPage.Controls.Add(this.Algorithm_comboBox);
-            this.Algorithms_tabPage.Controls.Add(this.ColorHelp_label);
-            this.Algorithms_tabPage.Controls.Add(this.Color_Box);
             this.Algorithms_tabPage.Controls.Add(this.panel1);
             this.Algorithms_tabPage.Location = new System.Drawing.Point(4, 22);
             this.Algorithms_tabPage.Name = "Algorithms_tabPage";
@@ -7341,11 +7353,31 @@
             this.Algorithms_tabPage.Text = "Setup Video Processing";
             this.Algorithms_tabPage.UseVisualStyleBackColor = true;
             // 
+            // GotoFeatureLoc_button
+            // 
+            this.GotoFeatureLoc_button.Location = new System.Drawing.Point(1052, 461);
+            this.GotoFeatureLoc_button.Name = "GotoFeatureLoc_button";
+            this.GotoFeatureLoc_button.Size = new System.Drawing.Size(127, 23);
+            this.GotoFeatureLoc_button.TabIndex = 313;
+            this.GotoFeatureLoc_button.Text = "Goto Feature Location";
+            this.GotoFeatureLoc_button.UseVisualStyleBackColor = true;
+            this.GotoFeatureLoc_button.Click += new System.EventHandler(this.GotoFeatureLoc_button_Click);
+            // 
+            // SaveFeatureLoc_button
+            // 
+            this.SaveFeatureLoc_button.Location = new System.Drawing.Point(1052, 422);
+            this.SaveFeatureLoc_button.Name = "SaveFeatureLoc_button";
+            this.SaveFeatureLoc_button.Size = new System.Drawing.Size(127, 23);
+            this.SaveFeatureLoc_button.TabIndex = 312;
+            this.SaveFeatureLoc_button.Text = "Save Feature Location";
+            this.SaveFeatureLoc_button.UseVisualStyleBackColor = true;
+            this.SaveFeatureLoc_button.Click += new System.EventHandler(this.SaveFeatureLoc_button_Click);
+            // 
             // MeasuredPosition_label
             // 
             this.MeasuredPosition_label.AutoSize = true;
             this.MeasuredPosition_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MeasuredPosition_label.Location = new System.Drawing.Point(988, 605);
+            this.MeasuredPosition_label.Location = new System.Drawing.Point(945, 605);
             this.MeasuredPosition_label.Name = "MeasuredPosition_label";
             this.MeasuredPosition_label.Size = new System.Drawing.Size(264, 31);
             this.MeasuredPosition_label.TabIndex = 311;
@@ -8107,27 +8139,6 @@
             this.Algorithm_comboBox.Size = new System.Drawing.Size(121, 21);
             this.Algorithm_comboBox.TabIndex = 207;
             this.Algorithm_comboBox.SelectedIndexChanged += new System.EventHandler(this.Algorithm_comboBox_SelectedIndexChanged);
-            // 
-            // ColorHelp_label
-            // 
-            this.ColorHelp_label.AutoSize = true;
-            this.ColorHelp_label.Location = new System.Drawing.Point(1030, 448);
-            this.ColorHelp_label.Name = "ColorHelp_label";
-            this.ColorHelp_label.Size = new System.Drawing.Size(176, 13);
-            this.ColorHelp_label.TabIndex = 206;
-            this.ColorHelp_label.Text = "(Alt+click to select color from image)";
-            this.toolTip1.SetToolTip(this.ColorHelp_label, "Set parameters for the selected algorithm");
-            this.ColorHelp_label.Visible = false;
-            // 
-            // Color_Box
-            // 
-            this.Color_Box.Location = new System.Drawing.Point(1033, 425);
-            this.Color_Box.Name = "Color_Box";
-            this.Color_Box.ReadOnly = true;
-            this.Color_Box.Size = new System.Drawing.Size(21, 20);
-            this.Color_Box.TabIndex = 205;
-            this.toolTip1.SetToolTip(this.Color_Box, "Set parameters for the selected algorithm");
-            this.Color_Box.Visible = false;
             // 
             // panel1
             // 
@@ -10452,8 +10463,6 @@
         private System.Windows.Forms.CheckBox ProcessDisplay_checkBox;
         private System.Windows.Forms.Label label166;
         private System.Windows.Forms.ComboBox Algorithm_comboBox;
-        private System.Windows.Forms.Label ColorHelp_label;
-        private System.Windows.Forms.TextBox Color_Box;
         private System.Windows.Forms.Label label105;
         private System.Windows.Forms.Label label106;
         private System.Windows.Forms.Label label160;
@@ -10758,6 +10767,9 @@
         private System.Windows.Forms.CheckBox DownCameraMirrorX_checkBox;
         private System.Windows.Forms.CheckBox UpCamFixedPhysLoc_checkBox;
         private System.Windows.Forms.CheckBox DownCamFixedPhysLoc_checkBox;
+        private System.Windows.Forms.Button GotoFeatureLoc_button;
+        private System.Windows.Forms.Button SaveFeatureLoc_button;
+        private System.Windows.Forms.Button GotoFeatureJob_button;
     }
 }
 

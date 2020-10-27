@@ -695,14 +695,9 @@ namespace LitePlacer
         // ===================
         private void GotoFeature_button_Click(object sender, EventArgs e)
         {
-            Camera cam = UpCamera;
-            if (DownCam_radioButton.Checked)
-            {
-                cam = DownCamera;
-            }
-            cam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
-            cam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
-            GoToFeatureLocation_m(cam, 0.005, out double Xtmp, out double Ytmp, out double Atmp, 4, 1);
+            selectedCam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
+            selectedCam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
+            GoToFeatureLocation_m(selectedCam, 0.001, out double Xtmp, out double Ytmp, out double Atmp, 2, 1);
         }
 
         // =====================================================================================
