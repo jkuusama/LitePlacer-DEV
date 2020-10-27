@@ -420,9 +420,9 @@ namespace LitePlacer
             // Fiducials on the job table
             foreach (DataGridViewRow row in JobData_GridView.Rows)
             {
-                if (row.Cells["GroupMethod"].Value.ToString() == "Fiducials")
+                if (row.Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials")
                 {
-                    row.Cells["MethodParamAllComponents"].Value = NewName;
+                    row.Cells["JobdataMethodParametersColumn"].Value = NewName;
                 }
             }
             // Tapes data table
@@ -477,9 +477,9 @@ namespace LitePlacer
             bool ret = false;
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
-                if (JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value != null)
+                if (JobData_GridView.Rows[i].Cells["JobdataMethodParametersColumn"].Value != null)
                 {
-                    if (JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value.ToString() == Alg)
+                    if (JobData_GridView.Rows[i].Cells["JobdataMethodParametersColumn"].Value.ToString() == Alg)
                     {
                         DisplayText("Algorithm \"" + Alg + "\" used in Job data, row " + (i+1).ToString());
                         ret = true;
@@ -521,11 +521,11 @@ namespace LitePlacer
             // Job data
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
-                if (JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value != null)
+                if (JobData_GridView.Rows[i].Cells["JobdataMethodParametersColumn"].Value != null)
                 {
-                    if (JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value.ToString() == Alg)
+                    if (JobData_GridView.Rows[i].Cells["JobdataMethodParametersColumn"].Value.ToString() == Alg)
                     {
-                        JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
+                        JobData_GridView.Rows[i].Cells["JobdataMethodParametersColumn"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                     }
                 }
             }

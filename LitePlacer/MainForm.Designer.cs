@@ -571,23 +571,18 @@
             this.label86 = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
             this.JobData_GridView = new System.Windows.Forms.DataGridView();
-            this.ComponentCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GroupMethod = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MethodParamAllComponents = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataNozzle_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComponentList = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Bottom_checkBox = new System.Windows.Forms.CheckBox();
             this.CadData_GridView = new System.Windows.Forms.DataGridView();
-            this.Component = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Value_Footprint = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Placed_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.X_nominal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_nominal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rotation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X_Machine = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y_machine = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rotation_machine = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CADdataComponentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CADdataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CADdataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CADdataPlacedColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.CADdataXnominalColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CADdataYnominalColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CADdataRotationNominalColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CADdataXmachineColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CADdataYmachineColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CADdataRotationMachineColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RunJob_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.resetPlacedDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CadFilePath_label = new System.Windows.Forms.Label();
@@ -799,6 +794,13 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.JobDataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodParametersColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataNozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataComponentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -6995,12 +6997,13 @@
             this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ComponentCount,
-            this.ComponentType,
-            this.GroupMethod,
-            this.MethodParamAllComponents,
-            this.JobDataNozzle_Column,
-            this.ComponentList});
+            this.JobDataValueColumn,
+            this.JobDataFootprintColumn,
+            this.JobdataCountColumn,
+            this.JobdataMethodColumn,
+            this.JobdataMethodParametersColumn,
+            this.JobDataNozzleColumn,
+            this.JobdataComponentsColumn});
             this.JobData_GridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.JobData_GridView.Location = new System.Drawing.Point(784, 364);
             this.JobData_GridView.Name = "JobData_GridView";
@@ -7012,50 +7015,6 @@
             this.JobData_GridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellClick);
             this.JobData_GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellContentClick);
             this.JobData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellEndEdit);
-            // 
-            // ComponentCount
-            // 
-            this.ComponentCount.HeaderText = "Count";
-            this.ComponentCount.MinimumWidth = 6;
-            this.ComponentCount.Name = "ComponentCount";
-            this.ComponentCount.Width = 40;
-            // 
-            // ComponentType
-            // 
-            this.ComponentType.HeaderText = "Component Type";
-            this.ComponentType.MinimumWidth = 6;
-            this.ComponentType.Name = "ComponentType";
-            this.ComponentType.Width = 130;
-            // 
-            // GroupMethod
-            // 
-            this.GroupMethod.HeaderText = "Method";
-            this.GroupMethod.MinimumWidth = 6;
-            this.GroupMethod.Name = "GroupMethod";
-            this.GroupMethod.ReadOnly = true;
-            this.GroupMethod.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.GroupMethod.Width = 80;
-            // 
-            // MethodParamAllComponents
-            // 
-            this.MethodParamAllComponents.HeaderText = "Method Parameters";
-            this.MethodParamAllComponents.MinimumWidth = 6;
-            this.MethodParamAllComponents.Name = "MethodParamAllComponents";
-            this.MethodParamAllComponents.Width = 80;
-            // 
-            // JobDataNozzle_Column
-            // 
-            this.JobDataNozzle_Column.HeaderText = "Nozzle";
-            this.JobDataNozzle_Column.MinimumWidth = 6;
-            this.JobDataNozzle_Column.Name = "JobDataNozzle_Column";
-            this.JobDataNozzle_Column.Width = 50;
-            // 
-            // ComponentList
-            // 
-            this.ComponentList.HeaderText = "Components";
-            this.ComponentList.MinimumWidth = 6;
-            this.ComponentList.Name = "ComponentList";
-            this.ComponentList.Width = 130;
             // 
             // Bottom_checkBox
             // 
@@ -7078,15 +7037,16 @@
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Component,
-            this.Value_Footprint,
-            this.Placed_column,
-            this.X_nominal,
-            this.Y_nominal,
-            this.Rotation,
-            this.X_Machine,
-            this.Y_machine,
-            this.Rotation_machine});
+            this.CADdataComponentColumn,
+            this.CADdataValueColumn,
+            this.CADdataFootprintColumn,
+            this.CADdataPlacedColumn,
+            this.CADdataXnominalColumn,
+            this.CADdataYnominalColumn,
+            this.CADdataRotationNominalColumn,
+            this.CADdataXmachineColumn,
+            this.CADdataYmachineColumn,
+            this.CADdataRotationMachineColumn});
             this.CadData_GridView.ContextMenuStrip = this.RunJob_contextMenuStrip;
             this.CadData_GridView.Location = new System.Drawing.Point(785, 62);
             this.CadData_GridView.Name = "CadData_GridView";
@@ -7099,70 +7059,77 @@
             this.CadData_GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CadData_GridView_CellContentClick);
             this.CadData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.CadData_GridView_CellEndEdit);
             // 
-            // Component
+            // CADdataComponentColumn
             // 
-            this.Component.HeaderText = "Component";
-            this.Component.MinimumWidth = 6;
-            this.Component.Name = "Component";
-            this.Component.Width = 125;
+            this.CADdataComponentColumn.HeaderText = "Component";
+            this.CADdataComponentColumn.MinimumWidth = 6;
+            this.CADdataComponentColumn.Name = "CADdataComponentColumn";
+            this.CADdataComponentColumn.Width = 125;
             // 
-            // Value_Footprint
+            // CADdataValueColumn
             // 
-            this.Value_Footprint.HeaderText = "Component Type";
-            this.Value_Footprint.MinimumWidth = 6;
-            this.Value_Footprint.Name = "Value_Footprint";
-            this.Value_Footprint.Width = 130;
+            this.CADdataValueColumn.HeaderText = "Value";
+            this.CADdataValueColumn.MinimumWidth = 6;
+            this.CADdataValueColumn.Name = "CADdataValueColumn";
+            this.CADdataValueColumn.Width = 125;
             // 
-            // Placed_column
+            // CADdataFootprintColumn
             // 
-            this.Placed_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Placed_column.HeaderText = "Placed";
-            this.Placed_column.MinimumWidth = 6;
-            this.Placed_column.Name = "Placed_column";
-            this.Placed_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Placed_column.Width = 80;
+            this.CADdataFootprintColumn.HeaderText = "FootPrint";
+            this.CADdataFootprintColumn.MinimumWidth = 6;
+            this.CADdataFootprintColumn.Name = "CADdataFootprintColumn";
+            this.CADdataFootprintColumn.Width = 130;
             // 
-            // X_nominal
+            // CADdataPlacedColumn
             // 
-            this.X_nominal.HeaderText = "X, nom.";
-            this.X_nominal.MinimumWidth = 6;
-            this.X_nominal.Name = "X_nominal";
-            this.X_nominal.Width = 80;
+            this.CADdataPlacedColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.CADdataPlacedColumn.HeaderText = "Placed";
+            this.CADdataPlacedColumn.MinimumWidth = 6;
+            this.CADdataPlacedColumn.Name = "CADdataPlacedColumn";
+            this.CADdataPlacedColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.CADdataPlacedColumn.Width = 80;
             // 
-            // Y_nominal
+            // CADdataXnominalColumn
             // 
-            this.Y_nominal.HeaderText = "Y, nom.";
-            this.Y_nominal.MinimumWidth = 6;
-            this.Y_nominal.Name = "Y_nominal";
-            this.Y_nominal.Width = 80;
+            this.CADdataXnominalColumn.HeaderText = "X, nom.";
+            this.CADdataXnominalColumn.MinimumWidth = 6;
+            this.CADdataXnominalColumn.Name = "CADdataXnominalColumn";
+            this.CADdataXnominalColumn.Width = 80;
             // 
-            // Rotation
+            // CADdataYnominalColumn
             // 
-            this.Rotation.HeaderText = "Rotation";
-            this.Rotation.MinimumWidth = 6;
-            this.Rotation.Name = "Rotation";
-            this.Rotation.Width = 70;
+            this.CADdataYnominalColumn.HeaderText = "Y, nom.";
+            this.CADdataYnominalColumn.MinimumWidth = 6;
+            this.CADdataYnominalColumn.Name = "CADdataYnominalColumn";
+            this.CADdataYnominalColumn.Width = 80;
             // 
-            // X_Machine
+            // CADdataRotationNominalColumn
             // 
-            this.X_Machine.HeaderText = "X, machine";
-            this.X_Machine.MinimumWidth = 6;
-            this.X_Machine.Name = "X_Machine";
-            this.X_Machine.Width = 80;
+            this.CADdataRotationNominalColumn.HeaderText = "Rotation";
+            this.CADdataRotationNominalColumn.MinimumWidth = 6;
+            this.CADdataRotationNominalColumn.Name = "CADdataRotationNominalColumn";
+            this.CADdataRotationNominalColumn.Width = 70;
             // 
-            // Y_machine
+            // CADdataXmachineColumn
             // 
-            this.Y_machine.HeaderText = "Y, machine";
-            this.Y_machine.MinimumWidth = 6;
-            this.Y_machine.Name = "Y_machine";
-            this.Y_machine.Width = 80;
+            this.CADdataXmachineColumn.HeaderText = "X, machine";
+            this.CADdataXmachineColumn.MinimumWidth = 6;
+            this.CADdataXmachineColumn.Name = "CADdataXmachineColumn";
+            this.CADdataXmachineColumn.Width = 80;
             // 
-            // Rotation_machine
+            // CADdataYmachineColumn
             // 
-            this.Rotation_machine.HeaderText = "Rotation, machine";
-            this.Rotation_machine.MinimumWidth = 6;
-            this.Rotation_machine.Name = "Rotation_machine";
-            this.Rotation_machine.Width = 125;
+            this.CADdataYmachineColumn.HeaderText = "Y, machine";
+            this.CADdataYmachineColumn.MinimumWidth = 6;
+            this.CADdataYmachineColumn.Name = "CADdataYmachineColumn";
+            this.CADdataYmachineColumn.Width = 80;
+            // 
+            // CADdataRotationMachineColumn
+            // 
+            this.CADdataRotationMachineColumn.HeaderText = "Rotation, machine";
+            this.CADdataRotationMachineColumn.MinimumWidth = 6;
+            this.CADdataRotationMachineColumn.Name = "CADdataRotationMachineColumn";
+            this.CADdataRotationMachineColumn.Width = 125;
             // 
             // RunJob_contextMenuStrip
             // 
@@ -9460,6 +9427,57 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
+            // JobDataValueColumn
+            // 
+            this.JobDataValueColumn.HeaderText = "Value";
+            this.JobDataValueColumn.MinimumWidth = 6;
+            this.JobDataValueColumn.Name = "JobDataValueColumn";
+            this.JobDataValueColumn.Width = 130;
+            // 
+            // JobDataFootprintColumn
+            // 
+            this.JobDataFootprintColumn.HeaderText = "Footprint";
+            this.JobDataFootprintColumn.MinimumWidth = 6;
+            this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
+            this.JobDataFootprintColumn.Width = 125;
+            // 
+            // JobdataCountColumn
+            // 
+            this.JobdataCountColumn.HeaderText = "Count";
+            this.JobdataCountColumn.MinimumWidth = 6;
+            this.JobdataCountColumn.Name = "JobdataCountColumn";
+            this.JobdataCountColumn.Width = 40;
+            // 
+            // JobdataMethodColumn
+            // 
+            this.JobdataMethodColumn.HeaderText = "Method";
+            this.JobdataMethodColumn.MinimumWidth = 6;
+            this.JobdataMethodColumn.Name = "JobdataMethodColumn";
+            this.JobdataMethodColumn.ReadOnly = true;
+            this.JobdataMethodColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobdataMethodColumn.Width = 80;
+            // 
+            // JobdataMethodParametersColumn
+            // 
+            this.JobdataMethodParametersColumn.HeaderText = "Method Parameters";
+            this.JobdataMethodParametersColumn.MinimumWidth = 6;
+            this.JobdataMethodParametersColumn.Name = "JobdataMethodParametersColumn";
+            this.JobdataMethodParametersColumn.Width = 80;
+            // 
+            // JobDataNozzleColumn
+            // 
+            this.JobDataNozzleColumn.HeaderText = "Nozzle";
+            this.JobDataNozzleColumn.MinimumWidth = 6;
+            this.JobDataNozzleColumn.Name = "JobDataNozzleColumn";
+            this.JobDataNozzleColumn.Width = 50;
+            // 
+            // JobdataComponentsColumn
+            // 
+            this.JobdataComponentsColumn.HeaderText = "Components";
+            this.JobdataComponentsColumn.MinimumWidth = 6;
+            this.JobdataComponentsColumn.Name = "JobdataComponentsColumn";
+            this.JobdataComponentsColumn.Width = 130;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -9945,15 +9963,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn B_column;
         private System.Windows.Forms.TextBox NozzleBelowPCB_textBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Component;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Value_Footprint;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Placed_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_nominal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_nominal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X_Machine;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y_machine;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Rotation_machine;
         private System.Windows.Forms.TabPage Nozzles_tabPage;
         private System.Windows.Forms.DataGridView NozzlesLoad_dataGridView;
         private System.Windows.Forms.NumericUpDown NoOfNozzles_UpDown;
@@ -10019,12 +10028,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
         private System.Windows.Forms.Button ResetPlaceZ_button;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GroupMethod;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MethodParamAllComponents;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzle_Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComponentList;
         private System.Windows.Forms.Button CalibrateNozzles_button;
         private System.Windows.Forms.ToolStripMenuItem getUnloadMovesFromLoadMovesToolStripMenuItem;
         private System.Windows.Forms.Button NozzlesSave_button;
@@ -10386,6 +10389,23 @@
         private System.Windows.Forms.TabPage NozzleCalibration_tabPage;
         private System.Windows.Forms.TabPage HideAdvanced_tabPage;
         private System.Windows.Forms.Button SpecialProcessing_button;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CADdataComponentColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CADdataValueColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CADdataFootprintColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn CADdataPlacedColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CADdataXnominalColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CADdataYnominalColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CADdataRotationNominalColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CADdataXmachineColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CADdataYmachineColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CADdataRotationMachineColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataValueColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataFootprintColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataCountColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodParametersColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzleColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
     }
 }
 

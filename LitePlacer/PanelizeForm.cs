@@ -191,7 +191,7 @@ namespace LitePlacer
                 bool found = false;
                 foreach (DataGridViewRow Row in JobData.Rows)
                 {
-                    if (Row.Cells["GroupMethod"].Value.ToString() == "Fiducials")
+                    if (Row.Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials")
                     {
                         found = true;
                         break;
@@ -288,7 +288,7 @@ namespace LitePlacer
             int FiducialIndex = -1;
             foreach (DataGridViewRow Row in JobData.Rows)
             {
-                if (Row.Cells["GroupMethod"].Value.ToString() == "Fiducials")
+                if (Row.Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials")
                 {
                     FiducialIndex = Row.Index;
                     break;
@@ -343,34 +343,36 @@ namespace LitePlacer
                         CadData.Rows.Add();
                         int Last = CadData.RowCount - 1;
                         // Component:
-                        Component = Row.Cells["Component"].Value.ToString() + "_"
+                        Component = Row.Cells["CADdataComponentColumn"].Value.ToString() + "_"
                             + PanelRow.ToString(CultureInfo.InvariantCulture) + "_" + PanelColumn.ToString(CultureInfo.InvariantCulture);
-                        CadData.Rows[Last].Cells["Component"].Value = Component;
-                        // Value_Footprint:
-                        CadData.Rows[Last].Cells["Value_Footprint"].Value = Row.Cells["Value_Footprint"].Value;
+                        CadData.Rows[Last].Cells["CADdataComponentColumn"].Value = Component;
+                        // Value:
+                        CadData.Rows[Last].Cells["CADdataValueColumn"].Value = Row.Cells["CADdataValueColumn"].Value;
+                        // Footprint:
+                        CadData.Rows[Last].Cells["CADdataFootprintColumn"].Value = Row.Cells["CADdataFootprintColumn"].Value;
                         // X_nominal:
-                        if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out val))
+                        if (!double.TryParse(Row.Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out val))
                         {
                             OK = false;
-                            Component = Row.Cells["Component"].Value.ToString();
+                            Component = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             break;
                         }
                         val = XFirstOffset + (double)(PanelColumn - 1) * XIncrement + val;
-                        CadData.Rows[Last].Cells["X_nominal"].Value = val;
+                        CadData.Rows[Last].Cells["CADdataXnominalColumn"].Value = val;
                         // Y_nominal:
-                        if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out val))
+                        if (!double.TryParse(Row.Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out val))
                         {
                             OK = false;
-                            Component = Row.Cells["Component"].Value.ToString();
+                            Component = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             break;
                         }
                         val = YFirstOffset + (double)(PanelRow - 1) * YIncrement + val;
-                        CadData.Rows[Last].Cells["Y_nominal"].Value = val;
+                        CadData.Rows[Last].Cells["CADdataYnominalColumn"].Value = val;
                         // Rotation:
-                        CadData.Rows[Last].Cells["Rotation"].Value = Row.Cells["Rotation"].Value;
-                        CadData.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
-                        CadData.Rows[Last].Cells["Y_Machine"].Value = "Nan";
-                        CadData.Rows[Last].Cells["Rotation_machine"].Value = "Nan";
+                        CadData.Rows[Last].Cells["CADdataRotationNominalColumn"].Value = Row.Cells["CADdataRotationNominalColumn"].Value;
+                        CadData.Rows[Last].Cells["CADdataXmachineColumn"].Value = "Nan";   // will be set later 
+                        CadData.Rows[Last].Cells["CADdataYmachineColumn"].Value = "Nan";
+                        CadData.Rows[Last].Cells["CADdataRotationMachineColumn"].Value = "Nan";
                     }
                 }
             }
@@ -395,13 +397,13 @@ namespace LitePlacer
                 // Remove existing:
                 if (FiducialIndex >= 0)
                 {
-                    string[] OriginalFids = JobData.Rows[FiducialIndex].Cells["ComponentList"].Value.ToString().Split(',');
+                    string[] OriginalFids = JobData.Rows[FiducialIndex].Cells["JobdataComponentsColumn"].Value.ToString().Split(',');
                     foreach (string CurrentFiducial in OriginalFids)
                     {
                         // loop from bottom, so we can modify the collection we are looping through:
                         for (int i = CadData.RowCount - 1; i >= 0; i--)
                         {
-                            if (CadData.Rows[i].Cells["Component"].Value.ToString().Contains(CurrentFiducial))
+                            if (CadData.Rows[i].Cells["CADdataComponentColumn"].Value.ToString().Contains(CurrentFiducial))
                             {
                                 CadData.Rows.RemoveAt(i);
                             }
@@ -415,14 +417,15 @@ namespace LitePlacer
                     CadData.Rows.Add();
                     int Last = CadData.RowCount - 1;
                     DataGridViewRow Row = PanelFiducials_dataGridView.Rows[i];
-                    CadData.Rows[Last].Cells["Component"].Value = Row.Cells["Designator_column"].Value.ToString();
-                    CadData.Rows[Last].Cells["Value_Footprint"].Value = "Fiducial | On panel";
-                    CadData.Rows[Last].Cells["X_nominal"].Value = Row.Cells["Xpanelize_Column"].Value.ToString();
-                    CadData.Rows[Last].Cells["Y_nominal"].Value = Row.Cells["Ypanelize_Column"].Value.ToString();
-                    CadData.Rows[Last].Cells["Rotation"].Value = "0.0";
-                    CadData.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
-                    CadData.Rows[Last].Cells["Y_Machine"].Value = "Nan";
-                    CadData.Rows[Last].Cells["Rotation_machine"].Value = "Nan";
+                    CadData.Rows[Last].Cells["CADdataComponentColumn"].Value = Row.Cells["Designator_column"].Value.ToString();
+                    CadData.Rows[Last].Cells["CADdataValueColumn"].Value = "Fiducial";
+                    CadData.Rows[Last].Cells["CADdataFootprintColumn"].Value = "On panel";
+                    CadData.Rows[Last].Cells["CADdataXnominalColumn"].Value = Row.Cells["Xpanelize_Column"].Value.ToString();
+                    CadData.Rows[Last].Cells["CADdataYnominalColumn"].Value = Row.Cells["Ypanelize_Column"].Value.ToString();
+                    CadData.Rows[Last].Cells["CADdataRotationNominalColumn"].Value = "0.0";
+                    CadData.Rows[Last].Cells["CADdataXmachineColumn"].Value = "Nan";   // will be set later 
+                    CadData.Rows[Last].Cells["CADdataYmachineColumn"].Value = "Nan";
+                    CadData.Rows[Last].Cells["CADdataRotationMachineColumn"].Value = "Nan";
                 }
                 // Build Job data
                 MainForm.FillJobData_GridView();
@@ -437,7 +440,7 @@ namespace LitePlacer
 
             // Here, we are using the fiducials data from the individual subboards.
             // (We know they are indicated already)
-            string[] OriginalFiducials = JobData.Rows[FiducialIndex].Cells["ComponentList"].Value.ToString().Split(',');
+            string[] OriginalFiducials = JobData.Rows[FiducialIndex].Cells["JobdataComponentsColumn"].Value.ToString().Split(',');
             // Build the job:
             MainForm.FillJobData_GridView();
 
@@ -471,16 +474,16 @@ namespace LitePlacer
                 // find the fiducial in CAD data.
                 foreach (DataGridViewRow Row in CadData.Rows)
                 {
-                    if (Row.Cells["Component"].Value.ToString().Contains(CurrentFiducial))
+                    if (Row.Cells["CADdataComponentColumn"].Value.ToString().Contains(CurrentFiducial))
                     {
                         // Get its nominal position (value already checked, but need to check again for compiler).
                         tempX = 0.0;
-                        if (double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out tempX))
+                        if (double.TryParse(Row.Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out tempX))
                         {
                             X = tempX;
                         }
                         tempY = 0.0;
-                        if (double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y))
+                        if (double.TryParse(Row.Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out Y))
                         {
                             Y = tempY;
                         }
@@ -491,7 +494,7 @@ namespace LitePlacer
                         {
                             // if 10m is not enough, then ??
                             MainForm.ShowMessageBox(
-                                "Problem with data. " + Row.Cells["Component"].Value.ToString()
+                                "Problem with data. " + Row.Cells["CADdataComponentColumn"].Value.ToString()
                                 + " X: " + X.ToString(CultureInfo.InvariantCulture)
                                 + ", Y: " + Y.ToString(CultureInfo.InvariantCulture) + "?",
                                 "Fiducials data error",
@@ -503,25 +506,25 @@ namespace LitePlacer
                         if (first)
                         {
                             tempX = 0.0;
-                            if (double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out tempX))
+                            if (double.TryParse(Row.Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out tempX))
                             {
                                 X = tempX;
                             }
                             tempY = 0.0;
-                            if (double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y))
+                            if (double.TryParse(Row.Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out Y))
                             {
                                 Y = tempY;
                             }
-                            LowLeft = Row.Cells["Component"].Value.ToString();
+                            LowLeft = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             LowLeftX = X;
                             LowLeftY = Y;
-                            LowRight = Row.Cells["Component"].Value.ToString();
+                            LowRight = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             LowRightX = X;
                             LowRightY = Y;
-                            HighLeft = Row.Cells["Component"].Value.ToString();
+                            HighLeft = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             HighLeftX = X;
                             HighLeftY = Y;
-                            HighRight = Row.Cells["Component"].Value.ToString();
+                            HighRight = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             HighRightX = X;
                             HighRightY = Y;
                             first = false;
@@ -532,7 +535,7 @@ namespace LitePlacer
                         ThisDist = Distance(X, Y, 0, 0);
                         if (ThisDist < CurrDist)
                         {
-                            LowLeft = Row.Cells["Component"].Value.ToString();
+                            LowLeft = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             LowLeftX = X;
                             LowLeftY = Y;
                         }
@@ -541,7 +544,7 @@ namespace LitePlacer
                         ThisDist = Distance(X, Y, 0, 2 * m10);
                         if (ThisDist < CurrDist)
                         {
-                            HighLeft = Row.Cells["Component"].Value.ToString();
+                            HighLeft = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             HighLeftX = X;
                             HighLeftY = Y;
                         }
@@ -550,7 +553,7 @@ namespace LitePlacer
                         ThisDist = Distance(X, Y, 2 * m10, 0);
                         if (ThisDist < CurrDist)
                         {
-                            LowRight = Row.Cells["Component"].Value.ToString();
+                            LowRight = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             LowRightX = X;
                             LowRightY = Y;
                         }
@@ -559,7 +562,7 @@ namespace LitePlacer
                         ThisDist = Distance(X, Y, 2 * m10, 2 * m10);
                         if (ThisDist < CurrDist)
                         {
-                            HighRight = Row.Cells["Component"].Value.ToString();
+                            HighRight = Row.Cells["CADdataComponentColumn"].Value.ToString();
                             HighRightX = X;
                             HighRightY = Y;
                         }
@@ -580,8 +583,8 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             }
-            JobData.Rows[FiducialIndex].Cells["ComponentList"].Value = LowLeft + "," + HighLeft + "," + LowRight + "," + HighRight;
-            JobData.Rows[FiducialIndex].Cells["ComponentCount"].Value = "4";
+            JobData.Rows[FiducialIndex].Cells["JobdataComponentsColumn"].Value = LowLeft + "," + HighLeft + "," + LowRight + "," + HighRight;
+            JobData.Rows[FiducialIndex].Cells["JobdataCountColumn"].Value = "4";
             return true;
         }
 

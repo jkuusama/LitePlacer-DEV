@@ -5297,22 +5297,20 @@ namespace LitePlacer
                     // write data
                     foreach (DataGridViewRow Row in CadData_GridView.Rows)
                     {
-                        OutLine = "\"" + Row.Cells["Component"].Value.ToString() + "\"";
-                        string temp = Row.Cells["Value_Footprint"].Value.ToString();
-                        int i = temp.IndexOf('|');
-                        OutLine += ",\"" + temp.Substring(0, i - 2) + "\"";
-                        OutLine += ",\"" + temp.Substring(i + 3, temp.Length - i - 3) + "\"";
-                        if (Row.Cells["Placed_column"].Value == null)
+                        OutLine = "\"" + Row.Cells["CADdataComponentColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + Row.Cells["CADdataValueColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + Row.Cells["CADdataFootprintColumn"].Value.ToString() + "\"";
+                        if (Row.Cells["CADdataPlacedColumn"].Value == null)
                         {
                             OutLine += ",\"false\"";
                         }
                         else
                         {
-                            OutLine += ",\"" + Row.Cells["Placed_column"].Value.ToString() + "\"";
+                            OutLine += ",\"" + Row.Cells["CADdataPlacedColumn"].Value.ToString() + "\"";
                         }
-                        OutLine += ",\"" + Row.Cells["X_nominal"].Value.ToString() + "\"";
-                        OutLine += ",\"" + Row.Cells["Y_nominal"].Value.ToString() + "\"";
-                        OutLine += ",\"" + Row.Cells["Rotation"].Value.ToString() + "\"";
+                        OutLine += ",\"" + Row.Cells["CADdataXnominalColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + Row.Cells["CADdataYnominalColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + Row.Cells["CADdataRotationNominalColumn"].Value.ToString() + "\"";
                         f.WriteLine(OutLine);
                     }
                 }
@@ -5511,6 +5509,8 @@ namespace LitePlacer
             }
         }
 
+        private const string JobdataVersion = "2020";
+
         private bool SaveJobData(string filename, bool tempfile = false)
         {
             try
@@ -5528,17 +5528,20 @@ namespace LitePlacer
                     {
                         MakeJobDataClean();
                     }
+                    f.WriteLine(JobdataVersion);  // used in ParseJobData()
+
                     // for each row in job datagrid,
                     for (int i = 0; i < JobData_GridView.RowCount; i++)
                     {
-                        OutLine = "\"" + JobData_GridView.Rows[i].Cells["ComponentCount"].Value.ToString() + "\"";
-                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["ComponentType"].Value.ToString() + "\"";
-                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() + "\"";
-                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["MethodParamAllComponents"].Value.ToString() + "\"";
-                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["ComponentList"].Value.ToString() + "\"";
-                        if (JobData_GridView.Rows[i].Cells["JobDataNozzle_Column"].Value != null)
+                        OutLine = "\"" + JobData_GridView.Rows[i].Cells["JobdataCountColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobDataValueColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobDataFootprintColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobdataMethodColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobdataMethodParametersColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobdataComponentsColumn"].Value.ToString() + "\"";
+                        if (JobData_GridView.Rows[i].Cells["JobDataNozzleColumn"].Value != null)
                         {
-                            OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobDataNozzle_Column"].Value.ToString() + "\"";
+                            OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobDataNozzleColumn"].Value.ToString() + "\"";
                         }
                         else
                         {
@@ -5563,39 +5566,67 @@ namespace LitePlacer
         {
             JobData_GridView.Rows.Clear();
             string WarningMessage = "";
-
-            // ComponentCount ComponentType GroupMethod MethodParamAllComponents ComponentList
-            foreach (string LineIn in AllLines)
+            if (AllLines[0] == "2020")
             {
-                List<String> Line = SplitCSV(LineIn, ',');
-                JobData_GridView.Rows.Add();
-                int Last = JobData_GridView.RowCount - 1;
-                JobData_GridView.Rows[Last].Cells["ComponentCount"].Value = Line[0];
-                JobData_GridView.Rows[Last].Cells["ComponentType"].Value = Line[1];
-                JobData_GridView.Rows[Last].Cells["GroupMethod"].Value = Line[2];
-                if (Line[2] == "Fiducials")
+                // format is ComponentCount value footprint GroupMethod MethodParamAllComponents ComponentList nozzle
+                for (int i = 1; i < AllLines.Length; i++)
                 {
-                    // Does the saved algorithm stil exist?
-                    string AlgName = Line[3];
-                    if (VideoAlgorithms.AlgorithmExists(AlgName))
+                    List<String> Line = SplitCSV(AllLines[i], ',');
+                    JobData_GridView.Rows.Add();
+                    int Last = JobData_GridView.RowCount - 1;
+                    JobData_GridView.Rows[Last].Cells["JobdataCountColumn"].Value = Line[0];
+                    JobData_GridView.Rows[Last].Cells["JobDataValueColumn"].Value = Line[1];
+                    JobData_GridView.Rows[Last].Cells["JobDataFootprintColumn"].Value = Line[2];
+                    JobData_GridView.Rows[Last].Cells["JobdataMethodColumn"].Value = Line[3];
+                    JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = Line[4];
+                    JobData_GridView.Rows[Last].Cells["JobdataComponentsColumn"].Value = Line[5];
+                    JobData_GridView.Rows[Last].Cells["JobDataNozzleColumn"].Value = Line[6];
+                }
+            }
+            else
+            {
+                // format is ComponentCount ComponentType GroupMethod MethodParamAllComponents ComponentList nozzle
+                foreach (string LineIn in AllLines)
+                {
+                    List<String> Line = SplitCSV(LineIn, ',');
+                    JobData_GridView.Rows.Add();
+                    int Last = JobData_GridView.RowCount - 1;
+                    JobData_GridView.Rows[Last].Cells["JobdataCountColumn"].Value = Line[0];
+                    string ComponentType = Line[1];
+                    if (ComponentType.Contains(" | "))
                     {
-                        JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = AlgName;
+                        int i = ComponentType.IndexOf('|');
+                        JobData_GridView.Rows[Last].Cells["JobDataValueColumn"].Value = ComponentType.Substring(0, i - 2);
+                        JobData_GridView.Rows[Last].Cells["JobDataFootprintColumn"].Value = 
+                            ComponentType.Substring(i + 3, ComponentType.Length - i - 3);
+
+                    }
+                    JobData_GridView.Rows[Last].Cells["JobdataMethodColumn"].Value = Line[2];
+                    if (Line[2] == "Fiducials")
+                    {
+                        // Does the saved algorithm stil exist?
+                        string AlgName = Line[3];
+                        if (VideoAlgorithms.AlgorithmExists(AlgName))
+                        {
+                            JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = AlgName;
+                        }
+                        else
+                        {
+                            WarningMessage = WarningMessage + "Algorithm " + AlgName + " used on file does not exist.\n\r";
+                            JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = "--";
+                        }
                     }
                     else
                     {
-                        WarningMessage = WarningMessage + "Algorithm " + AlgName + " used on file does not exist.\n\r";
-                        JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = "--";
+                        JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = Line[3];
+                    }
+                    JobData_GridView.Rows[Last].Cells["JobdataComponentsColumn"].Value = Line[4];
+                    if (Line.Count>5)
+                    {
+                        JobData_GridView.Rows[Last].Cells["JobDataNozzleColumn"].Value = Line[5];
                     }
                 }
-                else
-                {
-                    JobData_GridView.Rows[Last].Cells["MethodParamAllComponents"].Value = Line[3];
-                }
-                JobData_GridView.Rows[Last].Cells["ComponentList"].Value = Line[4];
-                if (Line.Count>5)
-                {
-                    JobData_GridView.Rows[Last].Cells["JobDataNozzle_Column"].Value = Line[5];
-                }
+
             }
             if (WarningMessage != "")
             {
@@ -5611,19 +5642,22 @@ namespace LitePlacer
         // =================================================================================
         public void FillJobData_GridView()
         {
-            string CurrentComponentType = "";
+            string CurrentComponentValue = "";
+            string CurrentComponentFootprint = "";
             int ComponentCount = 0;
             JobData_GridView.Rows.Clear();
             int TypeRow;
 
             foreach (DataGridViewRow InRow in CadData_GridView.Rows)
             {
-                CurrentComponentType = InRow.Cells["Value_Footprint"].Value.ToString();
+                CurrentComponentValue = InRow.Cells["CADdataValueColumn"].Value.ToString();
+                CurrentComponentFootprint = InRow.Cells["CADdataFootprintColumn"].Value.ToString();
                 TypeRow = -1;
                 // Have we seen this component type already?
                 foreach (DataGridViewRow JobRow in JobData_GridView.Rows)
                 {
-                    if (JobRow.Cells["ComponentType"].Value.ToString() == CurrentComponentType)
+                    if ((JobRow.Cells["JobDataValueColumn"].Value.ToString() == CurrentComponentValue) &&
+                        (JobRow.Cells["JobDataFootprintColumn"].Value.ToString() == CurrentComponentFootprint))
                     {
                         TypeRow = JobRow.Index;
                         break;
@@ -5634,23 +5668,24 @@ namespace LitePlacer
                     // No, create a new row
                     JobData_GridView.Rows.Add();
                     DataGridViewRow OutRow = JobData_GridView.Rows[JobData_GridView.RowCount - 1];
-                    OutRow.Cells["ComponentCount"].Value = "1";
-                    OutRow.Cells["ComponentType"].Value = CurrentComponentType;
-                    OutRow.Cells["GroupMethod"].Value = "?";
-                    OutRow.Cells["MethodParamAllComponents"].Value = "--";
-                    OutRow.Cells["ComponentList"].Value = InRow.Cells["Component"].Value.ToString();
+                    OutRow.Cells["JobdataCountColumn"].Value = "1";
+                    OutRow.Cells["JobDataValueColumn"].Value = CurrentComponentValue;
+                    OutRow.Cells["JobDataFootprintColumn"].Value = CurrentComponentFootprint;
+                    OutRow.Cells["JobdataMethodColumn"].Value = "?";
+                    OutRow.Cells["JobdataMethodParametersColumn"].Value = "--";
+                    OutRow.Cells["JobdataComponentsColumn"].Value = InRow.Cells["CADdataComponentColumn"].Value.ToString();
                 }
                 else
                 {
                     // Yes, increment component count and add component name to list
-                    string tmp = JobData_GridView.Rows[TypeRow].Cells["ComponentCount"].Value.ToString();
+                    string tmp = JobData_GridView.Rows[TypeRow].Cells["JobdataCountColumn"].Value.ToString();
                     ComponentCount = Convert.ToInt32(tmp, CultureInfo.InvariantCulture);
                     ComponentCount++;
-                    JobData_GridView.Rows[TypeRow].Cells["ComponentCount"].Value = ComponentCount.ToString(CultureInfo.InvariantCulture);
+                    JobData_GridView.Rows[TypeRow].Cells["JobdataCountColumn"].Value = ComponentCount.ToString(CultureInfo.InvariantCulture);
                     // and add component name to list
-                    string CurrentComponentList = JobData_GridView.Rows[TypeRow].Cells["ComponentList"].Value.ToString();
-                    CurrentComponentList = CurrentComponentList + ',' + InRow.Cells["Component"].Value.ToString();
-                    JobData_GridView.Rows[TypeRow].Cells["ComponentList"].Value = CurrentComponentList;
+                    string CurrentComponentList = JobData_GridView.Rows[TypeRow].Cells["JobdataComponentsColumn"].Value.ToString();
+                    CurrentComponentList = CurrentComponentList + ',' + InRow.Cells["CADdataComponentColumn"].Value.ToString();
+                    JobData_GridView.Rows[TypeRow].Cells["JobdataComponentsColumn"].Value = CurrentComponentList;
                 }
             }
         }
@@ -5659,12 +5694,12 @@ namespace LitePlacer
         {
             foreach (DataGridViewRow JobRow in JobData_GridView.Rows)
             {
-                if (JobRow.Cells["GroupMethod"].Value.ToString() != "Fiducials")
+                if (JobRow.Cells["JobdataMethodColumn"].Value.ToString() != "Fiducials")
                 {
-                    JobRow.Cells["GroupMethod"].Value = "Place Fast";
+                    JobRow.Cells["JobdataMethodColumn"].Value = "Place Fast";
                     if (Setting.Nozzles_Enabled)
                     {
-                        JobRow.Cells["JobDataNozzle_Column"].Value = Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
+                        JobRow.Cells["JobDataNozzleColumn"].Value = Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -5720,11 +5755,11 @@ namespace LitePlacer
                 index = JobData_GridView.CurrentRow.Index;
             }
             JobData_GridView.Rows.Insert(index);
-            JobData_GridView.Rows[index].Cells["ComponentCount"].Value = "--";
+            JobData_GridView.Rows[index].Cells["JobdataCountColumn"].Value = "--";
             JobData_GridView.Rows[index].Cells["ComponentType"].Value = "--";
-            JobData_GridView.Rows[index].Cells["GroupMethod"].Value = "?";
-            JobData_GridView.Rows[index].Cells["MethodParamAllComponents"].Value = "--";
-            JobData_GridView.Rows[index].Cells["ComponentList"].Value = "--";
+            JobData_GridView.Rows[index].Cells["JobdataMethodColumn"].Value = "?";
+            JobData_GridView.Rows[index].Cells["JobdataMethodParametersColumn"].Value = "--";
+            JobData_GridView.Rows[index].Cells["JobdataComponentsColumn"].Value = "--";
         }
 
         private void AddCadDataRow_button_Click(object sender, EventArgs e)
@@ -5735,11 +5770,12 @@ namespace LitePlacer
                 index = CadData_GridView.CurrentRow.Index;
             }
             CadData_GridView.Rows.Insert(index);
-            CadData_GridView.Rows[index].Cells["Component"].Value = "new_component";
-            CadData_GridView.Rows[index].Cells["Value_Footprint"].Value = "value "+" | "+" footprint";
-            CadData_GridView.Rows[index].Cells["X_nominal"].Value = "0.0";
-            CadData_GridView.Rows[index].Cells["Y_nominal"].Value = "0.0";
-            CadData_GridView.Rows[index].Cells["Rotation"].Value = "0.0";
+            CadData_GridView.Rows[index].Cells["CADdataComponentColumn"].Value = "new_component";
+            CadData_GridView.Rows[index].Cells["CADdataValueColumn"].Value = "value";
+            CadData_GridView.Rows[index].Cells["CADdataFootprintColumn"].Value = "footprint";
+            CadData_GridView.Rows[index].Cells["CADdataXnominalColumn"].Value = "0.0";
+            CadData_GridView.Rows[index].Cells["CADdataYnominalColumn"].Value = "0.0";
+            CadData_GridView.Rows[index].Cells["CADdataRotationNominalColumn"].Value = "0.0";
             CadData_GridView.CurrentCell = CadData_GridView.Rows[index].Cells[0];
             SaveTempCADdata();  // makes data dirty
         }
@@ -5806,12 +5842,12 @@ namespace LitePlacer
                 {
                     foreach (DataGridViewCell cell in JobData_GridView.SelectedCells)
                     {
-                        JobData_GridView.Rows[cell.RowIndex].Cells["GroupMethod"].Value = SelectedMethod;
-                        JobData_GridView.Rows[cell.RowIndex].Cells["MethodParamAllComponents"].Value = "--";
+                        JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodColumn"].Value = SelectedMethod;
+                        JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = "--";
                         if (SelectedMethod== "Fiducials")
                         {
                             string FidAlg = SelectFiducialAlgorithm("--");
-                            JobData_GridView.Rows[cell.RowIndex].Cells["MethodParamAllComponents"].Value = FidAlg;
+                            JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = FidAlg;
                         }
                     }
                 }
@@ -5826,9 +5862,9 @@ namespace LitePlacer
                 string TapeID;
                 int TapeNo;
                 int row = JobData_GridView.CurrentCell.RowIndex;
-                if ((JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place") ||
-                     (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place Assisted") ||
-                     (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Place Fast"))
+                if ((JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "Place") ||
+                     (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "Place Assisted") ||
+                     (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "Place Fast"))
                 {
                     TapeID = SelectTape("Select tape for " + JobData_GridView.Rows[row].Cells["ComponentType"].Value.ToString());
                     if (TapeID=="none")
@@ -5836,17 +5872,17 @@ namespace LitePlacer
                         // user closed it
                         return;
                     }
-                    JobData_GridView.Rows[row].Cells["MethodParamAllComponents"].Value = TapeID;
+                    JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value = TapeID;
                     if (Tapes.IdValidates_m(TapeID, out TapeNo))
                     {
-                        JobData_GridView.Rows[row].Cells["JobDataNozzle_Column"].Value = 
+                        JobData_GridView.Rows[row].Cells["JobDataNozzleColumn"].Value = 
                             Tapes_dataGridView.Rows[TapeNo].Cells["Nozzle_Column"].Value.ToString();
                     }
                 }
-                if (JobData_GridView.Rows[row].Cells["GroupMethod"].Value.ToString() == "Fiducials")
+                if (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials")
                 {
-                    JobData_GridView.Rows[row].Cells["MethodParamAllComponents"].Value = 
-                        SelectFiducialAlgorithm(JobData_GridView.Rows[row].Cells["MethodParamAllComponents"].Value.ToString());
+                    JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value = 
+                        SelectFiducialAlgorithm(JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value.ToString());
                 }
             }
             Update_GridView(JobData_GridView);
@@ -5863,7 +5899,7 @@ namespace LitePlacer
                 MakeJobDataDirty();
                 List<String> Line = SplitCSV(JobData_GridView.CurrentCell.Value.ToString(), ',');
                 int row = JobData_GridView.CurrentCell.RowIndex;
-                JobData_GridView.Rows[row].Cells["ComponentCount"].Value = Line.Count.ToString(CultureInfo.InvariantCulture);
+                JobData_GridView.Rows[row].Cells["JobdataCountColumn"].Value = Line.Count.ToString(CultureInfo.InvariantCulture);
                 Update_GridView(JobData_GridView);
             }
         }
@@ -5929,7 +5965,7 @@ namespace LitePlacer
             };
             // ... so that we can put next row label in place:
             NextGroup_label.Text = JobData_GridView.Rows[FirstRow].Cells["ComponentType"].Value.ToString() + " (" +
-                    JobData_GridView.Rows[FirstRow].Cells["ComponentCount"].Value.ToString() + " pcs.)";
+                    JobData_GridView.Rows[FirstRow].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
 
             // We know there is something to do, NextGroup_label is updated. Place all rows:
             for (int CurrentRow = 0; CurrentRow < JobData_GridView.RowCount; CurrentRow++)
@@ -5972,7 +6008,7 @@ namespace LitePlacer
                 if (NotLast)
                 {
                     NextGroup_label.Text = JobData_GridView.Rows[NextRow].Cells["ComponentType"].Value.ToString() + " (" +
-                                            JobData_GridView.Rows[NextRow].Cells["ComponentCount"].Value.ToString() + " pcs.)";
+                                            JobData_GridView.Rows[NextRow].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
                 }
                 else
                 {
@@ -6021,7 +6057,7 @@ namespace LitePlacer
             bool DoSomething = false;
             foreach (DataGridViewCell oneCell in CadData_GridView.SelectedCells)
             {
-                DataGridViewCheckBoxCell cell = CadData_GridView.Rows[oneCell.RowIndex].Cells["Placed_column"] as DataGridViewCheckBoxCell;
+                DataGridViewCheckBoxCell cell = CadData_GridView.Rows[oneCell.RowIndex].Cells["CADdataPlacedColumn"] as DataGridViewCheckBoxCell;
                 if (cell.Value != null)
                 {
                     if (cell.Value.ToString().ToUpperInvariant() == "FALSE")
@@ -6069,11 +6105,11 @@ namespace LitePlacer
                     continue;
                 };
                 // Found something to do. Find the row from Job data
-                string component = CadRow.Cells["Component"].Value.ToString();
+                string component = CadRow.Cells["CADdataComponentColumn"].Value.ToString();
                 int JobRowNo;
                 for (JobRowNo = 0; JobRowNo < JobData_GridView.RowCount; JobRowNo++)
                 {
-                    List<String> componentlist = SplitCSV(JobData_GridView.Rows[JobRowNo].Cells["ComponentList"].Value.ToString(), ',');
+                    List<String> componentlist = SplitCSV(JobData_GridView.Rows[JobRowNo].Cells["JobdataComponentsColumn"].Value.ToString(), ',');
                     if (componentlist.Contains(component))
                     {
                         break;
@@ -6090,12 +6126,12 @@ namespace LitePlacer
                 }
 
                 // is the component already placed?
-                DataGridViewCheckBoxCell cell = CadData_GridView.Rows[CadRowNo].Cells["Placed_column"] as DataGridViewCheckBoxCell;
+                DataGridViewCheckBoxCell cell = CadData_GridView.Rows[CadRowNo].Cells["CADdataPlacedColumn"] as DataGridViewCheckBoxCell;
                 if (cell.Value != null)
                 {
                     if (cell.Value.ToString() == "True")
                     {
-                        DisplayText(Component + " already placed");
+                        DisplayText(component + " already placed");
                         break;
                     }
                 }
@@ -6109,8 +6145,8 @@ namespace LitePlacer
                 }
 
                 // Make the copy row to have only one component on it
-                JobData_GridView.Rows[LastRowNo].Cells["ComponentCount"].Value = "1";
-                JobData_GridView.Rows[LastRowNo].Cells["ComponentList"].Value = component;
+                JobData_GridView.Rows[LastRowNo].Cells["JobdataCountColumn"].Value = "1";
+                JobData_GridView.Rows[LastRowNo].Cells["JobdataComponentsColumn"].Value = component;
                 // Update labels
                 PreviousGroup_label.Text = CurrentGroup_label.Text;
                 CurrentGroup_label.Text = JobData_GridView.Rows[LastRowNo].Cells["ComponentType"].Value.ToString() + " (1 pcs.)";
@@ -6137,9 +6173,9 @@ namespace LitePlacer
             // find the row
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
-                if (Row.Cells["Component"].Value.ToString() == component)
+                if (Row.Cells["CADdataComponentColumn"].Value.ToString() == component)
                 {
-                    DataGridViewCheckBoxCell cell = Row.Cells["Placed_column"] as DataGridViewCheckBoxCell;
+                    DataGridViewCheckBoxCell cell = Row.Cells["CADdataPlacedColumn"] as DataGridViewCheckBoxCell;
                     if (cell.Value != null)
                     {
                         if (cell.Value.ToString().ToUpperInvariant() == "TRUE")
@@ -6178,7 +6214,7 @@ namespace LitePlacer
 
             // If the Method is "?", ask the user what to do:
             DataGridViewRow tempRow = (DataGridViewRow)JobData_GridView.Rows[RowNo].Clone();
-            if (JobData_GridView.Rows[RowNo].Cells["GroupMethod"].Value.ToString() == "?")
+            if (JobData_GridView.Rows[RowNo].Cells["JobdataMethodColumn"].Value.ToString() == "?")
             {
                 // We'll now get new data from the user. By default, we don't mess with the data we have
                 // So, take a copy of current row
@@ -6234,8 +6270,8 @@ namespace LitePlacer
                     return false;   // user pressed x
                 }
                 // Put the values to JobData_GridView
-                JobData_GridView.Rows[RowNo].Cells["GroupMethod"].Value = SelectedMethod;
-                JobData_GridView.Rows[RowNo].Cells["MethodParamAllComponents"].Value = NewID;
+                JobData_GridView.Rows[RowNo].Cells["JobdataMethodColumn"].Value = SelectedMethod;
+                JobData_GridView.Rows[RowNo].Cells["JobdataMethodParametersColumn"].Value = NewID;
                 Update_GridView(JobData_GridView);
                 MethodDialog.Dispose();
             }
@@ -6243,22 +6279,22 @@ namespace LitePlacer
 
             // The place operation does not necessarily have any components for it (such as a manual nozzle change).
             // Make sure there is valid data at ComponentList anyway.
-            if (JobData_GridView.Rows[RowNo].Cells["ComponentList"].Value == null)
+            if (JobData_GridView.Rows[RowNo].Cells["JobdataComponentsColumn"].Value == null)
             {
-                JobData_GridView.Rows[RowNo].Cells["ComponentList"].Value = "--";
+                JobData_GridView.Rows[RowNo].Cells["JobdataComponentsColumn"].Value = "--";
             };
-            if (JobData_GridView.Rows[RowNo].Cells["ComponentList"].Value.ToString() == "--")
+            if (JobData_GridView.Rows[RowNo].Cells["JobdataComponentsColumn"].Value.ToString() == "--")
             {
                 Components = new string[] { "--" };
             }
             else
             {
-                Components = JobData_GridView.Rows[RowNo].Cells["ComponentList"].Value.ToString().Split(',');
+                Components = JobData_GridView.Rows[RowNo].Cells["JobdataComponentsColumn"].Value.ToString().Split(',');
             };
             bool ReturnValue = true;
 
             // Prepare for placement
-            string method = JobData_GridView.Rows[RowNo].Cells["GroupMethod"].Value.ToString();
+            string method = JobData_GridView.Rows[RowNo].Cells["JobdataMethodColumn"].Value.ToString();
             int nozzle;
             // Check, that the row isn't placed already
             bool EverythingPlaced = true;
@@ -6293,13 +6329,13 @@ namespace LitePlacer
                 ((method == "Place Fast") || (method == "Place") || (method == "LoosePart") || (method == "LoosePart Assisted") || (method == "Place Assisted"))  
                 && Setting.Nozzles_Enabled) 
             {
-                if (JobData_GridView.Rows[RowNo].Cells["JobDataNozzle_Column"].Value == null)
+                if (JobData_GridView.Rows[RowNo].Cells["JobDataNozzleColumn"].Value == null)
                 {
                     nozzle = Setting.Nozzles_default;
                 }
                 else
                 {
-                    if (!int.TryParse(JobData_GridView.Rows[RowNo].Cells["JobDataNozzle_Column"].Value.ToString(), out nozzle))
+                    if (!int.TryParse(JobData_GridView.Rows[RowNo].Cells["JobDataNozzleColumn"].Value.ToString(), out nozzle))
                     {
                         ShowMessageBox(
                             "Bad data at Nozzle column for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString(),
@@ -6325,9 +6361,9 @@ namespace LitePlacer
             bool FirstInRow = true;
             if (method == "Place Fast")
             {
-                string TapeID = JobData_GridView.Rows[RowNo].Cells["MethodParamAllComponents"].Value.ToString();
+                string TapeID = JobData_GridView.Rows[RowNo].Cells["JobdataMethodParametersColumn"].Value.ToString();
                 int count;
-                if (!int.TryParse(JobData_GridView.Rows[RowNo].Cells["ComponentCount"].Value.ToString(), out count))
+                if (!int.TryParse(JobData_GridView.Rows[RowNo].Cells["JobdataCountColumn"].Value.ToString(), out count))
                 {
                     ShowMessageBox(
                         "Bad data at component count",
@@ -6398,7 +6434,7 @@ namespace LitePlacer
             PreviousGroup_label.Text = "--";
             CurrentGroup_label.Text = "--";
             NextGroup_label.Text = JobData_GridView.Rows[0].Cells["ComponentType"].Value.ToString() + " (" +
-                JobData_GridView.Rows[0].Cells["ComponentCount"].Value.ToString() + " pcs.)";
+                JobData_GridView.Rows[0].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
 
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
@@ -6407,7 +6443,7 @@ namespace LitePlacer
                 if (i < (JobData_GridView.RowCount - 1))
                 {
                     NextGroup_label.Text = JobData_GridView.Rows[i + 1].Cells["ComponentType"].Value.ToString() + " (" +
-                        JobData_GridView.Rows[i + 1].Cells["ComponentCount"].Value.ToString() + " pcs.)";
+                        JobData_GridView.Rows[i + 1].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
                 }
                 else
                 {
@@ -6446,7 +6482,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value == null)
+            if (CadData_GridView.Rows[CADdataRow].Cells["CADdataXnominalColumn"].Value == null)
             {
                 ShowMessageBox(
                         "Component " + Component + ": No X data",
@@ -6455,7 +6491,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value == null)
+            if (CadData_GridView.Rows[CADdataRow].Cells["CADdataYnominalColumn"].Value == null)
             {
                 ShowMessageBox(
                         "Component " + Component + ": No Y data",
@@ -6464,7 +6500,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value == null)
+            if (CadData_GridView.Rows[CADdataRow].Cells["CADdataRotationNominalColumn"].Value == null)
             {
                 ShowMessageBox(
                         "Component " + Component + ": No Rotation data",
@@ -6475,7 +6511,7 @@ namespace LitePlacer
             else
             {
                 double Rotation;
-                if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString().Replace(',', '.'), out Rotation))
+                if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["CADdataRotationNominalColumn"].Value.ToString().Replace(',', '.'), out Rotation))
                 {
                     ShowMessageBox(
                         "Component " + Component + ": Bad Rotation data",
@@ -6489,9 +6525,9 @@ namespace LitePlacer
             double X;
             double Y;
             double A;
-            if ((!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString().Replace(',', '.'), out X))
+            if ((!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["CADdataXmachineColumn"].Value.ToString().Replace(',', '.'), out X))
                 ||
-                (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString().Replace(',', '.'), out Y)))
+                (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["CADdataYmachineColumn"].Value.ToString().Replace(',', '.'), out Y)))
             {
                 ShowMessageBox(
                     "Component " + Component + ", bad machine coordinate",
@@ -6499,7 +6535,7 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             }
-            if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out A))
+            if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["CADdataRotationMachineColumn"].Value.ToString().Replace(',', '.'), out A))
             {
                 ShowMessageBox(
                     "Bad data at Rotation, machine",
@@ -6509,7 +6545,7 @@ namespace LitePlacer
             };
 
             // Even if component is not specified, Method data should be there:
-            if (JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value == null)
+            if (JobData_GridView.Rows[GroupRow].Cells["JobdataMethodColumn"].Value == null)
             {
                 ShowMessageBox(
                         "Component " + Component + ", No method data",
@@ -6532,7 +6568,7 @@ namespace LitePlacer
         {
             DisplayText("PlaceComponent_m: Component: " + Component + ", Row:" + GroupRow.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
             // Skip fiducials
-            if (JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value.ToString() == "Fiducials")
+            if (JobData_GridView.Rows[GroupRow].Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials")
             {
                 DisplayText("PlaceComponent_m(): Skip fiducials");
                 return true;
@@ -6543,7 +6579,7 @@ namespace LitePlacer
             {
                 foreach (DataGridViewRow Row in CadData_GridView.Rows)
                 {
-                    if (Row.Cells["Component"].Value.ToString() == Component)
+                    if (Row.Cells["CADdataComponentColumn"].Value.ToString() == Component)
                     {
                         CADdataRow = Row.Index;
                         break;
@@ -6575,21 +6611,21 @@ namespace LitePlacer
                 if (SkipMeasurements_checkBox.Checked)
                 {
                     // User wants to use the nominal coordinates. Copy the nominal to machine for this to happen:
-                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString().Replace(',', '.'), out double X))
+                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out double X))
                     {
                         DisplayText("Bad data X nominal at component " + Component);
                     }
                     X = X + Setting.General_JigOffsetX + Setting.Job_Xoffset;
-                    CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value = X.ToString(CultureInfo.InvariantCulture);
+                    CadData_GridView.Rows[CADdataRow].Cells["CADdataXmachineColumn"].Value = X.ToString(CultureInfo.InvariantCulture);
 
-                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out double Y))
+                    if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out double Y))
                     {
                         DisplayText("Bad data Y nominal at component " + Component);
                     }
                     Y = Y + Setting.General_JigOffsetY + Setting.Job_Yoffset;
-                    CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value = Y.ToString(CultureInfo.InvariantCulture);
+                    CadData_GridView.Rows[CADdataRow].Cells["CADdataYmachineColumn"].Value = Y.ToString(CultureInfo.InvariantCulture);
 
-                    CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value = CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value;
+                    CadData_GridView.Rows[CADdataRow].Cells["CADdataRotationMachineColumn"].Value = CadData_GridView.Rows[CADdataRow].Cells["CADdataRotationNominalColumn"].Value;
                 }
                 // check data consistency
                 if (!ComponentDataValidates_m(Component, CADdataRow, GroupRow))
@@ -6598,11 +6634,11 @@ namespace LitePlacer
                 }
                 // and fill values:
                 Footprint = JobData_GridView.Rows[GroupRow].Cells["ComponentType"].Value.ToString();
-                Xstr = CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString();
-                Ystr = CadData_GridView.Rows[CADdataRow].Cells["Y_nominal"].Value.ToString();
-                RotationStr = CadData_GridView.Rows[CADdataRow].Cells["Rotation"].Value.ToString();
+                Xstr = CadData_GridView.Rows[CADdataRow].Cells["CADdataXnominalColumn"].Value.ToString();
+                Ystr = CadData_GridView.Rows[CADdataRow].Cells["CADdataYnominalColumn"].Value.ToString();
+                RotationStr = CadData_GridView.Rows[CADdataRow].Cells["CADdataRotationNominalColumn"].Value.ToString();
                 double tempD;
-                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString().Replace(',', '.'), out tempD))
+                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["CADdataXmachineColumn"].Value.ToString().Replace(',', '.'), out tempD))
                 {
                     X_machine = tempD;
                 }
@@ -6611,7 +6647,7 @@ namespace LitePlacer
                     DisplayText("Bad data X machine at component " + Component);
                     return false;
                 }
-                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString().Replace(',', '.'), out tempD))
+                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["CADdataYmachineColumn"].Value.ToString().Replace(',', '.'), out tempD))
                 {
                     Y_machine = tempD;
                 }
@@ -6620,7 +6656,7 @@ namespace LitePlacer
                     DisplayText("Bad data Y machine at component " + Component);
                     return false;
                 }
-                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out tempD))
+                if (double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["CADdataRotationMachineColumn"].Value.ToString().Replace(',', '.'), out tempD))
                 {
                     A_machine = tempD;
                 }
@@ -6631,12 +6667,12 @@ namespace LitePlacer
                 }
             }
 
-            Method = JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value.ToString();
+            Method = JobData_GridView.Rows[GroupRow].Cells["JobdataMethodColumn"].Value.ToString();
             // Even if component is not specified, Method data should be there:
             // it is not an error if method does not have parameters.
-            if (JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value != null)
+            if (JobData_GridView.Rows[GroupRow].Cells["JobdataMethodParametersColumn"].Value != null)
             {
-                MethodParameter = JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString();
+                MethodParameter = JobData_GridView.Rows[GroupRow].Cells["JobdataMethodParametersColumn"].Value.ToString();
             };
 
             // Data is now validated, all variables have values that check out. Place the component.
@@ -6654,8 +6690,8 @@ namespace LitePlacer
                 PlacedRotation_label.Text = RotationStr;
                 PlacedRotation_label.Update();
                 MachineCoords_label.Text = "( " +
-                    CadData_GridView.Rows[CADdataRow].Cells["X_machine"].Value.ToString() + ", " +
-                    CadData_GridView.Rows[CADdataRow].Cells["Y_machine"].Value.ToString() + " )";
+                    CadData_GridView.Rows[CADdataRow].Cells["CADdataXmachineColumn"].Value.ToString() + ", " +
+                    CadData_GridView.Rows[CADdataRow].Cells["CADdataYmachineColumn"].Value.ToString() + " )";
                 MachineCoords_label.Update();
             };
 
@@ -6708,7 +6744,7 @@ namespace LitePlacer
                             MessageBoxButtons.OK);
                         return false;
                     }
-                    DataGridViewCheckBoxCell cell = CadData_GridView.Rows[CADdataRow].Cells["Placed_column"] as DataGridViewCheckBoxCell;
+                    DataGridViewCheckBoxCell cell = CadData_GridView.Rows[CADdataRow].Cells["CADdataPlacedColumn"] as DataGridViewCheckBoxCell;
                     if (cell.Value != null)
                     {
                         if (cell.Value.ToString() == "True")
@@ -6723,7 +6759,7 @@ namespace LitePlacer
                     }
                     else
                     {
-                        CadData_GridView.Rows[CADdataRow].Cells["Placed_column"].Value = true;
+                        CadData_GridView.Rows[CADdataRow].Cells["CADdataPlacedColumn"].Value = true;
                         SaveTempCADdata();
                     }
                     break;
@@ -6741,7 +6777,7 @@ namespace LitePlacer
 
                 case "Ignore":
                     // Optionally, method parameter specifies pause time (used in debugging, I can't think of a real-life use case for that)
-                    if (int.TryParse(JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(), out time))
+                    if (int.TryParse(JobData_GridView.Rows[GroupRow].Cells["JobdataMethodParametersColumn"].Value.ToString(), out time))
                     {
                         for (int z = 0; z < time / 5; z++)
                         {
@@ -6763,7 +6799,7 @@ namespace LitePlacer
                     CNC_XYA_m(X_machine, Y_machine, Cnc.CurrentA);
 
                     // ... either for the time specified in method parameter
-                    if (int.TryParse(JobData_GridView.Rows[GroupRow].Cells["MethodParamAllComponents"].Value.ToString(), out time))
+                    if (int.TryParse(JobData_GridView.Rows[GroupRow].Cells["JobdataMethodParametersColumn"].Value.ToString(), out time))
                     {
                         for (int z = 0; z < time / 5; z++)
                         {
@@ -6784,7 +6820,7 @@ namespace LitePlacer
 
                 default:
                     ShowMessageBox(
-                        "No code for method " + JobData_GridView.Rows[GroupRow].Cells["GroupMethod"].Value.ToString(),
+                        "No code for method " + JobData_GridView.Rows[GroupRow].Cells["JobdataMethodColumn"].Value.ToString(),
                         "Lazy programmer error",
                         MessageBoxButtons.OK);
                     return false;
@@ -7459,9 +7495,10 @@ namespace LitePlacer
             }
 
             // ask for it 
-            string ComponentType = CadData_GridView.Rows[CADdataRow].Cells["Value_Footprint"].Value.ToString();
+            string ComponentValue = CadData_GridView.Rows[CADdataRow].Cells["CADdataValueColumn"].Value.ToString();
+            string ComponentFootprint = CadData_GridView.Rows[CADdataRow].Cells["CADdataFootprintColumn"].Value.ToString();
             DialogResult dialogResult = ShowMessageBox(
-                "Put one " + ComponentType + " to the pickup location.",
+                "Put one " + ComponentValue +", " + ComponentFootprint + " to the pickup location.",
                 "Placing " + Component,
                 MessageBoxButtons.OKCancel);
             if (dialogResult == DialogResult.Cancel)
@@ -7591,11 +7628,11 @@ namespace LitePlacer
                 AbortPlacement = false;
                 return false;
             };
-            string id = JobData_GridView.Rows[JobDataRow].Cells["MethodParamAllComponents"].Value.ToString();
-            string Method = JobData_GridView.Rows[JobDataRow].Cells["GroupMethod"].Value.ToString();
+            string id = JobData_GridView.Rows[JobDataRow].Cells["JobdataMethodParametersColumn"].Value.ToString();
+            string Method = JobData_GridView.Rows[JobDataRow].Cells["JobdataMethodColumn"].Value.ToString();
 
             int TapeNum = 0;
-            string Component = CadData_GridView.Rows[CADdataRow].Cells["Component"].Value.ToString();
+            string Component = CadData_GridView.Rows[CADdataRow].Cells["CADdataComponentColumn"].Value.ToString();
             DisplayText("PlacePart_m, Component: " + Component + ", CAD data row: " + CADdataRow.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
 
             // Preparing:
@@ -7920,7 +7957,7 @@ namespace LitePlacer
 
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
-                if (JobData_GridView.Rows[i].Cells["GroupMethod"].Value.ToString() == "Fiducials")
+                if (JobData_GridView.Rows[i].Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials")
                 {
                     if (FiducialsFound)
                     {
@@ -7945,7 +7982,7 @@ namespace LitePlacer
                 bool FidsOnThisRow = false;
                 for (int i = 0; i < JobData_GridView.RowCount; i++)
                 {
-                    Fids = JobData_GridView.Rows[i].Cells["ComponentList"].Value.ToString();
+                    Fids = JobData_GridView.Rows[i].Cells["JobdataComponentsColumn"].Value.ToString();
                     if (Fids.StartsWith("FI", StringComparison.CurrentCultureIgnoreCase))
                     {
                         if (Char.IsDigit(Fids[2]))
@@ -7981,7 +8018,7 @@ namespace LitePlacer
                 // If fids were found, the row is unique. Mark it:
                 if (FiducialsFound)
                 {
-                    JobData_GridView.Rows[FiducialsRow].Cells["GroupMethod"].Value = "Fiducials";
+                    JobData_GridView.Rows[FiducialsRow].Cells["JobdataMethodColumn"].Value = "Fiducials";
                 }
             }
             if (!FiducialsFound)
@@ -8033,31 +8070,31 @@ namespace LitePlacer
         {
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
-                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out double x))
+                if (!double.TryParse(Row.Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out double x))
                 {
                     ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
+                        "Problem with " + Row.Cells["CADdataComponentColumn"].Value.ToString() + " X coordinate data",
                         "Bad data",
                         MessageBoxButtons.OK);
                     return false;
                 };
-                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out double y))
+                if (!double.TryParse(Row.Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out double y))
                 {
                     ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
+                        "Problem with " + Row.Cells["CADdataComponentColumn"].Value.ToString() + " Y coordinate data",
                         "Bad data",
                         MessageBoxButtons.OK);
                     return false;
                 };
-                if (!double.TryParse(Row.Cells["Rotation"].Value.ToString().Replace(',', '.'), out double r))
+                if (!double.TryParse(Row.Cells["CADdataRotationNominalColumn"].Value.ToString().Replace(',', '.'), out double r))
                 {
                     ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " rotation data",
+                        "Problem with " + Row.Cells["CADdataComponentColumn"].Value.ToString() + " rotation data",
                         "Bad data",
                         MessageBoxButtons.OK);
                     return false;
                 };
-                // DisplayText(Row.Cells["Component"].Value.ToString() + ": x= " + x.ToString() + ", y= " + y.ToString() + ", r= " + r.ToString());
+                // DisplayText(Row.Cells["CADdataComponentColumn"].Value.ToString() + ": x= " + x.ToString() + ", y= " + y.ToString() + ", r= " + r.ToString());
             }
             return true;
         }
@@ -8074,22 +8111,22 @@ namespace LitePlacer
                 foreach (DataGridViewRow Row in CadData_GridView.Rows)
                 {
                     // Cad data is validated (but still need to test because compiler)
-                    if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X_nom))
+                    if (!double.TryParse(Row.Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out X_nom))
                     {
-                        DisplayText("Bad X nominal data, component " + Row.Cells["Component"].Value.ToString());
+                        DisplayText("Bad X nominal data, component " + Row.Cells["CADdataComponentColumn"].Value.ToString());
                         return false;
                     }
-                    if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y_nom))
+                    if (!double.TryParse(Row.Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out Y_nom))
                     {
-                        DisplayText("Bad Y nominal data, component " + Row.Cells["Component"].Value.ToString());
+                        DisplayText("Bad Y nominal data, component " + Row.Cells["CADdataComponentColumn"].Value.ToString());
                         return false;
                     }
                     X_nom += Setting.General_JigOffsetX;
                     Y_nom += Setting.General_JigOffsetY;
-                    Row.Cells["X_machine"].Value = X_nom.ToString("0.000", CultureInfo.InvariantCulture);
-                    Row.Cells["Y_machine"].Value = Y_nom.ToString("0.000", CultureInfo.InvariantCulture);
+                    Row.Cells["CADdataXmachineColumn"].Value = X_nom.ToString("0.000", CultureInfo.InvariantCulture);
+                    Row.Cells["CADdataYmachineColumn"].Value = Y_nom.ToString("0.000", CultureInfo.InvariantCulture);
 
-                    Row.Cells["Rotation_machine"].Value = Row.Cells["Rotation"].Value;
+                    Row.Cells["CADdataRotationMachineColumn"].Value = Row.Cells["CADdataRotationNominalColumn"].Value;
                 }
                 // Refresh UI:
                 Update_GridView(CadData_GridView);
@@ -8111,7 +8148,7 @@ namespace LitePlacer
                 return false;
             }
             // OriginalFiducials are at JobData_GridView.Rows[FiducialsRow]
-            string[] FiducialDesignators = JobData_GridView.Rows[FiducialsRow].Cells["ComponentList"].Value.ToString().Split(',');
+            string[] FiducialDesignators = JobData_GridView.Rows[FiducialsRow].Cells["JobdataComponentsColumn"].Value.ToString().Split(',');
             // Are there at least two?
             if (FiducialDesignators.Length < 2)
             {
@@ -8124,7 +8161,7 @@ namespace LitePlacer
             // Get ready for position measurements
             DisplayText("SetFiducialsMeasurement");
             VideoAlgorithmsCollection.FullAlgorithmDescription FidAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
-            string VidAlgName = JobData_GridView.Rows[FiducialsRow].Cells["MethodParamAllComponents"].Value.ToString();
+            string VidAlgName = JobData_GridView.Rows[FiducialsRow].Cells["JobdataMethodParametersColumn"].Value.ToString();
             if (!VideoAlgorithms.FindAlgorithm(VidAlgName, out FidAlg))
             {
                 DisplayText("*** Fiducial algorithm (" + VidAlgName + ") not found", KnownColor.DarkRed, true);
@@ -8144,17 +8181,17 @@ namespace LitePlacer
                 // find the fiducial in CAD data.
                 foreach (DataGridViewRow Row in CadData_GridView.Rows)
                 {
-                    if (Row.Cells["Component"].Value.ToString() == FiducialDesignators[i]) // If this is the fiducial we want,
+                    if (Row.Cells["CADdataComponentColumn"].Value.ToString() == FiducialDesignators[i]) // If this is the fiducial we want,
                     {
                         // Get its nominal position (value already checked).
-                        if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X_nom))
+                        if (!double.TryParse(Row.Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out X_nom))
                         {
-                            DisplayText("Bad X nominal data, fiducial " + Row.Cells["Component"].Value.ToString());
+                            DisplayText("Bad X nominal data, fiducial " + Row.Cells["CADdataComponentColumn"].Value.ToString());
                             return false;
                         }
-                        if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y_nom))
+                        if (!double.TryParse(Row.Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out Y_nom))
                         {
-                            DisplayText("Bad Y nominal data, fiducial " + Row.Cells["Component"].Value.ToString());
+                            DisplayText("Bad Y nominal data, fiducial " + Row.Cells["CADdataComponentColumn"].Value.ToString());
                             return false;
                         }
                         break;
@@ -8262,12 +8299,12 @@ namespace LitePlacer
             {
                 // build a point from CAD data values
                 Loc.X = 0.0;
-                if (double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out double tempD))
+                if (double.TryParse(Row.Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out double tempD))
                 {
                     Loc.X = tempD;
                 }
                 Loc.Y = 0.0;
-                if (double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out tempD))
+                if (double.TryParse(Row.Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out tempD))
                 {
                     Loc.Y = tempD;
                 }
@@ -8276,11 +8313,11 @@ namespace LitePlacer
                 Loc = transform.TransformPoint(Loc);
                 Loc = Loc.NormalizeHomogeneous();
                 // store calculated location values
-                Row.Cells["X_machine"].Value = Loc.X.ToString("0.000", CultureInfo.InvariantCulture);
-                Row.Cells["Y_machine"].Value = Loc.Y.ToString("0.000", CultureInfo.InvariantCulture);
+                Row.Cells["CADdataXmachineColumn"].Value = Loc.X.ToString("0.000", CultureInfo.InvariantCulture);
+                Row.Cells["CADdataYmachineColumn"].Value = Loc.Y.ToString("0.000", CultureInfo.InvariantCulture);
                 // handle rotation
                 double rot = 0.0;
-                if (double.TryParse(Row.Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot))
+                if (double.TryParse(Row.Cells["CADdataRotationNominalColumn"].Value.ToString().Replace(',', '.'), out rot))
                 {
                     rot += angle;
                 }
@@ -8292,7 +8329,7 @@ namespace LitePlacer
                 {
                     rot += 360.0;
                 }
-                Row.Cells["Rotation_machine"].Value = rot.ToString("0.0000", CultureInfo.InvariantCulture);
+                Row.Cells["CADdataRotationMachineColumn"].Value = rot.ToString("0.0000", CultureInfo.InvariantCulture);
 
             }
             // Refresh UI:
@@ -8444,7 +8481,7 @@ namespace LitePlacer
             {
                 return;  // header row
             }
-            if (!double.TryParse(cell.OwningRow.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out X))
+            if (!double.TryParse(cell.OwningRow.Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out X))
             {
                 ShowMessageBox(
                     "Bad data at X_nominal",
@@ -8453,7 +8490,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (!double.TryParse(cell.OwningRow.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out Y))
+            if (!double.TryParse(cell.OwningRow.Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out Y))
             {
                 ShowMessageBox(
                     "Bad data at Y_nominal",
@@ -8462,7 +8499,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (!double.TryParse(cell.OwningRow.Cells["Rotation"].Value.ToString().Replace(',', '.'), out A))
+            if (!double.TryParse(cell.OwningRow.Cells["CADdataRotationNominalColumn"].Value.ToString().Replace(',', '.'), out A))
             {
                 ShowMessageBox(
                     "Bad data at Rotation",
@@ -8477,7 +8514,7 @@ namespace LitePlacer
             DownCamera.DrawArrow = true;
 
             //ShowMessageBox(
-            //    "This is " + cell.OwningRow.Cells["Component"].Value.ToString() + " approximate (nominal) location",
+            //    "This is " + cell.OwningRow.Cells["CADdataComponentColumn"].Value.ToString() + " approximate (nominal) location",
             //    "Locate Component",
             //    MessageBoxButtons.OK);
         }
@@ -8505,7 +8542,7 @@ namespace LitePlacer
             {
                 return false;  // header row
             }
-            if (cell.OwningRow.Cells["X_machine"].Value.ToString() == "Nan")
+            if (cell.OwningRow.Cells["CADdataXmachineColumn"].Value.ToString() == "Nan")
             {
                 DialogResult dialogResult = ShowMessageBox(
                     "Component locations not yet measured. Measure now?",
@@ -8520,7 +8557,7 @@ namespace LitePlacer
                 }
             }
 
-            if (!double.TryParse(cell.OwningRow.Cells["X_machine"].Value.ToString().Replace(',', '.'), out X))
+            if (!double.TryParse(cell.OwningRow.Cells["CADdataXmachineColumn"].Value.ToString().Replace(',', '.'), out X))
             {
                 ShowMessageBox(
                     "Bad data at X_machine",
@@ -8529,7 +8566,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!double.TryParse(cell.OwningRow.Cells["Y_machine"].Value.ToString().Replace(',', '.'), out Y))
+            if (!double.TryParse(cell.OwningRow.Cells["CADdataYmachineColumn"].Value.ToString().Replace(',', '.'), out Y))
             {
                 ShowMessageBox(
                     "Bad data at Y_machine",
@@ -8554,7 +8591,7 @@ namespace LitePlacer
                 return;
             }
             CNC_XYA_m(X, Y, Cnc.CurrentA);
-            if (!double.TryParse(CadData_GridView.CurrentCell.OwningRow.Cells["Rotation_machine"].Value.ToString().Replace(',', '.'), out A))
+            if (!double.TryParse(CadData_GridView.CurrentCell.OwningRow.Cells["CADdataRotationMachineColumn"].Value.ToString().Replace(',', '.'), out A))
             {
                 ShowMessageBox(
                     "Bad data at Rotation_machine",
@@ -8567,7 +8604,7 @@ namespace LitePlacer
 
             //bool KnownComponent = ShowFootPrint_m(cell.OwningRow.Index);
             //ShowMessageBox(
-            //    "This is " + cell.OwningRow.Cells["Component"].Value.ToString() + " location",
+            //    "This is " + cell.OwningRow.Cells["CADdataComponentColumn"].Value.ToString() + " location",
             //    "Locate Component",
             //    MessageBoxButtons.OK);
             //if (KnownComponent)
@@ -8678,24 +8715,24 @@ namespace LitePlacer
             double val;
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
-                if (!double.TryParse(Row.Cells["X_nominal"].Value.ToString().Replace(',', '.'), out val))
+                if (!double.TryParse(Row.Cells["CADdataXnominalColumn"].Value.ToString().Replace(',', '.'), out val))
                 {
                     ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " X coordinate data",
+                        "Problem with " + Row.Cells["CADdataComponentColumn"].Value.ToString() + " X coordinate data",
                         "Bad data",
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Row.Cells["X_nominal"].Value = Math.Round((val * 25.4), 3).ToString(CultureInfo.InvariantCulture);
-                if (!double.TryParse(Row.Cells["Y_nominal"].Value.ToString().Replace(',', '.'), out val))
+                Row.Cells["CADdataXnominalColumn"].Value = Math.Round((val * 25.4), 3).ToString(CultureInfo.InvariantCulture);
+                if (!double.TryParse(Row.Cells["CADdataYnominalColumn"].Value.ToString().Replace(',', '.'), out val))
                 {
                     ShowMessageBox(
-                        "Problem with " + Row.Cells["Component"].Value.ToString() + " Y coordinate data",
+                        "Problem with " + Row.Cells["CADdataComponentColumn"].Value.ToString() + " Y coordinate data",
                         "Bad data",
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Row.Cells["Y_nominal"].Value = Math.Round((val * 25.4), 3).ToString(CultureInfo.InvariantCulture);
+                Row.Cells["CADdataYnominalColumn"].Value = Math.Round((val * 25.4), 3).ToString(CultureInfo.InvariantCulture);
             }
             return true;
         }
@@ -9060,24 +9097,25 @@ namespace LitePlacer
                 }
                 CadData_GridView.Rows.Add();
                 int Last = CadData_GridView.RowCount - 1;
-                CadData_GridView.Rows[Last].Cells["Component"].Value = Line[ComponentIndex];
-                CadData_GridView.Rows[Last].Cells["Value_Footprint"].Value = Line[ValueIndex] + "  |  " + Line[FootPrintIndex];
-                CadData_GridView.Rows[Last].Cells["Rotation"].Value = Line[RotationIndex];
+                CadData_GridView.Rows[Last].Cells["CADdataComponentColumn"].Value = Line[ComponentIndex];
+                CadData_GridView.Rows[Last].Cells["CADdataValueColumn"].Value = Line[ValueIndex];
+                CadData_GridView.Rows[Last].Cells["CADdataFootprintColumn"].Value = Line[FootPrintIndex];
+                CadData_GridView.Rows[Last].Cells["CADdataRotationNominalColumn"].Value = Line[RotationIndex];
 
                 if (PlacedDataPresent)
 	            {
                     if ((Line[PlacedIndex]=="True")||(Line[PlacedIndex]=="true"))
                     {
-                        CadData_GridView.Rows[Last].Cells["Placed_column"].Value = true;
+                        CadData_GridView.Rows[Last].Cells["CADdataPlacedColumn"].Value = true;
                     }
 		            else
 	                {
-                        CadData_GridView.Rows[Last].Cells["Placed_column"].Value = false;
+                        CadData_GridView.Rows[Last].Cells["CADdataPlacedColumn"].Value = false;
 	                }
 	            }
 		        else
 	            {
-                    CadData_GridView.Rows[Last].Cells["Placed_column"].Value = false;
+                    CadData_GridView.Rows[Last].Cells["CADdataPlacedColumn"].Value = false;
 	            }
 
                 if (LayerDataPresent)
@@ -9086,14 +9124,14 @@ namespace LitePlacer
                     {
                         if (Line[X_Nominal_Index].StartsWith("-", StringComparison.Ordinal))
                         {
-                            CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "").Replace("-", "");
+                            CadData_GridView.Rows[Last].Cells["CADdataXnominalColumn"].Value = Line[X_Nominal_Index].Replace("mm", "").Replace("-", "");
                         }
                         else
                         {
-                            CadData_GridView.Rows[Last].Cells["X_nominal"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
+                            CadData_GridView.Rows[Last].Cells["CADdataXnominalColumn"].Value = "-" + Line[X_Nominal_Index].Replace("mm", "");
                         }
                         double rot;
-                        if (!double.TryParse(CadData_GridView.Rows[Last].Cells["Rotation"].Value.ToString().Replace(',', '.'), out rot))
+                        if (!double.TryParse(CadData_GridView.Rows[Last].Cells["CADdataRotationNominalColumn"].Value.ToString().Replace(',', '.'), out rot))
                         {
                             ShowMessageBox(
                                 "Bad data at Rotation",
@@ -9102,23 +9140,23 @@ namespace LitePlacer
                             return false;
                         }
                         rot = -rot + 180;
-                        CadData_GridView.Rows[Last].Cells["Rotation"].Value = rot.ToString(CultureInfo.InvariantCulture);
+                        CadData_GridView.Rows[Last].Cells["CADdataRotationNominalColumn"].Value = rot.ToString(CultureInfo.InvariantCulture);
                     }
                     else
                     {
-                        CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
+                        CadData_GridView.Rows[Last].Cells["CADdataXnominalColumn"].Value = Line[X_Nominal_Index].Replace("mm", "");
                     }
                 }
                 else
                 {
-                    CadData_GridView.Rows[Last].Cells["X_nominal"].Value = Line[X_Nominal_Index].Replace("mm", "");
+                    CadData_GridView.Rows[Last].Cells["CADdataXnominalColumn"].Value = Line[X_Nominal_Index].Replace("mm", "");
                 }
-                CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = Line[Y_Nominal_Index].Replace("mm", "");
-                CadData_GridView.Rows[Last].Cells["X_nominal"].Value = CadData_GridView.Rows[Last].Cells["X_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["Y_nominal"].Value = CadData_GridView.Rows[Last].Cells["Y_nominal"].Value.ToString().Replace(",", ".");
-                CadData_GridView.Rows[Last].Cells["X_Machine"].Value = "Nan";   // will be set later 
-                CadData_GridView.Rows[Last].Cells["Y_Machine"].Value = "Nan";
-                CadData_GridView.Rows[Last].Cells["Rotation_machine"].Value = "Nan";
+                CadData_GridView.Rows[Last].Cells["CADdataYnominalColumn"].Value = Line[Y_Nominal_Index].Replace("mm", "");
+                CadData_GridView.Rows[Last].Cells["CADdataXnominalColumn"].Value = CadData_GridView.Rows[Last].Cells["CADdataXnominalColumn"].Value.ToString().Replace(",", ".");
+                CadData_GridView.Rows[Last].Cells["CADdataYnominalColumn"].Value = CadData_GridView.Rows[Last].Cells["CADdataYnominalColumn"].Value.ToString().Replace(",", ".");
+                CadData_GridView.Rows[Last].Cells["CADdataXmachineColumn"].Value = "Nan";   // will be set later 
+                CadData_GridView.Rows[Last].Cells["CADdataYmachineColumn"].Value = "Nan";
+                CadData_GridView.Rows[Last].Cells["CADdataRotationMachineColumn"].Value = "Nan";
             }   // end "for each component..."
 
             // Disable manual sorting
