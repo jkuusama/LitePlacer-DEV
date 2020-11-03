@@ -125,9 +125,6 @@
     <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
       <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
-    <Reference Include="HomographyEstimation">
-      <HintPath>..\..\HomographyEstimation\HomographyEstimation.dll</HintPath>
-    </Reference>
     <Reference Include="MathNet.Numerics, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.8.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
@@ -159,9 +156,13 @@
       <DependentUpon>AlgorithmName.cs</DependentUpon>
     </Compile>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="AppSettingsV2.cs" />
     <Compile Include="BoardSettings.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="CNC.cs" />
+    <Compile Include="CostumControls.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FiducialMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -301,6 +302,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="liteplacer icon.ico" />
+    <None Include="Resources\grid.png" />
+    <None Include="Resources\cross.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

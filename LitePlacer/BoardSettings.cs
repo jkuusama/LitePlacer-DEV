@@ -21,7 +21,7 @@ namespace LitePlacer
     // It works, but for Duet 3, I'll handle this differently.
     //
 
-    public partial class MySettings
+    public partial class AppSettingsV2
     {
         public double Duet3_Xspeed { get; set; } = 200; // mm/s
         public double Duet3_Yspeed { get; set; } = 200; // mm/s

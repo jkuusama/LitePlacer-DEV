@@ -146,7 +146,7 @@ namespace LitePlacer
         public bool ReceivingFrames { get; set; }
         public bool MirrorX { get; set; }    // Mirror around X-Axis
         public bool MirrorY { get; set; }    // Mirror around Y-Axis
-        public bool FixedPhysLocation { get; set; }
+        public bool OnHead { get; set; }    // Camera mounted to Nozzle Head
 
         // =================================================================================================
         public void ListResolutions(string MonikerStr)

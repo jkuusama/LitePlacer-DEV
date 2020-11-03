@@ -24,7 +24,6 @@ using System.Windows.Input;
 using System.Net;
 
 //using MathNet.Numerics;
-using HomographyEstimation;
 
 using AForge;
 using AForge.Video;
@@ -57,10 +56,8 @@ namespace LitePlacer
         Camera UpCamera;
         NozzleCalibrationClass Nozzle;
         TapesClass Tapes;
-        public MySettings Setting { get; set; }
+        public AppSettingsV2 Setting { get; set; } = new AppSettingsV2();
         public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
-
-        AppSettings SettingsOps;
 
         // =================================================================================
         // General and "global" functions 
@@ -131,7 +128,6 @@ namespace LitePlacer
         private void Form1_Load(object sender, EventArgs e)
         {
             StartingUp = true;
-            //this.Size = new Size(1280, 900);
             Dump_tabPage.Parent = null;
 
             DisplayText("Application Start", KnownColor.Black, true);
@@ -139,8 +135,8 @@ namespace LitePlacer
 
             string path = GetPath();
 
-            SettingsOps = new AppSettings(this);
-            Setting = SettingsOps.Load(path + APPLICATIONSETTINGS_DATAFILE);
+            AppSettings.InitDisplayText(this);
+            Setting = (AppSettingsV2)Setting.Load(path + APPLICATIONSETTINGS_DATAFILE);
             Setting.General_SafeFilesAtClosing = true;
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
@@ -197,9 +193,9 @@ namespace LitePlacer
             // We want it to be owned by main form (not by tab) and visible when needed.
             // Position math: https://stackoverflow.com/questions/1478022/c-sharp-get-a-controls-position-on-a-form
             System.Drawing.Point locationOnForm =
-                Cam_pictureBox.FindForm().PointToClient(Cam_pictureBox.Parent.PointToScreen(Cam_pictureBox.Location));
-            Cam_pictureBox.Parent = this;                   // position changes
-            Cam_pictureBox.Location = locationOnForm;       // move it back
+                Camera_Panel.FindForm().PointToClient(Camera_Panel.Parent.PointToScreen(Camera_Panel.Location));
+            Camera_Panel.Parent = this;                   // position changes
+            Camera_Panel.Location = locationOnForm;       // move it back
 
             // At design time, I can't draw items on top of each other. I draw them at a convenient location; this
             // moves motor control boxes to correct place
@@ -213,6 +209,7 @@ namespace LitePlacer
             AttachButtonLogging(this.Controls);
 
             DownCamera.DrawCross = Setting.DownCam_DrawCross;
+            DownCamera.DrawGrid = Setting.DownCam_DrawGrid;
             DownCamera.DrawBox = Setting.DownCam_DrawBox;
             DownCamera.DrawSidemarks = Setting.DownCam_DrawSidemarks;
             DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
@@ -224,9 +221,10 @@ namespace LitePlacer
             DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
             DownCameraMirrorX_checkBox.Checked = Setting.DownCam_MirrorX;
             DownCameraMirrorY_checkBox.Checked = Setting.DownCam_MirrorY;
-            DownCamFixedPhysLoc_checkBox.Checked = Setting.DownCam_FixedPhysLocation;
+            DownCamOnHead_checkBox.Checked = Setting.DownCam_OnHead;
 
             UpCamera.DrawCross = Setting.UpCam_DrawCross;
+            UpCamera.DrawGrid = Setting.UpCam_DrawGrid;
             UpCamera.DrawBox = Setting.UpCam_DrawBox;
             UpCamera.DrawSidemarks = Setting.UpCam_DrawSidemarks;
             UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
@@ -238,7 +236,7 @@ namespace LitePlacer
             UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
             UpCameraMirrorX_checkBox.Checked = Setting.UpCam_MirrorX;
             UpCameraMirrorY_checkBox.Checked = Setting.UpCam_MirrorY;
-            UpCamFixedPhysLoc_checkBox.Checked = Setting.UpCam_FixedPhysLocation;
+            UpCamOnHead_checkBox.Checked = Setting.UpCam_OnHead;
 
             ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
             if (ShowPixels_checkBox.Checked)
@@ -385,7 +383,7 @@ namespace LitePlacer
                 res = SaveTempJobData();
                 OK = OK && res;
 
-                res = SettingsOps.Save(Setting, path + APPLICATIONSETTINGS_DATAFILE);
+                res = AppSettingsSave(path + APPLICATIONSETTINGS_DATAFILE);
                 OK = OK && res;
 
                 res = SaveDataGrid(path + TAPES_DATAFILE, Tapes_dataGridView);
@@ -580,36 +578,36 @@ namespace LitePlacer
             switch (tabControlPages.SelectedTab.Name)
             {
                 case "RunJob_tabPage":
-                    Cam_pictureBox.BringToFront();
-                    Cam_pictureBox.Visible = true;
+                    Camera_Panel.BringToFront();
+                    Camera_Panel.Visible = true;
                     RunJob_tabPage_Begin();
                     LastTabPage = "RunJob_tabPage";
                     break;
                 case "tabPageBasicSetup":
-                    Cam_pictureBox.Visible = false;
+                    Camera_Panel.Visible = false;
                     BasicSetupTab_Begin();
                     LastTabPage = "tabPageBasicSetup";
                     break;
                 case "tabPageSetupCameras":
-                    Cam_pictureBox.BringToFront();
-                    Cam_pictureBox.Visible = true;
+                    Camera_Panel.BringToFront();
+                    Camera_Panel.Visible = true;
                     tabPageSetupCameras_Begin();
                     LastTabPage = "tabPageSetupCameras";
                     break;
                 case "Algorithms_tabPage":
-                    Cam_pictureBox.BringToFront();
-                    Cam_pictureBox.Visible = true;
+                    Camera_Panel.BringToFront();
+                    Camera_Panel.Visible = true;
                     Algorithms_tabPage_Begin();
                     LastTabPage = "Algorithms_tabPage";
                     break;
                 case "Tapes_tabPage":
-                    Cam_pictureBox.BringToFront();
-                    Cam_pictureBox.Visible = true;
+                    Camera_Panel.BringToFront();
+                    Camera_Panel.Visible = true;
                     Tapes_tabPage_Begin();
                     LastTabPage = "Tapes_tabPage";
                     break;
                 case "Nozzles_tabPage":
-                    Cam_pictureBox.Visible = false;
+                    Camera_Panel.Visible = false;
                     Nozzles_tabPage_Begin();
                     LastTabPage = "Nozzles_tabPage";
                     break;
@@ -1804,11 +1802,11 @@ namespace LitePlacer
         // =================================================================================
         // Picturebox mouse functions
 
-        private bool ImagepositionTo_mms(out double Xmm, out double Ymm, out bool fixedPhysCamLoc, int MouseX, int MouseY, PictureBox Box)
+        private bool ImagepositionTo_mms(out double Xmm, out double Ymm, out bool camOnHead, int MouseX, int MouseY, PictureBox Box)
         {
             // Input is mouse position inside picture box.
             // Output is mouse position in mm's from image center (machine position)
-            fixedPhysCamLoc = false;
+            camOnHead = true;
             MouseY = Box.Size.Height - 1 - MouseY; // Imagebox origin is up left, machine origin is down left
             Xmm = 0.0;
             Ymm = 0.0;
@@ -1844,7 +1842,7 @@ namespace LitePlacer
                 DisplayText("No camera running");
                 return false;
             };
-            fixedPhysCamLoc = cam.FixedPhysLocation;
+            camOnHead = cam.OnHead;
 
             if (!ShowPixels_checkBox.Checked)
             {
@@ -1911,17 +1909,17 @@ namespace LitePlacer
 
             else
             {
-                if (ImagepositionTo_mms(out Xmm, out Ymm, out bool fixedPhysCamLoc, e.X, e.Y, Cam_pictureBox))
+                if (ImagepositionTo_mms(out Xmm, out Ymm, out bool camOnHead, e.X, e.Y, Cam_pictureBox))
                 {
-                    if (fixedPhysCamLoc) //Fixed Cam (e.g. UpCam)
-                    {
-                        //move clicked image position to camera
-                        CNC_XYA_m(Cnc.CurrentX - Xmm, Cnc.CurrentY - Ymm, Cnc.CurrentA);
-                    }
-                    else //not fixed Cam (e.g. DownCam)
+                    if (camOnHead) //Cam on Head (e.g. DownCam)
                     {
                         //move camera to clicked image position
                         CNC_XYA_m(Cnc.CurrentX + Xmm, Cnc.CurrentY + Ymm, Cnc.CurrentA);
+                    }
+                    else //Cam not on Head (e.g. UpCam)
+                    {
+                        //move clicked image position to camera
+                        CNC_XYA_m(Cnc.CurrentX - Xmm, Cnc.CurrentY - Ymm, Cnc.CurrentA);
                     }
                 }
             }
@@ -2755,12 +2753,12 @@ namespace LitePlacer
                        + ", tries= " + tries.ToString());
                 }
 
-                if (cam.FixedPhysLocation)
+                if (!cam.OnHead)
                 {
-                    //fixed camera:
-                    //move feature to camera
-                    //not fixed camera:
+                    //camera on head:
                     //move camera to feature
+                    //camera not on head:
+                    //move feature to camera
                     X = -X;
                     Y = -Y;
                 }
@@ -2876,6 +2874,12 @@ namespace LitePlacer
             DownCamera.Active = false;
             UpCamera.Active = false;
             cam.Active = true;
+
+            CamCross_CheckBox.DataBindings.Clear();
+            CamCross_CheckBox.DataBindings.Add("Checked", cam, nameof(cam.DrawCross), false, DataSourceUpdateMode.OnPropertyChanged);
+            CamGrid_CheckBox.DataBindings.Clear();
+            CamGrid_CheckBox.DataBindings.Add("Checked", cam, nameof(cam.DrawGrid), false, DataSourceUpdateMode.OnPropertyChanged);
+
             if (KeepActive_checkBox.Checked)
             {
                 if (cam == DownCamera)
@@ -3124,13 +3128,11 @@ namespace LitePlacer
             DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString(CultureInfo.InvariantCulture);
             DownCamDrawSidemarks_checkBox.Checked = Setting.DownCam_DrawSidemarks;
-            DownCamDrawCross_checkBox.Checked = DownCamera.DrawCross;
             DownCamDrawBox_checkBox.Checked = DownCamera.DrawBox;
 
             SetUpCameraDefaults();
             UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString(CultureInfo.InvariantCulture);
             UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString(CultureInfo.InvariantCulture);
-            UpCamDrawCross_checkBox.Checked = UpCamera.DrawCross;
             UpCamDrawBox_checkBox.Checked = UpCamera.DrawBox;
 
             DownCameraStatus_label.Text = DownCamera.Active ? "Active" : "Not Active";
@@ -3250,7 +3252,7 @@ namespace LitePlacer
                 else
                 {
                     DownCamera.Zoom = false;
-                };
+                }
             }
             else
             {
@@ -3273,49 +3275,12 @@ namespace LitePlacer
                 else
                 {
                     UpCamera.Zoom = false;
-                };
+                }
             }
             else
             {
                 UpCameraStatus_label.Text = "Not active";
             }
-        }
-
-        private void SetCurrentCameraParameters()
-        {
-            double val;
-            if (UpCamera.IsRunning())
-            {
-                DownCameraStatus_label.Text = "Not active";
-                UpCameraStatus_label.Text = "Active";
-                if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-                {
-                    UpCamera.ZoomFactor = val;
-                    UpCamera.Zoom = UpCamZoom_checkBox.Checked;
-                }
-                else
-                {
-                    UpCamera.Zoom = false;
-                };
-            }
-            else if (DownCamera.IsRunning())
-            {
-                UpCameraStatus_label.Text = "Not active";
-                DownCameraStatus_label.Text = "Active";
-                if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-                {
-                    DownCamera.ZoomFactor = val;
-                    DownCamera.Zoom = UpCamZoom_checkBox.Checked;
-                }
-                else
-                {
-                    DownCamera.Zoom = false;
-                };
-            }
-            else
-            {
-                return;
-            };
         }
 
         // =================================================================================
@@ -3669,11 +3634,6 @@ namespace LitePlacer
         // =================================================================================
         // DownCam specific functions
         // =================================================================================
-        private void DownCamDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DownCamera.DrawCross = DownCamDrawCross_checkBox.Checked;
-            Setting.DownCam_DrawCross = DownCamDrawCross_checkBox.Checked;
-        }
 
         private void DownCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -3711,16 +3671,16 @@ namespace LitePlacer
             Setting.UpCam_MirrorY = UpCameraMirrorY_checkBox.Checked;
         }
 
-        private void DownCamFixedPhysLoc_checkBox_CheckedChanged(object sender, EventArgs e)
+        private void DownCamOnHead_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            DownCamera.FixedPhysLocation = DownCamFixedPhysLoc_checkBox.Checked;
-            Setting.DownCam_FixedPhysLocation = DownCamFixedPhysLoc_checkBox.Checked;
+            DownCamera.OnHead = DownCamOnHead_checkBox.Checked;
+            Setting.DownCam_OnHead = DownCamOnHead_checkBox.Checked;
         }
 
-        private void UpCamFixedPhysLoc_checkBox_CheckedChanged(object sender, EventArgs e)
+        private void UpCamOnHead_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            UpCamera.FixedPhysLocation = UpCamFixedPhysLoc_checkBox.Checked;
-            Setting.UpCam_FixedPhysLocation = UpCamFixedPhysLoc_checkBox.Checked;
+            UpCamera.OnHead = UpCamOnHead_checkBox.Checked;
+            Setting.UpCam_OnHead = UpCamOnHead_checkBox.Checked;
         }
 
         // =================================================================================
@@ -3966,12 +3926,6 @@ namespace LitePlacer
         // =================================================================================
         // UpCam specific functions
         // =================================================================================
-
-        private void UpCamDrawCross_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            UpCamera.DrawCross = UpCamDrawCross_checkBox.Checked;
-            Setting.UpCam_DrawCross = UpCamDrawCross_checkBox.Checked;
-        }
 
         private void UpCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -7807,7 +7761,6 @@ namespace LitePlacer
 
                 SelectCamera(UpCamera);
                 UpCamera.DrawGrid = true;
-                UpCamera.DrawCross = false;
                 UpCamera.Overlay = false;
                 UpCamera.ClearDisplayFunctionsList();
 
@@ -7816,10 +7769,10 @@ namespace LitePlacer
                 {
                     if (UpCamera.Measure(out double tmpX, out double tmpY, out double tmpA, out int res, false))
                     {
-                        if (UpCamera.FixedPhysLocation)
-                            CNC_XYA_m(Cnc.CurrentX - tmpX, Cnc.CurrentY - tmpY, Cnc.CurrentA);
-                        else
+                        if (UpCamera.OnHead)
                             CNC_XYA_m(Cnc.CurrentX + tmpX, Cnc.CurrentY + tmpY, Cnc.CurrentA);
+                        else
+                            CNC_XYA_m(Cnc.CurrentX - tmpX, Cnc.CurrentY - tmpY, Cnc.CurrentA);
                     }
                 }
                 if (VideoAlgorithms.AllAlgorithms.Exists(s => s.Name == "UpCam Component"))
@@ -12401,6 +12354,19 @@ namespace LitePlacer
         // ==========================================================================================================
         #region ApplicationSettings
 
+        private bool AppSettingsSave(string FileName)
+        {
+            Setting.DownCam_DrawBox = DownCamera.DrawBox;
+            Setting.DownCam_DrawCross = DownCamera.DrawCross;
+            Setting.DownCam_DrawGrid = DownCamera.DrawGrid;
+
+            Setting.UpCam_DrawBox = UpCamera.DrawBox;
+            Setting.UpCam_DrawCross = UpCamera.DrawCross;
+            Setting.UpCam_DrawGrid = UpCamera.DrawGrid;
+
+            return Setting.Save(FileName);
+        }
+
         private void AppSettingsSave_button_Click(object sender, EventArgs e)
         {
             if (StartingUp)
@@ -12414,9 +12380,8 @@ namespace LitePlacer
 
             if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                SettingsOps.Save(Setting, AppSettings_saveFileDialog.FileName);
+                AppSettingsSave(AppSettings_saveFileDialog.FileName);
             }
-
         }
 
         private void AppSettingsLoad_button_Click(object sender, EventArgs e)
@@ -12439,7 +12404,7 @@ namespace LitePlacer
 
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Setting = SettingsOps.Load(AppSettings_openFileDialog.FileName);
+                Setting = (AppSettingsV2)Setting.Load(AppSettings_openFileDialog.FileName);
                 Application.Restart();
             }
         }
@@ -12457,7 +12422,7 @@ namespace LitePlacer
             {
                 return;
             };
-            Setting = new MySettings();
+            Setting = new AppSettingsV2();
             Application.Restart();
         }
         #endregion
@@ -12825,7 +12790,6 @@ namespace LitePlacer
             {
                 ZGuardOn();
             }
-
         }
 
         private void ChangeNozzleOnVideoSetup_button_Click(object sender, EventArgs e)
