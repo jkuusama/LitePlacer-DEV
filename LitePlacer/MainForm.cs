@@ -56,7 +56,7 @@ namespace LitePlacer
         Camera UpCamera;
         NozzleCalibrationClass Nozzle;
         TapesClass Tapes;
-        public AppSettingsV2 Setting { get; set; } = new AppSettingsV2();
+        public AppSettingsV3 Setting { get; set; } = new AppSettingsV3();
         public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
 
         // =================================================================================
@@ -136,15 +136,15 @@ namespace LitePlacer
             string path = GetPath();
 
             AppSettings.InitDisplayText(this);
-            Setting = (AppSettingsV2)Setting.Load(path + APPLICATIONSETTINGS_DATAFILE);
+            Setting = (AppSettingsV3)Setting.Load(path + APPLICATIONSETTINGS_DATAFILE);
             Setting.General_SafeFilesAtClosing = true;
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
             CNC.SquareCorrection = Setting.CNC_SquareCorrection;
-            DownCamera = new Camera(this);
-            UpCamera = new Camera(this);
+            DownCamera = new Camera(this, Setting.Cameras_Settings[0]);
+            UpCamera = new Camera(this, Setting.Cameras_Settings[1]);
             Nozzle = new NozzleCalibrationClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Nozzle, DownCamera, Cnc, this);
             BoardSettings.MainForm = this;
@@ -208,35 +208,19 @@ namespace LitePlacer
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
-            DownCamera.DrawCross = Setting.DownCam_DrawCross;
-            DownCamera.DrawGrid = Setting.DownCam_DrawGrid;
-            DownCamera.DrawBox = Setting.DownCam_DrawBox;
-            DownCamera.DrawSidemarks = Setting.DownCam_DrawSidemarks;
-            DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
-            DownCamera.Zoom = Setting.DownCam_Zoom;
-            DownCamZoomFactor_textBox.Text = Setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
-            DownCamera.ZoomFactor = Setting.DownCam_Zoomfactor;
+            DownCamZoom_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.Zoom));
+            DownCamZoomFactor_textBox.Text = DownCamera.Settings.ZoomFactor.ToString("0.0", CultureInfo.InvariantCulture);
             DownCamera.ImageBox = Cam_pictureBox;
-            DownCamera.XmmPerPixel = Setting.DownCam_XmmPerPixel;
-            DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
-            DownCameraMirrorX_checkBox.Checked = Setting.DownCam_MirrorX;
-            DownCameraMirrorY_checkBox.Checked = Setting.DownCam_MirrorY;
-            DownCamOnHead_checkBox.Checked = Setting.DownCam_OnHead;
+            DownCameraMirrorX_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.MirrorX));
+            DownCameraMirrorY_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.MirrorY));
+            DownCamOnHead_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.OnHead));
 
-            UpCamera.DrawCross = Setting.UpCam_DrawCross;
-            UpCamera.DrawGrid = Setting.UpCam_DrawGrid;
-            UpCamera.DrawBox = Setting.UpCam_DrawBox;
-            UpCamera.DrawSidemarks = Setting.UpCam_DrawSidemarks;
-            UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
-            UpCamera.Zoom = Setting.UpCam_Zoom;
-            UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
-            UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
+            UpCamZoom_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.Zoom));
+            UpCamZoomFactor_textBox.Text = UpCamera.Settings.ZoomFactor.ToString("0.0", CultureInfo.InvariantCulture);
             UpCamera.ImageBox = Cam_pictureBox;
-            UpCamera.XmmPerPixel = Setting.UpCam_XmmPerPixel;
-            UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
-            UpCameraMirrorX_checkBox.Checked = Setting.UpCam_MirrorX;
-            UpCameraMirrorY_checkBox.Checked = Setting.UpCam_MirrorY;
-            UpCamOnHead_checkBox.Checked = Setting.UpCam_OnHead;
+            UpCameraMirrorX_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.MirrorX));
+            UpCameraMirrorY_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.MirrorY));
+            UpCamOnHead_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.OnHead));
 
             ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
             if (ShowPixels_checkBox.Checked)
@@ -364,6 +348,7 @@ namespace LitePlacer
         // =================================================================================
         // Close
         // =================================================================================
+
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             bool OK = true;
@@ -1820,29 +1805,27 @@ namespace LitePlacer
             int Xres = 0;
             int Yres = 0;
 
-            Camera cam = DownCamera;
+            Camera cam;
             if (DownCamera.Active)
             {
                 cam = DownCamera;
-                XmmPerPixel = Setting.DownCam_XmmPerPixel;
-                YmmPerPixel = Setting.DownCam_YmmPerPixel;
-                Xres = Setting.DownCam_DesiredX;
-                Yres = Setting.DownCam_DesiredY;
+                
             }
             else if (UpCamera.Active)
             {
                 cam = UpCamera;
-                XmmPerPixel = Setting.UpCam_XmmPerPixel;
-                YmmPerPixel = Setting.UpCam_YmmPerPixel;
-                Xres = Setting.UpCam_DesiredX;
-                Yres = Setting.UpCam_DesiredY;
             }
             else
             {
                 DisplayText("No camera running");
                 return false;
-            };
-            camOnHead = cam.OnHead;
+            }
+
+            XmmPerPixel = cam.Settings.XmmPerPixel;
+            YmmPerPixel = cam.Settings.YmmPerPixel;
+            Xres = cam.Settings.DesiredX;
+            Yres = cam.Settings.DesiredY;
+            camOnHead = cam.Settings.OnHead;
 
             if (!ShowPixels_checkBox.Checked)
             {
@@ -1853,10 +1836,10 @@ namespace LitePlacer
             Xmm = X * XmmPerPixel * Xscale;
             Ymm = Y * YmmPerPixel * Yscale;
 
-            if (cam.Zoom)  // if zoomed for display
+            if (cam.Settings.Zoom)  // if zoomed for display
             {
-                Xmm = Xmm / cam.ZoomFactor;
-                Ymm = Ymm / cam.ZoomFactor;
+                Xmm = Xmm / cam.Settings.ZoomFactor;
+                Ymm = Ymm / cam.Settings.ZoomFactor;
             };
             Xmm = Xmm / cam.GetDisplayZoom();	// Might also be zoomed for processing
             Ymm = Ymm / cam.GetDisplayZoom();
@@ -2753,7 +2736,7 @@ namespace LitePlacer
                        + ", tries= " + tries.ToString());
                 }
 
-                if (!cam.OnHead)
+                if (!cam.Settings.OnHead)
                 {
                     //camera on head:
                     //move camera to feature
@@ -2865,7 +2848,7 @@ namespace LitePlacer
 
         private void SelectCamera(Camera cam)
         {
-            if (cam.MonikerString == "-no camera-")
+            if (cam.Settings.Moniker == "-no camera-")
             {
                 DisplayText("Selecting, no camera");
                 return;
@@ -2876,9 +2859,9 @@ namespace LitePlacer
             cam.Active = true;
 
             CamCross_CheckBox.DataBindings.Clear();
-            CamCross_CheckBox.DataBindings.Add("Checked", cam, nameof(cam.DrawCross), false, DataSourceUpdateMode.OnPropertyChanged);
+            CamCross_CheckBox.DataBindings.Add("Checked", cam.Settings, nameof(cam.Settings.DrawCross), false, DataSourceUpdateMode.OnPropertyChanged);
             CamGrid_CheckBox.DataBindings.Clear();
-            CamGrid_CheckBox.DataBindings.Add("Checked", cam, nameof(cam.DrawGrid), false, DataSourceUpdateMode.OnPropertyChanged);
+            CamGrid_CheckBox.DataBindings.Add("Checked", cam.Settings, nameof(cam.Settings.DrawGrid), false, DataSourceUpdateMode.OnPropertyChanged);
 
             if (KeepActive_checkBox.Checked)
             {
@@ -2948,7 +2931,7 @@ namespace LitePlacer
             };
 
             DownCamera.Active = false;
-            if (string.IsNullOrEmpty(Setting.DowncamMoniker))
+            if (string.IsNullOrEmpty(DownCamera.Settings.Moniker))
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
                 DownCameraStatus_label.Text = "Not Active";
@@ -2956,14 +2939,14 @@ namespace LitePlacer
             };
             // Check that the device exists
             List<string> monikers = DownCamera.GetMonikerStrings();
-            if (!monikers.Contains(Setting.DowncamMoniker))
+            if (!monikers.Contains(DownCamera.Settings.Moniker))
             {
-                DisplayText("Downcamera moniker not found. Moniker: " + Setting.DowncamMoniker);
+                DisplayText("Downcamera moniker not found. Moniker: " + DownCamera.Settings.Moniker);
                 DownCameraStatus_label.Text = "Not Active";
                 return false;
             }
 
-            if (Setting.UpcamMoniker == Setting.DowncamMoniker)
+            if (UpCamera.Settings.Moniker == DownCamera.Settings.Moniker)
             {
                 ShowMessageBox(
                     "Up camera and Down camera point to same physical device.",
@@ -2974,7 +2957,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!DownCamera.Start("DownCamera", Setting.DowncamMoniker))
+            if (!DownCamera.Start("DownCamera", DownCamera.Settings.Moniker))
             {
                 ShowMessageBox(
                     "Problem Starting down camera.",
@@ -3004,7 +2987,7 @@ namespace LitePlacer
             };
 
             UpCamera.Active = false;
-            if (string.IsNullOrEmpty(Setting.UpcamMoniker))
+            if (string.IsNullOrEmpty(UpCamera.Settings.Moniker))
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
                 UpCameraStatus_label.Text = "Not Active";
@@ -3012,14 +2995,14 @@ namespace LitePlacer
             };
             // Check that the device exists
             List<string> monikers = UpCamera.GetMonikerStrings();
-            if (!monikers.Contains(Setting.UpcamMoniker))
+            if (!monikers.Contains(UpCamera.Settings.Moniker))
             {
-                DisplayText("Upcamera moniker not found. Moniker: " + Setting.UpcamMoniker);
+                DisplayText("Upcamera moniker not found. Moniker: " + UpCamera.Settings.Moniker);
                 UpCameraStatus_label.Text = "Not Active";
                 return false;
             }
 
-            if (Setting.UpcamMoniker == Setting.DowncamMoniker)
+            if (UpCamera.Settings.Moniker == DownCamera.Settings.Moniker)
             {
                 ShowMessageBox(
                     "Up camera and Down camera point to same physical device.",
@@ -3030,7 +3013,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!UpCamera.Start("UpCamera", Setting.UpcamMoniker))
+            if (!UpCamera.Start("UpCamera", UpCamera.Settings.Moniker))
             {
                 ShowMessageBox(
                     "Problem Starting up camera.",
@@ -3053,17 +3036,12 @@ namespace LitePlacer
 
         private void SetDownCameraDefaults()
         {
+            DownCamera.ImageBox = Cam_pictureBox;
             DownCamera.Id = "Downcamera";
-            DownCamera.DesiredX = Setting.DownCam_DesiredX;
-            DownCamera.DesiredY = Setting.DownCam_DesiredY;
             DownCamera.BoxSizeX = 200;
             DownCamera.BoxSizeY = 200;
-            DownCamera.BoxRotationDeg = 0;
-            DownCamera.ImageBox = Cam_pictureBox;
-            DownCamera.MirrorX = false;
-            DownCamera.MirrorY = false;
+            DownCamera.BoxRotationDeg = 0;            
             DownCamera.ClearDisplayFunctionsList();
-            DownCamera.SnapshotColor = Setting.DownCam_SnapshotColor;
             // Draws
             /*
             DownCamera.DrawCross = true;
@@ -3076,33 +3054,25 @@ namespace LitePlacer
             DownCamera.FindRectangles = false;
             DownCamera.FindComponent = false;
             DownCamera.TestAlgorithm = false;
-            DownCamera.DrawBox = false;
+            DownCamera.Settings.DrawBox = false;
             DownCamera.DrawArrow = false;
 
             DownCamera.SideMarksX = Setting.General_MachineSizeX / 100;
             DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
-            DownCamera.XmmPerPixel = Setting.DownCam_XmmPerPixel;
-            DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
-
         }
+
         // ====
         private void SetUpCameraDefaults()
         {
             UpCamera.ImageBox = Cam_pictureBox;
             UpCamera.Id = "Upcamera";
-            UpCamera.DesiredX = Setting.UpCam_DesiredX;
-            UpCamera.DesiredY = Setting.UpCam_DesiredY;
-
             UpCamera.BoxSizeX = 200;
             UpCamera.BoxSizeY = 200;
             UpCamera.BoxRotationDeg = 0;
-            UpCamera.MirrorX = false;
-            UpCamera.MirrorY = true;
             UpCamera.ClearDisplayFunctionsList();
-            UpCamera.SnapshotColor = Setting.UpCam_SnapshotColor;
             // Draws
-            UpCamera.DrawCross = true;
-            UpCamera.DrawGrid = false;
+            UpCamera.Settings.DrawCross = true;
+            UpCamera.Settings.DrawGrid = false;
             UpCamera.DrawDashedCross = false;
             UpCamera.Draw_Snapshot = false;
             // Finds:
@@ -3110,14 +3080,11 @@ namespace LitePlacer
             UpCamera.FindRectangles = false;
             UpCamera.FindComponent = false;
             UpCamera.TestAlgorithm = false;
-            UpCamera.DrawBox = false;
+            UpCamera.Settings.DrawBox = false;
             UpCamera.DrawArrow = false;
 
             UpCamera.SideMarksX = Setting.General_MachineSizeX / 100;
             UpCamera.SideMarksY = Setting.General_MachineSizeY / 100;
-            UpCamera.XmmPerPixel = Setting.UpCam_XmmPerPixel;
-            UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
-
         }
 
         // =================================================================================
@@ -3125,15 +3092,15 @@ namespace LitePlacer
         {
             DisplayText("Setup Cameras tab begin");
             SetDownCameraDefaults();
-            DownCameraDesiredX_textBox.Text = Setting.DownCam_DesiredX.ToString(CultureInfo.InvariantCulture);
-            DownCameraDesiredY_textBox.Text = Setting.DownCam_DesiredY.ToString(CultureInfo.InvariantCulture);
-            DownCamDrawSidemarks_checkBox.Checked = Setting.DownCam_DrawSidemarks;
-            DownCamDrawBox_checkBox.Checked = DownCamera.DrawBox;
+            DownCameraDesiredX_textBox.Text = DownCamera.Settings.DesiredX.ToString(CultureInfo.InvariantCulture);
+            DownCameraDesiredY_textBox.Text = DownCamera.Settings.DesiredY.ToString(CultureInfo.InvariantCulture);
+            DownCamDrawSidemarks_checkBox.Checked = DownCamera.Settings.DrawSidemarks;
+            DownCamDrawBox_checkBox.Checked = DownCamera.Settings.DrawBox;
 
             SetUpCameraDefaults();
-            UpCameraDesiredX_textBox.Text = Setting.UpCam_DesiredX.ToString(CultureInfo.InvariantCulture);
-            UpCameraDesiredY_textBox.Text = Setting.UpCam_DesiredY.ToString(CultureInfo.InvariantCulture);
-            UpCamDrawBox_checkBox.Checked = UpCamera.DrawBox;
+            UpCameraDesiredX_textBox.Text = UpCamera.Settings.DesiredX.ToString(CultureInfo.InvariantCulture);
+            UpCameraDesiredY_textBox.Text = UpCamera.Settings.DesiredY.ToString(CultureInfo.InvariantCulture);
+            UpCamDrawBox_checkBox.Checked = UpCamera.Settings.DrawBox;
 
             DownCameraStatus_label.Text = DownCamera.Active ? "Active" : "Not Active";
             UpCameraStatus_label.Text = UpCamera.Active ? "Active" : "Not Active";
@@ -3141,19 +3108,19 @@ namespace LitePlacer
             NozzleOffset_label.Visible = false;
 
             double f;
-            f = Setting.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
+            f = DownCamera.Settings.XmmPerPixel * DownCamera.BoxSizeX;
             DownCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
-            f = Setting.DownCam_YmmPerPixel * DownCamera.BoxSizeY;
+            DownCameraXmmPerPixel_textBox.Text = DownCamera.Settings.XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+            f = DownCamera.Settings.YmmPerPixel * DownCamera.BoxSizeY;
             DownCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+            DownCameraYmmPerPixel_textBox.Text = DownCamera.Settings.YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
 
-            f = Setting.UpCam_XmmPerPixel * UpCamera.BoxSizeX;
+            f = UpCamera.Settings.XmmPerPixel * UpCamera.BoxSizeX;
             UpCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
-            f = Setting.UpCam_YmmPerPixel * UpCamera.BoxSizeY;
+            UpCameraXmmPerPixel_textBox.Text = UpCamera.Settings.XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+            f = UpCamera.Settings.YmmPerPixel * UpCamera.BoxSizeY;
             UpCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+            UpCameraYmmPerPixel_textBox.Text = UpCamera.Settings.YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
 
             getDownCamList();
             getUpCamList();
@@ -3178,9 +3145,9 @@ namespace LitePlacer
                 DownCam_comboBox.Items.Add("----");
                 DownCameraStatus_label.Text = "No Cam";
             }
-            if (DownCam_comboBox.Items.Contains(Setting.Downcam_Name))
+            if (DownCam_comboBox.Items.Contains(DownCamera.Settings.Name))
             {
-                DownCam_comboBox.SelectedItem = Setting.Downcam_Name;
+                DownCam_comboBox.SelectedItem = DownCamera.Settings.Name;
             }
             else
             {
@@ -3203,9 +3170,9 @@ namespace LitePlacer
                     DisplayText("Device " + i.ToString(CultureInfo.InvariantCulture) + ": " + Devices[i]);
                 }
             }
-            if (UpCam_comboBox.Items.Contains(Setting.Upcam_Name))
+            if (UpCam_comboBox.Items.Contains(UpCamera.Settings.Name))
             {
-                UpCam_comboBox.SelectedItem = Setting.Upcam_Name;
+                UpCam_comboBox.SelectedItem = UpCamera.Settings.Name;
             }
             else
             {
@@ -3219,7 +3186,7 @@ namespace LitePlacer
         // =================================================================================
         private void tabPageSetupCameras_End()
         {
-            DownCamera.DrawGrid = false;
+            DownCamera.Settings.DrawGrid = false;
             ZGuardOn();
         }
 
@@ -3246,12 +3213,12 @@ namespace LitePlacer
                 DownCameraStatus_label.Text = "Active";
                 if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
-                    DownCamera.ZoomFactor = val;
-                    DownCamera.Zoom = UpCamZoom_checkBox.Checked;
+                    DownCamera.Settings.ZoomFactor = val;
+                    DownCamera.Settings.Zoom = UpCamZoom_checkBox.Checked;
                 }
                 else
                 {
-                    DownCamera.Zoom = false;
+                    DownCamera.Settings.Zoom = false;
                 }
             }
             else
@@ -3269,12 +3236,12 @@ namespace LitePlacer
                 UpCameraStatus_label.Text = "Active";
                 if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
-                    UpCamera.ZoomFactor = val;
-                    UpCamera.Zoom = UpCamZoom_checkBox.Checked;
+                    UpCamera.Settings.ZoomFactor = val;
+                    UpCamera.Settings.Zoom = UpCamZoom_checkBox.Checked;
                 }
                 else
                 {
-                    UpCamera.Zoom = false;
+                    UpCamera.Settings.Zoom = false;
                 }
             }
             else
@@ -3291,19 +3258,15 @@ namespace LitePlacer
             if (Monikers.Count == 0)
             {
                 DisplayTxt("No cameras");
-                Setting.DowncamMoniker = "-no camera-";
-                DownCamera.MonikerString = "-no camera-";
+                DownCamera.Settings.Moniker = "-no camera-";
                 return;
             }
-            Setting.Downcam_Name = DownCam_comboBox.SelectedItem.ToString();
-            Setting.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
-            DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
+            DownCamera.Settings.Name = DownCam_comboBox.SelectedItem.ToString();
+            DownCamera.Settings.Moniker = Monikers[DownCam_comboBox.SelectedIndex];
        }
 
         private void ConnectDownCamera_button_Click(object sender, EventArgs e)
         {
-            DownCamera.DesiredX = Setting.DownCam_DesiredX;
-            DownCamera.DesiredY = Setting.DownCam_DesiredY;
             SelectCamera(DownCamera);
 
             if (DownCamera.IsRunning())
@@ -3328,19 +3291,15 @@ namespace LitePlacer
             if (Monikers.Count == 1)
             {
                 DisplayTxt("No cameras");
-                Setting.UpcamMoniker = "-no camera-";
-                UpCamera.MonikerString = "-no camera-";
+                UpCamera.Settings.Moniker = "-no camera-";
                 return;
             }
-            Setting.Upcam_Name = UpCam_comboBox.SelectedItem.ToString();
-            Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
-            UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
+            UpCamera.Settings.Name = UpCam_comboBox.SelectedItem.ToString();
+            UpCamera.Settings.Moniker = Monikers[UpCam_comboBox.SelectedIndex];
         }
 
         private void ConnectUpCamera_button_Click(object sender, EventArgs e)
         {
-            UpCamera.DesiredX = Setting.UpCam_DesiredX;
-            UpCamera.DesiredY = Setting.UpCam_DesiredY;
             SelectCamera(UpCamera);
             if (UpCamera.IsRunning())
             {
@@ -3375,9 +3334,8 @@ namespace LitePlacer
             double val;
             if (double.TryParse(DownCameraBoxX_textBox.Text.Replace(',', '.'), out val))
             {
-                Setting.DownCam_XmmPerPixel = val / DownCamera.BoxSizeX;
-                DownCamera.XmmPerPixel = val / DownCamera.BoxSizeX;
-                DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+                DownCamera.Settings.XmmPerPixel = val / DownCamera.BoxSizeX;
+                DownCameraXmmPerPixel_textBox.Text = DownCamera.Settings.XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             }
         }
 
@@ -3387,8 +3345,7 @@ namespace LitePlacer
             if (double.TryParse(DownCameraXmmPerPixel_textBox.Text.Replace(',', '.'), out val))
             {
                 DownCameraXmmPerPixel_textBox.ForeColor = Color.Black;
-                Setting.DownCam_XmmPerPixel = val;
-                DownCamera.XmmPerPixel = val;
+                DownCamera.Settings.XmmPerPixel = val;
                 DownCameraBoxX_textBox.Text = (val * DownCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
             }
             else
@@ -3418,9 +3375,8 @@ namespace LitePlacer
             double val;
             if (double.TryParse(DownCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
-                Setting.DownCam_YmmPerPixel = val / DownCamera.BoxSizeY;
-                DownCamera.YmmPerPixel = val / DownCamera.BoxSizeY;
-                DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+                DownCamera.Settings.YmmPerPixel = val / DownCamera.BoxSizeY;
+                DownCameraYmmPerPixel_textBox.Text = DownCamera.Settings.YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             }
         }
 
@@ -3430,7 +3386,7 @@ namespace LitePlacer
             if (double.TryParse(DownCameraYmmPerPixel_textBox.Text.Replace(',', '.'), out val))
             {
                 DownCameraYmmPerPixel_textBox.ForeColor = Color.Black;
-                Setting.DownCam_YmmPerPixel = val;
+                DownCamera.Settings.YmmPerPixel = val;
                 DownCameraBoxY_textBox.Text = (val * DownCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
             }
             else
@@ -3460,9 +3416,8 @@ namespace LitePlacer
             double val;
             if (double.TryParse(UpCameraBoxX_textBox.Text.Replace(',', '.'), out val))
             {
-                Setting.UpCam_XmmPerPixel = val / UpCamera.BoxSizeX;
-                UpCamera.XmmPerPixel = val / UpCamera.BoxSizeX;
-                UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+                UpCamera.Settings.XmmPerPixel = val / UpCamera.BoxSizeX;
+                UpCameraXmmPerPixel_textBox.Text = UpCamera.Settings.XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             }
         }
 
@@ -3472,8 +3427,7 @@ namespace LitePlacer
             if (double.TryParse(UpCameraXmmPerPixel_textBox.Text.Replace(',', '.'), out val))
             {
                 UpCameraXmmPerPixel_textBox.ForeColor = Color.Black;
-                Setting.UpCam_XmmPerPixel = val;
-                UpCamera.XmmPerPixel = val;
+                UpCamera.Settings.XmmPerPixel = val;
                 UpCameraBoxX_textBox.Text = (val * UpCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
             }
             else
@@ -3503,9 +3457,8 @@ namespace LitePlacer
             double val;
             if (double.TryParse(UpCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
-                Setting.UpCam_YmmPerPixel = val / UpCamera.BoxSizeY;
-                UpCamera.YmmPerPixel = val / UpCamera.BoxSizeY;
-                UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+                UpCamera.Settings.YmmPerPixel = val / UpCamera.BoxSizeY;
+                UpCameraYmmPerPixel_textBox.Text = UpCamera.Settings.YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             }
         }
 
@@ -3515,42 +3468,12 @@ namespace LitePlacer
             if (double.TryParse(UpCameraYmmPerPixel_textBox.Text.Replace(',', '.'), out val))
             {
                 UpCameraYmmPerPixel_textBox.ForeColor = Color.Black;
-                Setting.UpCam_YmmPerPixel = val;
-                UpCamera.YmmPerPixel = val;
+                UpCamera.Settings.YmmPerPixel = val;
                 UpCameraBoxY_textBox.Text = (val * UpCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
             }
             else
             {
                 UpCameraYmmPerPixel_textBox.ForeColor = Color.Red;
-            }
-        }
-
-        // =================================================================================
-        private void DownCamZoom_checkBox_Click(object sender, EventArgs e)
-        {
-            if (DownCamZoom_checkBox.Checked)
-            {
-                DownCamera.Zoom = true;
-                Setting.DownCam_Zoom = true;
-            }
-            else
-            {
-                DownCamera.Zoom = false;
-                Setting.DownCam_Zoom = false;
-            }
-        }
-        // ====
-        private void UpCamZoom_checkBox_Click(object sender, EventArgs e)
-        {
-            if (UpCamZoom_checkBox.Checked)
-            {
-                UpCamera.Zoom = true;
-                Setting.UpCam_Zoom = true;
-            }
-            else
-            {
-                UpCamera.Zoom = false;
-                Setting.UpCam_Zoom = false;
             }
         }
 
@@ -3568,8 +3491,7 @@ namespace LitePlacer
                     }
                     else
                     {
-                        DownCamera.ZoomFactor = val;
-                        Setting.DownCam_Zoomfactor = val;
+                        DownCamera.Settings.ZoomFactor = val;
                     }
                 }
             }
@@ -3586,8 +3508,7 @@ namespace LitePlacer
                 }
                 else
                 {
-                    DownCamera.ZoomFactor = val;
-                    Setting.DownCam_Zoomfactor = val;
+                    DownCamera.Settings.ZoomFactor = val;
                 }
             }
         }
@@ -3606,8 +3527,7 @@ namespace LitePlacer
                     }
                     else
                     {
-                        UpCamera.ZoomFactor = val;
-                        Setting.UpCam_Zoomfactor = val;
+                        UpCamera.Settings.ZoomFactor = val;
                     }
                 }
             }
@@ -3624,8 +3544,7 @@ namespace LitePlacer
                 }
                 else
                 {
-                    UpCamera.ZoomFactor = val;
-                    Setting.UpCam_Zoomfactor = val;
+                    UpCamera.Settings.ZoomFactor = val;
                 }
             }
         }
@@ -3637,50 +3556,12 @@ namespace LitePlacer
 
         private void DownCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            DownCamera.DrawBox = DownCamDrawBox_checkBox.Checked;
-            Setting.DownCam_DrawBox = DownCamDrawBox_checkBox.Checked;
+            DownCamera.Settings.DrawBox = DownCamDrawBox_checkBox.Checked;
         }
 
         private void DownCamDrawSidemarks_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            DownCamera.DrawSidemarks = DownCamDrawSidemarks_checkBox.Checked;
-            Setting.DownCam_DrawSidemarks = DownCamDrawSidemarks_checkBox.Checked;
-        }
-
-        private void DownCamMirrorX_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DownCamera.MirrorX = DownCameraMirrorX_checkBox.Checked;
-            Setting.DownCam_MirrorX = DownCameraMirrorX_checkBox.Checked;
-        }
-
-        private void DownCamMirrorY_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DownCamera.MirrorY = DownCameraMirrorY_checkBox.Checked;
-            Setting.DownCam_MirrorY = DownCameraMirrorY_checkBox.Checked;
-        }
-
-        private void UpCamMirrorX_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            UpCamera.MirrorX = UpCameraMirrorX_checkBox.Checked;
-            Setting.UpCam_MirrorX = UpCameraMirrorX_checkBox.Checked;
-        }
-
-        private void UpCamMirrorY_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            UpCamera.MirrorY = UpCameraMirrorY_checkBox.Checked;
-            Setting.UpCam_MirrorY = UpCameraMirrorY_checkBox.Checked;
-        }
-
-        private void DownCamOnHead_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DownCamera.OnHead = DownCamOnHead_checkBox.Checked;
-            Setting.DownCam_OnHead = DownCamOnHead_checkBox.Checked;
-        }
-
-        private void UpCamOnHead_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            UpCamera.OnHead = UpCamOnHead_checkBox.Checked;
-            Setting.UpCam_OnHead = UpCamOnHead_checkBox.Checked;
+            DownCamera.Settings.DrawSidemarks = DownCamDrawSidemarks_checkBox.Checked;
         }
 
         // =================================================================================
@@ -3891,7 +3772,7 @@ namespace LitePlacer
                     NozzleOffsetMarkY = Cnc.CurrentY;
                     CNC_Z_m(0);
                     CNC_XYA_m(Cnc.CurrentX - Setting.DownCam_NozzleOffsetX, Cnc.CurrentY - Setting.DownCam_NozzleOffsetY, Cnc.CurrentA);
-                    DownCamera.DrawCross = true;
+                    DownCamera.Settings.DrawCross = true;
                     NozzleOffset_label.Text = "Jog camera above the same point, \n\rthen click \"Next\"";
                     break;
 
@@ -3929,14 +3810,12 @@ namespace LitePlacer
 
         private void UpCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            UpCamera.DrawBox = UpCamDrawBox_checkBox.Checked;
-            Setting.UpCam_DrawBox = UpCamDrawBox_checkBox.Checked;
+            UpCamera.Settings.DrawBox = UpCamDrawBox_checkBox.Checked;
         }
 
         private void UpCamDrawSidemarks_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            UpCamera.DrawSidemarks = UpCamDrawSidemarks_checkBox.Checked;
-            Setting.UpCam_DrawSidemarks  = UpCamDrawSidemarks_checkBox.Checked;
+            UpCamera.Settings.DrawSidemarks = UpCamDrawSidemarks_checkBox.Checked;
         }
 
         private void UpcamPositionX_textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -5132,7 +5011,7 @@ namespace LitePlacer
                     MessageBoxButtons.OK
                 );
             }
-            DownCamera.DrawCross = true;
+            DownCamera.Settings.DrawCross = true;
             DownCamera.BoxSizeX = 200;
             DownCamera.BoxSizeY = 200;
             DownCamera.BoxRotationDeg = 0;
@@ -6836,7 +6715,7 @@ namespace LitePlacer
                             "Locate Component",
                             MessageBoxButtons.OK);
                     }
-                    DownCamera.DrawBox = false;
+                    DownCamera.Settings.DrawBox = false;
                     break;
 
                 default:
@@ -7536,7 +7415,7 @@ namespace LitePlacer
             for (int i = 0; i < 2; i++)
             {
                 // measure 5 averages, component must be 8.0mm from its place
-                int count = MeasureClosestComponentInPx(out X, out Y, out A, DownCamera, (8.0 / Setting.DownCam_XmmPerPixel), 5);
+                int count = MeasureClosestComponentInPx(out X, out Y, out A, DownCamera, (8.0 / DownCamera.Settings.XmmPerPixel), 5);
                 if (count == 0)
                 {
                     ShowMessageBox(
@@ -7545,8 +7424,8 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 }
-                X = X * Setting.DownCam_XmmPerPixel;
-                Y = -Y * Setting.DownCam_YmmPerPixel;
+                X = X * DownCamera.Settings.XmmPerPixel;
+                Y = -Y * DownCamera.Settings.YmmPerPixel;
                 DisplayText("PickUpLoosePart_m(): measurement " + i.ToString(CultureInfo.InvariantCulture)
                     + ", X: " + X.ToString(CultureInfo.InvariantCulture)
                     + ", Y: " + Y.ToString(CultureInfo.InvariantCulture)
@@ -7760,7 +7639,7 @@ namespace LitePlacer
                 double yStart = Cnc.CurrentY;
 
                 SelectCamera(UpCamera);
-                UpCamera.DrawGrid = true;
+                UpCamera.Settings.DrawGrid = true;
                 UpCamera.Overlay = false;
                 UpCamera.ClearDisplayFunctionsList();
 
@@ -7769,7 +7648,7 @@ namespace LitePlacer
                 {
                     if (UpCamera.Measure(out double tmpX, out double tmpY, out double tmpA, out int res, false))
                     {
-                        if (UpCamera.OnHead)
+                        if (UpCamera.Settings.OnHead)
                             CNC_XYA_m(Cnc.CurrentX + tmpX, Cnc.CurrentY + tmpY, Cnc.CurrentA);
                         else
                             CNC_XYA_m(Cnc.CurrentX - tmpX, Cnc.CurrentY - tmpY, Cnc.CurrentA);
@@ -8015,7 +7894,7 @@ namespace LitePlacer
             dA = 0;
             for (int i = 0; i < 5; i++)
             {
-                if (UpCamera.GetClosestComponent(out X, out Y, out dA, Tolerance * Setting.UpCam_XmmPerPixel) > 0)
+                if (UpCamera.GetClosestComponent(out X, out Y, out dA, Tolerance * UpCamera.Settings.XmmPerPixel) > 0)
                 {
                     count++;
                     Xsum += X;
@@ -8026,9 +7905,9 @@ namespace LitePlacer
             {
                 return false;
             }
-            X = Xsum / Setting.UpCam_XmmPerPixel;
+            X = Xsum / UpCamera.Settings.XmmPerPixel;
             dX = X / (float)count;
-            Y = -Y / Setting.UpCam_XmmPerPixel;
+            Y = -Y / UpCamera.Settings.XmmPerPixel;
             dY = Y / (float)count;
             DisplayText("Component measurement:");
             DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
@@ -12356,14 +12235,6 @@ namespace LitePlacer
 
         private bool AppSettingsSave(string FileName)
         {
-            Setting.DownCam_DrawBox = DownCamera.DrawBox;
-            Setting.DownCam_DrawCross = DownCamera.DrawCross;
-            Setting.DownCam_DrawGrid = DownCamera.DrawGrid;
-
-            Setting.UpCam_DrawBox = UpCamera.DrawBox;
-            Setting.UpCam_DrawCross = UpCamera.DrawCross;
-            Setting.UpCam_DrawGrid = UpCamera.DrawGrid;
-
             return Setting.Save(FileName);
         }
 
@@ -12404,7 +12275,7 @@ namespace LitePlacer
 
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Setting = (AppSettingsV2)Setting.Load(AppSettings_openFileDialog.FileName);
+                Setting = (AppSettingsV3)Setting.Load(AppSettings_openFileDialog.FileName);
                 Application.Restart();
             }
         }
@@ -12422,7 +12293,7 @@ namespace LitePlacer
             {
                 return;
             };
-            Setting = new AppSettingsV2();
+            Setting = new AppSettingsV3();
             Application.Restart();
         }
         #endregion
@@ -12684,8 +12555,7 @@ namespace LitePlacer
             if (int.TryParse(DownCameraDesiredX_textBox.Text, out res))
             {
                 DownCameraDesiredX_textBox.ForeColor = Color.Black;
-                Setting.DownCam_DesiredX = res;
-                DownCamera.DesiredX = res;
+                DownCamera.Settings.DesiredX = res;
             }
             else
             {
@@ -12699,8 +12569,7 @@ namespace LitePlacer
             if (int.TryParse(DownCameraDesiredY_textBox.Text, out res))
             {
                 DownCameraDesiredY_textBox.ForeColor = Color.Black;
-                Setting.DownCam_DesiredY = res;
-                DownCamera.DesiredY = res;
+                DownCamera.Settings.DesiredY = res;
             }
             else
             {
@@ -12714,8 +12583,7 @@ namespace LitePlacer
             if (int.TryParse(UpCameraDesiredX_textBox.Text, out res))
             {
                 UpCameraDesiredX_textBox.ForeColor = Color.Black;
-                Setting.UpCam_DesiredX = res;
-                UpCamera.DesiredX = res;
+                UpCamera.Settings.DesiredX = res;
             }
             else
             {
@@ -12729,8 +12597,7 @@ namespace LitePlacer
             if (int.TryParse(UpCameraDesiredY_textBox.Text, out res))
             {
                 UpCameraDesiredY_textBox.ForeColor = Color.Black;
-                Setting.UpCam_DesiredY = res;
-                UpCamera.DesiredY = res;
+                UpCamera.Settings.DesiredY = res;
             }
             else
             {

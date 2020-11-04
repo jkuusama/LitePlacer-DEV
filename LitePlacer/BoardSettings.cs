@@ -21,46 +21,6 @@ namespace LitePlacer
     // It works, but for Duet 3, I'll handle this differently.
     //
 
-    public partial class AppSettingsV2
-    {
-        public double Duet3_Xspeed { get; set; } = 200; // mm/s
-        public double Duet3_Yspeed { get; set; } = 200; // mm/s
-        public double Duet3_Zspeed { get; set; } = 50; // mm/s
-        public double Duet3_Aspeed { get; set; } = 200; // mm/s
-
-        public double Duet3_Xacc { get; set; } = 1000; // mm/s^2
-        public double Duet3_Yacc { get; set; } = 1000; // mm/s^2
-        public double Duet3_Zacc { get; set; } = 1000; // mm/s^2
-        public double Duet3_Aacc { get; set; } = 1000; // mm/s^2
-
-        public double Duet3_XTravelPerRev { get; set; } = 40;   // mm
-        public double Duet3_YTravelPerRev { get; set; } = 40;   // mm
-        public double Duet3_ZTravelPerRev { get; set; } = 8;    // mm
-        public double Duet3_ATravelPerRev { get; set; } = 160;  // deg
-
-        public double Duet3_XDegPerStep { get; set; } = 0.9;   // mm
-        public double Duet3_YDegPerStep { get; set; } = 0.9;   // mm
-        public double Duet3_ZDegPerStep { get; set; } = 1.8;   // mm
-        public double Duet3_ADegPerStep { get; set; } = 0.9;   // mm
-
-        public int Duet3_XMicroStep { get; set; } = 16;
-        public int Duet3_YMicroStep { get; set; } = 16;
-        public int Duet3_ZMicroStep { get; set; } = 16;
-        public int Duet3_AMicroStep { get; set; } = 16;
-
-        public bool Duet3_XInterpolate { get; set; } = true;
-        public bool Duet3_YInterpolate { get; set; } = true;
-        public bool Duet3_ZInterpolate { get; set; } = true;
-        public bool Duet3_AInterpolate { get; set; } = true;
-
-        public int Duet3_XCurrent { get; set; } = 1100; //mA
-        public int Duet3_YCurrent { get; set; } = 1200; //mA
-        public int Duet3_ZCurrent { get; set; } = 1300; //mA
-        public int Duet3_ACurrent { get; set; } = 400; //mA
-
-    }
-
-
     public partial class FormMain : Form
     {
         // =================================================================================

@@ -177,7 +177,7 @@ namespace LitePlacer
                 TrayID_textBox.Text = Row.Cells["TrayID_Column"].Value.ToString();
             }
             MainForm.DownCameraRotationFollowsA = true;
-            DrawCross = Cam.DrawCross;
+            DrawCross = Cam.Settings.DrawCross;
             if (Row.Cells["CoordinatesForParts_Column"].Value != null)
             {
                 if (Row.Cells["CoordinatesForParts_Column"].Value.ToString() == "True")
@@ -185,7 +185,7 @@ namespace LitePlacer
                     CoordinatesForParts_checkBox.Checked = true;
                     DrawGrid_checkBox.Enabled = true;
                     DrawGrid_checkBox.Checked = false;
-                    Cam.DrawGrid = false;
+                    Cam.Settings.DrawGrid = false;
                     double val;
                     if (double.TryParse(RotationDirect_textBox.Text.Replace(',', '.'), out val))
                     {
@@ -365,16 +365,16 @@ namespace LitePlacer
             Row.Cells["LastY_Column"].Value = LastY_textBox.Text;
             MainForm.Update_GridView(TapesDataGrid);
             MainForm.DownCameraRotationFollowsA = false;
-            Cam.DrawGrid = false;
-            Cam.DrawCross = DrawCross;
+            Cam.Settings.DrawGrid = false;
+            Cam.Settings.DrawCross = DrawCross;
             Close();
         }
 
         private void TapeEditCancel_button_Click(object sender, EventArgs e)
         {
             MainForm.DownCameraRotationFollowsA = false;
-            Cam.DrawGrid = false;
-            Cam.DrawCross = DrawCross;
+            Cam.Settings.DrawGrid = false;
+            Cam.Settings.DrawCross = DrawCross;
             if (CreatingNew)
             {
                 TapesDataGrid.Rows.RemoveAt(TapeRowNo);
@@ -530,13 +530,13 @@ namespace LitePlacer
             if (CoordinatesForParts_checkBox.Checked)
             {
                 DrawGrid_checkBox.Enabled = true;
-                Cam.DrawGrid = DrawGrid_checkBox.Checked;
+                Cam.Settings.DrawGrid = DrawGrid_checkBox.Checked;
             }
             else
             {
                 DrawGrid_checkBox.Enabled = false;
-                Cam.DrawGrid = false;
-                Cam.DrawCross = DrawCross;
+                Cam.Settings.DrawGrid = false;
+                Cam.Settings.DrawCross = DrawCross;
             }
         }
 
@@ -562,10 +562,10 @@ namespace LitePlacer
 
         private void DrawGrid_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            Cam.DrawGrid = DrawGrid_checkBox.Checked;
-            if (!Cam.DrawGrid)
+            Cam.Settings.DrawGrid = DrawGrid_checkBox.Checked;
+            if (!Cam.Settings.DrawGrid)
             {
-                Cam.DrawCross = DrawCross;
+                Cam.Settings.DrawCross = DrawCross;
             }
         }
     }

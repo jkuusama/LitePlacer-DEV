@@ -948,7 +948,6 @@
             this.DownCamZoom_checkBox.Text = "Downcam Zoom";
             this.toolTip1.SetToolTip(this.DownCamZoom_checkBox, "Digital zoom for Downcam image");
             this.DownCamZoom_checkBox.UseVisualStyleBackColor = true;
-            this.DownCamZoom_checkBox.Click += new System.EventHandler(this.DownCamZoom_checkBox_Click);
             // 
             // SendtoControlBoard_textBox
             // 
@@ -1145,7 +1144,6 @@
             this.UpCamZoom_checkBox.Text = "Upcam Zoom";
             this.toolTip1.SetToolTip(this.UpCamZoom_checkBox, "Digital zoom for Upcam image");
             this.UpCamZoom_checkBox.UseVisualStyleBackColor = true;
-            this.UpCamZoom_checkBox.Click += new System.EventHandler(this.UpCamZoom_checkBox_Click);
             // 
             // Test3_button
             // 
@@ -2124,7 +2122,6 @@
             this.UpCamOnHead_checkBox.TabIndex = 207;
             this.UpCamOnHead_checkBox.Text = "Camera mounted on Nozzle Head";
             this.UpCamOnHead_checkBox.UseVisualStyleBackColor = true;
-            this.UpCamOnHead_checkBox.CheckedChanged += new System.EventHandler(this.UpCamOnHead_checkBox_CheckedChanged);
             // 
             // UpCameraMirrorY_checkBox
             // 
@@ -2136,7 +2133,6 @@
             this.UpCameraMirrorY_checkBox.TabIndex = 207;
             this.UpCameraMirrorY_checkBox.Text = "Mirror Y";
             this.UpCameraMirrorY_checkBox.UseVisualStyleBackColor = true;
-            this.UpCameraMirrorY_checkBox.CheckedChanged += new System.EventHandler(this.UpCamMirrorY_checkBox_CheckedChanged);
             // 
             // UpCameraMirrorX_checkBox
             // 
@@ -2148,7 +2144,6 @@
             this.UpCameraMirrorX_checkBox.TabIndex = 207;
             this.UpCameraMirrorX_checkBox.Text = "Mirror X";
             this.UpCameraMirrorX_checkBox.UseVisualStyleBackColor = true;
-            this.UpCameraMirrorX_checkBox.CheckedChanged += new System.EventHandler(this.UpCamMirrorX_checkBox_CheckedChanged);
             // 
             // UpCamListResolutions_button
             // 
@@ -2513,7 +2508,6 @@
             this.DownCamOnHead_checkBox.TabIndex = 207;
             this.DownCamOnHead_checkBox.Text = "Camera mounted on Nozzle Head";
             this.DownCamOnHead_checkBox.UseVisualStyleBackColor = true;
-            this.DownCamOnHead_checkBox.CheckedChanged += new System.EventHandler(this.DownCamOnHead_checkBox_CheckedChanged);
             // 
             // DownCameraMirrorY_checkBox
             // 
@@ -2525,7 +2519,6 @@
             this.DownCameraMirrorY_checkBox.TabIndex = 207;
             this.DownCameraMirrorY_checkBox.Text = "Mirror Y";
             this.DownCameraMirrorY_checkBox.UseVisualStyleBackColor = true;
-            this.DownCameraMirrorY_checkBox.CheckedChanged += new System.EventHandler(this.DownCamMirrorY_checkBox_CheckedChanged);
             // 
             // DownCameraMirrorX_checkBox
             // 
@@ -2537,7 +2530,6 @@
             this.DownCameraMirrorX_checkBox.TabIndex = 207;
             this.DownCameraMirrorX_checkBox.Text = "Mirror X";
             this.DownCameraMirrorX_checkBox.UseVisualStyleBackColor = true;
-            this.DownCameraMirrorX_checkBox.CheckedChanged += new System.EventHandler(this.DownCamMirrorX_checkBox_CheckedChanged);
             // 
             // DownCam_comboBox
             // 

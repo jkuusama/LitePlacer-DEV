@@ -24,7 +24,6 @@ namespace LitePlacer
 {
     public class Camera
     {
-
         // Program has been crashing due to access of ImageBox.  As a shared resource it needs
         // to be accessed in protected regions.  The lock _locker is to be used for this purpose.
         // The OnPaint method in PictureBox runs in a second task.  By extending the PictureBox
@@ -49,10 +48,12 @@ namespace LitePlacer
 
         private VideoCaptureDevice VideoSource = null;
         private FormMain MainForm;
+        public AppSettingsV3.CameraSettings Settings;
 
-        public Camera(FormMain MainF)
+        public Camera(FormMain MainF, AppSettingsV3.CameraSettings cameraSettings)
         {
             MainForm = MainF;
+            Settings = cameraSettings;
         }
 
         public bool Active { get; set; }
@@ -84,7 +85,7 @@ namespace LitePlacer
                 {
                     return;
                 }
-                MainForm.DisplayText("Stopping " + Id + ": " + MonikerString);
+                MainForm.DisplayText("Stopping " + Id + ": " + Settings.Moniker);
                 VideoSource.SignalToStop();
                 VideoSource.WaitForStop();  // problem? 
                 int i = 0;
@@ -96,11 +97,11 @@ namespace LitePlacer
                 }
                 if (i>=10)
                 {
-                    MainForm.DisplayText("*** "+ Id + " refuses to stop! ***" + MonikerString, KnownColor.DarkRed, true);
+                    MainForm.DisplayText("*** "+ Id + " refuses to stop! ***" + Settings.Moniker, KnownColor.DarkRed, true);
                 }
                 VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
                 VideoSource = null;
-                MonikerString = "Stopped";
+                Settings.Moniker = "Stopped";
             }
         }
 
@@ -131,22 +132,14 @@ namespace LitePlacer
             }
         }
 
-        public double XmmPerPixel { get; set; }
-        public double YmmPerPixel { get; set; }
         public int FrameCenterX { get; set; }
         public int FrameCenterY { get; set; }
         public int FrameSizeX { get; set; }
         public int FrameSizeY { get; set; }
-        public int DesiredX { get; set; }
-        public int DesiredY { get; set; }
 
-        public string MonikerString { get; set; } = "unconnected";
         public string Id { get; set; } = "unconnected";
 
         public bool ReceivingFrames { get; set; }
-        public bool MirrorX { get; set; }    // Mirror around X-Axis
-        public bool MirrorY { get; set; }    // Mirror around Y-Axis
-        public bool OnHead { get; set; }    // Camera mounted to Nozzle Head
 
         // =================================================================================================
         public void ListResolutions(string MonikerStr)
@@ -267,9 +260,9 @@ namespace LitePlacer
                 bool fine = false;
                 for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
                 {
-                    if ((VideoSource.VideoCapabilities[i].FrameSize.Width == DesiredX)
+                    if ((VideoSource.VideoCapabilities[i].FrameSize.Width == Settings.DesiredX)
                         &&
-                        (VideoSource.VideoCapabilities[i].FrameSize.Height == DesiredY))
+                        (VideoSource.VideoCapabilities[i].FrameSize.Height == Settings.DesiredY))
                     {
                         VideoSource.VideoResolution = VideoSource.VideoCapabilities[i];
                         fine = true;
@@ -318,8 +311,8 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Camera started: " + tries.ToString(CultureInfo.InvariantCulture), KnownColor.Purple);
 
                 // We managed to start the camera using desired resolution
-                FrameSizeX = DesiredX;
-                FrameSizeY = DesiredY;
+                FrameSizeX = Settings.DesiredX;
+                FrameSizeY = Settings.DesiredY;
                 FrameCenterX = FrameSizeX / 2;
                 FrameCenterY = FrameSizeY / 2;
                 PauseProcessing = false;
@@ -546,33 +539,16 @@ namespace LitePlacer
         // ==========================================================================================================
 
         // ==========================================================================================================
-        // Zoom
-        public bool Zoom { get; set; }          // If image is zoomed or not
-        private double _ZoomFactor = 1.0;
-        public double ZoomFactor                // If it is, this much
-        {
-            get
-            {
-                return _ZoomFactor;
-            }
-            set
-            {
-                _ZoomFactor = value;
-            }
-        }
 
         public int Threshold { get; set; }                  // Threshold for all the "draw" functions
         public bool GrayScale { get; set; }                 // If image is converted to grayscale 
         public bool Invert { get; set; }                    // If image is inverted (makes most sense on grayscale, looking for black stuff on light background)
-        public bool DrawCross { get; set; }         // If crosshair cursor is drawn
         public bool DrawArrow { get; set; }         // If arrow is drawn
         public bool Overlay { get; set; }           // overlay process picture with original
         public double ArrowAngle { get; set; }      // to which angle
-        public bool DrawSidemarks { get; set; }     // If marks on the side of the image are drawn
         public double SideMarksX { get; set; }      // How many marks on top and bottom (X) and sides (Y)
         public double SideMarksY { get; set; }      // (double, so you can do "SidemarksX= workarea_in_mm / 100;" to get mark every 10cm
         public bool DrawDashedCross { get; set; }   // If a dashed crosshaircursor is drawn (so that the center remains visible)
-        public bool DrawGrid { get; set; }          // Draws aiming grid for parts alignment
         public bool FindCircles { get; set; }       // Find and highlight circles in the image
         public bool FindRectangles { get; set; }    // Find and draw regtangles in the image
         public bool FindComponent { get; set; }     // Finds a component and identifies its center
@@ -580,7 +556,6 @@ namespace LitePlacer
         public bool PauseProcessing { get; set; }   // Drawing the video slows everything down. This can pause it for measurements.
         public bool Paused = true;                 // set in video processing indicating it is safe to change processing function list
         public bool TestAlgorithm { get; set; }
-        public bool DrawBox { get; set; }           // Draws a box on the image that is used for scale setting
 
         private int boxSizeX;
         public int BoxSizeX                         // The box size
@@ -690,9 +665,9 @@ namespace LitePlacer
 
             //Picture origin is up left, machine origin is down left
             //We mirror the picture origin to machine origin
-            if (!MirrorX || !MirrorY)
+            if (!Settings.MirrorX || !Settings.MirrorY)
             {
-                Mirror Mfilter = new Mirror(!MirrorX, MirrorY);
+                Mirror Mfilter = new Mirror(!Settings.MirrorX, Settings.MirrorY);
                 // apply the MirrFilter
                 Mfilter.ApplyInPlace(eventArgs.Frame);
             };
@@ -764,9 +739,9 @@ namespace LitePlacer
         {
             Bitmap frame = (Bitmap)frameObject;
 
-            if (Zoom)
+            if (Settings.Zoom)
             {
-                ZoomFunct(ref frame, ZoomFactor);
+                ZoomFunct(ref frame, Settings.ZoomFactor);
             };
 
             Bitmap origFrame = null;
@@ -806,22 +781,22 @@ namespace LitePlacer
                 // No need to do anything, next frame fixes it
             }
 
-            if (DrawBox)
+            if (Settings.DrawBox)
             {
                 DrawBoxFunct(ref frame);
             };
 
-            if (DrawGrid)
+            if (Settings.DrawGrid)
             {
                 DrawGridFunct(frame);
             };
 
-            if (DrawCross)
+            if (Settings.DrawCross)
             {
                 DrawCrossFunct(ref frame);
             };
 
-            if (DrawSidemarks)
+            if (Settings.DrawSidemarks)
             {
                 DrawSidemarksFunct(ref frame);
             };
@@ -1426,8 +1401,8 @@ namespace LitePlacer
             Graphics g = Graphics.FromImage(bitmap);
             Pen OrangePen = new Pen(Color.DarkOrange, 3);
             double zoom = GetMeasurementZoom();
-            double XmmPpix = XmmPerPixel / zoom;
-            double YmmPpix = YmmPerPixel / zoom;
+            double XmmPpix = Settings.XmmPerPixel / zoom;
+            double YmmPpix = Settings.YmmPerPixel / zoom;
             for (int i = Components.Count-1; i >= 0; i--)
             {
                 Shapes.Component component = Components[i];
@@ -1744,8 +1719,8 @@ namespace LitePlacer
         {
             List<Shapes.Circle> Circles = FindCirclesFunct(bitmap);
             double zoom = GetMeasurementZoom();
-            double XmmPpix = XmmPerPixel / zoom;
-            double YmmPpix = YmmPerPixel / zoom;
+            double XmmPpix = Settings.XmmPerPixel / zoom;
+            double YmmPpix = Settings.YmmPerPixel / zoom;
             for (int i = Circles.Count - 1; i >= 0; i--)
             {
                 Shapes.Circle circle = Circles[i];
@@ -1782,7 +1757,7 @@ namespace LitePlacer
             int PenSize = 3;
             // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
             // To make the circles visible, we need to draw then bit thicker
-            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Zoom)
+            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Settings.Zoom)
             {
                 PenSize = 5;
             }
@@ -1928,7 +1903,7 @@ namespace LitePlacer
             int PenSize = 3;
             // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
             // To make the circles visible, we need to draw then bit thicker
-            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Zoom)
+            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Settings.Zoom)
             {
                 PenSize = 5;
             }
@@ -2312,8 +2287,6 @@ namespace LitePlacer
 
         public double SnapshotRotation = 0.0;  // rotation when snapshot was taken
 
-        public Color SnapshotColor { get; set; }
-
         public void TakeSnapshot()
         {
             Bitmap image = GetMeasurementFrame();
@@ -2326,7 +2299,7 @@ namespace LitePlacer
                     peek = image.GetPixel(x, y);
                     if (peek.R != 0)  // i.e. background
                     {
-                        image.SetPixel(x, y, SnapshotColor);
+                        image.SetPixel(x, y, Settings.SnapshotColor);
                     }
                 }
             }
@@ -2556,8 +2529,8 @@ namespace LitePlacer
             List<Shapes.Shape> Candidates = new List<Shapes.Shape>();
 
             double zoom = GetMeasurementZoom();
-            double XmmPpix = XmmPerPixel / zoom;
-            double YmmPpix = YmmPerPixel / zoom;
+            double XmmPpix = Settings.XmmPerPixel / zoom;
+            double YmmPpix = Settings.YmmPerPixel / zoom;
 
             if (MeasurementParameters.SearchRounds)
             {

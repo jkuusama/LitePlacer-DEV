@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace LitePlacer
 {
@@ -6,24 +7,105 @@ namespace LitePlacer
     // The actual settings
     // =================================================================================
 
-    public partial class AppSettingsV2 : AppSettings
+    public partial class AppSettingsV3 : AppSettings
     {
         override public AppSettingsBase Read(string jsonString)
         {
-            /*
+            //read baseversion so version is zero if there is no version saved in the file
             AppSettings settingsBase = new AppSettings();
             settingsBase = (AppSettings)settingsBase.Read(jsonString);
-            */
 
-            AppSettingsV2 settingsV2 = JsonConvert.DeserializeObject<AppSettingsV2>(jsonString);
-            if (settingsV2 == null)
-                settingsV2 = new AppSettingsV2();
-            settingsV2.SettingsVersion = 2;
+            //create default settings
+            AppSettingsV3 settingsV3 = new AppSettingsV3();
 
-            return settingsV2;
+            if (settingsBase.SettingsVersion >= 3)
+            {
+                //read all available propertys
+                settingsV3 = JsonConvert.DeserializeObject<AppSettingsV3>(jsonString);
+                if (settingsV3 == null)
+                    settingsV3 = new AppSettingsV3();
+
+                //JsonConvert keeps default List elements. If there are at least 2 additional cameras
+                //delete the two default ones
+                if (settingsV3.Cameras_Settings.Count > 2)
+                    settingsV3.Cameras_Settings.RemoveAt(0);
+                if (settingsV3.Cameras_Settings.Count > 2)
+                    settingsV3.Cameras_Settings.RemoveAt(0);
+            }
+            else if (settingsBase.SettingsVersion < 3)
+            {
+                //let previous version handle load as far as it goes
+                //newer version should only call previous Version and let it convert recursively from oldest to newest
+                AppSettingsV2 settingsV2 = new AppSettingsV2();
+                settingsV2 = (AppSettingsV2)settingsV2.Read(jsonString);
+
+                //convert to json and load all available [converted] data
+                string tmpJson = JsonConvert.SerializeObject(settingsV2);
+                settingsV3 = JsonConvert.DeserializeObject<AppSettingsV3>(tmpJson);
+                settingsV3.SettingsVersion = 3;
+
+                //convert old data from previous Version
+                settingsV3.Cameras_Settings[0].DesiredX = settingsV2.DownCam_DesiredX;
+                settingsV3.Cameras_Settings[0].DesiredY = settingsV2.DownCam_DesiredY;
+                settingsV3.Cameras_Settings[0].DrawBox = settingsV2.DownCam_DrawBox;
+                settingsV3.Cameras_Settings[0].DrawCross = settingsV2.DownCam_DrawCross;
+                settingsV3.Cameras_Settings[0].DrawGrid = settingsV2.DownCam_DrawGrid;
+                settingsV3.Cameras_Settings[0].DrawSidemarks = settingsV2.DownCam_DrawSidemarks;
+                settingsV3.Cameras_Settings[0].DrawTicks = settingsV2.DownCam_DrawTicks;
+                settingsV3.Cameras_Settings[0].MirrorX = settingsV2.DownCam_MirrorX;
+                settingsV3.Cameras_Settings[0].MirrorY = settingsV2.DownCam_MirrorY;
+                settingsV3.Cameras_Settings[0].Moniker = settingsV2.DowncamMoniker;
+                settingsV3.Cameras_Settings[0].Name = settingsV2.Downcam_Name;
+                settingsV3.Cameras_Settings[0].OnHead = settingsV2.DownCam_OnHead;
+                settingsV3.Cameras_Settings[0].SnapshotColor = settingsV2.DownCam_SnapshotColor;
+                settingsV3.Cameras_Settings[0].XmmPerPixel = settingsV2.DownCam_XmmPerPixel;
+                settingsV3.Cameras_Settings[0].YmmPerPixel = settingsV2.DownCam_YmmPerPixel;
+                settingsV3.Cameras_Settings[0].Zoom = settingsV2.DownCam_Zoom;
+                settingsV3.Cameras_Settings[0].ZoomFactor = settingsV2.DownCam_Zoomfactor;
+
+                settingsV3.Cameras_Settings[1].DesiredX = settingsV2.UpCam_DesiredX;
+                settingsV3.Cameras_Settings[1].DesiredY = settingsV2.UpCam_DesiredY;
+                settingsV3.Cameras_Settings[1].DrawBox = settingsV2.UpCam_DrawBox;
+                settingsV3.Cameras_Settings[1].DrawCross = settingsV2.UpCam_DrawCross;
+                settingsV3.Cameras_Settings[1].DrawGrid = settingsV2.UpCam_DrawGrid;
+                settingsV3.Cameras_Settings[1].DrawSidemarks = settingsV2.UpCam_DrawSidemarks;
+                settingsV3.Cameras_Settings[1].DrawTicks = settingsV2.UpCam_DrawTicks;
+                settingsV3.Cameras_Settings[1].MirrorX = settingsV2.UpCam_MirrorX;
+                settingsV3.Cameras_Settings[1].MirrorY = settingsV2.UpCam_MirrorY;
+                settingsV3.Cameras_Settings[1].Moniker = settingsV2.UpcamMoniker;
+                settingsV3.Cameras_Settings[1].Name = settingsV2.Upcam_Name;
+                settingsV3.Cameras_Settings[1].OnHead = settingsV2.UpCam_OnHead;
+                settingsV3.Cameras_Settings[1].SnapshotColor = settingsV2.UpCam_SnapshotColor;
+                settingsV3.Cameras_Settings[1].XmmPerPixel = settingsV2.UpCam_XmmPerPixel;
+                settingsV3.Cameras_Settings[1].YmmPerPixel = settingsV2.UpCam_YmmPerPixel;
+                settingsV3.Cameras_Settings[1].Zoom = settingsV2.UpCam_Zoom;
+                settingsV3.Cameras_Settings[1].ZoomFactor = settingsV2.UpCam_Zoomfactor;
+            }
+            return settingsV3;
         }
 
-        public override int SettingsVersion { get; set; } = 2;
+        public class CameraSettings
+        {
+            public bool DrawBox { get; set; } = true;           // Draws a box on the image that is used for scale setting
+            public bool DrawCross { get; set; } = true;         // If crosshair cursor is drawn
+            public bool DrawGrid { get; set; } = false;         // Draws aiming grid for parts alignment
+            public bool DrawSidemarks { get; set; } = true;     // If marks on the side of the image are drawn
+            public bool DrawTicks { get; set; } = true;
+            public bool MirrorX { get; set; } = false;
+            public bool MirrorY { get; set; } = false;
+            public System.Drawing.Color SnapshotColor { get; set; } = System.Drawing.Color.White;
+            public double XmmPerPixel { get; set; } = 0.1;
+            public double YmmPerPixel { get; set; } = 0.1;
+            public bool Zoom { get; set; } = false;              // If image is zoomed or not
+            public double ZoomFactor { get; set; } = 1.5;        // If it is, this much
+            public string Moniker { get; set; } = "unconnected";
+            public string Name { get; set; } = "";
+            public int DesiredX { get; set; } = 1280;
+            public int DesiredY { get; set; } = 1024;
+            public bool OnHead { get; set; } = true;
+        }
+
+        public override int SettingsVersion { get; set; } = 3;
         public bool Cam_ShowPixels { get; set; } = false;
         public bool Cameras_KeepActive { get; set; } = false;
         public bool Cameras_RobustSwitch { get; set; } = false;
@@ -133,49 +215,53 @@ namespace LitePlacer
         public double UpCam_PositionX { get; set; } = 2;
         public double UpCam_PositionY { get; set; } = 3;
 
-        public bool DownCam_DrawBox { get; set; } = true;
-        public bool DownCam_DrawCross { get; set; } = true;
-        public bool DownCam_DrawGrid { get; set; } = false;
-        public bool DownCam_DrawSidemarks { get; set; } = true;
-        public bool DownCam_DrawTicks { get; set; } = true;
-        // public int DownCam_index { get; set; } = -1;
-        public bool DownCam_MirrorX { get; set; } = false;
-        public bool DownCam_MirrorY { get; set; } = false;        
-        public System.Drawing.Color DownCam_SnapshotColor { get; set; } = System.Drawing.Color.White;
-        public double DownCam_XmmPerPixel { get; set; } = 0.1;
-        public double DownCam_YmmPerPixel { get; set; } = 0.1;
-        public bool DownCam_Zoom { get; set; } = false;
-        public double DownCam_Zoomfactor { get; set; } = 1.5;
-        public string DowncamMoniker { get; set; } = "";
-        public string Downcam_Name { get; set; } = "";
-        public int DownCam_DesiredX { get; set; } = 1280;
-        public int DownCam_DesiredY { get; set; } = 1024;
-        public bool DownCam_OnHead { get; set; } = true;
-
-        public bool UpCam_DrawBox { get; set; } = true;
-        public bool UpCam_DrawCross { get; set; } = true;
-        public bool UpCam_DrawGrid { get; set; } = false;
-        public bool UpCam_DrawSidemarks { get; set; } = true;
-        public bool UpCam_DrawTicks { get; set; } = true;
-        public bool UpCam_MirrorX { get; set; } = false;
-        public bool UpCam_MirrorY { get; set; } = false;
-        public System.Drawing.Color UpCam_SnapshotColor { get; set; } = System.Drawing.Color.White;
-        public double UpCam_XmmPerPixel { get; set; } = 0.05;
-        public double UpCam_YmmPerPixel { get; set; } = 0.05;
-        public bool UpCam_Zoom { get; set; } = false;
-        public double UpCam_Zoomfactor { get; set; } = 1.5;
-        public string UpcamMoniker { get; set; } = "";
-        public string Upcam_Name { get; set; } = "";
-        public int UpCam_DesiredX { get; set; } = 1280;
-        public int UpCam_DesiredY { get; set; } = 1024;
-        public bool UpCam_OnHead { get; set; } = false;
+        public List<CameraSettings> Cameras_Settings { get; set; } = new List<CameraSettings>() {
+            new CameraSettings() {
+                 DrawBox  = true,
+         DrawCross  = true,
+        DrawGrid  = false,
+         DrawSidemarks  = true,
+         DrawTicks  = true,
+         MirrorX  = false,
+         MirrorY  = false,
+         SnapshotColor  = System.Drawing.Color.White,
+         XmmPerPixel  = 0.1,
+         YmmPerPixel  = 0.1,
+         Zoom  = false,
+         ZoomFactor  = 1.5,
+         Moniker  = "unconnected",
+         Name  = "",
+         DesiredX  = 1280,
+         DesiredY  = 1024,
+         OnHead  = true
+    },
+            new CameraSettings() {
+                 DrawBox  = true,
+         DrawCross  = true,
+        DrawGrid  = false,
+         DrawSidemarks  = true,
+         DrawTicks  = true,
+         MirrorX  = false,
+         MirrorY  = false,
+         SnapshotColor  = System.Drawing.Color.White,
+         XmmPerPixel  = 0.05,
+         YmmPerPixel  = 0.05,
+         Zoom  = false,
+         ZoomFactor  = 1.5,
+         Moniker  = "unconnected",
+         Name  = "",
+         DesiredX  = 1280,
+         DesiredY  = 1024,
+         OnHead  = false
+    }
+        };
     }
 
     // =================================================================================
     // Board Settings
     // =================================================================================
 
-    public partial class AppSettingsV2
+    public partial class AppSettingsV3
     {
         public double Duet3_Xspeed { get; set; } = 200; // mm/s
         public double Duet3_Yspeed { get; set; } = 200; // mm/s

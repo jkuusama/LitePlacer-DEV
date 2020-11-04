@@ -20,27 +20,19 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Configuration;
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace LitePlacer
 {
     // =================================================================================
     // 
     // =================================================================================
-    public abstract class AppSettingsBase
+    public abstract class AppSettingsBase : object
     {
         public abstract int SettingsVersion { get; set; }
 
-        protected abstract AppSettingsBase Read(string jsonString);
-        /* convert from previous versions like this:
-        {
-            AppSettingsBase settingsBase = JsonConvert.DeserializeObject<AppSettingsBase>(jsonString);
-            switch (settingsBase?.SettingsVersion)
-            {
-                default:
-                    return JsonConvert.DeserializeObject<AppSettingsV2>(jsonString);
-            }
-        }
-        */
+        public abstract AppSettingsBase Read(string jsonString);
     }
 
     public class AppSettings : AppSettingsBase
@@ -48,18 +40,20 @@ namespace LitePlacer
 #pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
 
         static private FormMain MainForm;
+        public static void InitDisplayText(FormMain MainF)
+        {
+            MainForm = MainF;
+        }
 
         public override int SettingsVersion { get; set; } = 0;
         public bool General_SafeFilesAtClosing { get; set; } = true;
 
-        protected override AppSettingsBase Read(string jsonString)
+        public override AppSettingsBase Read(string jsonString)
         {
-            return JsonConvert.DeserializeObject<AppSettings>(jsonString);
-        }
-
-        public static void InitDisplayText(FormMain MainF)
-        {
-            MainForm = MainF;
+            AppSettings settingsBase = JsonConvert.DeserializeObject<AppSettings>(jsonString);
+            if(settingsBase == null)
+                settingsBase = new AppSettings();
+            return settingsBase;
         }
 
         public bool Save(string FileName)

@@ -1099,9 +1099,9 @@ namespace LitePlacer
                 DisplayText("UpdateVideoProcessing(), no current algorithm");
                 return;
             }
+
             // Pass CurrentAlgorithm to camera
             DisplayText("UpdateVideoProcessing()");
-            Camera cam = new Camera(this);
             if (DownCam_radioButton.Checked)
             {
                 DownCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
@@ -1181,7 +1181,7 @@ namespace LitePlacer
 
         private void UpdateSearchFunctions()
         {
-            Camera cam = new Camera(this);
+            Camera cam;
             if (DownCam_radioButton.Checked)
             {
                 cam = DownCamera;
