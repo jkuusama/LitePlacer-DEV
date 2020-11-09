@@ -60,6 +60,28 @@ namespace LitePlacer
         public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
 
         // =================================================================================
+        // Variables
+        // =================================================================================
+        #region Variables
+
+        // workaround to bind ShowPixels_CheckBox to SizeMode of Cam_PictureBox
+        private bool showPixels = false;
+        public bool ShowPixels {
+            get { return showPixels; }
+            set 
+            { 
+                showPixels = value;
+                CamPictureBox_SizeMode = value ? PictureBoxSizeMode.CenterImage : PictureBoxSizeMode.Zoom;
+            }
+        }
+        public PictureBoxSizeMode CamPictureBox_SizeMode { get; set; } = PictureBoxSizeMode.Zoom;
+
+        private System.Drawing.Point camPanelLocation = new System.Drawing.Point();
+        private System.Drawing.Size camPanelSize = new System.Drawing.Size();
+
+        #endregion
+
+        // =================================================================================
         // General and "global" functions 
         // =================================================================================
         #region General
@@ -140,7 +162,7 @@ namespace LitePlacer
             Setting.General_SafeFilesAtClosing = true;
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
             CNC.SquareCorrection = Setting.CNC_SquareCorrection;
             DownCamera = new Camera(this, Setting.Cameras_Settings[0]);
@@ -159,19 +181,6 @@ namespace LitePlacer
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(My_KeyDown);
             this.KeyUp += new KeyEventHandler(My_KeyUp);
-
-            Bookmark1_button.Text = Setting.General_Mark1Name;
-            Bookmark2_button.Text = Setting.General_Mark2Name;
-            Bookmark3_button.Text = Setting.General_Mark3Name;
-            Bookmark4_button.Text = Setting.General_Mark4Name;
-            Bookmark5_button.Text = Setting.General_Mark5Name;
-            Bookmark6_button.Text = Setting.General_Mark6Name;
-            Mark1_textBox.Text = Setting.General_Mark1Name;
-            Mark2_textBox.Text = Setting.General_Mark2Name;
-            Mark3_textBox.Text = Setting.General_Mark3Name;
-            Mark4_textBox.Text = Setting.General_Mark4Name;
-            Mark5_textBox.Text = Setting.General_Mark5Name;
-            Mark6_textBox.Text = Setting.General_Mark6Name;
 
             VigorousHoming_checkBox.Checked = Setting.General_VigorousHoming;
 
@@ -192,46 +201,46 @@ namespace LitePlacer
             // For ease of design, the picture box is drawn on a setup Cameras tab. 
             // We want it to be owned by main form (not by tab) and visible when needed.
             // Position math: https://stackoverflow.com/questions/1478022/c-sharp-get-a-controls-position-on-a-form
-            System.Drawing.Point locationOnForm =
-                Camera_Panel.FindForm().PointToClient(Camera_Panel.Parent.PointToScreen(Camera_Panel.Location));
+            camPanelLocation = Camera_Panel.FindForm().PointToClient(Camera_Panel.Parent.PointToScreen(Camera_Panel.Location));
             Camera_Panel.Parent = this;                   // position changes
-            Camera_Panel.Location = locationOnForm;       // move it back
+            Camera_Panel.Location = camPanelLocation;       // move it back
+            camPanelSize = Camera_Panel.Size;
 
             // At design time, I can't draw items on top of each other. I draw them at a convenient location; this
             // moves motor control boxes to correct place
             TinyGMotors_tabControl.Location = new System.Drawing.Point(17, 177);
             Duet3Motors_tabControl.Location = new System.Drawing.Point(17, 177);
 
-
             BasicSetupTab_Begin();      // Form comes up with basic setup tab, but the tab change event doesn't fire
 
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
-            DownCamZoom_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.Zoom));
-            DownCamZoomFactor_textBox.Text = DownCamera.Settings.ZoomFactor.ToString("0.0", CultureInfo.InvariantCulture);
+            // ====== Bind Settings to UI Controls
+
             DownCamera.ImageBox = Cam_pictureBox;
-            DownCameraMirrorX_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.MirrorX));
-            DownCameraMirrorY_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.MirrorY));
-            DownCamOnHead_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.OnHead));
+            DownCameraMirrorX_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.MirrorX), false, DataSourceUpdateMode.OnPropertyChanged);
+            DownCameraMirrorY_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.MirrorY), false, DataSourceUpdateMode.OnPropertyChanged);
+            DownCamOnHead_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.OnHead), false, DataSourceUpdateMode.OnPropertyChanged);
 
-            UpCamZoom_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.Zoom));
-            UpCamZoomFactor_textBox.Text = UpCamera.Settings.ZoomFactor.ToString("0.0", CultureInfo.InvariantCulture);
             UpCamera.ImageBox = Cam_pictureBox;
-            UpCameraMirrorX_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.MirrorX));
-            UpCameraMirrorY_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.MirrorY));
-            UpCamOnHead_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.OnHead));
+            UpCameraMirrorX_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.MirrorX), false, DataSourceUpdateMode.OnPropertyChanged);
+            UpCameraMirrorY_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.MirrorY), false, DataSourceUpdateMode.OnPropertyChanged);
+            UpCamOnHead_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.OnHead), false, DataSourceUpdateMode.OnPropertyChanged);
 
-            ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
-            if (ShowPixels_checkBox.Checked)
-            {
-                Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-            }
-            else
-            {
-                Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            }
+            Cam_pictureBox.DataBindings.Add("SizeMode", this, nameof(this.CamPictureBox_SizeMode), false, DataSourceUpdateMode.OnPropertyChanged);
+            ShowPixels_checkBox.DataBindings.Add("Checked", this, nameof(this.ShowPixels), false, DataSourceUpdateMode.OnPropertyChanged);
 
+            Mark1_textBox.DataBindings.Add("Text", Setting, nameof(Setting.General_Mark1Name), false, DataSourceUpdateMode.OnValidation);
+            Mark2_textBox.DataBindings.Add("Text", Setting, nameof(Setting.General_Mark2Name), false, DataSourceUpdateMode.OnValidation);
+            Mark3_textBox.DataBindings.Add("Text", Setting, nameof(Setting.General_Mark3Name), false, DataSourceUpdateMode.OnValidation);
+            Mark4_textBox.DataBindings.Add("Text", Setting, nameof(Setting.General_Mark4Name), false, DataSourceUpdateMode.OnValidation);
+            Mark5_textBox.DataBindings.Add("Text", Setting, nameof(Setting.General_Mark5Name), false, DataSourceUpdateMode.OnValidation);
+            Mark6_textBox.DataBindings.Add("Text", Setting, nameof(Setting.General_Mark6Name), false, DataSourceUpdateMode.OnValidation);
+
+            CtlrJogSpeed_numericUpDown.DataBindings.Add("Value", Setting, nameof(Setting.CNC_CtlrJogSpeed), false, DataSourceUpdateMode.OnPropertyChanged);
+            NormalJogSpeed_numericUpDown.DataBindings.Add("Value", Setting, nameof(Setting.CNC_NormalJogSpeed), false, DataSourceUpdateMode.OnPropertyChanged);
+            AltJogSpeed_numericUpDown.DataBindings.Add("Value", Setting, nameof(Setting.CNC_AltJogSpeed), false, DataSourceUpdateMode.OnPropertyChanged);
 
             if (Setting.Nozzles_current == 0)
             {
@@ -251,8 +260,8 @@ namespace LitePlacer
 
             // ======== Run Job tab:
 
-            OmitNozzleCalibration_checkBox.Checked = Setting.Placement_OmitNozzleCalibration;
-            SkipMeasurements_checkBox.Checked = Setting.Placement_SkipMeasurements;
+            OmitNozzleCalibration_checkBox.DataBindings.Add("Checked", Setting, nameof(Setting.Placement_OmitNozzleCalibration), false, DataSourceUpdateMode.OnPropertyChanged);
+            SkipMeasurements_checkBox.DataBindings.Add("Checked", Setting, nameof(Setting.Placement_SkipMeasurements), false, DataSourceUpdateMode.OnPropertyChanged);
             JobOffsetX_textBox.Text = Setting.Job_Xoffset.ToString("0.000", CultureInfo.InvariantCulture);
             JobOffsetY_textBox.Text = Setting.Job_Yoffset.ToString("0.000", CultureInfo.InvariantCulture);
 
@@ -368,7 +377,7 @@ namespace LitePlacer
                 res = SaveTempJobData();
                 OK = OK && res;
 
-                res = AppSettingsSave(path + APPLICATIONSETTINGS_DATAFILE);
+                res = Setting.Save(path + APPLICATIONSETTINGS_DATAFILE);
                 OK = OK && res;
 
                 res = SaveDataGrid(path + TAPES_DATAFILE, Tapes_dataGridView);
@@ -1827,7 +1836,7 @@ namespace LitePlacer
             Yres = cam.Settings.DesiredY;
             camOnHead = cam.Settings.OnHead;
 
-            if (!ShowPixels_checkBox.Checked)
+            if (!ShowPixels)
             {
                 // image on screen is not at camera resolution
                 Xscale = Xres / Box.Size.Width;
@@ -2112,7 +2121,6 @@ namespace LitePlacer
         }
 
         #endregion Jogging
-
 
         // =================================================================================
         // CNC interface functions
@@ -2862,6 +2870,12 @@ namespace LitePlacer
             CamCross_CheckBox.DataBindings.Add("Checked", cam.Settings, nameof(cam.Settings.DrawCross), false, DataSourceUpdateMode.OnPropertyChanged);
             CamGrid_CheckBox.DataBindings.Clear();
             CamGrid_CheckBox.DataBindings.Add("Checked", cam.Settings, nameof(cam.Settings.DrawGrid), false, DataSourceUpdateMode.OnPropertyChanged);
+            CamZoom_CheckBox.DataBindings.Clear();
+            CamZoom_CheckBox.DataBindings.Add("Checked", cam.Settings, nameof(cam.Settings.Zoom), false, DataSourceUpdateMode.OnPropertyChanged);
+            CamZoomFactor_numericUpDown.DataBindings.Clear();
+            CamZoomFactor_numericUpDown.DataBindings.Add("Value", cam.Settings, nameof(cam.Settings.ZoomFactor), false, DataSourceUpdateMode.OnPropertyChanged);
+            CamPauseDisplay_checkBox.DataBindings.Clear();
+            CamPauseDisplay_checkBox.DataBindings.Add("Checked", cam, nameof(cam.PauseDisplay), false, DataSourceUpdateMode.OnPropertyChanged);
 
             if (KeepActive_checkBox.Checked)
             {
@@ -3206,48 +3220,12 @@ namespace LitePlacer
 
         private void SetDownCameraParameters()
         {
-            double val;
-            if (DownCamera.IsRunning())
-            {
-                UpCameraStatus_label.Text = "Not active";
-                DownCameraStatus_label.Text = "Active";
-                if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-                {
-                    DownCamera.Settings.ZoomFactor = val;
-                    DownCamera.Settings.Zoom = UpCamZoom_checkBox.Checked;
-                }
-                else
-                {
-                    DownCamera.Settings.Zoom = false;
-                }
-            }
-            else
-            {
-                DownCameraStatus_label.Text = "Not active";
-            }
+            DownCameraStatus_label.Text = DownCamera.IsRunning() ? "Active" : "Not active";
         }
 
         private void SetUpCameraParameters()
         {
-            double val;
-            if (UpCamera.IsRunning())
-            {
-                DownCameraStatus_label.Text = "Not active";
-                UpCameraStatus_label.Text = "Active";
-                if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-                {
-                    UpCamera.Settings.ZoomFactor = val;
-                    UpCamera.Settings.Zoom = UpCamZoom_checkBox.Checked;
-                }
-                else
-                {
-                    UpCamera.Settings.Zoom = false;
-                }
-            }
-            else
-            {
-                UpCameraStatus_label.Text = "Not active";
-            }
+            UpCameraStatus_label.Text = UpCamera.IsRunning() ? "Active" : "Not active";
         }
 
         // =================================================================================
@@ -3476,79 +3454,6 @@ namespace LitePlacer
                 UpCameraYmmPerPixel_textBox.ForeColor = Color.Red;
             }
         }
-
-        // =================================================================================
-        private void DownCamZoomFactor_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-                {
-                    if (val < 1.0)
-                    {
-                        DisplayText("Zoom factor must be >1", KnownColor.DarkRed, true);
-                    }
-                    else
-                    {
-                        DownCamera.Settings.ZoomFactor = val;
-                    }
-                }
-            }
-        }
-
-        private void DownCamZoomFactor_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-            {
-                if (val < 1.0)
-                {
-                    DisplayText("Zoom factor must be >1", KnownColor.DarkRed, true);
-                }
-                else
-                {
-                    DownCamera.Settings.ZoomFactor = val;
-                }
-            }
-        }
-
-        // ====
-        private void UpCamZoomFactor_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-                {
-                    if (val < 1.0)
-                    {
-                        DisplayText("Zoom factor must be >1", KnownColor.DarkRed, true);
-                    }
-                    else
-                    {
-                        UpCamera.Settings.ZoomFactor = val;
-                    }
-                }
-            }
-        }
-
-        private void UpCamZoomFactor_textBox_Leave(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
-            {
-                if (val < 1.0)
-                {
-                    DisplayText("Zoom factor must be >1", KnownColor.DarkRed, true);
-                }
-                else
-                {
-                    UpCamera.Settings.ZoomFactor = val;
-                }
-            }
-        }
-
 
         // =================================================================================
         // DownCam specific functions
@@ -3914,10 +3819,6 @@ namespace LitePlacer
             VacuumTime_textBox.Text = Setting.General_PickupVacuumTime.ToString(CultureInfo.InvariantCulture);
             VacuumRelease_textBox.Text = Setting.General_PickupReleaseTime.ToString(CultureInfo.InvariantCulture);
             SmallMovement_numericUpDown.Value = Setting.CNC_SmallMovementSpeed;
-
-            CtlrJogSpeed_numericUpDown.Value = Setting.CNC_CtlrJogSpeed;
-            NormalJogSpeed_numericUpDown.Value = Setting.CNC_NormalJogSpeed;
-            AltJogSpeed_numericUpDown.Value = Setting.CNC_AltJogSpeed;
 
             // Does this machine have any ports? (Maybe not, if TinyG is powered down.)
             RefreshPortList();
@@ -4712,142 +4613,139 @@ namespace LitePlacer
         // =================================================================================
         #region Bookmarks
 
-        private void SetMark1_button_Click(object sender, EventArgs e)
+        private void Mark1_textBox_Validated(object sender, EventArgs e)
         {
             Setting.General_Mark1X = Cnc.CurrentX;
             Setting.General_Mark1Y = Cnc.CurrentY;
             Setting.General_Mark1A = Cnc.CurrentA;
-            Setting.General_Mark1Name = Mark1_textBox.Text;
-            Bookmark1_button.Text = Setting.General_Mark1Name;
+            Mark1_textBox.ReadOnly = true;
         }
 
-        private void SetMark2_button_Click(object sender, EventArgs e)
+        private void Mark2_textBox_Validated(object sender, EventArgs e)
         {
             Setting.General_Mark2X = Cnc.CurrentX;
             Setting.General_Mark2Y = Cnc.CurrentY;
             Setting.General_Mark2A = Cnc.CurrentA;
-            Setting.General_Mark2Name = Mark2_textBox.Text;
-            Bookmark2_button.Text = Setting.General_Mark2Name;
+            Mark2_textBox.ReadOnly = true;
         }
 
-        private void SetMark3_button_Click(object sender, EventArgs e)
+        private void Mark3_textBox_Validated(object sender, EventArgs e)
         {
             Setting.General_Mark3X = Cnc.CurrentX;
             Setting.General_Mark3Y = Cnc.CurrentY;
             Setting.General_Mark3A = Cnc.CurrentA;
-            Setting.General_Mark3Name = Mark3_textBox.Text;
-            Bookmark3_button.Text = Setting.General_Mark3Name;
+            Mark3_textBox.ReadOnly = true;
         }
 
-        private void SetMark4_button_Click(object sender, EventArgs e)
+        private void Mark4_textBox_Validated(object sender, EventArgs e)
         {
             Setting.General_Mark4X = Cnc.CurrentX;
             Setting.General_Mark4Y = Cnc.CurrentY;
             Setting.General_Mark4A = Cnc.CurrentA;
-            Setting.General_Mark4Name = Mark4_textBox.Text;
-            Bookmark4_button.Text = Setting.General_Mark4Name;
+            Mark4_textBox.ReadOnly = true;
         }
 
-        private void SetMark5_button_Click(object sender, EventArgs e)
+        private void Mark5_textBox_Validated(object sender, EventArgs e)
         {
             Setting.General_Mark5X = Cnc.CurrentX;
             Setting.General_Mark5Y = Cnc.CurrentY;
             Setting.General_Mark5A = Cnc.CurrentA;
-            Setting.General_Mark5Name = Mark5_textBox.Text;
-            Bookmark5_button.Text = Setting.General_Mark5Name;
+            Mark4_textBox.ReadOnly = true;
         }
 
-        private void SetMark6_button_Click(object sender, EventArgs e)
+        private void Mark6_textBox_Validated(object sender, EventArgs e)
         {
             Setting.General_Mark6X = Cnc.CurrentX;
             Setting.General_Mark6Y = Cnc.CurrentY;
             Setting.General_Mark6A = Cnc.CurrentA;
-            Setting.General_Mark6Name = Mark6_textBox.Text;
-            Bookmark6_button.Text = Setting.General_Mark6Name;
+            Mark6_textBox.ReadOnly = true;
+        }
+
+        private void Mark_textBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if(sender is Control)
+            {
+                Control textBox = (Control)sender;
+                if (textBox.Focused)
+                {
+                    if(e.KeyCode == Keys.Enter)
+                        ValidateChildren();
+                    else if(e.KeyCode == Keys.Escape)
+                        textBox.DataBindings["Text"]?.ReadValue();
+                }
+            }
+        }
+
+        private void SetMark1_button_Click(object sender, EventArgs e)
+        {
+            Mark1_textBox.ReadOnly = false;
+            Mark1_textBox.Focus();
+        }
+
+        private void SetMark2_button_Click(object sender, EventArgs e)
+        {
+            Mark2_textBox.ReadOnly = false;
+            Mark2_textBox.Focus();
+        }
+
+        private void SetMark3_button_Click(object sender, EventArgs e)
+        {
+            Mark3_textBox.ReadOnly = false;
+            Mark3_textBox.Focus();
+        }
+
+        private void SetMark4_button_Click(object sender, EventArgs e)
+        {
+            Mark4_textBox.ReadOnly = false;
+            Mark4_textBox.Focus();
+        }
+
+        private void SetMark5_button_Click(object sender, EventArgs e)
+        {
+            Mark5_textBox.ReadOnly = false;
+            Mark5_textBox.Focus();
+        }
+
+        private void SetMark6_button_Click(object sender, EventArgs e)
+        {
+            Mark6_textBox.ReadOnly = false;
+            Mark6_textBox.Focus();
         }
 
         private void Bookmark1_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
-
-            if ((ModifierKeys & Keys.Control) == Keys.Control)
-            {
-                Setting.General_Mark1X = Cnc.CurrentX;
-                Setting.General_Mark1Y = Cnc.CurrentY;
-                Setting.General_Mark1A = Cnc.CurrentA;
-                return;
-            };
-            CNC_XYA_m(Setting.General_Mark1X, Setting.General_Mark1Y, Setting.General_Mark1A);
+            if (CheckPositionConfidence())
+                CNC_XYA_m(Setting.General_Mark1X, Setting.General_Mark1Y, Setting.General_Mark1A);
         }
 
         private void Bookmark2_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
-
-            if ((ModifierKeys & Keys.Control) == Keys.Control)
-            {
-                Setting.General_Mark2X = Cnc.CurrentX;
-                Setting.General_Mark2Y = Cnc.CurrentY;
-                Setting.General_Mark2A = Cnc.CurrentA;
-                return;
-            };
-            CNC_XYA_m(Setting.General_Mark2X, Setting.General_Mark2Y, Setting.General_Mark2A);
+            if (!CheckPositionConfidence())
+                CNC_XYA_m(Setting.General_Mark2X, Setting.General_Mark2Y, Setting.General_Mark2A);
         }
 
         private void Bookmark3_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
-
-            if ((ModifierKeys & Keys.Control) == Keys.Control)
-            {
-                Setting.General_Mark3X = Cnc.CurrentX;
-                Setting.General_Mark3Y = Cnc.CurrentY;
-                Setting.General_Mark3A = Cnc.CurrentA;
-                return;
-            };
-            CNC_XYA_m(Setting.General_Mark3X, Setting.General_Mark3Y, Setting.General_Mark3A);
+            if (!CheckPositionConfidence())
+                CNC_XYA_m(Setting.General_Mark3X, Setting.General_Mark3Y, Setting.General_Mark3A);
         }
 
         private void Bookmark4_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
-
-            if ((ModifierKeys & Keys.Control) == Keys.Control)
-            {
-                Setting.General_Mark4X = Cnc.CurrentX;
-                Setting.General_Mark4Y = Cnc.CurrentY;
-                Setting.General_Mark4A = Cnc.CurrentA;
-                return;
-            };
-            CNC_XYA_m(Setting.General_Mark4X, Setting.General_Mark4Y, Setting.General_Mark4A);
+            if (!CheckPositionConfidence())
+                CNC_XYA_m(Setting.General_Mark4X, Setting.General_Mark4Y, Setting.General_Mark4A);
         }
 
         private void Bookmark5_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
-
-            if ((ModifierKeys & Keys.Control) == Keys.Control)
-            {
-                Setting.General_Mark5X = Cnc.CurrentX;
-                Setting.General_Mark5Y = Cnc.CurrentY;
-                Setting.General_Mark5A = Cnc.CurrentA;
-                return;
-            };
-            CNC_XYA_m(Setting.General_Mark5X, Setting.General_Mark5Y, Setting.General_Mark5A);
+            if (!CheckPositionConfidence())
+                CNC_XYA_m(Setting.General_Mark5X, Setting.General_Mark5Y, Setting.General_Mark5A);
         }
 
         private void Bookmark6_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
-
-            if ((ModifierKeys & Keys.Control) == Keys.Control)
-            {
-                Setting.General_Mark6X = Cnc.CurrentX;
-                Setting.General_Mark6Y = Cnc.CurrentY;
-                Setting.General_Mark6A = Cnc.CurrentA;
-                return;
-            };
-            CNC_XYA_m(Setting.General_Mark6X, Setting.General_Mark6Y, Setting.General_Mark6A);
+            if (!CheckPositionConfidence())
+                CNC_XYA_m(Setting.General_Mark6X, Setting.General_Mark6Y, Setting.General_Mark6A);
         }
         #endregion
 
@@ -4880,22 +4778,6 @@ namespace LitePlacer
                     CNC.SquareCorrection = val;
                 }
             }
-        }
-
-        private void CtlrJogSpeed_numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            Setting.CNC_CtlrJogSpeed = (int)CtlrJogSpeed_numericUpDown.Value;
-
-        }
-
-        private void NormalJogSpeed_numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            Setting.CNC_NormalJogSpeed = (int)NormalJogSpeed_numericUpDown.Value;
-        }
-
-        private void AltJogSpeed_numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            Setting.CNC_AltJogSpeed = (int)AltJogSpeed_numericUpDown.Value;
         }
 
         private void DisableLog_checkBox_CheckedChanged(object sender, EventArgs e)
@@ -6508,7 +6390,7 @@ namespace LitePlacer
 
             if (Component != "--") // if component exists:
             {
-                if (SkipMeasurements_checkBox.Checked)
+                if (Setting.Placement_SkipMeasurements)
                 {
                     // User wants to use the nominal coordinates. Copy the nominal to machine for this to happen:
                     if (!double.TryParse(CadData_GridView.Rows[CADdataRow].Cells["X_nominal"].Value.ToString().Replace(',', '.'), out double X))
@@ -8677,20 +8559,6 @@ namespace LitePlacer
             }
         }
 
-        // =================================================================================
-
-        private void OmitNozzleCalibration_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Setting.Placement_OmitNozzleCalibration = OmitNozzleCalibration_checkBox.Checked;
-
-        }
-
-        private void SkipMeasurements_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Setting.Placement_SkipMeasurements = SkipMeasurements_checkBox.Checked;
-        }
-
-
         #endregion Job page functions
 
         // =================================================================================
@@ -10520,14 +10388,11 @@ namespace LitePlacer
         // ==========================================================================================================
         #region VideoProcessingFunctionsLists
 
-
-
         private void SetColorBoxColor(int row)
         {
             // xxx Color_Box.BackColor = Color.FromArgb(R, G, B);
         }
 
- 
         private void PickColor(int X, int Y)
         {
             Bitmap img = new Bitmap(Cam_pictureBox.Width, Cam_pictureBox.Height);
@@ -10573,9 +10438,25 @@ namespace LitePlacer
             B_numericUpDown.Value = B;
         }
 
+        private void CamPanelMaximize_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(CamPanelMaximize_checkBox.Checked)
+            {
+                Camera_Panel.Dock = DockStyle.Fill;
+                CamPanelMaximize_checkBox.BackgroundImage = Properties.Resources.minimize;
+            }
+            else
+            {
+                Camera_Panel.Dock = DockStyle.None;
+                Camera_Panel.Size = camPanelSize;
+                Camera_Panel.Location = camPanelLocation;
+                CamPanelMaximize_checkBox.BackgroundImage = Properties.Resources.maximize;
+            }
+        }
+
         #endregion
 
-        
+
         // ==========================================================================================================
         // Nozzles
         // ==========================================================================================================
@@ -12220,6 +12101,7 @@ namespace LitePlacer
 
 
         public bool DownCameraRotationFollowsA { get; set; } = false;
+
         private void apos_textBox_TextChanged(object sender, EventArgs e)
         {
             if (DownCameraRotationFollowsA)
@@ -12232,11 +12114,6 @@ namespace LitePlacer
 
         // ==========================================================================================================
         #region ApplicationSettings
-
-        private bool AppSettingsSave(string FileName)
-        {
-            return Setting.Save(FileName);
-        }
 
         private void AppSettingsSave_button_Click(object sender, EventArgs e)
         {
@@ -12251,7 +12128,7 @@ namespace LitePlacer
 
             if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                AppSettingsSave(AppSettings_saveFileDialog.FileName);
+                Setting.Save(AppSettings_saveFileDialog.FileName);
             }
         }
 

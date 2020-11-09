@@ -30,11 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
-            this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
-            this.DownCamZoom_checkBox = new System.Windows.Forms.CheckBox();
             this.SendtoControlBoard_textBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -51,8 +49,6 @@
             this.Job_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.Job_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OpticalHome_button = new System.Windows.Forms.Button();
-            this.UpCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
-            this.UpCamZoom_checkBox = new System.Windows.Forms.CheckBox();
             this.Test3_button = new System.Windows.Forms.Button();
             this.Test4_button = new System.Windows.Forms.Button();
             this.Test5_button = new System.Windows.Forms.Button();
@@ -128,9 +124,7 @@
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.Camera_Panel = new System.Windows.Forms.TableLayoutPanel();
             this.panel15 = new System.Windows.Forms.Panel();
-            this.CamGrid_CheckBox = new System.Windows.Forms.CheckBox();
-            this.CamCross_CheckBox = new System.Windows.Forms.CheckBox();
-            this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
+            this.CamZoomFactor_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.UpCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
             this.label130 = new System.Windows.Forms.Label();
@@ -277,13 +271,14 @@
             this.label180 = new System.Windows.Forms.Label();
             this.label179 = new System.Windows.Forms.Label();
             this.label178 = new System.Windows.Forms.Label();
-            this.label177 = new System.Windows.Forms.Label();
             this.label154 = new System.Windows.Forms.Label();
+            this.label109 = new System.Windows.Forms.Label();
             this.label147 = new System.Windows.Forms.Label();
             this.label153 = new System.Windows.Forms.Label();
             this.SlackCompensationDistance_textBox = new System.Windows.Forms.TextBox();
             this.MoveTimeout_textBox = new System.Windows.Forms.TextBox();
             this.label50 = new System.Windows.Forms.Label();
+            this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.Motors_label = new System.Windows.Forms.Label();
             this.TinyGMotors_tabControl = new System.Windows.Forms.TabControl();
             this.X_tabPage = new System.Windows.Forms.TabPage();
@@ -435,29 +430,16 @@
             this.SquareCorrection_textBox = new System.Windows.Forms.TextBox();
             this.SmallMovement_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label87 = new System.Windows.Forms.Label();
-            this.label152 = new System.Windows.Forms.Label();
             this.SlackCompensation_checkBox = new System.Windows.Forms.CheckBox();
-            this.SetMark6_button = new System.Windows.Forms.Button();
             this.TestXYA_button = new System.Windows.Forms.Button();
-            this.Mark6_textBox = new System.Windows.Forms.TextBox();
-            this.Mark5_textBox = new System.Windows.Forms.TextBox();
-            this.Mark4_textBox = new System.Windows.Forms.TextBox();
-            this.Mark3_textBox = new System.Windows.Forms.TextBox();
-            this.Mark2_textBox = new System.Windows.Forms.TextBox();
             this.SizeYMax_textBox = new System.Windows.Forms.TextBox();
-            this.Mark1_textBox = new System.Windows.Forms.TextBox();
             this.SizeXMax_textBox = new System.Windows.Forms.TextBox();
             this.ParkLocationY_textBox = new System.Windows.Forms.TextBox();
             this.ParkLocationX_textBox = new System.Windows.Forms.TextBox();
             this.TestYX_button = new System.Windows.Forms.Button();
-            this.SetMark5_button = new System.Windows.Forms.Button();
             this.MotorPower_checkBox = new System.Windows.Forms.CheckBox();
-            this.SetMark4_button = new System.Windows.Forms.Button();
-            this.SetMark3_button = new System.Windows.Forms.Button();
-            this.SetMark2_button = new System.Windows.Forms.Button();
             this.label113 = new System.Windows.Forms.Label();
             this.label102 = new System.Windows.Forms.Label();
-            this.SetMark1_button = new System.Windows.Forms.Button();
             this.label107 = new System.Windows.Forms.Label();
             this.label92 = new System.Windows.Forms.Label();
             this.label61 = new System.Windows.Forms.Label();
@@ -481,6 +463,20 @@
             this.buttonConnectSerial = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSerialPorts = new System.Windows.Forms.ComboBox();
+            this.label177 = new System.Windows.Forms.Label();
+            this.label152 = new System.Windows.Forms.Label();
+            this.SetMark6_button = new System.Windows.Forms.Button();
+            this.Mark6_textBox = new System.Windows.Forms.TextBox();
+            this.Mark5_textBox = new System.Windows.Forms.TextBox();
+            this.Mark4_textBox = new System.Windows.Forms.TextBox();
+            this.Mark3_textBox = new System.Windows.Forms.TextBox();
+            this.Mark2_textBox = new System.Windows.Forms.TextBox();
+            this.Mark1_textBox = new System.Windows.Forms.TextBox();
+            this.SetMark5_button = new System.Windows.Forms.Button();
+            this.SetMark4_button = new System.Windows.Forms.Button();
+            this.SetMark3_button = new System.Windows.Forms.Button();
+            this.SetMark2_button = new System.Windows.Forms.Button();
+            this.SetMark1_button = new System.Windows.Forms.Button();
             this.RunJob_tabPage = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel7 = new System.Windows.Forms.Panel();
@@ -794,7 +790,6 @@
             this.PlaceZ_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NextX_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NextY_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ShowPixels_checkBox = new System.Windows.Forms.CheckBox();
             this.CAD_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.GotoX_textBox = new System.Windows.Forms.TextBox();
@@ -819,11 +814,15 @@
             this.GoZ_button = new System.Windows.Forms.Button();
             this.AppSettings_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.AppSettings_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
-            this.label164 = new System.Windows.Forms.Label();
-            this.label165 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.ShowPixels_checkBox = new System.Windows.Forms.CheckBox();
+            this.CamPanelMaximize_checkBox = new System.Windows.Forms.CheckBox();
+            this.CamZoom_CheckBox = new System.Windows.Forms.CheckBox();
+            this.CamGrid_CheckBox = new System.Windows.Forms.CheckBox();
+            this.CamCross_CheckBox = new System.Windows.Forms.CheckBox();
+            this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
+            this.CamPauseDisplay_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -832,7 +831,7 @@
             this.tabPageSetupCameras.SuspendLayout();
             this.Camera_Panel.SuspendLayout();
             this.panel15.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CamZoomFactor_numericUpDown)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tabPageBasicSetup.SuspendLayout();
@@ -902,6 +901,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.panel5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // Park_button
@@ -926,34 +926,11 @@
             this.TestNozzleRecognition_button.UseVisualStyleBackColor = true;
             this.TestNozzleRecognition_button.Click += new System.EventHandler(this.TestNozzleRecognition_button_Click);
             // 
-            // DownCamZoomFactor_textBox
-            // 
-            this.DownCamZoomFactor_textBox.Location = new System.Drawing.Point(539, 29);
-            this.DownCamZoomFactor_textBox.Name = "DownCamZoomFactor_textBox";
-            this.DownCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 20);
-            this.DownCamZoomFactor_textBox.TabIndex = 57;
-            this.DownCamZoomFactor_textBox.Text = "1.0";
-            this.DownCamZoomFactor_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.DownCamZoomFactor_textBox, "Digital zoom for Downcam image");
-            this.DownCamZoomFactor_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCamZoomFactor_textBox_KeyPress);
-            this.DownCamZoomFactor_textBox.Leave += new System.EventHandler(this.DownCamZoomFactor_textBox_Leave);
-            // 
-            // DownCamZoom_checkBox
-            // 
-            this.DownCamZoom_checkBox.AutoSize = true;
-            this.DownCamZoom_checkBox.Location = new System.Drawing.Point(441, 8);
-            this.DownCamZoom_checkBox.Name = "DownCamZoom_checkBox";
-            this.DownCamZoom_checkBox.Size = new System.Drawing.Size(104, 17);
-            this.DownCamZoom_checkBox.TabIndex = 56;
-            this.DownCamZoom_checkBox.Text = "Downcam Zoom";
-            this.toolTip1.SetToolTip(this.DownCamZoom_checkBox, "Digital zoom for Downcam image");
-            this.DownCamZoom_checkBox.UseVisualStyleBackColor = true;
-            // 
             // SendtoControlBoard_textBox
             // 
-            this.SendtoControlBoard_textBox.Location = new System.Drawing.Point(681, 166);
+            this.SendtoControlBoard_textBox.Location = new System.Drawing.Point(559, 166);
             this.SendtoControlBoard_textBox.Name = "SendtoControlBoard_textBox";
-            this.SendtoControlBoard_textBox.Size = new System.Drawing.Size(241, 20);
+            this.SendtoControlBoard_textBox.Size = new System.Drawing.Size(264, 20);
             this.SendtoControlBoard_textBox.TabIndex = 8;
             this.toolTip1.SetToolTip(this.SendtoControlBoard_textBox, "On enter, the text is sent directly to TinyG.");
             this.SendtoControlBoard_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SendtoControlBoard_textBox_KeyPress);
@@ -961,7 +938,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(563, 169);
+            this.label4.Location = new System.Drawing.Point(441, 169);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(112, 13);
             this.label4.TabIndex = 7;
@@ -971,7 +948,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(608, 0);
+            this.label14.Location = new System.Drawing.Point(452, 1);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(24, 18);
             this.label14.TabIndex = 7;
@@ -981,7 +958,7 @@
             // 
             this.xpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.xpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xpos_textBox.Location = new System.Drawing.Point(651, 0);
+            this.xpos_textBox.Location = new System.Drawing.Point(495, 1);
             this.xpos_textBox.Name = "xpos_textBox";
             this.xpos_textBox.ReadOnly = true;
             this.xpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -995,7 +972,7 @@
             // 
             this.ypos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ypos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ypos_textBox.Location = new System.Drawing.Point(651, 21);
+            this.ypos_textBox.Location = new System.Drawing.Point(495, 22);
             this.ypos_textBox.Name = "ypos_textBox";
             this.ypos_textBox.ReadOnly = true;
             this.ypos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1009,7 +986,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(608, 21);
+            this.label17.Location = new System.Drawing.Point(452, 22);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(23, 18);
             this.label17.TabIndex = 10;
@@ -1019,7 +996,7 @@
             // 
             this.zpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.zpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.zpos_textBox.Location = new System.Drawing.Point(651, 42);
+            this.zpos_textBox.Location = new System.Drawing.Point(495, 43);
             this.zpos_textBox.Name = "zpos_textBox";
             this.zpos_textBox.ReadOnly = true;
             this.zpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1033,7 +1010,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(608, 42);
+            this.label18.Location = new System.Drawing.Point(452, 43);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(23, 18);
             this.label18.TabIndex = 12;
@@ -1043,7 +1020,7 @@
             // 
             this.apos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.apos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.apos_textBox.Location = new System.Drawing.Point(651, 62);
+            this.apos_textBox.Location = new System.Drawing.Point(495, 63);
             this.apos_textBox.Name = "apos_textBox";
             this.apos_textBox.ReadOnly = true;
             this.apos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1058,7 +1035,7 @@
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(608, 63);
+            this.label19.Location = new System.Drawing.Point(452, 64);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(23, 18);
             this.label19.TabIndex = 14;
@@ -1112,7 +1089,7 @@
             // OpticalHome_button
             // 
             this.OpticalHome_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OpticalHome_button.Location = new System.Drawing.Point(681, 112);
+            this.OpticalHome_button.Location = new System.Drawing.Point(525, 113);
             this.OpticalHome_button.Name = "OpticalHome_button";
             this.OpticalHome_button.Size = new System.Drawing.Size(106, 46);
             this.OpticalHome_button.TabIndex = 37;
@@ -1121,29 +1098,6 @@
         "based on home mark.");
             this.OpticalHome_button.UseVisualStyleBackColor = true;
             this.OpticalHome_button.Click += new System.EventHandler(this.OpticalHome_button_Click);
-            // 
-            // UpCamZoomFactor_textBox
-            // 
-            this.UpCamZoomFactor_textBox.Location = new System.Drawing.Point(539, 82);
-            this.UpCamZoomFactor_textBox.Name = "UpCamZoomFactor_textBox";
-            this.UpCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 20);
-            this.UpCamZoomFactor_textBox.TabIndex = 59;
-            this.UpCamZoomFactor_textBox.Text = "1.0";
-            this.UpCamZoomFactor_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.UpCamZoomFactor_textBox, "Digital zoom for Upcam image");
-            this.UpCamZoomFactor_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCamZoomFactor_textBox_KeyPress);
-            this.UpCamZoomFactor_textBox.Leave += new System.EventHandler(this.UpCamZoomFactor_textBox_Leave);
-            // 
-            // UpCamZoom_checkBox
-            // 
-            this.UpCamZoom_checkBox.AutoSize = true;
-            this.UpCamZoom_checkBox.Location = new System.Drawing.Point(441, 58);
-            this.UpCamZoom_checkBox.Name = "UpCamZoom_checkBox";
-            this.UpCamZoom_checkBox.Size = new System.Drawing.Size(90, 17);
-            this.UpCamZoom_checkBox.TabIndex = 58;
-            this.UpCamZoom_checkBox.Text = "Upcam Zoom";
-            this.toolTip1.SetToolTip(this.UpCamZoom_checkBox, "Digital zoom for Upcam image");
-            this.UpCamZoom_checkBox.UseVisualStyleBackColor = true;
             // 
             // Test3_button
             // 
@@ -1187,11 +1141,11 @@
             // 
             // Bookmark1_button
             // 
-            this.Bookmark1_button.Location = new System.Drawing.Point(789, 2);
+            this.Bookmark1_button.Location = new System.Drawing.Point(843, 24);
             this.Bookmark1_button.Name = "Bookmark1_button";
-            this.Bookmark1_button.Size = new System.Drawing.Size(133, 23);
+            this.Bookmark1_button.Size = new System.Drawing.Size(40, 23);
             this.Bookmark1_button.TabIndex = 70;
-            this.Bookmark1_button.Text = "Mark 1";
+            this.Bookmark1_button.Text = "Goto";
             this.toolTip1.SetToolTip(this.Bookmark1_button, "Goes to location 1 (named and set on the Basic Setup tab).\r\nCtrl+click sets the m" +
         "ark here.\r\n");
             this.Bookmark1_button.UseVisualStyleBackColor = true;
@@ -1199,11 +1153,11 @@
             // 
             // Bookmark2_button
             // 
-            this.Bookmark2_button.Location = new System.Drawing.Point(789, 29);
+            this.Bookmark2_button.Location = new System.Drawing.Point(843, 51);
             this.Bookmark2_button.Name = "Bookmark2_button";
-            this.Bookmark2_button.Size = new System.Drawing.Size(133, 23);
+            this.Bookmark2_button.Size = new System.Drawing.Size(40, 23);
             this.Bookmark2_button.TabIndex = 71;
-            this.Bookmark2_button.Text = "Mark 2";
+            this.Bookmark2_button.Text = "Goto";
             this.toolTip1.SetToolTip(this.Bookmark2_button, "Goes to location 2 (named and set on the Basic Setup tab).\r\nCtrl+click sets the m" +
         "ark here.");
             this.Bookmark2_button.UseVisualStyleBackColor = true;
@@ -1211,11 +1165,11 @@
             // 
             // Bookmark3_button
             // 
-            this.Bookmark3_button.Location = new System.Drawing.Point(789, 56);
+            this.Bookmark3_button.Location = new System.Drawing.Point(843, 78);
             this.Bookmark3_button.Name = "Bookmark3_button";
-            this.Bookmark3_button.Size = new System.Drawing.Size(133, 23);
+            this.Bookmark3_button.Size = new System.Drawing.Size(40, 23);
             this.Bookmark3_button.TabIndex = 72;
-            this.Bookmark3_button.Text = "Mark 3";
+            this.Bookmark3_button.Text = "Goto";
             this.toolTip1.SetToolTip(this.Bookmark3_button, "Goes to location 3 (named and set on the Basic Setup tab).\r\nCtrl+click sets the m" +
         "ark here.\r\n");
             this.Bookmark3_button.UseVisualStyleBackColor = true;
@@ -1223,11 +1177,11 @@
             // 
             // Bookmark4_button
             // 
-            this.Bookmark4_button.Location = new System.Drawing.Point(789, 83);
+            this.Bookmark4_button.Location = new System.Drawing.Point(843, 105);
             this.Bookmark4_button.Name = "Bookmark4_button";
-            this.Bookmark4_button.Size = new System.Drawing.Size(133, 23);
+            this.Bookmark4_button.Size = new System.Drawing.Size(40, 23);
             this.Bookmark4_button.TabIndex = 73;
-            this.Bookmark4_button.Text = "Mark 4";
+            this.Bookmark4_button.Text = "Goto";
             this.toolTip1.SetToolTip(this.Bookmark4_button, "Goes to location 4 (named and set on the Basic Setup tab).\r\nCtrl+click sets the m" +
         "ark here.\r\n");
             this.Bookmark4_button.UseVisualStyleBackColor = true;
@@ -1235,11 +1189,11 @@
             // 
             // Bookmark5_button
             // 
-            this.Bookmark5_button.Location = new System.Drawing.Point(789, 110);
+            this.Bookmark5_button.Location = new System.Drawing.Point(843, 132);
             this.Bookmark5_button.Name = "Bookmark5_button";
-            this.Bookmark5_button.Size = new System.Drawing.Size(133, 23);
+            this.Bookmark5_button.Size = new System.Drawing.Size(40, 23);
             this.Bookmark5_button.TabIndex = 74;
-            this.Bookmark5_button.Text = "Mark 5";
+            this.Bookmark5_button.Text = "Goto";
             this.toolTip1.SetToolTip(this.Bookmark5_button, "Goes to location 5 (named and set on the Basic Setup tab).\r\nCtrl+click sets the m" +
         "ark here.\r\n");
             this.Bookmark5_button.UseVisualStyleBackColor = true;
@@ -1247,11 +1201,11 @@
             // 
             // Bookmark6_button
             // 
-            this.Bookmark6_button.Location = new System.Drawing.Point(789, 137);
+            this.Bookmark6_button.Location = new System.Drawing.Point(843, 159);
             this.Bookmark6_button.Name = "Bookmark6_button";
-            this.Bookmark6_button.Size = new System.Drawing.Size(133, 23);
+            this.Bookmark6_button.Size = new System.Drawing.Size(40, 23);
             this.Bookmark6_button.TabIndex = 75;
-            this.Bookmark6_button.Text = "Mark 6";
+            this.Bookmark6_button.Text = "Goto";
             this.toolTip1.SetToolTip(this.Bookmark6_button, "Goes to location 6 (named and set on the Basic Setup tab).\r\nCtrl+click sets the m" +
         "ark here.\r\n");
             this.Bookmark6_button.UseVisualStyleBackColor = true;
@@ -1836,14 +1790,14 @@
             this.OffsetX_Column.HeaderText = "Offset X";
             this.OffsetX_Column.MinimumWidth = 6;
             this.OffsetX_Column.Name = "OffsetX_Column";
-            this.OffsetX_Column.Width = 65;
+            this.OffsetX_Column.Width = 70;
             // 
             // OffsetY_Column
             // 
             this.OffsetY_Column.HeaderText = "Offset Y";
             this.OffsetY_Column.MinimumWidth = 6;
             this.OffsetY_Column.Name = "OffsetY_Column";
-            this.OffsetY_Column.Width = 65;
+            this.OffsetY_Column.Width = 70;
             // 
             // FirstX_Column
             // 
@@ -1866,14 +1820,14 @@
             this.Z_Pickup_Column.HeaderText = "Pickup Z";
             this.Z_Pickup_Column.MinimumWidth = 6;
             this.Z_Pickup_Column.Name = "Z_Pickup_Column";
-            this.Z_Pickup_Column.Width = 69;
+            this.Z_Pickup_Column.Width = 75;
             // 
             // Z_Place_Column
             // 
             this.Z_Place_Column.HeaderText = "Place Z";
             this.Z_Place_Column.MinimumWidth = 6;
             this.Z_Place_Column.Name = "Z_Place_Column";
-            this.Z_Place_Column.Width = 64;
+            this.Z_Place_Column.Width = 69;
             // 
             // Next_X_Column
             // 
@@ -1881,7 +1835,7 @@
             this.Next_X_Column.MinimumWidth = 6;
             this.Next_X_Column.Name = "Next_X_Column";
             this.Next_X_Column.ReadOnly = true;
-            this.Next_X_Column.Width = 60;
+            this.Next_X_Column.Width = 64;
             // 
             // Next_Y_Column
             // 
@@ -1889,7 +1843,7 @@
             this.Next_Y_Column.MinimumWidth = 6;
             this.Next_Y_Column.Name = "Next_Y_Column";
             this.Next_Y_Column.ReadOnly = true;
-            this.Next_Y_Column.Width = 60;
+            this.Next_Y_Column.Width = 64;
             // 
             // CoordinatesForParts_Column
             // 
@@ -1960,14 +1914,16 @@
             // Camera_Panel
             // 
             this.Camera_Panel.AutoSize = true;
+            this.Camera_Panel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Camera_Panel.ColumnCount = 1;
-            this.Camera_Panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.Camera_Panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.Camera_Panel.Controls.Add(this.panel15, 0, 1);
             this.Camera_Panel.Controls.Add(this.Cam_pictureBox, 0, 0);
             this.Camera_Panel.Location = new System.Drawing.Point(6, 6);
+            this.Camera_Panel.MinimumSize = new System.Drawing.Size(640, 518);
             this.Camera_Panel.Name = "Camera_Panel";
             this.Camera_Panel.RowCount = 2;
-            this.Camera_Panel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.Camera_Panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.Camera_Panel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.Camera_Panel.Size = new System.Drawing.Size(640, 518);
             this.Camera_Panel.TabIndex = 228;
@@ -1976,49 +1932,49 @@
             // 
             this.panel15.AutoSize = true;
             this.panel15.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel15.Controls.Add(this.CamZoomFactor_numericUpDown);
+            this.panel15.Controls.Add(this.ShowPixels_checkBox);
+            this.panel15.Controls.Add(this.CamPanelMaximize_checkBox);
+            this.panel15.Controls.Add(this.CamPauseDisplay_checkBox);
+            this.panel15.Controls.Add(this.CamZoom_CheckBox);
             this.panel15.Controls.Add(this.CamGrid_CheckBox);
             this.panel15.Controls.Add(this.CamCross_CheckBox);
+            this.panel15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel15.Location = new System.Drawing.Point(0, 480);
             this.panel15.Margin = new System.Windows.Forms.Padding(0);
+            this.panel15.MaximumSize = new System.Drawing.Size(640, 38);
             this.panel15.Name = "panel15";
-            this.panel15.Size = new System.Drawing.Size(76, 38);
+            this.panel15.Size = new System.Drawing.Size(640, 38);
             this.panel15.TabIndex = 230;
             // 
-            // CamGrid_CheckBox
+            // CamZoomFactor_numericUpDown
             // 
-            this.CamGrid_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.CamGrid_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.grid;
-            this.CamGrid_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CamGrid_CheckBox.Location = new System.Drawing.Point(41, 3);
-            this.CamGrid_CheckBox.Name = "CamGrid_CheckBox";
-            this.CamGrid_CheckBox.Size = new System.Drawing.Size(32, 32);
-            this.CamGrid_CheckBox.TabIndex = 229;
-            this.CamGrid_CheckBox.UseVisualStyleBackColor = true;
-            // 
-            // CamCross_CheckBox
-            // 
-            this.CamCross_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.CamCross_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.cross;
-            this.CamCross_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CamCross_CheckBox.Location = new System.Drawing.Point(3, 3);
-            this.CamCross_CheckBox.Name = "CamCross_CheckBox";
-            this.CamCross_CheckBox.Size = new System.Drawing.Size(32, 32);
-            this.CamCross_CheckBox.TabIndex = 229;
-            this.CamCross_CheckBox.UseVisualStyleBackColor = true;
-            // 
-            // Cam_pictureBox
-            // 
-            this.Cam_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Cam_pictureBox.Location = new System.Drawing.Point(0, 0);
-            this.Cam_pictureBox.Margin = new System.Windows.Forms.Padding(0);
-            this.Cam_pictureBox.MinimumSize = new System.Drawing.Size(640, 480);
-            this.Cam_pictureBox.Name = "Cam_pictureBox";
-            this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.Cam_pictureBox.TabIndex = 10;
-            this.Cam_pictureBox.TabStop = false;
-            this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
-            this.Cam_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseMove);
+            this.CamZoomFactor_numericUpDown.DecimalPlaces = 1;
+            this.CamZoomFactor_numericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CamZoomFactor_numericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.CamZoomFactor_numericUpDown.Location = new System.Drawing.Point(193, 8);
+            this.CamZoomFactor_numericUpDown.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.CamZoomFactor_numericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.CamZoomFactor_numericUpDown.Name = "CamZoomFactor_numericUpDown";
+            this.CamZoomFactor_numericUpDown.Size = new System.Drawing.Size(42, 23);
+            this.CamZoomFactor_numericUpDown.TabIndex = 229;
+            this.CamZoomFactor_numericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // groupBox6
             // 
@@ -2761,13 +2717,14 @@
             this.tabPageBasicSetup.Controls.Add(this.label180);
             this.tabPageBasicSetup.Controls.Add(this.label179);
             this.tabPageBasicSetup.Controls.Add(this.label178);
-            this.tabPageBasicSetup.Controls.Add(this.label177);
             this.tabPageBasicSetup.Controls.Add(this.label154);
+            this.tabPageBasicSetup.Controls.Add(this.label109);
             this.tabPageBasicSetup.Controls.Add(this.label147);
             this.tabPageBasicSetup.Controls.Add(this.label153);
             this.tabPageBasicSetup.Controls.Add(this.SlackCompensationDistance_textBox);
             this.tabPageBasicSetup.Controls.Add(this.MoveTimeout_textBox);
             this.tabPageBasicSetup.Controls.Add(this.label50);
+            this.tabPageBasicSetup.Controls.Add(this.VigorousHoming_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.Motors_label);
             this.tabPageBasicSetup.Controls.Add(this.TinyGMotors_tabControl);
             this.tabPageBasicSetup.Controls.Add(this.Ato0_button);
@@ -2809,29 +2766,16 @@
             this.tabPageBasicSetup.Controls.Add(this.SquareCorrection_textBox);
             this.tabPageBasicSetup.Controls.Add(this.SmallMovement_numericUpDown);
             this.tabPageBasicSetup.Controls.Add(this.label87);
-            this.tabPageBasicSetup.Controls.Add(this.label152);
             this.tabPageBasicSetup.Controls.Add(this.SlackCompensation_checkBox);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark6_button);
             this.tabPageBasicSetup.Controls.Add(this.TestXYA_button);
-            this.tabPageBasicSetup.Controls.Add(this.Mark6_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark5_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark4_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark3_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark2_textBox);
             this.tabPageBasicSetup.Controls.Add(this.SizeYMax_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.Mark1_textBox);
             this.tabPageBasicSetup.Controls.Add(this.SizeXMax_textBox);
             this.tabPageBasicSetup.Controls.Add(this.ParkLocationY_textBox);
             this.tabPageBasicSetup.Controls.Add(this.ParkLocationX_textBox);
             this.tabPageBasicSetup.Controls.Add(this.TestYX_button);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark5_button);
             this.tabPageBasicSetup.Controls.Add(this.MotorPower_checkBox);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark4_button);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark3_button);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark2_button);
             this.tabPageBasicSetup.Controls.Add(this.label113);
             this.tabPageBasicSetup.Controls.Add(this.label102);
-            this.tabPageBasicSetup.Controls.Add(this.SetMark1_button);
             this.tabPageBasicSetup.Controls.Add(this.label107);
             this.tabPageBasicSetup.Controls.Add(this.label92);
             this.tabPageBasicSetup.Controls.Add(this.label61);
@@ -3797,7 +3741,7 @@
             // 
             this.label179.AutoSize = true;
             this.label179.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label179.Location = new System.Drawing.Point(510, 380);
+            this.label179.Location = new System.Drawing.Point(510, 420);
             this.label179.Name = "label179";
             this.label179.Size = new System.Drawing.Size(104, 20);
             this.label179.TabIndex = 126;
@@ -3814,17 +3758,6 @@
             this.label178.Text = "Movement\r\nTest:";
             this.toolTip1.SetToolTip(this.label178, "Connection status");
             // 
-            // label177
-            // 
-            this.label177.AutoSize = true;
-            this.label177.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label177.Location = new System.Drawing.Point(1004, 452);
-            this.label177.Name = "label177";
-            this.label177.Size = new System.Drawing.Size(93, 20);
-            this.label177.TabIndex = 124;
-            this.label177.Text = "Bookmarks:";
-            this.toolTip1.SetToolTip(this.label177, "Connection status");
-            // 
             // label154
             // 
             this.label154.AutoSize = true;
@@ -3835,6 +3768,16 @@
             this.label154.TabIndex = 123;
             this.label154.Text = "Vacuum:";
             this.toolTip1.SetToolTip(this.label154, "Connection status");
+            // 
+            // label109
+            // 
+            this.label109.AutoSize = true;
+            this.label109.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label109.Location = new System.Drawing.Point(374, 349);
+            this.label109.Name = "label109";
+            this.label109.Size = new System.Drawing.Size(68, 40);
+            this.label109.TabIndex = 122;
+            this.label109.Text = "Optical\r\nHoming:";
             // 
             // label147
             // 
@@ -3883,6 +3826,17 @@
             this.label50.Size = new System.Drawing.Size(127, 13);
             this.label50.TabIndex = 117;
             this.label50.Text = "Regular move timeout (s):";
+            // 
+            // VigorousHoming_checkBox
+            // 
+            this.VigorousHoming_checkBox.AutoSize = true;
+            this.VigorousHoming_checkBox.Location = new System.Drawing.Point(375, 392);
+            this.VigorousHoming_checkBox.Name = "VigorousHoming_checkBox";
+            this.VigorousHoming_checkBox.Size = new System.Drawing.Size(106, 17);
+            this.VigorousHoming_checkBox.TabIndex = 110;
+            this.VigorousHoming_checkBox.Text = "Vigorous Homing";
+            this.VigorousHoming_checkBox.UseVisualStyleBackColor = true;
+            this.VigorousHoming_checkBox.CheckedChanged += new System.EventHandler(this.VigorousHoming_checkBox_CheckedChanged);
             // 
             // Motors_label
             // 
@@ -5369,7 +5323,6 @@
             0,
             0,
             0});
-            this.AltJogSpeed_numericUpDown.ValueChanged += new System.EventHandler(this.AltJogSpeed_numericUpDown_ValueChanged);
             // 
             // NormalJogSpeed_numericUpDown
             // 
@@ -5388,7 +5341,6 @@
             0,
             0,
             0});
-            this.NormalJogSpeed_numericUpDown.ValueChanged += new System.EventHandler(this.NormalJogSpeed_numericUpDown_ValueChanged);
             // 
             // CtlrJogSpeed_numericUpDown
             // 
@@ -5407,7 +5359,6 @@
             0,
             0,
             0});
-            this.CtlrJogSpeed_numericUpDown.ValueChanged += new System.EventHandler(this.CtlrJogSpeed_numericUpDown_ValueChanged);
             // 
             // label134
             // 
@@ -5572,15 +5523,6 @@
             this.label87.TabIndex = 71;
             this.label87.Text = "Small moves speed:";
             // 
-            // label152
-            // 
-            this.label152.AutoSize = true;
-            this.label152.Location = new System.Drawing.Point(1195, 457);
-            this.label152.Name = "label152";
-            this.label152.Size = new System.Drawing.Size(35, 13);
-            this.label152.TabIndex = 70;
-            this.label152.Text = "Name";
-            // 
             // SlackCompensation_checkBox
             // 
             this.SlackCompensation_checkBox.AutoSize = true;
@@ -5595,17 +5537,6 @@
             this.SlackCompensation_checkBox.UseVisualStyleBackColor = true;
             this.SlackCompensation_checkBox.Click += new System.EventHandler(this.SlackCompensation_checkBox_Click);
             // 
-            // SetMark6_button
-            // 
-            this.SetMark6_button.Location = new System.Drawing.Point(1008, 605);
-            this.SetMark6_button.Name = "SetMark6_button";
-            this.SetMark6_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark6_button.TabIndex = 69;
-            this.SetMark6_button.Text = "Set Mark 6";
-            this.toolTip1.SetToolTip(this.SetMark6_button, "Sets and names your \"special\" locations.");
-            this.SetMark6_button.UseVisualStyleBackColor = true;
-            this.SetMark6_button.Click += new System.EventHandler(this.SetMark6_button_Click);
-            // 
             // TestXYA_button
             // 
             this.TestXYA_button.Location = new System.Drawing.Point(770, 206);
@@ -5617,49 +5548,9 @@
             this.TestXYA_button.UseVisualStyleBackColor = true;
             this.TestXYA_button.Click += new System.EventHandler(this.TestXYA_button_Click);
             // 
-            // Mark6_textBox
-            // 
-            this.Mark6_textBox.Location = new System.Drawing.Point(1097, 607);
-            this.Mark6_textBox.Name = "Mark6_textBox";
-            this.Mark6_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark6_textBox.TabIndex = 68;
-            this.toolTip1.SetToolTip(this.Mark6_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // Mark5_textBox
-            // 
-            this.Mark5_textBox.Location = new System.Drawing.Point(1097, 581);
-            this.Mark5_textBox.Name = "Mark5_textBox";
-            this.Mark5_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark5_textBox.TabIndex = 66;
-            this.toolTip1.SetToolTip(this.Mark5_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // Mark4_textBox
-            // 
-            this.Mark4_textBox.Location = new System.Drawing.Point(1097, 555);
-            this.Mark4_textBox.Name = "Mark4_textBox";
-            this.Mark4_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark4_textBox.TabIndex = 64;
-            this.toolTip1.SetToolTip(this.Mark4_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // Mark3_textBox
-            // 
-            this.Mark3_textBox.Location = new System.Drawing.Point(1097, 529);
-            this.Mark3_textBox.Name = "Mark3_textBox";
-            this.Mark3_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark3_textBox.TabIndex = 62;
-            this.toolTip1.SetToolTip(this.Mark3_textBox, "Sets and names your \"special\" locations.");
-            // 
-            // Mark2_textBox
-            // 
-            this.Mark2_textBox.Location = new System.Drawing.Point(1097, 503);
-            this.Mark2_textBox.Name = "Mark2_textBox";
-            this.Mark2_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark2_textBox.TabIndex = 60;
-            this.toolTip1.SetToolTip(this.Mark2_textBox, "Sets and names your \"special\" locations.");
-            // 
             // SizeYMax_textBox
             // 
-            this.SizeYMax_textBox.Location = new System.Drawing.Point(399, 431);
+            this.SizeYMax_textBox.Location = new System.Drawing.Point(399, 471);
             this.SizeYMax_textBox.Name = "SizeYMax_textBox";
             this.SizeYMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeYMax_textBox.TabIndex = 44;
@@ -5667,17 +5558,9 @@
             this.SizeYMax_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SizeYMax_textBox_KeyPress);
             this.SizeYMax_textBox.Leave += new System.EventHandler(this.SizeYMax_textBox_Leave);
             // 
-            // Mark1_textBox
-            // 
-            this.Mark1_textBox.Location = new System.Drawing.Point(1097, 477);
-            this.Mark1_textBox.Name = "Mark1_textBox";
-            this.Mark1_textBox.Size = new System.Drawing.Size(133, 20);
-            this.Mark1_textBox.TabIndex = 58;
-            this.toolTip1.SetToolTip(this.Mark1_textBox, "Sets and names your \"special\" locations.");
-            // 
             // SizeXMax_textBox
             // 
-            this.SizeXMax_textBox.Location = new System.Drawing.Point(399, 405);
+            this.SizeXMax_textBox.Location = new System.Drawing.Point(399, 445);
             this.SizeXMax_textBox.Name = "SizeXMax_textBox";
             this.SizeXMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeXMax_textBox.TabIndex = 42;
@@ -5687,7 +5570,7 @@
             // 
             // ParkLocationY_textBox
             // 
-            this.ParkLocationY_textBox.Location = new System.Drawing.Point(534, 429);
+            this.ParkLocationY_textBox.Location = new System.Drawing.Point(534, 469);
             this.ParkLocationY_textBox.Name = "ParkLocationY_textBox";
             this.ParkLocationY_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationY_textBox.TabIndex = 39;
@@ -5697,7 +5580,7 @@
             // 
             // ParkLocationX_textBox
             // 
-            this.ParkLocationX_textBox.Location = new System.Drawing.Point(534, 403);
+            this.ParkLocationX_textBox.Location = new System.Drawing.Point(534, 443);
             this.ParkLocationX_textBox.Name = "ParkLocationX_textBox";
             this.ParkLocationX_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationX_textBox.TabIndex = 37;
@@ -5716,17 +5599,6 @@
             this.TestYX_button.UseVisualStyleBackColor = true;
             this.TestYX_button.Click += new System.EventHandler(this.TestYX_button_Click);
             // 
-            // SetMark5_button
-            // 
-            this.SetMark5_button.Location = new System.Drawing.Point(1008, 579);
-            this.SetMark5_button.Name = "SetMark5_button";
-            this.SetMark5_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark5_button.TabIndex = 67;
-            this.SetMark5_button.Text = "Set Mark 5";
-            this.toolTip1.SetToolTip(this.SetMark5_button, "Sets and names your \"special\" locations.");
-            this.SetMark5_button.UseVisualStyleBackColor = true;
-            this.SetMark5_button.Click += new System.EventHandler(this.SetMark5_button_Click);
-            // 
             // MotorPower_checkBox
             // 
             this.MotorPower_checkBox.AutoSize = true;
@@ -5739,44 +5611,11 @@
             this.MotorPower_checkBox.UseVisualStyleBackColor = true;
             this.MotorPower_checkBox.Click += new System.EventHandler(this.MotorPower_checkBox_Click);
             // 
-            // SetMark4_button
-            // 
-            this.SetMark4_button.Location = new System.Drawing.Point(1008, 553);
-            this.SetMark4_button.Name = "SetMark4_button";
-            this.SetMark4_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark4_button.TabIndex = 65;
-            this.SetMark4_button.Text = "Set Mark 4";
-            this.toolTip1.SetToolTip(this.SetMark4_button, "Sets and names your \"special\" locations.");
-            this.SetMark4_button.UseVisualStyleBackColor = true;
-            this.SetMark4_button.Click += new System.EventHandler(this.SetMark4_button_Click);
-            // 
-            // SetMark3_button
-            // 
-            this.SetMark3_button.Location = new System.Drawing.Point(1008, 527);
-            this.SetMark3_button.Name = "SetMark3_button";
-            this.SetMark3_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark3_button.TabIndex = 63;
-            this.SetMark3_button.Text = "Set Mark 3";
-            this.toolTip1.SetToolTip(this.SetMark3_button, "Sets and names your \"special\" locations.");
-            this.SetMark3_button.UseVisualStyleBackColor = true;
-            this.SetMark3_button.Click += new System.EventHandler(this.SetMark3_button_Click);
-            // 
-            // SetMark2_button
-            // 
-            this.SetMark2_button.Location = new System.Drawing.Point(1008, 501);
-            this.SetMark2_button.Name = "SetMark2_button";
-            this.SetMark2_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark2_button.TabIndex = 61;
-            this.SetMark2_button.Text = "Set Mark 2";
-            this.toolTip1.SetToolTip(this.SetMark2_button, "Sets and names your \"special\" locations.");
-            this.SetMark2_button.UseVisualStyleBackColor = true;
-            this.SetMark2_button.Click += new System.EventHandler(this.SetMark2_button_Click);
-            // 
             // label113
             // 
             this.label113.AutoSize = true;
             this.label113.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label113.Location = new System.Drawing.Point(352, 382);
+            this.label113.Location = new System.Drawing.Point(352, 422);
             this.label113.Name = "label113";
             this.label113.Size = new System.Drawing.Size(108, 20);
             this.label113.TabIndex = 48;
@@ -5785,27 +5624,16 @@
             // label102
             // 
             this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(353, 434);
+            this.label102.Location = new System.Drawing.Point(353, 474);
             this.label102.Name = "label102";
             this.label102.Size = new System.Drawing.Size(40, 13);
             this.label102.TabIndex = 45;
             this.label102.Text = "Max Y:";
             // 
-            // SetMark1_button
-            // 
-            this.SetMark1_button.Location = new System.Drawing.Point(1008, 475);
-            this.SetMark1_button.Name = "SetMark1_button";
-            this.SetMark1_button.Size = new System.Drawing.Size(75, 23);
-            this.SetMark1_button.TabIndex = 59;
-            this.SetMark1_button.Text = "Set Mark 1";
-            this.toolTip1.SetToolTip(this.SetMark1_button, "Sets and names your \"special\" locations.");
-            this.SetMark1_button.UseVisualStyleBackColor = true;
-            this.SetMark1_button.Click += new System.EventHandler(this.SetMark1_button_Click);
-            // 
             // label107
             // 
             this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(353, 408);
+            this.label107.Location = new System.Drawing.Point(353, 448);
             this.label107.Name = "label107";
             this.label107.Size = new System.Drawing.Size(40, 13);
             this.label107.TabIndex = 43;
@@ -5814,7 +5642,7 @@
             // label92
             // 
             this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(511, 432);
+            this.label92.Location = new System.Drawing.Point(511, 472);
             this.label92.Name = "label92";
             this.label92.Size = new System.Drawing.Size(17, 13);
             this.label92.TabIndex = 40;
@@ -5823,7 +5651,7 @@
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(511, 406);
+            this.label61.Location = new System.Drawing.Point(511, 446);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(17, 13);
             this.label61.TabIndex = 38;
@@ -6046,6 +5874,158 @@
             this.comboBoxSerialPorts.Size = new System.Drawing.Size(75, 21);
             this.comboBoxSerialPorts.TabIndex = 0;
             this.toolTip1.SetToolTip(this.comboBoxSerialPorts, "Serial port used by TinyG");
+            // 
+            // label177
+            // 
+            this.label177.AutoSize = true;
+            this.label177.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label177.Location = new System.Drawing.Point(839, 1);
+            this.label177.Name = "label177";
+            this.label177.Size = new System.Drawing.Size(93, 20);
+            this.label177.TabIndex = 124;
+            this.label177.Text = "Bookmarks:";
+            this.toolTip1.SetToolTip(this.label177, "Connection status");
+            // 
+            // label152
+            // 
+            this.label152.AutoSize = true;
+            this.label152.Location = new System.Drawing.Point(984, 8);
+            this.label152.Name = "label152";
+            this.label152.Size = new System.Drawing.Size(38, 13);
+            this.label152.TabIndex = 70;
+            this.label152.Text = "Name:";
+            // 
+            // SetMark6_button
+            // 
+            this.SetMark6_button.Location = new System.Drawing.Point(1028, 160);
+            this.SetMark6_button.Name = "SetMark6_button";
+            this.SetMark6_button.Size = new System.Drawing.Size(40, 23);
+            this.SetMark6_button.TabIndex = 69;
+            this.SetMark6_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetMark6_button, "Sets and names your \"special\" locations.");
+            this.SetMark6_button.UseVisualStyleBackColor = true;
+            this.SetMark6_button.Click += new System.EventHandler(this.SetMark6_button_Click);
+            // 
+            // Mark6_textBox
+            // 
+            this.Mark6_textBox.Location = new System.Drawing.Point(889, 161);
+            this.Mark6_textBox.Name = "Mark6_textBox";
+            this.Mark6_textBox.ReadOnly = true;
+            this.Mark6_textBox.Size = new System.Drawing.Size(133, 20);
+            this.Mark6_textBox.TabIndex = 68;
+            this.toolTip1.SetToolTip(this.Mark6_textBox, "Sets and names your \"special\" locations.");
+            this.Mark6_textBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Mark_textBox_PreviewKeyDown);
+            this.Mark6_textBox.Validated += new System.EventHandler(this.Mark6_textBox_Validated);
+            // 
+            // Mark5_textBox
+            // 
+            this.Mark5_textBox.Location = new System.Drawing.Point(889, 134);
+            this.Mark5_textBox.Name = "Mark5_textBox";
+            this.Mark5_textBox.ReadOnly = true;
+            this.Mark5_textBox.Size = new System.Drawing.Size(133, 20);
+            this.Mark5_textBox.TabIndex = 66;
+            this.toolTip1.SetToolTip(this.Mark5_textBox, "Sets and names your \"special\" locations.");
+            this.Mark5_textBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Mark_textBox_PreviewKeyDown);
+            this.Mark5_textBox.Validated += new System.EventHandler(this.Mark5_textBox_Validated);
+            // 
+            // Mark4_textBox
+            // 
+            this.Mark4_textBox.Location = new System.Drawing.Point(889, 107);
+            this.Mark4_textBox.Name = "Mark4_textBox";
+            this.Mark4_textBox.ReadOnly = true;
+            this.Mark4_textBox.Size = new System.Drawing.Size(133, 20);
+            this.Mark4_textBox.TabIndex = 64;
+            this.toolTip1.SetToolTip(this.Mark4_textBox, "Sets and names your \"special\" locations.");
+            this.Mark4_textBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Mark_textBox_PreviewKeyDown);
+            this.Mark4_textBox.Validated += new System.EventHandler(this.Mark4_textBox_Validated);
+            // 
+            // Mark3_textBox
+            // 
+            this.Mark3_textBox.Location = new System.Drawing.Point(889, 80);
+            this.Mark3_textBox.Name = "Mark3_textBox";
+            this.Mark3_textBox.ReadOnly = true;
+            this.Mark3_textBox.Size = new System.Drawing.Size(133, 20);
+            this.Mark3_textBox.TabIndex = 62;
+            this.toolTip1.SetToolTip(this.Mark3_textBox, "Sets and names your \"special\" locations.");
+            this.Mark3_textBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Mark_textBox_PreviewKeyDown);
+            this.Mark3_textBox.Validated += new System.EventHandler(this.Mark3_textBox_Validated);
+            // 
+            // Mark2_textBox
+            // 
+            this.Mark2_textBox.Location = new System.Drawing.Point(889, 53);
+            this.Mark2_textBox.Name = "Mark2_textBox";
+            this.Mark2_textBox.ReadOnly = true;
+            this.Mark2_textBox.Size = new System.Drawing.Size(133, 20);
+            this.Mark2_textBox.TabIndex = 60;
+            this.toolTip1.SetToolTip(this.Mark2_textBox, "Sets and names your \"special\" locations.");
+            this.Mark2_textBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Mark_textBox_PreviewKeyDown);
+            this.Mark2_textBox.Validated += new System.EventHandler(this.Mark2_textBox_Validated);
+            // 
+            // Mark1_textBox
+            // 
+            this.Mark1_textBox.Location = new System.Drawing.Point(889, 26);
+            this.Mark1_textBox.Name = "Mark1_textBox";
+            this.Mark1_textBox.ReadOnly = true;
+            this.Mark1_textBox.Size = new System.Drawing.Size(133, 20);
+            this.Mark1_textBox.TabIndex = 58;
+            this.toolTip1.SetToolTip(this.Mark1_textBox, "Sets and names your \"special\" locations.");
+            this.Mark1_textBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Mark_textBox_PreviewKeyDown);
+            this.Mark1_textBox.Validated += new System.EventHandler(this.Mark1_textBox_Validated);
+            // 
+            // SetMark5_button
+            // 
+            this.SetMark5_button.Location = new System.Drawing.Point(1028, 132);
+            this.SetMark5_button.Name = "SetMark5_button";
+            this.SetMark5_button.Size = new System.Drawing.Size(40, 23);
+            this.SetMark5_button.TabIndex = 67;
+            this.SetMark5_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetMark5_button, "Sets and names your \"special\" locations.");
+            this.SetMark5_button.UseVisualStyleBackColor = true;
+            this.SetMark5_button.Click += new System.EventHandler(this.SetMark5_button_Click);
+            // 
+            // SetMark4_button
+            // 
+            this.SetMark4_button.Location = new System.Drawing.Point(1028, 105);
+            this.SetMark4_button.Name = "SetMark4_button";
+            this.SetMark4_button.Size = new System.Drawing.Size(40, 23);
+            this.SetMark4_button.TabIndex = 65;
+            this.SetMark4_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetMark4_button, "Sets and names your \"special\" locations.");
+            this.SetMark4_button.UseVisualStyleBackColor = true;
+            this.SetMark4_button.Click += new System.EventHandler(this.SetMark4_button_Click);
+            // 
+            // SetMark3_button
+            // 
+            this.SetMark3_button.Location = new System.Drawing.Point(1028, 80);
+            this.SetMark3_button.Name = "SetMark3_button";
+            this.SetMark3_button.Size = new System.Drawing.Size(40, 23);
+            this.SetMark3_button.TabIndex = 63;
+            this.SetMark3_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetMark3_button, "Sets and names your \"special\" locations.");
+            this.SetMark3_button.UseVisualStyleBackColor = true;
+            this.SetMark3_button.Click += new System.EventHandler(this.SetMark3_button_Click);
+            // 
+            // SetMark2_button
+            // 
+            this.SetMark2_button.Location = new System.Drawing.Point(1028, 51);
+            this.SetMark2_button.Name = "SetMark2_button";
+            this.SetMark2_button.Size = new System.Drawing.Size(40, 23);
+            this.SetMark2_button.TabIndex = 61;
+            this.SetMark2_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetMark2_button, "Sets and names your \"special\" locations.");
+            this.SetMark2_button.UseVisualStyleBackColor = true;
+            this.SetMark2_button.Click += new System.EventHandler(this.SetMark2_button_Click);
+            // 
+            // SetMark1_button
+            // 
+            this.SetMark1_button.Location = new System.Drawing.Point(1028, 24);
+            this.SetMark1_button.Name = "SetMark1_button";
+            this.SetMark1_button.Size = new System.Drawing.Size(40, 23);
+            this.SetMark1_button.TabIndex = 59;
+            this.SetMark1_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetMark1_button, "Sets and names your \"special\" locations.");
+            this.SetMark1_button.UseVisualStyleBackColor = true;
+            this.SetMark1_button.Click += new System.EventHandler(this.SetMark1_button_Click);
             // 
             // RunJob_tabPage
             // 
@@ -6314,7 +6294,6 @@
             this.SkipMeasurements_checkBox.TabIndex = 81;
             this.SkipMeasurements_checkBox.Text = "Skip measurement, use nominal";
             this.SkipMeasurements_checkBox.UseVisualStyleBackColor = true;
-            this.SkipMeasurements_checkBox.CheckedChanged += new System.EventHandler(this.SkipMeasurements_checkBox_CheckedChanged);
             // 
             // label122
             // 
@@ -6336,7 +6315,6 @@
             this.OmitNozzleCalibration_checkBox.Text = "Don\'t use nozzle correction";
             this.toolTip1.SetToolTip(this.OmitNozzleCalibration_checkBox, "Skips Nozzle correction phase.");
             this.OmitNozzleCalibration_checkBox.UseVisualStyleBackColor = true;
-            this.OmitNozzleCalibration_checkBox.CheckedChanged += new System.EventHandler(this.OmitNozzleCalibration_checkBox_CheckedChanged);
             // 
             // ReMeasure_button
             // 
@@ -7121,14 +7099,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ComponentCount,
@@ -9535,21 +9513,6 @@
             this.NextY_column.ReadOnly = true;
             this.NextY_column.Width = 64;
             // 
-            // ShowPixels_checkBox
-            // 
-            this.ShowPixels_checkBox.AutoSize = true;
-            this.ShowPixels_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShowPixels_checkBox.Location = new System.Drawing.Point(441, 110);
-            this.ShowPixels_checkBox.Name = "ShowPixels_checkBox";
-            this.ShowPixels_checkBox.Size = new System.Drawing.Size(82, 17);
-            this.ShowPixels_checkBox.TabIndex = 265;
-            this.ShowPixels_checkBox.Text = "Show pixels";
-            this.toolTip1.SetToolTip(this.ShowPixels_checkBox, "This draws camera image mapped 1:1 to pixels \r\non the screen. With high resolutio" +
-        "n cameras, imace is clipped.\r\nUse this mode to set box size!\r\nUncheck to zoom ou" +
-        "t to full camera view.");
-            this.ShowPixels_checkBox.UseVisualStyleBackColor = true;
-            this.ShowPixels_checkBox.CheckedChanged += new System.EventHandler(this.ShowPixels_checkBox_CheckedChanged);
-            // 
             // CAD_openFileDialog
             // 
             this.CAD_openFileDialog.Filter = "CSV files (*.csv)|*.csv|KiCad files (*.pos)|*.pos|All files (*.*)|*.*";
@@ -9566,7 +9529,7 @@
             // GotoX_textBox
             // 
             this.GotoX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoX_textBox.Location = new System.Drawing.Point(1083, 5);
+            this.GotoX_textBox.Location = new System.Drawing.Point(774, 3);
             this.GotoX_textBox.Name = "GotoX_textBox";
             this.GotoX_textBox.Size = new System.Drawing.Size(50, 20);
             this.GotoX_textBox.TabIndex = 78;
@@ -9577,7 +9540,7 @@
             // GotoY_textBox
             // 
             this.GotoY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoY_textBox.Location = new System.Drawing.Point(1083, 32);
+            this.GotoY_textBox.Location = new System.Drawing.Point(774, 32);
             this.GotoY_textBox.Name = "GotoY_textBox";
             this.GotoY_textBox.Size = new System.Drawing.Size(50, 20);
             this.GotoY_textBox.TabIndex = 83;
@@ -9588,7 +9551,7 @@
             // GotoZ_textBox
             // 
             this.GotoZ_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoZ_textBox.Location = new System.Drawing.Point(1081, 58);
+            this.GotoZ_textBox.Location = new System.Drawing.Point(774, 58);
             this.GotoZ_textBox.Name = "GotoZ_textBox";
             this.GotoZ_textBox.Size = new System.Drawing.Size(50, 20);
             this.GotoZ_textBox.TabIndex = 85;
@@ -9599,7 +9562,7 @@
             // GotoA_textBox
             // 
             this.GotoA_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoA_textBox.Location = new System.Drawing.Point(1081, 86);
+            this.GotoA_textBox.Location = new System.Drawing.Point(774, 86);
             this.GotoA_textBox.Name = "GotoA_textBox";
             this.GotoA_textBox.Size = new System.Drawing.Size(50, 20);
             this.GotoA_textBox.TabIndex = 87;
@@ -9610,7 +9573,7 @@
             // Goto_button
             // 
             this.Goto_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Goto_button.Location = new System.Drawing.Point(956, 62);
+            this.Goto_button.Location = new System.Drawing.Point(647, 59);
             this.Goto_button.Name = "Goto_button";
             this.Goto_button.Size = new System.Drawing.Size(76, 40);
             this.Goto_button.TabIndex = 89;
@@ -9623,7 +9586,7 @@
             // 
             this.NozzleNo_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.NozzleNo_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NozzleNo_textBox.Location = new System.Drawing.Point(715, 84);
+            this.NozzleNo_textBox.Location = new System.Drawing.Point(559, 85);
             this.NozzleNo_textBox.Name = "NozzleNo_textBox";
             this.NozzleNo_textBox.ReadOnly = true;
             this.NozzleNo_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -9635,7 +9598,7 @@
             // 
             // LoadCurrentPosition_button
             // 
-            this.LoadCurrentPosition_button.Location = new System.Drawing.Point(956, 115);
+            this.LoadCurrentPosition_button.Location = new System.Drawing.Point(646, 113);
             this.LoadCurrentPosition_button.Name = "LoadCurrentPosition_button";
             this.LoadCurrentPosition_button.Size = new System.Drawing.Size(177, 23);
             this.LoadCurrentPosition_button.TabIndex = 105;
@@ -9646,7 +9609,7 @@
             // 
             // SetCurrentPosition_button
             // 
-            this.SetCurrentPosition_button.Location = new System.Drawing.Point(956, 144);
+            this.SetCurrentPosition_button.Location = new System.Drawing.Point(646, 136);
             this.SetCurrentPosition_button.Name = "SetCurrentPosition_button";
             this.SetCurrentPosition_button.Size = new System.Drawing.Size(177, 23);
             this.SetCurrentPosition_button.TabIndex = 114;
@@ -9657,7 +9620,7 @@
             // 
             // MeasureAndSet_button
             // 
-            this.MeasureAndSet_button.Location = new System.Drawing.Point(597, 112);
+            this.MeasureAndSet_button.Location = new System.Drawing.Point(441, 113);
             this.MeasureAndSet_button.Name = "MeasureAndSet_button";
             this.MeasureAndSet_button.Size = new System.Drawing.Size(78, 46);
             this.MeasureAndSet_button.TabIndex = 266;
@@ -9685,7 +9648,7 @@
             // 
             this.Abs_radioButton.AutoSize = true;
             this.Abs_radioButton.Checked = true;
-            this.Abs_radioButton.Location = new System.Drawing.Point(955, 7);
+            this.Abs_radioButton.Location = new System.Drawing.Point(646, 4);
             this.Abs_radioButton.Name = "Abs_radioButton";
             this.Abs_radioButton.Size = new System.Drawing.Size(66, 17);
             this.Abs_radioButton.TabIndex = 92;
@@ -9696,7 +9659,7 @@
             // Relative_Button
             // 
             this.Relative_Button.AutoSize = true;
-            this.Relative_Button.Location = new System.Drawing.Point(956, 31);
+            this.Relative_Button.Location = new System.Drawing.Point(647, 28);
             this.Relative_Button.Name = "Relative_Button";
             this.Relative_Button.Size = new System.Drawing.Size(64, 17);
             this.Relative_Button.TabIndex = 93;
@@ -9707,7 +9670,7 @@
             // 
             this.label108.AutoSize = true;
             this.label108.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label108.Location = new System.Drawing.Point(608, 84);
+            this.label108.Location = new System.Drawing.Point(452, 85);
             this.label108.Name = "label108";
             this.label108.Size = new System.Drawing.Size(63, 18);
             this.label108.TabIndex = 95;
@@ -9721,7 +9684,7 @@
             // GoX_button
             // 
             this.GoX_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoX_button.Location = new System.Drawing.Point(1045, 5);
+            this.GoX_button.Location = new System.Drawing.Point(736, 2);
             this.GoX_button.Name = "GoX_button";
             this.GoX_button.Size = new System.Drawing.Size(32, 23);
             this.GoX_button.TabIndex = 106;
@@ -9732,7 +9695,7 @@
             // GoY_button
             // 
             this.GoY_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoY_button.Location = new System.Drawing.Point(1045, 33);
+            this.GoY_button.Location = new System.Drawing.Point(736, 30);
             this.GoY_button.Name = "GoY_button";
             this.GoY_button.Size = new System.Drawing.Size(32, 23);
             this.GoY_button.TabIndex = 107;
@@ -9743,7 +9706,7 @@
             // GoA_button
             // 
             this.GoA_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoA_button.Location = new System.Drawing.Point(1045, 87);
+            this.GoA_button.Location = new System.Drawing.Point(736, 84);
             this.GoA_button.Name = "GoA_button";
             this.GoA_button.Size = new System.Drawing.Size(32, 23);
             this.GoA_button.TabIndex = 109;
@@ -9754,7 +9717,7 @@
             // GoZ_button
             // 
             this.GoZ_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoZ_button.Location = new System.Drawing.Point(1045, 59);
+            this.GoZ_button.Location = new System.Drawing.Point(736, 56);
             this.GoZ_button.Name = "GoZ_button";
             this.GoZ_button.Size = new System.Drawing.Size(32, 23);
             this.GoZ_button.TabIndex = 108;
@@ -9766,53 +9729,21 @@
             // 
             this.AppSettings_openFileDialog.FileName = "openFileDialog1";
             // 
-            // VigorousHoming_checkBox
-            // 
-            this.VigorousHoming_checkBox.AutoSize = true;
-            this.VigorousHoming_checkBox.Location = new System.Drawing.Point(441, 133);
-            this.VigorousHoming_checkBox.Name = "VigorousHoming_checkBox";
-            this.VigorousHoming_checkBox.Size = new System.Drawing.Size(106, 17);
-            this.VigorousHoming_checkBox.TabIndex = 110;
-            this.VigorousHoming_checkBox.Text = "Vigorous Homing";
-            this.VigorousHoming_checkBox.UseVisualStyleBackColor = true;
-            this.VigorousHoming_checkBox.CheckedChanged += new System.EventHandler(this.VigorousHoming_checkBox_CheckedChanged);
-            // 
-            // label164
-            // 
-            this.label164.AutoSize = true;
-            this.label164.Location = new System.Drawing.Point(441, 33);
-            this.label164.Name = "label164";
-            this.label164.Size = new System.Drawing.Size(70, 13);
-            this.label164.TabIndex = 112;
-            this.label164.Text = "Zoom Factor:";
-            // 
-            // label165
-            // 
-            this.label165.AutoSize = true;
-            this.label165.Location = new System.Drawing.Point(441, 85);
-            this.label165.Name = "label165";
-            this.label165.Size = new System.Drawing.Size(70, 13);
-            this.label165.TabIndex = 113;
-            this.label165.Text = "Zoom Factor:";
-            // 
             // panel5
             // 
             this.panel5.Controls.Add(this.SerialMonitor_richTextBox);
             this.panel5.Controls.Add(this.label14);
             this.panel5.Controls.Add(this.xpos_textBox);
             this.panel5.Controls.Add(this.label17);
+            this.panel5.Controls.Add(this.label177);
             this.panel5.Controls.Add(this.SendtoControlBoard_textBox);
             this.panel5.Controls.Add(this.MeasureAndSet_button);
             this.panel5.Controls.Add(this.Test1_button);
-            this.panel5.Controls.Add(this.ShowPixels_checkBox);
             this.panel5.Controls.Add(this.label4);
             this.panel5.Controls.Add(this.SetCurrentPosition_button);
             this.panel5.Controls.Add(this.Test2_button);
-            this.panel5.Controls.Add(this.label165);
             this.panel5.Controls.Add(this.ypos_textBox);
-            this.panel5.Controls.Add(this.label164);
             this.panel5.Controls.Add(this.label18);
-            this.panel5.Controls.Add(this.VigorousHoming_checkBox);
             this.panel5.Controls.Add(this.zpos_textBox);
             this.panel5.Controls.Add(this.GoA_button);
             this.panel5.Controls.Add(this.label19);
@@ -9823,16 +9754,12 @@
             this.panel5.Controls.Add(this.GoX_button);
             this.panel5.Controls.Add(this.Test3_button);
             this.panel5.Controls.Add(this.LoadCurrentPosition_button);
-            this.panel5.Controls.Add(this.DownCamZoom_checkBox);
             this.panel5.Controls.Add(this.NozzleNo_textBox);
             this.panel5.Controls.Add(this.Park_button);
             this.panel5.Controls.Add(this.label108);
-            this.panel5.Controls.Add(this.DownCamZoomFactor_textBox);
             this.panel5.Controls.Add(this.Relative_Button);
             this.panel5.Controls.Add(this.Test4_button);
             this.panel5.Controls.Add(this.Abs_radioButton);
-            this.panel5.Controls.Add(this.UpCamZoom_checkBox);
-            this.panel5.Controls.Add(this.UpCamZoomFactor_textBox);
             this.panel5.Controls.Add(this.Goto_button);
             this.panel5.Controls.Add(this.Test5_button);
             this.panel5.Controls.Add(this.GotoA_textBox);
@@ -9840,12 +9767,25 @@
             this.panel5.Controls.Add(this.GotoZ_textBox);
             this.panel5.Controls.Add(this.Bookmark1_button);
             this.panel5.Controls.Add(this.GotoY_textBox);
-            this.panel5.Controls.Add(this.Bookmark2_button);
             this.panel5.Controls.Add(this.GotoX_textBox);
+            this.panel5.Controls.Add(this.SetMark6_button);
+            this.panel5.Controls.Add(this.Bookmark2_button);
+            this.panel5.Controls.Add(this.SetMark5_button);
+            this.panel5.Controls.Add(this.SetMark4_button);
+            this.panel5.Controls.Add(this.SetMark3_button);
             this.panel5.Controls.Add(this.Bookmark3_button);
+            this.panel5.Controls.Add(this.SetMark2_button);
+            this.panel5.Controls.Add(this.SetMark1_button);
             this.panel5.Controls.Add(this.Bookmark4_button);
+            this.panel5.Controls.Add(this.label152);
+            this.panel5.Controls.Add(this.Mark6_textBox);
             this.panel5.Controls.Add(this.Bookmark6_button);
+            this.panel5.Controls.Add(this.Mark5_textBox);
+            this.panel5.Controls.Add(this.Mark4_textBox);
             this.panel5.Controls.Add(this.Bookmark5_button);
+            this.panel5.Controls.Add(this.Mark3_textBox);
+            this.panel5.Controls.Add(this.Mark2_textBox);
+            this.panel5.Controls.Add(this.Mark1_textBox);
             this.panel5.Location = new System.Drawing.Point(3, 714);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(1253, 190);
@@ -9865,6 +9805,90 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1272, 907);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // ShowPixels_checkBox
+            // 
+            this.ShowPixels_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ShowPixels_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.pixel;
+            this.ShowPixels_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ShowPixels_checkBox.Location = new System.Drawing.Point(117, 3);
+            this.ShowPixels_checkBox.Name = "ShowPixels_checkBox";
+            this.ShowPixels_checkBox.Size = new System.Drawing.Size(32, 32);
+            this.ShowPixels_checkBox.TabIndex = 229;
+            this.ShowPixels_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // CamPanelMaximize_checkBox
+            // 
+            this.CamPanelMaximize_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamPanelMaximize_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.maximize;
+            this.CamPanelMaximize_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamPanelMaximize_checkBox.Location = new System.Drawing.Point(241, 3);
+            this.CamPanelMaximize_checkBox.MaximumSize = new System.Drawing.Size(32, 32);
+            this.CamPanelMaximize_checkBox.MinimumSize = new System.Drawing.Size(32, 32);
+            this.CamPanelMaximize_checkBox.Name = "CamPanelMaximize_checkBox";
+            this.CamPanelMaximize_checkBox.Size = new System.Drawing.Size(32, 32);
+            this.CamPanelMaximize_checkBox.TabIndex = 229;
+            this.CamPanelMaximize_checkBox.UseVisualStyleBackColor = true;
+            this.CamPanelMaximize_checkBox.CheckedChanged += new System.EventHandler(this.CamPanelMaximize_checkBox_CheckedChanged);
+            // 
+            // CamZoom_CheckBox
+            // 
+            this.CamZoom_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamZoom_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.zoom;
+            this.CamZoom_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamZoom_CheckBox.Location = new System.Drawing.Point(155, 3);
+            this.CamZoom_CheckBox.Name = "CamZoom_CheckBox";
+            this.CamZoom_CheckBox.Size = new System.Drawing.Size(32, 32);
+            this.CamZoom_CheckBox.TabIndex = 229;
+            this.CamZoom_CheckBox.UseVisualStyleBackColor = true;
+            // 
+            // CamGrid_CheckBox
+            // 
+            this.CamGrid_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamGrid_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.grid;
+            this.CamGrid_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamGrid_CheckBox.Location = new System.Drawing.Point(41, 3);
+            this.CamGrid_CheckBox.Name = "CamGrid_CheckBox";
+            this.CamGrid_CheckBox.Size = new System.Drawing.Size(32, 32);
+            this.CamGrid_CheckBox.TabIndex = 229;
+            this.CamGrid_CheckBox.UseVisualStyleBackColor = true;
+            // 
+            // CamCross_CheckBox
+            // 
+            this.CamCross_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamCross_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.cross;
+            this.CamCross_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamCross_CheckBox.Location = new System.Drawing.Point(3, 3);
+            this.CamCross_CheckBox.Name = "CamCross_CheckBox";
+            this.CamCross_CheckBox.Size = new System.Drawing.Size(32, 32);
+            this.CamCross_CheckBox.TabIndex = 229;
+            this.CamCross_CheckBox.UseVisualStyleBackColor = true;
+            // 
+            // Cam_pictureBox
+            // 
+            this.Cam_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Cam_pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Cam_pictureBox.Location = new System.Drawing.Point(0, 0);
+            this.Cam_pictureBox.Margin = new System.Windows.Forms.Padding(0);
+            this.Cam_pictureBox.MinimumSize = new System.Drawing.Size(640, 480);
+            this.Cam_pictureBox.Name = "Cam_pictureBox";
+            this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
+            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.Cam_pictureBox.TabIndex = 10;
+            this.Cam_pictureBox.TabStop = false;
+            this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
+            this.Cam_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseMove);
+            // 
+            // PauseDisplay_checkBox
+            // 
+            this.CamPauseDisplay_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamPauseDisplay_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.pause;
+            this.CamPauseDisplay_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamPauseDisplay_checkBox.Location = new System.Drawing.Point(79, 3);
+            this.CamPauseDisplay_checkBox.Name = "PauseDisplay_checkBox";
+            this.CamPauseDisplay_checkBox.Size = new System.Drawing.Size(32, 32);
+            this.CamPauseDisplay_checkBox.TabIndex = 229;
+            this.CamPauseDisplay_checkBox.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
@@ -9894,7 +9918,7 @@
             this.Camera_Panel.ResumeLayout(false);
             this.Camera_Panel.PerformLayout();
             this.panel15.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CamZoomFactor_numericUpDown)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -9997,6 +10021,7 @@
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -10020,10 +10045,6 @@
 		private System.Windows.Forms.SaveFileDialog Job_saveFileDialog;
 		private System.Windows.Forms.Button OpticalHome_button;
 		private System.Windows.Forms.Button Park_button;
-        private System.Windows.Forms.TextBox DownCamZoomFactor_textBox;
-		private System.Windows.Forms.CheckBox DownCamZoom_checkBox;
-        private System.Windows.Forms.TextBox UpCamZoomFactor_textBox;
-		private System.Windows.Forms.CheckBox UpCamZoom_checkBox;
         private System.Windows.Forms.Button TestNozzleRecognition_button;
         private System.Windows.Forms.Button Test3_button;
         private System.Windows.Forms.Button Test4_button;
@@ -10423,8 +10444,6 @@
         public System.Windows.Forms.CheckBox Vacuum_checkBox;
         public System.Windows.Forms.CheckBox Pump_checkBox;
         private System.Windows.Forms.CheckBox VigorousHoming_checkBox;
-        private System.Windows.Forms.Label label164;
-        private System.Windows.Forms.Label label165;
         private System.Windows.Forms.Button SetCurrentPosition_button;
         public System.Windows.Forms.CheckBox VacuumInvert_checkBox;
         public System.Windows.Forms.CheckBox PumpInvert_checkBox;
@@ -10521,7 +10540,6 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label71;
         private System.Windows.Forms.Button DownCamListResolutions_button;
-        private System.Windows.Forms.CheckBox ShowPixels_checkBox;
         private System.Windows.Forms.RadioButton DownCam_radioButton;
         private System.Windows.Forms.RadioButton UpCam_radioButton;
         private System.Windows.Forms.GroupBox groupBox6;
@@ -10796,6 +10814,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn B_column;
         private System.Windows.Forms.Panel panel15;
         private System.Windows.Forms.CheckBox CamGrid_CheckBox;
+        private System.Windows.Forms.CheckBox CamZoom_CheckBox;
+        private System.Windows.Forms.NumericUpDown CamZoomFactor_numericUpDown;
+        private System.Windows.Forms.CheckBox ShowPixels_checkBox;
+        private System.Windows.Forms.Label label109;
+        private System.Windows.Forms.CheckBox CamPanelMaximize_checkBox;
+        private System.Windows.Forms.CheckBox CamPauseDisplay_checkBox;
     }
 }
 

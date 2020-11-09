@@ -1215,19 +1215,6 @@ namespace LitePlacer
             UpdateSearchFunctions();
         }
 
-        private void ShowPixels_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ShowPixels_checkBox.Checked) 
-            {
-                Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-            }
-            else
-            {
-                Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            }
-            Setting.Cam_ShowPixels = ShowPixels_checkBox.Checked;
-        }
-
         // =====================================================================================
         // Textbox values and interaction
         void CommasToPoints(TextBox box)
@@ -1236,8 +1223,6 @@ namespace LitePlacer
             box.Text = box.Text.Replace(',', '.');
             box.SelectionStart = pos;
         }
-
-
 
         private void Xmin_textBox_TextChanged(object sender, EventArgs e)
         {
@@ -1258,8 +1243,6 @@ namespace LitePlacer
             }
             Xmin_textBox.ForeColor = Color.Red;
         }
-
-
 
         private void Xmax_textBox_TextChanged(object sender, EventArgs e)
         {
@@ -1313,7 +1296,6 @@ namespace LitePlacer
             Ymax_textBox.ForeColor = Color.Red;
         }
 
-
         private void XmaxDistance_textBox_TextChanged(object sender, EventArgs e)
         {
             double val = 0.0;
@@ -1333,8 +1315,6 @@ namespace LitePlacer
             }
             XmaxDistance_textBox.ForeColor = Color.Red;
         }
-
-
 
         private void YmaxDistance_textBox_TextChanged(object sender, EventArgs e)
         {

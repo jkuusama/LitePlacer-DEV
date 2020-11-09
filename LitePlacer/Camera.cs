@@ -141,6 +141,8 @@ namespace LitePlacer
 
         public bool ReceivingFrames { get; set; }
 
+        public bool PauseDisplay { get; set; } = false;
+
         // =================================================================================================
         public void ListResolutions(string MonikerStr)
         {
@@ -658,10 +660,12 @@ namespace LitePlacer
         //if Threadpool fails, fall back to singlethread
         bool multithreaded = true;
         BackgroundWorker backgroundWorker;
+        Bitmap pausedFrame = null;
 
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             ReceivingFrames = true;
+            Bitmap frame = eventArgs.Frame;
 
             //Picture origin is up left, machine origin is down left
             //We mirror the picture origin to machine origin
@@ -669,7 +673,7 @@ namespace LitePlacer
             {
                 Mirror Mfilter = new Mirror(!Settings.MirrorX, Settings.MirrorY);
                 // apply the MirrFilter
-                Mfilter.ApplyInPlace(eventArgs.Frame);
+                Mfilter.ApplyInPlace(frame);
             };
 
             // Take a copy for measurements, if needed:
@@ -681,7 +685,7 @@ namespace LitePlacer
                     {
                         TemporaryFrame.Dispose();
                     }
-                    TemporaryFrame = (Bitmap)eventArgs.Frame.Clone();
+                    TemporaryFrame = (Bitmap)frame.Clone();
                     CopyFrame = false;
                     secondFrame = false;
                 }
@@ -702,37 +706,45 @@ namespace LitePlacer
                 return;
             }
 
-            // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
-            /*lock (ProtectedPictureBox._locker)
-            {*/
-                //do multithread by default, fall back to singlethread if Threadpool fails
-                //new frames get dropped if maximum processing capacity is reached
-                if (multithreaded)
+            if (PauseDisplay)
+            {
+                if (pausedFrame == null)
+                    pausedFrame = (Bitmap)frame.Clone();
+                frame = pausedFrame;
+            }
+            else if (pausedFrame != null)
+            {
+                pausedFrame.Dispose();
+                pausedFrame = null;
+            }
+
+            if (multithreaded)
+            {
+                try
                 {
-                    try
+                    if (runningThreads < maxThreads)
                     {
-                        if (runningThreads < maxThreads)
-                        {
-                            runningThreads++;
-                            ThreadPool.QueueUserWorkItem(processNewFrame, eventArgs.Frame.Clone());
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        multithreaded = false;
+                        runningThreads++;
+                        ThreadPool.QueueUserWorkItem(processNewFrame, frame.Clone());
                     }
                 }
-                else
+                catch (Exception)
                 {
-                    if (backgroundWorker == null)
-                    {
-                        backgroundWorker = new BackgroundWorker();
-                        backgroundWorker.DoWork += new DoWorkEventHandler(processNewFrame);
-                    }
-                    if (!backgroundWorker.IsBusy)
-                        backgroundWorker.RunWorkerAsync(eventArgs.Frame.Clone());
-                }                
-            //}
+                    multithreaded = false;
+                }
+            }
+            else
+            {
+                if (backgroundWorker == null)
+                {
+                    backgroundWorker = new BackgroundWorker();
+                    backgroundWorker.DoWork += new DoWorkEventHandler(processNewFrame);
+                }
+                if (!backgroundWorker.IsBusy)
+                {
+                    backgroundWorker.RunWorkerAsync(frame.Clone());
+                }
+            }
         }
         private void processNewFrame(object sender, DoWorkEventArgs e) { processNewFrame(e.Argument); }
         private void processNewFrame(object frameObject)
@@ -837,10 +849,10 @@ namespace LitePlacer
                 {
                     ImageBox.Image.Dispose();
                 }
-                ImageBox.Image = (Bitmap)frame.Clone();
+                ImageBox.Image = frame;//(Bitmap)frame.Clone();     // Copy unnecessary
             }
 
-            frame.Dispose();
+            //frame.Dispose();
             if (CollectorCount > 20)
             {
                 GC.Collect();
