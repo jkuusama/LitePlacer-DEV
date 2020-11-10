@@ -22,8 +22,14 @@ using System.Windows.Controls;
 
 namespace LitePlacer
 {
-    public class Camera
+    public partial class Camera
     {
+        // ==========================================================================================================
+        // Camera Setup, Start etc.
+        // ==========================================================================================================
+
+        #region General
+
         // Program has been crashing due to access of ImageBox.  As a shared resource it needs
         // to be accessed in protected regions.  The lock _locker is to be used for this purpose.
         // The OnPaint method in PictureBox runs in a second task.  By extending the PictureBox
@@ -67,16 +73,6 @@ namespace LitePlacer
             return false;
         }
 
-        public void SignalToStop()      // Asks nicely
-        {
-            VideoSource.SignalToStop();
-        }
-
-        public void NakedStop()         // Tries to force it (but still doesn't always work, just like with children)
-        {
-            VideoSource.Stop();
-        }
-
         public void Close()
         {
             if (!(VideoSource == null))
@@ -89,26 +85,20 @@ namespace LitePlacer
                 VideoSource.SignalToStop();
                 VideoSource.WaitForStop();  // problem? 
                 int i = 0;
-                while (VideoSource.IsRunning && i<10)
+                while (VideoSource.IsRunning && i < 10)
                 {
                     VideoSource.Stop();
                     Thread.Sleep(20);
                     Application.DoEvents();
                 }
-                if (i>=10)
+                if (i >= 10)
                 {
-                    MainForm.DisplayText("*** "+ Id + " refuses to stop! ***" + Settings.Moniker, KnownColor.DarkRed, true);
+                    MainForm.DisplayText("*** " + Id + " refuses to stop! ***" + Settings.Moniker, KnownColor.DarkRed, true);
                 }
                 VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
                 VideoSource = null;
                 Settings.Moniker = "Stopped";
             }
-        }
-
-        public void DisplayPropertyPage()
-        {
-            VideoSource.DisplayPropertyPage(IntPtr.Zero);
-
         }
 
         // Image= PictureBox in UI, the final shown image
@@ -142,6 +132,7 @@ namespace LitePlacer
         public bool ReceivingFrames { get; set; }
 
         public bool PauseDisplay { get; set; } = false;
+        public int OverlayRatio { get; set; } = 0;      // overlay process picture with original
 
         // =================================================================================================
         public void ListResolutions(string MonikerStr)
@@ -230,7 +221,7 @@ namespace LitePlacer
                 if (tempSourceObject != null)
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(tempSourceObject);
                 ////: experimental
-                
+
                 // enumerate video devices
                 FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
                 // create the video source (check that the camera exists is already done
@@ -286,7 +277,7 @@ namespace LitePlacer
                 {
                     // VideoSource.Start() checks running status, is safe to call multiple times
                     tries++;
-                    if (VideoSource==null)
+                    if (VideoSource == null)
                     {
                         break;      // this can happen if changing tabs too fast. TODO: True guard for operations during camera switch/start
                     }
@@ -353,200 +344,16 @@ namespace LitePlacer
             return (Monikers);
         }
 
-
-
-        // ==========================================================================================================
-        // Video processing and measurements are done by appying AForge functions one by one to a videoframe.
-        // To do this, lists of functions are maintained.
-        // ==========================================================================================================
-
-        // The list of functions processing the image shown to user:
-        List<AForgeFunction> DisplayFunctions = new List<AForgeFunction>();
-
-        enum DataGridViewColumns { Function, Active, Int, Double, R, G, B };
-
-        public delegate void AForge_op(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B);
-        class AForgeFunction
-        {
-            public AForge_op func { get; set; }
-            public int parameter_int { get; set; }              // general parameters. Some functions take one int,
-            public double parameter_double { get; set; }        // some take a float,
-            public int R { get; set; }              // and some need R, B, G values.
-            public int G { get; set; }
-            public int B { get; set; }
-        }
-
+        #endregion
 
         // ==========================================================================================================
-        // Convert from UI functions (AForgeFunctionDefinition) to processing functions (AForgeFunction)
-
-        private List<AForgeFunction> BuildFunctionsList(List<AForgeFunctionDefinition> UiList)
-        {
-            List<AForgeFunction> NewList = new List<AForgeFunction>();
-            NewList.Clear();
-            MainForm.DisplayText("BuildFunctionsList: ");
-            foreach (AForgeFunctionDefinition UIfucnt in UiList)
-            {
-                AForgeFunction f = new AForgeFunction();
-                // skip inactive rows
-                if (UIfucnt == null)
-                {
-                    continue;
-                }
-                if (!UIfucnt.Active)
-                {
-                    continue;
-                }
-                switch (UIfucnt.Name)
-                {
-                    case "Grayscale":
-                        f.func = GrayscaleFunc;
-                        break;
-
-                    case "Contrast scretch":
-                        f.func = Contrast_scretchFunc;
-                        break;
-
-                    case "Kill color":
-                        f.func = KillColor_Func;
-                        break;
-
-                    case "Keep color":
-                        f.func = KeepColor_Func;
-                        break;
-
-                    case "Invert":
-                        f.func = InvertFunct;
-                        break;
-
-                    case "Erosion":
-                        f.func = ErosionFunct;
-                        break;
-
-                    case "Meas. zoom":
-                        f.func = Meas_ZoomFunc;
-                        break;
-
-                    case "Edge detect":
-                        f.func = Edge_detectFunc;
-                        break;
-
-                    case "Noise reduction":
-                        f.func = NoiseReduction_Funct;
-                        break;
-
-                    case "Threshold":
-                        f.func = ThresholdFunct;
-                        break;
-
-                    case "Histogram":
-                        f.func = HistogramFunct;
-                        break;
-
-                    case "Blur":
-                        f.func = BlurFunct;
-                        break;
-
-                    case "Gaussian blur":
-                        f.func = GaussianBlurFunct; 
-                        break;
-
-                    case "Hough circles":
-                        f.func = HoughCirclesFunct; 
-                        break;
-
-                    default:
-                        continue;
-                        // break; 
-                }
-                f.parameter_int = UIfucnt.parameterInt;
-                f.parameter_double = UIfucnt.parameterDouble;
-                f.R = UIfucnt.R;
-                f.B = UIfucnt.B;
-                f.G = UIfucnt.G;
-                NewList.Add(f);
-                MainForm.DisplayText(UIfucnt.Name + ", " + f.parameter_int.ToString() + ", " + f.parameter_double.ToString() + ", "
-                    + f.R.ToString() + ", " + f.G.ToString() + ", " + f.B.ToString());
-            };
-            return NewList;
-        }
-
-        // ==========================================================================================================
-        // For display: Get the function list, transfer to video processing
-
-        public void BuildDisplayFunctionsList(List<AForgeFunctionDefinition> UiList)
-        {
-            List<AForgeFunction> NewList = BuildFunctionsList(UiList);    // Get the list
-            int tries = 0;
-            // Stop video
-            bool pause = PauseProcessing;
-            if (VideoSource != null)
-            {
-                if (ReceivingFrames)
-                {
-                    // stop video
-                    PauseProcessing = true;  // ask for stop
-                    Paused = false;
-                    while (!Paused)
-                    {
-                        Thread.Sleep(10);  // wait until really stopped
-                        tries++;
-                        if (tries > 40)
-                        {
-                            break;
-                        }
-                    };
-                }
-            }
-            // copy new list
-            DisplayFunctions.Clear();
-            DisplayFunctions = NewList;
-            Thread.Sleep(50);  // wait until really stopped
-            PauseProcessing = pause;  // restart video is it was running
-        }
-
-        public void ClearDisplayFunctionsList()
-        {
-            if (DisplayFunctions.Count == 0)
-            {
-                return;
-            }
-            // Stop video
-            bool pause = PauseProcessing;
-            int tries = 0;
-            if (VideoSource != null)
-            {
-                if (ReceivingFrames)
-                {
-                    // stop video
-                    PauseProcessing = true;  // ask for stop
-                    Paused = false;
-                    while (!Paused)
-                    {
-                        Thread.Sleep(10);  // wait until really stopped
-                        tries++;
-                        if (tries>40)
-                        {
-                            break;
-                        }
-                    };
-                }
-            }
-            DisplayFunctions.Clear();
-            PauseProcessing = pause;  // restart video is it was running
-        }
-
-        // ==========================================================================================================
-        // Members we need for our drawing functions
+        // Drawing Members
         // ==========================================================================================================
 
-        // ==========================================================================================================
+        #region Drawing Members
 
-        public int Threshold { get; set; }                  // Threshold for all the "draw" functions
-        public bool GrayScale { get; set; }                 // If image is converted to grayscale 
         public bool Invert { get; set; }                    // If image is inverted (makes most sense on grayscale, looking for black stuff on light background)
         public bool DrawArrow { get; set; }         // If arrow is drawn
-        public bool Overlay { get; set; }           // overlay process picture with original
         public double ArrowAngle { get; set; }      // to which angle
         public double SideMarksX { get; set; }      // How many marks on top and bottom (X) and sides (Y)
         public double SideMarksY { get; set; }      // (double, so you can do "SidemarksX= workarea_in_mm / 100;" to get mark every 10cm
@@ -633,16 +440,10 @@ namespace LitePlacer
         // Convert list of AForge.NET's points to array of .NET points
         private System.Drawing.Point[] ToPointsArray(List<AForge.Point> points)
         {
-            System.Drawing.Point[] array = new System.Drawing.Point[points.Count];
-
-            for (int i = 0, n = points.Count; i < n; i++)
-            {
-                array[i] = new System.Drawing.Point((int)points[i].X, (int)points[i].Y);
-            }
-
-            return array;
+            return points.Select(s => new System.Drawing.Point((int)s.X, (int)s.Y)).ToArray();
         }
 
+        #endregion
 
         // ==========================================================================================================
         // ==========================================================================================================
@@ -651,6 +452,8 @@ namespace LitePlacer
 
         // ==========================================================================================================
         // ==========================================================================================================
+
+        #region NewFrame
 
         volatile int CollectorCount = 0;
         //manually keeping track on how many threads are running, so Threadpool doesnt queue up to many
@@ -672,7 +475,6 @@ namespace LitePlacer
             if (!Settings.MirrorX || !Settings.MirrorY)
             {
                 Mirror Mfilter = new Mirror(!Settings.MirrorX, Settings.MirrorY);
-                // apply the MirrFilter
                 Mfilter.ApplyInPlace(frame);
             };
 
@@ -680,7 +482,7 @@ namespace LitePlacer
             if (CopyFrame)
             {
                 if (secondFrame)
-                { 
+                {
                     if (TemporaryFrame != null)
                     {
                         TemporaryFrame.Dispose();
@@ -756,36 +558,59 @@ namespace LitePlacer
                 ZoomFunct(ref frame, Settings.ZoomFactor);
             };
 
+            bool keepOrig = OverlayRatio < 255 && DisplayAlgorithm.Functions?.Count > 0;
             Bitmap origFrame = null;
-            if (Overlay)
-            {
+            if (keepOrig)
                 origFrame = (Bitmap)frame.Clone();
-            }
 
-            // Even with safeguards, changing DisplayFunctions can cause errors. 
+            // Even with safeguards, changing DisplayFunctions can cause errors.
             try
             {
-                if (DisplayFunctions != null)
+                if (DisplayAlgorithm.Functions?.Count > 0)
                 {
-                    foreach (AForgeFunction f in DisplayFunctions)
+                    foreach (AForgeFunction f in DisplayAlgorithm.Functions)
                     {
-                        if(f.func == Meas_ZoomFunc && origFrame != null)
+                        if (f.func == Meas_ZoomFunc && origFrame != null)           // zoom original bitmap as well
                             f.func(ref origFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
                         f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
                     }
 
-                    if (FindCircles)
+                    Bitmap processedFrame = (Bitmap)frame.Clone();      // keep unblended bitmap for shape recognition
+
+                    if (keepOrig)
                     {
-                        DrawCirclesFunct(frame);
+                        // draw processed bitmap over original
+                        using (Graphics bitmapGraphics = Graphics.FromImage(origFrame))
+                        {
+                            ColorMatrix matrix = new ColorMatrix();
+                            matrix.Matrix33 = OverlayRatio / 255.0f;
+                            ImageAttributes attributes = new ImageAttributes();
+                            attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                            bitmapGraphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                            bitmapGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.GammaCorrected;
+
+                            bitmapGraphics.DrawImage(frame, new Rectangle(0, 0, frame.Width, frame.Height), 0, 0, frame.Width, frame.Height, GraphicsUnit.Pixel, attributes);
+                            frame.Dispose();
+                            frame = origFrame;
+                        }
                     }
-                    if (FindRectangles)
+
+                    using (Graphics graphics = Graphics.FromImage(frame))
                     {
-                        frame = DrawRectanglesFunct(frame);
+                        if (FindCircles)
+                        {
+                            DrawCirclesFunct(processedFrame, graphics);
+                        }
+                        if (FindRectangles)
+                        {
+                            DrawRectanglesFunct(processedFrame, graphics);
+                        }
+                        if (FindComponent)
+                        {
+                            DrawComponentsFunct(processedFrame, graphics);
+                        }
                     }
-                    if (FindComponent)
-                    {
-                        frame = DrawComponentsFunct(frame);
-                    }
+                    processedFrame.Dispose();
                 }
             }
             catch (System.InvalidOperationException)
@@ -793,50 +618,36 @@ namespace LitePlacer
                 // No need to do anything, next frame fixes it
             }
 
-            if (Settings.DrawBox)
+            using (Graphics graphics = Graphics.FromImage(frame))
             {
-                DrawBoxFunct(ref frame);
-            };
-
-            if (Settings.DrawGrid)
-            {
-                DrawGridFunct(frame);
-            };
-
-            if (Settings.DrawCross)
-            {
-                DrawCrossFunct(ref frame);
-            };
-
-            if (Settings.DrawSidemarks)
-            {
-                DrawSidemarksFunct(ref frame);
-            };
-
-            if (DrawDashedCross)
-            {
-                DrawDashedCrossFunct(frame);
-            };
-
-            if (DrawArrow)
-            {
-                DrawArrowFunct(frame);
-            };
-
-            if (Overlay && origFrame != null)
-            {
-                using (Graphics bitmapGraphics = Graphics.FromImage(origFrame))
+                if (Settings.DrawBox)
                 {
-                    ColorMatrix matrix = new ColorMatrix();
-                    matrix.Matrix33 = 128.0f / 255.0f;
-                    ImageAttributes attributes = new ImageAttributes();
-                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                    bitmapGraphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-                    bitmapGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.GammaCorrected;
+                    DrawBoxFunct(graphics);
+                }
 
-                    bitmapGraphics.DrawImage(frame, new Rectangle(0, 0, frame.Width, frame.Height), 0, 0, frame.Width, frame.Height, GraphicsUnit.Pixel, attributes);
-                    frame.Dispose();
-                    frame = origFrame;
+                if (Settings.DrawGrid)
+                {
+                    DrawGridFunct(graphics);
+                }
+
+                if (Settings.DrawCross)
+                {
+                    DrawCrossFunct(graphics);
+                }
+
+                if (Settings.DrawSidemarks)
+                {
+                    DrawSidemarksFunct(graphics);
+                }
+
+                if (DrawDashedCross)
+                {
+                    DrawDashedCrossFunct(graphics);
+                }
+
+                if (DrawArrow)
+                {
+                    DrawArrowFunct(graphics);
                 }
             }
 
@@ -867,12 +678,201 @@ namespace LitePlacer
 
         // see http://www.codeproject.com/Questions/689320/object-is-currently-in-use-elsewhere about the locker
 
-        // ==========================================================================================================
-        // Functions compatible with lists:
-        // ==========================================================================================================
-        // Note, that each function needs to keep the image in RGB, otherwise drawing fill fail 
+        #endregion
 
-        // ========================================================= 
+        // ==========================================================================================================
+        // Video processing and measurements are done by appying AForge functions one by one to a videoframe.
+        // To do this, lists of functions are maintained.
+        // ==========================================================================================================
+
+        #region Video Algorithm
+
+        public delegate void AForge_op(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B);
+        public class AForgeFunction
+        {
+            public AForge_op func { get; set; }
+            public int parameter_int { get; set; }              // general parameters. Some functions take one int,
+            public double parameter_double { get; set; }        // some take a float,
+            public int R { get; set; }              // and some need R, B, G values.
+            public int G { get; set; }
+            public int B { get; set; }
+        }
+
+        public class VideoAlgorithm
+        {
+            public List<AForgeFunction> Functions = new List<AForgeFunction>();
+            public MeasurementParametersClass MeasurementParameters = new MeasurementParametersClass();
+        }
+
+        VideoAlgorithm DisplayAlgorithm = new VideoAlgorithm();
+
+        // ==========================================================================================================
+        // Convert from UI functions (AForgeFunctionDefinition) to processing functions (AForgeFunction)
+
+        private List<AForgeFunction> BuildFunctionsList(List<AForgeFunctionDefinition> UiList)
+        {
+            List<AForgeFunction> NewList = new List<AForgeFunction>();
+            NewList.Clear();
+            MainForm.DisplayText("BuildFunctionsList: ");
+            foreach (AForgeFunctionDefinition UIfucnt in UiList)
+            {
+                AForgeFunction f = new AForgeFunction();
+                // skip inactive rows
+                if (UIfucnt == null)
+                {
+                    continue;
+                }
+                if (!UIfucnt.Active)
+                {
+                    continue;
+                }
+                switch (UIfucnt.Name)
+                {
+                    case "Grayscale":
+                        f.func = GrayscaleFunc;
+                        break;
+
+                    case "Contrast scretch":
+                        f.func = Contrast_scretchFunc;
+                        break;
+
+                    case "Kill color":
+                        f.func = KillColor_Func;
+                        break;
+
+                    case "Keep color":
+                        f.func = KeepColor_Func;
+                        break;
+
+                    case "Invert":
+                        f.func = InvertFunct;
+                        break;
+
+                    case "Erosion":
+                        f.func = ErosionFunct;
+                        break;
+
+                    case "Meas. zoom":
+                        f.func = Meas_ZoomFunc;
+                        break;
+
+                    case "Edge detect":
+                        f.func = Edge_detectFunc;
+                        break;
+
+                    case "Noise reduction":
+                        f.func = NoiseReduction_Funct;
+                        break;
+
+                    case "Threshold":
+                        f.func = ThresholdFunct;
+                        break;
+
+                    case "Histogram":
+                        f.func = HistogramFunct;
+                        break;
+
+                    case "Blur":
+                        f.func = BlurFunct;
+                        break;
+
+                    case "Gaussian blur":
+                        f.func = GaussianBlurFunct;
+                        break;
+
+                    case "Hough circles":
+                        f.func = HoughCirclesFunct;
+                        break;
+
+                    default:
+                        continue;
+                        // break; 
+                }
+                f.parameter_int = UIfucnt.parameterInt;
+                f.parameter_double = UIfucnt.parameterDouble;
+                f.R = UIfucnt.R;
+                f.B = UIfucnt.B;
+                f.G = UIfucnt.G;
+                NewList.Add(f);
+                MainForm.DisplayText(UIfucnt.Name + ", " + f.parameter_int.ToString() + ", " + f.parameter_double.ToString() + ", "
+                    + f.R.ToString() + ", " + f.G.ToString() + ", " + f.B.ToString());
+            };
+            return NewList;
+        }
+
+        // ==========================================================================================================
+        // For display: Get the function list, transfer to video processing
+
+        public void BuildDisplayFunctionsList(VideoAlgorithmsCollection.FullAlgorithmDescription videoAlgorithm)
+        {
+            int tries = 0;
+            // Stop video
+            bool pause = PauseProcessing;
+            if (VideoSource != null)
+            {
+                if (ReceivingFrames)
+                {
+                    // stop video
+                    PauseProcessing = true;  // ask for stop
+                    Paused = false;
+                    while (!Paused)
+                    {
+                        Thread.Sleep(10);  // wait until really stopped
+                        tries++;
+                        if (tries > 40)
+                        {
+                            break;
+                        }
+                    };
+                }
+            }
+
+            DisplayAlgorithm.Functions = BuildFunctionsList(videoAlgorithm.FunctionList);
+            DisplayAlgorithm.MeasurementParameters = videoAlgorithm.MeasurementParameters;
+
+            Thread.Sleep(50);  // wait until really stopped
+            PauseProcessing = pause;  // restart video is it was running
+        }
+
+        public void ClearDisplayFunctionsList()
+        {
+            if (DisplayAlgorithm.Functions.Count == 0)
+            {
+                return;
+            }
+            // Stop video
+            bool pause = PauseProcessing;
+            int tries = 0;
+            if (VideoSource != null)
+            {
+                if (ReceivingFrames)
+                {
+                    // stop video
+                    PauseProcessing = true;  // ask for stop
+                    Paused = false;
+                    while (!Paused)
+                    {
+                        Thread.Sleep(10);  // wait until really stopped
+                        tries++;
+                        if (tries > 40)
+                        {
+                            break;
+                        }
+                    };
+                }
+            }
+            DisplayAlgorithm.Functions.Clear();
+            PauseProcessing = pause;  // restart video is it was running
+        }
+
+        #endregion
+
+        // ==========================================================================================================
+        // Filterfunctions compatible with lists:
+        // ==========================================================================================================
+
+        #region Filterfunctions
+        // Note, that each function needs to keep the image in RGB, otherwise drawing fill fail 
 
         private void NoiseReduction_Funct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
         {
@@ -989,7 +989,7 @@ namespace LitePlacer
 
         private void HoughCirclesFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
         {
-            HoughCircleTransformation circleTransform = new HoughCircleTransformation(2* par_int);
+            HoughCircleTransformation circleTransform = new HoughCircleTransformation(2 * par_int);
             // apply Hough circle transform
             frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);    // Make gray
             circleTransform.ProcessImage(frame);
@@ -1062,9 +1062,15 @@ namespace LitePlacer
             ZoomFunct(ref frame, par_d);
         }
 
+        #endregion
+
         // ==========================================================================================================
-        // Components, newer version:
+        // Components
         // ==========================================================================================================
+
+        #region Components
+
+        #region Helperfunctions
         // helpers:
 
         // ===========
@@ -1146,26 +1152,6 @@ namespace LitePlacer
         }
 
         // ===========
-        private List<IntPoint> ScaleOutline(double scale, List<IntPoint> Outline)
-        {
-            List<IntPoint> Result = new List<IntPoint>();
-            foreach (var p in Outline)
-            {
-                Result.Add(new IntPoint((int)(p.X * scale), (int)(p.Y * scale)));
-            }
-            return Result;
-        }
-        // ===========
-        private List<AForge.Point> ScaleOutline(double scale, List<AForge.Point> Outline)
-        {
-            List<AForge.Point> Result = new List<AForge.Point>();
-            foreach (var p in Outline)
-            {
-                Result.Add(new AForge.Point((float)(p.X * scale), (float)(p.Y * scale)));
-            }
-            return Result;
-        }
-        // ===========
         private IntPoint RotatePoint(double angle, IntPoint p, IntPoint o)
         {
             // TODO: put all rotations in one routine
@@ -1240,7 +1226,12 @@ namespace LitePlacer
             return rect;
         }
 
-        // ===========
+        #endregion
+
+        // ==========================================================================================================
+        // Components, newer version:
+        // ==========================================================================================================
+
         private List<Shapes.Component> FindComponentsFunct(Bitmap bitmap)
         {
             // Locating objects
@@ -1265,89 +1256,6 @@ namespace LitePlacer
                 {
                     continue;
                 }
-                
-                // We are dealing with small objects, one pixel is coarse. Therefore, all calculations are done
-                // on a scaled outline, scaling back after finding the rectangle. (This is because AForge uses IntPoints.)
-                List<IntPoint> Outline = OutlineRaw;
-
-                // add start point to list, so we get line segments
-                Outline.Add(Outline[0]);
-                List<AForge.Point> Box = GetMinimumBoundingRectangle(Outline).Select(s => (AForge.Point)s).ToList();    // get bounding rectangle
-
-                //workaround for correct and consistent angle
-                List<AForge.Point> anglePoints = OutlineRaw.Select(s => (AForge.Point)s).ToList();
-
-                double angle = 0;
-                List<double[]> angle_length = new List<double[]>(anglePoints.Count);
-                for (int i = 0, j = 1; i < (anglePoints.Count - 0); i++, j = j < (anglePoints.Count - 1) ? j + 1 : 0)
-                {
-                    double tmpAngle;
-                    if (anglePoints[i].X == anglePoints[j].X)
-                    {
-                        tmpAngle = 0;
-                    }
-                    else if (anglePoints[i].X < anglePoints[j].X)
-                    {
-                        tmpAngle = Math.Atan2(anglePoints[j].Y - anglePoints[i].Y, anglePoints[j].X - anglePoints[i].X) / Math.PI * 180;
-                    }
-                    else
-                    {
-                        tmpAngle = Math.Atan2(anglePoints[i].Y - anglePoints[j].Y, anglePoints[i].X - anglePoints[j].X) / Math.PI * 180;
-                    }
-
-                    while (tmpAngle >= 45)
-                        tmpAngle -= 90;
-                    while (tmpAngle <= -45)
-                        tmpAngle += 90;
-
-                    angle_length.Add(new double[] { tmpAngle, anglePoints[i].DistanceTo(anglePoints[j]) });
-                }
-                //average angles of 4 longest sides
-                angle_length = angle_length.OrderByDescending(s => s[1]).ToList();
-                for (int i = 0; i < 4; i++)
-                {
-                    angle += angle_length[i][0];
-                }
-                angle = angle / 4.0;
-
-                //Box= ScaleOutline(0.001, Box);  // scale back
-                if (Box.Count != 4)
-                {
-                    MainForm.DisplayText("Rectangle with " + Box.Count.ToString() + "corners (BoxToComponent)", KnownColor.Red, true);
-                }
-                else
-                {
-                    Components.Add(new Shapes.Component(Box, blob.CenterOfGravity, angle));
-                }
-            }
-            return Components;
-        }
-
-        // ===========
-        private List<Shapes.Component> FindComponentsNewFunct(Bitmap bitmap)
-        {
-            // Locating objects
-            BlobCounter blobCounter = new BlobCounter();
-            blobCounter.FilterBlobs = true;
-            blobCounter.MinHeight = 8;
-            blobCounter.MinWidth = 8;
-            blobCounter.ProcessImage(bitmap);
-            List<Shapes.Component> Components = new List<Shapes.Component>();
-
-            Blob[] blobs = blobCounter.GetObjectsInformation(); // Get blobs
-            foreach (Blob blob in blobs)
-            {
-                if ((blob.Rectangle.Height > (bitmap.Height - 10)) && (blob.Rectangle.Width > (bitmap.Width - 10)))
-                {
-                    continue;  // The whole image could be a blob, discard that
-                }
-
-                List<IntPoint> edgePoints = GetBlobsOutline(blobCounter, blob);     // get edge points
-                List<IntPoint> OutlineRaw = GetConvexHull(edgePoints);                 // convert to convex hull
-                if (OutlineRaw.Count < 3)
-                {
-                    continue;
-                }
 
                 // We are dealing with small objects, one pixel is coarse. Therefore, all calculations are done
                 // on a scaled outline, scaling back after finding the rectangle. (This is because AForge uses IntPoints.)
@@ -1404,58 +1312,14 @@ namespace LitePlacer
                 }
             }
             return Components;
-        }
-
-        // ===========
-        private Bitmap DrawComponentsFunct(Bitmap bitmap)
-        {
-            List<Shapes.Component> Components = FindComponentsFunct(bitmap);
-            Graphics g = Graphics.FromImage(bitmap);
-            Pen OrangePen = new Pen(Color.DarkOrange, 3);
-            double zoom = GetMeasurementZoom();
-            double XmmPpix = Settings.XmmPerPixel / zoom;
-            double YmmPpix = Settings.YmmPerPixel / zoom;
-            for (int i = Components.Count-1; i >= 0; i--)
-            {
-                Shapes.Component component = Components[i];
-                if (((component.BoundingBox.LongsideLenght * XmmPpix) <= MeasurementParameters.Xmin) ||
-                      ((component.BoundingBox.LongsideLenght * XmmPpix) >= MeasurementParameters.Xmax) ||
-                      ((component.BoundingBox.ShortSideLenght * YmmPpix) <= MeasurementParameters.Ymin) ||
-                      ((component.BoundingBox.ShortSideLenght * YmmPpix) >= MeasurementParameters.Ymax))
-
-                {
-                    Components.Remove(component);
-                }
-            }
-
-            if(Components.Count == 1)
-            {
-                Shapes.Component component = Components[0];
-                MainForm.DisplayBigText( string.Format("{0,5:0.000}", (component.BoundingBox.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (component.BoundingBox.Center.Y - FrameCenterY) * YmmPpix) +
-                    "  " + string.Format("{0,5:0.00}", component.BoundingBox.Angle));
-            }
-            else
-            {
-                MainForm.DisplayBigText("No Unique Position");
-            }
-
-            foreach (Shapes.Component component in Components)
-            {
-                g.DrawPolygon(OrangePen, ToPointsArray(component.BoundingBox.Corners));
-                int crossSize = 300;
-                AForge.Point center = component.BoundingBox.Center;
-                g.DrawLine(OrangePen, center.X - crossSize, center.Y, center.X + crossSize, center.Y);
-                g.DrawLine(OrangePen, center.X, center.Y - crossSize, center.X, center.Y + crossSize);
-            }
-            
-            g.Dispose();
-            OrangePen.Dispose();
-            return (bitmap);
         }
 
         // ==========================================================================================================
         // Components, older version:
         // ==========================================================================================================
+
+        #region OldComponents
+
         private List<Shapes.LitePlacerShapeComponent> FindComponentsFunctOld(Bitmap bitmap)
         {
             // Locating objects
@@ -1623,16 +1487,9 @@ namespace LitePlacer
             return Components;
         }
 
-        public List<Shapes.Component> GetMeasurementComponents()
-        {
-            // No filtering! (tech. debt, maybe)
-            Bitmap image = GetMeasurementFrame();
-            List<Shapes.Component> Components = FindComponentsFunct(image);
-            image.Dispose();
-            return Components;
-        }
+        #endregion
 
-
+        // ===========
         public int GetClosestComponent(out double X, out double Y, out double A, double MaxDistance)
         // Sets X, Y position of the closest component to the frame center in pixels, 
         // A to rotation in degrees, 
@@ -1688,9 +1545,59 @@ namespace LitePlacer
             return (GoodComponents.Count);
         }
 
+        // ===========
+        private void DrawComponentsFunct(Bitmap bitmap, Graphics g)
+        {
+            List<Shapes.Component> Components = FindComponentsFunct(bitmap);
+            Pen OrangePen = new Pen(Color.DarkOrange, 3);
+            double zoom = GetMeasurementZoom();
+            double XmmPpix = Settings.XmmPerPixel / zoom;
+            double YmmPpix = Settings.YmmPerPixel / zoom;
+            for (int i = Components.Count - 1; i >= 0; i--)
+            {
+                Shapes.Component component = Components[i];
+                if (((component.BoundingBox.LongsideLenght * XmmPpix) <= DisplayAlgorithm.MeasurementParameters.Xmin) ||
+                      ((component.BoundingBox.LongsideLenght * XmmPpix) >= DisplayAlgorithm.MeasurementParameters.Xmax) ||
+                      ((component.BoundingBox.ShortSideLenght * YmmPpix) <= DisplayAlgorithm.MeasurementParameters.Ymin) ||
+                      ((component.BoundingBox.ShortSideLenght * YmmPpix) >= DisplayAlgorithm.MeasurementParameters.Ymax))
+
+                {
+                    Components.Remove(component);
+                }
+            }
+
+            if (Components.Count == 1)
+            {
+                Shapes.Component component = Components[0];
+                MainForm.DisplayBigText(string.Format("{0,5:0.000}", (component.BoundingBox.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (component.BoundingBox.Center.Y - FrameCenterY) * YmmPpix) +
+                    "  " + string.Format("{0,5:0.00}", component.BoundingBox.Angle));
+            }
+            else
+            {
+                MainForm.DisplayBigText("No Unique Position");
+            }
+
+            foreach (Shapes.Component component in Components)
+            {
+                g.DrawPolygon(OrangePen, ToPointsArray(component.BoundingBox.Corners));
+                int crossSize = 300;
+                AForge.Point center = component.BoundingBox.Center;
+                g.DrawLine(OrangePen, center.X - crossSize, center.Y, center.X + crossSize, center.Y);
+                g.DrawLine(OrangePen, center.X, center.Y - crossSize, center.X, center.Y + crossSize);
+            }
+
+            OrangePen.Dispose();
+            return;
+        }
+
+        #endregion
+
         // ==========================================================================================================
         // Circles:
         // ==========================================================================================================
+
+        #region Circles
+
         private List<Shapes.Circle> FindCirclesFunct(Bitmap bitmap)
         {
             // locating objects
@@ -1724,93 +1631,6 @@ namespace LitePlacer
                 }
             }
             return (Circles);
-        }
-
-        // =========================================================
-        private void DrawCirclesFunct(Bitmap bitmap)
-        {
-            List<Shapes.Circle> Circles = FindCirclesFunct(bitmap);
-            double zoom = GetMeasurementZoom();
-            double XmmPpix = Settings.XmmPerPixel / zoom;
-            double YmmPpix = Settings.YmmPerPixel / zoom;
-            for (int i = Circles.Count - 1; i >= 0; i--)
-            {
-                Shapes.Circle circle = Circles[i];
-                if (((circle.Radius * 2.0 * XmmPpix) <= MeasurementParameters.Xmin) ||
-                      ((circle.Radius * 2.0 * XmmPpix) >= MeasurementParameters.Xmax) ||
-                      ((circle.Radius * 2.0 * YmmPpix) <= MeasurementParameters.Ymin) ||
-                      ((circle.Radius * 2.0 * YmmPpix) >= MeasurementParameters.Ymax))
-
-                {
-                    Circles.Remove(circle);
-                }
-            }
-
-            if (Circles.Count == 1)
-            {
-                Shapes.Circle circle = Circles[0];
-                MainForm.DisplayBigText(string.Format("{0,5:0.000}", (circle.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (circle.Center.Y - FrameCenterY) * YmmPpix));
-            }
-            else
-            {
-                MainForm.DisplayBigText("No Unique Position");
-            }
-
-            if (Circles.Count == 0)
-            {
-                return;
-            }
-            // Find smallest
-            int Smallest = FindSmallestCircle(Circles);
-
-            // find closest to center
-            int Closest = FindClosestCircle(Circles);
-
-            int PenSize = 3;
-            // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
-            // To make the circles visible, we need to draw then bit thicker
-            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Settings.Zoom)
-            {
-                PenSize = 5;
-            }
-
-            Graphics g = Graphics.FromImage(bitmap);
-            Pen OrangePen = new Pen(Color.DarkOrange, PenSize);
-            Pen AquaPen = new Pen(Color.Aqua, PenSize);
-            Pen LimePen = new Pen(Color.Lime, PenSize);
-            Pen MagentaPen = new Pen(Color.Magenta, PenSize);
-
-            if (Closest == Smallest)
-            {
-                g.DrawEllipse(MagentaPen,
-                    (float)(Circles[Closest].Center.X - Circles[Closest].Radius), (float)(Circles[Closest].Center.Y - Circles[Closest].Radius),
-                    (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
-            }
-            else
-            {
-                g.DrawEllipse(LimePen,
-                    (float)(Circles[Closest].Center.X - Circles[Closest].Radius), (float)(Circles[Closest].Center.Y - Circles[Closest].Radius),
-                    (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
-                g.DrawEllipse(AquaPen,
-                    (float)(Circles[Smallest].Center.X - Circles[Smallest].Radius), (float)(Circles[Smallest].Center.Y - Circles[Smallest].Radius),
-                    (float)(Circles[Smallest].Radius * 2), (float)(Circles[Smallest].Radius * 2));
-            }
-
-
-            for (int i = 0, n = Circles.Count; i < n; i++)
-            {
-                if ((i != Closest) && (i != Smallest))
-                {
-                    g.DrawEllipse(OrangePen,
-                       (float)(Circles[i].Center.X - Circles[i].Radius), (float)(Circles[i].Center.Y - Circles[i].Radius),
-                       (float)(Circles[i].Radius * 2), (float)(Circles[i].Radius * 2));
-                }
-            }
-            g.Dispose();
-            OrangePen.Dispose();
-            AquaPen.Dispose();
-            LimePen.Dispose();
-            MagentaPen.Dispose();
         }
 
         // =========================================================
@@ -1851,9 +1671,99 @@ namespace LitePlacer
             return closest;
         }
 
+        // ===========
+        private void DrawCirclesFunct(Bitmap bitmap, Graphics g)
+        {
+            List<Shapes.Circle> Circles = FindCirclesFunct(bitmap);
+            double zoom = GetMeasurementZoom();
+            double XmmPpix = Settings.XmmPerPixel / zoom;
+            double YmmPpix = Settings.YmmPerPixel / zoom;
+            for (int i = Circles.Count - 1; i >= 0; i--)
+            {
+                Shapes.Circle circle = Circles[i];
+                if (((circle.Radius * 2.0 * XmmPpix) <= DisplayAlgorithm.MeasurementParameters.Xmin) ||
+                      ((circle.Radius * 2.0 * XmmPpix) >= DisplayAlgorithm.MeasurementParameters.Xmax) ||
+                      ((circle.Radius * 2.0 * YmmPpix) <= DisplayAlgorithm.MeasurementParameters.Ymin) ||
+                      ((circle.Radius * 2.0 * YmmPpix) >= DisplayAlgorithm.MeasurementParameters.Ymax))
+
+                {
+                    Circles.Remove(circle);
+                }
+            }
+
+            if (Circles.Count == 1)
+            {
+                Shapes.Circle circle = Circles[0];
+                MainForm.DisplayBigText(string.Format("{0,5:0.000}", (circle.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (circle.Center.Y - FrameCenterY) * YmmPpix));
+            }
+            else
+            {
+                MainForm.DisplayBigText("No Unique Position");
+            }
+
+            if (Circles.Count == 0)
+            {
+                return;
+            }
+            // Find smallest
+            int Smallest = FindSmallestCircle(Circles);
+
+            // find closest to center
+            int Closest = FindClosestCircle(Circles);
+
+            int PenSize = 3;
+            // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
+            // To make the circles visible, we need to draw then bit thicker
+            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Settings.Zoom)
+            {
+                PenSize = 5;
+            }
+
+            Pen OrangePen = new Pen(Color.DarkOrange, PenSize);
+            Pen AquaPen = new Pen(Color.Aqua, PenSize);
+            Pen LimePen = new Pen(Color.Lime, PenSize);
+            Pen MagentaPen = new Pen(Color.Magenta, PenSize);
+
+            if (Closest == Smallest)
+            {
+                g.DrawEllipse(MagentaPen,
+                    (float)(Circles[Closest].Center.X - Circles[Closest].Radius), (float)(Circles[Closest].Center.Y - Circles[Closest].Radius),
+                    (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
+            }
+            else
+            {
+                g.DrawEllipse(LimePen,
+                    (float)(Circles[Closest].Center.X - Circles[Closest].Radius), (float)(Circles[Closest].Center.Y - Circles[Closest].Radius),
+                    (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
+                g.DrawEllipse(AquaPen,
+                    (float)(Circles[Smallest].Center.X - Circles[Smallest].Radius), (float)(Circles[Smallest].Center.Y - Circles[Smallest].Radius),
+                    (float)(Circles[Smallest].Radius * 2), (float)(Circles[Smallest].Radius * 2));
+            }
+
+
+            for (int i = 0, n = Circles.Count; i < n; i++)
+            {
+                if ((i != Closest) && (i != Smallest))
+                {
+                    g.DrawEllipse(OrangePen,
+                       (float)(Circles[i].Center.X - Circles[i].Radius), (float)(Circles[i].Center.Y - Circles[i].Radius),
+                       (float)(Circles[i].Radius * 2), (float)(Circles[i].Radius * 2));
+                }
+            }
+            OrangePen.Dispose();
+            AquaPen.Dispose();
+            LimePen.Dispose();
+            MagentaPen.Dispose();
+        }
+
+        #endregion
+
         // ==========================================================================================================
         // Rectangles:
         // ==========================================================================================================
+
+        #region Rectangles
+
         private List<Shapes.Rectangle> FindRectanglesFunct(Bitmap bitmap)
         {
             // step 1 - turn background to black (done)
@@ -1895,49 +1805,17 @@ namespace LitePlacer
                     {
                         List<IntPoint> corners = PointsCloud.FindQuadrilateralCorners(edgePoints);
                         // In some cases, the bitmap edges count as a rectangle. That should be ignored:
-                        if ( !( (corners[2].X==(bitmap.Size.Width-1)) && 
+                        if (!((corners[2].X == (bitmap.Size.Width - 1)) &&
                                 (corners[2].Y == (bitmap.Size.Height - 1))
                               )
                             )
                         {
-                            Rectangles.Add( new Shapes.Rectangle(corners.Select(s => (AForge.Point)s).ToList()) );
+                            Rectangles.Add(new Shapes.Rectangle(corners.Select(s => (AForge.Point)s).ToList()));
                         }
                     }
                 }
             }
             return (Rectangles);
-        }
-        // =========================================================
-        private Bitmap DrawRectanglesFunct(Bitmap image)
-        {
-            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
-            int closest = FindClosestRectangle(Rectangles);
-            int PenSize = 3;
-            // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
-            // To make the circles visible, we need to draw then bit thicker
-            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Settings.Zoom)
-            {
-                PenSize = 5;
-            }
-            Graphics g = Graphics.FromImage(image);
-            Pen OrangePen = new Pen(Color.DarkOrange, PenSize);
-            Pen LimePen = new Pen(Color.Lime, PenSize);
-
-            for (int i = 0, n = Rectangles.Count; i < n; i++)
-            {
-                if (i == closest)
-                {
-                    g.DrawPolygon(LimePen, ToPointsArray(Rectangles[i].Corners));
-                }
-                else
-                {
-                    g.DrawPolygon(OrangePen, ToPointsArray(Rectangles[i].Corners));
-                }
-            }
-            g.Dispose();
-            LimePen.Dispose();
-            OrangePen.Dispose();
-            return (image);
         }
 
         // =========================================================
@@ -1966,26 +1844,37 @@ namespace LitePlacer
         }
 
         // =========================================================
-        public int GetClosestRectangle(out double X, out double Y, double MaxDistance)
-        // Sets X, Y position of the closest circle to the frame center in pixels, return value is number of circles found
+        private void DrawRectanglesFunct(Bitmap bitmap, Graphics g)
         {
-            List<Shapes.Rectangle> Rectangles = GetMeasurementRectangles(MaxDistance);
-            X = 0.0;
-            Y = 0.0;
-            if (Rectangles.Count == 0)
-            {
-                return (0);
-            }
-            // Find the closest
+            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(bitmap);
             int closest = FindClosestRectangle(Rectangles);
-            double zoom = GetMeasurementZoom();
-            X = (Rectangles[closest].Center.X - FrameCenterX);
-            Y = (Rectangles[closest].Center.Y - FrameCenterY);
-            X = X / zoom;
-            Y = Y / zoom;
-            return (Rectangles.Count);
+            int PenSize = 3;
+            // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
+            // To make the circles visible, we need to draw then bit thicker
+            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Settings.Zoom)
+            {
+                PenSize = 5;
+            }
+            Pen OrangePen = new Pen(Color.DarkOrange, PenSize);
+            Pen LimePen = new Pen(Color.Lime, PenSize);
+
+            for (int i = 0, n = Rectangles.Count; i < n; i++)
+            {
+                if (i == closest)
+                {
+                    g.DrawPolygon(LimePen, ToPointsArray(Rectangles[i].Corners));
+                }
+                else
+                {
+                    g.DrawPolygon(OrangePen, ToPointsArray(Rectangles[i].Corners));
+                }
+            }
+            LimePen.Dispose();
+            OrangePen.Dispose();
+            return;
         }
 
+        // ===========
         public List<Shapes.Rectangle> GetMeasurementRectangles(double MaxDistance)
         {
             // returns a list of circles for measurements, filters for distance (which we always do) and size, if needed
@@ -2011,14 +1900,13 @@ namespace LitePlacer
             return (GoodRectangles);
         }
 
-        // =========================================================
-        private Bitmap TestAlgorithmFunct(Bitmap frame)
-        {
-            frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);
-            Invert filter = new Invert();
-            filter.ApplyInPlace(frame);
-            return (frame);
-        }
+        #endregion
+
+        // ==========================================================================================================
+        // Rectangles:
+        // ==========================================================================================================
+
+        #region Display Functions
 
         // =========================================================
         private void ZoomFunct(ref Bitmap frame, double Factor)
@@ -2053,12 +1941,11 @@ namespace LitePlacer
             py = (int)(Math.Sin(theta) * (x - FrameCenterX) + Math.Cos(theta) * (y - FrameCenterY) + FrameCenterY);
         }
 
-        private void DrawGridFunct(Bitmap img)
+        private void DrawGridFunct(Graphics g)
         {
             Pen YellowPen = new Pen(Color.Yellow, 1);
             Pen GreenPen = new Pen(Color.Green, 1);
             Pen BluePen = new Pen(Color.Blue, 1);
-            Graphics g = Graphics.FromImage(img);
             int x1, x2, y1, y2;
             int step = 40;
             // vertical
@@ -2119,14 +2006,12 @@ namespace LitePlacer
             YellowPen.Dispose();
             GreenPen.Dispose();
             BluePen.Dispose();
-            g.Dispose();
         }
 
         // =========================================================
-        private void DrawDashedCrossFunct(Bitmap img)
+        private void DrawDashedCrossFunct(Graphics g)
         {
             Pen pen = new Pen(Color.SlateGray, 1);
-            Graphics g = Graphics.FromImage(img);
             int step = FrameSizeY / 40;
             int i = step / 2;
             while (i < FrameSizeY)
@@ -2142,65 +2027,21 @@ namespace LitePlacer
                 i = i + 2 * step;
             }
             pen.Dispose();
-            g.Dispose();
         }
         // =========================================================
 
-        private void DrawCrossFunct(ref Bitmap img)
+        private void DrawCrossFunct(Graphics g)
         {
             Pen pen = new Pen(Color.Red, 1);
-            Graphics g = Graphics.FromImage(img);
             g.DrawLine(pen, FrameCenterX, 0, FrameCenterX, FrameSizeY);
             g.DrawLine(pen, 0, FrameCenterY, FrameSizeX, FrameCenterY);
             pen.Dispose();
-            g.Dispose();
         }
 
         // =========================================================
 
-        private void DrawSidemarksFunct(ref Bitmap img)
-        {/*
-            // default values used when show pixels is off: 
-            // Draw from frame edges inwards, using ticksize that gets zoomed down
-            int TickSize = (FrameSizeX / 640) * 8;
-            int XstartUp = FrameSizeY;  // values used when drawing along X axis
-            int XstartBot = 0;
-            int YstartLeft = 0;         // values used when drawing along Y axis
-            int YstartRight = FrameSizeX;
-            int Xinc = Convert.ToInt32(YstartRight / SideMarksX);    // sidemarks: 10cm on machine
-            int Yinc = Convert.ToInt32(XstartUp / SideMarksY);
-
-            if (ImageBox.SizeMode == PictureBoxSizeMode.CenterImage)
-            {
-                // Show pixels is on, draw to middle of the image
-                TickSize = 8;
-                XstartUp = (FrameSizeY / 2) + 240;
-                XstartBot = (FrameSizeY / 2) - 240;
-                YstartLeft = (FrameSizeX / 2) - 320;
-                YstartRight = (FrameSizeX / 2) + 320;
-                Xinc = Convert.ToInt32(640 / SideMarksX);
-                Yinc = Convert.ToInt32(480 / SideMarksY);
-            }
-
-            Pen pen = new Pen(Color.Red, 2);
-            Graphics g = Graphics.FromImage(img);
-            int X = YstartLeft + Xinc;
-            while (X < YstartRight)
-            {
-                g.DrawLine(pen, X, XstartUp, X, XstartUp - TickSize);
-                g.DrawLine(pen, X, XstartBot, X, XstartBot + TickSize);
-                X += Xinc;
-            }
-
-            int Y = XstartBot + Yinc;
-            while (Y < XstartUp)
-            {
-                g.DrawLine(pen, YstartLeft, Y, YstartLeft + TickSize, Y);
-                g.DrawLine(pen, YstartRight, Y, YstartRight - TickSize, Y);
-                Y += Yinc;
-            }
-*/
-            Graphics g = Graphics.FromImage(img);
+        private void DrawSidemarksFunct(Graphics g)
+        {
             int PenSize = 2;
             int tick = 12;
             int PicSizeX = FrameSizeX;
@@ -2237,17 +2078,12 @@ namespace LitePlacer
                 Y -= Yinc;
             }
             pen.Dispose();
-            g.Dispose();
-
-            pen.Dispose();
-            g.Dispose();
         }
 
         // =========================================================
-        private void DrawBoxFunct(ref Bitmap img)
+        private void DrawBoxFunct(Graphics g)
         {
             Pen pen = new Pen(Color.Red, 1);
-            Graphics g = Graphics.FromImage(img);
             g.DrawLine(pen, BoxPoints[0].X + FrameCenterX, BoxPoints[0].Y + FrameCenterY,
                 BoxPoints[1].X + FrameCenterX, BoxPoints[1].Y + FrameCenterY);
 
@@ -2260,19 +2096,17 @@ namespace LitePlacer
             g.DrawLine(pen, BoxPoints[3].X + FrameCenterX, BoxPoints[3].Y + FrameCenterY,
                 BoxPoints[0].X + FrameCenterX, BoxPoints[0].Y + FrameCenterY);
             pen.Dispose();
-            g.Dispose();
         }
 
-        private void DrawArrowFunct(Bitmap img)
+        private void DrawArrowFunct(Graphics g)
         {
             Pen pen = new Pen(Color.Green, 3);
-            Graphics g = Graphics.FromImage(img);
             double length = 60;
             float detailLength = (float)(0.65 * length);
             double angle = Math.PI / 180.0 * (ArrowAngle); // to radians, -180 to get ccw, +90 to start from up
 
             System.Drawing.Drawing2D.AdjustableArrowCap bigArrow = new System.Drawing.Drawing2D.AdjustableArrowCap(6, 6);
-            
+
             g.DrawLine(pen, FrameCenterX, FrameCenterY, FrameCenterX + (int)(detailLength), FrameCenterY);
             g.DrawArc(pen, FrameCenterX - detailLength, FrameCenterY - detailLength, detailLength * 2.0f, detailLength * 2.0f, 0.0f, (float)ArrowAngle);
 
@@ -2283,13 +2117,15 @@ namespace LitePlacer
             g.DrawLine(pen, FrameCenterX, FrameCenterY, (int)(FrameCenterX + Math.Cos(angle) * length), (int)(FrameCenterY + Math.Sin(angle) * length));
 
             pen.Dispose();
-            g.Dispose();
         }
 
+        #endregion
 
         // =========================================================
         // Snapshot handling
         // =========================================================
+
+        #region SnapshotHandling
 
         // repeated rotations destroy the image. We'll store the original here and rotate only once.
         public Bitmap SnapshotOriginalImage = new Bitmap(640, 480);
@@ -2327,22 +2163,6 @@ namespace LitePlacer
         // =========================================================
         public bool rotating = false;
         private bool overlaying = false;
-
-        private Bitmap Draw_SnapshotFunct(Bitmap image)
-        {
-            if (rotating)
-            {
-                return (image);
-            }
-            overlaying = true;
-            Graphics g = Graphics.FromImage(image);
-            g.DrawImage(SnapshotImage, new System.Drawing.Point(0, 0));
-            g.Dispose();
-            overlaying = false;
-            return (image);
-        }
-
-        // =========================================================
         public void RotateSnapshot(double deg)
         {
             while (overlaying)
@@ -2367,18 +2187,22 @@ namespace LitePlacer
             rotating = false;
         }
 
+        #endregion
 
         // =========================================================
         // Measurements on video images
         // =========================================================
+
         #region Measurements
 
         // Caller = any function doing measurement from video frames. 
         // The list of functions processing the image used in measurements, set by caller:
-        List<AForgeFunction> MeasurementFunctions = new List<AForgeFunction>();
+        //List<AForgeFunction> MeasurementFunctions = new List<AForgeFunction>();
 
         // Measurement parameters: min and max size, max distance from initial location, set by caller:
-        public MeasurementParametersClass MeasurementParameters = new MeasurementParametersClass();
+        //public MeasurementParametersClass MeasurementParameters = new MeasurementParametersClass();
+
+        VideoAlgorithm MeasurementAlgorithm = new VideoAlgorithm();
 
         // ==========================================================================================================
         // Measurements are done by taking one frame and processing that:
@@ -2389,9 +2213,10 @@ namespace LitePlacer
 
         // The caller builds the MeasurementFunctions list:
 
-        public void BuildMeasurementFunctionsList(List<AForgeFunctionDefinition> UiList)
+        public void BuildMeasurementFunctionsList(VideoAlgorithmsCollection.FullAlgorithmDescription videoAlgorithm)
         {
-            MeasurementFunctions = BuildFunctionsList(UiList);
+            MeasurementAlgorithm.Functions = BuildFunctionsList(videoAlgorithm.FunctionList);
+            MeasurementAlgorithm.MeasurementParameters = videoAlgorithm.MeasurementParameters;
         }
 
         // And calls xx_measure() funtion. 
@@ -2423,9 +2248,9 @@ namespace LitePlacer
                 return TemporaryFrame;
             }
 
-            if (MeasurementFunctions != null)
+            if (MeasurementAlgorithm.Functions != null)
             {
-                foreach (AForgeFunction f in MeasurementFunctions)
+                foreach (AForgeFunction f in MeasurementAlgorithm.Functions)
                 {
                     f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
                 }
@@ -2437,7 +2262,7 @@ namespace LitePlacer
         public double GetMeasurementZoom()
         {
             double zoom = 1.0;
-            foreach (AForgeFunction f in MeasurementFunctions)
+            foreach (AForgeFunction f in MeasurementAlgorithm.Functions)
             {
                 if (f.func == Meas_ZoomFunc)
                 {
@@ -2451,7 +2276,7 @@ namespace LitePlacer
         public double GetDisplayZoom()
         {
             double zoom = 1.0;
-            foreach (AForgeFunction f in DisplayFunctions)
+            foreach (AForgeFunction f in DisplayAlgorithm.Functions)
             {
                 if (f.func == Meas_ZoomFunc)
                 {
@@ -2512,7 +2337,7 @@ namespace LitePlacer
             return Math.Sqrt(X * X + Y * Y);
         }
 
-        public bool Measure(out double Xresult, out double Yresult, out double Aresult, out int err, bool DisplayResults = false )
+        public bool Measure(out double Xresult, out double Yresult, out double Aresult, out int err, bool DisplayResults = false)
         {
             Xresult = 0.0;
             Yresult = 0.0;
@@ -2521,8 +2346,8 @@ namespace LitePlacer
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            if ((!MeasurementParameters.SearchRounds) && (!MeasurementParameters.SearchRectangles)
-                && (!MeasurementParameters.SearchComponents))
+            if ((!MeasurementAlgorithm.MeasurementParameters.SearchRounds) && (!MeasurementAlgorithm.MeasurementParameters.SearchRectangles)
+                && (!MeasurementAlgorithm.MeasurementParameters.SearchComponents))
             {
                 MainForm.DisplayText("Nothing to search for. Check some of the \"Features to search for\" boxes.", KnownColor.Red, true);
                 return false;
@@ -2544,7 +2369,7 @@ namespace LitePlacer
             double XmmPpix = Settings.XmmPerPixel / zoom;
             double YmmPpix = Settings.YmmPerPixel / zoom;
 
-            if (MeasurementParameters.SearchRounds)
+            if (MeasurementAlgorithm.MeasurementParameters.SearchRounds)
             {
                 List<Shapes.Circle> Circles = FindCirclesFunct(image);
                 foreach (Shapes.Circle circle in Circles)
@@ -2568,7 +2393,7 @@ namespace LitePlacer
             }
             int count = Candidates.Count;
 
-            if (MeasurementParameters.SearchRectangles)
+            if (MeasurementAlgorithm.MeasurementParameters.SearchRectangles)
             {
                 List<Shapes.Rectangle> Regtangles = FindRectanglesFunct(image);
                 foreach (Shapes.Rectangle regt in Regtangles)
@@ -2578,7 +2403,7 @@ namespace LitePlacer
                         Center = regt.Center,
                         Angle = regt.Angle,
                         Xsize = regt.LongsideLenght,
-                        Ysize=regt.ShortSideLenght
+                        Ysize = regt.ShortSideLenght
                     });
                 }
                 stopwatch.Stop();
@@ -2591,7 +2416,7 @@ namespace LitePlacer
             }
 
             count = Candidates.Count;
-            if (MeasurementParameters.SearchComponents)
+            if (MeasurementAlgorithm.MeasurementParameters.SearchComponents)
             {
                 List<Shapes.Component> Components = FindComponentsFunct(image);
 
@@ -2622,10 +2447,10 @@ namespace LitePlacer
             List<Shapes.Shape> FilteredForSize = new List<Shapes.Shape>();
             foreach (Shapes.Shape shape in Candidates)
             {
-                if (  ((shape.Xsize * XmmPpix) > MeasurementParameters.Xmin) &&
-                      ((shape.Xsize * XmmPpix) < MeasurementParameters.Xmax) &&
-                      ((shape.Ysize * YmmPpix) > MeasurementParameters.Ymin) &&
-                      ((shape.Ysize * YmmPpix) < MeasurementParameters.Ymax))
+                if (((shape.Xsize * XmmPpix) > MeasurementAlgorithm.MeasurementParameters.Xmin) &&
+                      ((shape.Xsize * XmmPpix) < MeasurementAlgorithm.MeasurementParameters.Xmax) &&
+                      ((shape.Ysize * YmmPpix) > MeasurementAlgorithm.MeasurementParameters.Ymin) &&
+                      ((shape.Ysize * YmmPpix) < MeasurementAlgorithm.MeasurementParameters.Ymax))
 
                 {
                     FilteredForSize.Add(shape);
@@ -2668,7 +2493,7 @@ namespace LitePlacer
                 for (int i = 1; i < FilteredForSize.Count; i++)
                 {
                     double ThisDistance = DistanceToCenter(FilteredForSize[i]);
-                    if (ThisDistance< ResultDistance)
+                    if (ThisDistance < ResultDistance)
                     {
                         ResultIndex = i;
                         ResultDistance = ThisDistance;
@@ -2678,8 +2503,8 @@ namespace LitePlacer
                 // ResultIndex tells which item is closest. There should not be others too close
                 double Xclosest = FilteredForSize[ResultIndex].Center.X;
                 double Yclosest = FilteredForSize[ResultIndex].Center.Y;
-                if ((MeasurementParameters.XUniqueDistance<0.01)||
-                    (MeasurementParameters.YUniqueDistance < 0.01))
+                if ((MeasurementAlgorithm.MeasurementParameters.XUniqueDistance < 0.01) ||
+                    (MeasurementAlgorithm.MeasurementParameters.YUniqueDistance < 0.01))
                 {
                     MainForm.DisplayText("Uniquedistance is 0 or less.", KnownColor.Red, true);
                     return false;
@@ -2688,12 +2513,12 @@ namespace LitePlacer
                 {
                     double Xdist = Math.Abs((shape.Center.X - Xclosest) * XmmPpix);
                     double Ydist = Math.Abs((shape.Center.Y - Yclosest) * YmmPpix);
-                    if ((Xdist < MeasurementParameters.XUniqueDistance) && (Ydist < MeasurementParameters.YUniqueDistance))
+                    if ((Xdist < MeasurementAlgorithm.MeasurementParameters.XUniqueDistance) && (Ydist < MeasurementAlgorithm.MeasurementParameters.YUniqueDistance))
                     {
                         ResultCount++;
                     }
                 }
-                if (ResultCount==0)
+                if (ResultCount == 0)
                 {
                     MainForm.DisplayText("***Camera Measure(), uniquetest=0", KnownColor.Red, true);
                     return false;
@@ -2726,7 +2551,7 @@ namespace LitePlacer
             }
 
             err = ResultCount;
-            if (err==1)
+            if (err == 1)
             {
                 return true;
             }

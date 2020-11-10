@@ -183,6 +183,21 @@ namespace LitePlacer
         public double Ymax = 0.0;
         public double XUniqueDistance = 0.0;
         public double YUniqueDistance = 0.0;
+
+        public MeasurementParametersClass() { }
+
+        public MeasurementParametersClass(MeasurementParametersClass original)
+        {
+            SearchRounds = original.SearchRounds;
+            SearchRectangles = original.SearchRectangles;
+            SearchComponents = original.SearchComponents;
+            Xmin = original.Xmin;
+            Xmax = original.Xmax;
+            Ymin = original.Ymin;
+            Ymax = original.Ymax;
+            XUniqueDistance = original.XUniqueDistance;
+            YUniqueDistance = original.YUniqueDistance;
+        }
     }
 
 }

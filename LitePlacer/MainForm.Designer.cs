@@ -124,7 +124,15 @@
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.Camera_Panel = new System.Windows.Forms.TableLayoutPanel();
             this.panel15 = new System.Windows.Forms.Panel();
+            this.CamOverlay_trackBar = new System.Windows.Forms.TrackBar();
             this.CamZoomFactor_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.ShowPixels_checkBox = new System.Windows.Forms.CheckBox();
+            this.CamPanelMaximize_checkBox = new System.Windows.Forms.CheckBox();
+            this.CamPauseDisplay_checkBox = new System.Windows.Forms.CheckBox();
+            this.CamZoom_CheckBox = new System.Windows.Forms.CheckBox();
+            this.CamGrid_CheckBox = new System.Windows.Forms.CheckBox();
+            this.CamCross_CheckBox = new System.Windows.Forms.CheckBox();
+            this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.UpCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
             this.label130 = new System.Windows.Forms.Label();
@@ -585,7 +593,6 @@
             this.SaveFeatureLoc_button = new System.Windows.Forms.Button();
             this.MeasuredPosition_label = new System.Windows.Forms.Label();
             this.GotoFeature_button = new System.Windows.Forms.Button();
-            this.OverlayPictures_checkBox = new System.Windows.Forms.CheckBox();
             this.AdvancedProcessing_tabControl = new System.Windows.Forms.TabControl();
             this.NozzleCalibration_tabPage = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -650,7 +657,6 @@
             this.DuplicateAlgorithm_button = new System.Windows.Forms.Button();
             this.RemoveAlgorithm_button = new System.Windows.Forms.Button();
             this.AddAlgorithm_button = new System.Windows.Forms.Button();
-            this.ProcessDisplay_checkBox = new System.Windows.Forms.CheckBox();
             this.label166 = new System.Windows.Forms.Label();
             this.Algorithm_comboBox = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -816,13 +822,6 @@
             this.AppSettings_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel5 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.ShowPixels_checkBox = new System.Windows.Forms.CheckBox();
-            this.CamPanelMaximize_checkBox = new System.Windows.Forms.CheckBox();
-            this.CamZoom_CheckBox = new System.Windows.Forms.CheckBox();
-            this.CamGrid_CheckBox = new System.Windows.Forms.CheckBox();
-            this.CamCross_CheckBox = new System.Windows.Forms.CheckBox();
-            this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
-            this.CamPauseDisplay_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -831,7 +830,9 @@
             this.tabPageSetupCameras.SuspendLayout();
             this.Camera_Panel.SuspendLayout();
             this.panel15.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CamOverlay_trackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CamZoomFactor_numericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tabPageBasicSetup.SuspendLayout();
@@ -901,7 +902,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             this.panel5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // Park_button
@@ -1790,14 +1790,14 @@
             this.OffsetX_Column.HeaderText = "Offset X";
             this.OffsetX_Column.MinimumWidth = 6;
             this.OffsetX_Column.Name = "OffsetX_Column";
-            this.OffsetX_Column.Width = 70;
+            this.OffsetX_Column.Width = 65;
             // 
             // OffsetY_Column
             // 
             this.OffsetY_Column.HeaderText = "Offset Y";
             this.OffsetY_Column.MinimumWidth = 6;
             this.OffsetY_Column.Name = "OffsetY_Column";
-            this.OffsetY_Column.Width = 70;
+            this.OffsetY_Column.Width = 65;
             // 
             // FirstX_Column
             // 
@@ -1820,14 +1820,14 @@
             this.Z_Pickup_Column.HeaderText = "Pickup Z";
             this.Z_Pickup_Column.MinimumWidth = 6;
             this.Z_Pickup_Column.Name = "Z_Pickup_Column";
-            this.Z_Pickup_Column.Width = 75;
+            this.Z_Pickup_Column.Width = 69;
             // 
             // Z_Place_Column
             // 
             this.Z_Place_Column.HeaderText = "Place Z";
             this.Z_Place_Column.MinimumWidth = 6;
             this.Z_Place_Column.Name = "Z_Place_Column";
-            this.Z_Place_Column.Width = 69;
+            this.Z_Place_Column.Width = 64;
             // 
             // Next_X_Column
             // 
@@ -1835,7 +1835,7 @@
             this.Next_X_Column.MinimumWidth = 6;
             this.Next_X_Column.Name = "Next_X_Column";
             this.Next_X_Column.ReadOnly = true;
-            this.Next_X_Column.Width = 64;
+            this.Next_X_Column.Width = 60;
             // 
             // Next_Y_Column
             // 
@@ -1843,7 +1843,7 @@
             this.Next_Y_Column.MinimumWidth = 6;
             this.Next_Y_Column.Name = "Next_Y_Column";
             this.Next_Y_Column.ReadOnly = true;
-            this.Next_Y_Column.Width = 64;
+            this.Next_Y_Column.Width = 60;
             // 
             // CoordinatesForParts_Column
             // 
@@ -1932,6 +1932,7 @@
             // 
             this.panel15.AutoSize = true;
             this.panel15.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel15.Controls.Add(this.CamOverlay_trackBar);
             this.panel15.Controls.Add(this.CamZoomFactor_numericUpDown);
             this.panel15.Controls.Add(this.ShowPixels_checkBox);
             this.panel15.Controls.Add(this.CamPanelMaximize_checkBox);
@@ -1946,6 +1947,17 @@
             this.panel15.Name = "panel15";
             this.panel15.Size = new System.Drawing.Size(640, 38);
             this.panel15.TabIndex = 230;
+            // 
+            // CamOverlay_trackBar
+            // 
+            this.CamOverlay_trackBar.AutoSize = false;
+            this.CamOverlay_trackBar.Location = new System.Drawing.Point(241, 8);
+            this.CamOverlay_trackBar.Maximum = 255;
+            this.CamOverlay_trackBar.Name = "CamOverlay_trackBar";
+            this.CamOverlay_trackBar.Size = new System.Drawing.Size(104, 23);
+            this.CamOverlay_trackBar.TabIndex = 229;
+            this.CamOverlay_trackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.toolTip1.SetToolTip(this.CamOverlay_trackBar, "Overlay original with processed frame");
             // 
             // CamZoomFactor_numericUpDown
             // 
@@ -1970,11 +1982,102 @@
             this.CamZoomFactor_numericUpDown.Name = "CamZoomFactor_numericUpDown";
             this.CamZoomFactor_numericUpDown.Size = new System.Drawing.Size(42, 23);
             this.CamZoomFactor_numericUpDown.TabIndex = 229;
+            this.toolTip1.SetToolTip(this.CamZoomFactor_numericUpDown, "Zoom");
             this.CamZoomFactor_numericUpDown.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
+            // 
+            // ShowPixels_checkBox
+            // 
+            this.ShowPixels_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ShowPixels_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.pixel;
+            this.ShowPixels_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ShowPixels_checkBox.Location = new System.Drawing.Point(117, 3);
+            this.ShowPixels_checkBox.Name = "ShowPixels_checkBox";
+            this.ShowPixels_checkBox.Size = new System.Drawing.Size(32, 32);
+            this.ShowPixels_checkBox.TabIndex = 229;
+            this.toolTip1.SetToolTip(this.ShowPixels_checkBox, "Original Size/\r\nPixel accurate");
+            this.ShowPixels_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // CamPanelMaximize_checkBox
+            // 
+            this.CamPanelMaximize_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamPanelMaximize_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.maximize;
+            this.CamPanelMaximize_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamPanelMaximize_checkBox.Location = new System.Drawing.Point(351, 3);
+            this.CamPanelMaximize_checkBox.MaximumSize = new System.Drawing.Size(32, 32);
+            this.CamPanelMaximize_checkBox.MinimumSize = new System.Drawing.Size(32, 32);
+            this.CamPanelMaximize_checkBox.Name = "CamPanelMaximize_checkBox";
+            this.CamPanelMaximize_checkBox.Size = new System.Drawing.Size(32, 32);
+            this.CamPanelMaximize_checkBox.TabIndex = 229;
+            this.toolTip1.SetToolTip(this.CamPanelMaximize_checkBox, "Maximize/minimize");
+            this.CamPanelMaximize_checkBox.UseVisualStyleBackColor = true;
+            this.CamPanelMaximize_checkBox.CheckedChanged += new System.EventHandler(this.CamPanelMaximize_checkBox_CheckedChanged);
+            // 
+            // CamPauseDisplay_checkBox
+            // 
+            this.CamPauseDisplay_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamPauseDisplay_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.pause;
+            this.CamPauseDisplay_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamPauseDisplay_checkBox.Location = new System.Drawing.Point(79, 3);
+            this.CamPauseDisplay_checkBox.Name = "CamPauseDisplay_checkBox";
+            this.CamPauseDisplay_checkBox.Size = new System.Drawing.Size(32, 32);
+            this.CamPauseDisplay_checkBox.TabIndex = 229;
+            this.toolTip1.SetToolTip(this.CamPauseDisplay_checkBox, "Pause Display");
+            this.CamPauseDisplay_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // CamZoom_CheckBox
+            // 
+            this.CamZoom_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamZoom_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.zoom;
+            this.CamZoom_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamZoom_CheckBox.Location = new System.Drawing.Point(155, 3);
+            this.CamZoom_CheckBox.Name = "CamZoom_CheckBox";
+            this.CamZoom_CheckBox.Size = new System.Drawing.Size(32, 32);
+            this.CamZoom_CheckBox.TabIndex = 229;
+            this.toolTip1.SetToolTip(this.CamZoom_CheckBox, "Enable Zoom");
+            this.CamZoom_CheckBox.UseVisualStyleBackColor = true;
+            // 
+            // CamGrid_CheckBox
+            // 
+            this.CamGrid_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamGrid_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.grid;
+            this.CamGrid_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamGrid_CheckBox.Location = new System.Drawing.Point(41, 3);
+            this.CamGrid_CheckBox.Name = "CamGrid_CheckBox";
+            this.CamGrid_CheckBox.Size = new System.Drawing.Size(32, 32);
+            this.CamGrid_CheckBox.TabIndex = 229;
+            this.toolTip1.SetToolTip(this.CamGrid_CheckBox, "Enable Grid");
+            this.CamGrid_CheckBox.UseVisualStyleBackColor = true;
+            // 
+            // CamCross_CheckBox
+            // 
+            this.CamCross_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamCross_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.cross;
+            this.CamCross_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamCross_CheckBox.Location = new System.Drawing.Point(3, 3);
+            this.CamCross_CheckBox.Name = "CamCross_CheckBox";
+            this.CamCross_CheckBox.Size = new System.Drawing.Size(32, 32);
+            this.CamCross_CheckBox.TabIndex = 229;
+            this.toolTip1.SetToolTip(this.CamCross_CheckBox, "Enable Cross");
+            this.CamCross_CheckBox.UseVisualStyleBackColor = true;
+            // 
+            // Cam_pictureBox
+            // 
+            this.Cam_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Cam_pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Cam_pictureBox.Location = new System.Drawing.Point(0, 0);
+            this.Cam_pictureBox.Margin = new System.Windows.Forms.Padding(0);
+            this.Cam_pictureBox.MinimumSize = new System.Drawing.Size(640, 480);
+            this.Cam_pictureBox.Name = "Cam_pictureBox";
+            this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
+            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.Cam_pictureBox.TabIndex = 10;
+            this.Cam_pictureBox.TabStop = false;
+            this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
+            this.Cam_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseMove);
             // 
             // groupBox6
             // 
@@ -7197,7 +7300,6 @@
             this.Algorithms_tabPage.Controls.Add(this.SaveFeatureLoc_button);
             this.Algorithms_tabPage.Controls.Add(this.MeasuredPosition_label);
             this.Algorithms_tabPage.Controls.Add(this.GotoFeature_button);
-            this.Algorithms_tabPage.Controls.Add(this.OverlayPictures_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.AdvancedProcessing_tabControl);
             this.Algorithms_tabPage.Controls.Add(this.SpecialProcessing_button);
             this.Algorithms_tabPage.Controls.Add(this.tabControl1);
@@ -7250,7 +7352,6 @@
             this.Algorithms_tabPage.Controls.Add(this.DuplicateAlgorithm_button);
             this.Algorithms_tabPage.Controls.Add(this.RemoveAlgorithm_button);
             this.Algorithms_tabPage.Controls.Add(this.AddAlgorithm_button);
-            this.Algorithms_tabPage.Controls.Add(this.ProcessDisplay_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.label166);
             this.Algorithms_tabPage.Controls.Add(this.Algorithm_comboBox);
             this.Algorithms_tabPage.Controls.Add(this.panel1);
@@ -7301,17 +7402,6 @@
             this.GotoFeature_button.Text = "Goto Feature";
             this.GotoFeature_button.UseVisualStyleBackColor = true;
             this.GotoFeature_button.Click += new System.EventHandler(this.GotoFeature_button_Click);
-            // 
-            // OverlayPictures_checkBox
-            // 
-            this.OverlayPictures_checkBox.AutoSize = true;
-            this.OverlayPictures_checkBox.Location = new System.Drawing.Point(1121, 217);
-            this.OverlayPictures_checkBox.Name = "OverlayPictures_checkBox";
-            this.OverlayPictures_checkBox.Size = new System.Drawing.Size(103, 17);
-            this.OverlayPictures_checkBox.TabIndex = 309;
-            this.OverlayPictures_checkBox.Text = "Overlay Pictures";
-            this.OverlayPictures_checkBox.UseVisualStyleBackColor = true;
-            this.OverlayPictures_checkBox.CheckedChanged += new System.EventHandler(this.OverlayPictures_checkBox_CheckedChanged);
             // 
             // AdvancedProcessing_tabControl
             // 
@@ -7996,17 +8086,6 @@
             this.AddAlgorithm_button.Text = "Add";
             this.AddAlgorithm_button.UseVisualStyleBackColor = true;
             this.AddAlgorithm_button.Click += new System.EventHandler(this.AddAlgorithm_button_Click);
-            // 
-            // ProcessDisplay_checkBox
-            // 
-            this.ProcessDisplay_checkBox.AutoSize = true;
-            this.ProcessDisplay_checkBox.Location = new System.Drawing.Point(1120, 193);
-            this.ProcessDisplay_checkBox.Name = "ProcessDisplay_checkBox";
-            this.ProcessDisplay_checkBox.Size = new System.Drawing.Size(101, 17);
-            this.ProcessDisplay_checkBox.TabIndex = 209;
-            this.ProcessDisplay_checkBox.Text = "Process Display";
-            this.ProcessDisplay_checkBox.UseVisualStyleBackColor = true;
-            this.ProcessDisplay_checkBox.CheckedChanged += new System.EventHandler(this.ProcessDisplay_checkBox_CheckedChanged);
             // 
             // label166
             // 
@@ -9806,90 +9885,6 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1272, 907);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // ShowPixels_checkBox
-            // 
-            this.ShowPixels_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.ShowPixels_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.pixel;
-            this.ShowPixels_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.ShowPixels_checkBox.Location = new System.Drawing.Point(117, 3);
-            this.ShowPixels_checkBox.Name = "ShowPixels_checkBox";
-            this.ShowPixels_checkBox.Size = new System.Drawing.Size(32, 32);
-            this.ShowPixels_checkBox.TabIndex = 229;
-            this.ShowPixels_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // CamPanelMaximize_checkBox
-            // 
-            this.CamPanelMaximize_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.CamPanelMaximize_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.maximize;
-            this.CamPanelMaximize_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CamPanelMaximize_checkBox.Location = new System.Drawing.Point(241, 3);
-            this.CamPanelMaximize_checkBox.MaximumSize = new System.Drawing.Size(32, 32);
-            this.CamPanelMaximize_checkBox.MinimumSize = new System.Drawing.Size(32, 32);
-            this.CamPanelMaximize_checkBox.Name = "CamPanelMaximize_checkBox";
-            this.CamPanelMaximize_checkBox.Size = new System.Drawing.Size(32, 32);
-            this.CamPanelMaximize_checkBox.TabIndex = 229;
-            this.CamPanelMaximize_checkBox.UseVisualStyleBackColor = true;
-            this.CamPanelMaximize_checkBox.CheckedChanged += new System.EventHandler(this.CamPanelMaximize_checkBox_CheckedChanged);
-            // 
-            // CamZoom_CheckBox
-            // 
-            this.CamZoom_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.CamZoom_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.zoom;
-            this.CamZoom_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CamZoom_CheckBox.Location = new System.Drawing.Point(155, 3);
-            this.CamZoom_CheckBox.Name = "CamZoom_CheckBox";
-            this.CamZoom_CheckBox.Size = new System.Drawing.Size(32, 32);
-            this.CamZoom_CheckBox.TabIndex = 229;
-            this.CamZoom_CheckBox.UseVisualStyleBackColor = true;
-            // 
-            // CamGrid_CheckBox
-            // 
-            this.CamGrid_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.CamGrid_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.grid;
-            this.CamGrid_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CamGrid_CheckBox.Location = new System.Drawing.Point(41, 3);
-            this.CamGrid_CheckBox.Name = "CamGrid_CheckBox";
-            this.CamGrid_CheckBox.Size = new System.Drawing.Size(32, 32);
-            this.CamGrid_CheckBox.TabIndex = 229;
-            this.CamGrid_CheckBox.UseVisualStyleBackColor = true;
-            // 
-            // CamCross_CheckBox
-            // 
-            this.CamCross_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.CamCross_CheckBox.BackgroundImage = global::LitePlacer.Properties.Resources.cross;
-            this.CamCross_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CamCross_CheckBox.Location = new System.Drawing.Point(3, 3);
-            this.CamCross_CheckBox.Name = "CamCross_CheckBox";
-            this.CamCross_CheckBox.Size = new System.Drawing.Size(32, 32);
-            this.CamCross_CheckBox.TabIndex = 229;
-            this.CamCross_CheckBox.UseVisualStyleBackColor = true;
-            // 
-            // Cam_pictureBox
-            // 
-            this.Cam_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Cam_pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Cam_pictureBox.Location = new System.Drawing.Point(0, 0);
-            this.Cam_pictureBox.Margin = new System.Windows.Forms.Padding(0);
-            this.Cam_pictureBox.MinimumSize = new System.Drawing.Size(640, 480);
-            this.Cam_pictureBox.Name = "Cam_pictureBox";
-            this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
-            this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.Cam_pictureBox.TabIndex = 10;
-            this.Cam_pictureBox.TabStop = false;
-            this.Cam_pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseClick);
-            this.Cam_pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Cam_pictureBox_MouseMove);
-            // 
-            // PauseDisplay_checkBox
-            // 
-            this.CamPauseDisplay_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.CamPauseDisplay_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.pause;
-            this.CamPauseDisplay_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CamPauseDisplay_checkBox.Location = new System.Drawing.Point(79, 3);
-            this.CamPauseDisplay_checkBox.Name = "PauseDisplay_checkBox";
-            this.CamPauseDisplay_checkBox.Size = new System.Drawing.Size(32, 32);
-            this.CamPauseDisplay_checkBox.TabIndex = 229;
-            this.CamPauseDisplay_checkBox.UseVisualStyleBackColor = true;
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -9918,7 +9913,9 @@
             this.Camera_Panel.ResumeLayout(false);
             this.Camera_Panel.PerformLayout();
             this.panel15.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.CamOverlay_trackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CamZoomFactor_numericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -10021,7 +10018,6 @@
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -10495,7 +10491,6 @@
         private System.Windows.Forms.Button DuplicateAlgorithm_button;
         private System.Windows.Forms.Button RemoveAlgorithm_button;
         private System.Windows.Forms.Button AddAlgorithm_button;
-        private System.Windows.Forms.CheckBox ProcessDisplay_checkBox;
         private System.Windows.Forms.Label label166;
         private System.Windows.Forms.ComboBox Algorithm_comboBox;
         private System.Windows.Forms.Label label105;
@@ -10788,7 +10783,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label TrueX_label;
-        private System.Windows.Forms.CheckBox OverlayPictures_checkBox;
         private System.Windows.Forms.Button GotoFeature_button;
         private System.Windows.Forms.Button GotoUpCamPositionCal_button;
         private System.Windows.Forms.CheckBox UseUpcam_checkBox;
@@ -10820,6 +10814,7 @@
         private System.Windows.Forms.Label label109;
         private System.Windows.Forms.CheckBox CamPanelMaximize_checkBox;
         private System.Windows.Forms.CheckBox CamPauseDisplay_checkBox;
+        private System.Windows.Forms.TrackBar CamOverlay_trackBar;
     }
 }
 

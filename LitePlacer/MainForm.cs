@@ -2509,8 +2509,7 @@ namespace LitePlacer
                 DisplayText("*** Homing algorithm not found - programming error or corrupt data file!", KnownColor.Red, true);
                 return false;
             }
-            DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
-            DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
+            DownCamera.BuildMeasurementFunctionsList(HomeAlg);
 
             if (!GoToFeatureLocationDownCam_m(0.1, out double X, out double Y, out double Atmp))
             {
@@ -2808,7 +2807,6 @@ namespace LitePlacer
             Setting.Cameras_KeepActive = KeepActive_checkBox.Checked;
         }
 
-
         private void StartCameras()
         {
             // Called at startup. 
@@ -2847,12 +2845,10 @@ namespace LitePlacer
             StartDownCamera_m();
         }
 
-
         private void RobustFast_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             Setting.Cameras_RobustSwitch = RobustFast_checkBox.Checked;
         }
-
 
         private void SelectCamera(Camera cam)
         {
@@ -2876,6 +2872,8 @@ namespace LitePlacer
             CamZoomFactor_numericUpDown.DataBindings.Add("Value", cam.Settings, nameof(cam.Settings.ZoomFactor), false, DataSourceUpdateMode.OnPropertyChanged);
             CamPauseDisplay_checkBox.DataBindings.Clear();
             CamPauseDisplay_checkBox.DataBindings.Add("Checked", cam, nameof(cam.PauseDisplay), false, DataSourceUpdateMode.OnPropertyChanged);
+            CamOverlay_trackBar.DataBindings.Clear();
+            CamOverlay_trackBar.DataBindings.Add("Value", cam, nameof(cam.OverlayRatio), false, DataSourceUpdateMode.OnPropertyChanged);
 
             if (KeepActive_checkBox.Checked)
             {
@@ -7522,7 +7520,6 @@ namespace LitePlacer
 
                 SelectCamera(UpCamera);
                 UpCamera.Settings.DrawGrid = true;
-                UpCamera.Overlay = false;
                 UpCamera.ClearDisplayFunctionsList();
 
                 bool withVideoAlgorithm = false;
@@ -7540,8 +7537,7 @@ namespace LitePlacer
                 {
                     withVideoAlgorithm = true;
                     VideoAlgorithmsCollection.FullAlgorithmDescription algorithmDescription = VideoAlgorithms.AllAlgorithms.Where(s => s.Name == "UpCam Component").ToList()[0];
-                    UpCamera.BuildMeasurementFunctionsList(algorithmDescription.FunctionList);
-                    UpCamera.MeasurementParameters = algorithmDescription.MeasurementParameters;
+                    UpCamera.BuildMeasurementFunctionsList(algorithmDescription);
                     GotoFeatureJob_button.Click += GotoFeature_Click;
                 }
 
@@ -8026,8 +8022,7 @@ namespace LitePlacer
                 DisplayText("*** Fiducial algorithm (" + VidAlgName + ") not found", KnownColor.DarkRed, true);
                 return false;
             }
-            DownCamera.BuildMeasurementFunctionsList(FidAlg.FunctionList);
-            DownCamera.MeasurementParameters = FidAlg.MeasurementParameters;
+            DownCamera.BuildMeasurementFunctionsList(FidAlg);
 
             // move them to our array, checking the data:
             PhysicalComponent[] Fiducials = new PhysicalComponent[FiducialDesignators.Length];  // store the data here
@@ -10913,25 +10908,18 @@ namespace LitePlacer
             Update_GridView(NozzlesParameters_dataGridView);
 
             // find the algorithm:            
-            VideoAlgorithmsCollection.FullAlgorithmDescription Alg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+            VideoAlgorithmsCollection.FullAlgorithmDescription Alg;
             string AlgName = NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells["VisionAlgorithm_column"].Value.ToString();
             if (!VideoAlgorithms.FindAlgorithm(AlgName, out Alg))
             {
                 DisplayText("*** Calibration algorithm algorithm not found!", KnownColor.Red, true);
                 return false;
             }
-            UpCamera.BuildMeasurementFunctionsList(Alg.FunctionList);
-            UpCamera.MeasurementParameters = Alg.MeasurementParameters;
 
             // Override size:
-            double SmaxSave = UpCamera.MeasurementParameters.Xmax;
-            double SminSave = UpCamera.MeasurementParameters.Xmin;
-            double YmaxSave = UpCamera.MeasurementParameters.Ymax;
-            double YminSave = UpCamera.MeasurementParameters.Ymin;
             bool SizeOverride = false;
             double Smin = 0.0;
             double Smax = 0.0;
-
 
             DataGridViewCheckBoxCell cell = NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells
                 ["NozzleOverrideSize_column"] as DataGridViewCheckBoxCell;
@@ -10975,19 +10963,21 @@ namespace LitePlacer
             DisplayText("Measuring nozzle " + Setting.Nozzles_current.ToString());
             if (SizeOverride)
             {
-                UpCamera.MeasurementParameters.Xmax = Smax;
-                UpCamera.MeasurementParameters.Xmin = Smin;
-                UpCamera.MeasurementParameters.Ymax = Smax;
-                UpCamera.MeasurementParameters.Ymin = Smin;
+                VideoAlgorithmsCollection.FullAlgorithmDescription tmpAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+                tmpAlg.FunctionList = Alg.FunctionList;
+                tmpAlg.MeasurementParameters = new MeasurementParametersClass(Alg.MeasurementParameters);
+                tmpAlg.MeasurementParameters.Xmax = Smax;
+                tmpAlg.MeasurementParameters.Xmin = Smin;
+                tmpAlg.MeasurementParameters.Ymax = Smax;
+                tmpAlg.MeasurementParameters.Ymin = Smin;
+                UpCamera.BuildMeasurementFunctionsList(tmpAlg);
             }
-            result &= Nozzle.Calibrate();
-            if (SizeOverride)
+            else
             {
-                UpCamera.MeasurementParameters.Xmax = SmaxSave;
-                UpCamera.MeasurementParameters.Xmin = SminSave;
-                UpCamera.MeasurementParameters.Ymax = SmaxSave;
-                UpCamera.MeasurementParameters.Ymin = SminSave;
+                UpCamera.BuildMeasurementFunctionsList(Alg);
             }
+
+            result &= Nozzle.Calibrate();
 
             // take Nozzle up
             result &= CNC_Z_m(0.0);
@@ -12564,7 +12554,7 @@ namespace LitePlacer
 
         private void SaveFeatureLoc_button_Click(object sender, EventArgs e)
         {
-            if(!selectedCam.Measure(out double xPos, out double yPos, out double aTmp, out int err, true))
+            if(!selectedCam.Measure(out double xPos, out double yPos, out double aTmp, out int _, true))
             {
                 return;
             }

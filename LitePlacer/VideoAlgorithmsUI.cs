@@ -67,7 +67,8 @@ namespace LitePlacer
             UpcamPositionX_textBox.Text = Setting.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
             UpcamPositionY_textBox.Text = Setting.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
 
-            ProcessDisplay_checkBox_Checked_Change();
+            UpdateVideoProcessing();
+            //ProcessDisplay_checkBox_Checked_Change();
         }
 
         private void Algorithms_tabPage_End()
@@ -119,14 +120,14 @@ namespace LitePlacer
 
         private void AlgorithmsTab_RestoreBehaviour()
         {
-            if (ProcessDisplay_checkBox.Checked)
-            {
+            /*if (ProcessDisplay_checkBox.Checked)
+            {*/
                 UpdateVideoProcessing();
-            }
+            /*}
             else
             {
                 StopVideoProcessing();
-            }
+            }*/
 
         }
 
@@ -226,11 +227,8 @@ namespace LitePlacer
             ClearFunctionParameters();
             Functions_dataGridView.CurrentCell = null;
             AlgorithmChange = false;
-            if (ProcessDisplay_checkBox.Checked)
-            {
-                UpdateVideoProcessing();
-            }
 
+            UpdateVideoProcessing();
         }
 
         bool ChangeYwithX = false;
@@ -450,17 +448,7 @@ namespace LitePlacer
 
         }
 
-        private void OverlayPictures_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            selectedCam.Overlay = OverlayPictures_checkBox.Checked;
-        }
-
-        private void ProcessDisplay_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            ProcessDisplay_checkBox_Checked_Change();
-        }
-
-        private void ProcessDisplay_checkBox_Checked_Change()
+        /*private void ProcessDisplay_checkBox_Checked_Change()
         {
             selectedCam.Overlay = OverlayPictures_checkBox.Checked;
             if (ProcessDisplay_checkBox.Checked)
@@ -471,9 +459,7 @@ namespace LitePlacer
             {
                 StopVideoProcessing();
             }
-        }
-
-
+        }*/
 
         // =====================================================================================
         // Check if Algorithm is used somewhere
@@ -682,22 +668,21 @@ namespace LitePlacer
         // ===================
         private void Algorithm_Measure_button_Click(object sender, EventArgs e)
         {
-            Camera cam = UpCamera;
-            if (DownCam_radioButton.Checked)
+            if (VideoAlgorithms.CurrentAlgorithm != null)
             {
-                cam = DownCamera;
+                selectedCam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm);
+                selectedCam.Measure(out double X, out double Y, out double Atmp, out int err, true);
             }
-            cam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
-            cam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
-            cam.Measure(out double X, out double Y, out double Atmp, out int err, true);
         }
 
         // ===================
         private void GotoFeature_button_Click(object sender, EventArgs e)
         {
-            selectedCam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
-            selectedCam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
-            GoToFeatureLocation_m(selectedCam, 0.001, out double Xtmp, out double Ytmp, out double Atmp, 2, 1);
+            if (VideoAlgorithms.CurrentAlgorithm != null)
+            {
+                selectedCam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm);
+                GoToFeatureLocation_m(selectedCam, 0.001, out double Xtmp, out double Ytmp, out double Atmp, 2, 1);
+            }
         }
 
         // =====================================================================================
@@ -1090,10 +1075,6 @@ namespace LitePlacer
         {
             // User changed something, that (potentially) affects the current video processing
             // Note, that there might not be a current algorithm
-            if (!ProcessDisplay_checkBox.Checked)
-            {
-                return;
-            }
             if (VideoAlgorithms.CurrentAlgorithm == null)
             {
                 DisplayText("UpdateVideoProcessing(), no current algorithm");
@@ -1104,11 +1085,11 @@ namespace LitePlacer
             DisplayText("UpdateVideoProcessing()");
             if (DownCam_radioButton.Checked)
             {
-                DownCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
+                DownCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm);
             }
             else
             {
-                UpCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
+                UpCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm);
             }
             UpdateSearchFunctions();
         }

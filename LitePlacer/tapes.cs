@@ -791,8 +791,7 @@ namespace LitePlacer
                 return false;
             }
             MainForm.DisplayText("SetCurrentTapeMeasurement_m: using alg " + TapeAlgName);
-            DownCamera.BuildMeasurementFunctionsList(TapeAlg.FunctionList);
-            DownCamera.MeasurementParameters = TapeAlg.MeasurementParameters;
+            DownCamera.BuildMeasurementFunctionsList(TapeAlg);
             return true;
 		}
 
