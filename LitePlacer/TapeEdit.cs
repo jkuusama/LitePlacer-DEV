@@ -363,7 +363,7 @@ namespace LitePlacer
             Row.Cells["UseNozzleCoordinates_Column"].Value = UseNozzleCoordinates_checkBox.Checked;
             Row.Cells["LastX_Column"].Value = LastX_textBox.Text;
             Row.Cells["LastY_Column"].Value = LastY_textBox.Text;
-            MainForm.Update_GridView(TapesDataGrid);
+            FormMain.Update_GridView(TapesDataGrid);
             MainForm.DownCameraRotationFollowsA = false;
             Cam.Settings.DrawGrid = false;
             Cam.Settings.DrawCross = DrawCross;
@@ -378,7 +378,7 @@ namespace LitePlacer
             if (CreatingNew)
             {
                 TapesDataGrid.Rows.RemoveAt(TapeRowNo);
-                MainForm.Update_GridView(TapesDataGrid);
+                FormMain.Update_GridView(TapesDataGrid);
             }
             Close();
         }
@@ -392,7 +392,7 @@ namespace LitePlacer
             double Xoff;
             double Yoff;
             double pitch;
-            MainForm.TapeWidthStringToValues(TapeWidth_comboBox.SelectedItem.ToString(), out Xoff, out Yoff, out pitch);
+            FormMain.TapeWidthStringToValues(TapeWidth_comboBox.SelectedItem.ToString(), out Xoff, out Yoff, out pitch);
             TapeOffsetX_textBox.Text = Xoff.ToString(CultureInfo.InvariantCulture);
             TapeOffsetX_textBox.ForeColor = Color.Black;    // in case there are erroneous edits left
             TapeOffsetY_textBox.Text = Yoff.ToString(CultureInfo.InvariantCulture);

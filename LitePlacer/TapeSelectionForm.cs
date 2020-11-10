@@ -43,7 +43,7 @@ namespace LitePlacer
 					cell.Value = row.Cells[cell.OwningColumn.Name].Value;
                 }
 			}
-			MainForm.Update_GridView(Grid);
+			FormMain.Update_GridView(Grid);
 			//Grid = grd;
 			GridSizeSave = Grid.Size;
             Nozzle = MainForm.Setting.Nozzles_default.ToString(CultureInfo.InvariantCulture);

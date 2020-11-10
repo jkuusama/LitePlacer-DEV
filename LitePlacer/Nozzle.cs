@@ -63,7 +63,7 @@ namespace LitePlacer
                         NozzleDataAllNozzles[i].Calibrated;
                 }
             }
-            MainForm.Update_GridView(MainForm.NozzlesParameters_dataGridView);
+            FormMain.Update_GridView(MainForm.NozzlesParameters_dataGridView);
         }
 
 

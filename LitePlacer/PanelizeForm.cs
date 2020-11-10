@@ -39,7 +39,7 @@ namespace LitePlacer
 
         private void PanelizeForm_Load(object sender, EventArgs e)
         {
-            string path = MainForm.GetPath();
+            string path = FormMain.GetPath();
             MainForm.LoadDataGrid(path + PANELFIDUCIALS_DATAFILE, PanelFiducials_dataGridView, FormMain.DataTableType.PanelFiducials);
 
             XFirstOffset = MainForm.Setting.Panel_XFirstOffset;
@@ -71,7 +71,7 @@ namespace LitePlacer
                 return;
             }
             OK = true;
-            string path = MainForm.GetPath();
+            string path = FormMain.GetPath();
             MainForm.SaveDataGrid(path + PANELFIDUCIALS_DATAFILE, PanelFiducials_dataGridView);
             MainForm.Setting.Panel_XFirstOffset = XFirstOffset;
             MainForm.Setting.Panel_YFirstOffset = YFirstOffset;

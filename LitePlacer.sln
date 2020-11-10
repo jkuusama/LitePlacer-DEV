@@ -1,12 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LitePlacer", "LitePlacer\LitePlacer.csproj", "{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{34FF0353-B9B2-4EDF-A13E-24071C8066B5}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		release.txt = release.txt
 	EndProjectSection
 EndProject
@@ -50,5 +51,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14236583-CEA9-41FA-B7EE-320DCB753A9C}
 	EndGlobalSection
 EndGlobal

@@ -320,7 +320,7 @@ namespace LitePlacer
 #pragma warning restore CA1031 // Do not catch general exception types
         }
 
-        public List<string> GetDeviceList()
+        public static List<string> GetDeviceList()
         {
             List<string> Devices = new List<string>();
 
@@ -332,7 +332,7 @@ namespace LitePlacer
             return (Devices);
         }
 
-        public List<string> GetMonikerStrings()
+        public static List<string> GetMonikerStrings()
         {
             List<string> Monikers = new List<string>();
 
@@ -438,7 +438,7 @@ namespace LitePlacer
 
         // =========================================================
         // Convert list of AForge.NET's points to array of .NET points
-        private System.Drawing.Point[] ToPointsArray(List<AForge.Point> points)
+        private static System.Drawing.Point[] ToPointsArray(List<AForge.Point> points)
         {
             return points.Select(s => new System.Drawing.Point((int)s.X, (int)s.Y)).ToArray();
         }
@@ -1074,7 +1074,7 @@ namespace LitePlacer
         // helpers:
 
         // ===========
-        private List<IntPoint> GetBlobsOutline(BlobCounter blobCounter, Blob blob)
+        private static List<IntPoint> GetBlobsOutline(BlobCounter blobCounter, Blob blob)
         {
             List<IntPoint> leftPoints, rightPoints, edgePoints = new List<IntPoint>();
             // get blob's edge points
@@ -1087,7 +1087,7 @@ namespace LitePlacer
         }
 
         // ===========
-        private List<IntPoint> GetConvexHull(List<IntPoint> edgePoints)
+        private static List<IntPoint> GetConvexHull(List<IntPoint> edgePoints)
         {
             // create convex hull searching algorithm
             GrahamConvexHull hullFinder = new GrahamConvexHull();
@@ -1106,7 +1106,7 @@ namespace LitePlacer
         }
 
         // ===========
-        private double GetAngle(IntPoint p1, IntPoint p2)
+        private static double GetAngle(IntPoint p1, IntPoint p2)
         {
             // returns the angle between line (p1,p2) and horizontal axis, in degrees
             double A = 0;
@@ -1146,13 +1146,13 @@ namespace LitePlacer
         }
 
         // ===========
-        private double RectangleArea(IntPoint p1, IntPoint p2)
+        private static double RectangleArea(IntPoint p1, IntPoint p2)
         {
             return Math.Abs(((double)p2.X - (double)p1.X) * ((double)p2.Y - (double)p1.Y));
         }
 
         // ===========
-        private IntPoint RotatePoint(double angle, IntPoint p, IntPoint o)
+        private static IntPoint RotatePoint(double angle, IntPoint p, IntPoint o)
         {
             // TODO: put all rotations in one routine
 
@@ -1168,7 +1168,7 @@ namespace LitePlacer
         }
 
         // ===========
-        private List<IntPoint> RotateOutline(double theta, List<IntPoint> Outline, IntPoint RotOrigin)
+        private static List<IntPoint> RotateOutline(double theta, List<IntPoint> Outline, IntPoint RotOrigin)
         {
             // returns the outline, rotated by angle around RotOrigin
             List<IntPoint> Result = new List<IntPoint>();
@@ -1182,7 +1182,7 @@ namespace LitePlacer
         }
 
         // ===========
-        private List<IntPoint> GetMinimumBoundingRectangle(List<IntPoint> Outline)
+        private static List<IntPoint> GetMinimumBoundingRectangle(List<IntPoint> Outline)
         {
             // Using caliber algorithm to find the minimum bounding regtangle
             // (see http://www.datagenetics.com/blog/march12014/index.html):
@@ -1232,7 +1232,7 @@ namespace LitePlacer
         // Components, newer version:
         // ==========================================================================================================
 
-        private List<Shapes.Component> FindComponentsFunct(Bitmap bitmap)
+        private List<LitePlacerShapes.Component> FindComponentsFunct(Bitmap bitmap)
         {
             // Locating objects
             BlobCounter blobCounter = new BlobCounter();
@@ -1240,7 +1240,7 @@ namespace LitePlacer
             blobCounter.MinHeight = 8;
             blobCounter.MinWidth = 8;
             blobCounter.ProcessImage(bitmap);
-            List<Shapes.Component> Components = new List<Shapes.Component>();
+            List<LitePlacerShapes.Component> Components = new List<LitePlacerShapes.Component>();
 
             Blob[] blobs = blobCounter.GetObjectsInformation(); // Get blobs
             foreach (Blob blob in blobs)
@@ -1252,7 +1252,7 @@ namespace LitePlacer
 
                 List<IntPoint> edgePoints = GetBlobsOutline(blobCounter, blob);     // get edge points
                 List<IntPoint> OutlineRaw = GetConvexHull(edgePoints);                 // convert to convex hull
-                if (OutlineRaw.Count < 3)
+                if (OutlineRaw?.Count < 3)
                 {
                     continue;
                 }
@@ -1308,7 +1308,7 @@ namespace LitePlacer
                 }
                 else
                 {
-                    Components.Add(new Shapes.Component(Box, blob.CenterOfGravity, angle));
+                    Components.Add(new LitePlacerShapes.Component(Box, blob.CenterOfGravity, angle));
                 }
             }
             return Components;
@@ -1320,7 +1320,7 @@ namespace LitePlacer
 
         #region OldComponents
 
-        private List<Shapes.LitePlacerShapeComponent> FindComponentsFunctOld(Bitmap bitmap)
+        private static List<LitePlacerShapes.LitePlacerShapeComponent> FindComponentsFunctOld(Bitmap bitmap)
         {
             // Locating objects
             BlobCounter blobCounter = new BlobCounter();
@@ -1335,7 +1335,7 @@ namespace LitePlacer
             ClosePointsMergingOptimizer optimizer1 = new ClosePointsMergingOptimizer();
             FlatAnglesOptimizer optimizer2 = new FlatAnglesOptimizer();
 
-            List<Shapes.LitePlacerShapeComponent> Components = new List<Shapes.LitePlacerShapeComponent>();
+            List<LitePlacerShapes.LitePlacerShapeComponent> Components = new List<LitePlacerShapes.LitePlacerShapeComponent>();
 
             // process each blob
             foreach (Blob blob in blobs)
@@ -1481,7 +1481,7 @@ namespace LitePlacer
                         Alignment = Math.Atan((Longest.End.Y - Longest.Start.Y) / (Longest.End.X - Longest.Start.X));
                         Alignment = Alignment * 180.0 / Math.PI; // in deg.
                     }
-                    Components.Add(new Shapes.LitePlacerShapeComponent(ComponentCenter, Alignment, Outline, Longest, NormalStart, NormalEnd));
+                    Components.Add(new LitePlacerShapes.LitePlacerShapeComponent(ComponentCenter, Alignment, Outline, Longest, NormalStart, NormalEnd));
                 }
             }
             return Components;
@@ -1496,9 +1496,9 @@ namespace LitePlacer
         // return value is number of components found
         {
             Bitmap image = GetMeasurementFrame();
-            List<Shapes.LitePlacerShapeComponent> RawComponents = FindComponentsFunctOld(image);
+            List<LitePlacerShapes.LitePlacerShapeComponent> RawComponents = FindComponentsFunctOld(image);
             image.Dispose();
-            List<Shapes.LitePlacerShapeComponent> GoodComponents = new List<Shapes.LitePlacerShapeComponent>();
+            List<LitePlacerShapes.LitePlacerShapeComponent> GoodComponents = new List<LitePlacerShapes.LitePlacerShapeComponent>();
 
             X = 0.0;
             Y = 0.0;
@@ -1508,7 +1508,7 @@ namespace LitePlacer
                 return (0);
             }
             // Remove those that are more than MaxDistance away from frame center
-            foreach (Shapes.LitePlacerShapeComponent Component in RawComponents)
+            foreach (LitePlacerShapes.LitePlacerShapeComponent Component in RawComponents)
             {
                 X = (Component.Center.X - FrameCenterX);
                 Y = (Component.Center.Y - FrameCenterY);
@@ -1548,14 +1548,14 @@ namespace LitePlacer
         // ===========
         private void DrawComponentsFunct(Bitmap bitmap, Graphics g)
         {
-            List<Shapes.Component> Components = FindComponentsFunct(bitmap);
+            List<LitePlacerShapes.Component> Components = FindComponentsFunct(bitmap);
             Pen OrangePen = new Pen(Color.DarkOrange, 3);
             double zoom = GetMeasurementZoom();
             double XmmPpix = Settings.XmmPerPixel / zoom;
             double YmmPpix = Settings.YmmPerPixel / zoom;
             for (int i = Components.Count - 1; i >= 0; i--)
             {
-                Shapes.Component component = Components[i];
+                LitePlacerShapes.Component component = Components[i];
                 if (((component.BoundingBox.LongsideLenght * XmmPpix) <= DisplayAlgorithm.MeasurementParameters.Xmin) ||
                       ((component.BoundingBox.LongsideLenght * XmmPpix) >= DisplayAlgorithm.MeasurementParameters.Xmax) ||
                       ((component.BoundingBox.ShortSideLenght * YmmPpix) <= DisplayAlgorithm.MeasurementParameters.Ymin) ||
@@ -1568,7 +1568,7 @@ namespace LitePlacer
 
             if (Components.Count == 1)
             {
-                Shapes.Component component = Components[0];
+                LitePlacerShapes.Component component = Components[0];
                 MainForm.DisplayBigText(string.Format("{0,5:0.000}", (component.BoundingBox.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (component.BoundingBox.Center.Y - FrameCenterY) * YmmPpix) +
                     "  " + string.Format("{0,5:0.00}", component.BoundingBox.Angle));
             }
@@ -1577,7 +1577,7 @@ namespace LitePlacer
                 MainForm.DisplayBigText("No Unique Position");
             }
 
-            foreach (Shapes.Component component in Components)
+            foreach (LitePlacerShapes.Component component in Components)
             {
                 g.DrawPolygon(OrangePen, ToPointsArray(component.BoundingBox.Corners));
                 int crossSize = 300;
@@ -1598,7 +1598,7 @@ namespace LitePlacer
 
         #region Circles
 
-        private List<Shapes.Circle> FindCirclesFunct(Bitmap bitmap)
+        private static List<LitePlacerShapes.Circle> FindCirclesFunct(Bitmap bitmap)
         {
             // locating objects
             BlobCounter blobCounter = new BlobCounter();
@@ -1608,7 +1608,7 @@ namespace LitePlacer
             blobCounter.ProcessImage(bitmap);
             Blob[] blobs = blobCounter.GetObjectsInformation();
 
-            List<Shapes.Circle> Circles = new List<Shapes.Circle>();
+            List<LitePlacerShapes.Circle> Circles = new List<LitePlacerShapes.Circle>();
 
             for (int i = 0, n = blobs.Length; i < n; i++)
             {
@@ -1626,7 +1626,7 @@ namespace LitePlacer
                         AForge.DoublePoint dCenter = center;
                         CircleOptimizer circleOptimizer = new CircleOptimizer();
                         circleOptimizer.optimize(edgePoints, ref dCenter, ref dRadius);
-                        Circles.Add(new Shapes.Circle((AForge.Point)dCenter, dRadius));
+                        Circles.Add(new LitePlacerShapes.Circle((AForge.Point)dCenter, dRadius));
                     }
                 }
             }
@@ -1634,7 +1634,7 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private int FindSmallestCircle(List<Shapes.Circle> Circles)
+        private static int FindSmallestCircle(List<LitePlacerShapes.Circle> Circles)
         {
             int Smallest = 0;
             double SmallRadius = Circles[0].Radius;
@@ -1651,7 +1651,7 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private int FindClosestCircle(List<Shapes.Circle> Circles)
+        private int FindClosestCircle(List<LitePlacerShapes.Circle> Circles)
         {
             int closest = 0;
             double X = (Circles[0].Center.X - FrameCenterX);
@@ -1674,13 +1674,13 @@ namespace LitePlacer
         // ===========
         private void DrawCirclesFunct(Bitmap bitmap, Graphics g)
         {
-            List<Shapes.Circle> Circles = FindCirclesFunct(bitmap);
+            List<LitePlacerShapes.Circle> Circles = FindCirclesFunct(bitmap);
             double zoom = GetMeasurementZoom();
             double XmmPpix = Settings.XmmPerPixel / zoom;
             double YmmPpix = Settings.YmmPerPixel / zoom;
             for (int i = Circles.Count - 1; i >= 0; i--)
             {
-                Shapes.Circle circle = Circles[i];
+                LitePlacerShapes.Circle circle = Circles[i];
                 if (((circle.Radius * 2.0 * XmmPpix) <= DisplayAlgorithm.MeasurementParameters.Xmin) ||
                       ((circle.Radius * 2.0 * XmmPpix) >= DisplayAlgorithm.MeasurementParameters.Xmax) ||
                       ((circle.Radius * 2.0 * YmmPpix) <= DisplayAlgorithm.MeasurementParameters.Ymin) ||
@@ -1693,7 +1693,7 @@ namespace LitePlacer
 
             if (Circles.Count == 1)
             {
-                Shapes.Circle circle = Circles[0];
+                LitePlacerShapes.Circle circle = Circles[0];
                 MainForm.DisplayBigText(string.Format("{0,5:0.000}", (circle.Center.X - FrameCenterX) * XmmPpix) + "  " + string.Format("{0,5:0.000}", (circle.Center.Y - FrameCenterY) * YmmPpix));
             }
             else
@@ -1764,7 +1764,7 @@ namespace LitePlacer
 
         #region Rectangles
 
-        private List<Shapes.Rectangle> FindRectanglesFunct(Bitmap bitmap)
+        private static List<LitePlacerShapes.Rectangle> FindRectanglesFunct(Bitmap bitmap)
         {
             // step 1 - turn background to black (done)
 
@@ -1777,7 +1777,7 @@ namespace LitePlacer
             Blob[] blobs = blobCounter.GetObjectsInformation();
 
             // step 3 - check objects' type and do what you do:
-            List<Shapes.Rectangle> Rectangles = new List<Shapes.Rectangle>();
+            List<LitePlacerShapes.Rectangle> Rectangles = new List<LitePlacerShapes.Rectangle>();
 
             for (int i = 0, n = blobs.Length; i < n; i++)
             {
@@ -1810,7 +1810,7 @@ namespace LitePlacer
                               )
                             )
                         {
-                            Rectangles.Add(new Shapes.Rectangle(corners.Select(s => (AForge.Point)s).ToList()));
+                            Rectangles.Add(new LitePlacerShapes.Rectangle(corners.Select(s => (AForge.Point)s).ToList()));
                         }
                     }
                 }
@@ -1819,7 +1819,7 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private int FindClosestRectangle(List<Shapes.Rectangle> Rectangles)
+        private int FindClosestRectangle(List<LitePlacerShapes.Rectangle> Rectangles)
         {
             if (Rectangles.Count == 0)
             {
@@ -1846,7 +1846,7 @@ namespace LitePlacer
         // =========================================================
         private void DrawRectanglesFunct(Bitmap bitmap, Graphics g)
         {
-            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(bitmap);
+            List<LitePlacerShapes.Rectangle> Rectangles = FindRectanglesFunct(bitmap);
             int closest = FindClosestRectangle(Rectangles);
             int PenSize = 3;
             // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
@@ -1875,20 +1875,20 @@ namespace LitePlacer
         }
 
         // ===========
-        public List<Shapes.Rectangle> GetMeasurementRectangles(double MaxDistance)
+        public List<LitePlacerShapes.Rectangle> GetMeasurementRectangles(double MaxDistance)
         {
             // returns a list of circles for measurements, filters for distance (which we always do) and size, if needed
 
             Bitmap image = GetMeasurementFrame();
-            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
-            List<Shapes.Rectangle> GoodRectangles = new List<Shapes.Rectangle>();
+            List<LitePlacerShapes.Rectangle> Rectangles = FindRectanglesFunct(image);
+            List<LitePlacerShapes.Rectangle> GoodRectangles = new List<LitePlacerShapes.Rectangle>();
             image.Dispose();
 
             double X = 0.0;
             double Y = 0.0;
             MaxDistance = MaxDistance * GetMeasurementZoom();
             // Remove those that are more than MaxDistance away from frame center
-            foreach (Shapes.Rectangle Rectangle in Rectangles)
+            foreach (LitePlacerShapes.Rectangle Rectangle in Rectangles)
             {
                 X = (Rectangle.Center.X - FrameCenterX);
                 Y = (Rectangle.Center.Y - FrameCenterY);
@@ -1909,7 +1909,7 @@ namespace LitePlacer
         #region Display Functions
 
         // =========================================================
-        private void ZoomFunct(ref Bitmap frame, double Factor)
+        private static void ZoomFunct(ref Bitmap frame, double Factor)
         {
             if (Factor < 0.1)
             {
@@ -2290,7 +2290,7 @@ namespace LitePlacer
         // Measure
         // ==========================================================================================================
 
-        private void DisplayShapes(List<Shapes.Shape> Shapes, int StartFrom, double XmmPpix, double YmmPpix)
+        private void DisplayShapes(List<LitePlacerShapes.Shape> Shapes, int StartFrom, double XmmPpix, double YmmPpix)
         {
             if ((Shapes.Count - StartFrom) == 0)
             {
@@ -2329,7 +2329,7 @@ namespace LitePlacer
 
 
         // =========================================================
-        private double DistanceToCenter(Shapes.Shape shape)
+        private double DistanceToCenter(LitePlacerShapes.Shape shape)
         {
             double X = shape.Center.X - FrameCenterX;
             double Y = shape.Center.Y - FrameCenterY;
@@ -2363,7 +2363,7 @@ namespace LitePlacer
             }
             stopwatch.Start();
 
-            List<Shapes.Shape> Candidates = new List<Shapes.Shape>();
+            List<LitePlacerShapes.Shape> Candidates = new List<LitePlacerShapes.Shape>();
 
             double zoom = GetMeasurementZoom();
             double XmmPpix = Settings.XmmPerPixel / zoom;
@@ -2371,10 +2371,10 @@ namespace LitePlacer
 
             if (MeasurementAlgorithm.MeasurementParameters.SearchRounds)
             {
-                List<Shapes.Circle> Circles = FindCirclesFunct(image);
-                foreach (Shapes.Circle circle in Circles)
+                List<LitePlacerShapes.Circle> Circles = FindCirclesFunct(image);
+                foreach (LitePlacerShapes.Circle circle in Circles)
                 {
-                    Candidates.Add(new Shapes.Shape()
+                    Candidates.Add(new LitePlacerShapes.Shape()
                     {
                         Center = circle.Center,
                         Angle = circle.Angle,
@@ -2395,10 +2395,10 @@ namespace LitePlacer
 
             if (MeasurementAlgorithm.MeasurementParameters.SearchRectangles)
             {
-                List<Shapes.Rectangle> Regtangles = FindRectanglesFunct(image);
-                foreach (Shapes.Rectangle regt in Regtangles)
+                List<LitePlacerShapes.Rectangle> Regtangles = FindRectanglesFunct(image);
+                foreach (LitePlacerShapes.Rectangle regt in Regtangles)
                 {
-                    Candidates.Add(new Shapes.Shape()
+                    Candidates.Add(new LitePlacerShapes.Shape()
                     {
                         Center = regt.Center,
                         Angle = regt.Angle,
@@ -2418,14 +2418,14 @@ namespace LitePlacer
             count = Candidates.Count;
             if (MeasurementAlgorithm.MeasurementParameters.SearchComponents)
             {
-                List<Shapes.Component> Components = FindComponentsFunct(image);
+                List<LitePlacerShapes.Component> Components = FindComponentsFunct(image);
 
-                foreach (Shapes.Component comp in Components)
+                foreach (LitePlacerShapes.Component comp in Components)
                 {
                     if (comp.BoundingBox.Corners.Count != 4)
                         continue;
 
-                    Candidates.Add(new Shapes.Shape()
+                    Candidates.Add(new LitePlacerShapes.Shape()
                     {
                         Center = comp.BoundingBox.Center,
                         Angle = comp.BoundingBox.Angle,
@@ -2444,8 +2444,8 @@ namespace LitePlacer
             }
 
             // Filter for size
-            List<Shapes.Shape> FilteredForSize = new List<Shapes.Shape>();
-            foreach (Shapes.Shape shape in Candidates)
+            List<LitePlacerShapes.Shape> FilteredForSize = new List<LitePlacerShapes.Shape>();
+            foreach (LitePlacerShapes.Shape shape in Candidates)
             {
                 if (((shape.Xsize * XmmPpix) > MeasurementAlgorithm.MeasurementParameters.Xmin) &&
                       ((shape.Xsize * XmmPpix) < MeasurementAlgorithm.MeasurementParameters.Xmax) &&
@@ -2509,7 +2509,7 @@ namespace LitePlacer
                     MainForm.DisplayText("Uniquedistance is 0 or less.", KnownColor.Red, true);
                     return false;
                 }
-                foreach (Shapes.Shape shape in FilteredForSize)
+                foreach (LitePlacerShapes.Shape shape in FilteredForSize)
                 {
                     double Xdist = Math.Abs((shape.Center.X - Xclosest) * XmmPpix);
                     double Ydist = Math.Abs((shape.Center.Y - Yclosest) * YmmPpix);

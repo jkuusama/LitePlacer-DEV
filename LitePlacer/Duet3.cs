@@ -11,6 +11,7 @@ namespace LitePlacer
 {
     public class Duet3class
     {
+#pragma warning disable CA1801 // Review unused parameters, remove when done developing this class
         FormMain MainForm;
         CNC Cnc;
         SerialComm Com;
@@ -417,6 +418,6 @@ namespace LitePlacer
 
         #endregion Features
 
-
+#pragma warning restore CA1801 // Review unused parameters, remove when done developing this class
     }
 }

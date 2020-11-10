@@ -681,7 +681,7 @@ namespace LitePlacer
             if (line.StartsWith("{\"sr\":", StringComparison.Ordinal))
             {
                 // Status report
-                NewStatusReport(line);
+                //NewStatusReport(line);
                 if (line.Contains("\"stat\":3"))
                 {
                     MainForm.DisplayText("ReadyEvent stat");
@@ -697,7 +697,7 @@ namespace LitePlacer
                 line = line.Substring(5);
                 int i = line.IndexOf("}}", StringComparison.Ordinal);
                 line = line.Substring(0, i + 2);
-                NewStatusReport(line);
+                //NewStatusReport(line);
                 ReadyEvent.Set();
                 MainForm.DisplayText("ReadyEvent r:sr");
                 return;
@@ -818,7 +818,7 @@ namespace LitePlacer
         // =================================================================================
         // Status report
 
-
+        /*
         [Serializable]
         internal class StatusReport
         {
@@ -887,7 +887,7 @@ namespace LitePlacer
                 }
             }
 
-        }
+        }*/
 
 
 

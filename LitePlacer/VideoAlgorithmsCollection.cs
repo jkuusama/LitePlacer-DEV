@@ -186,17 +186,17 @@ namespace LitePlacer
 
         public MeasurementParametersClass() { }
 
-        public MeasurementParametersClass(MeasurementParametersClass original)
+        public MeasurementParametersClass(MeasurementParametersClass source)
         {
-            SearchRounds = original.SearchRounds;
-            SearchRectangles = original.SearchRectangles;
-            SearchComponents = original.SearchComponents;
-            Xmin = original.Xmin;
-            Xmax = original.Xmax;
-            Ymin = original.Ymin;
-            Ymax = original.Ymax;
-            XUniqueDistance = original.XUniqueDistance;
-            YUniqueDistance = original.YUniqueDistance;
+            SearchRounds = source.SearchRounds;
+            SearchRectangles = source.SearchRectangles;
+            SearchComponents = source.SearchComponents;
+            Xmin = source.Xmin;
+            Xmax = source.Xmax;
+            Ymin = source.Ymin;
+            Ymax = source.Ymax;
+            XUniqueDistance = source.XUniqueDistance;
+            YUniqueDistance = source.YUniqueDistance;
         }
     }
 

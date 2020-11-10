@@ -113,10 +113,6 @@ namespace LitePlacer
         public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
 
         // =================================================================================
-        // We need "goto" to different features, currently circles, rectangles or both
-        public enum FeatureType { Circle, Rectangle, Both };
-
-        // =================================================================================
         // File names
         public const string VIDEOALGORITHMS_DATAFILE = "LitePlacer.VideoAlgorithms";
         public const string APPLICATIONSETTINGS_DATAFILE = "LitePlacer.Appsettings";
@@ -128,7 +124,7 @@ namespace LitePlacer
         public const string BOARDSETTINGS_DATAFILE = "LitePlacer.BoardSettings";
 
 
-        public string GetPath()
+        public static string GetPath()
         {
             return Application.StartupPath + '\\';
         }
@@ -222,11 +218,15 @@ namespace LitePlacer
             DownCameraMirrorX_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.MirrorX), false, DataSourceUpdateMode.OnPropertyChanged);
             DownCameraMirrorY_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.MirrorY), false, DataSourceUpdateMode.OnPropertyChanged);
             DownCamOnHead_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.OnHead), false, DataSourceUpdateMode.OnPropertyChanged);
+            DownCamDrawBox_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.DrawBox), false, DataSourceUpdateMode.OnPropertyChanged);
+            DownCamDrawSidemarks_checkBox.DataBindings.Add("Checked", DownCamera.Settings, nameof(DownCamera.Settings.DrawSidemarks), false, DataSourceUpdateMode.OnPropertyChanged);
 
             UpCamera.ImageBox = Cam_pictureBox;
             UpCameraMirrorX_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.MirrorX), false, DataSourceUpdateMode.OnPropertyChanged);
             UpCameraMirrorY_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.MirrorY), false, DataSourceUpdateMode.OnPropertyChanged);
             UpCamOnHead_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.OnHead), false, DataSourceUpdateMode.OnPropertyChanged);
+            UpCamDrawBox_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.DrawBox), false, DataSourceUpdateMode.OnPropertyChanged);
+            UpCamDrawSidemarks_checkBox.DataBindings.Add("Checked", UpCamera.Settings, nameof(UpCamera.Settings.DrawSidemarks), false, DataSourceUpdateMode.OnPropertyChanged);
 
             Cam_pictureBox.DataBindings.Add("SizeMode", this, nameof(this.CamPictureBox_SizeMode), false, DataSourceUpdateMode.OnPropertyChanged);
             ShowPixels_checkBox.DataBindings.Add("Checked", this, nameof(this.ShowPixels), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -395,7 +395,7 @@ namespace LitePlacer
                 res = Nozzle.SaveNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
                 OK = OK && res;
 
-                res = SaveVideoAlgorithms(path + VIDEOALGORITHMS_DATAFILE, VideoAlgorithms);
+                res = SaveVideoAlgorithms(path + VIDEOALGORITHMS_DATAFILE);
                 OK = OK && res;
 
                 res = BoardSettings.Save(TinyGBoard, path + BOARDSETTINGS_DATAFILE);
@@ -536,34 +536,6 @@ namespace LitePlacer
             Button button = sender as Button;
             DisplayText("B: " + button.Text.ToString(CultureInfo.InvariantCulture), KnownColor.DarkGreen, true);
         }
-        // ==============================================================================================
-        // =================================================================================
-        // Get and save settings from old version if necessary
-        // http://blog.johnsworkshop.net/automatically-upgrading-user-settings-after-an-application-version-change/
-        /*
-        private void Do_Upgrade()
-        {
-            try
-            {
-                if (Setting.General_UpgradeRequired)
-                {
-                    DisplayText("Updating from previous version");
-                    Setting.Upgrade();
-                    Setting.General_UpgradeRequired = false;
-                    Setting.Save();
-                }
-            }
-            catch (SettingsPropertyNotFoundException)
-            {
-                DisplayText("Updating from previous version (through ex)");
-                Setting.Upgrade();
-                Setting.General_UpgradeRequired = false;
-                Setting.Save();
-            }
-
-        }
-        */
-        // =================================================================================
 
         private string LastTabPage = "";
 
@@ -651,7 +623,6 @@ namespace LitePlacer
 
         private int Ver2FormatID = 20000001;  // Just in case we need to identify the format we are using. 
         public bool LoadingDataGrid = false;  // to avoid problems with cell value changed event and unfilled grids
-
 
         public void LoadDataGrid(string FileName, DataGridView dgv, DataTableType TableType)
         {
@@ -782,8 +753,6 @@ namespace LitePlacer
             return false;
         }
 
-
-
         public bool SaveDataGrid(string FileName, DataGridView dgv)
         {
             try
@@ -903,64 +872,6 @@ namespace LitePlacer
 
             return Headers;
         }
-
-        // =================================================================================
-        // This routine reads in old format file
-        public void LoadDataGrid_V1(string FileName, DataGridView dgv)
-        {
-            try
-            {
-                if (!File.Exists(FileName))
-                {
-                    return;
-                }
-                LoadingDataGrid = true;
-                dgv.Rows.Clear();
-                using (BinaryReader bw = new BinaryReader(File.Open(FileName, FileMode.Open)))
-                {
-                    int Cols = bw.ReadInt32();
-                    int Rows = bw.ReadInt32();
-                    string debug = "foo";
-                    if (dgv.AllowUserToAddRows)
-                    {
-                        // There is an empty row in the bottom that is visible for manual add.
-                        // It is saved in the file. It is automatically added, so we don't want to add it also.
-                        // It is not there when rows are added only programmatically, so we need to do it here.
-                        Rows = Rows - 1;
-                    }
-                    for (int i = 0; i < Rows; ++i)
-                    {
-                        dgv.Rows.Add();
-                        for (int j = 0; j < Cols; ++j)
-                        {
-                            if (bw.ReadBoolean())
-                            {
-                                debug = bw.ReadString();
-                                dgv.Rows[i].Cells[j].Value = "";
-                                dgv.Rows[i].Cells[j].Value = debug;
-                            }
-                            else bw.ReadBoolean();
-                            if (dgv.Rows[i].Cells[j].Value == null)
-                            {
-                                dgv.Rows[i].Cells[j].Value = "--";
-                            }
-                            if (string.IsNullOrEmpty(dgv.Rows[i].Cells[j].Value.ToString()))
-                            {
-                                dgv.Rows[i].Cells[j].Value = "--";
-                            }
-                        }
-                    }
-                    //bw.Close();
-                }
-                LoadingDataGrid = false;
-            }
-            catch (System.Exception excep)
-            {
-                MessageBox.Show(excep.Message);
-                LoadingDataGrid = false;
-            }
-        }
-
 
         // =================================================================================
         // I changed the data in tapes table, but I don't want to make customers to redo their tables
@@ -1142,7 +1053,6 @@ namespace LitePlacer
             }
             return RetVal;
         }
-
 
         private void LoadTapesFromFile(string Filename, System.Windows.Forms.DataGridView Grid)
         {
@@ -1353,7 +1263,7 @@ namespace LitePlacer
         // =================================================================================
         // Forcing a DataGridview display update
         // Ugly hack if you ask me, but MS didn't give us any other reliable way...
-        public void Update_GridView(DataGridView Grid)
+        public static void Update_GridView(DataGridView Grid)
         {
             Grid.CommitEdit(DataGridViewDataErrorContexts.Commit);
             BindingSource bs = new BindingSource(); // create a BindingSource
@@ -2950,7 +2860,7 @@ namespace LitePlacer
                 return true;
             };
             // Check that the device exists
-            List<string> monikers = DownCamera.GetMonikerStrings();
+            List<string> monikers = Camera.GetMonikerStrings();
             if (!monikers.Contains(DownCamera.Settings.Moniker))
             {
                 DisplayText("Downcamera moniker not found. Moniker: " + DownCamera.Settings.Moniker);
@@ -3006,7 +2916,7 @@ namespace LitePlacer
                 return true;
             };
             // Check that the device exists
-            List<string> monikers = UpCamera.GetMonikerStrings();
+            List<string> monikers = Camera.GetMonikerStrings();
             if (!monikers.Contains(UpCamera.Settings.Moniker))
             {
                 DisplayText("Upcamera moniker not found. Moniker: " + UpCamera.Settings.Moniker);
@@ -3142,7 +3052,7 @@ namespace LitePlacer
         // get the devices         
         private void getDownCamList()
         {
-            List<string> Devices = DownCamera.GetDeviceList();
+            List<string> Devices = Camera.GetDeviceList();
             DownCam_comboBox.Items.Clear();
             if (Devices.Count != 0)
             {
@@ -3171,7 +3081,7 @@ namespace LitePlacer
         // ====
         private void getUpCamList()
         {
-            List<string> Devices = UpCamera.GetDeviceList();
+            List<string> Devices = Camera.GetDeviceList();
             UpCam_comboBox.Items.Clear();
             UpCam_comboBox.Items.Add("-- none --");
             if (Devices.Count != 0)
@@ -3230,7 +3140,7 @@ namespace LitePlacer
 
         private void DownCam_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List<string> Monikers = DownCamera.GetMonikerStrings();
+            List<string> Monikers = Camera.GetMonikerStrings();
             if (Monikers.Count == 0)
             {
                 DisplayTxt("No cameras");
@@ -3263,7 +3173,7 @@ namespace LitePlacer
         {
             List<string> Monikers = new List<string>();
             Monikers.Add("-no camera-");
-            Monikers.AddRange(UpCamera.GetMonikerStrings());
+            Monikers.AddRange(Camera.GetMonikerStrings());
             if (Monikers.Count == 1)
             {
                 DisplayTxt("No cameras");
@@ -3457,16 +3367,6 @@ namespace LitePlacer
         // DownCam specific functions
         // =================================================================================
 
-        private void DownCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DownCamera.Settings.DrawBox = DownCamDrawBox_checkBox.Checked;
-        }
-
-        private void DownCamDrawSidemarks_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DownCamera.Settings.DrawSidemarks = DownCamDrawSidemarks_checkBox.Checked;
-        }
-
         // =================================================================================
         private void JigX_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -3650,7 +3550,6 @@ namespace LitePlacer
             }
         }
 
-
         private void Offset2Method_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
@@ -3710,16 +3609,6 @@ namespace LitePlacer
         // =================================================================================
         // UpCam specific functions
         // =================================================================================
-
-        private void UpCamDrawBox_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            UpCamera.Settings.DrawBox = UpCamDrawBox_checkBox.Checked;
-        }
-
-        private void UpCamDrawSidemarks_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            UpCamera.Settings.DrawSidemarks = UpCamDrawSidemarks_checkBox.Checked;
-        }
 
         private void UpcamPositionX_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -5484,7 +5373,6 @@ namespace LitePlacer
             }
         }
 
-
         private void Up_button_Click(object sender, EventArgs e)
         {
             MakeJobDataDirty();
@@ -5525,7 +5413,6 @@ namespace LitePlacer
                 JobData_GridView.CurrentRow.Cells[i].Value = ClipBoardRow.Cells[i].Value;
             }
         }
-
 
         private void NewRow_button_Click(object sender, EventArgs e)
         {
@@ -7704,96 +7591,6 @@ namespace LitePlacer
             return true;
         }
 
-
-        // =================================================================================
-        // GetCorrentionForPartAtNozzle():
-        // takes a look from Upcam, sets the correction values for the part at Nozzle
-        private bool GetCorrentionForPartAtNozzle(out double dX, out double dY, out double dA)
-        {
-            SelectCamera(UpCamera);
-            dX = 0;
-            dY = 0;
-            dA = 0;
-
-            if (!UpCamera.IsRunning())
-            {
-                SelectCamera(DownCamera);
-                return false;
-            }
-            // xxx SetUpCamComponentsMeasurement();
-            bool GoOn = false;
-            bool result = false;
-            while (!GoOn)
-            {
-                if (MeasureUpCamComponent(3.0, out dX, out dY, out dA))
-                {
-                    result = true;
-                    GoOn = true;
-                }
-                else
-                {
-                    DialogResult dialogResult = ShowMessageBox(
-                        "Did not get correction values from camera.\n Abort job / Retry / Place anyway?",
-                        "Did not see component",
-                        MessageBoxButtons.AbortRetryIgnore
-                    );
-                    if (dialogResult == DialogResult.Abort)
-                    {
-                        AbortPlacement = true;
-                        AbortPlacementShown = true;
-                        result = false;
-                        GoOn = true;
-                    }
-                    else if (dialogResult == DialogResult.Retry)
-                    {
-                        GoOn = false;
-                    }
-                    else
-                    {
-                        // ignore
-                        result = true;
-                        GoOn = true;
-                    }
-                }
-            };
-            SelectCamera(DownCamera);
-            return result;
-        }
-
-        private bool MeasureUpCamComponent(double Tolerance, out double dX, out double dY, out double dA)
-        {
-            double X = 0;
-            double Xsum = 0;
-            double Y = 0;
-            double Ysum = 0;
-            int count = 0;
-            dX = 0;
-            dY = 0;
-            dA = 0;
-            for (int i = 0; i < 5; i++)
-            {
-                if (UpCamera.GetClosestComponent(out X, out Y, out dA, Tolerance * UpCamera.Settings.XmmPerPixel) > 0)
-                {
-                    count++;
-                    Xsum += X;
-                    Ysum += Y;
-                }
-            };
-            if (count == 0)
-            {
-                return false;
-            }
-            X = Xsum / UpCamera.Settings.XmmPerPixel;
-            dX = X / (float)count;
-            Y = -Y / UpCamera.Settings.XmmPerPixel;
-            dY = Y / (float)count;
-            DisplayText("Component measurement:");
-            DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
-                + " (" + count.ToString(CultureInfo.InvariantCulture) + " results out of 5)");
-            DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-            return true;
-        }
-
         // =================================================================================
         // BuildMachineCoordinateData_m routine builds the machine coordinates data 
         // based on fiducials true (machine coord) location.
@@ -8507,35 +8304,6 @@ namespace LitePlacer
             CNC_XYA_m(X, Y, 0.0);
         }
 
-
-        // =================================================================================
-        private void Demo_button_Click(object sender, EventArgs e)
-        {
-            DemoThread = new Thread(() => DemoWork());
-            DemoRunning = true;
-            CNC_Z_m(0.0);
-            DemoThread.IsBackground = true;
-            DemoThread.Start();
-        }
-
-        private void StopDemo_button_Click(object sender, EventArgs e)
-        {
-            DemoRunning = false;
-        }
-
-        private bool DemoRunning = false;
-        private Thread DemoThread;
-
-        private void DemoWork()
-        {
-
-            while (DemoRunning)
-            {
-
-            }
-        }
-
-
         // =================================================================================
         // Panelizing
         // =================================================================================
@@ -8890,7 +8658,7 @@ namespace LitePlacer
             List<String> NewLine;
             List<List<string>> DataLines = new List<List<string>>();
 
-            for (i = LineIndex; i < AllLines.Count(); i++)   // for each component
+            for (i = LineIndex; i < AllLines.Length; i++)   // for each component
             {
                 // Skip: empty lines and comment lines (starting with # or "//")
                 if (
@@ -9031,7 +8799,7 @@ namespace LitePlacer
         // If the inout data has duplicate designators, like R1, R1, R1, this routine 
         // replaces them with R1_1, R1_2, R1_3 etc.
 
-        public void HandleDuplicates(ref List<List<string>> DataLines, int ComponentIndex)
+        public static void HandleDuplicates(ref List<List<string>> DataLines, int ComponentIndex)
         {
             string Designator = "";
             int Count;
@@ -9225,7 +8993,7 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        public void TapeWidthStringToValues(string WidthStr, out double Xoff, out double Yoff, out double pitch)
+        public static void TapeWidthStringToValues(string WidthStr, out double Xoff, out double Yoff, out double pitch)
         {
             switch (WidthStr)
             {
@@ -10260,133 +10028,12 @@ namespace LitePlacer
             }
         }
 
-        // ==========================================================================================================
-        // DownCam:
-
-        // ==========================================================================================================
-        // Snapshot:
-        /*
-        private void UpCam_SnapshotToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref UpcamSnapshot_dataGridView);
-        }
-
-        private void UpCam_SnapshotToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(UpcamSnapshot_dataGridView, ref Display_dataGridView);
-            UpCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-        private void UpCam_TakeSnapshot_button_Click(object sender, EventArgs e)
-        {
-            UpCam_TakeSnapshot();
-        }
-
-        private void UpCam_TakeSnapshot()
-        {
-            SelectCamera(UpCamera);
-            DisplayText("UpCam_TakeSnapshot()");
-            UpCamera.SnapshotRotation = Cnc.CurrentA;
-            UpCamera.BuildMeasurementFunctionsList(UpcamSnapshot_dataGridView);
-            UpCamera.TakeSnapshot();
-
-            DownCamera.SnapshotOriginalImage = new Bitmap(UpCamera.SnapshotImage);
-            DownCamera.SnapshotImage = new Bitmap(UpCamera.SnapshotImage);
-
-            // We need a copy of the snapshot to scale it, in 24bpp format. See http://stackoverflow.com/questions/2016406/converting-bitmap-pixelformats-in-c-sharp
-            Bitmap Snapshot24bpp = new Bitmap(640, 480, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            using (Graphics gr = Graphics.FromImage(Snapshot24bpp))
-            {
-                gr.DrawImage(UpCamera.SnapshotOriginalImage, new Rectangle(0, 0, 640, 480));
-            }
-            // scale:
-            double Xscale = Setting.UpCam_XmmPerPixel / Setting.DownCam_XmmPerPixel;
-            double Yscale = Setting.UpCam_YmmPerPixel / Setting.DownCam_YmmPerPixel;
-            double zoom = UpCamera.GetMeasurementZoom();
-            Xscale = Xscale / zoom;
-            Yscale = Yscale / zoom;
-            int SnapshotSizeX = (int)(Xscale * 640);
-            int SnapshotSizeY = (int)(Yscale * 480);
-            // SnapshotSize is the size (in pxls) of upcam snapshot, scaled so that it draws in correct size on downcam image.
-            ResizeNearestNeighbor RezFilter = new ResizeNearestNeighbor(SnapshotSizeX, SnapshotSizeY);
-            Bitmap ScaledShot = RezFilter.Apply(Snapshot24bpp);  // and this is the scaled image
-            // Mirror:
-            Mirror MirrFilter = new Mirror(false, true);
-            MirrFilter.ApplyInPlace(ScaledShot);
-
-            // Clear DownCam image
-            Graphics DownCamGr = Graphics.FromImage(DownCamera.SnapshotImage);
-            DownCamGr.Clear(Color.Black);
-            // Embed the ScaledShot to it. Upper left corner of the embedding is:
-            int X = 320 - SnapshotSizeX / 2;
-            int Y = 240 - SnapshotSizeY / 2;
-            DownCamGr.DrawImage(ScaledShot, X, Y, SnapshotSizeX, SnapshotSizeY);
-            DownCamera.SnapshotImage.MakeTransparent(Color.Black);
-            // DownCam Snapshot is ok, copy it to original too
-            DownCamera.SnapshotOriginalImage = new Bitmap(DownCamera.SnapshotImage);
-
-            DownCamera.SnapshotRotation = Cnc.CurrentA;
-        }
-
-        private void UpcamSnapshot_ColorBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            // Show the color dialog.
-            DialogResult result = colorDialog1.ShowDialog();
-            // See if user pressed ok.
-            if (result == DialogResult.OK)
-            {
-                // Set form background to the selected color.
-                UpcamSnapshot_ColorBox.BackColor = colorDialog1.Color;
-                Setting.UpCam_SnapshotColor = colorDialog1.Color;
-                UpCamera.SnapshotColor = colorDialog1.Color;
-            }
-        }
-
-
-        private void DownCam_SnapshotToHere_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(Display_dataGridView, ref DowncamSnapshot_dataGridView);
-        }
-
-        private void DownCam_SnapshotToDisplay_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewCopy(DowncamSnapshot_dataGridView, ref Display_dataGridView);
-            DownCamera.BuildDisplayFunctionsList(Display_dataGridView);
-        }
-
-        private void DownCam_TakeSnapshot_button_Click(object sender, EventArgs e)
-        {
-            DownCamera.SnapshotRotation = Cnc.CurrentA;
-            DownCamera.BuildMeasurementFunctionsList(DowncamSnapshot_dataGridView);
-            DownCamera.TakeSnapshot();
-        }
-
-        private void DowncamSnapshot_ColorBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            // Show the color dialog.
-            DialogResult result = colorDialog1.ShowDialog();
-            // See if user pressed ok.
-            if (result == DialogResult.OK)
-            {
-                // Set form background to the selected color.
-                DowncamSnapshot_ColorBox.BackColor = colorDialog1.Color;
-                Setting.DownCam_SnapshotColor = colorDialog1.Color;
-                DownCamera.SnapshotColor = colorDialog1.Color;
-            }
-        }
-
-        */
          #endregion  Measurementboxes
 
         // ==========================================================================================================
         // Video processing functions lists control
         // ==========================================================================================================
         #region VideoProcessingFunctionsLists
-
-        private void SetColorBoxColor(int row)
-        {
-            // xxx Color_Box.BackColor = Color.FromArgb(R, G, B);
-        }
 
         private void PickColor(int X, int Y)
         {
@@ -11327,8 +10974,8 @@ namespace LitePlacer
             }
         }
 
-    // ==========================================================================================================
-    private void copyLoadMovesFromNozzle1_ToolStripMenuItem_Click(object sender, EventArgs e)
+        // ==========================================================================================================
+        private void copyLoadMovesFromNozzle1_ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DisplayText("Copy load moves from nozzle 1", KnownColor.DarkGreen);
             copyMovesFromNozzle1(NozzlesLoad_dataGridView);
@@ -12393,7 +12040,7 @@ namespace LitePlacer
 
         private void DownCamListResolutions_button_Click(object sender, EventArgs e)
         {
-            List<string> Monikers = DownCamera.GetMonikerStrings();
+            List<string> Monikers = Camera.GetMonikerStrings();
             if (Monikers==null)
             {
                 DisplayText("Could not get resolution info.", KnownColor.Purple, true);
@@ -12405,7 +12052,7 @@ namespace LitePlacer
 
         private void UpCamListResolutions_button_Click(object sender, EventArgs e)
         {
-            List<string> Monikers = UpCamera.GetMonikerStrings();
+            List<string> Monikers = Camera.GetMonikerStrings();
             if (Monikers == null)
             {
                 DisplayText("Could not get resolution info.", KnownColor.Purple, true);

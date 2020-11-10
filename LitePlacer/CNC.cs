@@ -78,7 +78,7 @@ namespace LitePlacer
 
     public class CNC
     {
-        public static FormMain MainForm;
+        public static FormMain MainForm { get; set; }
         private TinyGclass TinyG;
         public Duet3class Duet3;
 
@@ -159,29 +159,9 @@ namespace LitePlacer
         private static double CurrX;
         private static double _trueX;
 
-        public double TrueX
-        {
-            get
-            {
-                return (_trueX);
-            }
-            set
-            {
-                _trueX = value;
-            }
-        }
+        public static double TrueX { get => _trueX; set => _trueX = value; }
 
-        public double CurrentX
-        {
-            get
-            {
-                return (CurrX);
-            }
-            set
-            {
-                CurrX = value;
-            }
-        }
+        public double CurrentX { get => CurrX; set => CurrX = value; }
 
         public static void setCurrX(double x)
         {
@@ -193,17 +173,7 @@ namespace LitePlacer
 
 
         private static double CurrY;
-        public double CurrentY
-        {
-            get
-            {
-                return (CurrY);
-            }
-            set
-            {
-                CurrY = value;
-            }
-        }
+        public double CurrentY { get => CurrY; set => CurrY = value; }
 
         public static void setCurrY(double y)
         {
@@ -215,36 +185,17 @@ namespace LitePlacer
 
 
         private static double CurrZ;
-        public double CurrentZ
-        {
-            get
-            {
-                return (CurrZ);
-            }
-            set
-            {
-                CurrZ = value;
-            }
-        }
+        public double CurrentZ { get => CurrZ; set => CurrZ = value; }
+
         public static void setCurrZ(double z)
         {
             CurrZ = z;
         }
 
 
-
         private static double CurrA;
-        public double CurrentA
-        {
-            get
-            {
-                return (CurrA);
-            }
-            set
-            {
-                CurrA = value;
-            }
-        }
+        public double CurrentA { get => CurrA; set => CurrA = value; }
+
         public static void setCurrA(double a)
         {
             CurrA = a;

@@ -809,7 +809,6 @@
             this.MeasureAndSet_button = new System.Windows.Forms.Button();
             this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.Abs_radioButton = new System.Windows.Forms.RadioButton();
             this.Relative_Button = new System.Windows.Forms.RadioButton();
             this.label108 = new System.Windows.Forms.Label();
@@ -2126,7 +2125,6 @@
             this.UpCamDrawSidemarks_checkBox.TabIndex = 213;
             this.UpCamDrawSidemarks_checkBox.Text = "Draw SideMarks";
             this.UpCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
-            this.UpCamDrawSidemarks_checkBox.CheckedChanged += new System.EventHandler(this.UpCamDrawSidemarks_checkBox_CheckedChanged);
             // 
             // label130
             // 
@@ -2169,7 +2167,6 @@
             this.UpCamDrawBox_checkBox.TabIndex = 210;
             this.UpCamDrawBox_checkBox.Text = "Draw Box";
             this.UpCamDrawBox_checkBox.UseVisualStyleBackColor = true;
-            this.UpCamDrawBox_checkBox.CheckedChanged += new System.EventHandler(this.UpCamDrawBox_checkBox_CheckedChanged);
             // 
             // UpCamOnHead_checkBox
             // 
@@ -2512,7 +2509,6 @@
             this.DownCamDrawSidemarks_checkBox.TabIndex = 212;
             this.DownCamDrawSidemarks_checkBox.Text = "Draw SideMarks";
             this.DownCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
-            this.DownCamDrawSidemarks_checkBox.CheckedChanged += new System.EventHandler(this.DownCamDrawSidemarks_checkBox_CheckedChanged);
             // 
             // label121
             // 
@@ -2555,7 +2551,6 @@
             this.DownCamDrawBox_checkBox.TabIndex = 208;
             this.DownCamDrawBox_checkBox.Text = "Draw Box";
             this.DownCamDrawBox_checkBox.UseVisualStyleBackColor = true;
-            this.DownCamDrawBox_checkBox.CheckedChanged += new System.EventHandler(this.DownCamDrawBox_checkBox_CheckedChanged);
             // 
             // DownCamOnHead_checkBox
             // 
@@ -9719,10 +9714,6 @@
             this.TapesAll_openFileDialog.DefaultExt = "tapes_v2";
             this.TapesAll_openFileDialog.Filter = "Tape files|*.tapes_v2;*.tapes|All files|*.*";
             // 
-            // colorDialog1
-            // 
-            this.colorDialog1.SolidColorOnly = true;
-            // 
             // Abs_radioButton
             // 
             this.Abs_radioButton.AutoSize = true;
@@ -10302,7 +10293,6 @@
         private System.Windows.Forms.Label label128;
         private System.Windows.Forms.MaskedTextBox HoleTest_maskedTextBox;
         private System.Windows.Forms.Button ShowPart_button;
-        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.NumericUpDown AltJogSpeed_numericUpDown;
         private System.Windows.Forms.NumericUpDown NormalJogSpeed_numericUpDown;
         private System.Windows.Forms.NumericUpDown CtlrJogSpeed_numericUpDown;

@@ -215,7 +215,7 @@ namespace LitePlacer
         public double UpCam_PositionX { get; set; } = 2;
         public double UpCam_PositionY { get; set; } = 3;
 
-        public List<CameraSettings> Cameras_Settings { get; set; } = new List<CameraSettings>() {
+        public List<CameraSettings> Cameras_Settings { get; } = new List<CameraSettings>() {
             new CameraSettings() {
                  DrawBox  = true,
          DrawCross  = true,

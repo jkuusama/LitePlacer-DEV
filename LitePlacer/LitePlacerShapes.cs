@@ -7,7 +7,7 @@ using AForge.Math.Geometry;
 
 namespace LitePlacer
 {
-	public class Shapes
+	public static class LitePlacerShapes
 	{
         public class Shape
         {
@@ -18,7 +18,6 @@ namespace LitePlacer
             public double Xsize;
             public double Ysize;
         }
-
 
         public class LitePlacerShapeComponent : Shape
         {
@@ -44,7 +43,7 @@ namespace LitePlacer
 
         public class Rectangle : Shape
         {
-            public List<Point> Corners { get; set; }
+            public List<Point> Corners { get; }
             public double LongsideLenght { get; }
             public double ShortSideLenght { get; }
 

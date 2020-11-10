@@ -158,7 +158,7 @@ namespace LitePlacer
             }
             else
             {
-                LoadOldVideoAlgorithms(path, Collection);
+                LoadOldVideoAlgorithms(Collection);
             }
             // fill Algorithm_comboBox
             Algorithm_comboBox.Items.Clear();
@@ -173,7 +173,7 @@ namespace LitePlacer
         }
 
 
-        private void LoadOldVideoAlgorithms(string path, VideoAlgorithmsCollection Collection)
+        private static void LoadOldVideoAlgorithms(VideoAlgorithmsCollection Collection)
         {
             // For now (maybe for good?), build an placeholder list
             List<VideoAlgorithmsCollection.FullAlgorithmDescription> NewList = new List<VideoAlgorithmsCollection.FullAlgorithmDescription>();
@@ -189,7 +189,7 @@ namespace LitePlacer
 
         // ========= Save
 
-        private bool SaveVideoAlgorithms(string FileName, VideoAlgorithmsCollection Collection)
+        private bool SaveVideoAlgorithms(string FileName)
         {
             try
             {
@@ -207,7 +207,7 @@ namespace LitePlacer
         private void AlgorithmsSave_button_Click(object sender, EventArgs e)
         {
             string path = GetPath();
-            SaveVideoAlgorithms(path + VIDEOALGORITHMS_DATAFILE, VideoAlgorithms);
+            SaveVideoAlgorithms(path + VIDEOALGORITHMS_DATAFILE);
         }
 
         #endregion Algorithms Load and Save
@@ -222,8 +222,8 @@ namespace LitePlacer
             string AlgorithmName = Algorithm_comboBox.SelectedItem.ToString();
             // DisplayText("Algorithm_comboBox_SelectedIndexChanged(), func: " + AlgorithmName);
             VideoAlgorithms.SelectedAlgorithmChanged(AlgorithmName);
-            FillFunctionTable(AlgorithmName);
-            FillMeasurementValues(AlgorithmName);
+            FillFunctionTable();
+            FillMeasurementValues();
             ClearFunctionParameters();
             Functions_dataGridView.CurrentCell = null;
             AlgorithmChange = false;
@@ -233,7 +233,7 @@ namespace LitePlacer
 
         bool ChangeYwithX = false;
 
-        private void FillMeasurementValues(string ListName)
+        private void FillMeasurementValues()
         {
             // User changed the current algorithm. This function fills the measurement value boxes
             MeasurementParametersClass values = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
@@ -255,7 +255,7 @@ namespace LitePlacer
 
         // ==================
         // helpers
-        public string GetName(string StartName, bool rename)
+        public string GetNewName(string StartName, bool rename)
         {
             AlgorithmNameForm GetNameDialog = new AlgorithmNameForm(StartName);
             GetNameDialog.Algorithms = VideoAlgorithms.AllAlgorithms;
@@ -287,9 +287,9 @@ namespace LitePlacer
             return false;
         }
 
-        public static T DeepClone<T>(T obj)
+        public static T DeepClone<T>(T source)
         {
-            string clone = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            string clone = JsonConvert.SerializeObject(source, Formatting.Indented);
             return JsonConvert.DeserializeObject<T>(clone);
         }
 
@@ -317,7 +317,7 @@ namespace LitePlacer
 
         private void AddAlgorithm_button_Click(object sender, EventArgs e)
         {
-            string NewName = GetName("", false);
+            string NewName = GetNewName("", false);
             if (NewName == null)
             {
                 DisplayText("Add algorithm canceled");
@@ -394,7 +394,7 @@ namespace LitePlacer
                 return;
             }
             string OldName = Algorithm_comboBox.SelectedItem.ToString();
-            string NewName = GetName(OldName, true);
+            string NewName = GetNewName(OldName, true);
             if (NewName == null)
             {
                 DisplayText("Rename algorithm canceled");
@@ -597,7 +597,7 @@ namespace LitePlacer
                 VideoAlgorithms.CurrentFunctionIndex = -1;
                 // We don't want false update of function parameters
                 AlgorithmChange = true;
-                FillFunctionTable(VideoAlgorithms.CurrentAlgorithm.Name);
+                FillFunctionTable();
                 ClearFunctionParameters();
                 Functions_dataGridView.CurrentCell = null;
                 AlgorithmChange = false;
@@ -654,7 +654,7 @@ namespace LitePlacer
                 VideoAlgorithms.CurrentAlgorithm.FunctionList.Insert(NewPos, funct);
             int col = Functions_dataGridView.CurrentCell.ColumnIndex;
             AlgorithmChange = true;
-            FillFunctionTable(VideoAlgorithms.CurrentAlgorithm.Name);
+            FillFunctionTable();
             ClearFunctionParameters();
             Functions_dataGridView.CurrentCell = null; // to force the change event at last statement
             AlgorithmChange = false;
@@ -702,7 +702,7 @@ namespace LitePlacer
         }
 
 
-        void FillFunctionTable(string AlgorithmName)
+        void FillFunctionTable()
         {
             // User changed the current algorithm or deleted a fuction. 
             // This function (re-)fills Algorithms_dataGridView function column
