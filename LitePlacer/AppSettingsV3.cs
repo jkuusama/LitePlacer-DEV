@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace LitePlacer
 {
@@ -31,6 +32,10 @@ namespace LitePlacer
                     settingsV3.Cameras_Settings.RemoveAt(0);
                 if (settingsV3.Cameras_Settings.Count > 2)
                     settingsV3.Cameras_Settings.RemoveAt(0);
+                if (string.IsNullOrWhiteSpace(settingsV3.Cameras_Settings[0].DisplayName) || settingsV3.Cameras_Settings[0].DisplayName == "Unnamed")
+                    settingsV3.Cameras_Settings[0].DisplayName = "Down Camera";
+                if (string.IsNullOrWhiteSpace(settingsV3.Cameras_Settings[1].DisplayName) || settingsV3.Cameras_Settings[1].DisplayName == "Unnamed")
+                    settingsV3.Cameras_Settings[1].DisplayName = "Up Camera";
             }
             else if (settingsBase.SettingsVersion < 3)
             {
@@ -84,8 +89,25 @@ namespace LitePlacer
             return settingsV3;
         }
 
-        public class CameraSettings
+        public class CameraSettings : INotifyPropertyChanged
         {
+            public event PropertyChangedEventHandler PropertyChanged;
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+            protected bool SetField<T>(ref T field, T value, string propertyName)
+            {
+                if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+                field = value;
+                OnPropertyChanged(propertyName);
+                return true;
+            }
+
+            public static string DefaultString { get; } = " -no camera- ";
+
+            private string _displayName = "Unnamed";           // Displayed Name of this Camera
+            public string DisplayName { get { return _displayName; } set { SetField(ref _displayName, value, nameof(DisplayName)); } }
             public bool DrawBox { get; set; } = true;           // Draws a box on the image that is used for scale setting
             public bool DrawCross { get; set; } = true;         // If crosshair cursor is drawn
             public bool DrawGrid { get; set; } = false;         // Draws aiming grid for parts alignment
@@ -96,10 +118,11 @@ namespace LitePlacer
             public System.Drawing.Color SnapshotColor { get; set; } = System.Drawing.Color.White;
             public double XmmPerPixel { get; set; } = 0.1;
             public double YmmPerPixel { get; set; } = 0.1;
-            public bool Zoom { get; set; } = false;              // If image is zoomed or not
+            private bool _zoom = false;                          // If image is zoomed or not
+            public bool Zoom { get { return _zoom; } set { SetField(ref _zoom, value, nameof(Zoom)); } }
             public double ZoomFactor { get; set; } = 1.5;        // If it is, this much
-            public string Moniker { get; set; } = "unconnected";
-            public string Name { get; set; } = "";
+            public string Moniker { get; set; } = DefaultString;
+            public string Name { get; set; } = DefaultString;
             public int DesiredX { get; set; } = 1280;
             public int DesiredY { get; set; } = 1024;
             public bool OnHead { get; set; } = true;
@@ -107,7 +130,8 @@ namespace LitePlacer
 
         public override int SettingsVersion { get; set; } = 3;
         public bool Cam_ShowPixels { get; set; } = false;
-        public bool Cameras_KeepActive { get; set; } = false;
+        private bool _cameras_KeepActive = false;
+        public bool Cameras_KeepActive { get { return _cameras_KeepActive; } set { SetField(ref _cameras_KeepActive, value, nameof(Cameras_KeepActive)); } }
         public bool Cameras_RobustSwitch { get; set; } = false;
 
         public int CNC_AltJogSpeed { get; set; } = 4000;
@@ -217,6 +241,7 @@ namespace LitePlacer
 
         public List<CameraSettings> Cameras_Settings { get; } = new List<CameraSettings>() {
             new CameraSettings() {
+                DisplayName = "Down Camera",
                  DrawBox  = true,
          DrawCross  = true,
         DrawGrid  = false,
@@ -229,13 +254,12 @@ namespace LitePlacer
          YmmPerPixel  = 0.1,
          Zoom  = false,
          ZoomFactor  = 1.5,
-         Moniker  = "unconnected",
-         Name  = "",
          DesiredX  = 1280,
          DesiredY  = 1024,
          OnHead  = true
     },
             new CameraSettings() {
+                DisplayName = "Up Camera",
                  DrawBox  = true,
          DrawCross  = true,
         DrawGrid  = false,
@@ -248,8 +272,6 @@ namespace LitePlacer
          YmmPerPixel  = 0.05,
          Zoom  = false,
          ZoomFactor  = 1.5,
-         Moniker  = "unconnected",
-         Name  = "",
          DesiredX  = 1280,
          DesiredY  = 1024,
          OnHead  = false

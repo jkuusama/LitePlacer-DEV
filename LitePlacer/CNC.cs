@@ -159,7 +159,7 @@ namespace LitePlacer
         private static double CurrX;
         private static double _trueX;
 
-        public static double TrueX { get => _trueX; set => _trueX = value; }
+        public double TrueX { get => _trueX; set => _trueX = value; }
 
         public double CurrentX { get => CurrX; set => CurrX = value; }
 

@@ -201,6 +201,17 @@
   <metadata name="Tapes_contextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>616, 56</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="CamFind_CheckBox.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAANhJREFUWEfdjlEOwyAMQ7n/pTflI9KTm9BQCmh7kgUEY9N+lQ+0lKyAH3Ap2bwM
+        wxmUnTnX82MYpCLRvek1qsFV3yM0PCuo+oZhGMN9ZmRnnQ8TBTBYRXp3ZXqPGZ55jIonhA+zx+q58w3D
+        4ChA710kmg3DcA/j3qFH9QrV4IpnikqBejLfMFGwSYk8pmk0iOE+595Rzy2ZMQvxORWRzS+UjUKvvIyH
+        zHziESxWbYFlXLd8QIt0v+wTHj6iJWi47pcVExZx3VJueFmkrRwrJkfLjeMf+Gda+wJnu+kXHgfc3QAA
+        AABJRU5ErkJggg==
+</value>
+  </data>
   <data name="RobustFast_checkBox.ToolTip" xml:space="preserve">
     <value>Camera switching methods:
 Fast: Uncheck both. Fastest and uses least resources, but may cause issues on some systems
@@ -501,7 +512,6 @@ F12: Down</value>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>63</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAA0AMDAQAAEABABoBgAA1gAAACAgEAABAAQA6AIAAD4HAAAYGBAAAQAEAOgBAAAmCgAAEBAQAAEA

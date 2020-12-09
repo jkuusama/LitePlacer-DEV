@@ -13,6 +13,19 @@ namespace LitePlacer
 {
     partial class FormMain
     {
+        /*private void ProcessDisplay_checkBox_Checked_Change()
+        {
+            selectedCam.Overlay = OverlayPictures_checkBox.Checked;
+            if (ProcessDisplay_checkBox.Checked)
+            {
+                UpdateVideoProcessing();
+            }
+            else
+            {
+                StopVideoProcessing();
+            }
+        }*/
+
         // =================================================================================
         // We need "goto" to different features, currently circles, rectangles or both
         public enum FeatureType { Circle, Rectangle, Both };

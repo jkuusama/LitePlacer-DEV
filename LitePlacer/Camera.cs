@@ -22,7 +22,7 @@ using System.Windows.Controls;
 
 namespace LitePlacer
 {
-    public partial class Camera
+    public partial class Camera : INotifyPropertyChanged
     {
         // ==========================================================================================================
         // Camera Setup, Start etc.
@@ -52,9 +52,42 @@ namespace LitePlacer
             public static object _locker { get; set; } = new object();
         }
 
+        // INotifyPropertyChanged implementation
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        protected bool SetField<T>(ref T field, T value, string propertyName)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
         private VideoCaptureDevice VideoSource = null;
         private FormMain MainForm;
         public AppSettingsV3.CameraSettings Settings;
+
+        public string DisplayName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Settings?.DisplayName))
+                    return Settings.DisplayName;
+                else
+                    return "";
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(Settings?.DisplayName))
+                {
+                    Settings.DisplayName = value;
+                    OnPropertyChanged(nameof(DisplayName));
+                }
+            }
+        }
 
         public Camera(FormMain MainF, AppSettingsV3.CameraSettings cameraSettings)
         {
@@ -62,43 +95,97 @@ namespace LitePlacer
             Settings = cameraSettings;
         }
 
-        public bool Active { get; set; }
+        public event EventHandler DisplayedChanged;
+        public event EventHandler RunningChanged;
+        // Do frames get displayed in PictureBox
+        // gets set by MainForm
+        private bool _displayed = false;
+        public bool Displayed
+        {
+            get { return _displayed; }
+            set
+            {
+                if (_displayed != value)
+                {
+                    _displayed = value;
+                    DisplayedChanged?.Invoke(this, new EventArgs());
+                }
+            }
+        }
+        // Is the camera running (new frames arrive)
+        // gets set by IsRunning()
+        private bool _running = false;
+        private bool Running
+        {
+            get { return _running; }
+            set
+            {
+                if (_running != value)
+                {
+                    _running = value;
+                    RunningChanged?.Invoke(this, new EventArgs());
+                }
+            }
+        }
+        // Do object positions get displayed in frames
+        private bool _findObjects = false;
+        public bool FindObjects
+        {
+            get { return _findObjects; }
+            set
+            {
+                if (_findObjects != value)
+                {
+                    _findObjects = value;
+                    OnPropertyChanged(nameof(FindObjects));
+                }
+            }
+        }
+
+        public string GetStatusText()
+        {
+            if (Running && Displayed)
+                return "Run + Display";
+            else if (Running && !Displayed)
+                return "Run";
+            else if (!Running && Displayed)
+                return "Display";
+            else
+                return "Off";
+        }
 
         public bool IsRunning()
         {
-            if (VideoSource != null)
-            {
-                return (VideoSource.IsRunning);
-            };
-            return false;
+            Running = VideoSource?.IsRunning == true;
+            return Running;
         }
 
         public void Close()
         {
-            if (!(VideoSource == null))
+            if (!IsRunning())
             {
-                if (!VideoSource.IsRunning)
-                {
-                    return;
-                }
-                MainForm.DisplayText("Stopping " + Id + ": " + Settings.Moniker);
-                VideoSource.SignalToStop();
-                VideoSource.WaitForStop();  // problem? 
-                int i = 0;
-                while (VideoSource.IsRunning && i < 10)
-                {
-                    VideoSource.Stop();
-                    Thread.Sleep(20);
-                    Application.DoEvents();
-                }
-                if (i >= 10)
-                {
-                    MainForm.DisplayText("*** " + Id + " refuses to stop! ***" + Settings.Moniker, KnownColor.DarkRed, true);
-                }
-                VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
-                VideoSource = null;
-                Settings.Moniker = "Stopped";
+                return;
             }
+
+            MainForm.DisplayText("Stopping " + DisplayName + ": " + Settings.Moniker);
+            VideoSource.SignalToStop();
+            VideoSource.WaitForStop();  // problem? 
+            int i = 0;
+            while (VideoSource.IsRunning && i < 10)
+            {
+                VideoSource.Stop();
+                Thread.Sleep(20);
+                Application.DoEvents();
+            }
+            if (i >= 10)
+            {
+                MainForm.DisplayText("*** " + DisplayName + " refuses to stop! ***" + Settings.Moniker, KnownColor.DarkRed, true);
+            }
+            VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
+            VideoSource.VideoSourceError -= VideoSourceError;
+            VideoSource = null;
+
+            IsRunning();
         }
 
         // Image= PictureBox in UI, the final shown image
@@ -127,15 +214,13 @@ namespace LitePlacer
         public int FrameSizeX { get; set; }
         public int FrameSizeY { get; set; }
 
-        public string Id { get; set; } = "unconnected";
-
         public bool ReceivingFrames { get; set; }
 
         public bool PauseDisplay { get; set; } = false;
         public int OverlayRatio { get; set; } = 0;      // overlay process picture with original
 
         // =================================================================================================
-        public void ListResolutions(string MonikerStr)
+        public void ListResolutions()
         {
             FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             // create video source
@@ -149,7 +234,7 @@ namespace LitePlacer
                 MainForm.DisplayText("No Cameras.", KnownColor.Purple);
                 return;
             }
-            VideoCaptureDevice source = new VideoCaptureDevice(MonikerStr);
+            VideoCaptureDevice source = new VideoCaptureDevice(Settings.Moniker);
             int tries = 0;
             while (tries < 4)
             {
@@ -173,18 +258,41 @@ namespace LitePlacer
             MainForm.DisplayText("Could not get resolution info.", KnownColor.Purple);
         }
 
-        // =================================================================================================
-        public bool Start(string cam, string MonikerStr)
+        private void VideoSourceError(object sender, VideoSourceErrorEventArgs e)
         {
+            this.Close();
+            MessageBox.Show("Video Error from " + DisplayName, "Video Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        // =================================================================================================
+        public bool Start()
+        {
+            if (IsRunning())
+            {
+                MainForm.DisplayText(DisplayName + " already running");
+                return true;
+            }
+            if (Settings.Moniker == AppSettingsV3.CameraSettings.DefaultString)
+            {
+                MainForm.DisplayText("No physical Camera for " + DisplayName + " selected");
+                return false;
+            }
+            if (!ValidateMoniker())
+            {
+                MainForm.DisplayText("Moniker for " + DisplayName + " not valid. Moniker: " + Settings.Moniker);
+                return false;
+            }
+
             try
             {
-                MainForm.DisplayText(cam + " start, moniker= " + MonikerStr);
+                Close();
+                MainForm.DisplayText(DisplayName + " start, moniker = " + Settings.Moniker);
 
                 ////experimental: disable camera autosettings and set fixed values for consistent color and brightness
                 object tempSourceObject = null;
                 try
                 {
-                    tempSourceObject = FilterInfo.CreateFilter(MonikerStr);
+                    tempSourceObject = FilterInfo.CreateFilter(Settings.Moniker);
                     if (tempSourceObject is AForge.Video.DirectShow.Internals.IAMVideoProcAmp)
                     {
                         AForge.Video.DirectShow.Internals.IAMVideoProcAmp pCamControl = (AForge.Video.DirectShow.Internals.IAMVideoProcAmp)tempSourceObject;
@@ -222,13 +330,10 @@ namespace LitePlacer
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(tempSourceObject);
                 ////: experimental
 
-                // enumerate video devices
-                FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-                // create the video source (check that the camera exists is already done
-                VideoSource = new VideoCaptureDevice(MonikerStr);
-                int tries = 0;
-                while (tries < 4)
+                // create the video source (check that the camera exists is already done)
+                for (int tries = 0; tries < 4; tries++)
                 {
+                    VideoSource = new VideoCaptureDevice(Settings.Moniker);
                     if (VideoSource != null)
                     {
                         break;
@@ -236,18 +341,15 @@ namespace LitePlacer
                     else
                     {
                         Thread.Sleep(10);
-                        tries++;
                     }
                 }
-                if (tries >= 4)
+                if (VideoSource == null)
                 {
-                    MainForm.DisplayText("Could not get resolution info");
-                    return false;
+                    throw new Exception("Camera start failed");
                 }
                 if (VideoSource.VideoCapabilities.Length <= 0)
                 {
-                    MainForm.DisplayText("Could not get resolution info");
-                    return false;
+                    throw new Exception("Could not get resolution info");
                 }
 
                 bool fine = false;
@@ -264,24 +366,17 @@ namespace LitePlacer
                 }
                 if (!fine)
                 {
-                    MainForm.DisplayText("Desired resolution not available");
-                    return false;
+                    throw new Exception("Desired resolution not available");
                 }
 
                 VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
+                VideoSource.VideoSourceError += VideoSourceError;
                 ReceivingFrames = false;
 
-                // try ten times to start
-                tries = 0;
-                while (tries < 80)  // 4s maximum to a camera to start
+                // try ~1 second times to start
+                for (int tries = 0; tries < 100; tries++)
                 {
-                    // VideoSource.Start() checks running status, is safe to call multiple times
-                    tries++;
-                    if (VideoSource == null)
-                    {
-                        break;      // this can happen if changing tabs too fast. TODO: True guard for operations during camera switch/start
-                    }
-                    VideoSource.Start();
+                    VideoSource.Start(); // checks running status, is safe to call multiple times
                     if (!ReceivingFrames)
                     {
                         // 50 ms pause, processing events so that videosource has a chance
@@ -298,10 +393,9 @@ namespace LitePlacer
                 }
                 if (!ReceivingFrames)
                 {
-                    MainForm.DisplayText("Camera started, but is not sending video");
-                    return false;
+                    throw new Exception("Camera started, but is not sending video");
                 }
-                MainForm.DisplayText("*** Camera started: " + tries.ToString(CultureInfo.InvariantCulture), KnownColor.Purple);
+                MainForm.DisplayText("Camera started", KnownColor.Purple);
 
                 // We managed to start the camera using desired resolution
                 FrameSizeX = Settings.DesiredX;
@@ -309,39 +403,58 @@ namespace LitePlacer
                 FrameCenterX = FrameSizeX / 2;
                 FrameCenterY = FrameSizeY / 2;
                 PauseProcessing = false;
+                if (!IsRunning())
+                {
+                    MessageBox.Show("Problem starting " + DisplayName);
+                    return false;
+                }
                 return true;
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (System.Exception excep)
             {
                 MessageBox.Show(excep.Message);
+                IsRunning();
                 return false;
             }
-#pragma warning restore CA1031 // Do not catch general exception types
         }
 
-        public static List<string> GetDeviceList()
+        public static System.Data.DataTable GetDeviceList()
         {
-            List<string> Devices = new List<string>();
+            System.Data.DataTable data = new System.Data.DataTable();
+            data.Columns.Add("Moniker");
+            data.Columns.Add("Name");
+            data.PrimaryKey = new System.Data.DataColumn[] { data.Columns[0] };
+
+            System.Data.DataRow row = data.NewRow();
+            row[0] = AppSettingsV3.CameraSettings.DefaultString;
+            row[1] = AppSettingsV3.CameraSettings.DefaultString;
+            data.Rows.Add(row);
+
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            int i = 0;
+            foreach (FilterInfo device in videoDevices)
+            {
+                row = data.NewRow();
+                row[0] = device.MonikerString;
+                row[1] = i++.ToString(CultureInfo.InvariantCulture) + ": " + device.Name;
+                data.Rows.Add(row);
+            }
+
+            return data;
+        }
+
+        public bool ValidateMoniker()
+        {
+            if (string.IsNullOrEmpty(Settings.Moniker))
+                return false;
 
             FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo device in videoDevices)
             {
-                Devices.Add(device.Name);
+                if (Settings.Moniker == device.MonikerString)
+                    return true;
             }
-            return (Devices);
-        }
-
-        public static List<string> GetMonikerStrings()
-        {
-            List<string> Monikers = new List<string>();
-
-            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach (FilterInfo device in videoDevices)
-            {
-                Monikers.Add(device.MonikerString);
-            }
-            return (Monikers);
+            return false;
         }
 
         #endregion
@@ -503,7 +616,7 @@ namespace LitePlacer
                 return;
             };
 
-            if (!Active)
+            if (!Displayed)
             {
                 return;
             }
@@ -558,29 +671,28 @@ namespace LitePlacer
                 ZoomFunct(ref frame, Settings.ZoomFactor);
             };
 
-            bool keepOrig = OverlayRatio < 255 && DisplayAlgorithm.Functions?.Count > 0;
-            Bitmap origFrame = null;
-            if (keepOrig)
-                origFrame = (Bitmap)frame.Clone();
+            bool process = DisplayAlgorithm.Functions?.Count > 0 && (OverlayRatio > 0 || FindObjects);
+            bool error = false;
 
             // Even with safeguards, changing DisplayFunctions can cause errors.
             try
             {
-                if (DisplayAlgorithm.Functions?.Count > 0)
+                if (process)
                 {
+                    bool blend = OverlayRatio < 255;
+                    Bitmap processedFrame = (Bitmap)frame.Clone();
+
                     foreach (AForgeFunction f in DisplayAlgorithm.Functions)
                     {
-                        if (f.func == Meas_ZoomFunc && origFrame != null)           // zoom original bitmap as well
-                            f.func(ref origFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
-                        f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
+                        if (blend && f.func == Meas_ZoomFunc)
+                            f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
+                        f.func(ref processedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
                     }
 
-                    Bitmap processedFrame = (Bitmap)frame.Clone();      // keep unblended bitmap for shape recognition
-
-                    if (keepOrig)
+                    if (blend)
                     {
                         // draw processed bitmap over original
-                        using (Graphics bitmapGraphics = Graphics.FromImage(origFrame))
+                        using (Graphics bitmapGraphics = Graphics.FromImage(frame))
                         {
                             ColorMatrix matrix = new ColorMatrix();
                             matrix.Matrix33 = OverlayRatio / 255.0f;
@@ -589,78 +701,93 @@ namespace LitePlacer
                             bitmapGraphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
                             bitmapGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.GammaCorrected;
 
-                            bitmapGraphics.DrawImage(frame, new Rectangle(0, 0, frame.Width, frame.Height), 0, 0, frame.Width, frame.Height, GraphicsUnit.Pixel, attributes);
-                            frame.Dispose();
-                            frame = origFrame;
+                            bitmapGraphics.DrawImage(processedFrame, new Rectangle(0, 0, frame.Width, frame.Height), 0, 0, frame.Width, frame.Height, GraphicsUnit.Pixel, attributes);
                         }
                     }
-
-                    using (Graphics graphics = Graphics.FromImage(frame))
+                    else
                     {
-                        if (FindCircles)
+                        frame.Dispose();
+                        frame = processedFrame;
+                    }
+
+                    if (FindObjects)
+                    {
+                        using (Graphics graphics = Graphics.FromImage(frame))
                         {
-                            DrawCirclesFunct(processedFrame, graphics);
-                        }
-                        if (FindRectangles)
-                        {
-                            DrawRectanglesFunct(processedFrame, graphics);
-                        }
-                        if (FindComponent)
-                        {
-                            DrawComponentsFunct(processedFrame, graphics);
+                            if (FindCircles)
+                            {
+                                DrawCirclesFunct(processedFrame, graphics);
+                            }
+                            if (FindRectangles)
+                            {
+                                DrawRectanglesFunct(processedFrame, graphics);
+                            }
+                            if (FindComponent)
+                            {
+                                DrawComponentsFunct(processedFrame, graphics);
+                            }
                         }
                     }
-                    processedFrame.Dispose();
                 }
             }
-            catch (System.InvalidOperationException)
+            catch
             {
-                // No need to do anything, next frame fixes it
+                error = true;
             }
 
-            using (Graphics graphics = Graphics.FromImage(frame))
+            if (!error)
             {
-                if (Settings.DrawBox)
+                using (Graphics graphics = Graphics.FromImage(frame))
                 {
-                    DrawBoxFunct(graphics);
-                }
+                    if (Settings.DrawBox)
+                    {
+                        DrawBoxFunct(graphics);
+                    }
 
-                if (Settings.DrawGrid)
-                {
-                    DrawGridFunct(graphics);
-                }
+                    if (Settings.DrawGrid)
+                    {
+                        DrawGridFunct(graphics);
+                    }
 
-                if (Settings.DrawCross)
-                {
-                    DrawCrossFunct(graphics);
-                }
+                    if (Settings.DrawCross)
+                    {
+                        DrawCrossFunct(graphics);
+                    }
 
-                if (Settings.DrawSidemarks)
-                {
-                    DrawSidemarksFunct(graphics);
-                }
+                    if (Settings.DrawSidemarks)
+                    {
+                        DrawSidemarksFunct(graphics);
+                    }
 
-                if (DrawDashedCross)
-                {
-                    DrawDashedCrossFunct(graphics);
-                }
+                    if (DrawDashedCross)
+                    {
+                        DrawDashedCrossFunct(graphics);
+                    }
 
-                if (DrawArrow)
-                {
-                    DrawArrowFunct(graphics);
+                    if (DrawArrow)
+                    {
+                        DrawArrowFunct(graphics);
+                    }
                 }
             }
 
-            //Mirror Y for Display only
-            Mirror Mfilter = new Mirror(true, false);
-            Mfilter.ApplyInPlace(frame);
-            lock (ProtectedPictureBox._locker)
+            if (!error)
             {
-                if (ImageBox.Image != null)
+                //Mirror Y for Display only
+                Mirror Mfilter = new Mirror(true, false);
+                Mfilter.ApplyInPlace(frame);
+                lock (ProtectedPictureBox._locker)
                 {
-                    ImageBox.Image.Dispose();
+                    if (ImageBox.Image != null)
+                    {
+                        ImageBox.Image.Dispose();
+                    }
+                    ImageBox.Image = frame;//(Bitmap)frame.Clone();     // Copy unnecessary
                 }
-                ImageBox.Image = frame;//(Bitmap)frame.Clone();     // Copy unnecessary
+            }
+            else if (frame != null)
+            {
+                frame.Dispose();
             }
 
             //frame.Dispose();
@@ -805,6 +932,9 @@ namespace LitePlacer
 
         public void BuildDisplayFunctionsList(VideoAlgorithmsCollection.FullAlgorithmDescription videoAlgorithm)
         {
+            if (videoAlgorithm == null)
+                return;
+
             int tries = 0;
             // Stop video
             bool pause = PauseProcessing;
@@ -2343,6 +2473,16 @@ namespace LitePlacer
             Yresult = 0.0;
             Aresult = 0.0;
             err = 0;
+
+            if (!IsRunning())
+            {
+                if (!Start())
+                {
+                    MainForm.DisplayText("Camera not running", KnownColor.Red, true);
+                    return false;
+                }
+            }
+
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 

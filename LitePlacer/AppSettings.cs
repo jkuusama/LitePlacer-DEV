@@ -13,8 +13,6 @@
 
  */
 
-
-
 using System.IO;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -22,17 +20,32 @@ using System.Configuration;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace LitePlacer
 {
     // =================================================================================
     // 
     // =================================================================================
-    public abstract class AppSettingsBase : object
+    public abstract class AppSettingsBase : object, INotifyPropertyChanged
     {
         public abstract int SettingsVersion { get; set; }
 
         public abstract AppSettingsBase Read(string jsonString);
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        protected bool SetField<T>(ref T field, T value, string propertyName)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
     }
 
     public class AppSettings : AppSettingsBase

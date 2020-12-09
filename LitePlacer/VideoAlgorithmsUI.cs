@@ -41,22 +41,17 @@ namespace LitePlacer
 
         // =====================================================================================
         // interface to main form:
-        Camera selectedCam;
 
         private void Algorithms_tabPage_Begin()
         {
             DisplayText("Setup Video Processing tab begin");
+
+            ResumeCameras();
+
             VideoProcessingZguard_checkBox.Checked = false;
             SetDownCameraDefaults();
             SetUpCameraDefaults();
-            if (DownCam_radioButton.Checked)
-            {
-                ChangeCamera(DownCamera);
-            }
-            else
-            {
-                ChangeCamera(UpCamera);
-            }
+
             JigX_textBox.Text = Setting.General_JigOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
             JigY_textBox.Text = Setting.General_JigOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
             PickupCenterX_textBox.Text = Setting.General_PickupCenterX.ToString("0.00", CultureInfo.InvariantCulture);
@@ -77,7 +72,6 @@ namespace LitePlacer
 
         public void InitVideoAlgorithmsUI()
         {
-            DownCam_radioButton.Checked = true; // default to Downcamera
             Functions_dataGridView.Rows.Clear();
             DataGridViewComboBoxColumn comboboxColumn =
                  (DataGridViewComboBoxColumn)Functions_dataGridView.Columns[(int)Functions_dataGridViewColumns.FunctionColumn];
@@ -86,49 +80,6 @@ namespace LitePlacer
 
             VideoAlgorithms = new VideoAlgorithmsCollection();
             LoadVideoAlgorithms(VideoAlgorithms); // causes updating of Functions_dataGridView and Function parameters
-        }
-
-        // camera change
-        private void ChangeCamera(Camera NewCam)
-        {
-            SelectCamera(NewCam);
-            AlgorithmsTab_RestoreBehaviour();
-        }
-
-        private void DownCam_radioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (StartingUp)
-            {
-                return;
-            }
-            // Both radiobuttons CheckedChanged events fire; we need to react only once
-            if (DownCam_radioButton.Checked)
-            {
-                ChangeCamera(DownCamera);
-            }
-            else
-            {
-                ChangeCamera(UpCamera);
-            }
-        }
-
-        private void UpCam_radioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            // ChangeCamera(UpCamera);
-        }
-
-
-        private void AlgorithmsTab_RestoreBehaviour()
-        {
-            /*if (ProcessDisplay_checkBox.Checked)
-            {*/
-                UpdateVideoProcessing();
-            /*}
-            else
-            {
-                StopVideoProcessing();
-            }*/
-
         }
 
         // =====================================================================================
@@ -448,19 +399,6 @@ namespace LitePlacer
 
         }
 
-        /*private void ProcessDisplay_checkBox_Checked_Change()
-        {
-            selectedCam.Overlay = OverlayPictures_checkBox.Checked;
-            if (ProcessDisplay_checkBox.Checked)
-            {
-                UpdateVideoProcessing();
-            }
-            else
-            {
-                StopVideoProcessing();
-            }
-        }*/
-
         // =====================================================================================
         // Check if Algorithm is used somewhere
         private bool AlgorithmUsed(string Alg)
@@ -670,8 +608,8 @@ namespace LitePlacer
         {
             if (VideoAlgorithms.CurrentAlgorithm != null)
             {
-                selectedCam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm);
-                selectedCam.Measure(out double X, out double Y, out double Atmp, out int err, true);
+                SelectedCam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm);
+                SelectedCam.Measure(out double X, out double Y, out double Atmp, out int err, true);
             }
         }
 
@@ -680,8 +618,8 @@ namespace LitePlacer
         {
             if (VideoAlgorithms.CurrentAlgorithm != null)
             {
-                selectedCam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm);
-                GoToFeatureLocation_m(selectedCam, 0.001, out double Xtmp, out double Ytmp, out double Atmp, 2, 1);
+                SelectedCam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm);
+                GoToFeatureLocation_m(SelectedCam, 0.001, out double Xtmp, out double Ytmp, out double Atmp, 2, 1);
             }
         }
 
@@ -1083,30 +1021,9 @@ namespace LitePlacer
 
             // Pass CurrentAlgorithm to camera
             DisplayText("UpdateVideoProcessing()");
-            if (DownCam_radioButton.Checked)
-            {
-                DownCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm);
-            }
-            else
-            {
-                UpCamera.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm);
-            }
+            SelectedCam?.BuildDisplayFunctionsList(VideoAlgorithms.CurrentAlgorithm);
             UpdateSearchFunctions();
         }
-
-        private void StopVideoProcessing()
-        {
-            DisplayText("StopVideoProcessing()");
-            if (DownCam_radioButton.Checked)
-            {
-                DownCamera.ClearDisplayFunctionsList();
-            }
-            if (UpCam_radioButton.Checked)
-            {
-                UpCamera.ClearDisplayFunctionsList();
-            }
-        }
-
 
         // =====================================================================================
         // Functions parameter changes:
@@ -1162,18 +1079,11 @@ namespace LitePlacer
 
         private void UpdateSearchFunctions()
         {
-            Camera cam;
-            if (DownCam_radioButton.Checked)
-            {
-                cam = DownCamera;
-            }
-            else
-            {
-                cam = UpCamera;
-            }
-            cam.FindCircles = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRounds;
-            cam.FindRectangles = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRectangles;
-            cam.FindComponent = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponents;
+            if (SelectedCam == null)
+                return;
+            SelectedCam.FindCircles = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRounds;
+            SelectedCam.FindRectangles = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRectangles;
+            SelectedCam.FindComponent = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponents;
         }
 
 

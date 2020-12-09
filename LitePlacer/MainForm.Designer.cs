@@ -124,8 +124,10 @@
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.Camera_Panel = new System.Windows.Forms.TableLayoutPanel();
             this.panel15 = new System.Windows.Forms.Panel();
+            this.CamSelection_comboBox = new System.Windows.Forms.ComboBox();
             this.CamOverlay_trackBar = new System.Windows.Forms.TrackBar();
             this.CamZoomFactor_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.CamFind_CheckBox = new System.Windows.Forms.CheckBox();
             this.ShowPixels_checkBox = new System.Windows.Forms.CheckBox();
             this.CamPanelMaximize_checkBox = new System.Windows.Forms.CheckBox();
             this.CamPauseDisplay_checkBox = new System.Windows.Forms.CheckBox();
@@ -134,65 +136,69 @@
             this.CamCross_CheckBox = new System.Windows.Forms.CheckBox();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.UpCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
+            this.label164 = new System.Windows.Forms.Label();
+            this.UpCamDisplayName_textBox = new System.Windows.Forms.TextBox();
             this.label130 = new System.Windows.Forms.Label();
+            this.UpCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
             this.UpCameraYmmPerPixel_textBox = new System.Windows.Forms.TextBox();
             this.UpCameraXmmPerPixel_textBox = new System.Windows.Forms.TextBox();
-            this.UpCamDrawBox_checkBox = new System.Windows.Forms.CheckBox();
-            this.UpCamOnHead_checkBox = new System.Windows.Forms.CheckBox();
-            this.UpCameraMirrorY_checkBox = new System.Windows.Forms.CheckBox();
-            this.UpCameraMirrorX_checkBox = new System.Windows.Forms.CheckBox();
             this.UpCamListResolutions_button = new System.Windows.Forms.Button();
+            this.label24 = new System.Windows.Forms.Label();
             this.label106 = new System.Windows.Forms.Label();
-            this.label160 = new System.Windows.Forms.Label();
-            this.UpCameraStatus_label = new System.Windows.Forms.Label();
-            this.label161 = new System.Windows.Forms.Label();
             this.label105 = new System.Windows.Forms.Label();
-            this.UpCameraDesiredX_textBox = new System.Windows.Forms.TextBox();
+            this.UpCamDrawBox_checkBox = new System.Windows.Forms.CheckBox();
             this.UpCam_comboBox = new System.Windows.Forms.ComboBox();
-            this.UpCameraDesiredY_textBox = new System.Windows.Forms.TextBox();
+            this.UpCamOnHead_checkBox = new System.Windows.Forms.CheckBox();
+            this.UpCameraMoniker_label = new System.Windows.Forms.Label();
+            this.UpCameraMirrorX_checkBox = new System.Windows.Forms.CheckBox();
+            this.SelectUpCamera_ = new System.Windows.Forms.Button();
+            this.UpCameraMirrorY_checkBox = new System.Windows.Forms.CheckBox();
             this.RefreshUpCameraList_button = new System.Windows.Forms.Button();
-            this.label110 = new System.Windows.Forms.Label();
-            this.ConnectUpCamera_button = new System.Windows.Forms.Button();
-            this.UpCamStop_button = new System.Windows.Forms.Button();
-            this.UpCamStart_button = new System.Windows.Forms.Button();
             this.UpCameraBoxX_textBox = new System.Windows.Forms.TextBox();
+            this.label161 = new System.Windows.Forms.Label();
             this.label162 = new System.Windows.Forms.Label();
             this.label104 = new System.Windows.Forms.Label();
+            this.UpCameraDesiredX_textBox = new System.Windows.Forms.TextBox();
             this.label163 = new System.Windows.Forms.Label();
+            this.UpCameraStatus_label = new System.Windows.Forms.Label();
+            this.UpCameraDesiredY_textBox = new System.Windows.Forms.TextBox();
             this.UpCameraBoxY_textBox = new System.Windows.Forms.TextBox();
             this.label103 = new System.Windows.Forms.Label();
+            this.UpCamStart_button = new System.Windows.Forms.Button();
+            this.UpCamStop_button = new System.Windows.Forms.Button();
             this.RobustFast_checkBox = new System.Windows.Forms.CheckBox();
             this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
             this.label135 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label165 = new System.Windows.Forms.Label();
+            this.DownCamDisplayName_textBox = new System.Windows.Forms.TextBox();
             this.DownCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
             this.label121 = new System.Windows.Forms.Label();
             this.DownCameraYmmPerPixel_textBox = new System.Windows.Forms.TextBox();
             this.DownCameraXmmPerPixel_textBox = new System.Windows.Forms.TextBox();
-            this.DownCamDrawBox_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCamOnHead_checkBox = new System.Windows.Forms.CheckBox();
+            this.DownCam_comboBox = new System.Windows.Forms.ComboBox();
             this.DownCameraMirrorY_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCameraMirrorX_checkBox = new System.Windows.Forms.CheckBox();
-            this.DownCam_comboBox = new System.Windows.Forms.ComboBox();
             this.label53 = new System.Windows.Forms.Label();
-            this.DownCameraStatus_label = new System.Windows.Forms.Label();
-            this.ConnectDownCamera_button = new System.Windows.Forms.Button();
-            this.RefreshDownCameraList_button = new System.Windows.Forms.Button();
-            this.DownCameraBoxY_textBox = new System.Windows.Forms.TextBox();
-            this.label70 = new System.Windows.Forms.Label();
-            this.DownCameraBoxX_textBox = new System.Windows.Forms.TextBox();
-            this.DownCamStop_button = new System.Windows.Forms.Button();
-            this.DownCamStart_button = new System.Windows.Forms.Button();
-            this.DownCameraDesiredY_textBox = new System.Windows.Forms.TextBox();
-            this.DownCameraDesiredX_textBox = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label69 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label68 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
+            this.DownCamDrawBox_checkBox = new System.Windows.Forms.CheckBox();
             this.label71 = new System.Windows.Forms.Label();
+            this.DownCameraMoniker_label = new System.Windows.Forms.Label();
+            this.label46 = new System.Windows.Forms.Label();
+            this.label68 = new System.Windows.Forms.Label();
+            this.DownCameraStatus_label = new System.Windows.Forms.Label();
+            this.SelectDownCamera_button = new System.Windows.Forms.Button();
+            this.RefreshDownCameraList_button = new System.Windows.Forms.Button();
+            this.label69 = new System.Windows.Forms.Label();
+            this.DownCameraBoxX_textBox = new System.Windows.Forms.TextBox();
+            this.label70 = new System.Windows.Forms.Label();
+            this.DownCamStop_button = new System.Windows.Forms.Button();
+            this.DownCameraDesiredY_textBox = new System.Windows.Forms.TextBox();
+            this.DownCamStart_button = new System.Windows.Forms.Button();
+            this.DownCameraBoxY_textBox = new System.Windows.Forms.TextBox();
+            this.DownCameraDesiredX_textBox = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
             this.DownCamListResolutions_button = new System.Windows.Forms.Button();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
             this.Duet3Motors_tabControl = new System.Windows.Forms.TabControl();
@@ -602,10 +608,6 @@
             this.NoOfNozzlesOnVideoSetup_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.HideAdvanced_tabPage = new System.Windows.Forms.TabPage();
             this.SpecialProcessing_button = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.UpCam_radioButton = new System.Windows.Forms.RadioButton();
-            this.DownCam_radioButton = new System.Windows.Forms.RadioButton();
             this.label149 = new System.Windows.Forms.Label();
             this.Z0toPCB_CamerasTab_label = new System.Windows.Forms.Label();
             this.label120 = new System.Windows.Forms.Label();
@@ -879,8 +881,6 @@
             this.AdvancedProcessing_tabControl.SuspendLayout();
             this.NozzleCalibration_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzlesOnVideoSetup_numericUpDown)).BeginInit();
-            this.tabControl1.SuspendLayout();
-            this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.G_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).BeginInit();
@@ -1931,8 +1931,10 @@
             // 
             this.panel15.AutoSize = true;
             this.panel15.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel15.Controls.Add(this.CamSelection_comboBox);
             this.panel15.Controls.Add(this.CamOverlay_trackBar);
             this.panel15.Controls.Add(this.CamZoomFactor_numericUpDown);
+            this.panel15.Controls.Add(this.CamFind_CheckBox);
             this.panel15.Controls.Add(this.ShowPixels_checkBox);
             this.panel15.Controls.Add(this.CamPanelMaximize_checkBox);
             this.panel15.Controls.Add(this.CamPauseDisplay_checkBox);
@@ -1946,6 +1948,16 @@
             this.panel15.Name = "panel15";
             this.panel15.Size = new System.Drawing.Size(640, 38);
             this.panel15.TabIndex = 230;
+            // 
+            // CamSelection_comboBox
+            // 
+            this.CamSelection_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CamSelection_comboBox.FormattingEnabled = true;
+            this.CamSelection_comboBox.Location = new System.Drawing.Point(538, 8);
+            this.CamSelection_comboBox.Name = "CamSelection_comboBox";
+            this.CamSelection_comboBox.Size = new System.Drawing.Size(98, 21);
+            this.CamSelection_comboBox.TabIndex = 229;
+            this.CamSelection_comboBox.SelectedIndexChanged += new System.EventHandler(this.CamSelection_comboBox_SelectedIndexChanged);
             // 
             // CamOverlay_trackBar
             // 
@@ -1988,6 +2000,17 @@
             0,
             0});
             // 
+            // CamFind_CheckBox
+            // 
+            this.CamFind_CheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.CamFind_CheckBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CamFind_CheckBox.BackgroundImage")));
+            this.CamFind_CheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CamFind_CheckBox.Location = new System.Drawing.Point(351, 2);
+            this.CamFind_CheckBox.Name = "CamFind_CheckBox";
+            this.CamFind_CheckBox.Size = new System.Drawing.Size(32, 32);
+            this.CamFind_CheckBox.TabIndex = 229;
+            this.CamFind_CheckBox.UseVisualStyleBackColor = true;
+            // 
             // ShowPixels_checkBox
             // 
             this.ShowPixels_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
@@ -2005,7 +2028,7 @@
             this.CamPanelMaximize_checkBox.Appearance = System.Windows.Forms.Appearance.Button;
             this.CamPanelMaximize_checkBox.BackgroundImage = global::LitePlacer.Properties.Resources.maximize;
             this.CamPanelMaximize_checkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CamPanelMaximize_checkBox.Location = new System.Drawing.Point(351, 3);
+            this.CamPanelMaximize_checkBox.Location = new System.Drawing.Point(500, 3);
             this.CamPanelMaximize_checkBox.MaximumSize = new System.Drawing.Size(32, 32);
             this.CamPanelMaximize_checkBox.MinimumSize = new System.Drawing.Size(32, 32);
             this.CamPanelMaximize_checkBox.Name = "CamPanelMaximize_checkBox";
@@ -2080,67 +2103,87 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.UpCamDrawSidemarks_checkBox);
+            this.groupBox6.Controls.Add(this.label164);
+            this.groupBox6.Controls.Add(this.UpCamDisplayName_textBox);
             this.groupBox6.Controls.Add(this.label130);
+            this.groupBox6.Controls.Add(this.UpCamDrawSidemarks_checkBox);
             this.groupBox6.Controls.Add(this.UpCameraYmmPerPixel_textBox);
             this.groupBox6.Controls.Add(this.UpCameraXmmPerPixel_textBox);
-            this.groupBox6.Controls.Add(this.UpCamDrawBox_checkBox);
-            this.groupBox6.Controls.Add(this.UpCamOnHead_checkBox);
-            this.groupBox6.Controls.Add(this.UpCameraMirrorY_checkBox);
-            this.groupBox6.Controls.Add(this.UpCameraMirrorX_checkBox);
             this.groupBox6.Controls.Add(this.UpCamListResolutions_button);
+            this.groupBox6.Controls.Add(this.label24);
             this.groupBox6.Controls.Add(this.label106);
-            this.groupBox6.Controls.Add(this.label160);
-            this.groupBox6.Controls.Add(this.UpCameraStatus_label);
-            this.groupBox6.Controls.Add(this.label161);
             this.groupBox6.Controls.Add(this.label105);
-            this.groupBox6.Controls.Add(this.UpCameraDesiredX_textBox);
+            this.groupBox6.Controls.Add(this.UpCamDrawBox_checkBox);
             this.groupBox6.Controls.Add(this.UpCam_comboBox);
-            this.groupBox6.Controls.Add(this.UpCameraDesiredY_textBox);
+            this.groupBox6.Controls.Add(this.UpCamOnHead_checkBox);
+            this.groupBox6.Controls.Add(this.UpCameraMoniker_label);
+            this.groupBox6.Controls.Add(this.UpCameraMirrorX_checkBox);
+            this.groupBox6.Controls.Add(this.SelectUpCamera_);
+            this.groupBox6.Controls.Add(this.UpCameraMirrorY_checkBox);
             this.groupBox6.Controls.Add(this.RefreshUpCameraList_button);
-            this.groupBox6.Controls.Add(this.label110);
-            this.groupBox6.Controls.Add(this.ConnectUpCamera_button);
-            this.groupBox6.Controls.Add(this.UpCamStop_button);
-            this.groupBox6.Controls.Add(this.UpCamStart_button);
             this.groupBox6.Controls.Add(this.UpCameraBoxX_textBox);
+            this.groupBox6.Controls.Add(this.label161);
             this.groupBox6.Controls.Add(this.label162);
             this.groupBox6.Controls.Add(this.label104);
+            this.groupBox6.Controls.Add(this.UpCameraDesiredX_textBox);
             this.groupBox6.Controls.Add(this.label163);
+            this.groupBox6.Controls.Add(this.UpCameraStatus_label);
+            this.groupBox6.Controls.Add(this.UpCameraDesiredY_textBox);
             this.groupBox6.Controls.Add(this.UpCameraBoxY_textBox);
             this.groupBox6.Controls.Add(this.label103);
-            this.groupBox6.Location = new System.Drawing.Point(652, 216);
+            this.groupBox6.Controls.Add(this.UpCamStart_button);
+            this.groupBox6.Controls.Add(this.UpCamStop_button);
+            this.groupBox6.Location = new System.Drawing.Point(950, 6);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(587, 195);
+            this.groupBox6.Size = new System.Drawing.Size(292, 466);
             this.groupBox6.TabIndex = 227;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Up Looking Camera";
             // 
-            // UpCamDrawSidemarks_checkBox
+            // label164
             // 
-            this.UpCamDrawSidemarks_checkBox.AutoSize = true;
-            this.UpCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(375, 120);
-            this.UpCamDrawSidemarks_checkBox.Name = "UpCamDrawSidemarks_checkBox";
-            this.UpCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(103, 17);
-            this.UpCamDrawSidemarks_checkBox.TabIndex = 213;
-            this.UpCamDrawSidemarks_checkBox.Text = "Draw SideMarks";
-            this.UpCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
+            this.label164.AutoSize = true;
+            this.label164.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label164.Location = new System.Drawing.Point(6, 89);
+            this.label164.Name = "label164";
+            this.label164.Size = new System.Drawing.Size(44, 15);
+            this.label164.TabIndex = 229;
+            this.label164.Text = "Name:";
+            // 
+            // UpCamDisplayName_textBox
+            // 
+            this.UpCamDisplayName_textBox.Location = new System.Drawing.Point(66, 88);
+            this.UpCamDisplayName_textBox.Name = "UpCamDisplayName_textBox";
+            this.UpCamDisplayName_textBox.Size = new System.Drawing.Size(160, 20);
+            this.UpCamDisplayName_textBox.TabIndex = 213;
+            this.UpCamDisplayName_textBox.Text = "Up Camera";
             // 
             // label130
             // 
             this.label130.AutoSize = true;
             this.label130.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label130.Location = new System.Drawing.Point(113, 81);
+            this.label130.Location = new System.Drawing.Point(109, 226);
             this.label130.Name = "label130";
             this.label130.Size = new System.Drawing.Size(50, 13);
             this.label130.TabIndex = 229;
             this.label130.Text = "mm/pixel:";
             this.toolTip1.SetToolTip(this.label130, "Set the true size of the box on the image.");
             // 
+            // UpCamDrawSidemarks_checkBox
+            // 
+            this.UpCamDrawSidemarks_checkBox.AutoSize = true;
+            this.UpCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(9, 404);
+            this.UpCamDrawSidemarks_checkBox.Name = "UpCamDrawSidemarks_checkBox";
+            this.UpCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(103, 17);
+            this.UpCamDrawSidemarks_checkBox.TabIndex = 213;
+            this.UpCamDrawSidemarks_checkBox.Text = "Draw SideMarks";
+            this.UpCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
+            // 
             // UpCameraYmmPerPixel_textBox
             // 
             this.UpCameraYmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraYmmPerPixel_textBox.Location = new System.Drawing.Point(117, 123);
+            this.UpCameraYmmPerPixel_textBox.Location = new System.Drawing.Point(113, 268);
             this.UpCameraYmmPerPixel_textBox.Name = "UpCameraYmmPerPixel_textBox";
             this.UpCameraYmmPerPixel_textBox.Size = new System.Drawing.Size(46, 18);
             this.UpCameraYmmPerPixel_textBox.TabIndex = 228;
@@ -2150,219 +2193,150 @@
             // UpCameraXmmPerPixel_textBox
             // 
             this.UpCameraXmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraXmmPerPixel_textBox.Location = new System.Drawing.Point(117, 97);
+            this.UpCameraXmmPerPixel_textBox.Location = new System.Drawing.Point(113, 242);
             this.UpCameraXmmPerPixel_textBox.Name = "UpCameraXmmPerPixel_textBox";
             this.UpCameraXmmPerPixel_textBox.Size = new System.Drawing.Size(46, 18);
             this.UpCameraXmmPerPixel_textBox.TabIndex = 227;
             this.toolTip1.SetToolTip(this.UpCameraXmmPerPixel_textBox, "Set the true size of the box on the image.");
             this.UpCameraXmmPerPixel_textBox.TextChanged += new System.EventHandler(this.UpCameraXmmPerPixel_textBox_TextChanged);
             // 
-            // UpCamDrawBox_checkBox
-            // 
-            this.UpCamDrawBox_checkBox.AutoSize = true;
-            this.UpCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamDrawBox_checkBox.Location = new System.Drawing.Point(376, 97);
-            this.UpCamDrawBox_checkBox.Name = "UpCamDrawBox_checkBox";
-            this.UpCamDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
-            this.UpCamDrawBox_checkBox.TabIndex = 210;
-            this.UpCamDrawBox_checkBox.Text = "Draw Box";
-            this.UpCamDrawBox_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // UpCamOnHead_checkBox
-            // 
-            this.UpCamOnHead_checkBox.AutoSize = true;
-            this.UpCamOnHead_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamOnHead_checkBox.Location = new System.Drawing.Point(375, 143);
-            this.UpCamOnHead_checkBox.Name = "UpCamOnHead_checkBox";
-            this.UpCamOnHead_checkBox.Size = new System.Drawing.Size(183, 17);
-            this.UpCamOnHead_checkBox.TabIndex = 207;
-            this.UpCamOnHead_checkBox.Text = "Camera mounted on Nozzle Head";
-            this.UpCamOnHead_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // UpCameraMirrorY_checkBox
-            // 
-            this.UpCameraMirrorY_checkBox.AutoSize = true;
-            this.UpCameraMirrorY_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraMirrorY_checkBox.Location = new System.Drawing.Point(485, 120);
-            this.UpCameraMirrorY_checkBox.Name = "UpCameraMirrorY_checkBox";
-            this.UpCameraMirrorY_checkBox.Size = new System.Drawing.Size(62, 17);
-            this.UpCameraMirrorY_checkBox.TabIndex = 207;
-            this.UpCameraMirrorY_checkBox.Text = "Mirror Y";
-            this.UpCameraMirrorY_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // UpCameraMirrorX_checkBox
-            // 
-            this.UpCameraMirrorX_checkBox.AutoSize = true;
-            this.UpCameraMirrorX_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraMirrorX_checkBox.Location = new System.Drawing.Point(485, 95);
-            this.UpCameraMirrorX_checkBox.Name = "UpCameraMirrorX_checkBox";
-            this.UpCameraMirrorX_checkBox.Size = new System.Drawing.Size(62, 17);
-            this.UpCameraMirrorX_checkBox.TabIndex = 207;
-            this.UpCameraMirrorX_checkBox.Text = "Mirror X";
-            this.UpCameraMirrorX_checkBox.UseVisualStyleBackColor = true;
-            // 
             // UpCamListResolutions_button
             // 
             this.UpCamListResolutions_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamListResolutions_button.Location = new System.Drawing.Point(221, 55);
+            this.UpCamListResolutions_button.Location = new System.Drawing.Point(9, 172);
             this.UpCamListResolutions_button.Name = "UpCamListResolutions_button";
-            this.UpCamListResolutions_button.Size = new System.Drawing.Size(114, 23);
+            this.UpCamListResolutions_button.Size = new System.Drawing.Size(118, 23);
             this.UpCamListResolutions_button.TabIndex = 207;
             this.UpCamListResolutions_button.Text = "List resolutions";
             this.toolTip1.SetToolTip(this.UpCamListResolutions_button, "List available resolutions to log window");
             this.UpCamListResolutions_button.UseVisualStyleBackColor = true;
             this.UpCamListResolutions_button.Click += new System.EventHandler(this.UpCamListResolutions_button_Click);
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(6, 209);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(51, 15);
+            this.label24.TabIndex = 225;
+            this.label24.Text = "Scaling:";
+            // 
             // label106
             // 
             this.label106.AutoSize = true;
-            this.label106.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label106.Location = new System.Drawing.Point(241, 81);
+            this.label106.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label106.Location = new System.Drawing.Point(6, 129);
             this.label106.Name = "label106";
-            this.label106.Size = new System.Drawing.Size(94, 13);
+            this.label106.Size = new System.Drawing.Size(110, 15);
             this.label106.TabIndex = 225;
             this.label106.Text = "Desired resolution:";
             this.toolTip1.SetToolTip(this.label106, "Set the native camera resolution here");
-            // 
-            // label160
-            // 
-            this.label160.AutoSize = true;
-            this.label160.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label160.Location = new System.Drawing.Point(266, 100);
-            this.label160.Name = "label160";
-            this.label160.Size = new System.Drawing.Size(17, 13);
-            this.label160.TabIndex = 221;
-            this.label160.Text = "X:";
-            this.toolTip1.SetToolTip(this.label160, "Set the native camera resolution here");
-            // 
-            // UpCameraStatus_label
-            // 
-            this.UpCameraStatus_label.AutoSize = true;
-            this.UpCameraStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraStatus_label.Location = new System.Drawing.Point(452, 39);
-            this.UpCameraStatus_label.Name = "UpCameraStatus_label";
-            this.UpCameraStatus_label.Size = new System.Drawing.Size(113, 17);
-            this.UpCameraStatus_label.TabIndex = 207;
-            this.UpCameraStatus_label.Text = "Not connected";
-            this.toolTip1.SetToolTip(this.UpCameraStatus_label, "Camera conection status");
-            // 
-            // label161
-            // 
-            this.label161.AutoSize = true;
-            this.label161.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label161.Location = new System.Drawing.Point(266, 124);
-            this.label161.Name = "label161";
-            this.label161.Size = new System.Drawing.Size(17, 13);
-            this.label161.TabIndex = 222;
-            this.label161.Text = "Y:";
-            this.toolTip1.SetToolTip(this.label161, "Set the native camera resolution here");
             // 
             // label105
             // 
             this.label105.AutoSize = true;
             this.label105.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label105.Location = new System.Drawing.Point(10, 81);
+            this.label105.Location = new System.Drawing.Point(26, 226);
             this.label105.Name = "label105";
             this.label105.Size = new System.Drawing.Size(49, 13);
             this.label105.TabIndex = 226;
             this.label105.Text = "Box size:";
             this.toolTip1.SetToolTip(this.label105, "Set the true size of the box on the image.");
             // 
-            // UpCameraDesiredX_textBox
+            // UpCamDrawBox_checkBox
             // 
-            this.UpCameraDesiredX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraDesiredX_textBox.Location = new System.Drawing.Point(289, 97);
-            this.UpCameraDesiredX_textBox.Name = "UpCameraDesiredX_textBox";
-            this.UpCameraDesiredX_textBox.Size = new System.Drawing.Size(46, 18);
-            this.UpCameraDesiredX_textBox.TabIndex = 223;
-            this.toolTip1.SetToolTip(this.UpCameraDesiredX_textBox, "Set the native camera resolution here");
-            this.UpCameraDesiredX_textBox.TextChanged += new System.EventHandler(this.UpCameraDesiredX_textBox_TextChanged);
+            this.UpCamDrawBox_checkBox.AutoSize = true;
+            this.UpCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamDrawBox_checkBox.Location = new System.Drawing.Point(9, 381);
+            this.UpCamDrawBox_checkBox.Name = "UpCamDrawBox_checkBox";
+            this.UpCamDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
+            this.UpCamDrawBox_checkBox.TabIndex = 210;
+            this.UpCamDrawBox_checkBox.Text = "Draw Box";
+            this.UpCamDrawBox_checkBox.UseVisualStyleBackColor = true;
             // 
             // UpCam_comboBox
             // 
             this.UpCam_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.UpCam_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCam_comboBox.FormattingEnabled = true;
-            this.UpCam_comboBox.Location = new System.Drawing.Point(6, 19);
+            this.UpCam_comboBox.Location = new System.Drawing.Point(66, 21);
             this.UpCam_comboBox.Name = "UpCam_comboBox";
-            this.UpCam_comboBox.Size = new System.Drawing.Size(132, 21);
+            this.UpCam_comboBox.Size = new System.Drawing.Size(160, 21);
             this.UpCam_comboBox.TabIndex = 208;
             this.toolTip1.SetToolTip(this.UpCam_comboBox, "List of USB cameras found on this computer.\r\nSelect up looking camera form this l" +
         "ist.\r\n");
-            this.UpCam_comboBox.SelectedIndexChanged += new System.EventHandler(this.UpCam_comboBox_SelectedIndexChanged);
             // 
-            // UpCameraDesiredY_textBox
+            // UpCamOnHead_checkBox
             // 
-            this.UpCameraDesiredY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraDesiredY_textBox.Location = new System.Drawing.Point(289, 121);
-            this.UpCameraDesiredY_textBox.Name = "UpCameraDesiredY_textBox";
-            this.UpCameraDesiredY_textBox.Size = new System.Drawing.Size(46, 18);
-            this.UpCameraDesiredY_textBox.TabIndex = 224;
-            this.toolTip1.SetToolTip(this.UpCameraDesiredY_textBox, "Set the native camera resolution here");
-            this.UpCameraDesiredY_textBox.TextChanged += new System.EventHandler(this.UpCameraDesiredY_textBox_TextChanged);
+            this.UpCamOnHead_checkBox.AutoSize = true;
+            this.UpCamOnHead_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamOnHead_checkBox.Location = new System.Drawing.Point(9, 328);
+            this.UpCamOnHead_checkBox.Name = "UpCamOnHead_checkBox";
+            this.UpCamOnHead_checkBox.Size = new System.Drawing.Size(183, 17);
+            this.UpCamOnHead_checkBox.TabIndex = 207;
+            this.UpCamOnHead_checkBox.Text = "Camera mounted on Nozzle Head";
+            this.UpCamOnHead_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // UpCameraMoniker_label
+            // 
+            this.UpCameraMoniker_label.AutoSize = true;
+            this.UpCameraMoniker_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraMoniker_label.Location = new System.Drawing.Point(6, 46);
+            this.UpCameraMoniker_label.Name = "UpCameraMoniker_label";
+            this.UpCameraMoniker_label.Size = new System.Drawing.Size(77, 13);
+            this.UpCameraMoniker_label.TabIndex = 205;
+            this.UpCameraMoniker_label.Text = "Name; Moniker";
+            // 
+            // UpCameraMirrorX_checkBox
+            // 
+            this.UpCameraMirrorX_checkBox.AutoSize = true;
+            this.UpCameraMirrorX_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraMirrorX_checkBox.Location = new System.Drawing.Point(9, 305);
+            this.UpCameraMirrorX_checkBox.Name = "UpCameraMirrorX_checkBox";
+            this.UpCameraMirrorX_checkBox.Size = new System.Drawing.Size(62, 17);
+            this.UpCameraMirrorX_checkBox.TabIndex = 207;
+            this.UpCameraMirrorX_checkBox.Text = "Mirror X";
+            this.UpCameraMirrorX_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // SelectUpCamera_
+            // 
+            this.SelectUpCamera_.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectUpCamera_.Location = new System.Drawing.Point(232, 20);
+            this.SelectUpCamera_.Name = "SelectUpCamera_";
+            this.SelectUpCamera_.Size = new System.Drawing.Size(54, 23);
+            this.SelectUpCamera_.TabIndex = 209;
+            this.SelectUpCamera_.Text = "Select";
+            this.SelectUpCamera_.UseVisualStyleBackColor = true;
+            this.SelectUpCamera_.Click += new System.EventHandler(this.SelectUpCamera_button_Click);
+            // 
+            // UpCameraMirrorY_checkBox
+            // 
+            this.UpCameraMirrorY_checkBox.AutoSize = true;
+            this.UpCameraMirrorY_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraMirrorY_checkBox.Location = new System.Drawing.Point(113, 305);
+            this.UpCameraMirrorY_checkBox.Name = "UpCameraMirrorY_checkBox";
+            this.UpCameraMirrorY_checkBox.Size = new System.Drawing.Size(62, 17);
+            this.UpCameraMirrorY_checkBox.TabIndex = 207;
+            this.UpCameraMirrorY_checkBox.Text = "Mirror Y";
+            this.UpCameraMirrorY_checkBox.UseVisualStyleBackColor = true;
             // 
             // RefreshUpCameraList_button
             // 
             this.RefreshUpCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUpCameraList_button.Location = new System.Drawing.Point(144, 17);
+            this.RefreshUpCameraList_button.Location = new System.Drawing.Point(6, 20);
             this.RefreshUpCameraList_button.Name = "RefreshUpCameraList_button";
-            this.RefreshUpCameraList_button.Size = new System.Drawing.Size(71, 23);
+            this.RefreshUpCameraList_button.Size = new System.Drawing.Size(54, 23);
             this.RefreshUpCameraList_button.TabIndex = 209;
-            this.RefreshUpCameraList_button.Text = "Refresh List";
+            this.RefreshUpCameraList_button.Text = "Refresh";
             this.toolTip1.SetToolTip(this.RefreshUpCameraList_button, "Re-scans USB cameras on this computer");
             this.RefreshUpCameraList_button.UseVisualStyleBackColor = true;
-            this.RefreshUpCameraList_button.Click += new System.EventHandler(this.RefreshUpCameraList_button_Click);
-            // 
-            // label110
-            // 
-            this.label110.AutoSize = true;
-            this.label110.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label110.Location = new System.Drawing.Point(450, 19);
-            this.label110.Name = "label110";
-            this.label110.Size = new System.Drawing.Size(40, 13);
-            this.label110.TabIndex = 210;
-            this.label110.Text = "Status:";
-            // 
-            // ConnectUpCamera_button
-            // 
-            this.ConnectUpCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConnectUpCamera_button.Location = new System.Drawing.Point(221, 17);
-            this.ConnectUpCamera_button.Name = "ConnectUpCamera_button";
-            this.ConnectUpCamera_button.Size = new System.Drawing.Size(71, 23);
-            this.ConnectUpCamera_button.TabIndex = 207;
-            this.ConnectUpCamera_button.Text = "Select";
-            this.toolTip1.SetToolTip(this.ConnectUpCamera_button, "Connets to selected camera");
-            this.ConnectUpCamera_button.UseVisualStyleBackColor = true;
-            this.ConnectUpCamera_button.Click += new System.EventHandler(this.ConnectUpCamera_button_Click);
-            // 
-            // UpCamStop_button
-            // 
-            this.UpCamStop_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamStop_button.Location = new System.Drawing.Point(298, 17);
-            this.UpCamStop_button.Name = "UpCamStop_button";
-            this.UpCamStop_button.Size = new System.Drawing.Size(71, 23);
-            this.UpCamStop_button.TabIndex = 217;
-            this.UpCamStop_button.Text = "Stop";
-            this.toolTip1.SetToolTip(this.UpCamStop_button, "Connets to selected camera");
-            this.UpCamStop_button.UseVisualStyleBackColor = true;
-            this.UpCamStop_button.Click += new System.EventHandler(this.UpCamStop_button_Click);
-            // 
-            // UpCamStart_button
-            // 
-            this.UpCamStart_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamStart_button.Location = new System.Drawing.Point(375, 17);
-            this.UpCamStart_button.Name = "UpCamStart_button";
-            this.UpCamStart_button.Size = new System.Drawing.Size(71, 23);
-            this.UpCamStart_button.TabIndex = 218;
-            this.UpCamStart_button.Text = "Start";
-            this.toolTip1.SetToolTip(this.UpCamStart_button, "Connets to selected camera");
-            this.UpCamStart_button.UseVisualStyleBackColor = true;
-            this.UpCamStart_button.Click += new System.EventHandler(this.UpCamStart_button_Click);
+            this.RefreshUpCameraList_button.Click += new System.EventHandler(this.RefreshCameraList_button_Click);
             // 
             // UpCameraBoxX_textBox
             // 
             this.UpCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.UpCameraBoxX_textBox.Location = new System.Drawing.Point(33, 97);
+            this.UpCameraBoxX_textBox.Location = new System.Drawing.Point(29, 242);
             this.UpCameraBoxX_textBox.Name = "UpCameraBoxX_textBox";
             this.UpCameraBoxX_textBox.Size = new System.Drawing.Size(46, 18);
             this.UpCameraBoxX_textBox.TabIndex = 211;
@@ -2370,11 +2344,22 @@
             this.UpCameraBoxX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCameraBoxX_textBox_KeyPress);
             this.UpCameraBoxX_textBox.Leave += new System.EventHandler(this.UpCameraBoxX_textBox_Leave);
             // 
+            // label161
+            // 
+            this.label161.AutoSize = true;
+            this.label161.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label161.Location = new System.Drawing.Point(61, 151);
+            this.label161.Name = "label161";
+            this.label161.Size = new System.Drawing.Size(14, 13);
+            this.label161.TabIndex = 222;
+            this.label161.Text = "X";
+            this.toolTip1.SetToolTip(this.label161, "Set the native camera resolution here");
+            // 
             // label162
             // 
             this.label162.AutoSize = true;
             this.label162.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label162.Location = new System.Drawing.Point(10, 100);
+            this.label162.Location = new System.Drawing.Point(6, 245);
             this.label162.Name = "label162";
             this.label162.Size = new System.Drawing.Size(17, 13);
             this.label162.TabIndex = 219;
@@ -2385,28 +2370,59 @@
             // 
             this.label104.AutoSize = true;
             this.label104.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label104.Location = new System.Drawing.Point(85, 100);
+            this.label104.Location = new System.Drawing.Point(81, 245);
             this.label104.Name = "label104";
             this.label104.Size = new System.Drawing.Size(23, 13);
             this.label104.TabIndex = 213;
             this.label104.Text = "mm";
             this.toolTip1.SetToolTip(this.label104, "Set the true size of the box on the image.");
             // 
+            // UpCameraDesiredX_textBox
+            // 
+            this.UpCameraDesiredX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraDesiredX_textBox.Location = new System.Drawing.Point(9, 148);
+            this.UpCameraDesiredX_textBox.Name = "UpCameraDesiredX_textBox";
+            this.UpCameraDesiredX_textBox.Size = new System.Drawing.Size(46, 18);
+            this.UpCameraDesiredX_textBox.TabIndex = 223;
+            this.toolTip1.SetToolTip(this.UpCameraDesiredX_textBox, "Set the native camera resolution here");
+            this.UpCameraDesiredX_textBox.TextChanged += new System.EventHandler(this.UpCameraDesiredX_textBox_TextChanged);
+            // 
             // label163
             // 
             this.label163.AutoSize = true;
             this.label163.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label163.Location = new System.Drawing.Point(10, 126);
+            this.label163.Location = new System.Drawing.Point(6, 271);
             this.label163.Name = "label163";
             this.label163.Size = new System.Drawing.Size(17, 13);
             this.label163.TabIndex = 220;
             this.label163.Text = "Y:";
             this.toolTip1.SetToolTip(this.label163, "Set the true size of the box on the image.");
             // 
+            // UpCameraStatus_label
+            // 
+            this.UpCameraStatus_label.AutoSize = true;
+            this.UpCameraStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraStatus_label.Location = new System.Drawing.Point(158, 439);
+            this.UpCameraStatus_label.Name = "UpCameraStatus_label";
+            this.UpCameraStatus_label.Size = new System.Drawing.Size(30, 17);
+            this.UpCameraStatus_label.TabIndex = 207;
+            this.UpCameraStatus_label.Text = "Off";
+            this.toolTip1.SetToolTip(this.UpCameraStatus_label, "Camera conection status");
+            // 
+            // UpCameraDesiredY_textBox
+            // 
+            this.UpCameraDesiredY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraDesiredY_textBox.Location = new System.Drawing.Point(81, 148);
+            this.UpCameraDesiredY_textBox.Name = "UpCameraDesiredY_textBox";
+            this.UpCameraDesiredY_textBox.Size = new System.Drawing.Size(46, 18);
+            this.UpCameraDesiredY_textBox.TabIndex = 224;
+            this.toolTip1.SetToolTip(this.UpCameraDesiredY_textBox, "Set the native camera resolution here");
+            this.UpCameraDesiredY_textBox.TextChanged += new System.EventHandler(this.UpCameraDesiredY_textBox_TextChanged);
+            // 
             // UpCameraBoxY_textBox
             // 
             this.UpCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.UpCameraBoxY_textBox.Location = new System.Drawing.Point(33, 123);
+            this.UpCameraBoxY_textBox.Location = new System.Drawing.Point(29, 268);
             this.UpCameraBoxY_textBox.Name = "UpCameraBoxY_textBox";
             this.UpCameraBoxY_textBox.Size = new System.Drawing.Size(46, 18);
             this.UpCameraBoxY_textBox.TabIndex = 212;
@@ -2418,44 +2434,67 @@
             // 
             this.label103.AutoSize = true;
             this.label103.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label103.Location = new System.Drawing.Point(85, 126);
+            this.label103.Location = new System.Drawing.Point(81, 271);
             this.label103.Name = "label103";
             this.label103.Size = new System.Drawing.Size(23, 13);
             this.label103.TabIndex = 214;
             this.label103.Text = "mm";
             this.toolTip1.SetToolTip(this.label103, "Set the true size of the box on the image.");
             // 
+            // UpCamStart_button
+            // 
+            this.UpCamStart_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamStart_button.Location = new System.Drawing.Point(4, 437);
+            this.UpCamStart_button.Name = "UpCamStart_button";
+            this.UpCamStart_button.Size = new System.Drawing.Size(71, 23);
+            this.UpCamStart_button.TabIndex = 218;
+            this.UpCamStart_button.Text = "Start";
+            this.toolTip1.SetToolTip(this.UpCamStart_button, "Connets to selected camera");
+            this.UpCamStart_button.UseVisualStyleBackColor = true;
+            this.UpCamStart_button.Click += new System.EventHandler(this.UpCamStart_button_Click);
+            // 
+            // UpCamStop_button
+            // 
+            this.UpCamStop_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamStop_button.Location = new System.Drawing.Point(81, 437);
+            this.UpCamStop_button.Name = "UpCamStop_button";
+            this.UpCamStop_button.Size = new System.Drawing.Size(71, 23);
+            this.UpCamStop_button.TabIndex = 217;
+            this.UpCamStop_button.Text = "Stop";
+            this.toolTip1.SetToolTip(this.UpCamStop_button, "Connets to selected camera");
+            this.UpCamStop_button.UseVisualStyleBackColor = true;
+            this.UpCamStop_button.Click += new System.EventHandler(this.UpCamStop_button_Click);
+            // 
             // RobustFast_checkBox
             // 
             this.RobustFast_checkBox.AutoSize = true;
             this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RobustFast_checkBox.Location = new System.Drawing.Point(750, 417);
+            this.RobustFast_checkBox.Location = new System.Drawing.Point(752, 485);
             this.RobustFast_checkBox.Name = "RobustFast_checkBox";
             this.RobustFast_checkBox.Size = new System.Drawing.Size(130, 17);
             this.RobustFast_checkBox.TabIndex = 195;
             this.RobustFast_checkBox.Text = "Robust (uncheck: fast)";
             this.toolTip1.SetToolTip(this.RobustFast_checkBox, resources.GetString("RobustFast_checkBox.ToolTip"));
             this.RobustFast_checkBox.UseVisualStyleBackColor = true;
-            this.RobustFast_checkBox.CheckedChanged += new System.EventHandler(this.RobustFast_checkBox_CheckedChanged);
             // 
             // KeepActive_checkBox
             // 
             this.KeepActive_checkBox.AutoSize = true;
             this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KeepActive_checkBox.Location = new System.Drawing.Point(906, 417);
+            this.KeepActive_checkBox.Location = new System.Drawing.Point(908, 485);
             this.KeepActive_checkBox.Name = "KeepActive_checkBox";
             this.KeepActive_checkBox.Size = new System.Drawing.Size(83, 17);
             this.KeepActive_checkBox.TabIndex = 196;
             this.KeepActive_checkBox.Text = "Keep Active";
             this.toolTip1.SetToolTip(this.KeepActive_checkBox, resources.GetString("KeepActive_checkBox.ToolTip"));
             this.KeepActive_checkBox.UseVisualStyleBackColor = true;
-            this.KeepActive_checkBox.Click += new System.EventHandler(this.KeepActive_checkBox_Click);
+            this.KeepActive_checkBox.CheckedChanged += new System.EventHandler(this.KeepActive_checkBox_CheckedChanged);
             // 
             // label135
             // 
             this.label135.AutoSize = true;
             this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label135.Location = new System.Drawing.Point(653, 418);
+            this.label135.Location = new System.Drawing.Point(655, 486);
             this.label135.Name = "label135";
             this.label135.Size = new System.Drawing.Size(78, 13);
             this.label135.TabIndex = 197;
@@ -2464,46 +2503,66 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.label165);
+            this.groupBox5.Controls.Add(this.DownCamDisplayName_textBox);
             this.groupBox5.Controls.Add(this.DownCamDrawSidemarks_checkBox);
             this.groupBox5.Controls.Add(this.label121);
             this.groupBox5.Controls.Add(this.DownCameraYmmPerPixel_textBox);
             this.groupBox5.Controls.Add(this.DownCameraXmmPerPixel_textBox);
-            this.groupBox5.Controls.Add(this.DownCamDrawBox_checkBox);
             this.groupBox5.Controls.Add(this.DownCamOnHead_checkBox);
+            this.groupBox5.Controls.Add(this.DownCam_comboBox);
             this.groupBox5.Controls.Add(this.DownCameraMirrorY_checkBox);
             this.groupBox5.Controls.Add(this.DownCameraMirrorX_checkBox);
-            this.groupBox5.Controls.Add(this.DownCam_comboBox);
             this.groupBox5.Controls.Add(this.label53);
-            this.groupBox5.Controls.Add(this.DownCameraStatus_label);
-            this.groupBox5.Controls.Add(this.ConnectDownCamera_button);
-            this.groupBox5.Controls.Add(this.RefreshDownCameraList_button);
-            this.groupBox5.Controls.Add(this.DownCameraBoxY_textBox);
-            this.groupBox5.Controls.Add(this.label70);
-            this.groupBox5.Controls.Add(this.DownCameraBoxX_textBox);
-            this.groupBox5.Controls.Add(this.DownCamStop_button);
-            this.groupBox5.Controls.Add(this.DownCamStart_button);
-            this.groupBox5.Controls.Add(this.DownCameraDesiredY_textBox);
-            this.groupBox5.Controls.Add(this.DownCameraDesiredX_textBox);
-            this.groupBox5.Controls.Add(this.label24);
-            this.groupBox5.Controls.Add(this.label69);
-            this.groupBox5.Controls.Add(this.label12);
-            this.groupBox5.Controls.Add(this.label68);
-            this.groupBox5.Controls.Add(this.label46);
-            this.groupBox5.Controls.Add(this.label35);
+            this.groupBox5.Controls.Add(this.DownCamDrawBox_checkBox);
             this.groupBox5.Controls.Add(this.label71);
+            this.groupBox5.Controls.Add(this.DownCameraMoniker_label);
+            this.groupBox5.Controls.Add(this.label46);
+            this.groupBox5.Controls.Add(this.label68);
+            this.groupBox5.Controls.Add(this.DownCameraStatus_label);
+            this.groupBox5.Controls.Add(this.SelectDownCamera_button);
+            this.groupBox5.Controls.Add(this.RefreshDownCameraList_button);
+            this.groupBox5.Controls.Add(this.label69);
+            this.groupBox5.Controls.Add(this.DownCameraBoxX_textBox);
+            this.groupBox5.Controls.Add(this.label70);
+            this.groupBox5.Controls.Add(this.DownCamStop_button);
+            this.groupBox5.Controls.Add(this.DownCameraDesiredY_textBox);
+            this.groupBox5.Controls.Add(this.DownCamStart_button);
+            this.groupBox5.Controls.Add(this.DownCameraBoxY_textBox);
+            this.groupBox5.Controls.Add(this.DownCameraDesiredX_textBox);
+            this.groupBox5.Controls.Add(this.label12);
+            this.groupBox5.Controls.Add(this.label35);
             this.groupBox5.Controls.Add(this.DownCamListResolutions_button);
             this.groupBox5.Location = new System.Drawing.Point(652, 6);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(587, 195);
+            this.groupBox5.Size = new System.Drawing.Size(292, 466);
             this.groupBox5.TabIndex = 145;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Down Looking Camera";
+            // 
+            // label165
+            // 
+            this.label165.AutoSize = true;
+            this.label165.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label165.Location = new System.Drawing.Point(6, 89);
+            this.label165.Name = "label165";
+            this.label165.Size = new System.Drawing.Size(44, 15);
+            this.label165.TabIndex = 229;
+            this.label165.Text = "Name:";
+            // 
+            // DownCamDisplayName_textBox
+            // 
+            this.DownCamDisplayName_textBox.Location = new System.Drawing.Point(66, 88);
+            this.DownCamDisplayName_textBox.Name = "DownCamDisplayName_textBox";
+            this.DownCamDisplayName_textBox.Size = new System.Drawing.Size(160, 20);
+            this.DownCamDisplayName_textBox.TabIndex = 213;
+            this.DownCamDisplayName_textBox.Text = "Down Camera";
             // 
             // DownCamDrawSidemarks_checkBox
             // 
             this.DownCamDrawSidemarks_checkBox.AutoSize = true;
             this.DownCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(374, 122);
+            this.DownCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(6, 404);
             this.DownCamDrawSidemarks_checkBox.Name = "DownCamDrawSidemarks_checkBox";
             this.DownCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(103, 17);
             this.DownCamDrawSidemarks_checkBox.TabIndex = 212;
@@ -2514,7 +2573,7 @@
             // 
             this.label121.AutoSize = true;
             this.label121.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label121.Location = new System.Drawing.Point(113, 82);
+            this.label121.Location = new System.Drawing.Point(109, 226);
             this.label121.Name = "label121";
             this.label121.Size = new System.Drawing.Size(50, 13);
             this.label121.TabIndex = 211;
@@ -2524,7 +2583,7 @@
             // DownCameraYmmPerPixel_textBox
             // 
             this.DownCameraYmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraYmmPerPixel_textBox.Location = new System.Drawing.Point(116, 124);
+            this.DownCameraYmmPerPixel_textBox.Location = new System.Drawing.Point(112, 268);
             this.DownCameraYmmPerPixel_textBox.Name = "DownCameraYmmPerPixel_textBox";
             this.DownCameraYmmPerPixel_textBox.Size = new System.Drawing.Size(46, 18);
             this.DownCameraYmmPerPixel_textBox.TabIndex = 210;
@@ -2534,40 +2593,41 @@
             // DownCameraXmmPerPixel_textBox
             // 
             this.DownCameraXmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraXmmPerPixel_textBox.Location = new System.Drawing.Point(116, 98);
+            this.DownCameraXmmPerPixel_textBox.Location = new System.Drawing.Point(112, 242);
             this.DownCameraXmmPerPixel_textBox.Name = "DownCameraXmmPerPixel_textBox";
             this.DownCameraXmmPerPixel_textBox.Size = new System.Drawing.Size(46, 18);
             this.DownCameraXmmPerPixel_textBox.TabIndex = 209;
             this.toolTip1.SetToolTip(this.DownCameraXmmPerPixel_textBox, "Set the true size of the box on the image.");
             this.DownCameraXmmPerPixel_textBox.TextChanged += new System.EventHandler(this.DownCameraXmmPerPixel_textBox_TextChanged);
             // 
-            // DownCamDrawBox_checkBox
-            // 
-            this.DownCamDrawBox_checkBox.AutoSize = true;
-            this.DownCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamDrawBox_checkBox.Location = new System.Drawing.Point(375, 99);
-            this.DownCamDrawBox_checkBox.Name = "DownCamDrawBox_checkBox";
-            this.DownCamDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
-            this.DownCamDrawBox_checkBox.TabIndex = 208;
-            this.DownCamDrawBox_checkBox.Text = "Draw Box";
-            this.DownCamDrawBox_checkBox.UseVisualStyleBackColor = true;
-            // 
             // DownCamOnHead_checkBox
             // 
             this.DownCamOnHead_checkBox.AutoSize = true;
             this.DownCamOnHead_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamOnHead_checkBox.Location = new System.Drawing.Point(374, 145);
+            this.DownCamOnHead_checkBox.Location = new System.Drawing.Point(6, 328);
             this.DownCamOnHead_checkBox.Name = "DownCamOnHead_checkBox";
             this.DownCamOnHead_checkBox.Size = new System.Drawing.Size(183, 17);
             this.DownCamOnHead_checkBox.TabIndex = 207;
             this.DownCamOnHead_checkBox.Text = "Camera mounted on Nozzle Head";
             this.DownCamOnHead_checkBox.UseVisualStyleBackColor = true;
             // 
+            // DownCam_comboBox
+            // 
+            this.DownCam_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DownCam_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCam_comboBox.FormattingEnabled = true;
+            this.DownCam_comboBox.Location = new System.Drawing.Point(66, 21);
+            this.DownCam_comboBox.Name = "DownCam_comboBox";
+            this.DownCam_comboBox.Size = new System.Drawing.Size(160, 21);
+            this.DownCam_comboBox.TabIndex = 183;
+            this.toolTip1.SetToolTip(this.DownCam_comboBox, "List of USB cameras found on this computer.\r\nSelect Down looking camera form this" +
+        " list.");
+            // 
             // DownCameraMirrorY_checkBox
             // 
             this.DownCameraMirrorY_checkBox.AutoSize = true;
             this.DownCameraMirrorY_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraMirrorY_checkBox.Location = new System.Drawing.Point(485, 122);
+            this.DownCameraMirrorY_checkBox.Location = new System.Drawing.Point(112, 305);
             this.DownCameraMirrorY_checkBox.Name = "DownCameraMirrorY_checkBox";
             this.DownCameraMirrorY_checkBox.Size = new System.Drawing.Size(62, 17);
             this.DownCameraMirrorY_checkBox.TabIndex = 207;
@@ -2578,97 +2638,126 @@
             // 
             this.DownCameraMirrorX_checkBox.AutoSize = true;
             this.DownCameraMirrorX_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraMirrorX_checkBox.Location = new System.Drawing.Point(485, 97);
+            this.DownCameraMirrorX_checkBox.Location = new System.Drawing.Point(6, 305);
             this.DownCameraMirrorX_checkBox.Name = "DownCameraMirrorX_checkBox";
             this.DownCameraMirrorX_checkBox.Size = new System.Drawing.Size(62, 17);
             this.DownCameraMirrorX_checkBox.TabIndex = 207;
             this.DownCameraMirrorX_checkBox.Text = "Mirror X";
             this.DownCameraMirrorX_checkBox.UseVisualStyleBackColor = true;
             // 
-            // DownCam_comboBox
-            // 
-            this.DownCam_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DownCam_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCam_comboBox.FormattingEnabled = true;
-            this.DownCam_comboBox.Location = new System.Drawing.Point(6, 19);
-            this.DownCam_comboBox.Name = "DownCam_comboBox";
-            this.DownCam_comboBox.Size = new System.Drawing.Size(132, 21);
-            this.DownCam_comboBox.TabIndex = 183;
-            this.toolTip1.SetToolTip(this.DownCam_comboBox, "List of USB cameras found on this computer.\r\nSelect Down looking camera form this" +
-        " list.");
-            this.DownCam_comboBox.SelectedIndexChanged += new System.EventHandler(this.DownCam_comboBox_SelectedIndexChanged);
-            // 
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label53.Location = new System.Drawing.Point(452, 19);
+            this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label53.Location = new System.Drawing.Point(6, 209);
             this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(40, 13);
-            this.label53.TabIndex = 186;
-            this.label53.Text = "Status:";
+            this.label53.Size = new System.Drawing.Size(51, 15);
+            this.label53.TabIndex = 225;
+            this.label53.Text = "Scaling:";
+            // 
+            // DownCamDrawBox_checkBox
+            // 
+            this.DownCamDrawBox_checkBox.AutoSize = true;
+            this.DownCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamDrawBox_checkBox.Location = new System.Drawing.Point(6, 381);
+            this.DownCamDrawBox_checkBox.Name = "DownCamDrawBox_checkBox";
+            this.DownCamDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
+            this.DownCamDrawBox_checkBox.TabIndex = 208;
+            this.DownCamDrawBox_checkBox.Text = "Draw Box";
+            this.DownCamDrawBox_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label71.Location = new System.Drawing.Point(81, 271);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(23, 13);
+            this.label71.TabIndex = 192;
+            this.label71.Text = "mm";
+            this.toolTip1.SetToolTip(this.label71, "Set the true size of the box on the image.");
+            // 
+            // DownCameraMoniker_label
+            // 
+            this.DownCameraMoniker_label.AutoSize = true;
+            this.DownCameraMoniker_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraMoniker_label.Location = new System.Drawing.Point(6, 46);
+            this.DownCameraMoniker_label.Name = "DownCameraMoniker_label";
+            this.DownCameraMoniker_label.Size = new System.Drawing.Size(77, 13);
+            this.DownCameraMoniker_label.TabIndex = 205;
+            this.DownCameraMoniker_label.Text = "Name; Moniker";
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label46.Location = new System.Drawing.Point(26, 226);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(49, 13);
+            this.label46.TabIndex = 205;
+            this.label46.Text = "Box size:";
+            this.toolTip1.SetToolTip(this.label46, "Set the true size of the box on the image.");
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label68.Location = new System.Drawing.Point(6, 245);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(17, 13);
+            this.label68.TabIndex = 187;
+            this.label68.Text = "X:";
+            this.toolTip1.SetToolTip(this.label68, "Set the true size of the box on the image.");
             // 
             // DownCameraStatus_label
             // 
             this.DownCameraStatus_label.AutoSize = true;
             this.DownCameraStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraStatus_label.Location = new System.Drawing.Point(452, 41);
+            this.DownCameraStatus_label.Location = new System.Drawing.Point(160, 439);
             this.DownCameraStatus_label.Name = "DownCameraStatus_label";
-            this.DownCameraStatus_label.Size = new System.Drawing.Size(113, 17);
+            this.DownCameraStatus_label.Size = new System.Drawing.Size(30, 17);
             this.DownCameraStatus_label.TabIndex = 184;
-            this.DownCameraStatus_label.Text = "Not connected";
+            this.DownCameraStatus_label.Text = "Off";
             this.toolTip1.SetToolTip(this.DownCameraStatus_label, "Camera conection status");
             // 
-            // ConnectDownCamera_button
+            // SelectDownCamera_button
             // 
-            this.ConnectDownCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConnectDownCamera_button.Location = new System.Drawing.Point(221, 19);
-            this.ConnectDownCamera_button.Name = "ConnectDownCamera_button";
-            this.ConnectDownCamera_button.Size = new System.Drawing.Size(71, 23);
-            this.ConnectDownCamera_button.TabIndex = 182;
-            this.ConnectDownCamera_button.Text = "Select";
-            this.toolTip1.SetToolTip(this.ConnectDownCamera_button, "Connets to selected camera");
-            this.ConnectDownCamera_button.UseVisualStyleBackColor = true;
-            this.ConnectDownCamera_button.Click += new System.EventHandler(this.ConnectDownCamera_button_Click);
+            this.SelectDownCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectDownCamera_button.Location = new System.Drawing.Point(232, 20);
+            this.SelectDownCamera_button.Name = "SelectDownCamera_button";
+            this.SelectDownCamera_button.Size = new System.Drawing.Size(54, 23);
+            this.SelectDownCamera_button.TabIndex = 185;
+            this.SelectDownCamera_button.Text = "Select";
+            this.SelectDownCamera_button.UseVisualStyleBackColor = true;
+            this.SelectDownCamera_button.Click += new System.EventHandler(this.SelectDownCamera_button_Click);
             // 
             // RefreshDownCameraList_button
             // 
             this.RefreshDownCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshDownCameraList_button.Location = new System.Drawing.Point(144, 19);
+            this.RefreshDownCameraList_button.Location = new System.Drawing.Point(6, 20);
             this.RefreshDownCameraList_button.Name = "RefreshDownCameraList_button";
-            this.RefreshDownCameraList_button.Size = new System.Drawing.Size(71, 23);
+            this.RefreshDownCameraList_button.Size = new System.Drawing.Size(54, 23);
             this.RefreshDownCameraList_button.TabIndex = 185;
-            this.RefreshDownCameraList_button.Text = "Refresh List";
+            this.RefreshDownCameraList_button.Text = "Refresh";
             this.toolTip1.SetToolTip(this.RefreshDownCameraList_button, "Re-scans USB cameras on this computer");
             this.RefreshDownCameraList_button.UseVisualStyleBackColor = true;
-            this.RefreshDownCameraList_button.Click += new System.EventHandler(this.RefreshDownCameraList_button_Click);
+            this.RefreshDownCameraList_button.Click += new System.EventHandler(this.RefreshCameraList_button_Click);
             // 
-            // DownCameraBoxY_textBox
+            // label69
             // 
-            this.DownCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(33, 124);
-            this.DownCameraBoxY_textBox.Name = "DownCameraBoxY_textBox";
-            this.DownCameraBoxY_textBox.Size = new System.Drawing.Size(46, 18);
-            this.DownCameraBoxY_textBox.TabIndex = 190;
-            this.toolTip1.SetToolTip(this.DownCameraBoxY_textBox, "Set the true size of the box on the image.");
-            this.DownCameraBoxY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCameraBoxY_textBox_KeyPress);
-            this.DownCameraBoxY_textBox.Leave += new System.EventHandler(this.DownCameraBoxY_textBox_Leave);
-            // 
-            // label70
-            // 
-            this.label70.AutoSize = true;
-            this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.Location = new System.Drawing.Point(85, 101);
-            this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(23, 13);
-            this.label70.TabIndex = 191;
-            this.label70.Text = "mm";
-            this.toolTip1.SetToolTip(this.label70, "Set the true size of the box on the image.");
+            this.label69.AutoSize = true;
+            this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label69.Location = new System.Drawing.Point(6, 271);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(17, 13);
+            this.label69.TabIndex = 188;
+            this.label69.Text = "Y:";
+            this.toolTip1.SetToolTip(this.label69, "Set the true size of the box on the image.");
             // 
             // DownCameraBoxX_textBox
             // 
             this.DownCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(33, 98);
+            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(29, 242);
             this.DownCameraBoxX_textBox.Name = "DownCameraBoxX_textBox";
             this.DownCameraBoxX_textBox.Size = new System.Drawing.Size(46, 18);
             this.DownCameraBoxX_textBox.TabIndex = 189;
@@ -2676,10 +2765,21 @@
             this.DownCameraBoxX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCameraBoxX_textBox_KeyPress);
             this.DownCameraBoxX_textBox.Leave += new System.EventHandler(this.DownCameraBoxX_textBox_Leave);
             // 
+            // label70
+            // 
+            this.label70.AutoSize = true;
+            this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label70.Location = new System.Drawing.Point(81, 245);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(23, 13);
+            this.label70.TabIndex = 191;
+            this.label70.Text = "mm";
+            this.toolTip1.SetToolTip(this.label70, "Set the true size of the box on the image.");
+            // 
             // DownCamStop_button
             // 
             this.DownCamStop_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamStop_button.Location = new System.Drawing.Point(298, 19);
+            this.DownCamStop_button.Location = new System.Drawing.Point(83, 437);
             this.DownCamStop_button.Name = "DownCamStop_button";
             this.DownCamStop_button.Size = new System.Drawing.Size(71, 23);
             this.DownCamStop_button.TabIndex = 198;
@@ -2688,10 +2788,20 @@
             this.DownCamStop_button.UseVisualStyleBackColor = true;
             this.DownCamStop_button.Click += new System.EventHandler(this.DownCamStop_button_Click);
             // 
+            // DownCameraDesiredY_textBox
+            // 
+            this.DownCameraDesiredY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraDesiredY_textBox.Location = new System.Drawing.Point(82, 147);
+            this.DownCameraDesiredY_textBox.Name = "DownCameraDesiredY_textBox";
+            this.DownCameraDesiredY_textBox.Size = new System.Drawing.Size(46, 18);
+            this.DownCameraDesiredY_textBox.TabIndex = 203;
+            this.toolTip1.SetToolTip(this.DownCameraDesiredY_textBox, "Set the native camera resolution here");
+            this.DownCameraDesiredY_textBox.TextChanged += new System.EventHandler(this.DownCameraDesiredY_textBox_TextChanged);
+            // 
             // DownCamStart_button
             // 
             this.DownCamStart_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamStart_button.Location = new System.Drawing.Point(375, 19);
+            this.DownCamStart_button.Location = new System.Drawing.Point(6, 437);
             this.DownCamStart_button.Name = "DownCamStart_button";
             this.DownCamStart_button.Size = new System.Drawing.Size(71, 23);
             this.DownCamStart_button.TabIndex = 199;
@@ -2700,109 +2810,55 @@
             this.DownCamStart_button.UseVisualStyleBackColor = true;
             this.DownCamStart_button.Click += new System.EventHandler(this.DownCamStart_button_Click);
             // 
-            // DownCameraDesiredY_textBox
+            // DownCameraBoxY_textBox
             // 
-            this.DownCameraDesiredY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDesiredY_textBox.Location = new System.Drawing.Point(289, 122);
-            this.DownCameraDesiredY_textBox.Name = "DownCameraDesiredY_textBox";
-            this.DownCameraDesiredY_textBox.Size = new System.Drawing.Size(46, 18);
-            this.DownCameraDesiredY_textBox.TabIndex = 203;
-            this.toolTip1.SetToolTip(this.DownCameraDesiredY_textBox, "Set the native camera resolution here");
-            this.DownCameraDesiredY_textBox.TextChanged += new System.EventHandler(this.DownCameraDesiredY_textBox_TextChanged);
+            this.DownCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(29, 268);
+            this.DownCameraBoxY_textBox.Name = "DownCameraBoxY_textBox";
+            this.DownCameraBoxY_textBox.Size = new System.Drawing.Size(46, 18);
+            this.DownCameraBoxY_textBox.TabIndex = 190;
+            this.toolTip1.SetToolTip(this.DownCameraBoxY_textBox, "Set the true size of the box on the image.");
+            this.DownCameraBoxY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCameraBoxY_textBox_KeyPress);
+            this.DownCameraBoxY_textBox.Leave += new System.EventHandler(this.DownCameraBoxY_textBox_Leave);
             // 
             // DownCameraDesiredX_textBox
             // 
             this.DownCameraDesiredX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDesiredX_textBox.Location = new System.Drawing.Point(289, 98);
+            this.DownCameraDesiredX_textBox.Location = new System.Drawing.Point(10, 147);
             this.DownCameraDesiredX_textBox.Name = "DownCameraDesiredX_textBox";
             this.DownCameraDesiredX_textBox.Size = new System.Drawing.Size(46, 18);
             this.DownCameraDesiredX_textBox.TabIndex = 202;
             this.toolTip1.SetToolTip(this.DownCameraDesiredX_textBox, "Set the native camera resolution here");
             this.DownCameraDesiredX_textBox.TextChanged += new System.EventHandler(this.DownCameraDesiredX_textBox_TextChanged);
             // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(269, 126);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(17, 13);
-            this.label24.TabIndex = 201;
-            this.label24.Text = "Y:";
-            this.toolTip1.SetToolTip(this.label24, "Set the native camera resolution here");
-            // 
-            // label69
-            // 
-            this.label69.AutoSize = true;
-            this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label69.Location = new System.Drawing.Point(10, 127);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(17, 13);
-            this.label69.TabIndex = 188;
-            this.label69.Text = "Y:";
-            this.toolTip1.SetToolTip(this.label69, "Set the true size of the box on the image.");
-            // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(269, 101);
+            this.label12.Location = new System.Drawing.Point(62, 150);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(17, 13);
+            this.label12.Size = new System.Drawing.Size(14, 13);
             this.label12.TabIndex = 200;
-            this.label12.Text = "X:";
+            this.label12.Text = "X";
             this.toolTip1.SetToolTip(this.label12, "Set the native camera resolution here");
-            // 
-            // label68
-            // 
-            this.label68.AutoSize = true;
-            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label68.Location = new System.Drawing.Point(10, 101);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(17, 13);
-            this.label68.TabIndex = 187;
-            this.label68.Text = "X:";
-            this.toolTip1.SetToolTip(this.label68, "Set the true size of the box on the image.");
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label46.Location = new System.Drawing.Point(10, 82);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(49, 13);
-            this.label46.TabIndex = 205;
-            this.label46.Text = "Box size:";
-            this.toolTip1.SetToolTip(this.label46, "Set the true size of the box on the image.");
             // 
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label35.Location = new System.Drawing.Point(237, 82);
+            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label35.Location = new System.Drawing.Point(6, 129);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(98, 13);
+            this.label35.Size = new System.Drawing.Size(115, 15);
             this.label35.TabIndex = 204;
             this.label35.Text = "Desired Resolution:";
             this.toolTip1.SetToolTip(this.label35, "Set the native camera resolution here");
             // 
-            // label71
-            // 
-            this.label71.AutoSize = true;
-            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(85, 127);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(23, 13);
-            this.label71.TabIndex = 192;
-            this.label71.Text = "mm";
-            this.toolTip1.SetToolTip(this.label71, "Set the true size of the box on the image.");
-            // 
             // DownCamListResolutions_button
             // 
             this.DownCamListResolutions_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamListResolutions_button.Location = new System.Drawing.Point(221, 56);
+            this.DownCamListResolutions_button.Location = new System.Drawing.Point(10, 171);
             this.DownCamListResolutions_button.Name = "DownCamListResolutions_button";
-            this.DownCamListResolutions_button.Size = new System.Drawing.Size(114, 23);
+            this.DownCamListResolutions_button.Size = new System.Drawing.Size(118, 23);
             this.DownCamListResolutions_button.TabIndex = 206;
             this.DownCamListResolutions_button.Text = "List resolutions";
             this.toolTip1.SetToolTip(this.DownCamListResolutions_button, "List available resolutions to log window");
@@ -3934,7 +3990,6 @@
             this.VigorousHoming_checkBox.TabIndex = 110;
             this.VigorousHoming_checkBox.Text = "Vigorous Homing";
             this.VigorousHoming_checkBox.UseVisualStyleBackColor = true;
-            this.VigorousHoming_checkBox.CheckedChanged += new System.EventHandler(this.VigorousHoming_checkBox_CheckedChanged);
             // 
             // Motors_label
             // 
@@ -7297,7 +7352,6 @@
             this.Algorithms_tabPage.Controls.Add(this.GotoFeature_button);
             this.Algorithms_tabPage.Controls.Add(this.AdvancedProcessing_tabControl);
             this.Algorithms_tabPage.Controls.Add(this.SpecialProcessing_button);
-            this.Algorithms_tabPage.Controls.Add(this.tabControl1);
             this.Algorithms_tabPage.Controls.Add(this.label149);
             this.Algorithms_tabPage.Controls.Add(this.Z0toPCB_CamerasTab_label);
             this.Algorithms_tabPage.Controls.Add(this.label120);
@@ -7500,50 +7554,6 @@
             this.SpecialProcessing_button.Text = "Special Options";
             this.SpecialProcessing_button.UseVisualStyleBackColor = true;
             this.SpecialProcessing_button.Click += new System.EventHandler(this.SpecialProcessing_button_Click);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage7);
-            this.tabControl1.Location = new System.Drawing.Point(658, 6);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(156, 79);
-            this.tabControl1.TabIndex = 307;
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.Controls.Add(this.UpCam_radioButton);
-            this.tabPage7.Controls.Add(this.DownCam_radioButton);
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(148, 53);
-            this.tabPage7.TabIndex = 0;
-            this.tabPage7.Text = "Select Camera to View:";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // UpCam_radioButton
-            // 
-            this.UpCam_radioButton.AutoSize = true;
-            this.UpCam_radioButton.Location = new System.Drawing.Point(3, 26);
-            this.UpCam_radioButton.Name = "UpCam_radioButton";
-            this.UpCam_radioButton.Size = new System.Drawing.Size(114, 17);
-            this.UpCam_radioButton.TabIndex = 0;
-            this.UpCam_radioButton.TabStop = true;
-            this.UpCam_radioButton.Text = "Up looking camera";
-            this.UpCam_radioButton.UseVisualStyleBackColor = true;
-            this.UpCam_radioButton.CheckedChanged += new System.EventHandler(this.UpCam_radioButton_CheckedChanged);
-            // 
-            // DownCam_radioButton
-            // 
-            this.DownCam_radioButton.AutoSize = true;
-            this.DownCam_radioButton.Location = new System.Drawing.Point(3, 3);
-            this.DownCam_radioButton.Name = "DownCam_radioButton";
-            this.DownCam_radioButton.Size = new System.Drawing.Size(128, 17);
-            this.DownCam_radioButton.TabIndex = 1;
-            this.DownCam_radioButton.TabStop = true;
-            this.DownCam_radioButton.Text = "Down looking camera";
-            this.DownCam_radioButton.UseVisualStyleBackColor = true;
-            this.DownCam_radioButton.CheckedChanged += new System.EventHandler(this.DownCam_radioButton_CheckedChanged);
             // 
             // label149
             // 
@@ -9981,9 +9991,6 @@
             this.NozzleCalibration_tabPage.ResumeLayout(false);
             this.NozzleCalibration_tabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzlesOnVideoSetup_numericUpDown)).EndInit();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage7.ResumeLayout(false);
-            this.tabPage7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.G_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.R_numericUpDown)).EndInit();
@@ -10485,7 +10492,6 @@
         private System.Windows.Forms.ComboBox Algorithm_comboBox;
         private System.Windows.Forms.Label label105;
         private System.Windows.Forms.Label label106;
-        private System.Windows.Forms.Label label160;
         private System.Windows.Forms.Label label161;
         private System.Windows.Forms.TextBox UpCameraDesiredX_textBox;
         private System.Windows.Forms.TextBox UpCameraDesiredY_textBox;
@@ -10497,8 +10503,6 @@
         private System.Windows.Forms.Label label135;
         private System.Windows.Forms.Button UpCamStop_button;
         private System.Windows.Forms.ComboBox UpCam_comboBox;
-        private System.Windows.Forms.Button ConnectUpCamera_button;
-        private System.Windows.Forms.Label label110;
         private System.Windows.Forms.Button RefreshUpCameraList_button;
         private System.Windows.Forms.Label label103;
         private System.Windows.Forms.TextBox UpCameraBoxY_textBox;
@@ -10506,9 +10510,7 @@
         private System.Windows.Forms.Label label104;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ComboBox DownCam_comboBox;
-        private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label DownCameraStatus_label;
-        private System.Windows.Forms.Button ConnectDownCamera_button;
         private System.Windows.Forms.Button RefreshDownCameraList_button;
         private System.Windows.Forms.TextBox DownCameraBoxY_textBox;
         private System.Windows.Forms.Label label70;
@@ -10517,7 +10519,6 @@
         private System.Windows.Forms.Button DownCamStart_button;
         private System.Windows.Forms.TextBox DownCameraDesiredY_textBox;
         private System.Windows.Forms.TextBox DownCameraDesiredX_textBox;
-        private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label69;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label68;
@@ -10525,8 +10526,6 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label71;
         private System.Windows.Forms.Button DownCamListResolutions_button;
-        private System.Windows.Forms.RadioButton DownCam_radioButton;
-        private System.Windows.Forms.RadioButton UpCam_radioButton;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label UpCameraStatus_label;
         private System.Windows.Forms.Button UpCamListResolutions_button;
@@ -10729,8 +10728,6 @@
         private System.Windows.Forms.Button CalibrateNozzleOnVideoSetup_button;
         private System.Windows.Forms.TextBox FunctionExplanation_textBox;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabControl AdvancedProcessing_tabControl;
         private System.Windows.Forms.TabPage NozzleCalibration_tabPage;
         private System.Windows.Forms.TabPage HideAdvanced_tabPage;
@@ -10805,6 +10802,18 @@
         private System.Windows.Forms.CheckBox CamPanelMaximize_checkBox;
         private System.Windows.Forms.CheckBox CamPauseDisplay_checkBox;
         private System.Windows.Forms.TrackBar CamOverlay_trackBar;
+        private System.Windows.Forms.ComboBox CamSelection_comboBox;
+        private System.Windows.Forms.Label label164;
+        private System.Windows.Forms.TextBox UpCamDisplayName_textBox;
+        private System.Windows.Forms.Label label165;
+        private System.Windows.Forms.TextBox DownCamDisplayName_textBox;
+        private System.Windows.Forms.Button SelectUpCamera_;
+        private System.Windows.Forms.Button SelectDownCamera_button;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.Label UpCameraMoniker_label;
+        private System.Windows.Forms.Label DownCameraMoniker_label;
+        private System.Windows.Forms.CheckBox CamFind_CheckBox;
     }
 }
 
