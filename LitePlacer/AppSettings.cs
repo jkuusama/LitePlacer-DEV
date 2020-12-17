@@ -100,6 +100,7 @@ namespace LitePlacer
         public bool General_PumpOutputInverted { get; set; } = false;
         public bool General_VacuumOutputInverted { get; set; } = false;
         public bool General_SafeFilesAtClosing { get; set; } = true;
+        public bool General_Autopark { get; set; } = false;
 
         public bool Nozzles_AfullSpeed { get; set; } = true;
         public double Nozzles_Aspeed { get; set; } = 500;

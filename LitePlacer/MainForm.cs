@@ -304,6 +304,9 @@ namespace LitePlacer
             Vacuum_checkBox.Checked = false;
             MoveTimeout_textBox.Text = Setting.CNC_RegularMoveTimeout.ToString("0.0", CultureInfo.InvariantCulture);
 
+            AutoPark_checkBox.Checked = Setting.General_Autopark;
+
+
             // ======== Setup Cameras tab:
 
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
@@ -2551,6 +2554,10 @@ namespace LitePlacer
             Update_xpos(X.ToString("0.000", CultureInfo.InvariantCulture));
             Update_ypos(Y.ToString("0.000", CultureInfo.InvariantCulture));
             DisplayText("Optical homing OK.");
+            if (Setting.General_Autopark)
+            {
+                CNC_Park();
+            }
             return true;
         }
 
@@ -2561,6 +2568,7 @@ namespace LitePlacer
 
         private void CNC_Park()
         {
+            DisplayText("Goto park");
             CNC_Z_m(0);
             CNC_XYA_m(Setting.General_ParkX, Setting.General_ParkY, 0.0);
         }
@@ -12690,6 +12698,11 @@ namespace LitePlacer
             SpecialProcessing_button.Visible = false;
             AdvancedProcessing_tabControl.SelectedTab = NozzleCalibration_tabPage;
             AdvancedProcessing_tabControl.Visible = true;
+        }
+
+        private void AutoPark_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.General_Autopark = AutoPark_checkBox.Checked;
         }
     }	// end of: 	public partial class FormMain : Form
 
