@@ -305,6 +305,8 @@ namespace LitePlacer
             MoveTimeout_textBox.Text = Setting.CNC_RegularMoveTimeout.ToString("0.0", CultureInfo.InvariantCulture);
 
             AutoPark_checkBox.Checked = Setting.General_Autopark;
+            OptimizeA_checkBox1.Checked = Setting.CNC_OptimizeA;
+            OptimizeA_checkBox2.Checked = Setting.CNC_OptimizeA;
 
 
             // ======== Setup Cameras tab:
@@ -2254,9 +2256,46 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             }
-            return Cnc.A(A);
+            if (Setting.CNC_OptimizeA)
+            {
+                DisplayText("Optimize");
+                NormalizeRotation(ref A);
+
+                double MinusDir = Cnc.CurrentA - A;
+                double PlusDir = A - Cnc.CurrentA;
+                NormalizeRotation(ref PlusDir);
+                NormalizeRotation(ref MinusDir);
+                if (PlusDir < MinusDir)
+                {
+                    if (!Cnc.A(Cnc.CurrentA + PlusDir)) return false;
+                }
+                else
+                {
+                    if (!Cnc.A(Cnc.CurrentA - MinusDir)) return false;
+                }
+                double tmpA = Cnc.CurrentA;
+                NormalizeRotation(ref tmpA);
+                Cnc.CurrentA = tmpA;
+                Cnc.SetPosition(X: "", Y: "", Z: "", A: Cnc.CurrentA.ToString(CultureInfo.InvariantCulture));
+                return true;
+            }
+            else
+            {
+                return Cnc.A(A);
+            }
         }
 
+        private void NormalizeRotation(ref double rot)
+        {
+            while (rot > 360.0)
+            {
+                rot -= 360.0;
+            }
+            while (rot < 0.0)
+            {
+                rot += 360.0;
+            }
+        }
         // =================================================================================
         // move guards
 
@@ -8329,14 +8368,7 @@ namespace LitePlacer
                 {
                     rot += angle;
                 }
-                while (rot > 360.0)
-                {
-                    rot -= 360.0;
-                }
-                while (rot < 0.0)
-                {
-                    rot += 360.0;
-                }
+                NormalizeRotation(ref rot);
                 Row.Cells["CADdataRotationMachineColumn"].Value = rot.ToString("0.0000", CultureInfo.InvariantCulture);
 
             }
@@ -12703,6 +12735,17 @@ namespace LitePlacer
         private void AutoPark_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             Setting.General_Autopark = AutoPark_checkBox.Checked;
+        }
+
+        private void OptimizeA_checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.CNC_OptimizeA = OptimizeA_checkBox1.Checked;
+
+        }
+
+        private void OptimizeA_checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.CNC_OptimizeA = OptimizeA_checkBox2.Checked;
         }
     }	// end of: 	public partial class FormMain : Form
 

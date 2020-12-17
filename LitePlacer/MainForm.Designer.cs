@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -212,6 +212,7 @@
             this.CameraSetupTest_button = new System.Windows.Forms.Button();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.AutoPark_checkBox = new System.Windows.Forms.CheckBox();
             this.Duet3Motors_tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label200 = new System.Windows.Forms.Label();
@@ -274,6 +275,7 @@
             this.label212 = new System.Windows.Forms.Label();
             this.label213 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.OptimizeA_checkBox2 = new System.Windows.Forms.CheckBox();
             this.label214 = new System.Windows.Forms.Label();
             this.label215 = new System.Windows.Forms.Label();
             this.Duet3ACurrent_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -387,6 +389,7 @@
             this.Zlim_checkBox = new System.Windows.Forms.CheckBox();
             this.Zhome_checkBox = new System.Windows.Forms.CheckBox();
             this.A_tabPage = new System.Windows.Forms.TabPage();
+            this.OptimizeA_checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel8 = new System.Windows.Forms.Panel();
             this.tr4_textBox = new System.Windows.Forms.TextBox();
             this.m4deg18_radioButton = new System.Windows.Forms.RadioButton();
@@ -801,7 +804,6 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.AutoPark_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -3007,6 +3009,17 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
+            // AutoPark_checkBox
+            // 
+            this.AutoPark_checkBox.AutoSize = true;
+            this.AutoPark_checkBox.Location = new System.Drawing.Point(534, 455);
+            this.AutoPark_checkBox.Name = "AutoPark_checkBox";
+            this.AutoPark_checkBox.Size = new System.Drawing.Size(135, 17);
+            this.AutoPark_checkBox.TabIndex = 129;
+            this.AutoPark_checkBox.Text = "Goto Park after homing";
+            this.AutoPark_checkBox.UseVisualStyleBackColor = true;
+            this.AutoPark_checkBox.CheckedChanged += new System.EventHandler(this.AutoPark_checkBox_CheckedChanged);
+            // 
             // Duet3Motors_tabControl
             // 
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage1);
@@ -3701,6 +3714,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.OptimizeA_checkBox2);
             this.tabPage4.Controls.Add(this.label214);
             this.tabPage4.Controls.Add(this.label215);
             this.tabPage4.Controls.Add(this.Duet3ACurrent_maskedTextBox);
@@ -3728,6 +3742,20 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "A";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // OptimizeA_checkBox2
+            // 
+            this.OptimizeA_checkBox2.AutoSize = true;
+            this.OptimizeA_checkBox2.Location = new System.Drawing.Point(91, 173);
+            this.OptimizeA_checkBox2.Name = "OptimizeA_checkBox2";
+            this.OptimizeA_checkBox2.Size = new System.Drawing.Size(110, 17);
+            this.OptimizeA_checkBox2.TabIndex = 131;
+            this.OptimizeA_checkBox2.Text = "Optimize A moves";
+            this.toolTip1.SetToolTip(this.OptimizeA_checkBox2, "If checked, A moves go the shortest route and\r\nkeeps A value between 0 and 360.\r\n" +
+        "- from 1 to 359 rotates 2 degrees clockwise\r\n- adding 2 degees rotation to 359 r" +
+        "esults to 1");
+            this.OptimizeA_checkBox2.UseVisualStyleBackColor = true;
+            this.OptimizeA_checkBox2.CheckedChanged += new System.EventHandler(this.OptimizeA_checkBox2_CheckedChanged);
             // 
             // label214
             // 
@@ -4960,6 +4988,7 @@
             // 
             // A_tabPage
             // 
+            this.A_tabPage.Controls.Add(this.OptimizeA_checkBox1);
             this.A_tabPage.Controls.Add(this.panel8);
             this.A_tabPage.Controls.Add(this.label51);
             this.A_tabPage.Controls.Add(this.label48);
@@ -4975,6 +5004,20 @@
             this.A_tabPage.TabIndex = 3;
             this.A_tabPage.Text = "A";
             this.A_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // OptimizeA_checkBox1
+            // 
+            this.OptimizeA_checkBox1.AutoSize = true;
+            this.OptimizeA_checkBox1.Location = new System.Drawing.Point(108, 63);
+            this.OptimizeA_checkBox1.Name = "OptimizeA_checkBox1";
+            this.OptimizeA_checkBox1.Size = new System.Drawing.Size(110, 17);
+            this.OptimizeA_checkBox1.TabIndex = 130;
+            this.OptimizeA_checkBox1.Text = "Optimize A moves";
+            this.toolTip1.SetToolTip(this.OptimizeA_checkBox1, "If checked, A moves go the shortest route and\r\nkeeps A value between 0 and 360.\r\n" +
+        "- from 1 to 359 rotates 2 degrees clockwise\r\n- adding 2 degees rotation to 359 r" +
+        "esults to 1");
+            this.OptimizeA_checkBox1.UseVisualStyleBackColor = true;
+            this.OptimizeA_checkBox1.CheckedChanged += new System.EventHandler(this.OptimizeA_checkBox1_CheckedChanged);
             // 
             // panel8
             // 
@@ -6989,14 +7032,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -9477,17 +9520,6 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
-            // AutoPark_checkBox
-            // 
-            this.AutoPark_checkBox.AutoSize = true;
-            this.AutoPark_checkBox.Location = new System.Drawing.Point(534, 455);
-            this.AutoPark_checkBox.Name = "AutoPark_checkBox";
-            this.AutoPark_checkBox.Size = new System.Drawing.Size(135, 17);
-            this.AutoPark_checkBox.TabIndex = 129;
-            this.AutoPark_checkBox.Text = "Goto Park after homing";
-            this.AutoPark_checkBox.UseVisualStyleBackColor = true;
-            this.AutoPark_checkBox.CheckedChanged += new System.EventHandler(this.AutoPark_checkBox_CheckedChanged);
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -10417,6 +10449,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CADdataYmachineColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn CADdataRotationMachineColumn;
         private System.Windows.Forms.CheckBox AutoPark_checkBox;
+        private System.Windows.Forms.CheckBox OptimizeA_checkBox1;
+        private System.Windows.Forms.CheckBox OptimizeA_checkBox2;
     }
 }
 

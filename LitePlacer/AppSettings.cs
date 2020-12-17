@@ -49,6 +49,8 @@ namespace LitePlacer
         public double CNC_SquareCorrection { get; set; } = 0;
         public int CNC_ZspeedMax { get; set; } = 1000;
         public double CNC_RegularMoveTimeout { get; set; } = 10.0;
+        public bool CNC_OptimizeA { get; set; } = true;
+
 
         public double General_BelowPCB_Allowance { get; set; } = 3;
         public bool General_CheckForUpdates { get; set; } = false;
