@@ -205,6 +205,8 @@ namespace LitePlacer
             TinyGMotors_tabControl.Location = new System.Drawing.Point(17, 177);
             Duet3Motors_tabControl.Location = new System.Drawing.Point(17, 177);
 
+            labelSerialPortStatus.ForeColor = Color.Red;
+            labelSerialPortStatus.Text = "Starting up";
 
             BasicSetupTab_Begin();      // Form comes up with basic setup tab, but the tab change event doesn't fire
 
@@ -4039,7 +4041,11 @@ namespace LitePlacer
             UpCamera.Active = false;
             DownCamera.Active = false;
 
-            UpdateCncConnectionStatus();
+            if (!StartingUp)
+            {
+                UpdateCncConnectionStatus();
+            }
+
             SizeXMax_textBox.Text = Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture);
             SizeYMax_textBox.Text = Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture);
 
