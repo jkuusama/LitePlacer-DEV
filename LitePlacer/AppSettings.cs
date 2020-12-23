@@ -101,7 +101,7 @@ namespace LitePlacer
         public bool General_VigorousHoming { get; set; } = false;
         public bool General_PumpOutputInverted { get; set; } = false;
         public bool General_VacuumOutputInverted { get; set; } = false;
-        public bool General_SafeFilesAtClosing { get; set; } = true;
+        public bool General_SaveFilesAtClosing { get; set; } = true;
         public bool General_Autopark { get; set; } = false;
 
         public bool Nozzles_AfullSpeed { get; set; } = true;
@@ -263,14 +263,14 @@ namespace LitePlacer
                     "Problem loading application settings:\n" + excep.Message +
                     " \n\rExit program without saving any data? \n\r" +
                    "If \"Yes\", you lose changes since last start.\n\r" +
-                   "If \"No\", continue with default settings. Your old settings will be\n\r" +
-                   "overwritten at program end.",
+                   "If \"No\", continue with default settings. ** Your old settings will be\n\r" +
+                   "overwritten at program end. **",
                    "Data save problem", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                 {
                     return s;
                 }
-                s.General_SafeFilesAtClosing = false;
+                s.General_SaveFilesAtClosing = false;
                 Application.Exit();
                 return s;    // to avoid compile error
             }

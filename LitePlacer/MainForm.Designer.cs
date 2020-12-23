@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -804,6 +804,7 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.NoPort_label = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -2901,6 +2902,7 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.NoPort_label);
             this.tabPageBasicSetup.Controls.Add(this.AutoPark_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.Duet3Motors_tabControl);
             this.tabPageBasicSetup.Controls.Add(this.label180);
@@ -3012,7 +3014,7 @@
             // AutoPark_checkBox
             // 
             this.AutoPark_checkBox.AutoSize = true;
-            this.AutoPark_checkBox.Location = new System.Drawing.Point(534, 455);
+            this.AutoPark_checkBox.Location = new System.Drawing.Point(642, 420);
             this.AutoPark_checkBox.Name = "AutoPark_checkBox";
             this.AutoPark_checkBox.Size = new System.Drawing.Size(135, 17);
             this.AutoPark_checkBox.TabIndex = 129;
@@ -3027,7 +3029,7 @@
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage3);
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage4);
             this.Duet3Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(892, 204);
+            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(521, 89);
             this.Duet3Motors_tabControl.Name = "Duet3Motors_tabControl";
             this.Duet3Motors_tabControl.SelectedIndex = 0;
             this.Duet3Motors_tabControl.Size = new System.Drawing.Size(325, 362);
@@ -3957,7 +3959,7 @@
             // 
             this.label180.AutoSize = true;
             this.label180.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label180.Location = new System.Drawing.Point(1040, 267);
+            this.label180.Location = new System.Drawing.Point(1031, 268);
             this.label180.Name = "label180";
             this.label180.Size = new System.Drawing.Size(69, 20);
             this.label180.TabIndex = 127;
@@ -3968,7 +3970,7 @@
             // 
             this.label179.AutoSize = true;
             this.label179.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label179.Location = new System.Drawing.Point(510, 380);
+            this.label179.Location = new System.Drawing.Point(524, 416);
             this.label179.Name = "label179";
             this.label179.Size = new System.Drawing.Size(104, 20);
             this.label179.TabIndex = 126;
@@ -4031,7 +4033,7 @@
             // 
             // SlackCompensationDistance_textBox
             // 
-            this.SlackCompensationDistance_textBox.Location = new System.Drawing.Point(1169, 165);
+            this.SlackCompensationDistance_textBox.Location = new System.Drawing.Point(1182, 166);
             this.SlackCompensationDistance_textBox.Name = "SlackCompensationDistance_textBox";
             this.SlackCompensationDistance_textBox.Size = new System.Drawing.Size(48, 20);
             this.SlackCompensationDistance_textBox.TabIndex = 119;
@@ -5201,7 +5203,7 @@
             // 
             // Ato0_button
             // 
-            this.Ato0_button.Location = new System.Drawing.Point(375, 293);
+            this.Ato0_button.Location = new System.Drawing.Point(375, 351);
             this.Ato0_button.Name = "Ato0_button";
             this.Ato0_button.Size = new System.Drawing.Size(75, 23);
             this.Ato0_button.TabIndex = 114;
@@ -5369,7 +5371,7 @@
             // MouseScroll_checkBox
             // 
             this.MouseScroll_checkBox.AutoSize = true;
-            this.MouseScroll_checkBox.Location = new System.Drawing.Point(1056, 413);
+            this.MouseScroll_checkBox.Location = new System.Drawing.Point(1047, 414);
             this.MouseScroll_checkBox.Name = "MouseScroll_checkBox";
             this.MouseScroll_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.MouseScroll_checkBox.Size = new System.Drawing.Size(183, 17);
@@ -5381,7 +5383,7 @@
             // NumPadJog_checkBox
             // 
             this.NumPadJog_checkBox.AutoSize = true;
-            this.NumPadJog_checkBox.Location = new System.Drawing.Point(1055, 390);
+            this.NumPadJog_checkBox.Location = new System.Drawing.Point(1046, 391);
             this.NumPadJog_checkBox.Name = "NumPadJog_checkBox";
             this.NumPadJog_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.NumPadJog_checkBox.Size = new System.Drawing.Size(184, 17);
@@ -5526,7 +5528,7 @@
             // SlackCompensationA_checkBox
             // 
             this.SlackCompensationA_checkBox.AutoSize = true;
-            this.SlackCompensationA_checkBox.Location = new System.Drawing.Point(1076, 145);
+            this.SlackCompensationA_checkBox.Location = new System.Drawing.Point(1089, 146);
             this.SlackCompensationA_checkBox.Name = "SlackCompensationA_checkBox";
             this.SlackCompensationA_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.SlackCompensationA_checkBox.Size = new System.Drawing.Size(141, 17);
@@ -5540,7 +5542,7 @@
             // 
             // AltJogSpeed_numericUpDown
             // 
-            this.AltJogSpeed_numericUpDown.Location = new System.Drawing.Point(1181, 364);
+            this.AltJogSpeed_numericUpDown.Location = new System.Drawing.Point(1172, 365);
             this.AltJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
             20000,
             0,
@@ -5559,7 +5561,7 @@
             // 
             // NormalJogSpeed_numericUpDown
             // 
-            this.NormalJogSpeed_numericUpDown.Location = new System.Drawing.Point(1181, 338);
+            this.NormalJogSpeed_numericUpDown.Location = new System.Drawing.Point(1172, 339);
             this.NormalJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -5578,7 +5580,7 @@
             // 
             // CtlrJogSpeed_numericUpDown
             // 
-            this.CtlrJogSpeed_numericUpDown.Location = new System.Drawing.Point(1181, 312);
+            this.CtlrJogSpeed_numericUpDown.Location = new System.Drawing.Point(1172, 313);
             this.CtlrJogSpeed_numericUpDown.Maximum = new decimal(new int[] {
             4000,
             0,
@@ -5598,7 +5600,7 @@
             // label134
             // 
             this.label134.AutoSize = true;
-            this.label134.Location = new System.Drawing.Point(1102, 366);
+            this.label134.Location = new System.Drawing.Point(1093, 367);
             this.label134.Name = "label134";
             this.label134.Size = new System.Drawing.Size(73, 13);
             this.label134.TabIndex = 91;
@@ -5608,7 +5610,7 @@
             // label133
             // 
             this.label133.AutoSize = true;
-            this.label133.Location = new System.Drawing.Point(1132, 340);
+            this.label133.Location = new System.Drawing.Point(1123, 341);
             this.label133.Name = "label133";
             this.label133.Size = new System.Drawing.Size(43, 13);
             this.label133.TabIndex = 89;
@@ -5618,7 +5620,7 @@
             // label132
             // 
             this.label132.AutoSize = true;
-            this.label132.Location = new System.Drawing.Point(1041, 292);
+            this.label132.Location = new System.Drawing.Point(1032, 293);
             this.label132.Name = "label132";
             this.label132.Size = new System.Drawing.Size(158, 13);
             this.label132.TabIndex = 88;
@@ -5628,7 +5630,7 @@
             // label131
             // 
             this.label131.AutoSize = true;
-            this.label131.Location = new System.Drawing.Point(1095, 314);
+            this.label131.Location = new System.Drawing.Point(1086, 315);
             this.label131.Name = "label131";
             this.label131.Size = new System.Drawing.Size(80, 13);
             this.label131.TabIndex = 86;
@@ -5671,7 +5673,7 @@
             // 
             // VacuumRelease_textBox
             // 
-            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1166, 76);
+            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1172, 79);
             this.VacuumRelease_textBox.Name = "VacuumRelease_textBox";
             this.VacuumRelease_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumRelease_textBox.TabIndex = 81;
@@ -5683,7 +5685,7 @@
             // label119
             // 
             this.label119.AutoSize = true;
-            this.label119.Location = new System.Drawing.Point(1026, 79);
+            this.label119.Location = new System.Drawing.Point(1032, 82);
             this.label119.Name = "label119";
             this.label119.Size = new System.Drawing.Size(130, 13);
             this.label119.TabIndex = 80;
@@ -5691,7 +5693,7 @@
             // 
             // VacuumTime_textBox
             // 
-            this.VacuumTime_textBox.Location = new System.Drawing.Point(1166, 52);
+            this.VacuumTime_textBox.Location = new System.Drawing.Point(1172, 55);
             this.VacuumTime_textBox.Name = "VacuumTime_textBox";
             this.VacuumTime_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumTime_textBox.TabIndex = 79;
@@ -5703,7 +5705,7 @@
             // label118
             // 
             this.label118.AutoSize = true;
-            this.label118.Location = new System.Drawing.Point(1026, 56);
+            this.label118.Location = new System.Drawing.Point(1032, 59);
             this.label118.Name = "label118";
             this.label118.Size = new System.Drawing.Size(128, 13);
             this.label118.TabIndex = 78;
@@ -5712,7 +5714,7 @@
             // label90
             // 
             this.label90.AutoSize = true;
-            this.label90.Location = new System.Drawing.Point(1019, 220);
+            this.label90.Location = new System.Drawing.Point(1032, 221);
             this.label90.Name = "label90";
             this.label90.Size = new System.Drawing.Size(116, 13);
             this.label90.TabIndex = 74;
@@ -5720,7 +5722,7 @@
             // 
             // SquareCorrection_textBox
             // 
-            this.SquareCorrection_textBox.Location = new System.Drawing.Point(1141, 217);
+            this.SquareCorrection_textBox.Location = new System.Drawing.Point(1154, 218);
             this.SquareCorrection_textBox.Name = "SquareCorrection_textBox";
             this.SquareCorrection_textBox.Size = new System.Drawing.Size(76, 20);
             this.SquareCorrection_textBox.TabIndex = 73;
@@ -5731,7 +5733,7 @@
             // 
             // SmallMovement_numericUpDown
             // 
-            this.SmallMovement_numericUpDown.Location = new System.Drawing.Point(1169, 191);
+            this.SmallMovement_numericUpDown.Location = new System.Drawing.Point(1182, 192);
             this.SmallMovement_numericUpDown.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -5752,7 +5754,7 @@
             // label87
             // 
             this.label87.AutoSize = true;
-            this.label87.Location = new System.Drawing.Point(1062, 196);
+            this.label87.Location = new System.Drawing.Point(1075, 197);
             this.label87.Name = "label87";
             this.label87.Size = new System.Drawing.Size(101, 13);
             this.label87.TabIndex = 71;
@@ -5770,7 +5772,7 @@
             // SlackCompensation_checkBox
             // 
             this.SlackCompensation_checkBox.AutoSize = true;
-            this.SlackCompensation_checkBox.Location = new System.Drawing.Point(1015, 167);
+            this.SlackCompensation_checkBox.Location = new System.Drawing.Point(1028, 168);
             this.SlackCompensation_checkBox.Name = "SlackCompensation_checkBox";
             this.SlackCompensation_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.SlackCompensation_checkBox.Size = new System.Drawing.Size(148, 17);
@@ -5845,7 +5847,7 @@
             // 
             // SizeYMax_textBox
             // 
-            this.SizeYMax_textBox.Location = new System.Drawing.Point(399, 431);
+            this.SizeYMax_textBox.Location = new System.Drawing.Point(418, 461);
             this.SizeYMax_textBox.Name = "SizeYMax_textBox";
             this.SizeYMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeYMax_textBox.TabIndex = 44;
@@ -5863,7 +5865,7 @@
             // 
             // SizeXMax_textBox
             // 
-            this.SizeXMax_textBox.Location = new System.Drawing.Point(399, 405);
+            this.SizeXMax_textBox.Location = new System.Drawing.Point(418, 435);
             this.SizeXMax_textBox.Name = "SizeXMax_textBox";
             this.SizeXMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeXMax_textBox.TabIndex = 42;
@@ -5873,7 +5875,7 @@
             // 
             // ParkLocationY_textBox
             // 
-            this.ParkLocationY_textBox.Location = new System.Drawing.Point(534, 429);
+            this.ParkLocationY_textBox.Location = new System.Drawing.Point(548, 465);
             this.ParkLocationY_textBox.Name = "ParkLocationY_textBox";
             this.ParkLocationY_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationY_textBox.TabIndex = 39;
@@ -5883,7 +5885,7 @@
             // 
             // ParkLocationX_textBox
             // 
-            this.ParkLocationX_textBox.Location = new System.Drawing.Point(534, 403);
+            this.ParkLocationX_textBox.Location = new System.Drawing.Point(548, 439);
             this.ParkLocationX_textBox.Name = "ParkLocationX_textBox";
             this.ParkLocationX_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationX_textBox.TabIndex = 37;
@@ -5962,7 +5964,7 @@
             // 
             this.label113.AutoSize = true;
             this.label113.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label113.Location = new System.Drawing.Point(352, 382);
+            this.label113.Location = new System.Drawing.Point(371, 412);
             this.label113.Name = "label113";
             this.label113.Size = new System.Drawing.Size(108, 20);
             this.label113.TabIndex = 48;
@@ -5971,7 +5973,7 @@
             // label102
             // 
             this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(353, 434);
+            this.label102.Location = new System.Drawing.Point(372, 464);
             this.label102.Name = "label102";
             this.label102.Size = new System.Drawing.Size(40, 13);
             this.label102.TabIndex = 45;
@@ -5991,7 +5993,7 @@
             // label107
             // 
             this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(353, 408);
+            this.label107.Location = new System.Drawing.Point(372, 438);
             this.label107.Name = "label107";
             this.label107.Size = new System.Drawing.Size(40, 13);
             this.label107.TabIndex = 43;
@@ -6000,7 +6002,7 @@
             // label92
             // 
             this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(511, 432);
+            this.label92.Location = new System.Drawing.Point(525, 468);
             this.label92.Name = "label92";
             this.label92.Size = new System.Drawing.Size(17, 13);
             this.label92.TabIndex = 40;
@@ -6009,7 +6011,7 @@
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(511, 406);
+            this.label61.Location = new System.Drawing.Point(525, 442);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(17, 13);
             this.label61.TabIndex = 38;
@@ -6018,7 +6020,7 @@
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(361, 319);
+            this.label72.Location = new System.Drawing.Point(374, 377);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(89, 13);
             this.label72.TabIndex = 36;
@@ -6037,14 +6039,13 @@
             // 
             // HomeXYZ_button
             // 
-            this.HomeXYZ_button.Location = new System.Drawing.Point(234, 165);
+            this.HomeXYZ_button.Location = new System.Drawing.Point(375, 322);
             this.HomeXYZ_button.Name = "HomeXYZ_button";
             this.HomeXYZ_button.Size = new System.Drawing.Size(75, 23);
             this.HomeXYZ_button.TabIndex = 17;
             this.HomeXYZ_button.Text = "Home XYZ";
             this.toolTip1.SetToolTip(this.HomeXYZ_button, "Homes X, Y and Z axis, using limit switch only.");
             this.HomeXYZ_button.UseVisualStyleBackColor = true;
-            this.HomeXYZ_button.Visible = false;
             this.HomeXYZ_button.Click += new System.EventHandler(this.HomeXYZ_button_Click);
             // 
             // TestZ_button
@@ -6082,14 +6083,13 @@
             // 
             // HomeXY_button
             // 
-            this.HomeXY_button.Location = new System.Drawing.Point(244, 161);
+            this.HomeXY_button.Location = new System.Drawing.Point(375, 293);
             this.HomeXY_button.Name = "HomeXY_button";
             this.HomeXY_button.Size = new System.Drawing.Size(75, 23);
             this.HomeXY_button.TabIndex = 31;
             this.HomeXY_button.Text = "Home XY";
             this.toolTip1.SetToolTip(this.HomeXY_button, "Homes X and Y axis, using limit switch only.");
             this.HomeXY_button.UseVisualStyleBackColor = true;
-            this.HomeXY_button.Visible = false;
             this.HomeXY_button.Click += new System.EventHandler(this.HomeXY_button_Click);
             // 
             // HomeX_button
@@ -7032,14 +7032,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7066,12 +7066,14 @@
             this.JobDataValueColumn.HeaderText = "Value";
             this.JobDataValueColumn.MinimumWidth = 6;
             this.JobDataValueColumn.Name = "JobDataValueColumn";
+            this.JobDataValueColumn.Width = 125;
             // 
             // JobDataFootprintColumn
             // 
             this.JobDataFootprintColumn.HeaderText = "Footprint";
             this.JobDataFootprintColumn.MinimumWidth = 6;
             this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
+            this.JobDataFootprintColumn.Width = 125;
             // 
             // JobdataCountColumn
             // 
@@ -7172,6 +7174,7 @@
             this.CADdataFootprintColumn.HeaderText = "FootPrint";
             this.CADdataFootprintColumn.MinimumWidth = 6;
             this.CADdataFootprintColumn.Name = "CADdataFootprintColumn";
+            this.CADdataFootprintColumn.Width = 125;
             // 
             // CADdataPlacedColumn
             // 
@@ -9520,6 +9523,18 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
+            // NoPort_label
+            // 
+            this.NoPort_label.AutoSize = true;
+            this.NoPort_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NoPort_label.Location = new System.Drawing.Point(78, 126);
+            this.NoPort_label.Name = "NoPort_label";
+            this.NoPort_label.Size = new System.Drawing.Size(297, 16);
+            this.NoPort_label.TabIndex = 130;
+            this.NoPort_label.Text = "No default port yet. Select one and click Connect.";
+            this.toolTip1.SetToolTip(this.NoPort_label, "Connection status");
+            this.NoPort_label.Visible = false;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -9853,10 +9868,8 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Button ButtonRefreshPortList;
-		private System.Windows.Forms.Label labelSerialPortStatus;
 		private System.Windows.Forms.Button buttonConnectSerial;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.ComboBox comboBoxSerialPorts;
 		private System.Windows.Forms.TabPage RunJob_tabPage;
 		private System.Windows.Forms.CheckBox JobCounterCW_checkBox;
 		private System.Windows.Forms.Button ReMeasure_button;
@@ -10451,6 +10464,9 @@
         private System.Windows.Forms.CheckBox AutoPark_checkBox;
         private System.Windows.Forms.CheckBox OptimizeA_checkBox1;
         private System.Windows.Forms.CheckBox OptimizeA_checkBox2;
+        public System.Windows.Forms.Label labelSerialPortStatus;
+        public System.Windows.Forms.ComboBox comboBoxSerialPorts;
+        public System.Windows.Forms.Label NoPort_label;
     }
 }
 

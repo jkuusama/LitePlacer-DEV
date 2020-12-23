@@ -54,6 +54,10 @@ namespace LitePlacer
 
         public void UpdateNozzleGridView()
         {
+            if (MainForm.NozzlesParameters_dataGridView.Rows.Count != MainForm.Setting.Nozzles_count)
+            {
+                MainForm.UpdateNozzlesGridSize();
+            }
             for (int i = 0; i < MainForm.Setting.Nozzles_count; i++)
             {
                 MainForm.NozzlesParameters_dataGridView.Rows[i].Cells["NozzleCalibrated_Column"].Value =
@@ -136,8 +140,8 @@ namespace LitePlacer
                         Nozzle.CalibrationPoints = new CalibrationPointsList();
                         Nozzle.Calibrated = false;
                         NozzleDataAllNozzles.Add(Nozzle);
-                        UpdateNozzleGridView();
                     }
+                    UpdateNozzleGridView();
                     return true;
                 }
             }

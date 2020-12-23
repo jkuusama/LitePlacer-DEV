@@ -130,7 +130,7 @@ namespace LitePlacer
         // =================================================================================
         private void Form1_Load(object sender, EventArgs e)
         {
-            StartingUp = true;
+            StartingUp = false;
             this.Size = new Size(1280, 900);
 
             DisplayText("Application Start", KnownColor.Black, true);
@@ -140,7 +140,9 @@ namespace LitePlacer
 
             SettingsOps = new AppSettings(this);
             Setting = SettingsOps.Load(path + APPLICATIONSETTINGS_DATAFILE);
-            Setting.General_SafeFilesAtClosing = true;
+            Setting.General_SaveFilesAtClosing = true;
+
+            StartingUp = true;  // we want the messages to get through from the settings load
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
@@ -342,18 +344,7 @@ namespace LitePlacer
             StartingUp = false;
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
-            Cnc.Connect(Setting.CNC_SerialPort);  // This can raise error condition, needing the form up
-            UpdateCncConnectionStatus();
-
-            if (Cnc.Connected)
-            {
-                if (Cnc.JustConnected())
-                {
-                    Cnc.PumpDefaultSetting();
-                    Cnc.VacuumDefaultSetting();
-                    OfferHoming();
-                }
-            }
+            ConnectToCnc(Setting.CNC_SerialPort);  // This can raise error condition, needing the form up
 
             MotorPower_timer.Enabled = true;
             DisableLog_checkBox.Checked = Setting.General_MuteLogging;
@@ -372,7 +363,7 @@ namespace LitePlacer
             Setting.General_CheckForUpdates = CheckForUpdate_checkBox.Checked;
             Setting.General_MuteLogging = DisableLog_checkBox.Checked;
 
-            if (Setting.General_SafeFilesAtClosing)
+            if (Setting.General_SaveFilesAtClosing)
             {
                 string path = GetPath();
 
@@ -4116,9 +4107,27 @@ namespace LitePlacer
             }
             else
             {
-                // show the first available port
-                comboBoxSerialPorts.SelectedIndex = 0;
-                return;
+                if (Cnc.Connected)
+                {
+                    // does the port that cnc think it is connected to still exist?
+                    for (int i = 0; i < comboBoxSerialPorts.Items.Count; i++)
+                    {
+                        if (comboBoxSerialPorts.Items[i].ToString() == Cnc.Port)
+                        {
+                            comboBoxSerialPorts.SelectedIndex = i;
+                            UpdateCncConnectionStatus();
+                            return;
+                        }
+                    }
+                    Cnc.Close();
+                    UpdateCncConnectionStatus();
+                }
+                else
+                {
+                    // show the first available port
+                    comboBoxSerialPorts.SelectedIndex = 0;
+                    UpdateCncConnectionStatus();
+                }
             }
         }
 
@@ -4133,6 +4142,10 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action(UpdateCncConnectionStatus)); return; }
 
+            if (Setting.CNC_SerialPort=="")
+            {
+                // user has not tried to connect yet. A message is 
+            }
             if (Cnc.ErrorState)
             {
                 buttonConnectSerial.Text = "Clear Err.";
@@ -4165,54 +4178,71 @@ namespace LitePlacer
             {
                 return;  // no ports
             };
-
-            if (Cnc.ErrorState || !Cnc.Connected)
-            {
-                if (Setting.CNC_SerialPort != comboBoxSerialPorts.SelectedItem.ToString())
-                {
-                    // user changed the selection
-                    buttonConnectSerial.Text = "Closing..";
-                    Cnc.Close();
-                    // 0.5 s delay for the system to clear buffers etc
-                    for (int i = 0; i < 250; i++)
-                    {
-                        Thread.Sleep(2);
-                        Application.DoEvents();
-                    }
-                }
-                // reconnect, attempt to clear the error
-                if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
-                {
-                    buttonConnectSerial.Text = "Connecting..";
-                    Cnc.ErrorState = false;
-                    Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
-                    UpdateCncConnectionStatus();
-                    if (Cnc.JustConnected())
-                    {
-                        Cnc.PumpDefaultSetting();
-                        Cnc.VacuumDefaultSetting();
-                        OfferHoming();
-                    }
-                    else
-                    {
-                        CncError();
-                    }
-                }
-            }
-            else
-            {
-                // Close connection
-                buttonConnectSerial.Text = "Closing..";
-                Cnc.Close();
-                for (int i = 0; i < 250; i++)
-                {
-                    Thread.Sleep(2);
-                    Application.DoEvents();
-                }
-                UpdateCncConnectionStatus();
-            }
+            ConnectToCnc(comboBoxSerialPorts.SelectedItem.ToString());
         }
 
+        private bool MessageShown= false;
+
+        private void ConnectToCnc(string port)
+        {
+            Motors_label.Text = "Control board not connected.";
+            TinyGMotors_tabControl.Visible = false;
+            Duet3Motors_tabControl.Visible = false;
+
+
+            // When first starting, there is no default port. Trying to connect to a random port is 
+            // potentially harmful, so we show a message. Once a message is shown, it is ok to try
+            if (port == "")
+            {
+                if (!MessageShown)
+                {
+                    NoPort_label.Visible = true;
+                    MessageShown = true;
+                    UpdateCncConnectionStatus();
+                    return;         // return, as shoving the no default port label is the only thing to do
+                }
+                if (comboBoxSerialPorts.Items.Count == 0)
+                {
+                    UpdateCncConnectionStatus();
+                    return;     // return to have no status change after there are some ports
+                }
+            }
+
+            NoPort_label.Visible = false;
+            // Usder wants close current connection (the button is a toggle) or (re-)connect
+            bool JustClose = (Cnc.Connected || Cnc.ErrorState);
+
+            // Close existing connection always
+            buttonConnectSerial.Text = "Closing...";
+
+            Cnc.Close();
+
+            if (JustClose)      // user didn't want to connect
+            {
+                UpdateCncConnectionStatus();
+                return;
+            }
+
+            // Possible connections are now closed and we know user wants to connect:
+            buttonConnectSerial.Text = "Connecting...";
+            if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
+            {
+                UpdateCncConnectionStatus();
+                Cnc.ErrorState = false;
+                Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
+                if (Cnc.JustConnected())
+                {
+                    Cnc.PumpDefaultSetting();
+                    Cnc.VacuumDefaultSetting();
+                    OfferHoming();
+                }
+                else
+                {
+                    CncError();
+                }
+            }
+            UpdateCncConnectionStatus();
+        }
 
         // =================================================================================
         // Logging textbox
@@ -12245,7 +12275,12 @@ namespace LitePlacer
                 return;
             }
 
-            if (NoOfNozzles_UpDown.Value > Setting.Nozzles_maximum) 
+            UpdateNozzlesGridSize();
+
+        }
+         public void UpdateNozzlesGridSize()
+        {
+            if (NoOfNozzles_UpDown.Value > Setting.Nozzles_maximum)
             {
                 NoOfNozzles_UpDown.Value = Setting.Nozzles_maximum;
             }
@@ -12269,8 +12304,7 @@ namespace LitePlacer
                 NozzleChangeEnable_checkBox.Checked = false;
             }
         }
-
-         #endregion
+        #endregion
 
 
 

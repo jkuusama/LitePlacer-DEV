@@ -6,6 +6,8 @@ using System.Drawing;
 using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+
 
 namespace LitePlacer
 {
@@ -52,15 +54,23 @@ namespace LitePlacer
         {
             try
             {
-                if (Port.IsOpen)
+                if (!Port.IsOpen)
                 {
-                    Port.DiscardInBuffer();
-                    Port.DiscardOutBuffer();
+                    return;
                 }
-                // Known issue: Sometimes serial port hangs in app closing. Google says that 
+                Port.DiscardInBuffer();
+                Port.DiscardOutBuffer();
+               // Known issue: Sometimes serial port hangs in app closing. Google says that 
                 // the workaround is to close in another thread
                 Thread t = new Thread(() => Close_thread());
                 t.Start();
+                MainForm.DisplayText("Com closing delay:");
+                for (int i = 0; i < 100; i++)  // delay for system to clear buffers
+                {
+                    Thread.Sleep(2);
+                    Application.DoEvents();
+                }
+                MainForm.DisplayText("Done.");
             }
             catch
             {

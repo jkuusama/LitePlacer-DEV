@@ -317,6 +317,7 @@ namespace LitePlacer
         #region Communications
 
         public bool Connected { get; set; }
+        public string Port { get; set; }  // valid only if connected
         public bool ErrorState { get; set; }
 
         public void RaiseError()
@@ -351,6 +352,7 @@ namespace LitePlacer
             if (Com.IsOpen)
             {
                 MainForm.DisplayText("Already connected to serial port " + port + ": already open");
+                Port = port;
                 Connected = true;
             }
             else
@@ -367,6 +369,7 @@ namespace LitePlacer
                     MainForm.DisplayText("Connected to serial port " + port);
                 }
             }
+            Port = port;
             Connected = true;
             return true;
         }
@@ -376,14 +379,11 @@ namespace LitePlacer
             ErrorState = false;
             Connected = false;
 
-            MainForm.Motors_label.Text = "Control board not connected.";
-            MainForm.TinyGMotors_tabControl.Visible = false;
-            MainForm.Duet3Motors_tabControl.Visible = false;
-
             if (!OpenPort(port))
             {
                 return false;
             }
+            Port = port;
             Controlboard = ControlBoardType.Duet3;      // to direct the response to correct module
             if (Duet3.CheckIdentity())
             {
@@ -394,7 +394,6 @@ namespace LitePlacer
             else
             {
                 Com.Close();
-                Thread.Sleep(500);
                 Connected = false;
             }
 
@@ -465,7 +464,6 @@ namespace LitePlacer
             ErrorState = false;
             Connected = false;
             Homing = false;
-            MainForm.UpdateCncConnectionStatus();
         }
 
 
