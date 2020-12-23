@@ -212,6 +212,7 @@
             this.CameraSetupTest_button = new System.Windows.Forms.Button();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.NoPort_label = new System.Windows.Forms.Label();
             this.AutoPark_checkBox = new System.Windows.Forms.CheckBox();
             this.Duet3Motors_tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -804,7 +805,6 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
-            this.NoPort_label = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -3011,6 +3011,18 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
+            // NoPort_label
+            // 
+            this.NoPort_label.AutoSize = true;
+            this.NoPort_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NoPort_label.Location = new System.Drawing.Point(78, 126);
+            this.NoPort_label.Name = "NoPort_label";
+            this.NoPort_label.Size = new System.Drawing.Size(297, 16);
+            this.NoPort_label.TabIndex = 130;
+            this.NoPort_label.Text = "No default port yet. Select one and click Connect.";
+            this.toolTip1.SetToolTip(this.NoPort_label, "Connection status");
+            this.NoPort_label.Visible = false;
+            // 
             // AutoPark_checkBox
             // 
             this.AutoPark_checkBox.AutoSize = true;
@@ -3029,7 +3041,7 @@
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage3);
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage4);
             this.Duet3Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(521, 89);
+            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(593, 126);
             this.Duet3Motors_tabControl.Name = "Duet3Motors_tabControl";
             this.Duet3Motors_tabControl.SelectedIndex = 0;
             this.Duet3Motors_tabControl.Size = new System.Drawing.Size(325, 362);
@@ -3748,7 +3760,7 @@
             // OptimizeA_checkBox2
             // 
             this.OptimizeA_checkBox2.AutoSize = true;
-            this.OptimizeA_checkBox2.Location = new System.Drawing.Point(91, 173);
+            this.OptimizeA_checkBox2.Location = new System.Drawing.Point(112, 171);
             this.OptimizeA_checkBox2.Name = "OptimizeA_checkBox2";
             this.OptimizeA_checkBox2.Size = new System.Drawing.Size(110, 17);
             this.OptimizeA_checkBox2.TabIndex = 131;
@@ -3762,7 +3774,7 @@
             // label214
             // 
             this.label214.AutoSize = true;
-            this.label214.Location = new System.Drawing.Point(151, 150);
+            this.label214.Location = new System.Drawing.Point(172, 148);
             this.label214.Name = "label214";
             this.label214.Size = new System.Drawing.Size(22, 13);
             this.label214.TabIndex = 151;
@@ -3779,7 +3791,7 @@
             // 
             // Duet3ACurrent_maskedTextBox
             // 
-            this.Duet3ACurrent_maskedTextBox.Location = new System.Drawing.Point(91, 147);
+            this.Duet3ACurrent_maskedTextBox.Location = new System.Drawing.Point(112, 145);
             this.Duet3ACurrent_maskedTextBox.Mask = "99999";
             this.Duet3ACurrent_maskedTextBox.Name = "Duet3ACurrent_maskedTextBox";
             this.Duet3ACurrent_maskedTextBox.PromptChar = ' ';
@@ -3792,7 +3804,7 @@
             // 
             // Duet3AtravelPerRev_textBox
             // 
-            this.Duet3AtravelPerRev_textBox.Location = new System.Drawing.Point(91, 121);
+            this.Duet3AtravelPerRev_textBox.Location = new System.Drawing.Point(112, 119);
             this.Duet3AtravelPerRev_textBox.Name = "Duet3AtravelPerRev_textBox";
             this.Duet3AtravelPerRev_textBox.Size = new System.Drawing.Size(54, 20);
             this.Duet3AtravelPerRev_textBox.TabIndex = 140;
@@ -3816,14 +3828,14 @@
             this.label216.AutoSize = true;
             this.label216.Location = new System.Drawing.Point(6, 124);
             this.label216.Name = "label216";
-            this.label216.Size = new System.Drawing.Size(79, 13);
+            this.label216.Size = new System.Drawing.Size(108, 13);
             this.label216.TabIndex = 145;
-            this.label216.Text = "Travel per rev.:";
+            this.label216.Text = "Angle per motor  rev.:";
             // 
             // label217
             // 
             this.label217.AutoSize = true;
-            this.label217.Location = new System.Drawing.Point(151, 126);
+            this.label217.Location = new System.Drawing.Point(172, 124);
             this.label217.Name = "label217";
             this.label217.Size = new System.Drawing.Size(23, 13);
             this.label217.TabIndex = 144;
@@ -5041,7 +5053,7 @@
             // 
             // tr4_textBox
             // 
-            this.tr4_textBox.Location = new System.Drawing.Point(101, 84);
+            this.tr4_textBox.Location = new System.Drawing.Point(126, 84);
             this.tr4_textBox.Name = "tr4_textBox";
             this.tr4_textBox.Size = new System.Drawing.Size(55, 20);
             this.tr4_textBox.TabIndex = 21;
@@ -5076,14 +5088,14 @@
             this.label42.AutoSize = true;
             this.label42.Location = new System.Drawing.Point(3, 87);
             this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(100, 13);
+            this.label42.Size = new System.Drawing.Size(126, 13);
             this.label42.TabIndex = 25;
-            this.label42.Text = "Travel per rev. [4tr]:";
+            this.label42.Text = "Angle per motor rev. [4tr]:";
             // 
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(162, 87);
+            this.label43.Location = new System.Drawing.Point(187, 87);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(23, 13);
             this.label43.TabIndex = 24;
@@ -9522,18 +9534,6 @@
             this.label165.Size = new System.Drawing.Size(70, 13);
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
-            // 
-            // NoPort_label
-            // 
-            this.NoPort_label.AutoSize = true;
-            this.NoPort_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NoPort_label.Location = new System.Drawing.Point(78, 126);
-            this.NoPort_label.Name = "NoPort_label";
-            this.NoPort_label.Size = new System.Drawing.Size(297, 16);
-            this.NoPort_label.TabIndex = 130;
-            this.NoPort_label.Text = "No default port yet. Select one and click Connect.";
-            this.toolTip1.SetToolTip(this.NoPort_label, "Connection status");
-            this.NoPort_label.Visible = false;
             // 
             // FormMain
             // 
