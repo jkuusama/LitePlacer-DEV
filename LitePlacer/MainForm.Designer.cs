@@ -805,6 +805,7 @@
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
+            this.Test7_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -868,11 +869,11 @@
             // 
             // Park_button
             // 
-            this.Park_button.Location = new System.Drawing.Point(1148, 829);
+            this.Park_button.Location = new System.Drawing.Point(946, 828);
             this.Park_button.Name = "Park_button";
-            this.Park_button.Size = new System.Drawing.Size(108, 23);
+            this.Park_button.Size = new System.Drawing.Size(177, 23);
             this.Park_button.TabIndex = 41;
-            this.Park_button.Text = "Park";
+            this.Park_button.Text = "Goto park";
             this.toolTip1.SetToolTip(this.Park_button, "Moves the machine to \"Park\" location,\r\ndefined at Basic Setup tab.");
             this.Park_button.UseVisualStyleBackColor = true;
             this.Park_button.Click += new System.EventHandler(this.Park_button_Click);
@@ -1057,21 +1058,21 @@
             // 
             // Test1_button
             // 
-            this.Test1_button.Location = new System.Drawing.Point(1148, 667);
+            this.Test1_button.Location = new System.Drawing.Point(1142, 667);
             this.Test1_button.Name = "Test1_button";
-            this.Test1_button.Size = new System.Drawing.Size(108, 23);
+            this.Test1_button.Size = new System.Drawing.Size(114, 23);
             this.Test1_button.TabIndex = 18;
-            this.Test1_button.Text = "Test 1";
+            this.Test1_button.Text = "Pickup this";
             this.Test1_button.UseVisualStyleBackColor = true;
             this.Test1_button.Click += new System.EventHandler(this.Test1_button_Click);
             // 
             // Test2_button
             // 
-            this.Test2_button.Location = new System.Drawing.Point(1148, 694);
+            this.Test2_button.Location = new System.Drawing.Point(1142, 694);
             this.Test2_button.Name = "Test2_button";
-            this.Test2_button.Size = new System.Drawing.Size(108, 23);
+            this.Test2_button.Size = new System.Drawing.Size(114, 23);
             this.Test2_button.TabIndex = 19;
-            this.Test2_button.Text = "Test 2";
+            this.Test2_button.Text = "Place here";
             this.Test2_button.UseVisualStyleBackColor = true;
             this.Test2_button.Click += new System.EventHandler(this.Test2_button_Click);
             // 
@@ -1125,41 +1126,41 @@
             // 
             // Test3_button
             // 
-            this.Test3_button.Location = new System.Drawing.Point(1148, 721);
+            this.Test3_button.Location = new System.Drawing.Point(1142, 721);
             this.Test3_button.Name = "Test3_button";
-            this.Test3_button.Size = new System.Drawing.Size(108, 23);
+            this.Test3_button.Size = new System.Drawing.Size(114, 23);
             this.Test3_button.TabIndex = 66;
-            this.Test3_button.Text = "Test 3";
+            this.Test3_button.Text = "Probe down";
             this.Test3_button.UseVisualStyleBackColor = true;
             this.Test3_button.Click += new System.EventHandler(this.Test3_button_Click);
             // 
             // Test4_button
             // 
-            this.Test4_button.Location = new System.Drawing.Point(1148, 748);
+            this.Test4_button.Location = new System.Drawing.Point(1142, 748);
             this.Test4_button.Name = "Test4_button";
-            this.Test4_button.Size = new System.Drawing.Size(108, 23);
+            this.Test4_button.Size = new System.Drawing.Size(114, 23);
             this.Test4_button.TabIndex = 52;
-            this.Test4_button.Text = "Test 4";
+            this.Test4_button.Text = "Probe (n.c.)";
             this.Test4_button.UseVisualStyleBackColor = true;
             this.Test4_button.Click += new System.EventHandler(this.Test4_button_Click);
             // 
             // Test5_button
             // 
-            this.Test5_button.Location = new System.Drawing.Point(1148, 775);
+            this.Test5_button.Location = new System.Drawing.Point(1142, 775);
             this.Test5_button.Name = "Test5_button";
-            this.Test5_button.Size = new System.Drawing.Size(108, 23);
+            this.Test5_button.Size = new System.Drawing.Size(114, 23);
             this.Test5_button.TabIndex = 68;
-            this.Test5_button.Text = "Test 5";
+            this.Test5_button.Text = "Nozzle up";
             this.Test5_button.UseVisualStyleBackColor = true;
             this.Test5_button.Click += new System.EventHandler(this.Test5_button_Click);
             // 
             // Test6_button
             // 
-            this.Test6_button.Location = new System.Drawing.Point(1148, 801);
+            this.Test6_button.Location = new System.Drawing.Point(1142, 801);
             this.Test6_button.Name = "Test6_button";
-            this.Test6_button.Size = new System.Drawing.Size(108, 23);
+            this.Test6_button.Size = new System.Drawing.Size(114, 23);
             this.Test6_button.TabIndex = 69;
-            this.Test6_button.Text = "Test 6";
+            this.Test6_button.Text = "Nozzle to down cam";
             this.Test6_button.UseVisualStyleBackColor = true;
             this.Test6_button.Click += new System.EventHandler(this.Test6_button_Click);
             // 
@@ -9295,7 +9296,7 @@
             // GotoX_textBox
             // 
             this.GotoX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoX_textBox.Location = new System.Drawing.Point(1086, 670);
+            this.GotoX_textBox.Location = new System.Drawing.Point(1072, 669);
             this.GotoX_textBox.Name = "GotoX_textBox";
             this.GotoX_textBox.Size = new System.Drawing.Size(50, 20);
             this.GotoX_textBox.TabIndex = 78;
@@ -9306,7 +9307,7 @@
             // GotoY_textBox
             // 
             this.GotoY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoY_textBox.Location = new System.Drawing.Point(1086, 697);
+            this.GotoY_textBox.Location = new System.Drawing.Point(1073, 696);
             this.GotoY_textBox.Name = "GotoY_textBox";
             this.GotoY_textBox.Size = new System.Drawing.Size(50, 20);
             this.GotoY_textBox.TabIndex = 83;
@@ -9317,7 +9318,7 @@
             // GotoZ_textBox
             // 
             this.GotoZ_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoZ_textBox.Location = new System.Drawing.Point(1084, 723);
+            this.GotoZ_textBox.Location = new System.Drawing.Point(1072, 723);
             this.GotoZ_textBox.Name = "GotoZ_textBox";
             this.GotoZ_textBox.Size = new System.Drawing.Size(50, 20);
             this.GotoZ_textBox.TabIndex = 85;
@@ -9328,7 +9329,7 @@
             // GotoA_textBox
             // 
             this.GotoA_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.GotoA_textBox.Location = new System.Drawing.Point(1084, 751);
+            this.GotoA_textBox.Location = new System.Drawing.Point(1072, 750);
             this.GotoA_textBox.Name = "GotoA_textBox";
             this.GotoA_textBox.Size = new System.Drawing.Size(50, 20);
             this.GotoA_textBox.TabIndex = 87;
@@ -9339,7 +9340,7 @@
             // Goto_button
             // 
             this.Goto_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Goto_button.Location = new System.Drawing.Point(959, 727);
+            this.Goto_button.Location = new System.Drawing.Point(945, 731);
             this.Goto_button.Name = "Goto_button";
             this.Goto_button.Size = new System.Drawing.Size(76, 40);
             this.Goto_button.TabIndex = 89;
@@ -9364,7 +9365,7 @@
             // 
             // LoadCurrentPosition_button
             // 
-            this.LoadCurrentPosition_button.Location = new System.Drawing.Point(959, 780);
+            this.LoadCurrentPosition_button.Location = new System.Drawing.Point(946, 775);
             this.LoadCurrentPosition_button.Name = "LoadCurrentPosition_button";
             this.LoadCurrentPosition_button.Size = new System.Drawing.Size(177, 23);
             this.LoadCurrentPosition_button.TabIndex = 105;
@@ -9375,7 +9376,7 @@
             // 
             // SetCurrentPosition_button
             // 
-            this.SetCurrentPosition_button.Location = new System.Drawing.Point(959, 809);
+            this.SetCurrentPosition_button.Location = new System.Drawing.Point(946, 801);
             this.SetCurrentPosition_button.Name = "SetCurrentPosition_button";
             this.SetCurrentPosition_button.Size = new System.Drawing.Size(177, 23);
             this.SetCurrentPosition_button.TabIndex = 114;
@@ -9425,7 +9426,7 @@
             // 
             this.Abs_radioButton.AutoSize = true;
             this.Abs_radioButton.Checked = true;
-            this.Abs_radioButton.Location = new System.Drawing.Point(958, 672);
+            this.Abs_radioButton.Location = new System.Drawing.Point(945, 672);
             this.Abs_radioButton.Name = "Abs_radioButton";
             this.Abs_radioButton.Size = new System.Drawing.Size(66, 17);
             this.Abs_radioButton.TabIndex = 92;
@@ -9436,7 +9437,7 @@
             // Relative_Button
             // 
             this.Relative_Button.AutoSize = true;
-            this.Relative_Button.Location = new System.Drawing.Point(959, 696);
+            this.Relative_Button.Location = new System.Drawing.Point(946, 696);
             this.Relative_Button.Name = "Relative_Button";
             this.Relative_Button.Size = new System.Drawing.Size(64, 17);
             this.Relative_Button.TabIndex = 93;
@@ -9461,7 +9462,7 @@
             // GoX_button
             // 
             this.GoX_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoX_button.Location = new System.Drawing.Point(1048, 670);
+            this.GoX_button.Location = new System.Drawing.Point(1035, 667);
             this.GoX_button.Name = "GoX_button";
             this.GoX_button.Size = new System.Drawing.Size(32, 23);
             this.GoX_button.TabIndex = 106;
@@ -9472,7 +9473,7 @@
             // GoY_button
             // 
             this.GoY_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoY_button.Location = new System.Drawing.Point(1048, 698);
+            this.GoY_button.Location = new System.Drawing.Point(1035, 694);
             this.GoY_button.Name = "GoY_button";
             this.GoY_button.Size = new System.Drawing.Size(32, 23);
             this.GoY_button.TabIndex = 107;
@@ -9483,7 +9484,7 @@
             // GoA_button
             // 
             this.GoA_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoA_button.Location = new System.Drawing.Point(1048, 752);
+            this.GoA_button.Location = new System.Drawing.Point(1035, 748);
             this.GoA_button.Name = "GoA_button";
             this.GoA_button.Size = new System.Drawing.Size(32, 23);
             this.GoA_button.TabIndex = 109;
@@ -9494,7 +9495,7 @@
             // GoZ_button
             // 
             this.GoZ_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GoZ_button.Location = new System.Drawing.Point(1048, 724);
+            this.GoZ_button.Location = new System.Drawing.Point(1035, 721);
             this.GoZ_button.Name = "GoZ_button";
             this.GoZ_button.Size = new System.Drawing.Size(32, 23);
             this.GoZ_button.TabIndex = 108;
@@ -9535,12 +9536,23 @@
             this.label165.TabIndex = 113;
             this.label165.Text = "Zoom Factor:";
             // 
+            // Test7_button
+            // 
+            this.Test7_button.Location = new System.Drawing.Point(1142, 828);
+            this.Test7_button.Name = "Test7_button";
+            this.Test7_button.Size = new System.Drawing.Size(114, 23);
+            this.Test7_button.TabIndex = 267;
+            this.Test7_button.Text = "Nozzle to up cam";
+            this.Test7_button.UseVisualStyleBackColor = true;
+            this.Test7_button.Click += new System.EventHandler(this.Test7_button_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1258, 856);
+            this.Controls.Add(this.Test7_button);
             this.Controls.Add(this.MeasureAndSet_button);
             this.Controls.Add(this.ShowPixels_checkBox);
             this.Controls.Add(this.SetCurrentPosition_button);
@@ -10467,6 +10479,7 @@
         public System.Windows.Forms.Label labelSerialPortStatus;
         public System.Windows.Forms.ComboBox comboBoxSerialPorts;
         public System.Windows.Forms.Label NoPort_label;
+        private System.Windows.Forms.Button Test7_button;
     }
 }
 

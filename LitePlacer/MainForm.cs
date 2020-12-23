@@ -10326,10 +10326,11 @@ namespace LitePlacer
         {
             Test1_button.Text = "Pickup this";
             Test2_button.Text = "Place here";
-            Test3_button.Text = "Probe (n.c.)";
-            Test4_button.Text = "Nozzle to cam";
-            Test5_button.Text = "Probe down";
-            Test6_button.Text = "Nozzle up";
+            Test3_button.Text = "Probe down";
+            Test4_button.Text = "Probe (n.c.)";
+            Test5_button.Text = "Nozzle up";
+            Test6_button.Text = "Nozzle to down cam";
+            Test7_button.Text = "Nozzle to up cam";
         }
 
         // test 1
@@ -10362,9 +10363,9 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
+            DisplayText("test 2: Place here (probing)");
             double Xmark = Cnc.CurrentX;
             double Ymark = Cnc.CurrentY;
-            DisplayText("test 2: Place here (probing)");
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
             {
                 return;
@@ -10376,39 +10377,14 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // test 3 "Probe (n.c.)"
+        // test 3 
 
         private void Test3_button_Click(object sender, EventArgs e)
         {
+            // Probe (no correction)
             if (!CheckPositionConfidence()) return;
 
-            CNC_XYA_m(  (Cnc.CurrentX + Setting.DownCam_NozzleOffsetX), 
-                        (Cnc.CurrentY + Setting.DownCam_NozzleOffsetY), Cnc.CurrentA);
-            Nozzle_ProbeDown_m();
-        }
-
-
-        // =================================================================================
-        // test 4 "Nozzle to cam"
-
-        private void Test4_button_Click(object sender, EventArgs e)
-        {
-            if (!CheckPositionConfidence()) return;
-
-            double xp = Setting.UpCam_PositionX;
-            double xo = Setting.DownCam_NozzleOffsetX;
-            double yp = Setting.UpCam_PositionY;
-            double yo = Setting.DownCam_NozzleOffsetY;
-            Nozzle.Move_m(xp - xo, yp - yo, Cnc.CurrentA);
-        }
-
-        // =================================================================================
-        // test 5 "Probe down";
-
-        private void Test5_button_Click(object sender, EventArgs e)
-        {
-            if (!CheckPositionConfidence()) return;
-
+            DisplayText("test 3: Probe down (using nozzle correction)");
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
             {
                 return;
@@ -10417,13 +10393,50 @@ namespace LitePlacer
             Nozzle_ProbeDown_m();
         }
 
+
+        // =================================================================================
+        // test 4 
+
+        private void Test4_button_Click(object sender, EventArgs e)
+        {
+            if (!CheckPositionConfidence()) return;
+
+            DisplayText("test 4: Probe down (no correction)");
+            CNC_XYA_m((Cnc.CurrentX + Setting.DownCam_NozzleOffsetX),
+                        (Cnc.CurrentY + Setting.DownCam_NozzleOffsetY), Cnc.CurrentA);
+            Nozzle_ProbeDown_m();
+        }
+
+        // =================================================================================
+        // test 5
+
+        private void Test5_button_Click(object sender, EventArgs e)
+        {
+            DisplayText("test 5: Nozzle up");
+            CNC_Z_m(0);  // go up
+        }
+
         // =================================================================================
         // test 6
         private void Test6_button_Click(object sender, EventArgs e)
         {
-            DisplayText("test 6: Nozzle up");
-            CNC_Z_m(0);  // go up
-            // CNC_XYa_m(Xmark, Ymark, Cnc.CurrentA);
+            DisplayText("test 6: Nozzle  to down cam");
+            CNC_XYA_m((Cnc.CurrentX + Setting.DownCam_NozzleOffsetX),
+                        (Cnc.CurrentY + Setting.DownCam_NozzleOffsetY), Cnc.CurrentA);
+        }
+
+        // =================================================================================
+        // test 7
+        private void Test7_button_Click(object sender, EventArgs e)
+        {
+            if (!CheckPositionConfidence()) return;
+
+            DisplayText("test 7: Nozzle to up cam (do nozzle down to check)");
+            double xp = Setting.UpCam_PositionX;
+            double xo = Setting.DownCam_NozzleOffsetX;
+            double yp = Setting.UpCam_PositionY;
+            double yo = Setting.DownCam_NozzleOffsetY;
+            Nozzle.Move_m(xp - xo, yp - yo, Cnc.CurrentA);
         }
 
         #endregion test functions
@@ -12787,6 +12800,7 @@ namespace LitePlacer
         {
             Setting.CNC_OptimizeA = OptimizeA_checkBox2.Checked;
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 
