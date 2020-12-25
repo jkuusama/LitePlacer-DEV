@@ -1639,14 +1639,16 @@
             // HoleTest_maskedTextBox
             // 
             this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(243, 519);
-            this.HoleTest_maskedTextBox.Mask = "999";
             this.HoleTest_maskedTextBox.Name = "HoleTest_maskedTextBox";
             this.HoleTest_maskedTextBox.PromptChar = ' ';
+            this.HoleTest_maskedTextBox.ResetOnSpace = false;
             this.HoleTest_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.HoleTest_maskedTextBox.Size = new System.Drawing.Size(32, 22);
             this.HoleTest_maskedTextBox.TabIndex = 48;
             this.HoleTest_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.HoleTest_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.HoleTest_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HoleTest_maskedTextBox_KeyPress);
+            this.HoleTest_maskedTextBox.Leave += new System.EventHandler(this.HoleTest_maskedTextBox_Leave);
             // 
             // ReloadTray_button
             // 
