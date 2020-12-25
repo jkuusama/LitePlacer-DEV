@@ -10133,6 +10133,25 @@ namespace LitePlacer
 
             // fix #22 calculate new next coordinates if column was changed
             // only update next coordinates if corresponding column has been changed and rowIndex > 0
+        }
+
+        private void Tapes_dataGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
+            if (StartingUp || LoadingDataGrid)
+            {
+                return;
+            }
+            if ((col < 0) || (col > Tapes_dataGridView.Columns.Count))
+            {
+                return;
+            }
+            if (row < 0)
+            {
+                return;
+            }
+
             if ((Tapes_dataGridView.Columns[e.ColumnIndex].HeaderText == "Next") && (e.RowIndex >= 0))
             {
                 int NextNo = 1;
@@ -10162,7 +10181,6 @@ namespace LitePlacer
                 return;
             }
         }
-
 
         // =================================================================================
         // Trays:
