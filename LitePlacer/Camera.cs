@@ -325,7 +325,8 @@ namespace LitePlacer
 
         enum DataGridViewColumns { Function, Active, Int, Double, R, G, B };
 
-        public delegate void AForge_op(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B);
+        public delegate void AForge_op(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B, 
+            double par_dA, double par_dB, double par_dC);
         class AForgeFunction
         {
             public AForge_op func { get; set; }
@@ -334,6 +335,9 @@ namespace LitePlacer
             public int R { get; set; }              // and some need R, B, G values.
             public int G { get; set; }
             public int B { get; set; }
+            public double parameter_doubleA { get; set; }
+            public double parameter_doubleB { get; set; }
+            public double parameter_doubleC { get; set; }
         }
 
 
@@ -415,6 +419,10 @@ namespace LitePlacer
                         f.func = HoughCirclesFunct; 
                         break;
 
+                    case "Pads to Component":
+                        f.func = PadsToComponentFunct;
+                        break;
+
                     default:
                         continue;
                         // break; 
@@ -424,9 +432,13 @@ namespace LitePlacer
                 f.R = UIfucnt.R;
                 f.B = UIfucnt.B;
                 f.G = UIfucnt.G;
+                f.parameter_doubleA = UIfucnt.parameterDoubleA;
+                f.parameter_doubleB = UIfucnt.parameterDoubleB;
+                f.parameter_doubleC = UIfucnt.parameterDoubleC;
                 NewList.Add(f);
                 MainForm.DisplayText(UIfucnt.Name + ", " + f.parameter_int.ToString() + ", " + f.parameter_double.ToString() + ", "
-                    + f.R.ToString() + ", " + f.G.ToString() + ", " + f.B.ToString());
+                    + f.R.ToString() + ", " + f.G.ToString() + ", " + f.B.ToString()
+                    + f.parameter_doubleA.ToString() + ", " + f.parameter_doubleB.ToString() + ", " + f.parameter_doubleC.ToString());
             };
             return NewList;
         }
@@ -672,7 +684,8 @@ namespace LitePlacer
                 {
                     foreach (AForgeFunction f in DisplayFunctions)
                     {
-                        f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B);
+                        f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B, 
+                            f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
                     }
 
                     if (FindCircles)
@@ -762,9 +775,15 @@ namespace LitePlacer
         // ==========================================================================================================
         // Note, that each function needs to keep the image in RGB, otherwise drawing fill fail 
 
-        // ========================================================= 
+        // =========================================================  
+        private void PadsToComponentFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
+        {
 
-        private void NoiseReduction_Funct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        }
+
+        private void NoiseReduction_Funct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);    // Make gray
             switch (par_int)
@@ -799,7 +818,8 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void Edge_detectFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void Edge_detectFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);    // Make gray
             switch (par_int)
@@ -835,21 +855,24 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void InvertFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void InvertFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             Invert filter = new Invert();
             filter.ApplyInPlace(frame);
         }
 
         // =========================================================
-        private void ErosionFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void ErosionFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             Erosion filter = new Erosion();
             filter.ApplyInPlace(frame);
         }
 
         // =========================================================
-        private void HistogramFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void HistogramFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             // create MirrFilter
             HistogramEqualization filter = new HistogramEqualization();
@@ -859,7 +882,8 @@ namespace LitePlacer
 
 
         // =========================================================
-        private void BlurFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void BlurFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             // create filter
             Blur filter = new Blur();
@@ -869,7 +893,8 @@ namespace LitePlacer
 
 
         // =========================================================
-        private void GaussianBlurFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void GaussianBlurFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             // create filter with kernel size equal to 11
             GaussianBlur filter = new GaussianBlur(par_d, 11);
@@ -877,7 +902,8 @@ namespace LitePlacer
             filter.ApplyInPlace(frame);
         }
 
-        private void HoughCirclesFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void HoughCirclesFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             HoughCircleTransformation circleTransform = new HoughCircleTransformation(2* par_int);
             // apply Hough circle transform
@@ -893,7 +919,8 @@ namespace LitePlacer
 
 
         // =========================================================
-        private void KillColor_Func(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void KillColor_Func(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             // create MirrFilter
             EuclideanColorFiltering filter = new EuclideanColorFiltering();
@@ -906,7 +933,8 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void KeepColor_Func(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void KeepColor_Func(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             // create MirrFilter
             EuclideanColorFiltering filter = new EuclideanColorFiltering();
@@ -919,7 +947,8 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void ThresholdFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void ThresholdFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             frame = Grayscale.CommonAlgorithms.RMY.Apply(frame);
             Threshold filter = new Threshold(par_int);
@@ -930,7 +959,8 @@ namespace LitePlacer
 
 
         // =========================================================
-        private void GrayscaleFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void GrayscaleFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             Grayscale toGrFilter = new Grayscale(0.2125, 0.7154, 0.0721);       // create grayscale MirrFilter (BT709)
             Bitmap fr = toGrFilter.Apply(frame);
@@ -939,7 +969,8 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void Contrast_scretchFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void Contrast_scretchFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             ContrastStretch filter = new ContrastStretch();
             // process image
@@ -947,7 +978,8 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void Meas_ZoomFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B)
+        private void Meas_ZoomFunc(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+            double par_dA, double par_dB, double par_dC)
         {
             ZoomFunct(ref frame, par_d);
         }
@@ -2131,7 +2163,8 @@ namespace LitePlacer
             {
                 foreach (AForgeFunction f in MeasurementFunctions)
                 {
-                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.B, f.G);
+                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.B, f.G,
+                        f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
                 }
             }
             return TemporaryFrame;

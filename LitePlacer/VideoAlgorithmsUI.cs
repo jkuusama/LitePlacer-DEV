@@ -32,10 +32,8 @@ namespace LitePlacer
     {
         enum Functions_dataGridViewColumns : int { FunctionColumn, ActiveColumn };
         public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", "Grayscale", "Edge detect",
-                "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles"};
+                "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles", "Pads to Component"};
         
-        //public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", "Grayscale", "Edge detect",
-        //        "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles", "Filter blobs"};
 
         public VideoAlgorithmsCollection VideoAlgorithms;
 
@@ -764,8 +762,10 @@ namespace LitePlacer
                 VideoAlgorithms.CurrentAlgorithm.FunctionList[row].Name = FunctionName;
                 SetFunctionDefaultParameters(FunctionName);
                 VideoAlgorithms.CurrentAlgorithm.FunctionList[row].Active = false;  // newly selected function is inactive by default
+                Functions_dataGridView.Rows[row].Cells[ActiveCol].Value = false;
+                Update_GridView(Functions_dataGridView);
                 UpdateParameterTargets(FunctionName);
-                // No need to update video processing
+                UpdateVideoProcessing();
             }
             else
             {
@@ -827,7 +827,7 @@ namespace LitePlacer
         // =====================================================================================
 
         // To add a function to UI: Add its name and default parameters to the case clause in function SetFunctionDefaultParameters().
-        // Enable the required parameters in UpdateParameterTargets)( and write the explanation text there.
+        // Enable the required parameters in UpdateParameterTargets() and write the explanation text there.
         // Add the function to Camera.cs, section "Functions compatible with lists:"
 
 
@@ -838,8 +838,9 @@ namespace LitePlacer
             switch (FunctionName)
             {
                 // switch by the selected algorithm:  
-                case "Filter blobs":
-                    funct.parameterDouble = 10.0;
+                case "Pads to Component":
+                    funct.parameterDoubleA = 1.0;
+                    funct.parameterDoubleB = 4.0;
                     break;
 
                 case "Blur":
@@ -910,7 +911,14 @@ namespace LitePlacer
             // and put in default values
             switch (Name)
             {
-                // switch by the selected algorithm:  
+                // switch by the selected algorithm:
+                case "Pads to Component":
+                    FunctionExplanation_textBox.Text = "Combines several pads to a single component";
+                    FunctionExplanation_textBox.Visible = true;
+                    EnableDoubleA("Pad size min:");
+                    EnableDoubleB("Pad size max:");
+                    break;
+
                 case "Blur":
                     // no parameters
                     FunctionExplanation_textBox.Text = "Blurs the image, reducing the effects of camera noise " +
@@ -1026,6 +1034,35 @@ namespace LitePlacer
                 DoubleParameter_label.Visible = true;
             }
 
+            void EnableDoubleA(string label)
+            {
+                DoubleParA_textBox.Text =
+                    VideoAlgorithms.CurrentAlgorithm.FunctionList[VideoAlgorithms.CurrentFunctionIndex].parameterDoubleA.ToString();
+                DoubleParA_textBox.Visible = true;
+                R_label.Text = label;
+                R_label.Visible = true;
+            }
+
+            void EnableDoubleB(string label)
+            {
+                DoubleParB_textBox.Text =
+                    VideoAlgorithms.CurrentAlgorithm.FunctionList[VideoAlgorithms.CurrentFunctionIndex].parameterDoubleB.ToString();
+                DoubleParB_textBox.Visible = true;
+                G_label.Text = label;
+                G_label.Visible = true;
+            }
+
+            /*
+            void EnableDoubleC(string label)
+            {
+                DoubleParC_textBox.Text =
+                    VideoAlgorithms.CurrentAlgorithm.FunctionList[VideoAlgorithms.CurrentFunctionIndex].parameterDoubleC.ToString();
+                DoubleParC_textBox.Visible = true;
+                B_label.Text = label;
+                B_label.Visible = true;
+            }
+            */
+
             void EnableRGB(string label)
             {
                 R_label.Visible = true;
@@ -1057,6 +1094,13 @@ namespace LitePlacer
             DoubleParameter_label.Visible = false;
             DoubleParameter_textBox.Text = "";
             DoubleParameter_textBox.Visible = false;
+
+            DoubleParA_textBox.Text = "";
+            DoubleParA_textBox.Visible = false;
+            DoubleParB_textBox.Text = "";
+            DoubleParB_textBox.Visible = false;
+            DoubleParC_textBox.Text = "";
+            DoubleParC_textBox.Visible = false;
 
             RGBParameter_label.Text = "--";
             RGBParameter_label.Visible = false;
@@ -1120,19 +1164,60 @@ namespace LitePlacer
             UpdateVideoProcessing();
         }
 
-        private void DoubleParameter_textBox_TextChanged(object sender, EventArgs e)
+        private bool DoubletextBox_TextChanged(TextBox box, ref double val)
         {
-            double val = 0.0;
-            CommasToPoints(DoubleParameter_textBox);
-            if (double.TryParse(DoubleParameter_textBox.Text, out val))
+            CommasToPoints(box);
+            if (double.TryParse(box.Text, out val))
             {
-                Ymin_textBox.ForeColor = Color.Black;
-                VideoAlgorithms.CurrentFunction_NewDouble(val);
-                UpdateVideoProcessing();
+                box.ForeColor = Color.Black;
+                return true;
             }
             else
             {
-                Ymin_textBox.ForeColor = Color.Red;
+                box.ForeColor = Color.Red;
+                return false;
+            }
+        }
+
+
+
+        private void DoubleParameter_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val = 0.0;
+            if (DoubletextBox_TextChanged(DoubleParameter_textBox, ref val))
+            {
+                VideoAlgorithms.CurrentFunction_NewDouble(val);
+                UpdateVideoProcessing();
+            }
+        }
+
+        private void DoubleParA_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val = 0.0;
+            if (DoubletextBox_TextChanged(DoubleParA_textBox, ref val))
+            {
+                VideoAlgorithms.CurrentFunction_NewDoubleParA(val);
+                UpdateVideoProcessing();
+            }
+        }
+
+        private void DoubleParB_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val = 0.0;
+            if (DoubletextBox_TextChanged(DoubleParB_textBox, ref val))
+            {
+                VideoAlgorithms.CurrentFunction_NewDoubleParB(val);
+                UpdateVideoProcessing();
+            }
+        }
+
+        private void DoubleParC_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val = 0.0;
+            if (DoubletextBox_TextChanged(DoubleParC_textBox, ref val))
+            {
+                VideoAlgorithms.CurrentFunction_NewDoubleParC(val);
+                UpdateVideoProcessing();
             }
         }
 

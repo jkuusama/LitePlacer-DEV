@@ -114,6 +114,48 @@ namespace LitePlacer
             }
         }
 
+        public void CurrentFunction_NewDoubleParA(double val)
+        {
+            if (CurrentAlgorithm != null)
+            {
+                if (CurrentAlgorithm.FunctionList.Count != 0)
+                {
+                    if ((CurrentFunctionIndex >= 0) && ((CurrentFunctionIndex < CurrentAlgorithm.FunctionList.Count)))
+                    {
+                        CurrentAlgorithm.FunctionList[CurrentFunctionIndex].parameterDoubleA = val;
+                    }
+                }
+            }
+        }
+
+        public void CurrentFunction_NewDoubleParB(double val)
+        {
+            if (CurrentAlgorithm != null)
+            {
+                if (CurrentAlgorithm.FunctionList.Count != 0)
+                {
+                    if ((CurrentFunctionIndex >= 0) && ((CurrentFunctionIndex < CurrentAlgorithm.FunctionList.Count)))
+                    {
+                        CurrentAlgorithm.FunctionList[CurrentFunctionIndex].parameterDoubleB = val;
+                    }
+                }
+            }
+        }
+
+        public void CurrentFunction_NewDoubleParC(double val)
+        {
+            if (CurrentAlgorithm != null)
+            {
+                if (CurrentAlgorithm.FunctionList.Count != 0)
+                {
+                    if ((CurrentFunctionIndex >= 0) && ((CurrentFunctionIndex < CurrentAlgorithm.FunctionList.Count)))
+                    {
+                        CurrentAlgorithm.FunctionList[CurrentFunctionIndex].parameterDoubleC = val;
+                    }
+                }
+            }
+        }
+
         public void CurrentFunction_NewR(int val)
         {
             if (CurrentAlgorithm != null)

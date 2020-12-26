@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -602,6 +602,9 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
+            this.DoubleParC_textBox = new System.Windows.Forms.TextBox();
+            this.DoubleParB_textBox = new System.Windows.Forms.TextBox();
+            this.DoubleParA_textBox = new System.Windows.Forms.TextBox();
             this.AdvancedProcessing_tabControl = new System.Windows.Forms.TabControl();
             this.NozzleCalibration_tabPage = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -7048,14 +7051,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7317,6 +7320,9 @@
             // 
             // Algorithms_tabPage
             // 
+            this.Algorithms_tabPage.Controls.Add(this.DoubleParC_textBox);
+            this.Algorithms_tabPage.Controls.Add(this.DoubleParB_textBox);
+            this.Algorithms_tabPage.Controls.Add(this.DoubleParA_textBox);
             this.Algorithms_tabPage.Controls.Add(this.AdvancedProcessing_tabControl);
             this.Algorithms_tabPage.Controls.Add(this.SpecialProcessing_button);
             this.Algorithms_tabPage.Controls.Add(this.tabControl1);
@@ -7386,6 +7392,33 @@
             this.Algorithms_tabPage.TabIndex = 8;
             this.Algorithms_tabPage.Text = "Setup Video Processing";
             this.Algorithms_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // DoubleParC_textBox
+            // 
+            this.DoubleParC_textBox.Location = new System.Drawing.Point(965, 464);
+            this.DoubleParC_textBox.Name = "DoubleParC_textBox";
+            this.DoubleParC_textBox.Size = new System.Drawing.Size(48, 20);
+            this.DoubleParC_textBox.TabIndex = 311;
+            this.DoubleParC_textBox.Visible = false;
+            this.DoubleParC_textBox.TextChanged += new System.EventHandler(this.DoubleParC_textBox_TextChanged);
+            // 
+            // DoubleParB_textBox
+            // 
+            this.DoubleParB_textBox.Location = new System.Drawing.Point(965, 425);
+            this.DoubleParB_textBox.Name = "DoubleParB_textBox";
+            this.DoubleParB_textBox.Size = new System.Drawing.Size(48, 20);
+            this.DoubleParB_textBox.TabIndex = 310;
+            this.DoubleParB_textBox.Visible = false;
+            this.DoubleParB_textBox.TextChanged += new System.EventHandler(this.DoubleParB_textBox_TextChanged);
+            // 
+            // DoubleParA_textBox
+            // 
+            this.DoubleParA_textBox.Location = new System.Drawing.Point(965, 386);
+            this.DoubleParA_textBox.Name = "DoubleParA_textBox";
+            this.DoubleParA_textBox.Size = new System.Drawing.Size(48, 20);
+            this.DoubleParA_textBox.TabIndex = 309;
+            this.DoubleParA_textBox.Visible = false;
+            this.DoubleParA_textBox.TextChanged += new System.EventHandler(this.DoubleParA_textBox_TextChanged);
             // 
             // AdvancedProcessing_tabControl
             // 
@@ -10483,6 +10516,9 @@
         public System.Windows.Forms.ComboBox comboBoxSerialPorts;
         public System.Windows.Forms.Label NoPort_label;
         private System.Windows.Forms.Button Test7_button;
+        private System.Windows.Forms.TextBox DoubleParC_textBox;
+        private System.Windows.Forms.TextBox DoubleParB_textBox;
+        private System.Windows.Forms.TextBox DoubleParA_textBox;
     }
 }
 

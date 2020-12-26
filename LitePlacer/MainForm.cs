@@ -10664,7 +10664,7 @@ namespace LitePlacer
             byte B = 0;
             Color pixelColor;
             int deb = 0;
-            Bitmap img = (Bitmap)Cam_pictureBox.Image.Clone();
+            Bitmap img = (Bitmap)Cam_pictureBox.Image;
             if (img!=null)
             {
                 for (int ix = X - 2; ix <= X + 2; ix++)
@@ -12835,7 +12835,7 @@ namespace LitePlacer
 
         private void HoleTest_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // not strictly necesasry because of the above, but makes it behave nicer
+            // not strictly necessary because of the above, but makes it behave nicer
             if ((e.KeyChar > 'a') && (e.KeyChar < 'z'))
             {
                 e.Handled = true;
@@ -12852,6 +12852,7 @@ namespace LitePlacer
                 return;
             }
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 
