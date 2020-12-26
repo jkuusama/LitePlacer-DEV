@@ -97,7 +97,7 @@ namespace LitePlacer
                 double A;
                 A = Math.Atan((x1 - x0) / (y1 - y0));
                 A = A * 180.0 / Math.PI; // in deg.
-                if (A<0)
+                if (A<-45.0)
                 {
                     A = A + 90.0;
                 }

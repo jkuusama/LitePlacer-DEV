@@ -4142,6 +4142,10 @@ namespace LitePlacer
         {
             if (InvokeRequired) { Invoke(new Action(UpdateCncConnectionStatus)); return; }
 
+            if (StartingUp)
+            {
+                return;
+            }
             if (Setting.CNC_SerialPort=="")
             {
                 // user has not tried to connect yet. A message is 
