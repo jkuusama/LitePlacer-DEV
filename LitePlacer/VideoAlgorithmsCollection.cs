@@ -170,6 +170,9 @@ namespace LitePlacer
         public int R = 0;                       // and some need R, B, G values.
         public int G = 0;                       // Some need many of these.
         public int B = 0;
+        public double parameterDoubleA = 0.0;
+        public double parameterDoubleB = 0.0;
+        public double parameterDoubleC = 0.0;
     }
 
     public class MeasurementParametersClass

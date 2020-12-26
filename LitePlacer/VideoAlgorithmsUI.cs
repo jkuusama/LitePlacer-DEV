@@ -827,7 +827,7 @@ namespace LitePlacer
         // =====================================================================================
 
         // To add a function to UI: Add its name and default parameters to the case clause in function SetFunctionDefaultParameters().
-        // Enable the required parameters in UpdateParameterTargets)( and write the explanatiopn text there.
+        // Enable the required parameters in UpdateParameterTargets)( and write the explanation text there.
         // Add the function to Camera.cs, section "Functions compatible with lists:"
 
 
@@ -954,7 +954,7 @@ namespace LitePlacer
                 case "Kill color":
                     // int and RGB parameter
                     EnableInt(0, 255, "Radius:");
-                    EnableRGB("Color to remove");
+                    EnableRGB("Color to remove: ");
                     FunctionExplanation_textBox.Text = "Removes color that is inside of RGB sphere " +
                         "with specified center color and radius.";
                     FunctionExplanation_textBox.Visible = true;
@@ -963,8 +963,8 @@ namespace LitePlacer
                 case "Keep color":
                     // int and RGB parameter
                     EnableInt(0, 255, "Radius:");
-                    EnableRGB("Color to keep:");
-                    FunctionExplanation_textBox.Text = "Removes color that is outside of RGB sphere " +
+                    EnableRGB("Color to keep: ");
+                    FunctionExplanation_textBox.Text = "Keeps color that is outside of RGB sphere " +
                         "with specified center color and radius.";
                     FunctionExplanation_textBox.Visible = true;
                     break;
