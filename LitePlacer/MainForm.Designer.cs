@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -894,7 +894,7 @@
             // 
             // DownCamZoomFactor_textBox
             // 
-            this.DownCamZoomFactor_textBox.Location = new System.Drawing.Point(542, 694);
+            this.DownCamZoomFactor_textBox.Location = new System.Drawing.Point(555, 695);
             this.DownCamZoomFactor_textBox.Name = "DownCamZoomFactor_textBox";
             this.DownCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 20);
             this.DownCamZoomFactor_textBox.TabIndex = 57;
@@ -907,7 +907,7 @@
             // DownCamZoom_checkBox
             // 
             this.DownCamZoom_checkBox.AutoSize = true;
-            this.DownCamZoom_checkBox.Location = new System.Drawing.Point(444, 673);
+            this.DownCamZoom_checkBox.Location = new System.Drawing.Point(479, 673);
             this.DownCamZoom_checkBox.Name = "DownCamZoom_checkBox";
             this.DownCamZoom_checkBox.Size = new System.Drawing.Size(104, 17);
             this.DownCamZoom_checkBox.TabIndex = 56;
@@ -1053,7 +1053,7 @@
             this.SerialMonitor_richTextBox.Location = new System.Drawing.Point(3, 665);
             this.SerialMonitor_richTextBox.Name = "SerialMonitor_richTextBox";
             this.SerialMonitor_richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(435, 187);
+            this.SerialMonitor_richTextBox.Size = new System.Drawing.Size(470, 187);
             this.SerialMonitor_richTextBox.TabIndex = 16;
             this.SerialMonitor_richTextBox.TabStop = false;
             this.SerialMonitor_richTextBox.Text = "";
@@ -1105,7 +1105,7 @@
             // 
             // UpCamZoomFactor_textBox
             // 
-            this.UpCamZoomFactor_textBox.Location = new System.Drawing.Point(542, 747);
+            this.UpCamZoomFactor_textBox.Location = new System.Drawing.Point(555, 747);
             this.UpCamZoomFactor_textBox.Name = "UpCamZoomFactor_textBox";
             this.UpCamZoomFactor_textBox.Size = new System.Drawing.Size(38, 20);
             this.UpCamZoomFactor_textBox.TabIndex = 59;
@@ -1118,7 +1118,7 @@
             // UpCamZoom_checkBox
             // 
             this.UpCamZoom_checkBox.AutoSize = true;
-            this.UpCamZoom_checkBox.Location = new System.Drawing.Point(444, 723);
+            this.UpCamZoom_checkBox.Location = new System.Drawing.Point(479, 723);
             this.UpCamZoom_checkBox.Name = "UpCamZoom_checkBox";
             this.UpCamZoom_checkBox.Size = new System.Drawing.Size(90, 17);
             this.UpCamZoom_checkBox.TabIndex = 58;
@@ -7051,14 +7051,14 @@
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7684,7 +7684,6 @@
             this.SearchComponents_checkBox.TabIndex = 253;
             this.SearchComponents_checkBox.Text = "Components";
             this.SearchComponents_checkBox.UseVisualStyleBackColor = true;
-            this.SearchComponents_checkBox.Visible = false;
             this.SearchComponents_checkBox.CheckedChanged += new System.EventHandler(this.SearchComponents_checkBox_CheckedChanged);
             // 
             // SearchRectangles_checkBox
@@ -9305,7 +9304,7 @@
             // 
             this.ShowPixels_checkBox.AutoSize = true;
             this.ShowPixels_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShowPixels_checkBox.Location = new System.Drawing.Point(444, 775);
+            this.ShowPixels_checkBox.Location = new System.Drawing.Point(479, 775);
             this.ShowPixels_checkBox.Name = "ShowPixels_checkBox";
             this.ShowPixels_checkBox.Size = new System.Drawing.Size(82, 17);
             this.ShowPixels_checkBox.TabIndex = 265;
@@ -9546,7 +9545,7 @@
             // VigorousHoming_checkBox
             // 
             this.VigorousHoming_checkBox.AutoSize = true;
-            this.VigorousHoming_checkBox.Location = new System.Drawing.Point(444, 798);
+            this.VigorousHoming_checkBox.Location = new System.Drawing.Point(479, 798);
             this.VigorousHoming_checkBox.Name = "VigorousHoming_checkBox";
             this.VigorousHoming_checkBox.Size = new System.Drawing.Size(106, 17);
             this.VigorousHoming_checkBox.TabIndex = 110;
@@ -9557,7 +9556,7 @@
             // label164
             // 
             this.label164.AutoSize = true;
-            this.label164.Location = new System.Drawing.Point(444, 698);
+            this.label164.Location = new System.Drawing.Point(479, 698);
             this.label164.Name = "label164";
             this.label164.Size = new System.Drawing.Size(70, 13);
             this.label164.TabIndex = 112;
@@ -9566,7 +9565,7 @@
             // label165
             // 
             this.label165.AutoSize = true;
-            this.label165.Location = new System.Drawing.Point(444, 750);
+            this.label165.Location = new System.Drawing.Point(479, 750);
             this.label165.Name = "label165";
             this.label165.Size = new System.Drawing.Size(70, 13);
             this.label165.TabIndex = 113;

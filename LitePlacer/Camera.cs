@@ -779,7 +779,19 @@ namespace LitePlacer
         private void PadsToComponentFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
             double par_dA, double par_dB, double par_dC)
         {
-
+            // Find limits
+            int MinSize = Convert.ToInt32(par_dA / XmmPerPixel);
+            int MaxSize = Convert.ToInt32(par_dB / XmmPerPixel);
+            // create filter
+            BlobsFiltering filter = new BlobsFiltering();
+            // configure filter
+            filter.CoupledSizeFiltering = true;
+            filter.MinWidth = MinSize;
+            filter.MinHeight = MinSize;
+            filter.MaxHeight = MaxSize;
+            filter.MaxWidth = MaxSize;
+            // apply the filter
+            filter.ApplyInPlace(frame);
         }
 
         private void NoiseReduction_Funct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
@@ -2220,19 +2232,21 @@ namespace LitePlacer
             string Ysize;
             string SizeXmm;
             string SizeYmm;
+            string A;
 
             for (int i = StartFrom; i < Shapes.Count; i++)
             {
                 Xpxls = String.Format("{0,6:0.0}", Shapes[i].Center.X - FrameCenterX);
-                Xmms = String.Format("{0,6:0.000}", (Shapes[i].Center.X - FrameCenterX) * XmmPpix);
                 Ypxls = String.Format("{0,6:0.0}", FrameCenterY - Shapes[i].Center.Y);
-                Ymms = String.Format("{0,6:0.000}", (FrameCenterY - Shapes[i].Center.Y) * YmmPpix);
+                Xmms = String.Format("{0,7:0.000}", (Shapes[i].Center.X - FrameCenterX) * XmmPpix);
+                Ymms = String.Format("{0,7:0.000}", (FrameCenterY - Shapes[i].Center.Y) * YmmPpix);
                 Xsize = String.Format("{0,5:0.0}", Shapes[i].Xsize);
                 Ysize = String.Format("{0,5:0.0}", Shapes[i].Ysize);
-                SizeXmm = String.Format("{0,5:0.00}", Shapes[i].Xsize * XmmPpix);
-                SizeYmm = String.Format("{0,5:0.00}", Shapes[i].Ysize * YmmPpix);
-                OutString = "pos: " + Xpxls + ", " + Ypxls + "px; " + Xmms + ", " + Ymms + "mm; " +
-                    "size: " + Xsize + ", " + Ysize + "px; " + SizeXmm + ", " + SizeYmm + "mm";
+                SizeXmm = String.Format("{0,4:0.00}", Shapes[i].Xsize * XmmPpix);
+                SizeYmm = String.Format("{0,4:0.00}", Shapes[i].Ysize * YmmPpix);
+                A= String.Format("{0,5:0.00}", Shapes[i].Angle);
+                OutString = "p: " + Xpxls + ", " + Ypxls + "px; " + Xmms + ", " + Ymms + "mm; " +
+                    "s: " + Xsize + ", " + Ysize + "px; " + SizeXmm + ", " + SizeYmm + "mm; A: " + A;
                 MainForm.DisplayText(OutString);
             }
         }
@@ -2247,10 +2261,11 @@ namespace LitePlacer
             return Math.Sqrt(X * X + Y * Y);
         }
 
-        public bool Measure(out double Xresult, out double Yresult, out int err, bool DisplayResults = false )
+        public bool Measure(out double Xresult, out double Yresult, out double Aresult, out int err, bool DisplayResults = false )
         {
             Xresult = 0.0;
             Yresult = 0.0;
+            Aresult = 0.0;
             err = 0;
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -2311,8 +2326,8 @@ namespace LitePlacer
                     {
                         Center = regt.Center,
                         Angle = regt.Angle,
-                        Xsize = regt.LongsideLenght,
-                        Ysize=regt.ShortSideLenght
+                        Xsize = regt.Xsize,
+                        Ysize = regt.Ysize
                     });
                 }
                 stopwatch.Stop();
@@ -2333,7 +2348,9 @@ namespace LitePlacer
                     Candidates.Add(new Shapes.Shape()
                     {
                         Center = comp.Center,
-                        Angle = comp.Angle
+                        Angle = comp.Angle,
+                        Xsize = comp.Xsize,
+                        Ysize = comp.Ysize
                     });
                 }
 
@@ -2429,6 +2446,7 @@ namespace LitePlacer
             }
             Xresult = (FilteredForSize[ResultIndex].Center.X - FrameCenterX) * XmmPpix;
             Yresult = (FrameCenterY - FilteredForSize[ResultIndex].Center.Y) * YmmPpix;
+            Aresult = FilteredForSize[ResultIndex].Angle;
 
             stopwatch.Stop();
             if (DisplayResults)

@@ -45,66 +45,79 @@ namespace LitePlacer
         public class Rectangle : Shape
         {
             public List<IntPoint> Corners { get; set; }
-            public double LongsideLenght { get; }
-            public double ShortSideLenght { get; }
 
-            public Rectangle(List<IntPoint> corners)
+            public Rectangle(List<IntPoint> cornersIn)
             {
-                Corners = corners;
+                // corners are in clockwise order, but not necessarily
+                // in order. Rearrange so, that x0 is lowest:
+                // Find lowest x0
+                double lowest= cornersIn[0].X;
+                int lowIndex = 0;
+                for (int i = 1; i < 4; i++)
+                {
+                    if (cornersIn[i].X< lowest)
+                    {
+                        lowIndex = i;
+                        lowest = cornersIn[i].X;
+                    }
+                }
+                Corners = new List<IntPoint>();
+                for (int i = 0; i < 4; i++)
+                {
+                    Corners.Add(cornersIn[lowIndex++]);
+                    if (lowIndex>3)
+                    {
+                        lowIndex = 0;
+                    }
+                }
+
+                double x0 = Corners[0].X;
+                double y0 = Corners[0].Y;
+                double x1 = Corners[1].X;
+                double y1 = Corners[1].Y;
+                double x2 = Corners[2].X;
+                double y2 = Corners[2].Y;
+                double x3 = Corners[3].X;
+                double y3 = Corners[3].Y;
+
+
                 AForge.Point C = new AForge.Point();
-                double x0 = corners[0].X;
-                double y0 = corners[0].Y;
-                double x1 = corners[1].X;
-                double y1 = corners[1].Y;
-                double x2 = corners[2].X;
-                double y2 = corners[2].Y;
-
-
                 C.X = (float)(((x2 - x0) / 2.0) + x0);
                 C.Y = (float)(((y2 - y0) / 2.0) + y0);
                 Center = C;
-                double dist1;
-                double dist2;
-                if (corners[0] ==corners[1])
+
+                if (Math.Abs(x0-x1)<0.00001)    // x0 == x1
                 {
-                    dist1 = 0;
-                }
-                else
-                {
-                    dist1 = new LineSegment(corners[0], corners[1]).Length;
-                }
-                if (corners[1] == corners[2])
-                {
-                    dist2 = 0;
-                }
-                else
-                {
-                    dist2 = new LineSegment(corners[1], corners[2]).Length;
-                }
-                double A;
-                if (x1==x0)
-                {
-                    A = 0;
-                }
-                else
-                {
-                    A= Math.Atan(Math.Abs((y1 - y0) / (x1 - x0)));
-                    A = A * 180.0 / Math.PI; // in deg.
+                    Angle = 0.0;
+                    Xsize = Math.Abs(x2 - x1);
+                    Ysize = Math.Abs(y0 - y1);
+                    return;
                 }
 
-                if (dist1>dist2)
+                double A;
+                A = Math.Atan((x1 - x0) / (y1 - y0));
+                A = A * 180.0 / Math.PI; // in deg.
+                if (A<0)
                 {
-                    LongsideLenght = dist1;
-                    ShortSideLenght = dist2;
-                    // note: x0 is lowest, cor0..cor1 is long side. Angle is 0..90
-                    Angle = A;
+                    A = A + 90.0;
+                }
+                Angle = A; // -45 < A < 45
+
+                // if A < 0: Xsize = c[1] to c[2], Ysize = c[0] to c[1]
+                // if A > 0: Xsize = c[0] to c[1], Ysize= c[1] to c[2]
+
+                double c0toc1 = Math.Sqrt(((x0 - x1) * (x0 - x1)) + ((y0 - y1) * (y0 - y1)));
+                double c1toc2 = Math.Sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
+
+                if (A< 0.0)
+                {
+                    Xsize = c1toc2;
+                    Ysize = c0toc1;
                 }
                 else
                 {
-                    LongsideLenght = dist2;
-                    ShortSideLenght = dist1;
-                    // corn0..corn1 is short side. Angle is 0..-90
-                    Angle = A - 90.0;
+                    Xsize = c0toc1;
+                    Ysize = c1toc2;
                 }
             }
         }
@@ -117,8 +130,11 @@ namespace LitePlacer
 			{
                 Center = centr;
                 Radius = r;
-			}
-		}
+                Angle = 0.0;
+                Xsize = r * 2.0;
+                Ysize = r * 2.0;
+            }
+        }
 
         public class Component : Shape
             // for now, equivalent to rectangle, but we'll see if this needs to change...
@@ -128,6 +144,11 @@ namespace LitePlacer
             public Component(List<IntPoint> corners)
             {
                 BoundingBox = new Rectangle(corners);
+                Angle = BoundingBox.Angle;
+                Center = BoundingBox.Center;
+                Xsize = BoundingBox.Xsize;
+                Ysize = BoundingBox.Ysize;
+
             }
         }
 

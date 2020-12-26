@@ -2549,7 +2549,7 @@ namespace LitePlacer
             do
             {
                 Tries++;
-                DownCamera.Measure(out X, out Y, out res, false);
+                DownCamera.Measure(out X, out Y, out double Ares, out res, false);
                 if (res == 1)
                 {
                     Successes++;
@@ -2733,7 +2733,7 @@ namespace LitePlacer
                 // Measure location
                 for (tries = 0; tries < 8; tries++)
                 {
-                    if (DownCamera.Measure(out X, out Y, out res, false))
+                    if (DownCamera.Measure(out X, out Y, out double Ares, out res, false))
                     {
                         break;
                     }
