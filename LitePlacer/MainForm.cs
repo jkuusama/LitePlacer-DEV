@@ -10664,7 +10664,7 @@ namespace LitePlacer
             byte B = 0;
             Color pixelColor;
             int deb = 0;
-            Bitmap img = (Bitmap)Cam_pictureBox.Image;
+            Bitmap img = (Bitmap)Cam_pictureBox.Image.Clone();
             if (img!=null)
             {
                 for (int ix = X - 2; ix <= X + 2; ix++)
