@@ -33,7 +33,7 @@ namespace LitePlacer
         {
             string resp;
             resp= ReadLineDirectly("M115", false);
-            if (resp.Contains("{\"r\":{}"))  
+            if (resp.Contains("{\"r\":{}") || resp.Contains("tinyg"))
             {
                 MainForm.DisplayText("TinyG board found.");
                 return true;
