@@ -1,4 +1,4 @@
-﻿    // Processing tables branch
+﻿// Processing tables branch
 
 using System;
 using System.Collections.Generic;
@@ -88,9 +88,9 @@ namespace LitePlacer
             {
                 CenteredMessageBox.PrepToCenterMessageBoxOnForm(this);
                 return MessageBox.Show(this, message, header, buttons);
-           }
+            }
             return DialogResult.Cancel;
-       }
+        }
         public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
 
         // =================================================================================
@@ -156,8 +156,8 @@ namespace LitePlacer
 
             //Do_Upgrade();
 
-        // Setup error handling for Tapes_dataGridViews
-        // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
+            // Setup error handling for Tapes_dataGridViews
+            // This is necessary, because programmatically changing a combobox cell value raises this error. (@MS: booooo!)
             Tapes_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
             TapesOld_dataGridView.DataError += new DataGridViewDataErrorEventHandler(Tapes_dataGridView_DataError);
 
@@ -682,7 +682,7 @@ namespace LitePlacer
                     br1.Close();
                 }
 
-                
+
                 using (BinaryReader br = new BinaryReader(File.Open(FileName, FileMode.Open)))
                 {
                     dgv.Rows.Clear();
@@ -709,12 +709,12 @@ namespace LitePlacer
                     List<string> Headers = new List<string>();
 
                     if (Ver2)
-	                {
+                    {
                         for (int j = 0; j < cols; ++j)
                         {
                             Headers.Add(br.ReadString());
                         }
-	                }
+                    }
                     else
                     {
                         Headers = Addv1Headers(TableType);
@@ -833,7 +833,7 @@ namespace LitePlacer
         // format headers, since I didn't have the insight to write them to the file from beginning.
         // this routine does it, called from LoadDataGrid()
 
-        public List<string> Addv1Headers(DataTableType TableType )
+        public List<string> Addv1Headers(DataTableType TableType)
         {
             List<string> Headers = new List<string>();
 
@@ -877,7 +877,7 @@ namespace LitePlacer
                     Headers.Add("R_column");
                     Headers.Add("G_column");
                     Headers.Add("B_column");
-                break;
+                    break;
 
                 case DataTableType.PanelFiducials:
                     Headers.Add("Designator_Column");
@@ -885,7 +885,7 @@ namespace LitePlacer
                     Headers.Add("FirstX_Column");
                     Headers.Add("FirstY_Column");
                     Headers.Add("Rotation_Column");
-                break;
+                    break;
 
 
 
@@ -894,7 +894,7 @@ namespace LitePlacer
                         "*** Header description for " + TableType.ToString() + " missing. Programmer's error. ***",
                         "Sloppy programmer",
                         MessageBoxButtons.OK);
-                break;
+                    break;
             }
 
             return Headers;
@@ -1151,7 +1151,7 @@ namespace LitePlacer
             for (int i = 0; i < Grid.Rows.Count; i++)
             {
                 string AlgName = Grid.Rows[i].Cells["Type_Column"].Value.ToString();  // value is correct, cell content is not
-                                                                                                    // Does the algorithm exist?
+                                                                                      // Does the algorithm exist?
                 if (VideoAlgorithms.AlgorithmExists(AlgName))
                 {
                     Create = false;
@@ -1415,8 +1415,8 @@ namespace LitePlacer
 
         public bool JoggingBusy { get; set; } = false;
         List<Keys> JoggingKeys = new List<Keys>()
-	    {
-	        Keys.NumPad1,   // down + left
+        {
+            Keys.NumPad1,   // down + left
 	        Keys.NumPad2,   // down
 	        Keys.NumPad3,   // down + right
 	        Keys.NumPad4,   // left
@@ -1436,7 +1436,7 @@ namespace LitePlacer
             Keys.F10,
             Keys.F11,
             Keys.F12
-	    };
+        };
 
         public void My_KeyUp(object sender, KeyEventArgs e)
         {
@@ -1474,14 +1474,14 @@ namespace LitePlacer
 
             // Abort placment should also be triggered by keyboard
             // In some situations this is much faster then using the mouse
-            if (e.KeyCode == Keys.Escape) 
+            if (e.KeyCode == Keys.Escape)
             {
                 AbortPlacement = true;
                 AbortPlacementShown = false;
             }
 
-            if ( (e.KeyCode == Keys.F4) &&
-                    !( (e.Alt) || (e.Control) || (e.Shift) ) 
+            if ((e.KeyCode == Keys.F4) &&
+                    !((e.Alt) || (e.Control) || (e.Shift))
                 )
             {
                 Demo_button.Visible = !Demo_button.Visible;
@@ -1489,7 +1489,7 @@ namespace LitePlacer
                 return;
             }
 
-            if ((e.KeyCode == Keys.F4) && (e.Alt) )
+            if ((e.KeyCode == Keys.F4) && (e.Alt))
             {
                 DialogResult dialogResult = ShowMessageBox(
                     "Close program; are you sure?",
@@ -1551,7 +1551,7 @@ namespace LitePlacer
                 Speedstr = NormalJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             }
 
-            e.Handled  = true;
+            e.Handled = true;
 
             if (JoggingBusy)
             {
@@ -2406,6 +2406,7 @@ namespace LitePlacer
 
         private bool DoHoming()
         {
+            OpticalHome_button.Enabled = false;
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
             ValidMeasurement_checkBox.Checked = false;
@@ -2413,11 +2414,13 @@ namespace LitePlacer
             if (!MechanicalHoming_m())
             {
                 OpticalHome_button.BackColor = Color.Red;
+                OpticalHome_button.Enabled = true;
                 return false;
             }
             if (!OpticalHoming_m())
             {
                 OpticalHome_button.BackColor = Color.Red;
+                OpticalHome_button.Enabled = true;
                 return false;
             }
             if (VigorousHoming_checkBox.Checked)
@@ -2425,12 +2428,14 @@ namespace LitePlacer
                 // shake the machine
                 if (!DoTheShake())
                 {
+                    OpticalHome_button.Enabled = true;
                     return false;
                 }
                 // home again
                 if (!OpticalHoming_m())
                 {
                     OpticalHome_button.BackColor = Color.Red;
+                    OpticalHome_button.Enabled = true;
                     return false;
                 }
             }
@@ -2438,6 +2443,7 @@ namespace LitePlacer
             OpticalHome_button.UseVisualStyleBackColor = true;
             PositionConfidence = true;
             MeasureAndSet_button.Enabled = true;
+            OpticalHome_button.Enabled = true;
             return true;
         }
 
@@ -2516,6 +2522,7 @@ namespace LitePlacer
             }
             return true;
         }
+
 
         private void OpticalHome_button_Click(object sender, EventArgs e)
         {
@@ -4203,7 +4210,7 @@ namespace LitePlacer
                     NoPort_label.Visible = true;
                     MessageShown = true;
                     UpdateCncConnectionStatus();
-                    return;         // return, as shoving the no default port label is the only thing to do
+                    return;         // return, as showing the no default port label is the only thing to do
                 }
                 if (comboBoxSerialPorts.Items.Count == 0)
                 {
@@ -4229,7 +4236,12 @@ namespace LitePlacer
 
             // Possible connections are now closed and we know user wants to connect:
             buttonConnectSerial.Text = "Connecting...";
-            if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
+            if (comboBoxSerialPorts.SelectedItem==null)
+            {
+                CncError();
+
+            }
+            else if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
             {
                 UpdateCncConnectionStatus();
                 Cnc.ErrorState = false;
@@ -9934,7 +9946,11 @@ namespace LitePlacer
 
         private void HoleTest_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
+            if (!CheckPositionConfidence())
+            {
+                DisplayText("Machine is not homed, position is unknown.");
+                return;
+            }
 
             int PartNum = 0;
             int TapeNum = 0;
@@ -9949,6 +9965,7 @@ namespace LitePlacer
             {
                 if (!int.TryParse(Row.Cells["NextPart_Column"].Value.ToString(), out PartNum))
                 {
+                    DisplayText("Value in part # box is invalid.");
                     return;
                 }
             }
@@ -9982,7 +9999,11 @@ namespace LitePlacer
 
     private void ShowPart_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
+            if (!CheckPositionConfidence())
+            {
+                DisplayText("Machine is not homed, position is unknown.");
+                return;
+            }
 
             int PartNum = 0;
             int TapeNum = 0;
@@ -9990,7 +10011,7 @@ namespace LitePlacer
             DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
-                DisplayText("Bad data in part # ");
+                DisplayText("Value in part # box is invalid.");
                 return;
             }
             // Tapes.GetPartLocationFromHolePosition_m() and ShowPartByCoordinates_m() use the next column from Tapes_dataGridView.
@@ -12823,40 +12844,23 @@ namespace LitePlacer
             Setting.CNC_OptimizeA = OptimizeA_checkBox2.Checked;
         }
 
-        private void HoleTest_maskedTextBox_Leave(object sender, EventArgs e)
+
+
+        private void HoleTest_maskedTextBox_TextChanged(object sender, EventArgs e)
         {
             int val = 1;
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out val))
             {
-                HoleTest_maskedTextBox.Text = "1";
+                HoleTest_maskedTextBox.ForeColor = Color.Red;
                 return;
             }
             if (val < 1)
             {
-                HoleTest_maskedTextBox.Text = "1";
+                HoleTest_maskedTextBox.ForeColor = Color.Red;
+                return;
             }
+            HoleTest_maskedTextBox.ForeColor = Color.Black;
         }
-
-        private void HoleTest_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // not strictly necessary because of the above, but makes it behave nicer
-            if ((e.KeyChar > 'a') && (e.KeyChar < 'z'))
-            {
-                e.Handled = true;
-                return;
-            }
-            if ((e.KeyChar > 'A') && (e.KeyChar < 'Z'))
-            {
-                e.Handled = true;
-                return;
-            }
-            if ((e.KeyChar == ' ') || (e.KeyChar == '-'))
-            {
-                e.Handled = true;
-                return;
-            }
-        }
-
     }	// end of: 	public partial class FormMain : Form
 
 
