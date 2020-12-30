@@ -1182,17 +1182,25 @@ namespace LitePlacer
             List<IntPoint> edgePoints = new List<IntPoint>(); 
             foreach (Blob blob in blobs)    // and merge their outlines to one list
             {
-                if ((blob.Rectangle.Height > (bitmap.Size.Height-5)) && 
+                if ((blob.Rectangle.Height > (bitmap.Size.Height-5)) || 
                     (blob.Rectangle.Width > (bitmap.Size.Width - 5)))
                 {
-                    break;  // The whole image could be a blob, discard that
+                    continue;  // The whole image could be a blob, discard that
                 }
-                edgePoints.AddRange(GetBlobsOutline(blobCounter, blob));     // get edge points, add to list
+                else
+                {
+                    edgePoints.AddRange(GetBlobsOutline(blobCounter, blob));     // get edge points, add to list
+                }
             }
-            
+
+            List<Shapes.Component> Components = new List<Shapes.Component>();
+            if (edgePoints.Count==0)
+            {
+                return Components;  // did not get an outline, return empty list
+            };
+
             List<IntPoint> Outline = GetConvexHull(edgePoints); // convert to convex hull
             Outline.Add(Outline[0]);  // creates line segment from last hull point to stat, closing the outline
-            List<Shapes.Component> Components = new List<Shapes.Component>();
             if (Outline.Count < 3)
             {
                 return Components;  // did not get an outline, return empty list
