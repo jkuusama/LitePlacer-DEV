@@ -224,7 +224,6 @@ namespace LitePlacer
             FillFunctionTable(AlgorithmName);
             FillMeasurementValues(AlgorithmName);
             ClearFunctionParameters();
-            Functions_dataGridView.CurrentCell = null;
             AlgorithmChange = false;
             if (ProcessDisplay_checkBox.Checked)
             {
@@ -578,7 +577,7 @@ namespace LitePlacer
             // adding a row will change current cell; we don't want false update of function parameters
             AlgorithmChange = true;
             DataGridViewSelectedRowCollection SelectedRows = Functions_dataGridView.SelectedRows;
-            int index = 0;
+            int row = 0;
             if (Functions_dataGridView.Rows.Count == 0)
             {
                 // grid is empty:
@@ -588,10 +587,20 @@ namespace LitePlacer
             {
                 // insert at end
                 Functions_dataGridView.Rows.Insert(Functions_dataGridView.Rows.Count);
-                index = Functions_dataGridView.Rows.Count - 1;
+                row = Functions_dataGridView.Rows.Count - 1;
             };
-            Functions_dataGridView.CurrentCell = null;
-            AlgorithmChange = false;
+
+            int FunctCol = (int)Functions_dataGridViewColumns.FunctionColumn;
+            // int ActiveCol = (int)Functions_dataGridViewColumns.ActiveColumn;
+
+
+            AForgeFunctionDefinition Newfunct = new AForgeFunctionDefinition();
+            Newfunct.Name= KnownFunctions[0].ToString();    // default to the first in list
+            VideoAlgorithms.CurrentAlgorithm.FunctionList.Insert(row, Newfunct);
+            AlgorithmChange = false; // next triggers cell changed event
+            Functions_dataGridView.CurrentCell = Functions_dataGridView.Rows[row].Cells[FunctCol];
+            Functions_dataGridView.Rows[row].Cells[FunctCol].Value = Newfunct.Name;
+
         }
 
         // ===================

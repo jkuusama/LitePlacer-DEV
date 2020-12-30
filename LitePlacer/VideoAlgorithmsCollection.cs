@@ -42,11 +42,6 @@ namespace LitePlacer
                 {
                     return;
                 }
-                while (CurrentAlgorithm.FunctionList.Count < (value + 1))
-                {
-                    AForgeFunctionDefinition NewF = new AForgeFunctionDefinition();
-                    CurrentAlgorithm.FunctionList.Add(NewF);
-                }
                 CurrFunctIndex = value;
             }
         }

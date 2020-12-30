@@ -1200,6 +1200,10 @@ namespace LitePlacer
             };
 
             List<IntPoint> Outline = GetConvexHull(edgePoints); // convert to convex hull
+            if (Outline==null)  //
+            {
+                return Components;
+            }
             Outline.Add(Outline[0]);  // creates line segment from last hull point to stat, closing the outline
             if (Outline.Count < 3)
             {
