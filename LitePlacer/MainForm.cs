@@ -2406,6 +2406,7 @@ namespace LitePlacer
 
         private bool DoHoming()
         {
+            OpticalHome_button.Enabled = false;
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
             ValidMeasurement_checkBox.Checked = false;
@@ -2413,11 +2414,13 @@ namespace LitePlacer
             if (!MechanicalHoming_m())
             {
                 OpticalHome_button.BackColor = Color.Red;
+                OpticalHome_button.Enabled = true;
                 return false;
             }
             if (!OpticalHoming_m())
             {
                 OpticalHome_button.BackColor = Color.Red;
+                OpticalHome_button.Enabled = true;
                 return false;
             }
             if (VigorousHoming_checkBox.Checked)
@@ -2425,12 +2428,14 @@ namespace LitePlacer
                 // shake the machine
                 if (!DoTheShake())
                 {
+                    OpticalHome_button.Enabled = true;
                     return false;
                 }
                 // home again
                 if (!OpticalHoming_m())
                 {
                     OpticalHome_button.BackColor = Color.Red;
+                    OpticalHome_button.Enabled = true;
                     return false;
                 }
             }
@@ -2438,6 +2443,7 @@ namespace LitePlacer
             OpticalHome_button.UseVisualStyleBackColor = true;
             PositionConfidence = true;
             MeasureAndSet_button.Enabled = true;
+            OpticalHome_button.Enabled = true;
             return true;
         }
 
@@ -4203,7 +4209,7 @@ namespace LitePlacer
                     NoPort_label.Visible = true;
                     MessageShown = true;
                     UpdateCncConnectionStatus();
-                    return;         // return, as shoving the no default port label is the only thing to do
+                    return;         // return, as showing the no default port label is the only thing to do
                 }
                 if (comboBoxSerialPorts.Items.Count == 0)
                 {
@@ -4229,7 +4235,12 @@ namespace LitePlacer
 
             // Possible connections are now closed and we know user wants to connect:
             buttonConnectSerial.Text = "Connecting...";
-            if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
+            if (comboBoxSerialPorts.SelectedItem == null)
+            {
+                CncError();
+
+            }
+            else if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
             {
                 UpdateCncConnectionStatus();
                 Cnc.ErrorState = false;
@@ -9982,7 +9993,11 @@ namespace LitePlacer
 
     private void ShowPart_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
+            if (!CheckPositionConfidence())
+            {
+                DisplayText("Machine is not homed, position is unknown.");
+                return;
+            }
 
             int PartNum = 0;
             int TapeNum = 0;
@@ -9990,7 +10005,7 @@ namespace LitePlacer
             DataGridViewRow Row = Tapes_dataGridView.Rows[Tapes_dataGridView.CurrentCell.RowIndex];
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out PartNum))
             {
-                DisplayText("Bad data in part # ");
+                DisplayText("Value in part # box is invalid.");
                 return;
             }
             // Tapes.GetPartLocationFromHolePosition_m() and ShowPartByCoordinates_m() use the next column from Tapes_dataGridView.
