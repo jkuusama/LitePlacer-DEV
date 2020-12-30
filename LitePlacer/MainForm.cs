@@ -3063,7 +3063,8 @@ namespace LitePlacer
             // Finds:
             DownCamera.FindCircles = false;
             DownCamera.FindRectangles = false;
-            DownCamera.FindComponent = false;
+            DownCamera.FindComponentByOutlines = false;
+            DownCamera.FindComponentByPads = false;
             DownCamera.TestAlgorithm = false;
             DownCamera.DrawBox = false;
             DownCamera.DrawArrow = false;
@@ -3096,7 +3097,7 @@ namespace LitePlacer
             // Finds:
             UpCamera.FindCircles = false;
             UpCamera.FindRectangles = false;
-            UpCamera.FindComponent = false;
+            UpCamera.FindComponentByOutlines = false;
             UpCamera.TestAlgorithm = false;
             UpCamera.DrawBox = false;
             UpCamera.DrawArrow = false;
@@ -12861,6 +12862,7 @@ namespace LitePlacer
             }
             HoleTest_maskedTextBox.ForeColor = Color.Black;
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

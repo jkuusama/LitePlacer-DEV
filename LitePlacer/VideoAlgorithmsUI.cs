@@ -32,7 +32,7 @@ namespace LitePlacer
     {
         enum Functions_dataGridViewColumns : int { FunctionColumn, ActiveColumn };
         public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", "Grayscale", "Edge detect",
-                "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles", "Pads to Component"};
+                "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles", "Filter Features by Size"};
         
 
         public VideoAlgorithmsCollection VideoAlgorithms;
@@ -240,7 +240,8 @@ namespace LitePlacer
             MeasurementParametersClass values = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
             SearchRound_checkBox.Checked = values.SearchRounds;
             SearchRectangles_checkBox.Checked = values.SearchRectangles;
-            SearchComponents_checkBox.Checked = values.SearchComponents;
+            SearchComponentsOutlines_checkBox.Checked = values.SearchComponentOutlines;
+            SearchComponentPads_checkBox.Checked = values.SearchComponentPads;
             // for some reason(??), the order of things to set are not honored. A workaround:
             ChangeYwithX = false;
             Xmin_textBox.Text = values.Xmin.ToString("0.00", CultureInfo.InvariantCulture);
@@ -838,7 +839,7 @@ namespace LitePlacer
             switch (FunctionName)
             {
                 // switch by the selected algorithm:  
-                case "Pads to Component":
+                case "Filter Features by Size":
                     funct.parameterDoubleA = 1.0;
                     funct.parameterDoubleB = 4.0;
                     break;
@@ -912,11 +913,11 @@ namespace LitePlacer
             switch (Name)
             {
                 // switch by the selected algorithm:
-                case "Pads to Component":
-                    FunctionExplanation_textBox.Text = "Combines several pads to a single component";
+                case "Filter Features by Size":
+                    FunctionExplanation_textBox.Text = "Filters features by Size";
                     FunctionExplanation_textBox.Visible = true;
-                    EnableDoubleA("Pad size min:");
-                    EnableDoubleB("Pad size max:");
+                    EnableDoubleA("Size min:");
+                    EnableDoubleB("Size max:");
                     break;
 
                 case "Blur":
@@ -1262,7 +1263,8 @@ namespace LitePlacer
             }
             cam.FindCircles = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRounds;
             cam.FindRectangles = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchRectangles;
-            cam.FindComponent = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponents;
+            cam.FindComponentByOutlines = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponentOutlines;
+            cam.FindComponentByPads = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponentPads;
         }
 
 
@@ -1279,9 +1281,15 @@ namespace LitePlacer
             UpdateSearchFunctions();
         }
 
-        private void SearchComponents_checkBox_CheckedChanged(object sender, EventArgs e)
+        private void SearchComponentOutlines_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponents = SearchComponents_checkBox.Checked;
+            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponentOutlines = SearchComponentsOutlines_checkBox.Checked;
+            UpdateSearchFunctions();
+        }
+
+        private void SearchComponentPads_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponentPads = SearchComponentPads_checkBox.Checked;
             UpdateSearchFunctions();
         }
 
