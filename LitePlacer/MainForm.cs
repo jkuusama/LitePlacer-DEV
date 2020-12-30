@@ -12823,40 +12823,21 @@ namespace LitePlacer
             Setting.CNC_OptimizeA = OptimizeA_checkBox2.Checked;
         }
 
-        private void HoleTest_maskedTextBox_Leave(object sender, EventArgs e)
+        private void HoleTest_maskedTextBox_TextChanged(object sender, EventArgs e)
         {
             int val = 1;
             if (!int.TryParse(HoleTest_maskedTextBox.Text, out val))
             {
-                HoleTest_maskedTextBox.Text = "1";
+                HoleTest_maskedTextBox.ForeColor = Color.Red;
                 return;
             }
             if (val < 1)
             {
-                HoleTest_maskedTextBox.Text = "1";
+                HoleTest_maskedTextBox.ForeColor = Color.Red;
+                return;
             }
+            HoleTest_maskedTextBox.ForeColor = Color.Black;
         }
-
-        private void HoleTest_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // not strictly necessary because of the above, but makes it behave nicer
-            if ((e.KeyChar > 'a') && (e.KeyChar < 'z'))
-            {
-                e.Handled = true;
-                return;
-            }
-            if ((e.KeyChar > 'A') && (e.KeyChar < 'Z'))
-            {
-                e.Handled = true;
-                return;
-            }
-            if ((e.KeyChar == ' ') || (e.KeyChar == '-'))
-            {
-                e.Handled = true;
-                return;
-            }
-        }
-
     }	// end of: 	public partial class FormMain : Form
 
 

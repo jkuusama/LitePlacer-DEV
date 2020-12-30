@@ -1650,8 +1650,7 @@
             this.HoleTest_maskedTextBox.TabIndex = 48;
             this.HoleTest_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.HoleTest_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.HoleTest_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HoleTest_maskedTextBox_KeyPress);
-            this.HoleTest_maskedTextBox.Leave += new System.EventHandler(this.HoleTest_maskedTextBox_Leave);
+            this.HoleTest_maskedTextBox.TextChanged += new System.EventHandler(this.HoleTest_maskedTextBox_TextChanged);
             // 
             // ReloadTray_button
             // 
