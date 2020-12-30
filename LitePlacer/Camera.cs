@@ -1172,7 +1172,34 @@ namespace LitePlacer
         // ===========
         private List<Shapes.Component> FindComponentsFromPads_Funct(Bitmap bitmap)
         {
-            XXX
+            // Locating objects
+            BlobCounter blobCounter = new BlobCounter();
+            blobCounter.FilterBlobs = true;
+            blobCounter.MinHeight = 2;
+            blobCounter.MinWidth = 2;
+            blobCounter.ProcessImage(bitmap);
+            Blob[] blobs = blobCounter.GetObjectsInformation(); // Get blobs
+            List<IntPoint> edgePoints = new List<IntPoint>(); 
+            foreach (Blob blob in blobs)    // and merge their outlines to one list
+            {
+                if ((blob.Rectangle.Height > (bitmap.Size.Height-5)) && 
+                    (blob.Rectangle.Width > (bitmap.Size.Width - 5)))
+                {
+                    break;  // The whole image could be a blob, discard that
+                }
+                edgePoints.AddRange(GetBlobsOutline(blobCounter, blob));     // get edge points, add to list
+            }
+            
+            List<IntPoint> Outline = GetConvexHull(edgePoints); // convert to convex hull
+            Outline.Add(Outline[0]);  // creates line segment from last hull point to stat, closing the outline
+            List<Shapes.Component> Components = new List<Shapes.Component>();
+            if (Outline.Count < 3)
+            {
+                return Components;  // did not get an outline, return empty list
+            }
+            List<IntPoint> Box = GetMinimumBoundingRectangle(Outline);
+            Components.Add(new Shapes.Component(Box));
+            return Components;
         }
 
         // =========== 
