@@ -5856,10 +5856,12 @@ namespace LitePlacer
                 index = JobData_GridView.CurrentRow.Index;
             }
             JobData_GridView.Rows.Insert(index);
+            JobData_GridView.Rows[index].Cells["JobDataValueColumn"].Value = "--";
+            JobData_GridView.Rows[index].Cells["JobDataFootprintColumn"].Value = "--";
             JobData_GridView.Rows[index].Cells["JobdataCountColumn"].Value = "--";
-            JobData_GridView.Rows[index].Cells["ComponentType"].Value = "--";
             JobData_GridView.Rows[index].Cells["JobdataMethodColumn"].Value = "?";
             JobData_GridView.Rows[index].Cells["JobdataMethodParametersColumn"].Value = "--";
+            JobData_GridView.Rows[index].Cells["JobDataNozzleColumn"].Value = Setting.Nozzles_default.ToString();
             JobData_GridView.Rows[index].Cells["JobdataComponentsColumn"].Value = "--";
         }
 
@@ -5967,7 +5969,8 @@ namespace LitePlacer
                      (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "Place Assisted") ||
                      (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "Place Fast"))
                 {
-                    TapeID = SelectTape("Select tape for " + JobData_GridView.Rows[row].Cells["ComponentType"].Value.ToString());
+                    TapeID = SelectTape("Select tape for " + JobData_GridView.Rows[row].Cells["JobDataValueColumn"].Value.ToString()
+                        + ", " + JobData_GridView.Rows[row].Cells["JobDataFootprintColumn"].Value.ToString());
                     if (TapeID=="none")
                     {
                         // user closed it
@@ -5994,7 +5997,7 @@ namespace LitePlacer
         {
             int col = JobData_GridView.CurrentCell.ColumnIndex;
 
-            if (JobData_GridView.Columns[col].Name == "ComponentList" )
+            if (JobData_GridView.Columns[col].Name == "JobdataComponentsColumn")
             {
                 // components
                 MakeJobDataDirty();
@@ -6065,8 +6068,9 @@ namespace LitePlacer
                 return;
             };
             // ... so that we can put next row label in place:
-            NextGroup_label.Text = JobData_GridView.Rows[FirstRow].Cells["ComponentType"].Value.ToString() + " (" +
-                    JobData_GridView.Rows[FirstRow].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
+            NextGroup_label.Text = JobData_GridView.Rows[FirstRow].Cells["JobDataValueColumn"].Value.ToString() +
+                ", " + JobData_GridView.Rows[FirstRow].Cells["JobDataFootprintColumn"].Value.ToString() +
+                " (" + JobData_GridView.Rows[FirstRow].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
 
             // We know there is something to do, NextGroup_label is updated. Place all rows:
             for (int CurrentRow = 0; CurrentRow < JobData_GridView.RowCount; CurrentRow++)
@@ -6108,8 +6112,9 @@ namespace LitePlacer
                 }
                 if (NotLast)
                 {
-                    NextGroup_label.Text = JobData_GridView.Rows[NextRow].Cells["ComponentType"].Value.ToString() + " (" +
-                                            JobData_GridView.Rows[NextRow].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
+                    NextGroup_label.Text = JobData_GridView.Rows[NextRow].Cells["JobDataValueColumn"].Value.ToString() +
+                        ", " + JobData_GridView.Rows[NextRow].Cells["JobDataFootprintColumn"].Value.ToString() +
+                        " (" + JobData_GridView.Rows[NextRow].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
                 }
                 else
                 {
@@ -6250,8 +6255,8 @@ namespace LitePlacer
                 JobData_GridView.Rows[LastRowNo].Cells["JobdataComponentsColumn"].Value = component;
                 // Update labels
                 PreviousGroup_label.Text = CurrentGroup_label.Text;
-                CurrentGroup_label.Text = JobData_GridView.Rows[LastRowNo].Cells["ComponentType"].Value.ToString() + " (1 pcs.)";
-
+                CurrentGroup_label.Text = JobData_GridView.Rows[LastRowNo].Cells["JobDataValueColumn"].Value.ToString() +
+                    ", " + JobData_GridView.Rows[LastRowNo].Cells["JobDataFootprintColumn"].Value.ToString() + " (1 pcs.)";
                 // Place that row
                 ok = PlaceRow_m(LastRowNo);
                 // delete the row
@@ -6340,7 +6345,8 @@ namespace LitePlacer
                     if ((SelectedMethod == "Place") || (SelectedMethod == "Place Assisted") || (SelectedMethod == "Place Fast"))
                     {
                         // show the tape selection dialog
-                        NewID = SelectTape("Select tape for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString());
+                        NewID = SelectTape("Select tape for " + JobData_GridView.Rows[RowNo].Cells["JobDataValueColumn"].Value.ToString()
+                            + ", " + JobData_GridView.Rows[RowNo].Cells["JobDataFootprintColumn"].Value.ToString());
                         if (!Setting.Placement_UpdateJobGridAtRuntime)
                         {
                             RestoreRow = true;   // In case user unselected it at the tape selection dialog
@@ -6420,15 +6426,16 @@ namespace LitePlacer
                 }
                 if (EverythingPlaced)
                 {
-                    DisplayText("All components on row " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString() + " already placed.", KnownColor.DarkRed);
+                    DisplayText("All " + JobData_GridView.Rows[RowNo].Cells["JobDataValueColumn"].Value.ToString()
+                        + ", " + JobData_GridView.Rows[RowNo].Cells["JobDataFootprintColumn"].Value.ToString() + " already placed.", KnownColor.DarkRed);
                     return true;
                 }
             }
             // Check nozzle, change if needed
             // if we are using a method that potentially needs a nozzle and automatic change is enabled:
             if (
-                ((method == "Place Fast") || (method == "Place") || (method == "LoosePart") || (method == "LoosePart Assisted") || (method == "Place Assisted"))  
-                && Setting.Nozzles_Enabled) 
+                ((method == "Place Fast") || (method == "Place") || (method == "LoosePart") || (method == "LoosePart Assisted") || (method == "Place Assisted"))
+                && Setting.Nozzles_Enabled)
             {
                 if (JobData_GridView.Rows[RowNo].Cells["JobDataNozzleColumn"].Value == null)
                 {
@@ -6439,15 +6446,17 @@ namespace LitePlacer
                     if (!int.TryParse(JobData_GridView.Rows[RowNo].Cells["JobDataNozzleColumn"].Value.ToString(), out nozzle))
                     {
                         ShowMessageBox(
-                            "Bad data at Nozzle column for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString(),
+                            "Bad data at Nozzle column for " + JobData_GridView.Rows[RowNo].Cells["JobDataValueColumn"].Value.ToString()
+                            + ", " + JobData_GridView.Rows[RowNo].Cells["JobDataFootprintColumn"].Value.ToString(),
                             "Nozzle?",
                             MessageBoxButtons.OK);
                         return false;
                     }
-                    if ((nozzle<1) || (nozzle > Setting.Nozzles_count))
+                    if ((nozzle < 1) || (nozzle > Setting.Nozzles_count))
                     {
                         ShowMessageBox(
-                            "Invalid value at Nozzle column for " + JobData_GridView.Rows[RowNo].Cells["ComponentType"].Value.ToString(),
+                            "Invalid value at Nozzle column for " + JobData_GridView.Rows[RowNo].Cells["JobDataValueColumn"].Value.ToString()
+                            + ", " + JobData_GridView.Rows[RowNo].Cells["JobDataFootprintColumn"].Value.ToString(),
                             "Nozzle?",
                             MessageBoxButtons.OK);
                         return false;
@@ -6534,8 +6543,10 @@ namespace LitePlacer
             }
             PreviousGroup_label.Text = "--";
             CurrentGroup_label.Text = "--";
-            NextGroup_label.Text = JobData_GridView.Rows[0].Cells["ComponentType"].Value.ToString() + " (" +
-                JobData_GridView.Rows[0].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
+
+            NextGroup_label.Text = JobData_GridView.Rows[0].Cells["JobDataValueColumn"].Value.ToString()
+                +", " + JobData_GridView.Rows[0].Cells["JobDataFootprintColumn"].Value.ToString()
+                +" (" + JobData_GridView.Rows[0].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
 
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
@@ -6543,8 +6554,9 @@ namespace LitePlacer
                 CurrentGroup_label.Text = NextGroup_label.Text;
                 if (i < (JobData_GridView.RowCount - 1))
                 {
-                    NextGroup_label.Text = JobData_GridView.Rows[i + 1].Cells["ComponentType"].Value.ToString() + " (" +
-                        JobData_GridView.Rows[i + 1].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
+                    NextGroup_label.Text = JobData_GridView.Rows[i + 1].Cells["JobDataValueColumn"].Value.ToString()
+                        + ", " + JobData_GridView.Rows[i + 1].Cells["JobDataFootprintColumn"].Value.ToString()
+                        + " (" + JobData_GridView.Rows[i + 1].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
                 }
                 else
                 {
@@ -6574,7 +6586,16 @@ namespace LitePlacer
         private bool ComponentDataValidates_m(string Component, int CADdataRow, int GroupRow)
         {
             // Component exist. Footprint, X, Y and rotation data should be there:
-            if (JobData_GridView.Rows[GroupRow].Cells["ComponentType"].Value == null)
+            if (JobData_GridView.Rows[GroupRow].Cells["JobDataValueColumn"].Value == null)
+            {
+                ShowMessageBox(
+                        "Component " + Component + ": No value data",
+                        "Missing Data",
+                        MessageBoxButtons.OK);
+                return false;
+            }
+
+            if (JobData_GridView.Rows[GroupRow].Cells["JobDataFootprintColumn"].Value == null)
             {
                 ShowMessageBox(
                         "Component " + Component + ": No Footprint",
@@ -6734,7 +6755,8 @@ namespace LitePlacer
                     return false;
                 }
                 // and fill values:
-                Footprint = JobData_GridView.Rows[GroupRow].Cells["ComponentType"].Value.ToString();
+                Footprint = JobData_GridView.Rows[GroupRow].Cells["JobDataValueColumn"].Value.ToString() 
+                    + JobData_GridView.Rows[GroupRow].Cells["JobDataFootprintColumn"].Value.ToString();
                 Xstr = CadData_GridView.Rows[CADdataRow].Cells["CADdataXnominalColumn"].Value.ToString();
                 Ystr = CadData_GridView.Rows[CADdataRow].Cells["CADdataYnominalColumn"].Value.ToString();
                 RotationStr = CadData_GridView.Rows[CADdataRow].Cells["CADdataRotationNominalColumn"].Value.ToString();
