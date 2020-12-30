@@ -419,8 +419,8 @@ namespace LitePlacer
                         f.func = HoughCirclesFunct; 
                         break;
 
-                    case "Pads to Component":
-                        f.func = PadsToComponentFunct;
+                    case "Filter Features by Size":
+                        f.func = FilterFeaturesBySizeFunct;
                         break;
 
                     default:
@@ -541,7 +541,8 @@ namespace LitePlacer
         public bool DrawGrid { get; set; }          // Draws aiming grid for parts alignment
         public bool FindCircles { get; set; }       // Find and highlight circles in the image
         public bool FindRectangles { get; set; }    // Find and draw regtangles in the image
-        public bool FindComponent { get; set; }     // Finds a component and identifies its center
+        public bool FindComponentByOutlines { get; set; }     // Finds a component and identifies its center, using its outline
+        public bool FindComponentByPads { get; set; }     // Finds a component and identifies its center, using its pads
         public bool Draw_Snapshot { get; set; }     // Draws the snapshot on the image 
         public bool PauseProcessing { get; set; }   // Drawing the video slows everything down. This can pause it for measurements.
         public bool Paused = true;                 // set in video processing indicating it is safe to change processing function list
@@ -696,9 +697,13 @@ namespace LitePlacer
                     {
                         frame = DrawRectanglesFunct(frame);
                     }
-                    if (FindComponent)
+                    if (FindComponentByOutlines)
                     {
                         frame = DrawComponentsFunct(frame);
+                    }
+                    if (FindComponentByPads)
+                    {
+                        frame = DrawComponentsByPadsFunct(frame);
                     }
                 }
             }
@@ -776,7 +781,7 @@ namespace LitePlacer
         // Note, that each function needs to keep the image in RGB, otherwise drawing fill fail 
 
         // =========================================================  
-        private void PadsToComponentFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
+        private void FilterFeaturesBySizeFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
             double par_dA, double par_dB, double par_dC)
         {
             // Find limits
@@ -1165,7 +1170,13 @@ namespace LitePlacer
         }
 
         // ===========
-        private List<Shapes.Component> FindComponentsFunct(Bitmap bitmap)
+        private List<Shapes.Component> FindComponentsFromPads_Funct(Bitmap bitmap)
+        {
+            XXX
+        }
+
+        // =========== 
+        private List<Shapes.Component> FindComponentsFromOutline_Funct(Bitmap bitmap)
         {
             // Locating objects
             BlobCounter blobCounter = new BlobCounter();
@@ -1211,7 +1222,7 @@ namespace LitePlacer
         // ===========
         private Bitmap DrawComponentsFunct(Bitmap bitmap)
         {
-            List<Shapes.Component> Components = FindComponentsFunct(bitmap);
+            List<Shapes.Component> Components = FindComponentsFromOutline_Funct(bitmap);
             Graphics g = Graphics.FromImage(bitmap);
             Pen OrangePen = new Pen(Color.DarkOrange, 3);
             for (int i = 0, n = Components.Count; i < n; i++)
@@ -1222,6 +1233,21 @@ namespace LitePlacer
             OrangePen.Dispose();
             return (bitmap);
         }
+        // ===========
+        private Bitmap DrawComponentsByPadsFunct(Bitmap bitmap)
+        {
+            List<Shapes.Component> Components = FindComponentsFromPads_Funct(bitmap);
+            Graphics g = Graphics.FromImage(bitmap);
+            Pen OrangePen = new Pen(Color.DarkOrange, 3);
+            for (int i = 0, n = Components.Count; i < n; i++)
+            {
+                g.DrawPolygon(OrangePen, ToPointsArray(Components[i].BoundingBox.Corners));
+            }
+            g.Dispose();
+            OrangePen.Dispose();
+            return (bitmap);
+        }
+
 
         // ==========================================================================================================
         // Components, older version:
@@ -1393,6 +1419,7 @@ namespace LitePlacer
             return Components;
         }
 
+        /*
         public List<Shapes.Component> GetMeasurementComponents()
         {
             // No filtering! (tech. debt, maybe)
@@ -1401,7 +1428,7 @@ namespace LitePlacer
             image.Dispose();
             return Components;
         }
-
+        */
 
         public int GetClosestComponent(out double X, out double Y, out double A, double MaxDistance)
         // Sets X, Y position of the closest component to the frame center in pixels, 
@@ -2271,7 +2298,7 @@ namespace LitePlacer
             stopwatch.Start();
 
             if ((!MeasurementParameters.SearchRounds) && (!MeasurementParameters.SearchRectangles)
-                && (!MeasurementParameters.SearchComponents))
+                && (!MeasurementParameters.SearchComponentOutlines) && (!MeasurementParameters.SearchComponentPads))
             {
                 MainForm.DisplayText("Nothing to search for. Check some of the \"Features to search for\" boxes.", KnownColor.Red, true);
                 return false;
@@ -2340,9 +2367,10 @@ namespace LitePlacer
             }
 
             count = Candidates.Count;
-            if (MeasurementParameters.SearchComponents)
+
+            if (MeasurementParameters.SearchComponentOutlines)
             {
-                List<Shapes.Component> Components = FindComponentsFunct(image);
+                List<Shapes.Component> Components = FindComponentsFromOutline_Funct(image);
                 foreach (Shapes.Component comp in Components)
                 {
                     Candidates.Add(new Shapes.Shape()
@@ -2357,7 +2385,31 @@ namespace LitePlacer
                 stopwatch.Stop();
                 if (DisplayResults)
                 {
-                    MainForm.DisplayText("Components:");
+                    MainForm.DisplayText("Components from outlines:");
+                    DisplayShapes(Candidates, count, XmmPpix, YmmPpix);
+                }
+                stopwatch.Start();
+            }
+            count = Candidates.Count;
+
+            if (MeasurementParameters.SearchComponentPads)
+            {
+                List<Shapes.Component> Components = FindComponentsFromPads_Funct(image);
+                foreach (Shapes.Component comp in Components)
+                {
+                    Candidates.Add(new Shapes.Shape()
+                    {
+                        Center = comp.Center,
+                        Angle = comp.Angle,
+                        Xsize = comp.Xsize,
+                        Ysize = comp.Ysize
+                    });
+                }
+
+                stopwatch.Stop();
+                if (DisplayResults)
+                {
+                    MainForm.DisplayText("Components from pads:");
                     DisplayShapes(Candidates, count, XmmPpix, YmmPpix);
                 }
                 stopwatch.Start();
