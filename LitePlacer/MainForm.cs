@@ -3097,7 +3097,8 @@ namespace LitePlacer
             // Finds:
             UpCamera.FindCircles = false;
             UpCamera.FindRectangles = false;
-            UpCamera.FindComponentByOutlines = false;
+            DownCamera.FindComponentByOutlines = false;
+            DownCamera.FindComponentByPads = false;
             UpCamera.TestAlgorithm = false;
             UpCamera.DrawBox = false;
             UpCamera.DrawArrow = false;
@@ -4237,7 +4238,7 @@ namespace LitePlacer
 
             // Possible connections are now closed and we know user wants to connect:
             buttonConnectSerial.Text = "Connecting...";
-            if (comboBoxSerialPorts.SelectedItem==null)
+            if (comboBoxSerialPorts.SelectedItem == null)
             {
                 CncError();
 
@@ -12844,8 +12845,6 @@ namespace LitePlacer
         {
             Setting.CNC_OptimizeA = OptimizeA_checkBox2.Checked;
         }
-
-
 
         private void HoleTest_maskedTextBox_TextChanged(object sender, EventArgs e)
         {

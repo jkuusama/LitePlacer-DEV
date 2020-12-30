@@ -1169,7 +1169,7 @@ namespace LitePlacer
             return rect;
         }
 
-        // =========== 
+        // ===========
         private List<Shapes.Component> FindComponentsFromPads_Funct(Bitmap bitmap)
         {
             XXX
@@ -2390,7 +2390,31 @@ namespace LitePlacer
                 stopwatch.Start();
             }
             count = Candidates.Count;
- 
+
+            if (MeasurementParameters.SearchComponentOutlines)
+            {
+                List<Shapes.Component> Components = FindComponentsFromOutline_Funct(image);
+                foreach (Shapes.Component comp in Components)
+                {
+                    Candidates.Add(new Shapes.Shape()
+                    {
+                        Center = comp.Center,
+                        Angle = comp.Angle,
+                        Xsize = comp.Xsize,
+                        Ysize = comp.Ysize
+                    });
+                }
+
+                stopwatch.Stop();
+                if (DisplayResults)
+                {
+                    MainForm.DisplayText("Components from outlines:");
+                    DisplayShapes(Candidates, count, XmmPpix, YmmPpix);
+                }
+                stopwatch.Start();
+            }
+            count = Candidates.Count;
+
             if (MeasurementParameters.SearchComponentPads)
             {
                 List<Shapes.Component> Components = FindComponentsFromPads_Funct(image);
@@ -2413,7 +2437,6 @@ namespace LitePlacer
                 }
                 stopwatch.Start();
             }
-
 
             // Filter for size
             List<Shapes.Shape> FilteredForSize = new List<Shapes.Shape>();

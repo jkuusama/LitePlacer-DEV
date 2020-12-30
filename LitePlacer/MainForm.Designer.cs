@@ -629,7 +629,7 @@
             this.DrawDashedCross_checkBox = new System.Windows.Forms.CheckBox();
             this.DrawGrid_checkBox = new System.Windows.Forms.CheckBox();
             this.Algorithm_Measure_button = new System.Windows.Forms.Button();
-            this.SearchComponentsOutlines_checkBox = new System.Windows.Forms.CheckBox();
+            this.SearchComponentOutlines_checkBox = new System.Windows.Forms.CheckBox();
             this.SearchRectangles_checkBox = new System.Windows.Forms.CheckBox();
             this.SearchRound_checkBox = new System.Windows.Forms.CheckBox();
             this.label176 = new System.Windows.Forms.Label();
@@ -7337,7 +7337,7 @@
             this.Algorithms_tabPage.Controls.Add(this.DrawDashedCross_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawGrid_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.Algorithm_Measure_button);
-            this.Algorithms_tabPage.Controls.Add(this.SearchComponentsOutlines_checkBox);
+            this.Algorithms_tabPage.Controls.Add(this.SearchComponentOutlines_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.SearchRectangles_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.SearchRound_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.label176);
@@ -7399,9 +7399,9 @@
             this.SearchComponentPads_checkBox.AutoSize = true;
             this.SearchComponentPads_checkBox.Location = new System.Drawing.Point(739, 593);
             this.SearchComponentPads_checkBox.Name = "SearchComponentPads_checkBox";
-            this.SearchComponentPads_checkBox.Size = new System.Drawing.Size(134, 17);
+            this.SearchComponentPads_checkBox.Size = new System.Drawing.Size(126, 17);
             this.SearchComponentPads_checkBox.TabIndex = 312;
-            this.SearchComponentPads_checkBox.Text = "Components from pads";
+            this.SearchComponentPads_checkBox.Text = "Components by Pads";
             this.SearchComponentPads_checkBox.UseVisualStyleBackColor = true;
             this.SearchComponentPads_checkBox.CheckedChanged += new System.EventHandler(this.SearchComponentPads_checkBox_CheckedChanged);
             // 
@@ -7633,7 +7633,7 @@
             this.VideoProcessingZguard_checkBox.AutoSize = true;
             this.VideoProcessingZguard_checkBox.Checked = true;
             this.VideoProcessingZguard_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.VideoProcessingZguard_checkBox.Location = new System.Drawing.Point(923, 605);
+            this.VideoProcessingZguard_checkBox.Location = new System.Drawing.Point(965, 607);
             this.VideoProcessingZguard_checkBox.Name = "VideoProcessingZguard_checkBox";
             this.VideoProcessingZguard_checkBox.Size = new System.Drawing.Size(187, 17);
             this.VideoProcessingZguard_checkBox.TabIndex = 266;
@@ -7687,16 +7687,16 @@
             this.Algorithm_Measure_button.UseVisualStyleBackColor = true;
             this.Algorithm_Measure_button.Click += new System.EventHandler(this.Algorithm_Measure_button_Click);
             // 
-            // SearchComponentsOutlines_checkBox
+            // SearchComponentOutlines_checkBox
             // 
-            this.SearchComponentsOutlines_checkBox.AutoSize = true;
-            this.SearchComponentsOutlines_checkBox.Location = new System.Drawing.Point(739, 570);
-            this.SearchComponentsOutlines_checkBox.Name = "SearchComponentsOutlines_checkBox";
-            this.SearchComponentsOutlines_checkBox.Size = new System.Drawing.Size(142, 17);
-            this.SearchComponentsOutlines_checkBox.TabIndex = 253;
-            this.SearchComponentsOutlines_checkBox.Text = "Components from outline";
-            this.SearchComponentsOutlines_checkBox.UseVisualStyleBackColor = true;
-            this.SearchComponentsOutlines_checkBox.CheckedChanged += new System.EventHandler(this.SearchComponentOutlines_checkBox_CheckedChanged);
+            this.SearchComponentOutlines_checkBox.AutoSize = true;
+            this.SearchComponentOutlines_checkBox.Location = new System.Drawing.Point(739, 570);
+            this.SearchComponentOutlines_checkBox.Name = "SearchComponentOutlines_checkBox";
+            this.SearchComponentOutlines_checkBox.Size = new System.Drawing.Size(135, 17);
+            this.SearchComponentOutlines_checkBox.TabIndex = 253;
+            this.SearchComponentOutlines_checkBox.Text = "Components by Outline";
+            this.SearchComponentOutlines_checkBox.UseVisualStyleBackColor = true;
+            this.SearchComponentOutlines_checkBox.CheckedChanged += new System.EventHandler(this.SearchComponentsOutlines_checkBox_CheckedChanged);
             // 
             // SearchRectangles_checkBox
             // 
@@ -7732,7 +7732,7 @@
             // label174
             // 
             this.label174.AutoSize = true;
-            this.label174.Location = new System.Drawing.Point(1035, 573);
+            this.label174.Location = new System.Drawing.Point(1035, 574);
             this.label174.Name = "label174";
             this.label174.Size = new System.Drawing.Size(39, 13);
             this.label174.TabIndex = 248;
@@ -7741,7 +7741,7 @@
             // label175
             // 
             this.label175.AutoSize = true;
-            this.label175.Location = new System.Drawing.Point(920, 573);
+            this.label175.Location = new System.Drawing.Point(920, 574);
             this.label175.Name = "label175";
             this.label175.Size = new System.Drawing.Size(36, 13);
             this.label175.TabIndex = 246;
@@ -7749,7 +7749,7 @@
             // 
             // Ymin_textBox
             // 
-            this.Ymin_textBox.Location = new System.Drawing.Point(965, 570);
+            this.Ymin_textBox.Location = new System.Drawing.Point(965, 571);
             this.Ymin_textBox.Name = "Ymin_textBox";
             this.Ymin_textBox.Size = new System.Drawing.Size(48, 20);
             this.Ymin_textBox.TabIndex = 247;
@@ -7757,7 +7757,7 @@
             // 
             // Ymax_textBox
             // 
-            this.Ymax_textBox.Location = new System.Drawing.Point(1080, 570);
+            this.Ymax_textBox.Location = new System.Drawing.Point(1080, 571);
             this.Ymax_textBox.Name = "Ymax_textBox";
             this.Ymax_textBox.Size = new System.Drawing.Size(48, 20);
             this.Ymax_textBox.TabIndex = 249;
@@ -7766,7 +7766,7 @@
             // label171
             // 
             this.label171.AutoSize = true;
-            this.label171.Location = new System.Drawing.Point(920, 525);
+            this.label171.Location = new System.Drawing.Point(920, 526);
             this.label171.Name = "label171";
             this.label171.Size = new System.Drawing.Size(85, 13);
             this.label171.TabIndex = 241;
@@ -7774,7 +7774,7 @@
             // 
             // Xmax_textBox
             // 
-            this.Xmax_textBox.Location = new System.Drawing.Point(1080, 543);
+            this.Xmax_textBox.Location = new System.Drawing.Point(1080, 544);
             this.Xmax_textBox.Name = "Xmax_textBox";
             this.Xmax_textBox.Size = new System.Drawing.Size(48, 20);
             this.Xmax_textBox.TabIndex = 245;
@@ -7783,7 +7783,7 @@
             // label172
             // 
             this.label172.AutoSize = true;
-            this.label172.Location = new System.Drawing.Point(1035, 547);
+            this.label172.Location = new System.Drawing.Point(1035, 548);
             this.label172.Name = "label172";
             this.label172.Size = new System.Drawing.Size(39, 13);
             this.label172.TabIndex = 244;
@@ -7791,7 +7791,7 @@
             // 
             // Xmin_textBox
             // 
-            this.Xmin_textBox.Location = new System.Drawing.Point(965, 544);
+            this.Xmin_textBox.Location = new System.Drawing.Point(965, 545);
             this.Xmin_textBox.Name = "Xmin_textBox";
             this.Xmin_textBox.Size = new System.Drawing.Size(48, 20);
             this.Xmin_textBox.TabIndex = 243;
@@ -7800,7 +7800,7 @@
             // label173
             // 
             this.label173.AutoSize = true;
-            this.label173.Location = new System.Drawing.Point(920, 547);
+            this.label173.Location = new System.Drawing.Point(920, 548);
             this.label173.Name = "label173";
             this.label173.Size = new System.Drawing.Size(36, 13);
             this.label173.TabIndex = 242;
@@ -7808,7 +7808,7 @@
             // 
             // YmaxDistance_textBox
             // 
-            this.YmaxDistance_textBox.Location = new System.Drawing.Point(1169, 570);
+            this.YmaxDistance_textBox.Location = new System.Drawing.Point(1169, 571);
             this.YmaxDistance_textBox.Name = "YmaxDistance_textBox";
             this.YmaxDistance_textBox.Size = new System.Drawing.Size(48, 20);
             this.YmaxDistance_textBox.TabIndex = 240;
@@ -7817,7 +7817,7 @@
             // label168
             // 
             this.label168.AutoSize = true;
-            this.label168.Location = new System.Drawing.Point(1146, 547);
+            this.label168.Location = new System.Drawing.Point(1146, 548);
             this.label168.Name = "label168";
             this.label168.Size = new System.Drawing.Size(17, 13);
             this.label168.TabIndex = 239;
@@ -7825,7 +7825,7 @@
             // 
             // XmaxDistance_textBox
             // 
-            this.XmaxDistance_textBox.Location = new System.Drawing.Point(1169, 544);
+            this.XmaxDistance_textBox.Location = new System.Drawing.Point(1169, 545);
             this.XmaxDistance_textBox.Name = "XmaxDistance_textBox";
             this.XmaxDistance_textBox.Size = new System.Drawing.Size(48, 20);
             this.XmaxDistance_textBox.TabIndex = 246;
@@ -7834,7 +7834,7 @@
             // label169
             // 
             this.label169.AutoSize = true;
-            this.label169.Location = new System.Drawing.Point(1146, 573);
+            this.label169.Location = new System.Drawing.Point(1146, 574);
             this.label169.Name = "label169";
             this.label169.Size = new System.Drawing.Size(17, 13);
             this.label169.TabIndex = 237;
@@ -7843,7 +7843,7 @@
             // label170
             // 
             this.label170.AutoSize = true;
-            this.label170.Location = new System.Drawing.Point(1146, 525);
+            this.label170.Location = new System.Drawing.Point(1146, 526);
             this.label170.Name = "label170";
             this.label170.Size = new System.Drawing.Size(89, 13);
             this.label170.TabIndex = 236;
@@ -10195,7 +10195,7 @@
         private System.Windows.Forms.Button Ato0_button;
         private System.Windows.Forms.TabPage Algorithms_tabPage;
         private System.Windows.Forms.Button Algorithm_Measure_button;
-        private System.Windows.Forms.CheckBox SearchComponentsOutlines_checkBox;
+        private System.Windows.Forms.CheckBox SearchComponentOutlines_checkBox;
         private System.Windows.Forms.CheckBox SearchRectangles_checkBox;
         private System.Windows.Forms.CheckBox SearchRound_checkBox;
         private System.Windows.Forms.Label label176;

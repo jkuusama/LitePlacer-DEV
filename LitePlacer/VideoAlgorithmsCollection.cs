@@ -221,7 +221,7 @@ namespace LitePlacer
     {
         public bool SearchRounds = false;
         public bool SearchRectangles = false;
-        public bool SearchComponentOutlines = false; 
+        public bool SearchComponentOutlines = false;
         public bool SearchComponentPads = false;
         public double Xmin = 0.0;
         public double Xmax = 0.0;

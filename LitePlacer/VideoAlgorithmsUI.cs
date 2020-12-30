@@ -31,9 +31,10 @@ namespace LitePlacer
     public partial class FormMain : Form
     {
         enum Functions_dataGridViewColumns : int { FunctionColumn, ActiveColumn };
-        public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", "Grayscale", "Edge detect",
-                "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", "Gaussian blur", "Hough circles", "Filter Features by Size"};
-        
+        public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", 
+            "Grayscale", "Edge detect", "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", 
+            "Gaussian blur", "Hough circles", "Filter Features by Size"};
+
 
         public VideoAlgorithmsCollection VideoAlgorithms;
 
@@ -240,7 +241,7 @@ namespace LitePlacer
             MeasurementParametersClass values = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
             SearchRound_checkBox.Checked = values.SearchRounds;
             SearchRectangles_checkBox.Checked = values.SearchRectangles;
-            SearchComponentsOutlines_checkBox.Checked = values.SearchComponentOutlines;
+            SearchComponentOutlines_checkBox.Checked = values.SearchComponentOutlines;
             SearchComponentPads_checkBox.Checked = values.SearchComponentPads;
             // for some reason(??), the order of things to set are not honored. A workaround:
             ChangeYwithX = false;
@@ -1281,9 +1282,9 @@ namespace LitePlacer
             UpdateSearchFunctions();
         }
 
-        private void SearchComponentOutlines_checkBox_CheckedChanged(object sender, EventArgs e)
+        private void SearchComponentsOutlines_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponentOutlines = SearchComponentsOutlines_checkBox.Checked;
+            VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.SearchComponentOutlines = SearchComponentOutlines_checkBox.Checked;
             UpdateSearchFunctions();
         }
 
