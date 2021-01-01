@@ -46,6 +46,7 @@ namespace LitePlacer
         {
             DisplayText("Setup Video Processing tab begin");
             VideoProcessingZguard_checkBox.Checked = false;
+            NoVideoProcessing_radioButton.Checked = true;
             SetDownCameraDefaults();
             SetUpCameraDefaults();
             if (DownCam_radioButton.Checked)
@@ -66,7 +67,7 @@ namespace LitePlacer
             UpcamPositionX_textBox.Text = Setting.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
             UpcamPositionY_textBox.Text = Setting.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
 
-            ProcessDisplay_checkBox_Checked_Change();
+            NoVideoProcessing_radioButton_CheckedChange();
         }
 
         private void Algorithms_tabPage_End()
@@ -119,13 +120,13 @@ namespace LitePlacer
 
         private void AlgorithmsTab_RestoreBehaviour()
         {
-            if (ProcessDisplay_checkBox.Checked)
+            if (NoVideoProcessing_radioButton.Checked)
             {
-                UpdateVideoProcessing();
+                StopVideoProcessing();
             }
             else
             {
-                StopVideoProcessing();
+                UpdateVideoProcessing();
             }
 
         }
@@ -225,7 +226,7 @@ namespace LitePlacer
             FillMeasurementValues(AlgorithmName);
             ClearFunctionParameters();
             AlgorithmChange = false;
-            if (ProcessDisplay_checkBox.Checked)
+            if (!NoVideoProcessing_radioButton.Checked)
             {
                 UpdateVideoProcessing();
             }
@@ -450,20 +451,49 @@ namespace LitePlacer
 
         }
 
-        private void ProcessDisplay_checkBox_CheckedChanged(object sender, EventArgs e)
+        private void NoVideoProcessing_radioButton_CheckedChange()
         {
-            ProcessDisplay_checkBox_Checked_Change();
-        }
-
-        private void ProcessDisplay_checkBox_Checked_Change()
-        {
-            if (ProcessDisplay_checkBox.Checked)
+            if (StartingUp)
             {
-                UpdateVideoProcessing();
+                return;
+            }
+            if (NoVideoProcessing_radioButton.Checked)
+            {
+                StopVideoProcessing();
             }
             else
             {
-                StopVideoProcessing();
+                UpdateVideoProcessing();
+            }
+        }
+
+        private void NoVideoProcessing_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            NoVideoProcessing_radioButton_CheckedChange();
+        }
+
+
+        private void ShowVideoProcessing_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DownCam_radioButton.Checked)
+            {
+                DownCamera.ShowProcessing = ShowVideoProcessing_radioButton.Checked;
+            }
+            if (UpCam_radioButton.Checked)
+            {
+                UpCamera.ShowProcessing = ShowVideoProcessing_radioButton.Checked;
+            }
+        }
+
+        private void ShowVideoResults_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DownCam_radioButton.Checked)
+            {
+                DownCamera.ShowProcessing = !ShowVideoResults_radioButton.Checked;
+            }
+            if (UpCam_radioButton.Checked)
+            {
+                UpCamera.ShowProcessing = !ShowVideoResults_radioButton.Checked;
             }
         }
 
@@ -690,7 +720,7 @@ namespace LitePlacer
             }
             cam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
             cam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
-            cam.Measure(out double X, out double Y, out double Ares, out int err, true);
+            cam.Measure(out double X, out double Y, out double Ares, true);
         }
 
 
@@ -1130,7 +1160,7 @@ namespace LitePlacer
         {
             // User changed something, that (potentially) affects the current video processing
             // Note, that there might not be a current algorithm
-            if (!ProcessDisplay_checkBox.Checked)
+            if (NoVideoProcessing_radioButton.Checked)
             {
                 return;
             }

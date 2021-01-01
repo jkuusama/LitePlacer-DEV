@@ -292,7 +292,7 @@ namespace LitePlacer
                 }
                 for (int tries = 0; tries < 10; tries++)
                 {
-                    if (Cam.Measure(out Point.X, out Point.Y, out double Ares, out int err, true))
+                    if (Cam.Measure(out Point.X, out Point.Y, out double Ares, true))
                     {
                         break;
                     }

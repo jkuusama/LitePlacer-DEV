@@ -2550,30 +2550,17 @@ namespace LitePlacer
             // Measure 7 times, get median: 
             List<double> Xlist = new List<double>();
             List<double> Ylist = new List<double>();
-            int res;
             int Successes = 0;
             int Tries = 0;
             do
             {
                 Tries++;
-                DownCamera.Measure(out X, out Y, out double Ares, out res, false);
-                if (res == 1)
+                if (DownCamera.Measure(out X, out Y, out double Ares, false))
                 {
                     Successes++;
                     Xlist.Add(X);
                     Ylist.Add(Y);
-                    // DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture) + ", Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
                 }
-                /*
-                else if (res == 0)
-                {
-                    DisplayText("Measurement " + Tries.ToString(CultureInfo.InvariantCulture) + ", no result");
-                }
-                else
-                {
-                    DisplayText("Measurement " + Tries.ToString(CultureInfo.InvariantCulture) + ", multiple results (" + res.ToString(CultureInfo.InvariantCulture) + ")");
-                }
-                */
             }
             while ((Successes < 7) && (Tries < 20));
             if (Tries >= 20)
@@ -2731,7 +2718,6 @@ namespace LitePlacer
                 return false;
             }
             int count = 0;
-            int res = 0;
             int tries = 0;
             // bool ProcessingStateSave = DownCamera.PauseProcessing;
             // DownCamera.PauseProcessing = true;
@@ -2740,7 +2726,7 @@ namespace LitePlacer
                 // Measure location
                 for (tries = 0; tries < 8; tries++)
                 {
-                    if (DownCamera.Measure(out X, out Y, out double Ares, out res, false))
+                    if (DownCamera.Measure(out X, out Y, out double Ares, false))
                     {
                         break;
                     }
