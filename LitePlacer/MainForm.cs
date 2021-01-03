@@ -5190,13 +5190,6 @@ namespace LitePlacer
         //const int CADdata_YMachColumn = 7;
         //const int CADdata_RotMachColumn = 8;
 
-        //const int Jobdata_CountColumn = 0;
-        //const int Jobdata_ComponentTypColumn = 1;
-        const int Jobdata_MethodColumn = 2;
-        const int Jobdata_MethodParametersColumn = 3;
-        //const int Jobdata_NozzleColumn = 4;
-        //const int Jobdata_ComponentsColumn = 5;
-
         // =================================================================================
         private void ResetPlacedDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -5278,8 +5271,14 @@ namespace LitePlacer
                 AllLines = File.ReadAllLines(JobFileName);
                 JobFileName_label.Text = Path.GetFileName(JobFileName);
                 JobFilePath_label.Text = Path.GetDirectoryName(JobFileName);
-                ParseJobData(AllLines);
-                ValidMeasurement_checkBox.Checked = false;
+                if (!ParseJobData(AllLines))
+                {
+                    JobData_GridView.Rows.Clear();
+                    JobFileName_label.Text = "--";
+                    JobFilePath_label.Text = "--";
+                    CadDataFileName = "--";
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -5437,7 +5436,13 @@ namespace LitePlacer
                 JobFileName_label.Text = AllLines[0];
                 JobFilePath_label.Text = AllLines[1];
                 AllLines = AllLines.Skip(2).ToArray();
-                ParseJobData(AllLines);
+                if (!ParseJobData(AllLines))
+                {
+                    JobData_GridView.Rows.Clear();
+                    JobFileName_label.Text = "--";
+                    JobFilePath_label.Text = "--";
+                    CadDataFileName = "--";
+                }
                 return;
             }
             catch (Exception ex)
@@ -5649,16 +5654,21 @@ namespace LitePlacer
 
 
         // =================================================================================
-        private void ParseJobData(String[] AllLines)
+        private bool ParseJobData(String[] AllLines)
         {
             JobData_GridView.Rows.Clear();
             string WarningMessage = "";
+            bool quit = false;
             if (AllLines[0] == "2020")
             {
                 // format is ComponentCount value footprint GroupMethod MethodParamAllComponents ComponentList nozzle
                 for (int i = 1; i < AllLines.Length; i++)
                 {
-                    List<String> Line = SplitCSV(AllLines[i], ',');
+                    List<String> Line = SplitCSV(AllLines[i], ',', out quit);
+                    if (quit)
+                    {
+                        return false;
+                    }
                     JobData_GridView.Rows.Add();
                     int Last = JobData_GridView.RowCount - 1;
                     JobData_GridView.Rows[Last].Cells["JobdataCountColumn"].Value = Line[0];
@@ -5675,7 +5685,11 @@ namespace LitePlacer
                 // format is ComponentCount ComponentType GroupMethod MethodParamAllComponents ComponentList nozzle
                 foreach (string LineIn in AllLines)
                 {
-                    List<String> Line = SplitCSV(LineIn, ',');
+                    List<String> Line = SplitCSV(LineIn, ',', out quit);
+                    if (quit)
+                    {
+                        return false;
+                    }
                     JobData_GridView.Rows.Add();
                     int Last = JobData_GridView.RowCount - 1;
                     JobData_GridView.Rows[Last].Cells["JobdataCountColumn"].Value = Line[0];
@@ -5720,6 +5734,7 @@ namespace LitePlacer
                 ShowMessageBox(WarningMessage, "Algorithm missing", MessageBoxButtons.OK);
             }
             JobData_GridView.ClearSelection();
+            return true;
         }
 
         // =================================================================================
@@ -5920,7 +5935,7 @@ namespace LitePlacer
                 // user clicked header, most likely to sort for nozzles
                 return;
             }
-            if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_MethodColumn)
+            if (JobData_GridView.CurrentCell.OwningColumn.Name == "JobdataMethodColumn")
             {
                 // For method, show a form with explanation texts
                 MakeJobDataDirty();
@@ -5944,7 +5959,7 @@ namespace LitePlacer
                 return;
             };
 
-            if (JobData_GridView.CurrentCell.ColumnIndex == Jobdata_MethodParametersColumn)
+            if (JobData_GridView.CurrentCell.OwningColumn.Name == "JobdataMethodParametersColumn")
             {
                 // For method parameter, show the tape selection form if method is place of some sort;
                 MakeJobDataDirty();
@@ -5982,12 +5997,12 @@ namespace LitePlacer
         private void JobData_GridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             int col = JobData_GridView.CurrentCell.ColumnIndex;
-
+            bool cancel;
             if (JobData_GridView.Columns[col].Name == "JobdataComponentsColumn")
             {
                 // components
                 MakeJobDataDirty();
-                List<String> Line = SplitCSV(JobData_GridView.CurrentCell.Value.ToString(), ',');
+                List<String> Line = SplitCSV(JobData_GridView.CurrentCell.Value.ToString(), ',', out cancel);
                 int row = JobData_GridView.CurrentCell.RowIndex;
                 JobData_GridView.Rows[row].Cells["JobdataCountColumn"].Value = Line.Count.ToString(CultureInfo.InvariantCulture);
                 Update_GridView(JobData_GridView);
@@ -6199,9 +6214,14 @@ namespace LitePlacer
                 // Found something to do. Find the row from Job data
                 string component = CadRow.Cells["CADdataComponentColumn"].Value.ToString();
                 int JobRowNo;
+                bool cancel = false;
                 for (JobRowNo = 0; JobRowNo < JobData_GridView.RowCount; JobRowNo++)
                 {
-                    List<String> componentlist = SplitCSV(JobData_GridView.Rows[JobRowNo].Cells["JobdataComponentsColumn"].Value.ToString(), ',');
+                    List<String> componentlist = SplitCSV(JobData_GridView.Rows[JobRowNo].Cells["JobdataComponentsColumn"].Value.ToString(), ',', out cancel);
+                    if (cancel)
+                    {
+                        return;
+                    }
                     if (componentlist.Contains(component))
                     {
                         break;
@@ -8372,7 +8392,7 @@ namespace LitePlacer
             }
 
             // find the tranformation
-            bool res = transform.Estimate(nominals, measured, ErrorMetric.Transfer, 450, 450);  // the PCBs are smaller than 450mm
+            bool res = transform.Estimate(nominals, measured, ErrorMetric.Transfer, 1450, 1450);  // the PCBs are smaller than 450mm
             if (!res)
             {
                 ShowMessageBox(
@@ -8988,15 +9008,19 @@ namespace LitePlacer
             }
 
             List<String> Headers;
-
+            bool quit = false;
             if (KiCad)
             {
                 Headers = SplitKiCadLine(AllLines[LineIndex++]);
             }
             else
             {
-                 Headers = SplitCSV(AllLines[LineIndex++], delimiter);
-           }
+                Headers = SplitCSV(AllLines[LineIndex++], delimiter, out quit);
+                if (quit)
+                {
+                    return false;
+                }
+            }
 
             for (i = 0; i < Headers.Count; i++)
             {
@@ -9137,7 +9161,6 @@ namespace LitePlacer
             // Parse data
             List<String> NewLine;
             List<List<string>> DataLines = new List<List<string>>();
-
             for (i = LineIndex; i < AllLines.Count(); i++)   // for each component
             {
                 // Skip: empty lines and comment lines (starting with # or "//")
@@ -9160,7 +9183,11 @@ namespace LitePlacer
                 }
                 else
                 {
-                    NewLine = SplitCSV(AllLines[i], delimiter);
+                    NewLine = SplitCSV(AllLines[i], delimiter, out quit);
+                    if (quit)
+                    {
+                        return false;
+                    }
                 }
                 DataLines.Add(NewLine);
             }
@@ -9314,14 +9341,16 @@ namespace LitePlacer
         // =================================================================================
         // Helper function for ParseCadData() (and some others, hence public)
 
-        public List<String> SplitCSV(string InputLine, char delimiter)
+        public List<String> SplitCSV(string InputLine, char delimiter, out bool quit)
         {
             // input lines can be "xxx","xxxx","xx"; output is array: xxx  xxxxx  xx
             // or xxx,xxxx,xx; output is array: xxx  xxxx  xx
             // or xxx,"xx,xx",xxxx; output is array: xxx  xx,xx  xxxx
 
+            quit = false;
             List<String> Tokens = new List<string>();
             string Line = InputLine;
+            DialogResult dialogResult;
             while (!string.IsNullOrEmpty(Line))
             {
                 // skip the delimiter(s)
@@ -9329,16 +9358,25 @@ namespace LitePlacer
                 {
                     if (Line.Length < 2)
                     {
-                        ShowMessageBox(
+                        dialogResult = ShowMessageBox(
                            "Unexpected end of line on " + InputLine,
                            "Line parsing failed",
-                           MessageBoxButtons.OK);
-                        return (Tokens);
+                            MessageBoxButtons.OKCancel);
+                        if (dialogResult == DialogResult.Cancel)
+                        {
+                            quit = true;
+                            return (Tokens);
+                        }
                     }
-                    ShowMessageBox(
+                    dialogResult = ShowMessageBox(
                        "Warning: empty field on line " + InputLine,
                        "Empty field",
-                       MessageBoxButtons.OK);
+                            MessageBoxButtons.OKCancel);
+                    if (dialogResult == DialogResult.Cancel)
+                    {
+                        quit = true;
+                        return (Tokens);
+                    }
                     Tokens.Add("");
                     Line = Line.Substring(1);
                 };
@@ -9347,11 +9385,15 @@ namespace LitePlacer
                 {
                     if (Line.Length < 2)
                     {
-                        ShowMessageBox(
+                        dialogResult = ShowMessageBox(
                            "Unexpected end of line on " + InputLine,
                            "Line parsing failed",
-                           MessageBoxButtons.OK);
-                        return (Tokens);
+                            MessageBoxButtons.OKCancel);
+                        if (dialogResult == DialogResult.Cancel)
+                        {
+                            quit = true;
+                            return (Tokens);
+                        }
                     }
                     // token is "xxx"
                     Line = Line.Substring(1);   // skip the first "
@@ -9385,7 +9427,7 @@ namespace LitePlacer
             {
                 Tokens[i] = Tokens[i].Trim();
             }
-            return (Tokens);
+            return Tokens;
         }
 
         private List<String> SplitKiCadLine(string InputLine)
