@@ -4157,7 +4157,7 @@ namespace LitePlacer
             else if (Cnc.Connected)
             {
                 buttonConnectSerial.Text = "Close";
-                labelSerialPortStatus.Text = "Connected";
+                labelSerialPortStatus.Text = "Connected to " + Cnc.Port;
                 labelSerialPortStatus.ForeColor = Color.Black;
             }
             else
