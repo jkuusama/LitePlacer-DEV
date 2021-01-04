@@ -694,51 +694,52 @@ namespace LitePlacer
                         if (FindCircles)
                         {
                             List<Shapes.Circle> Circles = FindCirclesFunct(frame);
-                            DrawCirclesFunct(ref frame, Circles);
+                            DrawCirclesFunct(ref frame, Circles, 1.0);
                         }
                         if (FindRectangles)
                         {
                             List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(frame);
-                            DrawRectanglesFunct(ref frame, Rectangles);
+                            DrawRectanglesFunct(ref frame, Rectangles, 1.0);
                         }
                         if (FindComponentByOutlines)
                         {
                             List<Shapes.Component> Components = FindComponentsFromOutline_Funct(frame);
-                            DrawComponentsFunct(ref frame, Components);
+                            DrawComponentsFunct(ref frame, Components, 1.0);
                         }
                         if (FindComponentByPads)
                         {
                             List<Shapes.Component> Components = FindComponentsFromPads_Funct(frame);
-                            DrawComponentsFunct(ref frame, Components);
+                            DrawComponentsFunct(ref frame, Components, 1.0);
                         }
                     }
                     else
                     {
-                        Bitmap ProcessFrame = (Bitmap)frame.Clone();
+                        Bitmap ProcessedFrame = (Bitmap)frame.Clone();
                         foreach (AForgeFunction f in DisplayFunctions)
                         {
-                            f.func(ref ProcessFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
+                            f.func(ref ProcessedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
                                 f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
                         }
+                        double zoom = 1/GetDisplayZoom();  // If measurement frame is zoomed, we need to zoom the displayed results as well
                         if (FindCircles)
                         {
-                            List<Shapes.Circle> Circles = FindCirclesFunct(ProcessFrame);
-                            DrawCirclesFunct(ref frame, Circles);
+                            List<Shapes.Circle> Circles = FindCirclesFunct(ProcessedFrame);
+                            DrawCirclesFunct(ref frame, Circles, zoom);
                         }
                         if (FindRectangles)
                         {
-                            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(ProcessFrame);
-                            DrawRectanglesFunct(ref frame, Rectangles);
+                            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(ProcessedFrame);
+                            DrawRectanglesFunct(ref frame, Rectangles, zoom);
                         }
                         if (FindComponentByOutlines)
                         {
-                            List<Shapes.Component> Components = FindComponentsFromOutline_Funct(ProcessFrame);
-                            DrawComponentsFunct(ref frame, Components);
+                            List<Shapes.Component> Components = FindComponentsFromOutline_Funct(ProcessedFrame);
+                            DrawComponentsFunct(ref frame, Components, zoom);
                         }
                         if (FindComponentByPads)
                         {
-                            List<Shapes.Component> Components = FindComponentsFromPads_Funct(ProcessFrame);
-                            DrawComponentsFunct(ref frame, Components);
+                            List<Shapes.Component> Components = FindComponentsFromPads_Funct(ProcessedFrame);
+                            DrawComponentsFunct(ref frame, Components, zoom);
                         }
                     }
                 }
@@ -1295,8 +1296,52 @@ namespace LitePlacer
         }
 
         // ===========
-        private void DrawComponentsFunct(ref Bitmap bitmap, List<Shapes.Component> Components)
+        private void DrawComponentsFunct(ref Bitmap bitmap, List<Shapes.Component> Components, double zoom)
         {
+            int PenSize = (int)(3 * zoom);
+            if (PenSize < 2)
+            {
+                PenSize = 2;
+            }
+            Graphics g = Graphics.FromImage(bitmap);
+            Pen OrangePen = new Pen(Color.DarkOrange, 3);
+            for (int i = 0; i < Components.Count; i++)
+            {
+                List<System.Drawing.PointF> Corners = new List<System.Drawing.PointF>();
+
+                for (int c = 0; c < Components[i].BoundingBox.Corners.Count; c++)
+                {
+                    double X = Components[i].BoundingBox.Corners[c].X;
+                    X = X - FrameCenterX;
+                    X = X * zoom;
+                    X = X + FrameCenterX;
+                    double Y = Components[i].BoundingBox.Corners[c].Y;
+                    Y = Y - FrameCenterY;
+                    Y = Y * zoom;
+                    Y = Y + FrameCenterY;
+                    System.Drawing.PointF Pnt = new System.Drawing.PointF();
+                    Pnt.X = (float)X;
+                    Pnt.Y = (float)Y;
+                    Corners.Add(Pnt);
+                }
+                g.DrawPolygon(OrangePen, Corners.ToArray());
+                double Xc = Components[i].Center.X;
+                Xc = Xc - FrameCenterX;
+                Xc = Xc * zoom;
+                Xc = Xc + FrameCenterX;
+                double Yc = Components[i].Center.Y;
+                Yc = Yc - FrameCenterY;
+                Yc = Yc * zoom;
+                Yc = Yc + FrameCenterY;
+                ArrowAngle = Components[i].Angle;
+                DrawArrowFunct(ref bitmap, (int)Xc, (int)Yc, (int)(Components[i].Xsize * 0.3));
+            }
+            g.Dispose();
+            OrangePen.Dispose();
+
+
+            /*
+
             Graphics g = Graphics.FromImage(bitmap);
             Pen OrangePen = new Pen(Color.DarkOrange, 3);
             for (int i = 0, n = Components.Count; i < n; i++)
@@ -1307,7 +1352,7 @@ namespace LitePlacer
             }
             g.Dispose();
             OrangePen.Dispose();
-
+            */
         }
 
 
@@ -1582,64 +1627,39 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles)
+        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles, double zoom)
         {
 
             if (Circles.Count == 0)
             {
                 return;
             }
-            // Find smallest
-            int Smallest = FindSmallestCircle(Circles);
 
-            // find closest to center
-            int Closest = FindClosestCircle(Circles);
-
-            int PenSize = 3;
-            // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
-            // To make the circles visible, we need to draw then bit thicker
-            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Zoom)
+            int PenSize = (int)(3 * zoom);
+            if (PenSize<2)
             {
-                PenSize = 5;
+                PenSize = 2;
             }
 
             Graphics g = Graphics.FromImage(bitmap);
-            Pen OrangePen = new Pen(Color.DarkOrange, PenSize);
-            Pen AquaPen = new Pen(Color.Aqua, PenSize);
             Pen LimePen = new Pen(Color.Lime, PenSize);
-            Pen MagentaPen = new Pen(Color.Magenta, PenSize);
-
-            if (Closest == Smallest)
-            {
-                g.DrawEllipse(MagentaPen,
-                    (float)(Circles[Closest].Center.X - Circles[Closest].Radius), (float)(Circles[Closest].Center.Y - Circles[Closest].Radius),
-                    (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
-            }
-            else
-            {
-                g.DrawEllipse(LimePen,
-                    (float)(Circles[Closest].Center.X - Circles[Closest].Radius), (float)(Circles[Closest].Center.Y - Circles[Closest].Radius),
-                    (float)(Circles[Closest].Radius * 2), (float)(Circles[Closest].Radius * 2));
-                g.DrawEllipse(AquaPen,
-                    (float)(Circles[Smallest].Center.X - Circles[Smallest].Radius), (float)(Circles[Smallest].Center.Y - Circles[Smallest].Radius),
-                    (float)(Circles[Smallest].Radius * 2), (float)(Circles[Smallest].Radius * 2));
-            }
-
-
             for (int i = 0, n = Circles.Count; i < n; i++)
             {
-                if ((i != Closest) && (i != Smallest))
-                {
-                    g.DrawEllipse(OrangePen,
-                       (float)(Circles[i].Center.X - Circles[i].Radius), (float)(Circles[i].Center.Y - Circles[i].Radius),
-                       (float)(Circles[i].Radius * 2), (float)(Circles[i].Radius * 2));
-                }
+                double X = Circles[i].Center.X;
+                X = X - Circles[i].Radius;
+                X = X - FrameCenterX;
+                X = X * zoom;
+                X = X + FrameCenterX;
+                double Y = Circles[i].Center.Y;
+                Y = Y - Circles[i].Radius;
+                Y = Y - FrameCenterY;
+                Y = Y * zoom;
+                Y = Y + FrameCenterY;
+                float dia = (float)((Circles[i].Radius * 2 * zoom));
+                g.DrawEllipse(LimePen, (float)X, (float)Y, dia, dia);
             }
             g.Dispose();
-            OrangePen.Dispose();
-            AquaPen.Dispose();
             LimePen.Dispose();
-            MagentaPen.Dispose();
         }
 
         // =========================================================
@@ -1737,34 +1757,38 @@ namespace LitePlacer
             return (Rectangles);
         }
         // =========================================================
-        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> Rectangles)
+        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> RectanglesIn, double zoom)
         {
-            int closest = FindClosestRectangle(Rectangles);
-            int PenSize = 3;
-            // if show pixels is off and image is not zoomed, the drawn pixels are going to be scaled down.
-            // To make the circles visible, we need to draw then bit thicker
-            if (!(ImageBox.SizeMode == PictureBoxSizeMode.CenterImage) && !Zoom)
+            int PenSize = (int)(3 * zoom);
+            if (PenSize < 2)
             {
-                PenSize = 5;
+                PenSize = 2;
             }
             Graphics g = Graphics.FromImage(image);
-            Pen OrangePen = new Pen(Color.DarkOrange, PenSize);
             Pen LimePen = new Pen(Color.Lime, PenSize);
-
-            for (int i = 0, n = Rectangles.Count; i < n; i++)
+            for (int i = 0; i < RectanglesIn.Count; i++)
             {
-                if (i == closest)
+                List<System.Drawing.PointF> Corners = new List<System.Drawing.PointF>();
+
+                for (int c = 0; c < RectanglesIn[i].Corners.Count; c++)
                 {
-                    g.DrawPolygon(LimePen, ToPointsArray(Rectangles[i].Corners));
+                    double X = RectanglesIn[i].Corners[c].X;
+                    X = X - FrameCenterX;
+                    X = X * zoom;
+                    X = X + FrameCenterX;
+                    double Y = RectanglesIn[i].Corners[c].Y;
+                    Y = Y - FrameCenterY;
+                    Y = Y * zoom;
+                    Y = Y + FrameCenterY;
+                    System.Drawing.PointF Pnt = new System.Drawing.PointF();
+                    Pnt.X = (float)X;
+                    Pnt.Y = (float)Y;
+                    Corners.Add(Pnt);
                 }
-                else
-                {
-                    g.DrawPolygon(OrangePen, ToPointsArray(Rectangles[i].Corners));
-                }
+                g.DrawPolygon(LimePen, Corners.ToArray());
             }
             g.Dispose();
             LimePen.Dispose();
-            OrangePen.Dispose();
         }
 
         // =========================================================
