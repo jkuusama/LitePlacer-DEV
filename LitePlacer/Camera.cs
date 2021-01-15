@@ -1542,14 +1542,18 @@ namespace LitePlacer
         // A to rotation in degrees, 
         // return value is number of components found
         {
+            X = 0.0;
+            Y = 0.0;
+            A = 0.0;
             Bitmap image = GetMeasurementFrame();
+            if (image==null)
+            {
+                return (0);
+            }
             List<Shapes.LitePlacerShapeComponent> RawComponents = FindComponentsFunctOld(image);
             image.Dispose();
             List<Shapes.LitePlacerShapeComponent> GoodComponents = new List<Shapes.LitePlacerShapeComponent>();
 
-            X = 0.0;
-            Y = 0.0;
-            A = 0.0;
             if (RawComponents.Count == 0)
             {
                 return (0);
@@ -1841,9 +1845,13 @@ namespace LitePlacer
         {
             // returns a list of circles for measurements, filters for distance (which we always do) and size, if needed
 
-            Bitmap image = GetMeasurementFrame();
-            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
             List<Shapes.Rectangle> GoodRectangles = new List<Shapes.Rectangle>();
+            Bitmap image = GetMeasurementFrame();
+            if (image==null)
+            {
+                return (GoodRectangles);
+            }
+            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
             image.Dispose();
 
             double X = 0.0;
@@ -2161,6 +2169,11 @@ namespace LitePlacer
         public void TakeSnapshot()
         {
             Bitmap image = GetMeasurementFrame();
+            if (image==null)
+            {
+                MainForm.DisplayText("Could not get a snapshot image", KnownColor.DarkRed, true);
+                return;
+            }
 
             Color peek;
             for (int y = 0; y < image.Height; y++)
@@ -2393,6 +2406,11 @@ namespace LitePlacer
             }
 
             Bitmap image = GetMeasurementFrame();
+            if (image==null)
+            {
+                MainForm.DisplayText("Could not get a snapshot image", KnownColor.DarkRed, true);
+                return false;
+            }
 
             // Find candidates:
             stopwatch.Stop();   // Don't time diagnostic messages
