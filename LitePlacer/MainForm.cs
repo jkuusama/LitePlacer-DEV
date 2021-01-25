@@ -66,7 +66,7 @@ namespace LitePlacer
         // General and "global" functions 
         // =================================================================================
         #region General
-
+          
         // =================================================================================
         // Note about thread guards: The prologue "if(InvokeRequired) {something long}" at a start of a function, 
         // makes the function safe to call from another thread.
@@ -5352,7 +5352,7 @@ namespace LitePlacer
             }
 
             Job_saveFileDialog.Filter = "CSV placement files (*.csv)|*.csv|All files (*.*)|*.*";
-            Job_saveFileDialog.FileName = CadDataFileName;
+            Job_saveFileDialog.FileName = CadFileName_label.Text;
 
             if (Job_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -5594,7 +5594,14 @@ namespace LitePlacer
             }
 
             Job_saveFileDialog.Filter = "LitePlacer Job files (*.lpj)|*.lpj|All files (*.*)|*.*";
-            Job_saveFileDialog.FileName = JobFileName;
+            if (JobFileName_label.Text.StartsWith("--"))
+            {
+                Job_saveFileDialog.FileName = "";
+            }
+            else
+            {
+                Job_saveFileDialog.FileName = JobFileName_label.Text;
+            }
 
             if (Job_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
