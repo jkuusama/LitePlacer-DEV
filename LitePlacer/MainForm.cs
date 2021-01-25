@@ -5352,6 +5352,7 @@ namespace LitePlacer
             }
 
             Job_saveFileDialog.Filter = "CSV placement files (*.csv)|*.csv|All files (*.*)|*.*";
+            Job_saveFileDialog.FileName = CadDataFileName;
 
             if (Job_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -5593,6 +5594,7 @@ namespace LitePlacer
             }
 
             Job_saveFileDialog.Filter = "LitePlacer Job files (*.lpj)|*.lpj|All files (*.*)|*.*";
+            Job_saveFileDialog.FileName = JobFileName;
 
             if (Job_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -5995,8 +5997,8 @@ namespace LitePlacer
                     JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value = 
                         SelectFiducialAlgorithm(JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value.ToString());
                 }
+                Update_GridView(JobData_GridView);
             }
-            Update_GridView(JobData_GridView);
         }
 
         // If components are edited, update count automatically
@@ -9826,16 +9828,27 @@ namespace LitePlacer
 
         // ==========================================================================================================
         // Tapes_dataGridView_CellClick(): 
-        // If the click is on a button column, resets the tape. 
         private void Tapes_dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Ignore clicks that are not on button cell  Id_Column
-            if ((e.RowIndex < 0) || (e.ColumnIndex != Tapes_dataGridView.Columns["SelectButton_Column"].Index))
+            if ((e.RowIndex < 0)||(e.ColumnIndex<0))
             {
                 return;
             }
-            Tapes.Reset(e.RowIndex);
-            Update_GridView(Tapes_dataGridView);
+            // If the click is on a button column, resets the tape. 
+            if (e.ColumnIndex == Tapes_dataGridView.Columns["SelectButton_Column"].Index)
+            {
+                Tapes.Reset(e.RowIndex);
+                Update_GridView(Tapes_dataGridView);
+                return;
+            }
+            // make drop down cells drop down on first click
+            if (Tapes_dataGridView.CurrentCell is DataGridViewComboBoxCell)
+            {
+                Tapes_dataGridView.BeginEdit(true);
+                ((ComboBox)Tapes_dataGridView.EditingControl).DroppedDown = true;
+                Tapes_dataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+
         }
 
 
@@ -10147,17 +10160,6 @@ namespace LitePlacer
             {
                 Tapes_dataGridView.Rows[row].Cells["Width_Column"].Value = "custom";
                 return;
-            }
-        }
-
-        private void Tapes_dataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-        {
-            // This event handler manually raises the CellValueChanged event 
-            // by calling the CommitEdit method. 
-            if (Tapes_dataGridView.IsCurrentCellDirty)
-            {
-                // This fires the cell value changed handler below
-                Tapes_dataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
         }
 
@@ -12940,6 +12942,7 @@ namespace LitePlacer
                 ZGuardOn();
             }
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

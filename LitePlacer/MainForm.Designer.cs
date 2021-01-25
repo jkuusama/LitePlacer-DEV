@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -65,6 +66,7 @@
             this.Bookmark5_button = new System.Windows.Forms.Button();
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.TapeSetupZguard_checkBox = new System.Windows.Forms.CheckBox();
             this.label225 = new System.Windows.Forms.Label();
             this.label67 = new System.Windows.Forms.Label();
             this.label62 = new System.Windows.Forms.Label();
@@ -812,7 +814,6 @@
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
-            this.TapeSetupZguard_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1288,6 +1289,19 @@
             this.Tapes_tabPage.TabIndex = 6;
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // TapeSetupZguard_checkBox
+            // 
+            this.TapeSetupZguard_checkBox.AutoSize = true;
+            this.TapeSetupZguard_checkBox.Checked = true;
+            this.TapeSetupZguard_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.TapeSetupZguard_checkBox.Location = new System.Drawing.Point(655, 610);
+            this.TapeSetupZguard_checkBox.Name = "TapeSetupZguard_checkBox";
+            this.TapeSetupZguard_checkBox.Size = new System.Drawing.Size(187, 17);
+            this.TapeSetupZguard_checkBox.TabIndex = 267;
+            this.TapeSetupZguard_checkBox.Text = "Allow movement with nozzle down";
+            this.TapeSetupZguard_checkBox.UseVisualStyleBackColor = true;
+            this.TapeSetupZguard_checkBox.CheckedChanged += new System.EventHandler(this.TapeSetupZguard_checkBox_CheckedChanged);
             // 
             // label225
             // 
@@ -1836,7 +1850,6 @@
             this.LastY_column,
             this.RotationDirect_Column});
             this.Tapes_dataGridView.ContextMenuStrip = this.Tapes_contextMenuStrip;
-            this.Tapes_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.Tapes_dataGridView.Location = new System.Drawing.Point(655, 19);
             this.Tapes_dataGridView.Name = "Tapes_dataGridView";
             this.Tapes_dataGridView.RowHeadersVisible = false;
@@ -1849,7 +1862,6 @@
             this.Tapes_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Tapes_dataGridView_CellMouseDown);
             this.Tapes_dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellMouseEnter);
             this.Tapes_dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellValueChanged);
-            this.Tapes_dataGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.Tapes_dataGridView_CurrentCellDirtyStateChanged);
             this.Tapes_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Tapes_dataGridView_EditingControlShowing);
             // 
             // Id_Column
@@ -1977,14 +1989,14 @@
             this.OffsetX_Column.HeaderText = "Offset X";
             this.OffsetX_Column.MinimumWidth = 6;
             this.OffsetX_Column.Name = "OffsetX_Column";
-            this.OffsetX_Column.Width = 70;
+            this.OffsetX_Column.Width = 65;
             // 
             // OffsetY_Column
             // 
             this.OffsetY_Column.HeaderText = "Offset Y";
             this.OffsetY_Column.MinimumWidth = 6;
             this.OffsetY_Column.Name = "OffsetY_Column";
-            this.OffsetY_Column.Width = 70;
+            this.OffsetY_Column.Width = 65;
             // 
             // FirstX_Column
             // 
@@ -2007,14 +2019,14 @@
             this.Z_Pickup_Column.HeaderText = "Pickup Z";
             this.Z_Pickup_Column.MinimumWidth = 6;
             this.Z_Pickup_Column.Name = "Z_Pickup_Column";
-            this.Z_Pickup_Column.Width = 75;
+            this.Z_Pickup_Column.Width = 69;
             // 
             // Z_Place_Column
             // 
             this.Z_Place_Column.HeaderText = "Place Z";
             this.Z_Place_Column.MinimumWidth = 6;
             this.Z_Place_Column.Name = "Z_Place_Column";
-            this.Z_Place_Column.Width = 69;
+            this.Z_Place_Column.Width = 64;
             // 
             // Next_X_Column
             // 
@@ -2022,7 +2034,7 @@
             this.Next_X_Column.MinimumWidth = 6;
             this.Next_X_Column.Name = "Next_X_Column";
             this.Next_X_Column.ReadOnly = true;
-            this.Next_X_Column.Width = 64;
+            this.Next_X_Column.Width = 60;
             // 
             // Next_Y_Column
             // 
@@ -2030,7 +2042,7 @@
             this.Next_Y_Column.MinimumWidth = 6;
             this.Next_Y_Column.Name = "Next_Y_Column";
             this.Next_Y_Column.ReadOnly = true;
-            this.Next_Y_Column.Width = 64;
+            this.Next_Y_Column.Width = 60;
             // 
             // CoordinatesForParts_Column
             // 
@@ -6624,7 +6636,7 @@
             this.JobDataSave_button.Name = "JobDataSave_button";
             this.JobDataSave_button.Size = new System.Drawing.Size(75, 23);
             this.JobDataSave_button.TabIndex = 60;
-            this.JobDataSave_button.Text = "Save";
+            this.JobDataSave_button.Text = "Save as";
             this.toolTip1.SetToolTip(this.JobDataSave_button, "Saves a Job Data file. If saved with the same name \r\nand same directory as a CAD " +
         "Data file, it will be loaded \r\nautomatically when the CAD data file is loaded.");
             this.JobDataSave_button.UseVisualStyleBackColor = true;
@@ -7054,16 +7066,17 @@
             // JobData_GridView
             // 
             this.JobData_GridView.AllowUserToAddRows = false;
+            this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
             this.JobDataFootprintColumn,
@@ -7072,7 +7085,6 @@
             this.JobdataMethodParametersColumn,
             this.JobDataNozzleColumn,
             this.JobdataComponentsColumn});
-            this.JobData_GridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.JobData_GridView.Location = new System.Drawing.Point(784, 364);
             this.JobData_GridView.Name = "JobData_GridView";
             this.JobData_GridView.RowHeadersVisible = false;
@@ -7147,10 +7159,16 @@
             // CadData_GridView
             // 
             this.CadData_GridView.AllowUserToAddRows = false;
-            this.CadData_GridView.AllowUserToDeleteRows = false;
-            this.CadData_GridView.AllowUserToResizeRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -9621,19 +9639,6 @@
             this.Test7_button.Text = "Nozzle to up cam";
             this.Test7_button.UseVisualStyleBackColor = true;
             this.Test7_button.Click += new System.EventHandler(this.Test7_button_Click);
-            // 
-            // TapeSetupZguard_checkBox
-            // 
-            this.TapeSetupZguard_checkBox.AutoSize = true;
-            this.TapeSetupZguard_checkBox.Checked = true;
-            this.TapeSetupZguard_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TapeSetupZguard_checkBox.Location = new System.Drawing.Point(655, 610);
-            this.TapeSetupZguard_checkBox.Name = "TapeSetupZguard_checkBox";
-            this.TapeSetupZguard_checkBox.Size = new System.Drawing.Size(187, 17);
-            this.TapeSetupZguard_checkBox.TabIndex = 267;
-            this.TapeSetupZguard_checkBox.Text = "Allow movement with nozzle down";
-            this.TapeSetupZguard_checkBox.UseVisualStyleBackColor = true;
-            this.TapeSetupZguard_checkBox.CheckedChanged += new System.EventHandler(this.TapeSetupZguard_checkBox_CheckedChanged);
             // 
             // FormMain
             // 
