@@ -12411,6 +12411,16 @@ namespace LitePlacer
                 }
             }
 
+            while (NozzlesParameters_dataGridView.Rows.Count > Setting.Nozzles_count)
+            {
+                NozzlesParameters_dataGridView.Rows.RemoveAt(NozzlesParameters_dataGridView.Rows.Count - 1);
+            }
+
+            while (NozzlesParameters_dataGridView.Rows.Count < Setting.Nozzles_count)
+            {
+                NozzlesParameters_dataGridView.Rows.Add();
+            }
+
             if (Setting.Nozzles_count == 0)
             {
                 NozzleChangeEnable_checkBox.Checked = false;
