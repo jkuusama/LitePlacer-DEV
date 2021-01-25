@@ -72,6 +72,7 @@ namespace LitePlacer
 
         private void Algorithms_tabPage_End()
         {
+            ZGuardOn();
         }
 
         public void InitVideoAlgorithmsUI()

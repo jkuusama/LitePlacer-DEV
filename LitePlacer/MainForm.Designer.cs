@@ -575,6 +575,13 @@
             this.label86 = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
             this.JobData_GridView = new System.Windows.Forms.DataGridView();
+            this.JobDataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodParametersColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataNozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataComponentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Bottom_checkBox = new System.Windows.Forms.CheckBox();
             this.CadData_GridView = new System.Windows.Forms.DataGridView();
             this.CADdataComponentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -805,13 +812,7 @@
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
-            this.JobDataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataMethodParametersColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataNozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataComponentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TapeSetupZguard_checkBox = new System.Windows.Forms.CheckBox();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1244,6 +1245,7 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.TapeSetupZguard_checkBox);
             this.Tapes_tabPage.Controls.Add(this.label225);
             this.Tapes_tabPage.Controls.Add(this.label67);
             this.Tapes_tabPage.Controls.Add(this.label62);
@@ -1840,7 +1842,7 @@
             this.Tapes_dataGridView.RowHeadersVisible = false;
             this.Tapes_dataGridView.RowHeadersWidth = 50;
             this.Tapes_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Tapes_dataGridView.Size = new System.Drawing.Size(584, 610);
+            this.Tapes_dataGridView.Size = new System.Drawing.Size(584, 581);
             this.Tapes_dataGridView.TabIndex = 15;
             this.Tapes_dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellClick);
             this.Tapes_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tapes_dataGridView_CellLeave);
@@ -1975,14 +1977,14 @@
             this.OffsetX_Column.HeaderText = "Offset X";
             this.OffsetX_Column.MinimumWidth = 6;
             this.OffsetX_Column.Name = "OffsetX_Column";
-            this.OffsetX_Column.Width = 65;
+            this.OffsetX_Column.Width = 70;
             // 
             // OffsetY_Column
             // 
             this.OffsetY_Column.HeaderText = "Offset Y";
             this.OffsetY_Column.MinimumWidth = 6;
             this.OffsetY_Column.Name = "OffsetY_Column";
-            this.OffsetY_Column.Width = 65;
+            this.OffsetY_Column.Width = 70;
             // 
             // FirstX_Column
             // 
@@ -2005,14 +2007,14 @@
             this.Z_Pickup_Column.HeaderText = "Pickup Z";
             this.Z_Pickup_Column.MinimumWidth = 6;
             this.Z_Pickup_Column.Name = "Z_Pickup_Column";
-            this.Z_Pickup_Column.Width = 69;
+            this.Z_Pickup_Column.Width = 75;
             // 
             // Z_Place_Column
             // 
             this.Z_Place_Column.HeaderText = "Place Z";
             this.Z_Place_Column.MinimumWidth = 6;
             this.Z_Place_Column.Name = "Z_Place_Column";
-            this.Z_Place_Column.Width = 64;
+            this.Z_Place_Column.Width = 69;
             // 
             // Next_X_Column
             // 
@@ -2020,7 +2022,7 @@
             this.Next_X_Column.MinimumWidth = 6;
             this.Next_X_Column.Name = "Next_X_Column";
             this.Next_X_Column.ReadOnly = true;
-            this.Next_X_Column.Width = 60;
+            this.Next_X_Column.Width = 64;
             // 
             // Next_Y_Column
             // 
@@ -2028,7 +2030,7 @@
             this.Next_Y_Column.MinimumWidth = 6;
             this.Next_Y_Column.Name = "Next_Y_Column";
             this.Next_Y_Column.ReadOnly = true;
-            this.Next_Y_Column.Width = 60;
+            this.Next_Y_Column.Width = 64;
             // 
             // CoordinatesForParts_Column
             // 
@@ -7082,6 +7084,55 @@
             this.JobData_GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellContentClick);
             this.JobData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellEndEdit);
             // 
+            // JobDataValueColumn
+            // 
+            this.JobDataValueColumn.HeaderText = "Value";
+            this.JobDataValueColumn.MinimumWidth = 6;
+            this.JobDataValueColumn.Name = "JobDataValueColumn";
+            // 
+            // JobDataFootprintColumn
+            // 
+            this.JobDataFootprintColumn.HeaderText = "Footprint";
+            this.JobDataFootprintColumn.MinimumWidth = 6;
+            this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
+            // 
+            // JobdataCountColumn
+            // 
+            this.JobdataCountColumn.HeaderText = "Count";
+            this.JobdataCountColumn.MinimumWidth = 6;
+            this.JobdataCountColumn.Name = "JobdataCountColumn";
+            this.JobdataCountColumn.Width = 40;
+            // 
+            // JobdataMethodColumn
+            // 
+            this.JobdataMethodColumn.HeaderText = "Method";
+            this.JobdataMethodColumn.MinimumWidth = 6;
+            this.JobdataMethodColumn.Name = "JobdataMethodColumn";
+            this.JobdataMethodColumn.ReadOnly = true;
+            this.JobdataMethodColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobdataMethodColumn.Width = 80;
+            // 
+            // JobdataMethodParametersColumn
+            // 
+            this.JobdataMethodParametersColumn.HeaderText = "Method Parameters";
+            this.JobdataMethodParametersColumn.MinimumWidth = 6;
+            this.JobdataMethodParametersColumn.Name = "JobdataMethodParametersColumn";
+            this.JobdataMethodParametersColumn.Width = 80;
+            // 
+            // JobDataNozzleColumn
+            // 
+            this.JobDataNozzleColumn.HeaderText = "Nozzle";
+            this.JobDataNozzleColumn.MinimumWidth = 6;
+            this.JobDataNozzleColumn.Name = "JobDataNozzleColumn";
+            this.JobDataNozzleColumn.Width = 50;
+            // 
+            // JobdataComponentsColumn
+            // 
+            this.JobdataComponentsColumn.HeaderText = "Components";
+            this.JobdataComponentsColumn.MinimumWidth = 6;
+            this.JobdataComponentsColumn.Name = "JobdataComponentsColumn";
+            this.JobdataComponentsColumn.Width = 130;
+            // 
             // Bottom_checkBox
             // 
             this.Bottom_checkBox.AutoSize = true;
@@ -9571,54 +9622,18 @@
             this.Test7_button.UseVisualStyleBackColor = true;
             this.Test7_button.Click += new System.EventHandler(this.Test7_button_Click);
             // 
-            // JobDataValueColumn
+            // TapeSetupZguard_checkBox
             // 
-            this.JobDataValueColumn.HeaderText = "Value";
-            this.JobDataValueColumn.MinimumWidth = 6;
-            this.JobDataValueColumn.Name = "JobDataValueColumn";
-            // 
-            // JobDataFootprintColumn
-            // 
-            this.JobDataFootprintColumn.HeaderText = "Footprint";
-            this.JobDataFootprintColumn.MinimumWidth = 6;
-            this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
-            // 
-            // JobdataCountColumn
-            // 
-            this.JobdataCountColumn.HeaderText = "Count";
-            this.JobdataCountColumn.MinimumWidth = 6;
-            this.JobdataCountColumn.Name = "JobdataCountColumn";
-            this.JobdataCountColumn.Width = 40;
-            // 
-            // JobdataMethodColumn
-            // 
-            this.JobdataMethodColumn.HeaderText = "Method";
-            this.JobdataMethodColumn.MinimumWidth = 6;
-            this.JobdataMethodColumn.Name = "JobdataMethodColumn";
-            this.JobdataMethodColumn.ReadOnly = true;
-            this.JobdataMethodColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobdataMethodColumn.Width = 80;
-            // 
-            // JobdataMethodParametersColumn
-            // 
-            this.JobdataMethodParametersColumn.HeaderText = "Method Parameters";
-            this.JobdataMethodParametersColumn.MinimumWidth = 6;
-            this.JobdataMethodParametersColumn.Name = "JobdataMethodParametersColumn";
-            this.JobdataMethodParametersColumn.Width = 80;
-            // 
-            // JobDataNozzleColumn
-            // 
-            this.JobDataNozzleColumn.HeaderText = "Nozzle";
-            this.JobDataNozzleColumn.MinimumWidth = 6;
-            this.JobDataNozzleColumn.Name = "JobDataNozzleColumn";
-            this.JobDataNozzleColumn.Width = 50;
-            // 
-            // JobdataComponentsColumn
-            // 
-            this.JobdataComponentsColumn.HeaderText = "Components";
-            this.JobdataComponentsColumn.MinimumWidth = 6;
-            this.JobdataComponentsColumn.Name = "JobdataComponentsColumn";
-            this.JobdataComponentsColumn.Width = 130;
+            this.TapeSetupZguard_checkBox.AutoSize = true;
+            this.TapeSetupZguard_checkBox.Checked = true;
+            this.TapeSetupZguard_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.TapeSetupZguard_checkBox.Location = new System.Drawing.Point(655, 610);
+            this.TapeSetupZguard_checkBox.Name = "TapeSetupZguard_checkBox";
+            this.TapeSetupZguard_checkBox.Size = new System.Drawing.Size(187, 17);
+            this.TapeSetupZguard_checkBox.TabIndex = 267;
+            this.TapeSetupZguard_checkBox.Text = "Allow movement with nozzle down";
+            this.TapeSetupZguard_checkBox.UseVisualStyleBackColor = true;
+            this.TapeSetupZguard_checkBox.CheckedChanged += new System.EventHandler(this.TapeSetupZguard_checkBox_CheckedChanged);
             // 
             // FormMain
             // 
@@ -10560,6 +10575,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodParametersColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzleColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
+        private System.Windows.Forms.CheckBox TapeSetupZguard_checkBox;
     }
 }
 

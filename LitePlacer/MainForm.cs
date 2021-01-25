@@ -2327,11 +2327,13 @@ namespace LitePlacer
         private void ZGuardOn()
         {
             _Zguard = true;
+            DisplayText("Z guard on");
         }
 
         private void ZGuardOff()
         {
             _Zguard = false;
+            DisplayText("Z guard off");
         }
 
         private bool CNC_NozzleIsDown_m()
@@ -9512,6 +9514,7 @@ namespace LitePlacer
             }
             SetDownCameraDefaults();
             SelectCamera(DownCamera);
+            TapeSetupZguard_checkBox.Checked = false;
         }
 
         private void Tapes_tabPage_End()
@@ -12926,6 +12929,17 @@ namespace LitePlacer
             HoleTest_maskedTextBox.ForeColor = Color.Black;
         }
 
+        private void TapeSetupZguard_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TapeSetupZguard_checkBox.Checked)
+            {
+                ZGuardOff();
+            }
+            else
+            {
+                ZGuardOn();
+            }
+        }
     }	// end of: 	public partial class FormMain : Form
 
 
