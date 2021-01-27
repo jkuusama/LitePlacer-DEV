@@ -94,6 +94,36 @@ namespace LitePlacer
         public delegate DialogResult PassStringStringReturnDialogResultDelegate(String s1, String s2, MessageBoxButtons buttons);
 
         // =================================================================================
+        // Non-modal dialog box:
+
+        public bool MessageboxDone = false;
+        public string NonModalMessageBox_result;   // Pass result trought this
+
+        public string NonModalMessageBox(string message, string header, string str1, string str2, string str3)
+        {
+            NonModalDialog DialogForm = new NonModalDialog(this, str1, str2, str2);
+            // DialogForm.StartPosition = FormStartPosition.CenterParent; // this doesn't work on non modal dialogs (MS: boo!)
+            DialogForm.StartPosition = FormStartPosition.Manual;
+            DialogForm.Location = new System.Drawing.Point(this.Location.X + (this.Width - DialogForm.Width) / 2, 
+                this.Location.Y + (this.Height - DialogForm.Height) / 2);
+
+            DialogForm.HeaderString = header;
+            DialogForm.MessageString = message;
+            DialogForm.Button1Txt = str1;
+            DialogForm.Button2Txt = str2;
+            DialogForm.Button3Txt = str3;
+            MessageboxDone = false;
+            DialogForm.Show(this);
+
+            while (!MessageboxDone)
+            {
+                Thread.Sleep(1);
+                Application.DoEvents();
+            }
+            return NonModalMessageBox_result;
+        }
+
+        // =================================================================================
         // We need "goto" to different features, currently circles, rectangles or both
         public enum FeatureType { Circle, Rectangle, Both };
 
@@ -2394,7 +2424,7 @@ namespace LitePlacer
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
             DialogResult dialogResult = ShowMessageBox(
-                "Home machine now?",
+              "Home machine now?",
                 "Home Now?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
