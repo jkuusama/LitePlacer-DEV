@@ -7337,6 +7337,8 @@
             this.tabControlPages.TabIndex = 3;
             this.tabControlPages.SelectedIndexChanged += new System.EventHandler(this.tabControlPages_SelectedIndexChanged);
             this.tabControlPages.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControlPages_Selecting);
+            this.tabControlPages.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControlPages_Selected);
+            this.tabControlPages.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControlPages_Deselecting);
             // 
             // Algorithms_tabPage
             // 

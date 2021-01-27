@@ -5,6 +5,7 @@ New Features, significant changes
 * vision processing and camera setup rewritten: There is now
   unlimited number of vision algorithms. This allows many new features
   in the future!
+* Option to draw video processing results on top of unpeocessed image
 * All features from the main version included
 * Position validity (homed status) is now checked on operations that causes moves
   or needs valid position
@@ -14,19 +15,9 @@ New Features, significant changes
 
 Bug Fixes 
 
-* All fixes from main version
-* Editing machine size now changes control board limits
-* Tape data validity is checked before exit from tape setup dialog
-* In tape selection window, the grid now fills the space better and scales with the window
-* Reset tape counts moved to tapes tab, added confirmation before reset all counts 
-* More reliable camera close on exit
-* Improved camera switch, removed double operations
-* improved nozle calibration and runout compensation
+* Many!
 
 Known issues
 
-* Component measurement still missing
 * The application does not automatically restart when loading new settings from file. (there is now a dialog, though)
 * Place fast sometimes uses last hole (which might not be whole), not the second to last as excpected
-* If a tab is showing up camera, switching tabs bwtween those that show down camera and back too fast,
-   can result to "Cannot start camera" message.

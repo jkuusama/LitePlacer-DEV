@@ -666,6 +666,22 @@ namespace LitePlacer
             }
         }
 
+        bool DowncamAciveSafe = false;
+        bool UpcamAciveSafe = false;
+        // This happens before anything else when changing tabs. Pause cameras for during change
+        private void tabControlPages_Deselecting(object sender, TabControlCancelEventArgs e)
+        {
+            DowncamAciveSafe = DownCamera.Active;
+            UpcamAciveSafe = UpCamera.Active;
+        }
+
+        // And this happens last. Activate cameras again
+        private void tabControlPages_Selected(object sender, TabControlEventArgs e)
+        {
+            DownCamera.Active = DowncamAciveSafe;
+            UpCamera.Active = UpcamAciveSafe;
+        }
+
         // =================================================================================
         // Saving and restoring data tables (Note: Not job files)
         // =================================================================================
