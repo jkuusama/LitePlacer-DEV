@@ -33,7 +33,7 @@ namespace LitePlacer
         enum Functions_dataGridViewColumns : int { FunctionColumn, ActiveColumn };
         public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", 
             "Grayscale", "Edge detect", "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", 
-            "Gaussian blur", "Hough circles", "Filter Features by Size"};
+            "Gaussian blur", "Hough circles", "Filter Features by Size", "Jog before measurement"};
 
 
         public VideoAlgorithmsCollection VideoAlgorithms;
@@ -937,6 +937,10 @@ namespace LitePlacer
                     funct.parameterInt = 128;
                     break;
 
+                case "Jog before measurement":
+                    break;		// no parameters
+
+
                 default:
                     break;
             }
@@ -1049,6 +1053,13 @@ namespace LitePlacer
                     FunctionExplanation_textBox.Text = "Makes the image black and white.";
                     FunctionExplanation_textBox.Visible = true;
                     break;
+
+                case "Jog before measurement":
+                    // no parameters
+                    FunctionExplanation_textBox.Text = "Jog machine to position before continuing.\r\n"
+                        + "(useful to target fiducials on a very tight board, for example)";
+                    FunctionExplanation_textBox.Visible = true;
+                    break;      
 
                 default:
                     break;

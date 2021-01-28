@@ -102,10 +102,11 @@ namespace LitePlacer
         public string NonModalMessageBox(string message, string header, string str1, string str2, string str3)
         {
             NonModalDialog DialogForm = new NonModalDialog(this, str1, str2, str2);
-            // DialogForm.StartPosition = FormStartPosition.CenterParent; // this doesn't work on non modal dialogs (MS: boo!)
+            // locate to up right corner
             DialogForm.StartPosition = FormStartPosition.Manual;
-            DialogForm.Location = new System.Drawing.Point(this.Location.X + (this.Width - DialogForm.Width) / 2, 
-                this.Location.Y + (this.Height - DialogForm.Height) / 2);
+
+            DialogForm.Location = new System.Drawing.Point(this.Location.X + 790, 
+                this.Location.Y);
 
             DialogForm.HeaderString = header;
             DialogForm.MessageString = message;
@@ -114,6 +115,7 @@ namespace LitePlacer
             DialogForm.Button3Txt = str3;
             MessageboxDone = false;
             DialogForm.Show(this);
+            this.Focus();   // get focus back to main screen, saving the user a click
 
             while (!MessageboxDone)
             {
@@ -591,7 +593,7 @@ namespace LitePlacer
         */
         // =================================================================================
 
-        private string LastTabPage = "";
+        public string LastTabPage = "";
 
         private void tabControlPages_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -655,7 +657,6 @@ namespace LitePlacer
                     break;
                 case "Algorithms_tabPage":
                     Algorithms_tabPage_End();
-                    LastTabPage = "Algorithms_tabPage";
                     break;
                 case "Tapes_tabPage":
                     Tapes_tabPage_End();
@@ -8391,8 +8392,6 @@ namespace LitePlacer
                 DisplayText("*** Fiducial algorithm (" + VidAlgName + ") not found", KnownColor.DarkRed, true);
                 return false;
             }
-            DownCamera.BuildMeasurementFunctionsList(FidAlg.FunctionList);
-            DownCamera.MeasurementParameters = FidAlg.MeasurementParameters;
 
             // move them to our array, checking the data:
             PhysicalComponent[] Fiducials = new PhysicalComponent[FiducialDesignators.Length];  // store the data here
@@ -8428,6 +8427,8 @@ namespace LitePlacer
                 do
                 {
                     ok = true;
+                    DownCamera.BuildMeasurementFunctionsList(FidAlg.FunctionList);
+                    DownCamera.MeasurementParameters = FidAlg.MeasurementParameters;
                     if (!MeasureFiducial_m(ref Fiducials[i]))
                     {
                         ok = false;
@@ -8442,9 +8443,6 @@ namespace LitePlacer
                         {
                             return false;
                         }
-                        DownCamera.BuildMeasurementFunctionsList(FidAlg.FunctionList);
-                        DownCamera.MeasurementParameters = FidAlg.MeasurementParameters;
-                        Thread.Sleep(100);
                     }
                 } while (!ok);
 

@@ -1098,7 +1098,7 @@
             // OpticalHome_button
             // 
             this.OpticalHome_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OpticalHome_button.Location = new System.Drawing.Point(684, 777);
+            this.OpticalHome_button.Location = new System.Drawing.Point(680, 777);
             this.OpticalHome_button.Name = "OpticalHome_button";
             this.OpticalHome_button.Size = new System.Drawing.Size(106, 46);
             this.OpticalHome_button.TabIndex = 37;
@@ -9483,7 +9483,7 @@
             // 
             // MeasureAndSet_button
             // 
-            this.MeasureAndSet_button.Location = new System.Drawing.Point(600, 777);
+            this.MeasureAndSet_button.Location = new System.Drawing.Point(596, 777);
             this.MeasureAndSet_button.Name = "MeasureAndSet_button";
             this.MeasureAndSet_button.Size = new System.Drawing.Size(78, 46);
             this.MeasureAndSet_button.TabIndex = 266;

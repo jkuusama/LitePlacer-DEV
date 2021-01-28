@@ -361,6 +361,11 @@ namespace LitePlacer
                 {
                     continue;
                 }
+                if (UIfucnt.Name == "Jog before measurement")
+                {
+                    JoggingRequested = true;
+                    continue;
+                }
                 switch (UIfucnt.Name)
                 {
                     case "Grayscale":
@@ -442,6 +447,9 @@ namespace LitePlacer
             };
             return NewList;
         }
+
+        // So that function "Jog before measurement" asks only once per measurement
+        public bool JoggingRequested = false;
 
         // ==========================================================================================================
         // For display: Get the function list, transfer to video processing
@@ -1036,6 +1044,22 @@ namespace LitePlacer
             double par_dA, double par_dB, double par_dC)
         {
             ZoomFunct(ref frame, par_d);
+        }
+
+        private void ManualJogFunc()
+        {
+            //if (MainForm.LastTabPage == "Algorithms_tabPage")
+            //{
+            //    return;
+            //}
+            if (!JoggingRequested)
+            {
+                return;
+            }
+            string answer = MainForm.NonModalMessageBox(
+                "Jog machine to position and click Continue.", "Manual measurement location",
+                "", "", "Continue");
+            JoggingRequested= false;
         }
 
         // ==========================================================================================================
@@ -2261,15 +2285,21 @@ namespace LitePlacer
 
         public void BuildMeasurementFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
+            JoggingRequested = false;     // BuildFunctionsList() sets this to true, if manual jog is needed
             MeasurementFunctions = BuildFunctionsList(UiList);
         }
 
         // And calls xx_measure() funtion. 
         // The xxx_measure funtion calls GetMeasurementFrame() function, that takes a frame from the stream, 
-        // processes it with the MeasurementFunctions list and returns the processed frame:
+        // processes it with the MeasurementFunctions list and returns the processed frame.
+
 
         private Bitmap GetMeasurementFrame()
         {
+            if (JoggingRequested)
+            {
+                ManualJogFunc();
+            }
             // Take a snapshot:
             CopyFrame = true;
             int tries = 100;
