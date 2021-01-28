@@ -2590,32 +2590,75 @@ namespace LitePlacer
             DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
             DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
 
-            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
-            {
-                return false;
-            }
-
-            // Measure 7 times, get median: 
-            List<double> Xlist = new List<double>();
-            List<double> Ylist = new List<double>();
-            int Successes = 0;
-            int Tries = 0;
+            double X;
+            double Y;
+            bool ok = true;
+            // Initial move: goto on top of homing mark
             do
             {
-                Tries++;
-                if (DownCamera.Measure(out X, out Y, out double Ares, false))
+                ok = true;
+                if (!GoToFeatureLocation_m(0.1, out X, out Y))
                 {
-                    Successes++;
-                    Xlist.Add(X);
-                    Ylist.Add(Y);
+                    ok = false;
+                    string nl = Environment.NewLine;
+                    string answer = NonModalMessageBox(
+                        "Move to home mark failed." + nl +
+                        "Jog machine to position and/or tune the algorithm." + nl +
+                        "Click \"Retry\" to try again," + nl +
+                        "click \"Cancel\" to continue without success", "Home Mark not found",
+                        "Retry", "", "Cancel");
+                    if (answer == "Cancel")
+                    {
+                        return false;
+                    }
+                    DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
+                    DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
+                    Thread.Sleep(100);
                 }
-            }
-            while ((Successes < 7) && (Tries < 20));
-            if (Tries >= 20)
+            } while (!ok);
+
+            List<double> Xlist = new List<double>();
+            List<double> Ylist = new List<double>();
+            // Once on top of the homing mark, get median from 7 new measurements.
+            // (The measurement might be off by a pixel. This gets the most likely correct result.)
+            do
             {
-                DisplayText("Optical homing failed, 20 tries did not give 7 unique results.");
-                return false;
-            }
+                Xlist.Clear();
+                Ylist.Clear();
+                int Successes = 0;
+                int Tries = 0;
+                do
+                {
+                    Tries++;
+                    if (DownCamera.Measure(out X, out Y, out double Ares, false))
+                    {
+                        Successes++;
+                        Xlist.Add(X);
+                        Ylist.Add(Y);
+                    }
+                }
+                while ((Successes < 7) && (Tries < 20));
+                ok = true;
+                if (Tries >= 20)
+                {
+                    ok = false;
+                    string nl = Environment.NewLine;
+                    string answer = NonModalMessageBox(
+                        "Secondary measurement failed, 20 measurements did not give 7 good results." + nl +
+                        "Try tuning the algorithm further." + nl +
+                        "Click \"Retry\" to try again," + nl +
+                        "Click \"Cancel\" to continue without success", "Measurement failed",
+                        "Retry", "", "Cancel");
+                    if (answer == "Cancel")
+                    {
+                        return false;
+                    }
+                    DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
+                    DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
+                    Thread.Sleep(100);
+                }
+            } while (!ok);
+
             Xlist.Sort();
             Ylist.Sort();
             X = -Xlist[3];
@@ -2749,7 +2792,7 @@ namespace LitePlacer
         // =====================================================================
         // This routine finds an accurate location of a circle/rectangle/... that downcamera is looking at.
         // Used in homing, locating fiducials and locating tape holes.
-        // At return, the camera is located on top of the feature. 
+        // At return, the camera is located on top of the feature (within MoveTolerance). 
         // X and Y are set to remaining error (true position: currect + error)
         // Measurement is already set up
         // =====================================================================
@@ -2767,11 +2810,9 @@ namespace LitePlacer
             }
             int count = 0;
             int tries = 0;
-            // bool ProcessingStateSave = DownCamera.PauseProcessing;
-            // DownCamera.PauseProcessing = true;
+
             do
             {
-                // Measure location
                 for (tries = 0; tries < 8; tries++)
                 {
                     if (DownCamera.Measure(out X, out Y, out double Ares, false))
@@ -2781,12 +2822,6 @@ namespace LitePlacer
                     Thread.Sleep(80); // next frame + vibration damping
                     if (tries >= 7)
                     {
-                        DisplayText("Failed in 8 tries.");
-                        ShowMessageBox(
-                            "Optical positioning: Can't find Feature",
-                            "No found",
-                            MessageBoxButtons.OK);
-                        // DownCamera.PauseProcessing = ProcessingStateSave;
                         return false;
                     }
                 }
@@ -2807,7 +2842,6 @@ namespace LitePlacer
                 && ((Math.Abs(X) > MoveTolerance)
                 || (Math.Abs(Y) > MoveTolerance)));
 
-            // DownCamera.PauseProcessing = ProcessingStateSave;
             if (count >= 7)
             {
                 ShowMessageBox(
@@ -8390,10 +8424,30 @@ namespace LitePlacer
                 Fiducials[i].X_nominal = X_nom;
                 Fiducials[i].Y_nominal = Y_nom;
                 // And measure it's true location:
-                if (!MeasureFiducial_m(ref Fiducials[i]))
+                bool ok = true;
+                do
                 {
-                    return false;
-                }
+                    ok = true;
+                    if (!MeasureFiducial_m(ref Fiducials[i]))
+                    {
+                        ok = false;
+                        string nl = Environment.NewLine;
+                        string answer = NonModalMessageBox(
+                            "Fiducial measurement failed." + nl +
+                            "Jog machine to position and/or tune the algorithm." + nl +
+                            "Click \"Retry\" to try again," + nl +
+                            "click \"Cancel\" to continue without success", "Fiducial not found",
+                            "Retry", "", "Cancel");
+                        if (answer == "Cancel")
+                        {
+                            return false;
+                        }
+                        DownCamera.BuildMeasurementFunctionsList(FidAlg.FunctionList);
+                        DownCamera.MeasurementParameters = FidAlg.MeasurementParameters;
+                        Thread.Sleep(100);
+                    }
+                } while (!ok);
+
                 if (Setting.Placement_FiducialConfirmation)
                 {
                     DialogResult dialogResult = ShowMessageBox(
@@ -8407,7 +8461,7 @@ namespace LitePlacer
                     }
                 }
                 // We could put the machine data in place at this point. However, 
-                // we don't, as if the algorithms below are correct, the data will not change more than measurement error.
+                // we don't, as if the algorithms below are correct, the fiducial data will not change more than measurement error.
                 // During development, that is a good checkpoint.
             }
 

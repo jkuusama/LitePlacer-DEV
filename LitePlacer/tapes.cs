@@ -415,15 +415,33 @@ namespace LitePlacer
             };
 
             // get hole exact location:
-            if (!MainForm.GoToFeatureLocation_m(0.2, out X, out Y))
+            bool ok = true;
+            do
             {
-                MainForm.ShowMessageBox(
-                    "Can't find tape hole",
-                    "Tape error",
-                    MessageBoxButtons.OK
-                );
-                return false;
-            }
+                ok = true;
+                if (!MainForm.GoToFeatureLocation_m(0.2, out X, out Y))
+                {
+                    ok = false;
+                    string nl = Environment.NewLine;
+                    string answer = MainForm.NonModalMessageBox(
+                        "Tape hole recognition failed." + nl +
+                        "Jog machine to position and/or tune the algorithm." + nl +
+                        "Click \"Retry\" to try again," + nl +
+                        "click \"Cancel\" to continue without success", "Tape hole not found",
+                        "Retry", "", "Cancel");
+                    if (answer == "Cancel")
+                    {
+                        return false;
+                    }
+                    if (!SetCurrentTapeMeasurement_m(TapeNum)) 
+                    {
+                        return false;
+                    }
+                    Thread.Sleep(100);
+                }
+            } 
+            while (!ok);
+
             ResultX = Cnc.CurrentX + X;
             ResultY = Cnc.CurrentY + Y;
             return true;
@@ -707,9 +725,11 @@ namespace LitePlacer
             HoleY = 0;
 			// Go to next hole approximate location:
 			if (!SetCurrentTapeMeasurement_m(TapeNumber))  // having the measurement setup here helps with the automatic gain lag
-				return false;
+            {
+                return false;
+            }
 
-			double NextX= 0;
+            double NextX = 0;
             double NextY = 0;
             if (!double.TryParse(Grid.Rows[TapeNumber].Cells["Next_X_Column"].Value.ToString().Replace(',', '.'), out NextX))
 			{
@@ -736,18 +756,36 @@ namespace LitePlacer
 				return false;
 			};
 
-			// Get hole exact location:
+            // Get hole exact location:
             // We want to find the hole less than 2mm from where we think it should be. (Otherwise there is a risk
-			// of picking a wrong hole.)
-            if (!MainForm.GoToFeatureLocation_m(0.5, out HoleX, out HoleY))
-			{
-				MainForm.ShowMessageBox(
-					"Can't find tape hole",
-					"Tape error",
-					MessageBoxButtons.OK
-				);
-				return false;
-			}
+            // of picking a wrong hole.)
+            bool ok = true;
+            do
+            {
+                ok = true;
+                if (!MainForm.GoToFeatureLocation_m(0.5, out HoleX, out HoleY))
+                {
+                    ok = false;
+                    string nl = Environment.NewLine;
+                    string answer = MainForm.NonModalMessageBox(
+                        "Tape hole recognition failed." + nl +
+                        "Jog machine to position and/or tune the algorithm." + nl +
+                        "Click \"Retry\" to try again," + nl +
+                        "click \"Cancel\" to continue without success", "Tape hole not found",
+                        "Retry", "", "Cancel");
+                    if (answer == "Cancel")
+                    {
+                        return false;
+                    }
+                    if (!SetCurrentTapeMeasurement_m(TapeNumber)) 
+                    {
+                        return false;
+                    }
+                    Thread.Sleep(100);
+                }
+            }
+            while (!ok);
+
 			// The hole locations are:
             HoleX = Cnc.CurrentX + HoleX;
             HoleY = Cnc.CurrentY + HoleY;
