@@ -3207,8 +3207,6 @@ namespace LitePlacer
                 UpCameraStatus_label.Text = "Active";
             }
 
-            NozzleOffset_label.Visible = false;
-
             double f;
             f = Setting.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
             DownCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
@@ -3226,6 +3224,16 @@ namespace LitePlacer
 
             getDownCamList();
             getUpCamList();
+
+            JigX_textBox.Text = Setting.General_JigOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
+            JigY_textBox.Text = Setting.General_JigOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
+            PickupCenterX_textBox.Text = Setting.General_PickupCenterX.ToString("0.00", CultureInfo.InvariantCulture);
+            PickupCenterY_textBox.Text = Setting.General_PickupCenterY.ToString("0.00", CultureInfo.InvariantCulture);
+            NozzleOffsetX_textBox.Text = Setting.DownCam_NozzleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
+            NozzleOffsetY_textBox.Text = Setting.DownCam_NozzleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
+            Z0toPCB_CamerasTab_label.Text = Setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) + " mm";
+            UpcamPositionX_textBox.Text = Setting.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
+            UpcamPositionY_textBox.Text = Setting.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
         }
 
         // =================================================================================
@@ -3772,26 +3780,37 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        private void JigX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(JigX_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.General_JigOffsetX = val;
-                }
-            }
-        }
 
-        private void JigX_textBox_Leave(object sender, EventArgs e)
+        private void JigX_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(JigX_textBox.Text.Replace(',', '.'), out val))
             {
                 Setting.General_JigOffsetX = val;
+                JigX_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                JigX_textBox.ForeColor = Color.Red;
             }
         }
+
+
+        private void JigY_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(JigY_textBox.Text.Replace(',', '.'), out val))
+            {
+                Setting.General_JigOffsetY = val;
+                JigY_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                JigY_textBox.ForeColor = Color.Red;
+            }
+        }
+
+
 
         // =================================================================================
         private void JigY_textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -3837,21 +3856,8 @@ namespace LitePlacer
 
 
         // =================================================================================
-        private void PickupCenterX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            PickupCenterX_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(PickupCenterX_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.General_PickupCenterX = val;
-                    PickupCenterX_textBox.ForeColor = Color.Black;
-                }
-            }
-        }
 
-        private void PickupCenterX_textBox_Leave(object sender, EventArgs e)
+        private void PickupCenterX_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(PickupCenterX_textBox.Text.Replace(',', '.'), out val))
@@ -3859,24 +3865,14 @@ namespace LitePlacer
                 Setting.General_PickupCenterX = val;
                 PickupCenterX_textBox.ForeColor = Color.Black;
             }
-        }
-
-        // =================================================================================
-        private void PickupCenterY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            PickupCenterY_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            else
             {
-                if (double.TryParse(PickupCenterY_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.General_PickupCenterY = val;
-                    PickupCenterY_textBox.ForeColor = Color.Black;
-                }
+                PickupCenterX_textBox.ForeColor = Color.Red;
             }
         }
 
-        private void PickupCenterY_textBox_Leave(object sender, EventArgs e)
+
+        private void PickupCenterY_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(PickupCenterY_textBox.Text.Replace(',', '.'), out val))
@@ -3884,9 +3880,12 @@ namespace LitePlacer
                 Setting.General_PickupCenterY = val;
                 PickupCenterY_textBox.ForeColor = Color.Black;
             }
+            else
+            {
+                PickupCenterY_textBox.ForeColor = Color.Red;
+            }
         }
 
-        // =================================================================================
         private void GotoPickupCenter_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
@@ -3894,7 +3893,6 @@ namespace LitePlacer
             CNC_XYA_m(Setting.General_PickupCenterX, Setting.General_PickupCenterY, Cnc.CurrentA);
         }
 
-        // =================================================================================
         private void SetPickupCenter_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
@@ -4033,45 +4031,31 @@ namespace LitePlacer
             Setting.UpCam_DrawSidemarks  = UpCamDrawSidemarks_checkBox.Checked;
         }
 
-        private void UpcamPositionX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                double val;
-                if (double.TryParse(UpcamPositionX_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.UpCam_PositionX = val;
-                }
-            }
-        }
-
-        private void UpcamPositionX_textBox_Leave(object sender, EventArgs e)
+        private void UpcamPositionX_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(UpcamPositionX_textBox.Text.Replace(',', '.'), out val))
             {
                 Setting.UpCam_PositionX = val;
+                UpcamPositionX_textBox.ForeColor = Color.Black;
             }
-        }
-
-        private void UpcamPositionY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
+            else
             {
-                double val;
-                if (double.TryParse(UpcamPositionY_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.UpCam_PositionY = val;
-                }
+                UpcamPositionX_textBox.ForeColor = Color.Red;
             }
         }
 
-        private void UpcamPositionY_textBox_Leave(object sender, EventArgs e)
+        private void UpcamPositionY_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(UpcamPositionY_textBox.Text.Replace(',', '.'), out val))
             {
                 Setting.UpCam_PositionY = val;
+                UpcamPositionY_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                UpcamPositionY_textBox.ForeColor = Color.Red;
             }
         }
 
@@ -6858,7 +6842,7 @@ namespace LitePlacer
                 }
                 // and fill values:
                 Footprint = JobData_GridView.Rows[GroupRow].Cells["JobDataValueColumn"].Value.ToString() 
-                    + JobData_GridView.Rows[GroupRow].Cells["JobDataFootprintColumn"].Value.ToString();
+                    + ", " + JobData_GridView.Rows[GroupRow].Cells["JobDataFootprintColumn"].Value.ToString();
                 Xstr = CadData_GridView.Rows[CADdataRow].Cells["CADdataXnominalColumn"].Value.ToString();
                 Ystr = CadData_GridView.Rows[CADdataRow].Cells["CADdataYnominalColumn"].Value.ToString();
                 RotationStr = CadData_GridView.Rows[CADdataRow].Cells["CADdataRotationNominalColumn"].Value.ToString();
@@ -6995,9 +6979,16 @@ namespace LitePlacer
                     break;
 
                 case "Recalibrate":
+                    if (!CNC_XYA_m(0.0, 0.0, Cnc.CurrentA))
+                    {
+                        return false;
+                    }
+                    OpticalHoming_m();
                     ValidMeasurement_checkBox.Checked = false;
                     if (!PrepareToPlace_m())
+                    {
                         return false;
+                    }
                     break;
 
                 case "Ignore":
@@ -13047,7 +13038,6 @@ namespace LitePlacer
                 ZGuardOn();
             }
         }
-
     }	// end of: 	public partial class FormMain : Form
 
 
