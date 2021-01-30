@@ -1,17 +1,21 @@
-Build date xxx
+Build date  01/30/2021
 
 New Features, significant changes
 
 * vision processing and camera setup rewritten: There is now
   unlimited number of vision algorithms. This allows many new features
   in the future!
-* Option to draw video processing results on top of unpeocessed image
+* Option to draw video processing results on top of unprocessed image
+* Retry (with option to jog, tune vision algorithm etc) on visual meas. error
+* Visual processing finds components by pads and by outline
+* optional A moves otptimisation (from 1 to 359 is two deg counterclockwise)
 * All features from the main version included
 * Position validity (homed status) is now checked on operations that causes moves
   or needs valid position
 * Supports setup of feeders (fixed pickup position) from areas where camera doesn't reach
 * Several appearance and internal code changes
 * ctrl+click bookmark button now sets bookmark
+* Many minor UI enhancements 
 
 Bug Fixes 
 
