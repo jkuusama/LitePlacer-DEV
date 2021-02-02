@@ -5246,18 +5246,6 @@ namespace LitePlacer
         }
 
         // =================================================================================
-        // CAD data and Job datagrid colum definitions
-        const int CADdata_ComponentColumn = 0;
-        const int CADdata_ComponentType_Column = 1;
-        const int CADdata_PlacedColumn = 2;
-        const int CADdata_XNomColumn = 3;
-        const int CADdata_YNomColumn = 4;
-        const int CADdata_RotNomColumn = 5;
-        //const int CADdata_XMachColumn = 6;
-        //const int CADdata_YMachColumn = 7;
-        //const int CADdata_RotMachColumn = 8;
-
-        // =================================================================================
         private void ResetPlacedDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // the foreach loop below ignores last checked box, unless we manually select some other cell before. ??
@@ -5267,7 +5255,7 @@ namespace LitePlacer
             this.Refresh();
             foreach (DataGridViewRow Row in CadData_GridView.Rows)
             {
-                Row.Cells[CADdata_PlacedColumn].Value = false;
+                Row.Cells["CADdataPlacedColumn"].Value = false;
             }
             CadData_GridView.ClearSelection();  // and we don't want a random celected cell
             CadDataDelay_label.Visible = false;
@@ -5611,9 +5599,9 @@ namespace LitePlacer
         // =================================================================================
         private void CadData_GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (CadData_GridView.CurrentCell.ColumnIndex == CADdata_PlacedColumn)
+            if (CadData_GridView.CurrentCell.OwningColumn.Name  == "CADdataPlacedColumn")
             {
-                MakeCADdataDirty();
+                MakeCADdataDirty(); 
 
             }
         }
@@ -5622,11 +5610,13 @@ namespace LitePlacer
         {
             // Machine coordinates can be manually edited (but I don't know why you would want to do that),
             // but they are not saved, therefore the edit of those does not make data dirty, but edit of other cells do
-            if ((CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentColumn) ||
-                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_ComponentType_Column) ||
-                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_XNomColumn) ||
-                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_YNomColumn) ||
-                (CadData_GridView.CurrentCell.ColumnIndex == CADdata_RotNomColumn)
+            if ((CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataComponentColumn") ||
+                (CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataValueColumn") ||
+                (CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataFootprintColumn") ||
+                (CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataPlacedColumn") ||
+                (CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataXNominalColumn") ||
+                (CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataYNominalColumn") ||
+                (CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataRotationNomColumn")
                 )
             {
                 MakeCADdataDirty();

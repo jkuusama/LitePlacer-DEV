@@ -33,9 +33,9 @@ namespace LitePlacer
         //      used for finding the part when optical recognition of holes are used
         //      standard values through a drop down dialog, custom values by manual edit
 
-        // enum Type: what values to use in optical hole regognition (values: Paper, Black, Clear (last two are plastic tapes));
-        //      used to determine which optical filter set to use in hole regognition
-        // bool MeasureHole: if part is located by optical regognition of tape hole; if not, coordinates are used directly
+        // enum Type: what values to use in optical hole recognition (values: Paper, Black, Clear (last two are plastic tapes));
+        //      used to determine which optical filter set to use in hole recognition
+        // bool MeasureHole: if part is located by optical recognition of tape hole; if not, coordinates are used directly
         // bool MeasurePart: if part position is optically measured
         // int Capacity: how many components can be on a fully loaded tape (0: user is prompted to place the component; <0: infinite (feeders))
         // int Next: the next component used in placement
