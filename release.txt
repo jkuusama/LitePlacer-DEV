@@ -20,6 +20,8 @@ New Features, significant changes
 Bug Fixes 
 
 * Many!
+* In this: reset placed fixed
+* location settings moved back to algorithm setup page
 
 Known issues
 
