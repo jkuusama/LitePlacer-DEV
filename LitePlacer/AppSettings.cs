@@ -157,6 +157,7 @@ namespace LitePlacer
         public string Downcam_Name { get; set; } = "";
         public int DownCam_DesiredX { get; set; } = 1280;
         public int DownCam_DesiredY { get; set; } = 1024;
+        public bool DownCam_UseMaxResolution = true;
 
         public bool UpCam_DrawBox { get; set; } = true;
         public bool UpCam_DrawCross { get; set; } = true;
@@ -174,6 +175,7 @@ namespace LitePlacer
         public string Upcam_Name { get; set; } = "";
         public int UpCam_DesiredX { get; set; } = 1280;
         public int UpCam_DesiredY { get; set; } = 1024;
+        public bool UpCam_UseMaxResolution = true;
     }
 
     // =================================================================================

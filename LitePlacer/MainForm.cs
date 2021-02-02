@@ -358,6 +358,8 @@ namespace LitePlacer
                 RobustFast_checkBox.Enabled = true;
             }
             RobustFast_checkBox.Checked = Setting.Cameras_RobustSwitch;
+            DownCamMaxResolution_checkBox.Checked = Setting.DownCam_UseMaxResolution;
+            UpCamMaxResolution_checkBox.Checked = Setting.UpCam_UseMaxResolution;
             StartCameras();
 
             // ======== Setup vision processing tab:
@@ -2994,6 +2996,20 @@ namespace LitePlacer
 
 
         // =================================================================================
+        private void UpdateDownCameraStatusLabel (bool active)
+        {
+            if (active)
+            {
+                DownCameraStatus_label.Text = "Active";
+                DownCamUsedResolution_label.Text = "resolution: " + DownCamera.Resolution.X.ToString() + " x " + DownCamera.Resolution.Y.ToString();
+                DownCamUsedResolution_label.Visible = true;
+            }
+            else
+            {
+                DownCameraStatus_label.Text = "Not Active";
+                DownCamUsedResolution_label.Visible = false;
+            }
+        }
 
         private bool StartDownCamera_m()
         {
@@ -3002,7 +3018,7 @@ namespace LitePlacer
             {
                 DisplayText("DownCamera already running");
                 DownCamera.Active = true;
-                DownCameraStatus_label.Text = "Active";
+                UpdateDownCameraStatusLabel(true);
                 return true;
             };
 
@@ -3010,7 +3026,7 @@ namespace LitePlacer
             if (string.IsNullOrEmpty(Setting.DowncamMoniker))
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
-                DownCameraStatus_label.Text = "Not Active";
+                UpdateDownCameraStatusLabel(false);
                 return true;
             };
             // Check that the device exists
@@ -3018,7 +3034,7 @@ namespace LitePlacer
             if (!monikers.Contains(Setting.DowncamMoniker))
             {
                 DisplayText("Downcamera moniker not found. Moniker: " + Setting.DowncamMoniker);
-                DownCameraStatus_label.Text = "Not Active";
+                UpdateDownCameraStatusLabel(false);
                 return false;
             }
 
@@ -3029,11 +3045,11 @@ namespace LitePlacer
                     "Camera selection issue",
                     MessageBoxButtons.OK
                 );
-                DownCameraStatus_label.Text = "Not Active";
+                UpdateDownCameraStatusLabel(false);
                 return false;
             }
 
-            if (!DownCamera.Start("DownCamera", Setting.DowncamMoniker))
+            if (!DownCamera.Start("DownCamera", Setting.DowncamMoniker, Setting.DownCam_UseMaxResolution))
             {
                 ShowMessageBox(
                     "Problem Starting down camera.",
@@ -3041,15 +3057,32 @@ namespace LitePlacer
                     MessageBoxButtons.OK
                 );
                 DownCamera.Active = false;
-                DownCameraStatus_label.Text = "Not Active";
+                UpdateDownCameraStatusLabel(false);
                 return false;
             };
             DownCamera.Active = true;
-            DownCameraStatus_label.Text = "Active";
+            UpdateDownCameraStatusLabel(true);
             return true;
         }
 
         // ====
+        private void UpdateUpCameraStatusLabel(bool active)
+        {
+            if (active)
+            {
+                UpCameraStatus_label.Text = "Active";
+                UpCamUsedResolution_label.Text = "resolution: " + UpCamera.Resolution.X.ToString() + " x " + UpCamera.Resolution.Y.ToString();
+                UpCamUsedResolution_label.Visible = true;
+            }
+            else
+            {
+                UpCameraStatus_label.Text = "Not Active";
+                UpCamUsedResolution_label.Visible = false;
+            }
+        }
+
+
+
         private bool StartUpCamera_m()
         {
 
@@ -3058,7 +3091,9 @@ namespace LitePlacer
             {
                 DisplayText("UpCamera already running");
                 UpCamera.Active = true;
-                UpCameraStatus_label.Text = "Active";
+                UpdateUpCameraStatusLabel(true);
+                UpCamUsedResolution_label.Text = "resolution: " + UpCamera.Resolution.X.ToString() + " x " + UpCamera.Resolution.Y.ToString();
+                UpCamUsedResolution_label.Visible = true;
                 return true;
             };
 
@@ -3066,7 +3101,7 @@ namespace LitePlacer
             if (string.IsNullOrEmpty(Setting.UpcamMoniker))
             {
                 // Very first runs, no attempt to connect cameras yet. This is ok.
-                UpCameraStatus_label.Text = "Not Active";
+                UpdateUpCameraStatusLabel(false);
                 return true;
             };
             // Check that the device exists
@@ -3074,7 +3109,7 @@ namespace LitePlacer
             if (!monikers.Contains(Setting.UpcamMoniker))
             {
                 DisplayText("Upcamera moniker not found. Moniker: " + Setting.UpcamMoniker);
-                UpCameraStatus_label.Text = "Not Active";
+                UpdateUpCameraStatusLabel(false);
                 return false;
             }
 
@@ -3085,22 +3120,22 @@ namespace LitePlacer
                     "Camera selection issue",
                     MessageBoxButtons.OK
                 );
-                UpCameraStatus_label.Text = "Not Active";
+                UpdateUpCameraStatusLabel(false);
                 return false;
             }
 
-            if (!UpCamera.Start("UpCamera", Setting.UpcamMoniker))
+            if (!UpCamera.Start("UpCamera", Setting.UpcamMoniker, Setting.UpCam_UseMaxResolution))
             {
                 ShowMessageBox(
                     "Problem Starting up camera.",
                     "Up camera problem",
                     MessageBoxButtons.OK
                 );
-                UpCameraStatus_label.Text = "Not Active";
+                UpdateUpCameraStatusLabel(false);
                 return false;
             };
             UpCamera.Active = true;
-            UpCameraStatus_label.Text = "Active";
+            UpdateUpCameraStatusLabel(true);
             return true;
         }
 
@@ -3198,13 +3233,13 @@ namespace LitePlacer
 
             if (DownCamera.Active)
             {
-                DownCameraStatus_label.Text = "Active";
-                UpCameraStatus_label.Text = "Not Active";
+                UpdateDownCameraStatusLabel(true);
+                UpdateUpCameraStatusLabel(false);
             }
             else
             {
-                DownCameraStatus_label.Text = "Not Active";
-                UpCameraStatus_label.Text = "Active";
+                UpdateDownCameraStatusLabel(false);
+                UpdateUpCameraStatusLabel(true);
             }
 
             double f;
@@ -3253,6 +3288,7 @@ namespace LitePlacer
             else
             {
                 DownCam_comboBox.Items.Add("----");
+                UpdateDownCameraStatusLabel(false);
                 DownCameraStatus_label.Text = "No Cam";
             }
             if (DownCam_comboBox.Items.Contains(Setting.Downcam_Name))
@@ -3312,6 +3348,25 @@ namespace LitePlacer
             getUpCamList();
         }
 
+        private void DownCamMaxResolution_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.DownCam_UseMaxResolution = DownCamMaxResolution_checkBox.Checked;
+            DowncamDesiredX_label.Enabled = !DownCamMaxResolution_checkBox.Checked;
+            DowncamDesiredY_label.Enabled = !DownCamMaxResolution_checkBox.Checked;
+            DownCameraDesiredX_textBox.Enabled = !DownCamMaxResolution_checkBox.Checked;
+            DownCameraDesiredY_textBox.Enabled = !DownCamMaxResolution_checkBox.Checked;
+        }
+
+        private void UpCamMaxResolution_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.UpCam_UseMaxResolution = UpCamMaxResolution_checkBox.Checked;
+            UpcamDesiredX_label.Enabled = !UpCamMaxResolution_checkBox.Checked;
+            UpcamDesiredY_label.Enabled = !UpCamMaxResolution_checkBox.Checked;
+            UpCameraDesiredX_textBox.Enabled = !UpCamMaxResolution_checkBox.Checked;
+            UpCameraDesiredY_textBox.Enabled = !UpCamMaxResolution_checkBox.Checked;
+        }
+
+
         // =================================================================================
 
         private void SetDownCameraParameters()
@@ -3319,8 +3374,8 @@ namespace LitePlacer
             double val;
             if (DownCamera.IsRunning())
             {
-                UpCameraStatus_label.Text = "Not active";
-                DownCameraStatus_label.Text = "Active";
+                UpdateUpCameraStatusLabel(false);
+                UpdateDownCameraStatusLabel(true);
                 if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
                     DownCamera.ZoomFactor = val;
@@ -3333,7 +3388,7 @@ namespace LitePlacer
             }
             else
             {
-                DownCameraStatus_label.Text = "Not active";
+                UpdateDownCameraStatusLabel(false);
             }
         }
 
@@ -3342,8 +3397,8 @@ namespace LitePlacer
             double val;
             if (UpCamera.IsRunning())
             {
-                DownCameraStatus_label.Text = "Not active";
-                UpCameraStatus_label.Text = "Active";
+                UpdateDownCameraStatusLabel(false);
+                UpdateUpCameraStatusLabel(true);
                 if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
                     UpCamera.ZoomFactor = val;
@@ -3356,7 +3411,7 @@ namespace LitePlacer
             }
             else
             {
-                UpCameraStatus_label.Text = "Not active";
+                UpdateUpCameraStatusLabel(false);
             }
         }
 
@@ -3365,8 +3420,8 @@ namespace LitePlacer
             double val;
             if (UpCamera.IsRunning())
             {
-                DownCameraStatus_label.Text = "Not active";
-                UpCameraStatus_label.Text = "Active";
+                UpdateDownCameraStatusLabel(false);
+                UpdateUpCameraStatusLabel(true);
                 if (double.TryParse(UpCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
                     UpCamera.ZoomFactor = val;
@@ -3379,8 +3434,8 @@ namespace LitePlacer
             }
             else if (DownCamera.IsRunning())
             {
-                UpCameraStatus_label.Text = "Not active";
-                DownCameraStatus_label.Text = "Active";
+                UpdateUpCameraStatusLabel(false);
+                UpdateDownCameraStatusLabel(true);
                 if (double.TryParse(DownCamZoomFactor_textBox.Text.Replace(',', '.'), out val))
                 {
                     DownCamera.ZoomFactor = val;
@@ -12827,11 +12882,11 @@ namespace LitePlacer
             List<string> Monikers = DownCamera.GetMonikerStrings();
             if (Monikers==null)
             {
-                DisplayText("Could not get resolution info.", KnownColor.Purple, true);
+                DisplayText("Could not get camera indentifier string.", KnownColor.Purple, true);
                 return;
             }
             string MonikerStr = Monikers[DownCam_comboBox.SelectedIndex];
-            DownCamera.ListResolutions(MonikerStr);
+            DownCamera.GetResolutions(MonikerStr);
         }
 
         private void UpCamListResolutions_button_Click(object sender, EventArgs e)
@@ -12839,11 +12894,11 @@ namespace LitePlacer
             List<string> Monikers = UpCamera.GetMonikerStrings();
             if (Monikers == null)
             {
-                DisplayText("Could not get resolution info.", KnownColor.Purple, true);
+                DisplayText("Could not get camera indentifier string.", KnownColor.Purple, true);
                 return;
             }
             string MonikerStr = Monikers[UpCam_comboBox.SelectedIndex];
-            UpCamera.ListResolutions(MonikerStr);
+            UpCamera.GetResolutions(MonikerStr);
         }
 
 
@@ -13028,6 +13083,7 @@ namespace LitePlacer
                 ZGuardOn();
             }
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

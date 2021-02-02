@@ -135,33 +135,49 @@ namespace LitePlacer
         public int FrameCenterY { get; set; }
         public int FrameSizeX { get; set; }
         public int FrameSizeY { get; set; }
-        public int DesiredX { get; set; }
+        public int DesiredX { get; set; }       // requested resolution
         public int DesiredY { get; set; }
+        public System.Drawing.Point Resolution { get; set; }  // resolution in use
 
         public string MonikerString { get; set; } = "unconnected";
         public string Id { get; set; } = "unconnected";
 
         public bool ReceivingFrames { get; set; }
 
-        public bool Mirror { get; set; }    // If image is mirrored (On upcam, more logical)
+        public bool Mirror { get; set; }    // If image is mirrored (On upcam, thins is more logical)
+
 
         // =================================================================================================
-        public void ListResolutions(string MonikerStr)
+
+        private System.Drawing.Point FindMaxResolution(List<System.Drawing.Point> Resolutions)
+        {
+            System.Drawing.Point res = new System.Drawing.Point(0, 0);
+            if (Resolutions==null)
+            {
+                return res;
+            }
+            List<System.Drawing.Point> InOrder= Resolutions.OrderByDescending(o => o.X).ToList();
+            return InOrder[0];
+        }
+
+        // =================================================================================================
+        public List<System.Drawing.Point> GetResolutions(string MonikerStr)
         {
             FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            // create video source
+            List<System.Drawing.Point> Resolutions = new List<System.Drawing.Point>();
             if (videoDevices == null)
             {
                 MainForm.DisplayText("No Cameras.", KnownColor.Purple);
-                return;
+                return Resolutions;
             }
             if (videoDevices.Count == 0)
             {
                 MainForm.DisplayText("No Cameras.", KnownColor.Purple);
-                return;
+                return Resolutions;
             }
             VideoCaptureDevice source = new VideoCaptureDevice(MonikerStr);
             int tries = 0;
+            System.Drawing.Point reso=new System.Drawing.Point();
             while (tries < 4)
             {
                 if (source == null)
@@ -174,18 +190,22 @@ namespace LitePlacer
                 {
                     for (int i = 0; i < source.VideoCapabilities.Length; i++)
                     {
-                        MainForm.DisplayText("X: " + source.VideoCapabilities[i].FrameSize.Width.ToString(CultureInfo.InvariantCulture) +
-                            ", Y: " + source.VideoCapabilities[i].FrameSize.Height.ToString(CultureInfo.InvariantCulture));
+                        reso.X = source.VideoCapabilities[i].FrameSize.Width;
+                        reso.Y = source.VideoCapabilities[i].FrameSize.Height;
+                        MainForm.DisplayText("X: " + reso.X.ToString(CultureInfo.InvariantCulture) +
+                            ", Y: " + reso.Y.ToString(CultureInfo.InvariantCulture));
                     }
-                    return;
+                    Resolutions.Add(reso);
+                    return Resolutions;
                 }
             }
             // if we didn't return from above:
-            MainForm.DisplayText("Could not get resolution info.", KnownColor.Purple);
+            MainForm.DisplayText("Could not get resolution info from camera.", KnownColor.Purple);
+            return Resolutions;
         }
 
         // =================================================================================================
-        public bool Start(string cam, string MonikerStr)
+        public bool Start(string cam, string MonikerStr, bool UseMaxRes)
         {
             try
             {
@@ -196,45 +216,74 @@ namespace LitePlacer
                 // create the video source (check that the camera exists is already done
                 VideoSource = new VideoCaptureDevice(MonikerStr);
                 int tries = 0;
-                while (tries < 4)
-                {
-                    if (VideoSource != null)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Thread.Sleep(10);
-                        tries++;
-                    }
-                }
-                if (tries >= 4)
-                {
-                    MainForm.DisplayText("Could not get resolution info");
-                    return false;
-                }
-                if (VideoSource.VideoCapabilities.Length <= 0)
-                {
-                    MainForm.DisplayText("Could not get resolution info");
-                    return false;
-                }
 
-                bool fine = false;
-                for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
+                if (UseMaxRes)
                 {
-                    if ((VideoSource.VideoCapabilities[i].FrameSize.Width == DesiredX)
-                        &&
-                        (VideoSource.VideoCapabilities[i].FrameSize.Height == DesiredY))
+                    List<System.Drawing.Point> Resolutions = GetResolutions(MonikerStr);
+                    System.Drawing.Point MaxRes = FindMaxResolution(Resolutions);
+                    bool fine = false;
+                    for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
                     {
-                        VideoSource.VideoResolution = VideoSource.VideoCapabilities[i];
-                        fine = true;
-                        break;
+                        if ((VideoSource.VideoCapabilities[i].FrameSize.Width == MaxRes.X)
+                            &&
+                            (VideoSource.VideoCapabilities[i].FrameSize.Height == MaxRes.Y))
+                        {
+                            VideoSource.VideoResolution = VideoSource.VideoCapabilities[i];
+                            fine = true;
+                            break;
+                        }
                     }
+                    if (!fine)
+                    {
+                        MainForm.DisplayText("Could not set resolution");
+                        return false;
+                    }
+                    Resolution = MaxRes;
                 }
-                if (!fine)
+                else
                 {
-                    MainForm.DisplayText("Desired resolution not available");
-                    return false;
+                    tries = 0;
+                    while (tries < 4)
+                    {
+                        if (VideoSource != null)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Thread.Sleep(10);
+                            tries++;
+                        }
+                    }
+                    if (tries >= 4)
+                    {
+                        MainForm.DisplayText("Could not get resolution info");
+                        return false;
+                    }
+                    if (VideoSource.VideoCapabilities.Length <= 0)
+                    {
+                        MainForm.DisplayText("Could not get resolution info");
+                        return false;
+                    }
+                    bool fine = false;
+                    for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
+                    {
+                        if ((VideoSource.VideoCapabilities[i].FrameSize.Width == DesiredX)
+                            &&
+                            (VideoSource.VideoCapabilities[i].FrameSize.Height == DesiredY))
+                        {
+                            VideoSource.VideoResolution = VideoSource.VideoCapabilities[i];
+                            fine = true;
+                            break;
+                        }
+                    }
+                    if (!fine)
+                    {
+                        MainForm.DisplayText("Desired resolution not available");
+                        return false;
+                    }
+                    System.Drawing.Point res = new System.Drawing.Point(DesiredX, DesiredY);
+                    Resolution = res;
                 }
 
                 VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
