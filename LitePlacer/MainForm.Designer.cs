@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -145,39 +145,6 @@
             this.Tapes_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
-            this.ZUp_button = new System.Windows.Forms.Button();
-            this.ZDown_button = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.NozzleOffset_label = new System.Windows.Forms.Label();
-            this.SetPickupCenter_button = new System.Windows.Forms.Button();
-            this.label101 = new System.Windows.Forms.Label();
-            this.label94 = new System.Windows.Forms.Label();
-            this.NozzleOffsetY_textBox = new System.Windows.Forms.TextBox();
-            this.label100 = new System.Windows.Forms.Label();
-            this.NozzleOffsetX_textBox = new System.Windows.Forms.TextBox();
-            this.label93 = new System.Windows.Forms.Label();
-            this.label55 = new System.Windows.Forms.Label();
-            this.label148 = new System.Windows.Forms.Label();
-            this.label96 = new System.Windows.Forms.Label();
-            this.label146 = new System.Windows.Forms.Label();
-            this.label95 = new System.Windows.Forms.Label();
-            this.label143 = new System.Windows.Forms.Label();
-            this.GotoPCB0_button = new System.Windows.Forms.Button();
-            this.GotoUpCamPosition_button = new System.Windows.Forms.Button();
-            this.GotoPickupCenter_button = new System.Windows.Forms.Button();
-            this.Offset2Method_button = new System.Windows.Forms.Button();
-            this.label115 = new System.Windows.Forms.Label();
-            this.SetUpCamPosition_button = new System.Windows.Forms.Button();
-            this.label114 = new System.Windows.Forms.Label();
-            this.SetPCB0_button = new System.Windows.Forms.Button();
-            this.label99 = new System.Windows.Forms.Label();
-            this.JigX_textBox = new System.Windows.Forms.TextBox();
-            this.label98 = new System.Windows.Forms.Label();
-            this.JigY_textBox = new System.Windows.Forms.TextBox();
-            this.UpcamPositionY_textBox = new System.Windows.Forms.TextBox();
-            this.PickupCenterX_textBox = new System.Windows.Forms.TextBox();
-            this.UpcamPositionX_textBox = new System.Windows.Forms.TextBox();
-            this.PickupCenterY_textBox = new System.Windows.Forms.TextBox();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.UpCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
@@ -811,15 +778,47 @@
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
-            this.label149 = new System.Windows.Forms.Label();
-            this.Z0toPCB_CamerasTab_label = new System.Windows.Forms.Label();
+            this.PickupCenterY_textBox = new System.Windows.Forms.TextBox();
+            this.UpcamPositionX_textBox = new System.Windows.Forms.TextBox();
+            this.PickupCenterX_textBox = new System.Windows.Forms.TextBox();
+            this.UpcamPositionY_textBox = new System.Windows.Forms.TextBox();
+            this.JigY_textBox = new System.Windows.Forms.TextBox();
+            this.label98 = new System.Windows.Forms.Label();
+            this.JigX_textBox = new System.Windows.Forms.TextBox();
+            this.label99 = new System.Windows.Forms.Label();
+            this.SetPCB0_button = new System.Windows.Forms.Button();
+            this.label114 = new System.Windows.Forms.Label();
+            this.SetUpCamPosition_button = new System.Windows.Forms.Button();
+            this.label115 = new System.Windows.Forms.Label();
+            this.Offset2Method_button = new System.Windows.Forms.Button();
+            this.GotoPickupCenter_button = new System.Windows.Forms.Button();
+            this.GotoUpCamPosition_button = new System.Windows.Forms.Button();
+            this.GotoPCB0_button = new System.Windows.Forms.Button();
+            this.label143 = new System.Windows.Forms.Label();
+            this.label95 = new System.Windows.Forms.Label();
+            this.label146 = new System.Windows.Forms.Label();
+            this.label96 = new System.Windows.Forms.Label();
+            this.label148 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.label93 = new System.Windows.Forms.Label();
+            this.NozzleOffsetX_textBox = new System.Windows.Forms.TextBox();
+            this.label100 = new System.Windows.Forms.Label();
+            this.NozzleOffsetY_textBox = new System.Windows.Forms.TextBox();
+            this.label94 = new System.Windows.Forms.Label();
             this.label120 = new System.Windows.Forms.Label();
+            this.label101 = new System.Windows.Forms.Label();
+            this.SetPickupCenter_button = new System.Windows.Forms.Button();
+            this.Z0toPCB_CamerasTab_label = new System.Windows.Forms.Label();
+            this.NozzleOffset_label = new System.Windows.Forms.Label();
+            this.label149 = new System.Windows.Forms.Label();
+            this.ZUp_button = new System.Windows.Forms.Button();
+            this.ZDown_button = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
             this.Tapes_contextMenuStrip.SuspendLayout();
             this.tabPageSetupCameras.SuspendLayout();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -873,6 +872,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).BeginInit();
             this.NozzleLoad_contextMenuStrip.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Park_button
@@ -2096,9 +2096,6 @@
             // 
             // tabPageSetupCameras
             // 
-            this.tabPageSetupCameras.Controls.Add(this.ZUp_button);
-            this.tabPageSetupCameras.Controls.Add(this.ZDown_button);
-            this.tabPageSetupCameras.Controls.Add(this.panel1);
             this.tabPageSetupCameras.Controls.Add(this.Cam_pictureBox);
             this.tabPageSetupCameras.Controls.Add(this.groupBox6);
             this.tabPageSetupCameras.Controls.Add(this.RobustFast_checkBox);
@@ -2115,354 +2112,6 @@
             this.tabPageSetupCameras.TabIndex = 0;
             this.tabPageSetupCameras.Text = "Setup Cameras";
             this.tabPageSetupCameras.UseVisualStyleBackColor = true;
-            // 
-            // ZUp_button
-            // 
-            this.ZUp_button.Location = new System.Drawing.Point(189, 521);
-            this.ZUp_button.Name = "ZUp_button";
-            this.ZUp_button.Size = new System.Drawing.Size(84, 23);
-            this.ZUp_button.TabIndex = 304;
-            this.ZUp_button.Text = "Nozzle Up";
-            this.toolTip1.SetToolTip(this.ZUp_button, "Takes Nozzle up to Z0");
-            this.ZUp_button.UseVisualStyleBackColor = true;
-            this.ZUp_button.Click += new System.EventHandler(this.ZUp_button_Click);
-            // 
-            // ZDown_button
-            // 
-            this.ZDown_button.Location = new System.Drawing.Point(280, 521);
-            this.ZDown_button.Name = "ZDown_button";
-            this.ZDown_button.Size = new System.Drawing.Size(84, 23);
-            this.ZDown_button.TabIndex = 303;
-            this.ZDown_button.Text = "Nozzle Down";
-            this.toolTip1.SetToolTip(this.ZDown_button, "Takes Nozzle down to PCB level");
-            this.ZDown_button.UseVisualStyleBackColor = true;
-            this.ZDown_button.Click += new System.EventHandler(this.ZDown_button_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label149);
-            this.panel1.Controls.Add(this.Z0toPCB_CamerasTab_label);
-            this.panel1.Controls.Add(this.label120);
-            this.panel1.Controls.Add(this.NozzleOffset_label);
-            this.panel1.Controls.Add(this.SetPickupCenter_button);
-            this.panel1.Controls.Add(this.label101);
-            this.panel1.Controls.Add(this.label94);
-            this.panel1.Controls.Add(this.NozzleOffsetY_textBox);
-            this.panel1.Controls.Add(this.label100);
-            this.panel1.Controls.Add(this.NozzleOffsetX_textBox);
-            this.panel1.Controls.Add(this.label93);
-            this.panel1.Controls.Add(this.label55);
-            this.panel1.Controls.Add(this.label148);
-            this.panel1.Controls.Add(this.label96);
-            this.panel1.Controls.Add(this.label146);
-            this.panel1.Controls.Add(this.label95);
-            this.panel1.Controls.Add(this.label143);
-            this.panel1.Controls.Add(this.GotoPCB0_button);
-            this.panel1.Controls.Add(this.GotoUpCamPosition_button);
-            this.panel1.Controls.Add(this.GotoPickupCenter_button);
-            this.panel1.Controls.Add(this.Offset2Method_button);
-            this.panel1.Controls.Add(this.label115);
-            this.panel1.Controls.Add(this.SetUpCamPosition_button);
-            this.panel1.Controls.Add(this.label114);
-            this.panel1.Controls.Add(this.SetPCB0_button);
-            this.panel1.Controls.Add(this.label99);
-            this.panel1.Controls.Add(this.JigX_textBox);
-            this.panel1.Controls.Add(this.label98);
-            this.panel1.Controls.Add(this.JigY_textBox);
-            this.panel1.Controls.Add(this.UpcamPositionY_textBox);
-            this.panel1.Controls.Add(this.PickupCenterX_textBox);
-            this.panel1.Controls.Add(this.UpcamPositionX_textBox);
-            this.panel1.Controls.Add(this.PickupCenterY_textBox);
-            this.panel1.Location = new System.Drawing.Point(6, 489);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(640, 143);
-            this.panel1.TabIndex = 305;
-            // 
-            // NozzleOffset_label
-            // 
-            this.NozzleOffset_label.AutoSize = true;
-            this.NozzleOffset_label.BackColor = System.Drawing.Color.White;
-            this.NozzleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NozzleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NozzleOffset_label.Location = new System.Drawing.Point(3, 61);
-            this.NozzleOffset_label.Name = "NozzleOffset_label";
-            this.NozzleOffset_label.Size = new System.Drawing.Size(119, 20);
-            this.NozzleOffset_label.TabIndex = 281;
-            this.NozzleOffset_label.Text = "Instructions here";
-            this.NozzleOffset_label.Visible = false;
-            // 
-            // SetPickupCenter_button
-            // 
-            this.SetPickupCenter_button.Location = new System.Drawing.Point(569, 34);
-            this.SetPickupCenter_button.Name = "SetPickupCenter_button";
-            this.SetPickupCenter_button.Size = new System.Drawing.Size(65, 23);
-            this.SetPickupCenter_button.TabIndex = 278;
-            this.SetPickupCenter_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetPickupCenter_button, "Sets manual pick up postion");
-            this.SetPickupCenter_button.UseVisualStyleBackColor = true;
-            this.SetPickupCenter_button.Click += new System.EventHandler(this.SetPickupCenter_button_Click);
-            // 
-            // label101
-            // 
-            this.label101.AutoSize = true;
-            this.label101.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label101.Location = new System.Drawing.Point(567, 7);
-            this.label101.Name = "label101";
-            this.label101.Size = new System.Drawing.Size(50, 17);
-            this.label101.TabIndex = 301;
-            this.label101.Text = "Pickup";
-            // 
-            // label94
-            // 
-            this.label94.AutoSize = true;
-            this.label94.Location = new System.Drawing.Point(484, 66);
-            this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(17, 13);
-            this.label94.TabIndex = 267;
-            this.label94.Text = "X:";
-            // 
-            // NozzleOffsetY_textBox
-            // 
-            this.NozzleOffsetY_textBox.Location = new System.Drawing.Point(114, 105);
-            this.NozzleOffsetY_textBox.Name = "NozzleOffsetY_textBox";
-            this.NozzleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
-            this.NozzleOffsetY_textBox.TabIndex = 293;
-            this.NozzleOffsetY_textBox.Text = "6.99";
-            this.toolTip1.SetToolTip(this.NozzleOffsetY_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
-            this.NozzleOffsetY_textBox.TextChanged += new System.EventHandler(this.NozzleOffsetY_textBox_TextChanged);
-            // 
-            // label100
-            // 
-            this.label100.AutoSize = true;
-            this.label100.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label100.Location = new System.Drawing.Point(479, 7);
-            this.label100.Name = "label100";
-            this.label100.Size = new System.Drawing.Size(67, 17);
-            this.label100.TabIndex = 300;
-            this.label100.Text = "PCB zero";
-            // 
-            // NozzleOffsetX_textBox
-            // 
-            this.NozzleOffsetX_textBox.Location = new System.Drawing.Point(25, 105);
-            this.NozzleOffsetX_textBox.Name = "NozzleOffsetX_textBox";
-            this.NozzleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
-            this.NozzleOffsetX_textBox.TabIndex = 292;
-            this.NozzleOffsetX_textBox.Text = "42.88";
-            this.toolTip1.SetToolTip(this.NozzleOffsetX_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
-            this.NozzleOffsetX_textBox.TextChanged += new System.EventHandler(this.NozzleOffsetX_textBox_TextChanged);
-            // 
-            // label93
-            // 
-            this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(484, 92);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(17, 13);
-            this.label93.TabIndex = 268;
-            this.label93.Text = "Y:";
-            // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label55.Location = new System.Drawing.Point(379, 7);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(79, 17);
-            this.label55.TabIndex = 299;
-            this.label55.Text = "Up Camera";
-            // 
-            // label148
-            // 
-            this.label148.AutoSize = true;
-            this.label148.Location = new System.Drawing.Point(66, 109);
-            this.label148.Name = "label148";
-            this.label148.Size = new System.Drawing.Size(23, 13);
-            this.label148.TabIndex = 297;
-            this.label148.Text = "mm";
-            // 
-            // label96
-            // 
-            this.label96.AutoSize = true;
-            this.label96.Location = new System.Drawing.Point(565, 66);
-            this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(17, 13);
-            this.label96.TabIndex = 271;
-            this.label96.Text = "X:";
-            // 
-            // label146
-            // 
-            this.label146.AutoSize = true;
-            this.label146.Location = new System.Drawing.Point(91, 109);
-            this.label146.Name = "label146";
-            this.label146.Size = new System.Drawing.Size(17, 13);
-            this.label146.TabIndex = 296;
-            this.label146.Text = "Y:";
-            // 
-            // label95
-            // 
-            this.label95.AutoSize = true;
-            this.label95.Location = new System.Drawing.Point(565, 92);
-            this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(17, 13);
-            this.label95.TabIndex = 272;
-            this.label95.Text = "Y:";
-            // 
-            // label143
-            // 
-            this.label143.AutoSize = true;
-            this.label143.Location = new System.Drawing.Point(2, 109);
-            this.label143.Name = "label143";
-            this.label143.Size = new System.Drawing.Size(17, 13);
-            this.label143.TabIndex = 295;
-            this.label143.Text = "X:";
-            // 
-            // GotoPCB0_button
-            // 
-            this.GotoPCB0_button.Location = new System.Drawing.Point(487, 115);
-            this.GotoPCB0_button.Name = "GotoPCB0_button";
-            this.GotoPCB0_button.Size = new System.Drawing.Size(65, 23);
-            this.GotoPCB0_button.TabIndex = 275;
-            this.GotoPCB0_button.Text = "Go there";
-            this.GotoPCB0_button.UseVisualStyleBackColor = true;
-            this.GotoPCB0_button.Click += new System.EventHandler(this.GotoPCB0_button_Click);
-            // 
-            // GotoUpCamPosition_button
-            // 
-            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(407, 115);
-            this.GotoUpCamPosition_button.Name = "GotoUpCamPosition_button";
-            this.GotoUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
-            this.GotoUpCamPosition_button.TabIndex = 288;
-            this.GotoUpCamPosition_button.Text = "Go there";
-            this.GotoUpCamPosition_button.UseVisualStyleBackColor = true;
-            this.GotoUpCamPosition_button.Click += new System.EventHandler(this.GotoUpCamPosition_button_Click);
-            // 
-            // GotoPickupCenter_button
-            // 
-            this.GotoPickupCenter_button.Location = new System.Drawing.Point(570, 115);
-            this.GotoPickupCenter_button.Name = "GotoPickupCenter_button";
-            this.GotoPickupCenter_button.Size = new System.Drawing.Size(65, 23);
-            this.GotoPickupCenter_button.TabIndex = 276;
-            this.GotoPickupCenter_button.Text = "Go there";
-            this.GotoPickupCenter_button.UseVisualStyleBackColor = true;
-            this.GotoPickupCenter_button.Click += new System.EventHandler(this.GotoPickupCenter_button_Click);
-            // 
-            // Offset2Method_button
-            // 
-            this.Offset2Method_button.Location = new System.Drawing.Point(3, 31);
-            this.Offset2Method_button.Name = "Offset2Method_button";
-            this.Offset2Method_button.Size = new System.Drawing.Size(75, 23);
-            this.Offset2Method_button.TabIndex = 282;
-            this.Offset2Method_button.Tag = "Runs the Nozzle calibration routine";
-            this.Offset2Method_button.Text = "Start";
-            this.Offset2Method_button.UseVisualStyleBackColor = true;
-            this.Offset2Method_button.Click += new System.EventHandler(this.Offset2Method_button_Click);
-            // 
-            // label115
-            // 
-            this.label115.AutoSize = true;
-            this.label115.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label115.Location = new System.Drawing.Point(3, 5);
-            this.label115.Name = "label115";
-            this.label115.Size = new System.Drawing.Size(96, 17);
-            this.label115.TabIndex = 280;
-            this.label115.Text = "Nozzle Setup:";
-            // 
-            // SetUpCamPosition_button
-            // 
-            this.SetUpCamPosition_button.Location = new System.Drawing.Point(407, 34);
-            this.SetUpCamPosition_button.Name = "SetUpCamPosition_button";
-            this.SetUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
-            this.SetUpCamPosition_button.TabIndex = 287;
-            this.SetUpCamPosition_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetUpCamPosition_button, "Sets Up camera location");
-            this.SetUpCamPosition_button.UseVisualStyleBackColor = true;
-            this.SetUpCamPosition_button.Click += new System.EventHandler(this.SetUpCamPosition_button_Click);
-            // 
-            // label114
-            // 
-            this.label114.AutoSize = true;
-            this.label114.Location = new System.Drawing.Point(3, 87);
-            this.label114.Name = "label114";
-            this.label114.Size = new System.Drawing.Size(114, 13);
-            this.label114.TabIndex = 279;
-            this.label114.Text = "Nozzle Nominal Offset:";
-            // 
-            // SetPCB0_button
-            // 
-            this.SetPCB0_button.Location = new System.Drawing.Point(487, 34);
-            this.SetPCB0_button.Name = "SetPCB0_button";
-            this.SetPCB0_button.Size = new System.Drawing.Size(65, 23);
-            this.SetPCB0_button.TabIndex = 277;
-            this.SetPCB0_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.SetPCB0_button, "Sets PCB jig lower left location");
-            this.SetPCB0_button.UseVisualStyleBackColor = true;
-            this.SetPCB0_button.Click += new System.EventHandler(this.SetPCB0_button_Click);
-            // 
-            // label99
-            // 
-            this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(404, 92);
-            this.label99.Name = "label99";
-            this.label99.Size = new System.Drawing.Size(17, 13);
-            this.label99.TabIndex = 286;
-            this.label99.Text = "Y:";
-            // 
-            // JigX_textBox
-            // 
-            this.JigX_textBox.Location = new System.Drawing.Point(506, 63);
-            this.JigX_textBox.Name = "JigX_textBox";
-            this.JigX_textBox.Size = new System.Drawing.Size(46, 20);
-            this.JigX_textBox.TabIndex = 269;
-            this.JigX_textBox.TextChanged += new System.EventHandler(this.JigX_textBox_TextChanged);
-            // 
-            // label98
-            // 
-            this.label98.AutoSize = true;
-            this.label98.Location = new System.Drawing.Point(404, 66);
-            this.label98.Name = "label98";
-            this.label98.Size = new System.Drawing.Size(17, 13);
-            this.label98.TabIndex = 285;
-            this.label98.Text = "X:";
-            // 
-            // JigY_textBox
-            // 
-            this.JigY_textBox.Location = new System.Drawing.Point(506, 89);
-            this.JigY_textBox.Name = "JigY_textBox";
-            this.JigY_textBox.Size = new System.Drawing.Size(46, 20);
-            this.JigY_textBox.TabIndex = 270;
-            this.JigY_textBox.TextChanged += new System.EventHandler(this.JigY_textBox_TextChanged);
-            // 
-            // UpcamPositionY_textBox
-            // 
-            this.UpcamPositionY_textBox.Location = new System.Drawing.Point(427, 89);
-            this.UpcamPositionY_textBox.Name = "UpcamPositionY_textBox";
-            this.UpcamPositionY_textBox.Size = new System.Drawing.Size(46, 20);
-            this.UpcamPositionY_textBox.TabIndex = 284;
-            this.UpcamPositionY_textBox.TextChanged += new System.EventHandler(this.UpcamPositionY_textBox_TextChanged);
-            // 
-            // PickupCenterX_textBox
-            // 
-            this.PickupCenterX_textBox.Location = new System.Drawing.Point(588, 63);
-            this.PickupCenterX_textBox.Name = "PickupCenterX_textBox";
-            this.PickupCenterX_textBox.Size = new System.Drawing.Size(46, 20);
-            this.PickupCenterX_textBox.TabIndex = 273;
-            this.PickupCenterX_textBox.TextChanged += new System.EventHandler(this.PickupCenterX_textBox_TextChanged);
-            // 
-            // UpcamPositionX_textBox
-            // 
-            this.UpcamPositionX_textBox.Location = new System.Drawing.Point(427, 63);
-            this.UpcamPositionX_textBox.Name = "UpcamPositionX_textBox";
-            this.UpcamPositionX_textBox.Size = new System.Drawing.Size(46, 20);
-            this.UpcamPositionX_textBox.TabIndex = 283;
-            this.UpcamPositionX_textBox.TextChanged += new System.EventHandler(this.UpcamPositionX_textBox_TextChanged);
-            // 
-            // PickupCenterY_textBox
-            // 
-            this.PickupCenterY_textBox.Location = new System.Drawing.Point(588, 89);
-            this.PickupCenterY_textBox.Name = "PickupCenterY_textBox";
-            this.PickupCenterY_textBox.Size = new System.Drawing.Size(46, 20);
-            this.PickupCenterY_textBox.TabIndex = 274;
-            this.PickupCenterY_textBox.TextChanged += new System.EventHandler(this.PickupCenterY_textBox_TextChanged);
             // 
             // Cam_pictureBox
             // 
@@ -7419,14 +7068,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7512,14 +7161,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7693,6 +7342,7 @@
             // 
             // Algorithms_tabPage
             // 
+            this.Algorithms_tabPage.Controls.Add(this.panel1);
             this.Algorithms_tabPage.Controls.Add(this.ShowVideoResults_radioButton);
             this.Algorithms_tabPage.Controls.Add(this.ShowVideoProcessing_radioButton);
             this.Algorithms_tabPage.Controls.Add(this.NoVideoProcessing_radioButton);
@@ -9609,32 +9259,382 @@
             this.Test7_button.UseVisualStyleBackColor = true;
             this.Test7_button.Click += new System.EventHandler(this.Test7_button_Click);
             // 
-            // label149
+            // PickupCenterY_textBox
             // 
-            this.label149.AutoSize = true;
-            this.label149.Location = new System.Drawing.Point(156, 108);
-            this.label149.Name = "label149";
-            this.label149.Size = new System.Drawing.Size(23, 13);
-            this.label149.TabIndex = 304;
-            this.label149.Text = "mm";
+            this.PickupCenterY_textBox.Location = new System.Drawing.Point(588, 89);
+            this.PickupCenterY_textBox.Name = "PickupCenterY_textBox";
+            this.PickupCenterY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.PickupCenterY_textBox.TabIndex = 274;
+            this.PickupCenterY_textBox.TextChanged += new System.EventHandler(this.PickupCenterY_textBox_TextChanged);
+            // 
+            // UpcamPositionX_textBox
+            // 
+            this.UpcamPositionX_textBox.Location = new System.Drawing.Point(427, 63);
+            this.UpcamPositionX_textBox.Name = "UpcamPositionX_textBox";
+            this.UpcamPositionX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.UpcamPositionX_textBox.TabIndex = 283;
+            this.UpcamPositionX_textBox.TextChanged += new System.EventHandler(this.UpcamPositionX_textBox_TextChanged);
+            // 
+            // PickupCenterX_textBox
+            // 
+            this.PickupCenterX_textBox.Location = new System.Drawing.Point(588, 63);
+            this.PickupCenterX_textBox.Name = "PickupCenterX_textBox";
+            this.PickupCenterX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.PickupCenterX_textBox.TabIndex = 273;
+            this.PickupCenterX_textBox.TextChanged += new System.EventHandler(this.PickupCenterX_textBox_TextChanged);
+            // 
+            // UpcamPositionY_textBox
+            // 
+            this.UpcamPositionY_textBox.Location = new System.Drawing.Point(427, 89);
+            this.UpcamPositionY_textBox.Name = "UpcamPositionY_textBox";
+            this.UpcamPositionY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.UpcamPositionY_textBox.TabIndex = 284;
+            this.UpcamPositionY_textBox.TextChanged += new System.EventHandler(this.UpcamPositionY_textBox_TextChanged);
+            // 
+            // JigY_textBox
+            // 
+            this.JigY_textBox.Location = new System.Drawing.Point(506, 89);
+            this.JigY_textBox.Name = "JigY_textBox";
+            this.JigY_textBox.Size = new System.Drawing.Size(46, 20);
+            this.JigY_textBox.TabIndex = 270;
+            this.JigY_textBox.TextChanged += new System.EventHandler(this.JigY_textBox_TextChanged);
+            // 
+            // label98
+            // 
+            this.label98.AutoSize = true;
+            this.label98.Location = new System.Drawing.Point(404, 66);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(17, 13);
+            this.label98.TabIndex = 285;
+            this.label98.Text = "X:";
+            // 
+            // JigX_textBox
+            // 
+            this.JigX_textBox.Location = new System.Drawing.Point(506, 63);
+            this.JigX_textBox.Name = "JigX_textBox";
+            this.JigX_textBox.Size = new System.Drawing.Size(46, 20);
+            this.JigX_textBox.TabIndex = 269;
+            this.JigX_textBox.TextChanged += new System.EventHandler(this.JigX_textBox_TextChanged);
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(404, 92);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(17, 13);
+            this.label99.TabIndex = 286;
+            this.label99.Text = "Y:";
+            // 
+            // SetPCB0_button
+            // 
+            this.SetPCB0_button.Location = new System.Drawing.Point(487, 34);
+            this.SetPCB0_button.Name = "SetPCB0_button";
+            this.SetPCB0_button.Size = new System.Drawing.Size(65, 23);
+            this.SetPCB0_button.TabIndex = 277;
+            this.SetPCB0_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetPCB0_button, "Sets PCB jig lower left location");
+            this.SetPCB0_button.UseVisualStyleBackColor = true;
+            this.SetPCB0_button.Click += new System.EventHandler(this.SetPCB0_button_Click);
+            // 
+            // label114
+            // 
+            this.label114.AutoSize = true;
+            this.label114.Location = new System.Drawing.Point(3, 87);
+            this.label114.Name = "label114";
+            this.label114.Size = new System.Drawing.Size(114, 13);
+            this.label114.TabIndex = 279;
+            this.label114.Text = "Nozzle Nominal Offset:";
+            // 
+            // SetUpCamPosition_button
+            // 
+            this.SetUpCamPosition_button.Location = new System.Drawing.Point(407, 34);
+            this.SetUpCamPosition_button.Name = "SetUpCamPosition_button";
+            this.SetUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
+            this.SetUpCamPosition_button.TabIndex = 287;
+            this.SetUpCamPosition_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetUpCamPosition_button, "Sets Up camera location");
+            this.SetUpCamPosition_button.UseVisualStyleBackColor = true;
+            this.SetUpCamPosition_button.Click += new System.EventHandler(this.SetUpCamPosition_button_Click);
+            // 
+            // label115
+            // 
+            this.label115.AutoSize = true;
+            this.label115.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label115.Location = new System.Drawing.Point(3, 5);
+            this.label115.Name = "label115";
+            this.label115.Size = new System.Drawing.Size(96, 17);
+            this.label115.TabIndex = 280;
+            this.label115.Text = "Nozzle Setup:";
+            // 
+            // Offset2Method_button
+            // 
+            this.Offset2Method_button.Location = new System.Drawing.Point(3, 31);
+            this.Offset2Method_button.Name = "Offset2Method_button";
+            this.Offset2Method_button.Size = new System.Drawing.Size(75, 23);
+            this.Offset2Method_button.TabIndex = 282;
+            this.Offset2Method_button.Tag = "Runs the Nozzle calibration routine";
+            this.Offset2Method_button.Text = "Start";
+            this.Offset2Method_button.UseVisualStyleBackColor = true;
+            this.Offset2Method_button.Click += new System.EventHandler(this.Offset2Method_button_Click);
+            // 
+            // GotoPickupCenter_button
+            // 
+            this.GotoPickupCenter_button.Location = new System.Drawing.Point(570, 115);
+            this.GotoPickupCenter_button.Name = "GotoPickupCenter_button";
+            this.GotoPickupCenter_button.Size = new System.Drawing.Size(65, 23);
+            this.GotoPickupCenter_button.TabIndex = 276;
+            this.GotoPickupCenter_button.Text = "Go there";
+            this.GotoPickupCenter_button.UseVisualStyleBackColor = true;
+            this.GotoPickupCenter_button.Click += new System.EventHandler(this.GotoPickupCenter_button_Click);
+            // 
+            // GotoUpCamPosition_button
+            // 
+            this.GotoUpCamPosition_button.Location = new System.Drawing.Point(407, 115);
+            this.GotoUpCamPosition_button.Name = "GotoUpCamPosition_button";
+            this.GotoUpCamPosition_button.Size = new System.Drawing.Size(66, 23);
+            this.GotoUpCamPosition_button.TabIndex = 288;
+            this.GotoUpCamPosition_button.Text = "Go there";
+            this.GotoUpCamPosition_button.UseVisualStyleBackColor = true;
+            this.GotoUpCamPosition_button.Click += new System.EventHandler(this.GotoUpCamPosition_button_Click);
+            // 
+            // GotoPCB0_button
+            // 
+            this.GotoPCB0_button.Location = new System.Drawing.Point(487, 115);
+            this.GotoPCB0_button.Name = "GotoPCB0_button";
+            this.GotoPCB0_button.Size = new System.Drawing.Size(65, 23);
+            this.GotoPCB0_button.TabIndex = 275;
+            this.GotoPCB0_button.Text = "Go there";
+            this.GotoPCB0_button.UseVisualStyleBackColor = true;
+            this.GotoPCB0_button.Click += new System.EventHandler(this.GotoPCB0_button_Click);
+            // 
+            // label143
+            // 
+            this.label143.AutoSize = true;
+            this.label143.Location = new System.Drawing.Point(2, 109);
+            this.label143.Name = "label143";
+            this.label143.Size = new System.Drawing.Size(17, 13);
+            this.label143.TabIndex = 295;
+            this.label143.Text = "X:";
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Location = new System.Drawing.Point(565, 92);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(17, 13);
+            this.label95.TabIndex = 272;
+            this.label95.Text = "Y:";
+            // 
+            // label146
+            // 
+            this.label146.AutoSize = true;
+            this.label146.Location = new System.Drawing.Point(91, 109);
+            this.label146.Name = "label146";
+            this.label146.Size = new System.Drawing.Size(17, 13);
+            this.label146.TabIndex = 296;
+            this.label146.Text = "Y:";
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(565, 66);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(17, 13);
+            this.label96.TabIndex = 271;
+            this.label96.Text = "X:";
+            // 
+            // label148
+            // 
+            this.label148.AutoSize = true;
+            this.label148.Location = new System.Drawing.Point(66, 109);
+            this.label148.Name = "label148";
+            this.label148.Size = new System.Drawing.Size(23, 13);
+            this.label148.TabIndex = 297;
+            this.label148.Text = "mm";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label55.Location = new System.Drawing.Point(379, 7);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(79, 17);
+            this.label55.TabIndex = 299;
+            this.label55.Text = "Up Camera";
+            // 
+            // label93
+            // 
+            this.label93.AutoSize = true;
+            this.label93.Location = new System.Drawing.Point(484, 92);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(17, 13);
+            this.label93.TabIndex = 268;
+            this.label93.Text = "Y:";
+            // 
+            // NozzleOffsetX_textBox
+            // 
+            this.NozzleOffsetX_textBox.Location = new System.Drawing.Point(25, 105);
+            this.NozzleOffsetX_textBox.Name = "NozzleOffsetX_textBox";
+            this.NozzleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
+            this.NozzleOffsetX_textBox.TabIndex = 292;
+            this.NozzleOffsetX_textBox.Text = "42.88";
+            this.toolTip1.SetToolTip(this.NozzleOffsetX_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
+            this.NozzleOffsetX_textBox.TextChanged += new System.EventHandler(this.NozzleOffsetX_textBox_TextChanged);
+            // 
+            // label100
+            // 
+            this.label100.AutoSize = true;
+            this.label100.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label100.Location = new System.Drawing.Point(479, 7);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(67, 17);
+            this.label100.TabIndex = 300;
+            this.label100.Text = "PCB zero";
+            // 
+            // NozzleOffsetY_textBox
+            // 
+            this.NozzleOffsetY_textBox.Location = new System.Drawing.Point(114, 105);
+            this.NozzleOffsetY_textBox.Name = "NozzleOffsetY_textBox";
+            this.NozzleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
+            this.NozzleOffsetY_textBox.TabIndex = 293;
+            this.NozzleOffsetY_textBox.Text = "6.99";
+            this.toolTip1.SetToolTip(this.NozzleOffsetY_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
+            this.NozzleOffsetY_textBox.TextChanged += new System.EventHandler(this.NozzleOffsetY_textBox_TextChanged);
+            // 
+            // label94
+            // 
+            this.label94.AutoSize = true;
+            this.label94.Location = new System.Drawing.Point(484, 66);
+            this.label94.Name = "label94";
+            this.label94.Size = new System.Drawing.Size(17, 13);
+            this.label94.TabIndex = 267;
+            this.label94.Text = "X:";
+            // 
+            // label120
+            // 
+            this.label120.AutoSize = true;
+            this.label120.Location = new System.Drawing.Point(199, 109);
+            this.label120.Name = "label120";
+            this.label120.Size = new System.Drawing.Size(59, 13);
+            this.label120.TabIndex = 302;
+            this.label120.Text = "Z0 to PCB:";
+            // 
+            // label101
+            // 
+            this.label101.AutoSize = true;
+            this.label101.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label101.Location = new System.Drawing.Point(567, 7);
+            this.label101.Name = "label101";
+            this.label101.Size = new System.Drawing.Size(50, 17);
+            this.label101.TabIndex = 301;
+            this.label101.Text = "Pickup";
+            // 
+            // SetPickupCenter_button
+            // 
+            this.SetPickupCenter_button.Location = new System.Drawing.Point(569, 34);
+            this.SetPickupCenter_button.Name = "SetPickupCenter_button";
+            this.SetPickupCenter_button.Size = new System.Drawing.Size(65, 23);
+            this.SetPickupCenter_button.TabIndex = 278;
+            this.SetPickupCenter_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.SetPickupCenter_button, "Sets manual pick up postion");
+            this.SetPickupCenter_button.UseVisualStyleBackColor = true;
+            this.SetPickupCenter_button.Click += new System.EventHandler(this.SetPickupCenter_button_Click);
             // 
             // Z0toPCB_CamerasTab_label
             // 
             this.Z0toPCB_CamerasTab_label.AutoSize = true;
-            this.Z0toPCB_CamerasTab_label.Location = new System.Drawing.Point(261, 108);
+            this.Z0toPCB_CamerasTab_label.Location = new System.Drawing.Point(261, 109);
             this.Z0toPCB_CamerasTab_label.Name = "Z0toPCB_CamerasTab_label";
             this.Z0toPCB_CamerasTab_label.Size = new System.Drawing.Size(53, 13);
             this.Z0toPCB_CamerasTab_label.TabIndex = 303;
             this.Z0toPCB_CamerasTab_label.Text = "37.00 mm";
             // 
-            // label120
+            // NozzleOffset_label
             // 
-            this.label120.AutoSize = true;
-            this.label120.Location = new System.Drawing.Point(199, 108);
-            this.label120.Name = "label120";
-            this.label120.Size = new System.Drawing.Size(59, 13);
-            this.label120.TabIndex = 302;
-            this.label120.Text = "Z0 to PCB:";
+            this.NozzleOffset_label.AutoSize = true;
+            this.NozzleOffset_label.BackColor = System.Drawing.Color.White;
+            this.NozzleOffset_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.NozzleOffset_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NozzleOffset_label.Location = new System.Drawing.Point(3, 61);
+            this.NozzleOffset_label.Name = "NozzleOffset_label";
+            this.NozzleOffset_label.Size = new System.Drawing.Size(119, 20);
+            this.NozzleOffset_label.TabIndex = 281;
+            this.NozzleOffset_label.Text = "Instructions here";
+            this.NozzleOffset_label.Visible = false;
+            // 
+            // label149
+            // 
+            this.label149.AutoSize = true;
+            this.label149.Location = new System.Drawing.Point(156, 109);
+            this.label149.Name = "label149";
+            this.label149.Size = new System.Drawing.Size(23, 13);
+            this.label149.TabIndex = 304;
+            this.label149.Text = "mm";
+            // 
+            // ZUp_button
+            // 
+            this.ZUp_button.Location = new System.Drawing.Point(183, 31);
+            this.ZUp_button.Name = "ZUp_button";
+            this.ZUp_button.Size = new System.Drawing.Size(84, 23);
+            this.ZUp_button.TabIndex = 304;
+            this.ZUp_button.Text = "Nozzle Up";
+            this.toolTip1.SetToolTip(this.ZUp_button, "Takes Nozzle up to Z0");
+            this.ZUp_button.UseVisualStyleBackColor = true;
+            this.ZUp_button.Click += new System.EventHandler(this.ZUp_button_Click);
+            // 
+            // ZDown_button
+            // 
+            this.ZDown_button.Location = new System.Drawing.Point(273, 31);
+            this.ZDown_button.Name = "ZDown_button";
+            this.ZDown_button.Size = new System.Drawing.Size(84, 23);
+            this.ZDown_button.TabIndex = 303;
+            this.ZDown_button.Text = "Nozzle Down";
+            this.toolTip1.SetToolTip(this.ZDown_button, "Takes Nozzle down to PCB level");
+            this.ZDown_button.UseVisualStyleBackColor = true;
+            this.ZDown_button.Click += new System.EventHandler(this.ZDown_button_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.ZDown_button);
+            this.panel1.Controls.Add(this.ZUp_button);
+            this.panel1.Controls.Add(this.label149);
+            this.panel1.Controls.Add(this.NozzleOffset_label);
+            this.panel1.Controls.Add(this.Z0toPCB_CamerasTab_label);
+            this.panel1.Controls.Add(this.SetPickupCenter_button);
+            this.panel1.Controls.Add(this.label101);
+            this.panel1.Controls.Add(this.label120);
+            this.panel1.Controls.Add(this.label94);
+            this.panel1.Controls.Add(this.NozzleOffsetY_textBox);
+            this.panel1.Controls.Add(this.label100);
+            this.panel1.Controls.Add(this.NozzleOffsetX_textBox);
+            this.panel1.Controls.Add(this.label93);
+            this.panel1.Controls.Add(this.label55);
+            this.panel1.Controls.Add(this.label148);
+            this.panel1.Controls.Add(this.label96);
+            this.panel1.Controls.Add(this.label146);
+            this.panel1.Controls.Add(this.label95);
+            this.panel1.Controls.Add(this.label143);
+            this.panel1.Controls.Add(this.GotoPCB0_button);
+            this.panel1.Controls.Add(this.GotoUpCamPosition_button);
+            this.panel1.Controls.Add(this.GotoPickupCenter_button);
+            this.panel1.Controls.Add(this.Offset2Method_button);
+            this.panel1.Controls.Add(this.label115);
+            this.panel1.Controls.Add(this.SetUpCamPosition_button);
+            this.panel1.Controls.Add(this.label114);
+            this.panel1.Controls.Add(this.SetPCB0_button);
+            this.panel1.Controls.Add(this.label99);
+            this.panel1.Controls.Add(this.JigX_textBox);
+            this.panel1.Controls.Add(this.label98);
+            this.panel1.Controls.Add(this.JigY_textBox);
+            this.panel1.Controls.Add(this.UpcamPositionY_textBox);
+            this.panel1.Controls.Add(this.PickupCenterX_textBox);
+            this.panel1.Controls.Add(this.UpcamPositionX_textBox);
+            this.panel1.Controls.Add(this.PickupCenterY_textBox);
+            this.panel1.Location = new System.Drawing.Point(6, 489);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(640, 143);
+            this.panel1.TabIndex = 305;
             // 
             // FormMain
             // 
@@ -9709,8 +9709,6 @@
             this.Tapes_contextMenuStrip.ResumeLayout(false);
             this.tabPageSetupCameras.ResumeLayout(false);
             this.tabPageSetupCameras.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Cam_pictureBox)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
@@ -9788,6 +9786,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzles_UpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NozzlesLoad_dataGridView)).EndInit();
             this.NozzleLoad_contextMenuStrip.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -10541,12 +10541,15 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzleColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
         private System.Windows.Forms.CheckBox TapeSetupZguard_checkBox;
-        private System.Windows.Forms.Button ZUp_button;
-        private System.Windows.Forms.Button ZDown_button;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button ZDown_button;
+        private System.Windows.Forms.Button ZUp_button;
+        private System.Windows.Forms.Label label149;
         private System.Windows.Forms.Label NozzleOffset_label;
+        private System.Windows.Forms.Label Z0toPCB_CamerasTab_label;
         private System.Windows.Forms.Button SetPickupCenter_button;
         private System.Windows.Forms.Label label101;
+        private System.Windows.Forms.Label label120;
         private System.Windows.Forms.Label label94;
         private System.Windows.Forms.TextBox NozzleOffsetY_textBox;
         private System.Windows.Forms.Label label100;
@@ -10574,9 +10577,6 @@
         private System.Windows.Forms.TextBox PickupCenterX_textBox;
         private System.Windows.Forms.TextBox UpcamPositionX_textBox;
         private System.Windows.Forms.TextBox PickupCenterY_textBox;
-        private System.Windows.Forms.Label label149;
-        private System.Windows.Forms.Label Z0toPCB_CamerasTab_label;
-        private System.Windows.Forms.Label label120;
     }
 }
 
