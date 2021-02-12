@@ -147,6 +147,7 @@
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.UpCamUsedResolution_label = new System.Windows.Forms.Label();
             this.UpCamMaxResolution_checkBox = new System.Windows.Forms.CheckBox();
             this.UpCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
             this.label130 = new System.Windows.Forms.Label();
@@ -178,6 +179,7 @@
             this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
             this.label135 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.DownCamUsedResolution_label = new System.Windows.Forms.Label();
             this.DownCamMaxResolution_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
             this.label121 = new System.Windows.Forms.Label();
@@ -579,13 +581,6 @@
             this.label86 = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
             this.JobData_GridView = new System.Windows.Forms.DataGridView();
-            this.JobDataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataMethodParametersColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataNozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataComponentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Bottom_checkBox = new System.Windows.Forms.CheckBox();
             this.CadData_GridView = new System.Windows.Forms.DataGridView();
             this.CADdataComponentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -816,8 +811,13 @@
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
-            this.DownCamUsedResolution_label = new System.Windows.Forms.Label();
-            this.UpCamUsedResolution_label = new System.Windows.Forms.Label();
+            this.JobDataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodParametersColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataNozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataComponentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -2166,6 +2166,17 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Up Looking Camera";
             // 
+            // UpCamUsedResolution_label
+            // 
+            this.UpCamUsedResolution_label.AutoSize = true;
+            this.UpCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamUsedResolution_label.Location = new System.Drawing.Point(454, 60);
+            this.UpCamUsedResolution_label.Name = "UpCamUsedResolution_label";
+            this.UpCamUsedResolution_label.Size = new System.Drawing.Size(111, 13);
+            this.UpCamUsedResolution_label.TabIndex = 231;
+            this.UpCamUsedResolution_label.Text = "resolution: 1280 x 720";
+            this.UpCamUsedResolution_label.Visible = false;
+            // 
             // UpCamMaxResolution_checkBox
             // 
             this.UpCamMaxResolution_checkBox.AutoSize = true;
@@ -2543,6 +2554,17 @@
             this.groupBox5.TabIndex = 145;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Down Looking Camera";
+            // 
+            // DownCamUsedResolution_label
+            // 
+            this.DownCamUsedResolution_label.AutoSize = true;
+            this.DownCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamUsedResolution_label.Location = new System.Drawing.Point(454, 61);
+            this.DownCamUsedResolution_label.Name = "DownCamUsedResolution_label";
+            this.DownCamUsedResolution_label.Size = new System.Drawing.Size(111, 13);
+            this.DownCamUsedResolution_label.TabIndex = 214;
+            this.DownCamUsedResolution_label.Text = "resolution: 1280 x 720";
+            this.DownCamUsedResolution_label.Visible = false;
             // 
             // DownCamMaxResolution_checkBox
             // 
@@ -7130,55 +7152,6 @@
             this.JobData_GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellContentClick);
             this.JobData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellEndEdit);
             // 
-            // JobDataValueColumn
-            // 
-            this.JobDataValueColumn.HeaderText = "Value";
-            this.JobDataValueColumn.MinimumWidth = 6;
-            this.JobDataValueColumn.Name = "JobDataValueColumn";
-            // 
-            // JobDataFootprintColumn
-            // 
-            this.JobDataFootprintColumn.HeaderText = "Footprint";
-            this.JobDataFootprintColumn.MinimumWidth = 6;
-            this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
-            // 
-            // JobdataCountColumn
-            // 
-            this.JobdataCountColumn.HeaderText = "Count";
-            this.JobdataCountColumn.MinimumWidth = 6;
-            this.JobdataCountColumn.Name = "JobdataCountColumn";
-            this.JobdataCountColumn.Width = 40;
-            // 
-            // JobdataMethodColumn
-            // 
-            this.JobdataMethodColumn.HeaderText = "Method";
-            this.JobdataMethodColumn.MinimumWidth = 6;
-            this.JobdataMethodColumn.Name = "JobdataMethodColumn";
-            this.JobdataMethodColumn.ReadOnly = true;
-            this.JobdataMethodColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobdataMethodColumn.Width = 80;
-            // 
-            // JobdataMethodParametersColumn
-            // 
-            this.JobdataMethodParametersColumn.HeaderText = "Method Parameters";
-            this.JobdataMethodParametersColumn.MinimumWidth = 6;
-            this.JobdataMethodParametersColumn.Name = "JobdataMethodParametersColumn";
-            this.JobdataMethodParametersColumn.Width = 80;
-            // 
-            // JobDataNozzleColumn
-            // 
-            this.JobDataNozzleColumn.HeaderText = "Nozzle";
-            this.JobDataNozzleColumn.MinimumWidth = 6;
-            this.JobDataNozzleColumn.Name = "JobDataNozzleColumn";
-            this.JobDataNozzleColumn.Width = 50;
-            // 
-            // JobdataComponentsColumn
-            // 
-            this.JobdataComponentsColumn.HeaderText = "Components";
-            this.JobdataComponentsColumn.MinimumWidth = 6;
-            this.JobdataComponentsColumn.Name = "JobdataComponentsColumn";
-            this.JobdataComponentsColumn.Width = 130;
-            // 
             // Bottom_checkBox
             // 
             this.Bottom_checkBox.AutoSize = true;
@@ -9670,27 +9643,54 @@
             this.Test7_button.UseVisualStyleBackColor = true;
             this.Test7_button.Click += new System.EventHandler(this.Test7_button_Click);
             // 
-            // DownCamUsedResolution_label
+            // JobDataValueColumn
             // 
-            this.DownCamUsedResolution_label.AutoSize = true;
-            this.DownCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamUsedResolution_label.Location = new System.Drawing.Point(454, 61);
-            this.DownCamUsedResolution_label.Name = "DownCamUsedResolution_label";
-            this.DownCamUsedResolution_label.Size = new System.Drawing.Size(111, 13);
-            this.DownCamUsedResolution_label.TabIndex = 214;
-            this.DownCamUsedResolution_label.Text = "resolution: 1280 x 720";
-            this.DownCamUsedResolution_label.Visible = false;
+            this.JobDataValueColumn.HeaderText = "Value";
+            this.JobDataValueColumn.MinimumWidth = 6;
+            this.JobDataValueColumn.Name = "JobDataValueColumn";
             // 
-            // UpCamUsedResolution_label
+            // JobDataFootprintColumn
             // 
-            this.UpCamUsedResolution_label.AutoSize = true;
-            this.UpCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamUsedResolution_label.Location = new System.Drawing.Point(454, 60);
-            this.UpCamUsedResolution_label.Name = "UpCamUsedResolution_label";
-            this.UpCamUsedResolution_label.Size = new System.Drawing.Size(111, 13);
-            this.UpCamUsedResolution_label.TabIndex = 231;
-            this.UpCamUsedResolution_label.Text = "resolution: 1280 x 720";
-            this.UpCamUsedResolution_label.Visible = false;
+            this.JobDataFootprintColumn.HeaderText = "Footprint";
+            this.JobDataFootprintColumn.MinimumWidth = 6;
+            this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
+            // 
+            // JobdataCountColumn
+            // 
+            this.JobdataCountColumn.HeaderText = "Count";
+            this.JobdataCountColumn.MinimumWidth = 6;
+            this.JobdataCountColumn.Name = "JobdataCountColumn";
+            this.JobdataCountColumn.Width = 40;
+            // 
+            // JobdataMethodColumn
+            // 
+            this.JobdataMethodColumn.HeaderText = "Method";
+            this.JobdataMethodColumn.MinimumWidth = 6;
+            this.JobdataMethodColumn.Name = "JobdataMethodColumn";
+            this.JobdataMethodColumn.ReadOnly = true;
+            this.JobdataMethodColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobdataMethodColumn.Width = 80;
+            // 
+            // JobdataMethodParametersColumn
+            // 
+            this.JobdataMethodParametersColumn.HeaderText = "Parameters";
+            this.JobdataMethodParametersColumn.MinimumWidth = 6;
+            this.JobdataMethodParametersColumn.Name = "JobdataMethodParametersColumn";
+            this.JobdataMethodParametersColumn.Width = 80;
+            // 
+            // JobDataNozzleColumn
+            // 
+            this.JobDataNozzleColumn.HeaderText = "Nozzle";
+            this.JobDataNozzleColumn.MinimumWidth = 6;
+            this.JobDataNozzleColumn.Name = "JobDataNozzleColumn";
+            this.JobDataNozzleColumn.Width = 50;
+            // 
+            // JobdataComponentsColumn
+            // 
+            this.JobdataComponentsColumn.HeaderText = "Components";
+            this.JobdataComponentsColumn.MinimumWidth = 6;
+            this.JobdataComponentsColumn.Name = "JobdataComponentsColumn";
+            this.JobdataComponentsColumn.Width = 130;
             // 
             // FormMain
             // 
@@ -10589,13 +10589,6 @@
         private System.Windows.Forms.RadioButton ShowVideoResults_radioButton;
         private System.Windows.Forms.RadioButton ShowVideoProcessing_radioButton;
         private System.Windows.Forms.RadioButton NoVideoProcessing_radioButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataValueColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataFootprintColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataCountColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodParametersColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzleColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
         private System.Windows.Forms.CheckBox TapeSetupZguard_checkBox;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button ZDown_button;
@@ -10637,6 +10630,13 @@
         private System.Windows.Forms.CheckBox DownCamMaxResolution_checkBox;
         private System.Windows.Forms.Label UpCamUsedResolution_label;
         private System.Windows.Forms.Label DownCamUsedResolution_label;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataValueColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataFootprintColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataCountColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodParametersColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzleColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
     }
 }
 

@@ -2794,7 +2794,7 @@ namespace LitePlacer
 
         // =====================================================================
         // This routine finds an accurate location of a circle/rectangle/... that downcamera is looking at.
-        // Used in homing, locating fiducials and locating tape holes.
+        // Used in homing, locating fiducials, components, tape holes or pockets...
         // At return, the camera is located on top of the feature (within MoveTolerance). 
         // X and Y are set to remaining error (true position: currect + error)
         // Measurement is already set up
@@ -4740,12 +4740,21 @@ namespace LitePlacer
 
         private void TestA_thread()
         {
+            bool OptSave = Setting.CNC_OptimizeA;
+            Setting.CNC_OptimizeA = false;
             if (!CNC_A_m(0))
+            {
+                Setting.CNC_OptimizeA = OptSave;
                 return;
+            }
             if (!CNC_A_m(360))
+            {
+                Setting.CNC_OptimizeA = OptSave;
                 return;
-            if (!CNC_A_m(0))
-                return;
+            }
+            CNC_A_m(0);
+            Setting.CNC_OptimizeA = OptSave;
+            return;
         }
 
         private void TestA_button_Click(object sender, EventArgs e)
@@ -6073,7 +6082,7 @@ namespace LitePlacer
                     {
                         JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodColumn"].Value = SelectedMethod;
                         JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = "--";
-                        if (SelectedMethod== "Fiducials")
+                        if ((SelectedMethod== "Fiducials") || (SelectedMethod == "LoosePart") || (SelectedMethod == "LoosePart Assisted"))
                         {
                             string FidAlg = SelectFiducialAlgorithm("--");
                             JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = FidAlg;
@@ -6109,7 +6118,9 @@ namespace LitePlacer
                             Tapes_dataGridView.Rows[TapeNo].Cells["Nozzle_Column"].Value.ToString();
                     }
                 }
-                if (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials")
+                if ((JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials") ||
+                     (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "LoosePart") ||
+                     (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "LoosePart Assisted"))
                 {
                     JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value = 
                         SelectFiducialAlgorithm(JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value.ToString());
@@ -7771,9 +7782,19 @@ namespace LitePlacer
             double X = 0;
             double Y = 0;
             double A = 0.0;
-            // xxx SetComponentsMeasurement();
-            // If we don't get a look from straight up (more than 2mm off) we need to re-measure
-            for (int i = 0; i < 2; i++)
+
+
+            /*
+            xxxx set up measurement
+            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
+            Pick up
+
+            */
+
+
+                // xxx SetComponentsMeasurement();
+                // If we don't get a look from straight up (more than 2mm off) we need to re-measure
+                for (int i = 0; i < 2; i++)
             {
                 // measure 5 averages, component must be 8.0mm from its place
                 int count = MeasureClosestComponentInPx(out X, out Y, out A, DownCamera, (8.0 / Setting.DownCam_XmmPerPixel), 5);
@@ -7822,6 +7843,10 @@ namespace LitePlacer
             {
                 return false;
             }
+
+
+
+
             // pick it up
             if (Probe)
             {
