@@ -13108,7 +13108,6 @@ namespace LitePlacer
                 ZGuardOn();
             }
         }
-
     }	// end of: 	public partial class FormMain : Form
 
 

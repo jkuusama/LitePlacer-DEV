@@ -387,7 +387,7 @@ namespace LitePlacer
             Controlboard = ControlBoardType.Duet3;      // to direct the response to correct module
             if (Duet3.CheckIdentity())
             {
-                MainForm.Motors_label.Text = "Motors setup (Duet3 board):";
+                MainForm.Motors_label.Text = "Axes setup (Duet3 board):";
                 MainForm.Duet3Motors_tabControl.Visible = true;
                 return true;
             }
@@ -405,7 +405,7 @@ namespace LitePlacer
             Controlboard = ControlBoardType.TinyG;
             if (TinyG.CheckIdentity())
             {
-                MainForm.Motors_label.Text = "Motors setup (TinyG board):";
+                MainForm.Motors_label.Text = "Axes setup (TinyG board):";
                 MainForm.TinyGMotors_tabControl.Visible = true;
                 return true;
             }

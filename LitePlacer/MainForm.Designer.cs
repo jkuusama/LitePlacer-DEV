@@ -581,6 +581,13 @@
             this.label86 = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
             this.JobData_GridView = new System.Windows.Forms.DataGridView();
+            this.JobDataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodParametersColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataNozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataComponentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Bottom_checkBox = new System.Windows.Forms.CheckBox();
             this.CadData_GridView = new System.Windows.Forms.DataGridView();
             this.CADdataComponentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -811,13 +818,8 @@
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
-            this.JobDataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataMethodParametersColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataNozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataComponentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -2981,6 +2983,8 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.label24);
+            this.tabPageBasicSetup.Controls.Add(this.label12);
             this.tabPageBasicSetup.Controls.Add(this.NoPort_label);
             this.tabPageBasicSetup.Controls.Add(this.AutoPark_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.Duet3Motors_tabControl);
@@ -4093,7 +4097,7 @@
             // 
             this.label154.AutoSize = true;
             this.label154.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label154.Location = new System.Drawing.Point(772, 26);
+            this.label154.Location = new System.Drawing.Point(789, 22);
             this.label154.Name = "label154";
             this.label154.Size = new System.Drawing.Size(72, 20);
             this.label154.TabIndex = 123;
@@ -5306,7 +5310,7 @@
             // VacuumInvert_checkBox
             // 
             this.VacuumInvert_checkBox.AutoSize = true;
-            this.VacuumInvert_checkBox.Location = new System.Drawing.Point(776, 78);
+            this.VacuumInvert_checkBox.Location = new System.Drawing.Point(793, 73);
             this.VacuumInvert_checkBox.Name = "VacuumInvert_checkBox";
             this.VacuumInvert_checkBox.Size = new System.Drawing.Size(52, 17);
             this.VacuumInvert_checkBox.TabIndex = 113;
@@ -5318,7 +5322,7 @@
             // PumpInvert_checkBox
             // 
             this.PumpInvert_checkBox.AutoSize = true;
-            this.PumpInvert_checkBox.Location = new System.Drawing.Point(776, 58);
+            this.PumpInvert_checkBox.Location = new System.Drawing.Point(793, 53);
             this.PumpInvert_checkBox.Name = "PumpInvert_checkBox";
             this.PumpInvert_checkBox.Size = new System.Drawing.Size(52, 17);
             this.PumpInvert_checkBox.TabIndex = 112;
@@ -5619,7 +5623,7 @@
             // SlackCompensationA_checkBox
             // 
             this.SlackCompensationA_checkBox.AutoSize = true;
-            this.SlackCompensationA_checkBox.Location = new System.Drawing.Point(1089, 146);
+            this.SlackCompensationA_checkBox.Location = new System.Drawing.Point(1035, 145);
             this.SlackCompensationA_checkBox.Name = "SlackCompensationA_checkBox";
             this.SlackCompensationA_checkBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.SlackCompensationA_checkBox.Size = new System.Drawing.Size(141, 17);
@@ -5764,7 +5768,7 @@
             // 
             // VacuumRelease_textBox
             // 
-            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1172, 79);
+            this.VacuumRelease_textBox.Location = new System.Drawing.Point(1172, 74);
             this.VacuumRelease_textBox.Name = "VacuumRelease_textBox";
             this.VacuumRelease_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumRelease_textBox.TabIndex = 81;
@@ -5776,7 +5780,7 @@
             // label119
             // 
             this.label119.AutoSize = true;
-            this.label119.Location = new System.Drawing.Point(1032, 82);
+            this.label119.Location = new System.Drawing.Point(1032, 77);
             this.label119.Name = "label119";
             this.label119.Size = new System.Drawing.Size(130, 13);
             this.label119.TabIndex = 80;
@@ -5784,7 +5788,7 @@
             // 
             // VacuumTime_textBox
             // 
-            this.VacuumTime_textBox.Location = new System.Drawing.Point(1172, 55);
+            this.VacuumTime_textBox.Location = new System.Drawing.Point(1172, 50);
             this.VacuumTime_textBox.Name = "VacuumTime_textBox";
             this.VacuumTime_textBox.Size = new System.Drawing.Size(58, 20);
             this.VacuumTime_textBox.TabIndex = 79;
@@ -5796,7 +5800,7 @@
             // label118
             // 
             this.label118.AutoSize = true;
-            this.label118.Location = new System.Drawing.Point(1032, 59);
+            this.label118.Location = new System.Drawing.Point(1032, 54);
             this.label118.Name = "label118";
             this.label118.Size = new System.Drawing.Size(128, 13);
             this.label118.TabIndex = 78;
@@ -6208,7 +6212,7 @@
             // Vacuum_checkBox
             // 
             this.Vacuum_checkBox.AutoSize = true;
-            this.Vacuum_checkBox.Location = new System.Drawing.Point(839, 78);
+            this.Vacuum_checkBox.Location = new System.Drawing.Point(856, 73);
             this.Vacuum_checkBox.Name = "Vacuum_checkBox";
             this.Vacuum_checkBox.Size = new System.Drawing.Size(159, 17);
             this.Vacuum_checkBox.TabIndex = 26;
@@ -6220,7 +6224,7 @@
             // Pump_checkBox
             // 
             this.Pump_checkBox.AutoSize = true;
-            this.Pump_checkBox.Location = new System.Drawing.Point(839, 58);
+            this.Pump_checkBox.Location = new System.Drawing.Point(856, 53);
             this.Pump_checkBox.Name = "Pump_checkBox";
             this.Pump_checkBox.Size = new System.Drawing.Size(70, 17);
             this.Pump_checkBox.TabIndex = 25;
@@ -7151,6 +7155,55 @@
             this.JobData_GridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellClick);
             this.JobData_GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellContentClick);
             this.JobData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellEndEdit);
+            // 
+            // JobDataValueColumn
+            // 
+            this.JobDataValueColumn.HeaderText = "Value";
+            this.JobDataValueColumn.MinimumWidth = 6;
+            this.JobDataValueColumn.Name = "JobDataValueColumn";
+            // 
+            // JobDataFootprintColumn
+            // 
+            this.JobDataFootprintColumn.HeaderText = "Footprint";
+            this.JobDataFootprintColumn.MinimumWidth = 6;
+            this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
+            // 
+            // JobdataCountColumn
+            // 
+            this.JobdataCountColumn.HeaderText = "Count";
+            this.JobdataCountColumn.MinimumWidth = 6;
+            this.JobdataCountColumn.Name = "JobdataCountColumn";
+            this.JobdataCountColumn.Width = 40;
+            // 
+            // JobdataMethodColumn
+            // 
+            this.JobdataMethodColumn.HeaderText = "Method";
+            this.JobdataMethodColumn.MinimumWidth = 6;
+            this.JobdataMethodColumn.Name = "JobdataMethodColumn";
+            this.JobdataMethodColumn.ReadOnly = true;
+            this.JobdataMethodColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobdataMethodColumn.Width = 80;
+            // 
+            // JobdataMethodParametersColumn
+            // 
+            this.JobdataMethodParametersColumn.HeaderText = "Parameters";
+            this.JobdataMethodParametersColumn.MinimumWidth = 6;
+            this.JobdataMethodParametersColumn.Name = "JobdataMethodParametersColumn";
+            this.JobdataMethodParametersColumn.Width = 80;
+            // 
+            // JobDataNozzleColumn
+            // 
+            this.JobDataNozzleColumn.HeaderText = "Nozzle";
+            this.JobDataNozzleColumn.MinimumWidth = 6;
+            this.JobDataNozzleColumn.Name = "JobDataNozzleColumn";
+            this.JobDataNozzleColumn.Width = 50;
+            // 
+            // JobdataComponentsColumn
+            // 
+            this.JobdataComponentsColumn.HeaderText = "Components";
+            this.JobdataComponentsColumn.MinimumWidth = 6;
+            this.JobdataComponentsColumn.Name = "JobdataComponentsColumn";
+            this.JobdataComponentsColumn.Width = 130;
             // 
             // Bottom_checkBox
             // 
@@ -8122,7 +8175,7 @@
             // label174
             // 
             this.label174.AutoSize = true;
-            this.label174.Location = new System.Drawing.Point(1035, 574);
+            this.label174.Location = new System.Drawing.Point(1021, 573);
             this.label174.Name = "label174";
             this.label174.Size = new System.Drawing.Size(39, 13);
             this.label174.TabIndex = 248;
@@ -8131,7 +8184,7 @@
             // label175
             // 
             this.label175.AutoSize = true;
-            this.label175.Location = new System.Drawing.Point(920, 574);
+            this.label175.Location = new System.Drawing.Point(906, 573);
             this.label175.Name = "label175";
             this.label175.Size = new System.Drawing.Size(36, 13);
             this.label175.TabIndex = 246;
@@ -8139,7 +8192,7 @@
             // 
             // Ymin_textBox
             // 
-            this.Ymin_textBox.Location = new System.Drawing.Point(965, 571);
+            this.Ymin_textBox.Location = new System.Drawing.Point(951, 570);
             this.Ymin_textBox.Name = "Ymin_textBox";
             this.Ymin_textBox.Size = new System.Drawing.Size(48, 20);
             this.Ymin_textBox.TabIndex = 247;
@@ -8147,7 +8200,7 @@
             // 
             // Ymax_textBox
             // 
-            this.Ymax_textBox.Location = new System.Drawing.Point(1080, 571);
+            this.Ymax_textBox.Location = new System.Drawing.Point(1066, 570);
             this.Ymax_textBox.Name = "Ymax_textBox";
             this.Ymax_textBox.Size = new System.Drawing.Size(48, 20);
             this.Ymax_textBox.TabIndex = 249;
@@ -8156,15 +8209,15 @@
             // label171
             // 
             this.label171.AutoSize = true;
-            this.label171.Location = new System.Drawing.Point(920, 526);
+            this.label171.Location = new System.Drawing.Point(906, 525);
             this.label171.Name = "label171";
-            this.label171.Size = new System.Drawing.Size(85, 13);
+            this.label171.Size = new System.Drawing.Size(110, 13);
             this.label171.TabIndex = 241;
-            this.label171.Text = "Acceptable size:";
+            this.label171.Text = "Acceptable size (mm):";
             // 
             // Xmax_textBox
             // 
-            this.Xmax_textBox.Location = new System.Drawing.Point(1080, 544);
+            this.Xmax_textBox.Location = new System.Drawing.Point(1066, 543);
             this.Xmax_textBox.Name = "Xmax_textBox";
             this.Xmax_textBox.Size = new System.Drawing.Size(48, 20);
             this.Xmax_textBox.TabIndex = 245;
@@ -8173,7 +8226,7 @@
             // label172
             // 
             this.label172.AutoSize = true;
-            this.label172.Location = new System.Drawing.Point(1035, 548);
+            this.label172.Location = new System.Drawing.Point(1021, 547);
             this.label172.Name = "label172";
             this.label172.Size = new System.Drawing.Size(39, 13);
             this.label172.TabIndex = 244;
@@ -8181,7 +8234,7 @@
             // 
             // Xmin_textBox
             // 
-            this.Xmin_textBox.Location = new System.Drawing.Point(965, 545);
+            this.Xmin_textBox.Location = new System.Drawing.Point(951, 544);
             this.Xmin_textBox.Name = "Xmin_textBox";
             this.Xmin_textBox.Size = new System.Drawing.Size(48, 20);
             this.Xmin_textBox.TabIndex = 243;
@@ -8190,7 +8243,7 @@
             // label173
             // 
             this.label173.AutoSize = true;
-            this.label173.Location = new System.Drawing.Point(920, 548);
+            this.label173.Location = new System.Drawing.Point(906, 547);
             this.label173.Name = "label173";
             this.label173.Size = new System.Drawing.Size(36, 13);
             this.label173.TabIndex = 242;
@@ -8198,7 +8251,7 @@
             // 
             // YmaxDistance_textBox
             // 
-            this.YmaxDistance_textBox.Location = new System.Drawing.Point(1169, 571);
+            this.YmaxDistance_textBox.Location = new System.Drawing.Point(1155, 570);
             this.YmaxDistance_textBox.Name = "YmaxDistance_textBox";
             this.YmaxDistance_textBox.Size = new System.Drawing.Size(48, 20);
             this.YmaxDistance_textBox.TabIndex = 240;
@@ -8207,7 +8260,7 @@
             // label168
             // 
             this.label168.AutoSize = true;
-            this.label168.Location = new System.Drawing.Point(1146, 548);
+            this.label168.Location = new System.Drawing.Point(1132, 547);
             this.label168.Name = "label168";
             this.label168.Size = new System.Drawing.Size(17, 13);
             this.label168.TabIndex = 239;
@@ -8215,7 +8268,7 @@
             // 
             // XmaxDistance_textBox
             // 
-            this.XmaxDistance_textBox.Location = new System.Drawing.Point(1169, 545);
+            this.XmaxDistance_textBox.Location = new System.Drawing.Point(1155, 544);
             this.XmaxDistance_textBox.Name = "XmaxDistance_textBox";
             this.XmaxDistance_textBox.Size = new System.Drawing.Size(48, 20);
             this.XmaxDistance_textBox.TabIndex = 246;
@@ -8224,7 +8277,7 @@
             // label169
             // 
             this.label169.AutoSize = true;
-            this.label169.Location = new System.Drawing.Point(1146, 574);
+            this.label169.Location = new System.Drawing.Point(1132, 573);
             this.label169.Name = "label169";
             this.label169.Size = new System.Drawing.Size(17, 13);
             this.label169.TabIndex = 237;
@@ -8233,14 +8286,13 @@
             // label170
             // 
             this.label170.AutoSize = true;
-            this.label170.Location = new System.Drawing.Point(1146, 526);
+            this.label170.Location = new System.Drawing.Point(1132, 525);
             this.label170.Name = "label170";
-            this.label170.Size = new System.Drawing.Size(89, 13);
+            this.label170.Size = new System.Drawing.Size(93, 13);
             this.label170.TabIndex = 236;
-            this.label170.Text = "Discard distance:";
-            this.toolTip1.SetToolTip(this.label170, "Measurement searces the feature from the intial location.\r\nThe result must be uni" +
-        "que. Features outside this distance\r\nare discarded. Also, no other valid results" +
-        " can occur within \r\nthis distacnce.");
+            this.label170.Text = "Discard dist. (mm):";
+            this.toolTip1.SetToolTip(this.label170, "Features outside this distance are discarded. Also, no other valid results can oc" +
+        "cur within \r\nthis distance, as the measurement result must be unique. ");
             // 
             // AlgorithmsLoad_button
             // 
@@ -9643,54 +9695,27 @@
             this.Test7_button.UseVisualStyleBackColor = true;
             this.Test7_button.Click += new System.EventHandler(this.Test7_button_Click);
             // 
-            // JobDataValueColumn
+            // label12
             // 
-            this.JobDataValueColumn.HeaderText = "Value";
-            this.JobDataValueColumn.MinimumWidth = 6;
-            this.JobDataValueColumn.Name = "JobDataValueColumn";
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(1031, 122);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(156, 20);
+            this.label12.TabIndex = 131;
+            this.label12.Text = "Slack compensation:";
+            this.toolTip1.SetToolTip(this.label12, "Connection status");
             // 
-            // JobDataFootprintColumn
+            // label24
             // 
-            this.JobDataFootprintColumn.HeaderText = "Footprint";
-            this.JobDataFootprintColumn.MinimumWidth = 6;
-            this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
-            // 
-            // JobdataCountColumn
-            // 
-            this.JobdataCountColumn.HeaderText = "Count";
-            this.JobdataCountColumn.MinimumWidth = 6;
-            this.JobdataCountColumn.Name = "JobdataCountColumn";
-            this.JobdataCountColumn.Width = 40;
-            // 
-            // JobdataMethodColumn
-            // 
-            this.JobdataMethodColumn.HeaderText = "Method";
-            this.JobdataMethodColumn.MinimumWidth = 6;
-            this.JobdataMethodColumn.Name = "JobdataMethodColumn";
-            this.JobdataMethodColumn.ReadOnly = true;
-            this.JobdataMethodColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobdataMethodColumn.Width = 80;
-            // 
-            // JobdataMethodParametersColumn
-            // 
-            this.JobdataMethodParametersColumn.HeaderText = "Parameters";
-            this.JobdataMethodParametersColumn.MinimumWidth = 6;
-            this.JobdataMethodParametersColumn.Name = "JobdataMethodParametersColumn";
-            this.JobdataMethodParametersColumn.Width = 80;
-            // 
-            // JobDataNozzleColumn
-            // 
-            this.JobDataNozzleColumn.HeaderText = "Nozzle";
-            this.JobDataNozzleColumn.MinimumWidth = 6;
-            this.JobDataNozzleColumn.Name = "JobDataNozzleColumn";
-            this.JobDataNozzleColumn.Width = 50;
-            // 
-            // JobdataComponentsColumn
-            // 
-            this.JobdataComponentsColumn.HeaderText = "Components";
-            this.JobdataComponentsColumn.MinimumWidth = 6;
-            this.JobdataComponentsColumn.Name = "JobdataComponentsColumn";
-            this.JobdataComponentsColumn.Width = 130;
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(6, 582);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(160, 20);
+            this.label24.TabIndex = 132;
+            this.label24.Text = "Updates and logging:";
+            this.toolTip1.SetToolTip(this.label24, "Connection status");
             // 
             // FormMain
             // 
@@ -10637,6 +10662,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodParametersColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzleColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label24;
     }
 }
 
