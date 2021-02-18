@@ -194,8 +194,8 @@ namespace LitePlacer
                         reso.Y = source.VideoCapabilities[i].FrameSize.Height;
                         MainForm.DisplayText("X: " + reso.X.ToString(CultureInfo.InvariantCulture) +
                             ", Y: " + reso.Y.ToString(CultureInfo.InvariantCulture));
+                        Resolutions.Add(reso);
                     }
-                    Resolutions.Add(reso);
                     return Resolutions;
                 }
             }
@@ -322,8 +322,8 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Camera started: " + tries.ToString(CultureInfo.InvariantCulture), KnownColor.Purple);
 
                 // We managed to start the camera using desired resolution
-                FrameSizeX = DesiredX;
-                FrameSizeY = DesiredY;
+                FrameSizeX = Resolution.X;
+                FrameSizeY = Resolution.Y;
                 FrameCenterX = FrameSizeX / 2;
                 FrameCenterY = FrameSizeY / 2;
                 PauseProcessing = false;
