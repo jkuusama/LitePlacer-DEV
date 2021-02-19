@@ -2534,11 +2534,11 @@ namespace LitePlacer
                 return false;
             };
             // DisplayText("move Z");
-            if (!CNC_Z_m(Setting.General_ShadeGuard_mm))		// make room for shade
+            if (!Cnc.Home_m("Y"))
             {
                 return false;
             };
-            if (!Cnc.Home_m("Y"))
+            if (!CNC_Z_m(Setting.General_ShadeGuard_mm))		// make room for shade
             {
                 return false;
             };
