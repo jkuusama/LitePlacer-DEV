@@ -218,6 +218,8 @@
             this.CameraSetupTest_button = new System.Windows.Forms.Button();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.NoPort_label = new System.Windows.Forms.Label();
             this.AutoPark_checkBox = new System.Windows.Forms.CheckBox();
             this.Duet3Motors_tabControl = new System.Windows.Forms.TabControl();
@@ -818,8 +820,6 @@
             this.label164 = new System.Windows.Forms.Label();
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -3094,6 +3094,28 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(6, 582);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(160, 20);
+            this.label24.TabIndex = 132;
+            this.label24.Text = "Updates and logging:";
+            this.toolTip1.SetToolTip(this.label24, "Connection status");
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(1031, 122);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(156, 20);
+            this.label12.TabIndex = 131;
+            this.label12.Text = "Slack compensation:";
+            this.toolTip1.SetToolTip(this.label12, "Connection status");
+            // 
             // NoPort_label
             // 
             this.NoPort_label.AutoSize = true;
@@ -3109,7 +3131,7 @@
             // AutoPark_checkBox
             // 
             this.AutoPark_checkBox.AutoSize = true;
-            this.AutoPark_checkBox.Location = new System.Drawing.Point(642, 420);
+            this.AutoPark_checkBox.Location = new System.Drawing.Point(787, 411);
             this.AutoPark_checkBox.Name = "AutoPark_checkBox";
             this.AutoPark_checkBox.Size = new System.Drawing.Size(135, 17);
             this.AutoPark_checkBox.TabIndex = 129;
@@ -3124,7 +3146,7 @@
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage3);
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage4);
             this.Duet3Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(593, 126);
+            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(723, 33);
             this.Duet3Motors_tabControl.Name = "Duet3Motors_tabControl";
             this.Duet3Motors_tabControl.SelectedIndex = 0;
             this.Duet3Motors_tabControl.Size = new System.Drawing.Size(325, 362);
@@ -4065,7 +4087,7 @@
             // 
             this.label179.AutoSize = true;
             this.label179.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label179.Location = new System.Drawing.Point(524, 416);
+            this.label179.Location = new System.Drawing.Point(669, 407);
             this.label179.Name = "label179";
             this.label179.Size = new System.Drawing.Size(104, 20);
             this.label179.TabIndex = 126;
@@ -5298,7 +5320,7 @@
             // 
             // Ato0_button
             // 
-            this.Ato0_button.Location = new System.Drawing.Point(375, 351);
+            this.Ato0_button.Location = new System.Drawing.Point(375, 390);
             this.Ato0_button.Name = "Ato0_button";
             this.Ato0_button.Size = new System.Drawing.Size(75, 23);
             this.Ato0_button.TabIndex = 114;
@@ -5734,7 +5756,7 @@
             // 
             // ShadeGuard_textBox
             // 
-            this.ShadeGuard_textBox.Location = new System.Drawing.Point(689, 267);
+            this.ShadeGuard_textBox.Location = new System.Drawing.Point(377, 306);
             this.ShadeGuard_textBox.Name = "ShadeGuard_textBox";
             this.ShadeGuard_textBox.Size = new System.Drawing.Size(75, 20);
             this.ShadeGuard_textBox.TabIndex = 85;
@@ -5743,20 +5765,20 @@
             // label126
             // 
             this.label126.AutoSize = true;
-            this.label126.Location = new System.Drawing.Point(686, 251);
+            this.label126.Location = new System.Drawing.Point(374, 290);
             this.label126.Name = "label126";
-            this.label126.Size = new System.Drawing.Size(79, 13);
+            this.label126.Size = new System.Drawing.Size(104, 13);
             this.label126.TabIndex = 84;
-            this.label126.Text = "Z shade guard:";
+            this.label126.Text = "Z shade guard (mm):";
             // 
             // label123
             // 
             this.label123.AutoSize = true;
             this.label123.Location = new System.Drawing.Point(610, 251);
             this.label123.Name = "label123";
-            this.label123.Size = new System.Drawing.Size(70, 13);
+            this.label123.Size = new System.Drawing.Size(95, 13);
             this.label123.TabIndex = 83;
-            this.label123.Text = "Z Test travel:";
+            this.label123.Text = "Z Test travel (mm):";
             // 
             // ZTestTravel_textBox
             // 
@@ -5942,7 +5964,7 @@
             // 
             // SizeYMax_textBox
             // 
-            this.SizeYMax_textBox.Location = new System.Drawing.Point(418, 461);
+            this.SizeYMax_textBox.Location = new System.Drawing.Point(557, 456);
             this.SizeYMax_textBox.Name = "SizeYMax_textBox";
             this.SizeYMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeYMax_textBox.TabIndex = 44;
@@ -5960,7 +5982,7 @@
             // 
             // SizeXMax_textBox
             // 
-            this.SizeXMax_textBox.Location = new System.Drawing.Point(418, 435);
+            this.SizeXMax_textBox.Location = new System.Drawing.Point(557, 430);
             this.SizeXMax_textBox.Name = "SizeXMax_textBox";
             this.SizeXMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeXMax_textBox.TabIndex = 42;
@@ -5970,7 +5992,7 @@
             // 
             // ParkLocationY_textBox
             // 
-            this.ParkLocationY_textBox.Location = new System.Drawing.Point(548, 465);
+            this.ParkLocationY_textBox.Location = new System.Drawing.Point(693, 456);
             this.ParkLocationY_textBox.Name = "ParkLocationY_textBox";
             this.ParkLocationY_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationY_textBox.TabIndex = 39;
@@ -5980,7 +6002,7 @@
             // 
             // ParkLocationX_textBox
             // 
-            this.ParkLocationX_textBox.Location = new System.Drawing.Point(548, 439);
+            this.ParkLocationX_textBox.Location = new System.Drawing.Point(693, 430);
             this.ParkLocationX_textBox.Name = "ParkLocationX_textBox";
             this.ParkLocationX_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationX_textBox.TabIndex = 37;
@@ -6059,7 +6081,7 @@
             // 
             this.label113.AutoSize = true;
             this.label113.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label113.Location = new System.Drawing.Point(371, 412);
+            this.label113.Location = new System.Drawing.Point(510, 407);
             this.label113.Name = "label113";
             this.label113.Size = new System.Drawing.Size(108, 20);
             this.label113.TabIndex = 48;
@@ -6068,7 +6090,7 @@
             // label102
             // 
             this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(372, 464);
+            this.label102.Location = new System.Drawing.Point(511, 459);
             this.label102.Name = "label102";
             this.label102.Size = new System.Drawing.Size(40, 13);
             this.label102.TabIndex = 45;
@@ -6088,7 +6110,7 @@
             // label107
             // 
             this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(372, 438);
+            this.label107.Location = new System.Drawing.Point(511, 433);
             this.label107.Name = "label107";
             this.label107.Size = new System.Drawing.Size(40, 13);
             this.label107.TabIndex = 43;
@@ -6097,7 +6119,7 @@
             // label92
             // 
             this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(525, 468);
+            this.label92.Location = new System.Drawing.Point(670, 459);
             this.label92.Name = "label92";
             this.label92.Size = new System.Drawing.Size(17, 13);
             this.label92.TabIndex = 40;
@@ -6106,7 +6128,7 @@
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(525, 442);
+            this.label61.Location = new System.Drawing.Point(670, 433);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(17, 13);
             this.label61.TabIndex = 38;
@@ -6115,7 +6137,7 @@
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(374, 377);
+            this.label72.Location = new System.Drawing.Point(374, 416);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(89, 13);
             this.label72.TabIndex = 36;
@@ -6134,7 +6156,7 @@
             // 
             // HomeXYZ_button
             // 
-            this.HomeXYZ_button.Location = new System.Drawing.Point(375, 322);
+            this.HomeXYZ_button.Location = new System.Drawing.Point(375, 361);
             this.HomeXYZ_button.Name = "HomeXYZ_button";
             this.HomeXYZ_button.Size = new System.Drawing.Size(75, 23);
             this.HomeXYZ_button.TabIndex = 17;
@@ -6178,7 +6200,7 @@
             // 
             // HomeXY_button
             // 
-            this.HomeXY_button.Location = new System.Drawing.Point(375, 293);
+            this.HomeXY_button.Location = new System.Drawing.Point(375, 332);
             this.HomeXY_button.Name = "HomeXY_button";
             this.HomeXY_button.Size = new System.Drawing.Size(75, 23);
             this.HomeXY_button.TabIndex = 31;
@@ -9694,28 +9716,6 @@
             this.Test7_button.Text = "Nozzle to up cam";
             this.Test7_button.UseVisualStyleBackColor = true;
             this.Test7_button.Click += new System.EventHandler(this.Test7_button_Click);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(1031, 122);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(156, 20);
-            this.label12.TabIndex = 131;
-            this.label12.Text = "Slack compensation:";
-            this.toolTip1.SetToolTip(this.label12, "Connection status");
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(6, 582);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(160, 20);
-            this.label24.TabIndex = 132;
-            this.label24.Text = "Updates and logging:";
-            this.toolTip1.SetToolTip(this.label24, "Connection status");
             // 
             // FormMain
             // 
