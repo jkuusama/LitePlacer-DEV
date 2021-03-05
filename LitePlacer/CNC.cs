@@ -664,7 +664,112 @@ namespace LitePlacer
             }
         }
 
+        public void SaveZSwitchSettings()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.SaveZSwitchSettings();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.SaveZSwitchSettings();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
 
+        public void RestoreZSwitchSettings()
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                Duet3.RestoreZSwitchSettings();
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                TinyG.RestoreZSwitchSettings();
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
+            }
+        }
+
+
+
+        public bool SetZ_ZeroBackoff(double val)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.SetZ_ZeroBackoff(val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.SetZ_ZeroBackoff(val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
+                Connected = false;
+                ErrorState = true;
+                return false;
+            }
+        }
+
+
+
+        public bool SetZ_SwitchClearance(double val)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.SetZ_SwitchClearance(val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.SetZ_SwitchClearance(val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
+                Connected = false;
+                ErrorState = true;
+                return false;
+            }
+        }
+ 
 
         public void ProbingMode(bool set)
         {

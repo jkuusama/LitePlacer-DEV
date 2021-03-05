@@ -218,6 +218,7 @@
             this.CameraSetupTest_button = new System.Windows.Forms.Button();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
+            this.label116 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.NoPort_label = new System.Windows.Forms.Label();
@@ -433,16 +434,21 @@
             this.CheckForUpdate_checkBox = new System.Windows.Forms.CheckBox();
             this.MouseScroll_checkBox = new System.Windows.Forms.CheckBox();
             this.NumPadJog_checkBox = new System.Windows.Forms.CheckBox();
-            this.Zlb_label = new System.Windows.Forms.Label();
+            this.NozzleHeightInstructions_label = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
-            this.Hysteresis_textBox = new System.Windows.Forms.TextBox();
+            this.TestSwitchClearanceCancel_button = new System.Windows.Forms.Button();
+            this.label227 = new System.Windows.Forms.Label();
+            this.label160 = new System.Windows.Forms.Label();
+            this.TestSwitchClearance_button = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label161 = new System.Windows.Forms.Label();
+            this.Z_SwitchClearance_textBox = new System.Windows.Forms.TextBox();
             this.label136 = new System.Windows.Forms.Label();
             this.PlacementDepth_textBox = new System.Windows.Forms.TextBox();
             this.label112 = new System.Windows.Forms.Label();
             this.BackOff_textBox = new System.Windows.Forms.TextBox();
-            this.Z0_textBox = new System.Windows.Forms.TextBox();
+            this.Z_FullDown_textBox = new System.Windows.Forms.TextBox();
             this.CancelProbing_button = new System.Windows.Forms.Button();
-            this.label116 = new System.Windows.Forms.Label();
             this.SetProbing_button = new System.Windows.Forms.Button();
             this.label111 = new System.Windows.Forms.Label();
             this.label117 = new System.Windows.Forms.Label();
@@ -2983,6 +2989,7 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.label116);
             this.tabPageBasicSetup.Controls.Add(this.label24);
             this.tabPageBasicSetup.Controls.Add(this.label12);
             this.tabPageBasicSetup.Controls.Add(this.NoPort_label);
@@ -3017,7 +3024,7 @@
             this.tabPageBasicSetup.Controls.Add(this.CheckForUpdate_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.MouseScroll_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.NumPadJog_checkBox);
-            this.tabPageBasicSetup.Controls.Add(this.Zlb_label);
+            this.tabPageBasicSetup.Controls.Add(this.NozzleHeightInstructions_label);
             this.tabPageBasicSetup.Controls.Add(this.panel9);
             this.tabPageBasicSetup.Controls.Add(this.SlackCompensationA_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.AltJogSpeed_numericUpDown);
@@ -3094,6 +3101,16 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
+            // label116
+            // 
+            this.label116.AutoSize = true;
+            this.label116.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label116.Location = new System.Drawing.Point(396, 494);
+            this.label116.Name = "label116";
+            this.label116.Size = new System.Drawing.Size(182, 16);
+            this.label116.TabIndex = 133;
+            this.label116.Text = "Nozzle height calibration:";
+            // 
             // label24
             // 
             this.label24.AutoSize = true;
@@ -3131,7 +3148,7 @@
             // AutoPark_checkBox
             // 
             this.AutoPark_checkBox.AutoSize = true;
-            this.AutoPark_checkBox.Location = new System.Drawing.Point(787, 411);
+            this.AutoPark_checkBox.Location = new System.Drawing.Point(782, 347);
             this.AutoPark_checkBox.Name = "AutoPark_checkBox";
             this.AutoPark_checkBox.Size = new System.Drawing.Size(135, 17);
             this.AutoPark_checkBox.TabIndex = 129;
@@ -3146,7 +3163,7 @@
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage3);
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage4);
             this.Duet3Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(723, 33);
+            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(112, 18);
             this.Duet3Motors_tabControl.Name = "Duet3Motors_tabControl";
             this.Duet3Motors_tabControl.SelectedIndex = 0;
             this.Duet3Motors_tabControl.Size = new System.Drawing.Size(325, 362);
@@ -4087,7 +4104,7 @@
             // 
             this.label179.AutoSize = true;
             this.label179.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label179.Location = new System.Drawing.Point(669, 407);
+            this.label179.Location = new System.Drawing.Point(664, 343);
             this.label179.Name = "label179";
             this.label179.Size = new System.Drawing.Size(104, 20);
             this.label179.TabIndex = 126;
@@ -5433,7 +5450,7 @@
             // 
             // NozzleBelowPCB_textBox
             // 
-            this.NozzleBelowPCB_textBox.Location = new System.Drawing.Point(931, 515);
+            this.NozzleBelowPCB_textBox.Location = new System.Drawing.Point(932, 444);
             this.NozzleBelowPCB_textBox.Name = "NozzleBelowPCB_textBox";
             this.NozzleBelowPCB_textBox.Size = new System.Drawing.Size(55, 20);
             this.NozzleBelowPCB_textBox.TabIndex = 104;
@@ -5442,7 +5459,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(788, 518);
+            this.label1.Location = new System.Drawing.Point(789, 447);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(137, 13);
             this.label1.TabIndex = 103;
@@ -5509,58 +5526,124 @@
             this.toolTip1.SetToolTip(this.NumPadJog_checkBox, "If enabled, numpad keys moe the machine");
             this.NumPadJog_checkBox.UseVisualStyleBackColor = true;
             // 
-            // Zlb_label
+            // NozzleHeightInstructions_label
             // 
-            this.Zlb_label.AutoSize = true;
-            this.Zlb_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Zlb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Zlb_label.Location = new System.Drawing.Point(422, 501);
-            this.Zlb_label.Name = "Zlb_label";
-            this.Zlb_label.Size = new System.Drawing.Size(353, 36);
-            this.Zlb_label.TabIndex = 51;
-            this.Zlb_label.Text = "Jog Z axis until the Nozzle just barely touches the PCB\r\nthen click \"next\"";
-            this.Zlb_label.Visible = false;
+            this.NozzleHeightInstructions_label.AutoSize = true;
+            this.NozzleHeightInstructions_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.NozzleHeightInstructions_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NozzleHeightInstructions_label.Location = new System.Drawing.Point(584, 477);
+            this.NozzleHeightInstructions_label.Name = "NozzleHeightInstructions_label";
+            this.NozzleHeightInstructions_label.Size = new System.Drawing.Size(327, 34);
+            this.NozzleHeightInstructions_label.TabIndex = 51;
+            this.NozzleHeightInstructions_label.Text = "Jog Z axis until the Nozzle just barely touches the PCB\r\nthen click \"next\"";
+            this.NozzleHeightInstructions_label.Visible = false;
             // 
             // panel9
             // 
             this.panel9.BackColor = System.Drawing.Color.WhiteSmoke;
             this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel9.Controls.Add(this.Hysteresis_textBox);
+            this.panel9.Controls.Add(this.TestSwitchClearanceCancel_button);
+            this.panel9.Controls.Add(this.label227);
+            this.panel9.Controls.Add(this.label160);
+            this.panel9.Controls.Add(this.TestSwitchClearance_button);
+            this.panel9.Controls.Add(this.textBox2);
+            this.panel9.Controls.Add(this.label161);
+            this.panel9.Controls.Add(this.Z_SwitchClearance_textBox);
             this.panel9.Controls.Add(this.label136);
             this.panel9.Controls.Add(this.PlacementDepth_textBox);
             this.panel9.Controls.Add(this.label112);
             this.panel9.Controls.Add(this.BackOff_textBox);
-            this.panel9.Controls.Add(this.Z0_textBox);
+            this.panel9.Controls.Add(this.Z_FullDown_textBox);
             this.panel9.Controls.Add(this.CancelProbing_button);
-            this.panel9.Controls.Add(this.label116);
             this.panel9.Controls.Add(this.SetProbing_button);
             this.panel9.Controls.Add(this.label111);
             this.panel9.Controls.Add(this.label117);
-            this.panel9.Location = new System.Drawing.Point(422, 541);
+            this.panel9.Location = new System.Drawing.Point(399, 513);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(564, 83);
+            this.panel9.Size = new System.Drawing.Size(603, 114);
             this.panel9.TabIndex = 97;
             // 
-            // Hysteresis_textBox
+            // TestSwitchClearanceCancel_button
             // 
-            this.Hysteresis_textBox.Location = new System.Drawing.Point(323, 51);
-            this.Hysteresis_textBox.Name = "Hysteresis_textBox";
-            this.Hysteresis_textBox.Size = new System.Drawing.Size(55, 20);
-            this.Hysteresis_textBox.TabIndex = 103;
-            this.Hysteresis_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Hysteresis_textBox_KeyPress);
+            this.TestSwitchClearanceCancel_button.Location = new System.Drawing.Point(88, 23);
+            this.TestSwitchClearanceCancel_button.Name = "TestSwitchClearanceCancel_button";
+            this.TestSwitchClearanceCancel_button.Size = new System.Drawing.Size(75, 23);
+            this.TestSwitchClearanceCancel_button.TabIndex = 111;
+            this.TestSwitchClearanceCancel_button.Text = "Cancel";
+            this.toolTip1.SetToolTip(this.TestSwitchClearanceCancel_button, "The routine to find the value for Z down switch clearance is active. this cancels" +
+        " it.");
+            this.TestSwitchClearanceCancel_button.UseVisualStyleBackColor = true;
+            this.TestSwitchClearanceCancel_button.Visible = false;
+            this.TestSwitchClearanceCancel_button.Click += new System.EventHandler(this.TestSwitchClearanceCancel_button_Click);
+            // 
+            // label227
+            // 
+            this.label227.AutoSize = true;
+            this.label227.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label227.Location = new System.Drawing.Point(4, 4);
+            this.label227.Name = "label227";
+            this.label227.Size = new System.Drawing.Size(131, 16);
+            this.label227.TabIndex = 110;
+            this.label227.Text = "Calibration Setup:";
+            // 
+            // label160
+            // 
+            this.label160.AutoSize = true;
+            this.label160.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label160.Location = new System.Drawing.Point(4, 51);
+            this.label160.Name = "label160";
+            this.label160.Size = new System.Drawing.Size(87, 16);
+            this.label160.TabIndex = 109;
+            this.label160.Text = "Calibration:";
+            // 
+            // TestSwitchClearance_button
+            // 
+            this.TestSwitchClearance_button.Location = new System.Drawing.Point(7, 23);
+            this.TestSwitchClearance_button.Name = "TestSwitchClearance_button";
+            this.TestSwitchClearance_button.Size = new System.Drawing.Size(75, 23);
+            this.TestSwitchClearance_button.TabIndex = 108;
+            this.TestSwitchClearance_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.TestSwitchClearance_button, "Runs routine, that allows you to find the\r\nminimum value for Z down switch cleara" +
+        "nce");
+            this.TestSwitchClearance_button.UseVisualStyleBackColor = true;
+            this.TestSwitchClearance_button.Click += new System.EventHandler(this.TestSwitchClearance_button_Click);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(507, 51);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(55, 20);
+            this.textBox2.TabIndex = 107;
+            // 
+            // label161
+            // 
+            this.label161.AutoSize = true;
+            this.label161.Location = new System.Drawing.Point(354, 55);
+            this.label161.Name = "label161";
+            this.label161.Size = new System.Drawing.Size(147, 13);
+            this.label161.TabIndex = 106;
+            this.label161.Text = "Difference to \"Just touching\":";
+            // 
+            // Z_SwitchClearance_textBox
+            // 
+            this.Z_SwitchClearance_textBox.Location = new System.Drawing.Point(273, 23);
+            this.Z_SwitchClearance_textBox.Name = "Z_SwitchClearance_textBox";
+            this.Z_SwitchClearance_textBox.Size = new System.Drawing.Size(55, 20);
+            this.Z_SwitchClearance_textBox.TabIndex = 103;
+            this.Z_SwitchClearance_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Z_SwitchClearance_textBox_KeyPress);
             // 
             // label136
             // 
             this.label136.AutoSize = true;
-            this.label136.Location = new System.Drawing.Point(226, 54);
+            this.label136.Location = new System.Drawing.Point(166, 28);
             this.label136.Name = "label136";
-            this.label136.Size = new System.Drawing.Size(91, 13);
+            this.label136.Size = new System.Drawing.Size(101, 13);
             this.label136.TabIndex = 102;
-            this.label136.Text = "Switch hysteresis:";
+            this.label136.Text = "Clearance distance:";
             // 
             // PlacementDepth_textBox
             // 
-            this.PlacementDepth_textBox.Location = new System.Drawing.Point(487, 51);
+            this.PlacementDepth_textBox.Location = new System.Drawing.Point(507, 77);
             this.PlacementDepth_textBox.Name = "PlacementDepth_textBox";
             this.PlacementDepth_textBox.Size = new System.Drawing.Size(55, 20);
             this.PlacementDepth_textBox.TabIndex = 101;
@@ -5569,7 +5652,7 @@
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(391, 54);
+            this.label112.Location = new System.Drawing.Point(411, 80);
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(90, 13);
             this.label112.TabIndex = 100;
@@ -5577,23 +5660,23 @@
             // 
             // BackOff_textBox
             // 
-            this.BackOff_textBox.Location = new System.Drawing.Point(487, 25);
+            this.BackOff_textBox.Location = new System.Drawing.Point(273, 77);
             this.BackOff_textBox.Name = "BackOff_textBox";
             this.BackOff_textBox.Size = new System.Drawing.Size(55, 20);
             this.BackOff_textBox.TabIndex = 99;
             this.BackOff_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BackOff_textBox_KeyPress);
             // 
-            // Z0_textBox
+            // Z_FullDown_textBox
             // 
-            this.Z0_textBox.Location = new System.Drawing.Point(323, 25);
-            this.Z0_textBox.Name = "Z0_textBox";
-            this.Z0_textBox.Size = new System.Drawing.Size(55, 20);
-            this.Z0_textBox.TabIndex = 98;
-            this.Z0_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Z0_textBox_KeyPress);
+            this.Z_FullDown_textBox.Location = new System.Drawing.Point(507, 23);
+            this.Z_FullDown_textBox.Name = "Z_FullDown_textBox";
+            this.Z_FullDown_textBox.Size = new System.Drawing.Size(55, 20);
+            this.Z_FullDown_textBox.TabIndex = 98;
+            this.Z_FullDown_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Z_FullDown_textBox_KeyPress);
             // 
             // CancelProbing_button
             // 
-            this.CancelProbing_button.Location = new System.Drawing.Point(89, 25);
+            this.CancelProbing_button.Location = new System.Drawing.Point(87, 76);
             this.CancelProbing_button.Name = "CancelProbing_button";
             this.CancelProbing_button.Size = new System.Drawing.Size(75, 23);
             this.CancelProbing_button.TabIndex = 52;
@@ -5603,19 +5686,9 @@
             this.CancelProbing_button.Visible = false;
             this.CancelProbing_button.Click += new System.EventHandler(this.CancelProbing_button_Click);
             // 
-            // label116
-            // 
-            this.label116.AutoSize = true;
-            this.label116.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label116.Location = new System.Drawing.Point(3, 0);
-            this.label116.Name = "label116";
-            this.label116.Size = new System.Drawing.Size(182, 16);
-            this.label116.TabIndex = 49;
-            this.label116.Text = "Nozzle height calibration:";
-            // 
             // SetProbing_button
             // 
-            this.SetProbing_button.Location = new System.Drawing.Point(8, 25);
+            this.SetProbing_button.Location = new System.Drawing.Point(7, 76);
             this.SetProbing_button.Name = "SetProbing_button";
             this.SetProbing_button.Size = new System.Drawing.Size(75, 23);
             this.SetProbing_button.TabIndex = 50;
@@ -5627,16 +5700,16 @@
             // label111
             // 
             this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(258, 28);
+            this.label111.Location = new System.Drawing.Point(394, 26);
             this.label111.Name = "label111";
-            this.label111.Size = new System.Drawing.Size(59, 13);
+            this.label111.Size = new System.Drawing.Size(107, 13);
             this.label111.TabIndex = 52;
-            this.label111.Text = "Z0 to PCB:";
+            this.label111.Text = "Z0 to PCB, full down:";
             // 
             // label117
             // 
             this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(434, 28);
+            this.label117.Location = new System.Drawing.Point(220, 81);
             this.label117.Name = "label117";
             this.label117.Size = new System.Drawing.Size(47, 13);
             this.label117.TabIndex = 76;
@@ -5964,7 +6037,7 @@
             // 
             // SizeYMax_textBox
             // 
-            this.SizeYMax_textBox.Location = new System.Drawing.Point(557, 456);
+            this.SizeYMax_textBox.Location = new System.Drawing.Point(552, 392);
             this.SizeYMax_textBox.Name = "SizeYMax_textBox";
             this.SizeYMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeYMax_textBox.TabIndex = 44;
@@ -5982,7 +6055,7 @@
             // 
             // SizeXMax_textBox
             // 
-            this.SizeXMax_textBox.Location = new System.Drawing.Point(557, 430);
+            this.SizeXMax_textBox.Location = new System.Drawing.Point(552, 366);
             this.SizeXMax_textBox.Name = "SizeXMax_textBox";
             this.SizeXMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeXMax_textBox.TabIndex = 42;
@@ -5992,7 +6065,7 @@
             // 
             // ParkLocationY_textBox
             // 
-            this.ParkLocationY_textBox.Location = new System.Drawing.Point(693, 456);
+            this.ParkLocationY_textBox.Location = new System.Drawing.Point(688, 392);
             this.ParkLocationY_textBox.Name = "ParkLocationY_textBox";
             this.ParkLocationY_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationY_textBox.TabIndex = 39;
@@ -6002,7 +6075,7 @@
             // 
             // ParkLocationX_textBox
             // 
-            this.ParkLocationX_textBox.Location = new System.Drawing.Point(693, 430);
+            this.ParkLocationX_textBox.Location = new System.Drawing.Point(688, 366);
             this.ParkLocationX_textBox.Name = "ParkLocationX_textBox";
             this.ParkLocationX_textBox.Size = new System.Drawing.Size(76, 20);
             this.ParkLocationX_textBox.TabIndex = 37;
@@ -6081,7 +6154,7 @@
             // 
             this.label113.AutoSize = true;
             this.label113.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label113.Location = new System.Drawing.Point(510, 407);
+            this.label113.Location = new System.Drawing.Point(505, 343);
             this.label113.Name = "label113";
             this.label113.Size = new System.Drawing.Size(108, 20);
             this.label113.TabIndex = 48;
@@ -6090,7 +6163,7 @@
             // label102
             // 
             this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(511, 459);
+            this.label102.Location = new System.Drawing.Point(506, 395);
             this.label102.Name = "label102";
             this.label102.Size = new System.Drawing.Size(40, 13);
             this.label102.TabIndex = 45;
@@ -6110,7 +6183,7 @@
             // label107
             // 
             this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(511, 433);
+            this.label107.Location = new System.Drawing.Point(506, 369);
             this.label107.Name = "label107";
             this.label107.Size = new System.Drawing.Size(40, 13);
             this.label107.TabIndex = 43;
@@ -6119,7 +6192,7 @@
             // label92
             // 
             this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(670, 459);
+            this.label92.Location = new System.Drawing.Point(665, 395);
             this.label92.Name = "label92";
             this.label92.Size = new System.Drawing.Size(17, 13);
             this.label92.TabIndex = 40;
@@ -6128,7 +6201,7 @@
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(670, 433);
+            this.label61.Location = new System.Drawing.Point(665, 369);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(17, 13);
             this.label61.TabIndex = 38;
@@ -9937,10 +10010,9 @@
         private System.Windows.Forms.CheckBox MotorPower_checkBox;
 		private System.Windows.Forms.Button SetMark4_button;
 		private System.Windows.Forms.Label label111;
-		private System.Windows.Forms.Label Zlb_label;
+		private System.Windows.Forms.Label NozzleHeightInstructions_label;
 		private System.Windows.Forms.Button SetMark3_button;
 		private System.Windows.Forms.Button SetProbing_button;
-		private System.Windows.Forms.Label label116;
 		private System.Windows.Forms.Button SetMark2_button;
 		private System.Windows.Forms.Label label113;
 		private System.Windows.Forms.Label label102;
@@ -10178,7 +10250,7 @@
         private System.Windows.Forms.Label label112;
         private System.Windows.Forms.TextBox PlacementDepth_textBox;
         private System.Windows.Forms.TextBox BackOff_textBox;
-        private System.Windows.Forms.TextBox Z0_textBox;
+        private System.Windows.Forms.TextBox Z_FullDown_textBox;
         private System.Windows.Forms.CheckBox OmitNozzleCalibration_checkBox;
         private System.Windows.Forms.CheckBox SkipMeasurements_checkBox;
         private System.Windows.Forms.TextBox GotoX_textBox;
@@ -10295,7 +10367,7 @@
         private System.Windows.Forms.Button ResetSelectedPlaceZs_button;
         private System.Windows.Forms.Button ResetSelectedZs_button;
         private System.Windows.Forms.Button ClearPlaced_button;
-        private System.Windows.Forms.TextBox Hysteresis_textBox;
+        private System.Windows.Forms.TextBox Z_SwitchClearance_textBox;
         private System.Windows.Forms.Label label136;
         private System.Windows.Forms.Label label139;
         public System.Windows.Forms.Label DefaultNozzle_label;
@@ -10664,6 +10736,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label161;
+        private System.Windows.Forms.Button TestSwitchClearance_button;
+        private System.Windows.Forms.Label label116;
+        private System.Windows.Forms.Label label227;
+        private System.Windows.Forms.Label label160;
+        private System.Windows.Forms.Button TestSwitchClearanceCancel_button;
     }
 }
 

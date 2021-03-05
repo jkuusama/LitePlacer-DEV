@@ -1183,6 +1183,7 @@ namespace LitePlacer
                 case "zlb":        // z latch backoff, mm
                     TinyGBoard.Zlb = value;
                     break;
+
                 case "zzb":        // z zero backoff, mm
                     TinyGBoard.Zzb = value;
                     break;

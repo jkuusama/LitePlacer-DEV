@@ -235,43 +235,46 @@ namespace LitePlacer
 
         public void CancelJog()
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function CancelJog", "Unimplemented function", MessageBoxButtons.OK);
         }
 
 
 
         public void Jog(string Speed, string X, string Y, string Z, string A)
         {
-
+            MainForm.ShowMessageBox("Unimplemented Duet3 function Jog", "Unimplemented function", MessageBoxButtons.OK);
         }
 
 
         public bool Home_m(string axis)
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function Home_m", "Unimplemented function", MessageBoxButtons.OK);
             return false;
         }
 
 
         public bool XYA(double X, double Y, double A, double speed, string MoveType)
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function XYA", "Unimplemented function", MessageBoxButtons.OK);
             return false;
         }
 
 
         public bool A(double A, double speed, string MoveType)
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function A", "Unimplemented function", MessageBoxButtons.OK);
             return false;
         }
 
 
         public bool Z(double Z, double speed, string MoveType)
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function Z", "Unimplemented function", MessageBoxButtons.OK);
             return false;
         }
 
 
         #endregion Movement
-
-
 
 
         // =================================================================================
@@ -280,40 +283,64 @@ namespace LitePlacer
 
         public bool SetMachineSizeX(int Xsize)
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function SetMachineSizeX", "Unimplemented function", MessageBoxButtons.OK);
             return false;
         }
 
         public bool SetMachineSizeY(int Xsize)
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function SetMachineSizeY", "Unimplemented function", MessageBoxButtons.OK);
             return false;
         }
 
 
-
         public void DisableZswitches()
         {
-
+            MainForm.ShowMessageBox("Unimplemented Duet3 function DisableZswitches", "Unimplemented function", MessageBoxButtons.OK);
         }
 
 
 
         public void EnableZswitches()
         {
-
+            MainForm.ShowMessageBox("Unimplemented Duet3 function EnableZswitches", "Unimplemented function", MessageBoxButtons.OK);
         }
 
 
+        public void SaveZSwitchSettings()
+        {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function SaveZSwitchSettings", "Unimplemented function", MessageBoxButtons.OK);
+        }
+
+        public void RestoreZSwitchSettings()
+        {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function RestoreZSwitchSettings", "Unimplemented function", MessageBoxButtons.OK);
+        }
 
 
+        public bool SetZ_SwitchClearance(double val)
+        {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function SetZ_SwitchClearance", "Unimplemented function", MessageBoxButtons.OK);
+            return false;
+        }
+
+
+        public bool SetZ_ZeroBackoff(double val)
+        {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function SetZ_ZeroBackoff", "Unimplemented function", MessageBoxButtons.OK);
+            return false;
+        }
+
+        
         public void ProbingMode(bool set)
         {
-
+            MainForm.ShowMessageBox("Unimplemented Duet3 function ProbingMode", "Unimplemented function", MessageBoxButtons.OK);
         }
 
 
         public bool Nozzle_ProbeDown()
         {
-
+            MainForm.ShowMessageBox("Unimplemented Duet3 function Nozzle_ProbeDown", "Unimplemented function", MessageBoxButtons.OK);
             return false;
         }
 
@@ -321,6 +348,7 @@ namespace LitePlacer
 
         public void MotorPowerOn()
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function MotorPowerOn", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("MotorPowerOn(), Duet3");
         }
 
@@ -328,6 +356,7 @@ namespace LitePlacer
 
         public void MotorPowerOff()
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function MotorPowerOff", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("MotorPowerOff(), Duet3");
         }
 

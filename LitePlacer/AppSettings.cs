@@ -90,12 +90,9 @@ namespace LitePlacer
         public double General_PickupCenterY { get; set; } = 0;
         public int General_PickupReleaseTime { get; set; } = 150;
         public int General_PickupVacuumTime { get; set; } = 250;
-        public double General_PlacementBackOff { get; set; } = 0.2;
+        public double General_FullDownToJustTouchingDifference { get; set; } = 0.2;
         public double General_ShadeGuard_mm { get; set; } = 0;
         public bool General_UpgradeRequired { get; set; } = true;
-        public double General_ZprobingHysteresis { get; set; } = 0.2;
-        public double General_ZTestTravel { get; set; } = 20;
-        public double General_ZtoPCB { get; set; } = 0;
         public double Job_Xoffset { get; set; } = 0;
         public double Job_Yoffset { get; set; } = 0;
         public bool General_VigorousHoming { get; set; } = false;
@@ -103,6 +100,22 @@ namespace LitePlacer
         public bool General_VacuumOutputInverted { get; set; } = false;
         public bool General_SaveFilesAtClosing { get; set; } = true;
         public bool General_Autopark { get; set; } = false;
+        public double General_ZTestTravel { get; set; } = 20;
+
+        public double General_Z0toPCB { get; set; } = 0;
+        public int SetProbing_stage { get; set; } = 0;
+        public int TestSwitchClearance_stage { get; set; } = 0;
+
+        public double General_Zdown_SwitchClearance { get; set; } = 2;
+
+
+        public bool General_SwitchClearanceSet { get; set; } = false;
+
+        public double General_PlacementBackOff { get; set; } = 0;
+
+
+
+
 
         public bool Nozzles_AfullSpeed { get; set; } = true;
         public double Nozzles_Aspeed { get; set; } = 500;

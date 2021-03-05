@@ -214,8 +214,8 @@ namespace LitePlacer
 
             Relative_Button.Checked = true;
 
-            Zlb_label.Text = "";
-            Zlb_label.Visible = false;
+            NozzleHeightInstructions_label.Text = "";
+            NozzleHeightInstructions_label.Visible = false;
 
         }
 
@@ -329,10 +329,10 @@ namespace LitePlacer
             ShadeGuard_textBox.Text = Setting.General_ShadeGuard_mm.ToString(CultureInfo.InvariantCulture);
             NozzleBelowPCB_textBox.Text = Setting.General_BelowPCB_Allowance.ToString(CultureInfo.InvariantCulture);
 
-            Z0_textBox.Text = Setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
+            Z_FullDown_textBox.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture);
             BackOff_textBox.Text = Setting.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture);
             PlacementDepth_textBox.Text = Setting.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
-            Hysteresis_textBox.Text = Setting.General_ZprobingHysteresis.ToString("0.00", CultureInfo.InvariantCulture);
+            // Z_SwitchClearance_textBox.Text = Setting.General_Z_SwitchClearance.ToString("0.00", CultureInfo.InvariantCulture);
 
             PumpInvert_checkBox.Checked = Setting.General_PumpOutputInverted;
             VacuumInvert_checkBox.Checked = Setting.General_VacuumOutputInverted;
@@ -1658,7 +1658,7 @@ namespace LitePlacer
             {
                 JoggingBusy = true;
                 double Ztarget;
-                if (!double.TryParse(Setting.General_ZtoPCB.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out Ztarget))
+                if (!double.TryParse(Setting.General_Z0toPCB.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out Ztarget))
                 {
                     DisplayText("Z to PCB internal value error!");
                     return;
@@ -2267,7 +2267,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (Z > (Setting.General_ZtoPCB + Setting.General_BelowPCB_Allowance))
+            if (Z > (Setting.General_Z0toPCB + Setting.General_BelowPCB_Allowance))
             {
                 DialogResult dialogResult = ShowMessageBox(
                     "The operation seems to take the Nozzle below safe level. Continue?",
@@ -3266,7 +3266,7 @@ namespace LitePlacer
             PickupCenterY_textBox.Text = Setting.General_PickupCenterY.ToString("0.00", CultureInfo.InvariantCulture);
             NozzleOffsetX_textBox.Text = Setting.DownCam_NozzleOffsetX.ToString("0.00", CultureInfo.InvariantCulture);
             NozzleOffsetY_textBox.Text = Setting.DownCam_NozzleOffsetY.ToString("0.00", CultureInfo.InvariantCulture);
-            Z0toPCB_CamerasTab_label.Text = Setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) + " mm";
+            Z0toPCB_CamerasTab_label.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture) + " mm";
             UpcamPositionX_textBox.Text = Setting.UpCam_PositionX.ToString("0.00", CultureInfo.InvariantCulture);
             UpcamPositionY_textBox.Text = Setting.UpCam_PositionY.ToString("0.00", CultureInfo.InvariantCulture);
         }
@@ -3969,7 +3969,7 @@ namespace LitePlacer
 
         private void ZDown_button_Click(object sender, EventArgs e)
         {
-            CNC_Z_m(Setting.General_ZtoPCB);
+            CNC_Z_m(Setting.General_Z0toPCB);
         }
 
         private void ZUp_button_Click(object sender, EventArgs e)
@@ -4168,7 +4168,27 @@ namespace LitePlacer
             NormalJogSpeed_numericUpDown.Value = Setting.CNC_NormalJogSpeed;
             AltJogSpeed_numericUpDown.Value = Setting.CNC_AltJogSpeed;
 
-            // Does this machine have any ports? (Maybe not, if TinyG is powered down.)
+            if (!Setting.General_SwitchClearanceSet)
+            {
+                SetProbing_button.Enabled = false;
+                CancelProbing_button.Enabled = false;
+            }
+            else
+            {
+                SetProbing_button.Enabled = true;
+                CancelProbing_button.Enabled = true;
+            }
+            if (Setting.TestSwitchClearance_stage != 0)
+            {
+                Cancel_TestSwitchClearanceOp();
+            }
+
+            if (Setting.SetProbing_stage != 0)
+            {
+                CancelProbing();
+            }
+
+            // Does this machine have any ports? (Maybe not, if TinyG is powered down.) 
             RefreshPortList();
             if (comboBoxSerialPorts.Items.Count == 0)
             {
@@ -4886,16 +4906,14 @@ namespace LitePlacer
         }
 
 
-        private static int SetProbing_stage = 0;
-
         private void CancelProbing()
         {
             SetProbing_button.Text = "Start";
             SetProbing_button.Enabled = false;
-            SetProbing_stage = 0;
+            Setting.SetProbing_stage = 0;
             ZGuardOn();
             CancelProbing_button.Visible = false;
-            Zlb_label.Visible = false;
+            NozzleHeightInstructions_label.Visible = false;
             Cnc.ProbingMode(false);
             Cnc.Home_m("Z");
             SetProbing_button.Enabled = true;
@@ -4909,15 +4927,15 @@ namespace LitePlacer
         private void SetProbing_button_Click(object sender, EventArgs e)
         {
             ZGuardOff();
-            switch (SetProbing_stage)
+            switch (Setting.SetProbing_stage)
             {
                 case 0:
                     CancelProbing_button.Visible = true;
                     CancelProbing_button.Enabled = true;
-                    Zlb_label.Text = "Put a regular height PCB under the Nozzle, \n\rthen click \"Next\"";
-                    Zlb_label.Visible = true;
+                    NozzleHeightInstructions_label.Text = "Put a regular height PCB under the Nozzle, \n\rthen click \"Next\"";
+                    NozzleHeightInstructions_label.Visible = true;
                     SetProbing_button.Text = "Next";
-                    SetProbing_stage = 1;
+                    Setting.SetProbing_stage = 1;
                     break;
 
                 case 1:
@@ -4930,18 +4948,18 @@ namespace LitePlacer
                     }
                     SetProbing_button.Enabled = true;
                     CancelProbing_button.Enabled = true;
-                    Setting.General_ZtoPCB = Cnc.CurrentZ;
-                    Zlb_label.Text = "Jog Z axis until the Nozzle just barely touches the PCB\nThen click \"Next\"";
-                    SetProbing_stage = 2;
+                    Setting.General_Z0toPCB = Cnc.CurrentZ;
+                    NozzleHeightInstructions_label.Text = "Jog Z axis until the Nozzle just barely touches the PCB\nThen click \"Next\"";
+                    Setting.SetProbing_stage = 2;
                     break;
 
                 case 2:
-                    Setting.General_PlacementBackOff = Setting.General_ZtoPCB - Cnc.CurrentZ;
-                    Setting.General_ZtoPCB = Cnc.CurrentZ;
+                    Setting.General_PlacementBackOff = Setting.General_Z0toPCB - Cnc.CurrentZ;
+                    Setting.General_Z0toPCB = Cnc.CurrentZ;
                     Cnc.ProbingMode(false);
                     SetProbing_button.Text = "Start";
-                    Zlb_label.Text = "";
-                    Zlb_label.Visible = false;
+                    NozzleHeightInstructions_label.Text = "";
+                    NozzleHeightInstructions_label.Visible = false;
                     CancelProbing_button.Visible = false;
                     SetProbing_button.Enabled = false;
                     Cnc.Home_m("Z");
@@ -4949,12 +4967,12 @@ namespace LitePlacer
                     SetProbing_button.Enabled = true;
                     ShowMessageBox(
                        "Probing Backoff set successfully.\n" +
-                            "PCB surface: " + Setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture) +
+                            "PCB surface: " + Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture) +
                             "\nBackoff:  " + Setting.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture),
                        "Done",
                        MessageBoxButtons.OK);
-                    SetProbing_stage = 0;
-                    Z0_textBox.Text = Setting.General_ZtoPCB.ToString("0.00", CultureInfo.InvariantCulture);
+                    Setting.SetProbing_stage = 0;
+                    Z_FullDown_textBox.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture);
                     BackOff_textBox.Text = Setting.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture);
 
                     // If tapes have z heights set, offer to zero out those:
@@ -4992,6 +5010,62 @@ namespace LitePlacer
                     break;
             }
         }
+
+
+        private void TestSwitchClearance_button_Click(object sender, EventArgs e)
+        {
+            
+            switch (Setting.TestSwitchClearance_stage)
+            {
+                case 0:
+                    NozzleHeightInstructions_label.Text = "Ensure nozzle is not over empty space (such as up cam hole)," +
+                                                                 "\n\rthen click \"Next\"";
+                    NozzleHeightInstructions_label.Visible = true;
+                    TestSwitchClearanceCancel_button.Visible = true;
+                    TestSwitchClearance_button.Text = "Next";
+                    Setting.TestSwitchClearance_stage = 1;
+                    break;
+
+                case 1:
+                    NozzleHeightInstructions_label.Text = "Jog nozzle up until the switch clears, with margin (such as 1mm)" +
+                                             "\n\rthen click \"Ready\"";
+                    NozzleHeightInstructions_label.Visible = true;
+                    TestSwitchClearance_button.Text = "ready";
+                    Setting.TestSwitchClearance_stage = 2;
+                    break;
+
+                case 2:
+                    NozzleHeightInstructions_label.Text = "";
+                    NozzleHeightInstructions_label.Visible = false;
+                    TestSwitchClearance_button.Text = "Set";
+                    Setting.TestSwitchClearance_stage = 0;
+                    Setting.General_SwitchClearanceSet = true;
+                    TestSwitchClearanceCancel_button.Visible = false;
+                    break;
+
+            }
+
+        }
+
+        private void Cancel_TestSwitchClearanceOp()
+        {
+            Setting.TestSwitchClearance_stage = 0;
+            Setting.General_SwitchClearanceSet = false;
+            TestSwitchClearance_button.Text = "Set";
+
+            TestSwitchClearanceCancel_button.Visible = false;
+            SetProbing_button.Enabled = false;
+            Setting.SetProbing_stage = 0;
+            CancelProbing_button.Visible = false;
+            NozzleHeightInstructions_label.Visible = false;
+        }
+
+        private void TestSwitchClearanceCancel_button_Click(object sender, EventArgs e)
+        {
+            Cancel_TestSwitchClearanceOp();
+        }
+
+
 
         // =================================================================================
         #region Bookmarks
@@ -5204,16 +5278,16 @@ namespace LitePlacer
             }
         }
 
-        private void Z0_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void Z_FullDown_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             double val;
-            Z0_textBox.ForeColor = Color.Red;
+            Z_FullDown_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(Z0_textBox.Text.Replace(',', '.'), out val))
+                if (double.TryParse(Z_FullDown_textBox.Text.Replace(',', '.'), out val))
                 {
-                    Setting.General_ZtoPCB = val;
-                    Z0_textBox.ForeColor = Color.Black;
+                    Setting.General_Z0toPCB = val;
+                    Z_FullDown_textBox.ForeColor = Color.Black;
                 }
             }
         }
@@ -5232,20 +5306,20 @@ namespace LitePlacer
             }
         }
 
-        private void Hysteresis_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void Z_SwitchClearance_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             double val;
-            Hysteresis_textBox.ForeColor = Color.Red;
+            Z_SwitchClearance_textBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
             {
-                if (double.TryParse(Hysteresis_textBox.Text.Replace(',', '.'), out val))
+                if (double.TryParse(Z_SwitchClearance_textBox.Text.Replace(',', '.'), out val))
                 {
-                    Setting.General_ZprobingHysteresis = val;
-                    Hysteresis_textBox.ForeColor = Color.Black;
+                    Setting.General_Zdown_SwitchClearance = val;
+                    Z_SwitchClearance_textBox.ForeColor = Color.Black;
+                    Cnc.SetZ_SwitchClearance(val);
                 }
             }
         }
-
 
         private void PlacementDepth_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -7637,7 +7711,7 @@ namespace LitePlacer
                 distance2pcb = 2.0;
             };
 
-            if (!CNC_Z_m(Setting.General_ZtoPCB - distance2pcb))
+            if (!CNC_Z_m(Setting.General_Z0toPCB - distance2pcb))
             {
                 return false;
             }
@@ -11456,7 +11530,7 @@ namespace LitePlacer
 
             // take Nozzle to camera
             result &= CNC_XYA_m(Setting.UpCam_PositionX, Setting.UpCam_PositionY, Cnc.CurrentA);
-            result &= CNC_Z_m(Setting.General_ZtoPCB - 0.5); // Average small component height 0.5mm (?)
+            result &= CNC_Z_m(Setting.General_Z0toPCB - 0.5); // Average small component height 0.5mm (?)
 
             // measure the values
             DisplayText("Measuring nozzle " + Setting.Nozzles_current.ToString());
@@ -13108,6 +13182,8 @@ namespace LitePlacer
                 ZGuardOn();
             }
         }
+
+
     }	// end of: 	public partial class FormMain : Form
 
 

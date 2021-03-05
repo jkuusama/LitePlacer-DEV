@@ -393,10 +393,33 @@ namespace LitePlacer
         }
 
 
+        public void SaveZSwitchSettings()
+        {
+            MainForm.DisplayText("SaveZSwitchSettings(), TinyG");
+        }
+
+
+        public void RestoreZSwitchSettings()
+        {
+            MainForm.DisplayText("RestoreZSwitchSettings(), TinyG");
+        }
+
+
+        public bool SetZ_ZeroBackoff(double val)
+        {
+            return Write_m("{\"zzb\"," + val.ToString(CultureInfo.InvariantCulture) + "}", 50);
+        }
+
+
+        public bool SetZ_SwitchClearance(double val)
+        {
+            return Write_m("{\"zlb\"," + val.ToString(CultureInfo.InvariantCulture) + "}", 50);
+        }
+
 
         public void ProbingMode(bool set)
         {
-            double b = MainForm.Setting.General_ZprobingHysteresis;
+            double b = MainForm.Setting.General_Zdown_SwitchClearance;
             string backoff = b.ToString("0.00", CultureInfo.InvariantCulture);
 
             if (set)
@@ -406,8 +429,6 @@ namespace LitePlacer
                 Thread.Sleep(50);
                 Write_m("{\"zsx\",1}", 50);
                 Thread.Sleep(50);
-                Write_m("{\"zzb\"," + backoff + "}", 50);
-                Thread.Sleep(50);
             }
             else
             {
@@ -415,8 +436,6 @@ namespace LitePlacer
                 Write_m("{\"zsn\",3}", 50);
                 Thread.Sleep(50);
                 Write_m("{\"zsx\",2}", 50);
-                Thread.Sleep(50);
-                Write_m("{\"zzb\",2}", 50);
                 Thread.Sleep(50);
             }
 
