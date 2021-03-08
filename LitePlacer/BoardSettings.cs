@@ -17,7 +17,7 @@ namespace LitePlacer
 #pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
     // This file has things that are related to control board settings, UI, their storage and retrieval.
     // 
-    // TinyG related items were written first, and löookign back, the implementation is not very good.
+    // TinyG related items were written first. Looking back now, the implementation is not very good.
     // It works, but for Duet 3, I'll handle this differently.
     //
 
@@ -1180,12 +1180,21 @@ namespace LitePlacer
                 case "zlv":      // z latch velocity, mm/min
                     TinyGBoard.Zlv = value;
                     break;
+
                 case "zlb":        // z latch backoff, mm
-                    TinyGBoard.Zlb = value;
+                    if ((Setting.SetProbing_stage == 0) && (Setting.TestSwitchClearance_stage == 0))
+                    {
+                        // If a process that temporarily changes the values is not underway
+                        TinyGBoard.Zlb = value;
+                    }
                     break;
 
                 case "zzb":        // z zero backoff, mm
-                    TinyGBoard.Zzb = value;
+                    if ((Setting.SetProbing_stage == 0) && (Setting.TestSwitchClearance_stage == 0))
+                    {
+                        // If a process that temporarily changes the values is not underway
+                        TinyGBoard.Zzb = value;
+                    }
                     break;
 
                 // ========== A axis ==========

@@ -2204,9 +2204,9 @@
             this.UpCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(375, 141);
             this.UpCamDrawSidemarks_checkBox.Name = "UpCamDrawSidemarks_checkBox";
-            this.UpCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(103, 17);
+            this.UpCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(102, 17);
             this.UpCamDrawSidemarks_checkBox.TabIndex = 213;
-            this.UpCamDrawSidemarks_checkBox.Text = "Draw SideMarks";
+            this.UpCamDrawSidemarks_checkBox.Text = "Draw Sidemarks";
             this.UpCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
             this.UpCamDrawSidemarks_checkBox.CheckedChanged += new System.EventHandler(this.UpCamDrawSidemarks_checkBox_CheckedChanged);
             // 
@@ -2593,9 +2593,9 @@
             this.DownCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(375, 144);
             this.DownCamDrawSidemarks_checkBox.Name = "DownCamDrawSidemarks_checkBox";
-            this.DownCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(103, 17);
+            this.DownCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(102, 17);
             this.DownCamDrawSidemarks_checkBox.TabIndex = 212;
-            this.DownCamDrawSidemarks_checkBox.Text = "Draw SideMarks";
+            this.DownCamDrawSidemarks_checkBox.Text = "Draw Sidemarks";
             this.DownCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
             this.DownCamDrawSidemarks_checkBox.CheckedChanged += new System.EventHandler(this.DownCamDrawSidemarks_checkBox_CheckedChanged);
             // 

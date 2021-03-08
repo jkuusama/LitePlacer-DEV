@@ -61,6 +61,35 @@ namespace LitePlacer
                 return false;
             }
             MainForm.SetMotorPower_checkBox(true);
+            if ((MainForm.Setting.SetProbing_stage == 0) && (MainForm.Setting.TestSwitchClearance_stage == 0))
+            {
+                // If a process that temporarily changes the Z switch values is not underway,
+                // save the critical values
+                double val;
+                if (double.TryParse(MainForm.TinyGBoard.Zlb.Replace(',', '.'), out val))
+                {
+                    MainForm.Setting.TinyG_Zswitch_Clearance = val;
+                }
+                else
+                {
+                    MainForm.Setting.TinyG_Zswitch_Clearance = MainForm.Setting.TinyG_Zswitch_Clearance_Default;
+                };
+                if (double.TryParse(MainForm.TinyGBoard.Zzb.Replace(',', '.'), out val))
+                {
+                    MainForm.Setting.TinyG_Z_ZeroBackoff = val;
+                }
+                else
+                {
+                    MainForm.Setting.TinyG_Z_ZeroBackoff = MainForm.Setting.TinyG_Z_ZeroBackoff_Default;
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("Recovering from Z switch related reset", KnownColor.DarkRed, true);
+                SetZ_SwitchClearance(MainForm.Setting.TinyG_Z_ZeroBackoff);
+                SetZ_ZeroBackoff(MainForm.Setting.TinyG_Z_ZeroBackoff);
+            }
+            
             return true;
         }
 
@@ -405,9 +434,22 @@ namespace LitePlacer
         }
 
 
+        public string GetZ_ZeroBackoff()
+        {
+            string line = ReadLineDirectly("{\"zzb\"}", true);
+            return GetParameterValue(line);
+        }
+
         public bool SetZ_ZeroBackoff(double val)
         {
             return Write_m("{\"zzb\"," + val.ToString(CultureInfo.InvariantCulture) + "}", 50);
+        }
+
+
+        public string GetZ_SwitchClearance()
+        {
+            string line = ReadLineDirectly("{\"zlb\"}", true);
+            return GetParameterValue(line);
         }
 
 
@@ -818,7 +860,14 @@ namespace LitePlacer
             }
 
         }  // end InterpretLine()
-
+        public string GetParameterValue(string line)
+        {
+            // line format is {"r":{"<parameter>":<value>},"f":[<some numbers>]}
+            line = line.Substring(7);  // line: <parameter>":<value>},"f":[<some numbers>]}
+            line = line.Substring(line.IndexOf(':') + 1);   //line: <value>},"f":[<some numbers>]}
+            line = line.Substring(0, line.IndexOf('}'));    // line is now the value
+            return line;
+        }
         public void ParameterValue(string line)
         {
             // line format is {"r":{"<parameter>":<value>},"f":[<some numbers>]}
@@ -828,6 +877,7 @@ namespace LitePlacer
             line = line.Substring(line.IndexOf(':') + 1);   //line: <value>},"f":[<some numbers>]}
             line = line.Substring(0, line.IndexOf('}'));    // line is now the value
             MainForm.ValueUpdater(parameter, line);
+
 
         }
         // =================================================================================
