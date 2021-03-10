@@ -4905,6 +4905,148 @@ namespace LitePlacer
             }
         }
 
+        // ==========================================================================================================
+        /*
+        Probing and probing setup
+
+        There is a switch that triggers when nozzle goes down. This is used for probing (measuring the 
+        height of PCB surface and parts). There are two kinds of setup to be done for this:
+
+        1) Latch release distance: 
+        This is the amount of travel that needs to be done for the switch to release
+
+        2) Placement depth
+        First, the distance form "full down" to "just touching" is determined. 
+        "Full down" is the nozzle position that went down, triggered the switch and backed up 
+        the latch relase distance. "Just touching" is the distance when nozzle is just touching the target surface.
+        The difference should be 1 to 2mm to avoid false triggering. Placement depth is the distance used to 
+        get a good vacuum on pickup and squeezing the part sufficiently to paste on placemdent. This is set by the user.
+
+        On TinyG, the probing is done by the built-in homing routine. Therefore, the regular homing parameters are not good for this. 
+        We'll use the z latch backoff parameter (zlb) as the latch release distance and set z zero backoff (zzb) to zero for probing.
+        To guard againts crashes, we save these z parameters before setup. On startup, we'll check that they
+        are equal to saved values; if not, a crash happened during setup or probing.
+
+        Safeguards:
+        At TinyG connection: Check the values, restore if different 
+        Before setup: Save the values. Before saving, if different from defaults, ask user if we should change the values on
+        TinyG or if we should change the saved values.
+
+        Implementation routines: CompareZdownSwitchParameters(): Compares the values on the board to values in the software
+        WriteZdownSwitchParametersFromSettingsToBoard(): software => control board
+        WriteZdownSwitchParametersFromBoardToSettings(): control board => software
+        CheckZdownSwitchParameters(): Does the comparision, asks user what to do if different and does it.
+        */
+        // ==========================================================================================================
+
+        private bool CompareZdownSwitchParameters(out bool res)
+        {
+            // does the comparision
+
+            res = false;
+            if (!Cnc.GetZ_ZeroBackoff(out double zzb))
+            {
+                DisplayText("Z switch parameters read failed", KnownColor.DarkRed, true);
+                return false;
+            }
+            if (!Cnc.GetZ_LatchBackoff(out double zlb))
+            {
+                DisplayText("Z switch parameters read failed", KnownColor.DarkRed, true);
+                return false;
+            }
+            if ( (Math.Abs(zzb - Setting.General_Z_ZeroBackoff) <= 0.001) && 
+                 (Math.Abs(zlb - Setting.General_Z_LatchBackoff) <= 0.001))
+            {
+                res = true;
+                return true;
+            }
+            return false;
+        }
+
+        private bool WriteZdownSwitchParametersFromSettingsToBoard()
+        {
+            if (!Cnc.SetZ_ZeroBackoff(Setting.General_Z_ZeroBackoff))
+            {
+                return false;
+            }
+            if (!Cnc.SetZ_LatchBackoff(Setting.General_Z_LatchBackoff))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool WriteZdownSwitchParametersFromBoardToSettings()
+        {
+            if (!Cnc.GetZ_LatchBackoff(out double zlb))
+            {
+                return false;
+            }
+            if (!Cnc.GetZ_ZeroBackoff(out double zzb))
+            {
+                return false;
+            }
+            Setting.General_Z_LatchBackoff = zlb;
+            Setting.General_Z_ZeroBackoff = zzb;
+            return true;
+        }
+
+
+        private bool CheckZdownSwitchParameters(out DialogResult res)
+        {
+            if (!CompareZdownSwitchParameters(out bool compares))
+            {
+                res = DialogResult.Cancel;
+                return false;
+            };
+
+            if (compares)
+            {
+                res = DialogResult.OK;
+                return true;
+            }
+            else
+            {
+                if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+                {
+                    res = ShowMessageBox(
+                        "TinyG switch parameters on board are different than stored in software\n\r" +
+                        "Yes: Restore the defaults (use this if you are recovering from an error)" +
+                        "No: Keep TinyG values and remember them (use this if you have changed the values yourself)" +
+                        "Cancel: Cancel whatever operation was going on, don't change anything",
+                        "Z switch parameters changed", MessageBoxButtons.YesNoCancel);
+                    if (res == DialogResult.Yes)
+                    {
+                        return WriteZdownSwitchParametersFromSettingsToBoard();
+                    }
+                    if (res == DialogResult.No)
+                    {
+                        return WriteZdownSwitchParametersFromBoardToSettings();
+                    }
+                    if (res == DialogResult.Cancel)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    ShowMessageBox(
+                        "CheckZdownSwitchParameters(): Unimplemented for this board",
+                        "Unsupported board", MessageBoxButtons.OK);
+                    res = DialogResult.Cancel;
+                    return true;
+                }
+            }
+            // Should not get here. Throw an error in case I saw it wrong. :-)
+            ShowMessageBox("Unhandled software option in CheckZdownSwitchParameters()",
+            "Programmer error", MessageBoxButtons.OK);
+            res = DialogResult.Cancel;
+            return false;
+        }
+
+
+        // ==========================================================================================================
+        // Probing functions
 
         private void CancelProbing()
         {

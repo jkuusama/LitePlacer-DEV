@@ -307,17 +307,6 @@ namespace LitePlacer
         }
 
 
-        public void SaveZSwitchSettings()
-        {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function SaveZSwitchSettings", "Unimplemented function", MessageBoxButtons.OK);
-        }
-
-        public void RestoreZSwitchSettings()
-        {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function RestoreZSwitchSettings", "Unimplemented function", MessageBoxButtons.OK);
-        }
-
-
         public bool SetZ_SwitchClearance(double val)
         {
             MainForm.ShowMessageBox("Unimplemented Duet3 function SetZ_SwitchClearance", "Unimplemented function", MessageBoxButtons.OK);
@@ -325,13 +314,37 @@ namespace LitePlacer
         }
 
 
+
+
+        public bool GetZ_LatchBackoff(out double val) 
+        {
+            val = 0.0;
+            MainForm.ShowMessageBox("Unimplemented Duet3 function GetZ_LatchBackoff", "Unimplemented function", MessageBoxButtons.OK);
+            return false;
+        }
+
+        public bool SetZ_LatchBackoff(double val)
+        {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function SetZ_LatchBackoff", "Unimplemented function", MessageBoxButtons.OK);
+            return false;
+        }
+
+
+
+        public bool GetZ_ZeroBackoff(out double val) 
+        {
+            val = 0.0;
+            MainForm.ShowMessageBox("Unimplemented Duet3 function GetZ_ZeroBackoff", "Unimplemented function", MessageBoxButtons.OK);
+            return false;
+        }
+
         public bool SetZ_ZeroBackoff(double val)
         {
             MainForm.ShowMessageBox("Unimplemented Duet3 function SetZ_ZeroBackoff", "Unimplemented function", MessageBoxButtons.OK);
             return false;
         }
 
-        
+
         public void ProbingMode(bool set)
         {
             MainForm.ShowMessageBox("Unimplemented Duet3 function ProbingMode", "Unimplemented function", MessageBoxButtons.OK);

@@ -1182,19 +1182,11 @@ namespace LitePlacer
                     break;
 
                 case "zlb":        // z latch backoff, mm
-                    if ((Setting.SetProbing_stage == 0) && (Setting.TestSwitchClearance_stage == 0))
-                    {
-                        // If a process that temporarily changes the values is not underway
                         TinyGBoard.Zlb = value;
-                    }
                     break;
 
                 case "zzb":        // z zero backoff, mm
-                    if ((Setting.SetProbing_stage == 0) && (Setting.TestSwitchClearance_stage == 0))
-                    {
-                        // If a process that temporarily changes the values is not underway
                         TinyGBoard.Zzb = value;
-                    }
                     break;
 
                 // ========== A axis ==========

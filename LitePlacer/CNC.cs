@@ -664,38 +664,113 @@ namespace LitePlacer
             }
         }
 
-        public void SaveZSwitchSettings()
+
+        public bool GetZ_LatchBackoff(out double val)
         {
+            val = 0.0;
             if (Controlboard == ControlBoardType.Duet3)
             {
-                Duet3.SaveZSwitchSettings();
+                if (Duet3.GetZ_LatchBackoff(out val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
             }
             else if (Controlboard == ControlBoardType.TinyG)
             {
-                TinyG.SaveZSwitchSettings();
+                if (TinyG.GetZ_LatchBackoff(out val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else
+            {
+                MainForm.DisplayText("*** Cnc.GetZ_LatchBackoff(), unknown board.", KnownColor.DarkRed, true);
+                Connected = false;
+                ErrorState = true;
+                return false;
+            }
+        }
+
+        public bool SetZ_LatchBackoff(double val)
+        {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                if (Duet3.SetZ_LatchBackoff(val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
+            }
+            else if (Controlboard == ControlBoardType.TinyG)
+            {
+                if (TinyG.SetZ_LatchBackoff(val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
             }
             else
             {
                 MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
+                Connected = false;
+                ErrorState = true;
+                return false;
             }
         }
 
-        public void RestoreZSwitchSettings()
+        public bool GetZ_ZeroBackoff(out double val)
         {
+            val = 0.0;
             if (Controlboard == ControlBoardType.Duet3)
             {
-                Duet3.RestoreZSwitchSettings();
+                if (Duet3.GetZ_ZeroBackoff(out val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
             }
             else if (Controlboard == ControlBoardType.TinyG)
             {
-                TinyG.RestoreZSwitchSettings();
+                if (TinyG.GetZ_ZeroBackoff(out val))
+                {
+                    return true;
+                }
+                else
+                {
+                    RaiseError();
+                    return false;
+                }
             }
             else
             {
-                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
+                MainForm.DisplayText("*** Cnc.GetZ_ZeroBackoff(), unknown board.", KnownColor.DarkRed, true);
+                Connected = false;
+                ErrorState = true;
+                return false;
             }
         }
-
 
 
         public bool SetZ_ZeroBackoff(double val)

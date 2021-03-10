@@ -106,18 +106,24 @@ namespace LitePlacer
         public int SetProbing_stage { get; set; } = 0;
         public int TestSwitchClearance_stage { get; set; } = 0;
 
-        public double General_Zdown_SwitchClearance { get; set; } = 2;
 
 
-        public bool General_SwitchClearanceSet { get; set; } = false;   // if z down swithc clearance is set. If it is, the PCB height calibration buttons are enabled
+        public bool General_SwitchClearanceSet { get; set; } = false;
+        // if z down switch clearance is set. If it is, the PCB height calibration buttons are enabled
+        public double General_Zdown_SwitchClearance { get; set; } = 2;  // How much the head needs to be lifted for the switch to clear
+
 
         public double General_PlacementBackOff { get; set; } = 0;   // How much deeper from "just touching" the placement goes
 
-        public double TinyG_Zswitch_Clearance { get; set; } = 2.0;
-        public double TinyG_Zswitch_Clearance_Default { get; } = 2.0;
-        public double TinyG_Z_ZeroBackoff { get; set; } = 2.0;
-        public double TinyG_Z_ZeroBackoff_Default { get; } = 2.0;
-
+        public double General_Z_ZeroBackoff { get; set; } = 2.0;
+        public double General_Z_ZeroBackoff_Default { get; } = 2.0;
+        public double General_Z_LatchBackoff { get; set; } = 2.0;
+        public double General_Z_LatchBackoff_Default { get; } = 2.0;
+        /*
+                public double General_Zdown_SwitchClearance { get; set; } = 2;  // 
+                public double TinyG_Zswitch_Clearance { get; set; } = 2.0;
+                public double TinyG_Zswitch_Clearance_Default { get; } = 2.0;
+        */
 
 
         public bool Nozzles_AfullSpeed { get; set; } = true;

@@ -61,35 +61,6 @@ namespace LitePlacer
                 return false;
             }
             MainForm.SetMotorPower_checkBox(true);
-            if ((MainForm.Setting.SetProbing_stage == 0) && (MainForm.Setting.TestSwitchClearance_stage == 0))
-            {
-                // If a process that temporarily changes the Z switch values is not underway,
-                // save the critical values
-                double val;
-                if (double.TryParse(MainForm.TinyGBoard.Zlb.Replace(',', '.'), out val))
-                {
-                    MainForm.Setting.TinyG_Zswitch_Clearance = val;
-                }
-                else
-                {
-                    MainForm.Setting.TinyG_Zswitch_Clearance = MainForm.Setting.TinyG_Zswitch_Clearance_Default;
-                };
-                if (double.TryParse(MainForm.TinyGBoard.Zzb.Replace(',', '.'), out val))
-                {
-                    MainForm.Setting.TinyG_Z_ZeroBackoff = val;
-                }
-                else
-                {
-                    MainForm.Setting.TinyG_Z_ZeroBackoff = MainForm.Setting.TinyG_Z_ZeroBackoff_Default;
-                }
-            }
-            else
-            {
-                MainForm.DisplayText("Recovering from Z switch related reset", KnownColor.DarkRed, true);
-                SetZ_SwitchClearance(MainForm.Setting.TinyG_Z_ZeroBackoff);
-                SetZ_ZeroBackoff(MainForm.Setting.TinyG_Z_ZeroBackoff);
-            }
-            
             return true;
         }
 
@@ -422,28 +393,64 @@ namespace LitePlacer
         }
 
 
-        public void SaveZSwitchSettings()
+
+        public bool GetZ_ZeroBackoff(out double val)
         {
-            MainForm.DisplayText("SaveZSwitchSettings(), TinyG");
-        }
-
-
-        public void RestoreZSwitchSettings()
-        {
-            MainForm.DisplayText("RestoreZSwitchSettings(), TinyG");
-        }
-
-
-        public string GetZ_ZeroBackoff()
-        {
+            val = 0.0;
             string line = ReadLineDirectly("{\"zzb\"}", true);
-            return GetParameterValue(line);
+            if (line=="")
+            {
+                return false;
+            }
+            else
+            {
+                line = GetParameterValue(line);
+                if (!double.TryParse(line.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out val))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
         public bool SetZ_ZeroBackoff(double val)
         {
             return Write_m("{\"zzb\"," + val.ToString(CultureInfo.InvariantCulture) + "}", 50);
         }
+
+
+
+        public bool GetZ_LatchBackoff(out double val)
+        {
+            val = 0.0;
+            string line = ReadLineDirectly("{\"zlb\"}", true);
+            if (line == "")
+            {
+                return false;
+            }
+            else
+            {
+                line = GetParameterValue(line);
+                if (!double.TryParse(line.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out val))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool SetZ_LatchBackoff(double val)
+        {
+            return Write_m("{\"zlb\"," + val.ToString(CultureInfo.InvariantCulture) + "}", 50);
+        }
+
+
 
 
         public string GetZ_SwitchClearance()
