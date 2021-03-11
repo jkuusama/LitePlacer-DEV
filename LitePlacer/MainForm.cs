@@ -1426,6 +1426,11 @@ namespace LitePlacer
                 return;
             }
 
+            if (Cnc.ErrorState)
+            {
+                return;
+            }
+
             double Mag = 0.0;
             if (e.Delta < 0)
             {
@@ -1607,7 +1612,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (!Cnc.Connected)
+            if (!Cnc.Connected || Cnc.ErrorState)
             {
                 return;
             }
@@ -1701,7 +1706,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (!Cnc.Connected)
+            if (!Cnc.Connected || Cnc.ErrorState)
             {
                 return;
             }
@@ -2027,6 +2032,12 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** Board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
+
             double X;  // target coordinates
             double Y;
             double Z;
@@ -2290,12 +2301,15 @@ namespace LitePlacer
                 DisplayText("### Cnc in error state, ignored", KnownColor.DarkRed, true);
                 return false;
             }
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** Cnc.CNC_A_m(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (!Cnc.Connected)
             {
-                ShowMessageBox(
-                    "CNC_A: Cnc not connected",
-                    "Cnc not connected",
-                    MessageBoxButtons.OK);
+                DisplayText("*** Cnc.CNC_A_m(), board not connected.", KnownColor.DarkRed, true);
                 return false;
             }
             if (Setting.CNC_OptimizeA)
@@ -2405,6 +2419,12 @@ namespace LitePlacer
 
         private bool Nozzle_ProbeDown_m()
         {
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** Nozzle_ProbeDown_m(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             DisplayText("Probing Z: ");
 
             Cnc.ProbingMode(true);
@@ -2440,6 +2460,12 @@ namespace LitePlacer
 
         private bool OfferHoming()
         {
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** OfferHoming(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
             DialogResult dialogResult = ShowMessageBox(
@@ -2457,6 +2483,12 @@ namespace LitePlacer
 
         private bool DoHoming()
         {
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** DoHoming(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             OpticalHome_button.Enabled = false;
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
@@ -2500,6 +2532,12 @@ namespace LitePlacer
 
         private bool DoTheShake()
         {
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** Vigorous homing(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             DisplayText("Vigorous homing");
             if ((Setting.General_MachineSizeX < 300) || (Setting.General_MachineSizeY < 300))
             {
@@ -2528,6 +2566,12 @@ namespace LitePlacer
 
         private bool MechanicalHoming_m()
         {
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** MechanicalHoming_m(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             Cnc.ProbingMode(false);
             if (!Cnc.Home_m("Z"))
             {
@@ -2583,6 +2627,12 @@ namespace LitePlacer
 
         private bool OpticalHoming_m()
         {
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** OpticalHoming_m(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             DisplayText("Optical homing");
             VideoAlgorithmsCollection.FullAlgorithmDescription HomeAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
             if (!VideoAlgorithms.FindAlgorithm("Homing", out HomeAlg))
@@ -2688,6 +2738,12 @@ namespace LitePlacer
 
         private void CNC_Park()
         {
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** CNC_Park(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
+
             DisplayText("Goto park");
             CNC_Z_m(0);
             CNC_XYA_m(Setting.General_ParkX, Setting.General_ParkY, 0.0);
@@ -2802,10 +2858,16 @@ namespace LitePlacer
 
         public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y)
         {
-            DisplayText("GoToFeatureLocation_m()");
-            SelectCamera(DownCamera);
             X = 100;
             Y = 100;
+            if (Cnc.ErrorState)
+            {
+                DisplayText("*** GoToFeatureLocation_m(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
+            DisplayText("GoToFeatureLocation_m()");
+            SelectCamera(DownCamera);
             if (!DownCamera.IsRunning())
             {
                 DisplayText("***Camera not running", KnownColor.Red, true);
@@ -4378,6 +4440,7 @@ namespace LitePlacer
                 Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                 if (Cnc.JustConnected())
                 {
+                    CheckZdownSwitchParameters(out DialogResult res);
                     Cnc.PumpDefaultSetting();
                     Cnc.VacuumDefaultSetting();
                     OfferHoming();
@@ -4936,6 +4999,7 @@ namespace LitePlacer
         WriteZdownSwitchParametersFromSettingsToBoard(): software => control board
         WriteZdownSwitchParametersFromBoardToSettings(): control board => software
         CheckZdownSwitchParameters(): Does the comparision, asks user what to do if different and does it.
+
         */
         // ==========================================================================================================
 
@@ -5037,7 +5101,7 @@ namespace LitePlacer
                     return true;
                 }
             }
-            // Should not get here. Throw an error in case I saw it wrong. :-)
+            // Should not get here, but the compiler needs another return statement. Throw an error in case I saw it wrong. :-)
             ShowMessageBox("Unhandled software option in CheckZdownSwitchParameters()",
             "Programmer error", MessageBoxButtons.OK);
             res = DialogResult.Cancel;

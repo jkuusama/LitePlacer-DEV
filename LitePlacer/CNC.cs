@@ -21,6 +21,12 @@ Here are templates for that:
 
         public void ()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.###(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.();
@@ -37,6 +43,12 @@ Here are templates for that:
 
         public bool ()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.###(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.())
@@ -559,6 +571,12 @@ namespace LitePlacer
 
         public bool SetMachineSizeX(int Xsize)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.SetMachineSizeX(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.SetMachineSizeX(Xsize))
@@ -595,6 +613,12 @@ namespace LitePlacer
 
         public bool SetMachineSizeY(int Ysize)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.SetMachineSizeY(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.SetMachineSizeY(Ysize))
@@ -632,6 +656,12 @@ namespace LitePlacer
 
         public void DisableZswitches()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.DisableZswitches(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.DisableZswitches();
@@ -650,6 +680,12 @@ namespace LitePlacer
 
         public void EnableZswitches()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.EnableZswitches(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.EnableZswitches();
@@ -668,6 +704,12 @@ namespace LitePlacer
         public bool GetZ_LatchBackoff(out double val)
         {
             val = 0.0;
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.GetZ_LatchBackoff(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.GetZ_LatchBackoff(out val))
@@ -703,6 +745,12 @@ namespace LitePlacer
 
         public bool SetZ_LatchBackoff(double val)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.GetZ_LatchBackoff(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.SetZ_LatchBackoff(val))
@@ -739,6 +787,12 @@ namespace LitePlacer
         public bool GetZ_ZeroBackoff(out double val)
         {
             val = 0.0;
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.GetZ_ZeroBackoff(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.GetZ_ZeroBackoff(out val))
@@ -775,6 +829,12 @@ namespace LitePlacer
 
         public bool SetZ_ZeroBackoff(double val)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.SetZ_ZeroBackoff(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.SetZ_ZeroBackoff(val))
@@ -812,6 +872,12 @@ namespace LitePlacer
 
         public bool SetZ_SwitchClearance(double val)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.SetZ_SwitchClearance(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.SetZ_SwitchClearance(val))
@@ -848,6 +914,12 @@ namespace LitePlacer
 
         public void ProbingMode(bool set)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.ProbingMode(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.ProbingMode(set);
@@ -866,6 +938,12 @@ namespace LitePlacer
 
         public bool Nozzle_ProbeDown()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.Nozzle_ProbeDown(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.Nozzle_ProbeDown())
@@ -901,6 +979,11 @@ namespace LitePlacer
 
         public void MotorPowerOn()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.MotorPowerOn(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.MotorPowerOn();
@@ -919,6 +1002,11 @@ namespace LitePlacer
 
         public void MotorPowerOff()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.MotorPowerOff(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.MotorPowerOff();
@@ -938,11 +1026,21 @@ namespace LitePlacer
 
         public void VacuumDefaultSetting()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.VacuumDefaultSetting(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
             VacuumOff();
         }
 
         public void VacuumOn()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.VacuumOn(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.VacuumOn();
@@ -959,6 +1057,11 @@ namespace LitePlacer
 
         public void VacuumOff()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.VacuumOff(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.VacuumOff();
@@ -979,12 +1082,22 @@ namespace LitePlacer
 
         public void PumpDefaultSetting()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.PumpDefaultSetting(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
             PumpOff();
         }
 
 
         public void PumpOn()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.PumpOn(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.PumpOn();
@@ -1001,6 +1114,11 @@ namespace LitePlacer
 
         public void PumpOff()
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.PumpOff(), board in error state.", KnownColor.DarkRed, true);
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.PumpOff();
@@ -1041,6 +1159,11 @@ namespace LitePlacer
 
         public bool Home_m(string axis)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.Home_m(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.Home_m(axis))
@@ -1080,6 +1203,11 @@ namespace LitePlacer
 
         public bool Execute_XYA(double X, double Y, double A, double speed, string MoveType)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.Execute_XYA(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.XYA(X, Y, A, speed, MoveType))
@@ -1115,6 +1243,11 @@ namespace LitePlacer
 
         public bool Execute_A(double A, double speed, string MoveType)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.Execute_A(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.A(A, speed, MoveType))
@@ -1150,6 +1283,11 @@ namespace LitePlacer
 
         public bool Execute_Z(double Z, double speed, string MoveType)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.Execute_Z(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 if (Duet3.Z(Z, speed, MoveType))
@@ -1188,6 +1326,12 @@ namespace LitePlacer
         // Main XYA move command
         public bool XYA(double X, double Y, double A)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.XYA(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             bool CompensateXY = false;
             bool CompensateA = false;
 
@@ -1238,6 +1382,12 @@ namespace LitePlacer
         // Main A move command
         public bool A(double A)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.A(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             if (Math.Abs(A - CurrentA) < 0.005)
             {
                 MainForm.DisplayText(" -- zero A movement command --");
@@ -1261,6 +1411,12 @@ namespace LitePlacer
         // Main Z move command
         public bool Z(double Z)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.Z(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             double speed = 0;
             string MoveType = "G0";
             double dZ = Math.Abs(Z - CurrentZ);
@@ -1283,6 +1439,12 @@ namespace LitePlacer
 
         private bool XYA_move(double X, double Y, double Am)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.XYA_move(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             // double speed = (double)Properties.Settings.Default.CNC_SmallMovementSpeed;
             // string MoveType = "G0";
             double dX = Math.Abs(X - CurrentX);
@@ -1349,6 +1511,12 @@ namespace LitePlacer
 
         private bool A_move(double A)
         {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** Cnc.A_move(), board in error state.", KnownColor.DarkRed, true);
+                return false;
+            }
+
             double dA = Math.Abs(A - CurrentA);
             if (dA<0.01)
             {
