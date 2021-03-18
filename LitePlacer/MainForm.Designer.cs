@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -427,8 +427,6 @@
             this.AppSettingsSave_button = new System.Windows.Forms.Button();
             this.Board_label = new System.Windows.Forms.Label();
             this.label159 = new System.Windows.Forms.Label();
-            this.NozzleBelowPCB_textBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.DisableLog_checkBox = new System.Windows.Forms.CheckBox();
             this.CheckNow_button = new System.Windows.Forms.Button();
             this.CheckForUpdate_checkBox = new System.Windows.Forms.CheckBox();
@@ -440,18 +438,18 @@
             this.label227 = new System.Windows.Forms.Label();
             this.label160 = new System.Windows.Forms.Label();
             this.TestSwitchClearance_button = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.TouchDifference_textBox = new System.Windows.Forms.TextBox();
             this.label161 = new System.Windows.Forms.Label();
             this.Z_SwitchClearance_textBox = new System.Windows.Forms.TextBox();
             this.label136 = new System.Windows.Forms.Label();
             this.PlacementDepth_textBox = new System.Windows.Forms.TextBox();
             this.label112 = new System.Windows.Forms.Label();
-            this.BackOff_textBox = new System.Windows.Forms.TextBox();
             this.Z_FullDown_textBox = new System.Windows.Forms.TextBox();
             this.CancelProbing_button = new System.Windows.Forms.Button();
             this.SetProbing_button = new System.Windows.Forms.Button();
             this.label111 = new System.Windows.Forms.Label();
-            this.label117 = new System.Windows.Forms.Label();
+            this.NozzleBelowPCB_textBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SlackCompensationA_checkBox = new System.Windows.Forms.CheckBox();
             this.AltJogSpeed_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.NormalJogSpeed_numericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -3017,8 +3015,6 @@
             this.tabPageBasicSetup.Controls.Add(this.AppSettingsSave_button);
             this.tabPageBasicSetup.Controls.Add(this.Board_label);
             this.tabPageBasicSetup.Controls.Add(this.label159);
-            this.tabPageBasicSetup.Controls.Add(this.NozzleBelowPCB_textBox);
-            this.tabPageBasicSetup.Controls.Add(this.label1);
             this.tabPageBasicSetup.Controls.Add(this.DisableLog_checkBox);
             this.tabPageBasicSetup.Controls.Add(this.CheckNow_button);
             this.tabPageBasicSetup.Controls.Add(this.CheckForUpdate_checkBox);
@@ -3105,7 +3101,7 @@
             // 
             this.label116.AutoSize = true;
             this.label116.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label116.Location = new System.Drawing.Point(396, 494);
+            this.label116.Location = new System.Drawing.Point(396, 457);
             this.label116.Name = "label116";
             this.label116.Size = new System.Drawing.Size(182, 16);
             this.label116.TabIndex = 133;
@@ -5448,23 +5444,6 @@
             this.label159.Text = "Application Settings:";
             this.toolTip1.SetToolTip(this.label159, "Connection status");
             // 
-            // NozzleBelowPCB_textBox
-            // 
-            this.NozzleBelowPCB_textBox.Location = new System.Drawing.Point(932, 444);
-            this.NozzleBelowPCB_textBox.Name = "NozzleBelowPCB_textBox";
-            this.NozzleBelowPCB_textBox.Size = new System.Drawing.Size(55, 20);
-            this.NozzleBelowPCB_textBox.TabIndex = 104;
-            this.NozzleBelowPCB_textBox.TextChanged += new System.EventHandler(this.NozzleBelowPCB_textBox_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(789, 447);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(137, 13);
-            this.label1.TabIndex = 103;
-            this.label1.Text = "Allow Nozzle to below PCB:";
-            // 
             // DisableLog_checkBox
             // 
             this.DisableLog_checkBox.AutoSize = true;
@@ -5528,14 +5507,12 @@
             // 
             // NozzleHeightInstructions_label
             // 
-            this.NozzleHeightInstructions_label.AutoSize = true;
             this.NozzleHeightInstructions_label.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NozzleHeightInstructions_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NozzleHeightInstructions_label.Location = new System.Drawing.Point(584, 477);
+            this.NozzleHeightInstructions_label.Location = new System.Drawing.Point(399, 475);
             this.NozzleHeightInstructions_label.Name = "NozzleHeightInstructions_label";
-            this.NozzleHeightInstructions_label.Size = new System.Drawing.Size(327, 34);
+            this.NozzleHeightInstructions_label.Size = new System.Drawing.Size(527, 34);
             this.NozzleHeightInstructions_label.TabIndex = 51;
-            this.NozzleHeightInstructions_label.Text = "Jog Z axis until the Nozzle just barely touches the PCB\r\nthen click \"next\"";
             this.NozzleHeightInstructions_label.Visible = false;
             // 
             // panel9
@@ -5546,18 +5523,18 @@
             this.panel9.Controls.Add(this.label227);
             this.panel9.Controls.Add(this.label160);
             this.panel9.Controls.Add(this.TestSwitchClearance_button);
-            this.panel9.Controls.Add(this.textBox2);
+            this.panel9.Controls.Add(this.TouchDifference_textBox);
             this.panel9.Controls.Add(this.label161);
             this.panel9.Controls.Add(this.Z_SwitchClearance_textBox);
             this.panel9.Controls.Add(this.label136);
             this.panel9.Controls.Add(this.PlacementDepth_textBox);
             this.panel9.Controls.Add(this.label112);
-            this.panel9.Controls.Add(this.BackOff_textBox);
             this.panel9.Controls.Add(this.Z_FullDown_textBox);
             this.panel9.Controls.Add(this.CancelProbing_button);
             this.panel9.Controls.Add(this.SetProbing_button);
             this.panel9.Controls.Add(this.label111);
-            this.panel9.Controls.Add(this.label117);
+            this.panel9.Controls.Add(this.NozzleBelowPCB_textBox);
+            this.panel9.Controls.Add(this.label1);
             this.panel9.Location = new System.Drawing.Point(399, 513);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(603, 114);
@@ -5590,7 +5567,7 @@
             // 
             this.label160.AutoSize = true;
             this.label160.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label160.Location = new System.Drawing.Point(4, 51);
+            this.label160.Location = new System.Drawing.Point(220, 4);
             this.label160.Name = "label160";
             this.label160.Size = new System.Drawing.Size(87, 16);
             this.label160.TabIndex = 109;
@@ -5608,17 +5585,17 @@
             this.TestSwitchClearance_button.UseVisualStyleBackColor = true;
             this.TestSwitchClearance_button.Click += new System.EventHandler(this.TestSwitchClearance_button_Click);
             // 
-            // textBox2
+            // TouchDifference_textBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(507, 51);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(55, 20);
-            this.textBox2.TabIndex = 107;
+            this.TouchDifference_textBox.Location = new System.Drawing.Point(324, 80);
+            this.TouchDifference_textBox.Name = "TouchDifference_textBox";
+            this.TouchDifference_textBox.Size = new System.Drawing.Size(55, 20);
+            this.TouchDifference_textBox.TabIndex = 107;
             // 
             // label161
             // 
             this.label161.AutoSize = true;
-            this.label161.Location = new System.Drawing.Point(354, 55);
+            this.label161.Location = new System.Drawing.Point(171, 84);
             this.label161.Name = "label161";
             this.label161.Size = new System.Drawing.Size(147, 13);
             this.label161.TabIndex = 106;
@@ -5626,24 +5603,24 @@
             // 
             // Z_SwitchClearance_textBox
             // 
-            this.Z_SwitchClearance_textBox.Location = new System.Drawing.Point(273, 23);
+            this.Z_SwitchClearance_textBox.Location = new System.Drawing.Point(112, 52);
             this.Z_SwitchClearance_textBox.Name = "Z_SwitchClearance_textBox";
-            this.Z_SwitchClearance_textBox.Size = new System.Drawing.Size(55, 20);
+            this.Z_SwitchClearance_textBox.Size = new System.Drawing.Size(51, 20);
             this.Z_SwitchClearance_textBox.TabIndex = 103;
             this.Z_SwitchClearance_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Z_SwitchClearance_textBox_KeyPress);
             // 
             // label136
             // 
             this.label136.AutoSize = true;
-            this.label136.Location = new System.Drawing.Point(166, 28);
+            this.label136.Location = new System.Drawing.Point(13, 55);
             this.label136.Name = "label136";
-            this.label136.Size = new System.Drawing.Size(101, 13);
+            this.label136.Size = new System.Drawing.Size(93, 13);
             this.label136.TabIndex = 102;
-            this.label136.Text = "Clearance distance:";
+            this.label136.Text = "Switch Clearance:";
             // 
             // PlacementDepth_textBox
             // 
-            this.PlacementDepth_textBox.Location = new System.Drawing.Point(507, 77);
+            this.PlacementDepth_textBox.Location = new System.Drawing.Point(538, 52);
             this.PlacementDepth_textBox.Name = "PlacementDepth_textBox";
             this.PlacementDepth_textBox.Size = new System.Drawing.Size(55, 20);
             this.PlacementDepth_textBox.TabIndex = 101;
@@ -5652,23 +5629,15 @@
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(411, 80);
+            this.label112.Location = new System.Drawing.Point(442, 55);
             this.label112.Name = "label112";
             this.label112.Size = new System.Drawing.Size(90, 13);
             this.label112.TabIndex = 100;
             this.label112.Text = "Placement depth:";
             // 
-            // BackOff_textBox
-            // 
-            this.BackOff_textBox.Location = new System.Drawing.Point(273, 77);
-            this.BackOff_textBox.Name = "BackOff_textBox";
-            this.BackOff_textBox.Size = new System.Drawing.Size(55, 20);
-            this.BackOff_textBox.TabIndex = 99;
-            this.BackOff_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BackOff_textBox_KeyPress);
-            // 
             // Z_FullDown_textBox
             // 
-            this.Z_FullDown_textBox.Location = new System.Drawing.Point(507, 23);
+            this.Z_FullDown_textBox.Location = new System.Drawing.Point(324, 52);
             this.Z_FullDown_textBox.Name = "Z_FullDown_textBox";
             this.Z_FullDown_textBox.Size = new System.Drawing.Size(55, 20);
             this.Z_FullDown_textBox.TabIndex = 98;
@@ -5676,7 +5645,7 @@
             // 
             // CancelProbing_button
             // 
-            this.CancelProbing_button.Location = new System.Drawing.Point(87, 76);
+            this.CancelProbing_button.Location = new System.Drawing.Point(304, 23);
             this.CancelProbing_button.Name = "CancelProbing_button";
             this.CancelProbing_button.Size = new System.Drawing.Size(75, 23);
             this.CancelProbing_button.TabIndex = 52;
@@ -5688,7 +5657,7 @@
             // 
             // SetProbing_button
             // 
-            this.SetProbing_button.Location = new System.Drawing.Point(7, 76);
+            this.SetProbing_button.Location = new System.Drawing.Point(223, 23);
             this.SetProbing_button.Name = "SetProbing_button";
             this.SetProbing_button.Size = new System.Drawing.Size(75, 23);
             this.SetProbing_button.TabIndex = 50;
@@ -5700,20 +5669,28 @@
             // label111
             // 
             this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(394, 26);
+            this.label111.Location = new System.Drawing.Point(211, 55);
             this.label111.Name = "label111";
             this.label111.Size = new System.Drawing.Size(107, 13);
             this.label111.TabIndex = 52;
             this.label111.Text = "Z0 to PCB, full down:";
             // 
-            // label117
+            // NozzleBelowPCB_textBox
             // 
-            this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(220, 81);
-            this.label117.Name = "label117";
-            this.label117.Size = new System.Drawing.Size(47, 13);
-            this.label117.TabIndex = 76;
-            this.label117.Text = "Backoff:";
+            this.NozzleBelowPCB_textBox.Location = new System.Drawing.Point(538, 80);
+            this.NozzleBelowPCB_textBox.Name = "NozzleBelowPCB_textBox";
+            this.NozzleBelowPCB_textBox.Size = new System.Drawing.Size(55, 20);
+            this.NozzleBelowPCB_textBox.TabIndex = 104;
+            this.NozzleBelowPCB_textBox.TextChanged += new System.EventHandler(this.NozzleBelowPCB_textBox_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(395, 84);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(137, 13);
+            this.label1.TabIndex = 103;
+            this.label1.Text = "Allow Nozzle to below PCB:";
             // 
             // SlackCompensationA_checkBox
             // 
@@ -7223,14 +7200,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7316,14 +7293,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -10197,7 +10174,6 @@
 		private System.Windows.Forms.Label TrueX_label;
 		private System.Windows.Forms.Label label90;
         private System.Windows.Forms.TextBox SquareCorrection_textBox;
-        private System.Windows.Forms.Label label117;
         private System.Windows.Forms.Button Tape_GoToNext_button;
         private System.Windows.Forms.Button Tape_resetZs_button;
         private System.Windows.Forms.Label label118;
@@ -10249,7 +10225,6 @@
         private System.Windows.Forms.Button CancelProbing_button;
         private System.Windows.Forms.Label label112;
         private System.Windows.Forms.TextBox PlacementDepth_textBox;
-        private System.Windows.Forms.TextBox BackOff_textBox;
         private System.Windows.Forms.TextBox Z_FullDown_textBox;
         private System.Windows.Forms.CheckBox OmitNozzleCalibration_checkBox;
         private System.Windows.Forms.CheckBox SkipMeasurements_checkBox;
@@ -10736,7 +10711,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox TouchDifference_textBox;
         private System.Windows.Forms.Label label161;
         private System.Windows.Forms.Button TestSwitchClearance_button;
         private System.Windows.Forms.Label label116;

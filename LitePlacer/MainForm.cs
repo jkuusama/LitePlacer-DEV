@@ -215,7 +215,6 @@ namespace LitePlacer
             Relative_Button.Checked = true;
 
             NozzleHeightInstructions_label.Text = "";
-            NozzleHeightInstructions_label.Visible = false;
 
         }
 
@@ -330,7 +329,6 @@ namespace LitePlacer
             NozzleBelowPCB_textBox.Text = Setting.General_BelowPCB_Allowance.ToString(CultureInfo.InvariantCulture);
 
             Z_FullDown_textBox.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture);
-            BackOff_textBox.Text = Setting.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture);
             PlacementDepth_textBox.Text = Setting.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
             // Z_SwitchClearance_textBox.Text = Setting.General_Z_SwitchClearance.ToString("0.00", CultureInfo.InvariantCulture);
 
@@ -5024,7 +5022,7 @@ namespace LitePlacer
                 res = true;
                 return true;
             }
-            return false;
+            return true;
         }
 
         private bool WriteZdownSwitchParametersFromSettingsToBoard()
@@ -5074,9 +5072,9 @@ namespace LitePlacer
                 if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
                 {
                     res = ShowMessageBox(
-                        "TinyG switch parameters on board are different than stored in software\n\r" +
-                        "Yes: Restore the defaults (use this if you are recovering from an error)" +
-                        "No: Keep TinyG values and remember them (use this if you have changed the values yourself)" +
+                        "TinyG switch parameters on board are different than stored in software.\n\r\n\r" +
+                        "Yes: Restore board values to defaults (use this if you are recovering from an error)\n\r" +
+                        "No: Keep TinyG values and remember them (use this if you have changed the values yourself)\n\r" +
                         "Cancel: Cancel whatever operation was going on, don't change anything",
                         "Z switch parameters changed", MessageBoxButtons.YesNoCancel);
                     if (res == DialogResult.Yes)
@@ -5119,7 +5117,6 @@ namespace LitePlacer
             Setting.SetProbing_stage = 0;
             ZGuardOn();
             CancelProbing_button.Visible = false;
-            NozzleHeightInstructions_label.Visible = false;
             Cnc.ProbingMode(false);
             Cnc.Home_m("Z");
             SetProbing_button.Enabled = true;
@@ -5139,7 +5136,6 @@ namespace LitePlacer
                     CancelProbing_button.Visible = true;
                     CancelProbing_button.Enabled = true;
                     NozzleHeightInstructions_label.Text = "Put a regular height PCB under the Nozzle, \n\rthen click \"Next\"";
-                    NozzleHeightInstructions_label.Visible = true;
                     SetProbing_button.Text = "Next";
                     Setting.SetProbing_stage = 1;
                     break;
@@ -5165,7 +5161,6 @@ namespace LitePlacer
                     Cnc.ProbingMode(false);
                     SetProbing_button.Text = "Start";
                     NozzleHeightInstructions_label.Text = "";
-                    NozzleHeightInstructions_label.Visible = false;
                     CancelProbing_button.Visible = false;
                     SetProbing_button.Enabled = false;
                     Cnc.Home_m("Z");
@@ -5179,7 +5174,6 @@ namespace LitePlacer
                        MessageBoxButtons.OK);
                     Setting.SetProbing_stage = 0;
                     Z_FullDown_textBox.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture);
-                    BackOff_textBox.Text = Setting.General_PlacementBackOff.ToString("0.00", CultureInfo.InvariantCulture);
 
                     // If tapes have z heights set, offer to zero out those:
                     bool ZisSet = false;
@@ -5226,7 +5220,6 @@ namespace LitePlacer
                 case 0:
                     NozzleHeightInstructions_label.Text = "Ensure nozzle is not over empty space (such as up cam hole)," +
                                                                  "\n\rthen click \"Next\"";
-                    NozzleHeightInstructions_label.Visible = true;
                     TestSwitchClearanceCancel_button.Visible = true;
                     TestSwitchClearance_button.Text = "Next";
                     Setting.TestSwitchClearance_stage = 1;
@@ -5235,14 +5228,12 @@ namespace LitePlacer
                 case 1:
                     NozzleHeightInstructions_label.Text = "Jog nozzle up until the switch clears, with margin (such as 1mm)" +
                                              "\n\rthen click \"Ready\"";
-                    NozzleHeightInstructions_label.Visible = true;
                     TestSwitchClearance_button.Text = "ready";
                     Setting.TestSwitchClearance_stage = 2;
                     break;
 
                 case 2:
                     NozzleHeightInstructions_label.Text = "";
-                    NozzleHeightInstructions_label.Visible = false;
                     TestSwitchClearance_button.Text = "Set";
                     Setting.TestSwitchClearance_stage = 0;
                     Setting.General_SwitchClearanceSet = true;
@@ -5263,7 +5254,7 @@ namespace LitePlacer
             SetProbing_button.Enabled = false;
             Setting.SetProbing_stage = 0;
             CancelProbing_button.Visible = false;
-            NozzleHeightInstructions_label.Visible = false;
+            NozzleHeightInstructions_label.Text = "";
         }
 
         private void TestSwitchClearanceCancel_button_Click(object sender, EventArgs e)
@@ -5498,19 +5489,6 @@ namespace LitePlacer
             }
         }
 
-        private void BackOff_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            BackOff_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(BackOff_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.General_PlacementBackOff = val;
-                    BackOff_textBox.ForeColor = Color.Black;
-                }
-            }
-        }
 
         private void Z_SwitchClearance_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -5520,9 +5498,8 @@ namespace LitePlacer
             {
                 if (double.TryParse(Z_SwitchClearance_textBox.Text.Replace(',', '.'), out val))
                 {
-                    Setting.General_Zdown_SwitchClearance = val;
+                    Setting.General_ZprobingBackoff = val;
                     Z_SwitchClearance_textBox.ForeColor = Color.Black;
-                    Cnc.SetZ_SwitchClearance(val);
                 }
             }
         }
@@ -13388,8 +13365,6 @@ namespace LitePlacer
                 ZGuardOn();
             }
         }
-
-
     }	// end of: 	public partial class FormMain : Form
 
 

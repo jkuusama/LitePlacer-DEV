@@ -652,7 +652,26 @@ namespace LitePlacer
             }
         }
 
-        // =======================================
+        /* =============================================================================================
+
+        Z switches and probing  routines:
+        DisableZswitches(): Board ignores all switch functions
+        EnableZswitches(): Enables swiches as set in the UI
+
+        Backoffs: Latch backoff is how much z needs to move after switch trigger to clear the switch. 
+        This normally leaves z too close to the switch, so zero backoff is added to that in normal operation
+
+        GetZ_LatchBackoff(): 
+        SetZ_LatchBackoff()
+        GetZ_ZeroBackoff()
+        SetZ_ZeroBackoff()
+
+        Probing: Nozzle goews down so that switch triggers and backs off "probing backoff" amount. The z value now is the "full down" smount.
+
+        ProbingMode(): Sets board to brobing
+        Nozzle_ProbeDown(): Nozzle goes down until switch clears, backs off 
+
+*/
 
         public void DisableZswitches()
         {
@@ -870,48 +889,6 @@ namespace LitePlacer
 
 
 
-        public bool SetZ_SwitchClearance(double val)
-        {
-            if (ErrorState)
-            {
-                MainForm.DisplayText("*** Cnc.SetZ_SwitchClearance(), board in error state.", KnownColor.DarkRed, true);
-                return false;
-            }
-
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                if (Duet3.SetZ_SwitchClearance(val))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            }
-            else if (Controlboard == ControlBoardType.TinyG)
-            {
-                if (TinyG.SetZ_SwitchClearance(val))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            }
-            else
-            {
-                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
-                Connected = false;
-                ErrorState = true;
-                return false;
-            }
-        }
- 
-
         public void ProbingMode(bool set)
         {
             if (ErrorState)
@@ -976,6 +953,8 @@ namespace LitePlacer
             return false;
         }
 
+
+        // =============================================================================================
 
         public void MotorPowerOn()
         {

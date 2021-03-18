@@ -103,27 +103,42 @@ namespace LitePlacer
         public double General_ZTestTravel { get; set; } = 20;
 
         public double General_Z0toPCB { get; set; } = 0;
+
+        // These values are so that we know if the software has crashed during operation that needs additional cleanup on cnc side
         public int SetProbing_stage { get; set; } = 0;
         public int TestSwitchClearance_stage { get; set; } = 0;
 
+        // Values involved with z probing. The probing operation:
+        // When the software needs z value for pickup or placement, it measures it. In probing, first the nozzle goes down 
+        // so that switch triggers. Then it backs off "Z probing backoff" amount. The z value now is the "full down" amount.
 
+        public double General_ZprobingBackoff { get; set; } = 2;
 
+        // During setup, we find out the difference of "full down" and "just touching". This is 
+        public bool General_ZTouchDifference { get; set; } = false;
+
+        // For next pickup and placement of the same component, the nozzle goes down "placement depth" from the just "touching" value.
+        // We get this from the probing measurement. The value is the probing result - Z touch difference + placement depth. This is the stored value.
+        // The placement depth is user set.
+        public double General_PlacementDepth { get; set; } = 1.0; 
+
+        // To setup probing, we need several values:
         public bool General_SwitchClearanceSet { get; set; } = false;
         // if z down switch clearance is set. If it is, the PCB height calibration buttons are enabled
-        public double General_Zdown_SwitchClearance { get; set; } = 2;  // How much the head needs to be lifted for the switch to clear
 
+        // The switches have different values for normal homing and probing. For normal homing, the nozzle goes up until switch triggers.
+        // Then it backs off for the switch to clear. This is 
+        public double General_Z_LatchBackoff { get; set; } = 2.0;       // (Also read from the board if the user has changed it.)
 
-        public double General_PlacementBackOff { get; set; } = 0;   // How much deeper from "just touching" the placement goes
-
+        // In addition, it backs off a little more, if using TinyG board.
         public double General_Z_ZeroBackoff { get; set; } = 2.0;
-        public double General_Z_ZeroBackoff_Default { get; } = 2.0;
-        public double General_Z_LatchBackoff { get; set; } = 2.0;
-        public double General_Z_LatchBackoff_Default { get; } = 2.0;
-        /*
-                public double General_Zdown_SwitchClearance { get; set; } = 2;  // 
-                public double TinyG_Zswitch_Clearance { get; set; } = 2.0;
-                public double TinyG_Zswitch_Clearance_Default { get; } = 2.0;
-        */
+
+        // For probing, we use General_ZprobingBackoff instead of General_Z_LatchBackoff and set General_Z_ZeroBackoff to zero (if on TinyG board).
+
+        // Relation to UI:
+        // Switch Clearance, set in Z_SwitchClearance_textBox, sets: General_ZprobingBackoff
+        // Z0 to PCB, full down, set in Z_FullDown_textBox, sets: General_Z0toPCB
+        // Difference to "just touching", set in TouchDifference_textBox, sets: General_ZTouchDifference
 
 
         public bool Nozzles_AfullSpeed { get; set; } = true;

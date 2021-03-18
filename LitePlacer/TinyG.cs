@@ -397,7 +397,7 @@ namespace LitePlacer
         public bool GetZ_ZeroBackoff(out double val)
         {
             val = 0.0;
-            string line = ReadLineDirectly("{\"zzb\"}", true);
+            string line = ReadLineDirectly("{\"zzb\":\"\"}", true);
             if (line=="")
             {
                 return false;
@@ -405,7 +405,7 @@ namespace LitePlacer
             else
             {
                 line = GetParameterValue(line);
-                if (!double.TryParse(line.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out val))
+                if (double.TryParse(line.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out val))
                 {
                     return true;
                 }
@@ -426,7 +426,7 @@ namespace LitePlacer
         public bool GetZ_LatchBackoff(out double val)
         {
             val = 0.0;
-            string line = ReadLineDirectly("{\"zlb\"}", true);
+            string line = ReadLineDirectly("{\"zlb\":\"\"}", true);
             if (line == "")
             {
                 return false;
@@ -434,7 +434,7 @@ namespace LitePlacer
             else
             {
                 line = GetParameterValue(line);
-                if (!double.TryParse(line.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out val))
+                if (double.TryParse(line.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out val))
                 {
                     return true;
                 }
@@ -446,21 +446,6 @@ namespace LitePlacer
         }
 
         public bool SetZ_LatchBackoff(double val)
-        {
-            return Write_m("{\"zlb\"," + val.ToString(CultureInfo.InvariantCulture) + "}", 50);
-        }
-
-
-
-
-        public string GetZ_SwitchClearance()
-        {
-            string line = ReadLineDirectly("{\"zlb\"}", true);
-            return GetParameterValue(line);
-        }
-
-
-        public bool SetZ_SwitchClearance(double val)
         {
             return Write_m("{\"zlb\"," + val.ToString(CultureInfo.InvariantCulture) + "}", 50);
         }
