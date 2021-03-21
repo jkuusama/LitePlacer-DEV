@@ -342,6 +342,7 @@ namespace LitePlacer
             // Get start points
             double X = 0.0;
             double Y = 0.0;
+            double A = 0.0;
             if (!double.TryParse(Grid.Rows[TapeNum].Cells["FirstX_Column"].Value.ToString().Replace(',', '.'), out X))
             {
                 MainForm.ShowMessageBox(
@@ -419,7 +420,7 @@ namespace LitePlacer
             do
             {
                 ok = true;
-                if (!MainForm.GoToFeatureLocation_m(0.2, out X, out Y))
+                if (!MainForm.GoToFeatureLocation_m(0.2, out X, out Y, out A))
                 {
                     ok = false;
                     string nl = Environment.NewLine;
@@ -759,11 +760,12 @@ namespace LitePlacer
             // Get hole exact location:
             // We want to find the hole less than 2mm from where we think it should be. (Otherwise there is a risk
             // of picking a wrong hole.)
+            double A = 0.0;
             bool ok = true;
             do
             {
                 ok = true;
-                if (!MainForm.GoToFeatureLocation_m(0.5, out HoleX, out HoleY))
+                if (!MainForm.GoToFeatureLocation_m(0.5, out HoleX, out HoleY, out A))
                 {
                     ok = false;
                     string nl = Environment.NewLine;
@@ -794,7 +796,6 @@ namespace LitePlacer
 			// find the part location and go there:
             double PartX = 0.0;
             double PartY = 0.0;
-			double A= 0.0;
 
             if (!GetPartLocationFromHolePosition_m(TapeNumber, HoleX, HoleY, out PartX, out PartY, out A))
             {

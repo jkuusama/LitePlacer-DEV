@@ -111,6 +111,7 @@ namespace LitePlacer
             DialogForm.HeaderString = header;
             DialogForm.MessageString = message;
             DialogForm.Button1Txt = str1;
+            DialogForm.Button1Txt = str1;
             DialogForm.Button2Txt = str2;
             DialogForm.Button3Txt = str3;
             MessageboxDone = false;
@@ -2640,12 +2641,13 @@ namespace LitePlacer
 
             double X;
             double Y;
+            double A = 0.0;
             bool ok = true;
             // Initial move: goto on top of homing mark
             do
             {
                 ok = true;
-                if (!GoToFeatureLocation_m(0.1, out X, out Y))
+                if (!GoToFeatureLocation_m(0.1, out X, out Y, out A))
                 {
                     ok = false;
                     string nl = Environment.NewLine;
@@ -2851,10 +2853,11 @@ namespace LitePlacer
         // Measurement is already set up
         // =====================================================================
 
-        public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y)
+        public bool GoToFeatureLocation_m(double MoveTolerance, out double X, out double Y, out double A)
         {
             X = 100;
             Y = 100;
+            A = 0;
             if (Cnc.ErrorState)
             {
                 DisplayText("*** GoToFeatureLocation_m(), board in error state.", KnownColor.DarkRed, true);
@@ -2875,7 +2878,7 @@ namespace LitePlacer
             {
                 for (tries = 0; tries < 8; tries++)
                 {
-                    if (DownCamera.Measure(out X, out Y, out double Ares, false))
+                    if (DownCamera.Measure(out X, out Y, out A, false))
                     {
                         break;
                     }
@@ -2886,12 +2889,12 @@ namespace LitePlacer
                     }
                 }
                 DisplayText("Optical positioning, round " + count.ToString(CultureInfo.InvariantCulture)
-                    + ", dX= " + X.ToString(CultureInfo.InvariantCulture) + ", dY= " + Y.ToString(CultureInfo.InvariantCulture)
-                    + ", tries= " + tries.ToString(CultureInfo.InvariantCulture));
+                    + ", dX= " + X.ToString("0.000",CultureInfo.InvariantCulture) + ", dY= " + Y.ToString("0.000", CultureInfo.InvariantCulture)
+                    + "A= " + X.ToString("0.000", CultureInfo.InvariantCulture) + ", tries= " + tries.ToString(CultureInfo.InvariantCulture));
                 // If we are further than move tolerance, go there
                 if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance))
                 {
-                    if (!CNC_XYA_m(Cnc.CurrentX + X, Cnc.CurrentY + Y, Cnc.CurrentA))
+                    if (!CNC_XYA_m(Cnc.CurrentX + X, Cnc.CurrentY + Y, A))
                     {
                         return false;
                     }
@@ -3301,17 +3304,17 @@ namespace LitePlacer
 
             double f;
             f = Setting.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
-            DownCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
+            DownCameraBoxX_textBox.Text = f.ToString("0.000", CultureInfo.InvariantCulture);
             DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             f = Setting.DownCam_YmmPerPixel * DownCamera.BoxSizeY;
-            DownCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
+            DownCameraBoxY_textBox.Text = f.ToString("0.0000", CultureInfo.InvariantCulture);
             DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
 
             f = Setting.UpCam_XmmPerPixel * UpCamera.BoxSizeX;
             UpCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
             UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             f = Setting.UpCam_YmmPerPixel * UpCamera.BoxSizeY;
-            UpCameraBoxY_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
+            UpCameraBoxY_textBox.Text = f.ToString("0.000", CultureInfo.InvariantCulture);
             UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
 
             getDownCamList();
@@ -7985,64 +7988,34 @@ namespace LitePlacer
         private double LoosePartPickupZ = 0.0;
         private double LoosePartPlaceZ = 0.0;
 
-        private double ReduceRotation(double rot)
-        {
-            // takes a rotation value, rotates it to +- 45degs.
-            while (rot > 45.01)
-            {
-                rot = rot - 90;
-            };
-            while (rot < -45.01)
-            {
-                rot = rot + 90;
-            }
-            return rot;
-        }
-
-        private int MeasureClosestComponentInPx(out double X, out double Y, out double A, Camera Cam, double Tolerance, int averages)
-        {
-            X = 0;
-            double Xsum = 0;
-            Y = 0;
-            double Ysum = 0;
-            A = 0.0;
-            double Asum = 0.0;
-            int count = 0;
-            for (int i = 0; i < averages; i++)
-            {
-                if (Cam.GetClosestComponent(out X, out Y, out A, Tolerance) > 0)
-                {
-                    //DisplayText("GetClosestComponent, X: " + X.ToString() + ", Y: " + Y.ToString() + ", A: " + A.ToString()+
-                    //    ", red: "+ReduceRotation(A).ToString());
-                    count++;
-                    Xsum += X;
-                    Ysum += Y;
-                    Asum += ReduceRotation(A);
-                }
-            }
-            if (count == 0)
-            {
-                return 0;
-            }
-            X = Xsum / (float)count;
-            Y = Ysum / (float)count;
-            A = -Asum / (float)count;
-            return count;
-        }
-
-        private bool PickUpLoosePart_m(bool Probe, bool Snapshot, int CADdataRow, string Component)
+        private bool PickUpLoosePart_m(bool Probe, bool Snapshot, int CADdataRow, int JobDataRow, string Component)
         {
             if (!Check_HeightCalibrationDone_m()) return false;
 
             DisplayText("PickUpLoosePart_m: " + Probe.ToString(CultureInfo.InvariantCulture) + ", "
                 + Snapshot.ToString(CultureInfo.InvariantCulture) + ", "
-                + CADdataRow.ToString(CultureInfo.InvariantCulture) + ", " + Component, KnownColor.Blue);
+                + CADdataRow.ToString(CultureInfo.InvariantCulture) + ", "
+                + JobDataRow.ToString(CultureInfo.InvariantCulture) + ", "
+                + Component, KnownColor.Blue);
+
+            VideoAlgorithmsCollection.FullAlgorithmDescription PartAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+            string VidAlgName = JobData_GridView.Rows[JobDataRow].Cells["JobdataMethodParametersColumn"].Value.ToString();
+            DisplayText("Using algorithm " + VidAlgName);
+            if (!VideoAlgorithms.FindAlgorithm(VidAlgName, out PartAlg))
+            {
+                DisplayText("*** Fiducial algorithm (" + VidAlgName + ") not found", KnownColor.DarkRed, true);
+                return false;
+            }
+            DownCamera.BuildMeasurementFunctionsList(PartAlg.FunctionList);
+            DownCamera.MeasurementParameters = PartAlg.MeasurementParameters;            
+            
+            // goto pickup
             if (!CNC_XYA_m(Setting.General_PickupCenterX, Setting.General_PickupCenterY, Cnc.CurrentA))
             {
                 return false;
             }
 
-            // ask for it 
+            // ask for part 
             string ComponentValue = CadData_GridView.Rows[CADdataRow].Cells["CADdataValueColumn"].Value.ToString();
             string ComponentFootprint = CadData_GridView.Rows[CADdataRow].Cells["CADdataFootprintColumn"].Value.ToString();
             DialogResult dialogResult = ShowMessageBox(
@@ -8059,47 +8032,30 @@ namespace LitePlacer
             double Y = 0;
             double A = 0.0;
 
-
-            /*
-            xxxx set up measurement
-            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
-            Pick up
-
-            */
-
-
-                // xxx SetComponentsMeasurement();
-                // If we don't get a look from straight up (more than 2mm off) we need to re-measure
-                for (int i = 0; i < 2; i++)
+            bool ok = true;
+            do
             {
-                // measure 5 averages, component must be 8.0mm from its place
-                int count = MeasureClosestComponentInPx(out X, out Y, out A, DownCamera, (8.0 / Setting.DownCam_XmmPerPixel), 5);
-                if (count == 0)
+                ok = true;
+                if (!GoToFeatureLocation_m(0.1, out X, out Y, out A))
                 {
-                    ShowMessageBox(
-                        "Could not see component",
-                        "No component",
-                        MessageBoxButtons.OK);
-                    return false;
-                }
-                X = X * Setting.DownCam_XmmPerPixel;
-                Y = -Y * Setting.DownCam_YmmPerPixel;
-                DisplayText("PickUpLoosePart_m(): measurement " + i.ToString(CultureInfo.InvariantCulture)
-                    + ", X: " + X.ToString(CultureInfo.InvariantCulture)
-                    + ", Y: " + Y.ToString(CultureInfo.InvariantCulture)
-                    + ", A: " + A.ToString(CultureInfo.InvariantCulture));
-                if ((Math.Abs(X) < 2.0) && (Math.Abs(Y) < 2.0))
-                {
-                    break;
-                }
-                else
-                {
-                    if (!CNC_XYA_m(Cnc.CurrentX + X, Cnc.CurrentY + Y, Cnc.CurrentA))
+                    ok = false;
+                    string nl = Environment.NewLine;
+                    string answer = NonModalMessageBox(
+                        "Failed to find the part." + nl +
+                        "Jog machine to position and/or tune the algorithm." + nl +
+                        "Click \"Retry\" to try again," + nl +
+                        "click \"Cancel\" to continue without success", "Part not found",
+                        "Retry", "", "Cancel");
+                    if (answer == "Cancel")
                     {
                         return false;
                     }
+                    DownCamera.BuildMeasurementFunctionsList(PartAlg.FunctionList);
+                    DownCamera.MeasurementParameters = PartAlg.MeasurementParameters;
+                    Thread.Sleep(100);
                 }
-            }
+            } while (!ok);
+
             // go exactly on top of component for user confidence and for snapshot to be at right place
             if (Snapshot)
             {
@@ -8109,6 +8065,7 @@ namespace LitePlacer
                 }
                 DownCamera.SnapshotRotation = A;
                 // xxx DownCamera.BuildMeasurementFunctionsList(DowncamSnapshot_dataGridView);
+                Thread.Sleep(200);
                 DownCamera.TakeSnapshot();
                 DownCamera.Draw_Snapshot = true;
                 X = 0.0;
@@ -8239,7 +8196,7 @@ namespace LitePlacer
 
                 case "LoosePart":
                 case "LoosePart Assisted":
-                    if (!PickUpLoosePart_m(FirstInRow, false, CADdataRow, Component))
+                    if (!PickUpLoosePart_m(FirstInRow, false, CADdataRow, JobDataRow, Component))
                     {
                         return false;
                     }
@@ -8247,7 +8204,7 @@ namespace LitePlacer
 
                 case "DownCam Snapshot":
                 case "UpCam Snapshot":
-                    if (!PickUpLoosePart_m(FirstInRow, true, CADdataRow, Component))
+                    if (!PickUpLoosePart_m(FirstInRow, true, CADdataRow, JobDataRow, Component))
                     {
                         return false;
                     }
@@ -8424,78 +8381,9 @@ namespace LitePlacer
                 return false;
             }
             // xxx SetUpCamComponentsMeasurement();
-            bool GoOn = false;
-            bool result = false;
-            while (!GoOn)
-            {
-                if (MeasureUpCamComponent(3.0, out dX, out dY, out dA))
-                {
-                    result = true;
-                    GoOn = true;
-                }
-                else
-                {
-                    DialogResult dialogResult = ShowMessageBox(
-                        "Did not get correction values from camera.\n Abort job / Retry / Place anyway?",
-                        "Did not see component",
-                        MessageBoxButtons.AbortRetryIgnore
-                    );
-                    if (dialogResult == DialogResult.Abort)
-                    {
-                        AbortPlacement = true;
-                        AbortPlacementShown = true;
-                        result = false;
-                        GoOn = true;
-                    }
-                    else if (dialogResult == DialogResult.Retry)
-                    {
-                        GoOn = false;
-                    }
-                    else
-                    {
-                        // ignore
-                        result = true;
-                        GoOn = true;
-                    }
-                }
-            };
-            SelectCamera(DownCamera);
-            return result;
+            return false;
         }
 
-        private bool MeasureUpCamComponent(double Tolerance, out double dX, out double dY, out double dA)
-        {
-            double X = 0;
-            double Xsum = 0;
-            double Y = 0;
-            double Ysum = 0;
-            int count = 0;
-            dX = 0;
-            dY = 0;
-            dA = 0;
-            for (int i = 0; i < 5; i++)
-            {
-                if (UpCamera.GetClosestComponent(out X, out Y, out dA, Tolerance * Setting.UpCam_XmmPerPixel) > 0)
-                {
-                    count++;
-                    Xsum += X;
-                    Ysum += Y;
-                }
-            };
-            if (count == 0)
-            {
-                return false;
-            }
-            X = Xsum / Setting.UpCam_XmmPerPixel;
-            dX = X / (float)count;
-            Y = -Y / Setting.UpCam_XmmPerPixel;
-            dY = Y / (float)count;
-            DisplayText("Component measurement:");
-            DisplayText("X: " + X.ToString("0.000", CultureInfo.InvariantCulture)
-                + " (" + count.ToString(CultureInfo.InvariantCulture) + " results out of 5)");
-            DisplayText("Y: " + Y.ToString("0.000", CultureInfo.InvariantCulture));
-            return true;
-        }
 
         // =================================================================================
         // BuildMachineCoordinateData_m routine builds the machine coordinates data 
@@ -8604,7 +8492,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!GoToFeatureLocation_m(0.1, out double X, out double Y))
+            if (!GoToFeatureLocation_m(0.1, out double X, out double Y, out double A))
             {
                 ShowMessageBox(
                     "Finding fiducial: Can't regognize fiducial " + fid.Designator,
