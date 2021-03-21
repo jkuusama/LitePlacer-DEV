@@ -666,8 +666,6 @@ namespace LitePlacer
         GetZ_ZeroBackoff()
         SetZ_ZeroBackoff()
 
-        Probing: Nozzle goews down so that switch triggers and backs off "probing backoff" amount. The z value now is the "full down" smount.
-
         ProbingMode(): Sets board to brobing
         Nozzle_ProbeDown(): Nozzle goes down until switch clears, backs off 
 

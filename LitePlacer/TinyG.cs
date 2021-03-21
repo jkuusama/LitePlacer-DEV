@@ -453,15 +453,16 @@ namespace LitePlacer
 
         public void ProbingMode(bool set)
         {
-            double b = MainForm.Setting.General_Zdown_SwitchClearance;
-            string backoff = b.ToString("0.00", CultureInfo.InvariantCulture);
-
             if (set)
             {
                 MainForm.DisplayText("Probing mode on, TinyG");
                 Write_m("{\"zsn\",0}", 50);
                 Thread.Sleep(50);
                 Write_m("{\"zsx\",1}", 50);
+                Thread.Sleep(50);
+                SetZ_LatchBackoff(MainForm.Setting.CNC_ZprobingBackoff);
+                Thread.Sleep(50);
+                SetZ_ZeroBackoff(0);
                 Thread.Sleep(50);
             }
             else
@@ -470,6 +471,10 @@ namespace LitePlacer
                 Write_m("{\"zsn\",3}", 50);
                 Thread.Sleep(50);
                 Write_m("{\"zsx\",2}", 50);
+                Thread.Sleep(50);
+                SetZ_LatchBackoff(MainForm.Setting.CNC_Z_LatchBackoff);
+                Thread.Sleep(50);
+                SetZ_ZeroBackoff(MainForm.Setting.CNC_Z_ZeroBackoff);
                 Thread.Sleep(50);
             }
 

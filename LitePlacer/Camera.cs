@@ -701,10 +701,24 @@ namespace LitePlacer
         // ==========================================================================================================
 
         Bitmap frame;
-        int CollectorCount = 0;
+        static int CollectorCount = 0;
+        static int ErrorCount = 0;
 
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
+            if (eventArgs.Frame==null)
+            {
+                if (ErrorCount==0)
+                {
+                    MainForm.DisplayText("Video_NewFrame, null frame.", KnownColor.DarkRed, true);
+                }
+                ErrorCount++;
+                if (ErrorCount>200)
+                {
+                    ErrorCount = 0;
+                }
+            }
+
             ReceivingFrames = true;
 
             // Take a copy for measurements, if needed:
@@ -2365,9 +2379,6 @@ namespace LitePlacer
             if (CopyFrame)
             {
                 // failed!
-                Graphics g = Graphics.FromImage(TemporaryFrame);
-                g.Clear(Color.Black);
-                g.Dispose();
                 MainForm.DisplayText("*** GetMeasurementFrame() failed!", KnownColor.Purple);
                 return TemporaryFrame;
             }
