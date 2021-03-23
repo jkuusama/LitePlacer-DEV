@@ -907,7 +907,7 @@ namespace LitePlacer
 
                 case "Kill color":
                     // radius and color
-                    funct.parameterInt = 10;
+                    funct.parameterInt = 50;
                     funct.R = 128;
                     funct.G = 128;
                     funct.B = 128;
@@ -915,7 +915,7 @@ namespace LitePlacer
 
                 case "Keep color":
                     // radius and color
-                    funct.parameterInt = 10;
+                    funct.parameterInt = 50;
                     funct.R = 128;
                     funct.G = 128;
                     funct.B = 128;
@@ -959,7 +959,7 @@ namespace LitePlacer
             {
                 // switch by the selected algorithm:
                 case "Filter Features by Size":
-                    FunctionExplanation_textBox.Text = "Filters features by Size";
+                    FunctionExplanation_textBox.Text = "Removes features that are smaller or larger than the specified values (mm)";
                     FunctionExplanation_textBox.Visible = true;
                     EnableDoubleA("Size min:");
                     EnableDoubleB("Size max:");
@@ -1007,7 +1007,7 @@ namespace LitePlacer
 
                 case "Kill color":
                     // int and RGB parameter
-                    EnableInt(0, 255, "Radius:");
+                    EnableInt(0, 450, "Radius:");
                     EnableRGB("Color to remove: ");
                     FunctionExplanation_textBox.Text = "Removes color that is inside of RGB sphere " +
                         "with specified center color and radius.";
@@ -1017,7 +1017,7 @@ namespace LitePlacer
 
                 case "Keep color":
                     // int and RGB parameter
-                    EnableInt(0, 255, "Radius:");
+                    EnableInt(0, 450, "Radius:");
                     EnableRGB("Color to keep: ");
                     FunctionExplanation_textBox.Text = "Keeps color that is outside of RGB sphere " +
                         "with specified center color and radius.";
@@ -1335,10 +1335,10 @@ namespace LitePlacer
             Color pixelColor;
             Bitmap img = (Bitmap)Cam_pictureBox.Image.Clone();
             // X, Y are from the Cam_pictureBox.Cam_pictureBox resolution is not the same as image resolution
-            double dX = X / Cam_pictureBox.Width;
-            double DY = Y / Cam_pictureBox.Height;
-            X = (int)dX * img.Width;
-            Y = (int)DY * img.Height;
+            double dX = (double)X / (double)Cam_pictureBox.Width;
+            double DY = (double)Y / (double)Cam_pictureBox.Height;
+            X = (int)(dX * (double)img.Width);
+            Y = (int)(DY * (double)img.Height);
 
             /*
             int Rsum = 0;

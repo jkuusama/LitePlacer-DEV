@@ -5179,7 +5179,7 @@ namespace LitePlacer
                     Cnc.DisableZswitches();
                     ZGuardOff();
                     Ztemp = Cnc.CurrentZ;
-                    NozzleHeightInstructions_label.Text = "The switch is now triggered. Jog nozzle up so that the switch clears, and add some margin (such as 1mm)." +
+                    NozzleHeightInstructions_label.Text = "The switch is now on. Jog nozzle up so that the switch goes off, and add some margin (such as 1mm)." +
                                              "\n\rThen click \"Next\".";
                     TestSwitchClearance_button.Text = "Next";
                     Setting.TestSwitchClearance_stage = 2;
