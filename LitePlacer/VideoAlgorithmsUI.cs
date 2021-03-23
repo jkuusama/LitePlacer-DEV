@@ -1012,6 +1012,7 @@ namespace LitePlacer
                     FunctionExplanation_textBox.Text = "Removes color that is inside of RGB sphere " +
                         "with specified center color and radius.";
                     FunctionExplanation_textBox.Visible = true;
+                    EnableColorBox();
                     break;
 
                 case "Keep color":
@@ -1021,6 +1022,7 @@ namespace LitePlacer
                     FunctionExplanation_textBox.Text = "Keeps color that is outside of RGB sphere " +
                         "with specified center color and radius.";
                     FunctionExplanation_textBox.Visible = true;
+                    EnableColorBox();
                     break;
 
                 case "Meas. zoom":
@@ -1133,8 +1135,14 @@ namespace LitePlacer
                 RGBParameter_label.Text = label;
                 RGBParameter_label.Visible = true;
             }
-        }       // UpdateParameterTargets() end
 
+            void EnableColorBox()
+            {
+                Color_Box.Visible = true;
+                ColorHelp_label.Visible = true;
+            }
+
+        }       // UpdateParameterTargets() end
 
 
         private void ClearFunctionParameters()
@@ -1163,6 +1171,8 @@ namespace LitePlacer
             R_label.Visible = false;
             G_label.Visible = false;
             B_label.Visible = false;
+            Color_Box.Visible = false;
+            ColorHelp_label.Visible = false;
 
             FunctionExplanation_textBox.Text = "";
             FunctionExplanation_textBox.Visible = false;
@@ -1277,18 +1287,21 @@ namespace LitePlacer
         private void R_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             VideoAlgorithms.CurrentFunction_NewR((int)R_numericUpDown.Value);
+            UpdateColorBoxColor();
             UpdateVideoProcessing();
         }
 
         private void G_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             VideoAlgorithms.CurrentFunction_NewG((int)G_numericUpDown.Value);
+            UpdateColorBoxColor();
             UpdateVideoProcessing();
         }
 
         private void B_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             VideoAlgorithms.CurrentFunction_NewB((int)B_numericUpDown.Value);
+            UpdateColorBoxColor();
             UpdateVideoProcessing();
         }
 
@@ -1296,6 +1309,76 @@ namespace LitePlacer
         {
             DisplayText("Functions_dataGridView_DataError ");
         }
+
+        // =====================================================================================
+        // Color box
+        private void UpdateColorBoxColor()
+        {
+            Color_Box.BackColor = Color.FromArgb((int)R_numericUpDown.Value, (int)G_numericUpDown.Value, (int)B_numericUpDown.Value);
+        }
+
+        //  Alt-click on video box calls this, used to pick color for processing
+        private void PickColor(int X, int Y)
+        {
+            if (X < 2)
+                X = 2;
+            if (X > (Cam_pictureBox.Width - 2))
+                X = Cam_pictureBox.Width - 2;
+            if (Y < 2)
+                Y = 2;
+            if (Y > (Cam_pictureBox.Height - 2))
+                X = Cam_pictureBox.Height - 2;
+
+            byte R = 0;
+            byte G = 0;
+            byte B = 0;
+            Color pixelColor;
+            Bitmap img = (Bitmap)Cam_pictureBox.Image.Clone();
+            // X, Y are from the Cam_pictureBox.Cam_pictureBox resolution is not the same as image resolution
+            double dX = X / Cam_pictureBox.Width;
+            double DY = Y / Cam_pictureBox.Height;
+            X = (int)dX * img.Width;
+            Y = (int)DY * img.Height;
+
+            /*
+            int Rsum = 0;
+            int Gsum = 0;
+            int Bsum = 0;
+            if (img != null)
+            {
+                for (int ix = X - 2; ix <= X + 2; ix++)
+                {
+                    for (int iy = Y - 2; iy <= Y + 2; iy++)
+                    {
+                        pixelColor = img.GetPixel(ix, iy);
+                        Rsum += pixelColor.R;
+                        Gsum += pixelColor.G;
+                        Bsum += pixelColor.B;
+                    }
+                }
+                R = (byte)(Rsum / 25);
+                G = (byte)(Gsum / 25);
+                B = (byte)(Bsum / 25);
+                img.Dispose();
+            }
+            */
+
+            if (img != null)
+            {
+                pixelColor = img.GetPixel(X, Y);
+                R = pixelColor.R;
+                G = pixelColor.G;
+                B = pixelColor.B;
+                img.Dispose();
+            }
+
+            R_numericUpDown.Value = R;
+            G_numericUpDown.Value = G;
+            B_numericUpDown.Value = B;
+            Color_Box.BackColor = Color.FromArgb(R, G, B);
+        }
+
+
         #endregion Functions and parameters
         // =====================================================================================
 
