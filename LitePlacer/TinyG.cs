@@ -324,12 +324,12 @@ namespace LitePlacer
             if (MoveType == "G1")
             {
                 command = "G1 F" + speed.ToString() +
-                    " A" + A.ToString(CultureInfo.InvariantCulture);
+                    " A" + A.ToString("0.000",CultureInfo.InvariantCulture);
             }
             else
             {
                 command = "G0 " +
-                    " A" + A.ToString(CultureInfo.InvariantCulture);
+                    " A" + A.ToString("0.000", CultureInfo.InvariantCulture);
             }
             return Write_m("{\"gc\":\"" + command + "\"}", RegularMoveTimeout);
         }
@@ -550,8 +550,8 @@ namespace LitePlacer
         {
             // see https://www.synthetos.com/topics/file-not-open-error/#post-7194
             // Summary: In some cases, we need a dummy move.
-            MainForm.CNC_Z_m(Cnc.CurrentZ - 0.01);
-            MainForm.CNC_Z_m(Cnc.CurrentZ + 0.01);
+            MainForm.CNC_A_m(Cnc.CurrentA - 0.01);
+            MainForm.CNC_A_m(Cnc.CurrentA + 0.01);
         }
 
 
@@ -564,7 +564,6 @@ namespace LitePlacer
             {
                 command = "{\"gc\":\"M05\"}";
             }
-            MainForm.DisplayText("PumpOn(), TinyG");
             if (!Cnc.PumpIsOn)
             {
                 if (RawWrite(command))

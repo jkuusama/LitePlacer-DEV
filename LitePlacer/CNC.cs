@@ -1365,7 +1365,7 @@ namespace LitePlacer
                 return false;
             }
 
-            if (Math.Abs(A - CurrentA) < 0.005)
+            if (Math.Abs(A - CurrentA) < 0.0009)
             {
                 MainForm.DisplayText(" -- zero A movement command --");
                 return true;   // already there
@@ -1427,14 +1427,14 @@ namespace LitePlacer
             double dX = Math.Abs(X - CurrentX);
             double dY = Math.Abs(Y - CurrentY);
             double dA = Math.Abs(Am - CurrentA);
-            if ((dX < 0.001) && (dY < 0.001) && (dA < 0.01))
+            if ((dX < 0.0009) && (dY < 0.0009) && (dA < 0.0009))
             {
                 MainForm.DisplayText(" -- zero XYA movement command --", KnownColor.Gray);
                 return true;   // already there
             }
 
             // It doesn't hurt to do only A when needed, and because of TinyG bug, is a must:
-            if ((dX < 0.001) && (dY < 0.001))
+            if ((dX < 0.0009) && (dY < 0.009))
             {
                 return A_move(Am);
             };
@@ -1469,7 +1469,7 @@ namespace LitePlacer
                 }
 
                 // Do A first, then XY
-                if (dA < 0.01)
+                if (dA < 0.0009)
                 {
                     MainForm.DisplayText(" -- XYA command, A already there --", KnownColor.Gray);
                 }
@@ -1495,8 +1495,9 @@ namespace LitePlacer
             }
 
             double dA = Math.Abs(A - CurrentA);
-            if (dA<0.01)
+            if (dA<0.0009)
             {
+                MainForm.DisplayText(" -- A_move, already there --", KnownColor.Gray);
                 return (true);  // Already there
             }
             double speed = 0;

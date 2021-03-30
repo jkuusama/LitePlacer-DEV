@@ -2228,7 +2228,7 @@ namespace LitePlacer
                                MessageBoxButtons.OK);
                 }
                 AbortPlacement = false;
-                if (Math.Abs(Cnc.CurrentZ) > 0.01)
+                if (Math.Abs(Cnc.CurrentZ) > 0.0009)
                 {
                     Cnc.Z(0.0);
                 }
@@ -2298,8 +2298,12 @@ namespace LitePlacer
             {
                 double tmpA = Cnc.CurrentA;
                 NormalizeRotation(ref tmpA);
+                if (Math.Abs(tmpA-360.0)<0.0009)
+                {
+                    tmpA = 0.0;
+                }
                 Cnc.CurrentA = tmpA;
-                Cnc.SetPosition(X: "", Y: "", Z: "", A: Cnc.CurrentA.ToString(CultureInfo.InvariantCulture));
+                Cnc.SetPosition(X: "", Y: "", Z: "", A: Cnc.CurrentA.ToString("0.000", CultureInfo.InvariantCulture));
             }
         }
 
