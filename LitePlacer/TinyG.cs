@@ -460,9 +460,9 @@ namespace LitePlacer
                 Thread.Sleep(50);
                 Write_m("{\"zsx\",1}", 50);
                 Thread.Sleep(50);
-                SetZ_LatchBackoff(MainForm.Setting.CNC_ZprobingBackoff);
+                SetZ_LatchBackoff(0);
                 Thread.Sleep(50);
-                SetZ_ZeroBackoff(0);
+                SetZ_ZeroBackoff(MainForm.Setting.CNC_ZprobingBackoff);
                 Thread.Sleep(50);
             }
             else
