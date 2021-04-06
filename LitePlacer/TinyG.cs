@@ -304,16 +304,16 @@ namespace LitePlacer
             if (MoveType == "G1")
             {
                 command = "G1 F" + speed.ToString() +
-                    " X" + X.ToString(CultureInfo.InvariantCulture) +
-                    " Y" + Y.ToString(CultureInfo.InvariantCulture) +
-                    " A" + A.ToString(CultureInfo.InvariantCulture);
+                    " X" + X.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " Y" + Y.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " A" + A.ToString("0.000", CultureInfo.InvariantCulture);
             }
             else
             {
                 command = "G0 " +
-                    " X" + X.ToString(CultureInfo.InvariantCulture) +
-                    " Y" + Y.ToString(CultureInfo.InvariantCulture) +
-                    " A" + A.ToString(CultureInfo.InvariantCulture);
+                    " X" + X.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " Y" + Y.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " A" + A.ToString("0.000", CultureInfo.InvariantCulture);
             }
             return Write_m("{\"gc\":\"" + command + "\"}", RegularMoveTimeout);
         }
