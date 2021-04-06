@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -7183,14 +7183,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7276,14 +7276,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7468,7 +7468,6 @@
             this.Algorithms_tabPage.Controls.Add(this.AdvancedProcessing_tabControl);
             this.Algorithms_tabPage.Controls.Add(this.SpecialProcessing_button);
             this.Algorithms_tabPage.Controls.Add(this.tabControl1);
-            this.Algorithms_tabPage.Controls.Add(this.VideoProcessingZguard_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.FunctionExplanation_textBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawDashedCross_checkBox);
             this.Algorithms_tabPage.Controls.Add(this.DrawGrid_checkBox);
@@ -7542,6 +7541,7 @@
             this.panel1.Controls.Add(this.label94);
             this.panel1.Controls.Add(this.NozzleOffsetY_textBox);
             this.panel1.Controls.Add(this.label100);
+            this.panel1.Controls.Add(this.VideoProcessingZguard_checkBox);
             this.panel1.Controls.Add(this.NozzleOffsetX_textBox);
             this.panel1.Controls.Add(this.label93);
             this.panel1.Controls.Add(this.label55);
@@ -7908,7 +7908,7 @@
             // ShowVideoResults_radioButton
             // 
             this.ShowVideoResults_radioButton.AutoSize = true;
-            this.ShowVideoResults_radioButton.Location = new System.Drawing.Point(1120, 238);
+            this.ShowVideoResults_radioButton.Location = new System.Drawing.Point(1120, 214);
             this.ShowVideoResults_radioButton.Name = "ShowVideoResults_radioButton";
             this.ShowVideoResults_radioButton.Size = new System.Drawing.Size(85, 17);
             this.ShowVideoResults_radioButton.TabIndex = 315;
@@ -7920,7 +7920,7 @@
             // ShowVideoProcessing_radioButton
             // 
             this.ShowVideoProcessing_radioButton.AutoSize = true;
-            this.ShowVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 215);
+            this.ShowVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 191);
             this.ShowVideoProcessing_radioButton.Name = "ShowVideoProcessing_radioButton";
             this.ShowVideoProcessing_radioButton.Size = new System.Drawing.Size(106, 17);
             this.ShowVideoProcessing_radioButton.TabIndex = 314;
@@ -7932,7 +7932,7 @@
             // NoVideoProcessing_radioButton
             // 
             this.NoVideoProcessing_radioButton.AutoSize = true;
-            this.NoVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 192);
+            this.NoVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 168);
             this.NoVideoProcessing_radioButton.Name = "NoVideoProcessing_radioButton";
             this.NoVideoProcessing_radioButton.Size = new System.Drawing.Size(122, 17);
             this.NoVideoProcessing_radioButton.TabIndex = 313;
@@ -7986,7 +7986,7 @@
             this.AdvancedProcessing_tabControl.Location = new System.Drawing.Point(823, 7);
             this.AdvancedProcessing_tabControl.Name = "AdvancedProcessing_tabControl";
             this.AdvancedProcessing_tabControl.SelectedIndex = 0;
-            this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(416, 175);
+            this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(419, 145);
             this.AdvancedProcessing_tabControl.TabIndex = 308;
             this.AdvancedProcessing_tabControl.Visible = false;
             // 
@@ -8000,14 +8000,14 @@
             this.NozzleCalibration_tabPage.Location = new System.Drawing.Point(4, 22);
             this.NozzleCalibration_tabPage.Name = "NozzleCalibration_tabPage";
             this.NozzleCalibration_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.NozzleCalibration_tabPage.Size = new System.Drawing.Size(408, 149);
+            this.NozzleCalibration_tabPage.Size = new System.Drawing.Size(411, 119);
             this.NozzleCalibration_tabPage.TabIndex = 0;
             this.NozzleCalibration_tabPage.Text = "Nozzle Calibration";
             this.NozzleCalibration_tabPage.UseVisualStyleBackColor = true;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 64);
+            this.textBox1.Location = new System.Drawing.Point(138, 37);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(183, 73);
@@ -8131,7 +8131,7 @@
             this.VideoProcessingZguard_checkBox.AutoSize = true;
             this.VideoProcessingZguard_checkBox.Checked = true;
             this.VideoProcessingZguard_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.VideoProcessingZguard_checkBox.Location = new System.Drawing.Point(965, 607);
+            this.VideoProcessingZguard_checkBox.Location = new System.Drawing.Point(183, 8);
             this.VideoProcessingZguard_checkBox.Name = "VideoProcessingZguard_checkBox";
             this.VideoProcessingZguard_checkBox.Size = new System.Drawing.Size(187, 17);
             this.VideoProcessingZguard_checkBox.TabIndex = 266;
@@ -8143,12 +8143,13 @@
             // 
             this.FunctionExplanation_textBox.BackColor = System.Drawing.SystemColors.Window;
             this.FunctionExplanation_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.FunctionExplanation_textBox.Location = new System.Drawing.Point(1038, 266);
+            this.FunctionExplanation_textBox.Location = new System.Drawing.Point(1047, 263);
             this.FunctionExplanation_textBox.Multiline = true;
             this.FunctionExplanation_textBox.Name = "FunctionExplanation_textBox";
             this.FunctionExplanation_textBox.ReadOnly = true;
             this.FunctionExplanation_textBox.Size = new System.Drawing.Size(191, 78);
             this.FunctionExplanation_textBox.TabIndex = 265;
+            this.FunctionExplanation_textBox.Text = "Explanation of the function";
             // 
             // DrawDashedCross_checkBox
             // 
