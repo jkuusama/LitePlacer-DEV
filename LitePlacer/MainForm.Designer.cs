@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -613,6 +613,7 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
+            this.Measure10x_button = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ZDown_button = new System.Windows.Forms.Button();
             this.ZUp_button = new System.Windows.Forms.Button();
@@ -625,6 +626,7 @@
             this.label94 = new System.Windows.Forms.Label();
             this.NozzleOffsetY_textBox = new System.Windows.Forms.TextBox();
             this.label100 = new System.Windows.Forms.Label();
+            this.VideoProcessingZguard_checkBox = new System.Windows.Forms.CheckBox();
             this.NozzleOffsetX_textBox = new System.Windows.Forms.TextBox();
             this.label93 = new System.Windows.Forms.Label();
             this.label55 = new System.Windows.Forms.Label();
@@ -669,7 +671,6 @@
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.UpCam_radioButton = new System.Windows.Forms.RadioButton();
             this.DownCam_radioButton = new System.Windows.Forms.RadioButton();
-            this.VideoProcessingZguard_checkBox = new System.Windows.Forms.CheckBox();
             this.FunctionExplanation_textBox = new System.Windows.Forms.TextBox();
             this.DrawDashedCross_checkBox = new System.Windows.Forms.CheckBox();
             this.DrawGrid_checkBox = new System.Windows.Forms.CheckBox();
@@ -7183,14 +7184,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7276,14 +7277,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7457,6 +7458,7 @@
             // 
             // Algorithms_tabPage
             // 
+            this.Algorithms_tabPage.Controls.Add(this.Measure10x_button);
             this.Algorithms_tabPage.Controls.Add(this.panel1);
             this.Algorithms_tabPage.Controls.Add(this.ShowVideoResults_radioButton);
             this.Algorithms_tabPage.Controls.Add(this.ShowVideoProcessing_radioButton);
@@ -7526,6 +7528,17 @@
             this.Algorithms_tabPage.TabIndex = 8;
             this.Algorithms_tabPage.Text = "Setup Video Processing";
             this.Algorithms_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // Measure10x_button
+            // 
+            this.Measure10x_button.Location = new System.Drawing.Point(658, 434);
+            this.Measure10x_button.Name = "Measure10x_button";
+            this.Measure10x_button.Size = new System.Drawing.Size(75, 23);
+            this.Measure10x_button.TabIndex = 316;
+            this.Measure10x_button.Text = "Meas. 10x";
+            this.toolTip1.SetToolTip(this.Measure10x_button, "Does 10 meaurements, displays max and min results.");
+            this.Measure10x_button.UseVisualStyleBackColor = true;
+            this.Measure10x_button.Click += new System.EventHandler(this.Measure10x_button_Click);
             // 
             // panel1
             // 
@@ -7682,6 +7695,19 @@
             this.label100.Size = new System.Drawing.Size(67, 17);
             this.label100.TabIndex = 300;
             this.label100.Text = "PCB zero";
+            // 
+            // VideoProcessingZguard_checkBox
+            // 
+            this.VideoProcessingZguard_checkBox.AutoSize = true;
+            this.VideoProcessingZguard_checkBox.Checked = true;
+            this.VideoProcessingZguard_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.VideoProcessingZguard_checkBox.Location = new System.Drawing.Point(183, 8);
+            this.VideoProcessingZguard_checkBox.Name = "VideoProcessingZguard_checkBox";
+            this.VideoProcessingZguard_checkBox.Size = new System.Drawing.Size(187, 17);
+            this.VideoProcessingZguard_checkBox.TabIndex = 266;
+            this.VideoProcessingZguard_checkBox.Text = "Allow movement with nozzle down";
+            this.VideoProcessingZguard_checkBox.UseVisualStyleBackColor = true;
+            this.VideoProcessingZguard_checkBox.CheckedChanged += new System.EventHandler(this.VideoProcessingZguard_checkBox_CheckedChanged);
             // 
             // NozzleOffsetX_textBox
             // 
@@ -8066,7 +8092,7 @@
             this.HideAdvanced_tabPage.Location = new System.Drawing.Point(4, 22);
             this.HideAdvanced_tabPage.Name = "HideAdvanced_tabPage";
             this.HideAdvanced_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.HideAdvanced_tabPage.Size = new System.Drawing.Size(408, 149);
+            this.HideAdvanced_tabPage.Size = new System.Drawing.Size(411, 119);
             this.HideAdvanced_tabPage.TabIndex = 1;
             this.HideAdvanced_tabPage.Text = "Hide Advanced Controls";
             this.HideAdvanced_tabPage.UseVisualStyleBackColor = true;
@@ -8125,19 +8151,6 @@
             this.DownCam_radioButton.Text = "Down looking camera";
             this.DownCam_radioButton.UseVisualStyleBackColor = true;
             this.DownCam_radioButton.CheckedChanged += new System.EventHandler(this.DownCam_radioButton_CheckedChanged);
-            // 
-            // VideoProcessingZguard_checkBox
-            // 
-            this.VideoProcessingZguard_checkBox.AutoSize = true;
-            this.VideoProcessingZguard_checkBox.Checked = true;
-            this.VideoProcessingZguard_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.VideoProcessingZguard_checkBox.Location = new System.Drawing.Point(183, 8);
-            this.VideoProcessingZguard_checkBox.Name = "VideoProcessingZguard_checkBox";
-            this.VideoProcessingZguard_checkBox.Size = new System.Drawing.Size(187, 17);
-            this.VideoProcessingZguard_checkBox.TabIndex = 266;
-            this.VideoProcessingZguard_checkBox.Text = "Allow movement with nozzle down";
-            this.VideoProcessingZguard_checkBox.UseVisualStyleBackColor = true;
-            this.VideoProcessingZguard_checkBox.CheckedChanged += new System.EventHandler(this.VideoProcessingZguard_checkBox_CheckedChanged);
             // 
             // FunctionExplanation_textBox
             // 
@@ -10701,6 +10714,7 @@
         private System.Windows.Forms.Label label160;
         private System.Windows.Forms.Button TestSwitchClearanceCancel_button;
         private System.Windows.Forms.OpenFileDialog TapesAll_openFileDialog;
+        private System.Windows.Forms.Button Measure10x_button;
     }
 }
 

@@ -31,8 +31,8 @@ namespace LitePlacer
     public partial class FormMain : Form
     {
         enum Functions_dataGridViewColumns : int { FunctionColumn, ActiveColumn };
-        public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram", 
-            "Grayscale", "Edge detect", "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur", 
+        public List<string> KnownFunctions = new List<string> {"Threshold", "Invert", "Meas. zoom", "Histogram",
+            "Grayscale", "Edge detect", "Noise reduction", "Erosion", "Kill color", "Keep color", "Blur",
             "Gaussian blur", "Hough circles", "Filter Features by Size", "Jog before measurement"};
 
 
@@ -511,7 +511,7 @@ namespace LitePlacer
                 {
                     if (JobData_GridView.Rows[i].Cells["JobdataMethodParametersColumn"].Value.ToString() == Alg)
                     {
-                        DisplayText("Algorithm \"" + Alg + "\" used in Job data, row " + (i+1).ToString());
+                        DisplayText("Algorithm \"" + Alg + "\" used in Job data, row " + (i + 1).ToString());
                         ret = true;
                     }
                 }
@@ -626,7 +626,7 @@ namespace LitePlacer
 
 
             AForgeFunctionDefinition Newfunct = new AForgeFunctionDefinition();
-            Newfunct.Name= KnownFunctions[0].ToString();    // default to the first in list
+            Newfunct.Name = KnownFunctions[0].ToString();    // default to the first in list
             VideoAlgorithms.CurrentAlgorithm.FunctionList.Insert(row, Newfunct);
             AlgorithmChange = false; // next triggers cell changed event
             Functions_dataGridView.CurrentCell = Functions_dataGridView.Rows[row].Cells[FunctCol];
@@ -724,6 +724,45 @@ namespace LitePlacer
             cam.Measure(out double X, out double Y, out double Ares, true);
         }
 
+        private void Measure10x_button_Click(object sender, EventArgs e)
+        {
+            if (DownCam_radioButton.Checked)
+            {
+                cam = DownCamera;
+            }
+            cam.BuildMeasurementFunctionsList(VideoAlgorithms.CurrentAlgorithm.FunctionList);
+            cam.MeasurementParameters = VideoAlgorithms.CurrentAlgorithm.MeasurementParameters;
+            double Xmax = 0.0;
+            double Xmin = 9999999.0;
+            double Xsum = 0.0;
+            double Ymax = 0.0;
+            double Ymin = 9999999.0;
+            double Ysum = 0.0;
+            double Amax = 0.0;
+            double Amin = 99999999.0;
+            double Asum = 0.0;
+            for (int i = 0; i < 10; i++)
+            {
+                cam.Measure(out double X, out double Y, out double A, false);
+                DisplayText("X: " + X.ToString("0.000") + ", Y:" + Y.ToString("0.000") + ", A:" + A.ToString("0.000"));
+                if (X > Xmax) Xmax = X;
+                if (X < Xmin) Xmin = X;
+                Xsum = Xsum + X;
+                if (Y > Ymax) Ymax = Y;
+                if (Y < Ymin) Ymin = Y;
+                Ysum = Ysum + Y;
+                if (A > Amax) Amax = A;
+                if (A < Amin) Amin = A;
+                Asum = Asum + A;
+            }
+            Xsum = Xsum / 10.0;
+            Ysum = Ysum / 10.0;
+            Asum = Asum / 10.0;
+            DisplayText("Results:");
+            DisplayText("Xmax: " + Xmax.ToString("0.000") + ", Xmin:" + Xmin.ToString("0.000") + ", Avg:" + Xsum.ToString("0.000"));
+            DisplayText("Ymax: " + Ymax.ToString("0.000") + ", Ymin:" + Ymin.ToString("0.000") + ", Avg:" + Ysum.ToString("0.000"));
+            DisplayText("Amax: " + Amax.ToString("0.000") + ", Amin:" + Amin.ToString("0.000") + ", Avg:" + Asum.ToString("0.000"));
+        }
 
         // =====================================================================================
         // Functions_dataGridView 
@@ -1061,7 +1100,7 @@ namespace LitePlacer
                     FunctionExplanation_textBox.Text = "Jog machine to position before continuing.\r\n"
                         + "(useful to target fiducials on a very tight board, for example)";
                     FunctionExplanation_textBox.Visible = true;
-                    break;      
+                    break;
 
                 default:
                     break;
@@ -1433,7 +1472,7 @@ namespace LitePlacer
 
         private void ShowPixels_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (ShowPixels_checkBox.Checked) 
+            if (ShowPixels_checkBox.Checked)
             {
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
             }
