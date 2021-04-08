@@ -755,7 +755,7 @@ namespace LitePlacer
             {
                 if (DisplayFunctions != null)
                 {
-                    if (ShowProcessing)    // Draw on the frame, showing what is going on 
+                    if (ShowProcessing)
                     {
                         foreach (AForgeFunction f in DisplayFunctions)
                         {
@@ -785,7 +785,7 @@ namespace LitePlacer
                     }
                     else
                     {
-                        Bitmap ProcessedFrame = (Bitmap)frame.Clone();
+                        Bitmap ProcessedFrame = (Bitmap)frame.Clone();  // Process a copy, finde features on it but draw on displayed frame
                         foreach (AForgeFunction f in DisplayFunctions)
                         {
                             f.func(ref ProcessedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
@@ -1352,7 +1352,7 @@ namespace LitePlacer
             Blob[] blobs = blobCounter.GetObjectsInformation(); // Get blobs
             foreach (Blob blob in blobs)
             {
-                if ((blob.Rectangle.Height > 400) && (blob.Rectangle.Width > 600))
+                if ((blob.Rectangle.Height > (bitmap.Height-10)) && (blob.Rectangle.Width > (bitmap.Height - 10)))
                 {
                     break;  // The whole image could be a blob, discard that
                 }
@@ -2392,6 +2392,7 @@ namespace LitePlacer
                 if (DisplayResults)
                 {
                     MainForm.DisplayText("No items left.");
+                    MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
                 }
                 else
                 {
@@ -2426,6 +2427,7 @@ namespace LitePlacer
                 if (DisplayResults)
                 {
                     MainForm.DisplayText("Filtered for distance, no items left.");
+                    MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
                 }
                 else
                 {
@@ -2443,6 +2445,7 @@ namespace LitePlacer
                 if (FilteredForDistance.Count != 1)
                 {
                     MainForm.DisplayText("Camera Measure(): result is not unique", KnownColor.Red, true);
+                    MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
                     return false;
                 }
                 else
@@ -2456,6 +2459,7 @@ namespace LitePlacer
             if (FilteredForDistance.Count != 1)
             {
                 MainForm.DisplayText("Result is NOT unique!", KnownColor.Red, true);
+                MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
                 return false;
             }
             MainForm.DisplayText( "Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
