@@ -491,7 +491,7 @@ namespace LitePlacer
                 f.parameter_doubleC = UIfucnt.parameterDoubleC;
                 NewList.Add(f);
                 MainForm.DisplayText(UIfucnt.Name + ", " + f.parameter_int.ToString() + ", " + f.parameter_double.ToString() + ", "
-                    + f.R.ToString() + ", " + f.G.ToString() + ", " + f.B.ToString()
+                    + f.R.ToString() + ", " + f.G.ToString() + ", " + f.B.ToString() + ", "
                     + f.parameter_doubleA.ToString() + ", " + f.parameter_doubleB.ToString() + ", " + f.parameter_doubleC.ToString());
             };
             return NewList;
@@ -750,74 +750,78 @@ namespace LitePlacer
                 frame = (Bitmap)eventArgs.Frame.Clone();
             }
 
-            // Even with safeguards, changing DisplayFunctions can cause errors. 
-            try
+            if (DisplayFunctions != null)
             {
-                if (DisplayFunctions != null)
+                if (DisplayFunctions.Count!=0)
                 {
-                    if (ShowProcessing)
+                    // Selection is either show processing or show results
+                    // Even with safeguards, changing DisplayFunctions can cause errors. 
+                    try
                     {
-                        foreach (AForgeFunction f in DisplayFunctions)
+                        if (ShowProcessing)  // Process the displayed frame and also draw on it
                         {
-                            f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B, 
-                                f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
+                            foreach (AForgeFunction f in DisplayFunctions)
+                            {
+                                f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
+                                    f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
+                            }
+                            if (FindCircles)
+                            {
+                                List<Shapes.Circle> Circles = FindCirclesFunct(frame);
+                                DrawCirclesFunct(ref frame, Circles, 1.0);
+                            }
+                            if (FindRectangles)
+                            {
+                                List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(frame);
+                                DrawRectanglesFunct(ref frame, Rectangles, 1.0);
+                            }
+                            if (FindComponentByOutlines)
+                            {
+                                List<Shapes.Component> Components = FindComponentsFromOutline_Funct(frame);
+                                DrawComponentsFunct(ref frame, Components, 1.0);
+                            }
+                            if (FindComponentByPads)
+                            {
+                                List<Shapes.Component> Components = FindComponentsFromPads_Funct(frame);
+                                DrawComponentsFunct(ref frame, Components, 1.0);
+                            }
                         }
-                        if (FindCircles)
+                        else
                         {
-                            List<Shapes.Circle> Circles = FindCirclesFunct(frame);
-                            DrawCirclesFunct(ref frame, Circles, 1.0);
-                        }
-                        if (FindRectangles)
-                        {
-                            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(frame);
-                            DrawRectanglesFunct(ref frame, Rectangles, 1.0);
-                        }
-                        if (FindComponentByOutlines)
-                        {
-                            List<Shapes.Component> Components = FindComponentsFromOutline_Funct(frame);
-                            DrawComponentsFunct(ref frame, Components, 1.0);
-                        }
-                        if (FindComponentByPads)
-                        {
-                            List<Shapes.Component> Components = FindComponentsFromPads_Funct(frame);
-                            DrawComponentsFunct(ref frame, Components, 1.0);
+                            Bitmap ProcessedFrame = (Bitmap)frame.Clone();  // Process a copy and find features on it; draw on displayed frame
+                            foreach (AForgeFunction f in DisplayFunctions)
+                            {
+                                f.func(ref ProcessedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
+                                    f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
+                            }
+                            double zoom = 1 / GetDisplayZoom();  // If measurement frame is zoomed, we need to zoom the displayed results as well
+                            if (FindCircles)
+                            {
+                                List<Shapes.Circle> Circles = FindCirclesFunct(ProcessedFrame);
+                                DrawCirclesFunct(ref frame, Circles, zoom);
+                            }
+                            if (FindRectangles)
+                            {
+                                List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(ProcessedFrame);
+                                DrawRectanglesFunct(ref frame, Rectangles, zoom);
+                            }
+                            if (FindComponentByOutlines)
+                            {
+                                List<Shapes.Component> Components = FindComponentsFromOutline_Funct(ProcessedFrame);
+                                DrawComponentsFunct(ref frame, Components, zoom);
+                            }
+                            if (FindComponentByPads)
+                            {
+                                List<Shapes.Component> Components = FindComponentsFromPads_Funct(ProcessedFrame);
+                                DrawComponentsFunct(ref frame, Components, zoom);
+                            }
                         }
                     }
-                    else
+                    catch (System.InvalidOperationException)
                     {
-                        Bitmap ProcessedFrame = (Bitmap)frame.Clone();  // Process a copy, finde features on it but draw on displayed frame
-                        foreach (AForgeFunction f in DisplayFunctions)
-                        {
-                            f.func(ref ProcessedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
-                                f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
-                        }
-                        double zoom = 1/GetDisplayZoom();  // If measurement frame is zoomed, we need to zoom the displayed results as well
-                        if (FindCircles)
-                        {
-                            List<Shapes.Circle> Circles = FindCirclesFunct(ProcessedFrame);
-                            DrawCirclesFunct(ref frame, Circles, zoom);
-                        }
-                        if (FindRectangles)
-                        {
-                            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(ProcessedFrame);
-                            DrawRectanglesFunct(ref frame, Rectangles, zoom);
-                        }
-                        if (FindComponentByOutlines)
-                        {
-                            List<Shapes.Component> Components = FindComponentsFromOutline_Funct(ProcessedFrame);
-                            DrawComponentsFunct(ref frame, Components, zoom);
-                        }
-                        if (FindComponentByPads)
-                        {
-                            List<Shapes.Component> Components = FindComponentsFromPads_Funct(ProcessedFrame);
-                            DrawComponentsFunct(ref frame, Components, zoom);
-                        }
+                        // No need to do anything, next frame fixes it
                     }
                 }
-            }
-            catch (System.InvalidOperationException)
-            {
-                // No need to do anything, next frame fixes it
             }
 
             if (Mirror)
@@ -2146,7 +2150,7 @@ namespace LitePlacer
             {
                 foreach (AForgeFunction f in MeasurementFunctions)
                 {
-                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.B, f.G,
+                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
                         f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
                 }
             }

@@ -1120,8 +1120,11 @@ namespace LitePlacer
 
             void EnableRGB(string label)
             {
+                R_label.Text = "R";
                 R_label.Visible = true;
+                G_label.Text = "G";
                 G_label.Visible = true;
+                B_label.Text = "B";
                 B_label.Visible = true;
                 R_numericUpDown.Visible = true;
                 G_numericUpDown.Visible = true;
