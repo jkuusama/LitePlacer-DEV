@@ -738,7 +738,7 @@ namespace LitePlacer
             double Ymax = 0.0;
             double Ymin = 9999999.0;
             double Ysum = 0.0;
-            double Amax = 0.0;
+            double Amax = -9999999.0;
             double Amin = 99999999.0;
             double Asum = 0.0;
             for (int i = 0; i < 10; i++)
@@ -759,9 +759,12 @@ namespace LitePlacer
             Ysum = Ysum / 10.0;
             Asum = Asum / 10.0;
             DisplayText("Results:");
-            DisplayText("Xmax: " + Xmax.ToString("0.000") + ", Xmin:" + Xmin.ToString("0.000") + ", Avg:" + Xsum.ToString("0.000"));
-            DisplayText("Ymax: " + Ymax.ToString("0.000") + ", Ymin:" + Ymin.ToString("0.000") + ", Avg:" + Ysum.ToString("0.000"));
-            DisplayText("Amax: " + Amax.ToString("0.000") + ", Amin:" + Amin.ToString("0.000") + ", Avg:" + Asum.ToString("0.000"));
+            DisplayText("Xmax: " + Xmax.ToString("0.000") + ", Xmin: " + Xmin.ToString("0.000") + ", Avg: " + Xsum.ToString("0.000")
+                + ", Diff: " + (Xmax - Xmin).ToString("0.000"));
+            DisplayText("Ymax: " + Ymax.ToString("0.000") + ", Ymin: " + Ymin.ToString("0.000") + ", Avg: " + Ysum.ToString("0.000")
+                + ", Diff: " + (Ymax - Ymin).ToString("0.000"));
+            DisplayText("Amax: " + Amax.ToString("0.000") + ", Amin: " + Amin.ToString("0.000") + ", Avg: " + Asum.ToString("0.000")
+                + ", Diff: " + (Amax - Amin).ToString("0.000"));
         }
 
         // =====================================================================================
