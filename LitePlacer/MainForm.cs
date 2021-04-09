@@ -1404,8 +1404,7 @@ namespace LitePlacer
             }
 
             double Mag = 0.0;
-            if ((System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
-                && (System.Windows.Forms.Control.ModifierKeys == Keys.Shift))
+            if (System.Windows.Forms.Control.ModifierKeys == (Keys.Alt | Keys.Shift))
             {
                 Mag = 90.0;
             }
@@ -1413,8 +1412,7 @@ namespace LitePlacer
             {
                 Mag = 10.0;
             }
-            else if ((System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
-                && (System.Windows.Forms.Control.ModifierKeys == Keys.Control))
+            else if (System.Windows.Forms.Control.ModifierKeys == (Keys.Alt | Keys.Control))
             {
                 Mag = 4.0;
             }
@@ -1433,11 +1431,11 @@ namespace LitePlacer
 
             if (e.Delta < 0)
             {
-                Mag = -1.0;
+                Mag = -Mag;
             }
             else if (e.Delta > 0)
             {
-                Mag = 1.0;
+                // Mag = Mag;
             }
             else
             {
