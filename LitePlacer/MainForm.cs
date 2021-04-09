@@ -1852,22 +1852,19 @@ namespace LitePlacer
             int Yres = 0;
             int pol = 1;
 
-            Camera cam = DownCamera;
             if (DownCamera.Active)
             {
-                cam = DownCamera;
                 XmmPerPixel = Setting.DownCam_XmmPerPixel;
                 YmmPerPixel = Setting.DownCam_YmmPerPixel;
-                Xres = Setting.DownCam_DesiredX;
-                Yres = Setting.DownCam_DesiredY;
+                Xres = DownCamera.FrameSizeX;
+                Yres = DownCamera.FrameSizeY;
             }
             else if (UpCamera.Active)
             {
-                cam = UpCamera;
                 XmmPerPixel = Setting.UpCam_XmmPerPixel;
                 YmmPerPixel = Setting.UpCam_YmmPerPixel;
-                Xres = Setting.UpCam_DesiredX;
-                Yres = Setting.UpCam_DesiredY;
+                Xres = UpCamera.FrameSizeX;
+                Yres = UpCamera.FrameSizeY;
                 pol = -1;
             }
             else
