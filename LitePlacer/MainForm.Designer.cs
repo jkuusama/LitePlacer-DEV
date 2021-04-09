@@ -9645,6 +9645,7 @@
             this.Abs_radioButton.TabIndex = 92;
             this.Abs_radioButton.TabStop = true;
             this.Abs_radioButton.Text = "Absolute";
+            this.toolTip1.SetToolTip(this.Abs_radioButton, resources.GetString("Abs_radioButton.ToolTip"));
             this.Abs_radioButton.UseVisualStyleBackColor = true;
             // 
             // Relative_Button
@@ -9655,6 +9656,7 @@
             this.Relative_Button.Size = new System.Drawing.Size(64, 17);
             this.Relative_Button.TabIndex = 93;
             this.Relative_Button.Text = "Relative";
+            this.toolTip1.SetToolTip(this.Relative_Button, resources.GetString("Relative_Button.ToolTip"));
             this.Relative_Button.UseVisualStyleBackColor = true;
             // 
             // label108
@@ -9680,6 +9682,7 @@
             this.GoX_button.Size = new System.Drawing.Size(32, 23);
             this.GoX_button.TabIndex = 106;
             this.GoX_button.Text = "X:";
+            this.toolTip1.SetToolTip(this.GoX_button, resources.GetString("GoX_button.ToolTip"));
             this.GoX_button.UseVisualStyleBackColor = true;
             this.GoX_button.Click += new System.EventHandler(this.GoX_button_Click);
             // 
@@ -9691,6 +9694,7 @@
             this.GoY_button.Size = new System.Drawing.Size(32, 23);
             this.GoY_button.TabIndex = 107;
             this.GoY_button.Text = "Y:";
+            this.toolTip1.SetToolTip(this.GoY_button, resources.GetString("GoY_button.ToolTip"));
             this.GoY_button.UseVisualStyleBackColor = true;
             this.GoY_button.Click += new System.EventHandler(this.GoY_button_Click);
             // 
@@ -9702,6 +9706,7 @@
             this.GoA_button.Size = new System.Drawing.Size(32, 23);
             this.GoA_button.TabIndex = 109;
             this.GoA_button.Text = "A:";
+            this.toolTip1.SetToolTip(this.GoA_button, resources.GetString("GoA_button.ToolTip"));
             this.GoA_button.UseVisualStyleBackColor = true;
             this.GoA_button.Click += new System.EventHandler(this.GoA_button_Click);
             // 
@@ -9713,6 +9718,7 @@
             this.GoZ_button.Size = new System.Drawing.Size(32, 23);
             this.GoZ_button.TabIndex = 108;
             this.GoZ_button.Text = "Z:";
+            this.toolTip1.SetToolTip(this.GoZ_button, resources.GetString("GoZ_button.ToolTip"));
             this.GoZ_button.UseVisualStyleBackColor = true;
             this.GoZ_button.Click += new System.EventHandler(this.GoZ_button_Click);
             // 

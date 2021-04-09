@@ -427,9 +427,7 @@ F8: Front         Shift:           1 mm
 F9: CCW         None:          0.1 mm
 F10: CW          Ctrl:             0.01 mm 
 F11: Up
-F12: Down
-
-</value>
+F12: Down</value>
   </data>
   <data name="GotoY_textBox.ToolTip" xml:space="preserve">
     <value>To jog the machine with keyboard:
@@ -474,9 +472,7 @@ F11: Up
 F12: Down</value>
   </data>
   <data name="Goto_button.ToolTip" xml:space="preserve">
-    <value>Sends the machine to coordinates on the left:
-
-To jog the machine with keyboard:
+    <value>To jog the machine with keyboard:
 Numpad arrow keys: unprecise amount
 
 F key:               With:          Distance:
@@ -485,7 +481,7 @@ F6: Right         Alt:              10 mm
 F7: Back          Alt+Ctrl:     4 mm
 F8: Front         Shift:           1 mm
 F9: CCW         None:          0.1 mm
-F10: CW          Ctrl:             0.01 mm /0.05 deg.
+F10: CW          Ctrl:             0.01 mm 
 F11: Up
 F12: Down</value>
   </data>
@@ -495,9 +491,93 @@ F12: Down</value>
   <metadata name="colorDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>791, 7</value>
   </metadata>
+  <data name="Abs_radioButton.ToolTip" xml:space="preserve">
+    <value>To jog the machine with keyboard:
+Numpad arrow keys: unprecise amount
+
+F key:               With:          Distance:
+F5: Left            Alt+Shift:   100 mm / 90 deg.
+F6: Right         Alt:              10 mm
+F7: Back          Alt+Ctrl:     4 mm
+F8: Front         Shift:           1 mm
+F9: CCW         None:          0.1 mm
+F10: CW          Ctrl:             0.01 mm 
+F11: Up
+F12: Down</value>
+  </data>
+  <data name="Relative_Button.ToolTip" xml:space="preserve">
+    <value>To jog the machine with keyboard:
+Numpad arrow keys: unprecise amount
+
+F key:               With:          Distance:
+F5: Left            Alt+Shift:   100 mm / 90 deg.
+F6: Right         Alt:              10 mm
+F7: Back          Alt+Ctrl:     4 mm
+F8: Front         Shift:           1 mm
+F9: CCW         None:          0.1 mm
+F10: CW          Ctrl:             0.01 mm 
+F11: Up
+F12: Down</value>
+  </data>
   <metadata name="MotorPower_timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>804, 46</value>
   </metadata>
+  <data name="GoX_button.ToolTip" xml:space="preserve">
+    <value>To jog the machine with keyboard:
+Numpad arrow keys: unprecise amount
+
+F key:               With:          Distance:
+F5: Left            Alt+Shift:   100 mm / 90 deg.
+F6: Right         Alt:              10 mm
+F7: Back          Alt+Ctrl:     4 mm
+F8: Front         Shift:           1 mm
+F9: CCW         None:          0.1 mm
+F10: CW          Ctrl:             0.01 mm 
+F11: Up
+F12: Down</value>
+  </data>
+  <data name="GoY_button.ToolTip" xml:space="preserve">
+    <value>To jog the machine with keyboard:
+Numpad arrow keys: unprecise amount
+
+F key:               With:          Distance:
+F5: Left            Alt+Shift:   100 mm / 90 deg.
+F6: Right         Alt:              10 mm
+F7: Back          Alt+Ctrl:     4 mm
+F8: Front         Shift:           1 mm
+F9: CCW         None:          0.1 mm
+F10: CW          Ctrl:             0.01 mm 
+F11: Up
+F12: Down</value>
+  </data>
+  <data name="GoA_button.ToolTip" xml:space="preserve">
+    <value>To jog the machine with keyboard:
+Numpad arrow keys: unprecise amount
+
+F key:               With:          Distance:
+F5: Left            Alt+Shift:   100 mm / 90 deg.
+F6: Right         Alt:              10 mm
+F7: Back          Alt+Ctrl:     4 mm
+F8: Front         Shift:           1 mm
+F9: CCW         None:          0.1 mm
+F10: CW          Ctrl:             0.01 mm 
+F11: Up
+F12: Down</value>
+  </data>
+  <data name="GoZ_button.ToolTip" xml:space="preserve">
+    <value>To jog the machine with keyboard:
+Numpad arrow keys: unprecise amount
+
+F key:               With:          Distance:
+F5: Left            Alt+Shift:   100 mm / 90 deg.
+F6: Right         Alt:              10 mm
+F7: Back          Alt+Ctrl:     4 mm
+F8: Front         Shift:           1 mm
+F9: CCW         None:          0.1 mm
+F10: CW          Ctrl:             0.01 mm 
+F11: Up
+F12: Down</value>
+  </data>
   <metadata name="AppSettings_saveFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>912, 7</value>
   </metadata>
