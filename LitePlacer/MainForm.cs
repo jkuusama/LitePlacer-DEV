@@ -1404,6 +1404,33 @@ namespace LitePlacer
             }
 
             double Mag = 0.0;
+            if ((System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
+                && (System.Windows.Forms.Control.ModifierKeys == Keys.Shift))
+            {
+                Mag = 90.0;
+            }
+            else if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
+            {
+                Mag = 10.0;
+            }
+            else if ((System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
+                && (System.Windows.Forms.Control.ModifierKeys == Keys.Control))
+            {
+                Mag = 4.0;
+            }
+            else if (System.Windows.Forms.Control.ModifierKeys == Keys.Shift)
+            {
+                Mag = 1.0;
+            }
+            else if (System.Windows.Forms.Control.ModifierKeys == Keys.Control)
+            {
+                Mag = 0.01;
+            }
+            else
+            {
+                Mag = 0.1;
+            }
+
             if (e.Delta < 0)
             {
                 Mag = -1.0;
@@ -1415,14 +1442,6 @@ namespace LitePlacer
             else
             {
                 return;
-            }
-            if (System.Windows.Forms.Control.ModifierKeys == Keys.Shift)
-            {
-                Mag = Mag * 10.0;
-            }
-            if (System.Windows.Forms.Control.ModifierKeys == Keys.Control)
-            {
-                Mag = Mag / 10.0;
             }
 
             JoggingBusy = true;
