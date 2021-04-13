@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -806,17 +806,17 @@
             this.LoadCurrentPosition_button = new System.Windows.Forms.Button();
             this.SetCurrentPosition_button = new System.Windows.Forms.Button();
             this.MeasureAndSet_button = new System.Windows.Forms.Button();
-            this.TrueX_label = new System.Windows.Forms.Label();
-            this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.Abs_radioButton = new System.Windows.Forms.RadioButton();
             this.Relative_Button = new System.Windows.Forms.RadioButton();
-            this.label108 = new System.Windows.Forms.Label();
-            this.MotorPower_timer = new System.Windows.Forms.Timer(this.components);
             this.GoX_button = new System.Windows.Forms.Button();
             this.GoY_button = new System.Windows.Forms.Button();
             this.GoA_button = new System.Windows.Forms.Button();
             this.GoZ_button = new System.Windows.Forms.Button();
+            this.TrueX_label = new System.Windows.Forms.Label();
+            this.TapesAll_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.label108 = new System.Windows.Forms.Label();
+            this.MotorPower_timer = new System.Windows.Forms.Timer(this.components);
             this.AppSettings_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.AppSettings_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.VigorousHoming_checkBox = new System.Windows.Forms.CheckBox();
@@ -1314,33 +1314,36 @@
             // label225
             // 
             this.label225.AutoSize = true;
-            this.label225.Location = new System.Drawing.Point(103, 503);
+            this.label225.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label225.Location = new System.Drawing.Point(97, 500);
             this.label225.Name = "label225";
-            this.label225.Size = new System.Drawing.Size(37, 13);
+            this.label225.Size = new System.Drawing.Size(47, 16);
             this.label225.TabIndex = 100;
             this.label225.Text = "Holes:";
             // 
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(481, 503);
+            this.label67.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label67.Location = new System.Drawing.Point(472, 500);
             this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(50, 13);
+            this.label67.Size = new System.Drawing.Size(63, 16);
             this.label67.TabIndex = 99;
             this.label67.Text = "All tapes:";
             // 
             // label62
             // 
             this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(571, 503);
+            this.label62.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label62.Location = new System.Drawing.Point(566, 500);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(54, 13);
+            this.label62.Size = new System.Drawing.Size(66, 16);
             this.label62.TabIndex = 98;
             this.label62.Text = "One tape:";
             // 
             // TapeUp_button
             // 
-            this.TapeUp_button.Location = new System.Drawing.Point(574, 548);
+            this.TapeUp_button.Location = new System.Drawing.Point(569, 548);
             this.TapeUp_button.Name = "TapeUp_button";
             this.TapeUp_button.Size = new System.Drawing.Size(32, 23);
             this.TapeUp_button.TabIndex = 19;
@@ -1351,7 +1354,7 @@
             // 
             // TapeDown_button
             // 
-            this.TapeDown_button.Location = new System.Drawing.Point(617, 548);
+            this.TapeDown_button.Location = new System.Drawing.Point(612, 548);
             this.TapeDown_button.Name = "TapeDown_button";
             this.TapeDown_button.Size = new System.Drawing.Size(32, 23);
             this.TapeDown_button.TabIndex = 20;
@@ -1363,15 +1366,16 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 503);
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(3, 500);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(36, 13);
+            this.label7.Size = new System.Drawing.Size(46, 16);
             this.label7.TabIndex = 97;
             this.label7.Text = "Trays:";
             // 
             // EditTape_button
             // 
-            this.EditTape_button.Location = new System.Drawing.Point(574, 519);
+            this.EditTape_button.Location = new System.Drawing.Point(569, 519);
             this.EditTape_button.Name = "EditTape_button";
             this.EditTape_button.Size = new System.Drawing.Size(75, 23);
             this.EditTape_button.TabIndex = 96;
@@ -1382,7 +1386,7 @@
             // 
             // ResetAllTapes_button
             // 
-            this.ResetAllTapes_button.Location = new System.Drawing.Point(385, 577);
+            this.ResetAllTapes_button.Location = new System.Drawing.Point(381, 577);
             this.ResetAllTapes_button.Name = "ResetAllTapes_button";
             this.ResetAllTapes_button.Size = new System.Drawing.Size(77, 23);
             this.ResetAllTapes_button.TabIndex = 37;
@@ -1393,7 +1397,7 @@
             // 
             // ResetOneTape_button
             // 
-            this.ResetOneTape_button.Location = new System.Drawing.Point(294, 577);
+            this.ResetOneTape_button.Location = new System.Drawing.Point(287, 577);
             this.ResetOneTape_button.Name = "ResetOneTape_button";
             this.ResetOneTape_button.Size = new System.Drawing.Size(75, 23);
             this.ResetOneTape_button.TabIndex = 25;
@@ -1406,24 +1410,26 @@
             // label158
             // 
             this.label158.AutoSize = true;
-            this.label158.Location = new System.Drawing.Point(291, 503);
+            this.label158.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label158.Location = new System.Drawing.Point(284, 499);
             this.label158.Name = "label158";
-            this.label158.Size = new System.Drawing.Size(77, 13);
+            this.label158.Size = new System.Drawing.Size(96, 16);
             this.label158.TabIndex = 95;
             this.label158.Text = "Selected rows:";
             // 
             // label157
             // 
             this.label157.AutoSize = true;
-            this.label157.Location = new System.Drawing.Point(385, 503);
+            this.label157.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label157.Location = new System.Drawing.Point(378, 499);
             this.label157.Name = "label157";
-            this.label157.Size = new System.Drawing.Size(46, 13);
+            this.label157.Size = new System.Drawing.Size(57, 16);
             this.label157.TabIndex = 94;
             this.label157.Text = "All rows:";
             // 
             // ResetSelectedPlaceZs_button
             // 
-            this.ResetSelectedPlaceZs_button.Location = new System.Drawing.Point(294, 548);
+            this.ResetSelectedPlaceZs_button.Location = new System.Drawing.Point(287, 548);
             this.ResetSelectedPlaceZs_button.Name = "ResetSelectedPlaceZs_button";
             this.ResetSelectedPlaceZs_button.Size = new System.Drawing.Size(75, 23);
             this.ResetSelectedPlaceZs_button.TabIndex = 93;
@@ -1434,7 +1440,7 @@
             // 
             // ResetSelectedZs_button
             // 
-            this.ResetSelectedZs_button.Location = new System.Drawing.Point(294, 519);
+            this.ResetSelectedZs_button.Location = new System.Drawing.Point(287, 519);
             this.ResetSelectedZs_button.Name = "ResetSelectedZs_button";
             this.ResetSelectedZs_button.Size = new System.Drawing.Size(75, 23);
             this.ResetSelectedZs_button.TabIndex = 92;
@@ -1445,7 +1451,7 @@
             // 
             // ResetPlaceZ_button
             // 
-            this.ResetPlaceZ_button.Location = new System.Drawing.Point(385, 548);
+            this.ResetPlaceZ_button.Location = new System.Drawing.Point(381, 548);
             this.ResetPlaceZ_button.Name = "ResetPlaceZ_button";
             this.ResetPlaceZ_button.Size = new System.Drawing.Size(75, 23);
             this.ResetPlaceZ_button.TabIndex = 63;
@@ -1626,7 +1632,7 @@
             // 
             // ShowPart_button
             // 
-            this.ShowPart_button.Location = new System.Drawing.Point(200, 574);
+            this.ShowPart_button.Location = new System.Drawing.Point(194, 577);
             this.ShowPart_button.Name = "ShowPart_button";
             this.ShowPart_button.Size = new System.Drawing.Size(75, 23);
             this.ShowPart_button.TabIndex = 52;
@@ -1640,15 +1646,16 @@
             // label129
             // 
             this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(199, 503);
+            this.label129.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label129.Location = new System.Drawing.Point(191, 500);
             this.label129.Name = "label129";
-            this.label129.Size = new System.Drawing.Size(76, 13);
+            this.label129.Size = new System.Drawing.Size(94, 16);
             this.label129.TabIndex = 51;
             this.label129.Text = "Alignment test:";
             // 
             // HoleTest_button
             // 
-            this.HoleTest_button.Location = new System.Drawing.Point(200, 545);
+            this.HoleTest_button.Location = new System.Drawing.Point(194, 548);
             this.HoleTest_button.Name = "HoleTest_button";
             this.HoleTest_button.Size = new System.Drawing.Size(74, 23);
             this.HoleTest_button.TabIndex = 50;
@@ -1660,7 +1667,7 @@
             // label128
             // 
             this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(198, 522);
+            this.label128.Location = new System.Drawing.Point(191, 525);
             this.label128.Name = "label128";
             this.label128.Size = new System.Drawing.Size(39, 13);
             this.label128.TabIndex = 49;
@@ -1668,7 +1675,7 @@
             // 
             // HoleTest_maskedTextBox
             // 
-            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(243, 519);
+            this.HoleTest_maskedTextBox.Location = new System.Drawing.Point(236, 521);
             this.HoleTest_maskedTextBox.Name = "HoleTest_maskedTextBox";
             this.HoleTest_maskedTextBox.PromptChar = ' ';
             this.HoleTest_maskedTextBox.ResetOnSpace = false;
@@ -1722,7 +1729,7 @@
             // 
             // LoadAllTapes_button
             // 
-            this.LoadAllTapes_button.Location = new System.Drawing.Point(480, 548);
+            this.LoadAllTapes_button.Location = new System.Drawing.Point(475, 548);
             this.LoadAllTapes_button.Name = "LoadAllTapes_button";
             this.LoadAllTapes_button.Size = new System.Drawing.Size(75, 23);
             this.LoadAllTapes_button.TabIndex = 42;
@@ -1732,7 +1739,7 @@
             // 
             // SaveAllTapes_button
             // 
-            this.SaveAllTapes_button.Location = new System.Drawing.Point(480, 519);
+            this.SaveAllTapes_button.Location = new System.Drawing.Point(475, 519);
             this.SaveAllTapes_button.Name = "SaveAllTapes_button";
             this.SaveAllTapes_button.Size = new System.Drawing.Size(75, 23);
             this.SaveAllTapes_button.TabIndex = 41;
@@ -1742,7 +1749,7 @@
             // 
             // TapeSet1_button
             // 
-            this.TapeSet1_button.Location = new System.Drawing.Point(106, 548);
+            this.TapeSet1_button.Location = new System.Drawing.Point(100, 548);
             this.TapeSet1_button.Name = "TapeSet1_button";
             this.TapeSet1_button.Size = new System.Drawing.Size(75, 23);
             this.TapeSet1_button.TabIndex = 40;
@@ -1753,7 +1760,7 @@
             // 
             // Tape_resetZs_button
             // 
-            this.Tape_resetZs_button.Location = new System.Drawing.Point(385, 519);
+            this.Tape_resetZs_button.Location = new System.Drawing.Point(381, 518);
             this.Tape_resetZs_button.Name = "Tape_resetZs_button";
             this.Tape_resetZs_button.Size = new System.Drawing.Size(75, 23);
             this.Tape_resetZs_button.TabIndex = 39;
@@ -1764,7 +1771,7 @@
             // 
             // Tape_GoToNext_button
             // 
-            this.Tape_GoToNext_button.Location = new System.Drawing.Point(106, 577);
+            this.Tape_GoToNext_button.Location = new System.Drawing.Point(100, 577);
             this.Tape_GoToNext_button.Name = "Tape_GoToNext_button";
             this.Tape_GoToNext_button.Size = new System.Drawing.Size(75, 23);
             this.Tape_GoToNext_button.TabIndex = 38;
@@ -1775,7 +1782,7 @@
             // 
             // SetPartNo_button
             // 
-            this.SetPartNo_button.Location = new System.Drawing.Point(106, 606);
+            this.SetPartNo_button.Location = new System.Drawing.Point(100, 606);
             this.SetPartNo_button.Name = "SetPartNo_button";
             this.SetPartNo_button.Size = new System.Drawing.Size(75, 23);
             this.SetPartNo_button.TabIndex = 35;
@@ -1786,7 +1793,7 @@
             // 
             // TapeGoTo_button
             // 
-            this.TapeGoTo_button.Location = new System.Drawing.Point(106, 519);
+            this.TapeGoTo_button.Location = new System.Drawing.Point(100, 519);
             this.TapeGoTo_button.Name = "TapeGoTo_button";
             this.TapeGoTo_button.Size = new System.Drawing.Size(75, 23);
             this.TapeGoTo_button.TabIndex = 21;
@@ -1797,7 +1804,7 @@
             // 
             // DeleteTape_button
             // 
-            this.DeleteTape_button.Location = new System.Drawing.Point(574, 606);
+            this.DeleteTape_button.Location = new System.Drawing.Point(569, 606);
             this.DeleteTape_button.Name = "DeleteTape_button";
             this.DeleteTape_button.Size = new System.Drawing.Size(75, 23);
             this.DeleteTape_button.TabIndex = 18;
@@ -1808,7 +1815,7 @@
             // 
             // AddTape_button
             // 
-            this.AddTape_button.Location = new System.Drawing.Point(574, 577);
+            this.AddTape_button.Location = new System.Drawing.Point(569, 577);
             this.AddTape_button.Name = "AddTape_button";
             this.AddTape_button.Size = new System.Drawing.Size(75, 23);
             this.AddTape_button.TabIndex = 17;
@@ -7184,14 +7191,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7277,14 +7284,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -9615,26 +9622,6 @@
             this.MeasureAndSet_button.UseVisualStyleBackColor = true;
             this.MeasureAndSet_button.Click += new System.EventHandler(this.MeasureAndSet_button_Click);
             // 
-            // TrueX_label
-            // 
-            this.TrueX_label.AutoSize = true;
-            this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrueX_label.Location = new System.Drawing.Point(760, 675);
-            this.TrueX_label.Name = "TrueX_label";
-            this.TrueX_label.Size = new System.Drawing.Size(31, 9);
-            this.TrueX_label.TabIndex = 77;
-            this.TrueX_label.Text = "000.000";
-            this.TrueX_label.Visible = false;
-            // 
-            // TapesAll_saveFileDialog
-            // 
-            this.TapesAll_saveFileDialog.DefaultExt = "tapes_v2";
-            this.TapesAll_saveFileDialog.Filter = "Tape files|*.tapes_v2;*.tapes|All files|*.*";
-            // 
-            // colorDialog1
-            // 
-            this.colorDialog1.SolidColorOnly = true;
-            // 
             // Abs_radioButton
             // 
             this.Abs_radioButton.AutoSize = true;
@@ -9658,21 +9645,6 @@
             this.Relative_Button.Text = "Relative";
             this.toolTip1.SetToolTip(this.Relative_Button, resources.GetString("Relative_Button.ToolTip"));
             this.Relative_Button.UseVisualStyleBackColor = true;
-            // 
-            // label108
-            // 
-            this.label108.AutoSize = true;
-            this.label108.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label108.Location = new System.Drawing.Point(611, 749);
-            this.label108.Name = "label108";
-            this.label108.Size = new System.Drawing.Size(63, 18);
-            this.label108.TabIndex = 95;
-            this.label108.Text = "nozzle:";
-            // 
-            // MotorPower_timer
-            // 
-            this.MotorPower_timer.Interval = 1000;
-            this.MotorPower_timer.Tick += new System.EventHandler(this.MotorPower_timer_Tick);
             // 
             // GoX_button
             // 
@@ -9721,6 +9693,41 @@
             this.toolTip1.SetToolTip(this.GoZ_button, resources.GetString("GoZ_button.ToolTip"));
             this.GoZ_button.UseVisualStyleBackColor = true;
             this.GoZ_button.Click += new System.EventHandler(this.GoZ_button_Click);
+            // 
+            // TrueX_label
+            // 
+            this.TrueX_label.AutoSize = true;
+            this.TrueX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TrueX_label.Location = new System.Drawing.Point(760, 675);
+            this.TrueX_label.Name = "TrueX_label";
+            this.TrueX_label.Size = new System.Drawing.Size(31, 9);
+            this.TrueX_label.TabIndex = 77;
+            this.TrueX_label.Text = "000.000";
+            this.TrueX_label.Visible = false;
+            // 
+            // TapesAll_saveFileDialog
+            // 
+            this.TapesAll_saveFileDialog.DefaultExt = "tapes_v2";
+            this.TapesAll_saveFileDialog.Filter = "Tape files|*.tapes_v2;*.tapes|All files|*.*";
+            // 
+            // colorDialog1
+            // 
+            this.colorDialog1.SolidColorOnly = true;
+            // 
+            // label108
+            // 
+            this.label108.AutoSize = true;
+            this.label108.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label108.Location = new System.Drawing.Point(611, 749);
+            this.label108.Name = "label108";
+            this.label108.Size = new System.Drawing.Size(63, 18);
+            this.label108.TabIndex = 95;
+            this.label108.Text = "nozzle:";
+            // 
+            // MotorPower_timer
+            // 
+            this.MotorPower_timer.Interval = 1000;
+            this.MotorPower_timer.Tick += new System.EventHandler(this.MotorPower_timer_Tick);
             // 
             // AppSettings_openFileDialog
             // 
