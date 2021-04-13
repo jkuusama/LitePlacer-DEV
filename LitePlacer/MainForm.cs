@@ -2441,6 +2441,10 @@ namespace LitePlacer
                 return false;
             }
 
+            if (!Check_HeightCalibrationDone_m())
+            {
+                return false;
+            }
             DisplayText("Probing Z: ");
 
             Cnc.ProbingMode(true);
@@ -2449,6 +2453,10 @@ namespace LitePlacer
             {
                 Cnc.Homing = false;
                 Cnc.ProbingMode(false);
+                return false;
+            }
+            if (!Cnc.Z(Cnc.CurrentZ - Setting.General_ZTouchDifference + Setting.Placement_Depth))
+            {
                 return false;
             }
             Cnc.Homing = false;
@@ -7508,8 +7516,6 @@ namespace LitePlacer
         // PickUpThis_m(): Actual pickup, assumes Nozzle is on top of the part
         private bool PickUpThis_m(int TapeNumber)
         {
-            if (!Check_HeightCalibrationDone_m()) return false;
-
             string Z_str = Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value.ToString();
             if (Z_str == "--")
             {
@@ -7518,7 +7524,7 @@ namespace LitePlacer
                 {
                     return false;
                 }
-                double Zpickup = Cnc.CurrentZ - Setting.General_ZTouchDifference + Setting.Placement_Depth;
+                double Zpickup = Cnc.CurrentZ;
                 Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value = Zpickup.ToString(CultureInfo.InvariantCulture);
                 DisplayText("PickUpPart_m(): Probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
             }
@@ -7839,8 +7845,6 @@ namespace LitePlacer
         // If placement Z isn't known already, updates the tape info.
         private bool PutPartDown_m(int TapeNum)
         {
-            if (!Check_HeightCalibrationDone_m()) return false;
-
             string Z_str = Tapes_dataGridView.Rows[TapeNum].Cells["Z_Place_Column"].Value.ToString();
             if (Z_str == "--")
             {
@@ -7849,7 +7853,7 @@ namespace LitePlacer
                 {
                     return false;
                 };
-                double Zplace = Cnc.CurrentZ - Setting.General_ZTouchDifference + Setting.Placement_Depth;
+                double Zplace = Cnc.CurrentZ;
                 Tapes_dataGridView.Rows[TapeNum].Cells["Z_Place_Column"].Value = Zplace.ToString(CultureInfo.InvariantCulture);
                 DisplayText("PutPartDown_m(): Probed placement Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
             }
@@ -7891,8 +7895,6 @@ namespace LitePlacer
         // 
         private bool PutLoosePartDown_m(bool Probe)
         {
-            if (!Check_HeightCalibrationDone_m()) return false;
-
             if (Probe)
             {
                 DisplayText("PutLoosePartDown_m(): Probing placement Z");
@@ -7900,7 +7902,7 @@ namespace LitePlacer
                 {
                     return false;
                 }
-                LoosePartPlaceZ = Cnc.CurrentZ - Setting.General_ZTouchDifference + Setting.Placement_Depth;
+                LoosePartPlaceZ = Cnc.CurrentZ;
                 DisplayText("PutLoosePartDown_m(): probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
                 DisplayText("PutLoosePartDown_m(): placement Z= " + LoosePartPlaceZ.ToString(CultureInfo.InvariantCulture));
             }
@@ -8121,7 +8123,7 @@ namespace LitePlacer
                     DownCamera.Draw_Snapshot = true;
                     return false;
                 }
-                LoosePartPickupZ = Cnc.CurrentZ - Setting.General_ZTouchDifference + Setting.Placement_Depth;
+                LoosePartPickupZ = Cnc.CurrentZ;
                 DisplayText("PickUpLoosePart_m(): Probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
                 DisplayText("PickUpLoosePart_m(): Pickup Z= " + LoosePartPickupZ.ToString(CultureInfo.InvariantCulture));
             }
@@ -10840,7 +10842,10 @@ namespace LitePlacer
             {
                 return;
             }
-            Nozzle_ProbeDown_m();
+            if (!Nozzle_ProbeDown_m())
+            {
+                return;
+            }
             Cnc.VacuumOff();
             CNC_Z_m(0);  // back up
             CNC_XYA_m(Xmark, Ymark, Cnc.CurrentA);  // show results
