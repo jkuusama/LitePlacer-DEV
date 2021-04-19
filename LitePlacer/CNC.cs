@@ -407,6 +407,7 @@ namespace LitePlacer
             {
                 MainForm.Motors_label.Text = "Axes setup (Duet3 board):";
                 MainForm.Duet3Motors_tabControl.Visible = true;
+                ErrorState = false;
                 return true;
             }
             else
@@ -426,6 +427,7 @@ namespace LitePlacer
             {
                 MainForm.Motors_label.Text = "Axes setup (TinyG board):";
                 MainForm.TinyGMotors_tabControl.Visible = true;
+                ErrorState = false;
                 return true;
             }
             Controlboard = ControlBoardType.unknown;
