@@ -1851,6 +1851,7 @@ namespace LitePlacer
             int Xres = 0;
             int Yres = 0;
             int pol = 1;
+            Camera cam = DownCamera;
 
             if (DownCamera.Active)
             {
@@ -1866,6 +1867,7 @@ namespace LitePlacer
                 Xres = UpCamera.FrameSizeX;
                 Yres = UpCamera.FrameSizeY;
                 pol = -1;
+                cam = UpCamera;
             }
             else
             {
@@ -2162,8 +2164,8 @@ namespace LitePlacer
         // =================================================================================
         // moving
 
-        // XY moves are always done as XYA. less axis are needed, 
-        // we use Cnc.Current# replacing axis we don't wantr to move
+        // XY moves are always done as XYA. When less axis are needed, 
+        // we use Cnc.Current# replacing axis we don't want to move
 
         public bool CNC_XYA_m(double X, double Y, double A)
         {
@@ -2770,8 +2772,10 @@ namespace LitePlacer
             }
 
             DisplayText("Goto park");
-            CNC_Z_m(0);
-            CNC_XYA_m(Setting.General_ParkX, Setting.General_ParkY, 0.0);
+            if (CNC_Z_m(0))
+            {
+                CNC_XYA_m(Setting.General_ParkX, Setting.General_ParkY, 0.0);
+            }
         }
 
 
@@ -2838,9 +2842,15 @@ namespace LitePlacer
         }
 
         [DebuggerStepThrough]
+        private bool IsTimerDone()
+        {
+            return TimerDone;
+        }
+
+        [DebuggerStepThrough]
         private void MotorPower_timer_Tick(object sender, EventArgs e)
         {
-            if (TimerDone)
+            if (IsTimerDone())
             {
                 return;
             };
@@ -4061,21 +4071,30 @@ namespace LitePlacer
             switch (SetNozzleOffset_stage)
             {
                 case 0:
-                    SetNozzleOffset_stage = 1;
                     Offset2Method_button.Text = "Next";
-                    CNC_A_m(0.0);
+                    if (!CNC_A_m(0.0))
+                    {
+                        break;
+                    }
                     NozzleOffset_label.Visible = true;
                     NozzleOffset_label.Text = "Jog Nozzle to a point on a PCB, then click \"Next\"";
+                    SetNozzleOffset_stage = 1;
                     break;
 
                 case 1:
-                    SetNozzleOffset_stage = 2;
                     NozzleOffsetMarkX = Cnc.CurrentX;
                     NozzleOffsetMarkY = Cnc.CurrentY;
-                    CNC_Z_m(0);
-                    CNC_XYA_m(Cnc.CurrentX - Setting.DownCam_NozzleOffsetX, Cnc.CurrentY - Setting.DownCam_NozzleOffsetY, Cnc.CurrentA);
+                    if (!CNC_Z_m(0.0))
+                    {
+                        break;
+                    }
+                    if (!CNC_XYA_m(Cnc.CurrentX - Setting.DownCam_NozzleOffsetX, Cnc.CurrentY - Setting.DownCam_NozzleOffsetY, Cnc.CurrentA))
+                    {
+                        break;
+                    }
                     DownCamera.DrawCross = true;
                     NozzleOffset_label.Text = "Jog camera above the same point, \n\rthen click \"Next\"";
+                    SetNozzleOffset_stage = 2;
                     break;
 
                 case 2:
@@ -4350,33 +4369,45 @@ namespace LitePlacer
             {
                 return;
             }
+            // Possible states:
+            // - no connection tried
+            // - serial port not ok
+            // - serial port ok, cnc board is not
+            // - connected to board
+
             if (Setting.CNC_SerialPort == "")
             {
-                // user has not tried to connect yet. A message is 
+                // - no connection tried
             }
-            if (Cnc.ErrorState)
+
+            if (!Cnc.Connected)
             {
-                buttonConnectSerial.Text = "Clear Err.";
-                labelSerialPortStatus.Text = "ERROR";
-                labelSerialPortStatus.ForeColor = Color.Red;
-                ValidMeasurement_checkBox.Checked = false;
-                PositionConfidence = false;
-                OpticalHome_button.BackColor = Color.Red;
-            }
-            else if (Cnc.Connected)
-            {
-                buttonConnectSerial.Text = "Close";
-                labelSerialPortStatus.Text = "Connected to " + Cnc.Port;
-                labelSerialPortStatus.ForeColor = Color.Black;
-            }
-            else
-            {
+                // - serial port not ok
                 PositionConfidence = false;
                 OpticalHome_button.BackColor = Color.Red;
                 buttonConnectSerial.Text = "Connect";
                 labelSerialPortStatus.Text = "Not connected";
                 labelSerialPortStatus.ForeColor = Color.Red;
                 ValidMeasurement_checkBox.Checked = false;
+                return;
+            }
+
+            if (Cnc.ErrorState)
+            {
+                // - serial port ok, cnc board is not
+                buttonConnectSerial.Text = "Clear Err.";
+                labelSerialPortStatus.Text = "Control board in error state";
+                labelSerialPortStatus.ForeColor = Color.Red;
+                ValidMeasurement_checkBox.Checked = false;
+                PositionConfidence = false;
+                OpticalHome_button.BackColor = Color.Red;
+            }
+            else
+            {
+                buttonConnectSerial.Text = "Close";
+                labelSerialPortStatus.Text = "Connected to " + Cnc.Controlboard.ToString()
+                    + " at port " + Cnc.Port;
+                labelSerialPortStatus.ForeColor = Color.Black;
             }
         }
 
@@ -4418,14 +4449,14 @@ namespace LitePlacer
 
             NoPort_label.Visible = false;
             // Usder wants close current connection (the button is a toggle) or (re-)connect
-            bool JustClose = (Cnc.Connected || Cnc.ErrorState);
+            bool JustClose = (Cnc.Connected && !Cnc.ErrorState);
 
             // Close existing connection always
             buttonConnectSerial.Text = "Closing...";
 
             Cnc.Close();
 
-            if (JustClose)      // user didn't want to connect
+            if (JustClose)      // user didn't want to connect (why?)
             {
                 UpdateCncConnectionStatus();
                 return;
@@ -4436,13 +4467,14 @@ namespace LitePlacer
             if (comboBoxSerialPorts.SelectedItem == null)
             {
                 CncError();
+                Cnc.Connected = false;
 
             }
             else if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
             {
+                Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                 UpdateCncConnectionStatus();
                 Cnc.ErrorState = false;
-                Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                 if (Cnc.JustConnected())
                 {
                     CheckZdownSwitchParameters(out DialogResult res);
@@ -5225,7 +5257,7 @@ namespace LitePlacer
                     Setting.General_ZTouchDifference = Ztemp - Cnc.CurrentZ;
                     TouchDifference_textBox.Text = Setting.General_ZTouchDifference.ToString("0.00", CultureInfo.InvariantCulture);
                     Setting.General_Z0toPCB = Cnc.CurrentZ;
-                    Cnc.Z(0);
+                    CNC_Z_m(0);
                     ZGuardOn();
                     NozzleHeightInstructions_label.Text = "";
                     TestSwitchClearance_button.Text = "Start";
@@ -8132,7 +8164,7 @@ namespace LitePlacer
                 DisplayText("PickUpLoosePart_m(): Part pickup, Z" + LoosePartPickupZ.ToString(CultureInfo.InvariantCulture));
                 if (!CNC_Z_m(LoosePartPickupZ))
                 {
-                    DownCamera.Draw_Snapshot = true;
+                    DownCamera.Draw_Snapshot = false;
                     return false;
                 }
             }
@@ -10809,7 +10841,11 @@ namespace LitePlacer
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
 
-            Cnc.Z(0);
+            if (!CNC_Z_m(0))
+            {
+                return;
+            }
+            CNC_Z_m(0);
             Cnc.PumpOn();
             Cnc.VacuumOff();
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
@@ -10835,7 +10871,10 @@ namespace LitePlacer
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
 
-            Cnc.Z(0);
+            if (!Cnc.Z(0))
+            {
+                return;
+            }
             double Xmark = Cnc.CurrentX;
             double Ymark = Cnc.CurrentY;
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
@@ -10847,7 +10886,10 @@ namespace LitePlacer
                 return;
             }
             Cnc.VacuumOff();
-            CNC_Z_m(0);  // back up
+            if (!Cnc.Z(0))
+            {
+                return;
+            }
             CNC_XYA_m(Xmark, Ymark, Cnc.CurrentA);  // show results
         }
 
@@ -10860,9 +10902,10 @@ namespace LitePlacer
             DisplayText("test 3: Probe down (using nozzle correction)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-
-            Cnc.Z(0);
-
+            if (!Cnc.Z(0))
+            {
+                return;
+            }
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
             {
                 return;
@@ -10879,8 +10922,10 @@ namespace LitePlacer
             DisplayText("test 4: Probe down (no correction)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-
-            Cnc.Z(0);
+            if (!Cnc.Z(0))
+            {
+                return;
+            }
             CNC_XYA_m((Cnc.CurrentX + Setting.DownCam_NozzleOffsetX),
                         (Cnc.CurrentY + Setting.DownCam_NozzleOffsetY), Cnc.CurrentA);
             Nozzle_ProbeDown_m();
@@ -10901,8 +10946,10 @@ namespace LitePlacer
         {
             DisplayText("test 6: Nozzle  to down cam");
             if (!CheckPositionConfidence()) return;
-            Cnc.Z(0);
-
+            if (!Cnc.Z(0))
+            {
+                return;
+            }
             CNC_XYA_m((Cnc.CurrentX + Setting.DownCam_NozzleOffsetX),
                         (Cnc.CurrentY + Setting.DownCam_NozzleOffsetY), Cnc.CurrentA);
         }
@@ -10913,8 +10960,10 @@ namespace LitePlacer
         {
             DisplayText("test 7: Nozzle to up cam (do nozzle down to check)");
             if (!CheckPositionConfidence()) return;
-            Cnc.Z(0);
-
+            if (!Cnc.Z(0))
+            {
+                return;
+            }
             double xp = Setting.UpCam_PositionX;
             double xo = Setting.DownCam_NozzleOffsetX;
             double yp = Setting.UpCam_PositionY;
@@ -11619,15 +11668,21 @@ namespace LitePlacer
                 return false;
             }
             UpCamera.PauseProcessing = true;
-
             // take Nozzle up
-            bool result = true;
-            result &= CNC_Z_m(0.0);
+            if (!CNC_Z_m(0))
+            {
+                return false;
+            }
 
             // take Nozzle to camera
-            result &= CNC_XYA_m(Setting.UpCam_PositionX, Setting.UpCam_PositionY, Cnc.CurrentA);
-            result &= CNC_Z_m(Setting.General_Z0toPCB - 0.5); // Average small component height 0.5mm (?)
-
+            if (!CNC_XYA_m(Setting.UpCam_PositionX, Setting.UpCam_PositionY, Cnc.CurrentA))
+            {
+                return false;
+            }
+            if (!CNC_Z_m(Setting.General_Z0toPCB - 0.5)) // Average small component height 0.5mm (?)
+            {
+                return false;
+            }
             // measure the values
             DisplayText("Measuring nozzle " + Setting.Nozzles_current.ToString());
             if (SizeOverride)
@@ -11637,7 +11692,14 @@ namespace LitePlacer
                 UpCamera.MeasurementParameters.Ymax = Smax;
                 UpCamera.MeasurementParameters.Ymin = Smin;
             }
-            result &= Nozzle.Calibrate();
+            if (!CNC_Z_m(Setting.General_Z0toPCB - 0.5)) // Average small component height 0.5mm (?)
+            {
+                return false;
+            }
+            if (!Nozzle.Calibrate())
+            {
+                return false;
+            }
             if (SizeOverride)
             {
                 UpCamera.MeasurementParameters.Xmax = SmaxSave;
@@ -11647,7 +11709,10 @@ namespace LitePlacer
             }
 
             // take Nozzle up
-            result &= CNC_Z_m(0.0);
+            if (!CNC_Z_m(0))
+            {
+                return false;
+            }
 
             UpCamera.PauseProcessing = false;
             if (!UpCamWasRunning)
@@ -11655,27 +11720,17 @@ namespace LitePlacer
                 SelectCamera(DownCamera);
             }
             NozzleCalibrationClass.CalibrationPointsList Points = Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current - 1].CalibrationPoints;
-            if (result)
+            for (int i = 0; i < Points.Count; i++)
             {
-                for (int i = 0; i < Points.Count; i++)
-                {
-                    DisplayText("A: " + Points[i].Angle.ToString("0.000", CultureInfo.InvariantCulture) +
-                        ", X: " + Points[i].X.ToString("0.000", CultureInfo.InvariantCulture) +
-                        ", Y: " + Points[i].Y.ToString("0.000", CultureInfo.InvariantCulture));
-                }
-                Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current - 1].Calibrated = true;
-                NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells["NozzleCalibrated_Column"].Value = true;
-                Update_GridView(NozzlesParameters_dataGridView);
+                DisplayText("A: " + Points[i].Angle.ToString("0.000", CultureInfo.InvariantCulture) +
+                    ", X: " + Points[i].X.ToString("0.000", CultureInfo.InvariantCulture) +
+                    ", Y: " + Points[i].Y.ToString("0.000", CultureInfo.InvariantCulture));
+            }
+            Nozzle.NozzleDataAllNozzles[Setting.Nozzles_current - 1].Calibrated = true;
+            NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells["NozzleCalibrated_Column"].Value = true;
+            Update_GridView(NozzlesParameters_dataGridView);
 
-            }
-            else
-            {
-                ShowMessageBox(
-                    "Nozzle calibration failed.",
-                    "Nozzle calibration failed.",
-                    MessageBoxButtons.OK);
-            }
-            return (result);
+            return true;
         }
 
 
@@ -12432,13 +12487,25 @@ namespace LitePlacer
                 Cnc.SlowZ = false;
                 Cnc.SlowA = false;
             }
-            CNC_Z_m(0.0);
+            if (!CNC_Z_m(0.0))
+            {
+                return false;
+            }
             if (Setting.Nozzles_FirstMoveSlackCompensation)
             {
-                CNC_XYA_m(X- Setting.SlackCompensationDistance, Y- Setting.SlackCompensationDistance, -5.0);
+                if (!CNC_XYA_m(X - Setting.SlackCompensationDistance, Y - Setting.SlackCompensationDistance, -5.0))
+                {
+                    return false;
+                }
             }
-            CNC_XYA_m(X, Y, 0.0);
-            CNC_Z_m(Z);
+            if (!CNC_XYA_m(X, Y, 0.0))
+            {
+                return false;
+            }
+            if (!CNC_Z_m(Z))
+            {
+                return false;
+            }
             Cnc.SlowXY = !Setting.Nozzles_XYfullSpeed;
             Cnc.SlowZ = !Setting.Nozzles_ZfullSpeed;
             Cnc.SlowA = !Setting.Nozzles_AfullSpeed;

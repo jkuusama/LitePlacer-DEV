@@ -328,15 +328,15 @@ namespace LitePlacer
         // =================================================================================
         #region Communications
 
-        public bool Connected { get; set; }
+        public bool Connected { get; set; } // If connectged to a serial port
         public string Port { get; set; }  // valid only if connected
-        public bool ErrorState { get; set; }
+        public bool ErrorState { get; set; }    // Cnc is in error or not connected
 
         public void RaiseError()
         {
             ErrorState = true;
-            Connected = false;
-            Com.Close();
+            // Connected = false;
+            // Com.Close();
             MainForm.ValidMeasurement_checkBox.Checked = false;
             MainForm.UpdateCncConnectionStatus();
         }
@@ -351,10 +351,14 @@ namespace LitePlacer
             {
                 TinyG.InterpretLine(line);
             }
-            else
+            else if (line.Contains("\", \"msg\":\"SYSTEM READY\"}"))     // TinyG reset message
             {
-                MainForm.DisplayText("*** Cnc.InterpretLine(), unknown board.", KnownColor.DarkRed, true);
-                MainForm.DisplayText("Line: " + line, KnownColor.DarkRed, true);
+                TinyG.InterpretLine(line);  // This will give the user a message
+            }
+            else 
+            {
+                // MainForm.DisplayText("*** Cnc.InterpretLine(), unknown board.", KnownColor.DarkRed, true);
+                MainForm.DisplayText("Line: " + line, KnownColor.Black, true);
             }
         }
 
@@ -374,6 +378,7 @@ namespace LitePlacer
                 {
                     MainForm.DisplayText("Connecting to serial port " + port + " failed.");
                     RaiseError();
+                    Connected = false;
                     return false;
                 }
                 else
@@ -395,6 +400,7 @@ namespace LitePlacer
             {
                 return false;
             }
+            Connected = true;
             Port = port;
             Controlboard = ControlBoardType.Duet3;      // to direct the response to correct module
             if (Duet3.CheckIdentity())
@@ -414,6 +420,7 @@ namespace LitePlacer
             {
                 return false;
             }
+            Connected = true;
             Controlboard = ControlBoardType.TinyG;
             if (TinyG.CheckIdentity())
             {
@@ -421,11 +428,6 @@ namespace LitePlacer
                 MainForm.TinyGMotors_tabControl.Visible = true;
                 return true;
             }
-            else
-            {
-                Com.Close();
-            }
-
             Controlboard = ControlBoardType.unknown;
             MainForm.DisplayText("*** Cnc.Connect(), did not find a supported board.", KnownColor.DarkRed, true);
             RaiseError();
@@ -1427,14 +1429,14 @@ namespace LitePlacer
             double dX = Math.Abs(X - CurrentX);
             double dY = Math.Abs(Y - CurrentY);
             double dA = Math.Abs(Am - CurrentA);
-            if ((dX < 0.0009) && (dY < 0.0009) && (dA < 0.0009))
+            if ((dX < 0.0005) && (dY < 0.0005) && (dA < 0.0005))
             {
                 MainForm.DisplayText(" -- zero XYA movement command --", KnownColor.Gray);
                 return true;   // already there
             }
 
             // It doesn't hurt to do only A when needed, and because of TinyG bug, is a must:
-            if ((dX < 0.0009) && (dY < 0.009))
+            if ((dX < 0.0005) && (dY < 0.0005))
             {
                 return A_move(Am);
             };
@@ -1469,7 +1471,7 @@ namespace LitePlacer
                 }
 
                 // Do A first, then XY
-                if (dA < 0.0009)
+                if (dA < 0.0005)
                 {
                     MainForm.DisplayText(" -- XYA command, A already there --", KnownColor.Gray);
                 }

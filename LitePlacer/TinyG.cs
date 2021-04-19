@@ -695,6 +695,14 @@ namespace LitePlacer
                     return;
                 };
                 Cnc.RaiseError();
+                if (line.Contains("Limit"))
+                {
+                    MainForm.ShowMessageBox(
+                        "Limit switch hit. Reset the TinyG and reconnect. Check job status if needed.",
+                        "TinyG Error",
+                        MessageBoxButtons.OK);
+                    return;
+                }
                 MainForm.ShowMessageBox(
                     "TinyG error. Review situation and restart if needed.",
                     "TinyG Error",
