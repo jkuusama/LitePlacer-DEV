@@ -1012,23 +1012,29 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.VacuumDefaultSetting(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            VacuumOff();
+            Vacuum_Off();
         }
 
-        public void VacuumOn()
+        public void Vacuum_On()
         {
             if (ErrorState)
             {
                 MainForm.DisplayText("*** Cnc.VacuumOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
+            if (VacuumIsOn)
+            {
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.VacuumOn();
+                VacuumIsOn = true;
             }
             else if (Controlboard == ControlBoardType.TinyG)
             {
                 TinyG.VacuumOn();
+                VacuumIsOn = true;
             }
             else
             {
@@ -1036,20 +1042,26 @@ namespace LitePlacer
             }
         }
 
-        public void VacuumOff()
+        public void Vacuum_Off()
         {
             if (ErrorState)
             {
                 MainForm.DisplayText("*** Cnc.VacuumOff(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
+            if (!VacuumIsOn)
+            {
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.VacuumOff();
+                VacuumIsOn = false;
             }
             else if (Controlboard == ControlBoardType.TinyG)
             {
                 TinyG.VacuumOff();
+                VacuumIsOn = false;
             }
             else
             {
@@ -1068,24 +1080,30 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.PumpDefaultSetting(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            PumpOff();
+            Pump_Off();
         }
 
 
-        public void PumpOn()
+        public void Pump_On()
         {
             if (ErrorState)
             {
                 MainForm.DisplayText("*** Cnc.PumpOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
+            if (PumpIsOn)
+            {
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.PumpOn();
+                PumpIsOn = true;
             }
             else if (Controlboard == ControlBoardType.TinyG)
             {
                 TinyG.PumpOn();
+                PumpIsOn = true;
             }
             else
             {
@@ -1093,20 +1111,26 @@ namespace LitePlacer
             }
         }
 
-        public void PumpOff()
+        public void Pump_Off()
         {
             if (ErrorState)
             {
                 MainForm.DisplayText("*** Cnc.PumpOff(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
+            if (!PumpIsOn)
+            {
+                return;
+            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.PumpOff();
+                PumpIsOn = false;
             }
             else if (Controlboard == ControlBoardType.TinyG)
             {
                 TinyG.PumpOff();
+                PumpIsOn = false;
             }
             else
             {

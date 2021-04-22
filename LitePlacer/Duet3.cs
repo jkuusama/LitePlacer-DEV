@@ -377,84 +377,31 @@ namespace LitePlacer
 
         public void VacuumOn()
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function VacuumOn", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("VacuumOn(), Duet3");
-            string command = "";
-            if (MainForm.Setting.General_VacuumOutputInverted)
-            {
-                command = "";
-            }
-            if (!Cnc.VacuumIsOn)
-            {
-                if (RawWrite(command))
-                {
-                    Cnc.VacuumIsOn = true;
-                    Thread.Sleep(MainForm.Setting.General_PickupVacuumTime);
-                }
-            }
-            MainForm.Vacuum_checkBox.Checked = Cnc.VacuumIsOn;
         }
 
 
 
         public void VacuumOff()
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function VacuumOff", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("VacuumOff(), Duet3");
-            string command = "";
-            if (MainForm.Setting.General_VacuumOutputInverted)
-            {
-                command = "";
-            }
-            if (Cnc.VacuumIsOn)
-            {
-                if (RawWrite(command))
-                {
-                    Cnc.VacuumIsOn = false;
-                    Thread.Sleep(MainForm.Setting.General_PickupReleaseTime);
-                }
-            }
-            MainForm.Vacuum_checkBox.Checked = Cnc.VacuumIsOn;
         }
 
 
         public void PumpOn()
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function PumpOn", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("PumpOn(), Duet3");
-            string command = "";
-            if (MainForm.Setting.General_PumpOutputInverted)
-            {
-                command = "";
-            }
-            MainForm.DisplayText("PumpOn(), TinyG");
-            if (!Cnc.PumpIsOn)
-            {
-                if (RawWrite(command))
-                {
-                    Thread.Sleep(500);  // this much to develop vacuum
-                    Cnc.PumpIsOn = true;
-                }
-            }
-            MainForm.Pump_checkBox.Checked = Cnc.PumpIsOn;
         }
 
 
 
         public void PumpOff()
         {
+            MainForm.ShowMessageBox("Unimplemented Duet3 function PumpOff", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("PumpOff(), Duet3");
-            string command = "";
-            if (MainForm.Setting.General_PumpOutputInverted)
-            {
-                command = "";
-            }
-            if (Cnc.PumpIsOn)
-            {
-                if (RawWrite(command))
-                {
-                    Thread.Sleep(50);
-                    Cnc.PumpIsOn = false;
-                }
-            }
-            MainForm.Pump_checkBox.Checked = Cnc.PumpIsOn;
         }
 
         #endregion Features

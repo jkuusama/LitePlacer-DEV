@@ -507,20 +507,7 @@ namespace LitePlacer
         public void VacuumOn()
         {
             MainForm.DisplayText("VacuumOn(), TinyG");
-            string command = "{\"gc\":\"M08\"}";
-            if (MainForm.Setting.General_VacuumOutputInverted)
-            {
-                command = "{\"gc\":\"M09\"}";
-            }
-            if (!Cnc.VacuumIsOn)
-            {
-                if (RawWrite(command))
-                {
-                    Cnc.VacuumIsOn = true;
-                    Thread.Sleep(MainForm.Setting.General_PickupVacuumTime);
-                }
-            }
-            MainForm.Vacuum_checkBox.Checked = Cnc.VacuumIsOn;
+            RawWrite("{\"gc\":\"M08\"}");
         }
 
 
@@ -528,20 +515,7 @@ namespace LitePlacer
         public void VacuumOff()
         {
             MainForm.DisplayText("VacuumOff(), TinyG");
-            string command = "{\"gc\":\"M09\"}";
-            if (MainForm.Setting.General_VacuumOutputInverted)
-            {
-                command = "{\"gc\":\"M08\"}";
-            }
-            if (Cnc.VacuumIsOn)
-            {
-                if (RawWrite(command))
-                {
-                    Cnc.VacuumIsOn = false;
-                    Thread.Sleep(MainForm.Setting.General_PickupReleaseTime);
-                }
-            }
-            MainForm.Vacuum_checkBox.Checked = Cnc.VacuumIsOn;
+            RawWrite("{\"gc\":\"M09\"}");
         }
 
 
@@ -559,21 +533,7 @@ namespace LitePlacer
         public void PumpOn()
         {
             MainForm.DisplayText("PumpOn(), TinyG");
-            string command = "{\"gc\":\"M03\"}";
-            if (MainForm.Setting.General_PumpOutputInverted)
-            {
-                command = "{\"gc\":\"M05\"}";
-            }
-            if (!Cnc.PumpIsOn)
-            {
-                if (RawWrite(command))
-                {
-                    BugWorkaround();
-                    Thread.Sleep(500);  // this much to develop vacuum
-                    Cnc.PumpIsOn = true;
-                }
-            }
-            MainForm.Pump_checkBox.Checked = Cnc.PumpIsOn;
+            RawWrite("{\"gc\":\"M03\"}");
         }
 
 
@@ -581,21 +541,7 @@ namespace LitePlacer
         public void PumpOff()
         {
             MainForm.DisplayText("PumpOff(), TinyG");
-            string command = "{\"gc\":\"M05\"}";
-            if (MainForm.Setting.General_PumpOutputInverted)
-            {
-                command = "{\"gc\":\"M03\"}";
-            }
-            if (Cnc.PumpIsOn)
-            {
-                if (RawWrite(command))
-                {
-                    Thread.Sleep(50);
-                    BugWorkaround();
-                    Cnc.PumpIsOn = false;
-                }
-            }
-            MainForm.Pump_checkBox.Checked = Cnc.PumpIsOn;
+            RawWrite("{\"gc\":\"M05\"}");
         }
 
         #endregion Features
