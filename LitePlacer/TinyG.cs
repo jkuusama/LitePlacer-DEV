@@ -373,7 +373,6 @@ namespace LitePlacer
         }
 
 
-
         public void DisableZswitches()
         {
             Write_m("{\"zsn\":0}", 100);
@@ -381,7 +380,6 @@ namespace LitePlacer
             Write_m("{\"zsx\":0}", 100);
             Thread.Sleep(50);
         }
-
 
 
         public void EnableZswitches()
@@ -392,97 +390,56 @@ namespace LitePlacer
             Thread.Sleep(50);
         }
 
-
-
-        public bool GetZ_ZeroBackoff(out double val)
+        // if setup is going on
+        private bool _probingsetup = false;
+        public bool ProbingSetup
         {
-            val = 0.0;
-            string line = ReadLineDirectly("{\"zzb\":\"\"}", true);
-            if (line=="")
+            get
+            {
+                return _probingsetup;
+            }
+            set
+            {
+                _probingsetup = value;
+                if (!value)
+                {
+                    EnableZswitches();
+                }
+            }
+        }
+
+        public bool Nozzle_ProbeDown(double backoff)
+        {
+            MainForm.DisplayText("Probing, TinyG");
+            Write_m("{\"zsn\",0}", 50);
+            Thread.Sleep(50);
+            Write_m("{\"zsx\",1}", 50);
+            Thread.Sleep(50);
+            Write_m("{\"zzb\",0}", 50); // latch backoff and zero backoff to 0. Probing goes down, doesn't back off
+            Thread.Sleep(50);
+            Write_m("{\"zlb\",0}", 50);
+            Thread.Sleep(50);
+
+            if (!Write_m("{\"gc\":\"G28.4 Z0\"}", RegularMoveTimeout))
             {
                 return false;
             }
-            else
+            if (_probingsetup)
             {
-                line = GetParameterValue(line);
-                if (double.TryParse(line.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out val))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                DisableZswitches();
+                return true;
             }
-        }
-
-        public bool SetZ_ZeroBackoff(double val)
-        {
-            return Write_m("{\"zzb\"," + val.ToString(CultureInfo.InvariantCulture) + "}", 50);
-        }
-
-
-
-        public bool GetZ_LatchBackoff(out double val)
-        {
-            val = 0.0;
-            string line = ReadLineDirectly("{\"zlb\":\"\"}", true);
-            if (line == "")
+            if (!MainForm.CNC_Z_m(Cnc.CurrentZ - backoff))
             {
                 return false;
             }
-            else
-            {
-                line = GetParameterValue(line);
-                if (double.TryParse(line.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out val))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+            EnableZswitches();
+            Write_m("{\"zzb\",2.0}", 50); // restore values
+            Thread.Sleep(50);
+            Write_m("{\"zlb\",2.0}", 50);
+            Thread.Sleep(50);
 
-        public bool SetZ_LatchBackoff(double val)
-        {
-            return Write_m("{\"zlb\"," + val.ToString(CultureInfo.InvariantCulture) + "}", 50);
-        }
-
-
-        public void ProbingMode(bool set)
-        {
-            if (set)
-            {
-                MainForm.DisplayText("Probing mode on, TinyG");
-                Write_m("{\"zsn\",0}", 50);
-                Thread.Sleep(50);
-                Write_m("{\"zsx\",1}", 50);
-                Thread.Sleep(50);
-                SetZ_LatchBackoff(0);
-                Thread.Sleep(50);
-                SetZ_ZeroBackoff(MainForm.Setting.CNC_ZprobingBackoff);
-                Thread.Sleep(50);
-            }
-            else
-            {
-                MainForm.DisplayText("Probing mode off, TinyG");
-                Write_m("{\"zsn\",3}", 50);
-                Thread.Sleep(50);
-                Write_m("{\"zsx\",2}", 50);
-                Thread.Sleep(50);
-                SetZ_LatchBackoff(MainForm.Setting.CNC_Z_LatchBackoff);
-                Thread.Sleep(50);
-                SetZ_ZeroBackoff(MainForm.Setting.CNC_Z_ZeroBackoff);
-                Thread.Sleep(50);
-            }
-
-        }
-
-        public bool Nozzle_ProbeDown()
-        {
-            return Write_m("{\"gc\":\"G28.4 Z0\"}", RegularMoveTimeout);
+            return true;
         }
 
 

@@ -108,13 +108,7 @@ namespace LitePlacer
         public int SetProbing_stage { get; set; } = 0;
         public int TestSwitchClearance_stage { get; set; } = 0;
 
-        // Values involved with z probing. The probing operation:
-        // When the software needs z value for pickup or placement, it measures it. In probing, first the nozzle goes down 
-        // so that switch triggers. Then it backs off "Z probing backoff" amount. The z value now is the "full down" amount.
-
-        public double CNC_ZprobingBackoff { get; set; } = 2.0;
-
-        // During setup, we find out the difference of "full down" and "just touching". This is 
+        public double CNC_ZswitchClearance { get; set; } = 2.0;
         public double General_ZTouchDifference { get; set; } = 2.0;
 
         // For next pickup and placement of the same component, the nozzle goes down "placement depth" from the just "touching" value.
@@ -135,7 +129,7 @@ namespace LitePlacer
         // For probing, we use General_ZprobingBackoff instead of CNC_Z_LatchBackoff and set CNC_Z_ZeroBackoff to zero (if on TinyG board).
 
         // Relation to UI:
-        // Switch Clearance, set in Z_SwitchClearance_textBox, sets: CNC_ZprobingBackoff
+        // Switch Clearance, set in Z_SwitchClearance_textBox, sets: CNC_ZswitchClearance
         // Z0 to PCB (just touching) set in Z0toPCB_textBox, sets: General_Z0toPCB
         // Difference to "just touching", set in TouchDifference_textBox, sets: General_ZTouchDifference
 

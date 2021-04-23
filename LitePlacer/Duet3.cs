@@ -306,52 +306,27 @@ namespace LitePlacer
             MainForm.ShowMessageBox("Unimplemented Duet3 function EnableZswitches", "Unimplemented function", MessageBoxButtons.OK);
         }
 
-
-        public bool SetZ_SwitchClearance(double val)
+        // if setup is going on
+        private bool _probingsetup = false;
+        public bool ProbingSetup
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function SetZ_SwitchClearance", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
+            get
+            {
+                MainForm.ShowMessageBox("Unimplemented Duet3 function ProbingSetup get()", "Unimplemented function", MessageBoxButtons.OK);
+                return _probingsetup;
+            }
+            set
+            {
+                _probingsetup = value;
+                if (!value)
+                {
+                    MainForm.ShowMessageBox("Unimplemented Duet3 function ProbingSetup set()", "Unimplemented function", MessageBoxButtons.OK);
+                }
+            }
         }
 
 
-
-
-        public bool GetZ_LatchBackoff(out double val) 
-        {
-            val = 0.0;
-            MainForm.ShowMessageBox("Unimplemented Duet3 function GetZ_LatchBackoff", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
-        }
-
-        public bool SetZ_LatchBackoff(double val)
-        {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function SetZ_LatchBackoff", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
-        }
-
-
-
-        public bool GetZ_ZeroBackoff(out double val) 
-        {
-            val = 0.0;
-            MainForm.ShowMessageBox("Unimplemented Duet3 function GetZ_ZeroBackoff", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
-        }
-
-        public bool SetZ_ZeroBackoff(double val)
-        {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function SetZ_ZeroBackoff", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
-        }
-
-
-        public void ProbingMode(bool set)
-        {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function ProbingMode", "Unimplemented function", MessageBoxButtons.OK);
-        }
-
-
-        public bool Nozzle_ProbeDown()
+        public bool Nozzle_ProbeDown(double backoff)
         {
             MainForm.ShowMessageBox("Unimplemented Duet3 function Nozzle_ProbeDown", "Unimplemented function", MessageBoxButtons.OK);
             return false;

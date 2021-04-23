@@ -721,201 +721,44 @@ namespace LitePlacer
             }
         }
 
-
-        public bool GetZ_LatchBackoff(out double val)
+        public bool ProbingSetup
         {
-            val = 0.0;
-            if (ErrorState)
+            get
             {
-                MainForm.DisplayText("*** Cnc.GetZ_LatchBackoff(), board in error state.", KnownColor.DarkRed, true);
-                return false;
-            }
-
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                if (Duet3.GetZ_LatchBackoff(out val))
+                if (Controlboard == ControlBoardType.Duet3)
                 {
-                    return true;
+                    return Duet3.ProbingSetup;
+                }
+                else if (Controlboard == ControlBoardType.TinyG)
+                {
+                    return TinyG.ProbingSetup;
                 }
                 else
                 {
-                    RaiseError();
+                    MainForm.DisplayText("*** Cnc.ProbingSetup get(), unknown board.", KnownColor.DarkRed, true);
                     return false;
                 }
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            set
             {
-                if (TinyG.GetZ_LatchBackoff(out val))
+                if (Controlboard == ControlBoardType.Duet3)
                 {
-                    return true;
+                    Duet3.ProbingSetup= value;
+                }
+                else if (Controlboard == ControlBoardType.TinyG)
+                {
+                    TinyG.ProbingSetup = value;
                 }
                 else
                 {
-                    RaiseError();
-                    return false;
+                    MainForm.DisplayText("*** Cnc.ProbingSetup set(), unknown board.", KnownColor.DarkRed, true);
+                    return;
                 }
-            }
-            else
-            {
-                MainForm.DisplayText("*** Cnc.GetZ_LatchBackoff(), unknown board.", KnownColor.DarkRed, true);
-                Connected = false;
-                ErrorState = true;
-                return false;
-            }
-        }
-
-        public bool SetZ_LatchBackoff(double val)
-        {
-            if (ErrorState)
-            {
-                MainForm.DisplayText("*** Cnc.GetZ_LatchBackoff(), board in error state.", KnownColor.DarkRed, true);
-                return false;
-            }
-
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                if (Duet3.SetZ_LatchBackoff(val))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            }
-            else if (Controlboard == ControlBoardType.TinyG)
-            {
-                if (TinyG.SetZ_LatchBackoff(val))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            }
-            else
-            {
-                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
-                Connected = false;
-                ErrorState = true;
-                return false;
-            }
-        }
-
-        public bool GetZ_ZeroBackoff(out double val)
-        {
-            val = 0.0;
-            if (ErrorState)
-            {
-                MainForm.DisplayText("*** Cnc.GetZ_ZeroBackoff(), board in error state.", KnownColor.DarkRed, true);
-                return false;
-            }
-
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                if (Duet3.GetZ_ZeroBackoff(out val))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            }
-            else if (Controlboard == ControlBoardType.TinyG)
-            {
-                if (TinyG.GetZ_ZeroBackoff(out val))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            }
-            else
-            {
-                MainForm.DisplayText("*** Cnc.GetZ_ZeroBackoff(), unknown board.", KnownColor.DarkRed, true);
-                Connected = false;
-                ErrorState = true;
-                return false;
             }
         }
 
 
-        public bool SetZ_ZeroBackoff(double val)
-        {
-            if (ErrorState)
-            {
-                MainForm.DisplayText("*** Cnc.SetZ_ZeroBackoff(), board in error state.", KnownColor.DarkRed, true);
-                return false;
-            }
-
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                if (Duet3.SetZ_ZeroBackoff(val))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            }
-            else if (Controlboard == ControlBoardType.TinyG)
-            {
-                if (TinyG.SetZ_ZeroBackoff(val))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            }
-            else
-            {
-                MainForm.DisplayText("*** Cnc.(), unknown board.", KnownColor.DarkRed, true);
-                Connected = false;
-                ErrorState = true;
-                return false;
-            }
-        }
-
-
-
-        public void ProbingMode(bool set)
-        {
-            if (ErrorState)
-            {
-                MainForm.DisplayText("*** Cnc.ProbingMode(), board in error state.", KnownColor.DarkRed, true);
-                return;
-            }
-
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                Duet3.ProbingMode(set);
-            }
-            else if (Controlboard == ControlBoardType.TinyG)
-            {
-                TinyG.ProbingMode(set);
-            }
-            else
-            {
-                MainForm.DisplayText("*** Cnc.ProbingMode(), unknown board.", KnownColor.DarkRed, true);
-            }
-        }
-
-
-
-        public bool Nozzle_ProbeDown()
+        public bool Nozzle_ProbeDown(double backoff)
         {
             if (ErrorState)
             {
@@ -925,7 +768,7 @@ namespace LitePlacer
 
             if (Controlboard == ControlBoardType.Duet3)
             {
-                if (Duet3.Nozzle_ProbeDown())
+                if (Duet3.Nozzle_ProbeDown(backoff))
                 {
                     return true;
                 }
@@ -938,7 +781,7 @@ namespace LitePlacer
 
             if (Controlboard == ControlBoardType.TinyG)
             {
-                if (TinyG.Nozzle_ProbeDown())
+                if (TinyG.Nozzle_ProbeDown(backoff))
                 {
                     return true;
                 }

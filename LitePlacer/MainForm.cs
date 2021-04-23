@@ -34,7 +34,6 @@ using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
 using Newtonsoft.Json;
 
-
 namespace LitePlacer
 {
 #pragma warning disable CA1031 // Do not catch general exception types
@@ -1570,8 +1569,7 @@ namespace LitePlacer
                 }
             }
 
-            if (
-                (ZguardIsOn())
+            if ( ((Cnc.CurrentZ > 3) && (ZguardIsOn()) )
                 &&
                 !((e.KeyCode == Keys.F11) || (e.KeyCode == Keys.F12)))  // F11&F12: It is ok to move z manually despite of Zguard
             {
@@ -2427,55 +2425,7 @@ namespace LitePlacer
         }
 
 
-        // =================================================================================
-        // probing
-        private bool Check_HeightCalibrationDone_m()
-        {
-            if (!Setting.General_HeightCalibrationDone)
-            {
-                DialogResult dialogResult = ShowMessageBox(
-                    "Nozzle height setup not done.",
-                    "Calibration not done.", MessageBoxButtons.OK);
-                return false;
-            }
-            return true;
-        }
-
-        private bool Nozzle_ProbeDown_m()
-        {
-            if (Cnc.ErrorState)
-            {
-                DisplayText("*** Nozzle_ProbeDown_m(), board in error state.", KnownColor.DarkRed, true);
-                return false;
-            }
-
-            if (!Check_HeightCalibrationDone_m())
-            {
-                return false;
-            }
-            DisplayText("Probing Z: ");
-
-            Cnc.ProbingMode(true);
-            Cnc.Homing = true;
-            if (!Cnc.Nozzle_ProbeDown())
-            {
-                Cnc.Homing = false;
-                Cnc.ProbingMode(false);
-                return false;
-            }
-            DisplayText("Probing, bottom: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
-
-            if (!Cnc.Z(Cnc.CurrentZ - Setting.General_ZTouchDifference + Setting.Placement_Depth))
-            {
-                return false;
-            }
-            DisplayText("Probing result: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
-            Cnc.Homing = false;
-            Cnc.ProbingMode(false);
-            return true;
-        }
-
-        // =================================================================================
+         // =================================================================================
         // Homing
         // =================================================================================
 
@@ -2607,7 +2557,6 @@ namespace LitePlacer
                 return false;
             }
 
-            Cnc.ProbingMode(false);
             if (!Cnc.Home_m("Z"))
             {
                 return false;
@@ -4271,7 +4220,7 @@ namespace LitePlacer
             TestSwitchClearance_button.Text = "Start";
             if (Setting.General_HeightCalibrationDone)
             {
-                Z_SwitchClearance_textBox.Text = Setting.CNC_ZprobingBackoff.ToString("0.00", CultureInfo.InvariantCulture);
+                Z_SwitchClearance_textBox.Text = Setting.CNC_ZswitchClearance.ToString("0.00", CultureInfo.InvariantCulture);
                 Z0toPCB_textBox.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture);
                 TouchDifference_textBox.Text = Setting.General_ZTouchDifference.ToString("0.00", CultureInfo.InvariantCulture);
                 PlacementDepth_textBox.Text = Setting.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
@@ -4485,7 +4434,6 @@ namespace LitePlacer
                 UpdateCncConnectionStatus();
                 if (Cnc.JustConnected())
                 {
-                    CheckZdownSwitchParameters(out DialogResult res);
                     Cnc.PumpDefaultSetting();
                     Cnc.VacuumDefaultSetting();
                     OfferHoming();
@@ -4806,7 +4754,6 @@ namespace LitePlacer
 
         private void HomeZ_button_Click(object sender, EventArgs e)
         {
-            Cnc.ProbingMode(false);
             Cnc.Home_m("Z");
         }
 
@@ -5065,105 +5012,175 @@ namespace LitePlacer
         */
         // ==========================================================================================================
 
-        private bool CompareZdownSwitchParameters(out bool res, out double zzb, out double zlb)
+        private bool Check_HeightCalibrationDone_m()
         {
-            // does the comparision
-
-            res = false;
-            zzb = 0;
-            zlb = 0;
-
-            if (!Cnc.GetZ_ZeroBackoff(out zzb))
+            if (!Setting.General_HeightCalibrationDone)
             {
-                DisplayText("Z switch parameters read failed", KnownColor.DarkRed, true);
-                return false;
-            }
-            if (!Cnc.GetZ_LatchBackoff(out zlb))
-            {
-                DisplayText("Z switch parameters read failed", KnownColor.DarkRed, true);
-                return false;
-            }
-            if ((Math.Abs(zzb - Setting.CNC_Z_ZeroBackoff) <= 0.001) &&
-                 (Math.Abs(zlb - Setting.CNC_Z_LatchBackoff) <= 0.001))
-            {
-                res = true;
-                return true;
-            }
-            return true;
-        }
-
-        private bool WriteZdownSwitchParametersToBoard()
-        {
-            if (!Cnc.SetZ_ZeroBackoff(Setting.CNC_Z_ZeroBackoff))
-            {
-                return false;
-            }
-            if (!Cnc.SetZ_LatchBackoff(Setting.CNC_Z_LatchBackoff))
-            {
+                DialogResult dialogResult = ShowMessageBox(
+                    "Nozzle height setup not done.",
+                    "Calibration not done.", MessageBoxButtons.OK);
                 return false;
             }
             return true;
         }
 
-        private bool CheckZdownSwitchParameters(out DialogResult res)
+        private bool Nozzle_ProbeDown_m()
         {
-            if (!CompareZdownSwitchParameters(out bool compares, out double zzb, out double zlb))
+            if (Cnc.ErrorState)
             {
-                res = DialogResult.Cancel;
+                DisplayText("*** Nozzle_ProbeDown_m(), board in error state.", KnownColor.DarkRed, true);
                 return false;
-            };
+            }
 
-            if (compares)
+            if (!Check_HeightCalibrationDone_m())
             {
-                res = DialogResult.OK;
-                return true;
+                return false;
             }
-            else
+            DisplayText("Probing Z: ");
+            DisplayText("Probing Z, touch difference= " + Setting.General_ZTouchDifference.ToString("0.000", CultureInfo.InvariantCulture)
+                + ", switch clearance= " + Setting.CNC_ZswitchClearance.ToString("0.000", CultureInfo.InvariantCulture)
+                + ", placement depth= " + Setting.Placement_Depth.ToString("0.000", CultureInfo.InvariantCulture));
+            Cnc.Homing = true;
+            if (!Cnc.Nozzle_ProbeDown(Setting.CNC_ZswitchClearance + Setting.General_ZTouchDifference- Setting.Placement_Depth))
             {
-                if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+                Cnc.Homing = false;
+                return false;
+            }
+            DisplayText("Probing result: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
+            Cnc.Homing = false;
+            return true;
+        }
+
+        // ==========================================================================
+        // setup
+
+        static double Zprevious = 0.0;
+        // Switch clearance box: Setting.CNC_ZswitchClearance = how much z needs to go up to clear the switch
+        // Z0 to PCB box: Setting.General_Z0toPCB
+        // Difference to just touching box: Setting.General_ZTouchDifference
+        // Probing result is switch closure z, backed up by switch clearance amount
+        // Probing ends at placement depth down from just touching distance 
+
+        private void TestSwitchClearance_button_Click(object sender, EventArgs e)
+        {
+            switch (Setting.TestSwitchClearance_stage)
+            {
+                case 0:
+                    NozzleHeightInstructions_label.Visible = true;
+                    NozzleHeightInstructions_label.Text = "Ensure nozzle is over a regular height PCB," +
+                                                                 "\n\rthen click \"Next\".";
+                    TestSwitchClearanceCancel_button.Visible = true;
+                    TestSwitchClearance_button.Text = "Next";
+                    Setting.TestSwitchClearance_stage = 1;
+                    break;
+
+                case 1:
+                    Setting.CNC_ZswitchClearance = 0.0;
+                    Cnc.Nozzle_ProbeDown(0);
+                    Cnc.DisableZswitches();
+                    // ZGuardOff();
+                    DisplayText("Switch closure: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
+                    NozzleHeightInstructions_label.Text = "The switch is now on. Jog nozzle up so that the switch goes off," +
+                                             "\n\rthen click \"Next\".";
+                    TestSwitchClearance_button.Text = "Next";
+                    Setting.TestSwitchClearance_stage = 2;
+                    Zprevious = Cnc.CurrentZ;
+                    break;
+
+                case 2:
+                    DisplayText("Z at switch clear: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
+                    Setting.CNC_ZswitchClearance = Zprevious - Cnc.CurrentZ;
+                    Z_SwitchClearance_textBox.Text = Setting.CNC_ZswitchClearance.ToString("0.00", CultureInfo.InvariantCulture);
+                    NozzleHeightInstructions_label.Text = "Jog nozzle up so that it just touches the PCB." +
+                                             "\n\rIf it doesn't touch anymore, click cancel, adjust the switch and start again.\n\rClick \"Next\".";
+                    TestSwitchClearance_button.Text = "Next";
+                    Setting.TestSwitchClearance_stage = 3;
+                    Zprevious = Cnc.CurrentZ;
+                    break;
+
+                case 3:
+                    Setting.General_ZTouchDifference = Zprevious - Cnc.CurrentZ;
+                    TouchDifference_textBox.Text = Setting.General_ZTouchDifference.ToString("0.00", CultureInfo.InvariantCulture);
+                    Setting.General_Z0toPCB = Cnc.CurrentZ;
+                    Z0toPCB_textBox.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture);
+                    DisplayText("PCB: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
+                    DisplayText("touch difference: " + Setting.General_ZTouchDifference.ToString("0.000", CultureInfo.InvariantCulture));
+                    CNC_Z_m(0);
+                    // ZGuardOn();
+                    NozzleHeightInstructions_label.Text = "";
+                    TestSwitchClearance_button.Text = "Start";
+                    Setting.TestSwitchClearance_stage = 0;
+                    Setting.General_HeightCalibrationDone = true;
+                    TestSwitchClearanceCancel_button.Visible = false;
+                    NozzleHeightInstructions_label.Visible = false;
+                    OfferTapeZzeroing();
+                    break;
+
+            }
+
+        }
+
+        private void Cancel_TestSwitchClearanceOp()
+        {
+            Setting.TestSwitchClearance_stage = 0;
+            Setting.General_HeightCalibrationDone = false;
+            TestSwitchClearance_button.Text = "Start";
+
+            TestSwitchClearanceCancel_button.Visible = false;
+            SetProbing_button.Enabled = false;
+            Setting.SetProbing_stage = 0;
+            CancelProbing_button.Visible = false;
+            NozzleHeightInstructions_label.Text = "";
+            NozzleHeightInstructions_label.Visible = false;
+            ZGuardOn();
+            Cnc.Z(0);
+        }
+
+        private void TestSwitchClearanceCancel_button_Click(object sender, EventArgs e)
+        {
+            Cancel_TestSwitchClearanceOp();
+        }
+
+        private void OfferTapeZzeroing()
+        {
+            // If any of the tapes have z heights set, 
+            bool ZisSet = false;
+            foreach (DataGridViewRow Row in Tapes_dataGridView.Rows)
+            {
+                if (Row.Cells["Z_Pickup_Column"].Value.ToString() != "--")
                 {
-                    res = ShowMessageBox(
-                        "TinyG switch parameters read from the board are different than stored in software.\n\r" +
-                        "(Parameres read: zzb= "+zzb.ToString("0.000", CultureInfo.InvariantCulture) +
-                        ", zlb= "+ zzb.ToString("0.000", CultureInfo.InvariantCulture)+"\n\r\n\r" +
-                        "Yes: Restore board values to defaults (use this if you are recovering from an error)\n\r" +
-                        "No: Keep TinyG values and remember them (use this if you have changed the values yourself)\n\r" +
-                        "Cancel: Cancel whatever operation was going on, don't change anything",
-                        "Z switch parameters changed", MessageBoxButtons.YesNoCancel);
-                    if (res == DialogResult.Yes)
-                    {
-                        Setting.CNC_Z_ZeroBackoff = 2.0;
-                        Setting.CNC_Z_LatchBackoff = 2.0;
-                        return WriteZdownSwitchParametersToBoard();
-                    }
-                    if (res == DialogResult.No)
-                    {
-                        Setting.CNC_Z_LatchBackoff = zlb;
-                        Setting.CNC_Z_ZeroBackoff = zzb;
-                    }
-                    if (res == DialogResult.Cancel)
-                    {
-                        return true;
-                    }
+                    ZisSet = true;
+                    break;
                 }
-                else
+                if (Row.Cells["Z_Place_Column"].Value.ToString() != "--")
                 {
-                    ShowMessageBox(
-                        "CheckZdownSwitchParameters(): Unimplemented for this board",
-                        "Unsupported board", MessageBoxButtons.OK);
-                    res = DialogResult.Cancel;
-                    return true;
+                    ZisSet = true;
+                    break;
                 }
             }
-            // Should not get here, but the compiler needs another return statement. Throw an error in case I saw it wrong. :-)
-            ShowMessageBox("Unhandled software option in CheckZdownSwitchParameters()",
-            "Programmer error", MessageBoxButtons.OK);
-            res = DialogResult.Cancel;
-            return false;
+            // ... offer to zero out those
+            if (ZisSet)
+            {
+                DialogResult dialogResult = ShowMessageBox(
+                    "Height calibration succesful. Reset pickup and placement heights on tapes?",
+                    "Reset Z's?",
+                    MessageBoxButtons.OKCancel);
+                if (dialogResult == DialogResult.Cancel)
+                {
+                    return;
+                }
+                foreach (DataGridViewRow Row in Tapes_dataGridView.Rows)
+                {
+                    Row.Cells["Z_Pickup_Column"].Value = "--";
+                    Row.Cells["Z_Place_Column"].Value = "--";
+                }
+            }
+
         }
 
 
-        // ==========================================================================================================
+
+         // ==========================================================================================================
         // OLD Probing functions
 
         /*  button clicks reset! Reassing if you get back to these.
@@ -5270,134 +5287,6 @@ namespace LitePlacer
          }
      }
          */
-
-        static double Ztemp = 0.0;
-        // Switch clearance box: Setting.CNC_ZprobingBackoff
-        // Z0 to PCB box: Setting.General_Z0toPCB
-        // Difference to just touching box: Setting.General_ZTouchDifference
-        // actual use, probing ends at Cnc.Z(Cnc.CurrentZ - Setting.General_ZTouchDifference + Setting.Placement_Depth)
-        // = (probing result - just touching difference) + placement depth
-
-        private void TestSwitchClearance_button_Click(object sender, EventArgs e)
-        {
-
-            switch (Setting.TestSwitchClearance_stage)
-            {
-                case 0:
-                    NozzleHeightInstructions_label.Visible = true;
-                    NozzleHeightInstructions_label.Text = "Ensure nozzle is over a regular height PCB," +
-                                                                 "\n\rthen click \"Next\".";
-                    TestSwitchClearanceCancel_button.Visible = true;
-                    TestSwitchClearance_button.Text = "Next";
-                    Setting.TestSwitchClearance_stage = 1;
-                    break;
-
-                case 1:
-                    Setting.CNC_ZprobingBackoff = 0.0;
-                    Cnc.ProbingMode(true);
-                    Cnc.Nozzle_ProbeDown();
-                    Cnc.DisableZswitches();
-                    // ZGuardOff();
-                    Ztemp = Cnc.CurrentZ;
-                    DisplayText("Probing result: " + Ztemp.ToString("0.000", CultureInfo.InvariantCulture));
-                    NozzleHeightInstructions_label.Text = "The switch is now on. Jog nozzle up so that the switch goes off," +
-                                             "\n\rthen click \"Next\".";
-                    TestSwitchClearance_button.Text = "Next";
-                    Setting.TestSwitchClearance_stage = 2;
-                    break;
-
-                case 2:
-                    Setting.CNC_ZprobingBackoff = Ztemp - Cnc.CurrentZ;
-                    Ztemp = Cnc.CurrentZ;
-                    DisplayText("Z at switch clear: " + Ztemp.ToString("0.000", CultureInfo.InvariantCulture));
-                    Z_SwitchClearance_textBox.Text = Setting.CNC_ZprobingBackoff.ToString("0.00", CultureInfo.InvariantCulture);
-                    NozzleHeightInstructions_label.Text = "Jog nozzle up so that it just touches the PCB." +
-                                             "\n\rIf it doesn't touch anymore, click cancel, adjust the switch and start again.\n\rClick \"Next\".";
-                    TestSwitchClearance_button.Text = "Next";
-                    Setting.TestSwitchClearance_stage = 3;
-                    break;
-
-                case 3:
-                    Setting.General_ZTouchDifference = Ztemp - Cnc.CurrentZ;
-                    TouchDifference_textBox.Text = Setting.General_ZTouchDifference.ToString("0.00", CultureInfo.InvariantCulture);
-                    Setting.General_Z0toPCB = Cnc.CurrentZ;
-                    Z0toPCB_textBox.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture);
-                    DisplayText("PCB: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
-                    DisplayText("touch difference: " + Setting.General_ZTouchDifference.ToString("0.000", CultureInfo.InvariantCulture));
-                    Cnc.ProbingMode(false);
-                    CNC_Z_m(0);
-                    // ZGuardOn();
-                    NozzleHeightInstructions_label.Text = "";
-                    TestSwitchClearance_button.Text = "Start";
-                    Setting.TestSwitchClearance_stage = 0;
-                    Setting.General_HeightCalibrationDone = true;
-                    TestSwitchClearanceCancel_button.Visible = false;
-                    NozzleHeightInstructions_label.Visible = false;
-                    OfferTapeZzeroing();
-                    break;
-
-            }
-
-        }
-
-        private void Cancel_TestSwitchClearanceOp()
-        {
-            Setting.TestSwitchClearance_stage = 0;
-            Setting.General_HeightCalibrationDone = false;
-            TestSwitchClearance_button.Text = "Start";
-
-            TestSwitchClearanceCancel_button.Visible = false;
-            SetProbing_button.Enabled = false;
-            Setting.SetProbing_stage = 0;
-            CancelProbing_button.Visible = false;
-            NozzleHeightInstructions_label.Text = "";
-            NozzleHeightInstructions_label.Visible = false;
-            ZGuardOn();
-            Cnc.ProbingMode(false);
-            Cnc.Z(0);
-        }
-
-        private void TestSwitchClearanceCancel_button_Click(object sender, EventArgs e)
-        {
-            Cancel_TestSwitchClearanceOp();
-        }
-
-        private void OfferTapeZzeroing()
-        {
-            // If any of the tapes have z heights set, 
-            bool ZisSet = false;
-            foreach (DataGridViewRow Row in Tapes_dataGridView.Rows)
-            {
-                if (Row.Cells["Z_Pickup_Column"].Value.ToString() != "--")
-                {
-                    ZisSet = true;
-                    break;
-                }
-                if (Row.Cells["Z_Place_Column"].Value.ToString() != "--")
-                {
-                    ZisSet = true;
-                    break;
-                }
-            }
-            // ... offer to zero out those
-            if (ZisSet)
-            {
-                DialogResult dialogResult = ShowMessageBox(
-                    "Height calibration succesful. Reset pickup and placement heights on tapes?",
-                    "Reset Z's?",
-                    MessageBoxButtons.OKCancel);
-                if (dialogResult == DialogResult.Cancel)
-                {
-                    return;
-                }
-                foreach (DataGridViewRow Row in Tapes_dataGridView.Rows)
-                {
-                    Row.Cells["Z_Pickup_Column"].Value = "--";
-                    Row.Cells["Z_Place_Column"].Value = "--";
-                }
-            }
-
-        }
 
         // =================================================================================
         #region Bookmarks
@@ -5625,7 +5514,7 @@ namespace LitePlacer
             if (double.TryParse(Z_SwitchClearance_textBox.Text.Replace(',', '.'), out val))
             {
                 Z_SwitchClearance_textBox.ForeColor = Color.Black;
-                Setting.CNC_ZprobingBackoff = val;
+                Setting.CNC_ZswitchClearance = val;
             }
             else
             {
