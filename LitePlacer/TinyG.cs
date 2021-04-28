@@ -390,23 +390,6 @@ namespace LitePlacer
             Thread.Sleep(50);
         }
 
-        // if setup is going on
-        private bool _probingsetup = false;
-        public bool ProbingSetup
-        {
-            get
-            {
-                return _probingsetup;
-            }
-            set
-            {
-                _probingsetup = value;
-                if (!value)
-                {
-                    EnableZswitches();
-                }
-            }
-        }
 
         public bool Nozzle_ProbeDown(double backoff)
         {
@@ -415,30 +398,20 @@ namespace LitePlacer
             Thread.Sleep(50);
             Write_m("{\"zsx\",1}", 50);
             Thread.Sleep(50);
-            Write_m("{\"zzb\",0}", 50); // latch backoff and zero backoff to 0. Probing goes down, doesn't back off
-            Thread.Sleep(50);
-            Write_m("{\"zlb\",0}", 50);
+            Write_m("{\"zzb\",0}", 50); 
             Thread.Sleep(50);
 
             if (!Write_m("{\"gc\":\"G28.4 Z0\"}", RegularMoveTimeout))
             {
                 return false;
             }
-            if (_probingsetup)
-            {
-                DisableZswitches();
-                return true;
-            }
+            Write_m("{\"zzb\",2}", 50);
+            Thread.Sleep(50);
             if (!MainForm.CNC_Z_m(Cnc.CurrentZ - backoff))
             {
                 return false;
             }
             EnableZswitches();
-            Write_m("{\"zzb\",2.0}", 50); // restore values
-            Thread.Sleep(50);
-            Write_m("{\"zlb\",2.0}", 50);
-            Thread.Sleep(50);
-
             return true;
         }
 

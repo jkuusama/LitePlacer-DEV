@@ -721,42 +721,6 @@ namespace LitePlacer
             }
         }
 
-        public bool ProbingSetup
-        {
-            get
-            {
-                if (Controlboard == ControlBoardType.Duet3)
-                {
-                    return Duet3.ProbingSetup;
-                }
-                else if (Controlboard == ControlBoardType.TinyG)
-                {
-                    return TinyG.ProbingSetup;
-                }
-                else
-                {
-                    MainForm.DisplayText("*** Cnc.ProbingSetup get(), unknown board.", KnownColor.DarkRed, true);
-                    return false;
-                }
-            }
-            set
-            {
-                if (Controlboard == ControlBoardType.Duet3)
-                {
-                    Duet3.ProbingSetup= value;
-                }
-                else if (Controlboard == ControlBoardType.TinyG)
-                {
-                    TinyG.ProbingSetup = value;
-                }
-                else
-                {
-                    MainForm.DisplayText("*** Cnc.ProbingSetup set(), unknown board.", KnownColor.DarkRed, true);
-                    return;
-                }
-            }
-        }
-
 
         public bool Nozzle_ProbeDown(double backoff)
         {

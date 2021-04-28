@@ -104,27 +104,17 @@ namespace LitePlacer
 
         public double General_Z0toPCB { get; set; } = 0;
 
-        // These values are so that we know if the software has crashed during operation that needs additional cleanup on cnc side
-        public int SetProbing_stage { get; set; } = 0;
-        public int TestSwitchClearance_stage { get; set; } = 0;
+        public int NozzleHeightSetupStage { get; set; } = 0;
 
-        public double CNC_ZswitchClearance { get; set; } = 2.0;
         public double General_ZTouchDifference { get; set; } = 2.0;
 
         // For next pickup and placement of the same component, the nozzle goes down "placement depth" from the just "touching" value.
-        // We get this from the probing measurement. The value is the probing result - Z touch difference + placement depth. This is the stored value.
         // The placement depth is user set.
         public double General_PlacementDepth { get; set; } = 1.0; 
 
         // To setup probing, we need several values:
         public bool General_HeightCalibrationDone { get; set; } = false;
 
-        // The switches have different values for normal homing and probing. For normal homing, the nozzle goes up until switch triggers.
-        // Then it backs off for the switch to clear. This is 
-        public double CNC_Z_LatchBackoff { get; set; } = 2.0;
-
-        // In addition, it backs off a little more, if using TinyG board.
-        public double CNC_Z_ZeroBackoff { get; set; } = 2.0;
 
         // For probing, we use General_ZprobingBackoff instead of CNC_Z_LatchBackoff and set CNC_Z_ZeroBackoff to zero (if on TinyG board).
 

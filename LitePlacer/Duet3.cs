@@ -306,25 +306,6 @@ namespace LitePlacer
             MainForm.ShowMessageBox("Unimplemented Duet3 function EnableZswitches", "Unimplemented function", MessageBoxButtons.OK);
         }
 
-        // if setup is going on
-        private bool _probingsetup = false;
-        public bool ProbingSetup
-        {
-            get
-            {
-                MainForm.ShowMessageBox("Unimplemented Duet3 function ProbingSetup get()", "Unimplemented function", MessageBoxButtons.OK);
-                return _probingsetup;
-            }
-            set
-            {
-                _probingsetup = value;
-                if (!value)
-                {
-                    MainForm.ShowMessageBox("Unimplemented Duet3 function ProbingSetup set()", "Unimplemented function", MessageBoxButtons.OK);
-                }
-            }
-        }
-
 
         public bool Nozzle_ProbeDown(double backoff)
         {
