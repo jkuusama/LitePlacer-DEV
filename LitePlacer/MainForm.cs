@@ -4223,9 +4223,10 @@ namespace LitePlacer
                 //Z_SwitchClearance_textBox.Text = Setting.CNC_ZswitchClearance.ToString("0.00", CultureInfo.InvariantCulture);
                 Z0toPCB_textBox.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture);
                 TouchDifference_textBox.Text = Setting.General_ZTouchDifference.ToString("0.00", CultureInfo.InvariantCulture);
+                PickupDepth_textBox.Text = Setting.Pickup_Depth.ToString("0.00", CultureInfo.InvariantCulture);
                 PlacementDepth_textBox.Text = Setting.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
             }
-            else
+            else 
             {
                 Z0toPCB_textBox.Text = "";
                 TouchDifference_textBox.Text = "";
@@ -5033,7 +5034,7 @@ namespace LitePlacer
             return true;
         }
 
-        private bool Nozzle_ProbeDown_m()
+        private bool Nozzle_ProbeDown_m(double depth)
         {
             if (Cnc.ErrorState)
             {
@@ -5048,12 +5049,11 @@ namespace LitePlacer
             DisplayText("Probing Z: ");
             DisplayText("Probing Z, touch difference= " + Setting.General_ZTouchDifference.ToString("0.000", CultureInfo.InvariantCulture)
                 // + ", switch clearance= " + Setting.CNC_ZswitchClearance.ToString("0.000", CultureInfo.InvariantCulture)
-                + ", placement depth= " + Setting.Placement_Depth.ToString("0.000", CultureInfo.InvariantCulture));
+                + ", depth= " + depth.ToString("0.000", CultureInfo.InvariantCulture));
             Cnc.Homing = true;
-            //if (!Cnc.Nozzle_ProbeDown(Setting.CNC_ZswitchClearance + Setting.General_ZTouchDifference - Setting.Placement_Depth))
-            if (!Cnc.Nozzle_ProbeDown(Setting.General_ZTouchDifference - Setting.Placement_Depth))
-                {
-                    Cnc.Homing = false;
+            if (!Cnc.Nozzle_ProbeDown(Setting.General_ZTouchDifference - depth))
+            {
+                Cnc.Homing = false;
                 return false;
             }
             DisplayText("Probing result: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
@@ -5502,6 +5502,21 @@ namespace LitePlacer
         }
 
 
+        private void PickupDepth_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(PickupDepth_textBox.Text.Replace(',', '.'), out val))
+            {
+                Setting.Pickup_Depth = val;
+                PickupDepth_textBox.ForeColor = Color.Black;
+            }
+            else
+            {
+                PickupDepth_textBox.ForeColor = Color.Red;
+            }
+        }
+
+
         private void PlacementDepth_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
@@ -5514,7 +5529,6 @@ namespace LitePlacer
             {
                 PlacementDepth_textBox.ForeColor = Color.Red;
             }
-
         }
 
 
@@ -7489,12 +7503,11 @@ namespace LitePlacer
             if (Z_str == "--")
             {
                 DisplayText("PickUpPart_m(): Probing pickup Z", KnownColor.Blue);
-                if (!Nozzle_ProbeDown_m())
+                if (!Nozzle_ProbeDown_m(Setting.Pickup_Depth))
                 {
                     return false;
                 }
-                double Zpickup = Cnc.CurrentZ - Setting.Placement_Depth;
-                ;
+                double Zpickup = Cnc.CurrentZ - Setting.Pickup_Depth;
                 Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value = Zpickup.ToString(CultureInfo.InvariantCulture);
                 DisplayText("PickUpPart_m(): Probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
             }
@@ -7509,7 +7522,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Z += Setting.Placement_Depth;
+                Z += Setting.Pickup_Depth;
                 DisplayText("PickUpPart_m(): Part pickup, Z" + Z.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
                 if (!CNC_Z_m(Z))
                 {
@@ -7819,7 +7832,7 @@ namespace LitePlacer
             if (Z_str == "--")
             {
                 DisplayText("PutPartDown_m(): Probing placement Z", KnownColor.Blue);
-                if (!Nozzle_ProbeDown_m())
+                if (!Nozzle_ProbeDown_m(Setting.Placement_Depth))
                 {
                     return false;
                 };
@@ -7869,7 +7882,7 @@ namespace LitePlacer
             if (Probe)
             {
                 DisplayText("PutLoosePartDown_m(): Probing placement Z");
-                if (!Nozzle_ProbeDown_m())
+                if (!Nozzle_ProbeDown_m(Setting.Placement_Depth))
                 {
                     return false;
                 }
@@ -7970,7 +7983,7 @@ namespace LitePlacer
             } while (!EnterKeyHit);
 
             // fine tuning part position done, place now part on board
-            if (!Nozzle_ProbeDown_m())
+            if (!Nozzle_ProbeDown_m(Setting.Placement_Depth))
             {
                 return false;
             }
@@ -8089,19 +8102,19 @@ namespace LitePlacer
             if (Probe)
             {
                 DisplayText("PickUpLoosePart_m(): Probing pickup Z");
-                if (!Nozzle_ProbeDown_m())
+                if (!Nozzle_ProbeDown_m(Setting.Pickup_Depth))
                 {
                     DownCamera.Draw_Snapshot = true;
                     return false;
                 }
-                LoosePartPickupZ = Cnc.CurrentZ - Setting.Placement_Depth;
+                LoosePartPickupZ = Cnc.CurrentZ - Setting.Pickup_Depth;
                 DisplayText("PickUpLoosePart_m(): Probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
                 DisplayText("PickUpLoosePart_m(): Pickup Z= " + LoosePartPickupZ.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
                 DisplayText("PickUpLoosePart_m(): Part pickup, Z" + LoosePartPickupZ.ToString(CultureInfo.InvariantCulture));
-                if (!CNC_Z_m(LoosePartPickupZ + Setting.Placement_Depth))
+                if (!CNC_Z_m(LoosePartPickupZ + Setting.Pickup_Depth))
                 {
                     DownCamera.Draw_Snapshot = false;
                     return false;
@@ -10792,7 +10805,7 @@ namespace LitePlacer
                 PumpOff();
                 return;
             }
-            if (!Nozzle_ProbeDown_m())
+            if (!Nozzle_ProbeDown_m(Setting.Pickup_Depth))
             {
                 return;
             }
@@ -10820,7 +10833,7 @@ namespace LitePlacer
             {
                 return;
             }
-            if (!Nozzle_ProbeDown_m())
+            if (!Nozzle_ProbeDown_m(Setting.Placement_Depth))
             {
                 return;
             }
@@ -10844,13 +10857,14 @@ namespace LitePlacer
             if (!CheckPositionConfidence()) return;
             if (!Cnc.Z(0))
             {
+                DisplayText("Nozzle already down");
                 return;
             }
             if (!Nozzle.Move_m(Cnc.CurrentX, Cnc.CurrentY, Cnc.CurrentA))
             {
                 return;
             }
-            Nozzle_ProbeDown_m();
+            Nozzle_ProbeDown_m(0);
         }
 
 
@@ -10864,11 +10878,12 @@ namespace LitePlacer
             if (!CheckPositionConfidence()) return;
             if (!Cnc.Z(0))
             {
+                DisplayText("Nozzle already down");
                 return;
             }
             CNC_XYA_m((Cnc.CurrentX + Setting.DownCam_NozzleOffsetX),
                         (Cnc.CurrentY + Setting.DownCam_NozzleOffsetY), Cnc.CurrentA);
-            Nozzle_ProbeDown_m();
+            Nozzle_ProbeDown_m(0);
         }
 
         // =================================================================================

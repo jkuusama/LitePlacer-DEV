@@ -152,6 +152,7 @@ namespace LitePlacer
         public double Panel_YIncrement { get; set; } = 0;
         public int Panel_YRepeats { get; set; } = 0;
 
+        public double Pickup_Depth { get; set; } = 0.2;
         public double Placement_Depth { get; set; } = 1;
         public bool Placement_FiducialConfirmation { get; set; } = false;
         public int Placement_FiducialsType { get; set; } = 0;
