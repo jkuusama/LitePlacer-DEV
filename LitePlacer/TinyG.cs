@@ -398,7 +398,7 @@ namespace LitePlacer
             Thread.Sleep(50);
             Write_m("{\"zsx\",1}", 50);
             Thread.Sleep(50);
-            Write_m("{\"zzb\",0}", 50); 
+            Write_m("{\"zzb\",0}", 50);
             Thread.Sleep(50);
 
             if (!Write_m("{\"gc\":\"G28.4 Z0\"}", RegularMoveTimeout))
@@ -407,11 +407,11 @@ namespace LitePlacer
             }
             Write_m("{\"zzb\",2}", 50);
             Thread.Sleep(50);
+            EnableZswitches();
             if (!MainForm.CNC_Z_m(Cnc.CurrentZ - backoff))
             {
                 return false;
             }
-            EnableZswitches();
             return true;
         }
 

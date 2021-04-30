@@ -2379,7 +2379,7 @@ namespace LitePlacer
         public string Zjh { get; set; } = "500";      // z jerk homing, mm/min^3 * 1 million
         public string Zsv { get; set; } = "1000";     // z search velocity, mm/min
         public string Zlv { get; set; } = "100";      // z latch velocity, mm/min
-        public string Zlb { get; set; } = "4";        // z latch backoff, mm
+        public string Zlb { get; set; } = "10";        // z latch backoff, mm
         public string Zzb { get; set; } = "2";        // z zero backoff, mm
 
         // ========== A axis ==========

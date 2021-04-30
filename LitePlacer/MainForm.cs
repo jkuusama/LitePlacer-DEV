@@ -2557,12 +2557,12 @@ namespace LitePlacer
                 return false;
             }
 
-            if (!Cnc.Home_m("Z"))
+            if (!HomeZ_m())
             {
                 return false;
             };
             // DisplayText("move Z");
-            if (!Cnc.Home_m("Y"))
+            if (!HomeY_m())
             {
                 return false;
             };
@@ -2570,7 +2570,7 @@ namespace LitePlacer
             {
                 return false;
             };
-            if (!Cnc.Home_m("X"))
+            if (!HomeX_m())
             {
                 return false;
             };
@@ -4218,13 +4218,13 @@ namespace LitePlacer
             }
             TestSwitchClearanceCancel_button.Visible = false;
             TestSwitchClearance_button.Text = "Start";
+            PickupDepth_textBox.Text = Setting.Placement_Pickup_Depth.ToString("0.00", CultureInfo.InvariantCulture);
+            PlacementDepth_textBox.Text = Setting.Placement_Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
             if (Setting.General_HeightCalibrationDone)
             {
                 //Z_SwitchClearance_textBox.Text = Setting.CNC_ZswitchClearance.ToString("0.00", CultureInfo.InvariantCulture);
                 Z0toPCB_textBox.Text = Setting.General_Z0toPCB.ToString("0.00", CultureInfo.InvariantCulture);
                 TouchDifference_textBox.Text = Setting.General_ZTouchDifference.ToString("0.00", CultureInfo.InvariantCulture);
-                PickupDepth_textBox.Text = Setting.Pickup_Depth.ToString("0.00", CultureInfo.InvariantCulture);
-                PlacementDepth_textBox.Text = Setting.Placement_Depth.ToString("0.00", CultureInfo.InvariantCulture);
             }
             else 
             {
@@ -4241,21 +4241,21 @@ namespace LitePlacer
 
             // At least there are some ports. Show the default port, if it is still there:
             bool found = false;
-            int i = 0;
+            int portno = 0;
             foreach (var item in comboBoxSerialPorts.Items)
             {
                 if (item.ToString() == Setting.CNC_SerialPort)
                 {
                     found = true;
-                    comboBoxSerialPorts.SelectedIndex = i;
+                    comboBoxSerialPorts.SelectedIndex = portno;
                     break;
                 }
-                i++;
+                portno++;
             }
             if (found)
             {
                 // Yes, the default port is still there, show it
-                comboBoxSerialPorts.SelectedIndex = i;
+                comboBoxSerialPorts.SelectedIndex = portno;
             }
             else
             {
@@ -4434,6 +4434,7 @@ namespace LitePlacer
                 UpdateCncConnectionStatus();
                 if (Cnc.JustConnected())
                 {
+                    CheckLatchBackoff();
                     Cnc.PumpDefaultSetting();
                     Cnc.VacuumDefaultSetting();
                     OfferHoming();
@@ -4446,6 +4447,29 @@ namespace LitePlacer
             UpdateCncConnectionStatus();
         }
 
+        public  void CheckLatchBackoff()
+        {
+            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+            {
+                double val;
+                if (!double.TryParse(TinyGBoard.Zlb.ToString().Replace(',', '.'), out val))
+                {
+                    DisplayText("Bad data at latch backoff!", KnownColor.DarkRed, true);
+                    return;
+                }
+
+                if ((val < 5) && !Setting.General_ZlbFixAsked)
+                {
+                    DisplayText("Open latch backoff dialog", KnownColor.DarkGreen, true);
+                    LatchBackoffForm LatchBackoffDialog = new LatchBackoffForm();
+                    LatchBackoffDialog.MainForm = this;
+                    LatchBackoffDialog.zlb_now = TinyGBoard.Zlb;
+                    LatchBackoffDialog.StartPosition = FormStartPosition.CenterParent;
+                    LatchBackoffDialog.ShowDialog(this);
+                }
+
+            }
+        }
         // =================================================================================
         // Logging textbox
 
@@ -4731,69 +4755,6 @@ namespace LitePlacer
                 CNC_XYA_m(Setting.General_MachineSizeX, 0.0, Cnc.CurrentA);
             }
         }
-        #endregion
-
-        #region HomingButtons
-
-        private bool HomeX_m()
-        {
-            if (!Xhome_checkBox.Checked)
-            {
-                DisplayText("X homing switch not enabled", KnownColor.DarkRed, true);
-                return false;
-            }
-            return Cnc.Home_m("X");
-        }
-
-        private bool HomeY_m()
-        {
-            if (!Yhome_checkBox.Checked)
-            {
-                DisplayText("Y homing switch not enabled", KnownColor.DarkRed, true);
-                return false;
-            }
-            return Cnc.Home_m("Y");
-        }
-
-        private bool HomeZ_m()
-        {
-            if (!Zhome_checkBox.Checked)
-            {
-                DisplayText("Z homing switch not enabled", KnownColor.DarkRed, true);
-                return false;
-            }
-            if (TinyGBoard.Zzb=="0.000")
-            {
-                DisplayText("Z probing value = 0. Crash during height calibration?", KnownColor.DarkRed, true);
-                DisplayText("To fix, send text: {\"zzb\",2.0}", KnownColor.DarkRed, true);
-                DisplayText("(Or if you have changed the value, replace 2.0 with your number)", KnownColor.DarkRed, true);
-                return false;
-            }
-            return Cnc.Home_m("Z");
-        }
-
-        private void HomeX_button_Click(object sender, EventArgs e)
-        {
-            HomeX_m();
-        }
-
-        private void HomeXY_button_Click(object sender, EventArgs e)
-        {
-            if (!HomeX_m())
-                return;
-            HomeY_m();
-        }
-
-        private void HomeY_button_Click(object sender, EventArgs e)
-        {
-            HomeY_m();
-        }
-
-        private void HomeZ_button_Click(object sender, EventArgs e)
-        {
-            HomeZ_m();
-        }
-
 
         private void TestZ_button_Click(object sender, EventArgs e)
         {
@@ -4806,8 +4767,6 @@ namespace LitePlacer
                 CNC_Z_m(0);
             }
         }
-
-        #endregion
 
         private void ZTestTravel_textBox_TextChanged(object sender, EventArgs e)
         {
@@ -4854,16 +4813,83 @@ namespace LitePlacer
             t.Start();
         }
 
+        #endregion
+
+        #region HomingButtons
+
+        private bool HomeX_m()
+        {
+            if (!Xhome_checkBox.Checked)
+            {
+                DisplayText("X homing switch not enabled", KnownColor.DarkRed, true);
+                return false;
+            }
+            return Cnc.Home_m("X");
+        }
+
+        private bool HomeY_m()
+        {
+            if (!Yhome_checkBox.Checked)
+            {
+                DisplayText("Y homing switch not enabled", KnownColor.DarkRed, true);
+                return false;
+            }
+            return Cnc.Home_m("Y");
+        }
+
+        private bool HomeZ_m()
+        {
+            if (!Zhome_checkBox.Checked)
+            {
+                DisplayText("Z homing switch not enabled", KnownColor.DarkRed, true);
+                return false;
+            }
+            if (TinyGBoard.Zzb=="0.000")
+            {
+                DisplayText("Z probing value = 0. Crash during height calibration?", KnownColor.DarkRed, true);
+                DisplayText("To fix, send text: {\"zzb\",2.0}", KnownColor.DarkRed, true);
+                DisplayText("(Or if you have changed the value, replace 2.0 with your number)", KnownColor.DarkRed, true);
+                return false;
+            }
+            return Cnc.Home_m("Z");
+        }
+
+        private void HomeX_button_Click(object sender, EventArgs e)
+        {
+            HomeX_m();
+        }
+
+        private void HomeY_button_Click(object sender, EventArgs e)
+        {
+            HomeY_m();
+        }
+
+        private void HomeZ_button_Click(object sender, EventArgs e)
+        {
+            HomeZ_m();
+        }
+
+
+        private void HomeXY_button_Click(object sender, EventArgs e)
+        {
+            if (!HomeX_m())
+                return;
+            HomeY_m();
+        }
+
+
         private void HomeXYZ_button_Click(object sender, EventArgs e)
         {
-            if (!Cnc.Home_m("Z"))
+            if (!HomeZ_m())
                 return;
-            if (!Cnc.Home_m("X"))
+            if (!HomeX_m())
                 return;
-            if (!Cnc.Home_m("Y"))
+            if (!HomeY_m())
                 return;
             CNC_A_m(0);
         }
+
+        #endregion
 
         private void MotorPower_checkBox_Click(object sender, EventArgs e)
         {
@@ -5507,7 +5533,7 @@ namespace LitePlacer
             double val;
             if (double.TryParse(PickupDepth_textBox.Text.Replace(',', '.'), out val))
             {
-                Setting.Pickup_Depth = val;
+                Setting.Placement_Pickup_Depth = val;
                 PickupDepth_textBox.ForeColor = Color.Black;
             }
             else
@@ -5522,7 +5548,7 @@ namespace LitePlacer
             double val;
             if (double.TryParse(PlacementDepth_textBox.Text.Replace(',', '.'), out val))
             {
-                Setting.Placement_Depth = val;
+                Setting.Placement_Placement_Depth = val;
                 PlacementDepth_textBox.ForeColor = Color.Black;
             }
             else
@@ -7503,11 +7529,11 @@ namespace LitePlacer
             if (Z_str == "--")
             {
                 DisplayText("PickUpPart_m(): Probing pickup Z", KnownColor.Blue);
-                if (!Nozzle_ProbeDown_m(Setting.Pickup_Depth))
+                if (!Nozzle_ProbeDown_m(Setting.Placement_Pickup_Depth))
                 {
                     return false;
                 }
-                double Zpickup = Cnc.CurrentZ - Setting.Pickup_Depth;
+                double Zpickup = Cnc.CurrentZ - Setting.Placement_Pickup_Depth;
                 Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value = Zpickup.ToString(CultureInfo.InvariantCulture);
                 DisplayText("PickUpPart_m(): Probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
             }
@@ -7522,7 +7548,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Z += Setting.Pickup_Depth;
+                Z += Setting.Placement_Pickup_Depth;
                 DisplayText("PickUpPart_m(): Part pickup, Z" + Z.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
                 if (!CNC_Z_m(Z))
                 {
@@ -7832,11 +7858,11 @@ namespace LitePlacer
             if (Z_str == "--")
             {
                 DisplayText("PutPartDown_m(): Probing placement Z", KnownColor.Blue);
-                if (!Nozzle_ProbeDown_m(Setting.Placement_Depth))
+                if (!Nozzle_ProbeDown_m(Setting.Placement_Placement_Depth))
                 {
                     return false;
                 };
-                double Zplace = Cnc.CurrentZ - Setting.Placement_Depth;
+                double Zplace = Cnc.CurrentZ - Setting.Placement_Placement_Depth;
                 Tapes_dataGridView.Rows[TapeNum].Cells["Z_Place_Column"].Value = Zplace.ToString(CultureInfo.InvariantCulture);
                 DisplayText("PutPartDown_m(): Probed placement Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
             }
@@ -7851,7 +7877,7 @@ namespace LitePlacer
                         MessageBoxButtons.OK);
                     return false;
                 };
-                Z += Setting.Placement_Depth;
+                Z += Setting.Placement_Placement_Depth;
                 DisplayText("PlacePart_m(): Part down, Z" + Z.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
                 if (!CNC_Z_m(Z))
                 {
@@ -7882,17 +7908,17 @@ namespace LitePlacer
             if (Probe)
             {
                 DisplayText("PutLoosePartDown_m(): Probing placement Z");
-                if (!Nozzle_ProbeDown_m(Setting.Placement_Depth))
+                if (!Nozzle_ProbeDown_m(Setting.Placement_Placement_Depth))
                 {
                     return false;
                 }
-                LoosePartPlaceZ = Cnc.CurrentZ - Setting.Placement_Depth;
+                LoosePartPlaceZ = Cnc.CurrentZ - Setting.Placement_Placement_Depth;
                 DisplayText("PutLoosePartDown_m(): probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
                 DisplayText("PutLoosePartDown_m(): placement Z= " + LoosePartPlaceZ.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                if (!CNC_Z_m(LoosePartPlaceZ + Setting.Placement_Depth))
+                if (!CNC_Z_m(LoosePartPlaceZ + Setting.Placement_Placement_Depth))
                 {
                     return false;
                 }
@@ -7983,7 +8009,7 @@ namespace LitePlacer
             } while (!EnterKeyHit);
 
             // fine tuning part position done, place now part on board
-            if (!Nozzle_ProbeDown_m(Setting.Placement_Depth))
+            if (!Nozzle_ProbeDown_m(Setting.Placement_Placement_Depth))
             {
                 return false;
             }
@@ -8102,19 +8128,19 @@ namespace LitePlacer
             if (Probe)
             {
                 DisplayText("PickUpLoosePart_m(): Probing pickup Z");
-                if (!Nozzle_ProbeDown_m(Setting.Pickup_Depth))
+                if (!Nozzle_ProbeDown_m(Setting.Placement_Pickup_Depth))
                 {
                     DownCamera.Draw_Snapshot = true;
                     return false;
                 }
-                LoosePartPickupZ = Cnc.CurrentZ - Setting.Pickup_Depth;
+                LoosePartPickupZ = Cnc.CurrentZ - Setting.Placement_Pickup_Depth;
                 DisplayText("PickUpLoosePart_m(): Probed Z= " + Cnc.CurrentZ.ToString(CultureInfo.InvariantCulture));
                 DisplayText("PickUpLoosePart_m(): Pickup Z= " + LoosePartPickupZ.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
                 DisplayText("PickUpLoosePart_m(): Part pickup, Z" + LoosePartPickupZ.ToString(CultureInfo.InvariantCulture));
-                if (!CNC_Z_m(LoosePartPickupZ + Setting.Pickup_Depth))
+                if (!CNC_Z_m(LoosePartPickupZ + Setting.Placement_Pickup_Depth))
                 {
                     DownCamera.Draw_Snapshot = false;
                     return false;
@@ -10805,7 +10831,7 @@ namespace LitePlacer
                 PumpOff();
                 return;
             }
-            if (!Nozzle_ProbeDown_m(Setting.Pickup_Depth))
+            if (!Nozzle_ProbeDown_m(Setting.Placement_Pickup_Depth))
             {
                 return;
             }
@@ -10833,7 +10859,7 @@ namespace LitePlacer
             {
                 return;
             }
-            if (!Nozzle_ProbeDown_m(Setting.Placement_Depth))
+            if (!Nozzle_ProbeDown_m(Setting.Placement_Placement_Depth))
             {
                 return;
             }

@@ -103,26 +103,11 @@ namespace LitePlacer
         public double General_ZTestTravel { get; set; } = 20;
 
         public double General_Z0toPCB { get; set; } = 0;
-
+        public bool General_ZlbFixAsked { get; set; } = false;
         public int NozzleHeightSetupStage { get; set; } = 0;
 
         public double General_ZTouchDifference { get; set; } = 2.0;
-
-        // For next pickup and placement of the same component, the nozzle goes down "placement depth" from the just "touching" value.
-        // The placement depth is user set.
-        public double General_PlacementDepth { get; set; } = 1.0; 
-
-        // To setup probing, we need several values:
         public bool General_HeightCalibrationDone { get; set; } = false;
-
-
-        // For probing, we use General_ZprobingBackoff instead of CNC_Z_LatchBackoff and set CNC_Z_ZeroBackoff to zero (if on TinyG board).
-
-        // Relation to UI:
-        // Switch Clearance, set in Z_SwitchClearance_textBox, sets: CNC_ZswitchClearance
-        // Z0 to PCB (just touching) set in Z0toPCB_textBox, sets: General_Z0toPCB
-        // Difference to "just touching", set in TouchDifference_textBox, sets: General_ZTouchDifference
-
 
         public bool Nozzles_AfullSpeed { get; set; } = true;
         public double Nozzles_Aspeed { get; set; } = 500;
@@ -152,8 +137,8 @@ namespace LitePlacer
         public double Panel_YIncrement { get; set; } = 0;
         public int Panel_YRepeats { get; set; } = 0;
 
-        public double Pickup_Depth { get; set; } = 0.2;
-        public double Placement_Depth { get; set; } = 1;
+        public double Placement_Pickup_Depth { get; set; } = 0.2;
+        public double Placement_Placement_Depth { get; set; } = 1;
         public bool Placement_FiducialConfirmation { get; set; } = false;
         public int Placement_FiducialsType { get; set; } = 0;
         public bool Placement_OmitNozzleCalibration { get; set; } = false;

@@ -169,6 +169,12 @@
     <Compile Include="AskToCreate.Designer.cs">
       <DependentUpon>AskToCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="LatchBackoff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LatchBackoff.Designer.cs">
+      <DependentUpon>LatchBackoff.cs</DependentUpon>
+    </Compile>
     <Compile Include="NonModalDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -229,6 +235,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AskToCreate.resx">
       <DependentUpon>AskToCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LatchBackoff.resx">
+      <DependentUpon>LatchBackoff.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NonModalDialog.resx">
       <DependentUpon>NonModalDialog.cs</DependentUpon>
