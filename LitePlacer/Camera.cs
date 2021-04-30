@@ -1516,44 +1516,6 @@ namespace LitePlacer
             LimePen.Dispose();
         }
 
-        // =========================================================
-        private int FindSmallestCircle(List<Shapes.Circle> Circles)
-        {
-            int Smallest = 0;
-            double SmallRadius = Circles[0].Radius;
-            for (int i = 0, n = Circles.Count; i < n; i++)
-            {
-                if (Circles[i].Radius < SmallRadius)
-                {
-                    Smallest = i;
-                    SmallRadius = Circles[i].Radius;
-                }
-            }
-
-            return Smallest;
-        }
-
-        // =========================================================
-        private int FindClosestCircle(List<Shapes.Circle> Circles)
-        {
-            int closest = 0;
-            double X = (Circles[0].Center.X - FrameCenterX);
-            double Y = (Circles[0].Center.Y - FrameCenterY);
-            double dist = X * X + Y * Y;  // we are interested only which one is closest, don't neet to take square roots to get distance right
-            double dX, dY;
-            for (int i = 0; i < Circles.Count; i++)
-            {
-                dX = Circles[i].Center.X - FrameCenterX;
-                dY = Circles[i].Center.Y - FrameCenterY;
-                if ((dX * dX + dY * dY) < dist)
-                {
-                    dist = dX * dX + dY * dY;
-                    closest = i;
-                }
-            }
-            return closest;
-        }
-
         // ==========================================================================================================
         // Rectangles:
         // ==========================================================================================================

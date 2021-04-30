@@ -2180,19 +2180,7 @@ namespace LitePlacer
             }
             if (AbortPlacement)
             {
-                if (!AbortPlacementShown)
-                {
-                    AbortPlacementShown = true;
-                    ShowMessageBox(
-                               "Operation aborted",
-                               "Operation aborted",
-                               MessageBoxButtons.OK);
-                }
-                AbortPlacement = false;
-                if (Math.Abs(Cnc.CurrentZ) > 0.01)
-                {
-                    CNC_Z_m(0.0);
-                }
+                StopOperation();
                 return false;
             }
 
@@ -2233,19 +2221,7 @@ namespace LitePlacer
         {
             if (AbortPlacement)
             {
-                if (!AbortPlacementShown)
-                {
-                    AbortPlacementShown = true;
-                    ShowMessageBox(
-                               "Operation aborted",
-                               "Operation aborted",
-                               MessageBoxButtons.OK);
-                }
-                AbortPlacement = false;
-                if (Math.Abs(Cnc.CurrentZ) > 0.0009)
-                {
-                    Cnc.Z(0.0);
-                }
+                StopOperation();
                 return false;
             }
             if (!Cnc.Connected)
@@ -2736,13 +2712,26 @@ namespace LitePlacer
             }
         }
 
-
-
-        // =================================================================================
-        // This down code is not reviewed!
-        // =================================================================================
-
-
+        private void StopOperation()
+        {
+            if (!AbortPlacementShown)
+            {
+                AbortPlacementShown = true;
+                ShowMessageBox(
+                           "Operation aborted",
+                           "Operation aborted",
+                           MessageBoxButtons.OK);
+            }
+            AbortPlacement = false;
+            if (!Check_zzb())
+            {
+                return;
+            }
+            if (Math.Abs(Cnc.CurrentZ) > 0.01)
+            {
+                CNC_Z_m(0.0);
+            }
+        }
 
         // =================================================================================
         // Different types of control hardware and settings
@@ -4837,6 +4826,21 @@ namespace LitePlacer
             return Cnc.Home_m("Y");
         }
 
+        private bool Check_zzb()
+        {
+            if (TinyGBoard.Zzb == "0.000")
+            {
+                DisplayText("Z probing value in TinyG = 0. Error during height calibration/measurement?", KnownColor.DarkRed, true);
+                DisplayText("To fix, send text: {\"zzb\",2.0}", KnownColor.DarkRed, true);
+                DisplayText("(Or if you have changed the value, replace 2.0 with your number)", KnownColor.DarkRed, true);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         private bool HomeZ_m()
         {
             if (!Zhome_checkBox.Checked)
@@ -4844,11 +4848,8 @@ namespace LitePlacer
                 DisplayText("Z homing switch not enabled", KnownColor.DarkRed, true);
                 return false;
             }
-            if (TinyGBoard.Zzb=="0.000")
+            if (!Check_zzb())
             {
-                DisplayText("Z probing value = 0. Crash during height calibration?", KnownColor.DarkRed, true);
-                DisplayText("To fix, send text: {\"zzb\",2.0}", KnownColor.DarkRed, true);
-                DisplayText("(Or if you have changed the value, replace 2.0 with your number)", KnownColor.DarkRed, true);
                 return false;
             }
             return Cnc.Home_m("Z");
@@ -7283,15 +7284,7 @@ namespace LitePlacer
 
             if (AbortPlacement)
             {
-                if (!AbortPlacementShown)
-                {
-                    AbortPlacementShown = true;
-                    ShowMessageBox(
-                               "Operation aborted",
-                               "Operation aborted",
-                               MessageBoxButtons.OK);
-                }
-                AbortPlacement = false;
+                StopOperation();
                 return false;
             }
 
@@ -7613,15 +7606,7 @@ namespace LitePlacer
 
             if (AbortPlacement)
             {
-                if (!AbortPlacementShown)
-                {
-                    AbortPlacementShown = true;
-                    ShowMessageBox(
-                               "Operation aborted",
-                               "Operation aborted",
-                               MessageBoxButtons.OK);
-                }
-                AbortPlacement = false;
+                StopOperation();
                 return false;
             }
             return true;
@@ -11127,23 +11112,7 @@ namespace LitePlacer
         */
          #endregion  Measurementboxes
 
-        // ==========================================================================================================
-        // Video processing functions lists control
-        // ==========================================================================================================
-        #region VideoProcessingFunctionsLists
 
-
-
-        private void SetColorBoxColor(int row)
-        {
-            // xxx Color_Box.BackColor = Color.FromArgb(R, G, B);
-        }
-
- 
-
-        #endregion
-
-        
         // ==========================================================================================================
         // Nozzles
         // ==========================================================================================================
