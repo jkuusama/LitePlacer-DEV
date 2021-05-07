@@ -47,6 +47,7 @@ namespace LitePlacer
 
         private void NonModalDialog_Load(object sender, EventArgs e)
         {
+            CenterToParent();
             this.Text = HeaderString;
             button1.Text = Button1Txt;
             button2.Text = Button2Txt;

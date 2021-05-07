@@ -1,4 +1,4 @@
-// Processing tables branch
+﻿// Processing tables branch
 
 using System;
 using System.Collections.Generic;
@@ -102,10 +102,10 @@ namespace LitePlacer
         {
             NonModalDialog DialogForm = new NonModalDialog(this, str1, str2, str2);
             // locate to up right corner
-            DialogForm.StartPosition = FormStartPosition.Manual;
+            // DialogForm.Parent = FormMain;
+            // DialogForm.StartPosition = FormStartPosition.CenterParent;
 
-            DialogForm.Location = new System.Drawing.Point(this.Location.X + 790,
-                this.Location.Y);
+            // DialogForm.Location = new System.Drawing.Point(this.Location.X + 790, this.Location.Y);
 
             DialogForm.HeaderString = header;
             DialogForm.MessageString = message;
