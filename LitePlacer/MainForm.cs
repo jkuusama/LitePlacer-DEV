@@ -1,4 +1,4 @@
-﻿// Processing tables branch
+// Processing tables branch
 
 using System;
 using System.Collections.Generic;
@@ -4841,7 +4841,7 @@ namespace LitePlacer
             }
         }
 
-        private bool HomeZ_m()
+        public bool HomeZ_m()
         {
             if (!Zhome_checkBox.Checked)
             {

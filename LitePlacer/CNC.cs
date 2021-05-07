@@ -225,7 +225,6 @@ namespace LitePlacer
         }
 
 
-
         private static double CurrZ;
         public double CurrentZ
         {
@@ -244,7 +243,6 @@ namespace LitePlacer
         }
 
 
-
         private static double CurrA;
         public double CurrentA
         {
@@ -261,7 +259,6 @@ namespace LitePlacer
         {
             CurrA = a;
         }
-
 
 
         public void SetPosition(string X, string Y, string Z, string A)
@@ -305,7 +302,6 @@ namespace LitePlacer
         }
 
 
-
         public void Jog(string Speed, string X, string Y, string Z, string A)
         {
             if (Controlboard == ControlBoardType.Duet3)
@@ -321,7 +317,6 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.Jog(), unknown board.", KnownColor.DarkRed, true);
             }
         }
-
 
         #endregion Position
 
@@ -391,6 +386,7 @@ namespace LitePlacer
             return true;
         }
 
+
         public bool Connect(string port)
         {
             ErrorState = false;
@@ -437,7 +433,6 @@ namespace LitePlacer
         }
 
 
-
         public bool JustConnected()
         {
             // Called after a control board connection is estabished.
@@ -473,7 +468,6 @@ namespace LitePlacer
         }
 
 
-
         public void Close()
         {
             Com.Close();
@@ -481,7 +475,6 @@ namespace LitePlacer
             Connected = false;
             Homing = false;
         }
-
 
 
         // Sends a command to control board, doesn't return until the response is handled
@@ -564,8 +557,6 @@ namespace LitePlacer
         {
             Com.Write(command);
         }
-
-
 
         #endregion Communications
 
@@ -656,24 +647,7 @@ namespace LitePlacer
             }
         }
 
-        /* =============================================================================================
-
-        Z switches and probing  routines:
-        DisableZswitches(): Board ignores all switch functions
-        EnableZswitches(): Enables swiches as set in the UI
-
-        Backoffs: Latch backoff is how much z needs to move after switch trigger to clear the switch. 
-        This normally leaves z too close to the switch, so zero backoff is added to that in normal operation
-
-        GetZ_LatchBackoff(): 
-        SetZ_LatchBackoff()
-        GetZ_ZeroBackoff()
-        SetZ_ZeroBackoff()
-
-        ProbingMode(): Sets board to brobing
-        Nozzle_ProbeDown(): Nozzle goes down until switch clears, backs off 
-
-*/
+        // =============================================================================================
 
         public void DisableZswitches()
         {
@@ -696,7 +670,6 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.DisableZswitches(), unknown board.", KnownColor.DarkRed, true);
             }
         }
-
 
 
         public void EnableZswitches()
@@ -787,7 +760,6 @@ namespace LitePlacer
         }
 
 
-
         public void MotorPowerOff()
         {
             if (ErrorState)
@@ -821,6 +793,7 @@ namespace LitePlacer
             }
             Vacuum_Off();
         }
+
 
         public void Vacuum_On()
         {
@@ -875,7 +848,6 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.VacuumOff(), unknown board.", KnownColor.DarkRed, true);
             }
         }
-
 
 
         public bool PumpIsOn { get; set; } = false;
@@ -945,9 +917,7 @@ namespace LitePlacer
             }
         }
 
-
         #endregion Features
-
 
         // =================================================================================
         // Movement
@@ -968,6 +938,7 @@ namespace LitePlacer
                 SmallMoveSpeed = (double)value;
             }
         }
+
 
         public bool Home_m(string axis)
         {
@@ -1053,6 +1024,7 @@ namespace LitePlacer
             }
         }
 
+
         public bool Execute_A(double A, double speed, string MoveType)
         {
             if (ErrorState)
@@ -1092,6 +1064,7 @@ namespace LitePlacer
                 return false;
             }
         }
+
 
         public bool Execute_Z(double Z, double speed, string MoveType)
         {
@@ -1247,7 +1220,6 @@ namespace LitePlacer
 
         // =================================================================================
         // helper functions for XYA, XY A and Z moves
-
 
         private bool XYA_move(double X, double Y, double Am)
         {

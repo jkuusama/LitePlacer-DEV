@@ -394,18 +394,18 @@ namespace LitePlacer
         public bool Nozzle_ProbeDown(double backoff)
         {
             MainForm.DisplayText("Probing, TinyG");
-            Write_m("{\"zsn\",0}", 50);
+            Write_m("{\"zsn\",0}", 150);
             Thread.Sleep(50);
-            Write_m("{\"zsx\",1}", 50);
+            Write_m("{\"zsx\",1}",150);
             Thread.Sleep(50);
-            Write_m("{\"zzb\",0}", 50);
+            Write_m("{\"zzb\",0}", 150);
             Thread.Sleep(50);
 
             if (!Write_m("{\"gc\":\"G28.4 Z0\"}", RegularMoveTimeout))
             {
                 return false;
             }
-            Write_m("{\"zzb\",2}", 50);
+            Write_m("{\"zzb\",2}", 150);
             Thread.Sleep(50);
             EnableZswitches();
             if (!MainForm.CNC_Z_m(Cnc.CurrentZ - backoff))

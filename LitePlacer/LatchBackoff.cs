@@ -32,7 +32,21 @@ namespace LitePlacer
 
         private void Fix_button_Click(object sender, EventArgs e)
         {
-            MainForm.Cnc.Write_m("{\"zlb\",10}");
+            if (!MainForm.Cnc.Write_m("{\"zlb\",10}"))
+            {
+                MainForm.DisplayText("Latch backoff write failed", KnownColor.DarkRed, true);
+                Close();
+            }
+            if (!MainForm.CNC_Z_m(10))
+            {
+                MainForm.DisplayText("Making room for Z re-homing failed", KnownColor.DarkRed, true);
+                Close();
+            }
+            if (!MainForm.HomeZ_m())
+            {
+                MainForm.DisplayText("Z re-homing failed", KnownColor.DarkRed, true);
+                Close();
+            }
             Close();
         }
 
