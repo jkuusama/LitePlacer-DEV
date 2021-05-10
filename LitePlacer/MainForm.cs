@@ -420,6 +420,7 @@ namespace LitePlacer
                 PumpOff();
                 Cnc.VacuumDefaultSetting();
                 Cnc.MotorPowerOff();
+                Cnc.EnableZswitches();
             }
             Cnc.Close();
 
