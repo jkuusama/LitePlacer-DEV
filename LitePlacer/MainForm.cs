@@ -48,6 +48,12 @@ namespace LitePlacer
     calls _m functions, it can consider itself a _m function.
     */
 
+    // =================================================================================
+    // Note about thread guards: The prologue "if(InvokeRequired) {something long}" at a start of a function, 
+    // makes the function safe to call from another thread.
+    // See http://stackoverflow.com/questions/661561/how-to-update-the-gui-from-another-thread-in-c, 
+    // "MajesticRa"'s answer near the bottom of first page
+
 
     public partial class FormMain : Form
     {
@@ -65,13 +71,6 @@ namespace LitePlacer
         // General and "global" functions 
         // =================================================================================
         #region General
-
-        // =================================================================================
-        // Note about thread guards: The prologue "if(InvokeRequired) {something long}" at a start of a function, 
-        // makes the function safe to call from another thread.
-        // See http://stackoverflow.com/questions/661561/how-to-update-the-gui-from-another-thread-in-c, 
-        // "MajesticRa"'s answer near the bottom of first page
-
 
         // =================================================================================
         // Thread safe dialog box:
@@ -3421,6 +3420,7 @@ namespace LitePlacer
 
         private void SetDownCameraParameters()
         {
+            /*
             double val;
             if (DownCamera.IsRunning())
             {
@@ -3440,10 +3440,12 @@ namespace LitePlacer
             {
                 UpdateDownCameraStatusLabel();
             }
+            */
         }
 
         private void SetUpCameraParameters()
         {
+            /*
             double val;
             if (UpCamera.IsRunning())
             {
@@ -3463,10 +3465,12 @@ namespace LitePlacer
             {
                 UpdateUpCameraStatusLabel();
             }
+            */
         }
 
         private void SetCurrentCameraParameters()
         {
+            /*
             double val;
             if (UpCamera.IsRunning())
             {
@@ -3500,11 +3504,29 @@ namespace LitePlacer
             {
                 return;
             };
+            */
         }
 
         // =================================================================================
 
         private void DownCam_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            /*
+            List<string> Monikers = DownCamera.GetMonikerStrings();
+            if (Monikers.Count == 0)
+            {
+                DisplayTxt("No cameras");
+                Setting.DowncamMoniker = "-no camera-";
+                DownCamera.MonikerString = "-no camera-";
+                return;
+            }
+            Setting.Downcam_Name = DownCam_comboBox.SelectedItem.ToString();
+            Setting.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
+            DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
+            */
+        }
+
+        private void ConnectDownCamera_button_Click(object sender, EventArgs e)
         {
             List<string> Monikers = DownCamera.GetMonikerStrings();
             if (Monikers.Count == 0)
@@ -3517,12 +3539,9 @@ namespace LitePlacer
             Setting.Downcam_Name = DownCam_comboBox.SelectedItem.ToString();
             Setting.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
-        }
-
-        private void ConnectDownCamera_button_Click(object sender, EventArgs e)
-        {
             DownCamera.DesiredX = Setting.DownCam_DesiredX;
             DownCamera.DesiredY = Setting.DownCam_DesiredY;
+
             SelectCamera(DownCamera);
 
             if (DownCamera.IsRunning())
@@ -3541,6 +3560,12 @@ namespace LitePlacer
         // ====
         private void UpCam_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            /*
+            */
+        }
+
+        private void ConnectUpCamera_button_Click(object sender, EventArgs e)
+        {
             List<string> Monikers = new List<string>();
             Monikers.Add("-no camera-");
             Monikers.AddRange(UpCamera.GetMonikerStrings());
@@ -3554,10 +3579,6 @@ namespace LitePlacer
             Setting.Upcam_Name = UpCam_comboBox.SelectedItem.ToString();
             Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
-        }
-
-        private void ConnectUpCamera_button_Click(object sender, EventArgs e)
-        {
             UpCamera.DesiredX = Setting.UpCam_DesiredX;
             UpCamera.DesiredY = Setting.UpCam_DesiredY;
             SelectCamera(UpCamera);
@@ -4014,7 +4035,7 @@ namespace LitePlacer
             // Nozzle calibration button
             ZGuardOff();
             SelectCamera(DownCamera);
-            SetDownCameraParameters();
+            // SetDownCameraParameters();
             switch (SetNozzleOffset_stage)
             {
                 case 0:

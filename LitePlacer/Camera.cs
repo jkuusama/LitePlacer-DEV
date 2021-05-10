@@ -175,33 +175,42 @@ namespace LitePlacer
                 MainForm.DisplayText("No Cameras.", KnownColor.Purple);
                 return Resolutions;
             }
-            VideoCaptureDevice source = new VideoCaptureDevice(MonikerStr);
-            int tries = 0;
-            System.Drawing.Point reso=new System.Drawing.Point();
-            while (tries < 4)
+            try
             {
-                if (source == null)
+                VideoCaptureDevice source = new VideoCaptureDevice(MonikerStr);
+                int tries = 0;
+                System.Drawing.Point reso = new System.Drawing.Point();
+                while (tries < 4)
                 {
-                    Thread.Sleep(20);
-                    tries++;
-                    break;
-                }
-                if (source.VideoCapabilities.Length > 0)
-                {
-                    for (int i = 0; i < source.VideoCapabilities.Length; i++)
+                    if (source == null)
                     {
-                        reso.X = source.VideoCapabilities[i].FrameSize.Width;
-                        reso.Y = source.VideoCapabilities[i].FrameSize.Height;
-                        MainForm.DisplayText("X: " + reso.X.ToString(CultureInfo.InvariantCulture) +
-                            ", Y: " + reso.Y.ToString(CultureInfo.InvariantCulture));
-                        Resolutions.Add(reso);
+                        Thread.Sleep(20);
+                        tries++;
+                        break;
                     }
-                    return Resolutions;
+                    if (source.VideoCapabilities.Length > 0)
+                    {
+                        for (int i = 0; i < source.VideoCapabilities.Length; i++)
+                        {
+                            reso.X = source.VideoCapabilities[i].FrameSize.Width;
+                            reso.Y = source.VideoCapabilities[i].FrameSize.Height;
+                            MainForm.DisplayText("X: " + reso.X.ToString(CultureInfo.InvariantCulture) +
+                                ", Y: " + reso.Y.ToString(CultureInfo.InvariantCulture));
+                            Resolutions.Add(reso);
+                        }
+                        return Resolutions;
+                    }
                 }
+                // if we didn't return from above:
+                MainForm.DisplayText("Could not get resolution info from camera.", KnownColor.Purple);
+                return Resolutions;
             }
-            // if we didn't return from above:
-            MainForm.DisplayText("Could not get resolution info from camera.", KnownColor.Purple);
-            return Resolutions;
+            catch (Exception)
+            {
+                MainForm.DisplayText("Could not get resolution info from camera.", KnownColor.Purple);
+                return Resolutions;
+            }
+
         }
 
         // =================================================================================================
@@ -219,9 +228,14 @@ namespace LitePlacer
 
                 if (UseMaxRes)
                 {
-                    List<System.Drawing.Point> Resolutions = GetResolutions(MonikerStr);
-                    System.Drawing.Point MaxRes = FindMaxResolution(Resolutions);
                     bool fine = false;
+                    List<System.Drawing.Point> Resolutions = GetResolutions(MonikerStr);
+                    if (Resolutions.Count==0)
+                    {
+                        MainForm.DisplayText("Could not set resolution");
+                        return false;
+                    }
+                    System.Drawing.Point MaxRes = FindMaxResolution(Resolutions);
                     for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
                     {
                         if ((VideoSource.VideoCapabilities[i].FrameSize.Width == MaxRes.X)
