@@ -1442,6 +1442,7 @@ namespace LitePlacer
             }
 
             JoggingBusy = true;
+            DisplayText("Mouse: " + Mag.ToString("0.000", CultureInfo.InvariantCulture), KnownColor.DarkGreen, true);
             CNC_A_m(Cnc.CurrentA + Mag);
             if (DownCamera.Draw_Snapshot)
             {
@@ -1502,12 +1503,10 @@ namespace LitePlacer
             }
         }
 
-        static bool EnterKeyHit = true;   // petegit: Why is this initialized with true???
+        static bool EnterKeyHit;
 
         public void My_KeyDown(object sender, KeyEventArgs e)
         {
-            //DisplayText("My_KeyDown: " + e.KeyCode.ToString());
-
             if (e.KeyCode == Keys.Enter)
             {
                 EnterKeyHit = true;
@@ -1577,6 +1576,7 @@ namespace LitePlacer
                 return;
             }
 
+            DisplayText("Jog: " + e.KeyCode.ToString(), KnownColor.DarkGreen, true);
             string Speedstr;
 
             if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
@@ -2875,7 +2875,7 @@ namespace LitePlacer
                 }
                 DisplayText("Optical positioning, round " + count.ToString(CultureInfo.InvariantCulture)
                     + ", dX= " + X.ToString("0.000",CultureInfo.InvariantCulture) + ", dY= " + Y.ToString("0.000", CultureInfo.InvariantCulture)
-                    + "A= " + X.ToString("0.000", CultureInfo.InvariantCulture) + ", tries= " + tries.ToString(CultureInfo.InvariantCulture));
+                    + ", A= " + X.ToString("0.000", CultureInfo.InvariantCulture) + ", tries= " + tries.ToString(CultureInfo.InvariantCulture));
                 // If we are further than move tolerance, go there
                 if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance))
                 {
