@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -436,6 +436,9 @@
             this.NumPadJog_checkBox = new System.Windows.Forms.CheckBox();
             this.NozzleHeightInstructions_label = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.PickupDepth_textBox = new System.Windows.Forms.TextBox();
+            this.label136 = new System.Windows.Forms.Label();
+            this.label117 = new System.Windows.Forms.Label();
             this.TestSwitchClearanceCancel_button = new System.Windows.Forms.Button();
             this.TestSwitchClearance_button = new System.Windows.Forms.Button();
             this.TouchDifference_textBox = new System.Windows.Forms.TextBox();
@@ -657,9 +660,10 @@
             this.DoubleParA_textBox = new System.Windows.Forms.TextBox();
             this.AdvancedProcessing_tabControl = new System.Windows.Forms.TabControl();
             this.NozzleCalibration_tabPage = new System.Windows.Forms.TabPage();
+            this.SaveNozzleCalibration_button = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.ChangeNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
-            this.CalibrateNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
+            this.CalibrateCurrentNozzle_button = new System.Windows.Forms.Button();
             this.label226 = new System.Windows.Forms.Label();
             this.NoOfNozzlesOnVideoSetup_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.HideAdvanced_tabPage = new System.Windows.Forms.TabPage();
@@ -722,11 +726,11 @@
             this.ColorHelp_label = new System.Windows.Forms.Label();
             this.Color_Box = new System.Windows.Forms.TextBox();
             this.Nozzles_tabPage = new System.Windows.Forms.TabPage();
+            this.label156 = new System.Windows.Forms.Label();
             this.NozzeTip_textBox = new System.Windows.Forms.TextBox();
+            this.NozzleWarning_textBox = new System.Windows.Forms.TextBox();
             this.DefaultNozzle_label = new System.Windows.Forms.Label();
             this.label139 = new System.Windows.Forms.Label();
-            this.NozzleWarning_textBox = new System.Windows.Forms.TextBox();
-            this.label156 = new System.Windows.Forms.Label();
             this.CalibrateThis_button = new System.Windows.Forms.Button();
             this.label155 = new System.Windows.Forms.Label();
             this.CalData_button = new System.Windows.Forms.Button();
@@ -741,7 +745,6 @@
             this.NozzleMaxSize_column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NozzlesStop_button = new System.Windows.Forms.Button();
             this.NozzlesSave_button = new System.Windows.Forms.Button();
-            this.CalibrateNozzles_button = new System.Windows.Forms.Button();
             this.NozzleChangeEnable_checkBox = new System.Windows.Forms.CheckBox();
             this.panel10 = new System.Windows.Forms.Panel();
             this.label28 = new System.Windows.Forms.Label();
@@ -821,9 +824,6 @@
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label117 = new System.Windows.Forms.Label();
-            this.PickupDepth_textBox = new System.Windows.Forms.TextBox();
-            this.label136 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -5568,6 +5568,35 @@
             this.panel9.Size = new System.Drawing.Size(603, 85);
             this.panel9.TabIndex = 97;
             // 
+            // PickupDepth_textBox
+            // 
+            this.PickupDepth_textBox.Location = new System.Drawing.Point(543, 6);
+            this.PickupDepth_textBox.Name = "PickupDepth_textBox";
+            this.PickupDepth_textBox.Size = new System.Drawing.Size(55, 20);
+            this.PickupDepth_textBox.TabIndex = 136;
+            this.toolTip1.SetToolTip(this.PickupDepth_textBox, "Depth added to \"just touching\" height for pickup");
+            this.PickupDepth_textBox.TextChanged += new System.EventHandler(this.PickupDepth_textBox_TextChanged);
+            // 
+            // label136
+            // 
+            this.label136.AutoSize = true;
+            this.label136.Location = new System.Drawing.Point(464, 10);
+            this.label136.Name = "label136";
+            this.label136.Size = new System.Drawing.Size(73, 13);
+            this.label136.TabIndex = 135;
+            this.label136.Text = "Pickup depth:";
+            this.toolTip1.SetToolTip(this.label136, "Depth added to \"just touching\" height for pickup");
+            // 
+            // label117
+            // 
+            this.label117.AutoSize = true;
+            this.label117.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label117.Location = new System.Drawing.Point(4, 7);
+            this.label117.Name = "label117";
+            this.label117.Size = new System.Drawing.Size(87, 16);
+            this.label117.TabIndex = 134;
+            this.label117.Text = "Calibration:";
+            // 
             // TestSwitchClearanceCancel_button
             // 
             this.TestSwitchClearanceCancel_button.Location = new System.Drawing.Point(88, 29);
@@ -7166,14 +7195,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeight = 29;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7262,14 +7291,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7919,7 +7948,7 @@
             // ShowVideoResults_radioButton
             // 
             this.ShowVideoResults_radioButton.AutoSize = true;
-            this.ShowVideoResults_radioButton.Location = new System.Drawing.Point(1120, 214);
+            this.ShowVideoResults_radioButton.Location = new System.Drawing.Point(1109, 223);
             this.ShowVideoResults_radioButton.Name = "ShowVideoResults_radioButton";
             this.ShowVideoResults_radioButton.Size = new System.Drawing.Size(85, 17);
             this.ShowVideoResults_radioButton.TabIndex = 315;
@@ -7931,7 +7960,7 @@
             // ShowVideoProcessing_radioButton
             // 
             this.ShowVideoProcessing_radioButton.AutoSize = true;
-            this.ShowVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 191);
+            this.ShowVideoProcessing_radioButton.Location = new System.Drawing.Point(1109, 200);
             this.ShowVideoProcessing_radioButton.Name = "ShowVideoProcessing_radioButton";
             this.ShowVideoProcessing_radioButton.Size = new System.Drawing.Size(106, 17);
             this.ShowVideoProcessing_radioButton.TabIndex = 314;
@@ -7943,7 +7972,7 @@
             // NoVideoProcessing_radioButton
             // 
             this.NoVideoProcessing_radioButton.AutoSize = true;
-            this.NoVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 168);
+            this.NoVideoProcessing_radioButton.Location = new System.Drawing.Point(1109, 177);
             this.NoVideoProcessing_radioButton.Name = "NoVideoProcessing_radioButton";
             this.NoVideoProcessing_radioButton.Size = new System.Drawing.Size(122, 17);
             this.NoVideoProcessing_radioButton.TabIndex = 313;
@@ -7997,28 +8026,39 @@
             this.AdvancedProcessing_tabControl.Location = new System.Drawing.Point(823, 7);
             this.AdvancedProcessing_tabControl.Name = "AdvancedProcessing_tabControl";
             this.AdvancedProcessing_tabControl.SelectedIndex = 0;
-            this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(419, 145);
+            this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(419, 164);
             this.AdvancedProcessing_tabControl.TabIndex = 308;
             this.AdvancedProcessing_tabControl.Visible = false;
             // 
             // NozzleCalibration_tabPage
             // 
+            this.NozzleCalibration_tabPage.Controls.Add(this.SaveNozzleCalibration_button);
             this.NozzleCalibration_tabPage.Controls.Add(this.textBox1);
             this.NozzleCalibration_tabPage.Controls.Add(this.ChangeNozzleOnVideoSetup_button);
-            this.NozzleCalibration_tabPage.Controls.Add(this.CalibrateNozzleOnVideoSetup_button);
+            this.NozzleCalibration_tabPage.Controls.Add(this.CalibrateCurrentNozzle_button);
             this.NozzleCalibration_tabPage.Controls.Add(this.label226);
             this.NozzleCalibration_tabPage.Controls.Add(this.NoOfNozzlesOnVideoSetup_numericUpDown);
             this.NozzleCalibration_tabPage.Location = new System.Drawing.Point(4, 22);
             this.NozzleCalibration_tabPage.Name = "NozzleCalibration_tabPage";
             this.NozzleCalibration_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.NozzleCalibration_tabPage.Size = new System.Drawing.Size(411, 119);
+            this.NozzleCalibration_tabPage.Size = new System.Drawing.Size(411, 138);
             this.NozzleCalibration_tabPage.TabIndex = 0;
             this.NozzleCalibration_tabPage.Text = "Nozzle Calibration";
             this.NozzleCalibration_tabPage.UseVisualStyleBackColor = true;
             // 
+            // SaveNozzleCalibration_button
+            // 
+            this.SaveNozzleCalibration_button.Location = new System.Drawing.Point(7, 64);
+            this.SaveNozzleCalibration_button.Name = "SaveNozzleCalibration_button";
+            this.SaveNozzleCalibration_button.Size = new System.Drawing.Size(108, 23);
+            this.SaveNozzleCalibration_button.TabIndex = 308;
+            this.SaveNozzleCalibration_button.Text = "Save calibration";
+            this.SaveNozzleCalibration_button.UseVisualStyleBackColor = true;
+            this.SaveNozzleCalibration_button.Click += new System.EventHandler(this.SaveNozzleCalibration_button_Click);
+            // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(138, 37);
+            this.textBox1.Location = new System.Drawing.Point(216, 62);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(183, 73);
@@ -8036,15 +8076,15 @@
             this.ChangeNozzleOnVideoSetup_button.UseVisualStyleBackColor = true;
             this.ChangeNozzleOnVideoSetup_button.Click += new System.EventHandler(this.ChangeNozzleOnVideoSetup_button_Click);
             // 
-            // CalibrateNozzleOnVideoSetup_button
+            // CalibrateCurrentNozzle_button
             // 
-            this.CalibrateNozzleOnVideoSetup_button.Location = new System.Drawing.Point(6, 35);
-            this.CalibrateNozzleOnVideoSetup_button.Name = "CalibrateNozzleOnVideoSetup_button";
-            this.CalibrateNozzleOnVideoSetup_button.Size = new System.Drawing.Size(108, 23);
-            this.CalibrateNozzleOnVideoSetup_button.TabIndex = 306;
-            this.CalibrateNozzleOnVideoSetup_button.Text = "Calibrate current";
-            this.CalibrateNozzleOnVideoSetup_button.UseVisualStyleBackColor = true;
-            this.CalibrateNozzleOnVideoSetup_button.Click += new System.EventHandler(this.CalibrateNozzleOnVideoSetup_button_Click);
+            this.CalibrateCurrentNozzle_button.Location = new System.Drawing.Point(6, 35);
+            this.CalibrateCurrentNozzle_button.Name = "CalibrateCurrentNozzle_button";
+            this.CalibrateCurrentNozzle_button.Size = new System.Drawing.Size(108, 23);
+            this.CalibrateCurrentNozzle_button.TabIndex = 306;
+            this.CalibrateCurrentNozzle_button.Text = "Calibrate current";
+            this.CalibrateCurrentNozzle_button.UseVisualStyleBackColor = true;
+            this.CalibrateCurrentNozzle_button.Click += new System.EventHandler(this.CalibrateCurrentNozzle_button_Click);
             // 
             // label226
             // 
@@ -8077,7 +8117,7 @@
             this.HideAdvanced_tabPage.Location = new System.Drawing.Point(4, 22);
             this.HideAdvanced_tabPage.Name = "HideAdvanced_tabPage";
             this.HideAdvanced_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.HideAdvanced_tabPage.Size = new System.Drawing.Size(411, 119);
+            this.HideAdvanced_tabPage.Size = new System.Drawing.Size(411, 138);
             this.HideAdvanced_tabPage.TabIndex = 1;
             this.HideAdvanced_tabPage.Text = "Hide Advanced Controls";
             this.HideAdvanced_tabPage.UseVisualStyleBackColor = true;
@@ -8621,7 +8661,7 @@
             // 
             // RenameAlgorithm_button
             // 
-            this.RenameAlgorithm_button.Location = new System.Drawing.Point(1039, 189);
+            this.RenameAlgorithm_button.Location = new System.Drawing.Point(1028, 197);
             this.RenameAlgorithm_button.Name = "RenameAlgorithm_button";
             this.RenameAlgorithm_button.Size = new System.Drawing.Size(75, 23);
             this.RenameAlgorithm_button.TabIndex = 213;
@@ -8631,7 +8671,7 @@
             // 
             // DuplicateAlgorithm_button
             // 
-            this.DuplicateAlgorithm_button.Location = new System.Drawing.Point(958, 188);
+            this.DuplicateAlgorithm_button.Location = new System.Drawing.Point(947, 197);
             this.DuplicateAlgorithm_button.Name = "DuplicateAlgorithm_button";
             this.DuplicateAlgorithm_button.Size = new System.Drawing.Size(75, 23);
             this.DuplicateAlgorithm_button.TabIndex = 212;
@@ -8641,7 +8681,7 @@
             // 
             // RemoveAlgorithm_button
             // 
-            this.RemoveAlgorithm_button.Location = new System.Drawing.Point(877, 188);
+            this.RemoveAlgorithm_button.Location = new System.Drawing.Point(866, 197);
             this.RemoveAlgorithm_button.Name = "RemoveAlgorithm_button";
             this.RemoveAlgorithm_button.Size = new System.Drawing.Size(75, 23);
             this.RemoveAlgorithm_button.TabIndex = 211;
@@ -8651,7 +8691,7 @@
             // 
             // AddAlgorithm_button
             // 
-            this.AddAlgorithm_button.Location = new System.Drawing.Point(794, 187);
+            this.AddAlgorithm_button.Location = new System.Drawing.Point(785, 197);
             this.AddAlgorithm_button.Name = "AddAlgorithm_button";
             this.AddAlgorithm_button.Size = new System.Drawing.Size(75, 23);
             this.AddAlgorithm_button.TabIndex = 210;
@@ -8662,17 +8702,17 @@
             // label166
             // 
             this.label166.AutoSize = true;
-            this.label166.Location = new System.Drawing.Point(658, 173);
+            this.label166.Location = new System.Drawing.Point(658, 183);
             this.label166.Name = "label166";
-            this.label166.Size = new System.Drawing.Size(117, 13);
+            this.label166.Size = new System.Drawing.Size(120, 13);
             this.label166.TabIndex = 208;
-            this.label166.Text = "Current Video Algorithm";
+            this.label166.Text = "Current Video Algorithm:";
             // 
             // Algorithm_comboBox
             // 
             this.Algorithm_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Algorithm_comboBox.FormattingEnabled = true;
-            this.Algorithm_comboBox.Location = new System.Drawing.Point(658, 189);
+            this.Algorithm_comboBox.Location = new System.Drawing.Point(658, 199);
             this.Algorithm_comboBox.Name = "Algorithm_comboBox";
             this.Algorithm_comboBox.Size = new System.Drawing.Size(121, 21);
             this.Algorithm_comboBox.TabIndex = 207;
@@ -8701,11 +8741,11 @@
             // 
             // Nozzles_tabPage
             // 
+            this.Nozzles_tabPage.Controls.Add(this.label156);
             this.Nozzles_tabPage.Controls.Add(this.NozzeTip_textBox);
+            this.Nozzles_tabPage.Controls.Add(this.NozzleWarning_textBox);
             this.Nozzles_tabPage.Controls.Add(this.DefaultNozzle_label);
             this.Nozzles_tabPage.Controls.Add(this.label139);
-            this.Nozzles_tabPage.Controls.Add(this.NozzleWarning_textBox);
-            this.Nozzles_tabPage.Controls.Add(this.label156);
             this.Nozzles_tabPage.Controls.Add(this.CalibrateThis_button);
             this.Nozzles_tabPage.Controls.Add(this.label155);
             this.Nozzles_tabPage.Controls.Add(this.CalData_button);
@@ -8714,7 +8754,6 @@
             this.Nozzles_tabPage.Controls.Add(this.NozzlesParameters_dataGridView);
             this.Nozzles_tabPage.Controls.Add(this.NozzlesStop_button);
             this.Nozzles_tabPage.Controls.Add(this.NozzlesSave_button);
-            this.Nozzles_tabPage.Controls.Add(this.CalibrateNozzles_button);
             this.Nozzles_tabPage.Controls.Add(this.NozzleChangeEnable_checkBox);
             this.Nozzles_tabPage.Controls.Add(this.panel10);
             this.Nozzles_tabPage.Controls.Add(this.GotoZ0_button);
@@ -8740,6 +8779,15 @@
             this.Nozzles_tabPage.Text = "Setup Nozzles";
             this.Nozzles_tabPage.UseVisualStyleBackColor = true;
             // 
+            // label156
+            // 
+            this.label156.AutoSize = true;
+            this.label156.Location = new System.Drawing.Point(970, 478);
+            this.label156.Name = "label156";
+            this.label156.Size = new System.Drawing.Size(96, 13);
+            this.label156.TabIndex = 42;
+            this.label156.Text = "Warning threshold:";
+            // 
             // NozzeTip_textBox
             // 
             this.NozzeTip_textBox.Location = new System.Drawing.Point(765, 498);
@@ -8750,6 +8798,14 @@
             this.NozzeTip_textBox.Text = "Nominal nozzle tip sizes (diameter):\r\n(in / out)\r\n#1: 0.5 / 1.0\r\n#2: 0.8 / 1.5\r\n#" +
     "3: 1.4 / 2.2\r\n#4: 2.4 / 4.0 \r\n#5: 4.0 / 6.2\r\n#6: 7.5 / 9.0\r\n(F1 toggles visibili" +
     "ty of this box)";
+            // 
+            // NozzleWarning_textBox
+            // 
+            this.NozzleWarning_textBox.Location = new System.Drawing.Point(1066, 475);
+            this.NozzleWarning_textBox.Name = "NozzleWarning_textBox";
+            this.NozzleWarning_textBox.Size = new System.Drawing.Size(88, 20);
+            this.NozzleWarning_textBox.TabIndex = 32;
+            this.NozzleWarning_textBox.TextChanged += new System.EventHandler(this.NozzleWarning_textBox_TextChanged);
             // 
             // DefaultNozzle_label
             // 
@@ -8769,26 +8825,9 @@
             this.label139.TabIndex = 43;
             this.label139.Text = "Default nozzle: ";
             // 
-            // NozzleWarning_textBox
-            // 
-            this.NozzleWarning_textBox.Location = new System.Drawing.Point(1066, 443);
-            this.NozzleWarning_textBox.Name = "NozzleWarning_textBox";
-            this.NozzleWarning_textBox.Size = new System.Drawing.Size(88, 20);
-            this.NozzleWarning_textBox.TabIndex = 32;
-            this.NozzleWarning_textBox.TextChanged += new System.EventHandler(this.NozzleWarning_textBox_TextChanged);
-            // 
-            // label156
-            // 
-            this.label156.AutoSize = true;
-            this.label156.Location = new System.Drawing.Point(970, 446);
-            this.label156.Name = "label156";
-            this.label156.Size = new System.Drawing.Size(96, 13);
-            this.label156.TabIndex = 42;
-            this.label156.Text = "Warning threshold:";
-            // 
             // CalibrateThis_button
             // 
-            this.CalibrateThis_button.Location = new System.Drawing.Point(1066, 414);
+            this.CalibrateThis_button.Location = new System.Drawing.Point(971, 446);
             this.CalibrateThis_button.Name = "CalibrateThis_button";
             this.CalibrateThis_button.Size = new System.Drawing.Size(87, 23);
             this.CalibrateThis_button.TabIndex = 41;
@@ -8856,7 +8895,7 @@
             this.NozzlesParameters_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.NozzlesParameters_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.NozzlesParameters_dataGridView.ShowEditingIcon = false;
-            this.NozzlesParameters_dataGridView.Size = new System.Drawing.Size(384, 78);
+            this.NozzlesParameters_dataGridView.Size = new System.Drawing.Size(394, 78);
             this.NozzlesParameters_dataGridView.TabIndex = 36;
             // 
             // NozzleNumber_column
@@ -8889,7 +8928,7 @@
             this.NozzleOverrideSize_column.HeaderText = "Override Size";
             this.NozzleOverrideSize_column.MinimumWidth = 6;
             this.NozzleOverrideSize_column.Name = "NozzleOverrideSize_column";
-            this.NozzleOverrideSize_column.Width = 60;
+            this.NozzleOverrideSize_column.Width = 55;
             // 
             // NozzleMinSize_column
             // 
@@ -8899,7 +8938,7 @@
             this.NozzleMinSize_column.Name = "NozzleMinSize_column";
             this.NozzleMinSize_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.NozzleMinSize_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.NozzleMinSize_column.Width = 60;
+            this.NozzleMinSize_column.Width = 55;
             // 
             // NozzleMaxSize_column
             // 
@@ -8909,21 +8948,21 @@
             this.NozzleMaxSize_column.Name = "NozzleMaxSize_column";
             this.NozzleMaxSize_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.NozzleMaxSize_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.NozzleMaxSize_column.Width = 60;
+            this.NozzleMaxSize_column.Width = 55;
             // 
             // NozzlesStop_button
             // 
-            this.NozzlesStop_button.Location = new System.Drawing.Point(971, 505);
+            this.NozzlesStop_button.Location = new System.Drawing.Point(971, 187);
             this.NozzlesStop_button.Name = "NozzlesStop_button";
-            this.NozzlesStop_button.Size = new System.Drawing.Size(89, 23);
+            this.NozzlesStop_button.Size = new System.Drawing.Size(108, 23);
             this.NozzlesStop_button.TabIndex = 35;
-            this.NozzlesStop_button.Text = "Stop";
+            this.NozzlesStop_button.Text = "Stop Moves";
             this.NozzlesStop_button.UseVisualStyleBackColor = true;
             this.NozzlesStop_button.Click += new System.EventHandler(this.NozzlesStop_button_Click);
             // 
             // NozzlesSave_button
             // 
-            this.NozzlesSave_button.Location = new System.Drawing.Point(971, 476);
+            this.NozzlesSave_button.Location = new System.Drawing.Point(971, 499);
             this.NozzlesSave_button.Name = "NozzlesSave_button";
             this.NozzlesSave_button.Size = new System.Drawing.Size(89, 23);
             this.NozzlesSave_button.TabIndex = 34;
@@ -8931,21 +8970,11 @@
             this.NozzlesSave_button.UseVisualStyleBackColor = true;
             this.NozzlesSave_button.Click += new System.EventHandler(this.NozzlesSave_button_Click);
             // 
-            // CalibrateNozzles_button
-            // 
-            this.CalibrateNozzles_button.Location = new System.Drawing.Point(971, 414);
-            this.CalibrateNozzles_button.Name = "CalibrateNozzles_button";
-            this.CalibrateNozzles_button.Size = new System.Drawing.Size(89, 23);
-            this.CalibrateNozzles_button.TabIndex = 33;
-            this.CalibrateNozzles_button.Text = "Calibrate All";
-            this.CalibrateNozzles_button.UseVisualStyleBackColor = true;
-            this.CalibrateNozzles_button.Click += new System.EventHandler(this.CalibrateNozzles_button_Click);
-            // 
             // NozzleChangeEnable_checkBox
             // 
             this.NozzleChangeEnable_checkBox.AutoSize = true;
             this.NozzleChangeEnable_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NozzleChangeEnable_checkBox.Location = new System.Drawing.Point(971, 534);
+            this.NozzleChangeEnable_checkBox.Location = new System.Drawing.Point(971, 545);
             this.NozzleChangeEnable_checkBox.Name = "NozzleChangeEnable_checkBox";
             this.NozzleChangeEnable_checkBox.Size = new System.Drawing.Size(205, 24);
             this.NozzleChangeEnable_checkBox.TabIndex = 32;
@@ -8972,7 +9001,7 @@
             this.panel10.Controls.Add(this.label141);
             this.panel10.Controls.Add(this.NozzleXYspeed_textBox);
             this.panel10.Controls.Add(this.label140);
-            this.panel10.Location = new System.Drawing.Point(971, 187);
+            this.panel10.Location = new System.Drawing.Point(971, 219);
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(259, 221);
             this.panel10.TabIndex = 16;
@@ -9211,7 +9240,7 @@
             // 
             // GetUnloadCoordinates_button
             // 
-            this.GetUnloadCoordinates_button.Location = new System.Drawing.Point(435, 291);
+            this.GetUnloadCoordinates_button.Location = new System.Drawing.Point(446, 291);
             this.GetUnloadCoordinates_button.Name = "GetUnloadCoordinates_button";
             this.GetUnloadCoordinates_button.Size = new System.Drawing.Size(108, 23);
             this.GetUnloadCoordinates_button.TabIndex = 7;
@@ -9221,7 +9250,7 @@
             // 
             // GetLoadCoordinates_button
             // 
-            this.GetLoadCoordinates_button.Location = new System.Drawing.Point(840, 5);
+            this.GetLoadCoordinates_button.Location = new System.Drawing.Point(850, 5);
             this.GetLoadCoordinates_button.Name = "GetLoadCoordinates_button";
             this.GetLoadCoordinates_button.Size = new System.Drawing.Size(108, 23);
             this.GetLoadCoordinates_button.TabIndex = 6;
@@ -9260,7 +9289,7 @@
             this.NozzlesUnload_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.NozzlesUnload_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.NozzlesUnload_dataGridView.ShowEditingIcon = false;
-            this.NozzlesUnload_dataGridView.Size = new System.Drawing.Size(537, 249);
+            this.NozzlesUnload_dataGridView.Size = new System.Drawing.Size(548, 249);
             this.NozzlesUnload_dataGridView.TabIndex = 4;
             this.NozzlesUnload_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.NozzlesUnload_dataGridView_CellMouseDown);
             this.NozzlesUnload_dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.NozzlesUnload_dataGridView_CellMouseEnter);
@@ -9403,7 +9432,7 @@
             this.NozzlesLoad_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.NozzlesLoad_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.NozzlesLoad_dataGridView.ShowEditingIcon = false;
-            this.NozzlesLoad_dataGridView.Size = new System.Drawing.Size(945, 205);
+            this.NozzlesLoad_dataGridView.Size = new System.Drawing.Size(955, 205);
             this.NozzlesLoad_dataGridView.TabIndex = 0;
             this.NozzlesLoad_dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.NozzlesLoad_dataGridView_CellMouseDown);
             this.NozzlesLoad_dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.NozzlesLoad_dataGridView_CellMouseEnter);
@@ -9754,35 +9783,6 @@
             // 
             this.TapesAll_openFileDialog.DefaultExt = "tapes_v2";
             this.TapesAll_openFileDialog.Filter = "Tape files|*.TapesData_v2;*.tapes|All files|*.*";
-            // 
-            // label117
-            // 
-            this.label117.AutoSize = true;
-            this.label117.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label117.Location = new System.Drawing.Point(4, 7);
-            this.label117.Name = "label117";
-            this.label117.Size = new System.Drawing.Size(87, 16);
-            this.label117.TabIndex = 134;
-            this.label117.Text = "Calibration:";
-            // 
-            // PickupDepth_textBox
-            // 
-            this.PickupDepth_textBox.Location = new System.Drawing.Point(543, 6);
-            this.PickupDepth_textBox.Name = "PickupDepth_textBox";
-            this.PickupDepth_textBox.Size = new System.Drawing.Size(55, 20);
-            this.PickupDepth_textBox.TabIndex = 136;
-            this.toolTip1.SetToolTip(this.PickupDepth_textBox, "Depth added to \"just touching\" height for pickup");
-            this.PickupDepth_textBox.TextChanged += new System.EventHandler(this.PickupDepth_textBox_TextChanged);
-            // 
-            // label136
-            // 
-            this.label136.AutoSize = true;
-            this.label136.Location = new System.Drawing.Point(464, 10);
-            this.label136.Name = "label136";
-            this.label136.Size = new System.Drawing.Size(73, 13);
-            this.label136.TabIndex = 135;
-            this.label136.Text = "Pickup depth:";
-            this.toolTip1.SetToolTip(this.label136, "Depth added to \"just touching\" height for pickup");
             // 
             // FormMain
             // 
@@ -10329,7 +10329,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NextX_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn NextY_column;
         private System.Windows.Forms.Button ResetPlaceZ_button;
-        private System.Windows.Forms.Button CalibrateNozzles_button;
         private System.Windows.Forms.ToolStripMenuItem getUnloadMovesFromLoadMovesToolStripMenuItem;
         private System.Windows.Forms.Button NozzlesSave_button;
         private System.Windows.Forms.Button NozzlesStop_button;
@@ -10630,17 +10629,11 @@
         private System.Windows.Forms.Label label225;
         private System.Windows.Forms.Label label67;
         private System.Windows.Forms.Label label62;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleNumber_column;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleCalibrated_Column;
-        private System.Windows.Forms.DataGridViewComboBoxColumn VisionAlgorithm_column;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleOverrideSize_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
         public System.Windows.Forms.DataGridView NozzlesParameters_dataGridView;
         private System.Windows.Forms.NumericUpDown NoOfNozzlesOnVideoSetup_numericUpDown;
         private System.Windows.Forms.Label label226;
         private System.Windows.Forms.Button ChangeNozzleOnVideoSetup_button;
-        private System.Windows.Forms.Button CalibrateNozzleOnVideoSetup_button;
+        private System.Windows.Forms.Button CalibrateCurrentNozzle_button;
         private System.Windows.Forms.TextBox FunctionExplanation_textBox;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TabControl tabControl1;
@@ -10735,6 +10728,13 @@
         private System.Windows.Forms.TextBox PickupDepth_textBox;
         private System.Windows.Forms.Label label136;
         private System.Windows.Forms.Label label117;
+        private System.Windows.Forms.Button SaveNozzleCalibration_button;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleNumber_column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleCalibrated_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn VisionAlgorithm_column;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn NozzleOverrideSize_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMinSize_column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NozzleMaxSize_column;
     }
 }
 

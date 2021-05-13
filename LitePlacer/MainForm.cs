@@ -11708,50 +11708,23 @@ namespace LitePlacer
 
         private void CalibrateNozzles_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
-
-            // this is only called from nozzle tab page, so we want to leave with slack compensation off
-            // We want to do moves to camera with slack compensation, if he user has it on
-
-            Nozzles_Stop = false;
-            for (int nozzle = 1; nozzle <= Setting.Nozzles_count; nozzle++)
-            {
-                if (!ChangeNozzle_m(nozzle))
-                {
-                    return;
-                }
-                if (Nozzles_Stop)
-                {
-                    return;
-                }
-                if (!CalibrateCurrentNozzle())
-                {
-                    return;
-                }
-            }
-            string path = GetPath();
-            Nozzle.SaveNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
-            for (int nozzle = 1; nozzle <= Setting.Nozzles_count; nozzle++)
-            {
-                CheckCalibrationErrors(nozzle);
-            }
         }
 
-        private bool CalibrateCurrentNozzle()
+        private void CalibrateCurrentNozzle()
         {
-            if (!CheckPositionConfidence()) return false;
+            if (!CheckPositionConfidence()) return;
 
             // We want to do moves to camera with normal speed and slack compensation
             bool SlowSave = Cnc.SlowXY;
             Cnc.SlowXY = false;
             bool compSave = Cnc.SlackCompensation;
             Cnc.SlackCompensation = Setting.CNC_SlackCompensation;
-            bool res = CalibrateNozzle_m();
+            if (CalibrateNozzle_m())
+            {
+                CheckCalibrationErrors(Setting.Nozzles_current);
+            }
             Cnc.SlowXY = SlowSave;
             Cnc.SlackCompensation = compSave;
-
-            CheckCalibrationErrors(Setting.Nozzles_current);
-            return res;
         }
 
         private void CalibrateThis_button_Click(object sender, EventArgs e)
@@ -12351,6 +12324,10 @@ namespace LitePlacer
 
         public bool ChangeNozzle_m(int Nozzle)
         {
+            if (!CheckPositionConfidence())
+            {
+                return false;
+            }
 
             if (!PositionConfidence)
             {
@@ -13256,9 +13233,14 @@ namespace LitePlacer
             ChangeNozzle_m((int)NoOfNozzlesOnVideoSetup_numericUpDown.Value);
         }
 
-        private void CalibrateNozzleOnVideoSetup_button_Click(object sender, EventArgs e)
+        private void CalibrateCurrentNozzle_button_Click(object sender, EventArgs e)
         {
-            CalibrateThis_button_Click(sender, e);      // does the same as the similar button on nozzle setup tab
+            if (!CheckPositionConfidence()) return;
+
+            if (CalibrateNozzle_m())
+            {
+                CheckCalibrationErrors(Setting.Nozzles_current);
+            }
         }
 
         private void HideAdvanced_tabPage_Enter(object sender, EventArgs e)
@@ -13318,6 +13300,11 @@ namespace LitePlacer
             }
         }
 
+        private void SaveNozzleCalibration_button_Click(object sender, EventArgs e)
+        {
+            string path = GetPath();
+            Nozzle.SaveNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
+        }
     }	// end of: 	public partial class FormMain : Form
 
 
