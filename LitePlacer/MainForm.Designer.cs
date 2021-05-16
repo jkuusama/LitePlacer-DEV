@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -436,6 +436,9 @@
             this.NumPadJog_checkBox = new System.Windows.Forms.CheckBox();
             this.NozzleHeightInstructions_label = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.PickupDepth_textBox = new System.Windows.Forms.TextBox();
+            this.label136 = new System.Windows.Forms.Label();
+            this.label117 = new System.Windows.Forms.Label();
             this.TestSwitchClearanceCancel_button = new System.Windows.Forms.Button();
             this.TestSwitchClearance_button = new System.Windows.Forms.Button();
             this.TouchDifference_textBox = new System.Windows.Forms.TextBox();
@@ -821,9 +824,6 @@
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label117 = new System.Windows.Forms.Label();
-            this.PickupDepth_textBox = new System.Windows.Forms.TextBox();
-            this.label136 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -2170,7 +2170,8 @@
             this.groupBox6.Controls.Add(this.label163);
             this.groupBox6.Controls.Add(this.UpCameraBoxY_textBox);
             this.groupBox6.Controls.Add(this.label103);
-            this.groupBox6.Location = new System.Drawing.Point(652, 184);
+            this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox6.Location = new System.Drawing.Point(652, 208);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(587, 176);
             this.groupBox6.TabIndex = 227;
@@ -2180,7 +2181,7 @@
             // UpCamUsedResolution_label
             // 
             this.UpCamUsedResolution_label.AutoSize = true;
-            this.UpCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCamUsedResolution_label.Location = new System.Drawing.Point(454, 60);
             this.UpCamUsedResolution_label.Name = "UpCamUsedResolution_label";
             this.UpCamUsedResolution_label.Size = new System.Drawing.Size(111, 13);
@@ -2191,10 +2192,10 @@
             // UpCamMaxResolution_checkBox
             // 
             this.UpCamMaxResolution_checkBox.AutoSize = true;
-            this.UpCamMaxResolution_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamMaxResolution_checkBox.Location = new System.Drawing.Point(266, 84);
+            this.UpCamMaxResolution_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamMaxResolution_checkBox.Location = new System.Drawing.Point(221, 84);
             this.UpCamMaxResolution_checkBox.Name = "UpCamMaxResolution_checkBox";
-            this.UpCamMaxResolution_checkBox.Size = new System.Drawing.Size(69, 17);
+            this.UpCamMaxResolution_checkBox.Size = new System.Drawing.Size(70, 17);
             this.UpCamMaxResolution_checkBox.TabIndex = 230;
             this.UpCamMaxResolution_checkBox.Text = "Use max.";
             this.toolTip1.SetToolTip(this.UpCamMaxResolution_checkBox, "If checked, maximum resolution of camera (by X) is automatically used");
@@ -2204,10 +2205,10 @@
             // UpCamDrawSidemarks_checkBox
             // 
             this.UpCamDrawSidemarks_checkBox.AutoSize = true;
-            this.UpCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(375, 141);
+            this.UpCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(375, 148);
             this.UpCamDrawSidemarks_checkBox.Name = "UpCamDrawSidemarks_checkBox";
-            this.UpCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(102, 17);
+            this.UpCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(103, 17);
             this.UpCamDrawSidemarks_checkBox.TabIndex = 213;
             this.UpCamDrawSidemarks_checkBox.Text = "Draw Sidemarks";
             this.UpCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
@@ -2216,30 +2217,30 @@
             // label130
             // 
             this.label130.AutoSize = true;
-            this.label130.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label130.Location = new System.Drawing.Point(113, 81);
+            this.label130.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label130.Location = new System.Drawing.Point(117, 100);
             this.label130.Name = "label130";
-            this.label130.Size = new System.Drawing.Size(50, 13);
+            this.label130.Size = new System.Drawing.Size(52, 13);
             this.label130.TabIndex = 229;
             this.label130.Text = "mm/pixel:";
             this.toolTip1.SetToolTip(this.label130, "Set the true size of the box on the image.");
             // 
             // UpCameraYmmPerPixel_textBox
             // 
-            this.UpCameraYmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraYmmPerPixel_textBox.Location = new System.Drawing.Point(117, 123);
+            this.UpCameraYmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraYmmPerPixel_textBox.Location = new System.Drawing.Point(120, 145);
             this.UpCameraYmmPerPixel_textBox.Name = "UpCameraYmmPerPixel_textBox";
-            this.UpCameraYmmPerPixel_textBox.Size = new System.Drawing.Size(46, 18);
+            this.UpCameraYmmPerPixel_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraYmmPerPixel_textBox.TabIndex = 228;
             this.toolTip1.SetToolTip(this.UpCameraYmmPerPixel_textBox, "Set the true size of the box on the image.");
             this.UpCameraYmmPerPixel_textBox.TextChanged += new System.EventHandler(this.UpCameraYmmPerPixel_textBox_TextChanged);
             // 
             // UpCameraXmmPerPixel_textBox
             // 
-            this.UpCameraXmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraXmmPerPixel_textBox.Location = new System.Drawing.Point(117, 97);
+            this.UpCameraXmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraXmmPerPixel_textBox.Location = new System.Drawing.Point(120, 116);
             this.UpCameraXmmPerPixel_textBox.Name = "UpCameraXmmPerPixel_textBox";
-            this.UpCameraXmmPerPixel_textBox.Size = new System.Drawing.Size(46, 18);
+            this.UpCameraXmmPerPixel_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraXmmPerPixel_textBox.TabIndex = 227;
             this.toolTip1.SetToolTip(this.UpCameraXmmPerPixel_textBox, "Set the true size of the box on the image.");
             this.UpCameraXmmPerPixel_textBox.TextChanged += new System.EventHandler(this.UpCameraXmmPerPixel_textBox_TextChanged);
@@ -2247,8 +2248,8 @@
             // UpCamDrawBox_checkBox
             // 
             this.UpCamDrawBox_checkBox.AutoSize = true;
-            this.UpCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamDrawBox_checkBox.Location = new System.Drawing.Point(375, 120);
+            this.UpCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamDrawBox_checkBox.Location = new System.Drawing.Point(376, 126);
             this.UpCamDrawBox_checkBox.Name = "UpCamDrawBox_checkBox";
             this.UpCamDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
             this.UpCamDrawBox_checkBox.TabIndex = 210;
@@ -2259,8 +2260,8 @@
             // UpCamDrawCross_checkBox
             // 
             this.UpCamDrawCross_checkBox.AutoSize = true;
-            this.UpCamDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamDrawCross_checkBox.Location = new System.Drawing.Point(375, 95);
+            this.UpCamDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamDrawCross_checkBox.Location = new System.Drawing.Point(375, 103);
             this.UpCamDrawCross_checkBox.Name = "UpCamDrawCross_checkBox";
             this.UpCamDrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
             this.UpCamDrawCross_checkBox.TabIndex = 209;
@@ -2270,7 +2271,7 @@
             // 
             // UpCamListResolutions_button
             // 
-            this.UpCamListResolutions_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCamListResolutions_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCamListResolutions_button.Location = new System.Drawing.Point(221, 55);
             this.UpCamListResolutions_button.Name = "UpCamListResolutions_button";
             this.UpCamListResolutions_button.Size = new System.Drawing.Size(114, 23);
@@ -2283,8 +2284,8 @@
             // label106
             // 
             this.label106.AutoSize = true;
-            this.label106.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label106.Location = new System.Drawing.Point(241, 101);
+            this.label106.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label106.Location = new System.Drawing.Point(218, 104);
             this.label106.Name = "label106";
             this.label106.Size = new System.Drawing.Size(94, 13);
             this.label106.TabIndex = 225;
@@ -2294,8 +2295,8 @@
             // UpcamDesiredX_label
             // 
             this.UpcamDesiredX_label.AutoSize = true;
-            this.UpcamDesiredX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpcamDesiredX_label.Location = new System.Drawing.Point(266, 120);
+            this.UpcamDesiredX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpcamDesiredX_label.Location = new System.Drawing.Point(217, 122);
             this.UpcamDesiredX_label.Name = "UpcamDesiredX_label";
             this.UpcamDesiredX_label.Size = new System.Drawing.Size(17, 13);
             this.UpcamDesiredX_label.TabIndex = 221;
@@ -2316,8 +2317,8 @@
             // UpcamDesiredY_label
             // 
             this.UpcamDesiredY_label.AutoSize = true;
-            this.UpcamDesiredY_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpcamDesiredY_label.Location = new System.Drawing.Point(266, 144);
+            this.UpcamDesiredY_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpcamDesiredY_label.Location = new System.Drawing.Point(217, 148);
             this.UpcamDesiredY_label.Name = "UpcamDesiredY_label";
             this.UpcamDesiredY_label.Size = new System.Drawing.Size(17, 13);
             this.UpcamDesiredY_label.TabIndex = 222;
@@ -2327,8 +2328,8 @@
             // label105
             // 
             this.label105.AutoSize = true;
-            this.label105.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label105.Location = new System.Drawing.Point(10, 81);
+            this.label105.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label105.Location = new System.Drawing.Point(8, 100);
             this.label105.Name = "label105";
             this.label105.Size = new System.Drawing.Size(49, 13);
             this.label105.TabIndex = 226;
@@ -2337,10 +2338,10 @@
             // 
             // UpCameraDesiredX_textBox
             // 
-            this.UpCameraDesiredX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraDesiredX_textBox.Location = new System.Drawing.Point(289, 117);
+            this.UpCameraDesiredX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraDesiredX_textBox.Location = new System.Drawing.Point(240, 119);
             this.UpCameraDesiredX_textBox.Name = "UpCameraDesiredX_textBox";
-            this.UpCameraDesiredX_textBox.Size = new System.Drawing.Size(46, 18);
+            this.UpCameraDesiredX_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraDesiredX_textBox.TabIndex = 223;
             this.toolTip1.SetToolTip(this.UpCameraDesiredX_textBox, "Set the native camera resolution here");
             this.UpCameraDesiredX_textBox.TextChanged += new System.EventHandler(this.UpCameraDesiredX_textBox_TextChanged);
@@ -2360,10 +2361,10 @@
             // 
             // UpCameraDesiredY_textBox
             // 
-            this.UpCameraDesiredY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraDesiredY_textBox.Location = new System.Drawing.Point(289, 141);
+            this.UpCameraDesiredY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraDesiredY_textBox.Location = new System.Drawing.Point(240, 145);
             this.UpCameraDesiredY_textBox.Name = "UpCameraDesiredY_textBox";
-            this.UpCameraDesiredY_textBox.Size = new System.Drawing.Size(46, 18);
+            this.UpCameraDesiredY_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraDesiredY_textBox.TabIndex = 224;
             this.toolTip1.SetToolTip(this.UpCameraDesiredY_textBox, "Set the native camera resolution here");
             this.UpCameraDesiredY_textBox.TextChanged += new System.EventHandler(this.UpCameraDesiredY_textBox_TextChanged);
@@ -2383,7 +2384,7 @@
             // label110
             // 
             this.label110.AutoSize = true;
-            this.label110.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
+            this.label110.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label110.Location = new System.Drawing.Point(450, 19);
             this.label110.Name = "label110";
             this.label110.Size = new System.Drawing.Size(40, 13);
@@ -2428,10 +2429,10 @@
             // 
             // UpCameraBoxX_textBox
             // 
-            this.UpCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.UpCameraBoxX_textBox.Location = new System.Drawing.Point(33, 97);
+            this.UpCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraBoxX_textBox.Location = new System.Drawing.Point(31, 116);
             this.UpCameraBoxX_textBox.Name = "UpCameraBoxX_textBox";
-            this.UpCameraBoxX_textBox.Size = new System.Drawing.Size(46, 18);
+            this.UpCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraBoxX_textBox.TabIndex = 211;
             this.toolTip1.SetToolTip(this.UpCameraBoxX_textBox, "Set the true size of the box on the image.");
             this.UpCameraBoxX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCameraBoxX_textBox_KeyPress);
@@ -2440,8 +2441,8 @@
             // label162
             // 
             this.label162.AutoSize = true;
-            this.label162.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label162.Location = new System.Drawing.Point(10, 100);
+            this.label162.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label162.Location = new System.Drawing.Point(8, 119);
             this.label162.Name = "label162";
             this.label162.Size = new System.Drawing.Size(17, 13);
             this.label162.TabIndex = 219;
@@ -2451,8 +2452,8 @@
             // label104
             // 
             this.label104.AutoSize = true;
-            this.label104.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label104.Location = new System.Drawing.Point(85, 100);
+            this.label104.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label104.Location = new System.Drawing.Point(81, 119);
             this.label104.Name = "label104";
             this.label104.Size = new System.Drawing.Size(23, 13);
             this.label104.TabIndex = 213;
@@ -2462,8 +2463,8 @@
             // label163
             // 
             this.label163.AutoSize = true;
-            this.label163.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label163.Location = new System.Drawing.Point(10, 126);
+            this.label163.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label163.Location = new System.Drawing.Point(8, 148);
             this.label163.Name = "label163";
             this.label163.Size = new System.Drawing.Size(17, 13);
             this.label163.TabIndex = 220;
@@ -2472,10 +2473,10 @@
             // 
             // UpCameraBoxY_textBox
             // 
-            this.UpCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.UpCameraBoxY_textBox.Location = new System.Drawing.Point(33, 123);
+            this.UpCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraBoxY_textBox.Location = new System.Drawing.Point(31, 145);
             this.UpCameraBoxY_textBox.Name = "UpCameraBoxY_textBox";
-            this.UpCameraBoxY_textBox.Size = new System.Drawing.Size(46, 18);
+            this.UpCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraBoxY_textBox.TabIndex = 212;
             this.toolTip1.SetToolTip(this.UpCameraBoxY_textBox, "Set the true size of the box on the image.");
             this.UpCameraBoxY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCameraBoxY_textBox_KeyPress);
@@ -2484,8 +2485,8 @@
             // label103
             // 
             this.label103.AutoSize = true;
-            this.label103.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label103.Location = new System.Drawing.Point(85, 126);
+            this.label103.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label103.Location = new System.Drawing.Point(83, 148);
             this.label103.Name = "label103";
             this.label103.Size = new System.Drawing.Size(23, 13);
             this.label103.TabIndex = 214;
@@ -2495,10 +2496,10 @@
             // RobustFast_checkBox
             // 
             this.RobustFast_checkBox.AutoSize = true;
-            this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RobustFast_checkBox.Location = new System.Drawing.Point(750, 378);
+            this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RobustFast_checkBox.Location = new System.Drawing.Point(772, 404);
             this.RobustFast_checkBox.Name = "RobustFast_checkBox";
-            this.RobustFast_checkBox.Size = new System.Drawing.Size(130, 17);
+            this.RobustFast_checkBox.Size = new System.Drawing.Size(134, 17);
             this.RobustFast_checkBox.TabIndex = 195;
             this.RobustFast_checkBox.Text = "Robust (uncheck: fast)";
             this.toolTip1.SetToolTip(this.RobustFast_checkBox, resources.GetString("RobustFast_checkBox.ToolTip"));
@@ -2508,10 +2509,10 @@
             // KeepActive_checkBox
             // 
             this.KeepActive_checkBox.AutoSize = true;
-            this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KeepActive_checkBox.Location = new System.Drawing.Point(906, 378);
+            this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeepActive_checkBox.Location = new System.Drawing.Point(919, 404);
             this.KeepActive_checkBox.Name = "KeepActive_checkBox";
-            this.KeepActive_checkBox.Size = new System.Drawing.Size(83, 17);
+            this.KeepActive_checkBox.Size = new System.Drawing.Size(84, 17);
             this.KeepActive_checkBox.TabIndex = 196;
             this.KeepActive_checkBox.Text = "Keep Active";
             this.toolTip1.SetToolTip(this.KeepActive_checkBox, resources.GetString("KeepActive_checkBox.ToolTip"));
@@ -2521,10 +2522,10 @@
             // label135
             // 
             this.label135.AutoSize = true;
-            this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label135.Location = new System.Drawing.Point(653, 379);
+            this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label135.Location = new System.Drawing.Point(658, 405);
             this.label135.Name = "label135";
-            this.label135.Size = new System.Drawing.Size(78, 13);
+            this.label135.Size = new System.Drawing.Size(79, 13);
             this.label135.TabIndex = 197;
             this.label135.Text = "Camera switch:";
             this.toolTip1.SetToolTip(this.label135, resources.GetString("label135.ToolTip"));
@@ -2559,9 +2560,10 @@
             this.groupBox5.Controls.Add(this.label35);
             this.groupBox5.Controls.Add(this.label71);
             this.groupBox5.Controls.Add(this.DownCamListResolutions_button);
+            this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(652, 6);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(587, 172);
+            this.groupBox5.Size = new System.Drawing.Size(587, 180);
             this.groupBox5.TabIndex = 145;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Down Looking Camera";
@@ -2569,8 +2571,8 @@
             // DownCamUsedResolution_label
             // 
             this.DownCamUsedResolution_label.AutoSize = true;
-            this.DownCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamUsedResolution_label.Location = new System.Drawing.Point(454, 61);
+            this.DownCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamUsedResolution_label.Location = new System.Drawing.Point(452, 66);
             this.DownCamUsedResolution_label.Name = "DownCamUsedResolution_label";
             this.DownCamUsedResolution_label.Size = new System.Drawing.Size(111, 13);
             this.DownCamUsedResolution_label.TabIndex = 214;
@@ -2580,10 +2582,10 @@
             // DownCamMaxResolution_checkBox
             // 
             this.DownCamMaxResolution_checkBox.AutoSize = true;
-            this.DownCamMaxResolution_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamMaxResolution_checkBox.Location = new System.Drawing.Point(266, 84);
+            this.DownCamMaxResolution_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamMaxResolution_checkBox.Location = new System.Drawing.Point(221, 85);
             this.DownCamMaxResolution_checkBox.Name = "DownCamMaxResolution_checkBox";
-            this.DownCamMaxResolution_checkBox.Size = new System.Drawing.Size(69, 17);
+            this.DownCamMaxResolution_checkBox.Size = new System.Drawing.Size(70, 17);
             this.DownCamMaxResolution_checkBox.TabIndex = 213;
             this.DownCamMaxResolution_checkBox.Text = "Use max.";
             this.toolTip1.SetToolTip(this.DownCamMaxResolution_checkBox, "If checked, maximum resolution of camera (by X) is automatically used");
@@ -2593,10 +2595,10 @@
             // DownCamDrawSidemarks_checkBox
             // 
             this.DownCamDrawSidemarks_checkBox.AutoSize = true;
-            this.DownCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(375, 144);
+            this.DownCamDrawSidemarks_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamDrawSidemarks_checkBox.Location = new System.Drawing.Point(375, 150);
             this.DownCamDrawSidemarks_checkBox.Name = "DownCamDrawSidemarks_checkBox";
-            this.DownCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(102, 17);
+            this.DownCamDrawSidemarks_checkBox.Size = new System.Drawing.Size(103, 17);
             this.DownCamDrawSidemarks_checkBox.TabIndex = 212;
             this.DownCamDrawSidemarks_checkBox.Text = "Draw Sidemarks";
             this.DownCamDrawSidemarks_checkBox.UseVisualStyleBackColor = true;
@@ -2605,30 +2607,30 @@
             // label121
             // 
             this.label121.AutoSize = true;
-            this.label121.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label121.Location = new System.Drawing.Point(113, 82);
+            this.label121.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label121.Location = new System.Drawing.Point(117, 106);
             this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(50, 13);
+            this.label121.Size = new System.Drawing.Size(52, 13);
             this.label121.TabIndex = 211;
             this.label121.Text = "mm/pixel:";
             this.toolTip1.SetToolTip(this.label121, "Set the true size of the box on the image.");
             // 
             // DownCameraYmmPerPixel_textBox
             // 
-            this.DownCameraYmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraYmmPerPixel_textBox.Location = new System.Drawing.Point(116, 124);
+            this.DownCameraYmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraYmmPerPixel_textBox.Location = new System.Drawing.Point(120, 150);
             this.DownCameraYmmPerPixel_textBox.Name = "DownCameraYmmPerPixel_textBox";
-            this.DownCameraYmmPerPixel_textBox.Size = new System.Drawing.Size(46, 18);
+            this.DownCameraYmmPerPixel_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraYmmPerPixel_textBox.TabIndex = 210;
             this.toolTip1.SetToolTip(this.DownCameraYmmPerPixel_textBox, "Set the true size of the box on the image.");
             this.DownCameraYmmPerPixel_textBox.TextChanged += new System.EventHandler(this.DownCameraYmmPerPixel_textBox_TextChanged);
             // 
             // DownCameraXmmPerPixel_textBox
             // 
-            this.DownCameraXmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraXmmPerPixel_textBox.Location = new System.Drawing.Point(116, 98);
+            this.DownCameraXmmPerPixel_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraXmmPerPixel_textBox.Location = new System.Drawing.Point(120, 122);
             this.DownCameraXmmPerPixel_textBox.Name = "DownCameraXmmPerPixel_textBox";
-            this.DownCameraXmmPerPixel_textBox.Size = new System.Drawing.Size(46, 18);
+            this.DownCameraXmmPerPixel_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraXmmPerPixel_textBox.TabIndex = 209;
             this.toolTip1.SetToolTip(this.DownCameraXmmPerPixel_textBox, "Set the true size of the box on the image.");
             this.DownCameraXmmPerPixel_textBox.TextChanged += new System.EventHandler(this.DownCameraXmmPerPixel_textBox_TextChanged);
@@ -2636,8 +2638,8 @@
             // DownCamDrawBox_checkBox
             // 
             this.DownCamDrawBox_checkBox.AutoSize = true;
-            this.DownCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamDrawBox_checkBox.Location = new System.Drawing.Point(375, 122);
+            this.DownCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamDrawBox_checkBox.Location = new System.Drawing.Point(376, 127);
             this.DownCamDrawBox_checkBox.Name = "DownCamDrawBox_checkBox";
             this.DownCamDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
             this.DownCamDrawBox_checkBox.TabIndex = 208;
@@ -2648,8 +2650,8 @@
             // DownCamDrawCross_checkBox
             // 
             this.DownCamDrawCross_checkBox.AutoSize = true;
-            this.DownCamDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamDrawCross_checkBox.Location = new System.Drawing.Point(375, 97);
+            this.DownCamDrawCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamDrawCross_checkBox.Location = new System.Drawing.Point(375, 104);
             this.DownCamDrawCross_checkBox.Name = "DownCamDrawCross_checkBox";
             this.DownCamDrawCross_checkBox.Size = new System.Drawing.Size(80, 17);
             this.DownCamDrawCross_checkBox.TabIndex = 207;
@@ -2660,7 +2662,7 @@
             // DownCam_comboBox
             // 
             this.DownCam_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DownCam_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCam_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCam_comboBox.FormattingEnabled = true;
             this.DownCam_comboBox.Location = new System.Drawing.Point(6, 19);
             this.DownCam_comboBox.Name = "DownCam_comboBox";
@@ -2673,8 +2675,8 @@
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label53.Location = new System.Drawing.Point(452, 19);
+            this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label53.Location = new System.Drawing.Point(452, 22);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(40, 13);
             this.label53.TabIndex = 186;
@@ -2684,7 +2686,7 @@
             // 
             this.DownCameraStatus_label.AutoSize = true;
             this.DownCameraStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraStatus_label.Location = new System.Drawing.Point(452, 41);
+            this.DownCameraStatus_label.Location = new System.Drawing.Point(452, 44);
             this.DownCameraStatus_label.Name = "DownCameraStatus_label";
             this.DownCameraStatus_label.Size = new System.Drawing.Size(113, 17);
             this.DownCameraStatus_label.TabIndex = 184;
@@ -2693,7 +2695,7 @@
             // 
             // ConnectDownCamera_button
             // 
-            this.ConnectDownCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ConnectDownCamera_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ConnectDownCamera_button.Location = new System.Drawing.Point(221, 19);
             this.ConnectDownCamera_button.Name = "ConnectDownCamera_button";
             this.ConnectDownCamera_button.Size = new System.Drawing.Size(71, 23);
@@ -2705,7 +2707,7 @@
             // 
             // RefreshDownCameraList_button
             // 
-            this.RefreshDownCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RefreshDownCameraList_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RefreshDownCameraList_button.Location = new System.Drawing.Point(144, 19);
             this.RefreshDownCameraList_button.Name = "RefreshDownCameraList_button";
             this.RefreshDownCameraList_button.Size = new System.Drawing.Size(71, 23);
@@ -2717,10 +2719,10 @@
             // 
             // DownCameraBoxY_textBox
             // 
-            this.DownCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(33, 124);
+            this.DownCameraBoxY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraBoxY_textBox.Location = new System.Drawing.Point(31, 148);
             this.DownCameraBoxY_textBox.Name = "DownCameraBoxY_textBox";
-            this.DownCameraBoxY_textBox.Size = new System.Drawing.Size(46, 18);
+            this.DownCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxY_textBox.TabIndex = 190;
             this.toolTip1.SetToolTip(this.DownCameraBoxY_textBox, "Set the true size of the box on the image.");
             this.DownCameraBoxY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCameraBoxY_textBox_KeyPress);
@@ -2729,8 +2731,8 @@
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.Location = new System.Drawing.Point(85, 101);
+            this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label70.Location = new System.Drawing.Point(91, 125);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(23, 13);
             this.label70.TabIndex = 191;
@@ -2739,10 +2741,10 @@
             // 
             // DownCameraBoxX_textBox
             // 
-            this.DownCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(33, 98);
+            this.DownCameraBoxX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraBoxX_textBox.Location = new System.Drawing.Point(31, 122);
             this.DownCameraBoxX_textBox.Name = "DownCameraBoxX_textBox";
-            this.DownCameraBoxX_textBox.Size = new System.Drawing.Size(46, 18);
+            this.DownCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxX_textBox.TabIndex = 189;
             this.toolTip1.SetToolTip(this.DownCameraBoxX_textBox, "Set the true size of the box on the image.");
             this.DownCameraBoxX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCameraBoxX_textBox_KeyPress);
@@ -2750,7 +2752,7 @@
             // 
             // DownCamStop_button
             // 
-            this.DownCamStop_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamStop_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCamStop_button.Location = new System.Drawing.Point(298, 19);
             this.DownCamStop_button.Name = "DownCamStop_button";
             this.DownCamStop_button.Size = new System.Drawing.Size(71, 23);
@@ -2762,7 +2764,7 @@
             // 
             // DownCamStart_button
             // 
-            this.DownCamStart_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamStart_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCamStart_button.Location = new System.Drawing.Point(375, 19);
             this.DownCamStart_button.Name = "DownCamStart_button";
             this.DownCamStart_button.Size = new System.Drawing.Size(71, 23);
@@ -2774,20 +2776,20 @@
             // 
             // DownCameraDesiredY_textBox
             // 
-            this.DownCameraDesiredY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDesiredY_textBox.Location = new System.Drawing.Point(289, 144);
+            this.DownCameraDesiredY_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraDesiredY_textBox.Location = new System.Drawing.Point(240, 148);
             this.DownCameraDesiredY_textBox.Name = "DownCameraDesiredY_textBox";
-            this.DownCameraDesiredY_textBox.Size = new System.Drawing.Size(46, 18);
+            this.DownCameraDesiredY_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraDesiredY_textBox.TabIndex = 203;
             this.toolTip1.SetToolTip(this.DownCameraDesiredY_textBox, "Set the native camera resolution here");
             this.DownCameraDesiredY_textBox.TextChanged += new System.EventHandler(this.DownCameraDesiredY_textBox_TextChanged);
             // 
             // DownCameraDesiredX_textBox
             // 
-            this.DownCameraDesiredX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraDesiredX_textBox.Location = new System.Drawing.Point(289, 120);
+            this.DownCameraDesiredX_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraDesiredX_textBox.Location = new System.Drawing.Point(240, 122);
             this.DownCameraDesiredX_textBox.Name = "DownCameraDesiredX_textBox";
-            this.DownCameraDesiredX_textBox.Size = new System.Drawing.Size(46, 18);
+            this.DownCameraDesiredX_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraDesiredX_textBox.TabIndex = 202;
             this.toolTip1.SetToolTip(this.DownCameraDesiredX_textBox, "Set the native camera resolution here");
             this.DownCameraDesiredX_textBox.TextChanged += new System.EventHandler(this.DownCameraDesiredX_textBox_TextChanged);
@@ -2795,8 +2797,8 @@
             // DowncamDesiredY_label
             // 
             this.DowncamDesiredY_label.AutoSize = true;
-            this.DowncamDesiredY_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DowncamDesiredY_label.Location = new System.Drawing.Point(269, 148);
+            this.DowncamDesiredY_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DowncamDesiredY_label.Location = new System.Drawing.Point(218, 151);
             this.DowncamDesiredY_label.Name = "DowncamDesiredY_label";
             this.DowncamDesiredY_label.Size = new System.Drawing.Size(17, 13);
             this.DowncamDesiredY_label.TabIndex = 201;
@@ -2806,8 +2808,8 @@
             // label69
             // 
             this.label69.AutoSize = true;
-            this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label69.Location = new System.Drawing.Point(10, 127);
+            this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label69.Location = new System.Drawing.Point(8, 151);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(17, 13);
             this.label69.TabIndex = 188;
@@ -2817,8 +2819,8 @@
             // DowncamDesiredX_label
             // 
             this.DowncamDesiredX_label.AutoSize = true;
-            this.DowncamDesiredX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DowncamDesiredX_label.Location = new System.Drawing.Point(269, 123);
+            this.DowncamDesiredX_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DowncamDesiredX_label.Location = new System.Drawing.Point(217, 125);
             this.DowncamDesiredX_label.Name = "DowncamDesiredX_label";
             this.DowncamDesiredX_label.Size = new System.Drawing.Size(17, 13);
             this.DowncamDesiredX_label.TabIndex = 200;
@@ -2828,8 +2830,8 @@
             // label68
             // 
             this.label68.AutoSize = true;
-            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label68.Location = new System.Drawing.Point(10, 101);
+            this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label68.Location = new System.Drawing.Point(8, 125);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(17, 13);
             this.label68.TabIndex = 187;
@@ -2839,8 +2841,8 @@
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label46.Location = new System.Drawing.Point(10, 82);
+            this.label46.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label46.Location = new System.Drawing.Point(6, 105);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(49, 13);
             this.label46.TabIndex = 205;
@@ -2850,10 +2852,10 @@
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label35.Location = new System.Drawing.Point(237, 104);
+            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label35.Location = new System.Drawing.Point(218, 105);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(98, 13);
+            this.label35.Size = new System.Drawing.Size(99, 13);
             this.label35.TabIndex = 204;
             this.label35.Text = "Desired Resolution:";
             this.toolTip1.SetToolTip(this.label35, "Set the native camera resolution here");
@@ -2861,8 +2863,8 @@
             // label71
             // 
             this.label71.AutoSize = true;
-            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(85, 127);
+            this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label71.Location = new System.Drawing.Point(91, 151);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(23, 13);
             this.label71.TabIndex = 192;
@@ -2871,7 +2873,7 @@
             // 
             // DownCamListResolutions_button
             // 
-            this.DownCamListResolutions_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCamListResolutions_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DownCamListResolutions_button.Location = new System.Drawing.Point(221, 56);
             this.DownCamListResolutions_button.Name = "DownCamListResolutions_button";
             this.DownCamListResolutions_button.Size = new System.Drawing.Size(114, 23);
@@ -5568,6 +5570,35 @@
             this.panel9.Size = new System.Drawing.Size(603, 85);
             this.panel9.TabIndex = 97;
             // 
+            // PickupDepth_textBox
+            // 
+            this.PickupDepth_textBox.Location = new System.Drawing.Point(543, 6);
+            this.PickupDepth_textBox.Name = "PickupDepth_textBox";
+            this.PickupDepth_textBox.Size = new System.Drawing.Size(55, 20);
+            this.PickupDepth_textBox.TabIndex = 136;
+            this.toolTip1.SetToolTip(this.PickupDepth_textBox, "Depth added to \"just touching\" height for pickup");
+            this.PickupDepth_textBox.TextChanged += new System.EventHandler(this.PickupDepth_textBox_TextChanged);
+            // 
+            // label136
+            // 
+            this.label136.AutoSize = true;
+            this.label136.Location = new System.Drawing.Point(464, 10);
+            this.label136.Name = "label136";
+            this.label136.Size = new System.Drawing.Size(73, 13);
+            this.label136.TabIndex = 135;
+            this.label136.Text = "Pickup depth:";
+            this.toolTip1.SetToolTip(this.label136, "Depth added to \"just touching\" height for pickup");
+            // 
+            // label117
+            // 
+            this.label117.AutoSize = true;
+            this.label117.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label117.Location = new System.Drawing.Point(4, 7);
+            this.label117.Name = "label117";
+            this.label117.Size = new System.Drawing.Size(87, 16);
+            this.label117.TabIndex = 134;
+            this.label117.Text = "Calibration:";
+            // 
             // TestSwitchClearanceCancel_button
             // 
             this.TestSwitchClearanceCancel_button.Location = new System.Drawing.Point(88, 29);
@@ -7166,14 +7197,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeight = 29;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7262,14 +7293,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -9754,35 +9785,6 @@
             // 
             this.TapesAll_openFileDialog.DefaultExt = "tapes_v2";
             this.TapesAll_openFileDialog.Filter = "Tape files|*.TapesData_v2;*.tapes|All files|*.*";
-            // 
-            // label117
-            // 
-            this.label117.AutoSize = true;
-            this.label117.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label117.Location = new System.Drawing.Point(4, 7);
-            this.label117.Name = "label117";
-            this.label117.Size = new System.Drawing.Size(87, 16);
-            this.label117.TabIndex = 134;
-            this.label117.Text = "Calibration:";
-            // 
-            // PickupDepth_textBox
-            // 
-            this.PickupDepth_textBox.Location = new System.Drawing.Point(543, 6);
-            this.PickupDepth_textBox.Name = "PickupDepth_textBox";
-            this.PickupDepth_textBox.Size = new System.Drawing.Size(55, 20);
-            this.PickupDepth_textBox.TabIndex = 136;
-            this.toolTip1.SetToolTip(this.PickupDepth_textBox, "Depth added to \"just touching\" height for pickup");
-            this.PickupDepth_textBox.TextChanged += new System.EventHandler(this.PickupDepth_textBox_TextChanged);
-            // 
-            // label136
-            // 
-            this.label136.AutoSize = true;
-            this.label136.Location = new System.Drawing.Point(464, 10);
-            this.label136.Name = "label136";
-            this.label136.Size = new System.Drawing.Size(73, 13);
-            this.label136.TabIndex = 135;
-            this.label136.Text = "Pickup depth:";
-            this.toolTip1.SetToolTip(this.label136, "Depth added to \"just touching\" height for pickup");
             // 
             // FormMain
             // 

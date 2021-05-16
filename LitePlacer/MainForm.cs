@@ -3543,8 +3543,8 @@ namespace LitePlacer
             DownCamera.DesiredX = Setting.DownCam_DesiredX;
             DownCamera.DesiredY = Setting.DownCam_DesiredY;
 
+            StartDownCamera_m();
             SelectCamera(DownCamera);
-
             if (DownCamera.IsRunning())
             {
                 SetDownCameraParameters();
@@ -3582,6 +3582,8 @@ namespace LitePlacer
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.DesiredX = Setting.UpCam_DesiredX;
             UpCamera.DesiredY = Setting.UpCam_DesiredY;
+
+            StartUpCamera_m();
             SelectCamera(UpCamera);
             if (UpCamera.IsRunning())
             {
@@ -13317,7 +13319,6 @@ namespace LitePlacer
                 ZGuardOn();
             }
         }
-
     }	// end of: 	public partial class FormMain : Form
 
 
