@@ -11706,10 +11706,6 @@ namespace LitePlacer
         }
 
 
-        private void CalibrateNozzles_button_Click(object sender, EventArgs e)
-        {
-        }
-
         private void CalibrateCurrentNozzle()
         {
             if (!CheckPositionConfidence()) return;
@@ -11726,6 +11722,7 @@ namespace LitePlacer
             Cnc.SlowXY = SlowSave;
             Cnc.SlackCompensation = compSave;
         }
+
 
         private void CalibrateThis_button_Click(object sender, EventArgs e)
         {
