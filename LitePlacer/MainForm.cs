@@ -3600,39 +3600,44 @@ namespace LitePlacer
 
         // =================================================================================
         // Down Camera, X size
-        private void DownCameraBoxX_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private bool NoRecalc = false;
+
+        private void DownCameraBoxX_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (e.KeyChar == '\r')
+            if (NoRecalc)
             {
-                DownCameraUpdateXmmPerPixel();
+                return;
             }
-        }
-
-        private void DownCameraBoxX_textBox_Leave(object sender, EventArgs e)
-        {
-            DownCameraUpdateXmmPerPixel();
-        }
-
-        private void DownCameraUpdateXmmPerPixel()
-        {
             double val;
             if (double.TryParse(DownCameraBoxX_textBox.Text.Replace(',', '.'), out val))
             {
+                NoRecalc = true;
                 Setting.DownCam_XmmPerPixel = val / DownCamera.BoxSizeX;
                 DownCamera.XmmPerPixel = val / DownCamera.BoxSizeX;
                 DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+                NoRecalc = false;
+            }
+            else
+            {
+                DownCameraBoxX_textBox.ForeColor = Color.Red;
             }
         }
 
         private void DownCameraXmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
         {
+            if (NoRecalc)
+            {
+                return;
+            }
             double val;
             if (double.TryParse(DownCameraXmmPerPixel_textBox.Text.Replace(',', '.'), out val))
             {
+                NoRecalc = true;
                 DownCameraXmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.DownCam_XmmPerPixel = val;
                 DownCamera.XmmPerPixel = val;
                 DownCameraBoxX_textBox.Text = (val * DownCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
+                NoRecalc = false;
             }
             else
             {
@@ -3642,39 +3647,43 @@ namespace LitePlacer
 
         // =================================================================================
         // Down Camera, Y size
-
-        private void DownCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void DownCameraBoxY_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (e.KeyChar == '\r')
+            if (NoRecalc)
             {
-                DownCameraUpdateYmmPerPixel();
+                return;
             }
-        }
-
-        private void DownCameraBoxY_textBox_Leave(object sender, EventArgs e)
-        {
-            DownCameraUpdateYmmPerPixel();
-        }
-
-        private void DownCameraUpdateYmmPerPixel()
-        {
             double val;
             if (double.TryParse(DownCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
+                NoRecalc = true;
                 Setting.DownCam_YmmPerPixel = val / DownCamera.BoxSizeY;
                 DownCamera.YmmPerPixel = val / DownCamera.BoxSizeY;
                 DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+                NoRecalc = false;
+            }
+            else
+            {
+                DownCameraBoxY_textBox.ForeColor = Color.Red;
             }
         }
 
+
         private void DownCameraYmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
         {
+            if (NoRecalc)
+            {
+                return;
+            }
             double val;
             if (double.TryParse(DownCameraYmmPerPixel_textBox.Text.Replace(',', '.'), out val))
             {
+                NoRecalc = true;
                 DownCameraYmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.DownCam_YmmPerPixel = val;
+                DownCamera.YmmPerPixel = val;
                 DownCameraBoxY_textBox.Text = (val * DownCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
+                NoRecalc = false;
             }
             else
             {
@@ -3682,42 +3691,46 @@ namespace LitePlacer
             }
         }
 
+
         // =================================================================================
         // Up Camera, X size
 
-        private void UpCameraBoxX_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void UpCameraBoxX_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (e.KeyChar == '\r')
+            if (NoRecalc)
             {
-                UpCameraUpdateXmmPerPixel();
+                return;
             }
-        }
-
-        private void UpCameraBoxX_textBox_Leave(object sender, EventArgs e)
-        {
-            UpCameraUpdateXmmPerPixel();
-        }
-
-        private void UpCameraUpdateXmmPerPixel()
-        {
             double val;
             if (double.TryParse(UpCameraBoxX_textBox.Text.Replace(',', '.'), out val))
             {
+                NoRecalc = true;
                 Setting.UpCam_XmmPerPixel = val / UpCamera.BoxSizeX;
                 UpCamera.XmmPerPixel = val / UpCamera.BoxSizeX;
                 UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+                NoRecalc = false;
+            }
+            else
+            {
+                UpCameraBoxX_textBox.ForeColor = Color.Red;
             }
         }
 
         private void UpCameraXmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
         {
+            if (NoRecalc)
+            {
+                return;
+            }
             double val;
             if (double.TryParse(UpCameraXmmPerPixel_textBox.Text.Replace(',', '.'), out val))
             {
+                NoRecalc = true;
                 UpCameraXmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.UpCam_XmmPerPixel = val;
                 UpCamera.XmmPerPixel = val;
                 UpCameraBoxX_textBox.Text = (val * UpCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
+                NoRecalc = false;
             }
             else
             {
@@ -3728,39 +3741,43 @@ namespace LitePlacer
         // =================================================================================
         // Up Camera, Y size
 
-        private void UpCameraBoxY_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void UpCameraBoxY_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (e.KeyChar == '\r')
+            if (NoRecalc)
             {
-                UpCameraUpdateYmmPerPixel();
+                return;
             }
-        }
-
-        private void UpCameraBoxY_textBox_Leave(object sender, EventArgs e)
-        {
-            UpCameraUpdateYmmPerPixel();
-        }
-
-        private void UpCameraUpdateYmmPerPixel()
-        {
             double val;
             if (double.TryParse(UpCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
+                NoRecalc = true;
                 Setting.UpCam_YmmPerPixel = val / UpCamera.BoxSizeY;
                 UpCamera.YmmPerPixel = val / UpCamera.BoxSizeY;
                 UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+                NoRecalc = false;
+            }
+            else
+            {
+                UpCameraBoxY_textBox.ForeColor = Color.Red;
             }
         }
 
+
         private void UpCameraYmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
         {
+            if (NoRecalc)
+            {
+                return;
+            }
             double val;
             if (double.TryParse(UpCameraYmmPerPixel_textBox.Text.Replace(',', '.'), out val))
             {
+                NoRecalc = true;
                 UpCameraYmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.UpCam_YmmPerPixel = val;
                 UpCamera.YmmPerPixel = val;
                 UpCameraBoxY_textBox.Text = (val * UpCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
+                NoRecalc = false;
             }
             else
             {
@@ -4575,87 +4592,35 @@ namespace LitePlacer
             return res;
         }
 
-        private void SizeXMax_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            SizeXMax_textBox.ForeColor = Color.Red;
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(SizeXMax_textBox.Text.Replace(',', '.'), out val))
-                {
-                    if (Setting.General_MachineSizeX == val)
-                    {
-                        return;
-                    };
-                    if (SetXsize_m(val))
-                    {
-                        Setting.General_MachineSizeX = val;
-                        SizeXMax_textBox.ForeColor = Color.Black;
-                        DownCamera.SideMarksX = Setting.General_MachineSizeX / 100;
-                    }
-                }
-            }
-        }
 
-        private void SizeXMax_textBox_Leave(object sender, EventArgs e)
+        private void SizeXMax_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(SizeXMax_textBox.Text.Replace(',', '.'), out val))
             {
                 SizeXMax_textBox.ForeColor = Color.Black;
-                if (Setting.General_MachineSizeX == val)
-                {
-                    return;
-                };
-                if (SetXsize_m(val))
-                {
-                    Setting.General_MachineSizeX = val;
-                    DownCamera.SideMarksX = Setting.General_MachineSizeX / 100;
-                }
+                Setting.General_MachineSizeX = val;
             }
-        }
-
-        private void SizeYMax_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            SizeYMax_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            else
             {
-                if (double.TryParse(SizeYMax_textBox.Text.Replace(',', '.'), out val))
-                {
-                    if (Setting.General_MachineSizeY == val)
-                    {
-                        return;
-                    };
-                    if (SetYsize_m(val))
-                    {
-                        Setting.General_MachineSizeY = val;
-                        SizeYMax_textBox.ForeColor = Color.Black;
-                        DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
-                    }
-                }
+                SizeXMax_textBox.ForeColor = Color.Red;
             }
         }
 
-        private void SizeYMax_textBox_Leave(object sender, EventArgs e)
+
+        private void SizeYMax_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(SizeYMax_textBox.Text.Replace(',', '.'), out val))
             {
                 SizeYMax_textBox.ForeColor = Color.Black;
-                if (Setting.General_MachineSizeY == val)
-                {
-                    return;
-                };
-                if (SetYsize_m(val))
-                {
-                    Setting.General_MachineSizeY = val;
-                    DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
-                }
+                Setting.General_MachineSizeY = val;
+            }
+            else
+            {
+                SizeYMax_textBox.ForeColor = Color.Red;
             }
         }
-
-
         #endregion
 
         // =========================================================================
@@ -4687,7 +4652,6 @@ namespace LitePlacer
             {
                 ParkLocationY_textBox.ForeColor = Color.Red;
             }
-
         }
 
         private void Park_button_Click(object sender, EventArgs e)
@@ -8933,46 +8897,32 @@ namespace LitePlacer
 
 
         // =================================================================================
-        private void JobOffsetX_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(JobOffsetX_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.Job_Xoffset = val;
-                }
-            }
-        }
-
-        private void JobOffsetX_textBox_Leave(object sender, EventArgs e)
+        private void JobOffsetX_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(JobOffsetX_textBox.Text.Replace(',', '.'), out val))
             {
+                JobOffsetX_textBox.ForeColor = Color.Black;
                 Setting.Job_Xoffset = val;
+            }
+            else
+            {
+                JobOffsetX_textBox.ForeColor = Color.Red;
             }
         }
 
         // =================================================================================
-        private void JobOffsetY_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double val;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(JobOffsetY_textBox.Text.Replace(',', '.'), out val))
-                {
-                    Setting.Job_Yoffset = val;
-                }
-            }
-        }
-
-        private void JobOffsetY_textBox_Leave(object sender, EventArgs e)
+        private void JobOffsetY_textBox_TextChanged(object sender, EventArgs e)
         {
             double val;
             if (double.TryParse(JobOffsetY_textBox.Text.Replace(',', '.'), out val))
             {
+                JobOffsetY_textBox.ForeColor = Color.Black;
                 Setting.Job_Yoffset = val;
+            }
+            else
+            {
+                JobOffsetY_textBox.ForeColor = Color.Red;
             }
         }
 
@@ -13319,6 +13269,7 @@ namespace LitePlacer
                 ZGuardOn();
             }
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

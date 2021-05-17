@@ -2435,8 +2435,7 @@
             this.UpCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraBoxX_textBox.TabIndex = 211;
             this.toolTip1.SetToolTip(this.UpCameraBoxX_textBox, "Set the true size of the box on the image.");
-            this.UpCameraBoxX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCameraBoxX_textBox_KeyPress);
-            this.UpCameraBoxX_textBox.Leave += new System.EventHandler(this.UpCameraBoxX_textBox_Leave);
+            this.UpCameraBoxX_textBox.TextChanged += new System.EventHandler(this.UpCameraBoxX_textBox_TextChanged);
             // 
             // label162
             // 
@@ -2479,8 +2478,7 @@
             this.UpCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
             this.UpCameraBoxY_textBox.TabIndex = 212;
             this.toolTip1.SetToolTip(this.UpCameraBoxY_textBox, "Set the true size of the box on the image.");
-            this.UpCameraBoxY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UpCameraBoxY_textBox_KeyPress);
-            this.UpCameraBoxY_textBox.Leave += new System.EventHandler(this.UpCameraBoxY_textBox_Leave);
+            this.UpCameraBoxY_textBox.TextChanged += new System.EventHandler(this.UpCameraBoxY_textBox_TextChanged);
             // 
             // label103
             // 
@@ -2725,8 +2723,7 @@
             this.DownCameraBoxY_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxY_textBox.TabIndex = 190;
             this.toolTip1.SetToolTip(this.DownCameraBoxY_textBox, "Set the true size of the box on the image.");
-            this.DownCameraBoxY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCameraBoxY_textBox_KeyPress);
-            this.DownCameraBoxY_textBox.Leave += new System.EventHandler(this.DownCameraBoxY_textBox_Leave);
+            this.DownCameraBoxY_textBox.TextChanged += new System.EventHandler(this.DownCameraBoxY_textBox_TextChanged);
             // 
             // label70
             // 
@@ -2747,8 +2744,7 @@
             this.DownCameraBoxX_textBox.Size = new System.Drawing.Size(46, 20);
             this.DownCameraBoxX_textBox.TabIndex = 189;
             this.toolTip1.SetToolTip(this.DownCameraBoxX_textBox, "Set the true size of the box on the image.");
-            this.DownCameraBoxX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DownCameraBoxX_textBox_KeyPress);
-            this.DownCameraBoxX_textBox.Leave += new System.EventHandler(this.DownCameraBoxX_textBox_Leave);
+            this.DownCameraBoxX_textBox.TextChanged += new System.EventHandler(this.DownCameraBoxX_textBox_TextChanged);
             // 
             // DownCamStop_button
             // 
@@ -3168,7 +3164,7 @@
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage3);
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage4);
             this.Duet3Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(634, 93);
+            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(536, 135);
             this.Duet3Motors_tabControl.Name = "Duet3Motors_tabControl";
             this.Duet3Motors_tabControl.SelectedIndex = 0;
             this.Duet3Motors_tabControl.Size = new System.Drawing.Size(325, 362);
@@ -6018,8 +6014,7 @@
             this.SizeYMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeYMax_textBox.TabIndex = 44;
             this.toolTip1.SetToolTip(this.SizeYMax_textBox, "Allows for custom machine size");
-            this.SizeYMax_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SizeYMax_textBox_KeyPress);
-            this.SizeYMax_textBox.Leave += new System.EventHandler(this.SizeYMax_textBox_Leave);
+            this.SizeYMax_textBox.TextChanged += new System.EventHandler(this.SizeYMax_textBox_TextChanged);
             // 
             // Mark1_textBox
             // 
@@ -6036,8 +6031,7 @@
             this.SizeXMax_textBox.Size = new System.Drawing.Size(76, 20);
             this.SizeXMax_textBox.TabIndex = 42;
             this.toolTip1.SetToolTip(this.SizeXMax_textBox, "Allows for custom machine size");
-            this.SizeXMax_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SizeXMax_textBox_KeyPress);
-            this.SizeXMax_textBox.Leave += new System.EventHandler(this.SizeXMax_textBox_Leave);
+            this.SizeXMax_textBox.TextChanged += new System.EventHandler(this.SizeXMax_textBox_TextChanged);
             // 
             // ParkLocationY_textBox
             // 
@@ -6872,8 +6866,7 @@
             this.JobOffsetY_textBox.Size = new System.Drawing.Size(43, 20);
             this.JobOffsetY_textBox.TabIndex = 39;
             this.JobOffsetY_textBox.Text = "0.0";
-            this.JobOffsetY_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JobOffsetY_textBox_KeyPress);
-            this.JobOffsetY_textBox.Leave += new System.EventHandler(this.JobOffsetY_textBox_Leave);
+            this.JobOffsetY_textBox.TextChanged += new System.EventHandler(this.JobOffsetY_textBox_TextChanged);
             // 
             // JobOffsetX_textBox
             // 
@@ -6882,8 +6875,7 @@
             this.JobOffsetX_textBox.Size = new System.Drawing.Size(43, 20);
             this.JobOffsetX_textBox.TabIndex = 37;
             this.JobOffsetX_textBox.Text = "0.0";
-            this.JobOffsetX_textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.JobOffsetX_textBox_KeyPress);
-            this.JobOffsetX_textBox.Leave += new System.EventHandler(this.JobOffsetX_textBox_Leave);
+            this.JobOffsetX_textBox.TextChanged += new System.EventHandler(this.JobOffsetX_textBox_TextChanged);
             // 
             // label60
             // 
