@@ -12684,7 +12684,7 @@ namespace LitePlacer
 
         private void NozzleAFullSpeed_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            Setting.Nozzles_ZfullSpeed = NozzleAFullSpeed_checkBox.Checked;
+            Setting.Nozzles_AfullSpeed = NozzleAFullSpeed_checkBox.Checked;
             Cnc.SlowA = !NozzleAFullSpeed_checkBox.Checked;
         }
 
