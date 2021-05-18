@@ -4009,7 +4009,7 @@ namespace LitePlacer
 
         private void ZDown_button_Click(object sender, EventArgs e)
         {
-            CNC_Z_m(Setting.General_Z0toPCB);
+            CNC_Z_m(Setting.General_Z0toPCB-0.5);
         }
 
         private void ZUp_button_Click(object sender, EventArgs e)
@@ -11594,7 +11594,7 @@ namespace LitePlacer
             // if nozzle isn't already above the up camera:
             if (!(  (Math.Abs(Cnc.CurrentX-Setting.UpCam_PositionX) <0.001) &&
                     (Math.Abs(Cnc.CurrentY - Setting.UpCam_PositionY) < 0.001) &&
-                    (Math.Abs(Cnc.CurrentZ - Setting.General_Z0toPCB-0.5) < 0.001)
+                    (Math.Abs(Cnc.CurrentZ - Setting.General_Z0toPCB+0.5) < 0.001)
                     ))
             {
                 // take Nozzle there:
