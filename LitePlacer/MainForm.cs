@@ -11591,21 +11591,27 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             }
-            UpCamera.PauseProcessing = true;
-            // take Nozzle up
-            if (!CNC_Z_m(0))
+            // if nozzle isn't already above the up camera:
+            if (!(  (Math.Abs(Cnc.CurrentX-Setting.UpCam_PositionX) <0.001) &&
+                    (Math.Abs(Cnc.CurrentY - Setting.UpCam_PositionY) < 0.001) &&
+                    (Math.Abs(Cnc.CurrentZ - Setting.General_Z0toPCB-0.5) < 0.001)
+                    ))
             {
-                return false;
-            }
+                // take Nozzle there:
+                if (!CNC_Z_m(0))
+                {
+                    return false;
+                }
 
-            // take Nozzle to camera
-            if (!CNC_XYA_m(Setting.UpCam_PositionX, Setting.UpCam_PositionY, Cnc.CurrentA))
-            {
-                return false;
-            }
-            if (!CNC_Z_m(Setting.General_Z0toPCB - 0.5)) // Average small component height 0.5mm (?)
-            {
-                return false;
+                // take Nozzle to camera
+                if (!CNC_XYA_m(Setting.UpCam_PositionX, Setting.UpCam_PositionY, Cnc.CurrentA))
+                {
+                    return false;
+                }
+                if (!CNC_Z_m(Setting.General_Z0toPCB - 0.5)) // Average small component height 0.5mm (?)
+                {
+                    return false;
+                }
             }
             // measure the values
             DisplayText("Measuring nozzle " + Setting.Nozzles_current.ToString());
@@ -11638,7 +11644,7 @@ namespace LitePlacer
                 return false;
             }
 
-            UpCamera.PauseProcessing = false;
+            // UpCamera.PauseProcessing = false;
             if (!UpCamWasRunning)
             {
                 SelectCamera(DownCamera);
@@ -13270,6 +13276,11 @@ namespace LitePlacer
             }
         }
 
+        private void SaveNozzleCalibration_button_Click(object sender, EventArgs e)
+        {
+            string path = GetPath();
+            Nozzle.SaveNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
+        }
     }	// end of: 	public partial class FormMain : Form
 
 
