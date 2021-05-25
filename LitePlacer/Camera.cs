@@ -808,7 +808,7 @@ namespace LitePlacer
                                 f.func(ref ProcessedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
                                     f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
                             }
-                            double zoom = 1 / GetDisplayZoom();  // If measurement frame is zoomed, we need to zoom the displayed results as well
+                            double zoom = 1 / GetProcessingZoom();  // If measurement frame is zoomed, we need to zoom the displayed results as well
                             if (FindCircles)
                             {
                                 List<Shapes.Circle> Circles = FindCirclesFunct(ProcessedFrame);
@@ -2150,6 +2150,16 @@ namespace LitePlacer
         // UI also needs the zoom factor from the DisplayFunctions
         public double GetDisplayZoom()
         {
+            if (Zoom)
+            {
+                return ZoomFactor;
+            }
+            return 1.0;
+        }
+
+        // if show processigng is on
+        public double GetProcessingZoom()
+        {
             double zoom = 1.0;
             foreach (AForgeFunction f in DisplayFunctions)
             {
@@ -2160,6 +2170,7 @@ namespace LitePlacer
             }
             return zoom;
         }
+
 
         // ==========================================================================================================
         // Measure

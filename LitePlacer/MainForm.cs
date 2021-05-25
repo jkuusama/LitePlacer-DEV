@@ -1884,11 +1884,15 @@ namespace LitePlacer
 
             if (cam.Zoom)  // if zoomed for display
             {
-                Xmm = Xmm / cam.ZoomFactor;
-                Ymm = Ymm / cam.ZoomFactor;
+                Xmm = Xmm / cam.GetDisplayZoom(); 
+                Ymm = Ymm / cam.GetDisplayZoom();
             };
-            Xmm = Xmm / cam.GetDisplayZoom();	// Might also be zoomed for processing
-            Ymm = Ymm / cam.GetDisplayZoom();
+
+            if (cam.ShowProcessing)
+            {
+                Xmm = Xmm / cam.GetProcessingZoom();   // Might also be zoomed for processing
+                Ymm = Ymm / cam.GetProcessingZoom();
+            }
 
             DisplayText("BoxTo_mms: MouseX: " + MouseX.ToString(CultureInfo.InvariantCulture)
                 + ", X: " + X.ToString(CultureInfo.InvariantCulture) + ", Xmm: " + Xmm.ToString(CultureInfo.InvariantCulture));
