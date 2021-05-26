@@ -407,8 +407,10 @@ namespace LitePlacer
         // ==========================================================================================================
         // Convert from UI functions (AForgeFunctionDefinition) to processing functions (AForgeFunction)
 
-        private List<AForgeFunction> BuildFunctionsList(List<AForgeFunctionDefinition> UiList)
+        private List<AForgeFunction> BuildFunctionsList(List<AForgeFunctionDefinition> UiList, int usage)
         {
+            // Usage: 1: neasurement functions, 2: display functions
+            // Currently only FilterFeaturesBySizeFunct needs the info, but there might be others
             List<AForgeFunction> NewList = new List<AForgeFunction>();
             NewList.Clear();
             MainForm.DisplayText("BuildFunctionsList: ");
@@ -489,6 +491,7 @@ namespace LitePlacer
 
                     case "Filter Features by Size":
                         f.func = FilterFeaturesBySizeFunct;
+                        f.parameter_int = usage;
                         break;
 
                     default:
@@ -519,7 +522,7 @@ namespace LitePlacer
 
         public void BuildDisplayFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
-            List<AForgeFunction> NewList = BuildFunctionsList(UiList);    // Get the list
+            List<AForgeFunction> NewList = BuildFunctionsList(UiList, 2);    // Get the list
             int tries = 0;
             // Stop video
             bool pause = PauseProcessing;
@@ -907,12 +910,50 @@ namespace LitePlacer
         // Note, that each function needs to keep the image in RGB, otherwise drawing fill fail 
 
         // =========================================================  
+        private double FeatureSizeZoom(List<AForgeFunction> Functionlist)
+        {
+            // finds the combined zoom factor from zoom functions on function list before FilterFeaturesBySizeFunct
+            double zoom = 1.0;
+            foreach (AForgeFunction f in Functionlist)
+            {
+                if (f.func == Meas_ZoomFunc)
+                {
+                    zoom = zoom * f.parameter_double;
+                }
+                if (f.func == FilterFeaturesBySizeFunct)
+                {
+                    break;
+                }
+            }
+            return zoom;
+        }
+
         private void FilterFeaturesBySizeFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
             double par_dA, double par_dB, double par_dC)
         {
+            // I don't like this hack, but this function needs to know if it is used for measurement or for display,
+            // since the image might be zoomed before this is called. To be able to find the zoom factor, the function needs
+            // to know which function list to look.
+            double zoom = 1.0;
+            if (par_int==1)
+            {
+                zoom = FeatureSizeZoom(MeasurementFunctions);
+            }
+            else if (par_int == 2)
+            {
+                zoom = FeatureSizeZoom(DisplayFunctions);
+            }
+            else
+            {
+                MainForm.DisplayText("FilterFeaturesBySizeFunct, bad parameter", KnownColor.DarkRed, true);
+            }
             // Find limits
-            int MinSize = Convert.ToInt32(par_dA / XmmPerPixel);
-            int MaxSize = Convert.ToInt32(par_dB / XmmPerPixel);
+            double MinD = par_dA / XmmPerPixel;
+            double MaxD = par_dB / XmmPerPixel;
+            MinD = MinD / zoom;
+            MaxD = MaxD / zoom;
+            int MinSize = Convert.ToInt32(MinD);
+            int MaxSize = Convert.ToInt32(MaxD);
             // create filter
             BlobsFiltering filter = new BlobsFiltering();
             // configure filter
@@ -2088,7 +2129,7 @@ namespace LitePlacer
         public void BuildMeasurementFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
             JoggingRequested = false;     // BuildFunctionsList() sets this to true, if manual jog is needed
-            MeasurementFunctions = BuildFunctionsList(UiList);
+            MeasurementFunctions = BuildFunctionsList(UiList, 1);
         }
 
         // And calls xx_measure() funtion. 
