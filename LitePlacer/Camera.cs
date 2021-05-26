@@ -431,6 +431,16 @@ namespace LitePlacer
                     JoggingRequested = true;
                     continue;
                 }
+
+                f.parameter_int = UIfucnt.parameterInt;
+                f.parameter_double = UIfucnt.parameterDouble;
+                f.R = UIfucnt.R;
+                f.B = UIfucnt.B;
+                f.G = UIfucnt.G;
+                f.parameter_doubleA = UIfucnt.parameterDoubleA;
+                f.parameter_doubleB = UIfucnt.parameterDoubleB;
+                f.parameter_doubleC = UIfucnt.parameterDoubleC;
+
                 switch (UIfucnt.Name)
                 {
                     case "Grayscale":
@@ -498,14 +508,6 @@ namespace LitePlacer
                         continue;
                         // break; 
                 }
-                f.parameter_int = UIfucnt.parameterInt;
-                f.parameter_double = UIfucnt.parameterDouble;
-                f.R = UIfucnt.R;
-                f.B = UIfucnt.B;
-                f.G = UIfucnt.G;
-                f.parameter_doubleA = UIfucnt.parameterDoubleA;
-                f.parameter_doubleB = UIfucnt.parameterDoubleB;
-                f.parameter_doubleC = UIfucnt.parameterDoubleC;
                 NewList.Add(f);
                 MainForm.DisplayText(UIfucnt.Name + ", " + f.parameter_int.ToString() + ", " + f.parameter_double.ToString() + ", "
                     + f.R.ToString() + ", " + f.G.ToString() + ", " + f.B.ToString() + ", "
@@ -950,8 +952,8 @@ namespace LitePlacer
             // Find limits
             double MinD = par_dA / XmmPerPixel;
             double MaxD = par_dB / XmmPerPixel;
-            MinD = MinD / zoom;
-            MaxD = MaxD / zoom;
+            MinD = MinD * zoom;
+            MaxD = MaxD * zoom;
             int MinSize = Convert.ToInt32(MinD);
             int MaxSize = Convert.ToInt32(MaxD);
             // create filter
