@@ -4837,7 +4837,8 @@ namespace LitePlacer
         {
             if (!Zhome_checkBox.Checked)
             {
-                DisplayText("Z homing switch not enabled", KnownColor.DarkRed, true);
+                DisplayText("Z homing switch not enabled.\n\r" +
+                    "(Abort or crash during probing? If so, please re-enable.)", KnownColor.DarkRed, true);
                 return false;
             }
             if (!Check_zzb())
