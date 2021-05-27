@@ -578,8 +578,8 @@
             this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(141, 17);
             this.CoordinatesForParts_checkBox.TabIndex = 50;
             this.CoordinatesForParts_checkBox.Text = "Coordinates are for parts";
-            this.toolTip1.SetToolTip(this.CoordinatesForParts_checkBox, "Parts are picked from position shown in camera view,\r\nvision regocnition is not u" +
-        "sed");
+            this.toolTip1.SetToolTip(this.CoordinatesForParts_checkBox, "Vision regocnition is not used.\r\nParts are picked from position shown in camera v" +
+        "iew, unless \r\ncoordinates are for nozzle is checked.\r\n");
             this.CoordinatesForParts_checkBox.UseVisualStyleBackColor = true;
             this.CoordinatesForParts_checkBox.CheckedChanged += new System.EventHandler(this.CoordinatesForParts_checkBox_CheckedChanged);
             // 
@@ -591,9 +591,7 @@
             this.UseNozzleCoordinates_checkBox.Size = new System.Drawing.Size(148, 17);
             this.UseNozzleCoordinates_checkBox.TabIndex = 53;
             this.UseNozzleCoordinates_checkBox.Text = "Coordinates are for nozzle";
-            this.toolTip1.SetToolTip(this.UseNozzleCoordinates_checkBox, "To pck up from the current nozzle position: \r\nJog nozzle to the right position, c" +
-        "heck this box\r\nTo use feeders (pick up always from same spot),\r\nset Part Pitch t" +
-        "o 0.");
+            this.toolTip1.SetToolTip(this.UseNozzleCoordinates_checkBox, resources.GetString("UseNozzleCoordinates_checkBox.ToolTip"));
             this.UseNozzleCoordinates_checkBox.UseVisualStyleBackColor = true;
             // 
             // TapeEditCancel_button
