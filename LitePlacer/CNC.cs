@@ -802,10 +802,6 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.VacuumOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (VacuumIsOn)
-            {
-                return;
-            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.VacuumOn();
@@ -819,7 +815,9 @@ namespace LitePlacer
             else
             {
                 MainForm.DisplayText("*** Cnc.VacuumOn(), unknown board.", KnownColor.DarkRed, true);
+                return;
             }
+            MainForm.Vacuum_checkBox.Checked = true;
         }
 
         public void Vacuum_Off()
@@ -827,10 +825,6 @@ namespace LitePlacer
             if (ErrorState)
             {
                 MainForm.DisplayText("*** Cnc.VacuumOff(), board in error state.", KnownColor.DarkRed, true);
-                return;
-            }
-            if (!VacuumIsOn)
-            {
                 return;
             }
             if (Controlboard == ControlBoardType.Duet3)
@@ -846,7 +840,9 @@ namespace LitePlacer
             else
             {
                 MainForm.DisplayText("*** Cnc.VacuumOff(), unknown board.", KnownColor.DarkRed, true);
+                return;
             }
+            MainForm.Vacuum_checkBox.Checked = false;
         }
 
 
@@ -870,10 +866,6 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.PumpOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (PumpIsOn)
-            {
-                return;
-            }
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.PumpOn();
@@ -887,7 +879,9 @@ namespace LitePlacer
             else
             {
                 MainForm.DisplayText("*** Cnc.PumpOn(), unknown board.", KnownColor.DarkRed, true);
+                return;
             }
+            MainForm.Pump_checkBox.Checked = false;
         }
 
         public void Pump_Off()
@@ -895,10 +889,6 @@ namespace LitePlacer
             if (ErrorState)
             {
                 MainForm.DisplayText("*** Cnc.PumpOff(), board in error state.", KnownColor.DarkRed, true);
-                return;
-            }
-            if (!PumpIsOn)
-            {
                 return;
             }
             if (Controlboard == ControlBoardType.Duet3)
@@ -914,7 +904,9 @@ namespace LitePlacer
             else
             {
                 MainForm.DisplayText("*** Cnc.PumpOff(), unknown board.", KnownColor.DarkRed, true);
+                return;
             }
+            MainForm.Pump_checkBox.Checked = false;
         }
 
         #endregion Features
