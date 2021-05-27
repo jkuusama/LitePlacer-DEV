@@ -94,7 +94,7 @@ namespace LitePlacer
                 NozzleDataAllNozzles.Add(Nozzle);
             }
 
-            while ((NozzleDataAllNozzles.Count > MainForm.Setting.Nozzles_count) && (MainForm.Setting.Nozzles_count < 0))
+            while ((NozzleDataAllNozzles.Count > MainForm.Setting.Nozzles_count) && (MainForm.Setting.Nozzles_count > 0))
             {
                 NozzleDataAllNozzles.RemoveAt(NozzleDataAllNozzles.Count - 1);
             }
@@ -105,29 +105,16 @@ namespace LitePlacer
         {
             try
             {
+                bool StartStatusSave = MainForm.StartingUp; 
                 if (File.Exists(FileName))
                 {
                     MainForm.DisplayText("Loading nozzle calibration data from " + FileName);
                     List<NozzleData> NewData = JsonConvert.DeserializeObject<List<NozzleData>>(File.ReadAllText(FileName));
                     NozzleDataAllNozzles = NewData;
-                    if (NewData.Count != MainForm.Setting.Nozzles_count)
-                    {
-                        bool StartStatusSave = MainForm.StartingUp; 
-                        MainForm.StartingUp = false;
-                        MainForm.ShowMessageBox(
-                            "Warning: Loaded nozzle data count does not match settings.\n\r" +
-                            "Data on disk: " + NewData.Count + " nozzles.\n\r" +
-                            "Set nozzle count: " + MainForm.Setting.Nozzles_count + "nozzles.",
-                            "Nozzle count mismatch", MessageBoxButtons.OK);
-                        MainForm.StartingUp = StartStatusSave;
-                        AdjustNozzleCalibrationDataCount();
-                    };
-                    UpdateNozzleGridView();
                     return true;
                 }
                 else
                 {
-                    bool StartStatusSave = MainForm.StartingUp;
                     MainForm.StartingUp = false;
                     MainForm.ShowMessageBox(
                         "Nozzle calibration data not found.\n\r" +

@@ -11131,6 +11131,7 @@ namespace LitePlacer
             Nozzle.LoadNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
             AdjustNozzleDataSizes();
             FillNozzlesParameters_dataGridView();
+            Nozzle.UpdateNozzleGridView();
         }
 
 
@@ -11149,14 +11150,14 @@ namespace LitePlacer
             bool SaveStarting = StartingUp;
             StartingUp = false;
             DialogResult dialogResult = ShowMessageBox(
-                "Nozzle data sizes on disk don't match nozzle count in program settings!!\n\r" +
+                "Nozzle data sizes on disk don't match nozzle count in program settings.\n\r" +
                 "Nozzle count = " + Setting.Nozzles_count.ToString() + "\n\r" +
                 "Count of load moves = " + LoadCount.ToString() + "\n\r" +
                 "Count of unload moves = " + UnloadCount.ToString() + "\n\r" +
                 "Count of vision parameters = " + ParameterCount.ToString() + "\n\r" +
                 "Count of calibration data = " + CalibrationCount.ToString() + "\n\r" +
                 "If you didn't excpect this:" + "\n\r" +
-                "Before clicking OK, take a backup copy of your LitePlacer directory!" + "\n\r" +
+                "Before clicking OK, take a backup copy of your LitePlacer directory." + "\n\r" +
                 "After clicking OK, the data size is adjusted to stored nozzle count," + "\n\r" +
                 "resulting to possible loss of data." + "\n\r" +
                 "Clicking Cancel will exit without changes.",
