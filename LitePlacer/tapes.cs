@@ -86,13 +86,18 @@ namespace LitePlacer
         // The part numbers are found with the GetPartLocationFromHolePosition_m() routine.
 
         public bool FastParametersOk { get; set; }  // if we should use fast placement in the first place
-        public double FastXstep { get; set; }       // steps for hole positions
-        public double FastYstep { get; set; }
-        public double FastXpos { get; set; }       // we don't want to mess with tape definitions
+        public double FastXpos { get; set; }       // True position for the fist hole to be used
         public double FastYpos { get; set; }
+        public double FastXstep { get; set; }       // step sizes for one hole to next
+        public double FastYstep { get; set; }
 
         // ========================================================================================
         // PrepareForFastPlacement_m: Called before starting fast placement
+
+        /* 
+            A problem with a partial first hole remains! TODO: Handle case where first hole is the first in tape an dis cut in half
+        */
+
 
         public bool PrepareForFastPlacement_m(string TapeID, int ComponentCount)
         {
@@ -107,19 +112,8 @@ namespace LitePlacer
                 return true;
             }
 
-
-            int first;
-            if (!int.TryParse(Grid.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out first))
-            {
-                MainForm.ShowMessageBox(
-                    "Bad data at next column",
-                    "Sloppy programmer error",
-                    MessageBoxButtons.OK);
-                FastParametersOk = false;
-                return false;
-            }
             // get pitch
-            double pitch = 0;
+            double pitch;
             if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString().Replace(',', '.'), out pitch))
             {
                 MainForm.ShowMessageBox(
@@ -128,120 +122,79 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
                 return false;
             }
-            int last = first + ComponentCount - 1;
-            //adjust for which part to measure - make sure that the one selected is not indexed
-            //from the hole at the end of the cut tape strip, as that hole is often cut in half
-            if (pitch < 6) //really 4 or less
+
+            int FirstpartNo;
+            if (!int.TryParse(Grid.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out FirstpartNo))
             {
-                --last;
+                MainForm.ShowMessageBox(
+                    "Bad data at next column",
+                    "Sloppy programmer error",
+                    MessageBoxButtons.OK);
+                FastParametersOk = false;
+                return false;
             }
-            if (pitch < 3) //really 2 or less
-            {
-                --last;
-            }
-            if (last < first)
-            {
-                last = first;
-            }
+
+            int LastPartNo = FirstpartNo + ComponentCount - 1;
+
             // measure holes
-            double LastX = 0.0;
-            double LastY = 0.0;
-            double FirstX = 0.0;
-            double FirstY = 0.0;
-            if (!GetPartHole_m(TapeNum, last, out LastX, out LastY))
+            double FirstXpos;
+            double FirstYpos;
+            if (!GetPartHole_m(TapeNum, FirstpartNo, out FirstXpos, out FirstYpos))
             {
                 FastParametersOk = false;
                 return false;
             }
-            if (last!= first)
+
+            double LastXpos = FirstXpos;
+            double LastYpos = FirstYpos;
+
+            if (LastPartNo != FirstpartNo)
             {
-                if (!GetPartHole_m(TapeNum, first, out FirstX, out FirstY))
+                if (!GetPartHole_m(TapeNum, LastPartNo, out LastXpos, out LastYpos))
                 {
                     FastParametersOk = false;
                     return false;
                 }
             }
+
+            if (ComponentCount <= 1)
+            {
+                FastXstep = 0.0;
+                FastYstep = 0.0;
+            }
             else
             {
-                FirstX = LastX;
-                FirstY = LastY;
-            }
-
-            FastXpos = FirstX;
-            FastYpos = FirstY;
-            //test for a minimum of 2 complete holes - ie don't try to measure hold at the end of the tape, which is likely cut in half
-            //measure and divide to calculate pitch for these
-            if (last > first)
-            {
-                // if pitch == 2
-                if ((pitch < 2.01) && (pitch > 1.99))
+                if ((pitch < 2.01) && (pitch > 1.99))       // if pitch == 2
                 {
-                    int starthole = (first + 1) / 2;
-                    int lasthole = (last + 1) / 2;
-                    int HoleIncrements = lasthole - starthole;
-                    if (HoleIncrements == 0)
+                    int starthole = (FirstpartNo + 1) / 2;
+                    int lasthole = (LastPartNo + 1) / 2;
+                    int HoleIncrement = lasthole - starthole;
+                    if (HoleIncrement == 0)
                     {
                         FastXstep = 0.0;
                         FastYstep = 0.0;
                     }
                     else
                     {
-                        FastXstep = (LastX - FirstX) / (double)HoleIncrements;
-                        FastYstep = (LastY - FirstY) / (double)HoleIncrements;
+                        FastXstep = (LastXpos - FirstXpos) / (double)HoleIncrement;
+                        FastYstep = (LastYpos - FirstYpos) / (double)HoleIncrement;
                     }
                 }
                 else
                 {
                     // normal case
-                    FastXstep = (LastX - FirstX) / (double)(last - first);
-                    FastYstep = (LastY - FirstY) / (double)(last - first);
+                    FastXstep = (LastXpos - FirstXpos) / (double)(ComponentCount - 1);
+                    FastYstep = (LastYpos - FirstYpos) / (double)(ComponentCount - 1);
                 }
             }
-            //if we had more than one component but could not measure multiple holes, just use the canned values for pitch
-            else if (ComponentCount > 1)
-            {
-                switch (Grid.Rows[TapeNum].Cells["Orientation_Column"].Value.ToString())
-                {
-                    case "+Y":
-                        FastXstep = 0;
-                        FastYstep = pitch;
-                        break;
 
-                    case "+X":
-                        FastXstep = pitch;
-                        FastYstep = 0;
-                        break;
-
-                    case "-Y":
-                        FastXstep = 0;
-                        FastYstep = -pitch;
-                        break;
-
-                    case "-X":
-                        FastXstep = -pitch;
-                        FastYstep = 0;
-                        break;
-
-                    default:
-                        MainForm.ShowMessageBox(
-                            "Bad data at Tape #" + TapeNum.ToString(CultureInfo.InvariantCulture) + ", Orientation",
-                            "Tape data error",
-                            MessageBoxButtons.OK
-                        );
-                        return false;
-                }
-            }
-            else
-            {
-                FastXstep = 0.0;
-                FastYstep = 0.0;
-            }
-
+            FastXpos = FirstXpos;
+            FastYpos = FirstYpos;
             MainForm.DisplayText("Fast parameters:");
-            MainForm.DisplayText("First X: " + FirstX.ToString(CultureInfo.InvariantCulture)
-                + ", Y: " + FirstY.ToString(CultureInfo.InvariantCulture));
-            MainForm.DisplayText("Last X: " + LastX.ToString(CultureInfo.InvariantCulture)
-                + ", Y: " + LastY.ToString(CultureInfo.InvariantCulture));
+            MainForm.DisplayText("First X: " + FastXpos.ToString(CultureInfo.InvariantCulture)
+                + ", Y: " + FastYpos.ToString(CultureInfo.InvariantCulture));
+            MainForm.DisplayText("Last X: " + LastXpos.ToString(CultureInfo.InvariantCulture)
+                + ", Y: " + LastYpos.ToString(CultureInfo.InvariantCulture));
             MainForm.DisplayText("Step X: " + FastXstep.ToString(CultureInfo.InvariantCulture)
                 + ", Y: " + FastYstep.ToString(CultureInfo.InvariantCulture));
 
