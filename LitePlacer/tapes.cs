@@ -114,6 +114,7 @@ namespace LitePlacer
 
             // get pitch
             double pitch;
+            bool PitchIsTwo = false;
             if (!double.TryParse(Grid.Rows[TapeNum].Cells["Pitch_Column"].Value.ToString().Replace(',', '.'), out pitch))
             {
                 MainForm.ShowMessageBox(
@@ -121,6 +122,10 @@ namespace LitePlacer
                     "Data error",
                     MessageBoxButtons.OK);
                 return false;
+            }
+            if ((pitch < 2.01) && (pitch > 1.99))
+            {
+                PitchIsTwo = true;
             }
 
             int FirstpartNo;
@@ -136,10 +141,28 @@ namespace LitePlacer
 
             int LastPartNo = FirstpartNo + ComponentCount - 1;
 
-            // measure holes
             double FirstXpos;
             double FirstYpos;
-            if (!GetPartHole_m(TapeNum, FirstpartNo, out FirstXpos, out FirstYpos))
+
+            // measure holes:
+
+            // **TODO:
+            // If FirstpartNo == 1, the tape hole might not be there. Solution:
+            /*
+            if (FirstpartNo == 1)
+            {
+                - measure second hole (resA)
+                - if last hole is >3, measure it, else measure hole #4 (resB)
+                - use resA and resB to interpolate first hole position
+                - calculate FastXstep && FastYstep
+            }
+            else
+            {
+                - do the below
+            }
+            */
+
+             if (!GetPartHole_m(TapeNum, FirstpartNo, out FirstXpos, out FirstYpos))
             {
                 FastParametersOk = false;
                 return false;
@@ -164,7 +187,7 @@ namespace LitePlacer
             }
             else
             {
-                if ((pitch < 2.01) && (pitch > 1.99))       // if pitch == 2
+                if (PitchIsTwo)
                 {
                     int starthole = (FirstpartNo + 1) / 2;
                     int lasthole = (LastPartNo + 1) / 2;
