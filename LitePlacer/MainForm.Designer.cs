@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -566,8 +566,8 @@
             this.Down_button = new System.Windows.Forms.Button();
             this.et3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.StopPlacement_button = new System.Windows.Forms.Button();
             this.label39 = new System.Windows.Forms.Label();
-            this.AbortPlacement_button = new System.Windows.Forms.Button();
             this.PausePlacement_button = new System.Windows.Forms.Button();
             this.MachineCoords_label = new System.Windows.Forms.Label();
             this.PlacedValue_label = new System.Windows.Forms.Label();
@@ -660,6 +660,7 @@
             this.DoubleParA_textBox = new System.Windows.Forms.TextBox();
             this.AdvancedProcessing_tabControl = new System.Windows.Forms.TabControl();
             this.NozzleCalibration_tabPage = new System.Windows.Forms.TabPage();
+            this.SaveNozzleCalibration_button = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.ChangeNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
             this.CalibrateNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
@@ -824,7 +825,6 @@
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.SaveNozzleCalibration_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -6679,7 +6679,7 @@
             this.ReMeasure_button.Size = new System.Drawing.Size(124, 23);
             this.ReMeasure_button.TabIndex = 48;
             this.ReMeasure_button.Text = "Re-measure";
-            this.toolTip1.SetToolTip(this.ReMeasure_button, "Re-measures PCB, convertign CAD data coordinates to \r\nmachine coordinates, based " +
+            this.toolTip1.SetToolTip(this.ReMeasure_button, "Re-measures PCB, converting CAD data coordinates to \r\nmachine coordinates, based " +
         "on PCB fiducials.");
             this.ReMeasure_button.UseVisualStyleBackColor = true;
             this.ReMeasure_button.Click += new System.EventHandler(this.ReMeasure_button_Click);
@@ -6983,8 +6983,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.StopPlacement_button);
             this.groupBox1.Controls.Add(this.label39);
-            this.groupBox1.Controls.Add(this.AbortPlacement_button);
             this.groupBox1.Controls.Add(this.PausePlacement_button);
             this.groupBox1.Controls.Add(this.MachineCoords_label);
             this.groupBox1.Controls.Add(this.PlacedValue_label);
@@ -7005,6 +7005,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Placement Operations";
             // 
+            // StopPlacement_button
+            // 
+            this.StopPlacement_button.Location = new System.Drawing.Point(6, 77);
+            this.StopPlacement_button.Name = "StopPlacement_button";
+            this.StopPlacement_button.Size = new System.Drawing.Size(109, 23);
+            this.StopPlacement_button.TabIndex = 39;
+            this.StopPlacement_button.Text = "Stop";
+            this.toolTip1.SetToolTip(this.StopPlacement_button, "Aborts the whole operation.");
+            this.StopPlacement_button.UseVisualStyleBackColor = true;
+            this.StopPlacement_button.Click += new System.EventHandler(this.StopPlacement_button_Click);
+            // 
             // label39
             // 
             this.label39.AutoSize = true;
@@ -7013,17 +7024,6 @@
             this.label39.Size = new System.Drawing.Size(80, 13);
             this.label39.TabIndex = 38;
             this.label39.Text = "Target position:";
-            // 
-            // AbortPlacement_button
-            // 
-            this.AbortPlacement_button.Location = new System.Drawing.Point(6, 77);
-            this.AbortPlacement_button.Name = "AbortPlacement_button";
-            this.AbortPlacement_button.Size = new System.Drawing.Size(109, 23);
-            this.AbortPlacement_button.TabIndex = 36;
-            this.AbortPlacement_button.Text = "Stop";
-            this.toolTip1.SetToolTip(this.AbortPlacement_button, "Aborts the whole operation.");
-            this.AbortPlacement_button.UseVisualStyleBackColor = true;
-            this.AbortPlacement_button.Click += new System.EventHandler(this.AbortPlacement_button_Click);
             // 
             // PausePlacement_button
             // 
@@ -7190,14 +7190,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeight = 29;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7286,14 +7286,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -8040,6 +8040,16 @@
             this.NozzleCalibration_tabPage.TabIndex = 0;
             this.NozzleCalibration_tabPage.Text = "Nozzle Calibration";
             this.NozzleCalibration_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // SaveNozzleCalibration_button
+            // 
+            this.SaveNozzleCalibration_button.Location = new System.Drawing.Point(7, 64);
+            this.SaveNozzleCalibration_button.Name = "SaveNozzleCalibration_button";
+            this.SaveNozzleCalibration_button.Size = new System.Drawing.Size(108, 23);
+            this.SaveNozzleCalibration_button.TabIndex = 308;
+            this.SaveNozzleCalibration_button.Text = "Save calibrations";
+            this.SaveNozzleCalibration_button.UseVisualStyleBackColor = true;
+            this.SaveNozzleCalibration_button.Click += new System.EventHandler(this.SaveNozzleCalibration_button_Click);
             // 
             // textBox1
             // 
@@ -9780,16 +9790,6 @@
             this.TapesAll_openFileDialog.DefaultExt = "tapes_v2";
             this.TapesAll_openFileDialog.Filter = "Tape files|*.TapesData_v2;*.tapes|All files|*.*";
             // 
-            // SaveNozzleCalibration_button
-            // 
-            this.SaveNozzleCalibration_button.Location = new System.Drawing.Point(7, 64);
-            this.SaveNozzleCalibration_button.Name = "SaveNozzleCalibration_button";
-            this.SaveNozzleCalibration_button.Size = new System.Drawing.Size(108, 23);
-            this.SaveNozzleCalibration_button.TabIndex = 308;
-            this.SaveNozzleCalibration_button.Text = "Save calibrations";
-            this.SaveNozzleCalibration_button.UseVisualStyleBackColor = true;
-            this.SaveNozzleCalibration_button.Click += new System.EventHandler(this.SaveNozzleCalibration_button_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -10141,7 +10141,6 @@
 		private System.Windows.Forms.Button Down_button;
 		private System.Windows.Forms.Button et3;
 		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Button AbortPlacement_button;
 		private System.Windows.Forms.Button PausePlacement_button;
 		private System.Windows.Forms.Label MachineCoords_label;
 		private System.Windows.Forms.Label PlacedValue_label;
@@ -10742,6 +10741,7 @@
         private System.Windows.Forms.Label label136;
         private System.Windows.Forms.Label label117;
         private System.Windows.Forms.Button SaveNozzleCalibration_button;
+        private System.Windows.Forms.Button StopPlacement_button;
     }
 }
 

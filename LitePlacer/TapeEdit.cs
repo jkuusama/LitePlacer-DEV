@@ -129,13 +129,13 @@ namespace LitePlacer
                 TapeOffsetY_textBox.Text = Row.Cells["OffsetY_Column"].Value.ToString();
                 ValidateDouble(TapeOffsetY_textBox); 
             }
-
+            /*
             if (Row.Cells["Capacity_Column"].Value != null)
             {
                 Capacity_textBox.Text = Row.Cells["Capacity_Column"].Value.ToString();
 
             }
-
+            */
             if (Row.Cells["NextPart_Column"].Value != null)
             {
                 NextPart_textBox.Text = Row.Cells["NextPart_Column"].Value.ToString();
@@ -280,11 +280,13 @@ namespace LitePlacer
                 ValidateError("Next part");
                 return;
             }
+            /*
             if (!ValidateInt(Capacity_textBox))
             {
                 ValidateError("Capacity");
                 return;
             }
+            */
             if (!ValidateDouble(TapePitch_textBox))
             {
                 ValidateError("Part pitch");
@@ -347,7 +349,7 @@ namespace LitePlacer
             Row.Cells["Rotation_Column"].Value = TapeRotation_comboBox.SelectedItem;
             Row.Cells["Nozzle_Column"].Value = Nozzle_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             Row.Cells["NextPart_Column"].Value = NextPart_textBox.Text;
-            Row.Cells["Capacity_Column"].Value = Capacity_textBox.Text;
+            // Row.Cells["Capacity_Column"].Value = Capacity_textBox.Text;
             Row.Cells["Width_Column"].Value = TapeWidth_comboBox.Text;
             Row.Cells["Type_Column"].Value = Type_comboBox.Text; 
             Row.Cells["TrayID_Column"].Value = TrayID_textBox.Text;
@@ -443,7 +445,7 @@ namespace LitePlacer
 
         private void Capacity_textBox_TextChanged(object sender, EventArgs e)
         {
-            ValidateInt(Capacity_textBox);
+            // ValidateInt(Capacity_textBox);
         }
 
         private void NextPart_textBox_TextChanged(object sender, EventArgs e)

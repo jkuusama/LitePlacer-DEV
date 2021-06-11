@@ -2281,8 +2281,8 @@ namespace LitePlacer
                 return false;
             }
 
-            if ((MeasurementParameters.XUniqueDistance < 0.01) ||
-                (MeasurementParameters.YUniqueDistance < 0.01))
+            if ((MeasurementParameters.XUniqueDistance < 0.001) ||
+                (MeasurementParameters.YUniqueDistance < 0.001))
             {
                 MainForm.DisplayText("Discard distance is 0 or less.", KnownColor.Red, true);
                 return false;

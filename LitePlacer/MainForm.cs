@@ -2611,7 +2611,6 @@ namespace LitePlacer
             double Y;
             double A = 0.0;
             bool ok = true;
-            // Initial move: goto on top of homing mark
             do
             {
                 ok = true;
@@ -8644,6 +8643,8 @@ namespace LitePlacer
             PhysicalComponent[] Fiducials = new PhysicalComponent[FiducialDesignators.Length];  // store the data here
             // double X_nom = 0;
             // double Y_nom = 0;
+            DownCamera.BuildMeasurementFunctionsList(FidAlg.FunctionList);
+            DownCamera.MeasurementParameters = FidAlg.MeasurementParameters;
             for (int i = 0; i < FiducialDesignators.Length; i++)  // for each fiducial in our OriginalFiducials array,
             {
                 Fiducials[i] = new PhysicalComponent();
@@ -8667,15 +8668,20 @@ namespace LitePlacer
                         break;
                     }
                 }
+
+                if (AbortPlacement)
+                {
+                    StopOperation();
+                    return false;
+                }
+
+                // And measure the fiducial's true location:
                 Fiducials[i].X_nominal = X_nom;
                 Fiducials[i].Y_nominal = Y_nom;
-                // And measure it's true location:
                 bool ok = true;
                 do
                 {
                     ok = true;
-                    DownCamera.BuildMeasurementFunctionsList(FidAlg.FunctionList);
-                    DownCamera.MeasurementParameters = FidAlg.MeasurementParameters;
                     if (!MeasureFiducial_m(ref Fiducials[i]))
                     {
                         ok = false;
@@ -8705,8 +8711,8 @@ namespace LitePlacer
                         return false;
                     }
                 }
-                // We could put the machine data in place at this point. However, 
-                // we don't, as if the algorithms below are correct, the fiducial data will not change more than measurement error.
+                // We could put the fiducials machine coordinates in place at this point. However, 
+                // we don't, since if the algorithms below are correct, the fiducial data will not change more than measurement error.
                 // During development, that is a good checkpoint.
             }
 
@@ -8894,12 +8900,11 @@ namespace LitePlacer
 
 
         // =================================================================================
-        private void AbortPlacement_button_Click(object sender, EventArgs e)
+        private void StopPlacement_button_Click(object sender, EventArgs e)
         {
             AbortPlacement = true;
             AbortPlacementShown = false;
         }
-
 
         // =================================================================================
         private void JobOffsetX_textBox_TextChanged(object sender, EventArgs e)
@@ -13287,6 +13292,7 @@ namespace LitePlacer
             string path = GetPath();
             Nozzle.SaveNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 
