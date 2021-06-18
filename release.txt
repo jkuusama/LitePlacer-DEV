@@ -1,4 +1,4 @@
-Build date  01/30/2021
+Build date  06/18/2021
 
 New Features, significant changes
 
@@ -8,7 +8,7 @@ New Features, significant changes
 * Option to draw video processing results on top of unprocessed image
 * Retry (with option to jog, tune vision algorithm etc) on visual meas. error
 * Visual processing finds components by pads and by outline
-* optional A moves otptimisation (from 1 to 359 is two deg counterclockwise)
+* optional A moves optimisation (from 1 to 359 is two deg counterclockwise)
 * All features from the main version included
 * Position validity (homed status) is now checked on operations that causes moves
   or needs valid position
@@ -19,9 +19,12 @@ New Features, significant changes
 
 Bug Fixes 
 
-* Many!
-* In this: reset placed fixed
-* location settings moved back to algorithm setup page
+* Too many to list
+
+BREAKING CHANGES
+
+* Z height calibration needs to be redone
+* Old vision algorithm definitions are not read back (take screenshots)
 
 Known issues
 
