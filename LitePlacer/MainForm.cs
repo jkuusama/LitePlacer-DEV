@@ -12489,8 +12489,10 @@ namespace LitePlacer
             return true;
         }
 
+        // Does one nozzle move, notifies caller if no more moves is needed (AllDone)
         private bool m_DoNozzleMove(DataGridView grid, int nozzle, int MoveNumber,out bool AllDone)
         {
+            // Sanity checks
             if (MoveNumber> NoOfNozzleMoves+1)
             {
                 DisplayText("Too many moves for nozzle " +  nozzle.ToString()
@@ -12503,19 +12505,9 @@ namespace LitePlacer
             {
                 return false;
             }
-            // is direction set? If not, all done.
-            int DirCol = Nozzledata_StartZColumn + (MoveNumber-1) * 2+1;
-            if (grid.Rows[nozzle - 1].Cells[DirCol].Value == null)
-            {
-                AllDone = true;
-                return true;
-            }
-            if (grid.Rows[nozzle - 1].Cells[DirCol].Value.ToString() == "--")
-            {
-                AllDone = true;
-                return true;
-            }
 
+            // is this the last defined move?
+            int DirCol = Nozzledata_StartZColumn + (MoveNumber-1) * 2+1;
             bool LastMove = false;
             if (MoveNumber == NoOfNozzleMoves)
             {
@@ -12529,7 +12521,15 @@ namespace LitePlacer
             {
                 LastMove = true;
             }
+            // If so and if so set, do it full speed
+            if (LastMove && Setting.Nozzles_LastMoveFullSpeed)
+            {
+                Cnc.SlowXY = false;
+                Cnc.SlowZ = false;
+                Cnc.SlowA = false;
+            }
 
+            // Check that all necessary data in the grid is valid
             double val;
             if (!NozzleDataCheck(grid, nozzle, DirCol + 1, out val))
             {
@@ -12547,16 +12547,11 @@ namespace LitePlacer
             }
             string axis=grid.Rows[nozzle - 1].Cells[DirCol].Value.ToString();
 
-            if (LastMove && Setting.Nozzles_LastMoveFullSpeed)
-            {
-                Cnc.SlowXY = false;
-                Cnc.SlowZ = false;
-                Cnc.SlowA = false;
-            }
 
+            // Do the move
             DisplayText("m_DoNozzleMove: nozzle #" + nozzle + ", move "
-                       + MoveNumber.ToString(CultureInfo.InvariantCulture) + ":", KnownColor.DarkBlue, true);
-            if (axis=="Z")
+           + MoveNumber.ToString(CultureInfo.InvariantCulture) + ":", KnownColor.DarkBlue, true);
+            if (axis == "Z")
             {
                 if (!CNC_Z_m(Cnc.CurrentZ + val))
                 {
@@ -12578,7 +12573,7 @@ namespace LitePlacer
                         break;
 
                     default:
-                        DisplayText("m_DoNozzleMove: nozzle #" + nozzle + ", move " 
+                        DisplayText("m_DoNozzleMove: nozzle #" + nozzle + ", move "
                             + MoveNumber.ToString(CultureInfo.InvariantCulture) + ", axis?", KnownColor.DarkRed, true);
                         Cnc.SlowXY = !Setting.Nozzles_XYfullSpeed;
                         Cnc.SlowZ = !Setting.Nozzles_ZfullSpeed;
@@ -12594,6 +12589,12 @@ namespace LitePlacer
             Cnc.SlowXY = !Setting.Nozzles_XYfullSpeed;
             Cnc.SlowZ = !Setting.Nozzles_ZfullSpeed;
             Cnc.SlowA = !Setting.Nozzles_AfullSpeed;
+
+            if (LastMove)
+            {
+                AllDone = true;
+                return true;
+            }
             return true;
         }
 
