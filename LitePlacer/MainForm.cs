@@ -2914,6 +2914,65 @@ namespace LitePlacer
         // =================================================================================
         // Common
         // =================================================================================
+        int DownCamFrameMeasuresCount = 0;
+        Queue<int> DownCamFrameMeasures = new Queue<int>();
+
+        private void InitDownCamFpsMeasurement()
+        {
+            DownCamFrameMeasures.Clear();
+            DownCamFrameMeasuresCount = 0;
+            FPStimer.Enabled = true;
+            FPStimer.Start();
+        }
+
+        int UpCamFrameMeasuresCount = 0;
+        Queue<int> UpCamFrameMeasures = new Queue<int>();
+        private void InitUpCamFpsMeasurement()
+        {
+            UpCamFrameMeasures.Clear();
+            UpCamFrameMeasuresCount = 0;
+        }
+
+        private void FPStimer_Tick(object sender, EventArgs e)
+        {
+            if (!DownCamera.IsRunning())
+            {
+                DownCameraFps_label.Text = "frame rate: --.- fps";
+                return;
+            }
+            DownCamFrameMeasures.Enqueue(DownCamera.FrameCount);
+            DownCamera.FrameCount = 0;
+            if (DownCamFrameMeasuresCount >= 5)   // queue is full
+            {
+                DownCamFrameMeasures.Dequeue();
+            }
+            else
+            {
+                DownCamFrameMeasuresCount++;
+                // DisplayText("count: " + DownCamFrameMeasures.Count.ToString() + ", sum: " + DownCamFrameMeasures.Sum());
+            }
+            double fps = (double)DownCamFrameMeasures.Sum() / (double)DownCamFrameMeasures.Count;
+            DownCameraFps_label.Text = "frame rate: " + fps.ToString("00.0", CultureInfo.InvariantCulture) + " fps";
+
+            if (!UpCamera.IsRunning())
+            {
+                UpCameraFps_label.Text = "frame rate: --.- fps";
+                return;
+            }
+            UpCamFrameMeasures.Enqueue(UpCamera.FrameCount);
+            UpCamera.FrameCount = 0;
+            if (UpCamFrameMeasuresCount >= 5)   // queue is full
+            {
+                UpCamFrameMeasures.Dequeue();
+            }
+            else
+            {
+                UpCamFrameMeasuresCount++;
+                DisplayText("count: " + UpCamFrameMeasures.Count.ToString() + ", sum: " + UpCamFrameMeasures.Sum());
+            }
+            fps = (double)UpCamFrameMeasures.Sum() / (double)UpCamFrameMeasures.Count;
+            UpCameraFps_label.Text = "frame rate: " + fps.ToString("00.0", CultureInfo.InvariantCulture) + " fps";
+        }
 
         private void KeepActive_checkBox_Click(object sender, EventArgs e)
         {
@@ -3055,10 +3114,12 @@ namespace LitePlacer
                 DownCameraStatus_label.Text = "Active";
                 DownCamUsedResolution_label.Text = "resolution: " + DownCamera.Resolution.X.ToString() + " x " + DownCamera.Resolution.Y.ToString();
                 DownCamUsedResolution_label.Visible = true;
+                DownCamUsedResolution_label.Visible = true;
             }
             else
             {
                 DownCameraStatus_label.Text = "Not Active";
+                DownCamUsedResolution_label.Visible = false;
                 DownCamUsedResolution_label.Visible = false;
             }
         }
@@ -3114,6 +3175,7 @@ namespace LitePlacer
             };
             DownCamera.Active = true;
             UpdateDownCameraStatusLabel();
+            InitDownCamFpsMeasurement();
             return true;
         }
 
@@ -3125,11 +3187,13 @@ namespace LitePlacer
                 UpCameraStatus_label.Text = "Active";
                 UpCamUsedResolution_label.Text = "resolution: " + UpCamera.Resolution.X.ToString() + " x " + UpCamera.Resolution.Y.ToString();
                 UpCamUsedResolution_label.Visible = true;
+                UpCameraFps_label.Visible = true;
             }
             else
             {
                 UpCameraStatus_label.Text = "Not Active";
                 UpCamUsedResolution_label.Visible = false;
+                UpCameraFps_label.Visible = false;
             }
         }
 
@@ -3144,8 +3208,6 @@ namespace LitePlacer
                 DisplayText("UpCamera already running");
                 UpCamera.Active = true;
                 UpdateUpCameraStatusLabel();
-                UpCamUsedResolution_label.Text = "resolution: " + UpCamera.Resolution.X.ToString() + " x " + UpCamera.Resolution.Y.ToString();
-                UpCamUsedResolution_label.Visible = true;
                 return true;
             };
 
@@ -3188,6 +3250,7 @@ namespace LitePlacer
             };
             UpCamera.Active = true;
             UpdateUpCameraStatusLabel();
+            InitUpCamFpsMeasurement();
             return true;
         }
 

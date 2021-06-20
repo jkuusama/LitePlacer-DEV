@@ -147,6 +147,7 @@
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.UpCameraFps_label = new System.Windows.Forms.Label();
             this.UpCamUsedResolution_label = new System.Windows.Forms.Label();
             this.UpCamMaxResolution_checkBox = new System.Windows.Forms.CheckBox();
             this.UpCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
@@ -179,6 +180,7 @@
             this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
             this.label135 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.DownCameraFps_label = new System.Windows.Forms.Label();
             this.DownCamUsedResolution_label = new System.Windows.Forms.Label();
             this.DownCamMaxResolution_checkBox = new System.Windows.Forms.CheckBox();
             this.DownCamDrawSidemarks_checkBox = new System.Windows.Forms.CheckBox();
@@ -825,6 +827,7 @@
             this.label165 = new System.Windows.Forms.Label();
             this.Test7_button = new System.Windows.Forms.Button();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.FPStimer = new System.Windows.Forms.Timer(this.components);
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -2143,6 +2146,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.UpCameraFps_label);
             this.groupBox6.Controls.Add(this.UpCamUsedResolution_label);
             this.groupBox6.Controls.Add(this.UpCamMaxResolution_checkBox);
             this.groupBox6.Controls.Add(this.UpCamDrawSidemarks_checkBox);
@@ -2179,11 +2183,21 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Up Looking Camera";
             // 
+            // UpCameraFps_label
+            // 
+            this.UpCameraFps_label.AutoSize = true;
+            this.UpCameraFps_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraFps_label.Location = new System.Drawing.Point(452, 80);
+            this.UpCameraFps_label.Name = "UpCameraFps_label";
+            this.UpCameraFps_label.Size = new System.Drawing.Size(95, 13);
+            this.UpCameraFps_label.TabIndex = 232;
+            this.UpCameraFps_label.Text = "frame rate: xx.x fps";
+            // 
             // UpCamUsedResolution_label
             // 
             this.UpCamUsedResolution_label.AutoSize = true;
             this.UpCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamUsedResolution_label.Location = new System.Drawing.Point(454, 60);
+            this.UpCamUsedResolution_label.Location = new System.Drawing.Point(452, 62);
             this.UpCamUsedResolution_label.Name = "UpCamUsedResolution_label";
             this.UpCamUsedResolution_label.Size = new System.Drawing.Size(111, 13);
             this.UpCamUsedResolution_label.TabIndex = 231;
@@ -2308,7 +2322,7 @@
             // 
             this.UpCameraStatus_label.AutoSize = true;
             this.UpCameraStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCameraStatus_label.Location = new System.Drawing.Point(452, 39);
+            this.UpCameraStatus_label.Location = new System.Drawing.Point(452, 40);
             this.UpCameraStatus_label.Name = "UpCameraStatus_label";
             this.UpCameraStatus_label.Size = new System.Drawing.Size(113, 17);
             this.UpCameraStatus_label.TabIndex = 207;
@@ -2386,7 +2400,7 @@
             // 
             this.label110.AutoSize = true;
             this.label110.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label110.Location = new System.Drawing.Point(450, 19);
+            this.label110.Location = new System.Drawing.Point(452, 22);
             this.label110.Name = "label110";
             this.label110.Size = new System.Drawing.Size(40, 13);
             this.label110.TabIndex = 210;
@@ -2531,6 +2545,7 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.DownCameraFps_label);
             this.groupBox5.Controls.Add(this.DownCamUsedResolution_label);
             this.groupBox5.Controls.Add(this.DownCamMaxResolution_checkBox);
             this.groupBox5.Controls.Add(this.DownCamDrawSidemarks_checkBox);
@@ -2566,6 +2581,16 @@
             this.groupBox5.TabIndex = 145;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Down Looking Camera";
+            // 
+            // DownCameraFps_label
+            // 
+            this.DownCameraFps_label.AutoSize = true;
+            this.DownCameraFps_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DownCameraFps_label.Location = new System.Drawing.Point(452, 85);
+            this.DownCameraFps_label.Name = "DownCameraFps_label";
+            this.DownCameraFps_label.Size = new System.Drawing.Size(95, 13);
+            this.DownCameraFps_label.TabIndex = 215;
+            this.DownCameraFps_label.Text = "frame rate: xx.x fps";
             // 
             // DownCamUsedResolution_label
             // 
@@ -2675,7 +2700,7 @@
             // 
             this.label53.AutoSize = true;
             this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label53.Location = new System.Drawing.Point(452, 22);
+            this.label53.Location = new System.Drawing.Point(452, 24);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(40, 13);
             this.label53.TabIndex = 186;
@@ -2685,7 +2710,7 @@
             // 
             this.DownCameraStatus_label.AutoSize = true;
             this.DownCameraStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCameraStatus_label.Location = new System.Drawing.Point(452, 44);
+            this.DownCameraStatus_label.Location = new System.Drawing.Point(452, 43);
             this.DownCameraStatus_label.Name = "DownCameraStatus_label";
             this.DownCameraStatus_label.Size = new System.Drawing.Size(113, 17);
             this.DownCameraStatus_label.TabIndex = 184;
@@ -9790,6 +9815,11 @@
             this.TapesAll_openFileDialog.DefaultExt = "tapes_v2";
             this.TapesAll_openFileDialog.Filter = "Tape files|*.TapesData_v2;*.tapes|All files|*.*";
             // 
+            // FPStimer
+            // 
+            this.FPStimer.Interval = 1000;
+            this.FPStimer.Tick += new System.EventHandler(this.FPStimer_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -10742,6 +10772,9 @@
         private System.Windows.Forms.Label label117;
         private System.Windows.Forms.Button SaveNozzleCalibration_button;
         private System.Windows.Forms.Button StopPlacement_button;
+        private System.Windows.Forms.Label DownCameraFps_label;
+        private System.Windows.Forms.Label UpCameraFps_label;
+        private System.Windows.Forms.Timer FPStimer;
     }
 }
 
