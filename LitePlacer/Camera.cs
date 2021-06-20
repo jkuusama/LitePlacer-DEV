@@ -180,6 +180,7 @@ namespace LitePlacer
                 VideoCaptureDevice source = new VideoCaptureDevice(MonikerStr);
                 int tries = 0;
                 System.Drawing.Point reso = new System.Drawing.Point();
+                int fps = 0;
                 while (tries < 4)
                 {
                     if (source == null)
@@ -194,8 +195,10 @@ namespace LitePlacer
                         {
                             reso.X = source.VideoCapabilities[i].FrameSize.Width;
                             reso.Y = source.VideoCapabilities[i].FrameSize.Height;
+                            fps = source.VideoCapabilities[i].AverageFrameRate;
                             MainForm.DisplayText("X: " + reso.X.ToString(CultureInfo.InvariantCulture) +
-                                ", Y: " + reso.Y.ToString(CultureInfo.InvariantCulture));
+                                ", Y: " + reso.Y.ToString(CultureInfo.InvariantCulture) +
+                                " at " + fps.ToString(CultureInfo.InvariantCulture) + "fps");
                             Resolutions.Add(reso);
                         }
                         return Resolutions;
@@ -722,8 +725,9 @@ namespace LitePlacer
         Bitmap frame;
         static int CollectorCount = 0;
         static int ErrorCount = 0;
+        public  int FrameCount { get; set; }
 
-        private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+    private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             if (eventArgs.Frame==null)
             {
@@ -739,6 +743,7 @@ namespace LitePlacer
             }
 
             ReceivingFrames = true;
+            FrameCount++;
 
             // Take a copy for measurements, if needed:
             if (CopyFrame)
