@@ -13152,6 +13152,16 @@ namespace LitePlacer
                 DisplayText("Could not get camera indentifier string.", KnownColor.Purple, true);
                 return;
             }
+            if (DownCam_comboBox.SelectedIndex < 0)
+            {
+                DisplayText("No camera selected in the drop down box.", KnownColor.Purple, true);
+                return;
+            }
+            if (DownCam_comboBox.SelectedIndex >= DownCam_comboBox.Items.Count)
+            {
+                DisplayText("Camera no longer there (click refresh list).", KnownColor.Purple, true);
+                return;
+            }
             string MonikerStr = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.GetResolutions(MonikerStr);
         }
@@ -13162,6 +13172,16 @@ namespace LitePlacer
             if (Monikers == null)
             {
                 DisplayText("Could not get camera indentifier string.", KnownColor.Purple, true);
+                return;
+            }
+            if (UpCam_comboBox.SelectedIndex < 0)
+            {
+                DisplayText("No camera selected in the drop down box.");
+                return;
+            }
+            if (UpCam_comboBox.SelectedIndex >= UpCam_comboBox.Items.Count)
+            {
+                DisplayText("Camera no longer there (click refresh list).", KnownColor.Purple, true);
                 return;
             }
             string MonikerStr = Monikers[UpCam_comboBox.SelectedIndex-1];

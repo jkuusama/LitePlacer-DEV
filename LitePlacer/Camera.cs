@@ -86,18 +86,29 @@ namespace LitePlacer
                 }
                 MainForm.DisplayText("Stopping " + Id + ": " + MonikerString);
                 VideoSource.SignalToStop();
-                VideoSource.WaitForStop();  // problem? 
+                // VideoSource.WaitForStop();  // problem?
+                // Wait 400ms to see if asking nicely will stop it
                 int i = 0;
-                while (VideoSource.IsRunning && i<10)
+                while (VideoSource.IsRunning && i < 20)
                 {
-                    VideoSource.Stop();
                     Thread.Sleep(20);
                     Application.DoEvents();
                 }
-                if (i>=10)
+                // if it didn't stop, try to force it
+                if (i >= 20)
                 {
-                    MainForm.DisplayText("*** "+ Id + " refuses to stop! ***" + MonikerString, KnownColor.DarkRed, true);
+                    while (VideoSource.IsRunning && i < 10)
+                    {
+                        VideoSource.Stop();
+                        Thread.Sleep(20);
+                        Application.DoEvents();
+                    }
+                    if (i >= 10)
+                    {
+                        MainForm.DisplayText("*** " + Id + " refuses to stop! ***" + MonikerString, KnownColor.DarkRed, true);
+                    }
                 }
+
                 VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
                 VideoSource = null;
                 MonikerString = "Stopped";
@@ -898,7 +909,7 @@ namespace LitePlacer
             }
 
             frame.Dispose();
-            if (CollectorCount > 20)
+            if (CollectorCount > 100)
             {
                 GC.Collect();
                 CollectorCount = 0;
