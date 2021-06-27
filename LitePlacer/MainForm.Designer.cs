@@ -2360,6 +2360,7 @@
             this.UpCameraDesiredX_textBox.TabIndex = 223;
             this.toolTip1.SetToolTip(this.UpCameraDesiredX_textBox, "Set the native camera resolution here");
             this.UpCameraDesiredX_textBox.TextChanged += new System.EventHandler(this.UpCameraDesiredX_textBox_TextChanged);
+            this.UpCameraDesiredX_textBox.Enter += new System.EventHandler(this.UpCameraDesiredX_textBox_Enter);
             // 
             // UpCam_comboBox
             // 
@@ -2383,6 +2384,7 @@
             this.UpCameraDesiredY_textBox.TabIndex = 224;
             this.toolTip1.SetToolTip(this.UpCameraDesiredY_textBox, "Set the native camera resolution here");
             this.UpCameraDesiredY_textBox.TextChanged += new System.EventHandler(this.UpCameraDesiredY_textBox_TextChanged);
+            this.UpCameraDesiredY_textBox.Enter += new System.EventHandler(this.UpCameraDesiredY_textBox_Enter);
             // 
             // RefreshUpCameraList_button
             // 
@@ -2805,6 +2807,7 @@
             this.DownCameraDesiredY_textBox.TabIndex = 203;
             this.toolTip1.SetToolTip(this.DownCameraDesiredY_textBox, "Set the native camera resolution here");
             this.DownCameraDesiredY_textBox.TextChanged += new System.EventHandler(this.DownCameraDesiredY_textBox_TextChanged);
+            this.DownCameraDesiredY_textBox.Enter += new System.EventHandler(this.DownCameraDesiredY_textBox_Enter);
             // 
             // DownCameraDesiredX_textBox
             // 
@@ -2815,6 +2818,7 @@
             this.DownCameraDesiredX_textBox.TabIndex = 202;
             this.toolTip1.SetToolTip(this.DownCameraDesiredX_textBox, "Set the native camera resolution here");
             this.DownCameraDesiredX_textBox.TextChanged += new System.EventHandler(this.DownCameraDesiredX_textBox_TextChanged);
+            this.DownCameraDesiredX_textBox.Enter += new System.EventHandler(this.DownCameraDesiredX_textBox_Enter);
             // 
             // DowncamDesiredY_label
             // 

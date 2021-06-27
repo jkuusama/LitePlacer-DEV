@@ -13377,6 +13377,25 @@ namespace LitePlacer
             Nozzle.SaveNozzlesCalibration(path + NOZZLES_CALIBRATION_DATAFILE);
         }
 
+        private void DownCameraDesiredX_textBox_Enter(object sender, EventArgs e)
+        {
+            DownCameraDesiredX_textBox.SelectAll();
+        }
+
+        private void DownCameraDesiredY_textBox_Enter(object sender, EventArgs e)
+        {
+            DownCameraDesiredY_textBox.SelectAll();
+        }
+
+        private void UpCameraDesiredX_textBox_Enter(object sender, EventArgs e)
+        {
+            UpCameraDesiredX_textBox.SelectAll();
+        }
+
+        private void UpCameraDesiredY_textBox_Enter(object sender, EventArgs e)
+        {
+            UpCameraDesiredY_textBox.SelectAll();
+        }
     }	// end of: 	public partial class FormMain : Form
 
 

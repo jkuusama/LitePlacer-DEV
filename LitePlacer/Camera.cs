@@ -2516,6 +2516,11 @@ namespace LitePlacer
                                         ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture) +
                                         ", A= " + Aresult.ToString("0.00", CultureInfo.InvariantCulture));
             MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
+            if (Math.Abs(XmmPpix-0.1)<0.001)
+            {
+                MainForm.DisplayText("Camera pixel size is at default value.", KnownColor.DarkRed, true);
+                MainForm.DisplayText("Go to Setup Cameras to set.", KnownColor.DarkRed, true);
+            }
             return true;
         }
 
