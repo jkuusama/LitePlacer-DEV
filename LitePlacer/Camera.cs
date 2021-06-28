@@ -49,10 +49,12 @@ namespace LitePlacer
 
         private VideoCaptureDevice VideoSource = null;
         private FormMain MainForm;
+        public string Name;
 
-        public Camera(FormMain MainF)
+        public Camera(FormMain MainF, string _name)
         {
             MainForm = MainF;
+            Name = _name;
         }
 
         public bool Active { get; set; }
@@ -2305,10 +2307,15 @@ namespace LitePlacer
                 return false;
             }
 
+            bool PauseSave = Paused;
+            PauseProcessing = true;
+
             Bitmap image = GetMeasurementFrame();
             if (image==null)
             {
                 MainForm.DisplayText("Could not get a snapshot image", KnownColor.DarkRed, true);
+                Paused = PauseSave;
+                PauseProcessing = false;
                 return false;
             }
 
@@ -2449,6 +2456,8 @@ namespace LitePlacer
                 {
                     MainForm.DisplayText("Camera Measure(), no items left after size filtering.", KnownColor.Red, true);
                 }
+                Paused = PauseSave;
+                PauseProcessing = false;
                 return false;
             }
 
@@ -2497,10 +2506,14 @@ namespace LitePlacer
                 {
                     MainForm.DisplayText("Camera Measure(): result is not unique", KnownColor.Red, true);
                     MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
+                    Paused = PauseSave;
+                    PauseProcessing = false;
                     return false;
                 }
                 else
                 {
+                    Paused = PauseSave;
+                    PauseProcessing = false;
                     return true;
                 }
             }
@@ -2522,6 +2535,8 @@ namespace LitePlacer
                 MainForm.DisplayText("Camera pixel size is at default value.", KnownColor.DarkRed, true);
                 MainForm.DisplayText("Go to Setup Cameras to set.", KnownColor.DarkRed, true);
             }
+            Paused = PauseSave;
+            PauseProcessing = false;
             return true;
         }
 
