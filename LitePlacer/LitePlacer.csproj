@@ -128,7 +128,7 @@
       <HintPath>AForge binaries\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
     <Reference Include="HomographyEstimation">
-      <HintPath>..\packages\HomographyEstimation\HomographyEstimation.dll</HintPath>
+      <HintPath>.\HomographyEstimation.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.8.0\lib\net40\MathNet.Numerics.dll</HintPath>

@@ -145,7 +145,7 @@
             this.Tapes_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
-            this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox();
+            this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox2();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.UpCameraFps_label = new System.Windows.Forms.Label();
             this.UpCamUsedResolution_label = new System.Windows.Forms.Label();
@@ -10023,7 +10023,7 @@
 		private System.Windows.Forms.TabPage tabPageSetupCameras;
 		private System.Windows.Forms.Button CameraSetupTest_button;
 		private System.Windows.Forms.CheckBox ImageTest_checkBox;
-		private Camera.ProtectedPictureBox Cam_pictureBox;
+		private Camera.ProtectedPictureBox2 Cam_pictureBox;
 		private System.Windows.Forms.TabPage tabPageBasicSetup;
 		private System.Windows.Forms.Label label152;
 		private System.Windows.Forms.CheckBox SlackCompensation_checkBox;
