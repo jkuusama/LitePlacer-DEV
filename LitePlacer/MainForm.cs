@@ -2942,7 +2942,7 @@ namespace LitePlacer
             }
             DownCamFrameMeasures.Enqueue(DownCamera.FrameCount);
             DownCamera.FrameCount = 0;
-            if (DownCamFrameMeasuresCount >= 5)   // queue is full
+            if (DownCamFrameMeasuresCount > 5)   // queue is full
             {
                 DownCamFrameMeasures.Dequeue();
             }
@@ -2961,14 +2961,14 @@ namespace LitePlacer
             }
             UpCamFrameMeasures.Enqueue(UpCamera.FrameCount);
             UpCamera.FrameCount = 0;
-            if (UpCamFrameMeasuresCount >= 5)   // queue is full
+            if (UpCamFrameMeasuresCount > 5)   // queue is full
             {
                 UpCamFrameMeasures.Dequeue();
             }
             else
             {
                 UpCamFrameMeasuresCount++;
-                DisplayText("count: " + UpCamFrameMeasures.Count.ToString() + ", sum: " + UpCamFrameMeasures.Sum());
+                // DisplayText("count: " + UpCamFrameMeasures.Count.ToString() + ", sum: " + UpCamFrameMeasures.Sum());
             }
             fps = (double)UpCamFrameMeasures.Sum() / (double)UpCamFrameMeasures.Count;
             UpCameraFps_label.Text = "frame rate: " + fps.ToString("00.0", CultureInfo.InvariantCulture) + " fps";
