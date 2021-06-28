@@ -31,9 +31,8 @@ namespace LitePlacer
         // class, overriding the OnPaint method and putting the call into a region protected
         // by _locker we can stop the crashing.
 
-#pragma warning disable CA1034 // Nested types should not be visible
-        public class ProtectedPictureBox : System.Windows.Forms.PictureBox
-#pragma warning restore CA1034 // Nested types should not be visible
+// #pragma warning disable CA1034 // Nested types should not be visible
+        public class ProtectedPictureBox2 : System.Windows.Forms.PictureBox
         {
             protected override void OnPaint(PaintEventArgs e)
             {
@@ -46,6 +45,7 @@ namespace LitePlacer
             // _locker must be a static variable to be available to the overridden OnPaint method
             public static object _locker { get; set; } = new object();
         }
+// #pragma warning restore CA1034 // Nested types should not be visible
 
         private VideoCaptureDevice VideoSource = null;
         private FormMain MainForm;
@@ -126,8 +126,8 @@ namespace LitePlacer
 
         // All processing and returned values are in Frame content
         // All references to PictureBox must be replace with ProtectedPictureBox
-        ProtectedPictureBox _imageBox;
-        public ProtectedPictureBox ImageBox
+        ProtectedPictureBox2 _imageBox;
+        public ProtectedPictureBox2 ImageBox
         {
             get
             {
@@ -135,7 +135,7 @@ namespace LitePlacer
             }
             set
             {
-                lock (ProtectedPictureBox._locker)
+                lock (ProtectedPictureBox2._locker)
                 {
                     _imageBox = value;
                 }
@@ -547,8 +547,8 @@ namespace LitePlacer
                 if (ReceivingFrames)
                 {
                     // stop video
-                    PauseProcessing = true;  // ask for stop
                     Paused = false;
+                    PauseProcessing = true;  // ask for stop
                     while (!Paused)
                     {
                         Thread.Sleep(10);  // wait until really stopped
@@ -563,7 +563,7 @@ namespace LitePlacer
             // copy new list
             DisplayFunctions.Clear();
             DisplayFunctions = NewList;
-            Thread.Sleep(50);  // wait until really stopped
+            // Thread.Sleep(50);  // wait until really stopped
             PauseProcessing = pause;  // restart video is it was running
         }
 
@@ -780,10 +780,11 @@ namespace LitePlacer
 
 
             // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
-            lock (ProtectedPictureBox._locker)
+            lock (ProtectedPictureBox2._locker)
             {
                 frame = (Bitmap)eventArgs.Frame.Clone();
             }
+
 
             if (DisplayFunctions != null)
             {
@@ -864,14 +865,14 @@ namespace LitePlacer
                 frame = MirrorFunct(ref frame);
             };
 
-            if (Zoom)
-            {
-                ZoomFunct(ref frame, ZoomFactor);
-            };
-
             if (DrawBox)
             {
                 DrawBoxFunct(ref frame);
+            };
+
+            if (Zoom)
+            {
+                ZoomFunct(ref frame, ZoomFactor);
             };
 
             if (DrawCross)
@@ -899,7 +900,7 @@ namespace LitePlacer
                 DrawArrowFunct(ref frame, FrameCenterX, FrameCenterY, 60);
             };
 
-            lock (ProtectedPictureBox._locker)
+            lock (ProtectedPictureBox2._locker)
             {
                 if (ImageBox.Image != null)
                 {
