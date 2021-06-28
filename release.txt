@@ -1,4 +1,4 @@
-Build date 06/18/2021
+Build date 06/28/2021
 
 New Features, significant changes
 
@@ -28,5 +28,15 @@ BREAKING CHANGES
 
 Known issues
 
+* Pause and Stop need to be clicked twice
 * The application does not automatically restart when loading new settings from file. (there is now a dialog, though)
 * Place fast sometimes uses last hole (which might not be whole), not the second to last as excpected
+
+Changes from 06/18:
+
+* Added frame rate measurement to camera setup
+* Added also the nominal frame rate promise from the camera
+* AForge vision libraries updated; this should give better video performance
+* Warning for measurement using default pixel size
+* Box now zooms with the rest of the display
+
