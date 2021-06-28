@@ -179,8 +179,8 @@ namespace LitePlacer
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
             CNC.SquareCorrection = Setting.CNC_SquareCorrection;
-            DownCamera = new Camera(this);
-            UpCamera = new Camera(this);
+            DownCamera = new Camera(this, "DownCamera");
+            UpCamera = new Camera(this, "UpCamera");
             Nozzle = new NozzleCalibrationClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Nozzle, DownCamera, Cnc, this);
             BoardSettings.MainForm = this;
@@ -3044,6 +3044,11 @@ namespace LitePlacer
 
         private void SelectCamera(Camera cam)
         {
+            if (cam.IsRunning() && cam.Active)
+            {
+                DisplayText(cam.Name + " already on");
+                return;
+            }
             if (cam.MonikerString == "-no camera-")
             {
                 DisplayText("Selecting, no camera");
@@ -3064,6 +3069,7 @@ namespace LitePlacer
                 }
                 return;
             };
+            /*
             if (cam.IsRunning())
             {
                 if (cam == DownCamera)
@@ -3076,6 +3082,7 @@ namespace LitePlacer
                 }
                 return;
             };
+            */
             if (Setting.Cameras_RobustSwitch)
             {
                 if (UpCamera.IsRunning())
@@ -3609,7 +3616,7 @@ namespace LitePlacer
             DownCamera.DesiredX = Setting.DownCam_DesiredX;
             DownCamera.DesiredY = Setting.DownCam_DesiredY;
 
-            StartDownCamera_m();
+            // StartDownCamera_m();
             SelectCamera(DownCamera);
             if (DownCamera.IsRunning())
             {
@@ -3649,7 +3656,7 @@ namespace LitePlacer
             UpCamera.DesiredX = Setting.UpCam_DesiredX;
             UpCamera.DesiredY = Setting.UpCam_DesiredY;
 
-            StartUpCamera_m();
+            // StartUpCamera_m();
             SelectCamera(UpCamera);
             if (UpCamera.IsRunning())
             {
