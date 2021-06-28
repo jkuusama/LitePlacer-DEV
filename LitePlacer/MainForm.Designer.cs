@@ -2189,9 +2189,9 @@
             this.UpCameraFps_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCameraFps_label.Location = new System.Drawing.Point(452, 80);
             this.UpCameraFps_label.Name = "UpCameraFps_label";
-            this.UpCameraFps_label.Size = new System.Drawing.Size(95, 13);
+            this.UpCameraFps_label.Size = new System.Drawing.Size(89, 13);
             this.UpCameraFps_label.TabIndex = 232;
-            this.UpCameraFps_label.Text = "frame rate: xx.x fps";
+            this.UpCameraFps_label.Text = "frame rate: --.- fps";
             // 
             // UpCamUsedResolution_label
             // 
@@ -2199,10 +2199,9 @@
             this.UpCamUsedResolution_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCamUsedResolution_label.Location = new System.Drawing.Point(452, 62);
             this.UpCamUsedResolution_label.Name = "UpCamUsedResolution_label";
-            this.UpCamUsedResolution_label.Size = new System.Drawing.Size(111, 13);
+            this.UpCamUsedResolution_label.Size = new System.Drawing.Size(64, 13);
             this.UpCamUsedResolution_label.TabIndex = 231;
-            this.UpCamUsedResolution_label.Text = "resolution: 1280 x 720";
-            this.UpCamUsedResolution_label.Visible = false;
+            this.UpCamUsedResolution_label.Text = "resolution: --";
             // 
             // UpCamMaxResolution_checkBox
             // 
@@ -2264,7 +2263,7 @@
             // 
             this.UpCamDrawBox_checkBox.AutoSize = true;
             this.UpCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpCamDrawBox_checkBox.Location = new System.Drawing.Point(376, 126);
+            this.UpCamDrawBox_checkBox.Location = new System.Drawing.Point(375, 126);
             this.UpCamDrawBox_checkBox.Name = "UpCamDrawBox_checkBox";
             this.UpCamDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
             this.UpCamDrawBox_checkBox.TabIndex = 210;
@@ -2321,13 +2320,13 @@
             // UpCameraStatus_label
             // 
             this.UpCameraStatus_label.AutoSize = true;
-            this.UpCameraStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpCameraStatus_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpCameraStatus_label.Location = new System.Drawing.Point(452, 40);
             this.UpCameraStatus_label.Name = "UpCameraStatus_label";
-            this.UpCameraStatus_label.Size = new System.Drawing.Size(113, 17);
+            this.UpCameraStatus_label.Size = new System.Drawing.Size(102, 16);
             this.UpCameraStatus_label.TabIndex = 207;
-            this.UpCameraStatus_label.Text = "Not connected";
-            this.toolTip1.SetToolTip(this.UpCameraStatus_label, "If the video feed is from this camera");
+            this.UpCameraStatus_label.Text = "On, not active";
+            this.toolTip1.SetToolTip(this.UpCameraStatus_label, "Active: If the video feed is from this camera");
             // 
             // UpcamDesiredY_label
             // 
@@ -2603,7 +2602,6 @@
             this.DownCamUsedResolution_label.Size = new System.Drawing.Size(111, 13);
             this.DownCamUsedResolution_label.TabIndex = 214;
             this.DownCamUsedResolution_label.Text = "resolution: 1280 x 720";
-            this.DownCamUsedResolution_label.Visible = false;
             // 
             // DownCamMaxResolution_checkBox
             // 
@@ -2665,7 +2663,7 @@
             // 
             this.DownCamDrawBox_checkBox.AutoSize = true;
             this.DownCamDrawBox_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownCamDrawBox_checkBox.Location = new System.Drawing.Point(376, 127);
+            this.DownCamDrawBox_checkBox.Location = new System.Drawing.Point(375, 127);
             this.DownCamDrawBox_checkBox.Name = "DownCamDrawBox_checkBox";
             this.DownCamDrawBox_checkBox.Size = new System.Drawing.Size(72, 17);
             this.DownCamDrawBox_checkBox.TabIndex = 208;

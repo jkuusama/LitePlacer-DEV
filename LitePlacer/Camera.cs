@@ -787,7 +787,6 @@ namespace LitePlacer
                 frame = (Bitmap)eventArgs.Frame.Clone();
             }
 
-
             if (DisplayFunctions != null)
             {
                 if (DisplayFunctions.Count!=0)
