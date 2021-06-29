@@ -2923,14 +2923,17 @@ namespace LitePlacer
             DownCamFrameMeasuresCount = 0;
             FPStimer.Enabled = true;
             FPStimer.Start();
+            DisplayText("InitDownCamFpsMeasurement()");
         }
 
         int UpCamFrameMeasuresCount = 0;
         Queue<int> UpCamFrameMeasures = new Queue<int>();
+
         private void InitUpCamFpsMeasurement()
         {
             UpCamFrameMeasures.Clear();
             UpCamFrameMeasuresCount = 0;
+            DisplayText("InitUpCamFpsMeasurement()");
         }
 
         private void FPStimer_Tick(object sender, EventArgs e)
@@ -3097,7 +3100,7 @@ namespace LitePlacer
         {
             if (cam.IsRunning() && cam.Active)
             {
-                DisplayText(cam.Name + " already on");
+                DisplayText(Name + " already on");
                 return;
             }
             if (cam.MonikerString == "-no camera-")
@@ -3287,7 +3290,6 @@ namespace LitePlacer
 
         private void SetDownCameraDefaults()
         {
-            DownCamera.Id = "Downcamera";
             DownCamera.DesiredX = Setting.DownCam_DesiredX;
             DownCamera.DesiredY = Setting.DownCam_DesiredY;
             DownCamera.BoxSizeX = 200;
@@ -3323,7 +3325,6 @@ namespace LitePlacer
         private void SetUpCameraDefaults()
         {
             UpCamera.ImageBox = Cam_pictureBox;
-            UpCamera.Id = "Upcamera";
             UpCamera.DesiredX = Setting.UpCam_DesiredX;
             UpCamera.DesiredY = Setting.UpCam_DesiredY;
 
@@ -13425,6 +13426,25 @@ namespace LitePlacer
         {
             UpCameraDesiredY_textBox.SelectAll();
         }
+
+        private void CameraSetupTest_button_Click(object sender, EventArgs e)
+        {
+            if (!UpCamera.IsRunning())
+            {
+                DisplayText("Upcam not running");
+                return;
+            }
+            Invoke_CameraPropertiesDialog(UpCamera);
+        }
+
+        private void Invoke_CameraPropertiesDialog(Camera cam)
+        {
+            DisplayText("Open camera properties dialog", KnownColor.DarkGreen, true);
+            CameraProperties CameraPropertiesDialog = new CameraProperties(this, cam);
+            CameraPropertiesDialog.Show(this);
+        }
+
+
     }	// end of: 	public partial class FormMain : Form
 
 

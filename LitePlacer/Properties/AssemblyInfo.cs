@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("LitePlacer Inc. (Kuusama Audio Oy)")]
 [assembly: AssemblyProduct("LitePlacer")]
-[assembly: AssemblyCopyright("Copyright ©  2013 -2019")]
+[assembly: AssemblyCopyright("Copyright ©  2013 -2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

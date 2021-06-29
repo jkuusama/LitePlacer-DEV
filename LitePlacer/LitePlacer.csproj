@@ -163,6 +163,12 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="BoardSettings.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="CameraProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CameraProperties.Designer.cs">
+      <DependentUpon>CameraProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="CNC.cs" />
     <Compile Include="Duet3.cs" />
     <Compile Include="AskToCreate.cs">
@@ -237,6 +243,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AskToCreate.resx">
       <DependentUpon>AskToCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraProperties.resx">
+      <DependentUpon>CameraProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LatchBackoff.resx">
       <DependentUpon>LatchBackoff.cs</DependentUpon>
