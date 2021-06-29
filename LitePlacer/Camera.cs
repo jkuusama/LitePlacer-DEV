@@ -45,9 +45,9 @@ namespace LitePlacer
             // _locker must be a static variable to be available to the overridden OnPaint method
             public static object _locker { get; set; } = new object();
         }
-// #pragma warning restore CA1034 // Nested types should not be visible
+        // #pragma warning restore CA1034 // Nested types should not be visible
 
-        private VideoCaptureDevice VideoSource = null;
+        public VideoCaptureDevice VideoSource = null;
         private FormMain MainForm;
         public string Name;
 
@@ -75,18 +75,14 @@ namespace LitePlacer
 
         public void NakedStop()         // Tries to force it (but still doesn't always work, just like with children)
         {
-            VideoSource.Stop();
+            VideoSource.Stop();     // JK: Don't use, will hang with some cameras
         }
 
         public void Close()
         {
             if (!(VideoSource == null))
             {
-                if (!VideoSource.IsRunning)
-                {
-                    return;
-                }
-                MainForm.DisplayText("Stopping " + Id + ": " + MonikerString);
+                MainForm.DisplayText("Stopping " + Name + ": " + MonikerString);
                 VideoSource.SignalToStop();
                 // VideoSource.WaitForStop();  // problem?
                 // Wait 400ms to see if asking nicely will stop it
@@ -95,25 +91,18 @@ namespace LitePlacer
                 {
                     Thread.Sleep(20);
                     Application.DoEvents();
+                    i++;
                 }
-                // if it didn't stop, try to force it
-                if (i >= 20)
-                {
-                    while (VideoSource.IsRunning && i < 10)
-                    {
-                        VideoSource.Stop();
-                        Thread.Sleep(20);
-                        Application.DoEvents();
-                    }
-                    if (i >= 10)
-                    {
-                        MainForm.DisplayText("*** " + Id + " refuses to stop! ***" + MonikerString, KnownColor.DarkRed, true);
-                    }
-                }
-
+                // if it didn't stop, quit anyway
+                MainForm.DisplayText("** " + Name + " did not stop on OS level");
                 VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
                 VideoSource = null;
                 MonikerString = "Stopped";
+                MainForm.DisplayText(Name + " stopped.");
+            }
+            else
+            {
+                MainForm.DisplayText(Name + " already stopped");
             }
         }
 
@@ -153,7 +142,6 @@ namespace LitePlacer
         public System.Drawing.Point Resolution { get; set; }  // resolution in use
 
         public string MonikerString { get; set; } = "unconnected";
-        public string Id { get; set; } = "unconnected";
 
         public bool ReceivingFrames { get; set; }
 
