@@ -392,17 +392,20 @@ namespace LitePlacer
             ErrorState = false;
             Connected = false;
 
+
+            // TinyG?
             if (!OpenPort(port))
             {
                 return false;
             }
             Connected = true;
             Port = port;
-            Controlboard = ControlBoardType.Duet3;      // to direct the response to correct module
-            if (Duet3.CheckIdentity())
+
+            Controlboard = ControlBoardType.TinyG;       // to direct the response to correct module
+            if (TinyG.CheckIdentity())
             {
-                MainForm.Motors_label.Text = "Axes setup (Duet3 board):";
-                MainForm.Duet3Motors_tabControl.Visible = true;
+                MainForm.Motors_label.Text = "Axes setup (TinyG board):";
+                MainForm.TinyGMotors_tabControl.Visible = true;
                 ErrorState = false;
                 return true;
             }
@@ -411,21 +414,23 @@ namespace LitePlacer
                 Com.Close();
                 Connected = false;
             }
+            Thread.Sleep(200);
 
-            // Not Duet. TinyG?
+            // Duet?
             if (!OpenPort(port))
             {
                 return false;
             }
             Connected = true;
-            Controlboard = ControlBoardType.TinyG;
-            if (TinyG.CheckIdentity())
+            Controlboard = ControlBoardType.Duet3;
+            if (Duet3.CheckIdentity())
             {
-                MainForm.Motors_label.Text = "Axes setup (TinyG board):";
-                MainForm.TinyGMotors_tabControl.Visible = true;
+                MainForm.Motors_label.Text = "Axes setup (Duet3 board):";
+                MainForm.Duet3Motors_tabControl.Visible = true;
                 ErrorState = false;
                 return true;
             }
+
             Controlboard = ControlBoardType.unknown;
             MainForm.DisplayText("*** Cnc.Connect(), did not find a supported board.", KnownColor.DarkRed, true);
             RaiseError();

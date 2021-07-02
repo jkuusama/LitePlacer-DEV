@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -147,6 +147,7 @@
             this.tabPageSetupCameras = new System.Windows.Forms.TabPage();
             this.Cam_pictureBox = new LitePlacer.Camera.ProtectedPictureBox2();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.UpCamProperties_button = new System.Windows.Forms.Button();
             this.UpCameraFps_label = new System.Windows.Forms.Label();
             this.UpCamUsedResolution_label = new System.Windows.Forms.Label();
             this.UpCamMaxResolution_checkBox = new System.Windows.Forms.CheckBox();
@@ -180,6 +181,7 @@
             this.KeepActive_checkBox = new System.Windows.Forms.CheckBox();
             this.label135 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.DownCamProperties_button = new System.Windows.Forms.Button();
             this.DownCameraFps_label = new System.Windows.Forms.Label();
             this.DownCamUsedResolution_label = new System.Windows.Forms.Label();
             this.DownCamMaxResolution_checkBox = new System.Windows.Forms.CheckBox();
@@ -2135,7 +2137,7 @@
             // Cam_pictureBox
             // 
             this.Cam_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Cam_pictureBox.Location = new System.Drawing.Point(6, 6);
+            this.Cam_pictureBox.Location = new System.Drawing.Point(8, -1);
             this.Cam_pictureBox.Name = "Cam_pictureBox";
             this.Cam_pictureBox.Size = new System.Drawing.Size(640, 480);
             this.Cam_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -2146,6 +2148,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.UpCamProperties_button);
             this.groupBox6.Controls.Add(this.UpCameraFps_label);
             this.groupBox6.Controls.Add(this.UpCamUsedResolution_label);
             this.groupBox6.Controls.Add(this.UpCamMaxResolution_checkBox);
@@ -2176,12 +2179,22 @@
             this.groupBox6.Controls.Add(this.UpCameraBoxY_textBox);
             this.groupBox6.Controls.Add(this.label103);
             this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox6.Location = new System.Drawing.Point(652, 208);
+            this.groupBox6.Location = new System.Drawing.Point(652, 233);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(587, 176);
+            this.groupBox6.Size = new System.Drawing.Size(587, 221);
             this.groupBox6.TabIndex = 227;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Up Looking Camera";
+            // 
+            // UpCamProperties_button
+            // 
+            this.UpCamProperties_button.Location = new System.Drawing.Point(31, 180);
+            this.UpCamProperties_button.Name = "UpCamProperties_button";
+            this.UpCamProperties_button.Size = new System.Drawing.Size(75, 23);
+            this.UpCamProperties_button.TabIndex = 233;
+            this.UpCamProperties_button.Text = "Properties";
+            this.UpCamProperties_button.UseVisualStyleBackColor = true;
+            this.UpCamProperties_button.Click += new System.EventHandler(this.UpCamProperties_button_Click);
             // 
             // UpCameraFps_label
             // 
@@ -2511,7 +2524,7 @@
             // 
             this.RobustFast_checkBox.AutoSize = true;
             this.RobustFast_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RobustFast_checkBox.Location = new System.Drawing.Point(772, 404);
+            this.RobustFast_checkBox.Location = new System.Drawing.Point(774, 465);
             this.RobustFast_checkBox.Name = "RobustFast_checkBox";
             this.RobustFast_checkBox.Size = new System.Drawing.Size(134, 17);
             this.RobustFast_checkBox.TabIndex = 195;
@@ -2524,7 +2537,7 @@
             // 
             this.KeepActive_checkBox.AutoSize = true;
             this.KeepActive_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KeepActive_checkBox.Location = new System.Drawing.Point(919, 404);
+            this.KeepActive_checkBox.Location = new System.Drawing.Point(921, 465);
             this.KeepActive_checkBox.Name = "KeepActive_checkBox";
             this.KeepActive_checkBox.Size = new System.Drawing.Size(84, 17);
             this.KeepActive_checkBox.TabIndex = 196;
@@ -2537,7 +2550,7 @@
             // 
             this.label135.AutoSize = true;
             this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label135.Location = new System.Drawing.Point(658, 405);
+            this.label135.Location = new System.Drawing.Point(660, 466);
             this.label135.Name = "label135";
             this.label135.Size = new System.Drawing.Size(79, 13);
             this.label135.TabIndex = 197;
@@ -2546,6 +2559,7 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.DownCamProperties_button);
             this.groupBox5.Controls.Add(this.DownCameraFps_label);
             this.groupBox5.Controls.Add(this.DownCamUsedResolution_label);
             this.groupBox5.Controls.Add(this.DownCamMaxResolution_checkBox);
@@ -2578,10 +2592,20 @@
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(652, 6);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(587, 180);
+            this.groupBox5.Size = new System.Drawing.Size(587, 221);
             this.groupBox5.TabIndex = 145;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Down Looking Camera";
+            // 
+            // DownCamProperties_button
+            // 
+            this.DownCamProperties_button.Location = new System.Drawing.Point(31, 184);
+            this.DownCamProperties_button.Name = "DownCamProperties_button";
+            this.DownCamProperties_button.Size = new System.Drawing.Size(75, 23);
+            this.DownCamProperties_button.TabIndex = 216;
+            this.DownCamProperties_button.Text = "Properties";
+            this.DownCamProperties_button.UseVisualStyleBackColor = true;
+            this.DownCamProperties_button.Click += new System.EventHandler(this.DownCamProperties_button_Click);
             // 
             // DownCameraFps_label
             // 
@@ -7218,14 +7242,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeight = 29;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7314,14 +7338,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -10778,6 +10802,8 @@
         public System.Windows.Forms.Label DownCamUsedResolution_label;
         public System.Windows.Forms.Label DownCameraFps_label;
         public System.Windows.Forms.Label UpCameraFps_label;
+        private System.Windows.Forms.Button UpCamProperties_button;
+        private System.Windows.Forms.Button DownCamProperties_button;
     }
 }
 

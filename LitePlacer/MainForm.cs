@@ -3100,7 +3100,7 @@ namespace LitePlacer
         {
             if (cam.IsRunning() && cam.Active)
             {
-                DisplayText(Name + " already on");
+                DisplayText(cam.Name + " already on");
                 return;
             }
             if (cam.MonikerString == "-no camera-")
@@ -3624,7 +3624,7 @@ namespace LitePlacer
             List<string> Monikers = DownCamera.GetMonikerStrings();
             if (Monikers.Count == 0)
             {
-                DisplayTxt("No cameras");
+                DisplayText("No cameras");
                 Setting.DowncamMoniker = "-no camera-";
                 DownCamera.MonikerString = "-no camera-";
                 return;
@@ -3661,12 +3661,20 @@ namespace LitePlacer
 
         private void ConnectUpCamera_button_Click(object sender, EventArgs e)
         {
+            int index = UpCam_comboBox.SelectedIndex;   // remember what is selected now
+            getUpCamList(); // Make sure that camera is still there
+            if ((index>= UpCam_comboBox.Items.Count) || (UpCam_comboBox.SelectedIndex == 0))
+            {
+                // No cameras or the last in list went away
+                DisplayText("Camera list changed, please re-select", KnownColor.DarkRed, true);
+                return;
+            }
             List<string> Monikers = new List<string>();
             Monikers.Add("-no camera-");
             Monikers.AddRange(UpCamera.GetMonikerStrings());
             if (Monikers.Count == 1)
             {
-                DisplayTxt("No cameras");
+                DisplayText("No cameras");
                 Setting.UpcamMoniker = "-no camera-";
                 UpCamera.MonikerString = "-no camera-";
                 return;
@@ -4608,12 +4616,12 @@ namespace LitePlacer
                 return;
             }
             DisplayTxtCol = Color.FromKnownColor(col);
-            DisplayTxt(txt);
+            _DisplayTxt(txt);
         }
 
-        public void DisplayTxt(string txt)
+        public void _DisplayTxt(string txt)
         {
-            if (InvokeRequired) { Invoke(new Action<string>(DisplayTxt), new[] { txt }); return; }
+            if (InvokeRequired) { Invoke(new Action<string>(_DisplayTxt), new[] { txt }); return; }
 
             try
             {
@@ -13429,12 +13437,6 @@ namespace LitePlacer
 
         private void CameraSetupTest_button_Click(object sender, EventArgs e)
         {
-            if (!UpCamera.IsRunning())
-            {
-                DisplayText("Upcam not running");
-                return;
-            }
-            Invoke_CameraPropertiesDialog(UpCamera);
         }
 
         private void Invoke_CameraPropertiesDialog(Camera cam)
@@ -13444,7 +13446,25 @@ namespace LitePlacer
             CameraPropertiesDialog.Show(this);
         }
 
+        private void DownCamProperties_button_Click(object sender, EventArgs e)
+        {
+            if (!DownCamera.IsRunning())
+            {
+                DisplayText("Downcam not running");
+                return;
+            }
+            Invoke_CameraPropertiesDialog(DownCamera);
+        }
 
+        private void UpCamProperties_button_Click(object sender, EventArgs e)
+        {
+            if (!UpCamera.IsRunning())
+            {
+                DisplayText("Upcam not running");
+                return;
+            }
+            Invoke_CameraPropertiesDialog(UpCamera);
+        }
     }	// end of: 	public partial class FormMain : Form
 
 
