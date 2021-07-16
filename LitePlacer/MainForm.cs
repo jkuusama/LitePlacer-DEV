@@ -3663,12 +3663,13 @@ namespace LitePlacer
         {
             int index = UpCam_comboBox.SelectedIndex;   // remember what is selected now
             getUpCamList(); // Make sure that camera is still there
-            if ((index>= UpCam_comboBox.Items.Count) || (UpCam_comboBox.SelectedIndex == 0))
+            if (index>= UpCam_comboBox.Items.Count)
             {
                 // No cameras or the last in list went away
                 DisplayText("Camera list changed, please re-select", KnownColor.DarkRed, true);
                 return;
             }
+            UpCam_comboBox.SelectedIndex = index;
             List<string> Monikers = new List<string>();
             Monikers.Add("-no camera-");
             Monikers.AddRange(UpCamera.GetMonikerStrings());
