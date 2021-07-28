@@ -204,6 +204,7 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("Writing " + FileName);
                 File.WriteAllText(FileName, JsonConvert.SerializeObject(pSettings, Formatting.Indented));
+                MainForm.DisplayText("Done.");
                 return true;
             }
             catch (Exception excep)
