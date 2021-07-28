@@ -567,7 +567,7 @@ namespace LitePlacer
             {
                 if (line.Contains("File not open"))
                 {
-                    MainForm.DisplayText("### Ignored file not open error ###");
+                    MainForm.DisplayText("### File not open error ignored. This is TinyG quirk, not a real error.");
                     return;
                 };
                 Cnc.RaiseError();
