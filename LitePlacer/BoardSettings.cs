@@ -2426,6 +2426,7 @@ namespace LitePlacer
                 {
                     MainForm.DisplayText("Writing TinyG settings file: " + FileName);
                     File.WriteAllText(FileName, "TinyG   \n\r" + JsonConvert.SerializeObject(TinyGSettings, Formatting.Indented));
+                    MainForm.DisplayText("Done.");
                 }
                 else
                 {
