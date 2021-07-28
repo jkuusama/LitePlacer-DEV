@@ -334,6 +334,7 @@ namespace LitePlacer
 
             // ======== Setup vision processing tab:
             NoOfNozzlesOnVideoSetup_numericUpDown.Maximum = Setting.Nozzles_count;
+            InitStoredImages();
 
             // ======== Tape Positions tab:
 
@@ -11561,7 +11562,7 @@ namespace LitePlacer
 
             if (ContextmenuUnloadNozzle == 0)
             {
-                DisplayText("Goto unload start - heaqder click, ignored", KnownColor.DarkGreen);
+                DisplayText("Goto unload start - header click, ignored", KnownColor.DarkGreen);
                 return;
             }
             DisplayText("Goto unload start", KnownColor.DarkGreen);
@@ -11660,7 +11661,7 @@ namespace LitePlacer
             string AlgName = NozzlesParameters_dataGridView.Rows[Setting.Nozzles_current - 1].Cells["VisionAlgorithm_column"].Value.ToString();
             if (!VideoAlgorithms.FindAlgorithm(AlgName, out Alg))
             {
-                DisplayText("*** Calibration algorithm algorithm not found!", KnownColor.Red, true);
+                DisplayText("*** Calibration algorithm not found!", KnownColor.Red, true);
                 return false;
             }
             UpCamera.BuildMeasurementFunctionsList(Alg.FunctionList);
@@ -12946,14 +12947,14 @@ namespace LitePlacer
                 return;
             }
             DialogResult dialogResult = ShowMessageBox(
-                "Reset application settings top built in defaults?",
+                "Settings will reset to defaults and the program will close. You need to restart manually.\n\rContinue?",
                 "Confirm Loading Built-In settings", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
             {
                 return;
             };
             Setting = new MySettings();
-            Application.Restart();
+            Application.Exit();
         }
         #endregion
 
@@ -13060,7 +13061,7 @@ namespace LitePlacer
             };
             if (delay)
             {
-                Thread.Sleep(50);
+                Thread.Sleep(100);
             }
             return true;
         }
@@ -13085,7 +13086,7 @@ namespace LitePlacer
                 {
                     return false;
                 };
-                DisplayText("parameter: " + name + ", value: " + value);
+                DisplayText(" Wrote parameter: " + name + ", value: " + value);
             }
             return true;
 
@@ -13466,6 +13467,8 @@ namespace LitePlacer
             }
             Invoke_CameraPropertiesDialog(UpCamera);
         }
+    
+    
     }	// end of: 	public partial class FormMain : Form
 
 

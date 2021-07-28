@@ -394,7 +394,7 @@ namespace LitePlacer
 
         public delegate void AForge_op(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B, 
             double par_dA, double par_dB, double par_dC);
-        class AForgeFunction
+        public class AForgeFunction
         {
             public AForge_op func { get; set; }
             public int parameter_int { get; set; }              // general parameters. Some functions take one int,
@@ -726,7 +726,9 @@ namespace LitePlacer
         Bitmap frame;
         static int CollectorCount = 0;
         static int ErrorCount = 0;
-        public  int FrameCount { get; set; }
+        public int FrameCount { get; set; }
+        public Bitmap ExternalImage;
+        public bool UseExternalImage = false;
 
     private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
@@ -772,7 +774,21 @@ namespace LitePlacer
             // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
             lock (ProtectedPictureBox2._locker)
             {
-                frame = (Bitmap)eventArgs.Frame.Clone();
+                if (UseExternalImage)
+                {
+                    if (ExternalImage != null)
+                    {
+                        frame = (Bitmap)ExternalImage.Clone();
+                    }
+                    else
+                    {
+                        frame = (Bitmap)eventArgs.Frame.Clone();
+                    }
+                }
+                else
+                {
+                    frame = (Bitmap)eventArgs.Frame.Clone();
+                }
             }
 
             if (DisplayFunctions != null)
@@ -2122,7 +2138,7 @@ namespace LitePlacer
 
         // Caller = any function doing measurement from video frames. 
         // The list of functions processing the image used in measurements, set by caller:
-        List<AForgeFunction> MeasurementFunctions = new List<AForgeFunction>();
+        public List<AForgeFunction> MeasurementFunctions = new List<AForgeFunction>();
 
         // Measurement parameters: min and max size, max distance from initial location, set by caller:
         public MeasurementParametersClass MeasurementParameters = new MeasurementParametersClass();
@@ -2145,7 +2161,7 @@ namespace LitePlacer
         // processes it with the MeasurementFunctions list and returns the processed frame.
 
 
-        private Bitmap GetMeasurementFrame()
+        public Bitmap GetMeasurementFrame()
         {
             if (JoggingRequested)
             {
@@ -2161,7 +2177,7 @@ namespace LitePlacer
                 {
                     break;
                 }
-                Thread.Sleep(10);
+                Thread.Sleep(1);
                 Application.DoEvents();
             }
             if (CopyFrame)

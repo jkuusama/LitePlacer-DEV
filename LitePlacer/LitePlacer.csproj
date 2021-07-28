@@ -177,6 +177,7 @@
     <Compile Include="AskToCreate.Designer.cs">
       <DependentUpon>AskToCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImagesForCameras.cs" />
     <Compile Include="LatchBackoff.cs">
       <SubType>Form</SubType>
     </Compile>

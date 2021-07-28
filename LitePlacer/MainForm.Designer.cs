@@ -670,6 +670,20 @@
             this.CalibrateNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
             this.label226 = new System.Windows.Forms.Label();
             this.NoOfNozzlesOnVideoSetup_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.StoredImages_tabPage = new System.Windows.Forms.TabPage();
+            this.StoredImageSetDelay_button = new System.Windows.Forms.Button();
+            this.StoredImageMeasureDelay_button = new System.Windows.Forms.Button();
+            this.label160 = new System.Windows.Forms.Label();
+            this.StoredImageSaveAll_button = new System.Windows.Forms.Button();
+            this.StoredImageLoadAll_button = new System.Windows.Forms.Button();
+            this.StoredImageFilename_label = new System.Windows.Forms.Label();
+            this.StoredImageSaveOne_button = new System.Windows.Forms.Button();
+            this.StoredImageLoadOne_button = new System.Windows.Forms.Button();
+            this.StoredImageSnapshot_button = new System.Windows.Forms.Button();
+            this.ImageNumber_label = new System.Windows.Forms.Label();
+            this.LeftArrowImage_button = new System.Windows.Forms.Button();
+            this.RightArrowImage_button = new System.Windows.Forms.Button();
+            this.UseStoredImage_checkBox = new System.Windows.Forms.CheckBox();
             this.HideAdvanced_tabPage = new System.Windows.Forms.TabPage();
             this.SpecialProcessing_button = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -873,6 +887,7 @@
             this.AdvancedProcessing_tabControl.SuspendLayout();
             this.NozzleCalibration_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzlesOnVideoSetup_numericUpDown)).BeginInit();
+            this.StoredImages_tabPage.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.B_numericUpDown)).BeginInit();
@@ -8069,11 +8084,12 @@
             // AdvancedProcessing_tabControl
             // 
             this.AdvancedProcessing_tabControl.Controls.Add(this.NozzleCalibration_tabPage);
+            this.AdvancedProcessing_tabControl.Controls.Add(this.StoredImages_tabPage);
             this.AdvancedProcessing_tabControl.Controls.Add(this.HideAdvanced_tabPage);
-            this.AdvancedProcessing_tabControl.Location = new System.Drawing.Point(823, 7);
+            this.AdvancedProcessing_tabControl.Location = new System.Drawing.Point(820, 6);
             this.AdvancedProcessing_tabControl.Name = "AdvancedProcessing_tabControl";
             this.AdvancedProcessing_tabControl.SelectedIndex = 0;
-            this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(419, 145);
+            this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(419, 146);
             this.AdvancedProcessing_tabControl.TabIndex = 308;
             this.AdvancedProcessing_tabControl.Visible = false;
             // 
@@ -8088,7 +8104,7 @@
             this.NozzleCalibration_tabPage.Location = new System.Drawing.Point(4, 22);
             this.NozzleCalibration_tabPage.Name = "NozzleCalibration_tabPage";
             this.NozzleCalibration_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.NozzleCalibration_tabPage.Size = new System.Drawing.Size(411, 119);
+            this.NozzleCalibration_tabPage.Size = new System.Drawing.Size(411, 120);
             this.NozzleCalibration_tabPage.TabIndex = 0;
             this.NozzleCalibration_tabPage.Text = "Nozzle Calibration";
             this.NozzleCalibration_tabPage.UseVisualStyleBackColor = true;
@@ -8159,12 +8175,170 @@
             0,
             0});
             // 
+            // StoredImages_tabPage
+            // 
+            this.StoredImages_tabPage.Controls.Add(this.StoredImageSetDelay_button);
+            this.StoredImages_tabPage.Controls.Add(this.StoredImageMeasureDelay_button);
+            this.StoredImages_tabPage.Controls.Add(this.label160);
+            this.StoredImages_tabPage.Controls.Add(this.StoredImageSaveAll_button);
+            this.StoredImages_tabPage.Controls.Add(this.StoredImageLoadAll_button);
+            this.StoredImages_tabPage.Controls.Add(this.StoredImageFilename_label);
+            this.StoredImages_tabPage.Controls.Add(this.StoredImageSaveOne_button);
+            this.StoredImages_tabPage.Controls.Add(this.StoredImageLoadOne_button);
+            this.StoredImages_tabPage.Controls.Add(this.StoredImageSnapshot_button);
+            this.StoredImages_tabPage.Controls.Add(this.ImageNumber_label);
+            this.StoredImages_tabPage.Controls.Add(this.LeftArrowImage_button);
+            this.StoredImages_tabPage.Controls.Add(this.RightArrowImage_button);
+            this.StoredImages_tabPage.Controls.Add(this.UseStoredImage_checkBox);
+            this.StoredImages_tabPage.Location = new System.Drawing.Point(4, 22);
+            this.StoredImages_tabPage.Name = "StoredImages_tabPage";
+            this.StoredImages_tabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.StoredImages_tabPage.Size = new System.Drawing.Size(411, 120);
+            this.StoredImages_tabPage.TabIndex = 2;
+            this.StoredImages_tabPage.Text = "Stored Images";
+            this.StoredImages_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // StoredImageSetDelay_button
+            // 
+            this.StoredImageSetDelay_button.Location = new System.Drawing.Point(88, 77);
+            this.StoredImageSetDelay_button.Name = "StoredImageSetDelay_button";
+            this.StoredImageSetDelay_button.Size = new System.Drawing.Size(60, 23);
+            this.StoredImageSetDelay_button.TabIndex = 12;
+            this.StoredImageSetDelay_button.Text = "Set";
+            this.toolTip1.SetToolTip(this.StoredImageSetDelay_button, resources.GetString("StoredImageSetDelay_button.ToolTip"));
+            this.StoredImageSetDelay_button.UseVisualStyleBackColor = true;
+            this.StoredImageSetDelay_button.Click += new System.EventHandler(this.StoredImageSetDelay_button_Click);
+            // 
+            // StoredImageMeasureDelay_button
+            // 
+            this.StoredImageMeasureDelay_button.Location = new System.Drawing.Point(7, 77);
+            this.StoredImageMeasureDelay_button.Name = "StoredImageMeasureDelay_button";
+            this.StoredImageMeasureDelay_button.Size = new System.Drawing.Size(75, 23);
+            this.StoredImageMeasureDelay_button.TabIndex = 11;
+            this.StoredImageMeasureDelay_button.Text = "Measure";
+            this.toolTip1.SetToolTip(this.StoredImageMeasureDelay_button, resources.GetString("StoredImageMeasureDelay_button.ToolTip"));
+            this.StoredImageMeasureDelay_button.UseVisualStyleBackColor = true;
+            this.StoredImageMeasureDelay_button.Click += new System.EventHandler(this.StoredImageMeasureDelay_button_Click);
+            // 
+            // label160
+            // 
+            this.label160.AutoSize = true;
+            this.label160.Location = new System.Drawing.Point(6, 61);
+            this.label160.Name = "label160";
+            this.label160.Size = new System.Drawing.Size(144, 13);
+            this.label160.TabIndex = 10;
+            this.label160.Text = "Measurement Delay (frames):";
+            // 
+            // StoredImageSaveAll_button
+            // 
+            this.StoredImageSaveAll_button.Location = new System.Drawing.Point(281, 88);
+            this.StoredImageSaveAll_button.Name = "StoredImageSaveAll_button";
+            this.StoredImageSaveAll_button.Size = new System.Drawing.Size(115, 23);
+            this.StoredImageSaveAll_button.TabIndex = 9;
+            this.StoredImageSaveAll_button.Text = "Save All";
+            this.StoredImageSaveAll_button.UseVisualStyleBackColor = true;
+            this.StoredImageSaveAll_button.Click += new System.EventHandler(this.StoredImageSaveAll_button_Click);
+            // 
+            // StoredImageLoadAll_button
+            // 
+            this.StoredImageLoadAll_button.Location = new System.Drawing.Point(281, 59);
+            this.StoredImageLoadAll_button.Name = "StoredImageLoadAll_button";
+            this.StoredImageLoadAll_button.Size = new System.Drawing.Size(115, 23);
+            this.StoredImageLoadAll_button.TabIndex = 8;
+            this.StoredImageLoadAll_button.Text = "Load All";
+            this.StoredImageLoadAll_button.UseVisualStyleBackColor = true;
+            this.StoredImageLoadAll_button.Click += new System.EventHandler(this.StoredImageLoadAll_button_Click);
+            // 
+            // StoredImageFilename_label
+            // 
+            this.StoredImageFilename_label.AutoSize = true;
+            this.StoredImageFilename_label.Location = new System.Drawing.Point(157, 11);
+            this.StoredImageFilename_label.Name = "StoredImageFilename_label";
+            this.StoredImageFilename_label.Size = new System.Drawing.Size(49, 13);
+            this.StoredImageFilename_label.TabIndex = 7;
+            this.StoredImageFilename_label.Text = "Filename";
+            // 
+            // StoredImageSaveOne_button
+            // 
+            this.StoredImageSaveOne_button.Location = new System.Drawing.Point(160, 88);
+            this.StoredImageSaveOne_button.Name = "StoredImageSaveOne_button";
+            this.StoredImageSaveOne_button.Size = new System.Drawing.Size(115, 23);
+            this.StoredImageSaveOne_button.TabIndex = 6;
+            this.StoredImageSaveOne_button.Text = "Save to Disk";
+            this.StoredImageSaveOne_button.UseVisualStyleBackColor = true;
+            this.StoredImageSaveOne_button.Click += new System.EventHandler(this.StoredImageSaveOne_button_Click);
+            // 
+            // StoredImageLoadOne_button
+            // 
+            this.StoredImageLoadOne_button.Location = new System.Drawing.Point(160, 59);
+            this.StoredImageLoadOne_button.Name = "StoredImageLoadOne_button";
+            this.StoredImageLoadOne_button.Size = new System.Drawing.Size(115, 23);
+            this.StoredImageLoadOne_button.TabIndex = 5;
+            this.StoredImageLoadOne_button.Text = "Load from Disk";
+            this.StoredImageLoadOne_button.UseVisualStyleBackColor = true;
+            this.StoredImageLoadOne_button.Click += new System.EventHandler(this.StoredImageLoadOne_button_Click);
+            // 
+            // StoredImageSnapshot_button
+            // 
+            this.StoredImageSnapshot_button.Location = new System.Drawing.Point(160, 30);
+            this.StoredImageSnapshot_button.Name = "StoredImageSnapshot_button";
+            this.StoredImageSnapshot_button.Size = new System.Drawing.Size(115, 23);
+            this.StoredImageSnapshot_button.TabIndex = 4;
+            this.StoredImageSnapshot_button.Text = "Take snapshot";
+            this.toolTip1.SetToolTip(this.StoredImageSnapshot_button, "Takes an image from display");
+            this.StoredImageSnapshot_button.UseVisualStyleBackColor = true;
+            this.StoredImageSnapshot_button.Click += new System.EventHandler(this.StoredImageSnapshot_button_Click);
+            // 
+            // ImageNumber_label
+            // 
+            this.ImageNumber_label.AutoSize = true;
+            this.ImageNumber_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ImageNumber_label.Location = new System.Drawing.Point(45, 30);
+            this.ImageNumber_label.Name = "ImageNumber_label";
+            this.ImageNumber_label.Size = new System.Drawing.Size(18, 20);
+            this.ImageNumber_label.TabIndex = 3;
+            this.ImageNumber_label.Text = "1";
+            // 
+            // LeftArrowImage_button
+            // 
+            this.LeftArrowImage_button.Location = new System.Drawing.Point(7, 30);
+            this.LeftArrowImage_button.Name = "LeftArrowImage_button";
+            this.LeftArrowImage_button.Size = new System.Drawing.Size(32, 23);
+            this.LeftArrowImage_button.TabIndex = 2;
+            this.LeftArrowImage_button.Text = "◀";
+            this.toolTip1.SetToolTip(this.LeftArrowImage_button, "Cycles the stored image downward");
+            this.LeftArrowImage_button.UseVisualStyleBackColor = true;
+            this.LeftArrowImage_button.Click += new System.EventHandler(this.LeftArrowImage_button_Click);
+            // 
+            // RightArrowImage_button
+            // 
+            this.RightArrowImage_button.Location = new System.Drawing.Point(78, 29);
+            this.RightArrowImage_button.Name = "RightArrowImage_button";
+            this.RightArrowImage_button.Size = new System.Drawing.Size(32, 23);
+            this.RightArrowImage_button.TabIndex = 1;
+            this.RightArrowImage_button.Text = "▶";
+            this.toolTip1.SetToolTip(this.RightArrowImage_button, "Cycles the stored image Upward");
+            this.RightArrowImage_button.UseVisualStyleBackColor = true;
+            this.RightArrowImage_button.Click += new System.EventHandler(this.RightArrowImage_button_Click);
+            // 
+            // UseStoredImage_checkBox
+            // 
+            this.UseStoredImage_checkBox.AutoSize = true;
+            this.UseStoredImage_checkBox.Location = new System.Drawing.Point(7, 7);
+            this.UseStoredImage_checkBox.Name = "UseStoredImage_checkBox";
+            this.UseStoredImage_checkBox.Size = new System.Drawing.Size(108, 17);
+            this.UseStoredImage_checkBox.TabIndex = 0;
+            this.UseStoredImage_checkBox.Text = "Use stored image";
+            this.toolTip1.SetToolTip(this.UseStoredImage_checkBox, "uses a stored image for the selected camera");
+            this.UseStoredImage_checkBox.UseVisualStyleBackColor = true;
+            this.UseStoredImage_checkBox.CheckedChanged += new System.EventHandler(this.UseStoredImage_checkBox_CheckedChanged);
+            // 
             // HideAdvanced_tabPage
             // 
             this.HideAdvanced_tabPage.Location = new System.Drawing.Point(4, 22);
             this.HideAdvanced_tabPage.Name = "HideAdvanced_tabPage";
             this.HideAdvanced_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.HideAdvanced_tabPage.Size = new System.Drawing.Size(411, 119);
+            this.HideAdvanced_tabPage.Size = new System.Drawing.Size(411, 120);
             this.HideAdvanced_tabPage.TabIndex = 1;
             this.HideAdvanced_tabPage.Text = "Hide Advanced Controls";
             this.HideAdvanced_tabPage.UseVisualStyleBackColor = true;
@@ -8177,6 +8351,8 @@
             this.SpecialProcessing_button.Size = new System.Drawing.Size(110, 23);
             this.SpecialProcessing_button.TabIndex = 0;
             this.SpecialProcessing_button.Text = "Special Options";
+            this.toolTip1.SetToolTip(this.SpecialProcessing_button, "Special Options are functions, that are seldom used or needed, and\r\ntherefore, no" +
+        "w shown for regular use. This button opens them.");
             this.SpecialProcessing_button.UseVisualStyleBackColor = true;
             this.SpecialProcessing_button.Click += new System.EventHandler(this.SpecialProcessing_button_Click);
             // 
@@ -9980,6 +10156,8 @@
             this.NozzleCalibration_tabPage.ResumeLayout(false);
             this.NozzleCalibration_tabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoOfNozzlesOnVideoSetup_numericUpDown)).EndInit();
+            this.StoredImages_tabPage.ResumeLayout(false);
+            this.StoredImages_tabPage.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
@@ -10804,6 +10982,20 @@
         public System.Windows.Forms.Label UpCameraFps_label;
         private System.Windows.Forms.Button UpCamProperties_button;
         private System.Windows.Forms.Button DownCamProperties_button;
+        private System.Windows.Forms.TabPage StoredImages_tabPage;
+        private System.Windows.Forms.Button StoredImageSetDelay_button;
+        private System.Windows.Forms.Button StoredImageMeasureDelay_button;
+        private System.Windows.Forms.Label label160;
+        private System.Windows.Forms.Button StoredImageSaveAll_button;
+        private System.Windows.Forms.Button StoredImageLoadAll_button;
+        private System.Windows.Forms.Label StoredImageFilename_label;
+        private System.Windows.Forms.Button StoredImageSaveOne_button;
+        private System.Windows.Forms.Button StoredImageLoadOne_button;
+        private System.Windows.Forms.Button StoredImageSnapshot_button;
+        private System.Windows.Forms.Label ImageNumber_label;
+        private System.Windows.Forms.Button LeftArrowImage_button;
+        private System.Windows.Forms.Button RightArrowImage_button;
+        private System.Windows.Forms.CheckBox UseStoredImage_checkBox;
     }
 }
 
