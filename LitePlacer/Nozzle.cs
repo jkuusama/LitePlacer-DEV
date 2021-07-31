@@ -78,7 +78,7 @@ namespace LitePlacer
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (System.Exception excep)
             {
-                MainForm.DisplayText("Saving Video algorithms failed. " + excep.Message);
+                MainForm.DisplayText("Saving nozzle calibration failed. " + excep.Message);
                 return false;
             }
 #pragma warning restore CA1031 // Do not catch general exception types

@@ -128,18 +128,6 @@ namespace LitePlacer
         // We need "goto" to different features, currently circles, rectangles or both
         public enum FeatureType { Circle, Rectangle, Both };
 
-        // =================================================================================
-        // File names
-        public const string VIDEOALGORITHMS_DATAFILE = "LitePlacer.VideoAlgorithms";
-        public const string APPLICATIONSETTINGS_DATAFILE = "LitePlacer.Appsettings";
-        public const string TAPES_DATAFILE = "LitePlacer.TapesData_v2";
-        public const string NOZZLES_CALIBRATION_DATAFILE = "LitePlacer.NozzlesCalibrationData_v3";
-        public const string NOZZLES_LOAD_DATAFILE = "LitePlacer.NozzlesLoadData_v2";
-        public const string NOZZLES_UNLOAD_DATAFILE = "LitePlacer.NozzlesUnLoadData_v2";
-        public const string NOZZLES_VISIONPARAMETERS_DATAFILE = "LitePlacer.NozzlesVisionParameters_v21";
-        public const string BOARDSETTINGS_DATAFILE = "LitePlacer.BoardSettings";
-
-
         public string GetPath()
         {
             return Application.StartupPath + '\\';
@@ -161,19 +149,18 @@ namespace LitePlacer
         // =================================================================================
         private void Form1_Load(object sender, EventArgs e)
         {
-            StartingUp = false;
+            StartingUp = false; // we want the first messages to get through
             this.Size = new Size(1280, 900);
 
             DisplayText("Application Start", KnownColor.Black, true);
             DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
 
             string path = GetPath();
-
             SettingsOps = new AppSettings(this);
             Setting = SettingsOps.Load(path + APPLICATIONSETTINGS_DATAFILE);
             Setting.General_SaveFilesAtClosing = true;
 
-            StartingUp = true;  // we want the messages to get through from the settings load
+            StartingUp = true;  
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
@@ -243,6 +230,11 @@ namespace LitePlacer
             LabelTestButtons();
             AttachButtonLogging(this.Controls);
 
+            if (!CreateDataBackups())
+            {
+                Environment.Exit(0);
+            }
+
             BasicSetupTab_Begin();      // Form comes up with basic setup tab, but the tab change event doesn't fire
 
 
@@ -293,7 +285,9 @@ namespace LitePlacer
             // ======== Setup Video Processing tab:  (needs to be first, other pages need the algorithms info)
 
             InitVideoAlgorithmsUI();
-
+            // before the feature is fully implemented, hide the stored images tab. This so, that 
+            // I can release a more important bugfix.
+            AdvancedProcessing_tabControl.TabPages.Remove(StoredImages_tabPage);
 
             // ======== Run Job tab:
 
@@ -361,13 +355,97 @@ namespace LitePlacer
         // =================================================================================
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            bool OK = true;
-            bool res;
             Setting.CNC_EnableMouseWheelJog = MouseScroll_checkBox.Checked;
             Setting.CNC_EnableNumPadJog = NumPadJog_checkBox.Checked;
             Setting.General_CheckForUpdates = CheckForUpdate_checkBox.Checked;
             Setting.General_MuteLogging = DisableLog_checkBox.Checked;
 
+            if (!SaveAllData())
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            if (Cnc.Connected)
+            {
+                Cnc.PumpIsOn = true;        // so it will be turned off, no matter what we think the status
+                PumpOff();
+                Cnc.VacuumDefaultSetting();
+                Cnc.MotorPowerOff();
+                Cnc.EnableZswitches();
+            }
+            Cnc.Close();
+
+            if (DownCamera.IsRunning())
+            {
+                DownCamera.Close();
+            }
+            if (UpCamera.IsRunning())
+            {
+                UpCamera.Close();
+            }
+            for (int i = 0; i < 20; i++)
+            {
+                Thread.Sleep(2);
+                Application.DoEvents();
+            }
+            Environment.Exit(0);    // kills all processes and threads (solves exit during startup issue)
+        }
+
+        // ==============================================================================================
+        // Save and load data
+        // =================================================================================
+
+        // =================================================================================
+        // File names
+        public const string VIDEOALGORITHMS_DATAFILE = "LitePlacer.VideoAlgorithms";
+        public const string APPLICATIONSETTINGS_DATAFILE = "LitePlacer.Appsettings";
+        public const string TAPES_DATAFILE = "LitePlacer.TapesData_v2";
+        public const string NOZZLES_CALIBRATION_DATAFILE = "LitePlacer.NozzlesCalibrationData_v3";
+        public const string NOZZLES_LOAD_DATAFILE = "LitePlacer.NozzlesLoadData_v2";
+        public const string NOZZLES_UNLOAD_DATAFILE = "LitePlacer.NozzlesUnLoadData_v2";
+        public const string NOZZLES_VISIONPARAMETERS_DATAFILE = "LitePlacer.NozzlesVisionParameters_v21";
+        public const string BOARDSETTINGS_DATAFILE = "LitePlacer.BoardSettings";
+        public const string BACKUP_DIRNAME = "DataBackup";
+
+        private List<string> DataFiles = new List<string> {
+            VIDEOALGORITHMS_DATAFILE, APPLICATIONSETTINGS_DATAFILE, TAPES_DATAFILE,
+            NOZZLES_CALIBRATION_DATAFILE, NOZZLES_LOAD_DATAFILE, NOZZLES_UNLOAD_DATAFILE,
+            NOZZLES_VISIONPARAMETERS_DATAFILE, BOARDSETTINGS_DATAFILE};
+
+
+        private bool CreateDataBackups()
+        {
+            DisplayText("Creating data file backups:");
+            string FilesPath = GetPath();
+            string BackupsPath = FilesPath + BACKUP_DIRNAME;
+            try
+            {
+                // If backup directory doesn't exist, create it. CreateDirectory() does the check automatically
+                Directory.CreateDirectory(BackupsPath);
+                foreach (var fName in DataFiles)
+                {
+                    // On first runs, not all data files exist. that is not an error
+                    if (File.Exists(fName))
+                    {
+                        File.Copy(Path.Combine(FilesPath, fName), Path.Combine(BackupsPath, fName), true);
+                    }
+                }
+                return true;
+            }
+            catch (System.Exception excep)
+            {
+                DisplayText(excep.Message);
+                return false;
+            }
+
+        }
+
+
+        private bool SaveAllData()
+        {
+            bool OK = true;
+            bool res;
             if (Setting.General_SaveFilesAtClosing)
             {
                 string path = GetPath();
@@ -409,37 +487,13 @@ namespace LitePlacer
                         "Data save problem", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.No)
                     {
-                        e.Cancel = true;
-                        return;
+                        return false;
                     }
                 }
             }
-
-            if (Cnc.Connected)
-            {
-                Cnc.PumpIsOn = true;        // so it will be turned off, no matter what we think the status
-                PumpOff();
-                Cnc.VacuumDefaultSetting();
-                Cnc.MotorPowerOff();
-                Cnc.EnableZswitches();
-            }
-            Cnc.Close();
-
-            if (DownCamera.IsRunning())
-            {
-                DownCamera.Close();
-            }
-            if (UpCamera.IsRunning())
-            {
-                UpCamera.Close();
-            }
-            for (int i = 0; i < 20; i++)
-            {
-                Thread.Sleep(2);
-                Application.DoEvents();
-            }
-            Environment.Exit(0);    // kills all processes and threads (solves exit during startup issue)
+            return true;
         }
+
 
         // ==============================================================================================
         // New software release checks
@@ -805,6 +859,7 @@ namespace LitePlacer
         {
             try
             {
+                DisplayText("Saving "+ FileName);
                 using (BinaryWriter bw = new BinaryWriter(File.Open(FileName, FileMode.Create)))
                 {
                     bw.Write(Ver2FormatID);
@@ -6030,6 +6085,7 @@ namespace LitePlacer
         // =================================================================================
         private bool SaveTempCADdata()
         {
+            DisplayText("Saving temp CAD data file");
             if ( CadFileName_label.Text!="----")
             {
                 string FileName = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
@@ -6043,6 +6099,7 @@ namespace LitePlacer
 
         private bool SaveTempJobData()
         {
+            DisplayText("Saving temp job data file");
             if (CadFileName_label.Text != "----")
             {
                 string FileName = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;

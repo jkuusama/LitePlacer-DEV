@@ -202,7 +202,7 @@ namespace LitePlacer
         {
             try
             {
-                MainForm.DisplayText("Writing " + FileName);
+                MainForm.DisplayText("Saving application settings to " + FileName);
                 File.WriteAllText(FileName, JsonConvert.SerializeObject(pSettings, Formatting.Indented));
                 MainForm.DisplayText("Done.");
                 return true;
@@ -236,7 +236,7 @@ namespace LitePlacer
                 MySettings settings = new MySettings();
                 if (File.Exists(FileName))
                 {
-                    MainForm.DisplayText("Reading " + FileName);
+                    MainForm.DisplayText("Reading application settings from " + FileName);
                     settings = JsonConvert.DeserializeObject<MySettings>(File.ReadAllText(FileName));
 
                     // JsonConvert.DeserializeObject can return null if the setings file is corrupt,
