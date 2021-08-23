@@ -3691,7 +3691,7 @@ namespace LitePlacer
             DownCamera.DesiredX = Setting.DownCam_DesiredX;
             DownCamera.DesiredY = Setting.DownCam_DesiredY;
 
-            // StartDownCamera_m();
+            StartDownCamera_m();        // was disabled, but seems to cause loss of connection(?).
             SelectCamera(DownCamera);
             if (DownCamera.IsRunning())
             {

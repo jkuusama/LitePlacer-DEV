@@ -1,30 +1,17 @@
-Build date 06/28/2021
+Build date 08/23/2021
+
+Previous release 06/28/2021, changes after that:
 
 New Features, significant changes
 
-* vision processing and camera setup rewritten: There is now
-  unlimited number of vision algorithms. This allows many new features
-  in the future!
-* Option to draw video processing results on top of unprocessed image
-* Retry (with option to jog, tune vision algorithm etc) on visual meas. error
-* Visual processing finds components by pads and by outline
-* optional A moves optimisation (from 1 to 359 is two deg counterclockwise)
-* All features from the main version included
-* Position validity (homed status) is now checked on operations that causes moves
-  or needs valid position
-* Supports setup of feeders (fixed pickup position) from areas where camera doesn't reach
-* Several appearance and internal code changes
-* ctrl+click bookmark button now sets bookmark
-* Many minor UI enhancements 
+* 
 
 Bug Fixes 
 
-* Too many to list
-
-BREAKING CHANGES
-
-* Z height calibration needs to be redone
-* Old vision algorithm definitions are not read back (take screenshots)
+* removed automatic control board identity check
+* camera switching, stopping and status reporting improved
+* on screen image processing paused for measurements (faster operation)
+* minor reporting ang logging changes
 
 Known issues
 
@@ -32,11 +19,4 @@ Known issues
 * The application does not automatically restart when loading new settings from file. (there is now a dialog, though)
 * Place fast sometimes uses last hole (which might not be whole), not the second to last as excpected
 
-Changes from 06/18:
-
-* Added frame rate measurement to camera setup
-* Added also the nominal frame rate promise from the camera
-* AForge vision libraries updated; this should give better video performance
-* Warning for measurement using default pixel size
-* Box now zooms with the rest of the display
 

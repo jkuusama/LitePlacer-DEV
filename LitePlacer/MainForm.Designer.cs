@@ -2209,6 +2209,7 @@
             this.UpCamProperties_button.TabIndex = 233;
             this.UpCamProperties_button.Text = "Properties";
             this.UpCamProperties_button.UseVisualStyleBackColor = true;
+            this.UpCamProperties_button.Visible = false;
             this.UpCamProperties_button.Click += new System.EventHandler(this.UpCamProperties_button_Click);
             // 
             // UpCameraFps_label
@@ -2620,6 +2621,7 @@
             this.DownCamProperties_button.TabIndex = 216;
             this.DownCamProperties_button.Text = "Properties";
             this.DownCamProperties_button.UseVisualStyleBackColor = true;
+            this.DownCamProperties_button.Visible = false;
             this.DownCamProperties_button.Click += new System.EventHandler(this.DownCamProperties_button_Click);
             // 
             // DownCameraFps_label
