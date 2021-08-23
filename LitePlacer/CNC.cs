@@ -402,6 +402,11 @@ namespace LitePlacer
             Port = port;
 
             Controlboard = ControlBoardType.TinyG;       // to direct the response to correct module
+            return true;
+
+            // identity check causes issues. Remove for now.
+            // TODO: Perhaps a dropdown list TinyG/Duet3/other?
+            /*
             if (TinyG.CheckIdentity())
             {
                 MainForm.Motors_label.Text = "Axes setup (TinyG board):";
@@ -435,6 +440,7 @@ namespace LitePlacer
             MainForm.DisplayText("*** Cnc.Connect(), did not find a supported board.", KnownColor.DarkRed, true);
             RaiseError();
             return false;
+            */
         }
 
 
