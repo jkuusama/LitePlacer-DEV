@@ -402,6 +402,9 @@ namespace LitePlacer
             Port = port;
 
             Controlboard = ControlBoardType.TinyG;       // to direct the response to correct module
+            MainForm.Motors_label.Text = "Axes setup (TinyG board):";
+            MainForm.TinyGMotors_tabControl.Visible = true;
+            ErrorState = false;
             return true;
 
             // identity check causes issues. Remove for now.

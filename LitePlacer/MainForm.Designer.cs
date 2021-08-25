@@ -8093,7 +8093,6 @@
             this.AdvancedProcessing_tabControl.SelectedIndex = 0;
             this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(419, 146);
             this.AdvancedProcessing_tabControl.TabIndex = 308;
-            this.AdvancedProcessing_tabControl.Visible = false;
             // 
             // NozzleCalibration_tabPage
             // 
@@ -8207,7 +8206,9 @@
             this.StoredImageSetDelay_button.Size = new System.Drawing.Size(60, 23);
             this.StoredImageSetDelay_button.TabIndex = 12;
             this.StoredImageSetDelay_button.Text = "Set";
-            this.toolTip1.SetToolTip(this.StoredImageSetDelay_button, resources.GetString("StoredImageSetDelay_button.ToolTip"));
+            this.toolTip1.SetToolTip(this.StoredImageSetDelay_button, "Sets the camera to ignore the number of frames shown above before each measuremen" +
+        "t.\r\nClick \"Set\" when the image number above is on the last unsharp image number." +
+        "\r\n");
             this.StoredImageSetDelay_button.UseVisualStyleBackColor = true;
             this.StoredImageSetDelay_button.Click += new System.EventHandler(this.StoredImageSetDelay_button_Click);
             // 

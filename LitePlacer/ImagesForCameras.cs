@@ -31,7 +31,7 @@ namespace LitePlacer
         }
 
 
-        private void UseStoredImage_checkBox_CheckedChanged(object sender, EventArgs e)
+        private void UseStoredImage()
         {
             Camera Cam = DownCamera;
             if (UpCam_radioButton.Checked)
@@ -40,9 +40,9 @@ namespace LitePlacer
             }
             if (UseStoredImage_checkBox.Checked)
             {
-                if (Images[ImageNumber]==null)
+                if (Images[ImageNumber] == null)
                 {
-                    DisplayText("No image loaded at image position "+ ImageNumber.ToString());
+                    DisplayText("No image loaded at image position " + ImageNumber.ToString());
                     return;
                 }
                 if (Cam.PauseProcessing || !Cam.IsRunning())
@@ -50,7 +50,6 @@ namespace LitePlacer
                     DisplayText("Camera is not active");
                     return;
                 }
-                Cam.ExternalImage = (Bitmap)Images[ImageNumber];
                 Cam.Paused = false;
                 Cam.PauseProcessing = true;
                 while (!Cam.Paused)
@@ -58,6 +57,7 @@ namespace LitePlacer
                     Thread.Sleep(10);
                     Application.DoEvents();
                 }
+                Cam.ExternalImage = (Bitmap)Images[ImageNumber].Clone();
                 Cam.UseExternalImage = true;
                 Cam.PauseProcessing = false;
                 return;
@@ -68,17 +68,27 @@ namespace LitePlacer
             }
         }
 
+
+        private void UseStoredImage_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UseStoredImage();
+        }
+
+
         private void LeftArrowImage_button_Click(object sender, EventArgs e)
         {
             ImageNumber--;
             UpdateImageLabels();
+            UseStoredImage();
         }
 
         private void RightArrowImage_button_Click(object sender, EventArgs e)
         {
             ImageNumber++;
             UpdateImageLabels();
+            UseStoredImage();
         }
+
 
         private void UpdateImageLabels()
         {
@@ -98,8 +108,8 @@ namespace LitePlacer
             {
                 RightArrowImage_button.Visible = true;
             }
-            ImageNumber_label.Text = (ImageNumber + 1).ToString();
-            StoredImageFilename_label.Text = (ImageNumber + 1).ToString() + ": " + ImageFilenames[ImageNumber];
+            ImageNumber_label.Text = ImageNumber.ToString();
+            StoredImageFilename_label.Text = ImageNumber.ToString() + ": " + ImageFilenames[ImageNumber];
 
         }
 
@@ -107,7 +117,6 @@ namespace LitePlacer
         private void StoredImageMeasureDelay_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-
             Camera Cam = DownCamera;
             if (UpCam_radioButton.Checked)
             {
@@ -154,7 +163,14 @@ namespace LitePlacer
 
         private void StoredImageSetDelay_button_Click(object sender, EventArgs e)
         {
-
+            if (DownCam_radioButton.Checked)
+            {
+                DownCamera.MeasurementDelay = ImageNumber;
+            }
+            else
+            {
+                UpCamera.MeasurementDelay = ImageNumber;
+            }
         }
 
         private void StoredImageSnapshot_button_Click(object sender, EventArgs e)

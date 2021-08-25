@@ -25,13 +25,60 @@ namespace LitePlacer
     public class Camera
     {
 
+        // #pragma warning disable CA1034 // Nested types should not be visible
+
+        // ==================================================================
+        // Parameters:
+
+        public bool Active { get; set; }
+
+        public int FrameCenterX { get; set; }
+        public int FrameCenterY { get; set; }
+        public int FrameSizeX { get; set; }
+        public int FrameSizeY { get; set; }
+        public int DesiredX { get; set; }       // requested resolution
+        public int DesiredY { get; set; }
+        public System.Drawing.Point Resolution { get; set; }  // resolution in use
+
+        public string MonikerString { get; set; } = "unconnected";
+
+        public bool ReceivingFrames { get; set; }
+
+        public bool Mirror { get; set; }    // If image is mirrored (On upcam, this makes directions more logical)
+
+        public int Threshold { get; set; }                  // Threshold for all the "draw" functions
+        public bool GrayScale { get; set; }                 // If image is converted to grayscale 
+        public bool Invert { get; set; }                    // If image is inverted (makes most sense on grayscale, looking for black stuff on light background)
+        public bool DrawCross { get; set; }         // If crosshair cursor is drawn
+        public bool DrawArrow { get; set; }         // If arrow is drawn
+        public double ArrowAngle { get; set; }      // to which angle
+        public bool DrawSidemarks { get; set; }     // If marks on the side of the image are drawn
+        public double SideMarksX { get; set; }      // How many marks on top and bottom (X) and sides (Y)
+        public double SideMarksY { get; set; }      // (double, so you can do "SidemarksX= workarea_in_mm / 100;" to get mark every 10cm
+        public bool DrawDashedCross { get; set; }   // If a dashed crosshaircursor is drawn (so that the center remains visible)
+        public bool DrawGrid { get; set; }          // Draws aiming grid for parts alignment
+        public bool FindCircles { get; set; }       // Find and highlight circles in the image
+        public bool FindRectangles { get; set; }    // Find and draw regtangles in the image
+        public bool FindComponentByOutlines { get; set; }     // Finds a component and identifies its center, using its outline
+        public bool FindComponentByPads { get; set; }     // Finds a component and identifies its center, using its pads
+        public bool Draw_Snapshot { get; set; }     // Draws the snapshot on the image 
+        public bool PauseProcessing { get; set; }   // Drawing the video slows everything down. This can pause it for measurements.
+        public bool Paused = true;                 // set in video processing indicating it is safe to change processing function list
+        public bool TestAlgorithm { get; set; }
+        public bool DrawBox { get; set; }           // Draws a box on the image that is used for scale setting
+        public bool ShowProcessing = true;   // If processing is on, shows the processed image; if false, shows results on top of unprocessed image
+
+
+
+        // ==================================================================
+
         // Program has been crashing due to access of ImageBox.  As a shared resource it needs
         // to be accessed in protected regions.  The lock _locker is to be used for this purpose.
         // The OnPaint method in PictureBox runs in a second task.  By extending the PictureBox
         // class, overriding the OnPaint method and putting the call into a region protected
         // by _locker we can stop the crashing.
 
-// #pragma warning disable CA1034 // Nested types should not be visible
+
         public class ProtectedPictureBox2 : System.Windows.Forms.PictureBox
         {
             protected override void OnPaint(PaintEventArgs e)
@@ -57,7 +104,6 @@ namespace LitePlacer
             Name = _name;
         }
 
-        public bool Active { get; set; }
 
         public bool IsRunning()
         {
@@ -132,20 +178,6 @@ namespace LitePlacer
                 }
             }
         }
-
-        public int FrameCenterX { get; set; }
-        public int FrameCenterY { get; set; }
-        public int FrameSizeX { get; set; }
-        public int FrameSizeY { get; set; }
-        public int DesiredX { get; set; }       // requested resolution
-        public int DesiredY { get; set; }
-        public System.Drawing.Point Resolution { get; set; }  // resolution in use
-
-        public string MonikerString { get; set; } = "unconnected";
-
-        public bool ReceivingFrames { get; set; }
-
-        public bool Mirror { get; set; }    // If image is mirrored (On upcam, thins is more logical)
 
 
         // =================================================================================================
@@ -608,27 +640,6 @@ namespace LitePlacer
             }
         }
 
-        public int Threshold { get; set; }                  // Threshold for all the "draw" functions
-        public bool GrayScale { get; set; }                 // If image is converted to grayscale 
-        public bool Invert { get; set; }                    // If image is inverted (makes most sense on grayscale, looking for black stuff on light background)
-        public bool DrawCross { get; set; }         // If crosshair cursor is drawn
-        public bool DrawArrow { get; set; }         // If arrow is drawn
-        public double ArrowAngle { get; set; }      // to which angle
-        public bool DrawSidemarks { get; set; }     // If marks on the side of the image are drawn
-        public double SideMarksX { get; set; }      // How many marks on top and bottom (X) and sides (Y)
-        public double SideMarksY { get; set; }      // (double, so you can do "SidemarksX= workarea_in_mm / 100;" to get mark every 10cm
-        public bool DrawDashedCross { get; set; }   // If a dashed crosshaircursor is drawn (so that the center remains visible)
-        public bool DrawGrid { get; set; }          // Draws aiming grid for parts alignment
-        public bool FindCircles { get; set; }       // Find and highlight circles in the image
-        public bool FindRectangles { get; set; }    // Find and draw regtangles in the image
-        public bool FindComponentByOutlines { get; set; }     // Finds a component and identifies its center, using its outline
-        public bool FindComponentByPads { get; set; }     // Finds a component and identifies its center, using its pads
-        public bool Draw_Snapshot { get; set; }     // Draws the snapshot on the image 
-        public bool PauseProcessing { get; set; }   // Drawing the video slows everything down. This can pause it for measurements.
-        public bool Paused = true;                 // set in video processing indicating it is safe to change processing function list
-        public bool TestAlgorithm { get; set; }
-        public bool DrawBox { get; set; }           // Draws a box on the image that is used for scale setting
-        public bool ShowProcessing = true;   // If processing is on, shows the processed image; if false, shows results on top of unprocessed image
 
         private int boxSizeX;
         public int BoxSizeX                         // The box size
@@ -730,7 +741,24 @@ namespace LitePlacer
         public Bitmap ExternalImage;
         public bool UseExternalImage = false;
 
-    private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        public int MeasurementDelay = 0;           // Wait this many frames before returning the measurement frame
+        private int DelayCounter = 0;
+
+        private bool copyFr = false;
+        private bool CopyFrame          // Tells we need to take a frame from the stream
+        {
+            get
+            {
+                return copyFr;
+            }
+            set
+            {
+                DelayCounter = MeasurementDelay;
+                copyFr = value;
+            }
+        }
+
+        private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             if (eventArgs.Frame==null)
             {
@@ -751,12 +779,19 @@ namespace LitePlacer
             // Take a copy for measurements, if needed:
             if (CopyFrame)
             {
-                if (TemporaryFrame != null)
+                if (DelayCounter>0)
                 {
-                    TemporaryFrame.Dispose();
+                    DelayCounter--;
                 }
-                TemporaryFrame = (Bitmap)eventArgs.Frame.Clone();
-                CopyFrame = false;
+                else
+                {
+                    if (TemporaryFrame != null)
+                    {
+                        TemporaryFrame.Dispose();
+                    }
+                    TemporaryFrame = (Bitmap)eventArgs.Frame.Clone();
+                    CopyFrame = false;
+                }
             };
 
             if (PauseProcessing)
@@ -778,7 +813,7 @@ namespace LitePlacer
                 {
                     if (ExternalImage != null)
                     {
-                        frame = (Bitmap)ExternalImage.Clone();
+                        frame = ExternalImage;
                     }
                     else
                     {
@@ -1508,21 +1543,6 @@ namespace LitePlacer
             }
             g.Dispose();
             OrangePen.Dispose();
-
-
-            /*
-
-            Graphics g = Graphics.FromImage(bitmap);
-            Pen OrangePen = new Pen(Color.DarkOrange, 3);
-            for (int i = 0, n = Components.Count; i < n; i++)
-            {
-                g.DrawPolygon(OrangePen, ToPointsArray(Components[i].BoundingBox.Corners));
-                ArrowAngle = Components[i].Angle;
-                DrawArrowFunct(ref bitmap, (int)Components[i].Center.X, (int)Components[i].Center.Y, (int)(Components[i].Xsize*0.3));
-            }
-            g.Dispose();
-            OrangePen.Dispose();
-            */
         }
 
         // ==========================================================================================================
@@ -1685,83 +1705,6 @@ namespace LitePlacer
             g.Dispose();
             LimePen.Dispose();
         }
-
-        // =========================================================
-        private int FindClosestRectangle(List<Shapes.Rectangle> Rectangles)
-        {
-            if (Rectangles.Count == 0)
-            {
-                return 0;
-            }
-            int closest = 0;
-            float X = (Rectangles[0].Center.X - FrameCenterX);
-            float Y = (Rectangles[0].Center.Y - FrameCenterY);
-            float dist = X * X + Y * Y;  // we are interested only which one is closest, don't neet to take square roots to get distance right
-            float dX, dY;
-            for (int i = 0; i < Rectangles.Count; i++)
-            {
-                dX = Rectangles[i].Center.X - FrameCenterX;
-                dY = Rectangles[i].Center.Y - FrameCenterY;
-                if ((dX * dX + dY * dY) < dist)
-                {
-                    dist = dX * dX + dY * dY;
-                    closest = i;
-                }
-            }
-            return closest;
-        }
-
-        // =========================================================
-        public int GetClosestRectangle(out double X, out double Y, double MaxDistance)
-        // Sets X, Y position of the closest circle to the frame center in pixels, return value is number of circles found
-        {
-            List<Shapes.Rectangle> Rectangles = GetMeasurementRectangles(MaxDistance);
-            X = 0.0;
-            Y = 0.0;
-            if (Rectangles.Count == 0)
-            {
-                return (0);
-            }
-            // Find the closest
-            int closest = FindClosestRectangle(Rectangles);
-            double zoom = GetMeasurementZoom();
-            X = (Rectangles[closest].Center.X - FrameCenterX);
-            Y = (Rectangles[closest].Center.Y - FrameCenterY);
-            X = X / zoom;
-            Y = Y / zoom;
-            return (Rectangles.Count);
-        }
-
-        public List<Shapes.Rectangle> GetMeasurementRectangles(double MaxDistance)
-        {
-            // returns a list of circles for measurements, filters for distance (which we always do) and size, if needed
-
-            List<Shapes.Rectangle> GoodRectangles = new List<Shapes.Rectangle>();
-            Bitmap image = GetMeasurementFrame();
-            if (image==null)
-            {
-                return (GoodRectangles);
-            }
-            List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(image);
-            image.Dispose();
-
-            double X = 0.0;
-            double Y = 0.0;
-            MaxDistance = MaxDistance * GetMeasurementZoom();
-            // Remove those that are more than MaxDistance away from frame center
-            foreach (Shapes.Rectangle Rectangle in Rectangles)
-            {
-                X = (Rectangle.Center.X - FrameCenterX);
-                Y = (Rectangle.Center.Y - FrameCenterY);
-                if ((X * X + Y * Y) <= (MaxDistance * MaxDistance))
-                {
-                    GoodRectangles.Add(Rectangle);
-                }
-            }
-            return (GoodRectangles);
-        }
-
-
 
         // ==========================================================================================================
 
@@ -2145,7 +2088,6 @@ namespace LitePlacer
 
         // ==========================================================================================================
         // Measurements are done by taking one frame and processing that:
-        private bool CopyFrame = false;     // Tells we need to take a frame from the stream 
         private Bitmap TemporaryFrame;      // The frame is stored here.
 
         // The caller builds the MeasurementFunctions list:
@@ -2168,16 +2110,16 @@ namespace LitePlacer
                 ManualJogFunc();
             }
             // Take a snapshot:
-            CopyFrame = true;
+            CopyFrame = true;   // tells the Video_NewFrame() function that a copy of the incoming frame is needed
             int tries = 100;
             while (tries > 0)
             {
                 tries--;
-                if (!CopyFrame)
+                if (!CopyFrame)     // Video_NewFrame() sets CopyFrame to false when frame is availabe.
                 {
                     break;
                 }
-                Thread.Sleep(1);
+                Thread.Sleep(10);
                 Application.DoEvents();
             }
             if (CopyFrame)

@@ -287,7 +287,7 @@ namespace LitePlacer
             InitVideoAlgorithmsUI();
             // before the feature is fully implemented, hide the stored images tab. This so, that 
             // I can release a more important bugfix.
-            AdvancedProcessing_tabControl.TabPages.Remove(StoredImages_tabPage);
+            // AdvancedProcessing_tabControl.TabPages.Remove(StoredImages_tabPage);
 
             // ======== Run Job tab:
 
@@ -3375,8 +3375,9 @@ namespace LitePlacer
             DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
             DownCamera.XmmPerPixel = Setting.DownCam_XmmPerPixel;
             DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
-
+            DownCamera.MeasurementDelay = Setting.DownCam_MeasurementDelay;
         }
+
         // ====
         private void SetUpCameraDefaults()
         {
@@ -3408,7 +3409,7 @@ namespace LitePlacer
             UpCamera.SideMarksY = Setting.General_MachineSizeY / 100;
             UpCamera.XmmPerPixel = Setting.UpCam_XmmPerPixel;
             UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
-
+            UpCamera.MeasurementDelay = Setting.UpCam_MeasurementDelay;
         }
 
         // =================================================================================
@@ -13524,8 +13525,7 @@ namespace LitePlacer
             }
             Invoke_CameraPropertiesDialog(UpCamera);
         }
-    
-    
+
     }	// end of: 	public partial class FormMain : Form
 
 
