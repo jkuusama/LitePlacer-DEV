@@ -111,6 +111,8 @@ namespace LitePlacer
             {
                 ChangeCamera(UpCamera);
             }
+            SpecialProcessing_button.Visible = true;
+            AdvancedProcessing_tabControl.Visible = false;
         }
 
         private void UpCam_radioButton_CheckedChanged(object sender, EventArgs e)

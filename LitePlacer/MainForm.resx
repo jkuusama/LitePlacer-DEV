@@ -362,7 +362,7 @@ will set A coordinate to 0 after that.</value>
     <value>On up camera, goes to up camera location and lowers the nozzle.
 On down camera, goes to home.
 Then 10 snapshots are taken. Find the first sharp image. Repeat a few times.
-Click "Set" when the image number above is on the last unsharp image number.
+Use stored image, and find the first sharp one. Click "Set".
 </value>
   </data>
   <metadata name="VideoFunctionColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

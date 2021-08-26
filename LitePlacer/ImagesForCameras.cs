@@ -12,9 +12,9 @@ namespace LitePlacer
 {
 	public partial class FormMain : Form
 	{
-        const int NoOfImages = 10;
-        Bitmap[] Images = new Bitmap[NoOfImages];
-        string[] ImageFilenames = new string[NoOfImages];
+        const int NoOfImages = 2;
+        static Bitmap[] Images = new Bitmap[NoOfImages];
+        static string[] ImageFilenames = new string[NoOfImages];
 
         static int ImageNumber = 0;
 
@@ -26,8 +26,20 @@ namespace LitePlacer
                 ImageFilenames[i] = "no image";
             }
             LeftArrowImage_button.Visible = false;
-            ImageNumber_label.Text = "1";
-            StoredImageFilename_label.Text = "1: no image";
+            ImageNumber_label.Text = "0";
+            StoredImageFilename_label.Text = "0: no image";
+        }
+
+
+        private void EnterStoredImagetab()
+        {
+            Camera Cam = DownCamera;
+            if (UpCam_radioButton.Checked)
+            {
+                Cam = UpCamera;
+            }
+            MeasurementDelay_label.Text = "Current delay: " + Cam.MeasurementDelay.ToString();
+            UpdateImageLabels();
         }
 
 
@@ -50,6 +62,7 @@ namespace LitePlacer
                     DisplayText("Camera is not active");
                     return;
                 }
+                bool PauseSave = Cam.PauseProcessing;
                 Cam.Paused = false;
                 Cam.PauseProcessing = true;
                 while (!Cam.Paused)
@@ -57,13 +70,17 @@ namespace LitePlacer
                     Thread.Sleep(10);
                     Application.DoEvents();
                 }
-                Cam.ExternalImage = (Bitmap)Images[ImageNumber].Clone();
+                Bitmap debug = Images[ImageNumber];
+
+                Cam.ExternalImage = debug;
                 Cam.UseExternalImage = true;
-                Cam.PauseProcessing = false;
+                Cam.PauseProcessing = PauseSave;
                 return;
             }
             else
             {
+                Bitmap debug = Images[ImageNumber];
+                Cam.Dummy = debug;
                 Cam.UseExternalImage = false;
             }
         }
@@ -108,6 +125,7 @@ namespace LitePlacer
             {
                 RightArrowImage_button.Visible = true;
             }
+            Bitmap debug = Images[ImageNumber];
             ImageNumber_label.Text = ImageNumber.ToString();
             StoredImageFilename_label.Text = ImageNumber.ToString() + ": " + ImageFilenames[ImageNumber];
 
@@ -116,12 +134,30 @@ namespace LitePlacer
 
         private void StoredImageMeasureDelay_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
+            // if (!CheckPositionConfidence()) return;
+
+            // which camera?
             Camera Cam = DownCamera;
             if (UpCam_radioButton.Checked)
             {
                 Cam = UpCamera;
             }
+
+            // initialize the images
+            for (int i = 0; i < NoOfImages; i++)
+            {
+                if (Images[i]!=null)
+                {
+                    Images[i].Dispose();
+                }
+                Images[i] = new Bitmap(Cam.FrameSizeX, Cam.FrameSizeY, PixelFormat.Format24bppRgb);
+            }
+
+            Cam.MeasurementFunctions = null;
+            Stopwatch stopwatch = new Stopwatch();
+            long[] times = new long[NoOfImages];
+
+            /*
             if (Cam== DownCamera)
             {
                 if (!CNC_XYA_m(0.0, 0.0, Cnc.CurrentA))
@@ -140,20 +176,23 @@ namespace LitePlacer
                     return;
                 }
             }
-            Cam.MeasurementFunctions = null;
-            Stopwatch stopwatch = new Stopwatch();
-            Bitmap debug;
+            */
+
+            int DelaySave = Cam.MeasurementDelay;
+            Cam.MeasurementDelay = 0;
             stopwatch.Start();
-            long[] times = new long[NoOfImages];
             for (int i = 0; i < NoOfImages; i++)
             {
-                debug= Cam.GetMeasurementFrame();
-                Images[i] = (Bitmap)debug.Clone();
+                Cam.GetMeasurementFrame(ref Images[i]);
                 times[i] = stopwatch.ElapsedMilliseconds;
             }
             stopwatch.Stop();
+            Cam.MeasurementDelay = DelaySave;
+
+            Bitmap debug;
             for (int i = 0; i < NoOfImages; i++)
             {
+                debug = Images[i];
                 ImageFilenames[i] = "captured frame at " + times[i].ToString() + "ms";
             }
             DisplayText("Done.");
@@ -166,10 +205,14 @@ namespace LitePlacer
             if (DownCam_radioButton.Checked)
             {
                 DownCamera.MeasurementDelay = ImageNumber;
+                Setting.DownCam_MeasurementDelay = ImageNumber;
+                MeasurementDelay_label.Text = "Current delay: " + DownCamera.MeasurementDelay.ToString();
             }
             else
             {
                 UpCamera.MeasurementDelay = ImageNumber;
+                Setting.UpCam_MeasurementDelay = ImageNumber;
+                MeasurementDelay_label.Text = "Current delay: " + UpCamera.MeasurementDelay.ToString();
             }
         }
 

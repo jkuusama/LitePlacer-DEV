@@ -67,7 +67,7 @@ namespace LitePlacer
         public bool TestAlgorithm { get; set; }
         public bool DrawBox { get; set; }           // Draws a box on the image that is used for scale setting
         public bool ShowProcessing = true;   // If processing is on, shows the processed image; if false, shows results on top of unprocessed image
-
+        public int MeasurementDelay = 0;           // Wait this many frames before returning the measurement frame
 
 
         // ==================================================================
@@ -741,9 +741,11 @@ namespace LitePlacer
         public Bitmap ExternalImage;
         public bool UseExternalImage = false;
 
-        public int MeasurementDelay = 0;           // Wait this many frames before returning the measurement frame
-        private int DelayCounter = 0;
+        public Bitmap TemporaryFrame;  // measurement frame is stored here 
 
+        public Bitmap Dummy;    // for debugging
+
+        static int DelayCounter = 0;
         private bool copyFr = false;
         private bool CopyFrame          // Tells we need to take a frame from the stream
         {
@@ -789,7 +791,10 @@ namespace LitePlacer
                     {
                         TemporaryFrame.Dispose();
                     }
+                    Bitmap debug = eventArgs.Frame;
                     TemporaryFrame = (Bitmap)eventArgs.Frame.Clone();
+                    // TemporaryFrame = new Bitmap(eventArgs.Frame.Width, eventArgs.Frame.Height, PixelFormat.Format24bppRgb);
+                    debug = TemporaryFrame;
                     CopyFrame = false;
                 }
             };
@@ -813,7 +818,7 @@ namespace LitePlacer
                 {
                     if (ExternalImage != null)
                     {
-                        frame = ExternalImage;
+                        frame = ExternalImage.Clone(new Rectangle(0, 0, ExternalImage.Width, ExternalImage.Height), ExternalImage.PixelFormat);
                     }
                     else
                     {
@@ -899,7 +904,6 @@ namespace LitePlacer
                     }
                 }
             }
-
             if (Mirror)
             {
                 frame = MirrorFunct(ref frame);
@@ -2002,8 +2006,9 @@ namespace LitePlacer
 
         public void TakeSnapshot()
         {
-            Bitmap image = GetMeasurementFrame();
-            if (image==null)
+            Bitmap image = new Bitmap(FrameSizeX, FrameSizeY, PixelFormat.Format24bppRgb);
+            bool res =  GetMeasurementFrame(ref image);
+            if ( (image==null) || (res==false))
             {
                 MainForm.DisplayText("Could not get a snapshot image", KnownColor.DarkRed, true);
                 return;
@@ -2088,7 +2093,7 @@ namespace LitePlacer
 
         // ==========================================================================================================
         // Measurements are done by taking one frame and processing that:
-        private Bitmap TemporaryFrame;      // The frame is stored here.
+       //  public Bitmap TemporaryFrame;      // The frame is stored here. public, so customers can take and keep their own copy
 
         // The caller builds the MeasurementFunctions list:
 
@@ -2103,12 +2108,18 @@ namespace LitePlacer
         // processes it with the MeasurementFunctions list and returns the processed frame.
 
 
-        public Bitmap GetMeasurementFrame()
+        public bool GetMeasurementFrame(ref Bitmap DestinationFrame)
         {
             if (JoggingRequested)
             {
                 ManualJogFunc();
             }
+
+            if (VideoSource == null)
+            {
+                MainForm.DisplayText("*** GetMeasurementFrame() failed, VideoSource == null !", KnownColor.Purple);
+            }
+
             // Take a snapshot:
             CopyFrame = true;   // tells the Video_NewFrame() function that a copy of the incoming frame is needed
             int tries = 100;
@@ -2126,8 +2137,11 @@ namespace LitePlacer
             {
                 // failed!
                 MainForm.DisplayText("*** GetMeasurementFrame() failed!", KnownColor.Purple);
-                return TemporaryFrame;
+                return false;
             }
+
+            DestinationFrame = new Bitmap(TemporaryFrame.Width, TemporaryFrame.Height, PixelFormat.Format24bppRgb);
+            Bitmap debug = TemporaryFrame;
 
             if (MeasurementFunctions != null)
             {
@@ -2137,7 +2151,7 @@ namespace LitePlacer
                         f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
                 }
             }
-            return TemporaryFrame;
+            return true;
         }
 
         // Since the measured image might be zoomed in, we need the value, so that we can convert to real measurements (public for debug)
@@ -2255,8 +2269,10 @@ namespace LitePlacer
             bool PauseSave = Paused;
             PauseProcessing = true;
 
-            Bitmap image = GetMeasurementFrame();
-            if (image==null)
+            Bitmap image = new Bitmap(FrameSizeX, FrameSizeY, PixelFormat.Format24bppRgb);
+            bool res = GetMeasurementFrame(ref image);
+
+            if ((image == null) || (res == false))
             {
                 MainForm.DisplayText("Could not get a snapshot image", KnownColor.DarkRed, true);
                 Paused = PauseSave;

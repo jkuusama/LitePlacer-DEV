@@ -4352,13 +4352,14 @@ namespace LitePlacer
         // =================================================================================
         #region Basic setup page functions
 
+
         private void BasicSetupTab_Begin()
         {
             // SetDownCameraDefaults();
             DisplayText("Basic Setup tab begin");
 
-            UpCamera.Active = false;
-            DownCamera.Active = false;
+            // UpCamera.Active = false;
+            // DownCamera.Active = false;
 
             if (!StartingUp)
             {
@@ -13423,6 +13424,7 @@ namespace LitePlacer
             SpecialProcessing_button.Visible = false;
             AdvancedProcessing_tabControl.SelectedTab = NozzleCalibration_tabPage;
             AdvancedProcessing_tabControl.Visible = true;
+            EnterStoredImagetab();
         }
 
         private void AutoPark_checkBox_CheckedChanged(object sender, EventArgs e)
