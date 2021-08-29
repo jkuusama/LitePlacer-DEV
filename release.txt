@@ -1,17 +1,14 @@
-Build date 08/23/2021
+Build date 08/29/2021
 
-Previous release 06/28/2021, changes after that:
+Previous release 08/23/2021, changes after that:
 
 New Features, significant changes
 
-* 
+* Added adjustable delay (in frames) to camera measurements
 
 Bug Fixes 
 
-* removed automatic control board identity check
-* camera switching, stopping and status reporting improved
-* on screen image processing paused for measurements (faster operation)
-* minor reporting ang logging changes
+* 
 
 Known issues
 
