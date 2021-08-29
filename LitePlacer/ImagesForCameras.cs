@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Threading;
 using System.Diagnostics;
+using System.Globalization;
 
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -12,7 +13,7 @@ namespace LitePlacer
 {
 	public partial class FormMain : Form
 	{
-        const int NoOfImages = 2;
+        const int NoOfImages = 10;
         static Bitmap[] Images = new Bitmap[NoOfImages];
         static string[] ImageFilenames = new string[NoOfImages];
 
@@ -25,8 +26,7 @@ namespace LitePlacer
                 Images[i] = null;
                 ImageFilenames[i] = "no image";
             }
-            LeftArrowImage_button.Visible = false;
-            ImageNumber_label.Text = "0";
+            // LeftArrowImage_button.Visible = false;
             StoredImageFilename_label.Text = "0: no image";
         }
 
@@ -38,6 +38,9 @@ namespace LitePlacer
             {
                 Cam = UpCamera;
             }
+            ImageNumber = Cam.MeasurementDelay;
+            ImageNumber_label.Text = Cam.MeasurementDelay.ToString();
+
             MeasurementDelay_label.Text = "Current delay: " + Cam.MeasurementDelay.ToString();
             UpdateImageLabels();
         }
@@ -94,16 +97,57 @@ namespace LitePlacer
 
         private void LeftArrowImage_button_Click(object sender, EventArgs e)
         {
+            if (ImageNumber>0)
+            {
             ImageNumber--;
+            }
+            ImageNumber_label.Text = ImageNumber.ToString();
+
+            Camera Cam = DownCamera;
+            if (UpCam_radioButton.Checked)
+            {
+                Cam = UpCamera;
+                Setting.UpCam_MeasurementDelay = ImageNumber;
+            }
+            else
+            {
+            Setting.DownCam_MeasurementDelay = ImageNumber;
+            }
+
+            Cam.MeasurementDelay = ImageNumber;
+            MeasurementDelay_label.Text = "Current delay: " + DownCamera.MeasurementDelay.ToString();
+
+            /*
             UpdateImageLabels();
             UseStoredImage();
+            */
         }
 
         private void RightArrowImage_button_Click(object sender, EventArgs e)
         {
-            ImageNumber++;
+            if (ImageNumber < NoOfImages)
+            {
+                ImageNumber++;
+            }
+            ImageNumber_label.Text = ImageNumber.ToString();
+
+            Camera Cam = DownCamera;
+            if (UpCam_radioButton.Checked)
+            {
+                Cam = UpCamera;
+                Setting.UpCam_MeasurementDelay = ImageNumber;
+            }
+            else
+            {
+                Setting.DownCam_MeasurementDelay = ImageNumber;
+            }
+
+            Cam.MeasurementDelay = ImageNumber;
+            MeasurementDelay_label.Text = "Current delay: " + DownCamera.MeasurementDelay.ToString();
+            /*
             UpdateImageLabels();
             UseStoredImage();
+            */
         }
 
 
@@ -134,6 +178,39 @@ namespace LitePlacer
 
         private void StoredImageMeasureDelay_button_Click(object sender, EventArgs e)
         {
+            if (!CheckPositionConfidence()) return;
+            if (UpCam_radioButton.Checked)
+            {
+                DisplayText("For now, measurememnt works only with down camera.");
+                return;
+            }
+
+
+                VideoAlgorithmsCollection.FullAlgorithmDescription HomeAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+            if (!VideoAlgorithms.FindAlgorithm("Homing", out HomeAlg))
+            {
+                DisplayText("*** Homing algorithm not found - programming error or corrupt data file!", KnownColor.Red, true);
+                return;
+            }
+            DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
+            DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
+
+            if (!CNC_XYA_m(10.0, 10.0, 0))
+            {
+                return;
+            }
+            if (!CNC_XYA_m(0.0, 0.0, 0))
+            {
+                return;
+            }
+
+            DownCamera.Measure(out double X, out double Y, out double A, false);
+            DisplayText("Result: X= " + X.ToString("0.000", CultureInfo.InvariantCulture) +
+                            ", Y= " + Y.ToString("0.000", CultureInfo.InvariantCulture) +
+                            ", A= " + A.ToString("0.00", CultureInfo.InvariantCulture));
+
+
+            /*
             // if (!CheckPositionConfidence()) return;
 
             // which camera?
@@ -157,7 +234,6 @@ namespace LitePlacer
             Stopwatch stopwatch = new Stopwatch();
             long[] times = new long[NoOfImages];
 
-            /*
             if (Cam== DownCamera)
             {
                 if (!CNC_XYA_m(0.0, 0.0, Cnc.CurrentA))
@@ -176,7 +252,6 @@ namespace LitePlacer
                     return;
                 }
             }
-            */
 
             int DelaySave = Cam.MeasurementDelay;
             Cam.MeasurementDelay = 0;
@@ -196,6 +271,7 @@ namespace LitePlacer
                 ImageFilenames[i] = "captured frame at " + times[i].ToString() + "ms";
             }
             DisplayText("Done.");
+            */
         }
 
 

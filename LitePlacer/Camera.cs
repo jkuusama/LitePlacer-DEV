@@ -2006,9 +2006,8 @@ namespace LitePlacer
 
         public void TakeSnapshot()
         {
-            Bitmap image = new Bitmap(FrameSizeX, FrameSizeY, PixelFormat.Format24bppRgb);
-            bool res =  GetMeasurementFrame(ref image);
-            if ( (image==null) || (res==false))
+            Bitmap image = GetMeasurementFrame();
+            if (image == null)
             {
                 MainForm.DisplayText("Could not get a snapshot image", KnownColor.DarkRed, true);
                 return;
@@ -2108,7 +2107,7 @@ namespace LitePlacer
         // processes it with the MeasurementFunctions list and returns the processed frame.
 
 
-        public bool GetMeasurementFrame(ref Bitmap DestinationFrame)
+        public Bitmap GetMeasurementFrame()
         {
             if (JoggingRequested)
             {
@@ -2137,10 +2136,9 @@ namespace LitePlacer
             {
                 // failed!
                 MainForm.DisplayText("*** GetMeasurementFrame() failed!", KnownColor.Purple);
-                return false;
+                return TemporaryFrame;
             }
 
-            DestinationFrame = new Bitmap(TemporaryFrame.Width, TemporaryFrame.Height, PixelFormat.Format24bppRgb);
             Bitmap debug = TemporaryFrame;
 
             if (MeasurementFunctions != null)
@@ -2151,7 +2149,7 @@ namespace LitePlacer
                         f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
                 }
             }
-            return true;
+            return TemporaryFrame;
         }
 
         // Since the measured image might be zoomed in, we need the value, so that we can convert to real measurements (public for debug)
@@ -2269,10 +2267,9 @@ namespace LitePlacer
             bool PauseSave = Paused;
             PauseProcessing = true;
 
-            Bitmap image = new Bitmap(FrameSizeX, FrameSizeY, PixelFormat.Format24bppRgb);
-            bool res = GetMeasurementFrame(ref image);
+            Bitmap image = GetMeasurementFrame();
 
-            if ((image == null) || (res == false))
+            if (image == null)
             {
                 MainForm.DisplayText("Could not get a snapshot image", KnownColor.DarkRed, true);
                 Paused = PauseSave;

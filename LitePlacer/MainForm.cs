@@ -3375,6 +3375,11 @@ namespace LitePlacer
             DownCamera.SideMarksY = Setting.General_MachineSizeY / 100;
             DownCamera.XmmPerPixel = Setting.DownCam_XmmPerPixel;
             DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
+            if (Setting.DownCam_MeasurementDelay>20)
+            {
+                // leftover from older revision, where the values was in milliseconds)
+                Setting.DownCam_MeasurementDelay = 0;       // existing users don't have delay set, don't introduce it
+            }
             DownCamera.MeasurementDelay = Setting.DownCam_MeasurementDelay;
         }
 
@@ -3409,6 +3414,12 @@ namespace LitePlacer
             UpCamera.SideMarksY = Setting.General_MachineSizeY / 100;
             UpCamera.XmmPerPixel = Setting.UpCam_XmmPerPixel;
             UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
+            if (Setting.UpCam_MeasurementDelay > 20)
+            {
+                // leftover from older revision, where the values was in milliseconds)
+                Setting.UpCam_MeasurementDelay = 0;
+            }
+
             UpCamera.MeasurementDelay = Setting.UpCam_MeasurementDelay;
         }
 
