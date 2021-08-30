@@ -619,6 +619,7 @@
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
             this.Measure10x_button = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.NozzleHeightCancel_button = new System.Windows.Forms.Button();
             this.ZDown_button = new System.Windows.Forms.Button();
             this.ZUp_button = new System.Windows.Forms.Button();
             this.label149 = new System.Windows.Forms.Label();
@@ -642,7 +643,7 @@
             this.GotoPCB0_button = new System.Windows.Forms.Button();
             this.GotoUpCamPosition_button = new System.Windows.Forms.Button();
             this.GotoPickupCenter_button = new System.Windows.Forms.Button();
-            this.Offset2Method_button = new System.Windows.Forms.Button();
+            this.NozzleHeightStart_button = new System.Windows.Forms.Button();
             this.label115 = new System.Windows.Forms.Label();
             this.SetUpCamPosition_button = new System.Windows.Forms.Button();
             this.label114 = new System.Windows.Forms.Label();
@@ -7622,6 +7623,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.NozzleHeightCancel_button);
             this.panel1.Controls.Add(this.ZDown_button);
             this.panel1.Controls.Add(this.ZUp_button);
             this.panel1.Controls.Add(this.label149);
@@ -7645,7 +7647,7 @@
             this.panel1.Controls.Add(this.GotoPCB0_button);
             this.panel1.Controls.Add(this.GotoUpCamPosition_button);
             this.panel1.Controls.Add(this.GotoPickupCenter_button);
-            this.panel1.Controls.Add(this.Offset2Method_button);
+            this.panel1.Controls.Add(this.NozzleHeightStart_button);
             this.panel1.Controls.Add(this.label115);
             this.panel1.Controls.Add(this.SetUpCamPosition_button);
             this.panel1.Controls.Add(this.label114);
@@ -7662,6 +7664,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(640, 143);
             this.panel1.TabIndex = 305;
+            // 
+            // NozzleHeightCancel_button
+            // 
+            this.NozzleHeightCancel_button.Enabled = false;
+            this.NozzleHeightCancel_button.Location = new System.Drawing.Point(84, 31);
+            this.NozzleHeightCancel_button.Name = "NozzleHeightCancel_button";
+            this.NozzleHeightCancel_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzleHeightCancel_button.TabIndex = 305;
+            this.NozzleHeightCancel_button.Tag = "Cancels Nozzle calibration routine";
+            this.NozzleHeightCancel_button.Text = "Cancel";
+            this.NozzleHeightCancel_button.UseVisualStyleBackColor = true;
+            this.NozzleHeightCancel_button.Click += new System.EventHandler(this.NozzleHeightCancel_button_Click);
             // 
             // ZDown_button
             // 
@@ -7892,16 +7906,16 @@
             this.GotoPickupCenter_button.UseVisualStyleBackColor = true;
             this.GotoPickupCenter_button.Click += new System.EventHandler(this.GotoPickupCenter_button_Click);
             // 
-            // Offset2Method_button
+            // NozzleHeightStart_button
             // 
-            this.Offset2Method_button.Location = new System.Drawing.Point(3, 31);
-            this.Offset2Method_button.Name = "Offset2Method_button";
-            this.Offset2Method_button.Size = new System.Drawing.Size(75, 23);
-            this.Offset2Method_button.TabIndex = 282;
-            this.Offset2Method_button.Tag = "Runs the Nozzle calibration routine";
-            this.Offset2Method_button.Text = "Start";
-            this.Offset2Method_button.UseVisualStyleBackColor = true;
-            this.Offset2Method_button.Click += new System.EventHandler(this.Offset2Method_button_Click);
+            this.NozzleHeightStart_button.Location = new System.Drawing.Point(3, 31);
+            this.NozzleHeightStart_button.Name = "NozzleHeightStart_button";
+            this.NozzleHeightStart_button.Size = new System.Drawing.Size(75, 23);
+            this.NozzleHeightStart_button.TabIndex = 282;
+            this.NozzleHeightStart_button.Tag = "Runs the Nozzle calibration routine";
+            this.NozzleHeightStart_button.Text = "Start";
+            this.NozzleHeightStart_button.UseVisualStyleBackColor = true;
+            this.NozzleHeightStart_button.Click += new System.EventHandler(this.NozzleHeightStart_button_Click);
             // 
             // label115
             // 
@@ -10962,7 +10976,7 @@
         private System.Windows.Forms.Button GotoPCB0_button;
         private System.Windows.Forms.Button GotoUpCamPosition_button;
         private System.Windows.Forms.Button GotoPickupCenter_button;
-        private System.Windows.Forms.Button Offset2Method_button;
+        private System.Windows.Forms.Button NozzleHeightStart_button;
         private System.Windows.Forms.Label label115;
         private System.Windows.Forms.Button SetUpCamPosition_button;
         private System.Windows.Forms.Label label114;
@@ -11020,6 +11034,7 @@
         private System.Windows.Forms.Button RightArrowImage_button;
         private System.Windows.Forms.CheckBox UseStoredImage_checkBox;
         private System.Windows.Forms.Label MeasurementDelay_label;
+        private System.Windows.Forms.Button NozzleHeightCancel_button;
     }
 }
 

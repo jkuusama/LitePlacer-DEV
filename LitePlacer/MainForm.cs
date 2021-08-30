@@ -4221,7 +4221,7 @@ namespace LitePlacer
         }
 
 
-        private void Offset2Method_button_Click(object sender, EventArgs e)
+        private void NozzleHeightStart_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
 
@@ -4232,7 +4232,7 @@ namespace LitePlacer
             switch (SetNozzleOffset_stage)
             {
                 case 0:
-                    Offset2Method_button.Text = "Next";
+                    NozzleHeightStart_button.Text = "Next";
                     if (!CNC_A_m(0.0))
                     {
                         break;
@@ -4240,6 +4240,7 @@ namespace LitePlacer
                     NozzleOffset_label.Visible = true;
                     NozzleOffset_label.Text = "Jog Nozzle to a point on a PCB, then click \"Next\"";
                     SetNozzleOffset_stage = 1;
+                    NozzleHeightCancel_button.Enabled = true;
                     break;
 
                 case 1:
@@ -4279,10 +4280,18 @@ namespace LitePlacer
 
         private void ResetNozzleOffsetStateMachine()
         {
-            Offset2Method_button.Text = "Start";
+            NozzleHeightStart_button.Text = "Start";
             SetNozzleOffset_stage = 0;
             NozzleOffset_label.Visible = false;
             NozzleOffset_label.Text = "   ";
+            NozzleHeightCancel_button.Enabled = false;
+        }
+
+        private void NozzleHeightCancel_button_Click(object sender, EventArgs e)
+        {
+            ResetNozzleOffsetStateMachine();
+            CNC_Z_m(0.0);
+            ZGuardOn();
         }
 
 
