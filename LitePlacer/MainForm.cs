@@ -150,7 +150,7 @@ namespace LitePlacer
         private void Form1_Load(object sender, EventArgs e)
         {
             StartingUp = false; // we want the first messages to get through
-            this.Size = new Size(1280, 900);
+            // this.Size = new Size(1280, 900);
 
             DisplayText("Application Start", KnownColor.Black, true);
             DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
@@ -13548,6 +13548,15 @@ namespace LitePlacer
             Invoke_CameraPropertiesDialog(UpCamera);
         }
 
+        private void NumPadJog_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.CNC_EnableNumPadJog = NumPadJog_checkBox.Checked;
+        }
+
+        private void MouseScroll_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.CNC_EnableMouseWheelJog = MouseScroll_checkBox.Checked;
+        }
     }	// end of: 	public partial class FormMain : Form
 
 
