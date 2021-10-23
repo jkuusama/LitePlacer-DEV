@@ -160,14 +160,32 @@ namespace LitePlacer
         // Use calibration
         public bool GetPositionCorrection_m(double angle, out double X, out double Y)
         {
+            X = 0.0;
+            Y = 0.0;
             if (MainForm.Setting.Placement_OmitNozzleCalibration)
             {
-                X = 0.0;
-                Y = 0.0;
                 return true;
             };
 
-            if(!NozzleDataAllNozzles[MainForm.Setting.Nozzles_current-1].Calibrated)
+            if ( (MainForm.Setting.Nozzles_current > MainForm.Setting.Nozzles_count) ||
+                (MainForm.Setting.Nozzles_current <= 0))
+            {
+                MainForm.ShowMessageBox(
+                                   "Current nozzle number is invalid.",
+                                   "Nozzle number problem", MessageBoxButtons.OK);
+                return false;
+            }
+
+            if (MainForm.Setting.Nozzles_current == 0)
+            {
+                MainForm.ShowMessageBox(
+                                   "No nozzle in the adapter. (If there is, fix thestatus on Seup Nozzles page.)",
+                                   "Nozzle number problem", MessageBoxButtons.OK);
+                return false;
+            }
+
+
+            if (!NozzleDataAllNozzles[MainForm.Setting.Nozzles_current-1].Calibrated)
             {
                 DialogResult dialogResult = MainForm.ShowMessageBox(
                     "Nozzle not calibrated. Calibrate now?",
