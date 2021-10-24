@@ -1476,6 +1476,7 @@ namespace LitePlacer
 
         private void ShowPixels_checkBox_CheckedChanged(object sender, EventArgs e)
         {
+            /*
             if (ShowPixels_checkBox.Checked)
             {
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -1484,7 +1485,13 @@ namespace LitePlacer
             {
                 Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             }
+            */
+
+            UpCamera.ShowPixels = ShowPixels_checkBox.Checked;
+            DownCamera.ShowPixels = ShowPixels_checkBox.Checked;
             Setting.Cam_ShowPixels = ShowPixels_checkBox.Checked;
+            InitDownCamFpsMeasurement();
+            InitUpCamFpsMeasurement();
         }
 
         // =====================================================================================
