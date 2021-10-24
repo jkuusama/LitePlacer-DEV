@@ -4,16 +4,16 @@ Previous release 08/23/2021, changes after that:
 
 New Features, significant changes
 
-* Added adjustable delay (in frames) to camera measurements
+* Video on UI is scaled down to UI resolution (much better performance), measurements are
+  taken from full resolution image
+* (in previous release) Added adjustable delay (in frames) to camera measurements
 
 Bug Fixes 
 
-* 
+* No crash if nozzle correction is asked when no nozzle is loaded
 
 Known issues
 
 * Pause and Stop need to be clicked twice
 * The application does not automatically restart when loading new settings from file. (there is now a dialog, though)
 * Place fast sometimes uses last hole (which might not be whole), not the second to last as excpected
-
-

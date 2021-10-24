@@ -32,14 +32,16 @@ namespace LitePlacer
 
         public bool Active { get; set; }
 
-        public int FrameCenterX { get; set; }
-        public int FrameCenterY { get; set; }
-        public int FrameSizeX { get; set; }
-        public int FrameSizeY { get; set; }
-        public int DesiredX { get; set; }       // requested resolution
-        public int DesiredY { get; set; }
-        public System.Drawing.Point Resolution { get; set; }  // resolution in use
+        // For performance reasons with 4k cameras:
+        // Measurements are done with the true resolution used by the cameras (full accuracy)
+        // The frames shown on UI are scaled down to user interface resolution
+        // (4k resolution on display, 8 fps, about 2 sec delay; 4k from camera, shown at 640x480: 20fps, delay not annoying)
 
+        public System.Drawing.Point CameraResolution { get; set; }  // resolution from camera
+        public System.Drawing.Point DisplayResolution { get; set; }  // resolution on UI
+        public System.Drawing.Point RequestedResolution { get; set; }  // user set resolution
+
+        // ================================================================== 
         public string MonikerString { get; set; } = "unconnected";
 
         public bool ReceivingFrames { get; set; }
@@ -68,6 +70,7 @@ namespace LitePlacer
         public bool DrawBox { get; set; }           // Draws a box on the image that is used for scale setting
         public bool ShowProcessing = true;   // If processing is on, shows the processed image; if false, shows results on top of unprocessed image
         public int MeasurementDelay = 0;           // Wait this many frames before returning the measurement frame
+        public bool ShowPixels = false;
 
 
         // ==================================================================
@@ -288,7 +291,7 @@ namespace LitePlacer
                         MainForm.DisplayText("Could not set resolution");
                         return false;
                     }
-                    Resolution = MaxRes;
+                    CameraResolution = MaxRes;
                 }
                 else
                 {
@@ -318,9 +321,9 @@ namespace LitePlacer
                     bool fine = false;
                     for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
                     {
-                        if ((VideoSource.VideoCapabilities[i].FrameSize.Width == DesiredX)
+                        if ((VideoSource.VideoCapabilities[i].FrameSize.Width == RequestedResolution.X)
                             &&
-                            (VideoSource.VideoCapabilities[i].FrameSize.Height == DesiredY))
+                            (VideoSource.VideoCapabilities[i].FrameSize.Height == RequestedResolution.Y))
                         {
                             VideoSource.VideoResolution = VideoSource.VideoCapabilities[i];
                             fine = true;
@@ -332,8 +335,8 @@ namespace LitePlacer
                         MainForm.DisplayText("Desired resolution not available");
                         return false;
                     }
-                    System.Drawing.Point res = new System.Drawing.Point(DesiredX, DesiredY);
-                    Resolution = res;
+                    System.Drawing.Point res = RequestedResolution;
+                    CameraResolution = res;
                 }
 
                 VideoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
@@ -372,10 +375,10 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Camera started: " + tries.ToString(CultureInfo.InvariantCulture), KnownColor.Purple);
 
                 // We managed to start the camera using desired resolution
-                FrameSizeX = Resolution.X;
-                FrameSizeY = Resolution.Y;
-                FrameCenterX = FrameSizeX / 2;
-                FrameCenterY = FrameSizeY / 2;
+                // FrameSizeX = Resolution.X;
+                // FrameSizeY = Resolution.Y;
+                // FrameCenterX = FrameSizeX / 2;
+                // FrameCenterY = FrameSizeY / 2;
                 PauseProcessing = false;
                 return true;
             }
@@ -626,7 +629,8 @@ namespace LitePlacer
 
         // ==========================================================================================================
         // Zoom
-        public bool Zoom { get; set; }          // If image is zoomed or not
+        public bool ZoomIsOn { get; set; }   // If image is zoomed or not
+
         private double _ZoomFactor = 1.0;
         public double ZoomFactor                // If it is, this much
         {
@@ -646,7 +650,7 @@ namespace LitePlacer
         {
             get
             {
-                return (boxSizeX);
+                return boxSizeX;
             }
             set
             {
@@ -660,7 +664,7 @@ namespace LitePlacer
         {
             get
             {
-                return (boxSizeY);
+                return boxSizeY;
             }
             set
             {
@@ -734,20 +738,28 @@ namespace LitePlacer
         // ==========================================================================================================
         // ==========================================================================================================
 
-        Bitmap frame;
+        Bitmap DisplayedFrame;      // The image that is shown on UI, sclaed down version of a frame received from camera
+        Bitmap AnalyzedFrame;       // The bitmap used to show processing to user; full resolution
+
+        public Bitmap ExternalImage;    // for future: capability to use stored images for processing
+        public Bitmap TemporaryFrame;  // measurement frame is stored here 
+        public Bitmap Dummy;    // for debugging
+
         static int CollectorCount = 0;
         static int ErrorCount = 0;
         public int FrameCount { get; set; }
-        public Bitmap ExternalImage;
         public bool UseExternalImage = false;
 
-        public Bitmap TemporaryFrame;  // measurement frame is stored here 
 
-        public Bitmap Dummy;    // for debugging
+        // A client needs a frame for measurements. It sets MeasurementDelay to the number of frames to wait
+        // before taking the measurement and sets CopyFrame = true.
+        // When Video_NewFrame() sees CopyFrame == true it decrements DelayCounter until == 0,
+        // puts a copy of incoming video frame to TemporaryFrame and sets
+        // CopyFrame = false, signalling the client that the frame is available:
 
         static int DelayCounter = 0;
         private bool copyFr = false;
-        private bool CopyFrame          // Tells we need to take a frame from the stream
+        private bool CopyFrame
         {
             get
             {
@@ -760,16 +772,44 @@ namespace LitePlacer
             }
         }
 
+        // Image source can be camera (usual case) but also external image from a file
+
+        private Bitmap GetSourceFrame(NewFrameEventArgs eventArgs)
+        {
+            // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
+            lock (ProtectedPictureBox2._locker)
+            {
+                if (UseExternalImage)
+                {
+                    if (ExternalImage != null)
+                    {
+                        return ExternalImage.Clone(new Rectangle(0, 0, ExternalImage.Width, ExternalImage.Height), ExternalImage.PixelFormat);
+                    }
+                    else
+                    {
+                        return (Bitmap)eventArgs.Frame.Clone();
+                    }
+                }
+                else
+                {
+                    return (Bitmap)eventArgs.Frame.Clone();
+                }
+            }
+        }
+
+
+        // ==========================================================================================================
+
         private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            if (eventArgs.Frame==null)
+            if (eventArgs.Frame == null)
             {
-                if (ErrorCount==0)
+                if (ErrorCount == 0)
                 {
                     MainForm.DisplayText("Video_NewFrame, null frame.", KnownColor.DarkRed, true);
                 }
                 ErrorCount++;
-                if (ErrorCount>200)
+                if (ErrorCount > 200)
                 {
                     ErrorCount = 0;
                 }
@@ -781,7 +821,7 @@ namespace LitePlacer
             // Take a copy for measurements, if needed:
             if (CopyFrame)
             {
-                if (DelayCounter>0)
+                if (DelayCounter > 0)
                 {
                     DelayCounter--;
                 }
@@ -811,137 +851,138 @@ namespace LitePlacer
             }
 
 
-            // Working with a copy of the frame to avoid conflict.  Protecting the region where the copy is made
-            lock (ProtectedPictureBox2._locker)
-            {
-                if (UseExternalImage)
-                {
-                    if (ExternalImage != null)
-                    {
-                        frame = ExternalImage.Clone(new Rectangle(0, 0, ExternalImage.Width, ExternalImage.Height), ExternalImage.PixelFormat);
-                    }
-                    else
-                    {
-                        frame = (Bitmap)eventArgs.Frame.Clone();
-                    }
-                }
-                else
-                {
-                    frame = (Bitmap)eventArgs.Frame.Clone();
-                }
-            }
+            List<Shapes.Circle> Circles = new List<Shapes.Circle>();
+            List<Shapes.Rectangle> Rectangles = new List<Shapes.Rectangle>();
+            List<Shapes.Component> ComponentsByOutline = new List<Shapes.Component>();
+            List<Shapes.Component> ComponentsFromPads = new List<Shapes.Component>();
+
+            bool ShowUnprocessed = true;
 
             if (DisplayFunctions != null)
             {
-                if (DisplayFunctions.Count!=0)
+                if (DisplayFunctions.Count != 0)
                 {
-                    // Selection is either show processing or show results
-                    // Even with safeguards, changing DisplayFunctions can cause errors. 
-                    try
+                    ShowUnprocessed = false;
+                }
+            };
+
+            if (ShowUnprocessed)
+            {
+                // Selection is neither show processing or show results, show the unprocessed source image
+                DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs));
+            }
+            else
+            {
+                // Selection is either show processing or show results
+                // Even with safeguards, changing DisplayFunctions can cause errors, therefore try block
+                try
+                {
+                    AnalyzedFrame = GetSourceFrame(eventArgs);   // use a copy of camera frame for processing
+                                                                 // Process it
+                    foreach (AForgeFunction f in DisplayFunctions)
                     {
-                        if (ShowProcessing)  // Process the displayed frame and also draw on it
-                        {
-                            foreach (AForgeFunction f in DisplayFunctions)
-                            {
-                                f.func(ref frame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
-                                    f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
-                            }
-                            if (FindCircles)
-                            {
-                                List<Shapes.Circle> Circles = FindCirclesFunct(frame);
-                                DrawCirclesFunct(ref frame, Circles, 1.0);
-                            }
-                            if (FindRectangles)
-                            {
-                                List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(frame);
-                                DrawRectanglesFunct(ref frame, Rectangles, 1.0);
-                            }
-                            if (FindComponentByOutlines)
-                            {
-                                List<Shapes.Component> Components = FindComponentsFromOutline_Funct(frame);
-                                DrawComponentsFunct(ref frame, Components, 1.0);
-                            }
-                            if (FindComponentByPads)
-                            {
-                                List<Shapes.Component> Components = FindComponentsFromPads_Funct(frame);
-                                DrawComponentsFunct(ref frame, Components, 1.0);
-                            }
-                        }
-                        else
-                        {
-                            Bitmap ProcessedFrame = (Bitmap)frame.Clone();  // Process a copy and find features on it; draw on displayed frame
-                            foreach (AForgeFunction f in DisplayFunctions)
-                            {
-                                f.func(ref ProcessedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
-                                    f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
-                            }
-                            double zoom = 1 / GetProcessingZoom();  // If measurement frame is zoomed, we need to zoom the displayed results as well
-                            if (FindCircles)
-                            {
-                                List<Shapes.Circle> Circles = FindCirclesFunct(ProcessedFrame);
-                                DrawCirclesFunct(ref frame, Circles, zoom);
-                            }
-                            if (FindRectangles)
-                            {
-                                List<Shapes.Rectangle> Rectangles = FindRectanglesFunct(ProcessedFrame);
-                                DrawRectanglesFunct(ref frame, Rectangles, zoom);
-                            }
-                            if (FindComponentByOutlines)
-                            {
-                                List<Shapes.Component> Components = FindComponentsFromOutline_Funct(ProcessedFrame);
-                                DrawComponentsFunct(ref frame, Components, zoom);
-                            }
-                            if (FindComponentByPads)
-                            {
-                                List<Shapes.Component> Components = FindComponentsFromPads_Funct(ProcessedFrame);
-                                DrawComponentsFunct(ref frame, Components, zoom);
-                            }
-                        }
+                        f.func(ref AnalyzedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
+                            f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
                     }
-                    catch (System.InvalidOperationException)
+                    // Find features
+                    if (FindCircles)
                     {
-                        // No need to do anything, next frame fixes it
+                        Circles = FindCirclesFunct(AnalyzedFrame);
+                    }
+                    if (FindRectangles)
+                    {
+                        Rectangles = FindRectanglesFunct(AnalyzedFrame);
+                    }
+                    if (FindComponentByOutlines)
+                    {
+                        ComponentsByOutline = FindComponentsFromOutline_Funct(AnalyzedFrame);
+                    }
+                    if (FindComponentByPads)
+                    {
+                        ComponentsFromPads = FindComponentsFromPads_Funct(AnalyzedFrame);
+                    }
+
+                    // Fit the image we are goint to show to the UI
+                    if (ShowProcessing)
+                    {
+                        DisplayedFrame = FitImageToUI(AnalyzedFrame);   // Showing processing to user: Use processed frame for display
+                    }
+                    else
+                    {
+                        DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs));
+                    }
+
+                    double ResultsZoom = GetDisplayZoom();
+                    double DisplayZoom = 1.0;
+                    if (ZoomIsOn)
+                    {
+                        DisplayZoom = ZoomFactor;
+                    }
+
+                    // Draw the processing results to DisplayedFrame
+                    if (FindCircles)
+                    {
+                        DrawCirclesFunct(ref DisplayedFrame, Circles, ResultsZoom, DisplayZoom);
+                    }
+                    if (FindRectangles)
+                    {
+                        DrawRectanglesFunct(ref DisplayedFrame, Rectangles, ResultsZoom, DisplayZoom);
+                    }
+                    if (FindComponentByOutlines)
+                    {
+                        DrawComponentsFunct(ref DisplayedFrame, ComponentsByOutline, ResultsZoom, DisplayZoom);
+                    }
+                    if (FindComponentByPads)
+                    {
+                        DrawComponentsFunct(ref DisplayedFrame, ComponentsFromPads, ResultsZoom, DisplayZoom);
                     }
                 }
-            }
+                catch (System.InvalidOperationException)
+                {
+                    // No need to do anything, next frame fixes it
+                }
+            };
+
+
             if (Mirror)
             {
-                frame = MirrorFunct(ref frame);
+                DisplayedFrame = MirrorFunct(ref DisplayedFrame);
             };
 
             if (DrawBox)
             {
-                DrawBoxFunct(ref frame);
+                DrawBoxFunct(ref DisplayedFrame);
             };
 
-            if (Zoom)
+            if (ZoomIsOn)
             {
-                ZoomFunct(ref frame, ZoomFactor);
+                // Zoom already taken care of by FitImageToUI()
+                // ZoomFunct(ref DisplayedFrame, ZoomFactor);
             };
 
             if (DrawCross)
             {
-                DrawCrossFunct(ref frame);
+                DrawCrossFunct(ref DisplayedFrame);
             };
 
             if (DrawSidemarks)
             {
-                DrawSidemarksFunct(ref frame);
+                DrawSidemarksFunct(ref DisplayedFrame);
             };
 
             if (DrawDashedCross)
             {
-                DrawDashedCrossFunct(ref frame);
+                DrawDashedCrossFunct(ref DisplayedFrame);
             };
 
             if (DrawGrid)
             {
-                DrawGridFunct(ref frame);
+                DrawGridFunct(ref DisplayedFrame);
             };
 
             if (DrawArrow)
             {
-                DrawArrowFunct(ref frame, FrameCenterX, FrameCenterY, 60);
+                DrawArrowFunct(ref DisplayedFrame, (int)DisplayResolution.X / 2, (int)DisplayResolution.Y / 2, 60);
             };
 
             lock (ProtectedPictureBox2._locker)
@@ -950,10 +991,13 @@ namespace LitePlacer
                 {
                     ImageBox.Image.Dispose();
                 }
-                ImageBox.Image = (Bitmap)frame.Clone();
             }
+            ImageBox.Image = (Bitmap)DisplayedFrame.Clone();
 
-            frame.Dispose();
+            if (DisplayedFrame != null)
+            {
+                DisplayedFrame.Dispose();
+            }
             if (CollectorCount > 100)
             {
                 GC.Collect();
@@ -966,6 +1010,73 @@ namespace LitePlacer
         } // end Video_NewFrame
 
         // see http://www.codeproject.com/Questions/689320/object-is-currently-in-use-elsewhere about the locker
+
+
+        // =========================================================
+        private Bitmap FitImageToUI(Bitmap SourceFrame)
+        {
+            // Input frame is the high resolution source image, not necessarily in 4:3 format.
+            // This function finds the correct scaling and returns an image, that fits to
+            // DisplayResolution sized imagebox.
+
+            double Xin = SourceFrame.Width;
+            double Yin = SourceFrame.Height;
+            double zoom = ZoomFactor;
+            if (!ZoomIsOn)
+            {
+                zoom = 1.0;
+            }
+
+            if (ShowPixels)  // no scaling is needed, just crop the portion we want
+            {
+                double OutSizeX = DisplayResolution.X / zoom;
+                double OutSizeY = DisplayResolution.Y / zoom;
+
+                int CropFromX = (int)((Xin / 2) - (OutSizeX / 2));
+                int CropFromY = (int)((Yin / 2) - (OutSizeY / 2));
+                Crop C1_filt = new Crop(new Rectangle(CropFromX, CropFromY, (int)OutSizeX, (int)OutSizeY));
+                Bitmap newImage1 = C1_filt.Apply(SourceFrame);
+                return newImage1;
+            }
+
+            // We want to find the region to show from and fit it to DisplayResolution.
+            double scale = 1.0;
+            if (!ZoomIsOn)
+            {
+                // no crop needed, just scale to display resolution
+                scale = Xin / (double)DisplayResolution.X;
+                int Ysize = (int)(Yin / scale);
+                ResizeNearestNeighbor R1_filt = new ResizeNearestNeighbor(DisplayResolution.X, Ysize);
+                Bitmap newImage2 = R1_filt.Apply(SourceFrame);
+                return newImage2;
+            }
+
+            // zoom is on. Crop first, then scale
+            double CenterX = Xin / 2.0;
+            double CenterY = Yin / 2.0;
+
+            double XpixsWanted = Xin / zoom;
+            double FromX = CenterX - XpixsWanted / 2.0;
+            scale = XpixsWanted / (double)DisplayResolution.X;
+            // We want to crop from Y using the same zoom ratio but in display aspect ratio
+            double OutAspect = (double)DisplayResolution.X / (double)DisplayResolution.Y;
+            double YpixsWanted = XpixsWanted / OutAspect;
+            if (YpixsWanted > Yin)
+            {
+                // slight zoom on a 16:9 input
+                YpixsWanted = Yin;
+            }
+            double FromY = CenterY - YpixsWanted / 2.0;
+            int YsizeOut = (int)(YpixsWanted / scale);
+            Crop C2_filt = new Crop(new Rectangle((int)FromX, (int)FromY, (int)XpixsWanted, (int)YpixsWanted));
+            Bitmap newImage3 = C2_filt.Apply(SourceFrame);
+            ResizeNearestNeighbor R2_filt = new ResizeNearestNeighbor(DisplayResolution.X, YsizeOut);
+            Bitmap newImage4 = R2_filt.Apply(newImage3);
+            newImage3.Dispose();
+            return newImage4;
+        }
+
+
 
         // ==========================================================================================================
         // Functions compatible with lists:
@@ -1505,8 +1616,64 @@ namespace LitePlacer
         }
 
         // ===========
-        private void DrawComponentsFunct(ref Bitmap bitmap, List<Shapes.Component> Components, double zoom)
+        private void DrawComponentsFunct(ref Bitmap image, List<Shapes.Component> Components,
+                        double ResultsZoom, double DisplayZoom)
         {
+            if (Components.Count <= 0)
+            {
+                return;
+            }
+
+            int PenSize = 2;
+            Graphics g = Graphics.FromImage(image);
+            Pen LimePen = new Pen(Color.Lime, PenSize);
+
+            int FrameCenterX = image.Width / 2;
+            int FrameCenterY = image.Height / 2;
+            int MeasurementCenterX = CameraResolution.X / 2;
+            int MeasurementCenterY = CameraResolution.Y / 2;
+            double RelationX = (double)DisplayResolution.X / (double)CameraResolution.X;
+            double RelationY = (double)DisplayResolution.Y / (double)CameraResolution.Y;
+
+            for (int i = 0; i < Components.Count; i++)
+            {
+                List<System.Drawing.PointF> Corners = new List<System.Drawing.PointF>();
+                for (int c = 0; c < Components[i].BoundingBox.Corners.Count; c++)
+                {
+                    double X = Components[i].BoundingBox.Corners[c].X;
+                    X = X - MeasurementCenterX;
+                    if (!ShowProcessing)
+                    {
+                        X = X / ResultsZoom;
+                    }
+                    X = X * RelationX;
+                    X = X * DisplayZoom;
+                    X = X + FrameCenterX;
+
+                    double Y = Components[i].BoundingBox.Corners[c].Y;
+                    Y = Y - MeasurementCenterY;
+                    if (!ShowProcessing)
+                    {
+                        Y = Y / ResultsZoom;
+                    }
+                    Y = Y * RelationY;
+                    Y = Y * DisplayZoom;
+                    Y = Y + FrameCenterY;
+                    System.Drawing.PointF Pnt = new System.Drawing.PointF();
+                    Pnt.X = (float)X;
+                    Pnt.Y = (float)Y;
+                    Corners.Add(Pnt);
+                }
+                g.DrawPolygon(LimePen, Corners.ToArray());
+            }
+            g.Dispose();
+            LimePen.Dispose();
+
+            /* Was:
+
+            int FrameCenterX = bitmap.Width / 2;
+            int FrameCenterY = bitmap.Height / 2;
+
             int PenSize = (int)(3 * zoom);
             if (PenSize < 2)
             {
@@ -1547,6 +1714,7 @@ namespace LitePlacer
             }
             g.Dispose();
             OrangePen.Dispose();
+            */
         }
 
         // ==========================================================================================================
@@ -1574,7 +1742,7 @@ namespace LitePlacer
                 // is circle ?
                 if (shapeChecker.IsCircle(edgePoints, out center, out radius))
                 {
-                    if (radius > 2)  // Filter out some noise
+                    if (radius > 2)  // Filter out noise pixels
                     {
                         Circles.Add(new Shapes.Circle(center, radius));
                     }
@@ -1584,36 +1752,56 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles, double zoom)
+        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles,
+            double ResultsZoom, double DisplayZoom)
         {
-
             if (Circles.Count == 0)
             {
                 return;
             }
 
-            int PenSize = (int)(3 * zoom);
-            if (PenSize<2)
-            {
-                PenSize = 2;
-            }
-
+            int PenSize = 2;
             Graphics g = Graphics.FromImage(bitmap);
             Pen LimePen = new Pen(Color.Lime, PenSize);
+
+            int FrameCenterX = bitmap.Width / 2;
+            int FrameCenterY = bitmap.Height / 2;
+            int MeasurementCenterX = CameraResolution.X / 2;
+            int MeasurementCenterY = CameraResolution.Y / 2;
+            double RelationX = (double)DisplayResolution.X / (double)CameraResolution.X;
+            double RelationY = (double)DisplayResolution.Y / (double)CameraResolution.Y;
+
             for (int i = 0, n = Circles.Count; i < n; i++)
             {
-                double X = Circles[i].Center.X;
-                X = X - Circles[i].Radius;
-                X = X - FrameCenterX;
-                X = X * zoom;
+                double Xc = Circles[i].Center.X;
+                double X = Xc - MeasurementCenterX;
+                if (!ShowProcessing)
+                {
+                    X = X / ResultsZoom;
+                }
+                X = X * RelationX;
+                X = X * DisplayZoom;
                 X = X + FrameCenterX;
-                double Y = Circles[i].Center.Y;
-                Y = Y - Circles[i].Radius;
-                Y = Y - FrameCenterY;
-                Y = Y * zoom;
+
+                double Yc = Circles[i].Center.Y;
+                double Y = Yc - MeasurementCenterY;
+                if (!ShowProcessing)
+                {
+                    Y = Y / ResultsZoom;
+                }
+                Y = Y * RelationY;
+                Y = Y * DisplayZoom;
                 Y = Y + FrameCenterY;
-                float dia = (float)((Circles[i].Radius * 2 * zoom));
-                g.DrawEllipse(LimePen, (float)X, (float)Y, dia, dia);
+
+                double radius = Circles[i].Radius;
+                if (!ShowProcessing)
+                {
+                    radius = radius / ResultsZoom;
+                }
+                radius = radius * RelationX;
+                radius = radius * DisplayZoom;
+                float dia = (float)(radius * 2);
+                g.DrawEllipse(LimePen, (float)(X - radius), (float)(Y - radius), dia, dia);
             }
             g.Dispose();
             LimePen.Dispose();
@@ -1676,28 +1864,48 @@ namespace LitePlacer
             return (Rectangles);
         }
         // =========================================================
-        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> RectanglesIn, double zoom)
+        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> RectanglesIn,
+                        double ResultsZoom, double DisplayZoom)
         {
-            int PenSize = (int)(3 * zoom);
-            if (PenSize < 2)
+            if (RectanglesIn.Count <= 0)
             {
-                PenSize = 2;
+                return;
             }
+
+            int PenSize = 2;
             Graphics g = Graphics.FromImage(image);
             Pen LimePen = new Pen(Color.Lime, PenSize);
+
+            int FrameCenterX = image.Width / 2;
+            int FrameCenterY = image.Height / 2;
+            int MeasurementCenterX = CameraResolution.X / 2;
+            int MeasurementCenterY = CameraResolution.Y / 2;
+            double RelationX = (double)DisplayResolution.X / (double)CameraResolution.X;
+            double RelationY = (double)DisplayResolution.Y / (double)CameraResolution.Y;
+
             for (int i = 0; i < RectanglesIn.Count; i++)
             {
                 List<System.Drawing.PointF> Corners = new List<System.Drawing.PointF>();
-
                 for (int c = 0; c < RectanglesIn[i].Corners.Count; c++)
                 {
                     double X = RectanglesIn[i].Corners[c].X;
-                    X = X - FrameCenterX;
-                    X = X * zoom;
+                    X = X - MeasurementCenterX;
+                    if (!ShowProcessing)
+                    {
+                        X = X / ResultsZoom;
+                    }
+                    X = X * RelationX;
+                    X = X * DisplayZoom;
                     X = X + FrameCenterX;
+
                     double Y = RectanglesIn[i].Corners[c].Y;
-                    Y = Y - FrameCenterY;
-                    Y = Y * zoom;
+                    Y = Y - MeasurementCenterY;
+                    if (!ShowProcessing)
+                    {
+                        Y = Y / ResultsZoom;
+                    }
+                    Y = Y * RelationY;
+                    Y = Y * DisplayZoom;
                     Y = Y + FrameCenterY;
                     System.Drawing.PointF Pnt = new System.Drawing.PointF();
                     Pnt.X = (float)X;
@@ -1753,7 +1961,7 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void RotateByFrameCenter(int x, int y, out int px, out int py)
+        private void RotateByFrameCenter(int FrameCenterX, int FrameCenterY, int x, int y, out int px, out int py)
         {
             double theta = boxRotationRad;
             // If you rotate point (px, py) around point (ox, oy) by angle theta you'll get:
@@ -1765,6 +1973,11 @@ namespace LitePlacer
 
         private void DrawGridFunct(ref Bitmap img)
         {
+            int FrameCenterX = img.Width / 2;
+            int FrameCenterY = img.Height / 2;
+            int FrameSizeX = img.Width;
+            int FrameSizeY = img.Height;
+
             Pen RedPen = new Pen(Color.Red, 1);
             Pen GreenPen = new Pen(Color.Green, 1);
             Pen BluePen = new Pen(Color.Blue, 1);
@@ -1776,25 +1989,25 @@ namespace LitePlacer
             while (i < FrameSizeX)
             {
                 // FrameCenterX, 0 to FrameCenterX, FrameSizeY
-                RotateByFrameCenter(FrameCenterX + i, 0, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameSizeY, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX + i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX + i, FrameSizeY, out x2, out y2);
                 g.DrawLine(RedPen, x1, y1, x2, y2);
-                RotateByFrameCenter(FrameCenterX - i, 0, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX - i, FrameSizeY, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX - i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX - i, FrameSizeY, out x2, out y2);
                 g.DrawLine(RedPen, x1, y1, x2, y2);
                 i = i + step;
-                RotateByFrameCenter(FrameCenterX + i, 0, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameSizeY, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX + i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX + i, FrameSizeY, out x2, out y2);
                 g.DrawLine(GreenPen, x1, y1, x2, y2);
-                RotateByFrameCenter(FrameCenterX - i, 0, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX - i, FrameSizeY, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX - i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX - i, FrameSizeY, out x2, out y2);
                 g.DrawLine(GreenPen, x1, y1, x2, y2);
                 i = i + step;
-                RotateByFrameCenter(FrameCenterX + i, 0, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX + i, FrameSizeY, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX + i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX + i, FrameSizeY, out x2, out y2);
                 g.DrawLine(BluePen, x1, y1, x2, y2);
-                RotateByFrameCenter(FrameCenterX - i, 0, out x1, out y1);
-                RotateByFrameCenter(FrameCenterX - i, FrameSizeY, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX - i, 0, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameCenterX - i, FrameSizeY, out x2, out y2);
                 g.DrawLine(BluePen, x1, y1, x2, y2);
                 i = i + step;
             }
@@ -1803,25 +2016,25 @@ namespace LitePlacer
             while (i < FrameSizeY)
             {
                 // 0, FrameCenterY to FrameSizeX, FrameCenterY
-                RotateByFrameCenter(0, FrameCenterY + i, out x1, out y1);
-                RotateByFrameCenter(FrameSizeX, FrameCenterY + i, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, 0, FrameCenterY + i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameSizeX, FrameCenterY + i, out x2, out y2);
                 g.DrawLine(RedPen, x1, y1, x2, y2);
-                RotateByFrameCenter(0, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameSizeX, FrameCenterY - i, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, 0, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameSizeX, FrameCenterY - i, out x2, out y2);
                 g.DrawLine(RedPen, x1, y1, x2, y2);
                 i = i + step;
-                RotateByFrameCenter(0, FrameCenterY + i, out x1, out y1);
-                RotateByFrameCenter(FrameSizeX, FrameCenterY + i, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, 0, FrameCenterY + i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameSizeX, FrameCenterY + i, out x2, out y2);
                 g.DrawLine(GreenPen, x1, y1, x2, y2);
-                RotateByFrameCenter(0, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameSizeX, FrameCenterY - i, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, 0, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameSizeX, FrameCenterY - i, out x2, out y2);
                 g.DrawLine(GreenPen, x1, y1, x2, y2);
                 i = i + step;
-                RotateByFrameCenter(0, FrameCenterY + i, out x1, out y1);
-                RotateByFrameCenter(FrameSizeX, FrameCenterY + i, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, 0, FrameCenterY + i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameSizeX, FrameCenterY + i, out x2, out y2);
                 g.DrawLine(BluePen, x1, y1, x2, y2);
-                RotateByFrameCenter(0, FrameCenterY - i, out x1, out y1);
-                RotateByFrameCenter(FrameSizeX, FrameCenterY - i, out x2, out y2);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, 0, FrameCenterY - i, out x1, out y1);
+                RotateByFrameCenter(FrameCenterX, FrameCenterY, FrameSizeX, FrameCenterY - i, out x2, out y2);
                 g.DrawLine(BluePen, x1, y1, x2, y2);
                 i = i + step;
             }
@@ -1835,6 +2048,11 @@ namespace LitePlacer
         // =========================================================
         private void DrawDashedCrossFunct(ref Bitmap img)
         {
+            int FrameCenterX = img.Width / 2;
+            int FrameCenterY = img.Height / 2;
+            int FrameSizeX = img.Width;
+            int FrameSizeY = img.Height;
+
             Pen pen = new Pen(Color.SlateGray, 1);
             Graphics g = Graphics.FromImage(img);
             int step = FrameSizeY / 40;
@@ -1858,6 +2076,15 @@ namespace LitePlacer
 
         private void DrawCrossFunct(ref Bitmap img)
         {
+            if (img == null)
+            {
+                return;
+            }
+            int FrameCenterX = img.Width / 2;
+            int FrameCenterY = img.Height / 2;
+            int FrameSizeX = img.Width;
+            int FrameSizeY = img.Height;
+
             Pen pen = new Pen(Color.Red, 1);
             Graphics g = Graphics.FromImage(img);
             g.DrawLine(pen, FrameCenterX, 0, FrameCenterX, FrameSizeY);
@@ -1910,6 +2137,11 @@ namespace LitePlacer
                 Y += Yinc;
             }
 */
+            int FrameCenterX = img.Width / 2;
+            int FrameCenterY = img.Height / 2;
+            int FrameSizeX = img.Width;
+            int FrameSizeY = img.Height;
+
             Graphics g = Graphics.FromImage(img);
             int PenSize = 2;
             int tick = 12;
@@ -1956,6 +2188,9 @@ namespace LitePlacer
         // =========================================================
         private void DrawBoxFunct(ref Bitmap img)
         {
+            int FrameCenterX = img.Width / 2;
+            int FrameCenterY = img.Height / 2;
+
             Pen pen = new Pen(Color.Red, 1);
             Graphics g = Graphics.FromImage(img);
             g.DrawLine(pen, BoxPoints[0].X + FrameCenterX, BoxPoints[0].Y + FrameCenterY,
@@ -2166,18 +2401,8 @@ namespace LitePlacer
             return zoom;
         }
 
-        // UI also needs the zoom factor from the DisplayFunctions
+        // If we are showing what actual measurements would give, we need the zoom
         public double GetDisplayZoom()
-        {
-            if (Zoom)
-            {
-                return ZoomFactor;
-            }
-            return 1.0;
-        }
-
-        // if show processigng is on
-        public double GetProcessingZoom()
         {
             double zoom = 1.0;
             foreach (AForgeFunction f in DisplayFunctions)
@@ -2190,6 +2415,77 @@ namespace LitePlacer
             return zoom;
         }
 
+        // UI needs the relationship from measurement results (which are in CameraResolution, and maybe zoomed)
+        // to UI, which is either in DisplayResolution or CameraResolution (if show pixels is on) and maybe zoomed in
+
+        public double GetMeasuresRelationToUI()
+        {
+            double Xmeasurements = CameraResolution.X * GetDisplayZoom();
+            double zoom = 1.0;
+            if (ZoomIsOn)
+            {
+                zoom = ZoomFactor;
+            }
+            double Xdisplay = DisplayResolution.X / zoom;
+            double res= Xdisplay / Xmeasurements;
+            return res;
+        }
+
+        // =========================================================================================================
+        // _mmPerScreenPixel: Returns the mm value of a pixel on UI, regardless of showing conditions
+
+        // CameraResolution { get; set; }  // resolution from camera
+        // DisplayResolution { get; set; }  // resolution on UI
+
+        public double XmmPerScreenPixel()
+        {
+            double zoom = 1.0;
+            if (ZoomIsOn)
+            {
+                zoom = ZoomFactor;
+            }
+
+            double PixelsShown;     // How many CameraResolution pixels are on the screen?
+            if (ShowPixels)
+            {
+                PixelsShown = CameraResolution.X * zoom;
+            }
+            else if (ShowProcessing)
+            {
+                PixelsShown = (double)CameraResolution.X / (zoom * GetDisplayZoom());
+            }
+            else 
+            {
+                PixelsShown = (double)CameraResolution.X / zoom;
+            }
+            double ScreenPixel = PixelsShown / (double)DisplayResolution.X; // This many CameraResolution pixels on one screen pixel
+            return ScreenPixel * XmmPerPixel;
+        }
+
+        public double YmmPerScreenPixel()
+        {
+            double zoom = 1.0;
+            if (ZoomIsOn)
+            {
+                zoom = ZoomFactor;
+            }
+
+            double PixelsShown;     // How many CameraResolution pixels are on the screen?
+            if (ShowPixels)
+            {
+                PixelsShown = CameraResolution.Y * zoom;
+            }
+            else if (ShowProcessing)
+            {
+                PixelsShown = (double)CameraResolution.Y / (zoom * GetDisplayZoom());
+            }
+            else
+            {
+                PixelsShown = (double)CameraResolution.Y / zoom;
+            }
+            double ScreenPixel = PixelsShown / (double)DisplayResolution.Y; // This many CameraResolution pixels on one screen pixel
+            return ScreenPixel * YmmPerPixel;
+        }
 
         // ==========================================================================================================
         // Measure
@@ -2215,6 +2511,9 @@ namespace LitePlacer
             string SizeYmm;
             string A;
 
+            int FrameCenterX = CameraResolution.X / 2;
+            int FrameCenterY = CameraResolution.Y / 2;
+
             for (int i = StartFrom; i < Shapes.Count; i++)
             {
                 Xpxls = String.Format("{0,6:0.0}", Shapes[i].Center.X - FrameCenterX);
@@ -2234,13 +2533,6 @@ namespace LitePlacer
 
 
         // =========================================================
-        private double DistanceToCenter(Shapes.Shape shape)
-        {
-            double X = shape.Center.X - FrameCenterX;
-            double Y = FrameCenterY - shape.Center.Y;
-
-            return Math.Sqrt(X * X + Y * Y);
-        }
 
         public bool Measure(out double Xresult, out double Yresult, out double Aresult, bool DisplayResults = false )
         {
@@ -2428,6 +2720,8 @@ namespace LitePlacer
 
             // Filter for distance
             List<Shapes.Shape> FilteredForDistance = new List<Shapes.Shape>();
+            int FrameCenterX = CameraResolution.X / 2;
+            int FrameCenterY = CameraResolution.Y / 2;
             foreach (Shapes.Shape shape in FilteredForSize)
             {
                 double Xdist = Math.Abs((shape.Center.X - FrameCenterX) * XmmPpix);
@@ -2457,6 +2751,8 @@ namespace LitePlacer
             Xresult = (FilteredForDistance[0].Center.X - FrameCenterX) * XmmPpix;
             Yresult = (FrameCenterY - FilteredForDistance[0].Center.Y) * YmmPpix;
             Aresult = FilteredForDistance[0].Angle;
+            double XSize = FilteredForDistance[0].Xsize * XmmPpix;
+            double YSize = FilteredForDistance[0].Ysize * YmmPpix;
 
             if (!DisplayResults)
             {
@@ -2486,7 +2782,9 @@ namespace LitePlacer
             }
             MainForm.DisplayText( "Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
                                         ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture) +
-                                        ", A= " + Aresult.ToString("0.00", CultureInfo.InvariantCulture));
+                                        ", A= " + Aresult.ToString("0.00", CultureInfo.InvariantCulture) +
+                                         ", X size = " + XSize.ToString("0.000", CultureInfo.InvariantCulture) +
+                                         ", Y size = " + YSize.ToString("0.000", CultureInfo.InvariantCulture));
             MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
             if (Math.Abs(XmmPpix-0.1)<0.001)
             {
