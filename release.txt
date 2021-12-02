@@ -10,7 +10,10 @@ New Features, significant changes
 
 Bug Fixes 
 
+* Setting pixel size now works regardless of zoom and show pixel setting
 * No crash if nozzle correction is asked when no nozzle is loaded
+* Screen resolution settings did not always clear red error color
+* You can now click the image to move the machine even if it is not homed
 
 Known issues
 

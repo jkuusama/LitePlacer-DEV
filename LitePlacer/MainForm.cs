@@ -1,4 +1,4 @@
-// Processing tables branch
+﻿// Processing tables branch
 
 using System;
 using System.Collections.Generic;
@@ -3765,8 +3765,18 @@ namespace LitePlacer
             {
                 DownCameraBoxX_textBox.ForeColor = Color.Black;
                 NoRecalc = true;
-                Setting.DownCam_XmmPerPixel = val / DownCamera.BoxSizeX;
-                DownCamera.XmmPerPixel = val / DownCamera.BoxSizeX;
+                // How many pixels are really on screen?
+                double BoxX = (double)DownCamera.BoxSizeX * (double)DownCamera.CameraResolution.X / (double)DownCamera.DisplayResolution.X;
+                if (DownCamera.ShowPixels)
+                {
+                    BoxX = (double)DownCamera.BoxSizeX;
+                }
+                if (DownCamera.ZoomIsOn)
+                {
+                    BoxX = BoxX / DownCamera.ZoomFactor;
+                }
+                Setting.DownCam_XmmPerPixel = val / BoxX;
+                DownCamera.XmmPerPixel = val / BoxX;
                 DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
                 NoRecalc = false;
             }
@@ -3809,10 +3819,20 @@ namespace LitePlacer
             double val;
             if (double.TryParse(DownCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
-                NoRecalc = true;
                 DownCameraBoxY_textBox.ForeColor = Color.Black;
-                Setting.DownCam_YmmPerPixel = val / DownCamera.BoxSizeY;
-                DownCamera.YmmPerPixel = val / DownCamera.BoxSizeY;
+                NoRecalc = true;
+                // How many pixels are really on screen?
+                double BoxY = (double)DownCamera.BoxSizeY * (double)DownCamera.CameraResolution.Y / (double)DownCamera.DisplayResolution.Y;
+                if (DownCamera.ShowPixels)
+                {
+                    BoxY = (double)DownCamera.BoxSizeY;
+                }
+                if (DownCamera.ZoomIsOn)
+                {
+                    BoxY = BoxY / DownCamera.ZoomFactor;
+                }
+                Setting.DownCam_YmmPerPixel = val / BoxY;
+                DownCamera.YmmPerPixel = val / BoxY;
                 DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
                 NoRecalc = false;
             }
@@ -3858,10 +3878,20 @@ namespace LitePlacer
             double val;
             if (double.TryParse(UpCameraBoxX_textBox.Text.Replace(',', '.'), out val))
             {
-                NoRecalc = true;
                 UpCameraBoxX_textBox.ForeColor = Color.Black;
-                Setting.UpCam_XmmPerPixel = val / UpCamera.BoxSizeX;
-                UpCamera.XmmPerPixel = val / UpCamera.BoxSizeX;
+                NoRecalc = true;
+                // How many pixels are really on screen?
+                double BoxX = (double)UpCamera.BoxSizeX * (double)UpCamera.CameraResolution.X / (double)UpCamera.DisplayResolution.X;
+                if (UpCamera.ShowPixels)
+                {
+                    BoxX = (double)UpCamera.BoxSizeX;
+                }
+                if (UpCamera.ZoomIsOn)
+                {
+                    BoxX = BoxX / UpCamera.ZoomFactor;
+                }
+                Setting.UpCam_XmmPerPixel = val / BoxX;
+                UpCamera.XmmPerPixel = val / BoxX;
                 UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
                 NoRecalc = false;
             }
@@ -3905,10 +3935,20 @@ namespace LitePlacer
             double val;
             if (double.TryParse(UpCameraBoxY_textBox.Text.Replace(',', '.'), out val))
             {
-                NoRecalc = true;
                 UpCameraBoxY_textBox.ForeColor = Color.Black;
-                Setting.UpCam_YmmPerPixel = val / UpCamera.BoxSizeY;
-                UpCamera.YmmPerPixel = val / UpCamera.BoxSizeY;
+                NoRecalc = true;
+                // How many pixels are really on screen?
+                double BoxY = (double)UpCamera.BoxSizeY * (double)UpCamera.CameraResolution.Y / (double)UpCamera.DisplayResolution.Y;
+                if (UpCamera.ShowPixels)
+                {
+                    BoxY = (double)UpCamera.BoxSizeY;
+                }
+                if (UpCamera.ZoomIsOn)
+                {
+                    BoxY = BoxY / UpCamera.ZoomFactor;
+                }
+                Setting.UpCam_YmmPerPixel = val / BoxY;
+                UpCamera.YmmPerPixel = val / BoxY;
                 UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
                 NoRecalc = false;
             }
