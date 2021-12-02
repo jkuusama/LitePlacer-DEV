@@ -1,4 +1,4 @@
-﻿// Processing tables branch
+// Processing tables branch
 
 using System;
 using System.Collections.Generic;
@@ -11731,6 +11731,7 @@ namespace LitePlacer
             if (!VideoAlgorithms.FindAlgorithm(AlgName, out Alg))
             {
                 DisplayText("*** Calibration algorithm not found!", KnownColor.Red, true);
+                DisplayText("*** Check vision parameters table on Setup Nozzles page.", KnownColor.Red, true);
                 return false;
             }
             UpCamera.BuildMeasurementFunctionsList(Alg.FunctionList);
