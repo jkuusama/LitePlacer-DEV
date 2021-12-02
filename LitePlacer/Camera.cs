@@ -2448,9 +2448,9 @@ namespace LitePlacer
             double PixelsShown;     // How many CameraResolution pixels are on the screen?
             if (ShowPixels)
             {
-                PixelsShown = CameraResolution.X * zoom;
+                return XmmPerPixel / zoom;
             }
-            else if (ShowProcessing)
+            else if (ShowProcessing) 
             {
                 PixelsShown = (double)CameraResolution.X / (zoom * GetDisplayZoom());
             }
@@ -2473,7 +2473,7 @@ namespace LitePlacer
             double PixelsShown;     // How many CameraResolution pixels are on the screen?
             if (ShowPixels)
             {
-                PixelsShown = CameraResolution.Y * zoom;
+                return XmmPerPixel / zoom;
             }
             else if (ShowProcessing)
             {
