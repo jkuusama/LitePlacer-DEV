@@ -8975,7 +8975,7 @@ namespace LitePlacer
             }
 
             // find the tranformation
-            bool res = transform.Estimate(nominals, measured, ErrorMetric.Transfer, 1450, 1450);  // the PCBs are smaller than 450mm
+            bool res = transform.Estimate(nominals, measured, ErrorMetric.Transfer, 1450, 1450);  // the PCBs are smaller than 1450mm
             if (!res)
             {
                 ShowMessageBox(
@@ -10339,10 +10339,19 @@ namespace LitePlacer
 
         private void DeleteTape_button_Click(object sender, EventArgs e)
         {
-            if (Tapes_dataGridView.RowCount > 0)
+            for (int i = Tapes_dataGridView.RowCount-1; i >0; i--)
             {
-                Tapes_dataGridView.Rows.RemoveAt(Tapes_dataGridView.CurrentCell.RowIndex);
+                foreach (DataGridViewCell cell in Tapes_dataGridView.Rows[i].Cells)
+                {
+                    if (cell.Selected)
+                    {
+                        Tapes_dataGridView.Rows.RemoveAt(i);
+                        break;
+                    }
+                }
             }
+            Tapes_dataGridView.ClearSelection();
+
         }
 
         private void TapeGoTo_button_Click(object sender, EventArgs e)
