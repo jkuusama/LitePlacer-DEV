@@ -5,7 +5,12 @@
       "ProjectGuid": "69b205a1-16af-4e8a-b751-ea5f5e4fcb4e",
       "DisplayName": "LitePlacer",
       "ColorIndex": 0
+    },
+    "34ff0353-b9b2-4edf-a13e-24071c8066b5": {
+      "ProjectGuid": "34ff0353-b9b2-4edf-a13e-24071c8066b5",
+      "DisplayName": "Solution Items",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }

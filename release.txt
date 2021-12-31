@@ -4,7 +4,7 @@ Previous release 08/23/2021, changes after that:
 
 New Features, significant changes
 
-* Video on UI is scaled down to UI resolution (much better performance), measurements are
+* Video to UI is scaled down (much better performance), measurements are
   taken from full resolution image
 * (in previous release) Added adjustable delay (in frames) to camera measurements
 
@@ -14,6 +14,7 @@ Bug Fixes
 * No crash if nozzle correction is asked when no nozzle is loaded
 * Screen resolution settings did not always clear red error color
 * You can now click the image to move the machine even if it is not homed
+* Tape type drop box was not always filled with vision algorithm names
 
 Known issues
 

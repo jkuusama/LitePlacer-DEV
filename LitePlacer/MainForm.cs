@@ -1171,6 +1171,7 @@ namespace LitePlacer
                             Tapes_dataGridView.Rows[i].Cells["UseNozzleCoordinates_Column"].Value = false;
                         }
                         LoadingDataGrid = false;
+                        FillTapeTypeSelectionBox(Tapes_dataGridView);
                     }
                     else
                     {
@@ -1219,6 +1220,10 @@ namespace LitePlacer
         private void LoadTapesFromFile(string Filename, System.Windows.Forms.DataGridView Grid)
         {
             LoadDataGrid(Filename, Grid, DataTableType.Tapes);
+            FillTapeTypeSelectionBox(Grid);
+        }
+        private void FillTapeTypeSelectionBox(System.Windows.Forms.DataGridView Grid)
+        {
             // build type combobox and set values
             bool YesToAll = false;
             bool NoToAll = false;
