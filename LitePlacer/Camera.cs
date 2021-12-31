@@ -912,6 +912,10 @@ namespace LitePlacer
                         DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs));
                     }
 
+                    if (DisplayedFrame==null)
+                    {
+                        return;     // this can happen during startup, change of cameras etc. Next frame will fix it.
+                    }
                     double ResultsZoom = GetDisplayZoom();
                     double DisplayZoom = 1.0;
                     if (ZoomIsOn)
@@ -1018,64 +1022,69 @@ namespace LitePlacer
             // Input frame is the high resolution source image, not necessarily in 4:3 format.
             // This function finds the correct scaling and returns an image, that fits to
             // DisplayResolution sized imagebox.
-
-            double Xin = SourceFrame.Width;
-            double Yin = SourceFrame.Height;
-            double zoom = ZoomFactor;
-            if (!ZoomIsOn)
+            try
             {
-                zoom = 1.0;
-            }
+                double Xin = SourceFrame.Width;
+                double Yin = SourceFrame.Height;
+                double zoom = ZoomFactor;
+                if (!ZoomIsOn)
+                {
+                    zoom = 1.0;
+                }
 
-            if (ShowPixels)  // no scaling is needed, just crop the portion we want
+                if (ShowPixels)  // no scaling is needed, just crop the portion we want
+                {
+                    double OutSizeX = DisplayResolution.X / zoom;
+                    double OutSizeY = DisplayResolution.Y / zoom;
+
+                    int CropFromX = (int)((Xin / 2) - (OutSizeX / 2));
+                    int CropFromY = (int)((Yin / 2) - (OutSizeY / 2));
+                    Crop C1_filt = new Crop(new Rectangle(CropFromX, CropFromY, (int)OutSizeX, (int)OutSizeY));
+                    Bitmap newImage1 = C1_filt.Apply(SourceFrame);
+                    return newImage1;
+                }
+
+                // We want to find the region to show from and fit it to DisplayResolution.
+                double scale = 1.0;
+                if (!ZoomIsOn)
+                {
+                    // no crop needed, just scale to display resolution
+                    scale = Xin / (double)DisplayResolution.X;
+                    int Ysize = (int)(Yin / scale);
+                    ResizeNearestNeighbor R1_filt = new ResizeNearestNeighbor(DisplayResolution.X, Ysize);
+                    Bitmap newImage2 = R1_filt.Apply(SourceFrame);
+                    return newImage2;
+                }
+
+                // zoom is on. Crop first, then scale
+                double CenterX = Xin / 2.0;
+                double CenterY = Yin / 2.0;
+
+                double XpixsWanted = Xin / zoom;
+                double FromX = CenterX - XpixsWanted / 2.0;
+                scale = XpixsWanted / (double)DisplayResolution.X;
+                // We want to crop from Y using the same zoom ratio but in display aspect ratio
+                double OutAspect = (double)DisplayResolution.X / (double)DisplayResolution.Y;
+                double YpixsWanted = XpixsWanted / OutAspect;
+                if (YpixsWanted > Yin)
+                {
+                    // slight zoom on a 16:9 input
+                    YpixsWanted = Yin;
+                }
+                double FromY = CenterY - YpixsWanted / 2.0;
+                int YsizeOut = (int)(YpixsWanted / scale);
+                Crop C2_filt = new Crop(new Rectangle((int)FromX, (int)FromY, (int)XpixsWanted, (int)YpixsWanted));
+                Bitmap newImage3 = C2_filt.Apply(SourceFrame);
+                ResizeNearestNeighbor R2_filt = new ResizeNearestNeighbor(DisplayResolution.X, YsizeOut);
+                Bitmap newImage4 = R2_filt.Apply(newImage3);
+                newImage3.Dispose();
+                return newImage4;
+            }
+            catch
             {
-                double OutSizeX = DisplayResolution.X / zoom;
-                double OutSizeY = DisplayResolution.Y / zoom;
-
-                int CropFromX = (int)((Xin / 2) - (OutSizeX / 2));
-                int CropFromY = (int)((Yin / 2) - (OutSizeY / 2));
-                Crop C1_filt = new Crop(new Rectangle(CropFromX, CropFromY, (int)OutSizeX, (int)OutSizeY));
-                Bitmap newImage1 = C1_filt.Apply(SourceFrame);
-                return newImage1;
+                return null;
             }
-
-            // We want to find the region to show from and fit it to DisplayResolution.
-            double scale = 1.0;
-            if (!ZoomIsOn)
-            {
-                // no crop needed, just scale to display resolution
-                scale = Xin / (double)DisplayResolution.X;
-                int Ysize = (int)(Yin / scale);
-                ResizeNearestNeighbor R1_filt = new ResizeNearestNeighbor(DisplayResolution.X, Ysize);
-                Bitmap newImage2 = R1_filt.Apply(SourceFrame);
-                return newImage2;
-            }
-
-            // zoom is on. Crop first, then scale
-            double CenterX = Xin / 2.0;
-            double CenterY = Yin / 2.0;
-
-            double XpixsWanted = Xin / zoom;
-            double FromX = CenterX - XpixsWanted / 2.0;
-            scale = XpixsWanted / (double)DisplayResolution.X;
-            // We want to crop from Y using the same zoom ratio but in display aspect ratio
-            double OutAspect = (double)DisplayResolution.X / (double)DisplayResolution.Y;
-            double YpixsWanted = XpixsWanted / OutAspect;
-            if (YpixsWanted > Yin)
-            {
-                // slight zoom on a 16:9 input
-                YpixsWanted = Yin;
-            }
-            double FromY = CenterY - YpixsWanted / 2.0;
-            int YsizeOut = (int)(YpixsWanted / scale);
-            Crop C2_filt = new Crop(new Rectangle((int)FromX, (int)FromY, (int)XpixsWanted, (int)YpixsWanted));
-            Bitmap newImage3 = C2_filt.Apply(SourceFrame);
-            ResizeNearestNeighbor R2_filt = new ResizeNearestNeighbor(DisplayResolution.X, YsizeOut);
-            Bitmap newImage4 = R2_filt.Apply(newImage3);
-            newImage3.Dispose();
-            return newImage4;
         }
-
 
 
         // ==========================================================================================================
