@@ -500,9 +500,6 @@ namespace LitePlacer
 					);
 					return false;
 			}
-            MainForm.DisplayText("Part position: " + Grid.Rows[Tape].Cells["Id_Column"].Value.ToString() + ", part #"
-                + pos.ToString(CultureInfo.InvariantCulture)
-                + ": X= " + PartX.ToString(CultureInfo.InvariantCulture) + ", Y= " + PartY.ToString(CultureInfo.InvariantCulture));
             // rotation:
             if (Grid.Rows[Tape].Cells["Rotation_Column"].Value == null)
 			{
@@ -547,6 +544,11 @@ namespace LitePlacer
 			{
 				A += 360.0;
 			};
+            MainForm.DisplayText("Part position: " + Grid.Rows[Tape].Cells["Id_Column"].Value.ToString() +
+                ", part #" + pos.ToString(CultureInfo.InvariantCulture) +
+                ": X= " + PartX.ToString(CultureInfo.InvariantCulture) +
+                ", Y= " + PartY.ToString(CultureInfo.InvariantCulture) +
+                ", A= " + A.ToString(CultureInfo.InvariantCulture));
             return true;
         }
 
