@@ -1490,6 +1490,10 @@ namespace LitePlacer
             UpCamera.ShowPixels = ShowPixels_checkBox.Checked;
             DownCamera.ShowPixels = ShowPixels_checkBox.Checked;
             Setting.Cam_ShowPixels = ShowPixels_checkBox.Checked;
+            UpdateDownCamBoxXSizeText();
+            UpdateDownCamBoxYSizeText();
+            UpdateUpCamBoxXSizeText();
+            UpdateUpCamBoxYSizeText();
             InitDownCamFpsMeasurement();
             InitUpCamFpsMeasurement();
         }

@@ -238,39 +238,6 @@ namespace LitePlacer
             BasicSetupTab_Begin();      // Form comes up with basic setup tab, but the tab change event doesn't fire
 
 
-            DownCamera.DrawCross = Setting.DownCam_DrawCross;
-            DownCamera.DrawBox = Setting.DownCam_DrawBox;
-            DownCamera.DrawSidemarks = Setting.DownCam_DrawSidemarks;
-            DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
-            DownCamera.ZoomIsOn = Setting.DownCam_Zoom;
-            DownCamZoomFactor_textBox.Text = Setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
-            DownCamera.ZoomFactor = Setting.DownCam_Zoomfactor;
-            DownCamera.ImageBox = Cam_pictureBox;
-            DownCamera.XmmPerPixel = Setting.DownCam_XmmPerPixel;
-            DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
-
-            UpCamera.DrawCross = Setting.UpCam_DrawCross;
-            UpCamera.DrawBox = Setting.UpCam_DrawBox;
-            UpCamera.DrawSidemarks = Setting.UpCam_DrawSidemarks;
-            UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
-            UpCamera.ZoomIsOn = Setting.UpCam_Zoom;
-            UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
-            UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
-            UpCamera.ImageBox = Cam_pictureBox;
-            UpCamera.XmmPerPixel = Setting.UpCam_XmmPerPixel;
-            UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
-
-            ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
-            if (ShowPixels_checkBox.Checked)
-            {
-                Cam_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-            }
-            else
-            {
-                Cam_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            }
-
-
             if (Setting.Nozzles_current == 0)
             {
                 NozzleNo_textBox.Text = "--";
@@ -325,6 +292,40 @@ namespace LitePlacer
             UpCamMaxResolution_checkBox.Checked = Setting.UpCam_UseMaxResolution;
             DoUpCamMaxResolution_checkBox_CheckedChanged();
             StartCameras();
+
+            DownCamera.DrawCross = Setting.DownCam_DrawCross;
+            DownCamera.DrawBox = Setting.DownCam_DrawBox;
+            DownCamera.DrawSidemarks = Setting.DownCam_DrawSidemarks;
+            DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
+            DownCamera.ZoomIsOn = Setting.DownCam_Zoom;
+            DownCamZoomFactor_textBox.Text = Setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
+            DownCamera.ZoomFactor = Setting.DownCam_Zoomfactor;
+            DownCamera.ImageBox = Cam_pictureBox;
+            DownCamera.XmmPerPixel = Setting.DownCam_XmmPerPixel;
+            DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
+
+            UpCamera.DrawCross = Setting.UpCam_DrawCross;
+            UpCamera.DrawBox = Setting.UpCam_DrawBox;
+            UpCamera.DrawSidemarks = Setting.UpCam_DrawSidemarks;
+            UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
+            UpCamera.ZoomIsOn = Setting.UpCam_Zoom;
+            UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
+            UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
+            UpCamera.ImageBox = Cam_pictureBox;
+            UpCamera.XmmPerPixel = Setting.UpCam_XmmPerPixel;
+            UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
+
+            ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
+
+
+            DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+            UpdateDownCamBoxXSizeText();
+            DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+            UpdateDownCamBoxYSizeText();
+            UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+            UpdateUpCamBoxXSizeText();
+            UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
+            UpdateUpCamBoxYSizeText();
 
             // ======== Setup vision processing tab:
             NoOfNozzlesOnVideoSetup_numericUpDown.Maximum = Setting.Nozzles_count;
@@ -3428,22 +3429,6 @@ namespace LitePlacer
                 UpdateDownCameraStatusLabel();
                 UpdateUpCameraStatusLabel();
             }
-
-            double f;
-            f = Setting.DownCam_XmmPerPixel * DownCamera.BoxSizeX;
-            DownCameraBoxX_textBox.Text = f.ToString("0.000", CultureInfo.InvariantCulture);
-            DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
-            f = Setting.DownCam_YmmPerPixel * DownCamera.BoxSizeY;
-            DownCameraBoxY_textBox.Text = f.ToString("0.0000", CultureInfo.InvariantCulture);
-            DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
-
-            f = Setting.UpCam_XmmPerPixel * UpCamera.BoxSizeX;
-            UpCameraBoxX_textBox.Text = f.ToString("0.00", CultureInfo.InvariantCulture);
-            UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
-            f = Setting.UpCam_YmmPerPixel * UpCamera.BoxSizeY;
-            UpCameraBoxY_textBox.Text = f.ToString("0.000", CultureInfo.InvariantCulture);
-            UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
-
             getDownCamList();
             getUpCamList();
         }
@@ -3759,6 +3744,21 @@ namespace LitePlacer
         // Down Camera, X size
         private bool NoRecalc = false;
 
+        private double BoxXzize(Camera cam)
+        {
+            // How many pixels are really on screen?
+            double BoxX = (double)cam.BoxSizeX * (double)cam.CameraResolution.X / (double)cam.DisplayResolution.X;
+            if (cam.ShowPixels)
+            {
+                BoxX = (double)cam.BoxSizeX;
+            }
+            if (cam.ZoomIsOn)
+            {
+                BoxX = BoxX / cam.ZoomFactor;
+            }
+            return BoxX;
+        }
+
         private void DownCameraBoxX_textBox_TextChanged(object sender, EventArgs e)
         {
             if (NoRecalc)
@@ -3771,15 +3771,7 @@ namespace LitePlacer
                 DownCameraBoxX_textBox.ForeColor = Color.Black;
                 NoRecalc = true;
                 // How many pixels are really on screen?
-                double BoxX = (double)DownCamera.BoxSizeX * (double)DownCamera.CameraResolution.X / (double)DownCamera.DisplayResolution.X;
-                if (DownCamera.ShowPixels)
-                {
-                    BoxX = (double)DownCamera.BoxSizeX;
-                }
-                if (DownCamera.ZoomIsOn)
-                {
-                    BoxX = BoxX / DownCamera.ZoomFactor;
-                }
+                double BoxX = BoxXzize(DownCamera);
                 Setting.DownCam_XmmPerPixel = val / BoxX;
                 DownCamera.XmmPerPixel = val / BoxX;
                 DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
@@ -3804,7 +3796,7 @@ namespace LitePlacer
                 DownCameraXmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.DownCam_XmmPerPixel = val;
                 DownCamera.XmmPerPixel = val;
-                DownCameraBoxX_textBox.Text = (val * DownCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
+                UpdateDownCamBoxXSizeText();
                 NoRecalc = false;
             }
             else
@@ -3813,8 +3805,29 @@ namespace LitePlacer
             }
         }
 
+        private void UpdateDownCamBoxXSizeText()
+        {
+            // Own function because the box size needs to be updated when zoom or show pixels status changes
+            DownCameraBoxX_textBox.Text = (Setting.DownCam_XmmPerPixel * BoxXzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+        }
+
         // =================================================================================
         // Down Camera, Y size
+        private double BoxYzize(Camera cam)
+        {
+            // How many pixels are really on screen?
+            double BoxY = (double)cam.BoxSizeY * (double)cam.CameraResolution.Y / (double)cam.DisplayResolution.Y;
+            if (cam.ShowPixels)
+            {
+                BoxY = (double)cam.BoxSizeY;
+            }
+            if (cam.ZoomIsOn)
+            {
+                BoxY = BoxY / cam.ZoomFactor;
+            }
+            return BoxY;
+        }
+
         private void DownCameraBoxY_textBox_TextChanged(object sender, EventArgs e)
         {
             if (NoRecalc)
@@ -3827,15 +3840,7 @@ namespace LitePlacer
                 DownCameraBoxY_textBox.ForeColor = Color.Black;
                 NoRecalc = true;
                 // How many pixels are really on screen?
-                double BoxY = (double)DownCamera.BoxSizeY * (double)DownCamera.CameraResolution.Y / (double)DownCamera.DisplayResolution.Y;
-                if (DownCamera.ShowPixels)
-                {
-                    BoxY = (double)DownCamera.BoxSizeY;
-                }
-                if (DownCamera.ZoomIsOn)
-                {
-                    BoxY = BoxY / DownCamera.ZoomFactor;
-                }
+                double BoxY = BoxYzize(DownCamera);
                 Setting.DownCam_YmmPerPixel = val / BoxY;
                 DownCamera.YmmPerPixel = val / BoxY;
                 DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
@@ -3861,7 +3866,7 @@ namespace LitePlacer
                 DownCameraYmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.DownCam_YmmPerPixel = val;
                 DownCamera.YmmPerPixel = val;
-                DownCameraBoxY_textBox.Text = (val * DownCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
+                UpdateDownCamBoxYSizeText();
                 NoRecalc = false;
             }
             else
@@ -3869,7 +3874,11 @@ namespace LitePlacer
                 DownCameraYmmPerPixel_textBox.ForeColor = Color.Red;
             }
         }
-
+        private void UpdateDownCamBoxYSizeText()
+        {
+            // Own function because the box size needs to be updated when zoom or show pixels status changes
+            DownCameraBoxY_textBox.Text = (Setting.DownCam_YmmPerPixel * BoxYzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+        }
 
         // =================================================================================
         // Up Camera, X size
@@ -3886,15 +3895,7 @@ namespace LitePlacer
                 UpCameraBoxX_textBox.ForeColor = Color.Black;
                 NoRecalc = true;
                 // How many pixels are really on screen?
-                double BoxX = (double)UpCamera.BoxSizeX * (double)UpCamera.CameraResolution.X / (double)UpCamera.DisplayResolution.X;
-                if (UpCamera.ShowPixels)
-                {
-                    BoxX = (double)UpCamera.BoxSizeX;
-                }
-                if (UpCamera.ZoomIsOn)
-                {
-                    BoxX = BoxX / UpCamera.ZoomFactor;
-                }
+                double BoxX = BoxXzize(UpCamera);
                 Setting.UpCam_XmmPerPixel = val / BoxX;
                 UpCamera.XmmPerPixel = val / BoxX;
                 UpCameraXmmPerPixel_textBox.Text = Setting.UpCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
@@ -3919,13 +3920,18 @@ namespace LitePlacer
                 UpCameraXmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.UpCam_XmmPerPixel = val;
                 UpCamera.XmmPerPixel = val;
-                UpCameraBoxX_textBox.Text = (val * UpCamera.BoxSizeX).ToString("0.000", CultureInfo.InvariantCulture);
+                UpdateUpCamBoxXSizeText();
                 NoRecalc = false;
             }
             else
             {
                 UpCameraXmmPerPixel_textBox.ForeColor = Color.Red;
             }
+        }
+        private void UpdateUpCamBoxXSizeText()
+        {
+            // Own function because the box size needs to be updated when zoom or show pixels status changes
+            UpCameraBoxX_textBox.Text = (Setting.UpCam_XmmPerPixel * BoxXzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
         }
 
         // =================================================================================
@@ -3943,15 +3949,7 @@ namespace LitePlacer
                 UpCameraBoxY_textBox.ForeColor = Color.Black;
                 NoRecalc = true;
                 // How many pixels are really on screen?
-                double BoxY = (double)UpCamera.BoxSizeY * (double)UpCamera.CameraResolution.Y / (double)UpCamera.DisplayResolution.Y;
-                if (UpCamera.ShowPixels)
-                {
-                    BoxY = (double)UpCamera.BoxSizeY;
-                }
-                if (UpCamera.ZoomIsOn)
-                {
-                    BoxY = BoxY / UpCamera.ZoomFactor;
-                }
+                double BoxY = BoxYzize(UpCamera);
                 Setting.UpCam_YmmPerPixel = val / BoxY;
                 UpCamera.YmmPerPixel = val / BoxY;
                 UpCameraYmmPerPixel_textBox.Text = Setting.UpCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
@@ -3977,13 +3975,18 @@ namespace LitePlacer
                 UpCameraYmmPerPixel_textBox.ForeColor = Color.Black;
                 Setting.UpCam_YmmPerPixel = val;
                 UpCamera.YmmPerPixel = val;
-                UpCameraBoxY_textBox.Text = (val * UpCamera.BoxSizeY).ToString("0.000", CultureInfo.InvariantCulture);
+                UpdateUpCamBoxYSizeText();
                 NoRecalc = false;
             }
             else
             {
                 UpCameraYmmPerPixel_textBox.ForeColor = Color.Red;
             }
+        }
+        private void UpdateUpCamBoxYSizeText()
+        {
+            // Own function because the box size needs to be updated when zoom or show pixels status changes
+            UpCameraBoxY_textBox.Text = (Setting.UpCam_YmmPerPixel * BoxYzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
         }
 
         // =================================================================================
@@ -3999,6 +4002,8 @@ namespace LitePlacer
                 DownCamera.ZoomIsOn = false;
                 Setting.DownCam_Zoom = false;
             }
+            UpdateDownCamBoxXSizeText();
+            UpdateDownCamBoxYSizeText();
         }
         // ====
         private void UpCamZoom_checkBox_Click(object sender, EventArgs e)
@@ -4013,6 +4018,8 @@ namespace LitePlacer
                 UpCamera.ZoomIsOn = false;
                 Setting.UpCam_Zoom = false;
             }
+            UpdateUpCamBoxXSizeText();
+            UpdateUpCamBoxYSizeText();
         }
 
         // =================================================================================
@@ -4031,6 +4038,8 @@ namespace LitePlacer
                     DownCamZoomFactor_textBox.ForeColor = Color.Black;
                     Setting.DownCam_Zoomfactor = val;
                     DownCamera.ZoomFactor = val;
+                    UpdateDownCamBoxXSizeText();
+                    UpdateDownCamBoxYSizeText();
                 }
             }
             else
@@ -4055,6 +4064,8 @@ namespace LitePlacer
                     UpCamZoomFactor_textBox.ForeColor = Color.Black;
                     Setting.UpCam_Zoomfactor = val;
                     UpCamera.ZoomFactor = val;
+                    UpdateUpCamBoxXSizeText();
+                    UpdateUpCamBoxYSizeText();
                 }
             }
             else

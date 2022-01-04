@@ -1655,7 +1655,10 @@ namespace LitePlacer
                     {
                         X = X / ResultsZoom;
                     }
-                    X = X * RelationX;
+                    if (!ShowProcessing)
+                    {
+                        X = X * RelationX;
+                    }
                     X = X * DisplayZoom;
                     X = X + FrameCenterX;
 
@@ -1665,7 +1668,10 @@ namespace LitePlacer
                     {
                         Y = Y / ResultsZoom;
                     }
-                    Y = Y * RelationY;
+                    if (!ShowProcessing)
+                    {
+                        Y = Y * RelationY;
+                    }
                     Y = Y * DisplayZoom;
                     Y = Y + FrameCenterY;
                     System.Drawing.PointF Pnt = new System.Drawing.PointF();
@@ -1677,53 +1683,6 @@ namespace LitePlacer
             }
             g.Dispose();
             LimePen.Dispose();
-
-            /* Was:
-
-            int FrameCenterX = bitmap.Width / 2;
-            int FrameCenterY = bitmap.Height / 2;
-
-            int PenSize = (int)(3 * zoom);
-            if (PenSize < 2)
-            {
-                PenSize = 2;
-            }
-            Graphics g = Graphics.FromImage(bitmap);
-            Pen OrangePen = new Pen(Color.DarkOrange, 3);
-            for (int i = 0; i < Components.Count; i++)
-            {
-                List<System.Drawing.PointF> Corners = new List<System.Drawing.PointF>();
-
-                for (int c = 0; c < Components[i].BoundingBox.Corners.Count; c++)
-                {
-                    double X = Components[i].BoundingBox.Corners[c].X;
-                    X = X - FrameCenterX;
-                    X = X * zoom;
-                    X = X + FrameCenterX;
-                    double Y = Components[i].BoundingBox.Corners[c].Y;
-                    Y = Y - FrameCenterY;
-                    Y = Y * zoom;
-                    Y = Y + FrameCenterY;
-                    System.Drawing.PointF Pnt = new System.Drawing.PointF();
-                    Pnt.X = (float)X;
-                    Pnt.Y = (float)Y;
-                    Corners.Add(Pnt);
-                }
-                g.DrawPolygon(OrangePen, Corners.ToArray());
-                double Xc = Components[i].Center.X;
-                Xc = Xc - FrameCenterX;
-                Xc = Xc * zoom;
-                Xc = Xc + FrameCenterX;
-                double Yc = Components[i].Center.Y;
-                Yc = Yc - FrameCenterY;
-                Yc = Yc * zoom;
-                Yc = Yc + FrameCenterY;
-                ArrowAngle = Components[i].Angle;
-                DrawArrowFunct(ref bitmap, (int)Xc, (int)Yc, (int)(Components[i].Xsize * 0.3));
-            }
-            g.Dispose();
-            OrangePen.Dispose();
-            */
         }
 
         // ==========================================================================================================
@@ -1808,6 +1767,9 @@ namespace LitePlacer
                     radius = radius / ResultsZoom;
                 }
                 radius = radius * RelationX;
+                if (!ShowPixels)
+                {
+                }
                 radius = radius * DisplayZoom;
                 float dia = (float)(radius * 2);
                 g.DrawEllipse(LimePen, (float)(X - radius), (float)(Y - radius), dia, dia);
@@ -1903,6 +1865,10 @@ namespace LitePlacer
                     {
                         X = X / ResultsZoom;
                     }
+                    if (!ShowProcessing)
+                    {
+                        X = X * RelationX;
+                    }
                     X = X * RelationX;
                     X = X * DisplayZoom;
                     X = X + FrameCenterX;
@@ -1913,7 +1879,10 @@ namespace LitePlacer
                     {
                         Y = Y / ResultsZoom;
                     }
-                    Y = Y * RelationY;
+                    if (!ShowProcessing)
+                    {
+                        Y = Y * RelationY;
+                    }
                     Y = Y * DisplayZoom;
                     Y = Y + FrameCenterY;
                     System.Drawing.PointF Pnt = new System.Drawing.PointF();
@@ -2424,21 +2393,6 @@ namespace LitePlacer
             return zoom;
         }
 
-        // UI needs the relationship from measurement results (which are in CameraResolution, and maybe zoomed)
-        // to UI, which is either in DisplayResolution or CameraResolution (if show pixels is on) and maybe zoomed in
-
-        public double GetMeasuresRelationToUI()
-        {
-            double Xmeasurements = CameraResolution.X * GetDisplayZoom();
-            double zoom = 1.0;
-            if (ZoomIsOn)
-            {
-                zoom = ZoomFactor;
-            }
-            double Xdisplay = DisplayResolution.X / zoom;
-            double res= Xdisplay / Xmeasurements;
-            return res;
-        }
 
         // =========================================================================================================
         // _mmPerScreenPixel: Returns the mm value of a pixel on UI, regardless of showing conditions
