@@ -24,11 +24,19 @@ namespace LitePlacer
 {
     public class Camera
     {
-
         // #pragma warning disable CA1034 // Nested types should not be visible
+
+        public Camera(FormMain MainF, string _name)
+        {
+            MainForm = MainF;
+            Name = _name;
+        }
+
 
         // ==================================================================
         // Parameters:
+        private FormMain MainForm;
+        public string Name;
 
         public bool Active { get; set; }
 
@@ -98,15 +106,6 @@ namespace LitePlacer
         // #pragma warning restore CA1034 // Nested types should not be visible
 
         public VideoCaptureDevice VideoSource = null;
-        private FormMain MainForm;
-        public string Name;
-
-        public Camera(FormMain MainF, string _name)
-        {
-            MainForm = MainF;
-            Name = _name;
-        }
-
 
         public bool IsRunning()
         {
@@ -866,10 +865,11 @@ namespace LitePlacer
                 }
             };
 
+            double Zoom = 1;
             if (ShowUnprocessed)
             {
                 // Selection is neither show processing or show results, show the unprocessed source image
-                DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs));
+                DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs), out Zoom);
             }
             else
             {
@@ -902,43 +902,38 @@ namespace LitePlacer
                         ComponentsFromPads = FindComponentsFromPads_Funct(AnalyzedFrame);
                     }
 
-                    // Fit the image we are goint to show to the UI
+                    // Fit the image we are going to show to the UI
                     if (ShowProcessing)
                     {
-                        DisplayedFrame = FitImageToUI(AnalyzedFrame);   // Showing processing to user: Use processed frame for display
+                        DisplayedFrame = FitImageToUI(AnalyzedFrame, out Zoom);   // Showing processing to user: Use processed frame for display
                     }
                     else
                     {
-                        DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs));
+                        DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs), out Zoom);
+                        Zoom = Zoom / GetProcessingZoom(); // if processing results are zoomed, undo
                     }
 
                     if (DisplayedFrame==null)
                     {
                         return;     // this can happen during startup, change of cameras etc. Next frame will fix it.
                     }
-                    double ResultsZoom = GetDisplayZoom();
-                    double DisplayZoom = 1.0;
-                    if (ZoomIsOn)
-                    {
-                        DisplayZoom = ZoomFactor;
-                    }
 
                     // Draw the processing results to DisplayedFrame
                     if (FindCircles)
                     {
-                        DrawCirclesFunct(ref DisplayedFrame, Circles, ResultsZoom, DisplayZoom);
+                        DrawCirclesFunct(ref DisplayedFrame, Circles, Zoom);
                     }
                     if (FindRectangles)
                     {
-                        DrawRectanglesFunct(ref DisplayedFrame, Rectangles, ResultsZoom, DisplayZoom);
+                        DrawRectanglesFunct(ref DisplayedFrame, Rectangles, Zoom);
                     }
                     if (FindComponentByOutlines)
                     {
-                        DrawComponentsFunct(ref DisplayedFrame, ComponentsByOutline, ResultsZoom, DisplayZoom);
+                        DrawComponentsFunct(ref DisplayedFrame, ComponentsByOutline, Zoom);
                     }
                     if (FindComponentByPads)
                     {
-                        DrawComponentsFunct(ref DisplayedFrame, ComponentsFromPads, ResultsZoom, DisplayZoom);
+                        DrawComponentsFunct(ref DisplayedFrame, ComponentsFromPads, Zoom);
                     }
                 }
                 catch (System.InvalidOperationException)
@@ -958,11 +953,6 @@ namespace LitePlacer
                 DrawBoxFunct(ref DisplayedFrame);
             };
 
-            if (ZoomIsOn)
-            {
-                // Zoom already taken care of by FitImageToUI()
-                // ZoomFunct(ref DisplayedFrame, ZoomFactor);
-            };
 
             if (DrawCross)
             {
@@ -1017,68 +1007,74 @@ namespace LitePlacer
 
 
         // =========================================================
-        private Bitmap FitImageToUI(Bitmap SourceFrame)
+        private Bitmap FitImageToUI(Bitmap SourceFrame, out double zoom)
         {
             // Input frame is the high resolution source image, not necessarily in 4:3 format.
             // This function finds the correct scaling and returns an image, that fits to
-            // DisplayResolution sized imagebox.
+            // DisplayResolution sized imagebox. Paramerter zoom tells, how much the image
+            // is zoomed in, inaddition to crop (needed to get the procesign results scaled correctly).
+            // Assumption is that the UI image is smaller than input image
+            // For performance: Handle basic cases separately
+            zoom = 1.0;
             try
             {
                 double Xin = SourceFrame.Width;
                 double Yin = SourceFrame.Height;
-                double zoom = ZoomFactor;
-                if (!ZoomIsOn)
-                {
-                    zoom = 1.0;
-                }
 
-                if (ShowPixels)  // no scaling is needed, just crop the portion we want
+                // Basic cases: 
+                if (!ZoomIsOn && !ShowPixels)
                 {
-                    double OutSizeX = DisplayResolution.X / zoom;
-                    double OutSizeY = DisplayResolution.Y / zoom;
-
-                    int CropFromX = (int)((Xin / 2) - (OutSizeX / 2));
-                    int CropFromY = (int)((Yin / 2) - (OutSizeY / 2));
-                    Crop C1_filt = new Crop(new Rectangle(CropFromX, CropFromY, (int)OutSizeX, (int)OutSizeY));
-                    Bitmap newImage1 = C1_filt.Apply(SourceFrame);
-                    return newImage1;
-                }
-
-                // We want to find the region to show from and fit it to DisplayResolution.
-                double scale = 1.0;
-                if (!ZoomIsOn)
-                {
-                    // no crop needed, just scale to display resolution
-                    scale = Xin / (double)DisplayResolution.X;
-                    int Ysize = (int)(Yin / scale);
+                    // no crop, scale to display resolution
+                    zoom = (double)DisplayResolution.X / Xin;
+                    int Ysize = (int)(Yin * zoom);
                     ResizeNearestNeighbor R1_filt = new ResizeNearestNeighbor(DisplayResolution.X, Ysize);
-                    Bitmap newImage2 = R1_filt.Apply(SourceFrame);
-                    return newImage2;
+                    Bitmap result1 = R1_filt.Apply(SourceFrame);
+                    return result1;
                 }
 
-                // zoom is on. Crop first, then scale
-                double CenterX = Xin / 2.0;
-                double CenterY = Yin / 2.0;
+                // The image we want is smaller than the input:
+                // find the viewed size, crop to that
 
-                double XpixsWanted = Xin / zoom;
-                double FromX = CenterX - XpixsWanted / 2.0;
-                scale = XpixsWanted / (double)DisplayResolution.X;
+                double zoomf = ZoomFactor;
+                if (!ZoomIsOn)
+                {
+                    zoomf = 1.0;
+                }
+                int XpixsWanted;
+                int YpixsWanted;
+
+                if (ShowPixels)
+                {
+                    XpixsWanted = (int)((double)DisplayResolution.X / zoomf);
+                }
+                else
+                {
+                    XpixsWanted = (int)(Xin / zoomf);
+                }
+
                 // We want to crop from Y using the same zoom ratio but in display aspect ratio
                 double OutAspect = (double)DisplayResolution.X / (double)DisplayResolution.Y;
-                double YpixsWanted = XpixsWanted / OutAspect;
+                YpixsWanted = (int)((double)XpixsWanted / OutAspect);
                 if (YpixsWanted > Yin)
                 {
                     // slight zoom on a 16:9 input
-                    YpixsWanted = Yin;
+                    YpixsWanted = (int)Yin;
                 }
-                double FromY = CenterY - YpixsWanted / 2.0;
-                int YsizeOut = (int)(YpixsWanted / scale);
-                Crop C2_filt = new Crop(new Rectangle((int)FromX, (int)FromY, (int)XpixsWanted, (int)YpixsWanted));
-                Bitmap newImage3 = C2_filt.Apply(SourceFrame);
-                ResizeNearestNeighbor R2_filt = new ResizeNearestNeighbor(DisplayResolution.X, YsizeOut);
-                Bitmap newImage4 = R2_filt.Apply(newImage3);
-                newImage3.Dispose();
-                return newImage4;
+
+
+                double CenterX = Xin / 2.0;
+                double CenterY = Yin / 2.0;
+                double FromX = CenterX - (XpixsWanted / 2.0);
+                double FromY = CenterY - (YpixsWanted / 2.0);
+
+                Crop Crop_filt = new Crop(new Rectangle((int)FromX, (int)FromY, (int)XpixsWanted, (int)YpixsWanted));
+                Bitmap result2 = Crop_filt.Apply(SourceFrame);
+
+                // scale to display res
+                zoom = (double)DisplayResolution.X / (double)result2.Width;
+                ResizeNearestNeighbor R2_filt = new ResizeNearestNeighbor(DisplayResolution.X, DisplayResolution.Y);
+                result2 = R2_filt.Apply(result2);
+                return result2;
             }
             catch
             {
@@ -1625,8 +1621,7 @@ namespace LitePlacer
         }
 
         // ===========
-        private void DrawComponentsFunct(ref Bitmap image, List<Shapes.Component> Components,
-                        double ResultsZoom, double DisplayZoom)
+        private void DrawComponentsFunct(ref Bitmap image, List<Shapes.Component> Components, double Zoom)
         {
             if (Components.Count <= 0)
             {
@@ -1651,29 +1646,14 @@ namespace LitePlacer
                 {
                     double X = Components[i].BoundingBox.Corners[c].X;
                     X = X - MeasurementCenterX;
-                    if (!ShowProcessing)
-                    {
-                        X = X / ResultsZoom;
-                    }
-                    if (!ShowProcessing)
-                    {
-                        X = X * RelationX;
-                    }
-                    X = X * DisplayZoom;
+                    X = X * Zoom;
                     X = X + FrameCenterX;
 
                     double Y = Components[i].BoundingBox.Corners[c].Y;
                     Y = Y - MeasurementCenterY;
-                    if (!ShowProcessing)
-                    {
-                        Y = Y / ResultsZoom;
-                    }
-                    if (!ShowProcessing)
-                    {
-                        Y = Y * RelationY;
-                    }
-                    Y = Y * DisplayZoom;
+                    Y = Y * Zoom;
                     Y = Y + FrameCenterY;
+
                     System.Drawing.PointF Pnt = new System.Drawing.PointF();
                     Pnt.X = (float)X;
                     Pnt.Y = (float)Y;
@@ -1720,8 +1700,7 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles,
-            double ResultsZoom, double DisplayZoom)
+        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles, double Zoom)
         {
             if (Circles.Count == 0)
             {
@@ -1736,41 +1715,25 @@ namespace LitePlacer
             int FrameCenterY = bitmap.Height / 2;
             int MeasurementCenterX = CameraResolution.X / 2;
             int MeasurementCenterY = CameraResolution.Y / 2;
-            double RelationX = (double)DisplayResolution.X / (double)CameraResolution.X;
-            double RelationY = (double)DisplayResolution.Y / (double)CameraResolution.Y;
 
             for (int i = 0, n = Circles.Count; i < n; i++)
             {
-                double Xc = Circles[i].Center.X;
-                double X = Xc - MeasurementCenterX;
-                if (!ShowProcessing)
-                {
-                    X = X / ResultsZoom;
-                }
-                X = X * RelationX;
-                X = X * DisplayZoom;
-                X = X + FrameCenterX;
+                double X = Circles[i].Center.X;
+                X = X - MeasurementCenterX;     // X = pixels from measured frame center
+                X = X * Zoom;                   // X = pixels from displayed image center
+                X = X + FrameCenterX;           // move to position
 
-                double Yc = Circles[i].Center.Y;
-                double Y = Yc - MeasurementCenterY;
-                if (!ShowProcessing)
-                {
-                    Y = Y / ResultsZoom;
-                }
-                Y = Y * RelationY;
-                Y = Y * DisplayZoom;
+                double Y = Circles[i].Center.Y;
+                Y = Y - MeasurementCenterY;
+                Y = Y * Zoom;
                 Y = Y + FrameCenterY;
 
                 double radius = Circles[i].Radius;
                 if (!ShowProcessing)
                 {
-                    radius = radius / ResultsZoom;
+                    // radius = radius / ResultsZoom;
                 }
-                radius = radius * RelationX;
-                if (!ShowPixels)
-                {
-                }
-                radius = radius * DisplayZoom;
+                radius = radius * Zoom;
                 float dia = (float)(radius * 2);
                 g.DrawEllipse(LimePen, (float)(X - radius), (float)(Y - radius), dia, dia);
             }
@@ -1835,8 +1798,7 @@ namespace LitePlacer
             return (Rectangles);
         }
         // =========================================================
-        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> RectanglesIn,
-                        double ResultsZoom, double DisplayZoom)
+        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> RectanglesIn, double Zoom)
         {
             if (RectanglesIn.Count <= 0)
             {
@@ -1861,30 +1823,14 @@ namespace LitePlacer
                 {
                     double X = RectanglesIn[i].Corners[c].X;
                     X = X - MeasurementCenterX;
-                    if (!ShowProcessing)
-                    {
-                        X = X / ResultsZoom;
-                    }
-                    if (!ShowProcessing)
-                    {
-                        X = X * RelationX;
-                    }
-                    X = X * RelationX;
-                    X = X * DisplayZoom;
+                    X = X * Zoom;
                     X = X + FrameCenterX;
 
                     double Y = RectanglesIn[i].Corners[c].Y;
                     Y = Y - MeasurementCenterY;
-                    if (!ShowProcessing)
-                    {
-                        Y = Y / ResultsZoom;
-                    }
-                    if (!ShowProcessing)
-                    {
-                        Y = Y * RelationY;
-                    }
-                    Y = Y * DisplayZoom;
+                    Y = Y * Zoom;
                     Y = Y + FrameCenterY;
+
                     System.Drawing.PointF Pnt = new System.Drawing.PointF();
                     Pnt.X = (float)X;
                     Pnt.Y = (float)Y;
@@ -2380,7 +2326,7 @@ namespace LitePlacer
         }
 
         // If we are showing what actual measurements would give, we need the zoom
-        public double GetDisplayZoom()
+        public double GetProcessingZoom()
         {
             double zoom = 1.0;
             foreach (AForgeFunction f in DisplayFunctions)
@@ -2415,7 +2361,7 @@ namespace LitePlacer
             }
             else if (ShowProcessing) 
             {
-                PixelsShown = (double)CameraResolution.X / (zoom * GetDisplayZoom());
+                PixelsShown = (double)CameraResolution.X / (zoom * GetProcessingZoom());
             }
             else 
             {
@@ -2440,7 +2386,7 @@ namespace LitePlacer
             }
             else if (ShowProcessing)
             {
-                PixelsShown = (double)CameraResolution.Y / (zoom * GetDisplayZoom());
+                PixelsShown = (double)CameraResolution.Y / (zoom * GetProcessingZoom());
             }
             else
             {
