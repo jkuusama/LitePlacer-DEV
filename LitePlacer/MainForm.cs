@@ -291,7 +291,6 @@ namespace LitePlacer
             DoDownCamMaxResolution_checkBox_CheckedChanged();
             UpCamMaxResolution_checkBox.Checked = Setting.UpCam_UseMaxResolution;
             DoUpCamMaxResolution_checkBox_CheckedChanged();
-            StartCameras();
 
             DownCamera.DrawCross = Setting.DownCam_DrawCross;
             DownCamera.DrawBox = Setting.DownCam_DrawBox;
@@ -317,6 +316,7 @@ namespace LitePlacer
 
             ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
 
+            StartCameras();
 
             DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             UpdateDownCamBoxXSizeText();
@@ -3431,6 +3431,10 @@ namespace LitePlacer
             }
             getDownCamList();
             getUpCamList();
+            UpdateDownCamBoxXSizeText();
+            UpdateDownCamBoxYSizeText();
+            UpdateUpCamBoxXSizeText();
+            UpdateUpCamBoxYSizeText();
         }
 
         // =================================================================================
@@ -3761,7 +3765,7 @@ namespace LitePlacer
 
         private void DownCameraBoxX_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (NoRecalc)
+            if (NoRecalc || StartingUp)
             {
                 return;
             }
@@ -3785,7 +3789,7 @@ namespace LitePlacer
 
         private void DownCameraXmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (NoRecalc)
+            if (NoRecalc || StartingUp)
             {
                 return;
             }
@@ -3805,10 +3809,39 @@ namespace LitePlacer
             }
         }
 
+        private bool CheckCam(Camera cam)
+        {
+            if (StartingUp)
+            {
+                return false;   // user doesn't see the label on startup, no need for delays
+            }
+            cam.ReceivingFrames = false;
+            int i = 0;
+            while (i++<250)
+            {
+                if (cam.ReceivingFrames)
+                {
+                    break;
+                }
+                Application.DoEvents();
+                Thread.Sleep(2);
+            }
+            return cam.ReceivingFrames;
+        }
+
         private void UpdateDownCamBoxXSizeText()
         {
             // Own function because the box size needs to be updated when zoom or show pixels status changes
-            DownCameraBoxX_textBox.Text = (Setting.DownCam_XmmPerPixel * BoxXzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+            if (CheckCam(DownCamera))
+            {
+                DownCameraBoxX_textBox.Text = (Setting.DownCam_XmmPerPixel * BoxXzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                NoRecalc = true;
+                DownCameraBoxX_textBox.Text = "n/a";
+                NoRecalc=false;
+            }
         }
 
         // =================================================================================
@@ -3830,7 +3863,7 @@ namespace LitePlacer
 
         private void DownCameraBoxY_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (NoRecalc)
+            if (NoRecalc || StartingUp)
             {
                 return;
             }
@@ -3855,7 +3888,7 @@ namespace LitePlacer
 
         private void DownCameraYmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (NoRecalc)
+            if (NoRecalc || StartingUp)
             {
                 return;
             }
@@ -3877,7 +3910,16 @@ namespace LitePlacer
         private void UpdateDownCamBoxYSizeText()
         {
             // Own function because the box size needs to be updated when zoom or show pixels status changes
-            DownCameraBoxY_textBox.Text = (Setting.DownCam_YmmPerPixel * BoxYzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+            if (CheckCam(DownCamera))
+            {
+                DownCameraBoxY_textBox.Text = (Setting.DownCam_YmmPerPixel * BoxYzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                NoRecalc = true;
+                DownCameraBoxY_textBox.Text = "n/a";
+                NoRecalc = false;
+            }
         }
 
         // =================================================================================
@@ -3885,7 +3927,7 @@ namespace LitePlacer
 
         private void UpCameraBoxX_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (NoRecalc)
+            if (NoRecalc || StartingUp)
             {
                 return;
             }
@@ -3909,7 +3951,7 @@ namespace LitePlacer
 
         private void UpCameraXmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (NoRecalc)
+            if (NoRecalc || StartingUp)
             {
                 return;
             }
@@ -3931,7 +3973,16 @@ namespace LitePlacer
         private void UpdateUpCamBoxXSizeText()
         {
             // Own function because the box size needs to be updated when zoom or show pixels status changes
-            UpCameraBoxX_textBox.Text = (Setting.UpCam_XmmPerPixel * BoxXzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+            if (CheckCam(UpCamera))
+            {
+                UpCameraBoxX_textBox.Text = (Setting.UpCam_XmmPerPixel * BoxXzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                NoRecalc = true;
+                UpCameraBoxX_textBox.Text = "n/a";
+                NoRecalc = false;
+            }
         }
 
         // =================================================================================
@@ -3939,7 +3990,7 @@ namespace LitePlacer
 
         private void UpCameraBoxY_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (NoRecalc)
+            if (NoRecalc || StartingUp)
             {
                 return;
             }
@@ -3964,7 +4015,7 @@ namespace LitePlacer
 
         private void UpCameraYmmPerPixel_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (NoRecalc)
+            if (NoRecalc || StartingUp)
             {
                 return;
             }
@@ -3986,7 +4037,16 @@ namespace LitePlacer
         private void UpdateUpCamBoxYSizeText()
         {
             // Own function because the box size needs to be updated when zoom or show pixels status changes
-            UpCameraBoxY_textBox.Text = (Setting.UpCam_YmmPerPixel * BoxYzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+            if (CheckCam(UpCamera))
+            {
+                UpCameraBoxY_textBox.Text = (Setting.UpCam_YmmPerPixel * BoxYzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                NoRecalc = true;
+                UpCameraBoxY_textBox.Text = "n/a";
+                NoRecalc = false;
+            }
         }
 
         // =================================================================================

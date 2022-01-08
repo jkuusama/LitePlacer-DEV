@@ -4,15 +4,16 @@ Previous release 08/23/2021, changes after that:
 
 New Features, significant changes
 
-* Video to UI is scaled down (much better performance), measurements are
-  taken from full resolution image
+* Video to UI is scaled down to UI resolution (much better performance), 
+  measurements and visual processing use full resolution image for precision
 * (in previous release) Added adjustable delay (in frames) to camera measurements
 * Multiple rows can be deleted from tapes data table
 
 Bug Fixes 
 
-* Setting pixel size now works regardless of zoom and show pixel setting
-* Changing zoom and show pixes status now recalculates the box size
+* Setting pixel size now works correctly regardless of zoom and show pixel setting
+* Changing zoom and show pixels status now recalculates the box size
+* Box size is not shown if it is not valid
 * No crash if nozzle correction is asked when no nozzle is loaded
 * Screen resolution settings did not always clear red error color
 * You can now click the image to move the machine even if it is not homed
