@@ -590,13 +590,6 @@
             this.label86 = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
             this.JobData_GridView = new System.Windows.Forms.DataGridView();
-            this.JobDataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataMethodParametersColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobDataNozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JobdataComponentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Bottom_checkBox = new System.Windows.Forms.CheckBox();
             this.CadData_GridView = new System.Windows.Forms.DataGridView();
             this.CADdataComponentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -846,6 +839,15 @@
             this.Test7_button = new System.Windows.Forms.Button();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.FPStimer = new System.Windows.Forms.Timer(this.components);
+            this.JobDataValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataFootprintColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobdataMethodParametersColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JobDataNozzleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlacementMethodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlacementParameterColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.JobdataComponentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -7269,8 +7271,7 @@
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.JobData_GridView.ColumnHeadersHeight = 29;
-            this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
             this.JobDataFootprintColumn,
@@ -7278,6 +7279,8 @@
             this.JobdataMethodColumn,
             this.JobdataMethodParametersColumn,
             this.JobDataNozzleColumn,
+            this.PlacementMethodColumn,
+            this.PlacementParameterColumn,
             this.JobdataComponentsColumn});
             this.JobData_GridView.Location = new System.Drawing.Point(784, 364);
             this.JobData_GridView.Name = "JobData_GridView";
@@ -7289,57 +7292,7 @@
             this.JobData_GridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellClick);
             this.JobData_GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellContentClick);
             this.JobData_GridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.JobData_GridView_CellEndEdit);
-            // 
-            // JobDataValueColumn
-            // 
-            this.JobDataValueColumn.HeaderText = "Value";
-            this.JobDataValueColumn.MinimumWidth = 6;
-            this.JobDataValueColumn.Name = "JobDataValueColumn";
-            this.JobDataValueColumn.Width = 125;
-            // 
-            // JobDataFootprintColumn
-            // 
-            this.JobDataFootprintColumn.HeaderText = "Footprint";
-            this.JobDataFootprintColumn.MinimumWidth = 6;
-            this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
-            this.JobDataFootprintColumn.Width = 125;
-            // 
-            // JobdataCountColumn
-            // 
-            this.JobdataCountColumn.HeaderText = "Count";
-            this.JobdataCountColumn.MinimumWidth = 6;
-            this.JobdataCountColumn.Name = "JobdataCountColumn";
-            this.JobdataCountColumn.Width = 40;
-            // 
-            // JobdataMethodColumn
-            // 
-            this.JobdataMethodColumn.HeaderText = "Method";
-            this.JobdataMethodColumn.MinimumWidth = 6;
-            this.JobdataMethodColumn.Name = "JobdataMethodColumn";
-            this.JobdataMethodColumn.ReadOnly = true;
-            this.JobdataMethodColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobdataMethodColumn.Width = 80;
-            // 
-            // JobdataMethodParametersColumn
-            // 
-            this.JobdataMethodParametersColumn.HeaderText = "Parameters";
-            this.JobdataMethodParametersColumn.MinimumWidth = 6;
-            this.JobdataMethodParametersColumn.Name = "JobdataMethodParametersColumn";
-            this.JobdataMethodParametersColumn.Width = 80;
-            // 
-            // JobDataNozzleColumn
-            // 
-            this.JobDataNozzleColumn.HeaderText = "Nozzle";
-            this.JobDataNozzleColumn.MinimumWidth = 6;
-            this.JobDataNozzleColumn.Name = "JobDataNozzleColumn";
-            this.JobDataNozzleColumn.Width = 50;
-            // 
-            // JobdataComponentsColumn
-            // 
-            this.JobdataComponentsColumn.HeaderText = "Components";
-            this.JobdataComponentsColumn.MinimumWidth = 6;
-            this.JobdataComponentsColumn.Name = "JobdataComponentsColumn";
-            this.JobdataComponentsColumn.Width = 130;
+            this.JobData_GridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.JobData_GridView_DataError);
             // 
             // Bottom_checkBox
             // 
@@ -10060,6 +10013,77 @@
             this.FPStimer.Interval = 1000;
             this.FPStimer.Tick += new System.EventHandler(this.FPStimer_Tick);
             // 
+            // JobDataValueColumn
+            // 
+            this.JobDataValueColumn.HeaderText = "Value";
+            this.JobDataValueColumn.MinimumWidth = 6;
+            this.JobDataValueColumn.Name = "JobDataValueColumn";
+            this.JobDataValueColumn.Width = 105;
+            // 
+            // JobDataFootprintColumn
+            // 
+            this.JobDataFootprintColumn.HeaderText = "Footprint";
+            this.JobDataFootprintColumn.MinimumWidth = 6;
+            this.JobDataFootprintColumn.Name = "JobDataFootprintColumn";
+            this.JobDataFootprintColumn.Width = 105;
+            // 
+            // JobdataCountColumn
+            // 
+            this.JobdataCountColumn.HeaderText = "Count";
+            this.JobdataCountColumn.MinimumWidth = 6;
+            this.JobdataCountColumn.Name = "JobdataCountColumn";
+            this.JobdataCountColumn.Width = 40;
+            // 
+            // JobdataMethodColumn
+            // 
+            this.JobdataMethodColumn.HeaderText = "Main Method";
+            this.JobdataMethodColumn.MinimumWidth = 6;
+            this.JobdataMethodColumn.Name = "JobdataMethodColumn";
+            this.JobdataMethodColumn.ReadOnly = true;
+            this.JobdataMethodColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobdataMethodColumn.ToolTipText = "Main method";
+            this.JobdataMethodColumn.Width = 80;
+            // 
+            // JobdataMethodParametersColumn
+            // 
+            this.JobdataMethodParametersColumn.HeaderText = "Parameters";
+            this.JobdataMethodParametersColumn.MinimumWidth = 6;
+            this.JobdataMethodParametersColumn.Name = "JobdataMethodParametersColumn";
+            this.JobdataMethodParametersColumn.ToolTipText = "Parameters for main method, if any. Usually, vision algorithm for pickup";
+            this.JobdataMethodParametersColumn.Width = 80;
+            // 
+            // JobDataNozzleColumn
+            // 
+            this.JobDataNozzleColumn.HeaderText = "Nozzle";
+            this.JobDataNozzleColumn.MinimumWidth = 6;
+            this.JobDataNozzleColumn.Name = "JobDataNozzleColumn";
+            this.JobDataNozzleColumn.Width = 50;
+            // 
+            // PlacementMethodColumn
+            // 
+            this.PlacementMethodColumn.HeaderText = "Placement Method";
+            this.PlacementMethodColumn.MinimumWidth = 6;
+            this.PlacementMethodColumn.Name = "PlacementMethodColumn";
+            this.PlacementMethodColumn.ToolTipText = "Placement methdod (currently none or up camera corrected)";
+            this.PlacementMethodColumn.Width = 80;
+            // 
+            // PlacementParameterColumn
+            // 
+            this.PlacementParameterColumn.HeaderText = "Placement algorithm";
+            this.PlacementParameterColumn.MinimumWidth = 6;
+            this.PlacementParameterColumn.Name = "PlacementParameterColumn";
+            this.PlacementParameterColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.PlacementParameterColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.PlacementParameterColumn.ToolTipText = "Vision algorithm for up looking camera";
+            this.PlacementParameterColumn.Width = 80;
+            // 
+            // JobdataComponentsColumn
+            // 
+            this.JobdataComponentsColumn.HeaderText = "Components";
+            this.JobdataComponentsColumn.MinimumWidth = 6;
+            this.JobdataComponentsColumn.Name = "JobdataComponentsColumn";
+            this.JobdataComponentsColumn.Width = 130;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -10993,13 +11017,6 @@
         private System.Windows.Forms.TextBox PickupCenterY_textBox;
         private System.Windows.Forms.CheckBox UpCamMaxResolution_checkBox;
         private System.Windows.Forms.CheckBox DownCamMaxResolution_checkBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataValueColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataFootprintColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataCountColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodParametersColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzleColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.TextBox TouchDifference_textBox;
@@ -11037,6 +11054,15 @@
         private System.Windows.Forms.CheckBox UseStoredImage_checkBox;
         private System.Windows.Forms.Label MeasurementDelay_label;
         private System.Windows.Forms.Button NozzleHeightCancel_button;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataValueColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataFootprintColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataCountColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataMethodParametersColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobDataNozzleColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlacementMethodColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn PlacementParameterColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
     }
 }
 

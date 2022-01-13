@@ -1172,7 +1172,7 @@ namespace LitePlacer
                             Tapes_dataGridView.Rows[i].Cells["UseNozzleCoordinates_Column"].Value = false;
                         }
                         LoadingDataGrid = false;
-                        FillTapeTypeSelectionBox(Tapes_dataGridView);
+                        FillAlgorithmSelectionBox(Tapes_dataGridView, "Type_Column");
                     }
                     else
                     {
@@ -1221,9 +1221,9 @@ namespace LitePlacer
         private void LoadTapesFromFile(string Filename, System.Windows.Forms.DataGridView Grid)
         {
             LoadDataGrid(Filename, Grid, DataTableType.Tapes);
-            FillTapeTypeSelectionBox(Grid);
+            FillAlgorithmSelectionBox(Grid, "Type_Column");
         }
-        private void FillTapeTypeSelectionBox(System.Windows.Forms.DataGridView Grid)
+        private void FillAlgorithmSelectionBox(System.Windows.Forms.DataGridView Grid, string ColumnName)
         {
             // build type combobox and set values
             bool YesToAll = false;
@@ -1232,7 +1232,7 @@ namespace LitePlacer
             bool Exists;
             for (int i = 0; i < Grid.Rows.Count; i++)
             {
-                string AlgName = Grid.Rows[i].Cells["Type_Column"].Value.ToString();  // value is correct, cell content is not
+                string AlgName = Grid.Rows[i].Cells[ColumnName].Value.ToString();  // value is correct, cell content is not
                                                                                       // Does the algorithm exist?
                 if (VideoAlgorithms.AlgorithmExists(AlgName))
                 {
@@ -1265,18 +1265,18 @@ namespace LitePlacer
                     Exists = true;
                 }
                 // Build the selection box
-                Grid.Rows[i].Cells["Type_Column"].Value = null;
+                Grid.Rows[i].Cells[ColumnName].Value = null;
                 DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
                 BuildAlgorithmsCombox(out c);
-                Grid.Rows[i].Cells["Type_Column"] = c;
+                Grid.Rows[i].Cells[ColumnName] = c;
                 if (Exists)
                 {
-                    Grid.Rows[i].Cells["Type_Column"].Value = AlgName;
+                    Grid.Rows[i].Cells[ColumnName].Value = AlgName;
                 }
                 else
                 {
                     // The algorithm didn't exist and didn't get created. Select homing
-                    Grid.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
+                    Grid.Rows[i].Cells[ColumnName].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                 }
             }
             Update_GridView(Grid);
@@ -6333,7 +6333,7 @@ namespace LitePlacer
             }
         }
 
-        private const string JobdataVersion = "2020";
+        private const string JobdataVersion = "2022";
 
         private bool SaveJobData(string filename, bool tempfile = false)
         {
@@ -6362,6 +6362,8 @@ namespace LitePlacer
                         OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobDataFootprintColumn"].Value.ToString() + "\"";
                         OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobdataMethodColumn"].Value.ToString() + "\"";
                         OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobdataMethodParametersColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["PlacementMethodColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["PlacementParameterColumn"].Value.ToString() + "\"";
                         OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobdataComponentsColumn"].Value.ToString() + "\"";
                         if (JobData_GridView.Rows[i].Cells["JobDataNozzleColumn"].Value != null)
                         {
@@ -6391,7 +6393,33 @@ namespace LitePlacer
             JobData_GridView.Rows.Clear();
             string WarningMessage = "";
             bool quit = false;
-            if (AllLines[0] == "2020")
+            if (AllLines[0] == "2022")
+            {
+                // format is ComponentCount, value, footprint, (pickup)Method, parameters, placement method, placement parameters, ComponentList, nozzle
+                for (int i = 1; i < AllLines.Length; i++)
+                {
+                    List<String> Line = SplitCSV(AllLines[i], ',', out quit);
+                    if (quit)
+                    {
+                        return false;
+                    }
+                    JobData_GridView.Rows.Add();
+                    int Last = JobData_GridView.RowCount - 1;
+                    JobData_GridView.Rows[Last].Cells["JobdataCountColumn"].Value = Line[0];
+                    JobData_GridView.Rows[Last].Cells["JobDataValueColumn"].Value = Line[1];
+                    JobData_GridView.Rows[Last].Cells["JobDataFootprintColumn"].Value = Line[2];
+                    JobData_GridView.Rows[Last].Cells["JobdataMethodColumn"].Value = Line[3];
+                    JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = Line[4];
+                    JobData_GridView.Rows[Last].Cells["PlacementMethodColumn"].Value = Line[5];
+                    JobData_GridView.Rows[Last].Cells["JobdataComponentsColumn"].Value = Line[7];
+                    JobData_GridView.Rows[Last].Cells["JobDataNozzleColumn"].Value = Line[8];
+                    DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                    BuildAlgorithmsCombox(out c);
+                    JobData_GridView.Rows[Last].Cells["PlacementParameterColumn"] = c;
+                    JobData_GridView.Rows[Last].Cells["PlacementParameterColumn"].Value = Line[6];
+                }
+            }
+            else if (AllLines[0] == "2020")
             {
                 // format is ComponentCount value footprint GroupMethod MethodParamAllComponents ComponentList nozzle
                 for (int i = 1; i < AllLines.Length; i++)
@@ -6410,11 +6438,17 @@ namespace LitePlacer
                     JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = Line[4];
                     JobData_GridView.Rows[Last].Cells["JobdataComponentsColumn"].Value = Line[5];
                     JobData_GridView.Rows[Last].Cells["JobDataNozzleColumn"].Value = Line[6];
+                    JobData_GridView.Rows[Last].Cells["PlacementMethodColumn"].Value = "--";
+                    DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                    BuildAlgorithmsCombox(out c);
+                    JobData_GridView.Rows[Last].Cells["PlacementParameterColumn"] = c;
+                    JobData_GridView.Rows[Last].Cells["PlacementParameterColumn"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                 }
             }
             else
             {
                 // format is ComponentCount ComponentType GroupMethod MethodParamAllComponents ComponentList nozzle
+                int LineNo = 1;
                 foreach (string LineIn in AllLines)
                 {
                     List<String> Line = SplitCSV(LineIn, ',', out quit);
@@ -6445,7 +6479,8 @@ namespace LitePlacer
                         }
                         else
                         {
-                            WarningMessage = WarningMessage + "Algorithm " + AlgName + " used on file does not exist.\n\r";
+                            WarningMessage = WarningMessage + "Algorithm " + AlgName + " used on job data file " +
+                                "as a parameter for method " + Line[2] + " does not exist.\n\r";
                             JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = "--";
                         }
                     }
@@ -6458,14 +6493,22 @@ namespace LitePlacer
                     {
                         JobData_GridView.Rows[Last].Cells["JobDataNozzleColumn"].Value = Line[5];
                     }
+                    JobData_GridView.Rows[Last].Cells["PlacementMethodColumn"].Value = "--";
+                    DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                    BuildAlgorithmsCombox(out c);
+                    JobData_GridView.Rows[Last].Cells["PlacementParameterColumn"] = c;
+                    JobData_GridView.Rows[Last].Cells["PlacementParameterColumn"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
+                    LineNo++;
                 }
-
             }
+
+            FillAlgorithmSelectionBox(JobData_GridView, "PlacementParameterColumn");
             if (WarningMessage != "")
             {
                 ShowMessageBox(WarningMessage, "Algorithm missing", MessageBoxButtons.OK);
             }
             JobData_GridView.ClearSelection();
+            Update_GridView(JobData_GridView);
             return true;
         }
 
@@ -6508,6 +6551,11 @@ namespace LitePlacer
                     OutRow.Cells["JobdataMethodColumn"].Value = "?";
                     OutRow.Cells["JobdataMethodParametersColumn"].Value = "--";
                     OutRow.Cells["JobdataComponentsColumn"].Value = InRow.Cells["CADdataComponentColumn"].Value.ToString();
+                    OutRow.Cells["PlacementMethodColumn"].Value = "--";
+                    DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+                    BuildAlgorithmsCombox(out c);
+                    OutRow.Cells["PlacementParameterColumn"] = c;
+                    OutRow.Cells["PlacementParameterColumn"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                 }
                 else
                 {
@@ -6600,6 +6648,11 @@ namespace LitePlacer
             JobData_GridView.Rows[index].Cells["JobdataMethodParametersColumn"].Value = "--";
             JobData_GridView.Rows[index].Cells["JobDataNozzleColumn"].Value = Setting.Nozzles_default.ToString();
             JobData_GridView.Rows[index].Cells["JobdataComponentsColumn"].Value = "--";
+            JobData_GridView.Rows[index].Cells["PlacementMethodColumn"].Value = "--";
+            DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
+            BuildAlgorithmsCombox(out c);
+            JobData_GridView.Rows[index].Cells["PlacementParameterColumn"] = c;
+            JobData_GridView.Rows[index].Cells["PlacementParameterColumn"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
         }
 
         private void AddCadDataRow_button_Click(object sender, EventArgs e)
@@ -6663,14 +6716,16 @@ namespace LitePlacer
         }
 
         public string SelectedMethod { get; set; }
+        public string PlacementMethod { get; set; }
 
         private void JobData_GridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex == -1)
+            if (e.RowIndex == -1)
             {
                 // user clicked header, most likely to sort for nozzles
                 return;
             }
+
             if (JobData_GridView.CurrentCell.OwningColumn.Name == "JobdataMethodColumn")
             {
                 // For method, show a form with explanation texts
@@ -6684,7 +6739,7 @@ namespace LitePlacer
                     {
                         JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodColumn"].Value = SelectedMethod;
                         JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = "--";
-                        if ((SelectedMethod== "Fiducials") || (SelectedMethod == "LoosePart") || (SelectedMethod == "LoosePart Assisted"))
+                        if ((SelectedMethod == "Fiducials") || (SelectedMethod == "LoosePart") || (SelectedMethod == "LoosePart Assisted"))
                         {
                             string FidAlg = SelectFiducialAlgorithm("--");
                             JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = FidAlg;
@@ -6694,6 +6749,22 @@ namespace LitePlacer
                 Update_GridView(JobData_GridView);
                 return;
             };
+
+            if (JobData_GridView.CurrentCell.OwningColumn.Name == "PlacementMethodColumn")
+            {
+                // as above, but for placement method
+                MakeJobDataDirty();
+                PlacementMethod= "--";
+                PlacementMethodSelectionForm MethodDialog = new PlacementMethodSelectionForm(this);
+                MethodDialog.ShowDialog(this);
+                foreach (DataGridViewCell cell in JobData_GridView.SelectedCells)
+                {
+                    JobData_GridView.Rows[cell.RowIndex].Cells["PlacementMethodColumn"].Value = PlacementMethod;
+                    JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = "--";
+                }
+                Update_GridView(JobData_GridView);
+                return;
+            }
 
             if (JobData_GridView.CurrentCell.OwningColumn.Name == "JobdataMethodParametersColumn")
             {
@@ -6708,7 +6779,7 @@ namespace LitePlacer
                 {
                     TapeID = SelectTape("Select tape for " + JobData_GridView.Rows[row].Cells["JobDataValueColumn"].Value.ToString()
                         + ", " + JobData_GridView.Rows[row].Cells["JobDataFootprintColumn"].Value.ToString());
-                    if (TapeID=="none")
+                    if (TapeID == "none")
                     {
                         // user closed it
                         return;
@@ -6716,7 +6787,7 @@ namespace LitePlacer
                     JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value = TapeID;
                     if (Tapes.IdValidates_m(TapeID, out TapeNo))
                     {
-                        JobData_GridView.Rows[row].Cells["JobDataNozzleColumn"].Value = 
+                        JobData_GridView.Rows[row].Cells["JobDataNozzleColumn"].Value =
                             Tapes_dataGridView.Rows[TapeNo].Cells["Nozzle_Column"].Value.ToString();
                     }
                 }
@@ -6724,12 +6795,13 @@ namespace LitePlacer
                      (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "LoosePart") ||
                      (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "LoosePart Assisted"))
                 {
-                    JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value = 
+                    JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value =
                         SelectFiducialAlgorithm(JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value.ToString());
                 }
                 Update_GridView(JobData_GridView);
             }
         }
+
 
         // If components are edited, update count automatically
         private void JobData_GridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -13684,6 +13756,11 @@ namespace LitePlacer
         private void MouseScroll_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             Setting.CNC_EnableMouseWheelJog = MouseScroll_checkBox.Checked;
+        }
+
+        private void JobData_GridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            DisplayText("JobData_GridView_DataError");
         }
     }	// end of: 	public partial class FormMain : Form
 
