@@ -19,6 +19,7 @@ Bug Fixes
 * You can now click the image to move the machine even if it is not homed
 * Tape type drop box was not always filled with vision algorithm names
 * job data value and footprint columns are narrower, so that nozzle number is visible
+* deleting the first tape is now possible
 
 Known issues
 

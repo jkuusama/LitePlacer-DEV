@@ -10482,7 +10482,7 @@ namespace LitePlacer
 
         private void DeleteTape_button_Click(object sender, EventArgs e)
         {
-            for (int i = Tapes_dataGridView.RowCount-1; i >0; i--)
+            for (int i = Tapes_dataGridView.RowCount-1; i >=0; i--)
             {
                 foreach (DataGridViewCell cell in Tapes_dataGridView.Rows[i].Cells)
                 {
