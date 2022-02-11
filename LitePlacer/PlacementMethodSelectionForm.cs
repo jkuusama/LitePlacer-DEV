@@ -26,7 +26,8 @@ namespace LitePlacer
 
         private void UpCamAssist_button_Click(object sender, EventArgs e)
         {
-            MainForm.PlacementMethod = "Up Camera Assisted";
+            MainForm.PlacementMethod = "Up Cam Assisted";
+            this.Close();
         }
     }
 }

@@ -985,8 +985,8 @@ namespace LitePlacer
                 {
                     ImageBox.Image.Dispose();
                 }
+                ImageBox.Image = (Bitmap)DisplayedFrame.Clone();
             }
-            ImageBox.Image = (Bitmap)DisplayedFrame.Clone();
 
             if (DisplayedFrame != null)
             {
@@ -2000,21 +2000,29 @@ namespace LitePlacer
 
         private void DrawCrossFunct(ref Bitmap img)
         {
-            if (img == null)
+            // Still getting exeptions when changing procesisgn funtions on heavy chains. Hiding an issue!!
+            // But next frame fixes it on drawing functions.
+            try
             {
-                return;
-            }
-            int FrameCenterX = img.Width / 2;
-            int FrameCenterY = img.Height / 2;
-            int FrameSizeX = img.Width;
-            int FrameSizeY = img.Height;
+                if (img == null)
+                {
+                    return;
+                }
+                int FrameCenterX = img.Width / 2;
+                int FrameCenterY = img.Height / 2;
+                int FrameSizeX = img.Width;
+                int FrameSizeY = img.Height;
 
-            Pen pen = new Pen(Color.Red, 1);
-            Graphics g = Graphics.FromImage(img);
-            g.DrawLine(pen, FrameCenterX, 0, FrameCenterX, FrameSizeY);
-            g.DrawLine(pen, 0, FrameCenterY, FrameSizeX, FrameCenterY);
-            pen.Dispose();
-            g.Dispose();
+                Pen pen = new Pen(Color.Red, 1);
+                Graphics g = Graphics.FromImage(img);
+                g.DrawLine(pen, FrameCenterX, 0, FrameCenterX, FrameSizeY);
+                g.DrawLine(pen, 0, FrameCenterY, FrameSizeX, FrameCenterY);
+                pen.Dispose();
+                g.Dispose();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         // =========================================================

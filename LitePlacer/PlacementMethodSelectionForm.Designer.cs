@@ -38,9 +38,9 @@
             // 
             // NoMethod_button
             // 
-            this.NoMethod_button.Location = new System.Drawing.Point(284, 22);
+            this.NoMethod_button.Location = new System.Drawing.Point(296, 22);
             this.NoMethod_button.Name = "NoMethod_button";
-            this.NoMethod_button.Size = new System.Drawing.Size(181, 28);
+            this.NoMethod_button.Size = new System.Drawing.Size(169, 28);
             this.NoMethod_button.TabIndex = 0;
             this.NoMethod_button.Text = "None";
             this.PlacementMethod_toolTip.SetToolTip(this.NoMethod_button, "Main method has all info needed. Up camera is not used.");
@@ -70,9 +70,9 @@
             // 
             // UpCamAssist_button
             // 
-            this.UpCamAssist_button.Location = new System.Drawing.Point(284, 56);
+            this.UpCamAssist_button.Location = new System.Drawing.Point(296, 56);
             this.UpCamAssist_button.Name = "UpCamAssist_button";
-            this.UpCamAssist_button.Size = new System.Drawing.Size(181, 28);
+            this.UpCamAssist_button.Size = new System.Drawing.Size(169, 28);
             this.UpCamAssist_button.TabIndex = 2;
             this.UpCamAssist_button.Text = "Up Cam Assisted";
             this.PlacementMethod_toolTip.SetToolTip(this.UpCamAssist_button, "Takes part over the up looking camera,\r\nmeasures how the part is hanging on the n" +
