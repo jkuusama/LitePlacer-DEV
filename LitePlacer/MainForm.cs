@@ -1172,7 +1172,7 @@ namespace LitePlacer
                             Tapes_dataGridView.Rows[i].Cells["UseNozzleCoordinates_Column"].Value = false;
                         }
                         LoadingDataGrid = false;
-                        FillTapeTypeSelectionBox(Tapes_dataGridView);
+                        FillAlgorithmSelectionBox(Tapes_dataGridView, "Type_Column");
                     }
                     else
                     {
@@ -1221,9 +1221,9 @@ namespace LitePlacer
         private void LoadTapesFromFile(string Filename, System.Windows.Forms.DataGridView Grid)
         {
             LoadDataGrid(Filename, Grid, DataTableType.Tapes);
-            FillTapeTypeSelectionBox(Grid);
+            FillAlgorithmSelectionBox(Grid, "Type_Column");
         }
-        private void FillTapeTypeSelectionBox(System.Windows.Forms.DataGridView Grid)
+        private void FillAlgorithmSelectionBox(System.Windows.Forms.DataGridView Grid, string ColumnName)
         {
             // build type combobox and set values
             bool YesToAll = false;
@@ -1232,7 +1232,7 @@ namespace LitePlacer
             bool Exists;
             for (int i = 0; i < Grid.Rows.Count; i++)
             {
-                string AlgName = Grid.Rows[i].Cells["Type_Column"].Value.ToString();  // value is correct, cell content is not
+                string AlgName = Grid.Rows[i].Cells[ColumnName].Value.ToString();  // value is correct, cell content is not
                                                                                       // Does the algorithm exist?
                 if (VideoAlgorithms.AlgorithmExists(AlgName))
                 {
@@ -1265,18 +1265,18 @@ namespace LitePlacer
                     Exists = true;
                 }
                 // Build the selection box
-                Grid.Rows[i].Cells["Type_Column"].Value = null;
+                Grid.Rows[i].Cells[ColumnName].Value = null;
                 DataGridViewComboBoxCell c = new DataGridViewComboBoxCell();
                 BuildAlgorithmsCombox(out c);
-                Grid.Rows[i].Cells["Type_Column"] = c;
+                Grid.Rows[i].Cells[ColumnName] = c;
                 if (Exists)
                 {
-                    Grid.Rows[i].Cells["Type_Column"].Value = AlgName;
+                    Grid.Rows[i].Cells[ColumnName].Value = AlgName;
                 }
                 else
                 {
                     // The algorithm didn't exist and didn't get created. Select homing
-                    Grid.Rows[i].Cells["Type_Column"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
+                    Grid.Rows[i].Cells[ColumnName].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                 }
             }
             Update_GridView(Grid);
@@ -4501,8 +4501,8 @@ namespace LitePlacer
 
             PumpInvert_checkBox.Checked = Setting.General_PumpOutputInverted;
             VacuumInvert_checkBox.Checked = Setting.General_VacuumOutputInverted;
-            Pump_checkBox.Checked = false;
-            Vacuum_checkBox.Checked = false;
+            Pump_checkBox.Checked = Cnc.PumpIsOn;
+            Vacuum_checkBox.Checked = Cnc.VacuumIsOn;
             MoveTimeout_textBox.Text = Setting.CNC_RegularMoveTimeout.ToString("0.0", CultureInfo.InvariantCulture);
 
             AutoPark_checkBox.Checked = Setting.General_Autopark;
@@ -6333,7 +6333,7 @@ namespace LitePlacer
             }
         }
 
-        private const string JobdataVersion = "2020";
+        private const string JobdataVersion = "2022";
 
         private bool SaveJobData(string filename, bool tempfile = false)
         {
@@ -6362,6 +6362,8 @@ namespace LitePlacer
                         OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobDataFootprintColumn"].Value.ToString() + "\"";
                         OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobdataMethodColumn"].Value.ToString() + "\"";
                         OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobdataMethodParametersColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["PlacementMethodColumn"].Value.ToString() + "\"";
+                        OutLine += ",\"" + JobData_GridView.Rows[i].Cells["PlacementParameterColumn"].Value.ToString() + "\"";
                         OutLine += ",\"" + JobData_GridView.Rows[i].Cells["JobdataComponentsColumn"].Value.ToString() + "\"";
                         if (JobData_GridView.Rows[i].Cells["JobDataNozzleColumn"].Value != null)
                         {
@@ -6391,7 +6393,30 @@ namespace LitePlacer
             JobData_GridView.Rows.Clear();
             string WarningMessage = "";
             bool quit = false;
-            if (AllLines[0] == "2020")
+            if (AllLines[0] == "2022")
+            {
+                // format is ComponentCount, value, footprint, (pickup)Method, parameters, placement method, placement parameters, ComponentList, nozzle
+                for (int i = 1; i < AllLines.Length; i++)
+                {
+                    List<String> Line = SplitCSV(AllLines[i], ',', out quit);
+                    if (quit)
+                    {
+                        return false;
+                    }
+                    JobData_GridView.Rows.Add();
+                    int Last = JobData_GridView.RowCount - 1;
+                    JobData_GridView.Rows[Last].Cells["JobdataCountColumn"].Value = Line[0];
+                    JobData_GridView.Rows[Last].Cells["JobDataValueColumn"].Value = Line[1];
+                    JobData_GridView.Rows[Last].Cells["JobDataFootprintColumn"].Value = Line[2];
+                    JobData_GridView.Rows[Last].Cells["JobdataMethodColumn"].Value = Line[3];
+                    JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = Line[4];
+                    JobData_GridView.Rows[Last].Cells["PlacementMethodColumn"].Value = Line[5];
+                    JobData_GridView.Rows[Last].Cells["JobdataComponentsColumn"].Value = Line[7];
+                    JobData_GridView.Rows[Last].Cells["JobDataNozzleColumn"].Value = Line[8];
+                    JobData_GridView.Rows[Last].Cells["PlacementParameterColumn"].Value = Line[6];
+                }
+            }
+            else if (AllLines[0] == "2020")
             {
                 // format is ComponentCount value footprint GroupMethod MethodParamAllComponents ComponentList nozzle
                 for (int i = 1; i < AllLines.Length; i++)
@@ -6410,11 +6435,14 @@ namespace LitePlacer
                     JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = Line[4];
                     JobData_GridView.Rows[Last].Cells["JobdataComponentsColumn"].Value = Line[5];
                     JobData_GridView.Rows[Last].Cells["JobDataNozzleColumn"].Value = Line[6];
+                    JobData_GridView.Rows[Last].Cells["PlacementMethodColumn"].Value = "--";
+                    JobData_GridView.Rows[Last].Cells["PlacementParameterColumn"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                 }
             }
             else
             {
                 // format is ComponentCount ComponentType GroupMethod MethodParamAllComponents ComponentList nozzle
+                int LineNo = 1;
                 foreach (string LineIn in AllLines)
                 {
                     List<String> Line = SplitCSV(LineIn, ',', out quit);
@@ -6445,7 +6473,8 @@ namespace LitePlacer
                         }
                         else
                         {
-                            WarningMessage = WarningMessage + "Algorithm " + AlgName + " used on file does not exist.\n\r";
+                            WarningMessage = WarningMessage + "Algorithm " + AlgName + " used on job data file " +
+                                "as a parameter for method " + Line[2] + " does not exist.\n\r";
                             JobData_GridView.Rows[Last].Cells["JobdataMethodParametersColumn"].Value = "--";
                         }
                     }
@@ -6458,14 +6487,14 @@ namespace LitePlacer
                     {
                         JobData_GridView.Rows[Last].Cells["JobDataNozzleColumn"].Value = Line[5];
                     }
+                    JobData_GridView.Rows[Last].Cells["PlacementMethodColumn"].Value = "--";
+                    JobData_GridView.Rows[Last].Cells["PlacementParameterColumn"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
+                    LineNo++;
                 }
+            }
 
-            }
-            if (WarningMessage != "")
-            {
-                ShowMessageBox(WarningMessage, "Algorithm missing", MessageBoxButtons.OK);
-            }
             JobData_GridView.ClearSelection();
+            Update_GridView(JobData_GridView);
             return true;
         }
 
@@ -6508,6 +6537,8 @@ namespace LitePlacer
                     OutRow.Cells["JobdataMethodColumn"].Value = "?";
                     OutRow.Cells["JobdataMethodParametersColumn"].Value = "--";
                     OutRow.Cells["JobdataComponentsColumn"].Value = InRow.Cells["CADdataComponentColumn"].Value.ToString();
+                    OutRow.Cells["PlacementMethodColumn"].Value = "--";
+                    OutRow.Cells["PlacementParameterColumn"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
                 }
                 else
                 {
@@ -6600,6 +6631,8 @@ namespace LitePlacer
             JobData_GridView.Rows[index].Cells["JobdataMethodParametersColumn"].Value = "--";
             JobData_GridView.Rows[index].Cells["JobDataNozzleColumn"].Value = Setting.Nozzles_default.ToString();
             JobData_GridView.Rows[index].Cells["JobdataComponentsColumn"].Value = "--";
+            JobData_GridView.Rows[index].Cells["PlacementMethodColumn"].Value = "--";
+            JobData_GridView.Rows[index].Cells["PlacementParameterColumn"].Value = VideoAlgorithms.AllAlgorithms[0].Name;
         }
 
         private void AddCadDataRow_button_Click(object sender, EventArgs e)
@@ -6663,14 +6696,16 @@ namespace LitePlacer
         }
 
         public string SelectedMethod { get; set; }
+        public string PlacementMethod { get; set; }
 
         private void JobData_GridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex == -1)
+            if (e.RowIndex == -1)
             {
                 // user clicked header, most likely to sort for nozzles
                 return;
             }
+
             if (JobData_GridView.CurrentCell.OwningColumn.Name == "JobdataMethodColumn")
             {
                 // For method, show a form with explanation texts
@@ -6683,14 +6718,15 @@ namespace LitePlacer
                     foreach (DataGridViewCell cell in JobData_GridView.SelectedCells)
                     {
                         JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodColumn"].Value = SelectedMethod;
-                        JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = "--";
-                        if ((SelectedMethod== "Fiducials") || (SelectedMethod == "LoosePart") || (SelectedMethod == "LoosePart Assisted"))
+                        // JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = "--";
+                        if ((SelectedMethod == "Fiducials") || (SelectedMethod == "LoosePart") || (SelectedMethod == "LoosePart Assisted"))
                         {
                             string FidAlg = SelectFiducialAlgorithm("--");
                             JobData_GridView.Rows[cell.RowIndex].Cells["JobdataMethodParametersColumn"].Value = FidAlg;
                         }
                     }
                 }
+                JobData_GridView.ClearSelection();
                 Update_GridView(JobData_GridView);
                 return;
             };
@@ -6708,7 +6744,7 @@ namespace LitePlacer
                 {
                     TapeID = SelectTape("Select tape for " + JobData_GridView.Rows[row].Cells["JobDataValueColumn"].Value.ToString()
                         + ", " + JobData_GridView.Rows[row].Cells["JobDataFootprintColumn"].Value.ToString());
-                    if (TapeID=="none")
+                    if (TapeID == "none")
                     {
                         // user closed it
                         return;
@@ -6716,20 +6752,51 @@ namespace LitePlacer
                     JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value = TapeID;
                     if (Tapes.IdValidates_m(TapeID, out TapeNo))
                     {
-                        JobData_GridView.Rows[row].Cells["JobDataNozzleColumn"].Value = 
+                        JobData_GridView.Rows[row].Cells["JobDataNozzleColumn"].Value =
                             Tapes_dataGridView.Rows[TapeNo].Cells["Nozzle_Column"].Value.ToString();
                     }
                 }
+                // Auto fill the visual algorithm
                 if ((JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials") ||
                      (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "LoosePart") ||
                      (JobData_GridView.Rows[row].Cells["JobdataMethodColumn"].Value.ToString() == "LoosePart Assisted"))
                 {
-                    JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value = 
+                    JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value =
                         SelectFiducialAlgorithm(JobData_GridView.Rows[row].Cells["JobdataMethodParametersColumn"].Value.ToString());
                 }
+                JobData_GridView.ClearSelection();
                 Update_GridView(JobData_GridView);
+                return;
+            }
+
+            if (JobData_GridView.CurrentCell.OwningColumn.Name == "PlacementMethodColumn")
+            {
+                // as above, but for placement method
+                MakeJobDataDirty();
+                PlacementMethod = "--";
+                PlacementMethodSelectionForm MethodDialog = new PlacementMethodSelectionForm(this);
+                MethodDialog.StartPosition = FormStartPosition.CenterParent;
+                MethodDialog.ShowDialog(this);
+                foreach (DataGridViewCell cell in JobData_GridView.SelectedCells)
+                {
+                    JobData_GridView.Rows[cell.RowIndex].Cells["PlacementMethodColumn"].Value = PlacementMethod;
+                    // Auto fill the visual algorithm
+                    if (JobData_GridView.Rows[cell.RowIndex].Cells["PlacementMethodColumn"].Value.ToString() == "Up Cam Assisted")
+                    {
+                        JobData_GridView.Rows[cell.RowIndex].Cells["PlacementParameterColumn"].Value =
+                            SelectFiducialAlgorithm(JobData_GridView.Rows[cell.RowIndex].Cells["PlacementParameterColumn"].Value.ToString());
+                    }
+                }
+                JobData_GridView.ClearSelection();
+                Update_GridView(JobData_GridView);
+                return;
+            }
+            if (JobData_GridView.CurrentCell.OwningColumn.Name == "PlacementParameterColumn")
+            {
+                JobData_GridView.CurrentCell.Value = SelectFiducialAlgorithm(JobData_GridView.CurrentCell.Value.ToString());
             }
         }
+
 
         // If components are edited, update count automatically
         private void JobData_GridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -6799,7 +6866,7 @@ namespace LitePlacer
             }
             if (!DoRow)
             {
-                CleanupPlacement(true);
+                CleanupPlacement(true, false);
                 ShowMessageBox(
                     "Nothing selected, nothing done.",
                     "Done",
@@ -6812,6 +6879,7 @@ namespace LitePlacer
                 " (" + JobData_GridView.Rows[FirstRow].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
 
             // We know there is something to do, NextGroup_label is updated. Place all rows:
+            bool PartAboveCam = false;
             for (int CurrentRow = 0; CurrentRow < JobData_GridView.RowCount; CurrentRow++)
             {
                 // Find the Row we need to do now:
@@ -6861,18 +6929,18 @@ namespace LitePlacer
                 };
 
                 // Labels are updated, place the row:
-                if (!PlaceRow_m(CurrentRow))
+                if (!PlaceRow_m(CurrentRow, out PartAboveCam))
                 {
                     ShowMessageBox(
                         "Placement operation failed. Review job status.",
                         "Placement failed",
                         MessageBoxButtons.OK);
-                    CleanupPlacement(false);
+                    CleanupPlacement(false, PartAboveCam);
                     return;
                 }
             };
 
-            CleanupPlacement(true);
+            CleanupPlacement(true, PartAboveCam);
             ShowMessageBox(
                 "Selected components succesfully placed.",
                 "Done",
@@ -6929,6 +6997,7 @@ namespace LitePlacer
                  );
                 return;
             };
+            bool PartAboveCam = false;
 
             // if a cell is selected on a row, place that component:
             bool DoRow = false;
@@ -7002,7 +7071,7 @@ namespace LitePlacer
                 CurrentGroup_label.Text = JobData_GridView.Rows[LastRowNo].Cells["JobDataValueColumn"].Value.ToString() +
                     ", " + JobData_GridView.Rows[LastRowNo].Cells["JobDataFootprintColumn"].Value.ToString() + " (1 pcs.)";
                 // Place that row
-                ok = PlaceRow_m(LastRowNo);
+                ok = PlaceRow_m(LastRowNo, out PartAboveCam);
                 // delete the row
                 JobData_GridView.Rows.RemoveAt(LastRowNo);
                 if (!ok)
@@ -7010,7 +7079,7 @@ namespace LitePlacer
                     break;
                 }
             }
-            CleanupPlacement(ok);
+            CleanupPlacement(ok, PartAboveCam);
             Update_GridView(JobData_GridView);
             SaveTempCADdata();
         }
@@ -7049,8 +7118,9 @@ namespace LitePlacer
 
         // =================================================================================
         // This routine places the [index] row from Job data grid view:
-        private bool PlaceRow_m(int RowNo)
+        private bool PlaceRow_m(int RowNo, out bool PartAboveCam)
         {
+            PartAboveCam = false;
             DisplayText("PlaceRow_m(" + RowNo.ToString(CultureInfo.InvariantCulture) + ")", KnownColor.Blue);
             // Select the row and keep it visible
             JobData_GridView.Rows[RowNo].Selected = true;
@@ -7240,9 +7310,10 @@ namespace LitePlacer
                 Tapes.FastParametersOk = true;
             }
             // Place parts:
+            PartAboveCam = false;
             foreach (string Component in Components)
             {
-                if (!PlaceComponent_m(Component, RowNo, FirstInRow))
+                if (!PlaceComponent_m(Component, RowNo, FirstInRow, out PartAboveCam))
                 {
                     JobData_GridView.Rows[RowNo].Selected = false;
                     ReturnValue = false;
@@ -7291,7 +7362,8 @@ namespace LitePlacer
             NextGroup_label.Text = JobData_GridView.Rows[0].Cells["JobDataValueColumn"].Value.ToString()
                 +", " + JobData_GridView.Rows[0].Cells["JobDataFootprintColumn"].Value.ToString()
                 +" (" + JobData_GridView.Rows[0].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
-
+            
+            bool PartAboveCam = false;
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
                 PreviousGroup_label.Text = CurrentGroup_label.Text;
@@ -7307,13 +7379,13 @@ namespace LitePlacer
                     NextGroup_label.Text = "--";
                 };
 
-                if (!PlaceRow_m(i))
+                if (!PlaceRow_m(i, out PartAboveCam))
                 {
                     break;
                 }
             }
 
-            CleanupPlacement(true);
+            CleanupPlacement(true, PartAboveCam);
             ShowMessageBox(
                 "All components placed.",
                 "Done",
@@ -7430,8 +7502,9 @@ namespace LitePlacer
         // GroupRow is the row index to Job data grid view.
         // =================================================================================
 
-        private bool PlaceComponent_m(string Component, int GroupRow, bool FirstInRow)
+        private bool PlaceComponent_m(string Component, int GroupRow, bool FirstInRow, out bool PartAboveCam)
         {
+            PartAboveCam = false;
             DisplayText("PlaceComponent_m: Component: " + Component + ", Row:" + GroupRow.ToString(CultureInfo.InvariantCulture), KnownColor.Blue);
             // Skip fiducials
             if (JobData_GridView.Rows[GroupRow].Cells["JobdataMethodColumn"].Value.ToString() == "Fiducials")
@@ -7612,7 +7685,8 @@ namespace LitePlacer
                             break;
                         }
                     }
-                    if (!PlacePart_m(CADdataRow, GroupRow, X_machine, Y_machine, A_machine, FirstInRow))
+                    PartAboveCam = false;
+                    if (!PlacePart_m(CADdataRow, GroupRow, X_machine, Y_machine, A_machine, FirstInRow, out PartAboveCam))
                     {
                         return false;
                     }
@@ -7773,7 +7847,7 @@ namespace LitePlacer
         // =================================================================================
         // This cleans up the UI after placement operations
         // =================================================================================
-        private void CleanupPlacement(bool success)
+        private void CleanupPlacement(bool success, bool PartAboveCam)
         {
             PlacedComponent_label.Text = "--";
             PlacedValue_label.Text = "--";
@@ -7785,12 +7859,18 @@ namespace LitePlacer
             CurrentGroup_label.Text = "--";
             NextGroup_label.Text = "--";
             JobData_GridView.ReadOnly = false;
-            Cnc.PumpDefaultSetting();
-            if (success)
+            // if fail (!success) it helps if machine stays still. However,
+            // if up cam assisted placement has part above camera, take the part away...
+            if (success || PartAboveCam)
             {
-                CNC_Park();  // if fail, it helps debugging if machine stays still
+                CNC_Park();
             }
-            Cnc.VacuumDefaultSetting();
+            if (!PartAboveCam)      // .. but don't release it (user can take it above up cam and debug)
+            {
+                Cnc.PumpDefaultSetting();
+                Cnc.VacuumDefaultSetting();
+            }
+            SelectCamera(DownCamera);
         }
 
 
@@ -8441,8 +8521,9 @@ namespace LitePlacer
         // It should go to X, Y, A
         // CAD data is validated already.
 
-        private bool PlacePart_m(int CADdataRow, int JobDataRow, double X, double Y, double A, bool FirstInRow)
+        private bool PlacePart_m(int CADdataRow, int JobDataRow, double X, double Y, double A, bool FirstInRow, out bool PartAboveCam)
         {
+            PartAboveCam = false;
             if (AbortPlacement)
             {
                 if (!AbortPlacementShown)
@@ -8531,6 +8612,7 @@ namespace LitePlacer
                 // break;
             };
 
+            /*
             // Take the part to position. With snapshot, we want to fine tune it here:
             if (Method == "UpCam Snapshot")
             {
@@ -8591,73 +8673,227 @@ namespace LitePlacer
                 Y = Cnc.CurrentY;
                 A = Cnc.CurrentA;
             };
+            */
 
-            // Take the part to position:
-            DisplayText("PlacePart_m: goto placement position");
-            if (!Nozzle.Move_m(X, Y, A))
-            {
-                // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
-                DownCamera.Draw_Snapshot = false;
-                UpCamera.Draw_Snapshot = false;
-                return false;
-            }
+            string PlacementMethod = JobData_GridView.Rows[JobDataRow].Cells["PlacementMethodColumn"].Value.ToString();
 
-            // Place it:
-            if (AbortPlacement)
+            if (PlacementMethod== "--")
             {
-                if (!AbortPlacementShown)
+                // Take the part to position:
+                DisplayText("PlacePart_m: goto placement position");
+                if (!Nozzle.Move_m(X, Y, A))
                 {
-                    AbortPlacementShown = true;
-                    ShowMessageBox(
-                               "Operation aborted",
-                               "Operation aborted",
-                               MessageBoxButtons.OK);
-                }
-                DownCamera.Draw_Snapshot = false;
-                UpCamera.Draw_Snapshot = false;
-                AbortPlacement = false;
-                return false;
-            }
-
-            switch (Method)
-            {
-                case "Place Assisted": // For parts from tapes allows manually correction of part position before placing them
-                    // since for tape parts id contains the Tape index, we use here a fixed stop distance above board
-                    if (!PutLoosePartDownAssisted_m("2.5"))
-                    {
-                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
-                        return false;
-                    }
-                    break;
-                case "LoosePart Assisted":
-                    if (!PutLoosePartDownAssisted_m(id)) // id contains stop distance above board
-                    {
-                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
-                        return false;
-                    }
-                    break;
-                case "LoosePart":
-                case "DownCam Snapshot":
-                case "UpCam Snapshot":
+                    // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
                     DownCamera.Draw_Snapshot = false;
                     UpCamera.Draw_Snapshot = false;
-                    if (!PutLoosePartDown_m(FirstInRow))
-                    {
-                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
-                        return false;
-                    }
-                    break;
+                    return false;
+                }
 
-                default:
-                    if (!PutPartDown_m(TapeNum))
+                // Place it:
+                if (AbortPlacement)
+                {
+                    if (!AbortPlacementShown)
                     {
-                        // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                        AbortPlacementShown = true;
+                        ShowMessageBox(
+                                   "Operation aborted",
+                                   "Operation aborted",
+                                   MessageBoxButtons.OK);
+                    }
+                    DownCamera.Draw_Snapshot = false;
+                    UpCamera.Draw_Snapshot = false;
+                    AbortPlacement = false;
+                    return false;
+                }
+
+                switch (Method)
+                {
+                    case "Place Assisted": // For parts from tapes allows manually correction of part position before placing them
+                                           // since for tape parts id contains the Tape index, we use here a fixed stop distance above board
+                        if (!PutLoosePartDownAssisted_m("2.5"))
+                        {
+                            // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                            return false;
+                        }
+                        break;
+                    case "LoosePart Assisted":
+                        if (!PutLoosePartDownAssisted_m(id)) // id contains stop distance above board
+                        {
+                            // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                            return false;
+                        }
+                        break;
+                    case "LoosePart":
+                    case "DownCam Snapshot":
+                    case "UpCam Snapshot":
                         DownCamera.Draw_Snapshot = false;
                         UpCamera.Draw_Snapshot = false;
-                        return false;
+                        if (!PutLoosePartDown_m(FirstInRow))
+                        {
+                            // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                            return false;
+                        }
+                        break;
+
+                    default:
+                        if (!PutPartDown_m(TapeNum))
+                        {
+                            // VacuumOff();  if this failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                            DownCamera.Draw_Snapshot = false;
+                            UpCamera.Draw_Snapshot = false;
+                            return false;
+                        }
+                        break;
+                };
+                if (AbortPlacement)
+                {
+                    if (!AbortPlacementShown)
+                    {
+                        AbortPlacementShown = true;
+                        ShowMessageBox(
+                                   "Operation aborted",
+                                   "Operation aborted",
+                                   MessageBoxButtons.OK);
                     }
-                    break;
-            };
+                    DownCamera.Draw_Snapshot = false;
+                    UpCamera.Draw_Snapshot = false;
+                    AbortPlacement = false;
+                    return false;
+                }
+                return true;
+            }
+            else if (PlacementMethod == "Up Cam Assisted")
+            {
+                double Xcorr = 0.0;
+                double Ycorr = 0.0;
+                double Acorr = 0.0;
+
+                // -------------------
+                // take part to up cam
+                PartAboveCam = true;
+                DisplayText("Up Cam Assisted, goto up cam");
+                if (!CNC_XYA_m(Setting.UpCam_PositionX, Setting.UpCam_PositionY, A))
+                {
+                    // VacuumOff();  if the above failed CNC seems to be down; low chances that VacuumOff() would go thru either. 
+                    DownCamera.Draw_Snapshot = false;
+                    UpCamera.Draw_Snapshot = false;
+                    return false;
+                }
+                if (!CNC_Z_m(Setting.General_Z0toPCB - 0.5))
+                {
+                    DownCamera.Draw_Snapshot = false;
+                    UpCamera.Draw_Snapshot = false;
+                    return false;
+                }
+
+                // -------------------
+                // measure it
+                string PlacementParameter = JobData_GridView.Rows[JobDataRow].Cells["PlacementParameterColumn"].Value.ToString();
+
+                DisplayText("Measuring part, algorithm " + PlacementParameter);
+                VideoAlgorithmsCollection.FullAlgorithmDescription Alg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+
+                if (!VideoAlgorithms.FindAlgorithm(PlacementParameter, out Alg))
+                {
+                    DisplayText("*** Part placement algorithm " + PlacementParameter + " not found!", KnownColor.Red, true);
+                    return false;
+                }
+                UpCamera.BuildMeasurementFunctionsList(Alg.FunctionList);
+                UpCamera.MeasurementParameters = Alg.MeasurementParameters;
+                SelectCamera(UpCamera);
+                if (!UpCamera.IsRunning())
+                {
+                    DisplayText("*** Selecting up camera failed", KnownColor.Red, true);
+                    return false;
+                }
+
+                string nl = Environment.NewLine;
+                int tries = 0;
+                bool ok = false;
+                do
+                {
+                    for (tries = 0; tries < 8; tries++)
+                    {
+                        if (UpCamera.Measure(out Xcorr, out Ycorr, out Acorr, false))
+                        {
+                            ok = true;
+                            break;
+                        }
+                        Thread.Sleep(80); // next frame + vibration damping
+                    }
+                    if (tries >= 7)
+                    {
+                        string answer = NonModalMessageBox(
+                           " Measuring part position failed." + nl +
+                           "Tune the algorithm or fix the issue another way." + nl +
+                           "Click \"Retry\" to try again," + nl +
+                           "click \"Cancel\" to continue without success", "Part position measurement failed",
+                           "Retry", "", "Cancel");
+                        if (answer == "Cancel")
+                        {
+                            return false;
+                        }
+                    }
+                } while (!ok);
+
+                DisplayText("Measurement ok, raw A= " + Acorr.ToString());
+                Acorr = -Acorr;     // looking rom below...
+                Acorr = A - Acorr;
+                // regulate to -45 .. 45
+                while (Acorr <= -45.0)
+                {
+                    Acorr = Acorr + 90.0;
+                }
+                while (Acorr >= 45.0)
+                {
+                    Acorr = Acorr - 90.0;
+                }
+                DisplayText("Result: dX= " + Xcorr.ToString() + ", dY= " + Ycorr.ToString() + ", dA= " + Acorr.ToString());
+                DisplayText("Target: X= " + X.ToString() + ", Y= " + Y.ToString() + ", A= " + A.ToString());
+
+                /*
+                for (tries = 0; tries < 600; tries++)
+                {
+                    Thread.Sleep(10);
+                    Application.DoEvents();
+                }
+                */
+
+                // -------------------
+                // take part to to X + correction, Y + correction, A+corr
+                if (!CNC_Z_m(0))
+                {
+                    DownCamera.Draw_Snapshot = false;
+                    UpCamera.Draw_Snapshot = false;
+                    return false;
+                }
+                X = X + Setting.DownCam_NozzleOffsetX + Xcorr;
+                Y = Y + Setting.DownCam_NozzleOffsetY - Ycorr;
+                A = Cnc.CurrentA + Acorr;
+                if (!CNC_XYA_m(X, Y, A))
+                {
+                    DownCamera.Draw_Snapshot = false;
+                    UpCamera.Draw_Snapshot = false;
+                    return false;
+                }
+                PartAboveCam = false;
+                // place part
+                if (!PutPartDown_m(TapeNum))
+                {
+                    DownCamera.Draw_Snapshot = false;
+                    UpCamera.Draw_Snapshot = false;
+                    return false;
+                }
+            }
+            else
+            {
+                ShowMessageBox(
+                    "Unknown placement method at placement time: ",
+                    "Operation aborted.",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+
             if (AbortPlacement)
             {
                 if (!AbortPlacementShown)
@@ -10297,8 +10533,9 @@ namespace LitePlacer
             TapeEditDialog.Row = Tapes_dataGridView.Rows[row];
             TapeEditDialog.CreatingNew = CreatingNew;
             AttachButtonLogging(TapeEditDialog.Controls);
+            // TapeEditDialog.Parent = this;
             TapeEditDialog.StartPosition = FormStartPosition.CenterParent;
-            TapeEditDialog.Show(this);
+            TapeEditDialog.ShowDialog(this);
         }
 
         private void EditTape_button_Click(object sender, EventArgs e)
@@ -10327,15 +10564,6 @@ namespace LitePlacer
         private void AddTape_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-
-            if (VideoAlgorithms.AllAlgorithms.Count < 2)
-            {
-                ShowMessageBox(
-                    "Define some video processing algorithms first.\n\r",
-                    "No algorithms",
-                    MessageBoxButtons.OK);
-                return;
-            }
 
             DataGridViewSelectedRowCollection SelectedRows = Tapes_dataGridView.SelectedRows;
             int index = 0;
@@ -10410,16 +10638,26 @@ namespace LitePlacer
 
         private void DeleteTape_button_Click(object sender, EventArgs e)
         {
-            for (int i = Tapes_dataGridView.RowCount-1; i >0; i--)
+            // Need to do in two stages, because deleting a row can transfer selection state to another row (boo MS!)
+
+            // make list of row indexes to delete, from high to low
+            List<int> rowsToDelete = new List<int>();
+            for (int i = Tapes_dataGridView.RowCount - 1; i >= 0; i--)
             {
                 foreach (DataGridViewCell cell in Tapes_dataGridView.Rows[i].Cells)
                 {
                     if (cell.Selected)
                     {
-                        Tapes_dataGridView.Rows.RemoveAt(i);
+                        rowsToDelete.Add(i);
                         break;
                     }
                 }
+            }
+
+            // delete rows 
+            foreach (int i in rowsToDelete)
+            {
+                Tapes_dataGridView.Rows.RemoveAt(i);
             }
             Tapes_dataGridView.ClearSelection();
 
@@ -13684,6 +13922,11 @@ namespace LitePlacer
         private void MouseScroll_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             Setting.CNC_EnableMouseWheelJog = MouseScroll_checkBox.Checked;
+        }
+
+        private void JobData_GridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            DisplayText("JobData_GridView_DataError");
         }
     }	// end of: 	public partial class FormMain : Form
 

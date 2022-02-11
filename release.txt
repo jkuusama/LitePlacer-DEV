@@ -8,6 +8,8 @@ New Features, significant changes
   measurements and visual processing use full resolution image for precision
 * (in previous release) Added adjustable delay (in frames) to camera measurements
 * Multiple rows can be deleted from tapes data table
+* Cameras have properties button , and can now use fixed exposure(*setting stored in camera)
+* Up camera assisted placement (*beta)
 
 Bug Fixes 
 
@@ -18,6 +20,9 @@ Bug Fixes
 * Screen resolution settings did not always clear red error color
 * You can now click the image to move the machine even if it is not homed
 * Tape type drop box was not always filled with vision algorithm names
+* job data value and footprint columns are narrower, so that nozzle number is visible
+* deleting the first tape is now possible
+* basic setup tab now shows pump and vacuum statuses correctly 
 
 Known issues
 
