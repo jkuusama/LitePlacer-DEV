@@ -10,6 +10,7 @@ New Features, significant changes
 * Multiple rows can be deleted from tapes data table
 * Cameras have properties button , and can now use fixed exposure(*setting stored in camera)
 * Up camera assisted placement (*beta)
+* Negative move guard sizes are now user settable 
 
 Bug Fixes 
 

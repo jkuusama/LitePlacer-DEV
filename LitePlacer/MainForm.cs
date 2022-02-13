@@ -2379,7 +2379,7 @@ namespace LitePlacer
 
         private bool CNC_MoveIsSafeX_m(double X)
         {
-            if ((X < -3.0) || (X > Setting.General_MachineSizeX))
+            if ((X < -Math.Abs(Setting.General_NegativeX)) || (X > Setting.General_MachineSizeX))
             {
                 ShowMessageBox(
                     "Attempt to Move outside machine limits (X " + X.ToString("0.000", CultureInfo.InvariantCulture) + ")",
@@ -2392,7 +2392,7 @@ namespace LitePlacer
 
         private bool CNC_MoveIsSafeY_m(double Y)
         {
-            if ((Y < -3.0) || (Y > Setting.General_MachineSizeY))
+            if ((Y < -Math.Abs(Setting.General_NegativeY)) || (Y > Setting.General_MachineSizeY))
             {
                 ShowMessageBox(
                     "Attempt to Move outside machine limits (Y " + Y.ToString("0.000", CultureInfo.InvariantCulture) + ")",
@@ -4511,6 +4511,9 @@ namespace LitePlacer
 
             SizeXMax_textBox.Text = Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture);
             SizeYMax_textBox.Text = Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture);
+
+            NegativeMoveX_textBox.Text = Setting.General_NegativeX.ToString(CultureInfo.InvariantCulture);
+            NegativeMoveY_textBox.Text = Setting.General_NegativeY.ToString(CultureInfo.InvariantCulture);
 
             ParkLocationX_textBox.Text = Setting.General_ParkX.ToString(CultureInfo.InvariantCulture);
             ParkLocationY_textBox.Text = Setting.General_ParkY.ToString(CultureInfo.InvariantCulture);
@@ -13927,6 +13930,34 @@ namespace LitePlacer
         private void JobData_GridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             DisplayText("JobData_GridView_DataError");
+        }
+
+        private void NegativeMoveX_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(NegativeMoveX_textBox.Text.Replace(',', '.'), out val))
+            {
+                NegativeMoveX_textBox.ForeColor = Color.Black;
+                Setting.General_NegativeX = val;
+            }
+            else
+            {
+                NegativeMoveX_textBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void NegativeMoveY_textBox_TextChanged(object sender, EventArgs e)
+        {
+            double val;
+            if (double.TryParse(NegativeMoveY_textBox.Text.Replace(',', '.'), out val))
+            {
+                NegativeMoveY_textBox.ForeColor = Color.Black;
+                Setting.General_NegativeY = val;
+            }
+            else
+            {
+                NegativeMoveY_textBox.ForeColor = Color.Red;
+            }
         }
     }	// end of: 	public partial class FormMain : Form
 

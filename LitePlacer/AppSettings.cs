@@ -58,6 +58,8 @@ namespace LitePlacer
         public double General_JigOffsetY { get; set; } = 10;
         public double General_MachineSizeX { get; set; } = 590;
         public double General_MachineSizeY { get; set; } = 370;
+        public double General_NegativeX { get; set; } = 3;
+        public double General_NegativeY { get; set; } = 3;
         public string General_Mark1Name { get; set; } = "Mark1";
         public double General_Mark1X { get; set; } = 0;
         public double General_Mark1Y { get; set; } = 0;
