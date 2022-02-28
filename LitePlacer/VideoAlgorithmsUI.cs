@@ -1003,10 +1003,13 @@ namespace LitePlacer
             {
                 // switch by the selected algorithm:
                 case "Filter Features by Size":
-                    FunctionExplanation_textBox.Text = "Removes features that are smaller or larger than the specified values (mm)";
+                    FunctionExplanation_textBox.Text = "Removes features that are smaller or larger than  the specified values (mm).\r\n" +
+                        "Also discards features that are further away from the center than specified.\r\n" +
+                        "Currently used only when searching 'component by pads'.";
                     FunctionExplanation_textBox.Visible = true;
                     EnableDoubleA("Size min:");
                     EnableDoubleB("Size max:");
+                    EnableDoubleC("Distance max:");
                     break;
 
                 case "Blur":
@@ -1151,7 +1154,6 @@ namespace LitePlacer
                 G_label.Visible = true;
             }
 
-            /*
             void EnableDoubleC(string label)
             {
                 DoubleParC_textBox.Text =
@@ -1160,7 +1162,6 @@ namespace LitePlacer
                 B_label.Text = label;
                 B_label.Visible = true;
             }
-            */
 
             void EnableRGB(string label)
             {

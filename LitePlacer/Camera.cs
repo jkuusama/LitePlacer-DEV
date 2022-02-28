@@ -1107,6 +1107,9 @@ namespace LitePlacer
             return zoom;
         }
 
+        double FilterFeaturesBySize_Min;
+        double FilterFeaturesBySize_Max;
+        double FilterFeaturesBySize_Distance;
         private void FilterFeaturesBySizeFunct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
             double par_dA, double par_dB, double par_dC)
         {
@@ -1126,23 +1129,10 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("FilterFeaturesBySizeFunct, bad parameter", KnownColor.DarkRed, true);
             }
-            // Find limits
-            double MinD = par_dA / XmmPerPixel;
-            double MaxD = par_dB / XmmPerPixel;
-            MinD = MinD * zoom;
-            MaxD = MaxD * zoom;
-            int MinSize = Convert.ToInt32(MinD);
-            int MaxSize = Convert.ToInt32(MaxD);
-            // create filter
-            BlobsFiltering filter = new BlobsFiltering();
-            // configure filter
-            filter.CoupledSizeFiltering = true;
-            filter.MinWidth = MinSize;
-            filter.MinHeight = MinSize;
-            filter.MaxHeight = MaxSize;
-            filter.MaxWidth = MaxSize;
-            // apply the filter
-            filter.ApplyInPlace(frame);
+            // Store the parameters. They will be used to pre-filter blobs when searching components by pads
+            FilterFeaturesBySize_Min = par_dA;
+            FilterFeaturesBySize_Max = par_dB;
+            FilterFeaturesBySize_Distance = par_dC;
         }
 
         private void NoiseReduction_Funct(ref Bitmap frame, int par_int, double par_d, int par_R, int par_G, int par_B,
@@ -1534,6 +1524,11 @@ namespace LitePlacer
         // ===========
         private List<Shapes.Component> FindComponentsFromPads_Funct(Bitmap bitmap)
         {
+            // double zoom = GetMeasurementZoom(); GetProcessingZoom
+            double zoom = GetProcessingZoom();
+            double XmmPpix = XmmPerPixel / zoom;
+            double YmmPpix = YmmPerPixel / zoom;
+
             // Locating objects
             BlobCounter blobCounter = new BlobCounter();
             blobCounter.FilterBlobs = true;
@@ -1544,15 +1539,34 @@ namespace LitePlacer
             List<IntPoint> edgePoints = new List<IntPoint>(); 
             foreach (Blob blob in blobs)    // and merge their outlines to one list
             {
-                if ((blob.Rectangle.Height > (bitmap.Size.Height-5)) || 
-                    (blob.Rectangle.Width > (bitmap.Size.Width - 5)))
+                // Filter candidates by size:
+                if (
+                        (blob.Rectangle.Height > (bitmap.Size.Height-5)) || // The whole image could be a blob, discard that
+                        (blob.Rectangle.Width > (bitmap.Size.Width - 5)) ||
+                        ((blob.Rectangle.Height * YmmPpix) > FilterFeaturesBySize_Max) ||
+                        ((blob.Rectangle.Width * XmmPpix) > FilterFeaturesBySize_Max) ||
+                        ((blob.Rectangle.Height * YmmPpix) < FilterFeaturesBySize_Min) ||
+                        ((blob.Rectangle.Width * XmmPpix) < FilterFeaturesBySize_Min)
+                    ) 
+
                 {
-                    continue;  // The whole image could be a blob, discard that
+                    continue;
                 }
-                else
+                // filter by distance:
+                // filter distance
+                double RectCenterX = (double)blob.Rectangle.Left + (double)blob.Rectangle.Width / 2.0;
+                double RectCenterY = (double)blob.Rectangle.Top + (double)blob.Rectangle.Height / 2.0;
+                double FrameCenterX = (double)CameraResolution.X / 2.0;
+                double FrameCenterY = (double)CameraResolution.Y / 2.0;
+                double Xdist = Math.Abs((RectCenterX - FrameCenterX) * XmmPpix);
+                double Ydist = Math.Abs((RectCenterY - FrameCenterY) * YmmPpix);
+                if ((Xdist > FilterFeaturesBySize_Distance) || (Ydist > FilterFeaturesBySize_Distance))
                 {
-                    edgePoints.AddRange(GetBlobsOutline(blobCounter, blob));     // get edge points, add to list
+                    continue;
                 }
+
+
+                edgePoints.AddRange(GetBlobsOutline(blobCounter, blob));     // get edge points, add to list
             }
 
             List<Shapes.Component> Components = new List<Shapes.Component>();
@@ -1777,7 +1791,7 @@ namespace LitePlacer
                     // only do things if the corners form a rectangle
                     SimpleShapeChecker RectangleChecker = new SimpleShapeChecker();
                     RectangleChecker.AngleError = 7;  // default 7
-                    RectangleChecker.LengthError = 0.050F;  // default 0.1 (10%)
+                    RectangleChecker.LengthError = 0.10F;  // default 0.1 (10%)
                     RectangleChecker.MinAcceptableDistortion = 1F;  // in pixels, default 0.5 
                     RectangleChecker.RelativeDistortionLimit = 0.05F;  // default 0.03 (3%)
                     if (RectangleChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
