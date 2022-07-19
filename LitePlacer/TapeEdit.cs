@@ -189,7 +189,7 @@ namespace LitePlacer
                     double val;
                     if (double.TryParse(RotationDirect_textBox.Text.Replace(',', '.'), out val))
                     {
-                        MainForm.CNC_A_m(val);
+                        // MainForm.CNC_A_m(val);
                     }
                     EnableLastItems();
                 }

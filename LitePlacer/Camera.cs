@@ -423,6 +423,7 @@ namespace LitePlacer
 
         // The list of functions processing the image shown to user:
         List<AForgeFunction> DisplayFunctions = new List<AForgeFunction>();
+        public static readonly object DisplayFunctionsLock = new object();
 
         enum DataGridViewColumns { Function, Active, Int, Double, R, G, B };
 
@@ -585,9 +586,11 @@ namespace LitePlacer
                 }
             }
             // copy new list
-            DisplayFunctions.Clear();
-            DisplayFunctions = NewList;
-            // Thread.Sleep(50);  // wait until really stopped
+            lock (DisplayFunctionsLock)
+            {
+                DisplayFunctions.Clear();
+                DisplayFunctions = NewList;
+            }
             PauseProcessing = pause;  // restart video is it was running
         }
 
@@ -618,7 +621,10 @@ namespace LitePlacer
                     };
                 }
             }
-            DisplayFunctions.Clear();
+            lock (DisplayFunctionsLock)
+            {
+                DisplayFunctions.Clear();
+            }
             PauseProcessing = pause;  // restart video is it was running
         }
 
@@ -741,7 +747,8 @@ namespace LitePlacer
         Bitmap AnalyzedFrame;       // The bitmap used to show processing to user; full resolution
 
         public Bitmap ExternalImage;    // for future: capability to use stored images for processing
-        public Bitmap TemporaryFrame;  // measurement frame is stored here 
+        public static readonly object MeasurementFrameLock = new object();
+        public Bitmap MeasurementFrame;  // measurement frame is stored here 
         public Bitmap Dummy;    // for debugging
 
         static int CollectorCount = 0;
@@ -817,26 +824,27 @@ namespace LitePlacer
             ReceivingFrames = true;
             FrameCount++;
 
-            // Take a copy for measurements, if needed:
-            if (CopyFrame)
+             // Take a copy for measurements, if needed:
+            lock (MeasurementFrameLock)
             {
-                if (DelayCounter > 0)
+                if (CopyFrame)
                 {
-                    DelayCounter--;
-                }
-                else
-                {
-                    if (TemporaryFrame != null)
+                    if (DelayCounter > 0)
                     {
-                        TemporaryFrame.Dispose();
+                        DelayCounter--;
                     }
-                    Bitmap debug = eventArgs.Frame;
-                    TemporaryFrame = (Bitmap)eventArgs.Frame.Clone();
-                    // TemporaryFrame = new Bitmap(eventArgs.Frame.Width, eventArgs.Frame.Height, PixelFormat.Format24bppRgb);
-                    debug = TemporaryFrame;
-                    CopyFrame = false;
+                    else
+                    {
+                        if (MeasurementFrame != null)
+                        {
+                            MeasurementFrame.Dispose();
+                        }
+                        MeasurementFrame = (Bitmap)eventArgs.Frame.Clone();
+                        // TemporaryFrame = new Bitmap(eventArgs.Frame.Width, eventArgs.Frame.Height, PixelFormat.Format24bppRgb);
+                        CopyFrame = false;
+                    }
                 }
-            };
+            }
 
             if (PauseProcessing)
             {
@@ -870,6 +878,10 @@ namespace LitePlacer
             {
                 // Selection is neither show processing or show results, show the unprocessed source image
                 DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs), out Zoom);
+                if (DisplayedFrame==null)
+                {
+                    return;
+                }
             }
             else
             {
@@ -879,10 +891,13 @@ namespace LitePlacer
                 {
                     AnalyzedFrame = GetSourceFrame(eventArgs);   // use a copy of camera frame for processing
                                                                  // Process it
-                    foreach (AForgeFunction f in DisplayFunctions)
+                    lock (DisplayFunctionsLock)
                     {
-                        f.func(ref AnalyzedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
-                            f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
+                        foreach (AForgeFunction f in DisplayFunctions)
+                        {
+                            f.func(ref AnalyzedFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
+                                f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
+                        }
                     }
                     // Find features
                     if (FindCircles)
@@ -899,7 +914,7 @@ namespace LitePlacer
                     }
                     if (FindComponentByPads)
                     {
-                        ComponentsFromPads = FindComponentsFromPads_Funct(AnalyzedFrame);
+                        ComponentsFromPads = FindComponentsFromPads_Funct(AnalyzedFrame, GetProcessingZoom());
                     }
 
                     // Fit the image we are going to show to the UI
@@ -984,6 +999,10 @@ namespace LitePlacer
                 if (ImageBox.Image != null)
                 {
                     ImageBox.Image.Dispose();
+                }
+                if (true)
+                {
+
                 }
                 ImageBox.Image = (Bitmap)DisplayedFrame.Clone();
             }
@@ -1522,10 +1541,8 @@ namespace LitePlacer
         }
 
         // ===========
-        private List<Shapes.Component> FindComponentsFromPads_Funct(Bitmap bitmap)
+        private List<Shapes.Component> FindComponentsFromPads_Funct(Bitmap bitmap, double zoom)
         {
-            // double zoom = GetMeasurementZoom(); GetProcessingZoom
-            double zoom = GetProcessingZoom();
             double XmmPpix = XmmPerPixel / zoom;
             double YmmPpix = YmmPerPixel / zoom;
 
@@ -2267,6 +2284,7 @@ namespace LitePlacer
         // Caller = any function doing measurement from video frames. 
         // The list of functions processing the image used in measurements, set by caller:
         public List<AForgeFunction> MeasurementFunctions = new List<AForgeFunction>();
+        public static readonly object MeasurementFunctionsLock = new object();
 
         // Measurement parameters: min and max size, max distance from initial location, set by caller:
         public MeasurementParametersClass MeasurementParameters = new MeasurementParametersClass();
@@ -2280,7 +2298,10 @@ namespace LitePlacer
         public void BuildMeasurementFunctionsList(List<AForgeFunctionDefinition> UiList)
         {
             JoggingRequested = false;     // BuildFunctionsList() sets this to true, if manual jog is needed
-            MeasurementFunctions = BuildFunctionsList(UiList, 1);
+            lock (MeasurementFunctionsLock)
+            {
+                MeasurementFunctions = BuildFunctionsList(UiList, 1);
+            }
         }
 
         // And calls xx_measure() funtion. 
@@ -2302,7 +2323,7 @@ namespace LitePlacer
 
             // Take a snapshot:
             CopyFrame = true;   // tells the Video_NewFrame() function that a copy of the incoming frame is needed
-            int tries = 100;
+            int tries = 10;
             while (tries > 0)
             {
                 tries--;
@@ -2310,27 +2331,32 @@ namespace LitePlacer
                 {
                     break;
                 }
-                Thread.Sleep(10);
+                Thread.Sleep(100);
                 Application.DoEvents();
             }
             if (CopyFrame)
             {
                 // failed!
+                CopyFrame = false;
                 MainForm.DisplayText("*** GetMeasurementFrame() failed!", KnownColor.Purple);
-                return TemporaryFrame;
+                return null;
             }
 
-            Bitmap debug = TemporaryFrame;
-
-            if (MeasurementFunctions != null)
+            lock (MeasurementFrameLock)
             {
-                foreach (AForgeFunction f in MeasurementFunctions)
+                if (MeasurementFunctions != null)
                 {
-                    f.func(ref TemporaryFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
-                        f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
+                    lock (MeasurementFunctionsLock)
+                    {
+                        foreach (AForgeFunction f in MeasurementFunctions)
+                        {
+                            f.func(ref MeasurementFrame, f.parameter_int, f.parameter_double, f.R, f.G, f.B,
+                                f.parameter_doubleA, f.parameter_doubleB, f.parameter_doubleC);
+                        }
+                    }
                 }
             }
-            return TemporaryFrame;
+            return MeasurementFrame;
         }
 
         // Since the measured image might be zoomed in, we need the value, so that we can convert to real measurements (public for debug)
@@ -2470,9 +2496,9 @@ namespace LitePlacer
             Xresult = 0.0;
             Yresult = 0.0;
             Aresult = 0.0;
+            DisplayResults = true;
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-
             if ((!MeasurementParameters.SearchRounds) && (!MeasurementParameters.SearchRectangles)
                 && (!MeasurementParameters.SearchComponentOutlines) && (!MeasurementParameters.SearchComponentPads))
             {
@@ -2494,7 +2520,7 @@ namespace LitePlacer
 
             if (image == null)
             {
-                MainForm.DisplayText("Could not get a snapshot image", KnownColor.DarkRed, true);
+                MainForm.DisplayText("Could not get measurement frame", KnownColor.DarkRed, true);
                 Paused = PauseSave;
                 PauseProcessing = false;
                 return false;
@@ -2585,7 +2611,7 @@ namespace LitePlacer
 
             if (MeasurementParameters.SearchComponentPads)
             {
-                List<Shapes.Component> Components = FindComponentsFromPads_Funct(image);
+                List<Shapes.Component> Components = FindComponentsFromPads_Funct(image, GetMeasurementZoom());
                 foreach (Shapes.Component comp in Components)
                 {
                     Candidates.Add(new Shapes.Shape()
