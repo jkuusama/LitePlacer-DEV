@@ -1,4 +1,6 @@
-Build date 08/29/2021
+Build date 07/20/2022¨
+
+***Beta release***:
 
 Previous release 08/23/2021, changes after that:
 
@@ -31,4 +33,3 @@ Known issues
 * Pause and Stop need to be clicked twice
 * The application does not automatically restart when loading new settings from file. (there is now a dialog, though)
 * Place fast sometimes uses last hole (which might not be whole), not the second to last as excpected
-* (testing gitkraken pull: this line should show up on my local machine...)
