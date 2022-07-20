@@ -509,25 +509,26 @@ namespace LitePlacer
             return buildDateTime.ToString(CultureInfo.InvariantCulture);
         }
 
-        private bool UpdateAvailable(out string UpdateDescription)
+        private bool UpdateAvailable(out string WebDate, out string ThisDate)
         {
             try
             {
                 var url = "http://www.liteplacer.com/Downloads/release.txt";
-                UpdateDescription = (new WebClient()).DownloadString(url);
-                string UpdateDate = "";
-                for (int i = 0; i < UpdateDescription.Length; i++)
+                string DateFromWeb = (new WebClient()).DownloadString(url);
+                WebDate = "";
+                for (int i = 0; i < DateFromWeb.Length; i++)
                 {
-                    if (UpdateDescription[i] == '\n')
+                    if (DateFromWeb[i] == '\n')
                     {
                         break;
                     }
-                    UpdateDate += UpdateDescription[i];
+                    WebDate += DateFromWeb[i];
                 }
-                UpdateDate = UpdateDate.Trim();
-                string BuildDateText = BuildDate();
-                BuildDateText = "Build date " + BuildDate().Substring(0, BuildDateText.IndexOf(' '));
-                if (UpdateDate != BuildDateText)
+                WebDate = WebDate.Trim();  // UpdateDate is the date on the web, format "Build date 08/29/2021"
+                WebDate = WebDate.Remove(0, "Build date ".Length);
+                ThisDate = BuildDate();
+                ThisDate = BuildDate().Substring(0, ThisDate.IndexOf(' '));
+                if (WebDate != ThisDate)
                 {
                     return true;
                 }
@@ -535,7 +536,8 @@ namespace LitePlacer
             catch
             {
                 DisplayText("Could not read http://www.liteplacer.com/Downloads/release.txt, update info not available.");
-                UpdateDescription = "";
+                WebDate = "";
+                ThisDate = "";
                 return false;
             }
             return false;
@@ -543,13 +545,16 @@ namespace LitePlacer
 
         private bool CheckForUpdate()
         {
-            string UpdateText;
-            if (UpdateAvailable(out UpdateText))
+            string WebDate;
+            string ThisDate;
+            if (UpdateAvailable(out WebDate, out ThisDate))
             {
                 ShowMessageBox(
-                    "There is a software update available:\n\r" + UpdateText,
+                    "There is a software update available (or you are a running pre-release).\n\r" +
+                    "Date of software on web: " + WebDate + "\n\r" +
+                    "Date of this software: " + ThisDate + "\n\r",
                     "Update available",
-                    MessageBoxButtons.OK);
+                    MessageBoxButtons.OK);  ;
                 return true;
             }
             return false;
