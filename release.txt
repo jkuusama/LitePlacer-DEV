@@ -1,6 +1,6 @@
 Build date 07/20/2022
 
-***Beta release***:
+**Beta release**:
 
 Previous release 08/23/2021, changes after that:
 
