@@ -292,27 +292,31 @@ namespace LitePlacer
             UpCamMaxResolution_checkBox.Checked = Setting.UpCam_UseMaxResolution;
             DoUpCamMaxResolution_checkBox_CheckedChanged();
 
+            DownCamera.ImageBox = Cam_pictureBox;
             DownCamera.DrawCross = Setting.DownCam_DrawCross;
             DownCamera.DrawBox = Setting.DownCam_DrawBox;
             DownCamera.DrawSidemarks = Setting.DownCam_DrawSidemarks;
+            DownCamera.DesiredResolutionX = Setting.DownCam_DesiredX;
+            DownCamera.DesiredResolutionY = Setting.DownCam_DesiredY;
+            DownCamera.XmmPerPixel = Setting.DownCam_XmmPerPixel;
+            DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
             DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
             DownCamera.ZoomIsOn = Setting.DownCam_Zoom;
             DownCamZoomFactor_textBox.Text = Setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             DownCamera.ZoomFactor = Setting.DownCam_Zoomfactor;
-            DownCamera.ImageBox = Cam_pictureBox;
-            DownCamera.XmmPerPixel = Setting.DownCam_XmmPerPixel;
-            DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
 
+            UpCamera.ImageBox = Cam_pictureBox;
             UpCamera.DrawCross = Setting.UpCam_DrawCross;
             UpCamera.DrawBox = Setting.UpCam_DrawBox;
             UpCamera.DrawSidemarks = Setting.UpCam_DrawSidemarks;
+            UpCamera.DesiredResolutionX = Setting.UpCam_DesiredX;
+            UpCamera.DesiredResolutionY = Setting.UpCam_DesiredY;
+            UpCamera.XmmPerPixel = Setting.UpCam_XmmPerPixel;
+            UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
             UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
             UpCamera.ZoomIsOn = Setting.UpCam_Zoom;
             UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
-            UpCamera.ImageBox = Cam_pictureBox;
-            UpCamera.XmmPerPixel = Setting.UpCam_XmmPerPixel;
-            UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
 
             ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
 
@@ -3317,12 +3321,11 @@ namespace LitePlacer
 
         private void SetDownCameraDefaults()
         {
-            System.Drawing.Point pt= new System.Drawing.Point();
-            pt.X = Setting.DownCam_DesiredX;
-            pt.Y = Setting.DownCam_DesiredY;
-            DownCamera.RequestedResolution = pt;
+            DownCamera.DesiredResolutionX = Setting.DownCam_DesiredX;
+            DownCamera.DesiredResolutionY = Setting.DownCam_DesiredY;
 
             DownCamera.ImageBox = Cam_pictureBox;
+            System.Drawing.Point pt = new System.Drawing.Point();
             pt.X = Cam_pictureBox.Width;
             pt.Y = Cam_pictureBox.Height;
             DownCamera.DisplayResolution = pt;
@@ -3364,12 +3367,11 @@ namespace LitePlacer
         // ====
         private void SetUpCameraDefaults()
         {
-            System.Drawing.Point pt = new System.Drawing.Point();
-            pt.X = Setting.UpCam_DesiredX;
-            pt.Y = Setting.UpCam_DesiredY;
-            UpCamera.RequestedResolution = pt;
+            UpCamera.DesiredResolutionX = Setting.UpCam_DesiredX;
+            UpCamera.DesiredResolutionY = Setting.UpCam_DesiredY;
 
             UpCamera.ImageBox = Cam_pictureBox;
+            System.Drawing.Point pt = new System.Drawing.Point();
             pt.X = Cam_pictureBox.Width;
             pt.Y = Cam_pictureBox.Height;
             UpCamera.DisplayResolution = pt;
@@ -3673,10 +3675,8 @@ namespace LitePlacer
             Setting.DowncamMoniker = Monikers[DownCam_comboBox.SelectedIndex];
             DownCamera.MonikerString = Monikers[DownCam_comboBox.SelectedIndex];
 
-            System.Drawing.Point pt = new System.Drawing.Point();
-            pt.X = Setting.DownCam_DesiredX;
-            pt.Y = Setting.DownCam_DesiredY;
-            DownCamera.RequestedResolution = pt;
+            DownCamera.DesiredResolutionX = Setting.DownCam_DesiredX;
+            DownCamera.DesiredResolutionY = Setting.DownCam_DesiredY;
 
             StartDownCamera_m();        // was disabled, but seems to cause loss of connection(?).
             SelectCamera(DownCamera);
@@ -3727,10 +3727,8 @@ namespace LitePlacer
             Setting.UpcamMoniker = Monikers[UpCam_comboBox.SelectedIndex];
             UpCamera.MonikerString = Monikers[UpCam_comboBox.SelectedIndex];
 
-            System.Drawing.Point pt = new System.Drawing.Point();
-            pt.X = Setting.UpCam_DesiredX;
-            pt.Y = Setting.UpCam_DesiredY;
-            UpCamera.RequestedResolution = pt;
+            UpCamera.DesiredResolutionX = Setting.UpCam_DesiredX;
+            UpCamera.DesiredResolutionY = Setting.UpCam_DesiredY;
 
             // StartUpCamera_m();
             SelectCamera(UpCamera);
@@ -3750,13 +3748,23 @@ namespace LitePlacer
         }
 
         // =================================================================================
+        private bool BoxSizeCalculationValid_m(Camera cam)
+        {
+            if ((cam.DesiredResolutionX==0) || (cam.DesiredResolutionY==0))
+            {
+                DisplayText("camera resolution not set.", KnownColor.DarkRed, true);
+                return false;
+            }
+            return true;
+        }
+        // =================================================================================
         // Down Camera, X size
         private bool NoRecalc = false;
 
         private double BoxXzize(Camera cam)
         {
             // How many pixels are really on screen?
-            double BoxX = (double)cam.BoxSizeX * (double)cam.CameraResolution.X / (double)cam.DisplayResolution.X;
+            double BoxX = (double)cam.BoxSizeX * (double)cam.DesiredResolutionX / (double)cam.DisplayResolution.X;
             if (cam.ShowPixels)
             {
                 BoxX = (double)cam.BoxSizeX;
@@ -3771,6 +3779,10 @@ namespace LitePlacer
         private void DownCameraBoxX_textBox_TextChanged(object sender, EventArgs e)
         {
             if (NoRecalc || StartingUp)
+            {
+                return;
+            }
+            if (!BoxSizeCalculationValid_m(DownCamera))
             {
                 return;
             }
@@ -3814,39 +3826,15 @@ namespace LitePlacer
             }
         }
 
-        private bool CheckCam(Camera cam)
-        {
-            if (StartingUp)
-            {
-                return false;   // user doesn't see the label on startup, no need for delays
-            }
-            cam.ReceivingFrames = false;
-            int i = 0;
-            while (i++<250)
-            {
-                if (cam.ReceivingFrames)
-                {
-                    break;
-                }
-                Application.DoEvents();
-                Thread.Sleep(2);
-            }
-            return cam.ReceivingFrames;
-        }
-
+ 
         private void UpdateDownCamBoxXSizeText()
         {
             // Own function because the box size needs to be updated when zoom or show pixels status changes
-            if (CheckCam(DownCamera))
+            if (!BoxSizeCalculationValid_m(DownCamera))
             {
-                DownCameraBoxX_textBox.Text = (Setting.DownCam_XmmPerPixel * BoxXzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+                return;
             }
-            else
-            {
-                NoRecalc = true;
-                DownCameraBoxX_textBox.Text = "n/a";
-                NoRecalc=false;
-            }
+            DownCameraBoxX_textBox.Text = (Setting.DownCam_XmmPerPixel * BoxXzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
         }
 
         // =================================================================================
@@ -3854,7 +3842,7 @@ namespace LitePlacer
         private double BoxYzize(Camera cam)
         {
             // How many pixels are really on screen?
-            double BoxY = (double)cam.BoxSizeY * (double)cam.CameraResolution.Y / (double)cam.DisplayResolution.Y;
+            double BoxY = (double)cam.BoxSizeY * (double)cam.DesiredResolutionY / (double)cam.DisplayResolution.Y;
             if (cam.ShowPixels)
             {
                 BoxY = (double)cam.BoxSizeY;
@@ -3869,6 +3857,10 @@ namespace LitePlacer
         private void DownCameraBoxY_textBox_TextChanged(object sender, EventArgs e)
         {
             if (NoRecalc || StartingUp)
+            {
+                return;
+            }
+            if (!BoxSizeCalculationValid_m(DownCamera))
             {
                 return;
             }
@@ -3915,16 +3907,11 @@ namespace LitePlacer
         private void UpdateDownCamBoxYSizeText()
         {
             // Own function because the box size needs to be updated when zoom or show pixels status changes
-            if (CheckCam(DownCamera))
+            if (!BoxSizeCalculationValid_m(DownCamera))
             {
-                DownCameraBoxY_textBox.Text = (Setting.DownCam_YmmPerPixel * BoxYzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+                return;
             }
-            else
-            {
-                NoRecalc = true;
-                DownCameraBoxY_textBox.Text = "n/a";
-                NoRecalc = false;
-            }
+            DownCameraBoxY_textBox.Text = (Setting.DownCam_YmmPerPixel * BoxYzize(DownCamera)).ToString("0.000", CultureInfo.InvariantCulture);
         }
 
         // =================================================================================
@@ -3933,6 +3920,10 @@ namespace LitePlacer
         private void UpCameraBoxX_textBox_TextChanged(object sender, EventArgs e)
         {
             if (NoRecalc || StartingUp)
+            {
+                return;
+            }
+            if (!BoxSizeCalculationValid_m(UpCamera))
             {
                 return;
             }
@@ -3978,16 +3969,11 @@ namespace LitePlacer
         private void UpdateUpCamBoxXSizeText()
         {
             // Own function because the box size needs to be updated when zoom or show pixels status changes
-            if (CheckCam(UpCamera))
+            if (!BoxSizeCalculationValid_m(UpCamera))
             {
-                UpCameraBoxX_textBox.Text = (Setting.UpCam_XmmPerPixel * BoxXzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+                return;
             }
-            else
-            {
-                NoRecalc = true;
-                UpCameraBoxX_textBox.Text = "n/a";
-                NoRecalc = false;
-            }
+            UpCameraBoxX_textBox.Text = (Setting.UpCam_XmmPerPixel * BoxXzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
         }
 
         // =================================================================================
@@ -3996,6 +3982,10 @@ namespace LitePlacer
         private void UpCameraBoxY_textBox_TextChanged(object sender, EventArgs e)
         {
             if (NoRecalc || StartingUp)
+            {
+                return;
+            }
+            if (!BoxSizeCalculationValid_m(UpCamera))
             {
                 return;
             }
@@ -4042,16 +4032,11 @@ namespace LitePlacer
         private void UpdateUpCamBoxYSizeText()
         {
             // Own function because the box size needs to be updated when zoom or show pixels status changes
-            if (CheckCam(UpCamera))
+            if (!BoxSizeCalculationValid_m(UpCamera))
             {
-                UpCameraBoxY_textBox.Text = (Setting.UpCam_YmmPerPixel * BoxYzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
+                return;
             }
-            else
-            {
-                NoRecalc = true;
-                UpCameraBoxY_textBox.Text = "n/a";
-                NoRecalc = false;
-            }
+            UpCameraBoxY_textBox.Text = (Setting.UpCam_YmmPerPixel * BoxYzize(UpCamera)).ToString("0.000", CultureInfo.InvariantCulture);
         }
 
         // =================================================================================
@@ -13672,15 +13657,12 @@ namespace LitePlacer
 
         private void DownCameraDesiredX_textBox_TextChanged(object sender, EventArgs e)
         {
-            int res;
-            if (int.TryParse(DownCameraDesiredX_textBox.Text, out res))
+            int val;
+            if (int.TryParse(DownCameraDesiredX_textBox.Text, out val))
             {
                 DownCameraDesiredX_textBox.ForeColor = Color.Black;
-                Setting.DownCam_DesiredX = res;
-                System.Drawing.Point pt = new System.Drawing.Point();
-                pt.X = res;
-                pt.Y = Setting.DownCam_DesiredY;
-                DownCamera.RequestedResolution = pt;
+                DownCamera.DesiredResolutionX = val;
+                Setting.DownCam_DesiredX = val;
             }
             else
             {
@@ -13690,15 +13672,12 @@ namespace LitePlacer
 
         private void DownCameraDesiredY_textBox_TextChanged(object sender, EventArgs e)
         {
-            int res;
-            if (int.TryParse(DownCameraDesiredY_textBox.Text, out res))
+            int val;
+            if (int.TryParse(DownCameraDesiredY_textBox.Text, out val))
             {
                 DownCameraDesiredY_textBox.ForeColor = Color.Black;
-                Setting.DownCam_DesiredY = res;
-                System.Drawing.Point pt = new System.Drawing.Point();
-                pt.X = Setting.DownCam_DesiredX;
-                pt.Y = res;
-                DownCamera.RequestedResolution = pt;
+                DownCamera.DesiredResolutionY = val;
+                Setting.DownCam_DesiredY = val;
             }
             else
             {
@@ -13708,15 +13687,12 @@ namespace LitePlacer
 
         private void UpCameraDesiredX_textBox_TextChanged(object sender, EventArgs e)
         {
-            int res;
-            if (int.TryParse(UpCameraDesiredX_textBox.Text, out res))
+            int val;
+            if (int.TryParse(UpCameraDesiredX_textBox.Text, out val))
             {
                 UpCameraDesiredX_textBox.ForeColor = Color.Black;
-                Setting.UpCam_DesiredX = res;
-                System.Drawing.Point pt = new System.Drawing.Point();
-                pt.X = res;
-                pt.Y = Setting.UpCam_DesiredY;
-                UpCamera.RequestedResolution = pt;
+                UpCamera.DesiredResolutionX = val;
+                Setting.UpCam_DesiredX = val;
             }
             else
             {
@@ -13726,15 +13702,12 @@ namespace LitePlacer
 
         private void UpCameraDesiredY_textBox_TextChanged(object sender, EventArgs e)
         {
-            int res;
-            if (int.TryParse(UpCameraDesiredY_textBox.Text, out res))
+            int val;
+            if (int.TryParse(UpCameraDesiredY_textBox.Text, out val))
             {
                 UpCameraDesiredY_textBox.ForeColor = Color.Black;
-                Setting.UpCam_DesiredY = res;
-                System.Drawing.Point pt = new System.Drawing.Point();
-                pt.X = Setting.UpCam_DesiredX;
-                pt.Y = res;
-                UpCamera.RequestedResolution = pt;
+                UpCamera.DesiredResolutionY = val;
+                Setting.UpCam_DesiredY = val;
             }
             else
             {

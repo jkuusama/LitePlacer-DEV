@@ -47,7 +47,9 @@ namespace LitePlacer
 
         public System.Drawing.Point CameraResolution { get; set; }  // resolution from camera
         public System.Drawing.Point DisplayResolution { get; set; }  // resolution on UI
-        public System.Drawing.Point RequestedResolution { get; set; }  // user set resolution
+
+        public int DesiredResolutionX;  // user set resolution
+        public int DesiredResolutionY;  // user set resolution
 
         // ================================================================== 
         public string MonikerString { get; set; } = "unconnected";
@@ -320,9 +322,9 @@ namespace LitePlacer
                     bool fine = false;
                     for (int i = 0; i < VideoSource.VideoCapabilities.Length; i++)
                     {
-                        if ((VideoSource.VideoCapabilities[i].FrameSize.Width == RequestedResolution.X)
+                        if ((VideoSource.VideoCapabilities[i].FrameSize.Width == DesiredResolutionX)
                             &&
-                            (VideoSource.VideoCapabilities[i].FrameSize.Height == RequestedResolution.Y))
+                            (VideoSource.VideoCapabilities[i].FrameSize.Height == DesiredResolutionY))
                         {
                             VideoSource.VideoResolution = VideoSource.VideoCapabilities[i];
                             fine = true;
@@ -334,7 +336,9 @@ namespace LitePlacer
                         MainForm.DisplayText("Desired resolution not available");
                         return false;
                     }
-                    System.Drawing.Point res = RequestedResolution;
+                    System.Drawing.Point res= new System.Drawing.Point();
+                    res.X = DesiredResolutionX;
+                    res.Y = DesiredResolutionY;
                     CameraResolution = res;
                 }
 
