@@ -5106,6 +5106,11 @@ namespace LitePlacer
 
         public bool HomeZ_m()
         {
+            if (LastTabPage == "Nozzles_tabPage")
+            {
+                // On nozzles page, switches are disabled. Easiest is to do homign on basic setup page
+                tabControlPages.SelectedTab = tabControlPages.TabPages["tabPageBasicSetup"];
+            }
             if (!Zhome_checkBox.Checked)
             {
                 DisplayText("Z homing switch not enabled.\n\r" +
