@@ -421,9 +421,9 @@ namespace LitePlacer
 
         private bool CreateDataBackups()
         {
-            DisplayText("Creating data file backups:");
             string FilesPath = GetPath();
-            string BackupsPath = FilesPath + BACKUP_DIRNAME;
+            string BackupsPath = FilesPath + BACKUP_DIRNAME + "\\" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
+            DisplayText("Creating data file backups to "+ BackupsPath);
             try
             {
                 // If backup directory doesn't exist, create it. CreateDirectory() does the check automatically
