@@ -2644,6 +2644,17 @@ namespace LitePlacer
                 DisplayText("*** Homing algorithm not found - programming error or corrupt data file!", KnownColor.Red, true);
                 return false;
             }
+
+            // Homing switches to downcamera. Keep UI updated on setup pages
+            if (LastTabPage == "tabPageSetupCameras")
+            {
+                Do_ConnectDownCamera_button_Click();
+            }
+            if (LastTabPage == "Algorithms_tabPage")
+            {
+                DownCam_radioButton.Checked = true;
+            }
+
             DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
             DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
 
@@ -3663,6 +3674,10 @@ namespace LitePlacer
 
         private void ConnectDownCamera_button_Click(object sender, EventArgs e)
         {
+            Do_ConnectDownCamera_button_Click();
+        }
+        private void Do_ConnectDownCamera_button_Click()
+        {
             List<string> Monikers = DownCamera.GetMonikerStrings();
             if (Monikers.Count == 0)
             {
@@ -3678,7 +3693,7 @@ namespace LitePlacer
             DownCamera.DesiredResolutionX = Setting.DownCam_DesiredX;
             DownCamera.DesiredResolutionY = Setting.DownCam_DesiredY;
 
-            StartDownCamera_m();        // was disabled, but seems to cause loss of connection(?).
+            // StartDownCamera_m();
             SelectCamera(DownCamera);
             if (DownCamera.IsRunning())
             {
