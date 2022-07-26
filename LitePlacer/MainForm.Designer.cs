@@ -672,6 +672,8 @@
             this.DoubleParA_textBox = new System.Windows.Forms.TextBox();
             this.AdvancedProcessing_tabControl = new System.Windows.Forms.TabControl();
             this.NozzleCalibration_tabPage = new System.Windows.Forms.TabPage();
+            this.NozzleWarning_textBox = new System.Windows.Forms.TextBox();
+            this.label156 = new System.Windows.Forms.Label();
             this.SaveNozzleCalibration_button = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.ChangeNozzleOnVideoSetup_button = new System.Windows.Forms.Button();
@@ -851,8 +853,7 @@
             this.Test7_button = new System.Windows.Forms.Button();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.FPStimer = new System.Windows.Forms.Timer(this.components);
-            this.NozzleWarning_textBox = new System.Windows.Forms.TextBox();
-            this.label156 = new System.Windows.Forms.Label();
+            this.label230 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1284,6 +1285,7 @@
             // 
             // Tapes_tabPage
             // 
+            this.Tapes_tabPage.Controls.Add(this.label230);
             this.Tapes_tabPage.Controls.Add(this.TapeSetupZguard_checkBox);
             this.Tapes_tabPage.Controls.Add(this.label225);
             this.Tapes_tabPage.Controls.Add(this.label67);
@@ -1834,7 +1836,7 @@
             // 
             // DeleteTape_button
             // 
-            this.DeleteTape_button.Location = new System.Drawing.Point(569, 606);
+            this.DeleteTape_button.Location = new System.Drawing.Point(475, 606);
             this.DeleteTape_button.Name = "DeleteTape_button";
             this.DeleteTape_button.Size = new System.Drawing.Size(75, 23);
             this.DeleteTape_button.TabIndex = 18;
@@ -8206,6 +8208,22 @@
             this.NozzleCalibration_tabPage.Text = "Nozzle Calibration";
             this.NozzleCalibration_tabPage.UseVisualStyleBackColor = true;
             // 
+            // NozzleWarning_textBox
+            // 
+            this.NozzleWarning_textBox.Location = new System.Drawing.Point(102, 94);
+            this.NozzleWarning_textBox.Name = "NozzleWarning_textBox";
+            this.NozzleWarning_textBox.Size = new System.Drawing.Size(58, 20);
+            this.NozzleWarning_textBox.TabIndex = 309;
+            // 
+            // label156
+            // 
+            this.label156.AutoSize = true;
+            this.label156.Location = new System.Drawing.Point(6, 97);
+            this.label156.Name = "label156";
+            this.label156.Size = new System.Drawing.Size(96, 13);
+            this.label156.TabIndex = 310;
+            this.label156.Text = "Warning threshold:";
+            // 
             // SaveNozzleCalibration_button
             // 
             this.SaveNozzleCalibration_button.Location = new System.Drawing.Point(7, 64);
@@ -10125,21 +10143,15 @@
             this.FPStimer.Interval = 1000;
             this.FPStimer.Tick += new System.EventHandler(this.FPStimer_Tick);
             // 
-            // NozzleWarning_textBox
+            // label230
             // 
-            this.NozzleWarning_textBox.Location = new System.Drawing.Point(102, 94);
-            this.NozzleWarning_textBox.Name = "NozzleWarning_textBox";
-            this.NozzleWarning_textBox.Size = new System.Drawing.Size(58, 20);
-            this.NozzleWarning_textBox.TabIndex = 309;
-            // 
-            // label156
-            // 
-            this.label156.AutoSize = true;
-            this.label156.Location = new System.Drawing.Point(6, 97);
-            this.label156.Name = "label156";
-            this.label156.Size = new System.Drawing.Size(96, 13);
-            this.label156.TabIndex = 310;
-            this.label156.Text = "Warning threshold:";
+            this.label230.AutoSize = true;
+            this.label230.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label230.Location = new System.Drawing.Point(478, 580);
+            this.label230.Name = "label230";
+            this.label230.Size = new System.Drawing.Size(64, 16);
+            this.label230.TabIndex = 268;
+            this.label230.Text = "Selected:";
             // 
             // FormMain
             // 
@@ -11124,6 +11136,7 @@
         private System.Windows.Forms.Label label229;
         private System.Windows.Forms.TextBox NozzleWarning_textBox;
         private System.Windows.Forms.Label label156;
+        private System.Windows.Forms.Label label230;
     }
 }
 
