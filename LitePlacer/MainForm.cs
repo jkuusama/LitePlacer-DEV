@@ -13957,6 +13957,7 @@ namespace LitePlacer
                 NegativeMoveY_textBox.ForeColor = Color.Red;
             }
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 

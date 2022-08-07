@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -66,6 +66,7 @@
             this.Bookmark5_button = new System.Windows.Forms.Button();
             this.Bookmark6_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage = new System.Windows.Forms.TabPage();
+            this.label230 = new System.Windows.Forms.Label();
             this.TapeSetupZguard_checkBox = new System.Windows.Forms.CheckBox();
             this.label225 = new System.Windows.Forms.Label();
             this.label67 = new System.Windows.Forms.Label();
@@ -624,6 +625,7 @@
             this.CAD_label = new System.Windows.Forms.Label();
             this.tabControlPages = new System.Windows.Forms.TabControl();
             this.Algorithms_tabPage = new System.Windows.Forms.TabPage();
+            this.IntParameterUp10_button = new System.Windows.Forms.Button();
             this.Measure10x_button = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.NozzleHeightCancel_button = new System.Windows.Forms.Button();
@@ -853,7 +855,7 @@
             this.Test7_button = new System.Windows.Forms.Button();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.FPStimer = new System.Windows.Forms.Timer(this.components);
-            this.label230 = new System.Windows.Forms.Label();
+            this.IntParameterDown10_button = new System.Windows.Forms.Button();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1329,6 +1331,16 @@
             this.Tapes_tabPage.TabIndex = 6;
             this.Tapes_tabPage.Text = "Tape Positions";
             this.Tapes_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // label230
+            // 
+            this.label230.AutoSize = true;
+            this.label230.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label230.Location = new System.Drawing.Point(478, 580);
+            this.label230.Name = "label230";
+            this.label230.Size = new System.Drawing.Size(64, 16);
+            this.label230.TabIndex = 268;
+            this.label230.Text = "Selected:";
             // 
             // TapeSetupZguard_checkBox
             // 
@@ -7320,14 +7332,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7437,14 +7449,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7618,6 +7630,8 @@
             // 
             // Algorithms_tabPage
             // 
+            this.Algorithms_tabPage.Controls.Add(this.IntParameterDown10_button);
+            this.Algorithms_tabPage.Controls.Add(this.IntParameterUp10_button);
             this.Algorithms_tabPage.Controls.Add(this.Measure10x_button);
             this.Algorithms_tabPage.Controls.Add(this.panel1);
             this.Algorithms_tabPage.Controls.Add(this.ShowVideoResults_radioButton);
@@ -7688,6 +7702,19 @@
             this.Algorithms_tabPage.TabIndex = 8;
             this.Algorithms_tabPage.Text = "Setup Video Processing";
             this.Algorithms_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // IntParameterUp10_button
+            // 
+            this.IntParameterUp10_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IntParameterUp10_button.Location = new System.Drawing.Point(1016, 270);
+            this.IntParameterUp10_button.Name = "IntParameterUp10_button";
+            this.IntParameterUp10_button.Size = new System.Drawing.Size(20, 17);
+            this.IntParameterUp10_button.TabIndex = 317;
+            this.IntParameterUp10_button.Text = "▲";
+            this.IntParameterUp10_button.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.IntParameterUp10_button.UseVisualStyleBackColor = true;
+            this.IntParameterUp10_button.Visible = false;
+            this.IntParameterUp10_button.Click += new System.EventHandler(this.IntParameterUp10_button_Click);
             // 
             // Measure10x_button
             // 
@@ -10143,15 +10170,18 @@
             this.FPStimer.Interval = 1000;
             this.FPStimer.Tick += new System.EventHandler(this.FPStimer_Tick);
             // 
-            // label230
+            // IntParameterDown10_button
             // 
-            this.label230.AutoSize = true;
-            this.label230.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label230.Location = new System.Drawing.Point(478, 580);
-            this.label230.Name = "label230";
-            this.label230.Size = new System.Drawing.Size(64, 16);
-            this.label230.TabIndex = 268;
-            this.label230.Text = "Selected:";
+            this.IntParameterDown10_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.25F);
+            this.IntParameterDown10_button.Location = new System.Drawing.Point(1016, 289);
+            this.IntParameterDown10_button.Name = "IntParameterDown10_button";
+            this.IntParameterDown10_button.Size = new System.Drawing.Size(20, 17);
+            this.IntParameterDown10_button.TabIndex = 318;
+            this.IntParameterDown10_button.Text = "▼";
+            this.IntParameterDown10_button.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.IntParameterDown10_button.UseVisualStyleBackColor = true;
+            this.IntParameterDown10_button.Visible = false;
+            this.IntParameterDown10_button.Click += new System.EventHandler(this.IntParameterDown10_button_Click);
             // 
             // FormMain
             // 
@@ -11137,6 +11167,8 @@
         private System.Windows.Forms.TextBox NozzleWarning_textBox;
         private System.Windows.Forms.Label label156;
         private System.Windows.Forms.Label label230;
+        private System.Windows.Forms.Button IntParameterUp10_button;
+        private System.Windows.Forms.Button IntParameterDown10_button;
     }
 }
 

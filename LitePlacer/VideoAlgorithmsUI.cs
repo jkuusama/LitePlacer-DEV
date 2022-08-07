@@ -1125,6 +1125,8 @@ namespace LitePlacer
                 IntParameter_numericUpDown.Visible = true;
                 IntParameter_label.Text = label;
                 IntParameter_label.Visible = true;
+                IntParameterUp10_button.Visible = true;
+                IntParameterDown10_button.Visible = true;
             }
 
             void EnableDouble(string label)
@@ -1198,6 +1200,9 @@ namespace LitePlacer
             IntParameter_label.Text = "--";
             IntParameter_label.Visible = false;
             IntParameter_numericUpDown.Visible = false;
+            IntParameterUp10_button.Visible = false;
+            IntParameterDown10_button.Visible = false;
+
 
             DoubleParameter_label.Text = "--";
             DoubleParameter_label.Visible = false;
@@ -1270,6 +1275,35 @@ namespace LitePlacer
         // Functions parameter changes:
         private void IntParameter_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
+            VideoAlgorithms.CurrentFunction_NewInt((int)IntParameter_numericUpDown.Value);
+            UpdateVideoProcessing();
+        }
+
+        // Separate buttons for 10 increment
+        private void IntParameterUp10_button_Click(object sender, EventArgs e)
+        {
+            if (IntParameter_numericUpDown.Value <= (IntParameter_numericUpDown.Maximum-10))
+            {
+                IntParameter_numericUpDown.Value = IntParameter_numericUpDown.Value + 10;
+            }
+            else
+            {
+                IntParameter_numericUpDown.Value = IntParameter_numericUpDown.Maximum;
+            }
+
+            VideoAlgorithms.CurrentFunction_NewInt((int)IntParameter_numericUpDown.Value);
+            UpdateVideoProcessing();
+        }
+        private void IntParameterDown10_button_Click(object sender, EventArgs e)
+        {
+            if (IntParameter_numericUpDown.Value>10)
+            {
+                IntParameter_numericUpDown.Value = IntParameter_numericUpDown.Value - 10;
+            }
+            else
+            {
+                IntParameter_numericUpDown.Value = IntParameter_numericUpDown.Value = 0;
+            }
             VideoAlgorithms.CurrentFunction_NewInt((int)IntParameter_numericUpDown.Value);
             UpdateVideoProcessing();
         }
