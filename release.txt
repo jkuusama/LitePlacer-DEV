@@ -29,6 +29,7 @@ Bug Fixes
 * basic setup tab now shows pump and vacuum statuses correctly 
 * Job file can be sorted by used nozzle, minimizing nozzle changes during run.
   This has always been possible, but the feature is now more visible (in docs and tooltip text)
+* Setting machine size now set movement limits on control board 
 
 Known issues
 

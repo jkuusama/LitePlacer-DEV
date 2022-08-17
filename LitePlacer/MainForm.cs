@@ -4905,18 +4905,24 @@ namespace LitePlacer
             return res;
         }
 
-
-        private void SizeYMax_textBox_TextChanged(object sender, EventArgs e)
+        private void SizeYMax_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            double val;
-            if (double.TryParse(SizeYMax_textBox.Text.Replace(',', '.'), out val))
+            SizeYMax_textBox.ForeColor = Color.Red;
+            if (e.KeyChar == '\r')
             {
-                SizeYMax_textBox.ForeColor = Color.Black;
-                Setting.General_MachineSizeY = val;
-            }
-            else
-            {
-                SizeYMax_textBox.ForeColor = Color.Red;
+                double val;
+                if (double.TryParse(SizeYMax_textBox.Text.Replace(',', '.'), out val))
+                {
+                    if (SetYsize_m(val))
+                    {
+                        SizeYMax_textBox.ForeColor = Color.Black;
+                        Setting.General_MachineSizeY = val;
+                    }
+                }
+                else
+                {
+                    DisplayText("Value did not convert to a number.");
+                }
             }
         }
         #endregion
@@ -13965,6 +13971,7 @@ namespace LitePlacer
                 NegativeMoveY_textBox.ForeColor = Color.Red;
             }
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 
