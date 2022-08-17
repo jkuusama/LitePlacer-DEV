@@ -4863,6 +4863,29 @@ namespace LitePlacer
             return res;
         }
 
+
+        private void SizeXMax_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            SizeXMax_textBox.ForeColor = Color.Red;
+            if (e.KeyChar == '\r')
+            {
+                double val;
+                if (double.TryParse(SizeXMax_textBox.Text.Replace(',', '.'), out val))
+                {
+                    if (SetXsize_m(val))
+                    {
+                        SizeXMax_textBox.ForeColor = Color.Black;
+                        Setting.General_MachineSizeX = val;
+                    }
+                }
+                else
+                {
+                    DisplayText("Value did not convert to a number.");
+                }
+            }
+        }
+
+
         private bool SetYsize_m(double size)
         {
             if (StartingUp)
@@ -4880,21 +4903,6 @@ namespace LitePlacer
                     MessageBoxButtons.OK);
             }
             return res;
-        }
-
-
-        private void SizeXMax_textBox_TextChanged(object sender, EventArgs e)
-        {
-            double val;
-            if (double.TryParse(SizeXMax_textBox.Text.Replace(',', '.'), out val))
-            {
-                SizeXMax_textBox.ForeColor = Color.Black;
-                Setting.General_MachineSizeX = val;
-            }
-            else
-            {
-                SizeXMax_textBox.ForeColor = Color.Red;
-            }
         }
 
 
@@ -13957,7 +13965,6 @@ namespace LitePlacer
                 NegativeMoveY_textBox.ForeColor = Color.Red;
             }
         }
-
     }	// end of: 	public partial class FormMain : Form
 
 

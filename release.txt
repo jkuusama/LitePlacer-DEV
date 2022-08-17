@@ -10,9 +10,10 @@ New Features, significant changes
   measurements and visual processing use full resolution image for precision
 * (in previous release) Added adjustable delay (in frames) to camera measurements
 * Multiple rows can be deleted from tapes data table
-* Cameras have properties button , and can now use fixed exposure(*setting stored in camera)
+* Cameras have properties button , and can now use fixed exposure (*setting stored in camera)
 * Up camera assisted placement (*beta)
-* Negative move guard sizes are now user settable 
+* Negative move guard sizes are now user settable
+* vision processign setup has +-10 buttons on int parameter
 
 Bug Fixes 
 
@@ -26,6 +27,8 @@ Bug Fixes
 * job data value and footprint columns are narrower, so that nozzle number is visible
 * deleting the first tape is now possible
 * basic setup tab now shows pump and vacuum statuses correctly 
+* Job file can be sorted by used nozzle, minimizing nozzle changes during run.
+  This has always been possible, but the feature is now more visible (in docs and tooltip text)
 
 Known issues
 
