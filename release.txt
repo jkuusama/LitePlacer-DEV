@@ -30,6 +30,7 @@ Bug Fixes
 * Job file can be sorted by used nozzle, minimizing nozzle changes during run.
   [This has always been possible, but the feature is now more visible (in docs and tooltip text)]
 * Setting machine size now sets movement limits on control board 
+* UI made clearer in several places
 
 Known issues
 

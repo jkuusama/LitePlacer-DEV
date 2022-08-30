@@ -33,6 +33,7 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
 using Newtonsoft.Json;
+//using System.Windows.Controls;
 
 namespace LitePlacer
 {
@@ -13293,16 +13294,15 @@ namespace LitePlacer
             Setting.Nozzles_Enabled = NozzleChangeEnable_checkBox.Checked;
         }
 
-        private void NoOfNozzles_UpDown_ValueChanged(object sender, EventArgs e)
+        private void SetNoOfNozzles_button_Click(object sender, EventArgs e)
         {
             if (StartingUp)
             {
                 return;
             }
-
             UpdateNozzlesGridSize();
-
         }
+
          public void UpdateNozzlesGridSize()
         {
             if (NoOfNozzles_UpDown.Value > Setting.Nozzles_maximum)
