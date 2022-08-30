@@ -2652,7 +2652,12 @@ namespace LitePlacer
             stopwatch.Stop();
             if (DisplayResults)
             {
-                MainForm.DisplayText("Filtered for size, results:");
+                MainForm.DisplayText("Filtered for size " + 
+                    "(Xmin: " + MeasurementParameters.Xmin.ToString("0.000") + 
+                    ", Xmax: " + MeasurementParameters.Xmax.ToString("0.000") +
+                    ", Ymin: " + MeasurementParameters.Ymin.ToString("0.000") +
+                    ", Ymax: " + MeasurementParameters.Ymax.ToString("0.000") +
+                    "), results:");
             }
             stopwatch.Start();
 
@@ -2733,7 +2738,10 @@ namespace LitePlacer
                 }
             }
 
-            MainForm.DisplayText("Filtered for distance, results:");
+            MainForm.DisplayText("Filtered for distance " +
+                    "(Xmax dist.: " + MeasurementParameters.XUniqueDistance.ToString("0.000") +
+                    ", Ymax dist.: " + MeasurementParameters.YUniqueDistance.ToString("0.000") +
+                "), results:");
             DisplayShapes(FilteredForDistance, 0, XmmPpix, YmmPpix);
             if (FilteredForDistance.Count != 1)
             {

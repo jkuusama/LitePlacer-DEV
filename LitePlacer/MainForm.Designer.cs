@@ -2519,7 +2519,7 @@
             // 
             this.label104.AutoSize = true;
             this.label104.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label104.Location = new System.Drawing.Point(81, 119);
+            this.label104.Location = new System.Drawing.Point(83, 119);
             this.label104.Name = "label104";
             this.label104.Size = new System.Drawing.Size(23, 13);
             this.label104.TabIndex = 213;
@@ -2817,7 +2817,7 @@
             // 
             this.label70.AutoSize = true;
             this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.Location = new System.Drawing.Point(91, 125);
+            this.label70.Location = new System.Drawing.Point(83, 125);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(23, 13);
             this.label70.TabIndex = 191;
@@ -2950,7 +2950,7 @@
             // 
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label71.Location = new System.Drawing.Point(91, 151);
+            this.label71.Location = new System.Drawing.Point(83, 151);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(23, 13);
             this.label71.TabIndex = 192;
@@ -9182,7 +9182,7 @@
             // 
             // SetNoOfNozzles_button
             // 
-            this.SetNoOfNozzles_button.Location = new System.Drawing.Point(1024, 490);
+            this.SetNoOfNozzles_button.Location = new System.Drawing.Point(1014, 487);
             this.SetNoOfNozzles_button.Name = "SetNoOfNozzles_button";
             this.SetNoOfNozzles_button.Size = new System.Drawing.Size(108, 23);
             this.SetNoOfNozzles_button.TabIndex = 46;
