@@ -46,7 +46,7 @@ namespace LitePlacer
             RawWrite("\x11");  // Xon
 
             // get initial position
-            if (!Write_m("{sr:n}"))
+            if (!Write_m("{sr:n}", 2000, true))
             {
                 return false;
             }
