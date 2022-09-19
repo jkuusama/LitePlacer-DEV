@@ -1,19 +1,16 @@
-Build date 08/17/2022
-
-**Beta release, release candidate**
-
-Previous release 08/23/2021, changes after that:
+Build date 09/09/2022
 
 New Features, significant changes
 
-* Video to UI is scaled down to UI resolution (much better performance), 
+* Up camera assisted placement
+* Video to UI is scaled down to UI resolution (much better performance),
   measurements and visual processing use full resolution image for precision
 * (in previous release) Added adjustable delay (in frames) to camera measurements
 * Multiple rows can be deleted from tapes data table
-* Cameras have properties button , and can now use fixed exposure (*setting stored in camera)
-* Up camera assisted placement (*beta)
+* Cameras have properties button, and can now use fixed exposure (*setting stored in camera)
 * Negative move guard sizes are now user settable
-* vision processign setup has +-10 buttons on int parameter
+* vision processing setup has +-10 buttons on int parameter
+* setup and settings backup files go to dated directories
 
 Bug Fixes 
 
