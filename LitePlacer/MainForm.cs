@@ -6315,6 +6315,16 @@ namespace LitePlacer
             {
                 MakeCADdataDirty();
             }
+            // Invalidate measurements if user manually edits placement info - issue #107
+            if ((CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataXNominalColumn") ||
+                (CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataYNominalColumn") ||
+                (CadData_GridView.CurrentCell.OwningColumn.Name == "CADdataRotationNomColumn")
+                )
+            {
+                ValidMeasurement_checkBox.Checked = false;
+            }
+
+
         }
 
 
