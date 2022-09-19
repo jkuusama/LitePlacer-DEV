@@ -448,6 +448,11 @@ namespace LitePlacer
         }
 
 
+        private void SaveAlldata_button_Click(object sender, EventArgs e)
+        {
+            SaveAllData();
+        }
+
         private bool SaveAllData()
         {
             bool OK = true;
@@ -4714,6 +4719,7 @@ namespace LitePlacer
                 if (!MessageShown)
                 {
                     NoPort_label.Visible = true;
+                    SaveAlldata_button.Visible = false;  // to save real estate on screen
                     MessageShown = true;
                     UpdateCncConnectionStatus();
                     return;         // return, as showing the no default port label is the only thing to do
@@ -4726,6 +4732,7 @@ namespace LitePlacer
             }
 
             NoPort_label.Visible = false;
+            SaveAlldata_button.Visible = true;
             // Usder wants close current connection (the button is a toggle) or (re-)connect
             bool JustClose = (Cnc.Connected && !Cnc.ErrorState);
 
