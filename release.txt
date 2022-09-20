@@ -2,32 +2,11 @@ Build date 09/09/2022
 
 New Features, significant changes
 
-* Up camera assisted placement
-* Video to UI is scaled down to UI resolution (much better performance),
-  measurements and visual processing use full resolution image for precision
-* (in previous release) Added adjustable delay (in frames) to camera measurements
-* Multiple rows can be deleted from tapes data table
-* Cameras have properties button, and can now use fixed exposure (*setting stored in camera)
-* Negative move guard sizes are now user settable
-* vision processing setup has +-10 buttons on int parameter
-* setup and settings backup files go to dated directories
+* Added "Save All Settings" button
 
 Bug Fixes 
 
-* Setting pixel size now works correctly regardless of zoom and show pixel setting
-* Changing zoom and show pixels status now recalculates the box size
-* Box size is not shown if it is not valid
-* No crash if nozzle correction is asked when no nozzle is loaded
-* Screen resolution settings did not always clear red error color
-* You can now click the image to move the machine even if it is not homed
-* Tape type drop box was not always filled with vision algorithm names
-* job data value and footprint columns are narrower, so that nozzle number is visible
-* deleting the first tape is now possible
-* basic setup tab now shows pump and vacuum statuses correctly 
-* Job file can be sorted by used nozzle, minimizing nozzle changes during run.
-  [This has always been possible, but the feature is now more visible (in docs and tooltip text)]
-* Setting machine size now sets movement limits on control board 
-* UI made clearer in several places
+* Manually editing CAD position data now invalidates measurements
 
 Known issues
 
