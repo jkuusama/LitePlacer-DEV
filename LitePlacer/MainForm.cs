@@ -348,11 +348,11 @@ namespace LitePlacer
 
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
+            StartingUp = false;
             ConnectToCnc(Setting.CNC_SerialPort);  // This can raise error condition, needing the form up
 
             MotorPower_timer.Enabled = true;
             DisableLog_checkBox.Checked = Setting.General_MuteLogging;
-            StartingUp = false;
             DisplayText("Startup completed.");
         }
 
@@ -1469,7 +1469,7 @@ namespace LitePlacer
         // =================================================================================
         private void MouseWheel_event(object sender, MouseEventArgs e)
         {
-            if (!MouseScroll_checkBox.Checked || StartingUp || Homing || Cnc.ErrorState)
+            if (!MouseScroll_checkBox.Checked || StartingUp || Homing || Cnc.ErrorState || CNCstarting)
             {
                 return;
             }
@@ -1571,6 +1571,11 @@ namespace LitePlacer
                 JoggingBusy = false;
                 e.Handled = true;
                 e.SuppressKeyPress = true;
+                if (StartingUp || Homing || Cnc.ErrorState || CNCstarting)
+                {
+                    return;
+                }
+
                 Cnc.CancelJog();
             }
         }
@@ -1648,7 +1653,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (JoggingBusy || !Cnc.Connected || Cnc.ErrorState || StartingUp || Homing)
+            if (JoggingBusy || !Cnc.Connected || Cnc.ErrorState || StartingUp || Homing || CNCstarting)
             {
                 return;
             }
@@ -4697,6 +4702,7 @@ namespace LitePlacer
         }
 
         private bool MessageShown = false;
+        private bool CNCstarting = false;
 
         private void ConnectToCnc(string port)
         {
@@ -4750,6 +4756,7 @@ namespace LitePlacer
             }
             else if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
             {
+                CNCstarting = true;
                 Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                 Cnc.ErrorState = false;
                 UpdateCncConnectionStatus();
@@ -4766,6 +4773,7 @@ namespace LitePlacer
                 }
             }
             UpdateCncConnectionStatus();
+            CNCstarting = false;
         }
 
         public  void CheckLatchBackoff()
@@ -13653,6 +13661,7 @@ namespace LitePlacer
 
         #endregion
 
+        // TODO: Move routines below to correct places
 
         private void DownCamListResolutions_button_Click(object sender, EventArgs e)
         {

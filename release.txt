@@ -11,8 +11,7 @@ New Features, significant changes
 Bug Fixes 
 
 * Manually editing CAD position data now invalidates measurements
-* Jogging is now disabled during homing and startup
-* Save all button interfered connection status text
+* Jogging is now disabled during homing and startup operations
 
 ---------------------
 
