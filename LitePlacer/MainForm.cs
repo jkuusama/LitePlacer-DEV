@@ -346,13 +346,13 @@ namespace LitePlacer
 
             // ======== Setup operations that can cause visible reaction:
 
-            StartingUp = false;
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
             ConnectToCnc(Setting.CNC_SerialPort);  // This can raise error condition, needing the form up
 
             MotorPower_timer.Enabled = true;
             DisableLog_checkBox.Checked = Setting.General_MuteLogging;
+            StartingUp = false;
             DisplayText("Startup completed.");
         }
 
@@ -1469,12 +1469,7 @@ namespace LitePlacer
         // =================================================================================
         private void MouseWheel_event(object sender, MouseEventArgs e)
         {
-            if (!MouseScroll_checkBox.Checked)
-            {
-                return;
-            }
-
-            if (Cnc.ErrorState)
+            if (!MouseScroll_checkBox.Checked || StartingUp || Homing || Cnc.ErrorState)
             {
                 return;
             }
@@ -1576,7 +1571,7 @@ namespace LitePlacer
                 JoggingBusy = false;
                 e.Handled = true;
                 e.SuppressKeyPress = true;
-                Cnc.RawWrite("!%");
+                Cnc.CancelJog();
             }
         }
 
@@ -1653,6 +1648,11 @@ namespace LitePlacer
                 return;
             }
 
+            if (JoggingBusy || !Cnc.Connected || Cnc.ErrorState || StartingUp || Homing)
+            {
+                return;
+            }
+
             DisplayText("Jog: " + e.KeyCode.ToString(), KnownColor.DarkGreen, true);
             string Speedstr;
 
@@ -1671,15 +1671,6 @@ namespace LitePlacer
 
             e.Handled = true;
 
-            if (JoggingBusy)
-            {
-                return;
-            }
-
-            if (!Cnc.Connected || Cnc.ErrorState)
-            {
-                return;
-            }
 
             if (e.KeyCode == Keys.NumPad1)
             {
@@ -2628,10 +2619,12 @@ namespace LitePlacer
             return true;
         }
 
-
+        public bool Homing = false;
         private void OpticalHome_button_Click(object sender, EventArgs e)
         {
+            Homing = true;
             DoHoming();
+            Homing = false;
         }
 
 

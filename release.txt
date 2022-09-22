@@ -1,12 +1,20 @@
 Build date 09/09/2022
 
+---------------------
+
 New Features, significant changes
 
 * Added "Save All Settings" button
 
+---------------------
+
 Bug Fixes 
 
 * Manually editing CAD position data now invalidates measurements
+* Jogging is now disabled during homing and startup
+* Save all button interfered connection status text
+
+---------------------
 
 Known issues
 
@@ -14,3 +22,9 @@ Known issues
 * Pause and Stop need to be clicked twice
 * The application does not automatically restart when loading new settings from file. (there is now a dialog, though)
 * Place fast sometimes uses last hole (which might not be whole), not the second to last as excpected
+
+---------------------
+
+For info about earlier releases,
+Please see https://liteplacer.com/downloads/ and 
+https://liteplacer.com/software-release-history-and-previous-versions/ .
