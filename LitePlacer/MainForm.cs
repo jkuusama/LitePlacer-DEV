@@ -1457,6 +1457,21 @@ namespace LitePlacer
             Grid.Refresh();
         }
 
+        public bool MovementIsBusy()
+        {
+            if (JoggingBusy || StartingUp || Homing || CNCstarting)
+            {
+                DisplayText("Other operations are underway, please try again", KnownColor.DarkGreen, true);
+                return true;
+            }
+            if (Cnc.ErrorState || !Cnc.Connected)
+            {
+                DisplayText("*** Control board not connected or in error state", KnownColor.DarkRed, true);
+                return true;
+            }
+            return false;
+        }
+
         #endregion General
 
         // =================================================================================
@@ -1469,7 +1484,11 @@ namespace LitePlacer
         // =================================================================================
         private void MouseWheel_event(object sender, MouseEventArgs e)
         {
-            if (!MouseScroll_checkBox.Checked || StartingUp || Homing || Cnc.ErrorState || CNCstarting)
+            if (!MouseScroll_checkBox.Checked)
+            {
+                return;
+            }
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -1571,7 +1590,8 @@ namespace LitePlacer
                 JoggingBusy = false;
                 e.Handled = true;
                 e.SuppressKeyPress = true;
-                if (StartingUp || Homing || Cnc.ErrorState || CNCstarting)
+
+                if (MovementIsBusy())
                 {
                     return;
                 }
@@ -1653,7 +1673,7 @@ namespace LitePlacer
                 return;
             }
 
-            if (JoggingBusy || !Cnc.Connected || Cnc.ErrorState || StartingUp || Homing || CNCstarting)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -1761,12 +1781,7 @@ namespace LitePlacer
         private void Jog(object sender, KeyEventArgs e)
         {
 
-            if (JoggingBusy)
-            {
-                return;
-            }
-
-            if (!Cnc.Connected || Cnc.ErrorState)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -1992,6 +2007,10 @@ namespace LitePlacer
         private void GoX_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
 
             double X;
             double Y = Cnc.CurrentY;
@@ -2011,6 +2030,10 @@ namespace LitePlacer
         private void GoY_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
 
             double X = Cnc.CurrentX;
             double Y;
@@ -2029,6 +2052,10 @@ namespace LitePlacer
         private void GoZ_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
 
             double Z;
             if (!double.TryParse(GotoZ_textBox.Text.Replace(',', '.'), out Z))
@@ -2045,6 +2072,10 @@ namespace LitePlacer
         private void GoA_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
 
             double X = Cnc.CurrentX;
             double Y = Cnc.CurrentY;
@@ -2064,9 +2095,8 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (Cnc.ErrorState)
+            if (MovementIsBusy())
             {
-                DisplayText("*** Board in error state.", KnownColor.DarkRed, true);
                 return;
             }
 
@@ -2141,6 +2171,11 @@ namespace LitePlacer
 
         private void LoadCurrentPosition_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
+
             GotoX_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
             GotoY_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
             GotoZ_textBox.Text = Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture);
@@ -2149,6 +2184,11 @@ namespace LitePlacer
 
         private void SetCurrentPosition_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
+
             double tst;
             string Xstr = "";
             string Ystr = "";
@@ -2198,7 +2238,6 @@ namespace LitePlacer
         }
 
         #endregion Jogging
-
 
         // =================================================================================
         // CNC interface functions
@@ -2490,12 +2529,10 @@ namespace LitePlacer
 
         private bool DoHoming()
         {
-            if (Cnc.ErrorState)
+            if (MovementIsBusy())
             {
-                DisplayText("*** DoHoming(), board in error state.", KnownColor.DarkRed, true);
                 return false;
             }
-
             OpticalHome_button.Enabled = false;
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
@@ -4970,6 +5007,10 @@ namespace LitePlacer
         private void Park_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
 
             CNC_Park();
         }
@@ -4987,6 +5028,10 @@ namespace LitePlacer
 
         private void TestX_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if (Cnc.CurrentX < 1.0)
             {
                 CNC_XYA_m(Setting.General_MachineSizeX, Cnc.CurrentY, Cnc.CurrentA);
@@ -4999,6 +5044,10 @@ namespace LitePlacer
 
         private void TestY_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if (Cnc.CurrentY < 1.0)
             {
                 CNC_XYA_m(Cnc.CurrentX, Setting.General_MachineSizeY, Cnc.CurrentA);
@@ -5012,6 +5061,10 @@ namespace LitePlacer
 
         private void TestXYA_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if ((Cnc.CurrentX < 1.0) && (Cnc.CurrentY < 1.0))
             {
                 CNC_XYA_m(Setting.General_MachineSizeX, Setting.General_MachineSizeY, 360.0);
@@ -5024,6 +5077,10 @@ namespace LitePlacer
 
         private void TestXY_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if ((Cnc.CurrentX < 1.0) && (Cnc.CurrentY < 1.0))
             {
                 CNC_XYA_m(Setting.General_MachineSizeX, Setting.General_MachineSizeY, Cnc.CurrentA);
@@ -5036,6 +5093,10 @@ namespace LitePlacer
 
         private void TestYX_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if ((Cnc.CurrentX > (Setting.General_MachineSizeX - 1.0)) && (Cnc.CurrentY < 1.0))
             {
                 CNC_XYA_m(0.0, Setting.General_MachineSizeY, Cnc.CurrentA);
@@ -5048,6 +5109,10 @@ namespace LitePlacer
 
         private void TestZ_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if (Cnc.CurrentZ < 1.0)
             {
                 CNC_Z_m(Setting.General_ZTestTravel);
@@ -5077,8 +5142,12 @@ namespace LitePlacer
         }
 
 
-        private void TestA_thread()
+        private void TestA_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             bool OptSave = Setting.CNC_OptimizeA;
             Setting.CNC_OptimizeA = false;
             if (!CNC_A_m(0))
@@ -5096,13 +5165,6 @@ namespace LitePlacer
             return;
         }
 
-        private void TestA_button_Click(object sender, EventArgs e)
-        {
-            Thread t = new Thread(() => TestA_thread());
-            t.IsBackground = true;
-            t.Start();
-        }
-
         #endregion
 
         #region HomingButtons
@@ -5114,7 +5176,14 @@ namespace LitePlacer
                 DisplayText("X homing switch not enabled", KnownColor.DarkRed, true);
                 return false;
             }
-            return Cnc.Home_m("X");
+            if (MovementIsBusy())
+            {
+                return false;
+            }
+            Homing = true;
+            bool res = Cnc.Home_m("X");
+            Homing = false;
+            return res;
         }
 
         private bool HomeY_m()
@@ -5124,7 +5193,14 @@ namespace LitePlacer
                 DisplayText("Y homing switch not enabled", KnownColor.DarkRed, true);
                 return false;
             }
-            return Cnc.Home_m("Y");
+            if (MovementIsBusy())
+            {
+                return false;
+            }
+            Homing = true;
+            bool res = Cnc.Home_m("Y");
+            Homing = false;
+            return res;
         }
 
         private bool Check_zzb()
@@ -5152,28 +5228,50 @@ namespace LitePlacer
             if (!Zhome_checkBox.Checked)
             {
                 DisplayText("Z homing switch not enabled.\n\r" +
-                    "(Abort or crash during probing? If so, please re-enable.)", KnownColor.DarkRed, true);
+                    "(Abort or crash during probing or nozzle setup? Please re-enable.)", KnownColor.DarkRed, true);
                 return false;
             }
             if (!Check_zzb())
             {
                 return false;
             }
-            return Cnc.Home_m("Z");
+            if (MovementIsBusy())
+            {
+                return false;
+            }
+            Homing = true;
+            bool res = Cnc.Home_m("Z");
+            Homing = false;
+            return res;
         }
 
         private void HomeX_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
+
             HomeX_m();
         }
 
         private void HomeY_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
+
             HomeY_m();
         }
 
         private void HomeZ_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
+
             HomeZ_m();
         }
 
@@ -5626,6 +5724,10 @@ namespace LitePlacer
 
         private void SetMark1_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             Setting.General_Mark1X = Cnc.CurrentX;
             Setting.General_Mark1Y = Cnc.CurrentY;
             Setting.General_Mark1A = Cnc.CurrentA;
@@ -5635,6 +5737,10 @@ namespace LitePlacer
 
         private void SetMark2_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             Setting.General_Mark2X = Cnc.CurrentX;
             Setting.General_Mark2Y = Cnc.CurrentY;
             Setting.General_Mark2A = Cnc.CurrentA;
@@ -5644,6 +5750,10 @@ namespace LitePlacer
 
         private void SetMark3_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             Setting.General_Mark3X = Cnc.CurrentX;
             Setting.General_Mark3Y = Cnc.CurrentY;
             Setting.General_Mark3A = Cnc.CurrentA;
@@ -5653,6 +5763,10 @@ namespace LitePlacer
 
         private void SetMark4_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             Setting.General_Mark4X = Cnc.CurrentX;
             Setting.General_Mark4Y = Cnc.CurrentY;
             Setting.General_Mark4A = Cnc.CurrentA;
@@ -5662,6 +5776,10 @@ namespace LitePlacer
 
         private void SetMark5_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             Setting.General_Mark5X = Cnc.CurrentX;
             Setting.General_Mark5Y = Cnc.CurrentY;
             Setting.General_Mark5A = Cnc.CurrentA;
@@ -5671,6 +5789,10 @@ namespace LitePlacer
 
         private void SetMark6_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             Setting.General_Mark6X = Cnc.CurrentX;
             Setting.General_Mark6Y = Cnc.CurrentY;
             Setting.General_Mark6A = Cnc.CurrentA;
@@ -5682,6 +5804,10 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark1X = Cnc.CurrentX;
@@ -5696,6 +5822,10 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark2X = Cnc.CurrentX;
@@ -5710,6 +5840,10 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark3X = Cnc.CurrentX;
@@ -5724,6 +5858,10 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark4X = Cnc.CurrentX;
@@ -5738,6 +5876,10 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark5X = Cnc.CurrentX;
@@ -5752,6 +5894,10 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 Setting.General_Mark6X = Cnc.CurrentX;
@@ -11368,6 +11514,10 @@ namespace LitePlacer
             DisplayText("test 1: Pick up this (probing)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
 
             if (!CNC_Z_m(0))
             {
@@ -11398,6 +11548,10 @@ namespace LitePlacer
             DisplayText("test 2: Place here (probing)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
 
             if (!Cnc.Z(0))
             {
@@ -11431,6 +11585,11 @@ namespace LitePlacer
             DisplayText("test 3: Probe down (using nozzle correction)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
+
             if (!Cnc.Z(0))
             {
                 DisplayText("Nozzle already down");
@@ -11452,6 +11611,11 @@ namespace LitePlacer
             DisplayText("test 4: Probe down (no correction)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
+
             if (!Cnc.Z(0))
             {
                 DisplayText("Nozzle already down");
@@ -11468,6 +11632,10 @@ namespace LitePlacer
         private void Test5_button_Click(object sender, EventArgs e)
         {
             DisplayText("test 5: Nozzle up");
+            if (MovementIsBusy())
+            {
+                return;
+            }
             CNC_Z_m(0);  // go up
         }
 
@@ -11475,10 +11643,19 @@ namespace LitePlacer
         // test 6
         private void Test6_button_Click(object sender, EventArgs e)
         {
-            DisplayText("test 6: Nozzle  to down cam");
+            DisplayText("test 6: Nozzle down cam");
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if (!Cnc.Z(0))
             {
+                DisplayText("Z not up");
                 return;
             }
             CNC_XYA_m((Cnc.CurrentX + Setting.DownCam_NozzleOffsetX),
@@ -11491,8 +11668,13 @@ namespace LitePlacer
         {
             DisplayText("test 7: Nozzle to up cam (do nozzle down to check)");
             if (!CheckPositionConfidence()) return;
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if (!Cnc.Z(0))
             {
+                DisplayText("Z not up");
                 return;
             }
             double xp = Setting.UpCam_PositionX;
@@ -13359,19 +13541,6 @@ namespace LitePlacer
         }
         #endregion
 
-
-
-        public bool DownCameraRotationFollowsA { get; set; } = false;
-        private void apos_textBox_TextChanged(object sender, EventArgs e)
-        {
-            if (DownCameraRotationFollowsA)
-            {
-                DownCamera.BoxRotationDeg = Cnc.CurrentA;
-            }
-        }
-
-
-
         // ==========================================================================================================
         #region ApplicationSettings
 
@@ -13663,6 +13832,15 @@ namespace LitePlacer
 
         // TODO: Move routines below to correct places
 
+        public bool DownCameraRotationFollowsA { get; set; } = false;
+        private void apos_textBox_TextChanged(object sender, EventArgs e)
+        {
+            if (DownCameraRotationFollowsA)
+            {
+                DownCamera.BoxRotationDeg = Cnc.CurrentA;
+            }
+        }
+
         private void DownCamListResolutions_button_Click(object sender, EventArgs e)
         {
             List<string> Monikers = DownCamera.GetMonikerStrings();
@@ -13781,6 +13959,10 @@ namespace LitePlacer
 
         private void MeasureAndSet_button_Click(object sender, EventArgs e)
         {
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if (!CheckPositionConfidence()) return;
 
             if (!CNC_XYA_m(0.0, 0.0, Cnc.CurrentA))
