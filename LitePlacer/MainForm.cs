@@ -1459,7 +1459,7 @@ namespace LitePlacer
 
         public bool MovementIsBusy()
         {
-            if (JoggingBusy || StartingUp || CNCstarting)
+            if (JoggingBusy || StartingUp)
             {
                 DisplayText("Other operations are underway, please try again", KnownColor.DarkGreen, true);
                 return true;
@@ -4739,7 +4739,6 @@ namespace LitePlacer
         }
 
         private bool MessageShown = false;
-        private bool CNCstarting = false;
 
         private void ConnectToCnc(string port)
         {
@@ -4793,7 +4792,6 @@ namespace LitePlacer
             }
             else if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
             {
-                CNCstarting = true;
                 Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
                 Cnc.ErrorState = false;
                 UpdateCncConnectionStatus();
@@ -4810,7 +4808,6 @@ namespace LitePlacer
                 }
             }
             UpdateCncConnectionStatus();
-            CNCstarting = false;
         }
 
         public  void CheckLatchBackoff()
