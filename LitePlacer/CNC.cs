@@ -443,7 +443,7 @@ namespace LitePlacer
             MainForm.DisplayText("*** Cnc.Connect(), did not find a supported board.", KnownColor.DarkRed, true);
             RaiseError();
             return false;
-            */
+           */
         }
 
 
