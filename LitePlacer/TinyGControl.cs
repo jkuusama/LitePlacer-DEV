@@ -32,8 +32,8 @@ namespace LitePlacer
         public bool CheckIdentity()
         {
             string resp;
-            resp= ReadLineDirectly("{sr:n}", true);
-            if (resp.Contains("{\"r\":") || resp.Contains("tinyg"))
+            resp= ReadLineDirectly("M115", false);
+            if (resp.Contains("{\"r\":{}") || resp.Contains("tinyg"))
             {
                 MainForm.DisplayText("TinyG board found.");
                 return true;
