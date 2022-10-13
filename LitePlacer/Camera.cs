@@ -2579,6 +2579,7 @@ namespace LitePlacer
             int FrameCenterX = CameraResolution.X / 2;
             int FrameCenterY = CameraResolution.Y / 2;
 
+                MainForm.DisplayText("Position, pxls|mm               |Size, pxls   |mm         |Angle");
             for (int i = StartFrom; i < Shapes.Count; i++)
             {
                 Xpxls = String.Format("{0,6:0.0}", Shapes[i].Center.X - FrameCenterX);
@@ -2590,8 +2591,8 @@ namespace LitePlacer
                 SizeXmm = String.Format("{0,4:0.00}", Shapes[i].Xsize * XmmPpix);
                 SizeYmm = String.Format("{0,4:0.00}", Shapes[i].Ysize * YmmPpix);
                 A= String.Format("{0,5:0.00}", Shapes[i].Angle);
-                OutString = "p: " + Xpxls + ", " + Ypxls + "px; " + Xmms + ", " + Ymms + "mm; " +
-                    "s: " + Xsize + ", " + Ysize + "px; " + SizeXmm + ", " + SizeYmm + "mm; A: " + A;
+                OutString = Xpxls + ", " + Ypxls + "| " + Xmms + ", " + Ymms + "| "
+                          + Xsize + ", " + Ysize + "| " + SizeXmm + ", " + SizeYmm + "| " + A;
                 MainForm.DisplayText(OutString);
             }
         }
@@ -2756,7 +2757,8 @@ namespace LitePlacer
             stopwatch.Stop();
             if (DisplayResults)
             {
-                MainForm.DisplayText("Filtered for size " + 
+                MainForm.DisplayText("");
+                MainForm.DisplayText("Filtered for size " +
                     "(Xmin: " + MeasurementParameters.Xmin.ToString("0.000") + 
                     ", Xmax: " + MeasurementParameters.Xmax.ToString("0.000") +
                     ", Ymin: " + MeasurementParameters.Ymin.ToString("0.000") +
@@ -2789,6 +2791,11 @@ namespace LitePlacer
             stopwatch.Start();
 
             // Filter for distance
+            MainForm.DisplayText("");
+            MainForm.DisplayText("Filtered for distance " +
+                    "(Xmax dist.: " + MeasurementParameters.XUniqueDistance.ToString("0.000") +
+                    ", Ymax dist.: " + MeasurementParameters.YUniqueDistance.ToString("0.000") +
+                "), results:");
             List<Shapes.Shape> FilteredForDistance = new List<Shapes.Shape>();
             int FrameCenterX = CameraResolution.X / 2;
             int FrameCenterY = CameraResolution.Y / 2;
@@ -2808,7 +2815,7 @@ namespace LitePlacer
             {
                 if (DisplayResults)
                 {
-                    MainForm.DisplayText("Filtered for distance, no items left.");
+                    MainForm.DisplayText("No items left.");
                     MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
                 }
                 else
@@ -2844,10 +2851,6 @@ namespace LitePlacer
                 }
             }
 
-            MainForm.DisplayText("Filtered for distance " +
-                    "(Xmax dist.: " + MeasurementParameters.XUniqueDistance.ToString("0.000") +
-                    ", Ymax dist.: " + MeasurementParameters.YUniqueDistance.ToString("0.000") +
-                "), results:");
             DisplayShapes(FilteredForDistance, 0, XmmPpix, YmmPpix);
             if (FilteredForDistance.Count != 1)
             {
@@ -2857,6 +2860,7 @@ namespace LitePlacer
                 PauseProcessing = false;
                 return false;
             }
+            MainForm.DisplayText("");
             MainForm.DisplayText( "Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
                                         ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture) +
                                         ", A= " + Aresult.ToString("0.00", CultureInfo.InvariantCulture) +
