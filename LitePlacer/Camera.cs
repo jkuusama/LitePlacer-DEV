@@ -922,6 +922,7 @@ namespace LitePlacer
                     }
 
                     // Fit the image we are going to show to the UI
+                    double ProcessingZoom = GetProcessingZoom();
                     if (ShowProcessing)
                     {
                         DisplayedFrame = FitImageToUI(AnalyzedFrame, out Zoom);   // Showing processing to user: Use processed frame for display
@@ -929,7 +930,7 @@ namespace LitePlacer
                     else
                     {
                         DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs), out Zoom);
-                        Zoom = Zoom / GetProcessingZoom(); // if processing results are zoomed, undo
+                        Zoom = Zoom / ProcessingZoom; // if processing results are zoomed, undo
                     }
 
                     if (DisplayedFrame==null)
@@ -940,19 +941,19 @@ namespace LitePlacer
                     // Draw the processing results to DisplayedFrame
                     if (FindCircles)
                     {
-                        DrawCirclesFunct(ref DisplayedFrame, Circles, Zoom);
+                        DrawCirclesFunct(ref DisplayedFrame, Circles, Zoom, ProcessingZoom);
                     }
                     if (FindRectangles)
                     {
-                        DrawRectanglesFunct(ref DisplayedFrame, Rectangles, Zoom);
+                        DrawRectanglesFunct(ref DisplayedFrame, Rectangles, Zoom, ProcessingZoom);
                     }
                     if (FindComponentByOutlines)
                     {
-                        DrawComponentsFunct(ref DisplayedFrame, ComponentsByOutline, Zoom);
+                        DrawComponentsFunct(ref DisplayedFrame, ComponentsByOutline, Zoom, ProcessingZoom);
                     }
                     if (FindComponentByPads)
                     {
-                        DrawComponentsFunct(ref DisplayedFrame, ComponentsFromPads, Zoom);
+                        DrawComponentsFunct(ref DisplayedFrame, ComponentsFromPads, Zoom, ProcessingZoom);
                     }
                 }
                 catch (System.InvalidOperationException)
@@ -1656,7 +1657,7 @@ namespace LitePlacer
         }
 
         // ===========
-        private void DrawComponentsFunct(ref Bitmap image, List<Shapes.Component> Components, double Zoom)
+        private void DrawComponentsFunct(ref Bitmap image, List<Shapes.Component> Components, double Zoom, double ProcessingZoom)
         {
             if (Components.Count <= 0)
             {
@@ -1716,8 +1717,10 @@ namespace LitePlacer
                 double Xdist = Math.Abs((Xpos - FrameCenterX) * XmmPpix);
                 double Ydist = Math.Abs((FrameCenterY - Ypos) * YmmPpix);
 
-                if (((Components[i].Xsize * XmmPerPixel) < Xmin) || ((Components[i].Xsize * XmmPerPixel) > Xmax)
-                    || ((Components[i].Ysize * YmmPerPixel) < Ymin) || ((Components[i].Ysize * YmmPerPixel) > Ymax))
+                double Xsize = Components[i].Xsize * XmmPerPixel / ProcessingZoom;
+                double Ysize = Components[i].Ysize * YmmPerPixel / ProcessingZoom;
+
+                if ((Xsize < Xmin) || (Xsize > Xmax) || (Ysize < Ymin) || (Ysize > Ymax))
                 {
                     // Wrong size, draw in red
                     g.DrawPolygon(RedPen, Corners.ToArray());
@@ -1775,7 +1778,7 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles, double Zoom)
+        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles, double Zoom, double ProcessingZoom)
         {
             if (Circles.Count == 0)
             {
@@ -1814,7 +1817,7 @@ namespace LitePlacer
                 double radius = Circles[i].Radius;
                 radius = radius * Zoom;
                 float dia = (float)(radius * 2);
-                double Size = Circles[i].Radius * 2 * XmmPerPixel;
+                double Size = Circles[i].Radius * 2 * XmmPerPixel / ProcessingZoom;
                 double Xdist = Math.Abs((X - FrameCenterX) * XmmPpix);
                 double Ydist = Math.Abs((FrameCenterY - Y) * YmmPpix);
 
@@ -1898,7 +1901,7 @@ namespace LitePlacer
             return (Rectangles);
         }
         // =========================================================
-        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> RectanglesIn, double Zoom)
+        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> RectanglesIn, double Zoom, double ProcessingZoom)
         {
             if (RectanglesIn.Count <= 0)
             {
@@ -1958,8 +1961,10 @@ namespace LitePlacer
                 double Xdist = Math.Abs((Xpos - FrameCenterX) * XmmPpix);
                 double Ydist = Math.Abs((FrameCenterY - Ypos) * YmmPpix);
 
-                if (((RectanglesIn[i].Xsize * XmmPerPixel) < Xmin) || ((RectanglesIn[i].Xsize * XmmPerPixel) > Xmax)
-                    || ((RectanglesIn[i].Ysize * YmmPerPixel) < Ymin) || ((RectanglesIn[i].Ysize * YmmPerPixel) > Ymax))
+                double Xsize = RectanglesIn[i].Xsize * XmmPerPixel / ProcessingZoom;
+                double Ysize = RectanglesIn[i].Ysize * YmmPerPixel / ProcessingZoom;
+
+                if ((Xsize < Xmin) || (Xsize > Xmax) || (Ysize < Ymin) || (Ysize > Ymax))
                 {
                     // Wrong size, draw in red
                     g.DrawPolygon(RedPen, Corners.ToArray());
