@@ -450,7 +450,13 @@ namespace LitePlacer
 
         private void SaveAlldata_button_Click(object sender, EventArgs e)
         {
-            SaveAllData();
+            // save to current directory
+            if (!SaveAllData())
+            {
+                return;
+            }
+            // and copy to backup directory
+            CreateDataBackups();
         }
 
         private bool SaveAllData()
@@ -494,7 +500,7 @@ namespace LitePlacer
                 if (!OK)
                 {
                     DialogResult dialogResult = ShowMessageBox(
-                        "Some data could not be saved (see log window). Quit anyway?",
+                        "Some data could not be saved (see log window). Continue?",
                         "Data save problem", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.No)
                     {
@@ -7577,6 +7583,7 @@ namespace LitePlacer
                 +" (" + JobData_GridView.Rows[0].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
             
             bool PartAboveCam = false;
+            bool ok = true;
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
                 PreviousGroup_label.Text = CurrentGroup_label.Text;
@@ -7594,15 +7601,26 @@ namespace LitePlacer
 
                 if (!PlaceRow_m(i, out PartAboveCam))
                 {
+                    ok = false;
                     break;
                 }
             }
 
-            CleanupPlacement(true, PartAboveCam);
-            ShowMessageBox(
-                "All components placed.",
-                "Done",
-                MessageBoxButtons.OK);
+            if (ok)
+            {
+                ShowMessageBox(
+                    "All components placed.",
+                    "Done",
+                    MessageBoxButtons.OK);
+            }
+            else
+            {
+                ShowMessageBox(
+                    "Operation stopped by user.",
+                    "Done",
+                    MessageBoxButtons.OK);
+            }
+            CleanupPlacement(ok, PartAboveCam);
         }
 
 
