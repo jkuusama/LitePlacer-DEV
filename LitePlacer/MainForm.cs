@@ -5730,6 +5730,10 @@ namespace LitePlacer
             Setting.General_Mark1A = Cnc.CurrentA;
             Setting.General_Mark1Name = Mark1_textBox.Text;
             Bookmark1_button.Text = Setting.General_Mark1Name;
+            DisplayText("Mark 1 \" " + Setting.General_Mark1Name + 
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark2_button_Click(object sender, EventArgs e)
@@ -5743,6 +5747,10 @@ namespace LitePlacer
             Setting.General_Mark2A = Cnc.CurrentA;
             Setting.General_Mark2Name = Mark2_textBox.Text;
             Bookmark2_button.Text = Setting.General_Mark2Name;
+            DisplayText("Mark 2 \" " + Setting.General_Mark2Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark3_button_Click(object sender, EventArgs e)
@@ -5756,6 +5764,10 @@ namespace LitePlacer
             Setting.General_Mark3A = Cnc.CurrentA;
             Setting.General_Mark3Name = Mark3_textBox.Text;
             Bookmark3_button.Text = Setting.General_Mark3Name;
+            DisplayText("Mark 5 \" " + Setting.General_Mark5Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark4_button_Click(object sender, EventArgs e)
@@ -5769,6 +5781,10 @@ namespace LitePlacer
             Setting.General_Mark4A = Cnc.CurrentA;
             Setting.General_Mark4Name = Mark4_textBox.Text;
             Bookmark4_button.Text = Setting.General_Mark4Name;
+            DisplayText("Mark 4 \" " + Setting.General_Mark4Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark5_button_Click(object sender, EventArgs e)
@@ -5782,6 +5798,10 @@ namespace LitePlacer
             Setting.General_Mark5A = Cnc.CurrentA;
             Setting.General_Mark5Name = Mark5_textBox.Text;
             Bookmark5_button.Text = Setting.General_Mark5Name;
+            DisplayText("Mark 5 \" " + Setting.General_Mark5Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark6_button_Click(object sender, EventArgs e)
@@ -5795,6 +5815,10 @@ namespace LitePlacer
             Setting.General_Mark6A = Cnc.CurrentA;
             Setting.General_Mark6Name = Mark6_textBox.Text;
             Bookmark6_button.Text = Setting.General_Mark6Name;
+            DisplayText("Mark 6 \" " + Setting.General_Mark6Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void Bookmark1_button_Click(object sender, EventArgs e)
