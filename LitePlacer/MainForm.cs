@@ -450,7 +450,13 @@ namespace LitePlacer
 
         private void SaveAlldata_button_Click(object sender, EventArgs e)
         {
-            SaveAllData();
+            // save to current directory
+            if (!SaveAllData())
+            {
+                return;
+            }
+            // and copy to backup directory
+            CreateDataBackups();
         }
 
         private bool SaveAllData()
@@ -494,7 +500,7 @@ namespace LitePlacer
                 if (!OK)
                 {
                     DialogResult dialogResult = ShowMessageBox(
-                        "Some data could not be saved (see log window). Quit anyway?",
+                        "Some data could not be saved (see log window). Continue?",
                         "Data save problem", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.No)
                     {
@@ -2254,13 +2260,13 @@ namespace LitePlacer
         {
             DisplayText("CNC_XYA_m, x: " + X.ToString("0.000", CultureInfo.InvariantCulture)
                 + ", y: " + Y.ToString("0.000", CultureInfo.InvariantCulture) + ", a: " + A.ToString("0.000", CultureInfo.InvariantCulture));
-            if (CNC_NozzleIsDown_m())
-            {
-                return false;
-            }
             if (Cnc.ErrorState)
             {
-                DisplayText("### Cnc in error state, ignored", KnownColor.DarkRed, true);
+                DisplayText("### Cnc in error state, no move", KnownColor.DarkRed, true);
+                return false;
+            }
+            if (CNC_NozzleIsDown_m())
+            {
                 return false;
             }
             if (AbortPlacement)
@@ -5492,11 +5498,18 @@ namespace LitePlacer
             Cnc.Homing = true;
             if (!Cnc.Nozzle_ProbeDown(Setting.General_ZTouchDifference - depth))
             {
+                DisplayText("*** Nozzle probing failed at CNC level.", KnownColor.DarkRed, true);
                 Cnc.Homing = false;
                 return false;
             }
-            DisplayText("Probing result: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
             Cnc.Homing = false;
+            if (Cnc.CurrentZ <0)
+            {
+                // A user reported negative probing result. I can't see how, but added a check anyway -issue #113 
+                DisplayText("*** Probing gave negative result: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture), KnownColor.DarkRed, true);
+                return false;
+            }
+            DisplayText("Probing result: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
             return true;
         }
 
@@ -5733,6 +5746,10 @@ namespace LitePlacer
             Setting.General_Mark1A = Cnc.CurrentA;
             Setting.General_Mark1Name = Mark1_textBox.Text;
             Bookmark1_button.Text = Setting.General_Mark1Name;
+            DisplayText("Mark 1 \" " + Setting.General_Mark1Name + 
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark2_button_Click(object sender, EventArgs e)
@@ -5746,6 +5763,10 @@ namespace LitePlacer
             Setting.General_Mark2A = Cnc.CurrentA;
             Setting.General_Mark2Name = Mark2_textBox.Text;
             Bookmark2_button.Text = Setting.General_Mark2Name;
+            DisplayText("Mark 2 \" " + Setting.General_Mark2Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark3_button_Click(object sender, EventArgs e)
@@ -5759,6 +5780,10 @@ namespace LitePlacer
             Setting.General_Mark3A = Cnc.CurrentA;
             Setting.General_Mark3Name = Mark3_textBox.Text;
             Bookmark3_button.Text = Setting.General_Mark3Name;
+            DisplayText("Mark 5 \" " + Setting.General_Mark5Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark4_button_Click(object sender, EventArgs e)
@@ -5772,6 +5797,10 @@ namespace LitePlacer
             Setting.General_Mark4A = Cnc.CurrentA;
             Setting.General_Mark4Name = Mark4_textBox.Text;
             Bookmark4_button.Text = Setting.General_Mark4Name;
+            DisplayText("Mark 4 \" " + Setting.General_Mark4Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark5_button_Click(object sender, EventArgs e)
@@ -5785,6 +5814,10 @@ namespace LitePlacer
             Setting.General_Mark5A = Cnc.CurrentA;
             Setting.General_Mark5Name = Mark5_textBox.Text;
             Bookmark5_button.Text = Setting.General_Mark5Name;
+            DisplayText("Mark 5 \" " + Setting.General_Mark5Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void SetMark6_button_Click(object sender, EventArgs e)
@@ -5798,6 +5831,10 @@ namespace LitePlacer
             Setting.General_Mark6A = Cnc.CurrentA;
             Setting.General_Mark6Name = Mark6_textBox.Text;
             Bookmark6_button.Text = Setting.General_Mark6Name;
+            DisplayText("Mark 6 \" " + Setting.General_Mark6Name +
+                "\" set to X: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", Y: " + Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture) +
+                ", A: " + Cnc.CurrentA.ToString("0.00", CultureInfo.InvariantCulture));
         }
 
         private void Bookmark1_button_Click(object sender, EventArgs e)
@@ -7123,11 +7160,11 @@ namespace LitePlacer
                 // Labels are updated, place the row:
                 if (!PlaceRow_m(CurrentRow, out PartAboveCam))
                 {
+                    CleanupPlacement(false, PartAboveCam);
                     ShowMessageBox(
                         "Placement operation failed. Review job status.",
                         "Placement failed",
                         MessageBoxButtons.OK);
-                    CleanupPlacement(false, PartAboveCam);
                     return;
                 }
             };
@@ -7556,6 +7593,7 @@ namespace LitePlacer
                 +" (" + JobData_GridView.Rows[0].Cells["JobdataCountColumn"].Value.ToString() + " pcs.)";
             
             bool PartAboveCam = false;
+            bool ok = true;
             for (int i = 0; i < JobData_GridView.RowCount; i++)
             {
                 PreviousGroup_label.Text = CurrentGroup_label.Text;
@@ -7573,15 +7611,27 @@ namespace LitePlacer
 
                 if (!PlaceRow_m(i, out PartAboveCam))
                 {
+                    ok = false;
                     break;
                 }
             }
 
-            CleanupPlacement(true, PartAboveCam);
-            ShowMessageBox(
-                "All components placed.",
-                "Done",
-                MessageBoxButtons.OK);
+            if (ok)
+            {
+                CleanupPlacement(ok, PartAboveCam);
+                ShowMessageBox(
+                    "All components placed.",
+                    "Done",
+                    MessageBoxButtons.OK);
+            }
+            else
+            {
+                CleanupPlacement(ok, PartAboveCam);
+                ShowMessageBox(
+                    "Operation stopped by user.",
+                    "Done",
+                    MessageBoxButtons.OK);
+            }
         }
 
 
@@ -8421,10 +8471,6 @@ namespace LitePlacer
                     return false;
                 }
             }
-            //ShowMessageBox(
-            //    "Debug: Nozzle down at component." + Component,
-            //    "Debug",
-            //    MessageBoxButtons.OK);
             DisplayText("PlacePart_m(): Nozzle up.");
             VacuumOff();
             if (!CNC_Z_m(0))  // back up
@@ -9029,7 +9075,7 @@ namespace LitePlacer
                 } while (!ok);
 
                 DisplayText("Measurement ok, raw A= " + Acorr.ToString());
-                Acorr = -Acorr;     // looking rom below...
+                Acorr = -Acorr;     // looking from below...
                 Acorr = A - Acorr;
                 // regulate to -45 .. 45
                 while (Acorr <= -45.0)
@@ -9042,14 +9088,6 @@ namespace LitePlacer
                 }
                 DisplayText("Result: dX= " + Xcorr.ToString() + ", dY= " + Ycorr.ToString() + ", dA= " + Acorr.ToString());
                 DisplayText("Target: X= " + X.ToString() + ", Y= " + Y.ToString() + ", A= " + A.ToString());
-
-                /*
-                for (tries = 0; tries < 600; tries++)
-                {
-                    Thread.Sleep(10);
-                    Application.DoEvents();
-                }
-                */
 
                 // -------------------
                 // take part to to X + correction, Y + correction, A+corr

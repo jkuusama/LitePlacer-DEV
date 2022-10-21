@@ -1,17 +1,16 @@
-Build date 09/09/2022
+Build date 10/14/2022
 
 ---------------------
 
 New Features, significant changes
 
-* Added "Save All Settings" button
+* 
 
 ---------------------
 
 Bug Fixes 
 
-* Manually editing CAD position data now invalidates measurements
-* Jogging and test operations are now disabled during homing and startup
+* After placement operations (park, camera switch etc) are now always done before message
 
 ---------------------
 
@@ -20,7 +19,7 @@ Known issues
 * If you change camera resolution, you need to re-set pixel size
 * Pause and Stop need to be clicked twice
 * The application does not automatically restart when loading new settings from file. (there is now a dialog, though)
-* Place fast sometimes uses last hole (which might not be whole), not the second to last as excpected
+* Place fast sometimes uses last hole (which might not be whole), not the second to last as expected
 
 ---------------------
 

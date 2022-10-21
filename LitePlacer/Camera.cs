@@ -144,7 +144,7 @@ namespace LitePlacer
                     i++;
                 }
                 // if it didn't stop, quit anyway
-                MainForm.DisplayText("** " + Name + " did not stop on OS level");
+                MainForm.DisplayText("** " + Name + " did not stop on OS level, forcing stop.");
                 VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
                 VideoSource = null;
                 MonikerString = "Stopped";
@@ -922,6 +922,7 @@ namespace LitePlacer
                     }
 
                     // Fit the image we are going to show to the UI
+                    double ProcessingZoom = GetProcessingZoom();
                     if (ShowProcessing)
                     {
                         DisplayedFrame = FitImageToUI(AnalyzedFrame, out Zoom);   // Showing processing to user: Use processed frame for display
@@ -929,7 +930,7 @@ namespace LitePlacer
                     else
                     {
                         DisplayedFrame = FitImageToUI(GetSourceFrame(eventArgs), out Zoom);
-                        Zoom = Zoom / GetProcessingZoom(); // if processing results are zoomed, undo
+                        Zoom = Zoom / ProcessingZoom; // if processing results are zoomed, undo
                     }
 
                     if (DisplayedFrame==null)
@@ -940,19 +941,19 @@ namespace LitePlacer
                     // Draw the processing results to DisplayedFrame
                     if (FindCircles)
                     {
-                        DrawCirclesFunct(ref DisplayedFrame, Circles, Zoom);
+                        DrawCirclesFunct(ref DisplayedFrame, Circles, Zoom, ProcessingZoom);
                     }
                     if (FindRectangles)
                     {
-                        DrawRectanglesFunct(ref DisplayedFrame, Rectangles, Zoom);
+                        DrawRectanglesFunct(ref DisplayedFrame, Rectangles, Zoom, ProcessingZoom);
                     }
                     if (FindComponentByOutlines)
                     {
-                        DrawComponentsFunct(ref DisplayedFrame, ComponentsByOutline, Zoom);
+                        DrawComponentsFunct(ref DisplayedFrame, ComponentsByOutline, Zoom, ProcessingZoom);
                     }
                     if (FindComponentByPads)
                     {
-                        DrawComponentsFunct(ref DisplayedFrame, ComponentsFromPads, Zoom);
+                        DrawComponentsFunct(ref DisplayedFrame, ComponentsFromPads, Zoom, ProcessingZoom);
                     }
                 }
                 catch (System.InvalidOperationException)
@@ -1656,7 +1657,7 @@ namespace LitePlacer
         }
 
         // ===========
-        private void DrawComponentsFunct(ref Bitmap image, List<Shapes.Component> Components, double Zoom)
+        private void DrawComponentsFunct(ref Bitmap image, List<Shapes.Component> Components, double Zoom, double ProcessingZoom)
         {
             if (Components.Count <= 0)
             {
@@ -1666,13 +1667,21 @@ namespace LitePlacer
             int PenSize = 2;
             Graphics g = Graphics.FromImage(image);
             Pen LimePen = new Pen(Color.Lime, PenSize);
+            Pen YellowPen = new Pen(Color.Yellow, PenSize);
+            Pen RedPen = new Pen(Color.Red, PenSize);
 
             int FrameCenterX = image.Width / 2;
             int FrameCenterY = image.Height / 2;
             int MeasurementCenterX = CameraResolution.X / 2;
             int MeasurementCenterY = CameraResolution.Y / 2;
-            double RelationX = (double)DisplayResolution.X / (double)CameraResolution.X;
-            double RelationY = (double)DisplayResolution.Y / (double)CameraResolution.Y;
+            double XmmPpix = XmmPerPixel / Zoom;
+            double YmmPpix = YmmPerPixel / Zoom;
+            double Xmin = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmin;
+            double Xmax = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmax;
+            double Ymin = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymin;
+            double Ymax = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymax;
+            double XUniqueDistance = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.XUniqueDistance;
+            double YUniqueDistance = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YUniqueDistance;
 
             for (int i = 0; i < Components.Count; i++)
             {
@@ -1694,10 +1703,44 @@ namespace LitePlacer
                     Pnt.Y = (float)Y;
                     Corners.Add(Pnt);
                 }
-                g.DrawPolygon(LimePen, Corners.ToArray());
+
+                double Xpos = Components[i].Center.X;
+                Xpos = Xpos - MeasurementCenterX;     // X = pixels from measured frame center
+                Xpos = Xpos * Zoom;                   // X = pixels from displayed image center
+                Xpos = Xpos + FrameCenterX;           // move to position
+
+                double Ypos = Components[i].Center.Y;
+                Ypos = Ypos - MeasurementCenterY;
+                Ypos = Ypos * Zoom;
+                Ypos = Ypos + FrameCenterY;
+
+                double Xdist = Math.Abs((Xpos - FrameCenterX) * XmmPpix);
+                double Ydist = Math.Abs((FrameCenterY - Ypos) * YmmPpix);
+
+                double Xsize = Components[i].Xsize * XmmPerPixel / ProcessingZoom;
+                double Ysize = Components[i].Ysize * YmmPerPixel / ProcessingZoom;
+
+                if ((Xsize < Xmin) || (Xsize > Xmax) || (Ysize < Ymin) || (Ysize > Ymax))
+                {
+                    // Wrong size, draw in red
+                    g.DrawPolygon(RedPen, Corners.ToArray());
+                }
+                else if ((Xdist > XUniqueDistance) || (Ydist > YUniqueDistance))
+                {
+                    // Size OK, too far; draw yellow
+                    g.DrawPolygon(YellowPen, Corners.ToArray());
+                }
+                else
+                {
+                    // All ok, draw in green
+                    g.DrawPolygon(LimePen, Corners.ToArray());
+                }
             }
+
             g.Dispose();
             LimePen.Dispose();
+            YellowPen.Dispose();
+            RedPen.Dispose();
         }
 
         // ==========================================================================================================
@@ -1735,7 +1778,7 @@ namespace LitePlacer
         }
 
         // =========================================================
-        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles, double Zoom)
+        private void DrawCirclesFunct(ref Bitmap bitmap, List<Shapes.Circle> Circles, double Zoom, double ProcessingZoom)
         {
             if (Circles.Count == 0)
             {
@@ -1745,11 +1788,19 @@ namespace LitePlacer
             int PenSize = 2;
             Graphics g = Graphics.FromImage(bitmap);
             Pen LimePen = new Pen(Color.Lime, PenSize);
+            Pen YellowPen = new Pen(Color.Yellow, PenSize);
+            Pen RedPen = new Pen(Color.Red, PenSize);
 
             int FrameCenterX = bitmap.Width / 2;
             int FrameCenterY = bitmap.Height / 2;
             int MeasurementCenterX = CameraResolution.X / 2;
             int MeasurementCenterY = CameraResolution.Y / 2;
+            double XmmPpix = XmmPerPixel / Zoom;
+            double YmmPpix = YmmPerPixel / Zoom;
+            double Xmin = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmin;
+            double Xmax = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmax;
+            double XUniqueDistance = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.XUniqueDistance;
+            double YUniqueDistance = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YUniqueDistance;
 
             for (int i = 0, n = Circles.Count; i < n; i++)
             {
@@ -1764,16 +1815,33 @@ namespace LitePlacer
                 Y = Y + FrameCenterY;
 
                 double radius = Circles[i].Radius;
-                if (!ShowProcessing)
-                {
-                    // radius = radius / ResultsZoom;
-                }
                 radius = radius * Zoom;
                 float dia = (float)(radius * 2);
-                g.DrawEllipse(LimePen, (float)(X - radius), (float)(Y - radius), dia, dia);
+                double Size = Circles[i].Radius * 2 * XmmPerPixel / ProcessingZoom;
+                double Xdist = Math.Abs((X - FrameCenterX) * XmmPpix);
+                double Ydist = Math.Abs((FrameCenterY - Y) * YmmPpix);
+
+
+                if ((Size < Xmin) || (Size > Xmax))
+                {
+                    // Wrong size, draw in red
+                    g.DrawEllipse(RedPen, (float)(X - radius), (float)(Y - radius), dia, dia);
+                }
+                else if ((Xdist > XUniqueDistance) || (Ydist > YUniqueDistance))
+                {
+                    // Size OK, too far; draw yellow
+                    g.DrawEllipse(YellowPen, (float)(X - radius), (float)(Y - radius), dia, dia);
+                }
+                else
+                {
+                    // All ok, draw in green
+                    g.DrawEllipse(LimePen, (float)(X - radius), (float)(Y - radius), dia, dia);
+                }
             }
             g.Dispose();
             LimePen.Dispose();
+            YellowPen.Dispose();
+            RedPen.Dispose();
         }
 
         // ==========================================================================================================
@@ -1833,7 +1901,7 @@ namespace LitePlacer
             return (Rectangles);
         }
         // =========================================================
-        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> RectanglesIn, double Zoom)
+        private void DrawRectanglesFunct(ref Bitmap image, List<Shapes.Rectangle> RectanglesIn, double Zoom, double ProcessingZoom)
         {
             if (RectanglesIn.Count <= 0)
             {
@@ -1843,13 +1911,21 @@ namespace LitePlacer
             int PenSize = 2;
             Graphics g = Graphics.FromImage(image);
             Pen LimePen = new Pen(Color.Lime, PenSize);
+            Pen YellowPen = new Pen(Color.Yellow, PenSize);
+            Pen RedPen = new Pen(Color.Red, PenSize);
 
             int FrameCenterX = image.Width / 2;
             int FrameCenterY = image.Height / 2;
             int MeasurementCenterX = CameraResolution.X / 2;
             int MeasurementCenterY = CameraResolution.Y / 2;
-            double RelationX = (double)DisplayResolution.X / (double)CameraResolution.X;
-            double RelationY = (double)DisplayResolution.Y / (double)CameraResolution.Y;
+            double XmmPpix = XmmPerPixel / Zoom;
+            double YmmPpix = YmmPerPixel / Zoom;
+            double Xmin = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmin;
+            double Xmax = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Xmax;
+            double Ymin = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymin;
+            double Ymax = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.Ymax;
+            double XUniqueDistance = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.XUniqueDistance;
+            double YUniqueDistance = MainForm.VideoAlgorithms.CurrentAlgorithm.MeasurementParameters.YUniqueDistance;
 
             for (int i = 0; i < RectanglesIn.Count; i++)
             {
@@ -1871,10 +1947,43 @@ namespace LitePlacer
                     Pnt.Y = (float)Y;
                     Corners.Add(Pnt);
                 }
-                g.DrawPolygon(LimePen, Corners.ToArray());
+
+                double Xpos = RectanglesIn[i].Center.X;
+                Xpos = Xpos - MeasurementCenterX;     // X = pixels from measured frame center
+                Xpos = Xpos * Zoom;                   // X = pixels from displayed image center
+                Xpos = Xpos + FrameCenterX;           // move to position
+
+                double Ypos = RectanglesIn[i].Center.Y;
+                Ypos = Ypos - MeasurementCenterY;
+                Ypos = Ypos * Zoom;
+                Ypos = Ypos + FrameCenterY;
+
+                double Xdist = Math.Abs((Xpos - FrameCenterX) * XmmPpix);
+                double Ydist = Math.Abs((FrameCenterY - Ypos) * YmmPpix);
+
+                double Xsize = RectanglesIn[i].Xsize * XmmPerPixel / ProcessingZoom;
+                double Ysize = RectanglesIn[i].Ysize * YmmPerPixel / ProcessingZoom;
+
+                if ((Xsize < Xmin) || (Xsize > Xmax) || (Ysize < Ymin) || (Ysize > Ymax))
+                {
+                    // Wrong size, draw in red
+                    g.DrawPolygon(RedPen, Corners.ToArray());
+                }
+                else if ((Xdist > XUniqueDistance) || (Ydist > YUniqueDistance))
+                {
+                    // Size OK, too far; draw yellow
+                    g.DrawPolygon(YellowPen, Corners.ToArray());
+                }
+                else
+                {
+                    // All ok, draw in green
+                    g.DrawPolygon(LimePen, Corners.ToArray());
+                }
             }
             g.Dispose();
             LimePen.Dispose();
+            YellowPen.Dispose();
+            RedPen.Dispose();
         }
 
         // ==========================================================================================================
@@ -2327,7 +2436,7 @@ namespace LitePlacer
 
             // Take a snapshot:
             CopyFrame = true;   // tells the Video_NewFrame() function that a copy of the incoming frame is needed
-            int tries = 10;
+            int tries = 4000/20;    // max. wait time is 4000ms
             while (tries > 0)
             {
                 tries--;
@@ -2335,7 +2444,7 @@ namespace LitePlacer
                 {
                     break;
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(20);
                 Application.DoEvents();
             }
             if (CopyFrame)
@@ -2475,6 +2584,7 @@ namespace LitePlacer
             int FrameCenterX = CameraResolution.X / 2;
             int FrameCenterY = CameraResolution.Y / 2;
 
+                MainForm.DisplayText("Position, pxls|mm               |Size, pxls   |mm         |Angle");
             for (int i = StartFrom; i < Shapes.Count; i++)
             {
                 Xpxls = String.Format("{0,6:0.0}", Shapes[i].Center.X - FrameCenterX);
@@ -2486,8 +2596,8 @@ namespace LitePlacer
                 SizeXmm = String.Format("{0,4:0.00}", Shapes[i].Xsize * XmmPpix);
                 SizeYmm = String.Format("{0,4:0.00}", Shapes[i].Ysize * YmmPpix);
                 A= String.Format("{0,5:0.00}", Shapes[i].Angle);
-                OutString = "p: " + Xpxls + ", " + Ypxls + "px; " + Xmms + ", " + Ymms + "mm; " +
-                    "s: " + Xsize + ", " + Ysize + "px; " + SizeXmm + ", " + SizeYmm + "mm; A: " + A;
+                OutString = Xpxls + ", " + Ypxls + "| " + Xmms + ", " + Ymms + "| "
+                          + Xsize + ", " + Ysize + "| " + SizeXmm + ", " + SizeYmm + "| " + A;
                 MainForm.DisplayText(OutString);
             }
         }
@@ -2652,7 +2762,8 @@ namespace LitePlacer
             stopwatch.Stop();
             if (DisplayResults)
             {
-                MainForm.DisplayText("Filtered for size " + 
+                MainForm.DisplayText("");
+                MainForm.DisplayText("Filtered for size " +
                     "(Xmin: " + MeasurementParameters.Xmin.ToString("0.000") + 
                     ", Xmax: " + MeasurementParameters.Xmax.ToString("0.000") +
                     ", Ymin: " + MeasurementParameters.Ymin.ToString("0.000") +
@@ -2685,6 +2796,11 @@ namespace LitePlacer
             stopwatch.Start();
 
             // Filter for distance
+            MainForm.DisplayText("");
+            MainForm.DisplayText("Filtered for distance " +
+                    "(Xmax dist.: " + MeasurementParameters.XUniqueDistance.ToString("0.000") +
+                    ", Ymax dist.: " + MeasurementParameters.YUniqueDistance.ToString("0.000") +
+                "), results:");
             List<Shapes.Shape> FilteredForDistance = new List<Shapes.Shape>();
             int FrameCenterX = CameraResolution.X / 2;
             int FrameCenterY = CameraResolution.Y / 2;
@@ -2704,13 +2820,15 @@ namespace LitePlacer
             {
                 if (DisplayResults)
                 {
-                    MainForm.DisplayText("Filtered for distance, no items left.");
+                    MainForm.DisplayText("No items left.");
                     MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
                 }
                 else
                 {
                     MainForm.DisplayText("Camera Measure(), no items left after distance filtering.", KnownColor.Red, true);
                 }
+                Paused = PauseSave;
+                PauseProcessing = false;
                 return false;
             }
 
@@ -2738,17 +2856,16 @@ namespace LitePlacer
                 }
             }
 
-            MainForm.DisplayText("Filtered for distance " +
-                    "(Xmax dist.: " + MeasurementParameters.XUniqueDistance.ToString("0.000") +
-                    ", Ymax dist.: " + MeasurementParameters.YUniqueDistance.ToString("0.000") +
-                "), results:");
             DisplayShapes(FilteredForDistance, 0, XmmPpix, YmmPpix);
             if (FilteredForDistance.Count != 1)
             {
                 MainForm.DisplayText("Result is NOT unique!", KnownColor.Red, true);
                 MainForm.DisplayText("Elapsed time " + stopwatch.ElapsedMilliseconds.ToString() + "ms");
+                Paused = PauseSave;
+                PauseProcessing = false;
                 return false;
             }
+            MainForm.DisplayText("");
             MainForm.DisplayText( "Result: X= " + Xresult.ToString("0.000", CultureInfo.InvariantCulture) +
                                         ", Y= " + Yresult.ToString("0.000", CultureInfo.InvariantCulture) +
                                         ", A= " + Aresult.ToString("0.00", CultureInfo.InvariantCulture) +

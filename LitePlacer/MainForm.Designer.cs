@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -3320,7 +3320,7 @@
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage3);
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage4);
             this.Duet3Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(823, 26);
+            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(377, 264);
             this.Duet3Motors_tabControl.Name = "Duet3Motors_tabControl";
             this.Duet3Motors_tabControl.SelectedIndex = 0;
             this.Duet3Motors_tabControl.Size = new System.Drawing.Size(325, 362);
@@ -7347,14 +7347,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7466,14 +7466,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -7723,12 +7723,13 @@
             // IntParameterDown10_button
             // 
             this.IntParameterDown10_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.25F);
-            this.IntParameterDown10_button.Location = new System.Drawing.Point(1016, 289);
+            this.IntParameterDown10_button.Location = new System.Drawing.Point(1016, 303);
             this.IntParameterDown10_button.Name = "IntParameterDown10_button";
             this.IntParameterDown10_button.Size = new System.Drawing.Size(20, 17);
             this.IntParameterDown10_button.TabIndex = 318;
             this.IntParameterDown10_button.Text = "▼";
             this.IntParameterDown10_button.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolTip1.SetToolTip(this.IntParameterDown10_button, "-10");
             this.IntParameterDown10_button.UseVisualStyleBackColor = true;
             this.IntParameterDown10_button.Visible = false;
             this.IntParameterDown10_button.Click += new System.EventHandler(this.IntParameterDown10_button_Click);
@@ -7736,24 +7737,25 @@
             // IntParameterUp10_button
             // 
             this.IntParameterUp10_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IntParameterUp10_button.Location = new System.Drawing.Point(1016, 270);
+            this.IntParameterUp10_button.Location = new System.Drawing.Point(1016, 284);
             this.IntParameterUp10_button.Name = "IntParameterUp10_button";
             this.IntParameterUp10_button.Size = new System.Drawing.Size(20, 17);
             this.IntParameterUp10_button.TabIndex = 317;
             this.IntParameterUp10_button.Text = "▲";
             this.IntParameterUp10_button.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolTip1.SetToolTip(this.IntParameterUp10_button, "+10");
             this.IntParameterUp10_button.UseVisualStyleBackColor = true;
             this.IntParameterUp10_button.Visible = false;
             this.IntParameterUp10_button.Click += new System.EventHandler(this.IntParameterUp10_button_Click);
             // 
             // Measure10x_button
             // 
-            this.Measure10x_button.Location = new System.Drawing.Point(658, 434);
+            this.Measure10x_button.Location = new System.Drawing.Point(658, 448);
             this.Measure10x_button.Name = "Measure10x_button";
             this.Measure10x_button.Size = new System.Drawing.Size(75, 23);
             this.Measure10x_button.TabIndex = 316;
             this.Measure10x_button.Text = "Meas. 10x";
-            this.toolTip1.SetToolTip(this.Measure10x_button, "Does 10 meaurements, displays max and min results.");
+            this.toolTip1.SetToolTip(this.Measure10x_button, "Does 10 meaurements, displays max and min results in log window.");
             this.Measure10x_button.UseVisualStyleBackColor = true;
             this.Measure10x_button.Click += new System.EventHandler(this.Measure10x_button_Click);
             // 
@@ -7844,6 +7846,8 @@
             this.label149.Size = new System.Drawing.Size(23, 13);
             this.label149.TabIndex = 304;
             this.label149.Text = "mm";
+            this.toolTip1.SetToolTip(this.label149, "Nominal distance of nozzle tip to image center. The distance\r\nactually used might" +
+        " be different due to thte runout correction.");
             // 
             // NozzleOffset_label
             // 
@@ -7913,7 +7917,8 @@
             this.NozzleOffsetY_textBox.Size = new System.Drawing.Size(36, 20);
             this.NozzleOffsetY_textBox.TabIndex = 293;
             this.NozzleOffsetY_textBox.Text = "6.99";
-            this.toolTip1.SetToolTip(this.NozzleOffsetY_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
+            this.toolTip1.SetToolTip(this.NozzleOffsetY_textBox, "Nominal distance of nozzle tip to image center. The distance\r\nactually used might" +
+        " be different due to thte runout correction.");
             this.NozzleOffsetY_textBox.TextChanged += new System.EventHandler(this.NozzleOffsetY_textBox_TextChanged);
             // 
             // label100
@@ -7946,7 +7951,8 @@
             this.NozzleOffsetX_textBox.Size = new System.Drawing.Size(37, 20);
             this.NozzleOffsetX_textBox.TabIndex = 292;
             this.NozzleOffsetX_textBox.Text = "42.88";
-            this.toolTip1.SetToolTip(this.NozzleOffsetX_textBox, "Nominal postion difference between\r\nthe Nozzle tip and down camera image center.");
+            this.toolTip1.SetToolTip(this.NozzleOffsetX_textBox, "Nominal distance of nozzle tip to image center. The distance\r\nactually used might" +
+        " be different due to thte runout correction.");
             this.NozzleOffsetX_textBox.TextChanged += new System.EventHandler(this.NozzleOffsetX_textBox_TextChanged);
             // 
             // label93
@@ -7976,6 +7982,8 @@
             this.label148.Size = new System.Drawing.Size(23, 13);
             this.label148.TabIndex = 297;
             this.label148.Text = "mm";
+            this.toolTip1.SetToolTip(this.label148, "Nominal distance of nozzle tip to image center. The distance\r\nactually used might" +
+        " be different due to thte runout correction.");
             // 
             // label96
             // 
@@ -7994,6 +8002,8 @@
             this.label146.Size = new System.Drawing.Size(17, 13);
             this.label146.TabIndex = 296;
             this.label146.Text = "Y:";
+            this.toolTip1.SetToolTip(this.label146, "Nominal distance of nozzle tip to image center. The distance\r\nactually used might" +
+        " be different due to thte runout correction.");
             // 
             // label95
             // 
@@ -8012,6 +8022,8 @@
             this.label143.Size = new System.Drawing.Size(17, 13);
             this.label143.TabIndex = 295;
             this.label143.Text = "X:";
+            this.toolTip1.SetToolTip(this.label143, "Nominal distance of nozzle tip to image center. The distance\r\nactually used might" +
+        " be different due to thte runout correction.");
             // 
             // GotoPCB0_button
             // 
@@ -8083,6 +8095,8 @@
             this.label114.Size = new System.Drawing.Size(114, 13);
             this.label114.TabIndex = 279;
             this.label114.Text = "Nozzle Nominal Offset:";
+            this.toolTip1.SetToolTip(this.label114, "Nominal distance of nozzle tip to image center. The distance\r\nactually used might" +
+        " be different due to thte runout correction.");
             // 
             // SetPCB0_button
             // 
@@ -8164,7 +8178,7 @@
             // ShowVideoResults_radioButton
             // 
             this.ShowVideoResults_radioButton.AutoSize = true;
-            this.ShowVideoResults_radioButton.Location = new System.Drawing.Point(1120, 214);
+            this.ShowVideoResults_radioButton.Location = new System.Drawing.Point(1120, 238);
             this.ShowVideoResults_radioButton.Name = "ShowVideoResults_radioButton";
             this.ShowVideoResults_radioButton.Size = new System.Drawing.Size(85, 17);
             this.ShowVideoResults_radioButton.TabIndex = 315;
@@ -8176,7 +8190,7 @@
             // ShowVideoProcessing_radioButton
             // 
             this.ShowVideoProcessing_radioButton.AutoSize = true;
-            this.ShowVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 191);
+            this.ShowVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 215);
             this.ShowVideoProcessing_radioButton.Name = "ShowVideoProcessing_radioButton";
             this.ShowVideoProcessing_radioButton.Size = new System.Drawing.Size(106, 17);
             this.ShowVideoProcessing_radioButton.TabIndex = 314;
@@ -8188,7 +8202,7 @@
             // NoVideoProcessing_radioButton
             // 
             this.NoVideoProcessing_radioButton.AutoSize = true;
-            this.NoVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 168);
+            this.NoVideoProcessing_radioButton.Location = new System.Drawing.Point(1120, 192);
             this.NoVideoProcessing_radioButton.Name = "NoVideoProcessing_radioButton";
             this.NoVideoProcessing_radioButton.Size = new System.Drawing.Size(122, 17);
             this.NoVideoProcessing_radioButton.TabIndex = 313;
@@ -8200,7 +8214,7 @@
             // SearchComponentPads_checkBox
             // 
             this.SearchComponentPads_checkBox.AutoSize = true;
-            this.SearchComponentPads_checkBox.Location = new System.Drawing.Point(739, 593);
+            this.SearchComponentPads_checkBox.Location = new System.Drawing.Point(742, 605);
             this.SearchComponentPads_checkBox.Name = "SearchComponentPads_checkBox";
             this.SearchComponentPads_checkBox.Size = new System.Drawing.Size(126, 17);
             this.SearchComponentPads_checkBox.TabIndex = 312;
@@ -8210,7 +8224,7 @@
             // 
             // DoubleParC_textBox
             // 
-            this.DoubleParC_textBox.Location = new System.Drawing.Point(965, 464);
+            this.DoubleParC_textBox.Location = new System.Drawing.Point(965, 478);
             this.DoubleParC_textBox.Name = "DoubleParC_textBox";
             this.DoubleParC_textBox.Size = new System.Drawing.Size(48, 20);
             this.DoubleParC_textBox.TabIndex = 311;
@@ -8219,7 +8233,7 @@
             // 
             // DoubleParB_textBox
             // 
-            this.DoubleParB_textBox.Location = new System.Drawing.Point(965, 425);
+            this.DoubleParB_textBox.Location = new System.Drawing.Point(965, 439);
             this.DoubleParB_textBox.Name = "DoubleParB_textBox";
             this.DoubleParB_textBox.Size = new System.Drawing.Size(48, 20);
             this.DoubleParB_textBox.TabIndex = 310;
@@ -8228,7 +8242,7 @@
             // 
             // DoubleParA_textBox
             // 
-            this.DoubleParA_textBox.Location = new System.Drawing.Point(965, 386);
+            this.DoubleParA_textBox.Location = new System.Drawing.Point(965, 400);
             this.DoubleParA_textBox.Name = "DoubleParA_textBox";
             this.DoubleParA_textBox.Size = new System.Drawing.Size(48, 20);
             this.DoubleParA_textBox.TabIndex = 309;
@@ -8243,7 +8257,7 @@
             this.AdvancedProcessing_tabControl.Location = new System.Drawing.Point(820, 6);
             this.AdvancedProcessing_tabControl.Name = "AdvancedProcessing_tabControl";
             this.AdvancedProcessing_tabControl.SelectedIndex = 0;
-            this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(419, 156);
+            this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(419, 179);
             this.AdvancedProcessing_tabControl.TabIndex = 308;
             this.AdvancedProcessing_tabControl.Visible = false;
             // 
@@ -8260,7 +8274,7 @@
             this.NozzleCalibration_tabPage.Location = new System.Drawing.Point(4, 22);
             this.NozzleCalibration_tabPage.Name = "NozzleCalibration_tabPage";
             this.NozzleCalibration_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.NozzleCalibration_tabPage.Size = new System.Drawing.Size(411, 130);
+            this.NozzleCalibration_tabPage.Size = new System.Drawing.Size(411, 153);
             this.NozzleCalibration_tabPage.TabIndex = 0;
             this.NozzleCalibration_tabPage.Text = "Nozzle Calibration";
             this.NozzleCalibration_tabPage.UseVisualStyleBackColor = true;
@@ -8293,7 +8307,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(222, 51);
+            this.textBox1.Location = new System.Drawing.Point(222, 74);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(183, 73);
@@ -8596,11 +8610,11 @@
             // 
             this.FunctionExplanation_textBox.BackColor = System.Drawing.SystemColors.Window;
             this.FunctionExplanation_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.FunctionExplanation_textBox.Location = new System.Drawing.Point(1047, 263);
+            this.FunctionExplanation_textBox.Location = new System.Drawing.Point(1047, 277);
             this.FunctionExplanation_textBox.Multiline = true;
             this.FunctionExplanation_textBox.Name = "FunctionExplanation_textBox";
             this.FunctionExplanation_textBox.ReadOnly = true;
-            this.FunctionExplanation_textBox.Size = new System.Drawing.Size(191, 78);
+            this.FunctionExplanation_textBox.Size = new System.Drawing.Size(191, 156);
             this.FunctionExplanation_textBox.TabIndex = 265;
             this.FunctionExplanation_textBox.Text = "Explanation of the function";
             // 
@@ -8608,7 +8622,7 @@
             // 
             this.DrawDashedCross_checkBox.AutoSize = true;
             this.DrawDashedCross_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawDashedCross_checkBox.Location = new System.Drawing.Point(593, 431);
+            this.DrawDashedCross_checkBox.Location = new System.Drawing.Point(593, 445);
             this.DrawDashedCross_checkBox.Name = "DrawDashedCross_checkBox";
             this.DrawDashedCross_checkBox.Size = new System.Drawing.Size(120, 17);
             this.DrawDashedCross_checkBox.TabIndex = 259;
@@ -8620,7 +8634,7 @@
             // 
             this.DrawGrid_checkBox.AutoSize = true;
             this.DrawGrid_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DrawGrid_checkBox.Location = new System.Drawing.Point(594, 409);
+            this.DrawGrid_checkBox.Location = new System.Drawing.Point(594, 423);
             this.DrawGrid_checkBox.Name = "DrawGrid_checkBox";
             this.DrawGrid_checkBox.Size = new System.Drawing.Size(73, 17);
             this.DrawGrid_checkBox.TabIndex = 264;
@@ -8631,18 +8645,20 @@
             // 
             // Algorithm_Measure_button
             // 
-            this.Algorithm_Measure_button.Location = new System.Drawing.Point(658, 463);
+            this.Algorithm_Measure_button.Location = new System.Drawing.Point(658, 477);
             this.Algorithm_Measure_button.Name = "Algorithm_Measure_button";
             this.Algorithm_Measure_button.Size = new System.Drawing.Size(75, 23);
             this.Algorithm_Measure_button.TabIndex = 254;
             this.Algorithm_Measure_button.Text = "Measure";
+            this.toolTip1.SetToolTip(this.Algorithm_Measure_button, "Does one measurement and displays the results\r\nwith size and distance filtering r" +
+        "euslts to log window\r\nin pixels and in mm\'s.");
             this.Algorithm_Measure_button.UseVisualStyleBackColor = true;
             this.Algorithm_Measure_button.Click += new System.EventHandler(this.Algorithm_Measure_button_Click);
             // 
             // SearchComponentOutlines_checkBox
             // 
             this.SearchComponentOutlines_checkBox.AutoSize = true;
-            this.SearchComponentOutlines_checkBox.Location = new System.Drawing.Point(739, 570);
+            this.SearchComponentOutlines_checkBox.Location = new System.Drawing.Point(742, 582);
             this.SearchComponentOutlines_checkBox.Name = "SearchComponentOutlines_checkBox";
             this.SearchComponentOutlines_checkBox.Size = new System.Drawing.Size(135, 17);
             this.SearchComponentOutlines_checkBox.TabIndex = 253;
@@ -8653,7 +8669,7 @@
             // SearchRectangles_checkBox
             // 
             this.SearchRectangles_checkBox.AutoSize = true;
-            this.SearchRectangles_checkBox.Location = new System.Drawing.Point(739, 547);
+            this.SearchRectangles_checkBox.Location = new System.Drawing.Point(742, 559);
             this.SearchRectangles_checkBox.Name = "SearchRectangles_checkBox";
             this.SearchRectangles_checkBox.Size = new System.Drawing.Size(80, 17);
             this.SearchRectangles_checkBox.TabIndex = 252;
@@ -8664,7 +8680,7 @@
             // SearchRound_checkBox
             // 
             this.SearchRound_checkBox.AutoSize = true;
-            this.SearchRound_checkBox.Location = new System.Drawing.Point(739, 524);
+            this.SearchRound_checkBox.Location = new System.Drawing.Point(742, 536);
             this.SearchRound_checkBox.Name = "SearchRound_checkBox";
             this.SearchRound_checkBox.Size = new System.Drawing.Size(58, 17);
             this.SearchRound_checkBox.TabIndex = 251;
@@ -8675,7 +8691,7 @@
             // label176
             // 
             this.label176.AutoSize = true;
-            this.label176.Location = new System.Drawing.Point(739, 503);
+            this.label176.Location = new System.Drawing.Point(742, 515);
             this.label176.Name = "label176";
             this.label176.Size = new System.Drawing.Size(100, 13);
             this.label176.TabIndex = 250;
@@ -8684,128 +8700,154 @@
             // label174
             // 
             this.label174.AutoSize = true;
-            this.label174.Location = new System.Drawing.Point(1021, 573);
+            this.label174.Location = new System.Drawing.Point(1024, 585);
             this.label174.Name = "label174";
             this.label174.Size = new System.Drawing.Size(39, 13);
             this.label174.TabIndex = 248;
             this.label174.Text = "Y max:";
+            this.toolTip1.SetToolTip(this.label174, "Features smaller or bigger than the limits set here,\r\nare discarded and shown in " +
+        "red.");
             // 
             // label175
             // 
             this.label175.AutoSize = true;
-            this.label175.Location = new System.Drawing.Point(906, 573);
+            this.label175.Location = new System.Drawing.Point(909, 585);
             this.label175.Name = "label175";
             this.label175.Size = new System.Drawing.Size(36, 13);
             this.label175.TabIndex = 246;
             this.label175.Text = "Y min:";
+            this.toolTip1.SetToolTip(this.label175, "Features smaller or bigger than the limits set here,\r\nare discarded and shown in " +
+        "red.");
             // 
             // Ymin_textBox
             // 
-            this.Ymin_textBox.Location = new System.Drawing.Point(951, 570);
+            this.Ymin_textBox.Location = new System.Drawing.Point(954, 582);
             this.Ymin_textBox.Name = "Ymin_textBox";
             this.Ymin_textBox.Size = new System.Drawing.Size(48, 20);
             this.Ymin_textBox.TabIndex = 247;
+            this.toolTip1.SetToolTip(this.Ymin_textBox, "Features smaller or bigger than the limits set here,\r\nare discarded and shown in " +
+        "red.");
             this.Ymin_textBox.TextChanged += new System.EventHandler(this.Ymin_textBox_TextChanged);
             // 
             // Ymax_textBox
             // 
-            this.Ymax_textBox.Location = new System.Drawing.Point(1066, 570);
+            this.Ymax_textBox.Location = new System.Drawing.Point(1069, 582);
             this.Ymax_textBox.Name = "Ymax_textBox";
             this.Ymax_textBox.Size = new System.Drawing.Size(48, 20);
             this.Ymax_textBox.TabIndex = 249;
+            this.toolTip1.SetToolTip(this.Ymax_textBox, "Features smaller or bigger than the limits set here,\r\nare discarded and shown in " +
+        "red.");
             this.Ymax_textBox.TextChanged += new System.EventHandler(this.Ymax_textBox_TextChanged);
             // 
             // label171
             // 
             this.label171.AutoSize = true;
-            this.label171.Location = new System.Drawing.Point(906, 525);
+            this.label171.Location = new System.Drawing.Point(909, 537);
             this.label171.Name = "label171";
             this.label171.Size = new System.Drawing.Size(110, 13);
             this.label171.TabIndex = 241;
             this.label171.Text = "Acceptable size (mm):";
+            this.toolTip1.SetToolTip(this.label171, "Features smaller or bigger than the limits set here,\r\nare discarded and shown in " +
+        "red.");
             // 
             // Xmax_textBox
             // 
-            this.Xmax_textBox.Location = new System.Drawing.Point(1066, 543);
+            this.Xmax_textBox.Location = new System.Drawing.Point(1069, 555);
             this.Xmax_textBox.Name = "Xmax_textBox";
             this.Xmax_textBox.Size = new System.Drawing.Size(48, 20);
             this.Xmax_textBox.TabIndex = 245;
+            this.toolTip1.SetToolTip(this.Xmax_textBox, "Features smaller or bigger than the limits set here,\r\nare discarded and shown in " +
+        "red.");
             this.Xmax_textBox.TextChanged += new System.EventHandler(this.Xmax_textBox_TextChanged);
             // 
             // label172
             // 
             this.label172.AutoSize = true;
-            this.label172.Location = new System.Drawing.Point(1021, 547);
+            this.label172.Location = new System.Drawing.Point(1024, 559);
             this.label172.Name = "label172";
             this.label172.Size = new System.Drawing.Size(39, 13);
             this.label172.TabIndex = 244;
             this.label172.Text = "X max:";
+            this.toolTip1.SetToolTip(this.label172, "Features smaller or bigger than the limits set here,\r\nare discarded and shown in " +
+        "red.");
             // 
             // Xmin_textBox
             // 
-            this.Xmin_textBox.Location = new System.Drawing.Point(951, 544);
+            this.Xmin_textBox.Location = new System.Drawing.Point(954, 556);
             this.Xmin_textBox.Name = "Xmin_textBox";
             this.Xmin_textBox.Size = new System.Drawing.Size(48, 20);
             this.Xmin_textBox.TabIndex = 243;
+            this.toolTip1.SetToolTip(this.Xmin_textBox, "Features smaller or bigger than the limits set here,\r\nare discarded and shown in " +
+        "red.");
             this.Xmin_textBox.TextChanged += new System.EventHandler(this.Xmin_textBox_TextChanged);
             // 
             // label173
             // 
             this.label173.AutoSize = true;
-            this.label173.Location = new System.Drawing.Point(906, 547);
+            this.label173.Location = new System.Drawing.Point(909, 559);
             this.label173.Name = "label173";
             this.label173.Size = new System.Drawing.Size(36, 13);
             this.label173.TabIndex = 242;
             this.label173.Text = "X min:";
+            this.toolTip1.SetToolTip(this.label173, "Features smaller or bigger than the limits set here,\r\nare discarded and shown in " +
+        "red.");
             // 
             // YmaxDistance_textBox
             // 
-            this.YmaxDistance_textBox.Location = new System.Drawing.Point(1155, 570);
+            this.YmaxDistance_textBox.Location = new System.Drawing.Point(1158, 582);
             this.YmaxDistance_textBox.Name = "YmaxDistance_textBox";
             this.YmaxDistance_textBox.Size = new System.Drawing.Size(48, 20);
             this.YmaxDistance_textBox.TabIndex = 240;
+            this.toolTip1.SetToolTip(this.YmaxDistance_textBox, "Features that are of acceptable size, but farther\r\naway from teh image center tha" +
+        "n the distances set here,\r\nare discrded and shown in yellow.");
             this.YmaxDistance_textBox.TextChanged += new System.EventHandler(this.YmaxDistance_textBox_TextChanged);
             // 
             // label168
             // 
             this.label168.AutoSize = true;
-            this.label168.Location = new System.Drawing.Point(1132, 547);
+            this.label168.Location = new System.Drawing.Point(1135, 559);
             this.label168.Name = "label168";
             this.label168.Size = new System.Drawing.Size(17, 13);
             this.label168.TabIndex = 239;
             this.label168.Text = "X:";
+            this.toolTip1.SetToolTip(this.label168, "Features that are of acceptable size, but farther\r\naway from teh image center tha" +
+        "n the distances set here,\r\nare discrded and shown in yellow.");
             // 
             // XmaxDistance_textBox
             // 
-            this.XmaxDistance_textBox.Location = new System.Drawing.Point(1155, 544);
+            this.XmaxDistance_textBox.Location = new System.Drawing.Point(1158, 556);
             this.XmaxDistance_textBox.Name = "XmaxDistance_textBox";
             this.XmaxDistance_textBox.Size = new System.Drawing.Size(48, 20);
             this.XmaxDistance_textBox.TabIndex = 246;
+            this.toolTip1.SetToolTip(this.XmaxDistance_textBox, "Features that are of acceptable size, but farther\r\naway from teh image center tha" +
+        "n the distances set here,\r\nare discrded and shown in yellow.");
             this.XmaxDistance_textBox.TextChanged += new System.EventHandler(this.XmaxDistance_textBox_TextChanged);
             // 
             // label169
             // 
             this.label169.AutoSize = true;
-            this.label169.Location = new System.Drawing.Point(1132, 573);
+            this.label169.Location = new System.Drawing.Point(1135, 585);
             this.label169.Name = "label169";
             this.label169.Size = new System.Drawing.Size(17, 13);
             this.label169.TabIndex = 237;
             this.label169.Text = "Y:";
+            this.toolTip1.SetToolTip(this.label169, "Features that are of acceptable size, but farther\r\naway from teh image center tha" +
+        "n the distances set here,\r\nare discrded and shown in yellow.");
             // 
             // label170
             // 
             this.label170.AutoSize = true;
-            this.label170.Location = new System.Drawing.Point(1132, 525);
+            this.label170.Location = new System.Drawing.Point(1135, 537);
             this.label170.Name = "label170";
             this.label170.Size = new System.Drawing.Size(93, 13);
             this.label170.TabIndex = 236;
             this.label170.Text = "Discard dist. (mm):";
-            this.toolTip1.SetToolTip(this.label170, "Features outside this distance are discarded. Also, no other valid results can oc" +
-        "cur within \r\nthis distance, as the measurement result must be unique. ");
+            this.toolTip1.SetToolTip(this.label170, "Features that are of acceptable size, but farther\r\naway from teh image center tha" +
+        "n the distances set here,\r\nare discrded and shown in yellow.");
             // 
             // AlgorithmsLoad_button
             // 
-            this.AlgorithmsLoad_button.Location = new System.Drawing.Point(739, 129);
+            this.AlgorithmsLoad_button.Location = new System.Drawing.Point(739, 162);
             this.AlgorithmsLoad_button.Name = "AlgorithmsLoad_button";
             this.AlgorithmsLoad_button.Size = new System.Drawing.Size(75, 23);
             this.AlgorithmsLoad_button.TabIndex = 235;
@@ -8815,7 +8857,7 @@
             // 
             // B_numericUpDown
             // 
-            this.B_numericUpDown.Location = new System.Drawing.Point(965, 464);
+            this.B_numericUpDown.Location = new System.Drawing.Point(965, 478);
             this.B_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -8834,7 +8876,7 @@
             // 
             // G_numericUpDown
             // 
-            this.G_numericUpDown.Location = new System.Drawing.Point(965, 425);
+            this.G_numericUpDown.Location = new System.Drawing.Point(965, 439);
             this.G_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -8853,7 +8895,7 @@
             // 
             // Save_button
             // 
-            this.Save_button.Location = new System.Drawing.Point(658, 130);
+            this.Save_button.Location = new System.Drawing.Point(658, 163);
             this.Save_button.Name = "Save_button";
             this.Save_button.Size = new System.Drawing.Size(75, 23);
             this.Save_button.TabIndex = 234;
@@ -8863,7 +8905,7 @@
             // 
             // R_numericUpDown
             // 
-            this.R_numericUpDown.Location = new System.Drawing.Point(965, 386);
+            this.R_numericUpDown.Location = new System.Drawing.Point(965, 400);
             this.R_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -8883,7 +8925,7 @@
             // label167
             // 
             this.label167.AutoSize = true;
-            this.label167.Location = new System.Drawing.Point(658, 114);
+            this.label167.Location = new System.Drawing.Point(658, 147);
             this.label167.Name = "label167";
             this.label167.Size = new System.Drawing.Size(72, 13);
             this.label167.TabIndex = 233;
@@ -8892,7 +8934,7 @@
             // RGBParameter_label
             // 
             this.RGBParameter_label.AutoSize = true;
-            this.RGBParameter_label.Location = new System.Drawing.Point(962, 357);
+            this.RGBParameter_label.Location = new System.Drawing.Point(962, 371);
             this.RGBParameter_label.Name = "RGBParameter_label";
             this.RGBParameter_label.Size = new System.Drawing.Size(13, 13);
             this.RGBParameter_label.TabIndex = 229;
@@ -8901,7 +8943,7 @@
             // 
             // IntParameter_numericUpDown
             // 
-            this.IntParameter_numericUpDown.Location = new System.Drawing.Point(965, 279);
+            this.IntParameter_numericUpDown.Location = new System.Drawing.Point(965, 293);
             this.IntParameter_numericUpDown.Maximum = new decimal(new int[] {
             255,
             0,
@@ -8921,7 +8963,7 @@
             // B_label
             // 
             this.B_label.AutoSize = true;
-            this.B_label.Location = new System.Drawing.Point(962, 448);
+            this.B_label.Location = new System.Drawing.Point(962, 462);
             this.B_label.Name = "B_label";
             this.B_label.Size = new System.Drawing.Size(14, 13);
             this.B_label.TabIndex = 226;
@@ -8931,7 +8973,7 @@
             // G_label
             // 
             this.G_label.AutoSize = true;
-            this.G_label.Location = new System.Drawing.Point(962, 409);
+            this.G_label.Location = new System.Drawing.Point(962, 423);
             this.G_label.Name = "G_label";
             this.G_label.Size = new System.Drawing.Size(15, 13);
             this.G_label.TabIndex = 225;
@@ -8941,7 +8983,7 @@
             // R_label
             // 
             this.R_label.AutoSize = true;
-            this.R_label.Location = new System.Drawing.Point(962, 370);
+            this.R_label.Location = new System.Drawing.Point(962, 384);
             this.R_label.Name = "R_label";
             this.R_label.Size = new System.Drawing.Size(15, 13);
             this.R_label.TabIndex = 224;
@@ -8951,7 +8993,7 @@
             // DoubleParameter_label
             // 
             this.DoubleParameter_label.AutoSize = true;
-            this.DoubleParameter_label.Location = new System.Drawing.Point(962, 308);
+            this.DoubleParameter_label.Location = new System.Drawing.Point(962, 322);
             this.DoubleParameter_label.Name = "DoubleParameter_label";
             this.DoubleParameter_label.Size = new System.Drawing.Size(13, 13);
             this.DoubleParameter_label.TabIndex = 223;
@@ -8960,7 +9002,7 @@
             // 
             // DoubleParameter_textBox
             // 
-            this.DoubleParameter_textBox.Location = new System.Drawing.Point(962, 324);
+            this.DoubleParameter_textBox.Location = new System.Drawing.Point(962, 338);
             this.DoubleParameter_textBox.Name = "DoubleParameter_textBox";
             this.DoubleParameter_textBox.Size = new System.Drawing.Size(48, 20);
             this.DoubleParameter_textBox.TabIndex = 222;
@@ -8970,7 +9012,7 @@
             // IntParameter_label
             // 
             this.IntParameter_label.AutoSize = true;
-            this.IntParameter_label.Location = new System.Drawing.Point(962, 263);
+            this.IntParameter_label.Location = new System.Drawing.Point(962, 277);
             this.IntParameter_label.Name = "IntParameter_label";
             this.IntParameter_label.Size = new System.Drawing.Size(13, 13);
             this.IntParameter_label.TabIndex = 221;
@@ -8981,7 +9023,7 @@
             // 
             this.label137.AutoSize = true;
             this.label137.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label137.Location = new System.Drawing.Point(959, 242);
+            this.label137.Location = new System.Drawing.Point(959, 256);
             this.label137.Name = "label137";
             this.label137.Size = new System.Drawing.Size(107, 13);
             this.label137.TabIndex = 220;
@@ -8995,7 +9037,7 @@
             this.VideoFunctionColumn,
             this.EnabledColumn});
             this.Functions_dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.Functions_dataGridView.Location = new System.Drawing.Point(742, 260);
+            this.Functions_dataGridView.Location = new System.Drawing.Point(742, 274);
             this.Functions_dataGridView.MultiSelect = false;
             this.Functions_dataGridView.Name = "Functions_dataGridView";
             this.Functions_dataGridView.RowHeadersVisible = false;
@@ -9027,7 +9069,7 @@
             // 
             // MoveDown_button
             // 
-            this.MoveDown_button.Location = new System.Drawing.Point(658, 347);
+            this.MoveDown_button.Location = new System.Drawing.Point(658, 361);
             this.MoveDown_button.Name = "MoveDown_button";
             this.MoveDown_button.Size = new System.Drawing.Size(75, 23);
             this.MoveDown_button.TabIndex = 218;
@@ -9037,7 +9079,7 @@
             // 
             // MoveUp_button
             // 
-            this.MoveUp_button.Location = new System.Drawing.Point(658, 318);
+            this.MoveUp_button.Location = new System.Drawing.Point(658, 332);
             this.MoveUp_button.Name = "MoveUp_button";
             this.MoveUp_button.Size = new System.Drawing.Size(75, 23);
             this.MoveUp_button.TabIndex = 217;
@@ -9047,7 +9089,7 @@
             // 
             // RemoveFunction_button
             // 
-            this.RemoveFunction_button.Location = new System.Drawing.Point(658, 289);
+            this.RemoveFunction_button.Location = new System.Drawing.Point(658, 303);
             this.RemoveFunction_button.Name = "RemoveFunction_button";
             this.RemoveFunction_button.Size = new System.Drawing.Size(75, 23);
             this.RemoveFunction_button.TabIndex = 216;
@@ -9057,7 +9099,7 @@
             // 
             // AddFunction_button
             // 
-            this.AddFunction_button.Location = new System.Drawing.Point(658, 260);
+            this.AddFunction_button.Location = new System.Drawing.Point(658, 274);
             this.AddFunction_button.Name = "AddFunction_button";
             this.AddFunction_button.Size = new System.Drawing.Size(75, 23);
             this.AddFunction_button.TabIndex = 215;
@@ -9068,7 +9110,7 @@
             // label138
             // 
             this.label138.AutoSize = true;
-            this.label138.Location = new System.Drawing.Point(658, 244);
+            this.label138.Location = new System.Drawing.Point(658, 258);
             this.label138.Name = "label138";
             this.label138.Size = new System.Drawing.Size(56, 13);
             this.label138.TabIndex = 214;
@@ -9076,7 +9118,7 @@
             // 
             // RenameAlgorithm_button
             // 
-            this.RenameAlgorithm_button.Location = new System.Drawing.Point(1039, 189);
+            this.RenameAlgorithm_button.Location = new System.Drawing.Point(1039, 211);
             this.RenameAlgorithm_button.Name = "RenameAlgorithm_button";
             this.RenameAlgorithm_button.Size = new System.Drawing.Size(75, 23);
             this.RenameAlgorithm_button.TabIndex = 213;
@@ -9086,7 +9128,7 @@
             // 
             // DuplicateAlgorithm_button
             // 
-            this.DuplicateAlgorithm_button.Location = new System.Drawing.Point(958, 188);
+            this.DuplicateAlgorithm_button.Location = new System.Drawing.Point(958, 212);
             this.DuplicateAlgorithm_button.Name = "DuplicateAlgorithm_button";
             this.DuplicateAlgorithm_button.Size = new System.Drawing.Size(75, 23);
             this.DuplicateAlgorithm_button.TabIndex = 212;
@@ -9096,7 +9138,7 @@
             // 
             // RemoveAlgorithm_button
             // 
-            this.RemoveAlgorithm_button.Location = new System.Drawing.Point(877, 188);
+            this.RemoveAlgorithm_button.Location = new System.Drawing.Point(877, 212);
             this.RemoveAlgorithm_button.Name = "RemoveAlgorithm_button";
             this.RemoveAlgorithm_button.Size = new System.Drawing.Size(75, 23);
             this.RemoveAlgorithm_button.TabIndex = 211;
@@ -9106,7 +9148,7 @@
             // 
             // AddAlgorithm_button
             // 
-            this.AddAlgorithm_button.Location = new System.Drawing.Point(794, 187);
+            this.AddAlgorithm_button.Location = new System.Drawing.Point(794, 211);
             this.AddAlgorithm_button.Name = "AddAlgorithm_button";
             this.AddAlgorithm_button.Size = new System.Drawing.Size(75, 23);
             this.AddAlgorithm_button.TabIndex = 210;
@@ -9117,7 +9159,7 @@
             // label166
             // 
             this.label166.AutoSize = true;
-            this.label166.Location = new System.Drawing.Point(658, 173);
+            this.label166.Location = new System.Drawing.Point(658, 197);
             this.label166.Name = "label166";
             this.label166.Size = new System.Drawing.Size(117, 13);
             this.label166.TabIndex = 208;
@@ -9127,7 +9169,7 @@
             // 
             this.Algorithm_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Algorithm_comboBox.FormattingEnabled = true;
-            this.Algorithm_comboBox.Location = new System.Drawing.Point(658, 189);
+            this.Algorithm_comboBox.Location = new System.Drawing.Point(658, 213);
             this.Algorithm_comboBox.Name = "Algorithm_comboBox";
             this.Algorithm_comboBox.Size = new System.Drawing.Size(121, 21);
             this.Algorithm_comboBox.TabIndex = 207;
@@ -9136,7 +9178,7 @@
             // ColorHelp_label
             // 
             this.ColorHelp_label.AutoSize = true;
-            this.ColorHelp_label.Location = new System.Drawing.Point(1030, 448);
+            this.ColorHelp_label.Location = new System.Drawing.Point(1030, 462);
             this.ColorHelp_label.Name = "ColorHelp_label";
             this.ColorHelp_label.Size = new System.Drawing.Size(176, 13);
             this.ColorHelp_label.TabIndex = 206;
@@ -9146,7 +9188,7 @@
             // 
             // Color_Box
             // 
-            this.Color_Box.Location = new System.Drawing.Point(1033, 425);
+            this.Color_Box.Location = new System.Drawing.Point(1033, 439);
             this.Color_Box.Name = "Color_Box";
             this.Color_Box.ReadOnly = true;
             this.Color_Box.Size = new System.Drawing.Size(21, 20);
@@ -10034,8 +10076,8 @@
             this.SetCurrentPosition_button.Size = new System.Drawing.Size(177, 23);
             this.SetCurrentPosition_button.TabIndex = 114;
             this.SetCurrentPosition_button.Text = "Set current position";
-            this.toolTip1.SetToolTip(this.SetCurrentPosition_button, "Set current coordinates to X-A boxes content. Warning! Coordinates are no longer " +
-        "referred to homing results.");
+            this.toolTip1.SetToolTip(this.SetCurrentPosition_button, "Set current coordinates to what is shown in X-A boxes. Warning! Coordinates are n" +
+        "o longer referred to homing results.");
             this.SetCurrentPosition_button.UseVisualStyleBackColor = true;
             this.SetCurrentPosition_button.Click += new System.EventHandler(this.SetCurrentPosition_button_Click);
             // 

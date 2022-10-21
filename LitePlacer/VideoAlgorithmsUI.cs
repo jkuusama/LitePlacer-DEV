@@ -1125,8 +1125,11 @@ namespace LitePlacer
                 IntParameter_numericUpDown.Visible = true;
                 IntParameter_label.Text = label;
                 IntParameter_label.Visible = true;
-                IntParameterUp10_button.Visible = true;
-                IntParameterDown10_button.Visible = true;
+                if (max>19)
+                {
+                    IntParameterUp10_button.Visible = true;
+                    IntParameterDown10_button.Visible = true;
+                }
             }
 
             void EnableDouble(string label)
