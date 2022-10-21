@@ -2255,13 +2255,13 @@ namespace LitePlacer
         {
             DisplayText("CNC_XYA_m, x: " + X.ToString("0.000", CultureInfo.InvariantCulture)
                 + ", y: " + Y.ToString("0.000", CultureInfo.InvariantCulture) + ", a: " + A.ToString("0.000", CultureInfo.InvariantCulture));
-            if (CNC_NozzleIsDown_m())
-            {
-                return false;
-            }
             if (Cnc.ErrorState)
             {
-                DisplayText("### Cnc in error state, ignored", KnownColor.DarkRed, true);
+                DisplayText("### Cnc in error state, no move", KnownColor.DarkRed, true);
+                return false;
+            }
+            if (CNC_NozzleIsDown_m())
+            {
                 return false;
             }
             if (AbortPlacement)
@@ -5495,11 +5495,18 @@ namespace LitePlacer
             Cnc.Homing = true;
             if (!Cnc.Nozzle_ProbeDown(Setting.General_ZTouchDifference - depth))
             {
+                DisplayText("*** Nozzle probing failed at CNC level.", KnownColor.DarkRed, true);
                 Cnc.Homing = false;
                 return false;
             }
-            DisplayText("Probing result: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
             Cnc.Homing = false;
+            if (Cnc.CurrentZ <0)
+            {
+                // A user reported negative probing result. I can't see how, but added a check anyway -issue #113 
+                DisplayText("*** Probing gave negative result: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture), KnownColor.DarkRed, true);
+                return false;
+            }
+            DisplayText("Probing result: " + Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture));
             return true;
         }
 
@@ -7150,11 +7157,11 @@ namespace LitePlacer
                 // Labels are updated, place the row:
                 if (!PlaceRow_m(CurrentRow, out PartAboveCam))
                 {
+                    CleanupPlacement(false, PartAboveCam);
                     ShowMessageBox(
                         "Placement operation failed. Review job status.",
                         "Placement failed",
                         MessageBoxButtons.OK);
-                    CleanupPlacement(false, PartAboveCam);
                     return;
                 }
             };
@@ -7608,6 +7615,7 @@ namespace LitePlacer
 
             if (ok)
             {
+                CleanupPlacement(ok, PartAboveCam);
                 ShowMessageBox(
                     "All components placed.",
                     "Done",
@@ -7615,12 +7623,12 @@ namespace LitePlacer
             }
             else
             {
+                CleanupPlacement(ok, PartAboveCam);
                 ShowMessageBox(
                     "Operation stopped by user.",
                     "Done",
                     MessageBoxButtons.OK);
             }
-            CleanupPlacement(ok, PartAboveCam);
         }
 
 
@@ -8460,10 +8468,6 @@ namespace LitePlacer
                     return false;
                 }
             }
-            //ShowMessageBox(
-            //    "Debug: Nozzle down at component." + Component,
-            //    "Debug",
-            //    MessageBoxButtons.OK);
             DisplayText("PlacePart_m(): Nozzle up.");
             VacuumOff();
             if (!CNC_Z_m(0))  // back up
@@ -9068,7 +9072,7 @@ namespace LitePlacer
                 } while (!ok);
 
                 DisplayText("Measurement ok, raw A= " + Acorr.ToString());
-                Acorr = -Acorr;     // looking rom below...
+                Acorr = -Acorr;     // looking from below...
                 Acorr = A - Acorr;
                 // regulate to -45 .. 45
                 while (Acorr <= -45.0)
@@ -9081,14 +9085,6 @@ namespace LitePlacer
                 }
                 DisplayText("Result: dX= " + Xcorr.ToString() + ", dY= " + Ycorr.ToString() + ", dA= " + Acorr.ToString());
                 DisplayText("Target: X= " + X.ToString() + ", Y= " + Y.ToString() + ", A= " + A.ToString());
-
-                /*
-                for (tries = 0; tries < 600; tries++)
-                {
-                    Thread.Sleep(10);
-                    Application.DoEvents();
-                }
-                */
 
                 // -------------------
                 // take part to to X + correction, Y + correction, A+corr

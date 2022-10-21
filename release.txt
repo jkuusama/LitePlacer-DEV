@@ -4,18 +4,13 @@ Build date 10/14/2022
 
 New Features, significant changes
 
-* Added "Save All Settings" button
-* Vision results are now color coded: 
-  Red= wrong size; yellow= right size, wrong distance; green= OK
+* 
 
 ---------------------
 
 Bug Fixes 
 
-* Manually editing CAD position data now invalidates measurements
-* Jogging and test operations are now disabled during homing and startup
-* Failed measurements now always restart cameras
-* Clearer measurement results
+* After placement operations (park, camera switch etc) are now always done before message
 
 ---------------------
 

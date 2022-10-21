@@ -144,7 +144,7 @@ namespace LitePlacer
                     i++;
                 }
                 // if it didn't stop, quit anyway
-                MainForm.DisplayText("** " + Name + " did not stop on OS level");
+                MainForm.DisplayText("** " + Name + " did not stop on OS level, forcing stop.");
                 VideoSource.NewFrame -= new NewFrameEventHandler(Video_NewFrame);
                 VideoSource = null;
                 MonikerString = "Stopped";
