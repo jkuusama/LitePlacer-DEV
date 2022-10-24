@@ -143,6 +143,10 @@ namespace LitePlacer
         const int ReadBufferSize = 10000;
         private string RxString = string.Empty;
 
+        // The DataReceived() routine is called when a charater is received from the serial port.
+        // The data is assumed to be ASCII, terminated with only \n
+        // When \n received, calls Cnc.LineReceived(), without termination character
+
         void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             //Initialize a buffer to hold the received data 
@@ -164,7 +168,7 @@ namespace LitePlacer
                     WorkingString = RxString.Substring(0, RxString.IndexOf("\n", StringComparison.Ordinal) + 1);
                     //Remove the data and the terminator from tString 
                     RxString = RxString.Substring(RxString.IndexOf("\n", StringComparison.Ordinal) + 1);
-                    Cnc.InterpretLine(WorkingString);
+                    Cnc.LineReceived(WorkingString);
                 }
             }
 #pragma warning disable CA1031 // Do not catch general exception types

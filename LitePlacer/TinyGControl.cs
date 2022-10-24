@@ -28,28 +28,8 @@ namespace LitePlacer
         // =================================================================================
 
         #region Communications
-
-        public bool CheckIdentity()
-        {
-            string resp;
-            resp= ReadLineDirectly("{sr:n}", true);
-            if (resp.Contains("{\"r\":") || resp.Contains("tinyg"))
-            {
-                MainForm.DisplayText("TinyG board found.");
-                return true;
-            }
-            return false;
-        }
-
         public bool JustConnected()
         {
-            RawWrite("\x11");  // Xon
-
-            // get initial position
-            if (!Write_m("{sr:n}", 2000, true))
-            {
-                return false;
-            }
             MainForm.DisplayText("Reading TinyG settings:");
             if (!LoopTinyGParameters())
             {
@@ -80,7 +60,7 @@ namespace LitePlacer
         // =================================================================================
         // Write_m():
         // Sends a command to the board, doesn't return until the response is handled
-        // by InterpretLine() (which sets ReadyEvent), or operation times out
+        // by LineReceived() (which sets ReadyEvent), or operation times out
 
         bool BlockingWriteDone = false;
         bool WriteOk = true;
@@ -524,7 +504,7 @@ namespace LitePlacer
         }
 
 
-        public void InterpretLine(string line)
+        public void LineReceived(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
             MainForm.DisplayText("<== " + line);
@@ -739,7 +719,7 @@ namespace LitePlacer
                 return;
             }
 
-        }  // end InterpretLine()
+        }  // end LineReceived()
         public string GetParameterValue(string line)
         {
             // line format is {"r":{"<parameter>":<value>},"f":[<some numbers>]}

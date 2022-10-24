@@ -57,6 +57,7 @@ namespace LitePlacer
         private bool LineAvailable = false;
         private string ReceivedLine = "";
         private bool WriteBusy = false;
+        private bool ExpectingResponse = false;
 
         // so that we don't need to write lock... so many times
         private void ClearReceivedLine()
@@ -138,6 +139,7 @@ namespace LitePlacer
             Timeout = Timeout / 2;
             int i = 0;
             LineAvailable = false;
+            ExpectingResponse = true;
             Com.Write(cmd);
             while (!LineAvailable)
             {
@@ -160,6 +162,7 @@ namespace LitePlacer
             lock (ReceivedLine)
             {
                 line = ReceivedLine;
+                ExpectingResponse=false;
             }
             return line;
         }
@@ -169,7 +172,8 @@ namespace LitePlacer
 
         public void LineReceived(string line)
         {
-            // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
+            // This is called from Cnc.LineReceived (called from SerialComm dataReceived),
+            // and runs in a separate thread than UI            
             MainForm.DisplayText("<== " + line);
             if (line == "ok\n")
             {
@@ -180,6 +184,10 @@ namespace LitePlacer
             {
                 ReceivedLine = line;
                 LineAvailable = true;
+            }
+            if (!ExpectingResponse)
+            {
+                MainForm.DisplayText("*** Duet3() - unsoliticed message", KnownColor.DarkRed, true);
             }
         }
 

@@ -33,6 +33,9 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
 using Newtonsoft.Json;
+using static LitePlacer.CNC;
+using System.Net.NetworkInformation;
+using System.Windows.Shapes;
 //using System.Windows.Controls;
 
 namespace LitePlacer
@@ -229,7 +232,7 @@ namespace LitePlacer
             labelSerialPortStatus.Text = "Starting up";
 
             LabelTestButtons();
-            AttachButtonLogging(this.Controls);
+            AttachHelpHandlers(this.Controls);
 
             if (!CreateDataBackups())
             {
@@ -253,8 +256,7 @@ namespace LitePlacer
             // ======== Setup Video Processing tab:  (needs to be first, other pages need the algorithms info)
 
             InitVideoAlgorithmsUI();
-            // before the feature is fully implemented, hide the stored images tab. This so, that 
-            // I can release a more important bugfix.
+            // before the feature is fully implemented, hide the stored images tab. 
             // AdvancedProcessing_tabControl.TabPages.Remove(StoredImages_tabPage);
 
             // ======== Run Job tab:
@@ -380,7 +382,7 @@ namespace LitePlacer
                 Cnc.MotorPowerOff();
                 Cnc.EnableZswitches();
             }
-            Cnc.Close();
+            Cnc.ClosePort();
 
             if (DownCamera.IsRunning())
             {
@@ -434,7 +436,7 @@ namespace LitePlacer
                     // On first runs, not all data files exist. that is not an error
                     if (File.Exists(fName))
                     {
-                        File.Copy(Path.Combine(FilesPath, fName), Path.Combine(BackupsPath, fName), true);
+                        File.Copy(System.IO.Path.Combine(FilesPath, fName), System.IO.Path.Combine(BackupsPath, fName), true);
                     }
                 }
                 return true;
@@ -588,11 +590,13 @@ namespace LitePlacer
         }
 
         // ==============================================================================================
-        // For diagnostics, log button presses. (Customers tend to send log window contents,
+        // For diagnostics, log button presses so that the button click appears in log window contents.
         // but the window does not log user actions without this.)
-        // http://stackoverflow.com/questions/17949390/log-all-button-clicks-in-win-forms-app
+        // Also, keep track of which control the mouse points at (mouseEnter), so that pressing F1
+        // for help can find help URL from tag
+        // https://stackoverflow.com/questions/7545775/how-to-loop-through-all-controls-in-a-windows-forms-form-or-how-to-find-if-a-par
 
-        public void AttachButtonLogging(System.Windows.Forms.Control.ControlCollection controls)
+        public void AttachHelpHandlers(System.Windows.Forms.Control.ControlCollection controls)
         {
             foreach (var control in controls.Cast<System.Windows.Forms.Control>())
             {
@@ -601,10 +605,8 @@ namespace LitePlacer
                     Button button = (Button)control;
                     button.MouseDown += LogButtonClick; // MouseDown comes before mouse click, we want this to fire first)
                 }
-                else
-                {
-                    AttachButtonLogging(control.Controls);
-                }
+                control.MouseEnter += TrackMouseEnter;
+                AttachHelpHandlers(control.Controls);
             }
         }
 
@@ -614,6 +616,22 @@ namespace LitePlacer
             Button button = sender as Button;
             DisplayText("B: " + button.Text.ToString(CultureInfo.InvariantCulture), KnownColor.DarkGreen, true);
         }
+
+
+        public string LastTag;
+        private void TrackMouseEnter(object sender, EventArgs eventArgs)
+        {
+            System.Windows.Forms.Control control = sender as System.Windows.Forms.Control;
+            if (control.Tag != null)
+            {
+                LastTag = control.Tag.ToString();
+            }
+            else
+            {
+                LastTag = "";
+            }
+        }
+
         // ==============================================================================================
         // =================================================================================
         // Get and save settings from old version if necessary
@@ -1044,7 +1062,7 @@ namespace LitePlacer
                             }
                         }
                     }
-                    //bw.Close();
+                    //bw.ClosePort();
                 }
                 LoadingDataGrid = false;
             }
@@ -1645,8 +1663,13 @@ namespace LitePlacer
                 e.Handled = true;
                 return;
             }
+            if (e.KeyCode == Keys.F1)
+            {
+                // TODO: open url
+                return;
+            }
 
-            if ((e.KeyCode == Keys.F1) && (tabControlPages.SelectedTab.Name == "Nozzles_tabPage"))
+            if ((e.KeyCode == Keys.F2) && (tabControlPages.SelectedTab.Name == "Nozzles_tabPage"))
             {
                 NozzeTip_textBox.Visible = !NozzeTip_textBox.Visible;
             }
@@ -4667,7 +4690,7 @@ namespace LitePlacer
                             return;
                         }
                     }
-                    Cnc.Close();
+                    Cnc.ClosePort();
                     UpdateCncConnectionStatus();
                 }
                 else
@@ -4730,7 +4753,7 @@ namespace LitePlacer
             else
             {
                 buttonConnectSerial.Text = "Close";
-                labelSerialPortStatus.Text = "Connected to " + Cnc.Controlboard.ToString();
+                labelSerialPortStatus.Text = "Connected to " + Cnc.Port;
                 labelSerialPortStatus.ForeColor = Color.Black;
             }
         }
@@ -4774,13 +4797,13 @@ namespace LitePlacer
 
             NoPort_label.Visible = false;
             SaveAlldata_button.Visible = true;
-            // Usder wants close current connection (the button is a toggle) or (re-)connect
+            // User wants close current connection (the button is a toggle) or (re-)connect
             bool JustClose = (Cnc.Connected && !Cnc.ErrorState);
 
             // Close existing connection always
             buttonConnectSerial.Text = "Closing...";
 
-            Cnc.Close();
+            Cnc.ClosePort();
 
             if (JustClose)      // user didn't want to connect (why?)
             {
@@ -4794,28 +4817,71 @@ namespace LitePlacer
             {
                 CncError();
                 Cnc.Connected = false;
-
-            }
-            else if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
-            {
-                Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
-                Cnc.ErrorState = false;
                 UpdateCncConnectionStatus();
-                if (Cnc.JustConnected())
-                {
-                    CheckLatchBackoff();
-                    Cnc.PumpDefaultSetting();
-                    Cnc.VacuumDefaultSetting();
-                    OfferHoming();
-                }
-                else
-                {
-                    CncError();
-                }
+                return;
+            }
+            if (!Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
+            {
+                CncError();
+                Cnc.Connected = false;
+                UpdateCncConnectionStatus();
+                return;
+            }
+
+            // Connection established
+            Setting.CNC_SerialPort = comboBoxSerialPorts.SelectedItem.ToString();
+            Cnc.ErrorState = false;
+            UI_BoardConnected();
+            if (!Cnc.JustConnected())  // does board specific startup things
+            {
+                CncError();
+                UpdateCncConnectionStatus();
+                return;
             }
             UpdateCncConnectionStatus();
+            // Board specific UI stuff
+
+            // System stuff after board connection
+            CheckLatchBackoff();
+            Cnc.PumpDefaultSetting();
+            Cnc.VacuumDefaultSetting();
+            OfferHoming();
+
         }
 
+        private void UI_BoardConnected()
+        {
+            switch (Cnc.Controlboard)
+            {
+                case ControlBoardType.TinyG:
+                    Motors_label.Text = "Axes setup (TinyG board):";
+                    Duet3Motors_tabControl.Visible = false;
+                    TinyGMotors_tabControl.Visible = true;
+                    return;
+                case ControlBoardType.Duet3:
+                    Motors_label.Text = "Axes setup (Duet 3 board):";
+                    TinyGMotors_tabControl.Visible = false;
+                    Duet3Motors_tabControl.Visible = true;
+                    return;
+                case ControlBoardType.unknown:
+                    Motors_label.Text = "Connected to unknown board, internal type" + Cnc.Controlboard.ToString();
+                    TinyGMotors_tabControl.Visible = false;
+                    Duet3Motors_tabControl.Visible = false;
+                    return;
+                case ControlBoardType.other:            // should not happen
+                    Motors_label.Text = "Connected to unknown board, internal type" + Cnc.Controlboard.ToString();
+                    TinyGMotors_tabControl.Visible = false;
+                    Duet3Motors_tabControl.Visible = false;
+                    return;
+                default:            // should not happen
+                    Motors_label.Text = "Connected to unknown board, internal type" + Cnc.Controlboard.ToString();
+                    TinyGMotors_tabControl.Visible = false;
+                    Duet3Motors_tabControl.Visible = false;
+                    return;        // should not happen
+            }
+
+
+        }
         public  void CheckLatchBackoff()
         {
             if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
@@ -6161,10 +6227,10 @@ namespace LitePlacer
                 {
                     bool result;
                     CadDataFileName = CAD_openFileDialog.FileName;
-                    CadFileName_label.Text = Path.GetFileName(CadDataFileName);
-                    CadFilePath_label.Text = Path.GetDirectoryName(CadDataFileName);
+                    CadFileName_label.Text = System.IO.Path.GetFileName(CadDataFileName);
+                    CadFilePath_label.Text = System.IO.Path.GetDirectoryName(CadDataFileName);
                     AllLines = File.ReadAllLines(CadDataFileName, Encoding.Default);
-                    if (Path.GetExtension(CAD_openFileDialog.FileName) == ".pos")
+                    if (System.IO.Path.GetExtension(CAD_openFileDialog.FileName) == ".pos")
                     {
                         result = ParseKiCadData_m(AllLines);
                     }
@@ -6204,8 +6270,8 @@ namespace LitePlacer
             try
             {
                 AllLines = File.ReadAllLines(JobFileName);
-                JobFileName_label.Text = Path.GetFileName(JobFileName);
-                JobFilePath_label.Text = Path.GetDirectoryName(JobFileName);
+                JobFileName_label.Text = System.IO.Path.GetFileName(JobFileName);
+                JobFilePath_label.Text = System.IO.Path.GetDirectoryName(JobFileName);
                 if (!ParseJobData(AllLines))
                 {
                     JobData_GridView.Rows.Clear();
@@ -6238,7 +6304,7 @@ namespace LitePlacer
             {
                 SaveTempCADdata();
                 // Read in job data (.lpj file), if exists
-                string ext = Path.GetExtension(CadDataFileName);
+                string ext = System.IO.Path.GetExtension(CadDataFileName);
                 JobFileName = CadDataFileName.Replace(ext, ".lpj");
                 if (File.Exists(JobFileName))
                 {
@@ -6291,8 +6357,8 @@ namespace LitePlacer
             {
                 SaveCADdata(Job_saveFileDialog.FileName);
                 CadDataFileName = Job_saveFileDialog.FileName;
-                CadFileName_label.Text = Path.GetFileName(CadDataFileName);
-                CadFilePath_label.Text = Path.GetDirectoryName(CadDataFileName);
+                CadFileName_label.Text = System.IO.Path.GetFileName(CadDataFileName);
+                CadFilePath_label.Text = System.IO.Path.GetDirectoryName(CadDataFileName);
             }
         }
 
@@ -6554,8 +6620,8 @@ namespace LitePlacer
             {
                 SaveJobData(Job_saveFileDialog.FileName);
                 JobFileName = Job_saveFileDialog.FileName;
-                JobFileName_label.Text = Path.GetFileName(JobFileName);
-                JobFilePath_label.Text = Path.GetDirectoryName(JobFileName);
+                JobFileName_label.Text = System.IO.Path.GetFileName(JobFileName);
+                JobFilePath_label.Text = System.IO.Path.GetDirectoryName(JobFileName);
             }
         }
 
@@ -10759,7 +10825,7 @@ namespace LitePlacer
             TapeEditDialog.TapesDataGrid = Tapes_dataGridView;
             TapeEditDialog.Row = Tapes_dataGridView.Rows[row];
             TapeEditDialog.CreatingNew = CreatingNew;
-            AttachButtonLogging(TapeEditDialog.Controls);
+            AttachHelpHandlers(TapeEditDialog.Controls);
             // TapeEditDialog.Parent = this;
             TapeEditDialog.StartPosition = FormStartPosition.CenterParent;
             TapeEditDialog.ShowDialog(this);

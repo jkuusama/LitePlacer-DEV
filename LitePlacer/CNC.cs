@@ -9,6 +9,8 @@ using System.Threading;
 using System.Globalization;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using AForge.Video;
+using MathNet.Numerics;
 
 /*
 CNC class handles communication with the control board. Most calls are just passed to a supported board.
@@ -95,6 +97,7 @@ namespace LitePlacer
         public Duet3class Duet3;
 
         public enum ControlBoardType { TinyG, Duet3, other, unknown };
+        // see AppSettings.cs, CNC_boardtype
         public ControlBoardType Controlboard { get; set; } = ControlBoardType.unknown;
 
         public bool SlackCompensation { get; set; }
@@ -331,33 +334,13 @@ namespace LitePlacer
         {
             ErrorState = true;
             // Connected = false;
-            // Com.Close();
+            // Com.ClosePort();
             MainForm.ValidMeasurement_checkBox.Checked = false;
             MainForm.UpdateCncConnectionStatus();
         }
 
-        public void InterpretLine(string line)
-        {
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                Duet3.LineReceived(line);
-            }
-            else if (Controlboard == ControlBoardType.TinyG)
-            {
-                TinyG.InterpretLine(line);
-            }
-            else if (line.Contains("\", \"msg\":\"SYSTEM READY\"}"))     // TinyG reset message
-            {
-                TinyG.InterpretLine(line);  // This will give the user a message
-            }
-            else 
-            {
-                // MainForm.DisplayText("*** Cnc.InterpretLine(), unknown board.", KnownColor.DarkRed, true);
-                MainForm.DisplayText("Line: " + line, KnownColor.Black, true);
-            }
-        }
-
-
+        // =============================================================================
+        // Serial port:
         bool OpenPort(string port)
         {
             if (Com.IsOpen)
@@ -386,74 +369,261 @@ namespace LitePlacer
             return true;
         }
 
+        public void ClosePort()
+        {
+            Com.Close();
+            ErrorState = false;
+            Connected = false;
+            Homing = false;
+        }
 
         public bool Connect(string port)
         {
             ErrorState = false;
             Connected = false;
 
-
-            // TinyG?
             if (!OpenPort(port))
             {
                 return false;
             }
+
             Connected = true;
             Port = port;
-
-            Controlboard = ControlBoardType.TinyG;       // to direct the response to correct module
-            MainForm.Motors_label.Text = "Axes setup (TinyG board):";
-            MainForm.TinyGMotors_tabControl.Visible = true;
-            ErrorState = false;
-            return true;
-
-            // identity check causes issues. Remove for now.
-            // TODO: Perhaps a dropdown list TinyG/Duet3/other?
-            /*
-            if (TinyG.CheckIdentity())
+            if (!FindBoardType())
             {
-                MainForm.Motors_label.Text = "Axes setup (TinyG board):";
-                MainForm.TinyGMotors_tabControl.Visible = true;
-                ErrorState = false;
-                return true;
-            }
-            else
-            {
-                Com.Close();
-                Connected = false;
-            }
-            Thread.Sleep(200);
-
-            // Duet?
-            if (!OpenPort(port))
-            {
+                RaiseError();
                 return false;
             }
-            Connected = true;
-            Controlboard = ControlBoardType.Duet3;
-            if (Duet3.CheckIdentity())
-            {
-                MainForm.Motors_label.Text = "Axes setup (Duet3 board):";
-                MainForm.Duet3Motors_tabControl.Visible = true;
-                ErrorState = false;
-                return true;
-            }
+            return true;
+        }
 
-            Controlboard = ControlBoardType.unknown;
-            MainForm.DisplayText("*** Cnc.Connect(), did not find a supported board.", KnownColor.DarkRed, true);
-            RaiseError();
-            return false;
-           */
+        // Write, that doesn't care what we think of the board or communication link status
+        public void ForceWrite(string command)
+        {
+            Com.Write(command);
+        }
+
+        // =============================================================================
+        // Basic communication
+
+        public void LineReceived(string line)
+        {
+            if (line.Contains("\", \"msg\":\"SYSTEM READY\"}"))     // TinyG reset message
+            {
+                TinyG.LineReceived(line);  // This will raise error and give the user a message
+                return;
+            }
+            switch (Controlboard)
+            {
+                case ControlBoardType.TinyG:
+                    TinyG.LineReceived(line);
+                    return;
+                case ControlBoardType.Duet3:
+                    Duet3.LineReceived(line);
+                    return;
+                case ControlBoardType.unknown: // used in board recognition
+                    UnknownBoardLineReceived(line);
+                    return;
+                case ControlBoardType.other:
+                    return;        // should not happen
+                default:
+                    return;        // should not happen
+            }
         }
 
 
+        // When we don't know the board, we store the response(s) here
+        public List<string> ReceivedLines = new List<string> { };
+        public bool LineAvailable = false;
+
+        // receive line:
+        public void UnknownBoardLineReceived(string line)
+        {
+            lock (ReceivedLines)
+            {
+                ReceivedLines.Add(line);
+            }
+            LineAvailable = true;
+        }
+
+        // read line:
+        public string ReadLine()
+        {
+            lock (ReceivedLines)
+            {
+                if (!LineAvailable || ReceivedLines.Count == 0)
+                {
+                    MainForm.ShowMessageBox(
+                            "Readline: No data",
+                            "Sloppy programmer error",
+                            MessageBoxButtons.OK);
+                    return ("");
+                }
+                if (!LineAvailable || ReceivedLines.Count == 0)
+                {
+                    MainForm.ShowMessageBox(
+                            "Readline: No data",
+                            "Sloppy programmer error",
+                            MessageBoxButtons.OK);
+                    return ("");
+                }
+                string ret = ReceivedLines.First();
+                ReceivedLines.RemoveAt(0);
+                if (ReceivedLines.Count == 0)
+                {
+                    LineAvailable = false;
+                }
+                return ret;
+            }
+        }
+
+        public void ClearReceivedBuffers()
+        {
+            ReceivedLines.Clear();
+            LineAvailable = false;
+        }
+
+        public bool FindBoardType()
+        {
+
+            // For clean communication, try the board last identified.
+            Controlboard = ControlBoardType.unknown;
+
+            // TinyG
+            if (MainForm.Setting.CNC_boardtype == 1)
+            {
+                if (CheckTinyG())
+                {
+                    return true;
+                }
+                // Don't know what it was, but it wasn't TinyG.
+                // Close and reopen port, just in case
+                ClosePort();
+                Thread.Sleep(200);
+                if (!OpenPort(Port))
+                {
+                    MainForm.DisplayText("*** FindBoardType(), port re-open failed", KnownColor.DarkRed, true);
+                    return false;
+                }
+                Connected = true;
+
+                if (CheckDuet3())
+                {
+                    return true;
+                }
+            }
+            // Duet3
+            else
+            {
+                if (CheckDuet3())
+                {
+                    return true;
+                }
+                // close and reopen port, just in case
+                ClosePort();
+                Thread.Sleep(200);
+                if (!OpenPort(Port))
+                {
+                    MainForm.DisplayText("*** FindBoardType(), port re-open failed", KnownColor.DarkRed, true);
+                    return false;
+                }
+                Connected = true;
+
+                if (CheckTinyG())
+                {
+                    return true;
+                }
+            }
+            MainForm.DisplayText("*** Serial port connected, did not find a supported board", KnownColor.DarkRed, true);
+            return false;
+        }
+
+
+        private bool CheckTinyG()
+        {
+            // board type is unknown at this point
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** CheckTinyG() - error state", KnownColor.DarkRed, true);
+                return false;
+            }
+            Thread.Sleep(200);  // TinyG wake up delay
+            ClearReceivedBuffers();
+            Com.Write("\x11{sr:n}");  // Xon + status request
+            int delay = 0;
+            while (delay < 200)
+            {
+                if (LineAvailable)
+                {
+                    break;
+                }
+                else
+                {
+                    Thread.Sleep(1);
+                    delay++;
+                }
+            }
+            if (delay >= 200)
+            {
+                MainForm.DisplayText("*** CheckTinyG() - no response", KnownColor.DarkRed, true);
+                return false;
+            }
+            string resp = ReadLine();
+            if (resp.Contains("{\"r\":") || resp.Contains("tinyg"))
+            {
+                MainForm.DisplayText("TinyG board found.");
+                Controlboard = ControlBoardType.TinyG;
+                MainForm.Setting.CNC_boardtype = 1;
+                TinyG.LineReceived(resp);   // updates position info
+                return true;
+            }
+            return false;
+        }
+
+
+        private bool CheckDuet3()
+        {
+            if (ErrorState)
+            {
+                MainForm.DisplayText("*** CheckDuet3() - error state", KnownColor.DarkRed, true);
+                return false;
+            }
+            Thread.Sleep(100);  //  wake up delay
+            ClearReceivedBuffers();
+            Com.Write("M115");
+            int delay = 0;
+            while (delay < 200)
+            {
+                if (LineAvailable)
+                {
+                    break;
+                }
+                else
+                {
+                    Thread.Sleep(1);
+                    delay++;
+                }
+            }
+            if (delay >= 200)
+            {
+                MainForm.DisplayText("*** CheckDuet3() - no response", KnownColor.DarkRed, true);
+                return false;
+            }
+            string resp = ReadLine();
+            if (resp.Contains("MB6HC"))
+            {
+                MainForm.DisplayText("Duet 3 board found.");
+                Controlboard = ControlBoardType.Duet3;
+                ClearReceivedBuffers();     // remove ok
+                MainForm.Setting.CNC_boardtype = 2;
+                return true;
+            }
+            return false;
+        }
+
         public bool JustConnected()
         {
-            // Called after a control board connection is estabished.
-            // Set sleep time according to slowest board supported.
-            // TinyG: 200 (ms)
-            // Duet 3: ??
-            Thread.Sleep(200);
+            // Called after a control board connection is estabished and board type found.
 
             if (Controlboard == ControlBoardType.Duet3)
             {
@@ -477,21 +647,10 @@ namespace LitePlacer
                 RaiseError();
                 return false;
             }
-            // Do settings that need to be done always
             return true;
         }
 
 
-        public void Close()
-        {
-            Com.Close();
-            ErrorState = false;
-            Connected = false;
-            Homing = false;
-        }
-
-
-        // Sends a command to control board, doesn't return until the response is handled
         public bool Write_m (string command, int Timeout = 250)
         {
             if (Controlboard == ControlBoardType.Duet3)
@@ -527,50 +686,6 @@ namespace LitePlacer
         }
 
 
-        // For operations that cause conflicts with event firings or don't give response
-        // Caller does waiting, if needed.
-        public bool RawWrite(string command)
-        {
-            if (Controlboard == ControlBoardType.Duet3)
-            {
-                if (Duet3.RawWrite(command))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            };
-
-            if (Controlboard == ControlBoardType.TinyG)
-            {
-                if (TinyG.RawWrite(command))
-                {
-                    return true;
-                }
-                else
-                {
-                    RaiseError();
-                    return false;
-                }
-            };
-
-            MainForm.DisplayText("*** Cnc.RawWrite(), unknown board.", KnownColor.DarkRed, true);
-            Connected = false;
-            ErrorState = true;
-            return false;
-        }
-
-
-
-        // ===================================================================
-        // Write, that doesn't care what we think of the board or communication link status
-        public void ForceWrite(string command)
-        {
-            Com.Write(command);
-        }
 
         #endregion Communications
 

@@ -50,7 +50,9 @@ namespace LitePlacer
         public int CNC_ZspeedMax { get; set; } = 1000;
         public double CNC_RegularMoveTimeout { get; set; } = 10.0;
         public bool CNC_OptimizeA { get; set; } = true;
-
+        public int CNC_boardtype { get; set; } = 1;
+        // must match CNC.cs, definition of ControlBoardType
+        // TinyG = 1, Duet3 = 2, other = 3, unknown= 4
 
         public double General_BelowPCB_Allowance { get; set; } = 3;
         public bool General_CheckForUpdates { get; set; } = false;
