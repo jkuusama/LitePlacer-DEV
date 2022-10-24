@@ -1483,7 +1483,7 @@ namespace LitePlacer
 
         public bool MovementIsBusy()
         {
-            if (JoggingBusy || StartingUp)
+            if (JoggingBusy || StartingUp || Homing || CNCstarting)
             {
                 DisplayText("Other operations are underway, please try again", KnownColor.DarkGreen, true);
                 return true;
@@ -1512,7 +1512,7 @@ namespace LitePlacer
             {
                 return;
             }
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -1615,7 +1615,7 @@ namespace LitePlacer
                 e.Handled = true;
                 e.SuppressKeyPress = true;
 
-                if (MovementIsBusy() || Homing)
+                if (MovementIsBusy())
                 {
                     return;
                 }
@@ -1699,6 +1699,11 @@ namespace LitePlacer
                 !((e.KeyCode == Keys.F11) || (e.KeyCode == Keys.F12)))  // F11&F12: It is ok to move z manually despite of Zguard
             {
                 DisplayText("Nozzle is down", KnownColor.DarkRed, true);
+                return;
+            }
+
+            if (MovementIsBusy())
+            {
                 return;
             }
 
@@ -1805,7 +1810,7 @@ namespace LitePlacer
         private void Jog(object sender, KeyEventArgs e)
         {
 
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -2031,7 +2036,7 @@ namespace LitePlacer
         private void GoX_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -2054,7 +2059,7 @@ namespace LitePlacer
         private void GoY_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -2076,7 +2081,7 @@ namespace LitePlacer
         private void GoZ_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -2096,7 +2101,7 @@ namespace LitePlacer
         private void GoA_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -2119,7 +2124,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -2195,7 +2200,7 @@ namespace LitePlacer
 
         private void LoadCurrentPosition_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -2208,7 +2213,7 @@ namespace LitePlacer
 
         private void SetCurrentPosition_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -2557,8 +2562,6 @@ namespace LitePlacer
             {
                 return false;
             }
-            Homing = true;
-
             OpticalHome_button.Enabled = false;
             PositionConfidence = false;
             OpticalHome_button.BackColor = Color.Red;
@@ -2568,14 +2571,12 @@ namespace LitePlacer
             {
                 OpticalHome_button.BackColor = Color.Red;
                 OpticalHome_button.Enabled = true;
-                Homing = false;
                 return false;
             }
             if (!OpticalHoming_m())
             {
                 OpticalHome_button.BackColor = Color.Red;
                 OpticalHome_button.Enabled = true;
-                Homing = false;
                 return false;
             }
             if (VigorousHoming_checkBox.Checked)
@@ -2584,7 +2585,6 @@ namespace LitePlacer
                 if (!DoTheShake())
                 {
                     OpticalHome_button.Enabled = true;
-                    Homing = false;
                     return false;
                 }
                 // home again
@@ -2592,7 +2592,6 @@ namespace LitePlacer
                 {
                     OpticalHome_button.BackColor = Color.Red;
                     OpticalHome_button.Enabled = true;
-                    Homing = false;
                     return false;
                 }
             }
@@ -2601,7 +2600,6 @@ namespace LitePlacer
             PositionConfidence = true;
             MeasureAndSet_button.Enabled = true;
             OpticalHome_button.Enabled = true;
-            Homing = false;
             return true;
         }
 
@@ -2695,7 +2693,9 @@ namespace LitePlacer
         public bool Homing = false;
         private void OpticalHome_button_Click(object sender, EventArgs e)
         {
+            Homing = true;
             DoHoming();
+            Homing = false;
         }
 
 
@@ -4768,6 +4768,7 @@ namespace LitePlacer
         }
 
         private bool MessageShown = false;
+        private bool CNCstarting = false;
 
         private void ConnectToCnc(string port)
         {
@@ -5076,7 +5077,7 @@ namespace LitePlacer
         private void Park_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5097,7 +5098,7 @@ namespace LitePlacer
 
         private void TestX_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5113,7 +5114,7 @@ namespace LitePlacer
 
         private void TestY_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5130,7 +5131,7 @@ namespace LitePlacer
 
         private void TestXYA_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5146,7 +5147,7 @@ namespace LitePlacer
 
         private void TestXY_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5162,7 +5163,7 @@ namespace LitePlacer
 
         private void TestYX_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5178,7 +5179,7 @@ namespace LitePlacer
 
         private void TestZ_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5213,7 +5214,7 @@ namespace LitePlacer
 
         private void TestA_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5316,7 +5317,7 @@ namespace LitePlacer
 
         private void HomeX_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5326,7 +5327,7 @@ namespace LitePlacer
 
         private void HomeY_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5336,7 +5337,7 @@ namespace LitePlacer
 
         private void HomeZ_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5347,7 +5348,7 @@ namespace LitePlacer
 
         private void HomeXY_button_Click(object sender, EventArgs e)
         {
-            if (!HomeX_m() || Homing)
+            if (!HomeX_m())
                 return;
             HomeY_m();
         }
@@ -5355,7 +5356,7 @@ namespace LitePlacer
 
         private void HomeXYZ_button_Click(object sender, EventArgs e)
         {
-            if (!HomeZ_m() || Homing)
+            if (!HomeZ_m())
                 return;
             if (!HomeX_m())
                 return;
@@ -5800,7 +5801,7 @@ namespace LitePlacer
 
         private void SetMark1_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5817,7 +5818,7 @@ namespace LitePlacer
 
         private void SetMark2_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5834,7 +5835,7 @@ namespace LitePlacer
 
         private void SetMark3_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5851,7 +5852,7 @@ namespace LitePlacer
 
         private void SetMark4_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5868,7 +5869,7 @@ namespace LitePlacer
 
         private void SetMark5_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5885,7 +5886,7 @@ namespace LitePlacer
 
         private void SetMark6_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5904,7 +5905,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5922,7 +5923,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5940,7 +5941,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5958,7 +5959,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5976,7 +5977,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -5994,7 +5995,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -11615,7 +11616,7 @@ namespace LitePlacer
             DisplayText("test 1: Pick up this (probing)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -11649,7 +11650,7 @@ namespace LitePlacer
             DisplayText("test 2: Place here (probing)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -11686,7 +11687,7 @@ namespace LitePlacer
             DisplayText("test 3: Probe down (using nozzle correction)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -11712,7 +11713,7 @@ namespace LitePlacer
             DisplayText("test 4: Probe down (no correction)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -11733,7 +11734,7 @@ namespace LitePlacer
         private void Test5_button_Click(object sender, EventArgs e)
         {
             DisplayText("test 5: Nozzle up");
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -11745,8 +11746,12 @@ namespace LitePlacer
         private void Test6_button_Click(object sender, EventArgs e)
         {
             DisplayText("test 6: Nozzle down cam");
+            if (MovementIsBusy())
+            {
+                return;
+            }
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -11765,7 +11770,7 @@ namespace LitePlacer
         {
             DisplayText("test 7: Nozzle to up cam (do nozzle down to check)");
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
@@ -14056,11 +14061,11 @@ namespace LitePlacer
 
         private void MeasureAndSet_button_Click(object sender, EventArgs e)
         {
-            if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy() || Homing)
+            if (MovementIsBusy())
             {
                 return;
             }
+            if (!CheckPositionConfidence()) return;
 
             if (!CNC_XYA_m(0.0, 0.0, Cnc.CurrentA))
             {

@@ -30,7 +30,7 @@ namespace LitePlacer
 
         public bool CheckIdentity()
         {
-            string resp = GetResponse_m("M115", 200, true);
+            string resp = GetResponse_m("M115", 200, false);
             if (resp.Contains("Duet 3"))
             {
                 MainForm.DisplayText("Duet 3 board found.");
