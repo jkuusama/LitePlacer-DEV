@@ -60,6 +60,7 @@ namespace LitePlacer
             this.Cancel_button.Name = "Cancel_button";
             this.Cancel_button.Size = new System.Drawing.Size(75, 23);
             this.Cancel_button.TabIndex = 2;
+            this.Cancel_button.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.Cancel_button.Text = "Cancel";
             this.Cancel_button.UseVisualStyleBackColor = true;
             this.Cancel_button.Click += new System.EventHandler(this.Cancel_button_Click);
@@ -70,6 +71,7 @@ namespace LitePlacer
             this.OK_button.Name = "OK_button";
             this.OK_button.Size = new System.Drawing.Size(75, 23);
             this.OK_button.TabIndex = 3;
+            this.OK_button.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.OK_button.Text = "OK";
             this.OK_button.UseVisualStyleBackColor = true;
             this.OK_button.Click += new System.EventHandler(this.OK_button_Click);
@@ -81,6 +83,7 @@ namespace LitePlacer
             this.Status_label.Name = "Status_label";
             this.Status_label.Size = new System.Drawing.Size(40, 13);
             this.Status_label.TabIndex = 6;
+            this.Status_label.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.Status_label.Text = "Status:";
             // 
             // CheckStatus_button
@@ -89,6 +92,7 @@ namespace LitePlacer
             this.CheckStatus_button.Name = "CheckStatus_button";
             this.CheckStatus_button.Size = new System.Drawing.Size(75, 23);
             this.CheckStatus_button.TabIndex = 7;
+            this.CheckStatus_button.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.CheckStatus_button.Text = "Check";
             this.CheckStatus_button.UseVisualStyleBackColor = true;
             this.CheckStatus_button.Click += new System.EventHandler(this.CheckStatus_button_Click);
@@ -100,6 +104,7 @@ namespace LitePlacer
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 8;
+            this.label2.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.label2.Text = "Status:";
             // 
             // label1
@@ -109,6 +114,7 @@ namespace LitePlacer
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 13);
             this.label1.TabIndex = 0;
+            this.label1.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.label1.Text = "Exposure:";
             // 
             // Exposure_trackBar
@@ -117,6 +123,7 @@ namespace LitePlacer
             this.Exposure_trackBar.Name = "Exposure_trackBar";
             this.Exposure_trackBar.Size = new System.Drawing.Size(218, 45);
             this.Exposure_trackBar.TabIndex = 4;
+            this.Exposure_trackBar.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.Exposure_trackBar.Value = 5;
             this.Exposure_trackBar.Scroll += new System.EventHandler(this.Exposure_trackBar_Scroll);
             // 
@@ -127,6 +134,7 @@ namespace LitePlacer
             this.ExposureAuto_checkBox.Name = "ExposureAuto_checkBox";
             this.ExposureAuto_checkBox.Size = new System.Drawing.Size(48, 17);
             this.ExposureAuto_checkBox.TabIndex = 5;
+            this.ExposureAuto_checkBox.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.ExposureAuto_checkBox.Text = "Auto";
             this.ExposureAuto_checkBox.UseVisualStyleBackColor = true;
             this.ExposureAuto_checkBox.CheckedChanged += new System.EventHandler(this.ExposureAuto_checkBox_CheckedChanged);
@@ -138,6 +146,7 @@ namespace LitePlacer
             this.ExposureValue_label.Name = "ExposureValue_label";
             this.ExposureValue_label.Size = new System.Drawing.Size(13, 13);
             this.ExposureValue_label.TabIndex = 9;
+            this.ExposureValue_label.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.ExposureValue_label.Text = "8";
             // 
             // IrisValue_label
@@ -147,6 +156,7 @@ namespace LitePlacer
             this.IrisValue_label.Name = "IrisValue_label";
             this.IrisValue_label.Size = new System.Drawing.Size(13, 13);
             this.IrisValue_label.TabIndex = 13;
+            this.IrisValue_label.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.IrisValue_label.Text = "8";
             // 
             // IrisAuto_checkBox
@@ -156,6 +166,7 @@ namespace LitePlacer
             this.IrisAuto_checkBox.Name = "IrisAuto_checkBox";
             this.IrisAuto_checkBox.Size = new System.Drawing.Size(48, 17);
             this.IrisAuto_checkBox.TabIndex = 12;
+            this.IrisAuto_checkBox.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.IrisAuto_checkBox.Text = "Auto";
             this.IrisAuto_checkBox.UseVisualStyleBackColor = true;
             this.IrisAuto_checkBox.CheckedChanged += new System.EventHandler(this.IrisAuto_checkBox_CheckedChanged);
@@ -166,6 +177,7 @@ namespace LitePlacer
             this.Iris_trackBar.Name = "Iris_trackBar";
             this.Iris_trackBar.Size = new System.Drawing.Size(218, 45);
             this.Iris_trackBar.TabIndex = 11;
+            this.Iris_trackBar.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.Iris_trackBar.Value = 5;
             this.Iris_trackBar.Scroll += new System.EventHandler(this.Iris_trackBar_Scroll);
             // 
@@ -176,6 +188,7 @@ namespace LitePlacer
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(23, 13);
             this.label4.TabIndex = 10;
+            this.label4.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.label4.Text = "Iris:";
             // 
             // FocusValue_label
@@ -185,6 +198,7 @@ namespace LitePlacer
             this.FocusValue_label.Name = "FocusValue_label";
             this.FocusValue_label.Size = new System.Drawing.Size(19, 13);
             this.FocusValue_label.TabIndex = 17;
+            this.FocusValue_label.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.FocusValue_label.Text = "88";
             // 
             // FocusAuto_checkBox
@@ -194,6 +208,7 @@ namespace LitePlacer
             this.FocusAuto_checkBox.Name = "FocusAuto_checkBox";
             this.FocusAuto_checkBox.Size = new System.Drawing.Size(48, 17);
             this.FocusAuto_checkBox.TabIndex = 16;
+            this.FocusAuto_checkBox.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.FocusAuto_checkBox.Text = "Auto";
             this.FocusAuto_checkBox.UseVisualStyleBackColor = true;
             this.FocusAuto_checkBox.CheckedChanged += new System.EventHandler(this.FocusAuto_checkBox_CheckedChanged);
@@ -204,6 +219,7 @@ namespace LitePlacer
             this.Focus_trackBar.Name = "Focus_trackBar";
             this.Focus_trackBar.Size = new System.Drawing.Size(218, 45);
             this.Focus_trackBar.TabIndex = 15;
+            this.Focus_trackBar.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.Focus_trackBar.Value = 5;
             this.Focus_trackBar.Scroll += new System.EventHandler(this.Focus_trackBar_Scroll);
             // 
@@ -214,6 +230,7 @@ namespace LitePlacer
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(39, 13);
             this.label5.TabIndex = 14;
+            this.label5.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.label5.Text = "Focus:";
             // 
             // Resolution_label
@@ -223,6 +240,7 @@ namespace LitePlacer
             this.Resolution_label.Name = "Resolution_label";
             this.Resolution_label.Size = new System.Drawing.Size(21, 13);
             this.Resolution_label.TabIndex = 18;
+            this.Resolution_label.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.Resolution_label.Text = "res";
             // 
             // Fps_label
@@ -232,6 +250,7 @@ namespace LitePlacer
             this.Fps_label.Name = "Fps_label";
             this.Fps_label.Size = new System.Drawing.Size(24, 13);
             this.Fps_label.TabIndex = 19;
+            this.Fps_label.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.Fps_label.Text = "Fps";
             // 
             // CameraProperties
@@ -260,6 +279,7 @@ namespace LitePlacer
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CameraProperties";
+            this.Tag = "https://liteplacer.com/setup-cameras-page/";
             this.Text = "Camera Properties";
             this.Shown += new System.EventHandler(this.CameraProperties_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.Exposure_trackBar)).EndInit();

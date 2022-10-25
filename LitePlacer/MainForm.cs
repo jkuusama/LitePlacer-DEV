@@ -1665,7 +1665,14 @@ namespace LitePlacer
             }
             if (e.KeyCode == Keys.F1)
             {
-                // TODO: open url
+                if (LastTag != null)
+                {
+                    if (LastTag!="")
+                    {
+                        System.Diagnostics.Process.Start(LastTag);
+                    }
+
+                }
                 return;
             }
 

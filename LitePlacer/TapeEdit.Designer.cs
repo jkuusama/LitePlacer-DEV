@@ -90,6 +90,7 @@
             this.TapeEditOK_button.Name = "TapeEditOK_button";
             this.TapeEditOK_button.Size = new System.Drawing.Size(75, 23);
             this.TapeEditOK_button.TabIndex = 0;
+            this.TapeEditOK_button.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.TapeEditOK_button.Text = "OK";
             this.TapeEditOK_button.UseVisualStyleBackColor = true;
             this.TapeEditOK_button.Click += new System.EventHandler(this.TapeEditOK_button_Click);
@@ -100,6 +101,7 @@
             this.ID_textBox.Name = "ID_textBox";
             this.ID_textBox.Size = new System.Drawing.Size(100, 20);
             this.ID_textBox.TabIndex = 1;
+            this.ID_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.ID_textBox, "Name of the tape (ex: 0805, 10k)");
             // 
             // label1
@@ -109,6 +111,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(18, 13);
             this.label1.TabIndex = 2;
+            this.label1.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label1.Text = "ID";
             this.toolTip1.SetToolTip(this.label1, "Name of the tape (ex: 0805, 10k)");
             // 
@@ -124,6 +127,7 @@
             this.TapeOrientation_comboBox.Name = "TapeOrientation_comboBox";
             this.TapeOrientation_comboBox.Size = new System.Drawing.Size(61, 21);
             this.TapeOrientation_comboBox.TabIndex = 3;
+            this.TapeOrientation_comboBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.TapeOrientation_comboBox, "Which way the part count increases.\r\n+Y: Tape holes on right\r\n-Y: Tape holes on l" +
         "eft\r\n+X: Tape holes down\r\n-X: Tape holes up");
             // 
@@ -134,6 +138,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 4;
+            this.label2.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label2.Text = "Orientation";
             this.toolTip1.SetToolTip(this.label2, "Which way the part count increases.\r\n+Y: Tape holes on right\r\n-Y: Tape holes on l" +
         "eft\r\n+X: Tape holes down\r\n-X: Tape holes up");
@@ -150,6 +155,7 @@
             this.TapeRotation_comboBox.Name = "TapeRotation_comboBox";
             this.TapeRotation_comboBox.Size = new System.Drawing.Size(61, 21);
             this.TapeRotation_comboBox.TabIndex = 5;
+            this.TapeRotation_comboBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.TapeRotation_comboBox, "Manufactures put parts on tapes rotated in any which way.\r\nPart on a tape in +Y o" +
         "rientation (holes to right) and with 0 deg.\r\nrotation in the CAD data, is rotate" +
         "d this much when placed.");
@@ -161,6 +167,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 13);
             this.label3.TabIndex = 6;
+            this.label3.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label3.Text = "Rotation";
             this.toolTip1.SetToolTip(this.label3, "Manufactures put parts on tapes rotated in any which way.\r\nPart on a tape in +Y o" +
         "rientation (holes to right) and with 0 deg.\r\nrotation in the CAD data, is rotate" +
@@ -173,6 +180,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(39, 13);
             this.label4.TabIndex = 8;
+            this.label4.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label4.Text = "Nozzle";
             this.toolTip1.SetToolTip(this.label4, "Manufactures put parts on tapes rotated in any which way.\r\nPart on a tape in +Y o" +
         "rientation (holes to right) and with 0 deg.\r\nrotation in the CAD data, is rotate" +
@@ -184,6 +192,7 @@
             this.TapeOffsetX_textBox.Name = "TapeOffsetX_textBox";
             this.TapeOffsetX_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapeOffsetX_textBox.TabIndex = 9;
+            this.TapeOffsetX_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.TapeOffsetX_textBox, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
         " part holder or somethign like that,\r\nyou can set a non-standard measures here.");
             // 
@@ -193,6 +202,7 @@
             this.TapePitch_textBox.Name = "TapePitch_textBox";
             this.TapePitch_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapePitch_textBox.TabIndex = 10;
+            this.TapePitch_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.TapePitch_textBox, resources.GetString("TapePitch_textBox.ToolTip"));
             this.TapePitch_textBox.TextChanged += new System.EventHandler(this.TapePitch_textBox_TextChanged);
             // 
@@ -203,6 +213,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(45, 13);
             this.label5.TabIndex = 12;
+            this.label5.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label5.Text = "Offset X";
             this.toolTip1.SetToolTip(this.label5, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
         " part holder or somethign like that,\r\nyou can set a non-standard measures here.");
@@ -214,6 +225,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(52, 13);
             this.label6.TabIndex = 13;
+            this.label6.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label6.Text = "Part pitch";
             this.toolTip1.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
             // 
@@ -228,6 +240,7 @@
             this.Nozzle_numericUpDown.Name = "Nozzle_numericUpDown";
             this.Nozzle_numericUpDown.Size = new System.Drawing.Size(37, 20);
             this.Nozzle_numericUpDown.TabIndex = 7;
+            this.Nozzle_numericUpDown.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.Nozzle_numericUpDown, "Which nozzle to use for these parts");
             this.Nozzle_numericUpDown.Value = new decimal(new int[] {
             1,
@@ -265,6 +278,7 @@
             this.TapeWidth_comboBox.Name = "TapeWidth_comboBox";
             this.TapeWidth_comboBox.Size = new System.Drawing.Size(77, 21);
             this.TapeWidth_comboBox.TabIndex = 11;
+            this.TapeWidth_comboBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.TapeWidth_comboBox, "Select a standard size");
             this.TapeWidth_comboBox.SelectedIndexChanged += new System.EventHandler(this.TapeWidth_comboBox_SelectedIndexChanged);
             // 
@@ -274,6 +288,7 @@
             this.TapeOffsetY_textBox.Name = "TapeOffsetY_textBox";
             this.TapeOffsetY_textBox.Size = new System.Drawing.Size(48, 20);
             this.TapeOffsetY_textBox.TabIndex = 14;
+            this.TapeOffsetY_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.TapeOffsetY_textBox, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
         " part holder or somethign like that,\r\nyou can set a non-standard measures here.");
             // 
@@ -284,6 +299,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(45, 13);
             this.label7.TabIndex = 15;
+            this.label7.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label7.Text = "Offset Y";
             this.toolTip1.SetToolTip(this.label7, "Automatically set if you use standard tape, selected above.\r\nIf you have a custom" +
         " part holder or somethign like that,\r\nyou can set a non-standard measures here.");
@@ -295,6 +311,7 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(63, 13);
             this.label8.TabIndex = 17;
+            this.label8.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label8.Text = "Tape Width";
             this.toolTip1.SetToolTip(this.label8, "Select a standard size");
             // 
@@ -304,6 +321,7 @@
             this.Capacity_textBox.Name = "Capacity_textBox";
             this.Capacity_textBox.Size = new System.Drawing.Size(48, 20);
             this.Capacity_textBox.TabIndex = 20;
+            this.Capacity_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.Capacity_textBox.Text = "1";
             this.toolTip1.SetToolTip(this.Capacity_textBox, "How many parts on a strip\r\n0: You are prompted to place a part at the location\r\n<" +
         "0: Infinite (feeder)");
@@ -317,6 +335,7 @@
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(48, 13);
             this.label10.TabIndex = 21;
+            this.label10.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label10.Text = "Capacity";
             this.toolTip1.SetToolTip(this.label10, "How many parts on a strip\r\n0: You are prompted to place a part at the location\r\n<" +
         "0: Infinite (feeder)");
@@ -333,6 +352,7 @@
             this.Type_comboBox.Name = "Type_comboBox";
             this.Type_comboBox.Size = new System.Drawing.Size(114, 21);
             this.Type_comboBox.TabIndex = 22;
+            this.Type_comboBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.Type_comboBox, "What vision algorithm is used");
             // 
             // label11
@@ -342,6 +362,7 @@
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(31, 13);
             this.label11.TabIndex = 23;
+            this.label11.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label11.Text = "Type";
             this.toolTip1.SetToolTip(this.label11, "What optical filter set is used");
             // 
@@ -352,6 +373,7 @@
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(50, 13);
             this.label12.TabIndex = 25;
+            this.label12.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label12.Text = "Next part";
             this.toolTip1.SetToolTip(this.label12, "Number of next part used for placement");
             // 
@@ -361,6 +383,7 @@
             this.NextPart_textBox.Name = "NextPart_textBox";
             this.NextPart_textBox.Size = new System.Drawing.Size(48, 20);
             this.NextPart_textBox.TabIndex = 24;
+            this.NextPart_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.NextPart_textBox.Text = "1";
             this.toolTip1.SetToolTip(this.NextPart_textBox, "Number of next part used for placement");
             this.NextPart_textBox.TextChanged += new System.EventHandler(this.NextPart_textBox_TextChanged);
@@ -372,6 +395,7 @@
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(36, 13);
             this.label13.TabIndex = 29;
+            this.label13.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label13.Text = "First Y";
             this.toolTip1.SetToolTip(this.label13, "Location of first hole/alingment mark/part");
             // 
@@ -381,6 +405,7 @@
             this.FirstY_textBox.Name = "FirstY_textBox";
             this.FirstY_textBox.Size = new System.Drawing.Size(48, 20);
             this.FirstY_textBox.TabIndex = 28;
+            this.FirstY_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.FirstY_textBox, "Location of first hole/alingment mark/part");
             this.FirstY_textBox.TextChanged += new System.EventHandler(this.FirstY_textBox_TextChanged);
             // 
@@ -391,6 +416,7 @@
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(36, 13);
             this.label14.TabIndex = 27;
+            this.label14.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label14.Text = "First X";
             this.toolTip1.SetToolTip(this.label14, "Location of first hole/alingment mark/part");
             // 
@@ -400,6 +426,7 @@
             this.FirstX_textBox.Name = "FirstX_textBox";
             this.FirstX_textBox.Size = new System.Drawing.Size(48, 20);
             this.FirstX_textBox.TabIndex = 26;
+            this.FirstX_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.FirstX_textBox, "Location of first hole/alingment mark/part");
             this.FirstX_textBox.TextChanged += new System.EventHandler(this.FirstX_textBox_TextChanged);
             // 
@@ -410,6 +437,7 @@
             this.LastY_label.Name = "LastY_label";
             this.LastY_label.Size = new System.Drawing.Size(37, 13);
             this.LastY_label.TabIndex = 33;
+            this.LastY_label.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.LastY_label.Text = "Last Y";
             this.toolTip1.SetToolTip(this.LastY_label, "Location of last hole/alingment mark/part");
             // 
@@ -420,6 +448,7 @@
             this.LastY_textBox.Name = "LastY_textBox";
             this.LastY_textBox.Size = new System.Drawing.Size(48, 20);
             this.LastY_textBox.TabIndex = 32;
+            this.LastY_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.LastY_textBox, "Location of last hole/alingment mark/part");
             this.LastY_textBox.TextChanged += new System.EventHandler(this.LastY_textBox_TextChanged);
             // 
@@ -430,6 +459,7 @@
             this.LastX_label.Name = "LastX_label";
             this.LastX_label.Size = new System.Drawing.Size(37, 13);
             this.LastX_label.TabIndex = 31;
+            this.LastX_label.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.LastX_label.Text = "Last X";
             this.toolTip1.SetToolTip(this.LastX_label, "Location of last hole/alingment mark/part");
             // 
@@ -440,6 +470,7 @@
             this.LastX_textBox.Name = "LastX_textBox";
             this.LastX_textBox.Size = new System.Drawing.Size(48, 20);
             this.LastX_textBox.TabIndex = 30;
+            this.LastX_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.LastX_textBox, "Location of last hole/alingment mark/part");
             this.LastX_textBox.TextChanged += new System.EventHandler(this.LastX_textBox_TextChanged);
             // 
@@ -450,6 +481,7 @@
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(67, 13);
             this.label17.TabIndex = 42;
+            this.label17.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label17.Text = "Placement Z";
             this.toolTip1.SetToolTip(this.label17, "Z values used in pickup and placement.\r\nIf reset, values are measured when first " +
         "needed.\r\n");
@@ -460,6 +492,7 @@
             this.PlacementZ_textBox.Name = "PlacementZ_textBox";
             this.PlacementZ_textBox.Size = new System.Drawing.Size(48, 20);
             this.PlacementZ_textBox.TabIndex = 41;
+            this.PlacementZ_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.PlacementZ_textBox, "Z values used in pickup and placement.\r\nIf reset, values are measured when first " +
         "needed.\r\n");
             this.PlacementZ_textBox.TextChanged += new System.EventHandler(this.PlacementZ_textBox_TextChanged);
@@ -471,6 +504,7 @@
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(50, 13);
             this.label18.TabIndex = 40;
+            this.label18.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label18.Text = "Pickup Z";
             this.toolTip1.SetToolTip(this.label18, "Z values used in pickup and placement.\r\nIf reset, values are measured when first " +
         "needed.\r\n");
@@ -481,6 +515,7 @@
             this.PickupZ_textBox.Name = "PickupZ_textBox";
             this.PickupZ_textBox.Size = new System.Drawing.Size(48, 20);
             this.PickupZ_textBox.TabIndex = 39;
+            this.PickupZ_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.PickupZ_textBox, "Z values used in pickup and placement.\r\nIf reset, values are measured when first " +
         "needed.\r\n");
             this.PickupZ_textBox.TextChanged += new System.EventHandler(this.PickupZ_textBox_TextChanged);
@@ -492,6 +527,7 @@
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(42, 13);
             this.label19.TabIndex = 48;
+            this.label19.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label19.Text = "Tray ID";
             this.toolTip1.SetToolTip(this.label19, "Name of tray (--: not part of a tray)\r\n\r\nTray is a collection of tapes, usually o" +
         "n holders of some sort.\r\npeople use these to quickly set up the machine to popul" +
@@ -503,6 +539,7 @@
             this.TrayID_textBox.Name = "TrayID_textBox";
             this.TrayID_textBox.Size = new System.Drawing.Size(100, 20);
             this.TrayID_textBox.TabIndex = 47;
+            this.TrayID_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.toolTip1.SetToolTip(this.TrayID_textBox, "Optional");
             // 
             // GetFirstPosition_button
@@ -511,6 +548,7 @@
             this.GetFirstPosition_button.Name = "GetFirstPosition_button";
             this.GetFirstPosition_button.Size = new System.Drawing.Size(102, 23);
             this.GetFirstPosition_button.TabIndex = 36;
+            this.GetFirstPosition_button.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.GetFirstPosition_button.Text = "Get current ";
             this.toolTip1.SetToolTip(this.GetFirstPosition_button, "move current X and Y position to the boxes");
             this.GetFirstPosition_button.UseVisualStyleBackColor = true;
@@ -523,6 +561,7 @@
             this.GetLastPosition_button.Name = "GetLastPosition_button";
             this.GetLastPosition_button.Size = new System.Drawing.Size(102, 23);
             this.GetLastPosition_button.TabIndex = 38;
+            this.GetLastPosition_button.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.GetLastPosition_button.Text = "Get current ";
             this.toolTip1.SetToolTip(this.GetLastPosition_button, "move current X and Y position to the boxes");
             this.GetLastPosition_button.UseVisualStyleBackColor = true;
@@ -534,6 +573,7 @@
             this.GetPickupZ_button.Name = "GetPickupZ_button";
             this.GetPickupZ_button.Size = new System.Drawing.Size(47, 23);
             this.GetPickupZ_button.TabIndex = 44;
+            this.GetPickupZ_button.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.GetPickupZ_button.Text = "Get";
             this.toolTip1.SetToolTip(this.GetPickupZ_button, "move current Z position to the box");
             this.GetPickupZ_button.UseVisualStyleBackColor = true;
@@ -545,6 +585,7 @@
             this.GetPlacementZ_button.Name = "GetPlacementZ_button";
             this.GetPlacementZ_button.Size = new System.Drawing.Size(47, 23);
             this.GetPlacementZ_button.TabIndex = 46;
+            this.GetPlacementZ_button.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.GetPlacementZ_button.Text = "Get";
             this.toolTip1.SetToolTip(this.GetPlacementZ_button, "move current Z position to the box");
             this.GetPlacementZ_button.UseVisualStyleBackColor = true;
@@ -557,6 +598,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(47, 13);
             this.label9.TabIndex = 52;
+            this.label9.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.label9.Text = "Rotation";
             this.toolTip1.SetToolTip(this.label9, "Location of last hole/alingment mark/part");
             // 
@@ -566,6 +608,7 @@
             this.RotationDirect_textBox.Name = "RotationDirect_textBox";
             this.RotationDirect_textBox.Size = new System.Drawing.Size(48, 20);
             this.RotationDirect_textBox.TabIndex = 51;
+            this.RotationDirect_textBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.RotationDirect_textBox.Text = "0.0";
             this.toolTip1.SetToolTip(this.RotationDirect_textBox, "Location of last hole/alingment mark/part");
             this.RotationDirect_textBox.TextChanged += new System.EventHandler(this.ACorrection_textBox_TextChanged);
@@ -577,6 +620,7 @@
             this.CoordinatesForParts_checkBox.Name = "CoordinatesForParts_checkBox";
             this.CoordinatesForParts_checkBox.Size = new System.Drawing.Size(141, 17);
             this.CoordinatesForParts_checkBox.TabIndex = 50;
+            this.CoordinatesForParts_checkBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.CoordinatesForParts_checkBox.Text = "Coordinates are for parts";
             this.toolTip1.SetToolTip(this.CoordinatesForParts_checkBox, "Vision regocnition is not used.\r\nParts are picked from position shown in camera v" +
         "iew, unless \r\ncoordinates are for nozzle is checked.\r\n");
@@ -590,6 +634,7 @@
             this.UseNozzleCoordinates_checkBox.Name = "UseNozzleCoordinates_checkBox";
             this.UseNozzleCoordinates_checkBox.Size = new System.Drawing.Size(148, 17);
             this.UseNozzleCoordinates_checkBox.TabIndex = 53;
+            this.UseNozzleCoordinates_checkBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.UseNozzleCoordinates_checkBox.Text = "Coordinates are for nozzle";
             this.toolTip1.SetToolTip(this.UseNozzleCoordinates_checkBox, resources.GetString("UseNozzleCoordinates_checkBox.ToolTip"));
             this.UseNozzleCoordinates_checkBox.UseVisualStyleBackColor = true;
@@ -600,6 +645,7 @@
             this.TapeEditCancel_button.Name = "TapeEditCancel_button";
             this.TapeEditCancel_button.Size = new System.Drawing.Size(75, 23);
             this.TapeEditCancel_button.TabIndex = 16;
+            this.TapeEditCancel_button.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.TapeEditCancel_button.Text = "Cancel";
             this.TapeEditCancel_button.UseVisualStyleBackColor = true;
             this.TapeEditCancel_button.Click += new System.EventHandler(this.TapeEditCancel_button_Click);
@@ -610,6 +656,7 @@
             this.ResetPickupZ_button.Name = "ResetPickupZ_button";
             this.ResetPickupZ_button.Size = new System.Drawing.Size(48, 23);
             this.ResetPickupZ_button.TabIndex = 43;
+            this.ResetPickupZ_button.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.ResetPickupZ_button.Text = "Reset";
             this.ResetPickupZ_button.UseVisualStyleBackColor = true;
             this.ResetPickupZ_button.Click += new System.EventHandler(this.ResetPickupZ_button_Click);
@@ -620,6 +667,7 @@
             this.ResetPlacementZ_button.Name = "ResetPlacementZ_button";
             this.ResetPlacementZ_button.Size = new System.Drawing.Size(48, 23);
             this.ResetPlacementZ_button.TabIndex = 45;
+            this.ResetPlacementZ_button.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.ResetPlacementZ_button.Text = "Reset";
             this.ResetPlacementZ_button.UseVisualStyleBackColor = true;
             this.ResetPlacementZ_button.Click += new System.EventHandler(this.ResetPlacementZ_button_Click);
@@ -630,6 +678,7 @@
             this.ResetTrayID_button.Name = "ResetTrayID_button";
             this.ResetTrayID_button.Size = new System.Drawing.Size(48, 23);
             this.ResetTrayID_button.TabIndex = 49;
+            this.ResetTrayID_button.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.ResetTrayID_button.Text = "Reset";
             this.ResetTrayID_button.UseVisualStyleBackColor = true;
             this.ResetTrayID_button.Click += new System.EventHandler(this.ResetTrayID_button_Click);
@@ -641,6 +690,7 @@
             this.DrawGrid_checkBox.Name = "DrawGrid_checkBox";
             this.DrawGrid_checkBox.Size = new System.Drawing.Size(73, 17);
             this.DrawGrid_checkBox.TabIndex = 54;
+            this.DrawGrid_checkBox.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.DrawGrid_checkBox.Text = "Draw Grid";
             this.DrawGrid_checkBox.UseVisualStyleBackColor = true;
             this.DrawGrid_checkBox.CheckedChanged += new System.EventHandler(this.DrawGrid_checkBox_CheckedChanged);
@@ -702,6 +752,7 @@
             this.Controls.Add(this.TapeEditOK_button);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TapeEditForm";
+            this.Tag = "https://liteplacer.com/edit-tape-parameters-dialog/";
             this.Text = "Edit Tape Parameters";
             this.Load += new System.EventHandler(this.TapeEditForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Nozzle_numericUpDown)).EndInit();
