@@ -4,13 +4,15 @@ Build date 10/14/2022
 
 New Features, significant changes
 
-* 
+* F1 now opens web help page about the item under mouse cursor
 
 ---------------------
 
 Bug Fixes 
 
-* After placement operations (park, camera switch etc) are now always done before message
+* 'After placement' -operations (park, camera switch etc) are now always done before 
+  error/OK message is shown
+* No "ding" sound when pressing enter on the text to send box
 
 ---------------------
 

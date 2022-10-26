@@ -223,17 +223,6 @@
             this.CameraSetupTest_button = new System.Windows.Forms.Button();
             this.ImageTest_checkBox = new System.Windows.Forms.CheckBox();
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
-            this.SaveAlldata_button = new System.Windows.Forms.Button();
-            this.NegativeMoveY_textBox = new System.Windows.Forms.TextBox();
-            this.NegativeMoveX_textBox = new System.Windows.Forms.TextBox();
-            this.label227 = new System.Windows.Forms.Label();
-            this.label228 = new System.Windows.Forms.Label();
-            this.label229 = new System.Windows.Forms.Label();
-            this.label116 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.NoPort_label = new System.Windows.Forms.Label();
-            this.AutoPark_checkBox = new System.Windows.Forms.CheckBox();
             this.Duet3Motors_tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label200 = new System.Windows.Forms.Label();
@@ -316,6 +305,17 @@
             this.Duet3Amicrosteps_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label223 = new System.Windows.Forms.Label();
             this.label224 = new System.Windows.Forms.Label();
+            this.SaveAlldata_button = new System.Windows.Forms.Button();
+            this.NegativeMoveY_textBox = new System.Windows.Forms.TextBox();
+            this.NegativeMoveX_textBox = new System.Windows.Forms.TextBox();
+            this.label227 = new System.Windows.Forms.Label();
+            this.label228 = new System.Windows.Forms.Label();
+            this.label229 = new System.Windows.Forms.Label();
+            this.label116 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.NoPort_label = new System.Windows.Forms.Label();
+            this.AutoPark_checkBox = new System.Windows.Forms.CheckBox();
             this.label180 = new System.Windows.Forms.Label();
             this.label179 = new System.Windows.Forms.Label();
             this.label178 = new System.Windows.Forms.Label();
@@ -858,6 +858,9 @@
             this.Test7_button = new System.Windows.Forms.Button();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.FPStimer = new System.Windows.Forms.Timer(this.components);
+            this.label231 = new System.Windows.Forms.Label();
+            this.Duet3XhomingSpeed_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label232 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -3212,6 +3215,7 @@
             // 
             // tabPageBasicSetup
             // 
+            this.tabPageBasicSetup.Controls.Add(this.Duet3Motors_tabControl);
             this.tabPageBasicSetup.Controls.Add(this.SaveAlldata_button);
             this.tabPageBasicSetup.Controls.Add(this.NegativeMoveY_textBox);
             this.tabPageBasicSetup.Controls.Add(this.NegativeMoveX_textBox);
@@ -3223,7 +3227,6 @@
             this.tabPageBasicSetup.Controls.Add(this.label12);
             this.tabPageBasicSetup.Controls.Add(this.NoPort_label);
             this.tabPageBasicSetup.Controls.Add(this.AutoPark_checkBox);
-            this.tabPageBasicSetup.Controls.Add(this.Duet3Motors_tabControl);
             this.tabPageBasicSetup.Controls.Add(this.label180);
             this.tabPageBasicSetup.Controls.Add(this.label179);
             this.tabPageBasicSetup.Controls.Add(this.label178);
@@ -3331,130 +3334,6 @@
             this.tabPageBasicSetup.Text = "Basic Setup";
             this.tabPageBasicSetup.UseVisualStyleBackColor = true;
             // 
-            // SaveAlldata_button
-            // 
-            this.SaveAlldata_button.Location = new System.Drawing.Point(352, 79);
-            this.SaveAlldata_button.Name = "SaveAlldata_button";
-            this.SaveAlldata_button.Size = new System.Drawing.Size(111, 23);
-            this.SaveAlldata_button.TabIndex = 139;
-            this.SaveAlldata_button.Tag = "https://liteplacer.com/application-settings/";
-            this.SaveAlldata_button.Text = "Save All Settings";
-            this.toolTip1.SetToolTip(this.SaveAlldata_button, "Save all program settings to default location\r\n(dated subdirectory under installa" +
-        "tion dir.)");
-            this.SaveAlldata_button.UseVisualStyleBackColor = true;
-            this.SaveAlldata_button.Click += new System.EventHandler(this.SaveAlldata_button_Click);
-            // 
-            // NegativeMoveY_textBox
-            // 
-            this.NegativeMoveY_textBox.Location = new System.Drawing.Point(677, 379);
-            this.NegativeMoveY_textBox.Name = "NegativeMoveY_textBox";
-            this.NegativeMoveY_textBox.Size = new System.Drawing.Size(76, 20);
-            this.NegativeMoveY_textBox.TabIndex = 136;
-            this.NegativeMoveY_textBox.Tag = "https://liteplacer.com/allow-negative-moves/";
-            this.toolTip1.SetToolTip(this.NegativeMoveY_textBox, "Allows for custom machine size");
-            this.NegativeMoveY_textBox.TextChanged += new System.EventHandler(this.NegativeMoveY_textBox_TextChanged);
-            // 
-            // NegativeMoveX_textBox
-            // 
-            this.NegativeMoveX_textBox.Location = new System.Drawing.Point(677, 353);
-            this.NegativeMoveX_textBox.Name = "NegativeMoveX_textBox";
-            this.NegativeMoveX_textBox.Size = new System.Drawing.Size(76, 20);
-            this.NegativeMoveX_textBox.TabIndex = 134;
-            this.NegativeMoveX_textBox.Tag = "https://liteplacer.com/allow-negative-moves/";
-            this.toolTip1.SetToolTip(this.NegativeMoveX_textBox, "Allows for custom machine size");
-            this.NegativeMoveX_textBox.TextChanged += new System.EventHandler(this.NegativeMoveX_textBox_TextChanged);
-            // 
-            // label227
-            // 
-            this.label227.AutoSize = true;
-            this.label227.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label227.Location = new System.Drawing.Point(653, 330);
-            this.label227.Name = "label227";
-            this.label227.Size = new System.Drawing.Size(164, 20);
-            this.label227.TabIndex = 138;
-            this.label227.Tag = "https://liteplacer.com/allow-negative-moves/";
-            this.label227.Text = "Allow negative moves:";
-            // 
-            // label228
-            // 
-            this.label228.AutoSize = true;
-            this.label228.Location = new System.Drawing.Point(654, 382);
-            this.label228.Name = "label228";
-            this.label228.Size = new System.Drawing.Size(17, 13);
-            this.label228.TabIndex = 137;
-            this.label228.Tag = "https://liteplacer.com/allow-negative-moves/";
-            this.label228.Text = "Y:";
-            // 
-            // label229
-            // 
-            this.label229.AutoSize = true;
-            this.label229.Location = new System.Drawing.Point(654, 356);
-            this.label229.Name = "label229";
-            this.label229.Size = new System.Drawing.Size(17, 13);
-            this.label229.TabIndex = 135;
-            this.label229.Tag = "https://liteplacer.com/allow-negative-moves/";
-            this.label229.Text = "X:";
-            // 
-            // label116
-            // 
-            this.label116.AutoSize = true;
-            this.label116.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label116.Location = new System.Drawing.Point(395, 519);
-            this.label116.Name = "label116";
-            this.label116.Size = new System.Drawing.Size(104, 16);
-            this.label116.TabIndex = 133;
-            this.label116.Tag = "https://liteplacer.com/nozzle-height-setup/";
-            this.label116.Text = "Nozzle height:";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(6, 582);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(160, 20);
-            this.label24.TabIndex = 132;
-            this.label24.Tag = "https://liteplacer.com/updates-and-logging/";
-            this.label24.Text = "Updates and logging:";
-            this.toolTip1.SetToolTip(this.label24, "Connection status");
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(1031, 122);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(156, 20);
-            this.label12.TabIndex = 131;
-            this.label12.Tag = "https://liteplacer.com/slack-compensation/";
-            this.label12.Text = "Slack compensation:";
-            this.toolTip1.SetToolTip(this.label12, "Connection status");
-            // 
-            // NoPort_label
-            // 
-            this.NoPort_label.AutoSize = true;
-            this.NoPort_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NoPort_label.Location = new System.Drawing.Point(81, 125);
-            this.NoPort_label.Name = "NoPort_label";
-            this.NoPort_label.Size = new System.Drawing.Size(296, 16);
-            this.NoPort_label.TabIndex = 130;
-            this.NoPort_label.Tag = "https://liteplacer.com/serial-port-connection/";
-            this.NoPort_label.Text = "No default port yet. Select one and click Connect.";
-            this.toolTip1.SetToolTip(this.NoPort_label, "Connection status");
-            this.NoPort_label.Visible = false;
-            // 
-            // AutoPark_checkBox
-            // 
-            this.AutoPark_checkBox.AutoSize = true;
-            this.AutoPark_checkBox.Location = new System.Drawing.Point(852, 405);
-            this.AutoPark_checkBox.Name = "AutoPark_checkBox";
-            this.AutoPark_checkBox.Size = new System.Drawing.Size(135, 17);
-            this.AutoPark_checkBox.TabIndex = 129;
-            this.AutoPark_checkBox.Tag = "https://liteplacer.com/park-location/";
-            this.AutoPark_checkBox.Text = "Goto Park after homing";
-            this.AutoPark_checkBox.UseVisualStyleBackColor = true;
-            this.AutoPark_checkBox.CheckedChanged += new System.EventHandler(this.AutoPark_checkBox_CheckedChanged);
-            // 
             // Duet3Motors_tabControl
             // 
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage1);
@@ -3462,7 +3341,7 @@
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage3);
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage4);
             this.Duet3Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(119, 13);
+            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(466, 93);
             this.Duet3Motors_tabControl.Name = "Duet3Motors_tabControl";
             this.Duet3Motors_tabControl.SelectedIndex = 0;
             this.Duet3Motors_tabControl.Size = new System.Drawing.Size(325, 362);
@@ -3471,6 +3350,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label231);
+            this.tabPage1.Controls.Add(this.Duet3XhomingSpeed_maskedTextBox);
+            this.tabPage1.Controls.Add(this.label232);
             this.tabPage1.Controls.Add(this.label200);
             this.tabPage1.Controls.Add(this.label199);
             this.tabPage1.Controls.Add(this.Duet3XCurrent_maskedTextBox);
@@ -3502,7 +3384,7 @@
             // label200
             // 
             this.label200.AutoSize = true;
-            this.label200.Location = new System.Drawing.Point(151, 150);
+            this.label200.Location = new System.Drawing.Point(179, 190);
             this.label200.Name = "label200";
             this.label200.Size = new System.Drawing.Size(22, 13);
             this.label200.TabIndex = 116;
@@ -3511,7 +3393,7 @@
             // label199
             // 
             this.label199.AutoSize = true;
-            this.label199.Location = new System.Drawing.Point(7, 152);
+            this.label199.Location = new System.Drawing.Point(35, 192);
             this.label199.Name = "label199";
             this.label199.Size = new System.Drawing.Size(44, 13);
             this.label199.TabIndex = 115;
@@ -3519,7 +3401,7 @@
             // 
             // Duet3XCurrent_maskedTextBox
             // 
-            this.Duet3XCurrent_maskedTextBox.Location = new System.Drawing.Point(91, 147);
+            this.Duet3XCurrent_maskedTextBox.Location = new System.Drawing.Point(119, 187);
             this.Duet3XCurrent_maskedTextBox.Mask = "99999";
             this.Duet3XCurrent_maskedTextBox.Name = "Duet3XCurrent_maskedTextBox";
             this.Duet3XCurrent_maskedTextBox.PromptChar = ' ';
@@ -3532,7 +3414,7 @@
             // 
             // Duet3XtravelPerRev_textBox
             // 
-            this.Duet3XtravelPerRev_textBox.Location = new System.Drawing.Point(91, 121);
+            this.Duet3XtravelPerRev_textBox.Location = new System.Drawing.Point(119, 161);
             this.Duet3XtravelPerRev_textBox.Name = "Duet3XtravelPerRev_textBox";
             this.Duet3XtravelPerRev_textBox.Size = new System.Drawing.Size(54, 20);
             this.Duet3XtravelPerRev_textBox.TabIndex = 19;
@@ -3542,7 +3424,7 @@
             // Duet3Xinterpolate_checkBox
             // 
             this.Duet3Xinterpolate_checkBox.AutoSize = true;
-            this.Duet3Xinterpolate_checkBox.Location = new System.Drawing.Point(188, 68);
+            this.Duet3Xinterpolate_checkBox.Location = new System.Drawing.Point(216, 108);
             this.Duet3Xinterpolate_checkBox.Name = "Duet3Xinterpolate_checkBox";
             this.Duet3Xinterpolate_checkBox.Size = new System.Drawing.Size(76, 17);
             this.Duet3Xinterpolate_checkBox.TabIndex = 113;
@@ -3554,7 +3436,7 @@
             // label181
             // 
             this.label181.AutoSize = true;
-            this.label181.Location = new System.Drawing.Point(6, 124);
+            this.label181.Location = new System.Drawing.Point(34, 164);
             this.label181.Name = "label181";
             this.label181.Size = new System.Drawing.Size(79, 13);
             this.label181.TabIndex = 25;
@@ -3563,7 +3445,7 @@
             // label182
             // 
             this.label182.AutoSize = true;
-            this.label182.Location = new System.Drawing.Point(151, 126);
+            this.label182.Location = new System.Drawing.Point(179, 166);
             this.label182.Name = "label182";
             this.label182.Size = new System.Drawing.Size(23, 13);
             this.label182.TabIndex = 24;
@@ -3572,7 +3454,7 @@
             // Duet3Xdeg18_radioButton
             // 
             this.Duet3Xdeg18_radioButton.AutoSize = true;
-            this.Duet3Xdeg18_radioButton.Location = new System.Drawing.Point(153, 96);
+            this.Duet3Xdeg18_radioButton.Location = new System.Drawing.Point(181, 136);
             this.Duet3Xdeg18_radioButton.Name = "Duet3Xdeg18_radioButton";
             this.Duet3Xdeg18_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Xdeg18_radioButton.TabIndex = 28;
@@ -3584,7 +3466,7 @@
             // Duet3Xdeg09_radioButton
             // 
             this.Duet3Xdeg09_radioButton.AutoSize = true;
-            this.Duet3Xdeg09_radioButton.Location = new System.Drawing.Point(91, 96);
+            this.Duet3Xdeg09_radioButton.Location = new System.Drawing.Point(119, 136);
             this.Duet3Xdeg09_radioButton.Name = "Duet3Xdeg09_radioButton";
             this.Duet3Xdeg09_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Xdeg09_radioButton.TabIndex = 27;
@@ -3596,7 +3478,7 @@
             // label188
             // 
             this.label188.AutoSize = true;
-            this.label188.Location = new System.Drawing.Point(6, 10);
+            this.label188.Location = new System.Drawing.Point(35, 7);
             this.label188.Name = "label188";
             this.label188.Size = new System.Drawing.Size(41, 13);
             this.label188.TabIndex = 12;
@@ -3605,16 +3487,16 @@
             // label189
             // 
             this.label189.AutoSize = true;
-            this.label189.Location = new System.Drawing.Point(140, 12);
+            this.label189.Location = new System.Drawing.Point(169, 9);
             this.label189.Name = "label189";
-            this.label189.Size = new System.Drawing.Size(33, 13);
+            this.label189.Size = new System.Drawing.Size(44, 13);
             this.label189.TabIndex = 11;
-            this.label189.Text = "mm/s";
+            this.label189.Text = "mm/min";
             // 
             // label183
             // 
             this.label183.AutoSize = true;
-            this.label183.Location = new System.Drawing.Point(7, 96);
+            this.label183.Location = new System.Drawing.Point(35, 136);
             this.label183.Name = "label183";
             this.label183.Size = new System.Drawing.Size(61, 13);
             this.label183.TabIndex = 22;
@@ -3622,7 +3504,7 @@
             // 
             // Duet3Xacceleration_maskedTextBox
             // 
-            this.Duet3Xacceleration_maskedTextBox.Location = new System.Drawing.Point(91, 35);
+            this.Duet3Xacceleration_maskedTextBox.Location = new System.Drawing.Point(120, 58);
             this.Duet3Xacceleration_maskedTextBox.Mask = "99999";
             this.Duet3Xacceleration_maskedTextBox.Name = "Duet3Xacceleration_maskedTextBox";
             this.Duet3Xacceleration_maskedTextBox.PromptChar = ' ';
@@ -3636,7 +3518,7 @@
             // label192
             // 
             this.label192.AutoSize = true;
-            this.label192.Location = new System.Drawing.Point(140, 38);
+            this.label192.Location = new System.Drawing.Point(169, 61);
             this.label192.Name = "label192";
             this.label192.Size = new System.Drawing.Size(45, 13);
             this.label192.TabIndex = 15;
@@ -3644,7 +3526,7 @@
             // 
             // Duet3Xspeed_maskedTextBox
             // 
-            this.Duet3Xspeed_maskedTextBox.Location = new System.Drawing.Point(91, 9);
+            this.Duet3Xspeed_maskedTextBox.Location = new System.Drawing.Point(120, 6);
             this.Duet3Xspeed_maskedTextBox.Mask = "99999";
             this.Duet3Xspeed_maskedTextBox.Name = "Duet3Xspeed_maskedTextBox";
             this.Duet3Xspeed_maskedTextBox.PromptChar = ' ';
@@ -3658,7 +3540,7 @@
             // label184
             // 
             this.label184.AutoSize = true;
-            this.label184.Location = new System.Drawing.Point(118, 69);
+            this.label184.Location = new System.Drawing.Point(146, 109);
             this.label184.Name = "label184";
             this.label184.Size = new System.Drawing.Size(64, 13);
             this.label184.TabIndex = 18;
@@ -3666,7 +3548,7 @@
             // 
             // Duet3Xmicrosteps_maskedTextBox
             // 
-            this.Duet3Xmicrosteps_maskedTextBox.Location = new System.Drawing.Point(91, 66);
+            this.Duet3Xmicrosteps_maskedTextBox.Location = new System.Drawing.Point(119, 106);
             this.Duet3Xmicrosteps_maskedTextBox.Mask = "99999";
             this.Duet3Xmicrosteps_maskedTextBox.Name = "Duet3Xmicrosteps_maskedTextBox";
             this.Duet3Xmicrosteps_maskedTextBox.PromptChar = ' ';
@@ -3680,7 +3562,7 @@
             // label194
             // 
             this.label194.AutoSize = true;
-            this.label194.Location = new System.Drawing.Point(7, 36);
+            this.label194.Location = new System.Drawing.Point(35, 61);
             this.label194.Name = "label194";
             this.label194.Size = new System.Drawing.Size(69, 13);
             this.label194.TabIndex = 16;
@@ -3689,7 +3571,7 @@
             // label186
             // 
             this.label186.AutoSize = true;
-            this.label186.Location = new System.Drawing.Point(6, 67);
+            this.label186.Location = new System.Drawing.Point(34, 107);
             this.label186.Name = "label186";
             this.label186.Size = new System.Drawing.Size(61, 13);
             this.label186.TabIndex = 19;
@@ -4387,6 +4269,130 @@
             this.label224.Size = new System.Drawing.Size(61, 13);
             this.label224.TabIndex = 141;
             this.label224.Text = "Microsteps:";
+            // 
+            // SaveAlldata_button
+            // 
+            this.SaveAlldata_button.Location = new System.Drawing.Point(352, 79);
+            this.SaveAlldata_button.Name = "SaveAlldata_button";
+            this.SaveAlldata_button.Size = new System.Drawing.Size(111, 23);
+            this.SaveAlldata_button.TabIndex = 139;
+            this.SaveAlldata_button.Tag = "https://liteplacer.com/application-settings/";
+            this.SaveAlldata_button.Text = "Save All Settings";
+            this.toolTip1.SetToolTip(this.SaveAlldata_button, "Save all program settings to default location\r\n(dated subdirectory under installa" +
+        "tion dir.)");
+            this.SaveAlldata_button.UseVisualStyleBackColor = true;
+            this.SaveAlldata_button.Click += new System.EventHandler(this.SaveAlldata_button_Click);
+            // 
+            // NegativeMoveY_textBox
+            // 
+            this.NegativeMoveY_textBox.Location = new System.Drawing.Point(677, 379);
+            this.NegativeMoveY_textBox.Name = "NegativeMoveY_textBox";
+            this.NegativeMoveY_textBox.Size = new System.Drawing.Size(76, 20);
+            this.NegativeMoveY_textBox.TabIndex = 136;
+            this.NegativeMoveY_textBox.Tag = "https://liteplacer.com/allow-negative-moves/";
+            this.toolTip1.SetToolTip(this.NegativeMoveY_textBox, "Allows for custom machine size");
+            this.NegativeMoveY_textBox.TextChanged += new System.EventHandler(this.NegativeMoveY_textBox_TextChanged);
+            // 
+            // NegativeMoveX_textBox
+            // 
+            this.NegativeMoveX_textBox.Location = new System.Drawing.Point(677, 353);
+            this.NegativeMoveX_textBox.Name = "NegativeMoveX_textBox";
+            this.NegativeMoveX_textBox.Size = new System.Drawing.Size(76, 20);
+            this.NegativeMoveX_textBox.TabIndex = 134;
+            this.NegativeMoveX_textBox.Tag = "https://liteplacer.com/allow-negative-moves/";
+            this.toolTip1.SetToolTip(this.NegativeMoveX_textBox, "Allows for custom machine size");
+            this.NegativeMoveX_textBox.TextChanged += new System.EventHandler(this.NegativeMoveX_textBox_TextChanged);
+            // 
+            // label227
+            // 
+            this.label227.AutoSize = true;
+            this.label227.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label227.Location = new System.Drawing.Point(653, 330);
+            this.label227.Name = "label227";
+            this.label227.Size = new System.Drawing.Size(164, 20);
+            this.label227.TabIndex = 138;
+            this.label227.Tag = "https://liteplacer.com/allow-negative-moves/";
+            this.label227.Text = "Allow negative moves:";
+            // 
+            // label228
+            // 
+            this.label228.AutoSize = true;
+            this.label228.Location = new System.Drawing.Point(654, 382);
+            this.label228.Name = "label228";
+            this.label228.Size = new System.Drawing.Size(17, 13);
+            this.label228.TabIndex = 137;
+            this.label228.Tag = "https://liteplacer.com/allow-negative-moves/";
+            this.label228.Text = "Y:";
+            // 
+            // label229
+            // 
+            this.label229.AutoSize = true;
+            this.label229.Location = new System.Drawing.Point(654, 356);
+            this.label229.Name = "label229";
+            this.label229.Size = new System.Drawing.Size(17, 13);
+            this.label229.TabIndex = 135;
+            this.label229.Tag = "https://liteplacer.com/allow-negative-moves/";
+            this.label229.Text = "X:";
+            // 
+            // label116
+            // 
+            this.label116.AutoSize = true;
+            this.label116.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label116.Location = new System.Drawing.Point(395, 519);
+            this.label116.Name = "label116";
+            this.label116.Size = new System.Drawing.Size(104, 16);
+            this.label116.TabIndex = 133;
+            this.label116.Tag = "https://liteplacer.com/nozzle-height-setup/";
+            this.label116.Text = "Nozzle height:";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(6, 582);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(160, 20);
+            this.label24.TabIndex = 132;
+            this.label24.Tag = "https://liteplacer.com/updates-and-logging/";
+            this.label24.Text = "Updates and logging:";
+            this.toolTip1.SetToolTip(this.label24, "Connection status");
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(1031, 122);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(156, 20);
+            this.label12.TabIndex = 131;
+            this.label12.Tag = "https://liteplacer.com/slack-compensation/";
+            this.label12.Text = "Slack compensation:";
+            this.toolTip1.SetToolTip(this.label12, "Connection status");
+            // 
+            // NoPort_label
+            // 
+            this.NoPort_label.AutoSize = true;
+            this.NoPort_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NoPort_label.Location = new System.Drawing.Point(81, 125);
+            this.NoPort_label.Name = "NoPort_label";
+            this.NoPort_label.Size = new System.Drawing.Size(296, 16);
+            this.NoPort_label.TabIndex = 130;
+            this.NoPort_label.Tag = "https://liteplacer.com/serial-port-connection/";
+            this.NoPort_label.Text = "No default port yet. Select one and click Connect.";
+            this.toolTip1.SetToolTip(this.NoPort_label, "Connection status");
+            this.NoPort_label.Visible = false;
+            // 
+            // AutoPark_checkBox
+            // 
+            this.AutoPark_checkBox.AutoSize = true;
+            this.AutoPark_checkBox.Location = new System.Drawing.Point(852, 405);
+            this.AutoPark_checkBox.Name = "AutoPark_checkBox";
+            this.AutoPark_checkBox.Size = new System.Drawing.Size(135, 17);
+            this.AutoPark_checkBox.TabIndex = 129;
+            this.AutoPark_checkBox.Tag = "https://liteplacer.com/park-location/";
+            this.AutoPark_checkBox.Text = "Goto Park after homing";
+            this.AutoPark_checkBox.UseVisualStyleBackColor = true;
+            this.AutoPark_checkBox.CheckedChanged += new System.EventHandler(this.AutoPark_checkBox_CheckedChanged);
             // 
             // label180
             // 
@@ -10855,6 +10861,39 @@
             this.FPStimer.Interval = 1000;
             this.FPStimer.Tick += new System.EventHandler(this.FPStimer_Tick);
             // 
+            // label231
+            // 
+            this.label231.AutoSize = true;
+            this.label231.Location = new System.Drawing.Point(35, 37);
+            this.label231.Name = "label231";
+            this.label231.Size = new System.Drawing.Size(78, 13);
+            this.label231.TabIndex = 118;
+            this.label231.Tag = "https://liteplacer.com/motors-setup/";
+            this.label231.Text = "Homing speed:";
+            // 
+            // Duet3XhomingSpeed_maskedTextBox
+            // 
+            this.Duet3XhomingSpeed_maskedTextBox.Location = new System.Drawing.Point(119, 32);
+            this.Duet3XhomingSpeed_maskedTextBox.Mask = "99999";
+            this.Duet3XhomingSpeed_maskedTextBox.Name = "Duet3XhomingSpeed_maskedTextBox";
+            this.Duet3XhomingSpeed_maskedTextBox.PromptChar = ' ';
+            this.Duet3XhomingSpeed_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Duet3XhomingSpeed_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.Duet3XhomingSpeed_maskedTextBox.TabIndex = 119;
+            this.Duet3XhomingSpeed_maskedTextBox.Tag = "";
+            this.Duet3XhomingSpeed_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Duet3XhomingSpeed_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            // 
+            // label232
+            // 
+            this.label232.AutoSize = true;
+            this.label232.Location = new System.Drawing.Point(168, 35);
+            this.label232.Name = "label232";
+            this.label232.Size = new System.Drawing.Size(44, 13);
+            this.label232.TabIndex = 117;
+            this.label232.Tag = "https://liteplacer.com/motors-setup/";
+            this.label232.Text = "mm/min";
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -11122,9 +11161,6 @@
 		private System.Windows.Forms.Label label75;
 		private System.Windows.Forms.MaskedTextBox xjh_maskedTextBox;
 		private System.Windows.Forms.Label label76;
-		private System.Windows.Forms.CheckBox Xmax_checkBox;
-		private System.Windows.Forms.CheckBox Xlim_checkBox;
-		private System.Windows.Forms.CheckBox Xhome_checkBox;
 		private System.Windows.Forms.Panel panel4;
 		private System.Windows.Forms.TextBox tr1_textBox;
 		private System.Windows.Forms.RadioButton m1deg18_radioButton;
@@ -11146,9 +11182,6 @@
 		private System.Windows.Forms.Label label83;
 		private System.Windows.Forms.MaskedTextBox zjh_maskedTextBox;
 		private System.Windows.Forms.Label label84;
-		private System.Windows.Forms.CheckBox Zmax_checkBox;
-		private System.Windows.Forms.CheckBox Zlim_checkBox;
-		private System.Windows.Forms.CheckBox Zhome_checkBox;
 		private System.Windows.Forms.Panel panel6;
 		private System.Windows.Forms.TextBox tr3_textBox;
 		private System.Windows.Forms.RadioButton m3deg18_radioButton;
@@ -11170,9 +11203,6 @@
 		private System.Windows.Forms.Label label79;
 		private System.Windows.Forms.MaskedTextBox yjh_maskedTextBox;
 		private System.Windows.Forms.Label label80;
-		private System.Windows.Forms.CheckBox Ymax_checkBox;
-		private System.Windows.Forms.CheckBox Ylim_checkBox;
-		private System.Windows.Forms.CheckBox Yhome_checkBox;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.TextBox tr2_textBox;
 		private System.Windows.Forms.RadioButton m2deg18_radioButton;
@@ -11843,6 +11873,18 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn JobdataComponentsColumn;
         private System.Windows.Forms.Button SetNoOfNozzles_button;
         private System.Windows.Forms.Button SaveAlldata_button;
+        private System.Windows.Forms.CheckBox Xmax_checkBox;
+        private System.Windows.Forms.CheckBox Xlim_checkBox;
+        private System.Windows.Forms.CheckBox Xhome_checkBox;
+        private System.Windows.Forms.CheckBox Ymax_checkBox;
+        private System.Windows.Forms.CheckBox Ylim_checkBox;
+        private System.Windows.Forms.CheckBox Yhome_checkBox;
+        private System.Windows.Forms.CheckBox Zmax_checkBox;
+        private System.Windows.Forms.CheckBox Zlim_checkBox;
+        private System.Windows.Forms.CheckBox Zhome_checkBox;
+        private System.Windows.Forms.Label label231;
+        public System.Windows.Forms.MaskedTextBox Duet3XhomingSpeed_maskedTextBox;
+        private System.Windows.Forms.Label label232;
     }
 }
 

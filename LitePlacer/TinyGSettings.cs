@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -25,8 +26,6 @@ namespace LitePlacer
     {
         // =================================================================================
         // TinyG stuff
-        // =================================================================================
-        #region TinyG
         // =================================================================================
 
         // Called from TinyG class when TinyG related UI need updating
@@ -451,6 +450,7 @@ namespace LitePlacer
 #endif
                 Thread.Sleep(50);
                 xjm_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -467,6 +467,7 @@ namespace LitePlacer
 #endif
                 Thread.Sleep(50);
                 yjm_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -483,6 +484,7 @@ namespace LitePlacer
 #endif
                 Thread.Sleep(50);
                 zjm_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -499,6 +501,7 @@ namespace LitePlacer
 #endif
                 Thread.Sleep(50);
                 ajm_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -560,6 +563,7 @@ namespace LitePlacer
 #endif
                 Thread.Sleep(50);
                 xjh_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -575,6 +579,7 @@ namespace LitePlacer
 #endif
                 Thread.Sleep(50);
                 yjh_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -590,6 +595,7 @@ namespace LitePlacer
 #endif
                 Thread.Sleep(50);
                 zjh_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -649,6 +655,7 @@ namespace LitePlacer
                 Cnc.Write_m("{\"xsv\":" + xsv_maskedTextBox.Text + "}");
                 Thread.Sleep(50);
                 xsv_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -660,6 +667,7 @@ namespace LitePlacer
                 Cnc.Write_m("{\"ysv\":" + ysv_maskedTextBox.Text + "}");
                 Thread.Sleep(50);
                 ysv_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -671,6 +679,7 @@ namespace LitePlacer
                 Cnc.Write_m("{\"zsv\":" + zsv_maskedTextBox.Text + "}");
                 Thread.Sleep(50);
                 zsv_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -968,6 +977,7 @@ namespace LitePlacer
                 Cnc.Write_m("{\"xfr\":" + xvm_maskedTextBox.Text + "000}");
                 Thread.Sleep(50);
                 xvm_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -981,6 +991,7 @@ namespace LitePlacer
                 Cnc.Write_m("{\"yfr\":" + yvm_maskedTextBox.Text + "000}");
                 Thread.Sleep(50);
                 yvm_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -996,6 +1007,7 @@ namespace LitePlacer
                 zvm_maskedTextBox.ForeColor = Color.Black;
                 int peek = Convert.ToInt32(zvm_maskedTextBox.Text);
                 Setting.CNC_ZspeedMax = peek;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -1011,6 +1023,7 @@ namespace LitePlacer
                 avm_maskedTextBox.ForeColor = Color.Black;
                 int peek = Convert.ToInt32(avm_maskedTextBox.Text);
                 Setting.CNC_AspeedMax = peek;
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -1067,6 +1080,7 @@ namespace LitePlacer
                     Thread.Sleep(50);
                     box.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
         }
         private void mi1_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -1132,6 +1146,7 @@ namespace LitePlacer
                     tr1_textBox.ForeColor = Color.Black;
                 }
             }
+            e.Handled = true;   // supress the ding sound
         }
 
         private void tr2_textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -1147,6 +1162,7 @@ namespace LitePlacer
                     tr2_textBox.ForeColor = Color.Black;
                 }
             }
+            e.Handled = true;   // supress the ding sound
         }
 
         private void tr3_textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -1162,6 +1178,7 @@ namespace LitePlacer
                     tr3_textBox.ForeColor = Color.Black;
                 }
             }
+            e.Handled = true;   // supress the ding sound
         }
 
         private void tr4_textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -1177,6 +1194,7 @@ namespace LitePlacer
                     tr4_textBox.ForeColor = Color.Black;
                 }
             }
+            e.Handled = true;   // supress the ding sound
         }
 
         #endregion
@@ -1392,10 +1410,159 @@ namespace LitePlacer
 
         #endregion
 
+        // =========================================================================
+        #region Save_and_Load
+
+
+        // Board settings file: Text file, starting with 8 characters board name and \n\r, 
+        // then the setings in Json format
+        private bool SaveTinyGSettings(TinyGSettings TinyGSettings, string FileName)
+        {
+            try
+            {
+                DisplayText("Writing TinyG settings file: " + FileName);
+                File.WriteAllText(FileName, "TinyG   \n\r" + JsonConvert.SerializeObject(TinyGSettings, Formatting.Indented));
+                DisplayText("Done.");
+                return true;
+            }
+            catch (Exception excep)
+            {
+                DisplayText("*** Saving settings to " + FileName + " failed:\n" + excep.Message, KnownColor.DarkRed);
+                return false;
+            }
+        }
+
+
+        private bool LoadTinyGsettings(ref TinyGSettings TinyGSettings, string FileName)
+        {
+            string content = "";
+            try
+            {
+                string name = FileName;
+                if (File.Exists(name))
+                {
+                    DisplayText("Reading " + name);
+                    content = File.ReadAllText(name);
+                }
+                else
+                {
+                    DisplayText("Settings file " + name + " not found, using default values.");
+                    return false;
+                }
+                if (content.Length < 10)
+                {
+                    ShowMessageBox(
+                       "Problem loading application settings: File is too short.\nUsing built in defaults.",
+                       "Settings not loaded",
+                       MessageBoxButtons.OK);
+                    return false;
+                }
+                string boardType = content.Substring(0, 10);
+                content = content.Remove(0, 10);
+                if (boardType == "TinyG   \n\r")
+                {
+                    TinyGSettings = JsonConvert.DeserializeObject<TinyGSettings>(content);
+                }
+                else
+                {
+                    ShowMessageBox(
+                       "Unknown / wrong board type (" + boardType + ") in file, board settings not changed.",
+                       "Settings not loaded",
+                       MessageBoxButtons.OK);
+                    return false;
+                }
+                return true;
+            }
+            catch (System.Exception excep)
+            {
+                ShowMessageBox(
+                    "Problem loading board settings:\n" + excep.Message + "\nBoard settings not changed.",
+                    "Settings not loaded",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+        }
+
+
+        private void WriteAllTinyGSettings_m()
+        {
+            if (StartingUp)
+            {
+                return;
+            }
+            string path = GetPath();
+            bool res = true;
+            DialogResult dialogResult;
+            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+            {
+                dialogResult = ShowMessageBox(
+                   "Settings currently stored on board of your TinyG will be overwritten,\n" +
+                   " with conservative values. Current values will be permanently lost\n" +
+                   "if you haven't stored a backup copy. Continue?",
+                   "Overwrite current settings?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }
+                res = WriteTinyGSettings();
+            }
+            if (!res)
+            {
+                DisplayText("Writing settings failed.");
+                ShowMessageBox(
+                    "Problem writing board settings. Board is in undefined state, fix the problem before continuing!",
+                    "Settings not loaded",
+                    MessageBoxButtons.OK);
+            }
+        }
+
+        private bool WriteOneTinyGSetting(string setting, string value, bool delay)
+        {
+            string dbg = "{\"" + setting + "\":" + value + "}";
+            //string dbg = "$" + setting + "=" + value;
+            DisplayText("write: " + dbg);
+            if (!Cnc.Write_m(dbg))
+            {
+                return false;
+            };
+            if (delay)
+            {
+                Thread.Sleep(100);
+            }
+            return true;
+        }
+
+
+        private bool WriteTinyGSettings()
+        {
+
+            DisplayText("Writing settings to TinyG board.");
+            foreach (PropertyInfo pi in TinyGBoard.GetType().GetProperties())
+            {
+                // The motor parameters are <motor number><parameter>, such as 1ma, 1sa, 1tr etc.
+                // These are not valid parameter names, so Motor1ma, motor1sa etc are used.
+                // to retrieve the values, we remove the "Motor"
+                string name = pi.Name;
+                if (name.StartsWith("Motor", StringComparison.Ordinal))
+                {
+                    name = name.Substring(5);
+                }
+                string value = pi.GetValue(TinyGBoard, null).ToString();
+                if (!WriteOneTinyGSetting(name, value, true))
+                {
+                    return false;
+                };
+                DisplayText(" Wrote parameter: " + name + ", value: " + value);
+            }
+            return true;
+
+        }
+
+
 
         #endregion
-
     }
+
 
 
     public class TinyGSettings
@@ -1508,90 +1675,4 @@ namespace LitePlacer
         public string Asn { get; set; } = "0";   // a switch min [0=off,1=homing,2=limit,3=limit+homing];
         public string Asx { get; set; } = "0";   // a switch max [0=off,1=homing,2=limit,3=limit+homing];
         }
-
-
-    // =================================================================================
-    // Really, TinyG board settings
-
-    public static class BoardSettings
-    {
-
-        static public FormMain MainForm { get; set; }
-
-        // Board settings file: Text file, starting with 8 characters board name and \n\r, 
-        // then the setings in Json format
-        static public bool Save(TinyGSettings TinyGSettings, string FileName)
-        {
-            try
-            {
-                if (MainForm.Cnc.Controlboard == CNC.ControlBoardType.TinyG)
-                {
-                    MainForm.DisplayText("Writing TinyG settings file: " + FileName);
-                    File.WriteAllText(FileName, "TinyG   \n\r" + JsonConvert.SerializeObject(TinyGSettings, Formatting.Indented));
-                    MainForm.DisplayText("Done.");
-                }
-                else
-                {
-                    MainForm.DisplayText("Skipping writing board settings file; board type unknown");
-                }
-                return true;
-            }
-            catch (Exception excep)
-            {
-                MainForm.DisplayText("Saving settings to " + FileName + " failed:\n" + excep.Message, KnownColor.DarkRed);
-                return false;
-            }
-        }
-
-        static public bool Load(ref TinyGSettings TinyGSettings, string FileName)
-        {
-            string content = "";
-            try
-            {
-                string name = FileName;
-                if (File.Exists(name))
-                {
-                    MainForm.DisplayText("Reading " + name);
-                    content = File.ReadAllText(name);
-                }
-                else
-                {
-                    MainForm.DisplayText("Settings file " + name + " not found, using default values.");
-                    return false;
-                }
-                if (content.Length < 10)
-                {
-                    MainForm.ShowMessageBox(
-                       "Problem loading application settings: File is too short.\nUsing built in defaults.",
-                       "Settings not loaded",
-                       MessageBoxButtons.OK);
-                    return false;
-                }
-                string boardType = content.Substring(0, 10);
-                content = content.Remove(0, 10);
-                if (boardType == "TinyG   \n\r")
-                {
-                    TinyGSettings = JsonConvert.DeserializeObject<TinyGSettings>(content);
-                }
-                else
-                {
-                    MainForm.ShowMessageBox(
-                       "Unknown board type " + boardType + "\nUsing built in defaults.",
-                       "Settings not loaded",
-                       MessageBoxButtons.OK);
-                    return false;
-                }
-                return true;
-            }
-            catch (System.Exception excep)
-            {
-                MainForm.ShowMessageBox(
-                    "Problem loading board settings:\n" + excep.Message + "\nUsing built in defaults.",
-                    "Settings not loaded",
-                    MessageBoxButtons.OK);
-                return false;
-            }
-        }
-    }
-
 }

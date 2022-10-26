@@ -174,7 +174,6 @@ namespace LitePlacer
             UpCamera = new Camera(this, "UpCamera");
             Nozzle = new NozzleCalibrationClass(UpCamera, Cnc, this);
             Tapes = new TapesClass(Tapes_dataGridView, Nozzle, DownCamera, Cnc, this);
-            BoardSettings.MainForm = this;
 
             //Do_Upgrade();
 
@@ -494,9 +493,6 @@ namespace LitePlacer
                 OK = OK && res;
 
                 res = SaveVideoAlgorithms(path + VIDEOALGORITHMS_DATAFILE, VideoAlgorithms);
-                OK = OK && res;
-
-                res = BoardSettings.Save(TinyGBoard, path + BOARDSETTINGS_DATAFILE);
                 OK = OK && res;
 
                 if (!OK)
@@ -4960,6 +4956,7 @@ namespace LitePlacer
             {
                 Cnc.ForceWrite(SendtoControlBoard_textBox.Text);
                 SendtoControlBoard_textBox.Clear();
+                e.Handled = true;   // othewrwise, a ding sound
             }
         }
 
@@ -5005,6 +5002,7 @@ namespace LitePlacer
                 {
                     DisplayText("Value did not convert to a number.");
                 }
+                e.Handled = true;   // supress the ding sound
             }
         }
 
@@ -5046,6 +5044,7 @@ namespace LitePlacer
                 {
                     DisplayText("Value did not convert to a number.");
                 }
+                e.Handled = true;   // supress the ding sound
             }
         }
         #endregion
@@ -5248,14 +5247,17 @@ namespace LitePlacer
 
         private bool HomeX_m()
         {
-            if (!Xhome_checkBox.Checked)
-            {
-                DisplayText("X homing switch not enabled", KnownColor.DarkRed, true);
-                return false;
-            }
             if (MovementIsBusy())
             {
                 return false;
+            }
+            if (Cnc.Controlboard == ControlBoardType.TinyG)
+            {
+                if (!Xhome_checkBox.Checked)
+                {
+                    MainForm.DisplayText("X homing switch not enabled", KnownColor.DarkRed, true);
+                    return false;
+                }
             }
             Homing = true;
             bool res = Cnc.Home_m("X");
@@ -5265,14 +5267,17 @@ namespace LitePlacer
 
         private bool HomeY_m()
         {
-            if (!Yhome_checkBox.Checked)
-            {
-                DisplayText("Y homing switch not enabled", KnownColor.DarkRed, true);
-                return false;
-            }
             if (MovementIsBusy())
             {
                 return false;
+            }
+            if (Cnc.Controlboard == ControlBoardType.TinyG)
+            {
+                if (!Yhome_checkBox.Checked)
+                {
+                    MainForm.DisplayText("Y homing switch not enabled", KnownColor.DarkRed, true);
+                    return false;
+                }
             }
             Homing = true;
             bool res = Cnc.Home_m("Y");
@@ -5297,25 +5302,29 @@ namespace LitePlacer
 
         public bool HomeZ_m()
         {
-            if (LastTabPage == "Nozzles_tabPage")
-            {
-                // On nozzles page, switches are disabled. Easiest is to do homign on basic setup page
-                tabControlPages.SelectedTab = tabControlPages.TabPages["tabPageBasicSetup"];
-            }
-            if (!Zhome_checkBox.Checked)
-            {
-                DisplayText("Z homing switch not enabled.\n\r" +
-                    "(Abort or crash during probing or nozzle setup? Please re-enable.)", KnownColor.DarkRed, true);
-                return false;
-            }
-            if (!Check_zzb())
-            {
-                return false;
-            }
             if (MovementIsBusy())
             {
                 return false;
             }
+            if (Cnc.Controlboard == ControlBoardType.TinyG)
+            {
+                if (LastTabPage == "Nozzles_tabPage")
+                {
+                    // On nozzles page, switches are disabled. Easiest is to do homing on basic setup page
+                    tabControlPages.SelectedTab = tabControlPages.TabPages["tabPageBasicSetup"];
+                }
+                if (!Zhome_checkBox.Checked)
+                {
+                    DisplayText("Z homing switch not enabled.\n\r" +
+                        "(Abort or crash during probing or nozzle setup? Please re-enable.)", KnownColor.DarkRed, true);
+                    return false;
+                }
+                if (!Check_zzb())
+                {
+                    return false;
+                }
+            }
+
             Homing = true;
             bool res = Cnc.Home_m("Z");
             Homing = false;
@@ -13729,10 +13738,16 @@ namespace LitePlacer
             AppSettings_saveFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_saveFileDialog.InitialDirectory = path;
 
-            if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (Cnc.Controlboard == ControlBoardType.TinyG)
             {
-                BoardSettings.Save(TinyGBoard, AppSettings_saveFileDialog.FileName);
+
+                if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    SaveTinyGSettings(TinyGBoard, AppSettings_saveFileDialog.FileName);
+                }
+                return;
             }
+            MainForm.DisplayText("*** Skipping saving board settings file; board type unknown or unsupported");
         }
 
 
@@ -13747,17 +13762,21 @@ namespace LitePlacer
             AppSettings_openFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_openFileDialog.InitialDirectory = path;
 
-            TinyGSettings tg = TinyGBoard;
-
-            if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
+            if (Cnc.Controlboard == ControlBoardType.TinyG)
             {
-                if (!BoardSettings.Load(ref tg, AppSettings_openFileDialog.FileName))
+                TinyGSettings tg = TinyGBoard;
+                if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    return;
+                    if (!LoadTinyGsettings(ref tg, AppSettings_openFileDialog.FileName))
+                    {
+                        return;
+                    }
+                    TinyGBoard = tg;
+                    WriteAllTinyGSettings_m();
                 }
-                TinyGBoard = tg;
-                WriteAllBoardSettings_m();
+                return;
             }
+            DisplayText("*** Skipping loading board settings operation; board type unknown or unsupported");
         }
 
 
@@ -13768,177 +13787,18 @@ namespace LitePlacer
                 return;
             }
             string path = GetPath();
-            TinyGBoard = new TinyGSettings();
-            WriteAllBoardSettings_m();
-        }
-
-
-        private void WriteAllBoardSettings_m()
-        {
-            if (StartingUp)
+            if (Cnc.Controlboard == ControlBoardType.TinyG)
             {
+                TinyGBoard = new TinyGSettings();
+                WriteAllTinyGSettings_m();
                 return;
             }
-            string path = GetPath();
-            bool res = true;
-            DialogResult dialogResult;
-            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
-            {
-                dialogResult = ShowMessageBox(
-                   "Settings currently stored on board of your TinyG will be overwritten,\n" +
-                   " with conservative values. Current values will be permanently lost\n" +
-                   "if you haven't stored a backup copy. Continue?",
-                   "Overwrite current settings?", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.No)
-                {
-                    return;
-                }
-                res = WriteTinyGSettings();
-            }
-            if (!res)
-            {
-                DisplayText("Writing settings failed.");
-                ShowMessageBox(
-                    "Problem writing board settings. Board is in undefined state, fix the problem before continuing!",
-                    "Settings not loaded",
-                    MessageBoxButtons.OK);
-            }
-        }
-
-        // =============
-        private bool WriteSetting(string setting, string value, bool delay)
-        {
-            string dbg = "{\"" + setting + "\":" + value + "}";
-            //string dbg = "$" + setting + "=" + value;
-            DisplayText("write: " + dbg);
-            if (!Cnc.Write_m(dbg))
-            {
-                return false;
-            };
-            if (delay)
-            {
-                Thread.Sleep(100);
-            }
-            return true;
-        }
-
-
-        private bool WriteTinyGSettings()
-        {
-
-            DisplayText("Writing settings to TinyG board.");
-            foreach (PropertyInfo pi in TinyGBoard.GetType().GetProperties())
-            {
-                // The motor parameters are <motor number><parameter>, such as 1ma, 1sa, 1tr etc.
-                // These are not valid parameter names, so Motor1ma, motor1sa etc are used.
-                // to retrieve the values, we remove the "Motor"
-                string name = pi.Name;
-                if (name.StartsWith("Motor", StringComparison.Ordinal))
-                {
-                    name = name.Substring(5);
-                }
-                string value = pi.GetValue(TinyGBoard, null).ToString();
-                if (!WriteSetting(name, value, true))
-                {
-                    return false;
-                };
-                DisplayText(" Wrote parameter: " + name + ", value: " + value);
-            }
-            return true;
-
-
-/*
-            if (!WriteSetting("st", TinyGBoard.st, true)) return false;
-            if (!WriteSetting("mt", TinyGBoard.mt, true)) return false;
-            if (!WriteSetting("jv", TinyGBoard.jv, true)) return false;
-            if (!WriteSetting("js", TinyGBoard.js, true)) return false;
-            if (!WriteSetting("tv", TinyGBoard.tv, true)) return false;
-            if (!WriteSetting("qv", TinyGBoard.qv, true)) return false;
-            if (!WriteSetting("sv", TinyGBoard.sv, true)) return false;
-            if (!WriteSetting("si", TinyGBoard.si, true)) return false;
-            if (!WriteSetting("gun", TinyGBoard.gun, true)) return false;
-            if (!WriteSetting("1ma", TinyGBoard.Motor1ma, true)) return false;
-            if (!WriteSetting("1sa", TinyGBoard.Motor1sa, true)) return false;
-            if (!WriteSetting("1tr", TinyGBoard.Motor1tr, true)) return false;
-            if (!WriteSetting("1mi", TinyGBoard.Motor1mi, true)) return false;
-            if (!WriteSetting("1po", TinyGBoard.Motor1po, true)) return false;
-            if (!WriteSetting("1pm", TinyGBoard.Motor1pm, true)) return false;
-            if (!WriteSetting("2ma", TinyGBoard.Motor2ma, true)) return false;
-            if (!WriteSetting("2sa", TinyGBoard.Motor2sa, true)) return false;
-            if (!WriteSetting("2tr", TinyGBoard.Motor2tr, true)) return false;
-            if (!WriteSetting("2mi", TinyGBoard.Motor2mi, true)) return false;
-            if (!WriteSetting("2po", TinyGBoard.Motor2po, true)) return false;
-            if (!WriteSetting("2pm", TinyGBoard.Motor2pm, true)) return false;
-            if (!WriteSetting("3ma", TinyGBoard.Motor3ma, true)) return false;
-            if (!WriteSetting("3sa", TinyGBoard.Motor3sa, true)) return false;
-            if (!WriteSetting("3tr", TinyGBoard.Motor3tr, true)) return false;
-            if (!WriteSetting("3mi", TinyGBoard.Motor3mi, true)) return false;
-            if (!WriteSetting("3po", TinyGBoard.Motor3po, true)) return false;
-            if (!WriteSetting("3pm", TinyGBoard.Motor3pm, true)) return false;
-            if (!WriteSetting("4ma", TinyGBoard.Motor4ma, true)) return false;
-            if (!WriteSetting("4sa", TinyGBoard.Motor4sa, true)) return false;
-            if (!WriteSetting("4tr", TinyGBoard.Motor4tr, true)) return false;
-            if (!WriteSetting("4mi", TinyGBoard.Motor4mi, true)) return false;
-            if (!WriteSetting("4po", TinyGBoard.Motor4po, true)) return false;
-            if (!WriteSetting("4pm", TinyGBoard.Motor4pm, true)) return false;
-            if (!WriteSetting("xam", TinyGBoard.Xam, true)) return false;
-            if (!WriteSetting("xvm", TinyGBoard.Xvm, true)) return false;
-            if (!WriteSetting("xfr", TinyGBoard.Xfr, true)) return false;
-            if (!WriteSetting("xtn", TinyGBoard.Xtn, true)) return false;
-            if (!WriteSetting("xtm", TinyGBoard.Xtm, true)) return false;
-            if (!WriteSetting("xjm", TinyGBoard.Xjm, true)) return false;
-            if (!WriteSetting("xjh", TinyGBoard.Xjh, true)) return false;
-            if (!WriteSetting("xsv", TinyGBoard.Xsv, true)) return false;
-            if (!WriteSetting("xlv", TinyGBoard.Xlv, true)) return false;
-            if (!WriteSetting("xlb", TinyGBoard.Xlb, true)) return false;
-            if (!WriteSetting("xzb", TinyGBoard.Xzb, true)) return false;
-            if (!WriteSetting("yam", TinyGBoard.Yam, true)) return false;
-            if (!WriteSetting("yvm", TinyGBoard.Yvm, true)) return false;
-            if (!WriteSetting("yfr", TinyGBoard.Yfr, true)) return false;
-            if (!WriteSetting("ytn", TinyGBoard.Ytn, true)) return false;
-            if (!WriteSetting("ytm", TinyGBoard.Ytm, true)) return false;
-            if (!WriteSetting("yjm", TinyGBoard.Yjm, true)) return false;
-            if (!WriteSetting("yjh", TinyGBoard.Yjh, true)) return false;
-            if (!WriteSetting("ysv", TinyGBoard.Ysv, true)) return false;
-            if (!WriteSetting("ylv", TinyGBoard.Ylv, true)) return false;
-            if (!WriteSetting("ylb", TinyGBoard.Ylb, true)) return false;
-            if (!WriteSetting("yzb", TinyGBoard.Yzb, true)) return false;
-            if (!WriteSetting("zam", TinyGBoard.Zam, true)) return false;
-            if (!WriteSetting("zvm", TinyGBoard.Zvm, true)) return false;
-            if (!WriteSetting("zfr", TinyGBoard.Zfr, true)) return false;
-            if (!WriteSetting("ztn", TinyGBoard.Ztn, true)) return false;
-            if (!WriteSetting("ztm", TinyGBoard.Ztm, true)) return false;
-            if (!WriteSetting("zjm", TinyGBoard.Zjm, true)) return false;
-            if (!WriteSetting("zjh", TinyGBoard.Zjh, true)) return false;
-            if (!WriteSetting("zsv", TinyGBoard.Zsv, true)) return false;
-            if (!WriteSetting("zlv", TinyGBoard.Zlv, true)) return false;
-            if (!WriteSetting("zlb", TinyGBoard.Zlb, true)) return false;
-            if (!WriteSetting("zzb", TinyGBoard.Zzb, true)) return false;
-            if (!WriteSetting("aam", TinyGBoard.Aam, true)) return false;
-            if (!WriteSetting("avm", TinyGBoard.Avm, true)) return false;
-            if (!WriteSetting("afr", TinyGBoard.Afr, true)) return false;
-            if (!WriteSetting("atn", TinyGBoard.Atn, true)) return false;
-            if (!WriteSetting("atm", TinyGBoard.Atm, true)) return false;
-            if (!WriteSetting("ajm", TinyGBoard.Ajm, true)) return false;
-            if (!WriteSetting("ajh", TinyGBoard.Ajh, true)) return false;
-            if (!WriteSetting("asv", TinyGBoard.Asv, true)) return false;
-            if (!WriteSetting("ec", TinyGBoard.ec, true)) return false;
-            if (!WriteSetting("ee", TinyGBoard.ee, true)) return false;
-            if (!WriteSetting("ex", TinyGBoard.ex, true)) return false;
-            if (!WriteSetting("xsn", TinyGBoard.Xsn, true)) return false;
-            if (!WriteSetting("xsx", TinyGBoard.Xsx, true)) return false;
-            if (!WriteSetting("ysn", TinyGBoard.Ysn, true)) return false;
-            if (!WriteSetting("ysx", TinyGBoard.Ysx, true)) return false;
-            if (!WriteSetting("zsn", TinyGBoard.Zsn, true)) return false;
-            if (!WriteSetting("zsx", TinyGBoard.Zsx, true)) return false;
-            if (!WriteSetting("asn", TinyGBoard.Asn, true)) return false;
-            if (!WriteSetting("asx", TinyGBoard.Asx, true)) return false;
-            return true;
-*/
+            DisplayText("*** Skipping loading board settings operation; board type unknown or unsupported");
         }
 
         #endregion
 
+        // =========================================================================
         // TODO: Move routines below to correct places
 
         public bool DownCameraRotationFollowsA { get; set; } = false;
@@ -14281,7 +14141,6 @@ namespace LitePlacer
                 NegativeMoveY_textBox.ForeColor = Color.Red;
             }
         }
-
     }	// end of: 	public partial class FormMain : Form
 
 

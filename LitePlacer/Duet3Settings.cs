@@ -15,45 +15,11 @@ namespace LitePlacer
     // This file has things that are related to Duet 3 control board settings, UI, their storage and retrieval.
     //
 
+    // For settings, see AppSettings.cs (VS bug prevents having the settings here.
     public partial class FormMain
     {
-        public double Duet3_Xspeed { get; set; } = 200; // mm/s
-        public double Duet3_Yspeed { get; set; } = 200; // mm/s
-        public double Duet3_Zspeed { get; set; } = 50; // mm/s
-        public double Duet3_Aspeed { get; set; } = 200; // mm/s
-
-        public double Duet3_Xacc { get; set; } = 1000; // mm/s^2
-        public double Duet3_Yacc { get; set; } = 1000; // mm/s^2
-        public double Duet3_Zacc { get; set; } = 1000; // mm/s^2
-        public double Duet3_Aacc { get; set; } = 1000; // mm/s^2
-
-        public double Duet3_XTravelPerRev { get; set; } = 40;   // mm
-        public double Duet3_YTravelPerRev { get; set; } = 40;   // mm
-        public double Duet3_ZTravelPerRev { get; set; } = 8;    // mm
-        public double Duet3_ATravelPerRev { get; set; } = 160;  // deg
-
-        public double Duet3_XDegPerStep { get; set; } = 0.9;   // mm
-        public double Duet3_YDegPerStep { get; set; } = 0.9;   // mm
-        public double Duet3_ZDegPerStep { get; set; } = 1.8;   // mm
-        public double Duet3_ADegPerStep { get; set; } = 0.9;   // mm
-
-        public int Duet3_XMicroStep { get; set; } = 16;
-        public int Duet3_YMicroStep { get; set; } = 16;
-        public int Duet3_ZMicroStep { get; set; } = 16;
-        public int Duet3_AMicroStep { get; set; } = 16;
-
-        public bool Duet3_XInterpolate { get; set; } = true;
-        public bool Duet3_YInterpolate { get; set; } = true;
-        public bool Duet3_ZInterpolate { get; set; } = true;
-        public bool Duet3_AInterpolate { get; set; } = true;
-
-        public int Duet3_XCurrent { get; set; } = 1100; //mA
-        public int Duet3_YCurrent { get; set; } = 1200; //mA
-        public int Duet3_ZCurrent { get; set; } = 1300; //mA
-        public int Duet3_ACurrent { get; set; } = 400; //mA
-
         // =================================================================================
-        // We can go directly to business. No need to go trough cnc class in motor settins,
+        // We can go directly to business. No need to go trough cnc class in motor settings,
         // as they are visible only when the corresponding board is already found.
         // Duet3 is owned by Cnc, so we do Cnc.Duet3.xxx(), not Cnc.xxx()
 
@@ -67,8 +33,6 @@ namespace LitePlacer
 
         public bool SetDuet3XmotorParameters()
         {
-            /*
-            SettingDuet3XmotorParameters = true;
 
             Duet3Xspeed_maskedTextBox.Text = Setting.Duet3_Xspeed.ToString();
             if (!SetDuet3Xspeed(Setting.Duet3_Xspeed)) return false;
@@ -95,10 +59,7 @@ namespace LitePlacer
             Duet3XCurrent_maskedTextBox.Text = Setting.Duet3_XCurrent.ToString();
             SetDuet3Xcurr(Setting.Duet3_XCurrent);
 
-            SettingDuet3XmotorParameters = false;
             return true;
-            */
-            return false;
         }
 
 
@@ -117,6 +78,7 @@ namespace LitePlacer
                     SetDuet3Xspeed(speed);
                     Duet3Xspeed_maskedTextBox.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -146,6 +108,7 @@ namespace LitePlacer
                     SetDuet3Xacc(acc);
                 }
                 Duet3Xacceleration_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -203,6 +166,7 @@ namespace LitePlacer
                         Duet3Xmicrosteps_maskedTextBox.ForeColor = Color.Black;
                     }
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -267,6 +231,7 @@ namespace LitePlacer
                     SetDuet3Xstepping();
                     Duet3XtravelPerRev_textBox.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -287,6 +252,7 @@ namespace LitePlacer
                     SetDuet3Xcurr(curr);
                     Duet3XCurrent_maskedTextBox.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -361,6 +327,7 @@ namespace LitePlacer
                     SetDuet3Yspeed(speed);
                     Duet3Yspeed_maskedTextBox.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -390,6 +357,7 @@ namespace LitePlacer
                     SetDuet3Yacc(acc);
                 }
                 Duet3Yacceleration_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -447,6 +415,7 @@ namespace LitePlacer
                         Duet3Ymicrosteps_maskedTextBox.ForeColor = Color.Black;
                     }
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -511,7 +480,8 @@ namespace LitePlacer
                     SetDuet3Ystepping();
                     Duet3YtravelPerRev_textBox.ForeColor = Color.Black;
                 }
-            }
+                 e.Handled = true;   // supress the ding sound
+           }
             */
         }
 
@@ -531,6 +501,7 @@ namespace LitePlacer
                     SetDuet3Ycurr(curr);
                     Duet3YCurrent_maskedTextBox.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -605,6 +576,7 @@ namespace LitePlacer
                     SetDuet3Zspeed(speed);
                     Duet3Zspeed_maskedTextBox.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -634,6 +606,7 @@ namespace LitePlacer
                     SetDuet3Zacc(acc);
                 }
                 Duet3Zacceleration_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -691,7 +664,8 @@ namespace LitePlacer
                         Duet3Zmicrosteps_maskedTextBox.ForeColor = Color.Black;
                     }
                 }
-            }
+                 e.Handled = true;   // supress the ding sound
+           }
             */
         }
 
@@ -755,7 +729,8 @@ namespace LitePlacer
                     SetDuet3Zstepping();
                     Duet3ZtravelPerRev_textBox.ForeColor = Color.Black;
                 }
-            }
+                e.Handled = true;   // supress the ding sound
+           }
             */
         }
 
@@ -775,6 +750,7 @@ namespace LitePlacer
                     SetDuet3Zcurr(curr);
                     Duet3ZCurrent_maskedTextBox.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -849,6 +825,7 @@ namespace LitePlacer
                     SetDuet3Aspeed(speed);
                     Duet3Aspeed_maskedTextBox.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -878,6 +855,7 @@ namespace LitePlacer
                     SetDuet3Aacc(acc);
                 }
                 Duet3Aacceleration_maskedTextBox.ForeColor = Color.Black;
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -935,6 +913,7 @@ namespace LitePlacer
                         Duet3Amicrosteps_maskedTextBox.ForeColor = Color.Black;
                     }
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -999,6 +978,7 @@ namespace LitePlacer
                     SetDuet3Astepping();
                     Duet3AtravelPerRev_textBox.ForeColor = Color.Black;
                 }
+                e.Handled = true;   // supress the ding sound
             }
             */
         }
@@ -1019,7 +999,8 @@ namespace LitePlacer
                     SetDuet3Acurr(curr);
                     Duet3ACurrent_maskedTextBox.ForeColor = Color.Black;
                 }
-            }
+                 e.Handled = true;   // supress the ding sound
+           }
             */
         }
 
