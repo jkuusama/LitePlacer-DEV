@@ -1035,77 +1035,127 @@ namespace LitePlacer
         {
             // Input frame is the high resolution source image, not necessarily in 4:3 format.
             // This function finds the correct scaling and returns an image, that fits to
-            // DisplayResolution sized imagebox. Paramerter zoom tells, how much the image
-            // is zoomed in, inaddition to crop (needed to get the procesign results scaled correctly).
+            // DisplayResolution sized imagebox. Paramerter zoom tells, how much the result image
+            // is zoomed in, in addition to crop (needed to get the procesign results scaled correctly).
             // Assumption is that the UI image is smaller than input image
-            // For performance: Handle basic cases separately
-            zoom = 1.0;
+
             try
             {
-                double Xin = SourceFrame.Width;
-                double Yin = SourceFrame.Height;
+                    // Basic case: 
+                    if (!ZoomIsOn && !ShowPixels)
+                    {
+                        return AspectRatioScale(SourceFrame, out zoom);
+                    }
 
-                // Basic cases: 
-                if (!ZoomIsOn && !ShowPixels)
-                {
-                    // no crop, scale to display resolution
-                    zoom = (double)DisplayResolution.X / Xin;
-                    int Ysize = (int)(Yin * zoom);
-                    ResizeNearestNeighbor R1_filt = new ResizeNearestNeighbor(DisplayResolution.X, Ysize);
-                    Bitmap result1 = R1_filt.Apply(SourceFrame);
-                    return result1;
-                }
+                    // The image we want is smaller than the input:
+                    // find the viewed size, crop to that
 
-                // The image we want is smaller than the input:
-                // find the viewed size, crop to that
+                    zoom = 1.0;
+                    double Xin = SourceFrame.Width;
+                    double Yin = SourceFrame.Height;
 
-                double zoomf = ZoomFactor;
-                if (!ZoomIsOn)
-                {
-                    zoomf = 1.0;
-                }
-                int XpixsWanted;
-                int YpixsWanted;
+                    double zoomf = ZoomFactor;
+                    if (!ZoomIsOn)
+                    {
+                        zoomf = 1.0;
+                    }
+                    int XpixsWanted;
+                    int YpixsWanted;
 
-                if (ShowPixels)
-                {
-                    XpixsWanted = (int)((double)DisplayResolution.X / zoomf);
-                }
-                else
-                {
-                    XpixsWanted = (int)(Xin / zoomf);
-                }
+                    if (ShowPixels)
+                    {
+                        XpixsWanted = (int)((double)DisplayResolution.X / zoomf);
+                    }
+                    else
+                    {
+                        XpixsWanted = (int)(Xin / zoomf);
+                    }
 
-                // We want to crop from Y using the same zoom ratio but in display aspect ratio
-                double OutAspect = (double)DisplayResolution.X / (double)DisplayResolution.Y;
-                YpixsWanted = (int)((double)XpixsWanted / OutAspect);
-                if (YpixsWanted > Yin)
-                {
-                    // slight zoom on a 16:9 input
-                    YpixsWanted = (int)Yin;
-                }
+                    // We want to crop from Y using the same zoom ratio but in display aspect ratio
+                    double OutAspect = (double)DisplayResolution.X / (double)DisplayResolution.Y;
+                    YpixsWanted = (int)((double)XpixsWanted / OutAspect);
+                    if (YpixsWanted > Yin)
+                    {
+                        // slight zoom on a 16:9 input
+                        YpixsWanted = (int)Yin;
+                    }
 
 
-                double CenterX = Xin / 2.0;
-                double CenterY = Yin / 2.0;
-                double FromX = CenterX - (XpixsWanted / 2.0);
-                double FromY = CenterY - (YpixsWanted / 2.0);
+                    double CenterX = Xin / 2.0;
+                    double CenterY = Yin / 2.0;
+                    double FromX = CenterX - (XpixsWanted / 2.0);
+                    double FromY = CenterY - (YpixsWanted / 2.0);
 
-                Crop Crop_filt = new Crop(new Rectangle((int)FromX, (int)FromY, (int)XpixsWanted, (int)YpixsWanted));
-                Bitmap result2 = Crop_filt.Apply(SourceFrame);
+                    Crop Crop_filt = new Crop(new Rectangle((int)FromX, (int)FromY, (int)XpixsWanted, (int)YpixsWanted));
+                    Bitmap result2 = Crop_filt.Apply(SourceFrame);
 
-                // scale to display res
-                zoom = (double)DisplayResolution.X / (double)result2.Width;
-                ResizeNearestNeighbor R2_filt = new ResizeNearestNeighbor(DisplayResolution.X, DisplayResolution.Y);
-                result2 = R2_filt.Apply(result2);
-                return result2;
+                    // scale to display res
+                    zoom = (double)DisplayResolution.X / (double)result2.Width;
+                    ResizeNearestNeighbor R2_filt = new ResizeNearestNeighbor(DisplayResolution.X, DisplayResolution.Y);
+                    result2 = R2_filt.Apply(result2);
+                    return result2;
+
             }
             catch
             {
+                zoom = 1.0;
                 return null;
             }
         }
 
+
+        Bitmap AspectRatioScale(Bitmap SourceFrame, out double zoom)
+        {
+            // Input is non-zoomed image, not necessarily same aspect ratio as UI
+            // Modified from https://www.codeproject.com/Articles/2941/Resizing-a-Photographic-image-with-GDI-for-NET
+
+            int sourceWidth = SourceFrame.Width;
+            int sourceHeight = SourceFrame.Height;
+            int TargetWidth = DisplayResolution.X;
+            int TargetHeight = DisplayResolution.Y;
+            int sourceX = 0;
+            int sourceY = 0;
+            int destX = 0;
+            int destY = 0;
+
+            double nPercent = 0;
+
+            double nPercentW = (double)TargetWidth / (double)sourceWidth;
+            double nPercentH = (double)TargetHeight / (double)sourceHeight;
+            if (nPercentH < nPercentW)
+            {
+                nPercent = nPercentH;
+                destX = System.Convert.ToInt16((TargetWidth -
+                              (sourceWidth * nPercent)) / 2);
+            }
+            else
+            {
+                nPercent = nPercentW;
+                destY = System.Convert.ToInt16((TargetHeight -
+                              (sourceHeight * nPercent)) / 2);
+            }
+
+            int destWidth = (int)(sourceWidth * nPercent);
+            int destHeight = (int)(sourceHeight * nPercent);
+
+            Bitmap result = new Bitmap(TargetWidth, TargetHeight, PixelFormat.Format24bppRgb);
+            result.SetResolution(SourceFrame.HorizontalResolution, SourceFrame.VerticalResolution);
+
+            Graphics gr = Graphics.FromImage(result);
+            // gr.Clear(Color.);
+            gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+            gr.DrawImage(SourceFrame,
+                new Rectangle(destX, destY, destWidth, destHeight),
+                new Rectangle(sourceX, sourceY, sourceWidth, sourceHeight),
+                GraphicsUnit.Pixel);
+
+            gr.Dispose();
+            zoom = nPercent;
+            return result;
+
+
+        }
 
         // ==========================================================================================================
         // Functions compatible with lists:

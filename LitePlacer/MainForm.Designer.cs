@@ -8902,7 +8902,7 @@
             this.toolTip1.SetToolTip(this.StoredImageMeasureDelay_button, "Uses Down camera. Moves to away from home,\r\nthen back to home, tries to measure h" +
         "oming.\r\nSet delay to value that gives reliable results.");
             this.StoredImageMeasureDelay_button.UseVisualStyleBackColor = true;
-            this.StoredImageMeasureDelay_button.Click += new System.EventHandler(this.StoredImageMeasureDelay_button_Click);
+            this.StoredImageMeasureDelay_button.Click += new System.EventHandler(this.MeasureCameraDelay_button_Click);
             // 
             // label160
             // 

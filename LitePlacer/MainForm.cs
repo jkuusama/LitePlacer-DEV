@@ -304,7 +304,6 @@ namespace LitePlacer
             DownCamera.YmmPerPixel = Setting.DownCam_YmmPerPixel;
             DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
             DownCamera.ZoomIsOn = Setting.DownCam_Zoom;
-            DownCamZoomFactor_textBox.Text = Setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             DownCamera.ZoomFactor = Setting.DownCam_Zoomfactor;
 
             UpCamera.ImageBox = Cam_pictureBox;
@@ -317,13 +316,14 @@ namespace LitePlacer
             UpCamera.YmmPerPixel = Setting.UpCam_YmmPerPixel;
             UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
             UpCamera.ZoomIsOn = Setting.UpCam_Zoom;
-            UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
 
             ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
 
             StartCameras();
 
+            UpCamZoomFactor_textBox.Text = Setting.UpCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
+            DownCamZoomFactor_textBox.Text = Setting.DownCam_Zoomfactor.ToString("0.0", CultureInfo.InvariantCulture);
             DownCameraXmmPerPixel_textBox.Text = Setting.DownCam_XmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
             UpdateDownCamBoxXSizeText();
             DownCameraYmmPerPixel_textBox.Text = Setting.DownCam_YmmPerPixel.ToString("0.0000", CultureInfo.InvariantCulture);
@@ -1470,16 +1470,16 @@ namespace LitePlacer
         {
             Grid.CommitEdit(DataGridViewDataErrorContexts.Commit);
             BindingSource bs = new BindingSource(); // create a BindingSource
-            bs.DataSource = Grid.DataSource;  // copy jobdata to bs
+            bs.DataSource = Grid.DataSource;  // copy data to bs
             DataTable dat = (DataTable)(bs.DataSource);  // make a datatable from bs
-            Grid.DataSource = dat;  // and copy datatable data to jobdata, forcing redraw
+            Grid.DataSource = dat;  // and copy datatable data, forcing redraw
             Grid.RefreshEdit();
             Grid.Refresh();
         }
 
         public bool MovementIsBusy()
         {
-            if (JoggingBusy || StartingUp || Homing || CNCstarting)
+            if (JoggingBusy || StartingUp || CNCstarting)
             {
                 DisplayText("Other operations are underway, please try again", KnownColor.DarkGreen, true);
                 return true;
@@ -3001,7 +3001,7 @@ namespace LitePlacer
                     }
                 }
                 DisplayText("Optical positioning, round " + count.ToString(CultureInfo.InvariantCulture)
-                    + ", dX= " + X.ToString("0.000",CultureInfo.InvariantCulture) + ", dY= " + Y.ToString("0.000", CultureInfo.InvariantCulture)
+                    + ", dX= " + X.ToString("0.000", CultureInfo.InvariantCulture) + ", dY= " + Y.ToString("0.000", CultureInfo.InvariantCulture)
                     + ", A= " + X.ToString("0.000", CultureInfo.InvariantCulture) + ", tries= " + tries.ToString(CultureInfo.InvariantCulture));
                 // If we are further than move tolerance, go there
                 if ((Math.Abs(X) > MoveTolerance) || (Math.Abs(Y) > MoveTolerance))
@@ -3011,11 +3011,15 @@ namespace LitePlacer
                         return false;
                     }
                 }
+                else
+                {
+                    break;
+                }
                 count++;
             }  // repeat this until we didn't need to move
-            while ((count < 8)
-                && ((Math.Abs(X) > MoveTolerance)
-                || (Math.Abs(Y) > MoveTolerance)));
+            while (count < 8);
+//                && ((Math.Abs(X) > MoveTolerance)
+//                || (Math.Abs(Y) > MoveTolerance)));
 
             if (count >= 7)
             {
@@ -3838,7 +3842,7 @@ namespace LitePlacer
         // =================================================================================
         private bool BoxSizeCalculationValid_m(Camera cam)
         {
-            if ((cam.DesiredResolutionX==0) || (cam.DesiredResolutionY==0))
+            if ((cam.CameraResolution.X == 0) || (cam.CameraResolution.Y == 0))
             {
                 DisplayText("camera resolution not set.", KnownColor.DarkRed, true);
                 return false;
@@ -3852,7 +3856,7 @@ namespace LitePlacer
         private double BoxXzize(Camera cam)
         {
             // How many pixels are really on screen?
-            double BoxX = (double)cam.BoxSizeX * (double)cam.DesiredResolutionX / (double)cam.DisplayResolution.X;
+            double BoxX = (double)cam.BoxSizeX * (double)cam.CameraResolution.X / (double)cam.DisplayResolution.X;
             if (cam.ShowPixels)
             {
                 BoxX = (double)cam.BoxSizeX;
@@ -3930,7 +3934,10 @@ namespace LitePlacer
         private double BoxYzize(Camera cam)
         {
             // How many pixels are really on screen?
-            double BoxY = (double)cam.BoxSizeY * (double)cam.DesiredResolutionY / (double)cam.DisplayResolution.Y;
+            double BoxY = (double)cam.BoxSizeY * (double)cam.CameraResolution.Y / (double)cam.DisplayResolution.Y;
+            double InputAspectRatio = (double)cam.CameraResolution.Y / (double)cam.CameraResolution.X;
+            double OutputAspectRatio = (double)cam.DisplayResolution.Y / (double)cam.DisplayResolution.X;
+            BoxY = BoxY * OutputAspectRatio / InputAspectRatio;
             if (cam.ShowPixels)
             {
                 BoxY = (double)cam.BoxSizeY;
