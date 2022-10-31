@@ -13,7 +13,7 @@ namespace LitePlacer
 {
 	public partial class FormMain : Form
 	{
-        const int NoOfImages = 10;
+        const int NoOfImages = 20;
         static Bitmap[] Images = new Bitmap[NoOfImages];
         static string[] ImageFilenames = new string[NoOfImages];
 
@@ -175,8 +175,28 @@ namespace LitePlacer
 
         }
 
+        private bool MeasureOneDelay(out double X, out double Y)
+        {
+            X = 0.0;
+            Y = 0.0;
+            Thread.Sleep(200);
+            if (!CNC_XYA_m(10.0, 10.0, 0))
+            {
+                return false;
+            }
+            Thread.Sleep(800);
+            if (!CNC_XYA_m(0.0, 0.0, 0))
+            {
+                return false;
+            }
+            if (!DownCamera.Measure(out X, out Y, out double A, false))
+            {
+                X = -100;   // fake result to indicate failed measurement
+            }
+            return true;
+        }
 
-        private void StoredImageMeasureDelay_button_Click(object sender, EventArgs e)
+        private void MeasureCameraDelay_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
             if (UpCam_radioButton.Checked)
@@ -186,7 +206,7 @@ namespace LitePlacer
             }
 
 
-                VideoAlgorithmsCollection.FullAlgorithmDescription HomeAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
+            VideoAlgorithmsCollection.FullAlgorithmDescription HomeAlg = new VideoAlgorithmsCollection.FullAlgorithmDescription();
             if (!VideoAlgorithms.FindAlgorithm("Homing", out HomeAlg))
             {
                 DisplayText("*** Homing algorithm not found - programming error or corrupt data file!", KnownColor.Red, true);
@@ -194,20 +214,39 @@ namespace LitePlacer
             }
             DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
             DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
-
-            if (!CNC_XYA_m(10.0, 10.0, 0))
+            double[] Xs = new double[20];
+            double[] Ys = new double[20];
+            int DelayStore = DownCamera.MeasurementDelay;
+            for (int i = 0; i < 15; i++)
             {
-                return;
+                DownCamera.MeasurementDelay = i;
+                if (!MeasureOneDelay(out Xs[i], out Ys[i]))
+                {
+                    DownCamera.MeasurementDelay = DelayStore;
+                    DisplayText("Operation failed.");
+                    break;
+                }
             }
-            if (!CNC_XYA_m(0.0, 0.0, 0))
-            {
-                return;
-            }
+            Thread.Sleep(500);
+            DownCamera.Measure(out double trueX, out double trueY, out double A, false);
+            DisplayText("Results:");
+            DisplayText("Del| X       | Y");
 
-            DownCamera.Measure(out double X, out double Y, out double A, false);
-            DisplayText("Result: X= " + X.ToString("0.000", CultureInfo.InvariantCulture) +
-                            ", Y= " + Y.ToString("0.000", CultureInfo.InvariantCulture) +
-                            ", A= " + A.ToString("0.00", CultureInfo.InvariantCulture));
+            for (int i = 0; i < 15; i++)
+            {
+                if (Xs[i] < -99)
+                {
+                    DisplayText(String.Format("{0,2}", i) + "  |    --- |    ---");
+                }
+                else
+                {
+                    DisplayText(String.Format("{0,2}", i) + " | " + String.Format("{0,7:0.000}", Xs[i])
+                        + " | " + String.Format("{0,7:0.000}", Ys[i]));
+                }
+            }
+            DisplayText("tr:| " + String.Format("{0,7:0.000}", trueX)
+                + " | " + String.Format("{0,7:0.000}", trueY));
+            DownCamera.MeasurementDelay = DelayStore;
 
 
             /*
