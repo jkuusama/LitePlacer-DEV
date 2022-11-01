@@ -1,10 +1,11 @@
-Build date 10/14/2022
+Build date 11/01/2022
 
 ---------------------
 
 New Features, significant changes
 
 * F1 now opens web help page about the item under mouse cursor
+* camera delay measurement now uses 0 to 15 frame delay and reports results
 
 ---------------------
 
@@ -13,6 +14,7 @@ Bug Fixes
 * 'After placement' -operations (park, camera switch etc) are now always done before 
   error/OK message is shown
 * No "ding" sound when pressing enter on the text to send box
+* Pixel to mm now calculated correctly, regardless of aspect ratio
 
 ---------------------
 
