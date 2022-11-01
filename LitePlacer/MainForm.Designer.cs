@@ -225,6 +225,9 @@
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
             this.Duet3Motors_tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label231 = new System.Windows.Forms.Label();
+            this.Duet3XhomingSpeed_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label232 = new System.Windows.Forms.Label();
             this.label200 = new System.Windows.Forms.Label();
             this.label199 = new System.Windows.Forms.Label();
             this.Duet3XCurrent_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -685,7 +688,6 @@
             this.label226 = new System.Windows.Forms.Label();
             this.NoOfNozzlesOnVideoSetup_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.StoredImages_tabPage = new System.Windows.Forms.TabPage();
-            this.MeasurementDelay_label = new System.Windows.Forms.Label();
             this.StoredImageSetDelay_button = new System.Windows.Forms.Button();
             this.StoredImageMeasureDelay_button = new System.Windows.Forms.Button();
             this.label160 = new System.Windows.Forms.Label();
@@ -858,9 +860,6 @@
             this.Test7_button = new System.Windows.Forms.Button();
             this.TapesAll_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.FPStimer = new System.Windows.Forms.Timer(this.components);
-            this.label231 = new System.Windows.Forms.Label();
-            this.Duet3XhomingSpeed_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label232 = new System.Windows.Forms.Label();
             this.Tapes_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TapesOld_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tapes_dataGridView)).BeginInit();
@@ -1124,7 +1123,6 @@
             this.SerialMonitor_richTextBox.TabStop = false;
             this.SerialMonitor_richTextBox.Tag = "https://liteplacer.com/bottom-section-of-the-user-interface/";
             this.SerialMonitor_richTextBox.Text = "";
-            this.toolTip1.SetToolTip(this.SerialMonitor_richTextBox, "Currently loaded nozzle");
             // 
             // Test1_button
             // 
@@ -3380,6 +3378,39 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "X";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label231
+            // 
+            this.label231.AutoSize = true;
+            this.label231.Location = new System.Drawing.Point(35, 37);
+            this.label231.Name = "label231";
+            this.label231.Size = new System.Drawing.Size(78, 13);
+            this.label231.TabIndex = 118;
+            this.label231.Tag = "https://liteplacer.com/motors-setup/";
+            this.label231.Text = "Homing speed:";
+            // 
+            // Duet3XhomingSpeed_maskedTextBox
+            // 
+            this.Duet3XhomingSpeed_maskedTextBox.Location = new System.Drawing.Point(119, 32);
+            this.Duet3XhomingSpeed_maskedTextBox.Mask = "99999";
+            this.Duet3XhomingSpeed_maskedTextBox.Name = "Duet3XhomingSpeed_maskedTextBox";
+            this.Duet3XhomingSpeed_maskedTextBox.PromptChar = ' ';
+            this.Duet3XhomingSpeed_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Duet3XhomingSpeed_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.Duet3XhomingSpeed_maskedTextBox.TabIndex = 119;
+            this.Duet3XhomingSpeed_maskedTextBox.Tag = "";
+            this.Duet3XhomingSpeed_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Duet3XhomingSpeed_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            // 
+            // label232
+            // 
+            this.label232.AutoSize = true;
+            this.label232.Location = new System.Drawing.Point(168, 35);
+            this.label232.Name = "label232";
+            this.label232.Size = new System.Drawing.Size(44, 13);
+            this.label232.TabIndex = 117;
+            this.label232.Tag = "https://liteplacer.com/motors-setup/";
+            this.label232.Text = "mm/min";
             // 
             // label200
             // 
@@ -8733,6 +8764,7 @@
             this.AdvancedProcessing_tabControl.SelectedIndex = 0;
             this.AdvancedProcessing_tabControl.Size = new System.Drawing.Size(419, 179);
             this.AdvancedProcessing_tabControl.TabIndex = 308;
+            this.AdvancedProcessing_tabControl.Tag = "https://liteplacer.com/special-options-on-setup-video-processing-page/";
             this.AdvancedProcessing_tabControl.Visible = false;
             // 
             // NozzleCalibration_tabPage
@@ -8846,7 +8878,6 @@
             // 
             // StoredImages_tabPage
             // 
-            this.StoredImages_tabPage.Controls.Add(this.MeasurementDelay_label);
             this.StoredImages_tabPage.Controls.Add(this.StoredImageSetDelay_button);
             this.StoredImages_tabPage.Controls.Add(this.StoredImageMeasureDelay_button);
             this.StoredImages_tabPage.Controls.Add(this.label160);
@@ -8865,18 +8896,9 @@
             this.StoredImages_tabPage.Padding = new System.Windows.Forms.Padding(3);
             this.StoredImages_tabPage.Size = new System.Drawing.Size(411, 153);
             this.StoredImages_tabPage.TabIndex = 2;
+            this.StoredImages_tabPage.Tag = "https://liteplacer.com/measurement-delay-2/";
             this.StoredImages_tabPage.Text = "Measurement Delay";
             this.StoredImages_tabPage.UseVisualStyleBackColor = true;
-            // 
-            // MeasurementDelay_label
-            // 
-            this.MeasurementDelay_label.AutoSize = true;
-            this.MeasurementDelay_label.Location = new System.Drawing.Point(10, 107);
-            this.MeasurementDelay_label.Name = "MeasurementDelay_label";
-            this.MeasurementDelay_label.Size = new System.Drawing.Size(81, 13);
-            this.MeasurementDelay_label.TabIndex = 13;
-            this.MeasurementDelay_label.Text = "Current delay: 0";
-            this.MeasurementDelay_label.Visible = false;
             // 
             // StoredImageSetDelay_button
             // 
@@ -8884,6 +8906,7 @@
             this.StoredImageSetDelay_button.Name = "StoredImageSetDelay_button";
             this.StoredImageSetDelay_button.Size = new System.Drawing.Size(60, 23);
             this.StoredImageSetDelay_button.TabIndex = 12;
+            this.StoredImageSetDelay_button.Tag = "https://liteplacer.com/measurement-delay-2/";
             this.StoredImageSetDelay_button.Text = "Set";
             this.toolTip1.SetToolTip(this.StoredImageSetDelay_button, "Sets the camera to ignore the number of frames shown above before each measuremen" +
         "t.\r\nClick \"Set\" when the image number above is on the first sharp image number.\r" +
@@ -8898,6 +8921,7 @@
             this.StoredImageMeasureDelay_button.Name = "StoredImageMeasureDelay_button";
             this.StoredImageMeasureDelay_button.Size = new System.Drawing.Size(75, 23);
             this.StoredImageMeasureDelay_button.TabIndex = 11;
+            this.StoredImageMeasureDelay_button.Tag = "https://liteplacer.com/measurement-delay-2/";
             this.StoredImageMeasureDelay_button.Text = "Measure";
             this.toolTip1.SetToolTip(this.StoredImageMeasureDelay_button, "Uses Down camera. Moves to away from home,\r\nthen back to home, tries to measure h" +
         "oming.\r\nSet delay to value that gives reliable results.");
@@ -8911,6 +8935,7 @@
             this.label160.Name = "label160";
             this.label160.Size = new System.Drawing.Size(144, 13);
             this.label160.TabIndex = 10;
+            this.label160.Tag = "https://liteplacer.com/measurement-delay-2/";
             this.label160.Text = "Measurement Delay (frames):";
             // 
             // StoredImageSaveAll_button
@@ -8987,6 +9012,7 @@
             this.ImageNumber_label.Name = "ImageNumber_label";
             this.ImageNumber_label.Size = new System.Drawing.Size(18, 20);
             this.ImageNumber_label.TabIndex = 3;
+            this.ImageNumber_label.Tag = "https://liteplacer.com/measurement-delay-2/";
             this.ImageNumber_label.Text = "0";
             // 
             // LeftArrowImage_button
@@ -8995,6 +9021,7 @@
             this.LeftArrowImage_button.Name = "LeftArrowImage_button";
             this.LeftArrowImage_button.Size = new System.Drawing.Size(32, 23);
             this.LeftArrowImage_button.TabIndex = 2;
+            this.LeftArrowImage_button.Tag = "https://liteplacer.com/measurement-delay-2/";
             this.LeftArrowImage_button.Text = "◀";
             this.LeftArrowImage_button.UseVisualStyleBackColor = true;
             this.LeftArrowImage_button.Click += new System.EventHandler(this.LeftArrowImage_button_Click);
@@ -9005,6 +9032,7 @@
             this.RightArrowImage_button.Name = "RightArrowImage_button";
             this.RightArrowImage_button.Size = new System.Drawing.Size(32, 23);
             this.RightArrowImage_button.TabIndex = 1;
+            this.RightArrowImage_button.Tag = "https://liteplacer.com/measurement-delay-2/";
             this.RightArrowImage_button.Text = "▶";
             this.RightArrowImage_button.UseVisualStyleBackColor = true;
             this.RightArrowImage_button.Click += new System.EventHandler(this.RightArrowImage_button_Click);
@@ -10861,39 +10889,6 @@
             this.FPStimer.Interval = 1000;
             this.FPStimer.Tick += new System.EventHandler(this.FPStimer_Tick);
             // 
-            // label231
-            // 
-            this.label231.AutoSize = true;
-            this.label231.Location = new System.Drawing.Point(35, 37);
-            this.label231.Name = "label231";
-            this.label231.Size = new System.Drawing.Size(78, 13);
-            this.label231.TabIndex = 118;
-            this.label231.Tag = "https://liteplacer.com/motors-setup/";
-            this.label231.Text = "Homing speed:";
-            // 
-            // Duet3XhomingSpeed_maskedTextBox
-            // 
-            this.Duet3XhomingSpeed_maskedTextBox.Location = new System.Drawing.Point(119, 32);
-            this.Duet3XhomingSpeed_maskedTextBox.Mask = "99999";
-            this.Duet3XhomingSpeed_maskedTextBox.Name = "Duet3XhomingSpeed_maskedTextBox";
-            this.Duet3XhomingSpeed_maskedTextBox.PromptChar = ' ';
-            this.Duet3XhomingSpeed_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Duet3XhomingSpeed_maskedTextBox.Size = new System.Drawing.Size(43, 20);
-            this.Duet3XhomingSpeed_maskedTextBox.TabIndex = 119;
-            this.Duet3XhomingSpeed_maskedTextBox.Tag = "";
-            this.Duet3XhomingSpeed_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.Duet3XhomingSpeed_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            // 
-            // label232
-            // 
-            this.label232.AutoSize = true;
-            this.label232.Location = new System.Drawing.Point(168, 35);
-            this.label232.Name = "label232";
-            this.label232.Size = new System.Drawing.Size(44, 13);
-            this.label232.TabIndex = 117;
-            this.label232.Tag = "https://liteplacer.com/motors-setup/";
-            this.label232.Text = "mm/min";
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -11850,7 +11845,6 @@
         private System.Windows.Forms.Button LeftArrowImage_button;
         private System.Windows.Forms.Button RightArrowImage_button;
         private System.Windows.Forms.CheckBox UseStoredImage_checkBox;
-        private System.Windows.Forms.Label MeasurementDelay_label;
         private System.Windows.Forms.Button NozzleHeightCancel_button;
         private System.Windows.Forms.TextBox NegativeMoveY_textBox;
         private System.Windows.Forms.TextBox NegativeMoveX_textBox;

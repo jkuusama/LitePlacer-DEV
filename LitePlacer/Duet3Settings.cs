@@ -67,7 +67,6 @@ namespace LitePlacer
         // speed
         private void Duet3Xspeed_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            /*
             double speed;
             Duet3Xspeed_maskedTextBox.ForeColor = Color.Red;
             if (e.KeyChar == '\r')
@@ -80,16 +79,11 @@ namespace LitePlacer
                 }
                 e.Handled = true;   // supress the ding sound
             }
-            */
         }
 
         private bool SetDuet3Xspeed(double speed)
         {
-            /*
-            speed = speed * 60; // speed is set in mm/min, but reported in mm/s.
             return Cnc.Duet3.Write_m("M203 X" + speed.ToString().Replace(',', '.'));
-            */
-            return false;
         }
 
 

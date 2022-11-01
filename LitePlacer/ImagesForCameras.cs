@@ -13,15 +13,15 @@ namespace LitePlacer
 {
 	public partial class FormMain : Form
 	{
-        const int NoOfImages = 20;
-        static Bitmap[] Images = new Bitmap[NoOfImages];
-        static string[] ImageFilenames = new string[NoOfImages];
+        const int MaxDelay = 20;
+        static Bitmap[] Images = new Bitmap[MaxDelay];
+        static string[] ImageFilenames = new string[MaxDelay];
 
-        static int ImageNumber = 0;
+        static int FramesToWait = 0;
 
         private void InitStoredImages()
         {
-            for (int i = 0; i < NoOfImages; i++)
+            for (int i = 0; i < MaxDelay; i++)
             {
                 Images[i] = null;
                 ImageFilenames[i] = "no image";
@@ -38,10 +38,9 @@ namespace LitePlacer
             {
                 Cam = UpCamera;
             }
-            ImageNumber = Cam.MeasurementDelay;
+            FramesToWait = Cam.MeasurementDelay;
             ImageNumber_label.Text = Cam.MeasurementDelay.ToString();
 
-            MeasurementDelay_label.Text = "Current delay: " + Cam.MeasurementDelay.ToString();
             UpdateImageLabels();
         }
 
@@ -55,9 +54,9 @@ namespace LitePlacer
             }
             if (UseStoredImage_checkBox.Checked)
             {
-                if (Images[ImageNumber] == null)
+                if (Images[FramesToWait] == null)
                 {
-                    DisplayText("No image loaded at image position " + ImageNumber.ToString());
+                    DisplayText("No image loaded at image position " + FramesToWait.ToString());
                     return;
                 }
                 if (Cam.PauseProcessing || !Cam.IsRunning())
@@ -73,7 +72,7 @@ namespace LitePlacer
                     Thread.Sleep(10);
                     Application.DoEvents();
                 }
-                Bitmap debug = Images[ImageNumber];
+                Bitmap debug = Images[FramesToWait];
 
                 Cam.ExternalImage = debug;
                 Cam.UseExternalImage = true;
@@ -82,7 +81,7 @@ namespace LitePlacer
             }
             else
             {
-                Bitmap debug = Images[ImageNumber];
+                Bitmap debug = Images[FramesToWait];
                 Cam.Dummy = debug;
                 Cam.UseExternalImage = false;
             }
@@ -97,63 +96,51 @@ namespace LitePlacer
 
         private void LeftArrowImage_button_Click(object sender, EventArgs e)
         {
-            if (ImageNumber>0)
+            if (FramesToWait>0)
             {
-            ImageNumber--;
+            FramesToWait--;
             }
-            ImageNumber_label.Text = ImageNumber.ToString();
+            ImageNumber_label.Text = FramesToWait.ToString();
 
             Camera Cam = DownCamera;
             if (UpCam_radioButton.Checked)
             {
                 Cam = UpCamera;
-                Setting.UpCam_MeasurementDelay = ImageNumber;
+                Setting.UpCam_MeasurementDelay = FramesToWait;
             }
             else
             {
-            Setting.DownCam_MeasurementDelay = ImageNumber;
+            Setting.DownCam_MeasurementDelay = FramesToWait;
             }
-
-            Cam.MeasurementDelay = ImageNumber;
-            MeasurementDelay_label.Text = "Current delay: " + DownCamera.MeasurementDelay.ToString();
-
-            /*
-            UpdateImageLabels();
-            UseStoredImage();
-            */
+            Cam.MeasurementDelay = FramesToWait;
         }
 
         private void RightArrowImage_button_Click(object sender, EventArgs e)
         {
-            if (ImageNumber < NoOfImages)
+            if (FramesToWait < MaxDelay)
             {
-                ImageNumber++;
+                FramesToWait++;
             }
-            ImageNumber_label.Text = ImageNumber.ToString();
+            ImageNumber_label.Text = FramesToWait.ToString();
 
             Camera Cam = DownCamera;
             if (UpCam_radioButton.Checked)
             {
                 Cam = UpCamera;
-                Setting.UpCam_MeasurementDelay = ImageNumber;
+                Setting.UpCam_MeasurementDelay = FramesToWait;
             }
             else
             {
-                Setting.DownCam_MeasurementDelay = ImageNumber;
+                Setting.DownCam_MeasurementDelay = FramesToWait;
             }
 
-            Cam.MeasurementDelay = ImageNumber;
-            MeasurementDelay_label.Text = "Current delay: " + DownCamera.MeasurementDelay.ToString();
-            /*
-            UpdateImageLabels();
-            UseStoredImage();
-            */
+            Cam.MeasurementDelay = FramesToWait;
         }
 
 
         private void UpdateImageLabels()
         {
-            if (ImageNumber == 0)
+            if (FramesToWait == 0)
             {
                 LeftArrowImage_button.Visible = false;
             }
@@ -161,7 +148,7 @@ namespace LitePlacer
             {
                 LeftArrowImage_button.Visible = true;
             }
-            if (ImageNumber == 9)
+            if (FramesToWait == 9)
             {
                 RightArrowImage_button.Visible = false;
             }
@@ -169,9 +156,9 @@ namespace LitePlacer
             {
                 RightArrowImage_button.Visible = true;
             }
-            Bitmap debug = Images[ImageNumber];
-            ImageNumber_label.Text = ImageNumber.ToString();
-            StoredImageFilename_label.Text = ImageNumber.ToString() + ": " + ImageFilenames[ImageNumber];
+            Bitmap debug = Images[FramesToWait];
+            ImageNumber_label.Text = FramesToWait.ToString();
+            StoredImageFilename_label.Text = FramesToWait.ToString() + ": " + ImageFilenames[FramesToWait];
 
         }
 
@@ -214,6 +201,11 @@ namespace LitePlacer
             }
             DownCamera.BuildMeasurementFunctionsList(HomeAlg.FunctionList);
             DownCamera.MeasurementParameters = HomeAlg.MeasurementParameters;
+            if (!CNC_XYA_m(0.0, 0.0, 0))
+            {
+                return;
+            }
+
             double[] Xs = new double[20];
             double[] Ys = new double[20];
             int DelayStore = DownCamera.MeasurementDelay;
@@ -227,8 +219,6 @@ namespace LitePlacer
                     break;
                 }
             }
-            Thread.Sleep(500);
-            DownCamera.Measure(out double trueX, out double trueY, out double A, false);
             DisplayText("Results:");
             DisplayText("Del| X       | Y");
 
@@ -244,8 +234,6 @@ namespace LitePlacer
                         + " | " + String.Format("{0,7:0.000}", Ys[i]));
                 }
             }
-            DisplayText("tr:| " + String.Format("{0,7:0.000}", trueX)
-                + " | " + String.Format("{0,7:0.000}", trueY));
             DownCamera.MeasurementDelay = DelayStore;
 
 
@@ -319,15 +307,13 @@ namespace LitePlacer
         {
             if (DownCam_radioButton.Checked)
             {
-                DownCamera.MeasurementDelay = ImageNumber;
-                Setting.DownCam_MeasurementDelay = ImageNumber;
-                MeasurementDelay_label.Text = "Current delay: " + DownCamera.MeasurementDelay.ToString();
+                DownCamera.MeasurementDelay = FramesToWait;
+                Setting.DownCam_MeasurementDelay = FramesToWait;
             }
             else
             {
-                UpCamera.MeasurementDelay = ImageNumber;
-                Setting.UpCam_MeasurementDelay = ImageNumber;
-                MeasurementDelay_label.Text = "Current delay: " + UpCamera.MeasurementDelay.ToString();
+                UpCamera.MeasurementDelay = FramesToWait;
+                Setting.UpCam_MeasurementDelay = FramesToWait;
             }
         }
 

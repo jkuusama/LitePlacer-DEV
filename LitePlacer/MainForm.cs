@@ -3447,7 +3447,7 @@ namespace LitePlacer
             if (Setting.DownCam_MeasurementDelay>20)
             {
                 // leftover from older revision, where the values was in milliseconds)
-                Setting.DownCam_MeasurementDelay = 0;       // existing users don't have delay set, don't introduce it
+                Setting.DownCam_MeasurementDelay = 10;
             }
             DownCamera.MeasurementDelay = Setting.DownCam_MeasurementDelay;
         }
