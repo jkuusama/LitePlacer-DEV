@@ -40,6 +40,15 @@ namespace LitePlacer
             {
                 return false;
             }
+            // Checking aam parameter, and if not 1, force it
+            // TODO: Find out the real problem, don't hide it!
+            if (MainForm.TinyGBoard.Aam != "1")
+            {
+                if (!Write_m("{\"aam\":1}"))      // aam mode
+                {
+                    return false;
+                }
+            }
             MainForm.SetMotorPower_checkBox(true);
             return true;
         }
@@ -271,7 +280,6 @@ namespace LitePlacer
                     "Homing operation mechanical step failed, CNC issue",
                     "Homing failed",
                     MessageBoxButtons.OK);
-                Cnc.Homing = false;
                 return false;
             }
             MainForm.DisplayText("Homing " + axis + " done.");
@@ -775,7 +783,7 @@ namespace LitePlacer
                 set
                 {
                     _posx = value;
-                    CNC.setCurrX(_posx);
+                    CNC.SetCurrentX(_posx);
                     CNC.MainForm.ValueUpdater("posx", _posx.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
@@ -787,7 +795,7 @@ namespace LitePlacer
                 set
                 {
                     _posy = value;
-                    CNC.setCurrY(_posy);
+                    CNC.SetCurrentY(_posy);
                     CNC.MainForm.ValueUpdater("posy", _posy.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
@@ -799,7 +807,7 @@ namespace LitePlacer
                 set
                 {
                     _posz = value;
-                    CNC.setCurrZ(_posz);
+                    CNC.SetCurrentZ(_posz);
                     CNC.MainForm.ValueUpdater("posz", _posz.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
@@ -811,7 +819,7 @@ namespace LitePlacer
                 set
                 {
                     _posa = value;
-                    CNC.setCurrA(_posa);
+                    CNC.SetCurrentA(_posa);
                     CNC.MainForm.ValueUpdater("posa", _posa.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
