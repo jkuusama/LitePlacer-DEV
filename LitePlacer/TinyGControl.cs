@@ -40,8 +40,8 @@ namespace LitePlacer
             {
                 return false;
             }
-            // Checking aam parameter, and if not 1, force it
-            // TODO: Find out the real problem, don't hide it!
+            // Check aam parameter and if not 1, force it
+            //     TODO: Find out the real problem (issue #176), don't hide it!
             if (MainForm.TinyGBoard.Aam != "1")
             {
                 if (!Write_m("{\"aam\":1}"))      // aam mode
@@ -783,7 +783,7 @@ namespace LitePlacer
                 set
                 {
                     _posx = value;
-                    CNC.SetCurrentX(_posx);
+                    CNC.MainForm.Cnc.SetCurrentX(_posx);
                     CNC.MainForm.ValueUpdater("posx", _posx.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
@@ -795,7 +795,7 @@ namespace LitePlacer
                 set
                 {
                     _posy = value;
-                    CNC.SetCurrentY(_posy);
+                    CNC.MainForm.Cnc.SetCurrentY(_posy);
                     CNC.MainForm.ValueUpdater("posy", _posy.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
@@ -807,7 +807,7 @@ namespace LitePlacer
                 set
                 {
                     _posz = value;
-                    CNC.SetCurrentZ(_posz);
+                    CNC.MainForm.Cnc.SetCurrentZ(_posz);
                     CNC.MainForm.ValueUpdater("posz", _posz.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }
@@ -819,7 +819,7 @@ namespace LitePlacer
                 set
                 {
                     _posa = value;
-                    CNC.SetCurrentA(_posa);
+                    CNC.MainForm.Cnc.SetCurrentA(_posa);
                     CNC.MainForm.ValueUpdater("posa", _posa.ToString("0.000", CultureInfo.InvariantCulture));
                 }
             }

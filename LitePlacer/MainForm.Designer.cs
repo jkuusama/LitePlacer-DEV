@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Park_button = new System.Windows.Forms.Button();
             this.TestNozzleRecognition_button = new System.Windows.Forms.Button();
             this.DownCamZoomFactor_textBox = new System.Windows.Forms.TextBox();
@@ -40,12 +40,12 @@
             this.SendtoControlBoard_textBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.xpos_textBox = new System.Windows.Forms.TextBox();
-            this.ypos_textBox = new System.Windows.Forms.TextBox();
+            this.Xposition_textBox = new System.Windows.Forms.TextBox();
+            this.Yposition_textBox = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.zpos_textBox = new System.Windows.Forms.TextBox();
+            this.Zposition_textBox = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.apos_textBox = new System.Windows.Forms.TextBox();
+            this.Aposition_textBox = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
             this.SerialMonitor_richTextBox = new System.Windows.Forms.RichTextBox();
             this.Test1_button = new System.Windows.Forms.Button();
@@ -225,6 +225,12 @@
             this.tabPageBasicSetup = new System.Windows.Forms.TabPage();
             this.Duet3Motors_tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label237 = new System.Windows.Forms.Label();
+            this.label236 = new System.Windows.Forms.Label();
+            this.Duet3XHomingBackoff_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label235 = new System.Windows.Forms.Label();
+            this.label234 = new System.Windows.Forms.Label();
+            this.label233 = new System.Windows.Forms.Label();
             this.label231 = new System.Windows.Forms.Label();
             this.Duet3XhomingSpeed_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.label232 = new System.Windows.Forms.Label();
@@ -248,6 +254,15 @@
             this.label194 = new System.Windows.Forms.Label();
             this.label186 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label244 = new System.Windows.Forms.Label();
+            this.label243 = new System.Windows.Forms.Label();
+            this.label238 = new System.Windows.Forms.Label();
+            this.label239 = new System.Windows.Forms.Label();
+            this.Duet3YHomingBackoff_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label240 = new System.Windows.Forms.Label();
+            this.label241 = new System.Windows.Forms.Label();
+            this.Duet3YhomingSpeed_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label242 = new System.Windows.Forms.Label();
             this.label201 = new System.Windows.Forms.Label();
             this.label202 = new System.Windows.Forms.Label();
             this.Duet3YCurrent_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -268,6 +283,15 @@
             this.label197 = new System.Windows.Forms.Label();
             this.label198 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label247 = new System.Windows.Forms.Label();
+            this.label248 = new System.Windows.Forms.Label();
+            this.Duet3ZHomingBackoff_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label249 = new System.Windows.Forms.Label();
+            this.label250 = new System.Windows.Forms.Label();
+            this.Duet3ZhomingSpeed_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.label251 = new System.Windows.Forms.Label();
+            this.label246 = new System.Windows.Forms.Label();
+            this.label245 = new System.Windows.Forms.Label();
             this.label203 = new System.Windows.Forms.Label();
             this.label204 = new System.Windows.Forms.Label();
             this.Duet3ZCurrent_maskedTextBox = new System.Windows.Forms.MaskedTextBox();
@@ -288,6 +312,8 @@
             this.label212 = new System.Windows.Forms.Label();
             this.label213 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label253 = new System.Windows.Forms.Label();
+            this.label252 = new System.Windows.Forms.Label();
             this.OptimizeA_Duet3_checkBox = new System.Windows.Forms.CheckBox();
             this.label214 = new System.Windows.Forms.Label();
             this.label215 = new System.Windows.Forms.Label();
@@ -1018,33 +1044,33 @@
             // 
             // xpos_textBox
             // 
-            this.xpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.xpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xpos_textBox.Location = new System.Drawing.Point(654, 665);
-            this.xpos_textBox.Name = "xpos_textBox";
-            this.xpos_textBox.ReadOnly = true;
-            this.xpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.xpos_textBox.Size = new System.Drawing.Size(113, 17);
-            this.xpos_textBox.TabIndex = 9;
-            this.xpos_textBox.Tag = "https://liteplacer.com/bottom-section-of-the-user-interface/";
-            this.xpos_textBox.Text = "- - - -";
-            this.xpos_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.xpos_textBox, "Current X position");
+            this.Xposition_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Xposition_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Xposition_textBox.Location = new System.Drawing.Point(654, 665);
+            this.Xposition_textBox.Name = "xpos_textBox";
+            this.Xposition_textBox.ReadOnly = true;
+            this.Xposition_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Xposition_textBox.Size = new System.Drawing.Size(113, 17);
+            this.Xposition_textBox.TabIndex = 9;
+            this.Xposition_textBox.Tag = "https://liteplacer.com/bottom-section-of-the-user-interface/";
+            this.Xposition_textBox.Text = "- - - -";
+            this.Xposition_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.Xposition_textBox, "Current X position");
             // 
             // ypos_textBox
             // 
-            this.ypos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ypos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ypos_textBox.Location = new System.Drawing.Point(654, 686);
-            this.ypos_textBox.Name = "ypos_textBox";
-            this.ypos_textBox.ReadOnly = true;
-            this.ypos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.ypos_textBox.Size = new System.Drawing.Size(113, 17);
-            this.ypos_textBox.TabIndex = 11;
-            this.ypos_textBox.Tag = "https://liteplacer.com/bottom-section-of-the-user-interface/";
-            this.ypos_textBox.Text = "- - - -";
-            this.ypos_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.ypos_textBox, "Current Y position");
+            this.Yposition_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Yposition_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Yposition_textBox.Location = new System.Drawing.Point(654, 686);
+            this.Yposition_textBox.Name = "ypos_textBox";
+            this.Yposition_textBox.ReadOnly = true;
+            this.Yposition_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Yposition_textBox.Size = new System.Drawing.Size(113, 17);
+            this.Yposition_textBox.TabIndex = 11;
+            this.Yposition_textBox.Tag = "https://liteplacer.com/bottom-section-of-the-user-interface/";
+            this.Yposition_textBox.Text = "- - - -";
+            this.Yposition_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.Yposition_textBox, "Current Y position");
             // 
             // label17
             // 
@@ -1059,18 +1085,18 @@
             // 
             // zpos_textBox
             // 
-            this.zpos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.zpos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.zpos_textBox.Location = new System.Drawing.Point(654, 707);
-            this.zpos_textBox.Name = "zpos_textBox";
-            this.zpos_textBox.ReadOnly = true;
-            this.zpos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.zpos_textBox.Size = new System.Drawing.Size(113, 17);
-            this.zpos_textBox.TabIndex = 13;
-            this.zpos_textBox.Tag = "https://liteplacer.com/bottom-section-of-the-user-interface/";
-            this.zpos_textBox.Text = "- - - -";
-            this.zpos_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.zpos_textBox, "Current Z position");
+            this.Zposition_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Zposition_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Zposition_textBox.Location = new System.Drawing.Point(654, 707);
+            this.Zposition_textBox.Name = "zpos_textBox";
+            this.Zposition_textBox.ReadOnly = true;
+            this.Zposition_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Zposition_textBox.Size = new System.Drawing.Size(113, 17);
+            this.Zposition_textBox.TabIndex = 13;
+            this.Zposition_textBox.Tag = "https://liteplacer.com/bottom-section-of-the-user-interface/";
+            this.Zposition_textBox.Text = "- - - -";
+            this.Zposition_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.Zposition_textBox, "Current Z position");
             // 
             // label18
             // 
@@ -1085,19 +1111,19 @@
             // 
             // apos_textBox
             // 
-            this.apos_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.apos_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.apos_textBox.Location = new System.Drawing.Point(654, 727);
-            this.apos_textBox.Name = "apos_textBox";
-            this.apos_textBox.ReadOnly = true;
-            this.apos_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.apos_textBox.Size = new System.Drawing.Size(113, 17);
-            this.apos_textBox.TabIndex = 15;
-            this.apos_textBox.Tag = "https://liteplacer.com/bottom-section-of-the-user-interface/";
-            this.apos_textBox.Text = "- - - -";
-            this.apos_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.apos_textBox, "Current A (rotation) position");
-            this.apos_textBox.TextChanged += new System.EventHandler(this.apos_textBox_TextChanged);
+            this.Aposition_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Aposition_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.944F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Aposition_textBox.Location = new System.Drawing.Point(654, 727);
+            this.Aposition_textBox.Name = "apos_textBox";
+            this.Aposition_textBox.ReadOnly = true;
+            this.Aposition_textBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Aposition_textBox.Size = new System.Drawing.Size(113, 17);
+            this.Aposition_textBox.TabIndex = 15;
+            this.Aposition_textBox.Tag = "https://liteplacer.com/bottom-section-of-the-user-interface/";
+            this.Aposition_textBox.Text = "- - - -";
+            this.Aposition_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.Aposition_textBox, "Current A (rotation) position");
+            this.Aposition_textBox.TextChanged += new System.EventHandler(this.apos_textBox_TextChanged);
             // 
             // label19
             // 
@@ -3339,7 +3365,7 @@
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage3);
             this.Duet3Motors_tabControl.Controls.Add(this.tabPage4);
             this.Duet3Motors_tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(466, 93);
+            this.Duet3Motors_tabControl.Location = new System.Drawing.Point(95, 103);
             this.Duet3Motors_tabControl.Name = "Duet3Motors_tabControl";
             this.Duet3Motors_tabControl.SelectedIndex = 0;
             this.Duet3Motors_tabControl.Size = new System.Drawing.Size(325, 362);
@@ -3348,6 +3374,12 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label237);
+            this.tabPage1.Controls.Add(this.label236);
+            this.tabPage1.Controls.Add(this.Duet3XHomingBackoff_maskedTextBox);
+            this.tabPage1.Controls.Add(this.label235);
+            this.tabPage1.Controls.Add(this.label234);
+            this.tabPage1.Controls.Add(this.label233);
             this.tabPage1.Controls.Add(this.label231);
             this.tabPage1.Controls.Add(this.Duet3XhomingSpeed_maskedTextBox);
             this.tabPage1.Controls.Add(this.label232);
@@ -3379,10 +3411,74 @@
             this.tabPage1.Text = "X";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label237
+            // 
+            this.label237.AutoSize = true;
+            this.label237.Location = new System.Drawing.Point(2, 284);
+            this.label237.Name = "label237";
+            this.label237.Size = new System.Drawing.Size(85, 13);
+            this.label237.TabIndex = 125;
+            this.label237.Tag = "";
+            this.label237.Text = "Homing backoff:";
+            // 
+            // label236
+            // 
+            this.label236.AutoSize = true;
+            this.label236.Location = new System.Drawing.Point(153, 284);
+            this.label236.Name = "label236";
+            this.label236.Size = new System.Drawing.Size(23, 13);
+            this.label236.TabIndex = 124;
+            this.label236.Tag = "";
+            this.label236.Text = "mm";
+            // 
+            // Duet3XHomingBackoff_maskedTextBox
+            // 
+            this.Duet3XHomingBackoff_maskedTextBox.Location = new System.Drawing.Point(93, 281);
+            this.Duet3XHomingBackoff_maskedTextBox.Mask = "99999";
+            this.Duet3XHomingBackoff_maskedTextBox.Name = "Duet3XHomingBackoff_maskedTextBox";
+            this.Duet3XHomingBackoff_maskedTextBox.PromptChar = ' ';
+            this.Duet3XHomingBackoff_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Duet3XHomingBackoff_maskedTextBox.Size = new System.Drawing.Size(54, 20);
+            this.Duet3XHomingBackoff_maskedTextBox.TabIndex = 123;
+            this.Duet3XHomingBackoff_maskedTextBox.Tag = "";
+            this.Duet3XHomingBackoff_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Duet3XHomingBackoff_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.Duet3XHomingBackoff_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Duet3XHomingBackoff_maskedTextBox_KeyPress);
+            // 
+            // label235
+            // 
+            this.label235.AutoSize = true;
+            this.label235.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label235.Location = new System.Drawing.Point(6, 230);
+            this.label235.Name = "label235";
+            this.label235.Size = new System.Drawing.Size(64, 16);
+            this.label235.TabIndex = 122;
+            this.label235.Text = "Homing:";
+            // 
+            // label234
+            // 
+            this.label234.AutoSize = true;
+            this.label234.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label234.Location = new System.Drawing.Point(6, 94);
+            this.label234.Name = "label234";
+            this.label234.Size = new System.Drawing.Size(50, 16);
+            this.label234.TabIndex = 121;
+            this.label234.Text = "Motor:";
+            // 
+            // label233
+            // 
+            this.label233.AutoSize = true;
+            this.label233.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label233.Location = new System.Drawing.Point(6, 8);
+            this.label233.Name = "label233";
+            this.label233.Size = new System.Drawing.Size(57, 16);
+            this.label233.TabIndex = 120;
+            this.label233.Text = "Speed:";
+            // 
             // label231
             // 
             this.label231.AutoSize = true;
-            this.label231.Location = new System.Drawing.Point(35, 37);
+            this.label231.Location = new System.Drawing.Point(9, 258);
             this.label231.Name = "label231";
             this.label231.Size = new System.Drawing.Size(78, 13);
             this.label231.TabIndex = 118;
@@ -3391,31 +3487,32 @@
             // 
             // Duet3XhomingSpeed_maskedTextBox
             // 
-            this.Duet3XhomingSpeed_maskedTextBox.Location = new System.Drawing.Point(119, 32);
+            this.Duet3XhomingSpeed_maskedTextBox.Location = new System.Drawing.Point(93, 255);
             this.Duet3XhomingSpeed_maskedTextBox.Mask = "99999";
             this.Duet3XhomingSpeed_maskedTextBox.Name = "Duet3XhomingSpeed_maskedTextBox";
             this.Duet3XhomingSpeed_maskedTextBox.PromptChar = ' ';
             this.Duet3XhomingSpeed_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Duet3XhomingSpeed_maskedTextBox.Size = new System.Drawing.Size(43, 20);
+            this.Duet3XhomingSpeed_maskedTextBox.Size = new System.Drawing.Size(54, 20);
             this.Duet3XhomingSpeed_maskedTextBox.TabIndex = 119;
             this.Duet3XhomingSpeed_maskedTextBox.Tag = "";
             this.Duet3XhomingSpeed_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.Duet3XhomingSpeed_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.Duet3XhomingSpeed_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Duet3XhomingSpeed_maskedTextBox_KeyPress);
             // 
             // label232
             // 
             this.label232.AutoSize = true;
-            this.label232.Location = new System.Drawing.Point(168, 35);
+            this.label232.Location = new System.Drawing.Point(153, 258);
             this.label232.Name = "label232";
             this.label232.Size = new System.Drawing.Size(44, 13);
             this.label232.TabIndex = 117;
-            this.label232.Tag = "https://liteplacer.com/motors-setup/";
+            this.label232.Tag = "";
             this.label232.Text = "mm/min";
             // 
             // label200
             // 
             this.label200.AutoSize = true;
-            this.label200.Location = new System.Drawing.Point(179, 190);
+            this.label200.Location = new System.Drawing.Point(153, 204);
             this.label200.Name = "label200";
             this.label200.Size = new System.Drawing.Size(22, 13);
             this.label200.TabIndex = 116;
@@ -3424,7 +3521,7 @@
             // label199
             // 
             this.label199.AutoSize = true;
-            this.label199.Location = new System.Drawing.Point(35, 192);
+            this.label199.Location = new System.Drawing.Point(43, 204);
             this.label199.Name = "label199";
             this.label199.Size = new System.Drawing.Size(44, 13);
             this.label199.TabIndex = 115;
@@ -3432,7 +3529,7 @@
             // 
             // Duet3XCurrent_maskedTextBox
             // 
-            this.Duet3XCurrent_maskedTextBox.Location = new System.Drawing.Point(119, 187);
+            this.Duet3XCurrent_maskedTextBox.Location = new System.Drawing.Point(93, 201);
             this.Duet3XCurrent_maskedTextBox.Mask = "99999";
             this.Duet3XCurrent_maskedTextBox.Name = "Duet3XCurrent_maskedTextBox";
             this.Duet3XCurrent_maskedTextBox.PromptChar = ' ';
@@ -3445,7 +3542,7 @@
             // 
             // Duet3XtravelPerRev_textBox
             // 
-            this.Duet3XtravelPerRev_textBox.Location = new System.Drawing.Point(119, 161);
+            this.Duet3XtravelPerRev_textBox.Location = new System.Drawing.Point(93, 175);
             this.Duet3XtravelPerRev_textBox.Name = "Duet3XtravelPerRev_textBox";
             this.Duet3XtravelPerRev_textBox.Size = new System.Drawing.Size(54, 20);
             this.Duet3XtravelPerRev_textBox.TabIndex = 19;
@@ -3455,7 +3552,7 @@
             // Duet3Xinterpolate_checkBox
             // 
             this.Duet3Xinterpolate_checkBox.AutoSize = true;
-            this.Duet3Xinterpolate_checkBox.Location = new System.Drawing.Point(216, 108);
+            this.Duet3Xinterpolate_checkBox.Location = new System.Drawing.Point(193, 121);
             this.Duet3Xinterpolate_checkBox.Name = "Duet3Xinterpolate_checkBox";
             this.Duet3Xinterpolate_checkBox.Size = new System.Drawing.Size(76, 17);
             this.Duet3Xinterpolate_checkBox.TabIndex = 113;
@@ -3467,7 +3564,7 @@
             // label181
             // 
             this.label181.AutoSize = true;
-            this.label181.Location = new System.Drawing.Point(34, 164);
+            this.label181.Location = new System.Drawing.Point(8, 178);
             this.label181.Name = "label181";
             this.label181.Size = new System.Drawing.Size(79, 13);
             this.label181.TabIndex = 25;
@@ -3476,7 +3573,7 @@
             // label182
             // 
             this.label182.AutoSize = true;
-            this.label182.Location = new System.Drawing.Point(179, 166);
+            this.label182.Location = new System.Drawing.Point(153, 178);
             this.label182.Name = "label182";
             this.label182.Size = new System.Drawing.Size(23, 13);
             this.label182.TabIndex = 24;
@@ -3485,7 +3582,7 @@
             // Duet3Xdeg18_radioButton
             // 
             this.Duet3Xdeg18_radioButton.AutoSize = true;
-            this.Duet3Xdeg18_radioButton.Location = new System.Drawing.Point(181, 136);
+            this.Duet3Xdeg18_radioButton.Location = new System.Drawing.Point(163, 150);
             this.Duet3Xdeg18_radioButton.Name = "Duet3Xdeg18_radioButton";
             this.Duet3Xdeg18_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Xdeg18_radioButton.TabIndex = 28;
@@ -3497,7 +3594,7 @@
             // Duet3Xdeg09_radioButton
             // 
             this.Duet3Xdeg09_radioButton.AutoSize = true;
-            this.Duet3Xdeg09_radioButton.Location = new System.Drawing.Point(119, 136);
+            this.Duet3Xdeg09_radioButton.Location = new System.Drawing.Point(93, 150);
             this.Duet3Xdeg09_radioButton.Name = "Duet3Xdeg09_radioButton";
             this.Duet3Xdeg09_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Xdeg09_radioButton.TabIndex = 27;
@@ -3509,7 +3606,7 @@
             // label188
             // 
             this.label188.AutoSize = true;
-            this.label188.Location = new System.Drawing.Point(35, 7);
+            this.label188.Location = new System.Drawing.Point(46, 33);
             this.label188.Name = "label188";
             this.label188.Size = new System.Drawing.Size(41, 13);
             this.label188.TabIndex = 12;
@@ -3518,7 +3615,7 @@
             // label189
             // 
             this.label189.AutoSize = true;
-            this.label189.Location = new System.Drawing.Point(169, 9);
+            this.label189.Location = new System.Drawing.Point(142, 33);
             this.label189.Name = "label189";
             this.label189.Size = new System.Drawing.Size(44, 13);
             this.label189.TabIndex = 11;
@@ -3527,7 +3624,7 @@
             // label183
             // 
             this.label183.AutoSize = true;
-            this.label183.Location = new System.Drawing.Point(35, 136);
+            this.label183.Location = new System.Drawing.Point(26, 152);
             this.label183.Name = "label183";
             this.label183.Size = new System.Drawing.Size(61, 13);
             this.label183.TabIndex = 22;
@@ -3535,7 +3632,7 @@
             // 
             // Duet3Xacceleration_maskedTextBox
             // 
-            this.Duet3Xacceleration_maskedTextBox.Location = new System.Drawing.Point(120, 58);
+            this.Duet3Xacceleration_maskedTextBox.Location = new System.Drawing.Point(93, 56);
             this.Duet3Xacceleration_maskedTextBox.Mask = "99999";
             this.Duet3Xacceleration_maskedTextBox.Name = "Duet3Xacceleration_maskedTextBox";
             this.Duet3Xacceleration_maskedTextBox.PromptChar = ' ';
@@ -3549,7 +3646,7 @@
             // label192
             // 
             this.label192.AutoSize = true;
-            this.label192.Location = new System.Drawing.Point(169, 61);
+            this.label192.Location = new System.Drawing.Point(142, 59);
             this.label192.Name = "label192";
             this.label192.Size = new System.Drawing.Size(45, 13);
             this.label192.TabIndex = 15;
@@ -3557,7 +3654,7 @@
             // 
             // Duet3Xspeed_maskedTextBox
             // 
-            this.Duet3Xspeed_maskedTextBox.Location = new System.Drawing.Point(120, 6);
+            this.Duet3Xspeed_maskedTextBox.Location = new System.Drawing.Point(93, 30);
             this.Duet3Xspeed_maskedTextBox.Mask = "99999";
             this.Duet3Xspeed_maskedTextBox.Name = "Duet3Xspeed_maskedTextBox";
             this.Duet3Xspeed_maskedTextBox.PromptChar = ' ';
@@ -3571,7 +3668,7 @@
             // label184
             // 
             this.label184.AutoSize = true;
-            this.label184.Location = new System.Drawing.Point(146, 109);
+            this.label184.Location = new System.Drawing.Point(123, 123);
             this.label184.Name = "label184";
             this.label184.Size = new System.Drawing.Size(64, 13);
             this.label184.TabIndex = 18;
@@ -3579,7 +3676,7 @@
             // 
             // Duet3Xmicrosteps_maskedTextBox
             // 
-            this.Duet3Xmicrosteps_maskedTextBox.Location = new System.Drawing.Point(119, 106);
+            this.Duet3Xmicrosteps_maskedTextBox.Location = new System.Drawing.Point(93, 120);
             this.Duet3Xmicrosteps_maskedTextBox.Mask = "99999";
             this.Duet3Xmicrosteps_maskedTextBox.Name = "Duet3Xmicrosteps_maskedTextBox";
             this.Duet3Xmicrosteps_maskedTextBox.PromptChar = ' ';
@@ -3593,7 +3690,7 @@
             // label194
             // 
             this.label194.AutoSize = true;
-            this.label194.Location = new System.Drawing.Point(35, 61);
+            this.label194.Location = new System.Drawing.Point(18, 59);
             this.label194.Name = "label194";
             this.label194.Size = new System.Drawing.Size(69, 13);
             this.label194.TabIndex = 16;
@@ -3602,7 +3699,7 @@
             // label186
             // 
             this.label186.AutoSize = true;
-            this.label186.Location = new System.Drawing.Point(34, 107);
+            this.label186.Location = new System.Drawing.Point(26, 123);
             this.label186.Name = "label186";
             this.label186.Size = new System.Drawing.Size(61, 13);
             this.label186.TabIndex = 19;
@@ -3610,6 +3707,15 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label244);
+            this.tabPage2.Controls.Add(this.label243);
+            this.tabPage2.Controls.Add(this.label238);
+            this.tabPage2.Controls.Add(this.label239);
+            this.tabPage2.Controls.Add(this.Duet3YHomingBackoff_maskedTextBox);
+            this.tabPage2.Controls.Add(this.label240);
+            this.tabPage2.Controls.Add(this.label241);
+            this.tabPage2.Controls.Add(this.Duet3YhomingSpeed_maskedTextBox);
+            this.tabPage2.Controls.Add(this.label242);
             this.tabPage2.Controls.Add(this.label201);
             this.tabPage2.Controls.Add(this.label202);
             this.tabPage2.Controls.Add(this.Duet3YCurrent_maskedTextBox);
@@ -3638,10 +3744,108 @@
             this.tabPage2.Text = "Y";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label244
+            // 
+            this.label244.AutoSize = true;
+            this.label244.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label244.Location = new System.Drawing.Point(6, 94);
+            this.label244.Name = "label244";
+            this.label244.Size = new System.Drawing.Size(50, 16);
+            this.label244.TabIndex = 141;
+            this.label244.Text = "Motor:";
+            // 
+            // label243
+            // 
+            this.label243.AutoSize = true;
+            this.label243.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label243.Location = new System.Drawing.Point(6, 8);
+            this.label243.Name = "label243";
+            this.label243.Size = new System.Drawing.Size(57, 16);
+            this.label243.TabIndex = 140;
+            this.label243.Text = "Speed:";
+            // 
+            // label238
+            // 
+            this.label238.AutoSize = true;
+            this.label238.Location = new System.Drawing.Point(2, 284);
+            this.label238.Name = "label238";
+            this.label238.Size = new System.Drawing.Size(85, 13);
+            this.label238.TabIndex = 139;
+            this.label238.Tag = "";
+            this.label238.Text = "Homing backoff:";
+            // 
+            // label239
+            // 
+            this.label239.AutoSize = true;
+            this.label239.Location = new System.Drawing.Point(153, 284);
+            this.label239.Name = "label239";
+            this.label239.Size = new System.Drawing.Size(23, 13);
+            this.label239.TabIndex = 138;
+            this.label239.Tag = "";
+            this.label239.Text = "mm";
+            // 
+            // Duet3YHomingBackoff_maskedTextBox
+            // 
+            this.Duet3YHomingBackoff_maskedTextBox.Location = new System.Drawing.Point(93, 281);
+            this.Duet3YHomingBackoff_maskedTextBox.Mask = "99999";
+            this.Duet3YHomingBackoff_maskedTextBox.Name = "Duet3YHomingBackoff_maskedTextBox";
+            this.Duet3YHomingBackoff_maskedTextBox.PromptChar = ' ';
+            this.Duet3YHomingBackoff_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Duet3YHomingBackoff_maskedTextBox.Size = new System.Drawing.Size(54, 20);
+            this.Duet3YHomingBackoff_maskedTextBox.TabIndex = 137;
+            this.Duet3YHomingBackoff_maskedTextBox.Tag = "";
+            this.Duet3YHomingBackoff_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Duet3YHomingBackoff_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.Duet3YHomingBackoff_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Duet3YHomingBackoff_maskedTextBox_KeyPress);
+            // 
+            // label240
+            // 
+            this.label240.AutoSize = true;
+            this.label240.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label240.Location = new System.Drawing.Point(6, 230);
+            this.label240.Name = "label240";
+            this.label240.Size = new System.Drawing.Size(64, 16);
+            this.label240.TabIndex = 136;
+            this.label240.Text = "Homing:";
+            // 
+            // label241
+            // 
+            this.label241.AutoSize = true;
+            this.label241.Location = new System.Drawing.Point(9, 258);
+            this.label241.Name = "label241";
+            this.label241.Size = new System.Drawing.Size(78, 13);
+            this.label241.TabIndex = 134;
+            this.label241.Tag = "https://liteplacer.com/motors-setup/";
+            this.label241.Text = "Homing speed:";
+            // 
+            // Duet3YhomingSpeed_maskedTextBox
+            // 
+            this.Duet3YhomingSpeed_maskedTextBox.Location = new System.Drawing.Point(93, 255);
+            this.Duet3YhomingSpeed_maskedTextBox.Mask = "99999";
+            this.Duet3YhomingSpeed_maskedTextBox.Name = "Duet3YhomingSpeed_maskedTextBox";
+            this.Duet3YhomingSpeed_maskedTextBox.PromptChar = ' ';
+            this.Duet3YhomingSpeed_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Duet3YhomingSpeed_maskedTextBox.Size = new System.Drawing.Size(54, 20);
+            this.Duet3YhomingSpeed_maskedTextBox.TabIndex = 135;
+            this.Duet3YhomingSpeed_maskedTextBox.Tag = "";
+            this.Duet3YhomingSpeed_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Duet3YhomingSpeed_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.Duet3YhomingSpeed_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Duet3YhomingSpeed_maskedTextBox_KeyPress);
+            // 
+            // label242
+            // 
+            this.label242.AutoSize = true;
+            this.label242.Location = new System.Drawing.Point(153, 258);
+            this.label242.Name = "label242";
+            this.label242.Size = new System.Drawing.Size(44, 13);
+            this.label242.TabIndex = 133;
+            this.label242.Tag = "";
+            this.label242.Text = "mm/min";
+            // 
             // label201
             // 
             this.label201.AutoSize = true;
-            this.label201.Location = new System.Drawing.Point(151, 150);
+            this.label201.Location = new System.Drawing.Point(153, 204);
             this.label201.Name = "label201";
             this.label201.Size = new System.Drawing.Size(22, 13);
             this.label201.TabIndex = 132;
@@ -3650,7 +3854,7 @@
             // label202
             // 
             this.label202.AutoSize = true;
-            this.label202.Location = new System.Drawing.Point(7, 152);
+            this.label202.Location = new System.Drawing.Point(43, 204);
             this.label202.Name = "label202";
             this.label202.Size = new System.Drawing.Size(44, 13);
             this.label202.TabIndex = 131;
@@ -3658,7 +3862,7 @@
             // 
             // Duet3YCurrent_maskedTextBox
             // 
-            this.Duet3YCurrent_maskedTextBox.Location = new System.Drawing.Point(91, 147);
+            this.Duet3YCurrent_maskedTextBox.Location = new System.Drawing.Point(93, 201);
             this.Duet3YCurrent_maskedTextBox.Mask = "99999";
             this.Duet3YCurrent_maskedTextBox.Name = "Duet3YCurrent_maskedTextBox";
             this.Duet3YCurrent_maskedTextBox.PromptChar = ' ';
@@ -3671,7 +3875,7 @@
             // 
             // Duet3YtravelPerRev_textBox
             // 
-            this.Duet3YtravelPerRev_textBox.Location = new System.Drawing.Point(91, 121);
+            this.Duet3YtravelPerRev_textBox.Location = new System.Drawing.Point(93, 175);
             this.Duet3YtravelPerRev_textBox.Name = "Duet3YtravelPerRev_textBox";
             this.Duet3YtravelPerRev_textBox.Size = new System.Drawing.Size(54, 20);
             this.Duet3YtravelPerRev_textBox.TabIndex = 121;
@@ -3681,7 +3885,7 @@
             // Duet3Yinterpolate_checkBox
             // 
             this.Duet3Yinterpolate_checkBox.AutoSize = true;
-            this.Duet3Yinterpolate_checkBox.Location = new System.Drawing.Point(188, 68);
+            this.Duet3Yinterpolate_checkBox.Location = new System.Drawing.Point(193, 121);
             this.Duet3Yinterpolate_checkBox.Name = "Duet3Yinterpolate_checkBox";
             this.Duet3Yinterpolate_checkBox.Size = new System.Drawing.Size(76, 17);
             this.Duet3Yinterpolate_checkBox.TabIndex = 129;
@@ -3693,7 +3897,7 @@
             // label185
             // 
             this.label185.AutoSize = true;
-            this.label185.Location = new System.Drawing.Point(6, 124);
+            this.label185.Location = new System.Drawing.Point(8, 178);
             this.label185.Name = "label185";
             this.label185.Size = new System.Drawing.Size(79, 13);
             this.label185.TabIndex = 126;
@@ -3702,7 +3906,7 @@
             // label187
             // 
             this.label187.AutoSize = true;
-            this.label187.Location = new System.Drawing.Point(151, 126);
+            this.label187.Location = new System.Drawing.Point(153, 178);
             this.label187.Name = "label187";
             this.label187.Size = new System.Drawing.Size(23, 13);
             this.label187.TabIndex = 125;
@@ -3711,7 +3915,7 @@
             // Duet3Ydeg18_radioButton
             // 
             this.Duet3Ydeg18_radioButton.AutoSize = true;
-            this.Duet3Ydeg18_radioButton.Location = new System.Drawing.Point(153, 96);
+            this.Duet3Ydeg18_radioButton.Location = new System.Drawing.Point(163, 150);
             this.Duet3Ydeg18_radioButton.Name = "Duet3Ydeg18_radioButton";
             this.Duet3Ydeg18_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Ydeg18_radioButton.TabIndex = 128;
@@ -3723,7 +3927,7 @@
             // Duet3Ydeg09_radioButton
             // 
             this.Duet3Ydeg09_radioButton.AutoSize = true;
-            this.Duet3Ydeg09_radioButton.Location = new System.Drawing.Point(91, 96);
+            this.Duet3Ydeg09_radioButton.Location = new System.Drawing.Point(93, 150);
             this.Duet3Ydeg09_radioButton.Name = "Duet3Ydeg09_radioButton";
             this.Duet3Ydeg09_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Ydeg09_radioButton.TabIndex = 127;
@@ -3735,7 +3939,7 @@
             // label190
             // 
             this.label190.AutoSize = true;
-            this.label190.Location = new System.Drawing.Point(6, 10);
+            this.label190.Location = new System.Drawing.Point(46, 33);
             this.label190.Name = "label190";
             this.label190.Size = new System.Drawing.Size(41, 13);
             this.label190.TabIndex = 115;
@@ -3744,16 +3948,16 @@
             // label191
             // 
             this.label191.AutoSize = true;
-            this.label191.Location = new System.Drawing.Point(140, 12);
+            this.label191.Location = new System.Drawing.Point(142, 33);
             this.label191.Name = "label191";
-            this.label191.Size = new System.Drawing.Size(33, 13);
+            this.label191.Size = new System.Drawing.Size(44, 13);
             this.label191.TabIndex = 114;
-            this.label191.Text = "mm/s";
+            this.label191.Text = "mm/min";
             // 
             // label193
             // 
             this.label193.AutoSize = true;
-            this.label193.Location = new System.Drawing.Point(7, 96);
+            this.label193.Location = new System.Drawing.Point(26, 152);
             this.label193.Name = "label193";
             this.label193.Size = new System.Drawing.Size(61, 13);
             this.label193.TabIndex = 124;
@@ -3761,7 +3965,7 @@
             // 
             // Duet3Yacceleration_maskedTextBox
             // 
-            this.Duet3Yacceleration_maskedTextBox.Location = new System.Drawing.Point(91, 35);
+            this.Duet3Yacceleration_maskedTextBox.Location = new System.Drawing.Point(93, 56);
             this.Duet3Yacceleration_maskedTextBox.Mask = "99999";
             this.Duet3Yacceleration_maskedTextBox.Name = "Duet3Yacceleration_maskedTextBox";
             this.Duet3Yacceleration_maskedTextBox.PromptChar = ' ';
@@ -3775,7 +3979,7 @@
             // label195
             // 
             this.label195.AutoSize = true;
-            this.label195.Location = new System.Drawing.Point(140, 38);
+            this.label195.Location = new System.Drawing.Point(142, 59);
             this.label195.Name = "label195";
             this.label195.Size = new System.Drawing.Size(45, 13);
             this.label195.TabIndex = 117;
@@ -3783,7 +3987,7 @@
             // 
             // Duet3Yspeed_maskedTextBox
             // 
-            this.Duet3Yspeed_maskedTextBox.Location = new System.Drawing.Point(91, 9);
+            this.Duet3Yspeed_maskedTextBox.Location = new System.Drawing.Point(93, 30);
             this.Duet3Yspeed_maskedTextBox.Mask = "99999";
             this.Duet3Yspeed_maskedTextBox.Name = "Duet3Yspeed_maskedTextBox";
             this.Duet3Yspeed_maskedTextBox.PromptChar = ' ';
@@ -3797,7 +4001,7 @@
             // label196
             // 
             this.label196.AutoSize = true;
-            this.label196.Location = new System.Drawing.Point(118, 69);
+            this.label196.Location = new System.Drawing.Point(123, 123);
             this.label196.Name = "label196";
             this.label196.Size = new System.Drawing.Size(64, 13);
             this.label196.TabIndex = 120;
@@ -3805,7 +4009,7 @@
             // 
             // Duet3Ymicrosteps_maskedTextBox
             // 
-            this.Duet3Ymicrosteps_maskedTextBox.Location = new System.Drawing.Point(91, 66);
+            this.Duet3Ymicrosteps_maskedTextBox.Location = new System.Drawing.Point(93, 120);
             this.Duet3Ymicrosteps_maskedTextBox.Mask = "99999";
             this.Duet3Ymicrosteps_maskedTextBox.Name = "Duet3Ymicrosteps_maskedTextBox";
             this.Duet3Ymicrosteps_maskedTextBox.PromptChar = ' ';
@@ -3819,7 +4023,7 @@
             // label197
             // 
             this.label197.AutoSize = true;
-            this.label197.Location = new System.Drawing.Point(7, 36);
+            this.label197.Location = new System.Drawing.Point(18, 59);
             this.label197.Name = "label197";
             this.label197.Size = new System.Drawing.Size(69, 13);
             this.label197.TabIndex = 118;
@@ -3828,7 +4032,7 @@
             // label198
             // 
             this.label198.AutoSize = true;
-            this.label198.Location = new System.Drawing.Point(6, 67);
+            this.label198.Location = new System.Drawing.Point(26, 123);
             this.label198.Name = "label198";
             this.label198.Size = new System.Drawing.Size(61, 13);
             this.label198.TabIndex = 122;
@@ -3836,6 +4040,15 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label247);
+            this.tabPage3.Controls.Add(this.label248);
+            this.tabPage3.Controls.Add(this.Duet3ZHomingBackoff_maskedTextBox);
+            this.tabPage3.Controls.Add(this.label249);
+            this.tabPage3.Controls.Add(this.label250);
+            this.tabPage3.Controls.Add(this.Duet3ZhomingSpeed_maskedTextBox);
+            this.tabPage3.Controls.Add(this.label251);
+            this.tabPage3.Controls.Add(this.label246);
+            this.tabPage3.Controls.Add(this.label245);
             this.tabPage3.Controls.Add(this.label203);
             this.tabPage3.Controls.Add(this.label204);
             this.tabPage3.Controls.Add(this.Duet3ZCurrent_maskedTextBox);
@@ -3864,10 +4077,108 @@
             this.tabPage3.Text = "Z";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label247
+            // 
+            this.label247.AutoSize = true;
+            this.label247.Location = new System.Drawing.Point(2, 284);
+            this.label247.Name = "label247";
+            this.label247.Size = new System.Drawing.Size(85, 13);
+            this.label247.TabIndex = 160;
+            this.label247.Tag = "";
+            this.label247.Text = "Homing backoff:";
+            // 
+            // label248
+            // 
+            this.label248.AutoSize = true;
+            this.label248.Location = new System.Drawing.Point(153, 284);
+            this.label248.Name = "label248";
+            this.label248.Size = new System.Drawing.Size(23, 13);
+            this.label248.TabIndex = 159;
+            this.label248.Tag = "";
+            this.label248.Text = "mm";
+            // 
+            // Duet3ZHomingBackoff_maskedTextBox
+            // 
+            this.Duet3ZHomingBackoff_maskedTextBox.Location = new System.Drawing.Point(93, 281);
+            this.Duet3ZHomingBackoff_maskedTextBox.Mask = "99999";
+            this.Duet3ZHomingBackoff_maskedTextBox.Name = "Duet3ZHomingBackoff_maskedTextBox";
+            this.Duet3ZHomingBackoff_maskedTextBox.PromptChar = ' ';
+            this.Duet3ZHomingBackoff_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Duet3ZHomingBackoff_maskedTextBox.Size = new System.Drawing.Size(54, 20);
+            this.Duet3ZHomingBackoff_maskedTextBox.TabIndex = 158;
+            this.Duet3ZHomingBackoff_maskedTextBox.Tag = "";
+            this.Duet3ZHomingBackoff_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Duet3ZHomingBackoff_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.Duet3ZHomingBackoff_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Duet3ZHomingBackoff_maskedTextBox_KeyPress);
+            // 
+            // label249
+            // 
+            this.label249.AutoSize = true;
+            this.label249.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label249.Location = new System.Drawing.Point(6, 230);
+            this.label249.Name = "label249";
+            this.label249.Size = new System.Drawing.Size(64, 16);
+            this.label249.TabIndex = 157;
+            this.label249.Text = "Homing:";
+            // 
+            // label250
+            // 
+            this.label250.AutoSize = true;
+            this.label250.Location = new System.Drawing.Point(9, 258);
+            this.label250.Name = "label250";
+            this.label250.Size = new System.Drawing.Size(78, 13);
+            this.label250.TabIndex = 155;
+            this.label250.Tag = "https://liteplacer.com/motors-setup/";
+            this.label250.Text = "Homing speed:";
+            // 
+            // Duet3ZhomingSpeed_maskedTextBox
+            // 
+            this.Duet3ZhomingSpeed_maskedTextBox.Location = new System.Drawing.Point(93, 255);
+            this.Duet3ZhomingSpeed_maskedTextBox.Mask = "99999";
+            this.Duet3ZhomingSpeed_maskedTextBox.Name = "Duet3ZhomingSpeed_maskedTextBox";
+            this.Duet3ZhomingSpeed_maskedTextBox.PromptChar = ' ';
+            this.Duet3ZhomingSpeed_maskedTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Duet3ZhomingSpeed_maskedTextBox.Size = new System.Drawing.Size(54, 20);
+            this.Duet3ZhomingSpeed_maskedTextBox.TabIndex = 156;
+            this.Duet3ZhomingSpeed_maskedTextBox.Tag = "";
+            this.Duet3ZhomingSpeed_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Duet3ZhomingSpeed_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
+            this.Duet3ZhomingSpeed_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Duet3ZhomingSpeed_maskedTextBox_KeyPress);
+            // 
+            // label251
+            // 
+            this.label251.AutoSize = true;
+            this.label251.Location = new System.Drawing.Point(153, 258);
+            this.label251.Name = "label251";
+            this.label251.Size = new System.Drawing.Size(44, 13);
+            this.label251.TabIndex = 154;
+            this.label251.Tag = "";
+            this.label251.Text = "mm/min";
+            // 
+            // label246
+            // 
+            this.label246.AutoSize = true;
+            this.label246.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label246.Location = new System.Drawing.Point(6, 94);
+            this.label246.Name = "label246";
+            this.label246.Size = new System.Drawing.Size(50, 16);
+            this.label246.TabIndex = 153;
+            this.label246.Text = "Motor:";
+            // 
+            // label245
+            // 
+            this.label245.AutoSize = true;
+            this.label245.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label245.Location = new System.Drawing.Point(6, 8);
+            this.label245.Name = "label245";
+            this.label245.Size = new System.Drawing.Size(57, 16);
+            this.label245.TabIndex = 152;
+            this.label245.Text = "Speed:";
+            // 
             // label203
             // 
             this.label203.AutoSize = true;
-            this.label203.Location = new System.Drawing.Point(151, 150);
+            this.label203.Location = new System.Drawing.Point(153, 204);
             this.label203.Name = "label203";
             this.label203.Size = new System.Drawing.Size(22, 13);
             this.label203.TabIndex = 151;
@@ -3876,7 +4187,7 @@
             // label204
             // 
             this.label204.AutoSize = true;
-            this.label204.Location = new System.Drawing.Point(7, 152);
+            this.label204.Location = new System.Drawing.Point(43, 204);
             this.label204.Name = "label204";
             this.label204.Size = new System.Drawing.Size(44, 13);
             this.label204.TabIndex = 150;
@@ -3884,7 +4195,7 @@
             // 
             // Duet3ZCurrent_maskedTextBox
             // 
-            this.Duet3ZCurrent_maskedTextBox.Location = new System.Drawing.Point(91, 147);
+            this.Duet3ZCurrent_maskedTextBox.Location = new System.Drawing.Point(93, 201);
             this.Duet3ZCurrent_maskedTextBox.Mask = "99999";
             this.Duet3ZCurrent_maskedTextBox.Name = "Duet3ZCurrent_maskedTextBox";
             this.Duet3ZCurrent_maskedTextBox.PromptChar = ' ';
@@ -3897,7 +4208,7 @@
             // 
             // Duet3ZtravelPerRev_textBox
             // 
-            this.Duet3ZtravelPerRev_textBox.Location = new System.Drawing.Point(91, 121);
+            this.Duet3ZtravelPerRev_textBox.Location = new System.Drawing.Point(93, 175);
             this.Duet3ZtravelPerRev_textBox.Name = "Duet3ZtravelPerRev_textBox";
             this.Duet3ZtravelPerRev_textBox.Size = new System.Drawing.Size(54, 20);
             this.Duet3ZtravelPerRev_textBox.TabIndex = 140;
@@ -3907,7 +4218,7 @@
             // Duet3Zinterpolate_checkBox
             // 
             this.Duet3Zinterpolate_checkBox.AutoSize = true;
-            this.Duet3Zinterpolate_checkBox.Location = new System.Drawing.Point(188, 68);
+            this.Duet3Zinterpolate_checkBox.Location = new System.Drawing.Point(193, 121);
             this.Duet3Zinterpolate_checkBox.Name = "Duet3Zinterpolate_checkBox";
             this.Duet3Zinterpolate_checkBox.Size = new System.Drawing.Size(76, 17);
             this.Duet3Zinterpolate_checkBox.TabIndex = 148;
@@ -3919,7 +4230,7 @@
             // label205
             // 
             this.label205.AutoSize = true;
-            this.label205.Location = new System.Drawing.Point(6, 124);
+            this.label205.Location = new System.Drawing.Point(8, 178);
             this.label205.Name = "label205";
             this.label205.Size = new System.Drawing.Size(79, 13);
             this.label205.TabIndex = 145;
@@ -3928,7 +4239,7 @@
             // label206
             // 
             this.label206.AutoSize = true;
-            this.label206.Location = new System.Drawing.Point(151, 126);
+            this.label206.Location = new System.Drawing.Point(153, 178);
             this.label206.Name = "label206";
             this.label206.Size = new System.Drawing.Size(23, 13);
             this.label206.TabIndex = 144;
@@ -3937,7 +4248,7 @@
             // Duet3Zdeg18_radioButton
             // 
             this.Duet3Zdeg18_radioButton.AutoSize = true;
-            this.Duet3Zdeg18_radioButton.Location = new System.Drawing.Point(153, 96);
+            this.Duet3Zdeg18_radioButton.Location = new System.Drawing.Point(163, 150);
             this.Duet3Zdeg18_radioButton.Name = "Duet3Zdeg18_radioButton";
             this.Duet3Zdeg18_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Zdeg18_radioButton.TabIndex = 147;
@@ -3949,7 +4260,7 @@
             // Duet3Zdeg09_radioButton
             // 
             this.Duet3Zdeg09_radioButton.AutoSize = true;
-            this.Duet3Zdeg09_radioButton.Location = new System.Drawing.Point(91, 96);
+            this.Duet3Zdeg09_radioButton.Location = new System.Drawing.Point(93, 150);
             this.Duet3Zdeg09_radioButton.Name = "Duet3Zdeg09_radioButton";
             this.Duet3Zdeg09_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Zdeg09_radioButton.TabIndex = 146;
@@ -3961,7 +4272,7 @@
             // label207
             // 
             this.label207.AutoSize = true;
-            this.label207.Location = new System.Drawing.Point(6, 10);
+            this.label207.Location = new System.Drawing.Point(46, 33);
             this.label207.Name = "label207";
             this.label207.Size = new System.Drawing.Size(41, 13);
             this.label207.TabIndex = 134;
@@ -3970,16 +4281,16 @@
             // label208
             // 
             this.label208.AutoSize = true;
-            this.label208.Location = new System.Drawing.Point(140, 12);
+            this.label208.Location = new System.Drawing.Point(142, 33);
             this.label208.Name = "label208";
-            this.label208.Size = new System.Drawing.Size(33, 13);
+            this.label208.Size = new System.Drawing.Size(44, 13);
             this.label208.TabIndex = 133;
-            this.label208.Text = "mm/s";
+            this.label208.Text = "mm/min";
             // 
             // label209
             // 
             this.label209.AutoSize = true;
-            this.label209.Location = new System.Drawing.Point(7, 96);
+            this.label209.Location = new System.Drawing.Point(26, 152);
             this.label209.Name = "label209";
             this.label209.Size = new System.Drawing.Size(61, 13);
             this.label209.TabIndex = 143;
@@ -3987,7 +4298,7 @@
             // 
             // Duet3Zacceleration_maskedTextBox
             // 
-            this.Duet3Zacceleration_maskedTextBox.Location = new System.Drawing.Point(91, 35);
+            this.Duet3Zacceleration_maskedTextBox.Location = new System.Drawing.Point(93, 56);
             this.Duet3Zacceleration_maskedTextBox.Mask = "99999";
             this.Duet3Zacceleration_maskedTextBox.Name = "Duet3Zacceleration_maskedTextBox";
             this.Duet3Zacceleration_maskedTextBox.PromptChar = ' ';
@@ -4001,7 +4312,7 @@
             // label210
             // 
             this.label210.AutoSize = true;
-            this.label210.Location = new System.Drawing.Point(140, 38);
+            this.label210.Location = new System.Drawing.Point(142, 59);
             this.label210.Name = "label210";
             this.label210.Size = new System.Drawing.Size(45, 13);
             this.label210.TabIndex = 136;
@@ -4009,7 +4320,7 @@
             // 
             // Duet3Zspeed_maskedTextBox
             // 
-            this.Duet3Zspeed_maskedTextBox.Location = new System.Drawing.Point(91, 9);
+            this.Duet3Zspeed_maskedTextBox.Location = new System.Drawing.Point(93, 30);
             this.Duet3Zspeed_maskedTextBox.Mask = "99999";
             this.Duet3Zspeed_maskedTextBox.Name = "Duet3Zspeed_maskedTextBox";
             this.Duet3Zspeed_maskedTextBox.PromptChar = ' ';
@@ -4023,7 +4334,7 @@
             // label211
             // 
             this.label211.AutoSize = true;
-            this.label211.Location = new System.Drawing.Point(118, 69);
+            this.label211.Location = new System.Drawing.Point(123, 123);
             this.label211.Name = "label211";
             this.label211.Size = new System.Drawing.Size(64, 13);
             this.label211.TabIndex = 139;
@@ -4031,7 +4342,7 @@
             // 
             // Duet3Zmicrosteps_maskedTextBox
             // 
-            this.Duet3Zmicrosteps_maskedTextBox.Location = new System.Drawing.Point(91, 66);
+            this.Duet3Zmicrosteps_maskedTextBox.Location = new System.Drawing.Point(93, 120);
             this.Duet3Zmicrosteps_maskedTextBox.Mask = "99999";
             this.Duet3Zmicrosteps_maskedTextBox.Name = "Duet3Zmicrosteps_maskedTextBox";
             this.Duet3Zmicrosteps_maskedTextBox.PromptChar = ' ';
@@ -4045,7 +4356,7 @@
             // label212
             // 
             this.label212.AutoSize = true;
-            this.label212.Location = new System.Drawing.Point(7, 36);
+            this.label212.Location = new System.Drawing.Point(18, 59);
             this.label212.Name = "label212";
             this.label212.Size = new System.Drawing.Size(69, 13);
             this.label212.TabIndex = 137;
@@ -4054,7 +4365,7 @@
             // label213
             // 
             this.label213.AutoSize = true;
-            this.label213.Location = new System.Drawing.Point(6, 67);
+            this.label213.Location = new System.Drawing.Point(26, 123);
             this.label213.Name = "label213";
             this.label213.Size = new System.Drawing.Size(61, 13);
             this.label213.TabIndex = 141;
@@ -4062,6 +4373,8 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.label253);
+            this.tabPage4.Controls.Add(this.label252);
             this.tabPage4.Controls.Add(this.OptimizeA_Duet3_checkBox);
             this.tabPage4.Controls.Add(this.label214);
             this.tabPage4.Controls.Add(this.label215);
@@ -4091,10 +4404,30 @@
             this.tabPage4.Text = "A";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // label253
+            // 
+            this.label253.AutoSize = true;
+            this.label253.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label253.Location = new System.Drawing.Point(6, 94);
+            this.label253.Name = "label253";
+            this.label253.Size = new System.Drawing.Size(50, 16);
+            this.label253.TabIndex = 154;
+            this.label253.Text = "Motor:";
+            // 
+            // label252
+            // 
+            this.label252.AutoSize = true;
+            this.label252.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label252.Location = new System.Drawing.Point(6, 8);
+            this.label252.Name = "label252";
+            this.label252.Size = new System.Drawing.Size(57, 16);
+            this.label252.TabIndex = 152;
+            this.label252.Text = "Speed:";
+            // 
             // OptimizeA_Duet3_checkBox
             // 
             this.OptimizeA_Duet3_checkBox.AutoSize = true;
-            this.OptimizeA_Duet3_checkBox.Location = new System.Drawing.Point(112, 171);
+            this.OptimizeA_Duet3_checkBox.Location = new System.Drawing.Point(140, 238);
             this.OptimizeA_Duet3_checkBox.Name = "OptimizeA_Duet3_checkBox";
             this.OptimizeA_Duet3_checkBox.Size = new System.Drawing.Size(110, 17);
             this.OptimizeA_Duet3_checkBox.TabIndex = 131;
@@ -4108,7 +4441,7 @@
             // label214
             // 
             this.label214.AutoSize = true;
-            this.label214.Location = new System.Drawing.Point(172, 148);
+            this.label214.Location = new System.Drawing.Point(200, 211);
             this.label214.Name = "label214";
             this.label214.Size = new System.Drawing.Size(22, 13);
             this.label214.TabIndex = 151;
@@ -4117,7 +4450,7 @@
             // label215
             // 
             this.label215.AutoSize = true;
-            this.label215.Location = new System.Drawing.Point(7, 152);
+            this.label215.Location = new System.Drawing.Point(88, 211);
             this.label215.Name = "label215";
             this.label215.Size = new System.Drawing.Size(44, 13);
             this.label215.TabIndex = 150;
@@ -4125,7 +4458,7 @@
             // 
             // Duet3ACurrent_maskedTextBox
             // 
-            this.Duet3ACurrent_maskedTextBox.Location = new System.Drawing.Point(112, 145);
+            this.Duet3ACurrent_maskedTextBox.Location = new System.Drawing.Point(140, 208);
             this.Duet3ACurrent_maskedTextBox.Mask = "99999";
             this.Duet3ACurrent_maskedTextBox.Name = "Duet3ACurrent_maskedTextBox";
             this.Duet3ACurrent_maskedTextBox.PromptChar = ' ';
@@ -4138,7 +4471,7 @@
             // 
             // Duet3AtravelPerRev_textBox
             // 
-            this.Duet3AtravelPerRev_textBox.Location = new System.Drawing.Point(112, 119);
+            this.Duet3AtravelPerRev_textBox.Location = new System.Drawing.Point(140, 180);
             this.Duet3AtravelPerRev_textBox.Name = "Duet3AtravelPerRev_textBox";
             this.Duet3AtravelPerRev_textBox.Size = new System.Drawing.Size(54, 20);
             this.Duet3AtravelPerRev_textBox.TabIndex = 140;
@@ -4148,7 +4481,7 @@
             // Duet3Ainterpolate_checkBox
             // 
             this.Duet3Ainterpolate_checkBox.AutoSize = true;
-            this.Duet3Ainterpolate_checkBox.Location = new System.Drawing.Point(188, 68);
+            this.Duet3Ainterpolate_checkBox.Location = new System.Drawing.Point(193, 121);
             this.Duet3Ainterpolate_checkBox.Name = "Duet3Ainterpolate_checkBox";
             this.Duet3Ainterpolate_checkBox.Size = new System.Drawing.Size(76, 17);
             this.Duet3Ainterpolate_checkBox.TabIndex = 148;
@@ -4160,7 +4493,7 @@
             // label216
             // 
             this.label216.AutoSize = true;
-            this.label216.Location = new System.Drawing.Point(6, 124);
+            this.label216.Location = new System.Drawing.Point(26, 183);
             this.label216.Name = "label216";
             this.label216.Size = new System.Drawing.Size(108, 13);
             this.label216.TabIndex = 145;
@@ -4169,16 +4502,16 @@
             // label217
             // 
             this.label217.AutoSize = true;
-            this.label217.Location = new System.Drawing.Point(172, 124);
+            this.label217.Location = new System.Drawing.Point(200, 183);
             this.label217.Name = "label217";
-            this.label217.Size = new System.Drawing.Size(23, 13);
+            this.label217.Size = new System.Drawing.Size(45, 13);
             this.label217.TabIndex = 144;
-            this.label217.Text = "mm";
+            this.label217.Text = "degrees";
             // 
             // Duet3Adeg18_radioButton
             // 
             this.Duet3Adeg18_radioButton.AutoSize = true;
-            this.Duet3Adeg18_radioButton.Location = new System.Drawing.Point(153, 96);
+            this.Duet3Adeg18_radioButton.Location = new System.Drawing.Point(163, 150);
             this.Duet3Adeg18_radioButton.Name = "Duet3Adeg18_radioButton";
             this.Duet3Adeg18_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Adeg18_radioButton.TabIndex = 147;
@@ -4190,7 +4523,7 @@
             // Duet3Adeg09_radioButton
             // 
             this.Duet3Adeg09_radioButton.AutoSize = true;
-            this.Duet3Adeg09_radioButton.Location = new System.Drawing.Point(91, 96);
+            this.Duet3Adeg09_radioButton.Location = new System.Drawing.Point(93, 150);
             this.Duet3Adeg09_radioButton.Name = "Duet3Adeg09_radioButton";
             this.Duet3Adeg09_radioButton.Size = new System.Drawing.Size(64, 17);
             this.Duet3Adeg09_radioButton.TabIndex = 146;
@@ -4202,7 +4535,7 @@
             // label218
             // 
             this.label218.AutoSize = true;
-            this.label218.Location = new System.Drawing.Point(6, 10);
+            this.label218.Location = new System.Drawing.Point(46, 33);
             this.label218.Name = "label218";
             this.label218.Size = new System.Drawing.Size(41, 13);
             this.label218.TabIndex = 134;
@@ -4211,16 +4544,16 @@
             // label219
             // 
             this.label219.AutoSize = true;
-            this.label219.Location = new System.Drawing.Point(140, 12);
+            this.label219.Location = new System.Drawing.Point(142, 33);
             this.label219.Name = "label219";
-            this.label219.Size = new System.Drawing.Size(33, 13);
+            this.label219.Size = new System.Drawing.Size(44, 13);
             this.label219.TabIndex = 133;
-            this.label219.Text = "mm/s";
+            this.label219.Text = "mm/min";
             // 
             // label220
             // 
             this.label220.AutoSize = true;
-            this.label220.Location = new System.Drawing.Point(7, 96);
+            this.label220.Location = new System.Drawing.Point(26, 152);
             this.label220.Name = "label220";
             this.label220.Size = new System.Drawing.Size(61, 13);
             this.label220.TabIndex = 143;
@@ -4228,7 +4561,7 @@
             // 
             // Duet3Aacceleration_maskedTextBox
             // 
-            this.Duet3Aacceleration_maskedTextBox.Location = new System.Drawing.Point(91, 35);
+            this.Duet3Aacceleration_maskedTextBox.Location = new System.Drawing.Point(93, 56);
             this.Duet3Aacceleration_maskedTextBox.Mask = "99999";
             this.Duet3Aacceleration_maskedTextBox.Name = "Duet3Aacceleration_maskedTextBox";
             this.Duet3Aacceleration_maskedTextBox.PromptChar = ' ';
@@ -4242,7 +4575,7 @@
             // label221
             // 
             this.label221.AutoSize = true;
-            this.label221.Location = new System.Drawing.Point(140, 38);
+            this.label221.Location = new System.Drawing.Point(142, 59);
             this.label221.Name = "label221";
             this.label221.Size = new System.Drawing.Size(45, 13);
             this.label221.TabIndex = 136;
@@ -4250,7 +4583,7 @@
             // 
             // Duet3Aspeed_maskedTextBox
             // 
-            this.Duet3Aspeed_maskedTextBox.Location = new System.Drawing.Point(91, 9);
+            this.Duet3Aspeed_maskedTextBox.Location = new System.Drawing.Point(93, 30);
             this.Duet3Aspeed_maskedTextBox.Mask = "99999";
             this.Duet3Aspeed_maskedTextBox.Name = "Duet3Aspeed_maskedTextBox";
             this.Duet3Aspeed_maskedTextBox.PromptChar = ' ';
@@ -4264,7 +4597,7 @@
             // label222
             // 
             this.label222.AutoSize = true;
-            this.label222.Location = new System.Drawing.Point(118, 69);
+            this.label222.Location = new System.Drawing.Point(123, 123);
             this.label222.Name = "label222";
             this.label222.Size = new System.Drawing.Size(64, 13);
             this.label222.TabIndex = 139;
@@ -4272,7 +4605,7 @@
             // 
             // Duet3Amicrosteps_maskedTextBox
             // 
-            this.Duet3Amicrosteps_maskedTextBox.Location = new System.Drawing.Point(91, 66);
+            this.Duet3Amicrosteps_maskedTextBox.Location = new System.Drawing.Point(93, 120);
             this.Duet3Amicrosteps_maskedTextBox.Mask = "99999";
             this.Duet3Amicrosteps_maskedTextBox.Name = "Duet3Amicrosteps_maskedTextBox";
             this.Duet3Amicrosteps_maskedTextBox.PromptChar = ' ';
@@ -4286,7 +4619,7 @@
             // label223
             // 
             this.label223.AutoSize = true;
-            this.label223.Location = new System.Drawing.Point(7, 36);
+            this.label223.Location = new System.Drawing.Point(18, 59);
             this.label223.Name = "label223";
             this.label223.Size = new System.Drawing.Size(69, 13);
             this.label223.TabIndex = 137;
@@ -4295,7 +4628,7 @@
             // label224
             // 
             this.label224.AutoSize = true;
-            this.label224.Location = new System.Drawing.Point(6, 67);
+            this.label224.Location = new System.Drawing.Point(26, 123);
             this.label224.Name = "label224";
             this.label224.Size = new System.Drawing.Size(61, 13);
             this.label224.TabIndex = 141;
@@ -5373,7 +5706,7 @@
             this.zjh_maskedTextBox.Tag = "https://liteplacer.com/motors-setup/";
             this.zjh_maskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.zjh_maskedTextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
-            this.zjh_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.zjh_maskedTextBox_KeyPress);
+            this.zjh_maskedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Duet3ZhomingSpeed_maskedTextBox_KeyPress);
             // 
             // zvm_maskedTextBox
             // 
@@ -7798,14 +8131,14 @@
             this.JobData_GridView.AllowUserToAddRows = false;
             this.JobData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.JobData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.JobData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.JobData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JobData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JobDataValueColumn,
@@ -7919,14 +8252,14 @@
             this.CadData_GridView.AllowUserToAddRows = false;
             this.CadData_GridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.CadData_GridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CadData_GridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.CadData_GridView.ColumnHeadersHeight = 29;
             this.CadData_GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CadData_GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -10936,17 +11269,17 @@
             this.Controls.Add(this.Test3_button);
             this.Controls.Add(this.OpticalHome_button);
             this.Controls.Add(this.SerialMonitor_richTextBox);
-            this.Controls.Add(this.apos_textBox);
+            this.Controls.Add(this.Aposition_textBox);
             this.Controls.Add(this.label19);
-            this.Controls.Add(this.zpos_textBox);
+            this.Controls.Add(this.Zposition_textBox);
             this.Controls.Add(this.label18);
-            this.Controls.Add(this.ypos_textBox);
+            this.Controls.Add(this.Yposition_textBox);
             this.Controls.Add(this.Test2_button);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Test1_button);
             this.Controls.Add(this.SendtoControlBoard_textBox);
             this.Controls.Add(this.label17);
-            this.Controls.Add(this.xpos_textBox);
+            this.Controls.Add(this.Xposition_textBox);
             this.Controls.Add(this.label14);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -11055,12 +11388,12 @@
 		private System.Windows.Forms.TextBox SendtoControlBoard_textBox;
 		private System.Windows.Forms.Button reset_button;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox xpos_textBox;
-        private System.Windows.Forms.TextBox ypos_textBox;
+        private System.Windows.Forms.TextBox Xposition_textBox;
+        private System.Windows.Forms.TextBox Yposition_textBox;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox zpos_textBox;
+        private System.Windows.Forms.TextBox Zposition_textBox;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox apos_textBox;
+        private System.Windows.Forms.TextBox Aposition_textBox;
 		private System.Windows.Forms.Label label19;
 		private System.Windows.Forms.RichTextBox SerialMonitor_richTextBox;
         private System.Windows.Forms.Button Test1_button;
@@ -11879,6 +12212,32 @@
         private System.Windows.Forms.Label label231;
         public System.Windows.Forms.MaskedTextBox Duet3XhomingSpeed_maskedTextBox;
         private System.Windows.Forms.Label label232;
+        private System.Windows.Forms.Label label233;
+        private System.Windows.Forms.Label label237;
+        private System.Windows.Forms.Label label236;
+        public System.Windows.Forms.MaskedTextBox Duet3XHomingBackoff_maskedTextBox;
+        private System.Windows.Forms.Label label235;
+        private System.Windows.Forms.Label label234;
+        private System.Windows.Forms.Label label244;
+        private System.Windows.Forms.Label label243;
+        private System.Windows.Forms.Label label238;
+        private System.Windows.Forms.Label label239;
+        public System.Windows.Forms.MaskedTextBox Duet3YHomingBackoff_maskedTextBox;
+        private System.Windows.Forms.Label label240;
+        private System.Windows.Forms.Label label241;
+        public System.Windows.Forms.MaskedTextBox Duet3YhomingSpeed_maskedTextBox;
+        private System.Windows.Forms.Label label242;
+        private System.Windows.Forms.Label label245;
+        private System.Windows.Forms.Label label247;
+        private System.Windows.Forms.Label label248;
+        public System.Windows.Forms.MaskedTextBox Duet3ZHomingBackoff_maskedTextBox;
+        private System.Windows.Forms.Label label249;
+        private System.Windows.Forms.Label label250;
+        public System.Windows.Forms.MaskedTextBox Duet3ZhomingSpeed_maskedTextBox;
+        private System.Windows.Forms.Label label251;
+        private System.Windows.Forms.Label label246;
+        private System.Windows.Forms.Label label253;
+        private System.Windows.Forms.Label label252;
     }
 }
 

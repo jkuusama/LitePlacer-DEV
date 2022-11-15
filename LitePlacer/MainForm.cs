@@ -1594,11 +1594,9 @@ namespace LitePlacer
 
         public void My_KeyUp(object sender, KeyEventArgs e)
         {
-            if ((e.KeyCode == Keys.NumPad1) || (e.KeyCode == Keys.NumPad2) || (e.KeyCode == Keys.NumPad3) ||
-                (e.KeyCode == Keys.NumPad4) || (e.KeyCode == Keys.NumPad6) ||
-                (e.KeyCode == Keys.NumPad7) || (e.KeyCode == Keys.NumPad8) || (e.KeyCode == Keys.NumPad9) ||
-                (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
+            if (JoggingKeys.Contains(e.KeyCode))
             {
+                JoggingBusy = false;
                 if (!NumPadJog_checkBox.Checked)
                 {
                     return;
@@ -1607,7 +1605,6 @@ namespace LitePlacer
                 {
                     return;
                 };
-                JoggingBusy = false;
                 e.Handled = true;
                 e.SuppressKeyPress = true;
 
@@ -1705,10 +1702,18 @@ namespace LitePlacer
                 return;
             }
 
+            if (JoggingBusy)
+            {
+                return;
+            }
+
             if (MovementIsBusy())
             {
                 return;
             }
+
+            JoggingBusy = true;     // will be reset by keyup event
+            e.Handled = true;
 
             DisplayText("Jog: " + e.KeyCode.ToString(), KnownColor.DarkGreen, true);
             string Speedstr;
@@ -1726,54 +1731,42 @@ namespace LitePlacer
                 Speedstr = NormalJogSpeed_numericUpDown.Value.ToString(CultureInfo.InvariantCulture);
             }
 
-            e.Handled = true;
-
-
             if (e.KeyCode == Keys.NumPad1)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, "0", "0", "", "");
             }
             else if (e.KeyCode == Keys.NumPad2)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, "", "0", "", "");
             }
             else if (e.KeyCode == Keys.NumPad3)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture), "0", "", "");
             }
             else if (e.KeyCode == Keys.NumPad4)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, "0", "", "", "");
             }
             else if (e.KeyCode == Keys.NumPad6)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture), "", "", "");
             }
             else if (e.KeyCode == Keys.NumPad7)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, "0", Setting.General_MachineSizeY.ToString(), "", "");
             }
             else if (e.KeyCode == Keys.NumPad8)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, "", Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture), "", "");
             }
             else if (e.KeyCode == Keys.NumPad9)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture),
                     Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture), "", "");
             }
             //     (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
             else if (e.KeyCode == Keys.Add)
             {
-                JoggingBusy = true;
                 double Ztarget;
                 if (!double.TryParse(Setting.General_Z0toPCB.ToString(CultureInfo.InvariantCulture).Replace(',', '.'), out Ztarget))
                 {
@@ -1791,28 +1784,25 @@ namespace LitePlacer
             }
             else if (e.KeyCode == Keys.Subtract)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, "", "", "0", "");
             }
             else if (e.KeyCode == Keys.Divide)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, "", "", "", "0");
             }
             else if (e.KeyCode == Keys.Multiply)
             {
-                JoggingBusy = true;
                 Cnc.Jog(Speedstr, "", "", "", "100000");  // should be enough
             }
             else
             {
-                Jog(sender, e);
+                JogFkeys(sender, e);
             }
         }
 
-        private void Jog(object sender, KeyEventArgs e)
+        private void JogFkeys(object sender, KeyEventArgs e)
         {
-
+            JoggingBusy = false;
             if (MovementIsBusy())
             {
                 return;
@@ -2809,8 +2799,8 @@ namespace LitePlacer
             Thread.Sleep(50);
             Cnc.CurrentX = X;
             Cnc.CurrentY = Y;
-            Update_xpos(X.ToString("0.000", CultureInfo.InvariantCulture));
-            Update_ypos(Y.ToString("0.000", CultureInfo.InvariantCulture));
+            Update_Xposition(X.ToString("0.000", CultureInfo.InvariantCulture));
+            Update_Yposition(Y.ToString("0.000", CultureInfo.InvariantCulture));
             DisplayText("Optical homing OK.");
             if (Setting.General_Autopark)
             {
@@ -2823,6 +2813,42 @@ namespace LitePlacer
 
         // =================================================================================
         // Misc CNC functions
+
+        // =================================================================================
+        // UI position update 
+
+        #region Position
+
+        public void Update_Xposition(string value)
+        {
+            if (InvokeRequired) { Invoke(new Action<string>(Update_Xposition), new[] { value }); return; }
+            TrueX_label.Text = value;
+            Xposition_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
+            //DisplayText("Update_xpos: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture));
+        }
+
+        public void Update_Yposition(string value)
+        {
+            if (InvokeRequired) { Invoke(new Action<string>(Update_Yposition), new[] { value }); return; }
+            Yposition_textBox.Text = value;
+            Yposition_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
+            //DisplayText("Update_ypos, x: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture));
+        }
+
+        public void Update_Zposition(string value)
+        {
+            if (InvokeRequired) { Invoke(new Action<string>(Update_Zposition), new[] { value }); return; }
+            Zposition_textBox.Text = value;
+        }
+
+        public void Update_Aposition(string value)
+        {
+            if (InvokeRequired) { Invoke(new Action<string>(Update_Aposition), new[] { value }); return; }
+            Aposition_textBox.Text = value;
+        }
+
+        #endregion Position
+
 
         private void CNC_Park()
         {
@@ -4862,7 +4888,7 @@ namespace LitePlacer
 
         private void UI_BoardConnected()
         {
-            switch (Cnc.Controlboard)
+            switch (Controlboard)
             {
                 case ControlBoardType.TinyG:
                     Motors_label.Text = "Axes setup (TinyG board):";
@@ -4875,17 +4901,17 @@ namespace LitePlacer
                     Duet3Motors_tabControl.Visible = true;
                     return;
                 case ControlBoardType.unknown:
-                    Motors_label.Text = "Connected to unknown board, internal type" + Cnc.Controlboard.ToString();
+                    Motors_label.Text = "Connected to unknown board, internal type" + Controlboard.ToString();
                     TinyGMotors_tabControl.Visible = false;
                     Duet3Motors_tabControl.Visible = false;
                     return;
                 case ControlBoardType.other:            // should not happen
-                    Motors_label.Text = "Connected to unknown board, internal type" + Cnc.Controlboard.ToString();
+                    Motors_label.Text = "Connected to unknown board, internal type" + Controlboard.ToString();
                     TinyGMotors_tabControl.Visible = false;
                     Duet3Motors_tabControl.Visible = false;
                     return;
                 default:            // should not happen
-                    Motors_label.Text = "Connected to unknown board, internal type" + Cnc.Controlboard.ToString();
+                    Motors_label.Text = "Connected to unknown board, internal type" + Controlboard.ToString();
                     TinyGMotors_tabControl.Visible = false;
                     Duet3Motors_tabControl.Visible = false;
                     return;        // should not happen
@@ -4895,7 +4921,7 @@ namespace LitePlacer
         }
         public  void CheckLatchBackoff()
         {
-            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+            if (Controlboard == ControlBoardType.TinyG)
             {
                 double val;
                 if (!double.TryParse(TinyGBoard.Zlb.ToString().Replace(',', '.'), out val))
@@ -5258,7 +5284,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            if (Cnc.Controlboard == ControlBoardType.TinyG)
+            if (Controlboard == ControlBoardType.TinyG)
             {
                 if (!Xhome_checkBox.Checked)
                 {
@@ -5278,7 +5304,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            if (Cnc.Controlboard == ControlBoardType.TinyG)
+            if (Controlboard == ControlBoardType.TinyG)
             {
                 if (!Yhome_checkBox.Checked)
                 {
@@ -5313,7 +5339,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            if (Cnc.Controlboard == ControlBoardType.TinyG)
+            if (Controlboard == ControlBoardType.TinyG)
             {
                 if (LastTabPage == "Nozzles_tabPage")
                 {
@@ -5400,6 +5426,10 @@ namespace LitePlacer
             {
                 Cnc.MotorPowerOff();
             }
+            PositionConfidence = false;
+            OpticalHome_button.BackColor = Color.Red;
+            DisplayText("*** Switching motor power causes loss of precise position. ", KnownColor.DarkRed, true);
+            DisplayText("Re-homing is needed.", KnownColor.DarkRed, true);
         }
 
         // =======================================
@@ -13745,7 +13775,7 @@ namespace LitePlacer
             AppSettings_saveFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_saveFileDialog.InitialDirectory = path;
 
-            if (Cnc.Controlboard == ControlBoardType.TinyG)
+            if (Controlboard == ControlBoardType.TinyG)
             {
 
                 if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -13769,7 +13799,7 @@ namespace LitePlacer
             AppSettings_openFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_openFileDialog.InitialDirectory = path;
 
-            if (Cnc.Controlboard == ControlBoardType.TinyG)
+            if (Controlboard == ControlBoardType.TinyG)
             {
                 TinyGSettings tg = TinyGBoard;
                 if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
@@ -13794,7 +13824,7 @@ namespace LitePlacer
                 return;
             }
             string path = GetPath();
-            if (Cnc.Controlboard == ControlBoardType.TinyG)
+            if (Controlboard == ControlBoardType.TinyG)
             {
                 TinyGBoard = new TinyGSettings();
                 WriteAllTinyGSettings_m();

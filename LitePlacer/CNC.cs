@@ -98,7 +98,7 @@ namespace LitePlacer
 
         public enum ControlBoardType { TinyG, Duet3, other, unknown };
         // see AppSettings.cs, CNC_boardtype
-        public ControlBoardType Controlboard { get; set; } = ControlBoardType.unknown;
+        public static ControlBoardType Controlboard { get; set; } = ControlBoardType.unknown;
 
         public bool SlackCompensation { get; set; }
         public double SlackCompensationDistance { get; set; }
@@ -163,11 +163,16 @@ namespace LitePlacer
         // Therefore, for each movement when the user wants to go to (X, Y),
         // we really go to (X - 0.002*Y, Y)
 
-        // CurrentX, CurrentXY are the corrected values that user and MainForm sees and uses.
+        // CurrentX, CurrentY are the corrected values that user and MainForm sees and uses.
         // These reflect a square machine.
         // TrueX/Y is what the control board actually uses.
 
         // CurrentZ, CurrentA are the values that user and MainForm sees and uses; no correction at the moment
+
+        // TinyG sends position reports as status info, and updates UI based on those.
+        // Duet 3 doesn't, so we need to keeo UI updated ourselves. On some commands, we 
+        // can call UI update routines directly. On some, we set temporary position and a flag,
+        // so that Duet3 knows to update UI on "ok" message
 
         public static double SquareCorrection { get; set; }
 
@@ -198,11 +203,14 @@ namespace LitePlacer
             }
         }
 
-        public static void setCurrX(double x)
+        public void SetCurrentX(double x)
         {
             _trueX = x;
             CurrX = x - CurrY * SquareCorrection;
-            //MainForm.DisplayText("CNC.setCurrX: x= " + x.ToString() + ", CurrX= " + CurrX.ToString() + ", CurrY= " + CurrY.ToString());
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                MainForm.Update_Xposition(CurrX.ToString("0.000", CultureInfo.InvariantCulture));
+            }
         }
 
 
@@ -220,11 +228,15 @@ namespace LitePlacer
             }
         }
 
-        public static void setCurrY(double y)
+        public void SetCurrentY(double y)
         {
             CurrY = y;
             CurrX = _trueX - CurrY * SquareCorrection;
-            //MainForm.DisplayText("CNC.setCurrY: "+ y.ToString()+ " CurrX= " + CurrX.ToString());
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                MainForm.Update_Yposition(y.ToString("0.000", CultureInfo.InvariantCulture));
+                MainForm.Update_Xposition(CurrX.ToString("0.000", CultureInfo.InvariantCulture));
+            }
         }
 
 
@@ -240,9 +252,13 @@ namespace LitePlacer
                 CurrZ = value;
             }
         }
-        public static void setCurrZ(double z)
+        public void SetCurrentZ(double z)
         {
             CurrZ = z;
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                MainForm.Update_Zposition(z.ToString("0.000", CultureInfo.InvariantCulture));
+            }
         }
 
 
@@ -258,9 +274,13 @@ namespace LitePlacer
                 CurrA = value;
             }
         }
-        public static void setCurrA(double a)
+        public void SetCurrentA(double a)
         {
             CurrA = a;
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                MainForm.Update_Aposition(a.ToString("0.000", CultureInfo.InvariantCulture));
+            }
         }
 
 
@@ -275,6 +295,10 @@ namespace LitePlacer
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.SetPosition(X, Y, Z, A);
+                MainForm.Update_Xposition(X);
+                MainForm.Update_Yposition(Y);
+                MainForm.Update_Zposition(Z);
+                MainForm.Update_Aposition(A);
             }
             else if (Controlboard == ControlBoardType.TinyG)
             {
@@ -1063,6 +1087,7 @@ namespace LitePlacer
 
         public bool Home_m(string axis)
         {
+            Homing = true;
             if (ErrorState)
             {
                 MainForm.DisplayText("*** Cnc.Home_m(), board in error state.", KnownColor.DarkRed, true);
@@ -1072,11 +1097,13 @@ namespace LitePlacer
             {
                 if (Duet3.Home_m(axis))
                 {
+                    Homing = false;
                     return true;
                 }
                 else
                 {
                     RaiseError();
+                    Homing = false;
                     return false;
                 }
             };
@@ -1085,11 +1112,13 @@ namespace LitePlacer
             {
                 if (TinyG.Home_m(axis))
                 {
+                    Homing = false;
                     return true;
                 }
                 else
                 {
                     RaiseError();
+                    Homing = false;
                     return false;
                 }
             };

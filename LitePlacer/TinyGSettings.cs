@@ -29,6 +29,7 @@ namespace LitePlacer
         // =================================================================================
 
         // Called from TinyG class when TinyG related UI need updating
+
         public void ValueUpdater(string item, string value)
         {
             if (InvokeRequired) { Invoke(new Action<string, string>(ValueUpdater), new[] { item, value }); return; }
@@ -38,16 +39,16 @@ namespace LitePlacer
             {
                 // ==========  position values  ==========
                 case "posx":
-                    Update_xpos(value);
+                    Update_Xposition(value);
                     break;
                 case "posy":
-                    Update_ypos(value);
+                    Update_Yposition(value);
                     break;
                 case "posz":
-                    Update_zpos(value);
+                    Update_Zposition(value);
                     break;
                 case "posa":
-                    Update_apos(value);
+                    Update_Aposition(value);
                     break;
 
                 // ==========  System values  ==========
@@ -372,12 +373,12 @@ namespace LitePlacer
 
             if (value == "1")
             {
-                Cnc.Controlboard = CNC.ControlBoardType.TinyG;
+                CNC.Controlboard = CNC.ControlBoardType.TinyG;
                 DisplayText("TinyG board found.");
             }
             else
             {
-                Cnc.Controlboard = CNC.ControlBoardType.other;
+                CNC.Controlboard = CNC.ControlBoardType.other;
                 DisplayText("Unknown control board.");
             }
         }
@@ -1377,38 +1378,6 @@ namespace LitePlacer
 
         #endregion
 
-        // =========================================================================
-        #region mpo  // mpo*: Position
-        // * update
-        private void Update_xpos(string value)
-        {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_xpos), new[] { value }); return; }
-            TrueX_label.Text = value;
-            xpos_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            //DisplayText("Update_xpos: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture));
-        }
-
-        private void Update_ypos(string value)
-        {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_ypos), new[] { value }); return; }
-            ypos_textBox.Text = value;
-            xpos_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            //DisplayText("Update_ypos, x: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture));
-        }
-
-        private void Update_zpos(string value)
-        {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_zpos), new[] { value }); return; }
-            zpos_textBox.Text = value;
-        }
-
-        private void Update_apos(string value)
-        {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_apos), new[] { value }); return; }
-            apos_textBox.Text = value;
-        }
-
-        #endregion
 
         // =========================================================================
         #region Save_and_Load
@@ -1493,7 +1462,7 @@ namespace LitePlacer
             string path = GetPath();
             bool res = true;
             DialogResult dialogResult;
-            if (Cnc.Controlboard == CNC.ControlBoardType.TinyG)
+            if (CNC.Controlboard == CNC.ControlBoardType.TinyG)
             {
                 dialogResult = ShowMessageBox(
                    "Settings currently stored on board of your TinyG will be overwritten,\n" +

@@ -165,7 +165,7 @@ namespace LitePlacer
                 while (RxString.IndexOf("\n", StringComparison.Ordinal) > -1)
                 {
                     //Even when RxString does contain terminator we cannot assume that it is the last character received 
-                    WorkingString = RxString.Substring(0, RxString.IndexOf("\n", StringComparison.Ordinal) + 1);
+                    WorkingString = RxString.Substring(0, RxString.IndexOf("\n", StringComparison.Ordinal));
                     //Remove the data and the terminator from tString 
                     RxString = RxString.Substring(RxString.IndexOf("\n", StringComparison.Ordinal) + 1);
                     Cnc.LineReceived(WorkingString);

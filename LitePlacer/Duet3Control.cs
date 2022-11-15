@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Globalization;
+using AForge.Math.Geometry;
+using Newtonsoft.Json.Linq;
 
 namespace LitePlacer
 {
@@ -42,6 +45,7 @@ namespace LitePlacer
 
         public bool JustConnected()
         {
+            Write_m("M555 P6");     // set compatibility mode so that ok comes after command is done
             if (!MainForm.SetDuet3XmotorParameters()) return false;
             if (!MainForm.SetDuet3YmotorParameters()) return false;
             if (!MainForm.SetDuet3ZmotorParameters()) return false;
@@ -72,7 +76,7 @@ namespace LitePlacer
         // Write_m
         // Normal write, waits until "ok" response is received
 
-        public bool Write_m(string cmd, int Timeout = 250)
+        public bool Write_m(string cmd, int Timeout = 500)
         {
             if (!Com.IsOpen)
             {
@@ -170,12 +174,20 @@ namespace LitePlacer
 
         // ===================================================================
 
+        // Position info is stored here on start of the move, and PositionUpdateRequired
+        // is set. If set, "ok" message updates the UI.
         public void LineReceived(string line)
         {
             // This is called from Cnc.LineReceived (called from SerialComm dataReceived),
             // and runs in a separate thread than UI            
+            if (line== "Z_move_comp")       
+            {
+                // in nanoDLP comm mode, this is received after moves. Discard (for now, notice it, though)
+                MainForm.DisplayText("--");
+                return;
+            }
             MainForm.DisplayText("<== " + line);
-            if (line == "ok\n")
+            if (line == "ok")
             {
                 WriteBusy = false;
                 return;
@@ -213,30 +225,121 @@ namespace LitePlacer
 
         #endregion Communications
 
-            // =================================================================================
-            // Movement, position:
-            #region Movement
+        // =================================================================================
+        // Movement, position:
+        #region Movement
+
+        private bool SetXposition(string pos)
+        {
+            double val;
+            if (!double.TryParse(pos.Replace(',', '.'), out val))
+            {
+                MainForm.ShowMessageBox(
+                    "Duet3.SetXposition() called with bad value " + pos,
+                    "BUG",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            Cnc.SetCurrentX(val);
+            if (!Write_m("G92 X" + pos))
+            {
+                MainForm.ShowMessageBox(
+                    "Duet3 G92 X" + pos + " failed",
+                    "comm err?",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            return true;
+        }
+
+        private bool SetYposition(string pos)
+        {
+            double val;
+            if (!double.TryParse(pos.Replace(',', '.'), out val))
+            {
+                MainForm.ShowMessageBox(
+                    "Duet3.SetYposition() called with bad value " + pos,
+                    "BUG",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            Cnc.SetCurrentY(val);
+            if (!Write_m("G92 Y" + pos))
+            {
+                MainForm.ShowMessageBox(
+                    "Duet3 G92 Y" + pos + " failed",
+                    "comm err?",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            return true;
+        }
+
+        private bool SetZposition(string pos)
+        {
+            double val;
+            if (!double.TryParse(pos.Replace(',', '.'), out val))
+            {
+                MainForm.ShowMessageBox(
+                    "Duet3.SetZposition() called with bad value " + pos,
+                    "BUG",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            Cnc.SetCurrentZ(val);
+            if (!Write_m("G92 Z" + pos))
+            {
+                MainForm.ShowMessageBox(
+                    "Duet3 G92 Z" + pos + " failed",
+                    "comm err?",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            return true;
+        }
+
+        private bool SetAposition(string pos)
+        {
+            double val;
+            if (!double.TryParse(pos.Replace(',', '.'), out val))
+            {
+                MainForm.ShowMessageBox(
+                    "Duet3.SetAposition() called with bad value " + pos,
+                    "BUG",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            Cnc.SetCurrentA(val);
+            if (!Write_m("G92 A" + pos))
+            {
+                MainForm.ShowMessageBox(
+                    "Duet3 G92 A" + pos + " failed",
+                    "comm err?",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            return true;
+        }
+
 
         public void SetPosition(string Xstr, string Ystr, string Zstr, string Astr)
         {
-            string Pos = "G92";
             if (Xstr != "")
             {
-                Pos = Pos + " X" + Xstr;
+                SetXposition(Xstr);
             };
             if (Ystr != "")
             {
-                Pos = Pos + " Y" + Ystr;
+                SetYposition(Ystr);
             };
             if (Zstr != "")
             {
-                Pos = Pos + " Z" + Zstr;
+                SetZposition(Zstr);
             };
             if (Astr != "")
             {
-                Pos = Pos + " A" + Astr;
+                SetAposition(Astr);
             };
-            Write_m(Pos);
         }
 
 
@@ -253,18 +356,153 @@ namespace LitePlacer
             MainForm.ShowMessageBox("Unimplemented Duet3 function Jog", "Unimplemented function", MessageBoxButtons.OK);
         }
 
+        // =================================================================================
+        // homing
+
+        private bool HomingTimeout_m(out int TimeOut, string axis)
+        {
+            double Speed;
+            double size;
+            TimeOut = 0;
+            switch (axis)
+            {
+                case "X":
+                    Speed = MainForm.Setting.Duet3_XHomingSpeed;
+                    size = MainForm.Setting.General_MachineSizeX;
+                    break;
+
+                case "Y":
+                    Speed = MainForm.Setting.Duet3_YHomingSpeed;
+                    size = MainForm.Setting.General_MachineSizeY;
+                    break;
+
+                case "Z":
+                    Speed = MainForm.Setting.Duet3_ZHomingSpeed;
+                    size = 100.0;
+                    break;
+
+                default:
+                    return false;
+            }
+
+            Speed = Speed / 60;  // Was mm/min, now in mm / second
+            Double MaxTime = (size / Speed) * 1.2 + 4;
+            // in seconds for the machine size and some (1.2 to allow acceleration, + 4 for the operarations at end stop
+            TimeOut = (int)MaxTime * 1000;  // to ms
+            return true;
+        }
+
 
         public bool Home_m(string axis)
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function Home_m", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
+            double HomingSpeed = 0;
+            double HomingBackoff = 0;
+            string BackoffSpeedStr = MainForm.Setting.CNC_SmallMovementSpeed.ToString();
+            int timeout;
+
+            switch (axis)
+            {
+                case "X":
+                    HomingSpeed = MainForm.Setting.Duet3_XHomingSpeed;
+                    HomingBackoff = MainForm.Setting.Duet3_XHomingBackoff;
+                    MainForm.Update_Xposition("---");
+                    break;
+                case "Y":
+                    HomingSpeed = MainForm.Setting.Duet3_YHomingSpeed;
+                    HomingBackoff = MainForm.Setting.Duet3_YHomingBackoff;
+                    MainForm.Update_Yposition("---");
+                    break;
+                case "Z":
+                    HomingSpeed = MainForm.Setting.Duet3_ZHomingSpeed;
+                    HomingBackoff = MainForm.Setting.Duet3_ZHomingBackoff;
+                    MainForm.Update_Zposition("---");
+                    break;
+                default:
+                    MainForm.ShowMessageBox("Unimplemented Duet3 function Home_m: axis " + axis,
+                        "Unimplemented function", MessageBoxButtons.OK);
+                    break;
+            }
+            if (!HomingTimeout_m(out timeout, axis))
+            {
+                return false;
+            }
+
+
+            string cmd = "G1 H1 " + axis + "-999999 F" + HomingSpeed.ToString();
+            if (!Write_m(cmd, timeout))
+            {
+                MainForm.ShowMessageBox(
+                    "Homing operation mechanical step failed, CNC issue",
+                    "Homing failed",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            cmd = "G1 " + axis + HomingBackoff.ToString() + " F" + BackoffSpeedStr;
+            if (!Write_m(cmd, RegularMoveTimeout))
+            {
+                MainForm.ShowMessageBox(
+                    "Homing operation mechanical step failed, CNC issue",
+                    "Homing failed",
+                    MessageBoxButtons.OK);
+                return false;
+            }
+            bool res = true;
+            switch (axis)
+            {
+                case "X":
+                    res= SetXposition("0.0");
+                    break;
+                case "Y":
+                    res = SetYposition("0.0");
+                    break;
+                case "Z":
+                    res = SetZposition("0.0");
+                    break;
+                default:
+                    MainForm.ShowMessageBox("Unimplemented Duet3 function Home_m: axis " + axis,
+                        "Unimplemented function", MessageBoxButtons.OK);
+                    break;
+            }
+            if (!res)
+            {
+                MainForm.DisplayText("*** Homing operation post moves position set failed", KnownColor.DarkRed, true);
+                return false;
+            }
+
+            MainForm.DisplayText("Homing " + axis + " done.");
+            return true;
         }
 
 
         public bool XYA(double X, double Y, double A, double speed, string MoveType)
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function XYA", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
+            string command;
+            if (MoveType == "G1")
+            {
+                command = "G1 F" + speed.ToString() +
+                    " X" + X.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " Y" + Y.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " A" + A.ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                command = "G0 " +
+                    " X" + X.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " Y" + Y.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " A" + A.ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            if (!Write_m(command, RegularMoveTimeout))
+            {
+                return false;
+            }
+            Cnc.SetCurrentX(X);
+            Cnc.SetCurrentY(Y);
+            Cnc.SetCurrentA(A);
+            MainForm.Update_Xposition(X.ToString("0.000", CultureInfo.InvariantCulture));
+            MainForm.Update_Yposition(Y.ToString("0.000", CultureInfo.InvariantCulture));
+            MainForm.Update_Aposition(A.ToString("0.000", CultureInfo.InvariantCulture));
+
+            return true;
         }
 
 
@@ -325,47 +563,47 @@ namespace LitePlacer
 
         public void MotorPowerOn()
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function MotorPowerOn", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("MotorPowerOn(), Duet3");
+            Write_m("M17");
         }
 
 
 
         public void MotorPowerOff()
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function MotorPowerOff", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("MotorPowerOff(), Duet3");
+            Write_m("M18");
         }
 
 
 
         public void VacuumOn()
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function VacuumOn", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("VacuumOn(), Duet3");
+            Write_m("M42 P7 S1");
         }
 
 
 
         public void VacuumOff()
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function VacuumOff", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("VacuumOff(), Duet3");
+            Write_m("M42 P8 S0");
         }
 
 
         public void PumpOn()
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function PumpOn", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("PumpOn(), Duet3");
+            Write_m("M42 P7 S1");
         }
 
 
 
         public void PumpOff()
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function PumpOff", "Unimplemented function", MessageBoxButtons.OK);
             MainForm.DisplayText("PumpOff(), Duet3");
+            Write_m("M42 P7 S0");
         }
 
         #endregion Features

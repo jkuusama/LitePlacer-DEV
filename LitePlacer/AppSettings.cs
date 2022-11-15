@@ -40,12 +40,18 @@ namespace LitePlacer
             }
         block. Visual Studio bug doesn't allow that, so they are here. :-(
         */
-        public double Duet3_Xspeed { get; set; } = 1000; // mm/s
+        public double Duet3_Xspeed { get; set; } = 5000; // mm/s
         public double Duet3_XHomingSpeed { get; set; } = 500; // mm/s
-       public double Duet3_Yspeed { get; set; } = 200; // mm/s
+        public double Duet3_XHomingBackoff { get; set; } = 5; // mm
+
+        public double Duet3_Yspeed { get; set; } = 5000; // mm/s
         public double Duet3_YHomingSpeed { get; set; } = 500; // mm/s
+        public double Duet3_YHomingBackoff { get; set; } = 5; // mm
+
         public double Duet3_Zspeed { get; set; } = 50; // mm/s
         public double Duet3_ZHomingSpeed { get; set; } = 500; // mm/s
+        public double Duet3_ZHomingBackoff { get; set; } = 5; // mm
+
         public double Duet3_Aspeed { get; set; } = 200; // mm/s
 
         public double Duet3_Xacc { get; set; } = 1000; // mm/s^2
@@ -76,7 +82,7 @@ namespace LitePlacer
         public int Duet3_XCurrent { get; set; } = 1100; //mA
         public int Duet3_YCurrent { get; set; } = 1200; //mA
         public int Duet3_ZCurrent { get; set; } = 1300; //mA
-        public int Duet3_ACurrent { get; set; } = 400; //mA
+        public int Duet3_ACurrent { get; set; } = 100; //mA
         // =================================================================================
 
 

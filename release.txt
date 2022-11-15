@@ -15,6 +15,7 @@ Bug Fixes
   error/OK message is shown
 * No "ding" sound when pressing enter on the text to send box
 * Pixel to mm now calculated correctly, regardless of aspect ratio
+* TinyG aam parameter is checked at connection and if not correct, forced to 1
 
 ---------------------
 
