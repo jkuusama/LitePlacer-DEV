@@ -117,7 +117,7 @@ namespace LitePlacer
 
         private void RightArrowImage_button_Click(object sender, EventArgs e)
         {
-            if (FramesToWait < MaxDelay)
+            if (FramesToWait < MaxDelay-1)
             {
                 FramesToWait++;
             }
@@ -209,7 +209,7 @@ namespace LitePlacer
             double[] Xs = new double[20];
             double[] Ys = new double[20];
             int DelayStore = DownCamera.MeasurementDelay;
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < MaxDelay-1; i++)
             {
                 DownCamera.MeasurementDelay = i;
                 if (!MeasureOneDelay(out Xs[i], out Ys[i]))
@@ -222,7 +222,7 @@ namespace LitePlacer
             DisplayText("Results:");
             DisplayText("Del| X       | Y");
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < MaxDelay - 1; i++)
             {
                 if (Xs[i] < -99)
                 {

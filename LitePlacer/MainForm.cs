@@ -1477,7 +1477,7 @@ namespace LitePlacer
             Grid.Refresh();
         }
 
-        public bool MovementIsBusy()
+        public bool MovementIsBusy_m()
         {
             if (JoggingBusy || StartingUp || CNCstarting)
             {
@@ -1508,7 +1508,7 @@ namespace LitePlacer
             {
                 return;
             }
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -1568,7 +1568,7 @@ namespace LitePlacer
 
 
         public bool JoggingBusy { get; set; } = false;
-        List<Keys> JoggingKeys = new List<Keys>()
+        List<Keys> NumpadKeys = new List<Keys>()
         {
             Keys.NumPad1,   // down + left
 	        Keys.NumPad2,   // down
@@ -1582,6 +1582,10 @@ namespace LitePlacer
             Keys.Subtract,
             Keys.Divide,
             Keys.Multiply,
+        };
+
+        List<Keys> JoggingFKeys = new List<Keys>()
+        {
             Keys.F5,
             Keys.F6,
             Keys.F7,
@@ -1594,25 +1598,20 @@ namespace LitePlacer
 
         public void My_KeyUp(object sender, KeyEventArgs e)
         {
-            if (JoggingKeys.Contains(e.KeyCode))
+            if (NumpadKeys.Contains(e.KeyCode))
             {
+                // ignore when user is inputting a number
+                if ((ActiveControl is TextBox) || (ActiveControl is NumericUpDown) || (ActiveControl is MaskedTextBox))
+                {
+                    return;
+                }
                 JoggingBusy = false;
                 if (!NumPadJog_checkBox.Checked)
                 {
                     return;
                 }
-                if ((ActiveControl is TextBox) || (ActiveControl is NumericUpDown) || (ActiveControl is MaskedTextBox))
-                {
-                    return;
-                };
                 e.Handled = true;
                 e.SuppressKeyPress = true;
-
-                if (MovementIsBusy())
-                {
-                    return;
-                }
-
                 Cnc.CancelJog();
             }
         }
@@ -1621,20 +1620,21 @@ namespace LitePlacer
 
         public void My_KeyDown(object sender, KeyEventArgs e)
         {
+        // Enter key finishes assisted placement operation
             if (e.KeyCode == Keys.Enter)
             {
                 EnterKeyHit = true;
                 return;
             }
 
-            // Abort placment should also be triggered by keyboard
-            // In some situations this is much faster then using the mouse
+        // esc aborts placment (in some situations this is much faster then using the mouse)
             if (e.KeyCode == Keys.Escape)
             {
                 AbortPlacement = true;
                 AbortPlacementShown = false;
             }
 
+        // F4 shows/hides demo buttons
             if ((e.KeyCode == Keys.F4) &&
                     !((e.Alt) || (e.Control) || (e.Shift))
                 )
@@ -1644,6 +1644,7 @@ namespace LitePlacer
                 return;
             }
 
+        // Alt+F4 closes (windows standard)
             if ((e.KeyCode == Keys.F4) && (e.Alt))
             {
                 DialogResult dialogResult = ShowMessageBox(
@@ -1656,6 +1657,8 @@ namespace LitePlacer
                 e.Handled = true;
                 return;
             }
+
+        // F1 opens relevant doc page on browser
             if (e.KeyCode == Keys.F1)
             {
                 if (LastTag != null)
@@ -1669,31 +1672,20 @@ namespace LitePlacer
                 return;
             }
 
+        // F2 shows/hides nozzle tip info text on Nozzles tab
             if ((e.KeyCode == Keys.F2) && (tabControlPages.SelectedTab.Name == "Nozzles_tabPage"))
             {
                 NozzeTip_textBox.Visible = !NozzeTip_textBox.Visible;
             }
 
-            if (!JoggingKeys.Contains(e.KeyCode))
+        // return, until we need to do jogging
+            if (!(NumpadKeys.Contains(e.KeyCode) || JoggingFKeys.Contains(e.KeyCode)))
             {
                 return;
             }
 
-            if ((e.KeyCode == Keys.NumPad1) || (e.KeyCode == Keys.NumPad2) || (e.KeyCode == Keys.NumPad3) ||
-                (e.KeyCode == Keys.NumPad4) || (e.KeyCode == Keys.NumPad6) ||
-                (e.KeyCode == Keys.NumPad7) || (e.KeyCode == Keys.NumPad8) || (e.KeyCode == Keys.NumPad9) ||
-                (e.KeyCode == Keys.Add) || (e.KeyCode == Keys.Subtract) || (e.KeyCode == Keys.Divide) || (e.KeyCode == Keys.Multiply))
-            {
-                if (!NumPadJog_checkBox.Checked)
-                {
-                    return;
-                }
-                if ((ActiveControl is TextBox) || (ActiveControl is NumericUpDown) || (ActiveControl is MaskedTextBox))
-                {
-                    return;
-                }
-            }
-
+        // Handle jogging:
+        // No jogging with nozzle down, unil specifically enabled
             if ( ((Cnc.CurrentZ > 3) && (ZguardIsOn()) )
                 &&
                 !((e.KeyCode == Keys.F11) || (e.KeyCode == Keys.F12)))  // F11&F12: It is ok to move z manually despite of Zguard
@@ -1702,12 +1694,25 @@ namespace LitePlacer
                 return;
             }
 
-            if (JoggingBusy)
+            if (MovementIsBusy_m())
             {
                 return;
             }
 
-            if (MovementIsBusy())
+            if (JoggingFKeys.Contains(e.KeyCode))
+            {
+                JogFkeys(sender, e);
+                return;
+            }
+
+        // Numpad keys are numbers on some controls
+            if ((ActiveControl is TextBox) || (ActiveControl is NumericUpDown) || (ActiveControl is MaskedTextBox))
+            {
+                return;
+            }
+
+        // Only numpad jogging left
+            if (!NumPadJog_checkBox.Checked)
             {
                 return;
             }
@@ -1794,19 +1799,28 @@ namespace LitePlacer
             {
                 Cnc.Jog(Speedstr, "", "", "", "100000");  // should be enough
             }
-            else
-            {
-                JogFkeys(sender, e);
-            }
         }
 
         private void JogFkeys(object sender, KeyEventArgs e)
         {
-            JoggingBusy = false;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
+            string ModStr="";
+            if (e.Alt)
+            {
+                ModStr = ModStr + "Alt+";
+            }
+            if (e.Shift)
+            {
+                ModStr = ModStr + "Shift+";
+            }
+            if (e.Control)
+            {
+                ModStr = ModStr + "Control+";
+            }
+            DisplayText("Jog: " + ModStr + e.KeyCode.ToString(), KnownColor.DarkGreen, true);
 
             double Mag = 0.0;
             if ((e.Alt) && (e.Shift))
@@ -2029,7 +2043,7 @@ namespace LitePlacer
         private void GoX_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -2052,7 +2066,7 @@ namespace LitePlacer
         private void GoY_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -2074,7 +2088,7 @@ namespace LitePlacer
         private void GoZ_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -2094,7 +2108,7 @@ namespace LitePlacer
         private void GoA_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -2117,7 +2131,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -2193,7 +2207,7 @@ namespace LitePlacer
 
         private void LoadCurrentPosition_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -2206,7 +2220,7 @@ namespace LitePlacer
 
         private void SetCurrentPosition_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -2551,7 +2565,7 @@ namespace LitePlacer
 
         private bool DoHoming()
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return false;
             }
@@ -2799,8 +2813,8 @@ namespace LitePlacer
             Thread.Sleep(50);
             Cnc.CurrentX = X;
             Cnc.CurrentY = Y;
-            Update_Xposition(X.ToString("0.000", CultureInfo.InvariantCulture));
-            Update_Yposition(Y.ToString("0.000", CultureInfo.InvariantCulture));
+            Update_Xposition();
+            Update_Yposition();
             DisplayText("Optical homing OK.");
             if (Setting.General_Autopark)
             {
@@ -2819,32 +2833,29 @@ namespace LitePlacer
 
         #region Position
 
-        public void Update_Xposition(string value)
+        public void Update_Xposition()
         {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_Xposition), new[] { value }); return; }
-            TrueX_label.Text = value;
+            if (InvokeRequired) { Invoke(new Action(Update_Xposition)); return; }
+            TrueX_label.Text = Cnc.TrueX.ToString("0.000", CultureInfo.InvariantCulture);
             Xposition_textBox.Text = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
-            //DisplayText("Update_xpos: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture));
         }
 
-        public void Update_Yposition(string value)
+        public void Update_Yposition()
         {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_Yposition), new[] { value }); return; }
-            Yposition_textBox.Text = value;
+            if (InvokeRequired) { Invoke(new Action(Update_Yposition)); return; }
             Yposition_textBox.Text = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
-            //DisplayText("Update_ypos, x: " + Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture));
         }
 
-        public void Update_Zposition(string value)
+        public void Update_Zposition()
         {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_Zposition), new[] { value }); return; }
-            Zposition_textBox.Text = value;
+            if (InvokeRequired) { Invoke(new Action(Update_Zposition)); return; }
+            Zposition_textBox.Text = Cnc.CurrentZ.ToString("0.000", CultureInfo.InvariantCulture); 
         }
 
-        public void Update_Aposition(string value)
+        public void Update_Aposition()
         {
-            if (InvokeRequired) { Invoke(new Action<string>(Update_Aposition), new[] { value }); return; }
-            Aposition_textBox.Text = value;
+            if (InvokeRequired) { Invoke(new Action(Update_Aposition)); return; }
+            Aposition_textBox.Text = Cnc.CurrentA.ToString("0.000", CultureInfo.InvariantCulture);
         }
 
         #endregion Position
@@ -2950,6 +2961,11 @@ namespace LitePlacer
         [DebuggerStepThrough]
         private void MotorPower_timer_Tick(object sender, EventArgs e)
         {
+            if (Controlboard == ControlBoardType.Duet3)
+            {
+                return;
+            }
+
             if (IsTimerDone())
             {
                 return;
@@ -3115,6 +3131,7 @@ namespace LitePlacer
         }
 
 
+        [DebuggerStepThrough]
         private void FPStimer_Tick(object sender, EventArgs e)
         {
             DownCameraFps_label.Text = ReportFPS(DownCamera, ref DownCamFrameMeasuresCount, ref DownCamFrameMeasures);
@@ -3475,6 +3492,11 @@ namespace LitePlacer
                 // leftover from older revision, where the values was in milliseconds)
                 Setting.DownCam_MeasurementDelay = 10;
             }
+            if (Setting.DownCam_MeasurementDelay >= MaxDelay)
+            {
+                // Fixing a bug that might have resulted to a bad settings file
+                Setting.DownCam_MeasurementDelay = MaxDelay - 1;
+            }
             DownCamera.MeasurementDelay = Setting.DownCam_MeasurementDelay;
         }
 
@@ -3520,6 +3542,11 @@ namespace LitePlacer
                 Setting.UpCam_MeasurementDelay = 0;
             }
 
+            if (Setting.UpCam_MeasurementDelay >= MaxDelay)
+            {
+                // Fixing a bug that might have resulted to a bad settings file
+                Setting.UpCam_MeasurementDelay = MaxDelay - 1;
+            }
             UpCamera.MeasurementDelay = Setting.UpCam_MeasurementDelay;
         }
 
@@ -5025,10 +5052,10 @@ namespace LitePlacer
                 double val;
                 if (double.TryParse(SizeXMax_textBox.Text.Replace(',', '.'), out val))
                 {
+                    Setting.General_MachineSizeX = val;
                     if (SetXsize_m(val))
                     {
                         SizeXMax_textBox.ForeColor = Color.Black;
-                        Setting.General_MachineSizeX = val;
                     }
                 }
                 else
@@ -5067,10 +5094,10 @@ namespace LitePlacer
                 double val;
                 if (double.TryParse(SizeYMax_textBox.Text.Replace(',', '.'), out val))
                 {
-                    if (SetYsize_m(val))
+                   Setting.General_MachineSizeY = val;
+                   if (SetYsize_m(val))
                     {
                         SizeYMax_textBox.ForeColor = Color.Black;
-                        Setting.General_MachineSizeY = val;
                     }
                 }
                 else
@@ -5116,7 +5143,7 @@ namespace LitePlacer
         private void Park_button_Click(object sender, EventArgs e)
         {
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5137,7 +5164,7 @@ namespace LitePlacer
 
         private void TestX_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5153,7 +5180,7 @@ namespace LitePlacer
 
         private void TestY_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5170,7 +5197,7 @@ namespace LitePlacer
 
         private void TestXYA_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5186,7 +5213,7 @@ namespace LitePlacer
 
         private void TestXY_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5202,7 +5229,7 @@ namespace LitePlacer
 
         private void TestYX_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5218,7 +5245,7 @@ namespace LitePlacer
 
         private void TestZ_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5253,7 +5280,7 @@ namespace LitePlacer
 
         private void TestA_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5280,7 +5307,7 @@ namespace LitePlacer
 
         private bool HomeX_m()
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return false;
             }
@@ -5300,7 +5327,7 @@ namespace LitePlacer
 
         private bool HomeY_m()
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return false;
             }
@@ -5335,7 +5362,7 @@ namespace LitePlacer
 
         public bool HomeZ_m()
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return false;
             }
@@ -5366,7 +5393,7 @@ namespace LitePlacer
 
         private void HomeX_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5376,7 +5403,7 @@ namespace LitePlacer
 
         private void HomeY_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5386,7 +5413,7 @@ namespace LitePlacer
 
         private void HomeZ_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5854,7 +5881,7 @@ namespace LitePlacer
 
         private void SetMark1_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5871,7 +5898,7 @@ namespace LitePlacer
 
         private void SetMark2_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5888,7 +5915,7 @@ namespace LitePlacer
 
         private void SetMark3_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5905,7 +5932,7 @@ namespace LitePlacer
 
         private void SetMark4_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5922,7 +5949,7 @@ namespace LitePlacer
 
         private void SetMark5_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5939,7 +5966,7 @@ namespace LitePlacer
 
         private void SetMark6_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5958,7 +5985,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5976,7 +6003,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -5994,7 +6021,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -6012,7 +6039,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -6030,7 +6057,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -6048,7 +6075,7 @@ namespace LitePlacer
         {
             if (!CheckPositionConfidence()) return;
 
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -11669,7 +11696,7 @@ namespace LitePlacer
             DisplayText("test 1: Pick up this (probing)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -11703,7 +11730,7 @@ namespace LitePlacer
             DisplayText("test 2: Place here (probing)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -11740,7 +11767,7 @@ namespace LitePlacer
             DisplayText("test 3: Probe down (using nozzle correction)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -11766,7 +11793,7 @@ namespace LitePlacer
             DisplayText("test 4: Probe down (no correction)");
             if (!Check_HeightCalibrationDone_m()) return;
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -11787,7 +11814,7 @@ namespace LitePlacer
         private void Test5_button_Click(object sender, EventArgs e)
         {
             DisplayText("test 5: Nozzle up");
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -11799,12 +11826,12 @@ namespace LitePlacer
         private void Test6_button_Click(object sender, EventArgs e)
         {
             DisplayText("test 6: Nozzle down cam");
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -11823,7 +11850,7 @@ namespace LitePlacer
         {
             DisplayText("test 7: Nozzle to up cam (do nozzle down to check)");
             if (!CheckPositionConfidence()) return;
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
@@ -13965,7 +13992,7 @@ namespace LitePlacer
 
         private void MeasureAndSet_button_Click(object sender, EventArgs e)
         {
-            if (MovementIsBusy())
+            if (MovementIsBusy_m())
             {
                 return;
             }
