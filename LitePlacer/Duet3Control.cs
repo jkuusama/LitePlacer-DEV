@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Globalization;
 using AForge.Math.Geometry;
 using Newtonsoft.Json.Linq;
+using System.Runtime.InteropServices;
 
 namespace LitePlacer
 {
@@ -50,6 +51,9 @@ namespace LitePlacer
             if (!MainForm.SetDuet3YmotorParameters()) return false;
             if (!MainForm.SetDuet3ZmotorParameters()) return false;
             if (!MainForm.SetDuet3AmotorParameters()) return false;
+            if (!SetMachineSizeX()) return false;
+            if (!SetMachineSizeY()) return false;
+            Write_m("M453");        // set cnc mode, so G0 is full speed
             return true;
         }
 
@@ -405,17 +409,17 @@ namespace LitePlacer
                 case "X":
                     HomingSpeed = MainForm.Setting.Duet3_XHomingSpeed;
                     HomingBackoff = MainForm.Setting.Duet3_XHomingBackoff;
-                    MainForm.Update_Xposition("---");
+                    MainForm.Update_Xposition();
                     break;
                 case "Y":
                     HomingSpeed = MainForm.Setting.Duet3_YHomingSpeed;
                     HomingBackoff = MainForm.Setting.Duet3_YHomingBackoff;
-                    MainForm.Update_Yposition("---");
+                    MainForm.Update_Yposition();
                     break;
                 case "Z":
                     HomingSpeed = MainForm.Setting.Duet3_ZHomingSpeed;
                     HomingBackoff = MainForm.Setting.Duet3_ZHomingBackoff;
-                    MainForm.Update_Zposition("---");
+                    MainForm.Update_Zposition();
                     break;
                 default:
                     MainForm.ShowMessageBox("Unimplemented Duet3 function Home_m: axis " + axis,
@@ -498,25 +502,51 @@ namespace LitePlacer
             Cnc.SetCurrentX(X);
             Cnc.SetCurrentY(Y);
             Cnc.SetCurrentA(A);
-            MainForm.Update_Xposition(X.ToString("0.000", CultureInfo.InvariantCulture));
-            MainForm.Update_Yposition(Y.ToString("0.000", CultureInfo.InvariantCulture));
-            MainForm.Update_Aposition(A.ToString("0.000", CultureInfo.InvariantCulture));
-
             return true;
         }
 
 
         public bool A(double A, double speed, string MoveType)
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function A", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
+            string command;
+            if (MoveType == "G1")
+            {
+                command = "G1 F" + speed.ToString() +
+                    " A" + A.ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                command = "G0 " +
+                    " A" + A.ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            if (!Write_m(command, RegularMoveTimeout))
+            {
+                return false;
+            }
+            Cnc.SetCurrentA(A);
+            return true;
         }
 
 
         public bool Z(double Z, double speed, string MoveType)
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function Z", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
+            string command;
+            if (MoveType == "G1")
+            {
+                command = "G1 F" + speed.ToString() +
+                    " Z" + Z.ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                command = "G0 " +
+                    " Z" + Z.ToString(CultureInfo.InvariantCulture);
+            }
+            if (!Write_m(command, RegularMoveTimeout))
+            {
+                return false;
+            }
+            Cnc.SetCurrentZ(Z);
+            return true;
         }
 
 
@@ -527,16 +557,18 @@ namespace LitePlacer
         // Hardware features: probing, pump, vacuum, motor power
         #region Features
 
-        public bool SetMachineSizeX(int Xsize)
+        public bool SetMachineSizeX()
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function SetMachineSizeX", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
+            int MaxSixe = (int)Math.Round(MainForm.Setting.General_MachineSizeX) + 3;
+            int MinSize = (int)Math.Round(MainForm.Setting.General_NegativeX);
+            return Write_m("M208 X-" + MinSize.ToString() + ":" + MaxSixe.ToString());
         }
 
-        public bool SetMachineSizeY(int Xsize)
+        public bool SetMachineSizeY()
         {
-            MainForm.ShowMessageBox("Unimplemented Duet3 function SetMachineSizeY", "Unimplemented function", MessageBoxButtons.OK);
-            return false;
+            int MaxSixe = (int)Math.Round(MainForm.Setting.General_MachineSizeY) + 3;
+            int MinSize = (int)Math.Round(MainForm.Setting.General_NegativeY);
+            return Write_m("M208 Y-" + MinSize.ToString() + ":" + MaxSixe.ToString());
         }
 
 

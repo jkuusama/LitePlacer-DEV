@@ -39,7 +39,7 @@ namespace LitePlacer
             if (!SetDuet3Xacc(Setting.Duet3_Xacc)) return false;
 
             Duet3Xmicrosteps_maskedTextBox.Text = Setting.Duet3_XMicroStep.ToString();
-            if (Setting.Duet3_XDegPerStep > 1.0)
+            if (Setting.Duet3_XDegPerStep < 1.0)
             {
                 Duet3Xdeg09_radioButton.Checked = true;
                 Duet3Xdeg18_radioButton.Checked = false;
@@ -286,7 +286,7 @@ namespace LitePlacer
             if (!SetDuet3Yacc(Setting.Duet3_Yacc)) return false;
 
             Duet3Ymicrosteps_maskedTextBox.Text = Setting.Duet3_YMicroStep.ToString();
-            if (Setting.Duet3_YDegPerStep > 1.0)
+            if (Setting.Duet3_YDegPerStep < 1.0)
             {
                 Duet3Ydeg09_radioButton.Checked = true;
                 Duet3Ydeg18_radioButton.Checked = false;
@@ -532,7 +532,7 @@ namespace LitePlacer
             if (!SetDuet3Zacc(Setting.Duet3_Zacc)) return false;
 
             Duet3Zmicrosteps_maskedTextBox.Text = Setting.Duet3_ZMicroStep.ToString();
-            if (Setting.Duet3_ZDegPerStep > 1.0)
+            if (Setting.Duet3_ZDegPerStep < 1.0)
             {
                 Duet3Zdeg09_radioButton.Checked = true;
                 Duet3Zdeg18_radioButton.Checked = false;
@@ -779,7 +779,7 @@ namespace LitePlacer
             if (!SetDuet3Aacc(Setting.Duet3_Aacc)) return false;
 
             Duet3Amicrosteps_maskedTextBox.Text = Setting.Duet3_AMicroStep.ToString();
-            if (Setting.Duet3_ADegPerStep > 1.0)
+            if (Setting.Duet3_ADegPerStep < 1.0)
             {
                 Duet3Adeg09_radioButton.Checked = true;
                 Duet3Adeg18_radioButton.Checked = false;

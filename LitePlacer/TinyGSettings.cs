@@ -38,17 +38,18 @@ namespace LitePlacer
             switch (item)
             {
                 // ==========  position values  ==========
+                // now handled at Sr class
                 case "posx":
-                    Update_Xposition(value);
+                    DisplayText("*** ValueUpdater posx", KnownColor.DarkRed, true);                    
                     break;
                 case "posy":
-                    Update_Yposition(value);
+                    DisplayText("*** ValueUpdater posy", KnownColor.DarkRed, true);
                     break;
                 case "posz":
-                    Update_Zposition(value);
+                    DisplayText("*** ValueUpdater posz", KnownColor.DarkRed, true);
                     break;
                 case "posa":
-                    Update_Aposition(value);
+                    DisplayText("*** ValueUpdater posa", KnownColor.DarkRed, true);
                     break;
 
                 // ==========  System values  ==========

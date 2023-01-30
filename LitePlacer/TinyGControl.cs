@@ -784,7 +784,7 @@ namespace LitePlacer
                 {
                     _posx = value;
                     CNC.MainForm.Cnc.SetCurrentX(_posx);
-                    CNC.MainForm.ValueUpdater("posx", _posx.ToString("0.000", CultureInfo.InvariantCulture));
+                    CNC.MainForm.Update_Xposition();
                 }
             }
 
@@ -796,7 +796,7 @@ namespace LitePlacer
                 {
                     _posy = value;
                     CNC.MainForm.Cnc.SetCurrentY(_posy);
-                    CNC.MainForm.ValueUpdater("posy", _posy.ToString("0.000", CultureInfo.InvariantCulture));
+                    CNC.MainForm.Update_Yposition();
                 }
             }
 
@@ -808,7 +808,7 @@ namespace LitePlacer
                 {
                     _posz = value;
                     CNC.MainForm.Cnc.SetCurrentZ(_posz);
-                    CNC.MainForm.ValueUpdater("posz", _posz.ToString("0.000", CultureInfo.InvariantCulture));
+                    CNC.MainForm.Update_Zposition();
                 }
             }
 
@@ -820,7 +820,7 @@ namespace LitePlacer
                 {
                     _posa = value;
                     CNC.MainForm.Cnc.SetCurrentA(_posa);
-                    CNC.MainForm.ValueUpdater("posa", _posa.ToString("0.000", CultureInfo.InvariantCulture));
+                    CNC.MainForm.Update_Aposition();
                 }
             }
 

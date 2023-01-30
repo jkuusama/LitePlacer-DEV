@@ -209,7 +209,7 @@ namespace LitePlacer
             CurrX = x - CurrY * SquareCorrection;
             if (Controlboard == ControlBoardType.Duet3)
             {
-                MainForm.Update_Xposition(CurrX.ToString("0.000", CultureInfo.InvariantCulture));
+                MainForm.Update_Xposition();
             }
         }
 
@@ -230,12 +230,12 @@ namespace LitePlacer
 
         public void SetCurrentY(double y)
         {
+            CurrX = _trueX - y * SquareCorrection;
             CurrY = y;
-            CurrX = _trueX - CurrY * SquareCorrection;
             if (Controlboard == ControlBoardType.Duet3)
             {
-                MainForm.Update_Yposition(y.ToString("0.000", CultureInfo.InvariantCulture));
-                MainForm.Update_Xposition(CurrX.ToString("0.000", CultureInfo.InvariantCulture));
+                MainForm.Update_Yposition();
+                MainForm.Update_Xposition();
             }
         }
 
@@ -257,7 +257,7 @@ namespace LitePlacer
             CurrZ = z;
             if (Controlboard == ControlBoardType.Duet3)
             {
-                MainForm.Update_Zposition(z.ToString("0.000", CultureInfo.InvariantCulture));
+                MainForm.Update_Zposition();
             }
         }
 
@@ -279,7 +279,7 @@ namespace LitePlacer
             CurrA = a;
             if (Controlboard == ControlBoardType.Duet3)
             {
-                MainForm.Update_Aposition(a.ToString("0.000", CultureInfo.InvariantCulture));
+                MainForm.Update_Aposition();
             }
         }
 
@@ -295,10 +295,10 @@ namespace LitePlacer
             if (Controlboard == ControlBoardType.Duet3)
             {
                 Duet3.SetPosition(X, Y, Z, A);
-                MainForm.Update_Xposition(X);
-                MainForm.Update_Yposition(Y);
-                MainForm.Update_Zposition(Z);
-                MainForm.Update_Aposition(A);
+                MainForm.Update_Xposition();
+                MainForm.Update_Yposition();
+                MainForm.Update_Zposition();
+                MainForm.Update_Aposition();
             }
             else if (Controlboard == ControlBoardType.TinyG)
             {
@@ -727,7 +727,7 @@ namespace LitePlacer
 
             if (Controlboard == ControlBoardType.Duet3)
             {
-                if (Duet3.SetMachineSizeX(Xsize))
+                if (Duet3.SetMachineSizeX())        // takes value from settings
                 {
                     return true;
                 }
@@ -769,7 +769,7 @@ namespace LitePlacer
 
             if (Controlboard == ControlBoardType.Duet3)
             {
-                if (Duet3.SetMachineSizeY(Ysize))
+                if (Duet3.SetMachineSizeY())
                 {
                     return true;
                 }
