@@ -38,7 +38,13 @@ namespace LitePlacer
 			}
 			Grid.Columns["SelectButton_Column"].Visible = true;
 			Grid.Location = new Point(15, 59);
-			ResizeGrid();
+            // a customer reported an exeption on following line. I can't see how, but...
+            // ResizeGrid();
+            // Therefore, doing the resize manually. The form size at this point is 1250, 875,
+            // obtained with debugger.
+            Grid.Size = new Size(1250 - GridSizeXtrim, 875 - GridSizeYtrim);
+
+            ResizeGrid(); // 1250 875
 			// Add a CellClick handler to handle clicks in the button column.
 			Grid.CellClick += new DataGridViewCellEventHandler(Grid_CellClick);
 		}
