@@ -44,7 +44,6 @@ namespace LitePlacer
             // obtained with debugger.
             Grid.Size = new Size(1250 - GridSizeXtrim, 875 - GridSizeYtrim);
 
-            ResizeGrid(); // 1250 875
 			// Add a CellClick handler to handle clicks in the button column.
 			Grid.CellClick += new DataGridViewCellEventHandler(Grid_CellClick);
 		}
