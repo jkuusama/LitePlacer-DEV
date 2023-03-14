@@ -23,6 +23,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using AForge;
 using AForge.Video;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 // To add a function: Add its name to the list of KnownFunctions below, and read more at SetFunctionDefaultParameters() 
 
@@ -158,6 +159,11 @@ namespace LitePlacer
                 List<VideoAlgorithmsCollection.FullAlgorithmDescription> NewList = new List<VideoAlgorithmsCollection.FullAlgorithmDescription>();
                 NewList = JsonConvert.DeserializeObject<List<VideoAlgorithmsCollection.FullAlgorithmDescription>>(File.ReadAllText(FileName));
                 Collection.AllAlgorithms = NewList;
+                if (NewList.Count == 0)
+                {
+                    // This should never happen, but there was a customer case where this turned out to be the issue...
+                    HandleEmptyVAlist(path, Collection);
+                }
             }
             else
             {
@@ -175,6 +181,22 @@ namespace LitePlacer
             AlgorithmChange = false;
         }
 
+        private void HandleEmptyVAlist(string path, VideoAlgorithmsCollection Collection)
+        {
+            DialogResult dialogResult = ShowMessageBox(
+                "Stored video algorithms data was unusable, and saved data has been lost.\n\r " +
+                "There is dated data backup directories under your LitePlacer directory.\n\r\n\r " +
+                "To recover: Exit the program. Copy the datafiles from a backup directory to the \n\r " +
+                "litePlacer main directory, overwriting existing files.\n\r\n\r " +
+                "Exit now? (Yes: Exit; No: Continue with empty placeholder algorithm list",
+
+                "*** Data loss! ***", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            LoadOldVideoAlgorithms(path, Collection);
+        }
 
         private void LoadOldVideoAlgorithms(string path, VideoAlgorithmsCollection Collection)
         {
