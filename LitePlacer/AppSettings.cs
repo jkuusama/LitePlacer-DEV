@@ -34,55 +34,55 @@ namespace LitePlacer
 
         // =================================================================================
         /*
-        Duet3_xxx should be in Duet3Settings.cs in a
+        Marlin_xxx should be in MarlinSettings.cs in a
             public partial class MySettings
             {
             }
         block. Visual Studio bug doesn't allow that, so they are here. :-(
         */
-        public double Duet3_Xspeed { get; set; } = 5000; // mm/s
-        public double Duet3_XHomingSpeed { get; set; } = 500; // mm/s
-        public double Duet3_XHomingBackoff { get; set; } = 5; // mm
+        public double Marlin_Xspeed { get; set; } = 5000; // mm/s
+        public double Marlin_XHomingSpeed { get; set; } = 500; // mm/s
+        public double Marlin_XHomingBackoff { get; set; } = 5; // mm
 
-        public double Duet3_Yspeed { get; set; } = 5000; // mm/s
-        public double Duet3_YHomingSpeed { get; set; } = 500; // mm/s
-        public double Duet3_YHomingBackoff { get; set; } = 5; // mm
+        public double Marlin_Yspeed { get; set; } = 5000; // mm/s
+        public double Marlin_YHomingSpeed { get; set; } = 500; // mm/s
+        public double Marlin_YHomingBackoff { get; set; } = 5; // mm
 
-        public double Duet3_Zspeed { get; set; } = 50; // mm/s
-        public double Duet3_ZHomingSpeed { get; set; } = 500; // mm/s
-        public double Duet3_ZHomingBackoff { get; set; } = 5; // mm
+        public double Marlin_Zspeed { get; set; } = 50; // mm/s
+        public double Marlin_ZHomingSpeed { get; set; } = 500; // mm/s
+        public double Marlin_ZHomingBackoff { get; set; } = 5; // mm
 
-        public double Duet3_Aspeed { get; set; } = 200; // mm/s
+        public double Marlin_Aspeed { get; set; } = 200; // mm/s
 
-        public double Duet3_Xacc { get; set; } = 1000; // mm/s^2
-        public double Duet3_Yacc { get; set; } = 1000; // mm/s^2
-        public double Duet3_Zacc { get; set; } = 1000; // mm/s^2
-        public double Duet3_Aacc { get; set; } = 1000; // mm/s^2
+        public double Marlin_Xacc { get; set; } = 1000; // mm/s^2
+        public double Marlin_Yacc { get; set; } = 1000; // mm/s^2
+        public double Marlin_Zacc { get; set; } = 1000; // mm/s^2
+        public double Marlin_Aacc { get; set; } = 1000; // mm/s^2
 
-        public double Duet3_XTravelPerRev { get; set; } = 40;   // mm
-        public double Duet3_YTravelPerRev { get; set; } = 40;   // mm
-        public double Duet3_ZTravelPerRev { get; set; } = 8;    // mm
-        public double Duet3_ATravelPerRev { get; set; } = 160;  // deg
+        public double Marlin_XTravelPerRev { get; set; } = 40;   // mm
+        public double Marlin_YTravelPerRev { get; set; } = 40;   // mm
+        public double Marlin_ZTravelPerRev { get; set; } = 8;    // mm
+        public double Marlin_ATravelPerRev { get; set; } = 160;  // deg
 
-        public double Duet3_XDegPerStep { get; set; } = 0.9;   // mm
-        public double Duet3_YDegPerStep { get; set; } = 0.9;   // mm
-        public double Duet3_ZDegPerStep { get; set; } = 1.8;   // mm
-        public double Duet3_ADegPerStep { get; set; } = 0.9;   // mm
+        public double Marlin_XDegPerStep { get; set; } = 0.9;   // mm
+        public double Marlin_YDegPerStep { get; set; } = 0.9;   // mm
+        public double Marlin_ZDegPerStep { get; set; } = 1.8;   // mm
+        public double Marlin_ADegPerStep { get; set; } = 0.9;   // mm
 
-        public int Duet3_XMicroStep { get; set; } = 16;
-        public int Duet3_YMicroStep { get; set; } = 16;
-        public int Duet3_ZMicroStep { get; set; } = 16;
-        public int Duet3_AMicroStep { get; set; } = 16;
+        public int Marlin_XMicroStep { get; set; } = 16;
+        public int Marlin_YMicroStep { get; set; } = 16;
+        public int Marlin_ZMicroStep { get; set; } = 16;
+        public int Marlin_AMicroStep { get; set; } = 16;
 
-        public bool Duet3_XInterpolate { get; set; } = true;
-        public bool Duet3_YInterpolate { get; set; } = true;
-        public bool Duet3_ZInterpolate { get; set; } = true;
-        public bool Duet3_AInterpolate { get; set; } = true;
+        public bool Marlin_XInterpolate { get; set; } = true;
+        public bool Marlin_YInterpolate { get; set; } = true;
+        public bool Marlin_ZInterpolate { get; set; } = true;
+        public bool Marlin_AInterpolate { get; set; } = true;
 
-        public int Duet3_XCurrent { get; set; } = 1100; //mA
-        public int Duet3_YCurrent { get; set; } = 1200; //mA
-        public int Duet3_ZCurrent { get; set; } = 1300; //mA
-        public int Duet3_ACurrent { get; set; } = 100; //mA
+        public int Marlin_XCurrent { get; set; } = 1100; //mA
+        public int Marlin_YCurrent { get; set; } = 1200; //mA
+        public int Marlin_ZCurrent { get; set; } = 1300; //mA
+        public int Marlin_ACurrent { get; set; } = 100; //mA
         // =================================================================================
 
 
@@ -105,10 +105,21 @@ namespace LitePlacer
         public int CNC_ZspeedMax { get; set; } = 1000;
         public double CNC_RegularMoveTimeout { get; set; } = 10.0;
         public bool CNC_OptimizeA { get; set; } = true;
-        public int CNC_boardtype { get; set; } = 1;
-        // must match CNC.cs, definition of ControlBoardType
-        // TinyG = 1, Duet3 = 2, other = 3, unknown= 4
-
+        public FormMain.ControlBoardType Controlboard { get; set; } = FormMain.ControlBoardType.unknown;
+        // must match CNC.cs definition of ControlBoardType
+        private string EndCharacters = "\n";
+        public string Serial_EndCharacters
+        {
+            get
+            {
+                return EndCharacters;
+            }
+            set
+            {
+                EndCharacters = value;
+                FormMain.setEOLchars(value);
+            }
+        }
         public double General_BelowPCB_Allowance { get; set; } = 3;
         public bool General_CheckForUpdates { get; set; } = false;
         public double General_JigOffsetX { get; set; } = 10;

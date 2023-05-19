@@ -62,6 +62,8 @@ namespace LitePlacer
     public partial class FormMain : Form
     {
         public CNC Cnc { get; set; }
+        public enum ControlBoardType { TinyG, Marlin, other, unknown };
+
         Camera DownCamera;
         Camera UpCamera;
         NozzleCalibrationClass Nozzle;
@@ -70,6 +72,11 @@ namespace LitePlacer
         public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
 
         AppSettings SettingsOps;
+        public static void setEOLchars(string value)
+        {
+            FormMain frm = new FormMain();
+            frm.EOL_textBox.Text = value;
+        }
 
         // =================================================================================
         // General and "global" functions 
@@ -224,8 +231,8 @@ namespace LitePlacer
 
             // At design time, I can't draw items on top of each other. I draw them at a convenient location; this
             // moves motor control boxes to correct place
-            TinyGMotors_tabControl.Location = new System.Drawing.Point(17, 177);
-            Duet3Motors_tabControl.Location = new System.Drawing.Point(17, 177);
+            TinyGMotors_tabControl.Location = new System.Drawing.Point(6, 191);
+            MarlinMotors_tabControl.Location = new System.Drawing.Point(6, 191);
 
             labelSerialPortStatus.ForeColor = Color.Red;
             labelSerialPortStatus.Text = "Starting up";
@@ -2961,7 +2968,7 @@ namespace LitePlacer
         [DebuggerStepThrough]
         private void MotorPower_timer_Tick(object sender, EventArgs e)
         {
-            if (Controlboard == ControlBoardType.Duet3)
+            if (Setting.Controlboard == ControlBoardType.Marlin)
             {
                 return;
             }
@@ -4645,7 +4652,7 @@ namespace LitePlacer
 
             AutoPark_checkBox.Checked = Setting.General_Autopark;
             OptimizeA_TinyG_checkBox.Checked = Setting.CNC_OptimizeA;
-            OptimizeA_Duet3_checkBox.Checked = Setting.CNC_OptimizeA;
+            OptimizeA_Marlin_checkBox.Checked = Setting.CNC_OptimizeA;
 
             SizeXMax_textBox.Text = Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture);
             SizeYMax_textBox.Text = Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture);
@@ -4837,7 +4844,7 @@ namespace LitePlacer
         {
             Motors_label.Text = "Control board not connected.";
             TinyGMotors_tabControl.Visible = false;
-            Duet3Motors_tabControl.Visible = false;
+            MarlinMotors_tabControl.Visible = false;
 
 
             // When first starting, there is no default port. Trying to connect to a random port is 
@@ -4915,32 +4922,32 @@ namespace LitePlacer
 
         private void UI_BoardConnected()
         {
-            switch (Controlboard)
+            switch (Setting.Controlboard)
             {
                 case ControlBoardType.TinyG:
                     Motors_label.Text = "Axes setup (TinyG board):";
-                    Duet3Motors_tabControl.Visible = false;
+                    MarlinMotors_tabControl.Visible = false;
                     TinyGMotors_tabControl.Visible = true;
                     return;
-                case ControlBoardType.Duet3:
+                case ControlBoardType.Marlin:
                     Motors_label.Text = "Axes setup (Duet 3 board):";
                     TinyGMotors_tabControl.Visible = false;
-                    Duet3Motors_tabControl.Visible = true;
+                    MarlinMotors_tabControl.Visible = true;
                     return;
                 case ControlBoardType.unknown:
-                    Motors_label.Text = "Connected to unknown board, internal type" + Controlboard.ToString();
+                    Motors_label.Text = "Connected to unknown board";
                     TinyGMotors_tabControl.Visible = false;
-                    Duet3Motors_tabControl.Visible = false;
+                    MarlinMotors_tabControl.Visible = false;
                     return;
                 case ControlBoardType.other:            // should not happen
-                    Motors_label.Text = "Connected to unknown board, internal type" + Controlboard.ToString();
+                    Motors_label.Text = "Connected to \"other\" type board";
                     TinyGMotors_tabControl.Visible = false;
-                    Duet3Motors_tabControl.Visible = false;
+                    MarlinMotors_tabControl.Visible = false;
                     return;
                 default:            // should not happen
-                    Motors_label.Text = "Connected to unknown board, internal type" + Controlboard.ToString();
+                    Motors_label.Text = "Connected to unknown (default) board";
                     TinyGMotors_tabControl.Visible = false;
-                    Duet3Motors_tabControl.Visible = false;
+                    MarlinMotors_tabControl.Visible = false;
                     return;        // should not happen
             }
 
@@ -4948,7 +4955,7 @@ namespace LitePlacer
         }
         public  void CheckLatchBackoff()
         {
-            if (Controlboard == ControlBoardType.TinyG)
+            if (Setting.Controlboard == ControlBoardType.TinyG)
             {
                 double val;
                 if (!double.TryParse(TinyGBoard.Zlb.ToString().Replace(',', '.'), out val))
@@ -5311,7 +5318,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            if (Controlboard == ControlBoardType.TinyG)
+            if (Setting.Controlboard == ControlBoardType.TinyG)
             {
                 if (!Xhome_checkBox.Checked)
                 {
@@ -5331,7 +5338,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            if (Controlboard == ControlBoardType.TinyG)
+            if (Setting.Controlboard == ControlBoardType.TinyG)
             {
                 if (!Yhome_checkBox.Checked)
                 {
@@ -5366,7 +5373,7 @@ namespace LitePlacer
             {
                 return false;
             }
-            if (Controlboard == ControlBoardType.TinyG)
+            if (Setting.Controlboard == ControlBoardType.TinyG)
             {
                 if (LastTabPage == "Nozzles_tabPage")
                 {
@@ -13802,7 +13809,7 @@ namespace LitePlacer
             AppSettings_saveFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_saveFileDialog.InitialDirectory = path;
 
-            if (Controlboard == ControlBoardType.TinyG)
+            if (Setting.Controlboard == ControlBoardType.TinyG)
             {
 
                 if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -13826,7 +13833,7 @@ namespace LitePlacer
             AppSettings_openFileDialog.FileName = BOARDSETTINGS_DATAFILE;
             AppSettings_openFileDialog.InitialDirectory = path;
 
-            if (Controlboard == ControlBoardType.TinyG)
+            if (Setting.Controlboard == ControlBoardType.TinyG)
             {
                 TinyGSettings tg = TinyGBoard;
                 if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
@@ -13851,7 +13858,7 @@ namespace LitePlacer
                 return;
             }
             string path = GetPath();
-            if (Controlboard == ControlBoardType.TinyG)
+            if (Setting.Controlboard == ControlBoardType.TinyG)
             {
                 TinyGBoard = new TinyGSettings();
                 WriteAllTinyGSettings_m();
@@ -14075,7 +14082,7 @@ namespace LitePlacer
 
         private void OptimizeA_checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            Setting.CNC_OptimizeA = OptimizeA_Duet3_checkBox.Checked;
+            Setting.CNC_OptimizeA = OptimizeA_Marlin_checkBox.Checked;
         }
 
         private void HoleTest_maskedTextBox_TextChanged(object sender, EventArgs e)

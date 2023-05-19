@@ -175,16 +175,11 @@
       <DependentUpon>CameraProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="CNC.cs" />
-    <Compile Include="Duet3Control.cs" />
     <Compile Include="AskToCreate.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AskToCreate.Designer.cs">
       <DependentUpon>AskToCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Duet3Settings.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="ImagesForCameras.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -195,6 +190,10 @@
     </Compile>
     <Compile Include="LatchBackoff.Designer.cs">
       <DependentUpon>LatchBackoff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MarlinControl.cs" />
+    <Compile Include="MarlinSettings.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="NonModalDialog.cs">
       <SubType>Form</SubType>

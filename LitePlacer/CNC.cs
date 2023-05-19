@@ -1,21 +1,14 @@
 ﻿using System;
-using System.IO.Ports;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Windows.Forms;
+using System.Linq;
 using System.Threading;
-using System.Globalization;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
-using AForge.Video;
-using MathNet.Numerics;
+using System.Windows.Forms;
 
 /*
 CNC class handles communication with the control board. Most calls are just passed to a supported board.
 (For now, there are only two supported boards, so most routines are
-    - if board is Duet3, call Duet3.routine
+    - if board is Marlin, call Marlin.routine
     - else if board is Tinyg, call TinyG.routine
     - else report and return failure )
 
@@ -29,11 +22,11 @@ Here are templates for that:
                 return;
             }
 
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.CNC_boardtype == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.();
+                Marlin.();
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.CNC_boardtype == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.();
             }
@@ -51,9 +44,9 @@ Here are templates for that:
                 return false;
             }
 
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.CNC_boardtype == FormMain.ControlBoardType.Marlin)
             {
-                if (Duet3.())
+                if (Marlin.())
                 {
                     return true;
                 }
@@ -63,7 +56,7 @@ Here are templates for that:
                     return false;
                 }
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.CNC_boardtype == FormMain.ControlBoardType.TinyG)
             {
                 if (TinyG.())
                 {
@@ -94,11 +87,7 @@ namespace LitePlacer
     {
         public static FormMain MainForm;
         private TinyGclass TinyG;
-        public Duet3class Duet3;
-
-        public enum ControlBoardType { TinyG, Duet3, other, unknown };
-        // see AppSettings.cs, CNC_boardtype
-        public static ControlBoardType Controlboard { get; set; } = ControlBoardType.unknown;
+        public Marlinclass Marlin;
 
         public bool SlackCompensation { get; set; }
         public double SlackCompensationDistance { get; set; }
@@ -130,7 +119,7 @@ namespace LitePlacer
             SlowA = false;
             Com = new SerialComm(this, MainF);
             TinyG = new TinyGclass(MainForm, this, Com);
-            Duet3 = new Duet3class(MainForm, this, Com);
+            Marlin = new Marlinclass(MainForm, this, Com);
         }
 
         // =================================================================================
@@ -138,7 +127,7 @@ namespace LitePlacer
         private double regTimeout = 10;
 
         public double RegularMoveTimeout // in seconds
-        { 
+        {
             get
             {
                 return (regTimeout);
@@ -146,8 +135,8 @@ namespace LitePlacer
             set
             {
                 regTimeout = value;
-                TinyG.RegularMoveTimeout = (int)value*1000;  // in ms
-                Duet3.RegularMoveTimeout = (int)value * 1000;  // in ms
+                TinyG.RegularMoveTimeout = (int)value * 1000;  // in ms
+                Marlin.RegularMoveTimeout = (int)value * 1000;  // in ms
             }
         }
 
@@ -172,7 +161,7 @@ namespace LitePlacer
         // TinyG sends position reports as status info, and updates UI based on those.
         // Duet 3 doesn't, so we need to keeo UI updated ourselves. On some commands, we 
         // can call UI update routines directly. On some, we set temporary position and a flag,
-        // so that Duet3 knows to update UI on "ok" message
+        // so that Marlin knows to update UI on "ok" message
 
         public static double SquareCorrection { get; set; }
 
@@ -207,7 +196,7 @@ namespace LitePlacer
         {
             _trueX = x;
             CurrX = x - CurrY * SquareCorrection;
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
                 MainForm.Update_Xposition();
             }
@@ -232,7 +221,7 @@ namespace LitePlacer
         {
             CurrX = _trueX - y * SquareCorrection;
             CurrY = y;
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
                 MainForm.Update_Yposition();
                 MainForm.Update_Xposition();
@@ -255,7 +244,7 @@ namespace LitePlacer
         public void SetCurrentZ(double z)
         {
             CurrZ = z;
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
                 MainForm.Update_Zposition();
             }
@@ -277,7 +266,7 @@ namespace LitePlacer
         public void SetCurrentA(double a)
         {
             CurrA = a;
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
                 MainForm.Update_Aposition();
             }
@@ -292,15 +281,15 @@ namespace LitePlacer
                 return;
             }
 
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.SetPosition(X, Y, Z, A);
+                Marlin.SetPosition(X, Y, Z, A);
                 MainForm.Update_Xposition();
                 MainForm.Update_Yposition();
                 MainForm.Update_Zposition();
                 MainForm.Update_Aposition();
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.SetPosition(X, Y, Z, A);
             }
@@ -314,11 +303,11 @@ namespace LitePlacer
 
         public void CancelJog()
         {
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.CancelJog();
+                Marlin.CancelJog();
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.CancelJog();
             }
@@ -331,11 +320,11 @@ namespace LitePlacer
 
         public void Jog(string Speed, string X, string Y, string Z, string A)
         {
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.Jog(Speed, X, Y, Z, A);
+                Marlin.Jog(Speed, X, Y, Z, A);
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.Jog(Speed, X, Y, Z, A);
             }
@@ -437,18 +426,18 @@ namespace LitePlacer
                 TinyG.LineReceived(line);  // This will raise error and give the user a message
                 return;
             }
-            switch (Controlboard)
+            switch (MainForm.Setting.Controlboard)
             {
-                case ControlBoardType.TinyG:
+                case FormMain.ControlBoardType.TinyG:
                     TinyG.LineReceived(line);
                     return;
-                case ControlBoardType.Duet3:
-                    Duet3.LineReceived(line);
+                case FormMain.ControlBoardType.Marlin:
+                    Marlin.LineReceived(line);
                     return;
-                case ControlBoardType.unknown: // used in board recognition
+                case FormMain.ControlBoardType.unknown: // used in board recognition
                     UnknownBoardLineReceived(line);
                     return;
-                case ControlBoardType.other:
+                case FormMain.ControlBoardType.other:
                     return;        // should not happen
                 default:
                     return;        // should not happen
@@ -509,18 +498,36 @@ namespace LitePlacer
 
         public bool FindBoardType()
         {
-
             // For clean communication, try the board last identified.
-            Controlboard = ControlBoardType.unknown;
-
-            // TinyG
-            if (MainForm.Setting.CNC_boardtype == 1)
+            switch (MainForm.Setting.Controlboard)
             {
-                if (CheckTinyG())
+                case FormMain.ControlBoardType.TinyG:
+                    if (CheckTinyG())
+                    {
+                        return true;
+                    }
+                    break;
+                case FormMain.ControlBoardType.Marlin:
+                    if (CheckMarlin())
+                    {
+                        return true;
+                    }
+                    break;
+                case FormMain.ControlBoardType.other:
+                    MainForm.DisplayText("*** Control board type set to \"other\", which is not supported.", KnownColor.DarkRed, true);
+                    break;
+                case FormMain.ControlBoardType.unknown:
+                    break;
+                default:
+                    break;
+            }
+
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
+            {
+                if (CheckMarlin())
                 {
                     return true;
                 }
-                // Don't know what it was, but it wasn't TinyG.
                 // Close and reopen port, just in case
                 ClosePort();
                 Thread.Sleep(200);
@@ -530,16 +537,10 @@ namespace LitePlacer
                     return false;
                 }
                 Connected = true;
-
-                if (CheckDuet3())
-                {
-                    return true;
-                }
             }
-            // Duet3
             else
             {
-                if (CheckDuet3())
+                if (CheckTinyG())
                 {
                     return true;
                 }
@@ -552,11 +553,6 @@ namespace LitePlacer
                     return false;
                 }
                 Connected = true;
-
-                if (CheckTinyG())
-                {
-                    return true;
-                }
             }
             MainForm.DisplayText("*** Serial port connected, did not find a supported board", KnownColor.DarkRed, true);
             return false;
@@ -565,12 +561,13 @@ namespace LitePlacer
 
         private bool CheckTinyG()
         {
-            // board type is unknown at this point
+            MainForm.Setting.Controlboard = FormMain.ControlBoardType.unknown;
             if (ErrorState)
             {
                 MainForm.DisplayText("*** CheckTinyG() - error state", KnownColor.DarkRed, true);
                 return false;
             }
+            MainForm.Setting.Serial_EndCharacters = "\n";
             Thread.Sleep(200);  // TinyG wake up delay
             ClearReceivedBuffers();
             Com.Write("\x11{sr:n}");  // Xon + status request
@@ -596,8 +593,7 @@ namespace LitePlacer
             if (resp.Contains("{\"r\":") || resp.Contains("tinyg"))
             {
                 MainForm.DisplayText("TinyG board found.");
-                Controlboard = ControlBoardType.TinyG;
-                MainForm.Setting.CNC_boardtype = 1;
+                MainForm.Setting.Controlboard = FormMain.ControlBoardType.TinyG;
                 TinyG.LineReceived(resp);   // updates position info
                 return true;
             }
@@ -605,15 +601,16 @@ namespace LitePlacer
         }
 
 
-        private bool CheckDuet3()
+        private bool CheckMarlin()
         {
             if (ErrorState)
             {
-                MainForm.DisplayText("*** CheckDuet3() - error state", KnownColor.DarkRed, true);
+                MainForm.DisplayText("*** CheckMarlin() - error state", KnownColor.DarkRed, true);
                 return false;
             }
             Thread.Sleep(100);  //  wake up delay
             ClearReceivedBuffers();
+            MainForm.Setting.Serial_EndCharacters = "\n\r";
             Com.Write("M115");
             int delay = 0;
             while (delay < 200)
@@ -630,16 +627,15 @@ namespace LitePlacer
             }
             if (delay >= 200)
             {
-                MainForm.DisplayText("*** CheckDuet3() - no response", KnownColor.DarkRed, true);
+                MainForm.DisplayText("*** CheckMarlin() - no response", KnownColor.DarkRed, true);
                 return false;
             }
             string resp = ReadLine();
-            if (resp.Contains("MB6HC"))
+            if (resp.Contains("FIRMWARE_NAME:Marlin"))
             {
-                MainForm.DisplayText("Duet 3 board found.");
-                Controlboard = ControlBoardType.Duet3;
+                MainForm.DisplayText("Marlin board found.");
+                MainForm.Setting.Controlboard = FormMain.ControlBoardType.Marlin;
                 ClearReceivedBuffers();     // remove ok
-                MainForm.Setting.CNC_boardtype = 2;
                 return true;
             }
             return false;
@@ -649,15 +645,15 @@ namespace LitePlacer
         {
             // Called after a control board connection is estabished and board type found.
 
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                if (!Duet3.JustConnected())
+                if (!Marlin.JustConnected())
                 {
                     RaiseError();
                     return false;
                 }
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 if (!TinyG.JustConnected())
                 {
@@ -675,11 +671,11 @@ namespace LitePlacer
         }
 
 
-        public bool Write_m (string command, int Timeout = 250)
+        public bool Write_m(string command, int Timeout = 250)
         {
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                if (Duet3.Write_m(command, Timeout))
+                if (Marlin.Write_m(command, Timeout))
                 {
                     return true;
                 }
@@ -690,7 +686,7 @@ namespace LitePlacer
                 }
             };
 
-            if (Controlboard == ControlBoardType.TinyG)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 if (TinyG.Write_m(command, Timeout))
                 {
@@ -725,9 +721,9 @@ namespace LitePlacer
                 return false;
             }
 
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                if (Duet3.SetMachineSizeX())        // takes value from settings
+                if (Marlin.SetMachineSizeX())        // takes value from settings
                 {
                     return true;
                 }
@@ -737,7 +733,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 if (TinyG.SetMachineSizeX(Xsize))
                 {
@@ -767,9 +763,9 @@ namespace LitePlacer
                 return false;
             }
 
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                if (Duet3.SetMachineSizeY())
+                if (Marlin.SetMachineSizeY())
                 {
                     return true;
                 }
@@ -779,7 +775,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 if (TinyG.SetMachineSizeY(Ysize))
                 {
@@ -810,11 +806,11 @@ namespace LitePlacer
                 return;
             }
 
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.DisableZswitches();
+                Marlin.DisableZswitches();
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.DisableZswitches();
             }
@@ -833,11 +829,11 @@ namespace LitePlacer
                 return;
             }
 
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.EnableZswitches();
+                Marlin.EnableZswitches();
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.EnableZswitches();
             }
@@ -856,9 +852,9 @@ namespace LitePlacer
                 return false;
             }
 
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                if (Duet3.Nozzle_ProbeDown(backoff))
+                if (Marlin.Nozzle_ProbeDown(backoff))
                 {
                     return true;
                 }
@@ -869,7 +865,7 @@ namespace LitePlacer
                 }
             };
 
-            if (Controlboard == ControlBoardType.TinyG)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 if (TinyG.Nozzle_ProbeDown(backoff))
                 {
@@ -898,11 +894,11 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.MotorPowerOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.MotorPowerOn();
+                Marlin.MotorPowerOn();
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.MotorPowerOn();
             }
@@ -920,11 +916,11 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.MotorPowerOff(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.MotorPowerOff();
+                Marlin.MotorPowerOff();
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.MotorPowerOff();
             }
@@ -955,12 +951,12 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.VacuumOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.VacuumOn();
+                Marlin.VacuumOn();
                 VacuumIsOn = true;
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.VacuumOn();
                 VacuumIsOn = true;
@@ -980,12 +976,12 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.VacuumOff(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.VacuumOff();
+                Marlin.VacuumOff();
                 VacuumIsOn = false;
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.VacuumOff();
                 VacuumIsOn = false;
@@ -1019,12 +1015,12 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.PumpOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.PumpOn();
+                Marlin.PumpOn();
                 PumpIsOn = true;
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.PumpOn();
                 PumpIsOn = true;
@@ -1044,12 +1040,12 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.PumpOff(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                Duet3.PumpOff();
+                Marlin.PumpOff();
                 PumpIsOn = false;
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 TinyG.PumpOff();
                 PumpIsOn = false;
@@ -1093,9 +1089,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.Home_m(), board in error state.", KnownColor.DarkRed, true);
                 return false;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                if (Duet3.Home_m(axis))
+                if (Marlin.Home_m(axis))
                 {
                     Homing = false;
                     return true;
@@ -1108,7 +1104,7 @@ namespace LitePlacer
                 }
             };
 
-            if (Controlboard == ControlBoardType.TinyG)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 if (TinyG.Home_m(axis))
                 {
@@ -1141,9 +1137,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.Execute_XYA(), board in error state.", KnownColor.DarkRed, true);
                 return false;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                if (Duet3.XYA(X, Y, A, speed, MoveType))
+                if (Marlin.XYA(X, Y, A, speed, MoveType))
                 {
                     return true;
                 }
@@ -1153,7 +1149,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 if (TinyG.XYA(X, Y, A, speed, MoveType))
                 {
@@ -1182,9 +1178,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.Execute_A(), board in error state.", KnownColor.DarkRed, true);
                 return false;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                if (Duet3.A(A, speed, MoveType))
+                if (Marlin.A(A, speed, MoveType))
                 {
                     return true;
                 }
@@ -1194,7 +1190,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 if (TinyG.A(A, speed, MoveType))
                 {
@@ -1223,9 +1219,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.Execute_Z(), board in error state.", KnownColor.DarkRed, true);
                 return false;
             }
-            if (Controlboard == ControlBoardType.Duet3)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
             {
-                if (Duet3.Z(Z, speed, MoveType))
+                if (Marlin.Z(Z, speed, MoveType))
                 {
                     return true;
                 }
@@ -1235,7 +1231,7 @@ namespace LitePlacer
                     return false;
                 }
             }
-            else if (Controlboard == ControlBoardType.TinyG)
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
                 if (TinyG.Z(Z, speed, MoveType))
                 {
@@ -1452,7 +1448,7 @@ namespace LitePlacer
             }
 
             double dA = Math.Abs(A - CurrentA);
-            if (dA<0.0009)
+            if (dA < 0.0009)
             {
                 MainForm.DisplayText(" -- A_move, already there --", KnownColor.Gray);
                 return (true);  // Already there
@@ -1472,7 +1468,7 @@ namespace LitePlacer
 
         // =================================================================================
 
- 
+
 
         // =================================================================================
 

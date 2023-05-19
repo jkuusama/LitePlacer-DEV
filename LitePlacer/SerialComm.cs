@@ -122,7 +122,7 @@ namespace LitePlacer
                 }
                 if (Port.IsOpen)
                 {
-                    Port.Write(TxText + "\n");
+                    Port.Write(TxText + MainForm.Setting.Serial_EndCharacters);
                     MainForm.DisplayText("==> " + TxText, KnownColor.Blue);
                 }
                 else
@@ -144,8 +144,9 @@ namespace LitePlacer
         private string RxString = string.Empty;
 
         // The DataReceived() routine is called when a charater is received from the serial port.
-        // The data is assumed to be ASCII, terminated with only \n
+        // The data is assumed to be ASCII, terminated with \n or \n\r
         // When \n received, calls Cnc.LineReceived(), without termination character
+        // the \r is 
 
         void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -168,6 +169,7 @@ namespace LitePlacer
                     WorkingString = RxString.Substring(0, RxString.IndexOf("\n", StringComparison.Ordinal));
                     //Remove the data and the terminator from tString 
                     RxString = RxString.Substring(RxString.IndexOf("\n", StringComparison.Ordinal) + 1);
+                    WorkingString = WorkingString.Replace("\r", "");
                     Cnc.LineReceived(WorkingString);
                 }
             }

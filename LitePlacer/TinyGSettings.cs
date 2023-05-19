@@ -374,12 +374,12 @@ namespace LitePlacer
 
             if (value == "1")
             {
-                CNC.Controlboard = CNC.ControlBoardType.TinyG;
+                Setting.Controlboard = ControlBoardType.TinyG;
                 DisplayText("TinyG board found.");
             }
             else
             {
-                CNC.Controlboard = CNC.ControlBoardType.other;
+                Setting.Controlboard = ControlBoardType.other;
                 DisplayText("Unknown control board.");
             }
         }
@@ -1463,7 +1463,7 @@ namespace LitePlacer
             string path = GetPath();
             bool res = true;
             DialogResult dialogResult;
-            if (CNC.Controlboard == CNC.ControlBoardType.TinyG)
+            if (Setting.Controlboard == ControlBoardType.TinyG)
             {
                 dialogResult = ShowMessageBox(
                    "Settings currently stored on board of your TinyG will be overwritten,\n" +
