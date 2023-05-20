@@ -20,6 +20,8 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Configuration;
 using System;
+using System.Xml.Linq;
+using System.Drawing;
 
 namespace LitePlacer
 {
@@ -29,8 +31,10 @@ namespace LitePlacer
     // The settings
     // =================================================================================
 
-    public partial class MySettings
+    public class MySettings
     {
+
+        public FormMain MainForm;
 
         // =================================================================================
         /*
@@ -117,7 +121,7 @@ namespace LitePlacer
             set
             {
                 EndCharacters = value;
-                FormMain.setEOLchars(value);
+                setEOLchars(value);
             }
         }
         public double General_BelowPCB_Allowance { get; set; } = 3;
@@ -252,38 +256,37 @@ namespace LitePlacer
         public int UpCam_DesiredX { get; set; } = 1280;
         public int UpCam_DesiredY { get; set; } = 1024;
         public bool UpCam_UseMaxResolution = true;
-    }
 
-    // =================================================================================
-    // 
-    // =================================================================================
-    public class AppSettings
-    {
-#pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
+        // =================================================================================
+        // 
+        // =================================================================================
 
-        static FormMain MainForm;
-
-        public AppSettings(FormMain MainF)
+        public void setEOLchars(string val)
         {
-            MainForm = MainF;
+            if (MainForm == null) return;       // startup
+            MainForm.EOL_textBox.Text = "test";
         }
 
         public bool Save(MySettings pSettings, string FileName)
         {
             try
             {
+                FormMain Fsave;
+
                 MainForm.DisplayText("Saving application settings to " + FileName);
+                Fsave = pSettings.MainForm;
+                pSettings.MainForm = null;  // Otherwise self-referecing loop
                 File.WriteAllText(FileName, JsonConvert.SerializeObject(pSettings, Formatting.Indented));
+                pSettings.MainForm = Fsave;
                 MainForm.DisplayText("Done.");
                 return true;
             }
             catch (Exception excep)
             {
-                MainForm.DisplayText("Application settings save failed: " + excep.Message);
+                MainForm.DisplayText("Application settings save failed: " + excep.Message, KnownColor.DarkRed, true);
                 return false;
             }
         }
-
 
 
         public MySettings Load(string FileName)
@@ -315,6 +318,7 @@ namespace LitePlacer
                     {
                         throw new Exception($"Couldn't load {FileName}. File exists but is corrupt.");
                     }
+                    settings.MainForm = MainForm;
                     return settings;
                 }
                 else
@@ -331,12 +335,15 @@ namespace LitePlacer
                     {
                         Environment.Exit(0);
                     }
+                    settings.MainForm = MainForm;
                     return settings;
                 }
             }
             catch (Exception excep)
             {
                 MySettings s = new MySettings();
+                s.MainForm = MainForm;
+
 
                 DialogResult dialogResult = MainForm.ShowMessageBox(
                     "Problem loading application settings:\n" + excep.Message +
@@ -522,6 +529,5 @@ namespace LitePlacer
             }
         }
 #endif
-
     }
 }

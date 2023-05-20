@@ -1397,7 +1397,7 @@ namespace LitePlacer
             }
             catch (Exception excep)
             {
-                DisplayText("*** Saving settings to " + FileName + " failed:\n" + excep.Message, KnownColor.DarkRed);
+                DisplayText("*** Saving settings to " + FileName + " failed:\n" + excep.Message, KnownColor.DarkRed, true);
                 return false;
             }
         }

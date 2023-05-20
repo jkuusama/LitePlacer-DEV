@@ -242,12 +242,12 @@ namespace LitePlacer
                     }
                 }
                 // if we didn't return from above:
-                MainForm.DisplayText("Could not get resolution info from camera.", KnownColor.Purple);
+                MainForm.DisplayText("Could not get resolution info from camera.", KnownColor.DarkRed, true);
                 return Resolutions;
             }
             catch (Exception)
             {
-                MainForm.DisplayText("Could not get resolution info from camera.", KnownColor.Purple);
+                MainForm.DisplayText("Could not get resolution info from camera.", KnownColor.DarkRed, true);
                 return Resolutions;
             }
 

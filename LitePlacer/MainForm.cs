@@ -68,15 +68,9 @@ namespace LitePlacer
         Camera UpCamera;
         NozzleCalibrationClass Nozzle;
         TapesClass Tapes;
-        public MySettings Setting { get; set; }
-        public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
 
-        AppSettings SettingsOps;
-        public static void setEOLchars(string value)
-        {
-            FormMain frm = new FormMain();
-            frm.EOL_textBox.Text = value;
-        }
+        public MySettings Setting;
+        public TinyGSettings TinyGBoard { get; set; } = new TinyGSettings();
 
         // =================================================================================
         // General and "global" functions 
@@ -161,17 +155,17 @@ namespace LitePlacer
         private void Form1_Load(object sender, EventArgs e)
         {
             StartingUp = false; // we want the first messages to get through
-            // this.Size = new Size(1280, 900);
-
             DisplayText("Application Start", KnownColor.Black, true);
             DisplayText("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString() + ", build date: " + BuildDate());
+            StartingUp = true;  
 
             string path = GetPath();
-            SettingsOps = new AppSettings(this);
-            Setting = SettingsOps.Load(path + APPLICATIONSETTINGS_DATAFILE);
+            Setting = new MySettings();
+            Setting.MainForm = this;
+            Setting = Setting.Load(path + APPLICATIONSETTINGS_DATAFILE);
             Setting.General_SaveFilesAtClosing = true;
 
-            StartingUp = true;  
+
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
@@ -481,7 +475,7 @@ namespace LitePlacer
                 res = SaveTempJobData();
                 OK = OK && res;
 
-                res = SettingsOps.Save(Setting, path + APPLICATIONSETTINGS_DATAFILE);
+                res = Setting.Save(Setting, path + APPLICATIONSETTINGS_DATAFILE);
                 OK = OK && res;
 
                 res = SaveDataGrid(path + TAPES_DATAFILE, Tapes_dataGridView);
@@ -13746,7 +13740,7 @@ namespace LitePlacer
 
             if (AppSettings_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                SettingsOps.Save(Setting, AppSettings_saveFileDialog.FileName);
+                Setting.Save(Setting, AppSettings_saveFileDialog.FileName);
             }
 
         }
@@ -13771,7 +13765,7 @@ namespace LitePlacer
 
             if (AppSettings_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Setting = SettingsOps.Load(AppSettings_openFileDialog.FileName);
+                Setting = Setting.Load(AppSettings_openFileDialog.FileName);
                 Application.Restart();
             }
         }
@@ -13789,7 +13783,8 @@ namespace LitePlacer
             {
                 return;
             };
-            Setting = new MySettings();
+            Setting = new MySettings(); 
+            Setting.MainForm = this;
             Application.Exit();
         }
         #endregion
