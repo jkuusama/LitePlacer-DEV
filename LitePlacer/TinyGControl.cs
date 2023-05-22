@@ -515,7 +515,6 @@ namespace LitePlacer
         public void LineReceived(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
-            MainForm.DisplayText("<== " + line);
 
             // In some cases, the caller wants to look at the line directly:
             if (LineWanted)

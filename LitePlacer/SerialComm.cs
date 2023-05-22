@@ -27,7 +27,39 @@ namespace LitePlacer
         {
             Cnc = caller;
             Port.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
+            Port.PinChanged += new SerialPinChangedEventHandler(PinChanged);
+            Port.ErrorReceived += new SerialErrorReceivedEventHandler(ErrorReceived);
             MainForm = MainF;
+        }
+
+        // Pin changed and error received events are subscribed to, in hoping to catch board
+        // resets and cable disconnections. These never fire. Bummer. If you read this and know
+        // how to catch those, please contribute!
+        // How to: Find out the connected port device ID: https://stackoverflow.com/a/64541160/2419027
+        // Detect USB device connect or remove: https://community.silabs.com/s/article/detecting-when-a-usb-device-is-connected-or-removed-in-c-net?language=en_US
+        // Check if our device is still there. Maybe one day I'll get to this...
+
+        void ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        {
+            MainForm.DisplayText("Serial port error (error received event");
+            PortError();
+        }
+
+        void PinChanged(object sender, SerialPinChangedEventArgs e)
+        {
+            MainForm.DisplayText("Serial port error (pin changed event");
+            PortError();
+        }
+
+        void PortError()
+        {
+            if (Cnc.ErrorState)
+            {
+                return; // no need to handle multiple error raising events
+            }
+            Close();
+            Cnc.RaiseError();
+            Cnc.Connected = false;
         }
 
         public bool IsOpen
@@ -58,19 +90,20 @@ namespace LitePlacer
                 {
                     return;
                 }
+                MainForm.DisplayText("Port close");
                 Port.DiscardInBuffer();
                 Port.DiscardOutBuffer();
                // Known issue: Sometimes serial port hangs in app closing. Google says that 
                 // the workaround is to close in another thread
+
                 Thread t = new Thread(() => Close_thread());
                 t.Start();
-                MainForm.DisplayText("Com closing delay:");
-                for (int i = 0; i < 100; i++)  // delay for system to clear buffers
+                if (!t.Join(100))
                 {
-                    Thread.Sleep(2);
-                    Application.DoEvents();
+                    MainForm.DisplayText("*** Com didn't close");
+                    t.Abort();
                 }
-                MainForm.DisplayText("Done.");
+                Thread.Sleep(50);  // Don't open/close too fast
             }
             catch
             {
@@ -92,6 +125,8 @@ namespace LitePlacer
                 Port.DtrEnable = true;  // prevent hangs on some drivers
                 Port.RtsEnable = true;
                 Port.WriteTimeout = 500;
+                RxString = string.Empty; 
+                Thread.Sleep(100);  // Don't open/close too fast
                 Port.Open();
                 if (Port.IsOpen)
                 {
@@ -139,6 +174,10 @@ namespace LitePlacer
             }
         }
 
+        public void ClearBuffer()
+        {
+            RxString = string.Empty;
+        }
 
         const int ReadBufferSize = 10000;
         private string RxString = string.Empty;
@@ -146,7 +185,7 @@ namespace LitePlacer
         // The DataReceived() routine is called when a charater is received from the serial port.
         // The data is assumed to be ASCII, terminated with \n or \n\r
         // When \n received, calls Cnc.LineReceived(), without termination character
-        // the \r is 
+        // the \r is discarded
 
         void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {

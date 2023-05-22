@@ -44,9 +44,11 @@ namespace LitePlacer
 #pragma warning disable CA1308 // Yes, we want to use lower case characters
 
     /*
-    Note: For function success/failure, I use bool return code. (instead of C# exceptions; a philosophical debate, let's not go there too much.
-    Still, it should be mentioned that CA1031 is supressed: I think the right way is to tell the user and continue. For example: A save fails; tell the user, 
-    Let the user to free room on the disk, plug in a USB stick, whatever, and let the user to try again. 
+    Note: For function success/failure, I use bool return code. (instead of C# exceptions; a philosophical debate,
+    let's not go there too much.
+    Still, it should be mentioned that CA1031 is supressed: I think the right way is to tell the user and continue. 
+    For example: A save fails; tell the user,  Let the user to free room on the disk, plug in a USB stick, whatever, 
+    and let the user to try again. 
 
     The naming convention is xxx_m() for functions that have already displayed an error message to user. If a function only
     calls _m functions, it can consider itself a _m function.
@@ -55,8 +57,7 @@ namespace LitePlacer
     // =================================================================================
     // Note about thread guards: The prologue "if(InvokeRequired) {something long}" at a start of a function, 
     // makes the function safe to call from another thread.
-    // See http://stackoverflow.com/questions/661561/how-to-update-the-gui-from-another-thread-in-c, 
-    // "MajesticRa"'s answer near the bottom of first page
+    // See https://stackoverflow.com/a/9395275/2419027
 
 
     public partial class FormMain : Form
@@ -443,7 +444,7 @@ namespace LitePlacer
             }
             catch (System.Exception excep)
             {
-                DisplayText(excep.Message);
+                DisplayText(excep.Message, KnownColor.DarkRed, true);
                 return false;
             }
 
@@ -550,7 +551,7 @@ namespace LitePlacer
             }
             catch
             {
-                DisplayText("Could not read http://www.liteplacer.com/Downloads/release.txt, update info not available.");
+                DisplayText("Could not read http://www.liteplacer.com/Downloads/release.txt, update info not available.", KnownColor.DarkRed, true);
                 WebDate = "";
                 ThisDate = "";
                 return false;
@@ -565,7 +566,7 @@ namespace LitePlacer
             if (UpdateAvailable(out WebDate, out ThisDate))
             {
                 ShowMessageBox(
-                    "There is a software update available (or you are a running pre-release).\n\r" +
+                    "There is a software update available.\n\r" +
                     "Date of software on web: " + WebDate + "\n\r" +
                     "Date of this software: " + ThisDate + "\n\r",
                     "Update available",
@@ -936,7 +937,7 @@ namespace LitePlacer
             }
             catch (System.Exception excep)
             {
-                DisplayText(excep.Message);
+                DisplayText(excep.Message, KnownColor.DarkRed, true);
                 return false;
             }
         }
@@ -4924,7 +4925,7 @@ namespace LitePlacer
                     TinyGMotors_tabControl.Visible = true;
                     return;
                 case ControlBoardType.Marlin:
-                    Motors_label.Text = "Axes setup (Duet 3 board):";
+                    Motors_label.Text = "Axes setup (Marlin board):";
                     TinyGMotors_tabControl.Visible = false;
                     MarlinMotors_tabControl.Visible = true;
                     return;
@@ -6489,7 +6490,7 @@ namespace LitePlacer
             catch (System.Exception excep)
             {
 
-                DisplayText("SaveCADdata failed: "+ excep.Message);
+                DisplayText("SaveCADdata failed: "+ excep.Message, KnownColor.DarkRed, true);
                 return false;
             }
         }
@@ -6755,7 +6756,7 @@ namespace LitePlacer
             catch (System.Exception excep)
             {
 
-                DisplayText("SaveJobData failed: " + excep.Message);
+                DisplayText("SaveJobData failed: " + excep.Message, KnownColor.DarkRed, true);
                 return false;
             }
         }
@@ -8680,7 +8681,7 @@ namespace LitePlacer
             }
             catch (FormatException)
             {
-                distance2pcb = 2.0; // if convertion faild, set minimum stop distance to board
+                distance2pcb = 2.0; // if convert faild, set minimum stop distance to board
             }
 
             // we need a minimum stop distance
@@ -14207,6 +14208,40 @@ namespace LitePlacer
                 NegativeMoveY_textBox.ForeColor = Color.Red;
             }
         }
+
+
+        public void ShowEOL_chars()
+        {
+            // for debug
+            string val = Setting.Serial_EndCharacters;
+            val = val.Replace("\r", "r");
+            val = val.Replace("\n", "n");
+            DisplayText("   EndCharacters are "+val);
+        }
+        public void SetEOL_textBoxText(string val)
+        {
+            val = val.Replace("\r", "r");
+            val = val.Replace("\n", "n");
+            MainForm.EOL_textBox.Text = val;
+        }
+
+        private void EOL_textBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            // only accepted values are "\n" or "\n\r"
+            if (!((EOL_textBox.Text == "n") ||
+                   (EOL_textBox.Text == "nr")))
+            {
+                EOL_textBox.ForeColor = Color.Red;
+                return;
+            }
+            EOL_textBox.ForeColor = Color.Black;
+            string val = EOL_textBox.Text;
+            val = val.Replace("r", "\r");
+            val = val.Replace("n", "\n");
+            Setting.Serial_EndCharacters = val;
+        }
+
+
     }	// end of: 	public partial class FormMain : Form
 
 

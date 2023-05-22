@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
+using System.Threading;
+using System.Drawing;
+
 
 /*
 CNC class handles communication with the control board. Most calls are just passed to a supported board.
@@ -339,7 +340,7 @@ namespace LitePlacer
         // =================================================================================
         #region Communications
 
-        public bool Connected { get; set; } // If connectged to a serial port
+        public bool Connected { get; set; } // If connected to a serial port
         public string Port { get; set; }  // valid only if connected
         public bool ErrorState { get; set; }    // Cnc is in error or not connected
 
@@ -356,6 +357,7 @@ namespace LitePlacer
         // Serial port:
         bool OpenPort(string port)
         {
+            ClearReceivedBuffers();
             if (Com.IsOpen)
             {
                 MainForm.DisplayText("Already connected to serial port " + port + ": already open");
@@ -421,6 +423,9 @@ namespace LitePlacer
 
         public void LineReceived(string line)
         {
+            if (MainForm.InvokeRequired) { MainForm.Invoke(new Action<string>(LineReceived), new[] { line }); return; }
+
+            MainForm.DisplayText("<== " + line);
             if (line.Contains("\", \"msg\":\"SYSTEM READY\"}"))     // TinyG reset message
             {
                 TinyG.LineReceived(line);  // This will raise error and give the user a message
@@ -494,24 +499,30 @@ namespace LitePlacer
         {
             ReceivedLines.Clear();
             LineAvailable = false;
+            Com.ClearBuffer();
         }
 
         public bool FindBoardType()
         {
+            bool CheckedTinyG = false;
+            bool CheckedMarlin = false;
             // For clean communication, try the board last identified.
-            switch (MainForm.Setting.Controlboard)
+            MainForm.Setting.Controlboard = FormMain.ControlBoardType.unknown;
+            switch (MainForm.Setting.LastSeenControlboard)
             {
                 case FormMain.ControlBoardType.TinyG:
                     if (CheckTinyG())
                     {
                         return true;
                     }
+                    CheckedTinyG = true;
                     break;
                 case FormMain.ControlBoardType.Marlin:
                     if (CheckMarlin())
                     {
                         return true;
                     }
+                    CheckedMarlin=true;
                     break;
                 case FormMain.ControlBoardType.other:
                     MainForm.DisplayText("*** Control board type set to \"other\", which is not supported.", KnownColor.DarkRed, true);
@@ -522,57 +533,68 @@ namespace LitePlacer
                     break;
             }
 
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
+            if (!CheckedTinyG)
             {
-                if (CheckMarlin())
+                if (!ReopenPort())
                 {
-                    return true;
-                }
-                // Close and reopen port, just in case
-                ClosePort();
-                Thread.Sleep(200);
-                if (!OpenPort(Port))
-                {
-                    MainForm.DisplayText("*** FindBoardType(), port re-open failed", KnownColor.DarkRed, true);
                     return false;
                 }
-                Connected = true;
-            }
-            else
-            {
                 if (CheckTinyG())
                 {
                     return true;
                 }
-                // close and reopen port, just in case
-                ClosePort();
-                Thread.Sleep(200);
-                if (!OpenPort(Port))
+            }
+
+            if (!CheckedMarlin)
+            {
+                if (!ReopenPort())
                 {
-                    MainForm.DisplayText("*** FindBoardType(), port re-open failed", KnownColor.DarkRed, true);
                     return false;
                 }
-                Connected = true;
+                if (CheckMarlin())
+                {
+                    return true;
+                }
+            }
+            if (!ReopenPort())
+            {
+                return false;
             }
             MainForm.DisplayText("*** Serial port connected, did not find a supported board", KnownColor.DarkRed, true);
             return false;
         }
 
+        private bool ReopenPort()
+        {
+            if (Com.IsOpen)
+            {
+                return true;
+            }
+            ClosePort();
+            Thread.Sleep(400);
+            if (!OpenPort(Port))
+            {
+                MainForm.DisplayText("*** FindBoardType(), port re-open failed", KnownColor.DarkRed, true);
+                return false;
+            }
+            Connected = true;
+            return true;
+        }
 
         private bool CheckTinyG()
         {
-            MainForm.Setting.Controlboard = FormMain.ControlBoardType.unknown;
+            MainForm.DisplayText("CheckTinyG()");
             if (ErrorState)
             {
                 MainForm.DisplayText("*** CheckTinyG() - error state", KnownColor.DarkRed, true);
                 return false;
             }
+            Thread.Sleep(100);  // TinyG wake up delay
             MainForm.Setting.Serial_EndCharacters = "\n";
-            Thread.Sleep(200);  // TinyG wake up delay
             ClearReceivedBuffers();
             Com.Write("\x11{sr:n}");  // Xon + status request
             int delay = 0;
-            while (delay < 200)
+            while (delay < 50)
             {
                 if (LineAvailable)
                 {
@@ -580,11 +602,12 @@ namespace LitePlacer
                 }
                 else
                 {
-                    Thread.Sleep(1);
+                    Thread.Sleep(5);
                     delay++;
+                    Application.DoEvents();
                 }
             }
-            if (delay >= 200)
+            if (delay >= 50)
             {
                 MainForm.DisplayText("*** CheckTinyG() - no response", KnownColor.DarkRed, true);
                 return false;
@@ -594,6 +617,7 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("TinyG board found.");
                 MainForm.Setting.Controlboard = FormMain.ControlBoardType.TinyG;
+                MainForm.Setting.LastSeenControlboard = FormMain.ControlBoardType.TinyG;
                 TinyG.LineReceived(resp);   // updates position info
                 return true;
             }
@@ -603,17 +627,19 @@ namespace LitePlacer
 
         private bool CheckMarlin()
         {
+            MainForm.DisplayText("CheckMarlin()");
             if (ErrorState)
             {
                 MainForm.DisplayText("*** CheckMarlin() - error state", KnownColor.DarkRed, true);
                 return false;
             }
             Thread.Sleep(100);  //  wake up delay
-            ClearReceivedBuffers();
             MainForm.Setting.Serial_EndCharacters = "\n\r";
+            ClearReceivedBuffers();
+            Thread.Sleep(50);
             Com.Write("M115");
             int delay = 0;
-            while (delay < 200)
+            while (delay < 50)
             {
                 if (LineAvailable)
                 {
@@ -621,11 +647,12 @@ namespace LitePlacer
                 }
                 else
                 {
-                    Thread.Sleep(1);
+                    Thread.Sleep(5);
                     delay++;
+                    Application.DoEvents();
                 }
             }
-            if (delay >= 200)
+            if (delay >= 50)
             {
                 MainForm.DisplayText("*** CheckMarlin() - no response", KnownColor.DarkRed, true);
                 return false;
@@ -635,6 +662,7 @@ namespace LitePlacer
             {
                 MainForm.DisplayText("Marlin board found.");
                 MainForm.Setting.Controlboard = FormMain.ControlBoardType.Marlin;
+                MainForm.Setting.LastSeenControlboard = FormMain.ControlBoardType.Marlin;
                 ClearReceivedBuffers();     // remove ok
                 return true;
             }

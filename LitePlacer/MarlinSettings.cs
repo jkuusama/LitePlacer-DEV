@@ -24,21 +24,57 @@ namespace LitePlacer
         // Marlin is owned by Cnc, so we do Cnc.Marlin.xxx(), not Cnc.xxx()
 
         // =================================================================================
-        // X motor
-        // =================================================================================
-        #region MarlinXmotor
-
-        private bool SettingMarlinXmotorParameters = false;
-        public bool SetMarlinXmotorParameters()
+        // doing our own mask, as masked text box doesn't get backspace or delete
+        bool IsNumberOrEditKey(int e)
         {
-            SettingMarlinXmotorParameters = true;    // to not trigger checkbox related events
-            MarlinXspeed_maskedTextBox.Text = Setting.Marlin_Xspeed.ToString();
+            if ((e >= 0x60) && (e <= 0x069)) return true;   // number
+            if ((e >= 0x30) && (e <= 0x039)) return true;   // number
+            if (e == 0x08) return true;  // backspace
+            if (e == 0x2e) return true;  // delete
+            if (e == 0xbe) return true;  // .
+            if (e == 0x6e) return true;  // numpad .
+            if (e == 0xbc) return true;  // ,
+            if (e == 0x0d) return true;  // enter
+            return false;
+        }
+
+        bool IsPowerOfTwo(string s, out int i)
+        {
+            // Check for power of 2: // https://stackoverflow.com/questions/600293/how-to-check-if-a-number-is-a-power-of-2
+            i = 0;
+            if (int.TryParse(s.Replace(',', '.'), out i))   // is integer
+            {
+                if ((i > 1) && (i <= 256) && ((i & (i - 1)) == 0))   // is pow of 2    
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        // =================================================================================
+        // X 
+        // =================================================================================
+        #region MarlinX
+
+        private bool SettingMarlinXAxisParameters = false;
+        public bool SetMarlinXAxisParameters()  // when connection is established
+        {
+            SettingMarlinXAxisParameters = true;    // to not trigger checkbox related events
+            MarlinXspeed_TextBox.Text = Setting.Marlin_Xspeed.ToString();
             if (!SetMarlinXspeed(Setting.Marlin_Xspeed)) return false;
 
-            MarlinXacceleration_maskedTextBox.Text = Setting.Marlin_Xacc.ToString();
+            MarlinXacceleration_TextBox.Text = Setting.Marlin_Xacc.ToString();
             if (!SetMarlinXacc(Setting.Marlin_Xacc)) return false;
 
-            MarlinXmicrosteps_maskedTextBox.Text = Setting.Marlin_XMicroStep.ToString();
+            MarlinXhomingSpeed_TextBox.Text = Setting.Marlin_XHomingSpeed.ToString();
+            MarlinXHomingAcceleration_TextBox.Text = Setting.Marlin_XHomingAcc.ToString();
+            MarlinXHomingBackoff_textBox.Text = Setting.Marlin_XHomingBackoff.ToString();
+
+            //MarlinXmicrosteps_textBox.Text = Setting.Marlin_XMicroStep.ToString();
+            MarlinXmicrosteps_textBox.Text = "16";
+            //MarlinXinterpolate_checkBox.Checked = Setting.Marlin_XInterpolate;
+            MarlinXinterpolate_checkBox.Checked = true;
+
             if (Setting.Marlin_XDegPerStep < 1.0)
             {
                 MarlinXdeg09_radioButton.Checked = true;
@@ -50,35 +86,38 @@ namespace LitePlacer
                 MarlinXdeg18_radioButton.Checked = true;
 
             }
-            MarlinXinterpolate_checkBox.Checked = Setting.Marlin_XInterpolate;
             MarlinXtravelPerRev_textBox.Text = Setting.Marlin_XTravelPerRev.ToString();
             if (!SetMarlinXstepping())
             {
-                SettingMarlinXmotorParameters = false;
+                SettingMarlinXAxisParameters = false;
                 return false;
             }
-            MarlinXCurrent_maskedTextBox.Text = Setting.Marlin_XCurrent.ToString();
+            MarlinXCurrent_textBox.Text = Setting.Marlin_XCurrent.ToString();
             SetMarlinXcurr(Setting.Marlin_XCurrent);
-            MarlinXhomingSpeed_maskedTextBox.Text = Setting.Marlin_XHomingSpeed.ToString();
-            MarlinXHomingBackoff_maskedTextBox.Text = Setting.Marlin_XHomingBackoff.ToString();
-            SettingMarlinXmotorParameters = false;
+            SettingMarlinXAxisParameters = false;
             return true;
         }
 
 
         // =================================================================================
         // speed
-        private void MarlinXspeed_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinXspeed_TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             double speed;
-            MarlinXspeed_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                if (double.TryParse(MarlinXspeed_maskedTextBox.Text.Replace(',', '.'), out speed))
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinXspeed_TextBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinXspeed_TextBox.Text.Replace(',', '.'), out speed))
                 {
                     Setting.Marlin_Xspeed = speed;
                     SetMarlinXspeed(speed);
-                    MarlinXspeed_maskedTextBox.ForeColor = Color.Black;
+                    MarlinXspeed_TextBox.ForeColor = Color.Black;
                 }
                 e.Handled = true;   // supress the ding sound
             }
@@ -91,18 +130,24 @@ namespace LitePlacer
 
         // =================================================================================
         // acceleration
-        private void MarlinXacceleration_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinXacceleration_TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             double acc;
-            MarlinXacceleration_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                if (double.TryParse(MarlinXacceleration_maskedTextBox.Text.Replace(',', '.'), out acc))
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinXacceleration_TextBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinXacceleration_TextBox.Text.Replace(',', '.'), out acc))
                 {
                     Setting.Marlin_Xacc = acc;
                     SetMarlinXacc(acc);
+                    MarlinXacceleration_TextBox.ForeColor = Color.Black;
                 }
-                MarlinXacceleration_maskedTextBox.ForeColor = Color.Black;
                 e.Handled = true;   // supress the ding sound
             }
         }
@@ -114,45 +159,92 @@ namespace LitePlacer
 
 
         // =================================================================================
-        // Stepping, depends on microsteps, degrees per step and travel per revolution
-        private bool SetMarlinXstepping()
+        // homing
+
+        private void MarlinXhomingSpeed_TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            string i;
-            if (Setting.Marlin_XInterpolate)
+            double speed;
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                i = " i1";
+                e.SuppressKeyPress = true;
+                return;
             }
-            else
+
+            MarlinXhomingSpeed_TextBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
             {
-                i = " i0";
+                if (double.TryParse(MarlinXhomingSpeed_TextBox.Text.Replace(',', '.'), out speed))
+                {
+                    Setting.Marlin_XHomingSpeed = speed;  // Nothing done here, the value is used at homing
+                    MarlinXhomingSpeed_TextBox.ForeColor = Color.Black;
+                }
+                e.Handled = true;   // supress the ding sound
             }
-            if (!Cnc.Marlin.Write_m("M350 X" + Setting.Marlin_XMicroStep.ToString().Replace(',', '.') + i)) return false;
-            // steps per rev= usteps * 360/(step_angle)
-            // steps per mm = steps per rev / travel per rev
-            double steps = Setting.Marlin_XMicroStep * 360.0 / Setting.Marlin_XDegPerStep;
-            steps = steps / Setting.Marlin_XTravelPerRev;
-            return Cnc.Marlin.Write_m("M92 X" + steps.ToString().Replace(',', '.'));
+        }
+
+        private void MarlinXHomingAcceleration_TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            double acc;
+            if (!IsNumberOrEditKey(e.KeyValue))
+            {
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinXHomingAcceleration_TextBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinXHomingAcceleration_TextBox.Text.Replace(',', '.'), out acc))
+                {
+                    Setting.Marlin_XHomingAcc = acc;
+                    MarlinXHomingAcceleration_TextBox.ForeColor = Color.Black;
+                }
+                e.Handled = true;   // supress the ding sound
+            }
+        }
+
+        private void MarlinXHomingBackoff_textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            double Backoff;
+            if (!IsNumberOrEditKey(e.KeyValue))
+            {
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinXHomingBackoff_textBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinXHomingBackoff_textBox.Text.Replace(',', '.'), out Backoff))
+                {
+                    Setting.Marlin_XHomingBackoff = Backoff;
+                    MarlinXHomingBackoff_textBox.ForeColor = Color.Black;
+                }
+                e.Handled = true;   // supress the ding sound
+            }
         }
 
         // =================================================================================
         // microsteps
-        private void MarlinXmicrosteps_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinXmicrosteps_textBox_KeyDown(object sender, KeyEventArgs e)
         {
-            // Check for power of 2: // https://stackoverflow.com/questions/600293/how-to-check-if-a-number-is-a-power-of-2
             int usteps;
-            MarlinXmicrosteps_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                if (int.TryParse(MarlinXmicrosteps_maskedTextBox.Text.Replace(',', '.'), out usteps))
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinXHomingBackoff_textBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (!IsPowerOfTwo(MarlinXmicrosteps_textBox.Text, out usteps))
                 {
-                    if ( (usteps>1) && (usteps<=256) &&
-                        ((usteps & (usteps - 1)) == 0))   
-                    {
-                        Setting.Marlin_XMicroStep = usteps;
-                        SetMarlinXstepping();
-                        MarlinXmicrosteps_maskedTextBox.ForeColor = Color.Black;
-                    }
+                    return;
                 }
+                Setting.Marlin_XMicroStep = usteps;
+                SetMarlinXstepping();
+                MarlinXmicrosteps_textBox.ForeColor = Color.Black;
                 e.Handled = true;   // supress the ding sound
             }
         }
@@ -162,11 +254,12 @@ namespace LitePlacer
         private void MarlinXinterpolate_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             Setting.Marlin_XInterpolate = MarlinXinterpolate_checkBox.Checked;
-            if (!SettingMarlinXmotorParameters)
+            if (!SettingMarlinXAxisParameters)
             {
                 SetMarlinXstepping();
             }
         }
+
 
         // =================================================================================
         // 0.9 or 1.8 deg. per step?
@@ -188,18 +281,24 @@ namespace LitePlacer
             }
             else
             {
-                Setting.Marlin_XDegPerStep = 0.9;
+                Setting.Marlin_XDegPerStep = 1.8;
             }
             SetMarlinXstepping();
         }
 
         // =================================================================================
         // travel per revolution
-        private void MarlinXtravelPerRev_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinXtravelPerRev_textBox_KeyDown(object sender, KeyEventArgs e)
         {
             double travel;
+            if (!IsNumberOrEditKey(e.KeyValue))
+            {
+                e.SuppressKeyPress = true;
+                return;
+            }
+
             MarlinXtravelPerRev_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            if (e.KeyValue == 0x0d) // enter  
             {
                 if (double.TryParse(MarlinXtravelPerRev_textBox.Text.Replace(',', '.'), out travel))
                 {
@@ -213,79 +312,68 @@ namespace LitePlacer
 
         // =================================================================================
         // motor current
-        private void MarlinXCurrent_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinXCurrent_textBox_KeyDown(object sender, KeyEventArgs e)
         {
-            int curr;
-            MarlinXCurrent_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            double curr;
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                if (int.TryParse(MarlinXCurrent_maskedTextBox.Text, out curr))
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinXCurrent_textBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinXCurrent_textBox.Text.Replace(',', '.'), out curr))
                 {
                     Setting.Marlin_XCurrent = curr;
                     SetMarlinXcurr(curr);
-                    MarlinXCurrent_maskedTextBox.ForeColor = Color.Black;
+                    MarlinXCurrent_textBox.ForeColor = Color.Black;
                 }
                 e.Handled = true;   // supress the ding sound
+
             }
         }
-
-        private bool SetMarlinXcurr(int curr)
+        private bool SetMarlinXcurr(double curr)
         {
-            return Cnc.Marlin.Write_m("M906 X" + curr.ToString());
+            return Cnc.Marlin.Write_m("M906 X" + ((int)curr).ToString());
         }
 
         // =================================================================================
-        // homing
-
-        private void MarlinXhomingSpeed_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        // Stepping, depends on microsteps, degrees per step and travel per revolution
+        private bool SetMarlinXstepping()
         {
-            double speed;
-            MarlinXhomingSpeed_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(MarlinXhomingSpeed_maskedTextBox.Text.Replace(',', '.'), out speed))
-                {
-                    Setting.Marlin_XHomingSpeed = speed;
-                    MarlinXhomingSpeed_maskedTextBox.ForeColor = Color.Black;
-                }
-                e.Handled = true;   // supress the ding sound
-            }
+            double steps = 360.0 / Setting.Marlin_XDegPerStep;  // steps per revolution
+            steps = Setting.Marlin_XTravelPerRev / steps;       // whole steps per mm
+            steps = steps * Setting.Marlin_XMicroStep;
+            return Cnc.Marlin.Write_m("M92 X" + steps.ToString());
         }
+        #endregion MarlinX
 
-        private void MarlinXHomingBackoff_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double backoff;
-            MarlinXHomingBackoff_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(MarlinXHomingBackoff_maskedTextBox.Text.Replace(',', '.'), out backoff))
-                {
-                    Setting.Marlin_XHomingBackoff = backoff;
-                    MarlinXHomingBackoff_maskedTextBox.ForeColor = Color.Black;
-                }
-                e.Handled = true;   // supress the ding sound
-            }
-        }
-
-        #endregion MarlinXmotor
 
         // =================================================================================
-        // Y motor
+        // Y 
         // =================================================================================
-        #region MarlinYmotor
-
-        private bool SettingMarlinYmotorParameters = false;
-
-        public bool SetMarlinYmotorParameters()
+        #region MarlinY
+        private bool SettingMarlinYAxisParameters = false;
+        public bool SetMarlinYAxisParameters()  // when connection is established
         {
-            SettingMarlinYmotorParameters = true;    // to not trigger checkbox related events
-            MarlinYspeed_maskedTextBox.Text = Setting.Marlin_Yspeed.ToString();
+            SettingMarlinYAxisParameters = true;    // to not trigger checkbox related events
+            MarlinYspeed_TextBox.Text = Setting.Marlin_Yspeed.ToString();
             if (!SetMarlinYspeed(Setting.Marlin_Yspeed)) return false;
 
-            MarlinYacceleration_maskedTextBox.Text = Setting.Marlin_Yacc.ToString();
+            MarlinYacceleration_TextBox.Text = Setting.Marlin_Yacc.ToString();
             if (!SetMarlinYacc(Setting.Marlin_Yacc)) return false;
 
-            MarlinYmicrosteps_maskedTextBox.Text = Setting.Marlin_YMicroStep.ToString();
+            MarlinYhomingSpeed_TextBox.Text = Setting.Marlin_YHomingSpeed.ToString();
+            MarlinYHomingAcceleration_TextBox.Text = Setting.Marlin_YHomingAcc.ToString();
+            MarlinYHomingBackoff_textBox.Text = Setting.Marlin_YHomingBackoff.ToString();
+
+            //MarlinYmicrosteps_textBox.Text = Setting.Marlin_YMicroStep.ToString();
+            MarlinYmicrosteps_textBox.Text = "16";
+            //MarlinYinterpolate_checkBox.Checked = Setting.Marlin_YInterpolate;
+            MarlinYinterpolate_checkBox.Checked = true;
+
             if (Setting.Marlin_YDegPerStep < 1.0)
             {
                 MarlinYdeg09_radioButton.Checked = true;
@@ -297,35 +385,38 @@ namespace LitePlacer
                 MarlinYdeg18_radioButton.Checked = true;
 
             }
-            MarlinYinterpolate_checkBox.Checked = Setting.Marlin_YInterpolate;
             MarlinYtravelPerRev_textBox.Text = Setting.Marlin_YTravelPerRev.ToString();
             if (!SetMarlinYstepping())
             {
-                SettingMarlinYmotorParameters = false;
+                SettingMarlinYAxisParameters = false;
                 return false;
             }
-            MarlinYCurrent_maskedTextBox.Text = Setting.Marlin_YCurrent.ToString();
+            MarlinYCurrent_textBox.Text = Setting.Marlin_YCurrent.ToString();
             SetMarlinYcurr(Setting.Marlin_YCurrent);
-            MarlinYhomingSpeed_maskedTextBox.Text = Setting.Marlin_YHomingSpeed.ToString();
-            MarlinYHomingBackoff_maskedTextBox.Text = Setting.Marlin_YHomingBackoff.ToString();
-            SettingMarlinYmotorParameters = false;
+            SettingMarlinYAxisParameters = false;
             return true;
         }
 
 
         // =================================================================================
         // speed
-        private void MarlinYspeed_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinYspeed_TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             double speed;
-            MarlinYspeed_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                if (double.TryParse(MarlinYspeed_maskedTextBox.Text.Replace(',', '.'), out speed))
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinYspeed_TextBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinYspeed_TextBox.Text.Replace(',', '.'), out speed))
                 {
                     Setting.Marlin_Yspeed = speed;
                     SetMarlinYspeed(speed);
-                    MarlinYspeed_maskedTextBox.ForeColor = Color.Black;
+                    MarlinYspeed_TextBox.ForeColor = Color.Black;
                 }
                 e.Handled = true;   // supress the ding sound
             }
@@ -333,73 +424,126 @@ namespace LitePlacer
 
         private bool SetMarlinYspeed(double speed)
         {
-            return Cnc.Marlin.Write_m("M203 Y" + speed.ToString().Replace(',', '.'));
+            return Cnc.Marlin.Write_m("M203 X" + speed.ToString().Replace(',', '.'));
         }
 
         // =================================================================================
         // acceleration
-        private void MarlinYacceleration_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinYacceleration_TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             double acc;
-            MarlinYacceleration_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                if (double.TryParse(MarlinYacceleration_maskedTextBox.Text.Replace(',', '.'), out acc))
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinYacceleration_TextBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinYacceleration_TextBox.Text.Replace(',', '.'), out acc))
                 {
                     Setting.Marlin_Yacc = acc;
                     SetMarlinYacc(acc);
+                    MarlinYacceleration_TextBox.ForeColor = Color.Black;
                 }
-                MarlinYacceleration_maskedTextBox.ForeColor = Color.Black;
                 e.Handled = true;   // supress the ding sound
             }
         }
 
         private bool SetMarlinYacc(double acc)
         {
-            return Cnc.Marlin.Write_m("M201 Y" + acc.ToString().Replace(',', '.'));
+            return Cnc.Marlin.Write_m("M201 X" + acc.ToString().Replace(',', '.'));
         }
 
 
         // =================================================================================
-        // Stepping, depends on microsteps, degrees per step and travel per revolution
-        private bool SetMarlinYstepping()
+        // homing
+
+        private void MarlinYhomingSpeed_TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            string i;
-            if (Setting.Marlin_YInterpolate)
+            double speed;
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                i = " i1";
+                e.SuppressKeyPress = true;
+                return;
             }
-            else
+
+            MarlinYhomingSpeed_TextBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
             {
-                i = " i0";
+                if (double.TryParse(MarlinYhomingSpeed_TextBox.Text.Replace(',', '.'), out speed))
+                {
+                    Setting.Marlin_YHomingSpeed = speed;  // Nothing done here, the value is used at homing
+                    MarlinYhomingSpeed_TextBox.ForeColor = Color.Black;
+                }
+                e.Handled = true;   // supress the ding sound
             }
-            if (!Cnc.Marlin.Write_m("M350 Y" + Setting.Marlin_YMicroStep.ToString().Replace(',', '.') + i)) return false;
-            // steps per rev= usteps * 360/(step_angle)
-            // steps per mm = steps per rev / travel per rev
-            double steps = Setting.Marlin_YMicroStep * 360.0 / Setting.Marlin_YDegPerStep;
-            steps = steps / Setting.Marlin_YTravelPerRev;
-            return Cnc.Marlin.Write_m("M92 Y" + steps.ToString().Replace(',', '.'));
+        }
+
+        private void MarlinYHomingAcceleration_TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            double acc;
+            if (!IsNumberOrEditKey(e.KeyValue))
+            {
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinYHomingAcceleration_TextBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinYHomingAcceleration_TextBox.Text.Replace(',', '.'), out acc))
+                {
+                    Setting.Marlin_YHomingAcc = acc;
+                    MarlinYHomingAcceleration_TextBox.ForeColor = Color.Black;
+                }
+                e.Handled = true;   // supress the ding sound
+            }
+        }
+
+        private void MarlinYHomingBackoff_textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            double Backoff;
+            if (!IsNumberOrEditKey(e.KeyValue))
+            {
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinYHomingBackoff_textBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinYHomingBackoff_textBox.Text.Replace(',', '.'), out Backoff))
+                {
+                    Setting.Marlin_YHomingBackoff = Backoff;
+                    MarlinYHomingBackoff_textBox.ForeColor = Color.Black;
+                }
+                e.Handled = true;   // supress the ding sound
+            }
         }
 
         // =================================================================================
         // microsteps
-        private void MarlinYmicrosteps_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinYmicrosteps_textBox_KeyDown(object sender, KeyEventArgs e)
         {
-            // Check for power of 2: // https://stackoverflow.com/questions/600293/how-to-check-if-a-number-is-a-power-of-2
             int usteps;
-            MarlinYmicrosteps_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                if (int.TryParse(MarlinYmicrosteps_maskedTextBox.Text.Replace(',', '.'), out usteps))
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinYHomingBackoff_textBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (!IsPowerOfTwo(MarlinYmicrosteps_textBox.Text, out usteps))
                 {
-                    if ((usteps > 1) && (usteps <= 256) &&
-                        ((usteps & (usteps - 1)) == 0))
-                    {
-                        Setting.Marlin_YMicroStep = usteps;
-                        SetMarlinYstepping();
-                        MarlinYmicrosteps_maskedTextBox.ForeColor = Color.Black;
-                    }
+                    return;
                 }
+                Setting.Marlin_YMicroStep = usteps;
+                SetMarlinYstepping();
+                MarlinYmicrosteps_textBox.ForeColor = Color.Black;
                 e.Handled = true;   // supress the ding sound
             }
         }
@@ -409,11 +553,12 @@ namespace LitePlacer
         private void MarlinYinterpolate_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             Setting.Marlin_YInterpolate = MarlinYinterpolate_checkBox.Checked;
-            if (!SettingMarlinYmotorParameters)
+            if (!SettingMarlinYAxisParameters)
             {
                 SetMarlinYstepping();
             }
         }
+
 
         // =================================================================================
         // 0.9 or 1.8 deg. per step?
@@ -435,18 +580,24 @@ namespace LitePlacer
             }
             else
             {
-                Setting.Marlin_YDegPerStep = 0.9;
+                Setting.Marlin_YDegPerStep = 1.8;
             }
             SetMarlinYstepping();
         }
 
         // =================================================================================
         // travel per revolution
-        private void MarlinYtravelPerRev_textBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinYtravelPerRev_textBox_KeyDown(object sender, KeyEventArgs e)
         {
             double travel;
+            if (!IsNumberOrEditKey(e.KeyValue))
+            {
+                e.SuppressKeyPress = true;
+                return;
+            }
+
             MarlinYtravelPerRev_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            if (e.KeyValue == 0x0d) // enter  
             {
                 if (double.TryParse(MarlinYtravelPerRev_textBox.Text.Replace(',', '.'), out travel))
                 {
@@ -460,308 +611,344 @@ namespace LitePlacer
 
         // =================================================================================
         // motor current
-        private void MarlinYCurrent_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void MarlinYCurrent_textBox_KeyDown(object sender, KeyEventArgs e)
         {
-            int curr;
-            MarlinYCurrent_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
+            double curr;
+            if (!IsNumberOrEditKey(e.KeyValue))
             {
-                if (int.TryParse(MarlinYCurrent_maskedTextBox.Text, out curr))
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            MarlinYCurrent_textBox.ForeColor = Color.Red;
+            if (e.KeyValue == 0x0d) // enter  
+            {
+                if (double.TryParse(MarlinYCurrent_textBox.Text.Replace(',', '.'), out curr))
                 {
                     Setting.Marlin_YCurrent = curr;
                     SetMarlinYcurr(curr);
-                    MarlinYCurrent_maskedTextBox.ForeColor = Color.Black;
+                    MarlinYCurrent_textBox.ForeColor = Color.Black;
                 }
                 e.Handled = true;   // supress the ding sound
-            }
-        }
-
-        private bool SetMarlinYcurr(int curr)
-        {
-            return Cnc.Marlin.Write_m("M906 Y" + curr.ToString());
-        }
-
-        // =================================================================================
-        // homing
-
-        private void MarlinYhomingSpeed_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double speed;
-            MarlinYhomingSpeed_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(MarlinYhomingSpeed_maskedTextBox.Text.Replace(',', '.'), out speed))
-                {
-                    Setting.Marlin_YHomingSpeed = speed;
-                    MarlinYhomingSpeed_maskedTextBox.ForeColor = Color.Black;
-                }
-                e.Handled = true;   // supress the ding sound
-            }
-        }
-
-        private void MarlinYHomingBackoff_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double backoff;
-            MarlinYHomingBackoff_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(MarlinYHomingBackoff_maskedTextBox.Text.Replace(',', '.'), out backoff))
-                {
-                    Setting.Marlin_YHomingBackoff = backoff;
-                    MarlinYHomingBackoff_maskedTextBox.ForeColor = Color.Black;
-                }
-                e.Handled = true;   // supress the ding sound
-            }
-        }
-        #endregion MarlinYmotor
-
-        // =================================================================================
-        // Z motor
-        // =================================================================================
-
-        #region MarlinZmotor
-
-        private bool SettingMarlinZmotorParameters = false;
-        public bool SetMarlinZmotorParameters()
-        {
-            SettingMarlinZmotorParameters = true;    // to not trigger checkbox related events
-            MarlinZspeed_maskedTextBox.Text = Setting.Marlin_Zspeed.ToString();
-            if (!SetMarlinZspeed(Setting.Marlin_Zspeed)) return false;
-
-            MarlinZacceleration_maskedTextBox.Text = Setting.Marlin_Zacc.ToString();
-            if (!SetMarlinZacc(Setting.Marlin_Zacc)) return false;
-
-            MarlinZmicrosteps_maskedTextBox.Text = Setting.Marlin_ZMicroStep.ToString();
-            if (Setting.Marlin_ZDegPerStep < 1.0)
-            {
-                MarlinZdeg09_radioButton.Checked = true;
-                MarlinZdeg18_radioButton.Checked = false;
-            }
-            else
-            {
-                MarlinZdeg09_radioButton.Checked = false;
-                MarlinZdeg18_radioButton.Checked = true;
 
             }
-            MarlinZinterpolate_checkBox.Checked = Setting.Marlin_ZInterpolate;
-            MarlinZtravelPerRev_textBox.Text = Setting.Marlin_ZTravelPerRev.ToString();
-            if (!SetMarlinZstepping())
-            {
-                SettingMarlinZmotorParameters = false;
-                return false;
-            }
-            MarlinZCurrent_maskedTextBox.Text = Setting.Marlin_ZCurrent.ToString();
-            SetMarlinZcurr(Setting.Marlin_ZCurrent);
-            MarlinZhomingSpeed_maskedTextBox.Text = Setting.Marlin_ZHomingSpeed.ToString();
-            MarlinZHomingBackoff_maskedTextBox.Text = Setting.Marlin_ZHomingBackoff.ToString();
-            SettingMarlinZmotorParameters = false;
-            return true;
         }
-
-
-        // =================================================================================
-        // speed
-        private void MarlinZspeed_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private bool SetMarlinYcurr(double curr)
         {
-            double speed;
-            MarlinZspeed_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(MarlinZspeed_maskedTextBox.Text.Replace(',', '.'), out speed))
-                {
-                    Setting.Marlin_Zspeed = speed;
-                    SetMarlinZspeed(speed);
-                    MarlinZspeed_maskedTextBox.ForeColor = Color.Black;
-                }
-                e.Handled = true;   // supress the ding sound
-            }
+            return Cnc.Marlin.Write_m("M906 X" + ((int)curr).ToString());
         }
-
-        private bool SetMarlinZspeed(double speed)
-        {
-            return Cnc.Marlin.Write_m("M203 Z" + speed.ToString().Replace(',', '.'));
-        }
-
-        // =================================================================================
-        // acceleration
-        private void MarlinZacceleration_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double acc;
-            MarlinZacceleration_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(MarlinZacceleration_maskedTextBox.Text.Replace(',', '.'), out acc))
-                {
-                    Setting.Marlin_Zacc = acc;
-                    SetMarlinZacc(acc);
-                }
-                MarlinZacceleration_maskedTextBox.ForeColor = Color.Black;
-                e.Handled = true;   // supress the ding sound
-            }
-        }
-
-        private bool SetMarlinZacc(double acc)
-        {
-            return Cnc.Marlin.Write_m("M201 Z" + acc.ToString().Replace(',', '.'));
-        }
-
 
         // =================================================================================
         // Stepping, depends on microsteps, degrees per step and travel per revolution
-        private bool SetMarlinZstepping()
+        private bool SetMarlinYstepping()
         {
-            string i;
-            if (Setting.Marlin_ZInterpolate)
-            {
-                i = " i1";
-            }
-            else
-            {
-                i = " i0";
-            }
-            if (!Cnc.Marlin.Write_m("M350 Z" + Setting.Marlin_ZMicroStep.ToString().Replace(',', '.') + i)) return false;
-            // steps per rev= usteps * 360/(step_angle)
-            // steps per mm = steps per rev / travel per rev
-            double steps = Setting.Marlin_ZMicroStep * 360.0 / Setting.Marlin_ZDegPerStep;
-            steps = steps / Setting.Marlin_ZTravelPerRev;
-            return Cnc.Marlin.Write_m("M92 Z" + steps.ToString().Replace(',', '.'));
+            double steps = 360.0 / Setting.Marlin_YDegPerStep;  // steps per revolution
+            steps = Setting.Marlin_YTravelPerRev / steps;       // whole steps per mm
+            steps = steps * Setting.Marlin_YMicroStep;
+            return Cnc.Marlin.Write_m("M92 X" + steps.ToString());
         }
+        #endregion MarlinY
+
 
         // =================================================================================
-        // microsteps
-        private void MarlinZmicrosteps_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // Check for power of 2: // https://stackoverflow.com/questions/600293/how-to-check-if-a-number-is-a-power-of-2
-            int usteps;
-            MarlinZmicrosteps_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (int.TryParse(MarlinZmicrosteps_maskedTextBox.Text.Replace(',', '.'), out usteps))
+        // Z 
+        // =================================================================================
+
+        #region MarlinZ
+                private bool SettingMarlinZAxisParameters = false;
+                public bool SetMarlinZAxisParameters()  // when connection is established
                 {
-                    if ((usteps > 1) && (usteps <= 256) &&
-                        ((usteps & (usteps - 1)) == 0))
+                    SettingMarlinZAxisParameters = true;    // to not trigger checkbox related events
+                    MarlinZspeed_TextBox.Text = Setting.Marlin_Zspeed.ToString();
+                    if (!SetMarlinZspeed(Setting.Marlin_Zspeed)) return false;
+
+                    MarlinZacceleration_TextBox.Text = Setting.Marlin_Zacc.ToString();
+                    if (!SetMarlinZacc(Setting.Marlin_Zacc)) return false;
+
+                    MarlinZhomingSpeed_TextBox.Text = Setting.Marlin_ZHomingSpeed.ToString();
+                    MarlinZHomingAcceleration_TextBox.Text = Setting.Marlin_ZHomingAcc.ToString();
+                    MarlinZHomingBackoff_textBox.Text = Setting.Marlin_ZHomingBackoff.ToString();
+
+                    //MarlinZmicrosteps_textBox.Text = Setting.Marlin_ZMicroStep.ToString();
+                    MarlinZmicrosteps_textBox.Text = "16";
+                    //MarlinZinterpolate_checkBox.Checked = Setting.Marlin_ZInterpolate;
+                    MarlinZinterpolate_checkBox.Checked = true;
+
+                    if (Setting.Marlin_ZDegPerStep < 1.0)
                     {
-                        Setting.Marlin_ZMicroStep = usteps;
-                        SetMarlinZstepping();
-                        MarlinZmicrosteps_maskedTextBox.ForeColor = Color.Black;
+                        MarlinZdeg09_radioButton.Checked = true;
+                        MarlinZdeg18_radioButton.Checked = false;
+                    }
+                    else
+                    {
+                        MarlinZdeg09_radioButton.Checked = false;
+                        MarlinZdeg18_radioButton.Checked = true;
+
+                    }
+                    MarlinZtravelPerRev_textBox.Text = Setting.Marlin_ZTravelPerRev.ToString();
+                    if (!SetMarlinZstepping())
+                    {
+                        SettingMarlinZAxisParameters = false;
+                        return false;
+                    }
+                    MarlinZCurrent_textBox.Text = Setting.Marlin_ZCurrent.ToString();
+                    SetMarlinZcurr(Setting.Marlin_ZCurrent);
+                    SettingMarlinZAxisParameters = false;
+                    return true;
+                }
+
+
+                // =================================================================================
+                // speed
+                private void MarlinZspeed_TextBox_KeyDown(object sender, KeyEventArgs e)
+                {
+                    double speed;
+                    if (!IsNumberOrEditKey(e.KeyValue))
+                    {
+                        e.SuppressKeyPress = true;
+                        return;
+                    }
+
+                    MarlinZspeed_TextBox.ForeColor = Color.Red;
+                    if (e.KeyValue == 0x0d) // enter  
+                    {
+                        if (double.TryParse(MarlinZspeed_TextBox.Text.Replace(',', '.'), out speed))
+                        {
+                            Setting.Marlin_Zspeed = speed;
+                            SetMarlinZspeed(speed);
+                            MarlinZspeed_TextBox.ForeColor = Color.Black;
+                        }
+                        e.Handled = true;   // supress the ding sound
                     }
                 }
-                e.Handled = true;   // supress the ding sound
-            }
-        }
 
-        // =================================================================================
-        // interpolate
-        private void MarlinZinterpolate_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Setting.Marlin_ZInterpolate = MarlinZinterpolate_checkBox.Checked;
-            if (!SettingMarlinZmotorParameters)
-            {
-                SetMarlinZstepping();
-            }
-        }
-
-        // =================================================================================
-        // 0.9 or 1.8 deg. per step?
-        private void MarlinZdeg09_radioButton_Click(object sender, EventArgs e)
-        {
-            MarlinZDegChange();
-        }
-
-        private void MarlinZdeg18_radioButton_Click(object sender, EventArgs e)
-        {
-            MarlinZDegChange();
-        }
-
-        private void MarlinZDegChange()
-        {
-            if (MarlinZdeg09_radioButton.Checked)
-            {
-                Setting.Marlin_ZDegPerStep = 0.9;
-            }
-            else
-            {
-                Setting.Marlin_ZDegPerStep = 0.9;
-            }
-            SetMarlinZstepping();
-        }
-
-        // =================================================================================
-        // travel per revolution
-        private void MarlinZtravelPerRev_textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double travel;
-            MarlinZtravelPerRev_textBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(MarlinZtravelPerRev_textBox.Text.Replace(',', '.'), out travel))
+                private bool SetMarlinZspeed(double speed)
                 {
-                    Setting.Marlin_ZTravelPerRev = travel;
+                    return Cnc.Marlin.Write_m("M203 X" + speed.ToString().Replace(',', '.'));
+                }
+
+                // =================================================================================
+                // acceleration
+                private void MarlinZacceleration_TextBox_KeyDown(object sender, KeyEventArgs e)
+                {
+                    double acc;
+                    if (!IsNumberOrEditKey(e.KeyValue))
+                    {
+                        e.SuppressKeyPress = true;
+                        return;
+                    }
+
+                    MarlinZacceleration_TextBox.ForeColor = Color.Red;
+                    if (e.KeyValue == 0x0d) // enter  
+                    {
+                        if (double.TryParse(MarlinZacceleration_TextBox.Text.Replace(',', '.'), out acc))
+                        {
+                            Setting.Marlin_Zacc = acc;
+                            SetMarlinZacc(acc);
+                            MarlinZacceleration_TextBox.ForeColor = Color.Black;
+                        }
+                        e.Handled = true;   // supress the ding sound
+                    }
+                }
+
+                private bool SetMarlinZacc(double acc)
+                {
+                    return Cnc.Marlin.Write_m("M201 X" + acc.ToString().Replace(',', '.'));
+                }
+
+
+                // =================================================================================
+                // homing
+
+                private void MarlinZhomingSpeed_TextBox_KeyDown(object sender, KeyEventArgs e)
+                {
+                    double speed;
+                    if (!IsNumberOrEditKey(e.KeyValue))
+                    {
+                        e.SuppressKeyPress = true;
+                        return;
+                    }
+
+                    MarlinZhomingSpeed_TextBox.ForeColor = Color.Red;
+                    if (e.KeyValue == 0x0d) // enter  
+                    {
+                        if (double.TryParse(MarlinZhomingSpeed_TextBox.Text.Replace(',', '.'), out speed))
+                        {
+                            Setting.Marlin_ZHomingSpeed = speed;  // Nothing done here, the value is used at homing
+                            MarlinZhomingSpeed_TextBox.ForeColor = Color.Black;
+                        }
+                        e.Handled = true;   // supress the ding sound
+                    }
+                }
+
+                private void MarlinZHomingAcceleration_TextBox_KeyDown(object sender, KeyEventArgs e)
+                {
+                    double acc;
+                    if (!IsNumberOrEditKey(e.KeyValue))
+                    {
+                        e.SuppressKeyPress = true;
+                        return;
+                    }
+
+                    MarlinZHomingAcceleration_TextBox.ForeColor = Color.Red;
+                    if (e.KeyValue == 0x0d) // enter  
+                    {
+                        if (double.TryParse(MarlinZHomingAcceleration_TextBox.Text.Replace(',', '.'), out acc))
+                        {
+                            Setting.Marlin_ZHomingAcc = acc;
+                            MarlinZHomingAcceleration_TextBox.ForeColor = Color.Black;
+                        }
+                        e.Handled = true;   // supress the ding sound
+                    }
+                }
+
+                private void MarlinZHomingBackoff_textBox_KeyDown(object sender, KeyEventArgs e)
+                {
+                    double Backoff;
+                    if (!IsNumberOrEditKey(e.KeyValue))
+                    {
+                        e.SuppressKeyPress = true;
+                        return;
+                    }
+
+                    MarlinZHomingBackoff_textBox.ForeColor = Color.Red;
+                    if (e.KeyValue == 0x0d) // enter  
+                    {
+                        if (double.TryParse(MarlinZHomingBackoff_textBox.Text.Replace(',', '.'), out Backoff))
+                        {
+                            Setting.Marlin_ZHomingBackoff = Backoff;
+                            MarlinZHomingBackoff_textBox.ForeColor = Color.Black;
+                        }
+                        e.Handled = true;   // supress the ding sound
+                    }
+                }
+
+                // =================================================================================
+                // microsteps
+                private void MarlinZmicrosteps_textBox_KeyDown(object sender, KeyEventArgs e)
+                {
+                    int usteps;
+                    if (!IsNumberOrEditKey(e.KeyValue))
+                    {
+                        e.SuppressKeyPress = true;
+                        return;
+                    }
+
+                    MarlinZHomingBackoff_textBox.ForeColor = Color.Red;
+                    if (e.KeyValue == 0x0d) // enter  
+                    {
+                        if (!IsPowerOfTwo(MarlinZmicrosteps_textBox.Text, out usteps))
+                        {
+                            return;
+                        }
+                        Setting.Marlin_ZMicroStep = usteps;
+                        SetMarlinZstepping();
+                        MarlinZmicrosteps_textBox.ForeColor = Color.Black;
+                        e.Handled = true;   // supress the ding sound
+                    }
+                }
+
+                // =================================================================================
+                // interpolate
+                private void MarlinZinterpolate_checkBox_CheckedChanged(object sender, EventArgs e)
+                {
+                    Setting.Marlin_ZInterpolate = MarlinZinterpolate_checkBox.Checked;
+                    if (!SettingMarlinZAxisParameters)
+                    {
+                        SetMarlinZstepping();
+                    }
+                }
+
+
+                // =================================================================================
+                // 0.9 or 1.8 deg. per step?
+                private void MarlinZdeg09_radioButton_Click(object sender, EventArgs e)
+                {
+                    MarlinZDegChange();
+                }
+
+                private void MarlinZdeg18_radioButton_Click(object sender, EventArgs e)
+                {
+                    MarlinZDegChange();
+                }
+
+                private void MarlinZDegChange()
+                {
+                    if (MarlinZdeg09_radioButton.Checked)
+                    {
+                        Setting.Marlin_ZDegPerStep = 0.9;
+                    }
+                    else
+                    {
+                        Setting.Marlin_ZDegPerStep = 1.8;
+                    }
                     SetMarlinZstepping();
-                    MarlinZtravelPerRev_textBox.ForeColor = Color.Black;
                 }
-                e.Handled = true;   // supress the ding sound
-            }
-        }
 
-        // =================================================================================
-        // motor current
-        private void MarlinZCurrent_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            int curr;
-            MarlinZCurrent_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (int.TryParse(MarlinZCurrent_maskedTextBox.Text, out curr))
+                // =================================================================================
+                // travel per revolution
+                private void MarlinZtravelPerRev_textBox_KeyDown(object sender, KeyEventArgs e)
                 {
-                    Setting.Marlin_ZCurrent = curr;
-                    SetMarlinZcurr(curr);
-                    MarlinZCurrent_maskedTextBox.ForeColor = Color.Black;
+                    double travel;
+                    if (!IsNumberOrEditKey(e.KeyValue))
+                    {
+                        e.SuppressKeyPress = true;
+                        return;
+                    }
+
+                    MarlinZtravelPerRev_textBox.ForeColor = Color.Red;
+                    if (e.KeyValue == 0x0d) // enter  
+                    {
+                        if (double.TryParse(MarlinZtravelPerRev_textBox.Text.Replace(',', '.'), out travel))
+                        {
+                            Setting.Marlin_ZTravelPerRev = travel;
+                            SetMarlinZstepping();
+                            MarlinZtravelPerRev_textBox.ForeColor = Color.Black;
+                        }
+                        e.Handled = true;   // supress the ding sound
+                    }
                 }
-                e.Handled = true;   // supress the ding sound
-            }
-        }
 
-        private bool SetMarlinZcurr(int curr)
-        {
-            return Cnc.Marlin.Write_m("M906 Z" + curr.ToString());
-        }
-
-        // =================================================================================
-        // homing
-
-        private void MarlinZhomingSpeed_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double speed;
-            MarlinZhomingSpeed_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(MarlinZhomingSpeed_maskedTextBox.Text.Replace(',', '.'), out speed))
+                // =================================================================================
+                // motor current
+                private void MarlinZCurrent_textBox_KeyDown(object sender, KeyEventArgs e)
                 {
-                    Setting.Marlin_ZHomingSpeed = speed;
-                    MarlinZhomingSpeed_maskedTextBox.ForeColor = Color.Black;
-                }
-                e.Handled = true;   // supress the ding sound
-            }
-        }
+                    double curr;
+                    if (!IsNumberOrEditKey(e.KeyValue))
+                    {
+                        e.SuppressKeyPress = true;
+                        return;
+                    }
 
-        private void MarlinZHomingBackoff_maskedTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            double backoff;
-            MarlinZHomingBackoff_maskedTextBox.ForeColor = Color.Red;
-            if (e.KeyChar == '\r')
-            {
-                if (double.TryParse(MarlinZHomingBackoff_maskedTextBox.Text.Replace(',', '.'), out backoff))
+                    MarlinZCurrent_textBox.ForeColor = Color.Red;
+                    if (e.KeyValue == 0x0d) // enter  
+                    {
+                        if (double.TryParse(MarlinZCurrent_textBox.Text.Replace(',', '.'), out curr))
+                        {
+                            Setting.Marlin_ZCurrent = curr;
+                            SetMarlinZcurr(curr);
+                            MarlinZCurrent_textBox.ForeColor = Color.Black;
+                        }
+                        e.Handled = true;   // supress the ding sound
+
+                    }
+                }
+                private bool SetMarlinZcurr(double curr)
                 {
-                    Setting.Marlin_ZHomingBackoff = backoff;
-                    MarlinZHomingBackoff_maskedTextBox.ForeColor = Color.Black;
+                    return Cnc.Marlin.Write_m("M906 X" + ((int)curr).ToString());
                 }
-                e.Handled = true;   // supress the ding sound
-            }
-        }
 
-        #endregion MarlinZmotor
-
+                // =================================================================================
+                // Stepping, depends on microsteps, degrees per step and travel per revolution
+                private bool SetMarlinZstepping()
+                {
+                    double steps = 360.0 / Setting.Marlin_ZDegPerStep;  // steps per revolution
+                    steps = Setting.Marlin_ZTravelPerRev / steps;       // whole steps per mm
+                    steps = steps * Setting.Marlin_ZMicroStep;
+                    return Cnc.Marlin.Write_m("M92 X" + steps.ToString());
+                }
+        #endregion MarlinZ
+      
         // =================================================================================
         // A motor
         // =================================================================================
@@ -798,7 +985,7 @@ namespace LitePlacer
                 return false;
             }
             MarlinACurrent_maskedTextBox.Text = Setting.Marlin_ACurrent.ToString();
-            SetMarlinAcurr(Setting.Marlin_ACurrent);
+            SetMarlinAcurr((int)Setting.Marlin_ACurrent);
             SettingMarlinAmotorParameters = false;
             return true;
         }

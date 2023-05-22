@@ -46,10 +46,9 @@ namespace LitePlacer
 
         public bool JustConnected()
         {
-            Write_m("M555 P6");     // set compatibility mode so that ok comes after command is done
-            if (!MainForm.SetMarlinXmotorParameters()) return false;
-            if (!MainForm.SetMarlinYmotorParameters()) return false;
-            if (!MainForm.SetMarlinZmotorParameters()) return false;
+            if (!MainForm.SetMarlinXAxisParameters()) return false;
+            if (!MainForm.SetMarlinYAxisParameters()) return false;
+            if (!MainForm.SetMarlinZAxisParameters()) return false;
             if (!MainForm.SetMarlinAmotorParameters()) return false;
             if (!SetMachineSizeX()) return false;
             if (!SetMachineSizeY()) return false;
@@ -184,13 +183,6 @@ namespace LitePlacer
         {
             // This is called from Cnc.LineReceived (called from SerialComm dataReceived),
             // and runs in a separate thread than UI            
-            if (line== "Z_move_comp")       
-            {
-                // in nanoDLP comm mode, this is received after moves. Discard (for now, notice it, though)
-                MainForm.DisplayText("--");
-                return;
-            }
-            MainForm.DisplayText("<== " + line);
             if (line == "ok")
             {
                 WriteBusy = false;

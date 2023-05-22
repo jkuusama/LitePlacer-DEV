@@ -46,14 +46,17 @@ namespace LitePlacer
         */
         public double Marlin_Xspeed { get; set; } = 5000; // mm/s
         public double Marlin_XHomingSpeed { get; set; } = 500; // mm/s
+        public double Marlin_XHomingAcc { get; set; } = 5; // mm
         public double Marlin_XHomingBackoff { get; set; } = 5; // mm
 
         public double Marlin_Yspeed { get; set; } = 5000; // mm/s
         public double Marlin_YHomingSpeed { get; set; } = 500; // mm/s
+        public double Marlin_YHomingAcc { get; set; } = 5; // mm
         public double Marlin_YHomingBackoff { get; set; } = 5; // mm
 
         public double Marlin_Zspeed { get; set; } = 50; // mm/s
         public double Marlin_ZHomingSpeed { get; set; } = 500; // mm/s
+        public double Marlin_ZHomingAcc { get; set; } = 5; // mm
         public double Marlin_ZHomingBackoff { get; set; } = 5; // mm
 
         public double Marlin_Aspeed { get; set; } = 200; // mm/s
@@ -83,10 +86,10 @@ namespace LitePlacer
         public bool Marlin_ZInterpolate { get; set; } = true;
         public bool Marlin_AInterpolate { get; set; } = true;
 
-        public int Marlin_XCurrent { get; set; } = 1100; //mA
-        public int Marlin_YCurrent { get; set; } = 1200; //mA
-        public int Marlin_ZCurrent { get; set; } = 1300; //mA
-        public int Marlin_ACurrent { get; set; } = 100; //mA
+        public double Marlin_XCurrent { get; set; } = 100; //mA
+        public double Marlin_YCurrent { get; set; } = 100; //mA
+        public double Marlin_ZCurrent { get; set; } = 100; //mA
+        public double Marlin_ACurrent { get; set; } = 100; //mA
         // =================================================================================
 
 
@@ -110,8 +113,11 @@ namespace LitePlacer
         public double CNC_RegularMoveTimeout { get; set; } = 10.0;
         public bool CNC_OptimizeA { get; set; } = true;
         public FormMain.ControlBoardType Controlboard { get; set; } = FormMain.ControlBoardType.unknown;
-        // must match CNC.cs definition of ControlBoardType
-        private string EndCharacters = "\n";
+        // used when connecting
+        public FormMain.ControlBoardType LastSeenControlboard { get; set; } = FormMain.ControlBoardType.unknown;
+        // prioritised on startup
+
+        private string EndCharacters = "\n";    // for development and debug
         public string Serial_EndCharacters
         {
             get
@@ -264,7 +270,7 @@ namespace LitePlacer
         public void setEOLchars(string val)
         {
             if (MainForm == null) return;       // startup
-            MainForm.EOL_textBox.Text = "test";
+            MainForm.SetEOL_textBoxText(val);
         }
 
         public bool Save(MySettings pSettings, string FileName)
