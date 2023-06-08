@@ -425,7 +425,7 @@ namespace LitePlacer
         {
             if (MainForm.InvokeRequired) { MainForm.Invoke(new Action<string>(LineReceived), new[] { line }); return; }
 
-            MainForm.DisplayText("<== " + line);
+            // MainForm.DisplayText("<== " + line);
             if (line.Contains("\", \"msg\":\"SYSTEM READY\"}"))     // TinyG reset message
             {
                 TinyG.LineReceived(line);  // This will raise error and give the user a message
@@ -457,6 +457,7 @@ namespace LitePlacer
         // receive line:
         public void UnknownBoardLineReceived(string line)
         {
+            MainForm.DisplayText("<== " + line);
             lock (ReceivedLines)
             {
                 ReceivedLines.Add(line);

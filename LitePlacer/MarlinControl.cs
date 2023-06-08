@@ -185,6 +185,7 @@ namespace LitePlacer
             // and runs in a separate thread than UI            
             if (line == "ok")
             {
+                MainForm.DisplayText("<== " + line);
                 WriteBusy = false;
                 return;
             }
@@ -195,7 +196,8 @@ namespace LitePlacer
             }
             if (!ExpectingResponse)
             {
-                MainForm.DisplayText("*** Marlin() - unsoliticed message", KnownColor.DarkRed, true);
+                MainForm.DisplayText("<=! " + line, KnownColor.DarkRed);
+                // MainForm.DisplayText("*** Marlin() - unsoliticed message", KnownColor.DarkRed, true);
             }
         }
 
