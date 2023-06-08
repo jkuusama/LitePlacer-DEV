@@ -166,8 +166,6 @@ namespace LitePlacer
             Setting = Setting.Load(path + APPLICATIONSETTINGS_DATAFILE);
             Setting.General_SaveFilesAtClosing = true;
 
-
-
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
@@ -4974,9 +4972,29 @@ namespace LitePlacer
         // =================================================================================
         // Logging textbox
 
-        Color DisplayTxtCol = Color.Black;
+        // Steal ctrl+C to copy with colors
+        private void SerialMonitor_richTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar == 0x03) && ((ModifierKeys & Keys.Control) == Keys.Control))
+            {
+                SetClipboardText();
+                e.Handled = true;
+            }
+        }
 
-        public void DisplayText(string txt, KnownColor col = KnownColor.Black, bool force = false)
+        private void SetClipboardText()
+        {
+            if (InvokeRequired) { Invoke(new Action(SetClipboardText)); return; }
+            DataObject dto = new DataObject();
+            dto.SetText(SerialMonitor_richTextBox.SelectedRtf, TextDataFormat.Rtf);
+            dto.SetText(SerialMonitor_richTextBox.Text, TextDataFormat.Text);
+            Clipboard.Clear();
+            Clipboard.SetDataObject(dto);
+        }
+
+
+        Color DisplayTxtCol = Color.Black;
+       public void DisplayText(string txt, KnownColor col = KnownColor.Black, bool force = false)
         {
             if (DisableLog_checkBox.Checked && !force)
             {
@@ -14240,7 +14258,6 @@ namespace LitePlacer
             val = val.Replace("n", "\n");
             Setting.Serial_EndCharacters = val;
         }
-
 
     }	// end of: 	public partial class FormMain : Form
 
