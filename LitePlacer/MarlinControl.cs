@@ -32,18 +32,6 @@ namespace LitePlacer
         // =================================================================================
         #region Communications
 
-        public bool CheckIdentity()
-        {
-            string resp = GetResponse_m("M115", 200, false);
-            if (resp.Contains("Duet 3"))
-            {
-                MainForm.DisplayText("Duet 3 board found.");
-                return true;
-            }
-            return false;
-        }
-
-
         public bool JustConnected()
         {
             if (!MainForm.SetMarlinXAxisParameters()) return false;
@@ -52,7 +40,6 @@ namespace LitePlacer
             if (!MainForm.SetMarlinAmotorParameters()) return false;
             if (!SetMachineSizeX()) return false;
             if (!SetMachineSizeY()) return false;
-            Write_m("M453");        // set cnc mode, so G0 is full speed
             return true;
         }
 
@@ -61,19 +48,12 @@ namespace LitePlacer
         // Read & write
         // ===================================================================
 
-        private bool LineAvailable = false;
-        private string ReceivedLine = "";
-        private bool WriteBusy = false;
-        private bool ExpectingResponse = false;
+        private Queue<string> ReceivedLines=new Queue<string>();
 
-        // so that we don't need to write lock... so many times
-        private void ClearReceivedLine()
-        {
-            lock (ReceivedLine)
-            {
-                ReceivedLine = "";
-            }
-        }
+        public bool ExpectingResponse = false; // to make note about unexpected messages
+        bool ResponseWanted = false;
+        private bool WriteBusy = false;
+        public bool LogCommunication = true;   // real-time monitoring would flood the log window
 
         // ===================================================================
         // Write_m
@@ -84,20 +64,32 @@ namespace LitePlacer
             if (!Com.IsOpen)
             {
                 MainForm.DisplayText("###" + cmd + " discarded, com not open");
-                ClearReceivedLine();
+                ReceivedLines.Clear();
                 return false;
             }
             if (Cnc.ErrorState)
             {
                 MainForm.DisplayText("###" + cmd + " discarded, error state on");
-                ClearReceivedLine();
+                ReceivedLines.Clear();
                 return false;
             }
 
             Timeout = Timeout / 2;
             int i = 0;
             WriteBusy = true;
-            bool WriteOk = Com.Write(cmd);
+            if (LogCommunication)
+            {
+                MainForm.DisplayText("==> " + cmd, KnownColor.Blue);
+            }
+            if (!Com.Write(cmd))
+            {
+                MainForm.ShowMessageBox(
+                    "Marlin.Write_m: Write failed on cmd " + cmd,
+                    "Write failed",
+                    MessageBoxButtons.OK);
+                ReceivedLines.Clear();
+                return false;
+            }
             while (WriteBusy)
             {
                 Thread.Sleep(2);
@@ -109,69 +101,53 @@ namespace LitePlacer
                         "Marlin.Write_m: Timeout on command " + cmd,
                         "Timeout",
                         MessageBoxButtons.OK);
-                    ClearReceivedLine();
+                    ReceivedLines.Clear();
                     return false;
                 }
             }
-            return WriteOk;
+            if (!ResponseWanted)
+            {
+                ReceivedLines.Clear();
+            }
+            return true;
         }
 
 
         // ===================================================================
         // GetResponse
         // Writes a command, returns a response. Failed write returns empty response.
-        public string GetResponse_m(string cmd, int Timeout = 250, bool report = true)
+        // Response is everything, including "ok"
+        // Line separator is \n
+        public List<string> GetResponse_m(string cmd, out bool success, int Timeout = 500)
         {
-            string line;
+            List<string> response = new List<string>();
 
             if (!Com.IsOpen)
             {
-                if (report)
-                {
-                    MainForm.DisplayText("###" + cmd + " discarded, com not open");
-                }
-                ClearReceivedLine();
-                return "";
+                MainForm.DisplayText("###" + cmd + " discarded, com not open");
+                ReceivedLines.Clear();
+                success = false;
+                return response;
             }
             if (Cnc.ErrorState)
             {
-                if (report)
-                {
-                    MainForm.DisplayText("###" + cmd + " discarded, error state on");
-                }
-                ClearReceivedLine();
-                return "";
+                MainForm.DisplayText("###" + cmd + " discarded, error state on");
+                ReceivedLines.Clear();
+                success = false;
+                return response;
             }
 
-            Timeout = Timeout / 2;
-            int i = 0;
-            LineAvailable = false;
             ExpectingResponse = true;
-            Com.Write(cmd);
-            while (!LineAvailable)
+            ResponseWanted = true;
+            success = Write_m(cmd, Timeout);
+            ResponseWanted = false;
+            ExpectingResponse = false;
+            lock (ReceivedLines)
             {
-                Thread.Sleep(2);
-                Application.DoEvents();
-                i++;
-                if (i > Timeout)
-                {
-                    if (report)
-                    {
-                        MainForm.ShowMessageBox(
-                            "Marlin.Write_m: Timeout on command " + cmd,
-                            "Timeout",
-                            MessageBoxButtons.OK);
-                    }
-                    ClearReceivedLine();
-                    return "";
-                }
+                response=ReceivedLines.ToList();
+                ReceivedLines.Clear();
             }
-            lock (ReceivedLine)
-            {
-                line = ReceivedLine;
-                ExpectingResponse=false;
-            }
-            return line;
+            return response;
         }
 
 
@@ -185,41 +161,31 @@ namespace LitePlacer
             // and runs in a separate thread than UI            
             if (line == "ok")
             {
-                MainForm.DisplayText("<== " + line);
+                if (LogCommunication)
+                {
+                    MainForm.DisplayText("<== " + line);
+                }
                 WriteBusy = false;
                 return;
             }
-            lock (ReceivedLine)
+            lock (ReceivedLines)
             {
-                ReceivedLine = line;
-                LineAvailable = true;
+                ReceivedLines.Enqueue(line);
             }
-            if (!ExpectingResponse)
+            if (LogCommunication)
             {
-                MainForm.DisplayText("<=! " + line, KnownColor.DarkRed);
-                // MainForm.DisplayText("*** Marlin() - unsoliticed message", KnownColor.DarkRed, true);
+                if (!ExpectingResponse)
+                {
+                    MainForm.DisplayText("<=! " + line, KnownColor.DarkRed);
+                    // MainForm.DisplayText("*** Marlin() - unsoliticed message", KnownColor.DarkRed, true);
+                }
+                else
+                {
+                    MainForm.DisplayText("<== " + line);
+                }
             }
+
         }
-
-
-        // ===================================================================
-        // For operations that don't give response
-        // Caller does waiting, if needed.
-        public bool RawWrite(string command)
-        {
-            if (!Com.IsOpen)
-            {
-                MainForm.DisplayText("###" + command + " discarded, com not open");
-                return false;
-            }
-            if (Cnc.ErrorState)
-            {
-                MainForm.DisplayText("###" + command + " discarded, error state on");
-                return false;
-            }
-            return Com.Write(command);
-        }
-
 
         #endregion Communications
 
@@ -578,6 +544,33 @@ namespace LitePlacer
             MainForm.ShowMessageBox("Unimplemented Marlin function EnableZswitches", "Unimplemented function", MessageBoxButtons.OK);
         }
 
+        public bool GetEndStopStatuses(out List<int> Statuses, bool show)
+        {
+            List<int> stats = new List<int> { 0, -1, 0, -1, 0, -1, 0, -1 };
+            // Xmin, Xmax, Ymin, Ymax, Zmin, Zmax. 1= not active, 0= active, -1= not present
+            // FOR NOW: only min switches
+            List<string> response = new List<string>(GetResponse_m("m119", out bool success));
+            if (!success)
+            {
+                Statuses = stats;
+                return false;
+            }
+            if (response.Count!=4)
+            {
+                MainForm.DisplayText("Marlin.GetEndStopStatuses: Unexpected response:", KnownColor.DarkRed, true);
+                foreach (string s in response)
+                {
+                    MainForm.DisplayText(s, KnownColor.DarkRed, true);
+                }
+                Statuses = stats;
+                return false;
+            }
+            if (response[1].Contains("open")) stats[0] = 1;
+            if (response[2].Contains("open")) stats[2] = 1;
+            if (response[3].Contains("open")) stats[4] = 1;
+            Statuses = stats;
+            return true;
+        }
 
         public bool Nozzle_ProbeDown(double backoff)
         {

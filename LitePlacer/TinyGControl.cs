@@ -104,6 +104,8 @@ namespace LitePlacer
                 return false;
             }
 
+            MainForm.DisplayText("==> " + cmd, KnownColor.Blue);
+
             BlockingWriteDone = false;
             Thread t = new Thread(() => BlockingWrite_thread(cmd));
             t.IsBackground = true;
@@ -138,19 +140,20 @@ namespace LitePlacer
 
         // For operations that cause conflicts with event firings or don't give response
         // Caller does waiting, if needed.
-        public bool RawWrite(string command)
+        public bool RawWrite(string cmd)
         {
             if (!Com.IsOpen)
             {
-                MainForm.DisplayText("###" + command + " discarded, com not open");
+                MainForm.DisplayText("###" + cmd + " discarded, com not open");
                 return false;
             }
             if (Cnc.ErrorState)
             {
-                MainForm.DisplayText("###" + command + " discarded, error state on");
+                MainForm.DisplayText("###" + cmd + " discarded, error state on");
                 return false;
             }
-            return Com.Write(command);
+            MainForm.DisplayText("==> " + cmd, KnownColor.Blue);
+            return Com.Write(cmd);
         }
 
 

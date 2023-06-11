@@ -158,7 +158,6 @@ namespace LitePlacer
                 if (Port.IsOpen)
                 {
                     Port.Write(TxText + MainForm.Setting.Serial_EndCharacters);
-                    MainForm.DisplayText("==> " + TxText, KnownColor.Blue);
                 }
                 else
                 {

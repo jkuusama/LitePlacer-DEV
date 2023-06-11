@@ -237,6 +237,12 @@
     <Compile Include="SerialComm.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Shapes.cs" />
+    <Compile Include="SwitchTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SwitchTest.Designer.cs">
+      <DependentUpon>SwitchTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="TapeEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -301,6 +307,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SwitchTest.resx">
+      <DependentUpon>SwitchTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TapeEdit.resx">
       <DependentUpon>TapeEdit.cs</DependentUpon>
     </EmbeddedResource>

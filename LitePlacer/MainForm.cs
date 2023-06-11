@@ -4838,6 +4838,7 @@ namespace LitePlacer
             Motors_label.Text = "Control board not connected.";
             TinyGMotors_tabControl.Visible = false;
             MarlinMotors_tabControl.Visible = false;
+            TestLimitSwitches_button.Visible = false;
 
 
             // When first starting, there is no default port. Trying to connect to a random port is 
@@ -4920,28 +4921,33 @@ namespace LitePlacer
                 case ControlBoardType.TinyG:
                     Motors_label.Text = "Axes setup (TinyG board):";
                     MarlinMotors_tabControl.Visible = false;
+                    TestLimitSwitches_button.Visible = false;
                     TinyGMotors_tabControl.Visible = true;
                     return;
                 case ControlBoardType.Marlin:
                     Motors_label.Text = "Axes setup (Marlin board):";
                     TinyGMotors_tabControl.Visible = false;
                     MarlinMotors_tabControl.Visible = true;
-                    return;
+                    TestLimitSwitches_button.Visible = true;
+                return;
                 case ControlBoardType.unknown:
                     Motors_label.Text = "Connected to unknown board";
                     TinyGMotors_tabControl.Visible = false;
                     MarlinMotors_tabControl.Visible = false;
-                    return;
+                    TestLimitSwitches_button.Visible = false;
+                return;
                 case ControlBoardType.other:            // should not happen
                     Motors_label.Text = "Connected to \"other\" type board";
                     TinyGMotors_tabControl.Visible = false;
                     MarlinMotors_tabControl.Visible = false;
-                    return;
+                    TestLimitSwitches_button.Visible = false;
+                return;
                 default:            // should not happen
                     Motors_label.Text = "Connected to unknown (default) board";
                     TinyGMotors_tabControl.Visible = false;
                     MarlinMotors_tabControl.Visible = false;
-                    return;        // should not happen
+                    TestLimitSwitches_button.Visible = false;
+                return;        // should not happen
             }
 
 
@@ -4972,28 +4978,7 @@ namespace LitePlacer
         // =================================================================================
         // Logging textbox
 
-        // Steal ctrl+C to copy with colors
-        private void SerialMonitor_richTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if ((e.KeyChar == 0x03) && ((ModifierKeys & Keys.Control) == Keys.Control))
-            {
-                SetClipboardText();
-                e.Handled = true;
-            }
-        }
-
-        private void SetClipboardText()
-        {
-            if (InvokeRequired) { Invoke(new Action(SetClipboardText)); return; }
-            DataObject dto = new DataObject();
-            dto.SetText(SerialMonitor_richTextBox.SelectedRtf, TextDataFormat.Rtf);
-            dto.SetText(SerialMonitor_richTextBox.Text, TextDataFormat.Text);
-            Clipboard.Clear();
-            Clipboard.SetDataObject(dto);
-        }
-
-
-        Color DisplayTxtCol = Color.Black;
+       Color DisplayTxtCol = Color.Black;
        public void DisplayText(string txt, KnownColor col = KnownColor.Black, bool force = false)
         {
             if (DisableLog_checkBox.Checked && !force)
@@ -5460,7 +5445,15 @@ namespace LitePlacer
                 return;
             CNC_A_m(0);
         }
+        // =======================================
+        private void TestLimitSwitches_button_Click(object sender, EventArgs e)
+        {
+            DisplayText("Open switch test window", KnownColor.DarkGreen, true);
+            SwitchTest SwitchTestWin = new SwitchTest(this);
+            SwitchTestWin.Show(this);
+        }
 
+        // =======================================
         #endregion
 
         private void MotorPower_checkBox_Click(object sender, EventArgs e)

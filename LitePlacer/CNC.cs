@@ -415,6 +415,7 @@ namespace LitePlacer
         // Write, that doesn't care what we think of the board or communication link status
         public void ForceWrite(string command)
         {
+            MainForm.DisplayText("==> " + command, KnownColor.Blue);
             Com.Write(command);
         }
 
@@ -593,6 +594,7 @@ namespace LitePlacer
             Thread.Sleep(100);  // TinyG wake up delay
             MainForm.Setting.Serial_EndCharacters = "\n";
             ClearReceivedBuffers();
+            MainForm.DisplayText("==> /Xon{sr:n}", KnownColor.Blue);
             Com.Write("\x11{sr:n}");  // Xon + status request
             int delay = 0;
             while (delay < 50)
@@ -638,6 +640,7 @@ namespace LitePlacer
             MainForm.Setting.Serial_EndCharacters = "\n\r";
             ClearReceivedBuffers();
             Thread.Sleep(50);
+            MainForm.DisplayText("==> M115", KnownColor.Blue);
             Com.Write("M115");
             int delay = 0;
             while (delay < 50)
@@ -913,6 +916,39 @@ namespace LitePlacer
             return false;
         }
 
+        public bool GetEndStopStatuses(out List<int> Statuses, bool Show)
+        {
+            Statuses = new List<int>();
+            Statuses.Clear();
+            if (ErrorState)
+            {
+                if (Show)
+                {
+                    MainForm.DisplayText("*** Cnc.GetEndStopStatuses(), board in error state.", KnownColor.DarkRed, true);
+                }
+                return false;
+            }
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            {
+                return Marlin.GetEndStopStatuses(out Statuses, Show);
+            }
+            else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
+            {
+                if (Show)
+                {
+                    MainForm.DisplayText("*** Cnc.GetEndStopStatuses(), TinyG does not have the function!", KnownColor.DarkRed, true);
+                }
+                return false;
+            }
+            else
+            {
+                if (Show)
+                {
+                    MainForm.DisplayText("*** Cnc.GetEndStopStatuses(), unknown board", KnownColor.DarkRed, true);
+                }
+                return false;
+            }
+        }
 
         // =============================================================================================
 
