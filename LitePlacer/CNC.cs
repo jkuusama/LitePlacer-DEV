@@ -619,6 +619,7 @@ namespace LitePlacer
             if (resp.Contains("{\"r\":") || resp.Contains("tinyg"))
             {
                 MainForm.DisplayText("TinyG board found.");
+
                 MainForm.Setting.Controlboard = FormMain.ControlBoardType.TinyG;
                 MainForm.Setting.LastSeenControlboard = FormMain.ControlBoardType.TinyG;
                 TinyG.LineReceived(resp);   // updates position info
@@ -664,7 +665,13 @@ namespace LitePlacer
             string resp = ReadLine();
             if (resp.Contains("FIRMWARE_NAME:Marlin"))
             {
-                MainForm.DisplayText("Marlin board found.");
+                // MainForm.DisplayText("Marlin board found.");
+                MainForm.ShowMessageBox(
+                    "Found a Marlin board, but it is not supported by this firmware!\n\r"+
+                    "Continue for developers only!",
+                    "Marlin board found",
+                    MessageBoxButtons.OK);
+
                 MainForm.Setting.Controlboard = FormMain.ControlBoardType.Marlin;
                 MainForm.Setting.LastSeenControlboard = FormMain.ControlBoardType.Marlin;
                 ClearReceivedBuffers();     // remove ok

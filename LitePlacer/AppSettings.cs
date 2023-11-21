@@ -36,6 +36,7 @@ namespace LitePlacer
 
         public FormMain MainForm;
 
+#region Marlin
         // =================================================================================
         /*
         Marlin_xxx should be in MarlinSettings.cs in a
@@ -90,8 +91,9 @@ namespace LitePlacer
         public double Marlin_YCurrent { get; set; } = 100; //mA
         public double Marlin_ZCurrent { get; set; } = 100; //mA
         public double Marlin_ACurrent { get; set; } = 100; //mA
-        // =================================================================================
 
+#endregion Marlin
+        // =================================================================================
 
         public bool Cam_ShowPixels { get; set; } = false;
         public bool Cameras_KeepActive { get; set; } = false;

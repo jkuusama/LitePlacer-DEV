@@ -359,6 +359,10 @@ namespace LitePlacer
 
         public bool Home_m(string axis)
         {
+            MainForm.ShowMessageBox("Unimplemented Marlin function Home_m: axis " + axis,
+                "Unimplemented function", MessageBoxButtons.OK);
+            return false;
+            /*
             double HomingSpeed = 0;
             double HomingBackoff = 0;
             string BackoffSpeedStr = MainForm.Setting.CNC_SmallMovementSpeed.ToString();
@@ -435,6 +439,7 @@ namespace LitePlacer
 
             MainForm.DisplayText("Homing " + axis + " done.");
             return true;
+            */
         }
 
 

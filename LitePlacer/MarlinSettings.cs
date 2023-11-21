@@ -938,10 +938,10 @@ namespace LitePlacer
                     return Cnc.Marlin.Write_m("M906 X" + ((int)curr).ToString());
                 }
 
-                // =================================================================================
-                // Stepping, depends on microsteps, degrees per step and travel per revolution
-                private bool SetMarlinZstepping()
-                {
+        // =================================================================================
+        // Stepping, depends on microsteps, degrees per step and travel per revolution
+        private bool SetMarlinZstepping()
+        {
             double steps = 360.0 / Setting.Marlin_ZDegPerStep;  // steps per revolution
             steps = steps / Setting.Marlin_ZTravelPerRev;       // whole steps per mm
             steps = steps * Setting.Marlin_ZMicroStep;
