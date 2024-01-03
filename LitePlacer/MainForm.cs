@@ -165,8 +165,6 @@ namespace LitePlacer
             Setting = Setting.Load(path + APPLICATIONSETTINGS_DATAFILE);
             Setting.General_SaveFilesAtClosing = true;
 
-
-
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Cnc = new CNC(this);
@@ -4972,6 +4970,38 @@ namespace LitePlacer
         }
         // =================================================================================
         // Logging textbox
+
+        // Steal ctrl+C to copy with colors
+        private void SerialMonitor_richTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar == 0x03) && ((ModifierKeys & Keys.Control) == Keys.Control))
+            {
+                SetClipboardText(true);
+                e.Handled = true;
+            }
+            if ((e.KeyChar == 0x04) && ((ModifierKeys & Keys.Control) == Keys.Control))
+            {
+                SetClipboardText(false);
+                e.Handled = true;
+            }
+        }
+
+        private void SetClipboardText(bool RichText)
+        {
+            if (InvokeRequired) { Invoke(new Action<bool>(SetClipboardText), new[] { RichText }); return; }
+ 
+            DataObject dto = new DataObject();
+            if (RichText)
+            {
+                dto.SetText(SerialMonitor_richTextBox.SelectedRtf, TextDataFormat.Rtf);
+            }
+            else
+            {
+                dto.SetText(SerialMonitor_richTextBox.Text, TextDataFormat.Text);
+            }
+            Clipboard.Clear();
+            Clipboard.SetDataObject(dto);
+        }
 
         Color DisplayTxtCol = Color.Black;
 
