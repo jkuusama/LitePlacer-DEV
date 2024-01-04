@@ -37,6 +37,7 @@ namespace LitePlacer
         public FormMain MainForm;
 
         // =================================================================================
+        #region Marlin
         /*
         Marlin_xxx should be in MarlinSettings.cs in a
             public partial class MySettings
@@ -88,7 +89,7 @@ namespace LitePlacer
         public int Marlin_ZCurrent { get; set; } = 1300; //mA
         public int Marlin_ACurrent { get; set; } = 100; //mA
         // =================================================================================
-
+        #endregion Marlin
 
         public bool Cam_ShowPixels { get; set; } = false;
         public bool Cameras_KeepActive { get; set; } = false;
@@ -235,6 +236,8 @@ namespace LitePlacer
         public double DownCam_Zoomfactor { get; set; } = 1.5;
         public string DowncamMoniker { get; set; } = "";
         public string Downcam_Name { get; set; } = "";
+        public bool Downcam_Mirror { get; set; } = false;
+
         public int DownCam_DesiredX { get; set; } = 1280;
         public int DownCam_DesiredY { get; set; } = 1024;
         public bool DownCam_UseMaxResolution = true;
@@ -253,6 +256,7 @@ namespace LitePlacer
         public double UpCam_Zoomfactor { get; set; } = 1.5;
         public string UpcamMoniker { get; set; } = "";
         public string Upcam_Name { get; set; } = "";
+        public bool Upcam_Mirror { get; set; } = true;
         public int UpCam_DesiredX { get; set; } = 1280;
         public int UpCam_DesiredY { get; set; } = 1024;
         public bool UpCam_UseMaxResolution = true;

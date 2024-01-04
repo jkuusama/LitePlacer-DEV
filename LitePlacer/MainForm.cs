@@ -304,6 +304,7 @@ namespace LitePlacer
             DownCamZoom_checkBox.Checked = Setting.DownCam_Zoom;
             DownCamera.ZoomIsOn = Setting.DownCam_Zoom;
             DownCamera.ZoomFactor = Setting.DownCam_Zoomfactor;
+            DowncamMirror_checkBox.Checked = Setting.Downcam_Mirror;
 
             UpCamera.ImageBox = Cam_pictureBox;
             UpCamera.DrawCross = Setting.UpCam_DrawCross;
@@ -316,6 +317,8 @@ namespace LitePlacer
             UpCamZoom_checkBox.Checked = Setting.UpCam_Zoom;
             UpCamera.ZoomIsOn = Setting.UpCam_Zoom;
             UpCamera.ZoomFactor = Setting.UpCam_Zoomfactor;
+            UpcamMirror_checkBox.Checked = Setting.Upcam_Mirror;
+
 
             ShowPixels_checkBox.Checked = Setting.Cam_ShowPixels;
 
@@ -3463,7 +3466,7 @@ namespace LitePlacer
             DownCamera.BoxSizeX = 200;
             DownCamera.BoxSizeY = 200;
             DownCamera.BoxRotationDeg = 0;
-            DownCamera.Mirror = false;
+            DownCamera.Mirror = Setting.Downcam_Mirror;
             DownCamera.ClearDisplayFunctionsList();
             DownCamera.SnapshotColor = Setting.DownCam_SnapshotColor;
             // Draws
@@ -3514,7 +3517,8 @@ namespace LitePlacer
             UpCamera.BoxSizeX = 200;
             UpCamera.BoxSizeY = 200;
             UpCamera.BoxRotationDeg = 0;
-            UpCamera.Mirror = true;
+            UpCamera.Mirror = Setting.Upcam_Mirror;
+
             UpCamera.ClearDisplayFunctionsList();
             UpCamera.SnapshotColor = Setting.UpCam_SnapshotColor;
             // Draws
@@ -9319,26 +9323,6 @@ namespace LitePlacer
 
 
         // =================================================================================
-        // GetCorrentionForPartAtNozzle():
-        // takes a look from Upcam, sets the correction values for the part at Nozzle
-        private bool GetCorrentionForPartAtNozzle(out double dX, out double dY, out double dA)
-        {
-            SelectCamera(UpCamera);
-            dX = 0;
-            dY = 0;
-            dA = 0;
-
-            if (!UpCamera.IsRunning())
-            {
-                SelectCamera(DownCamera);
-                return false;
-            }
-            // xxx SetUpCamComponentsMeasurement();
-            return false;
-        }
-
-
-        // =================================================================================
         // BuildMachineCoordinateData_m routine builds the machine coordinates data 
         // based on fiducials true (machine coord) location.
         // =================================================================================
@@ -14236,6 +14220,18 @@ namespace LitePlacer
             {
                 NegativeMoveY_textBox.ForeColor = Color.Red;
             }
+        }
+
+        private void DowncamMirror_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.Downcam_Mirror = DowncamMirror_checkBox.Checked;
+            DownCamera.Mirror = Setting.Downcam_Mirror;
+        }
+
+        private void UpcamMirror_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Setting.Upcam_Mirror = UpcamMirror_checkBox.Checked;
+            UpCamera.Mirror = Setting.Upcam_Mirror;
         }
     }	// end of: 	public partial class FormMain : Form
 
