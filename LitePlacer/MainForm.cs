@@ -62,7 +62,7 @@ namespace LitePlacer
     public partial class FormMain : Form
     {
         public CNC Cnc { get; set; }
-        public enum ControlBoardType { TinyG, Marlin, other, unknown };
+        public enum ControlBoardType { TinyG, SKR3, other, unknown };
 
         Camera DownCamera;
         Camera UpCamera;
@@ -2963,7 +2963,7 @@ namespace LitePlacer
         [DebuggerStepThrough]
         private void MotorPower_timer_Tick(object sender, EventArgs e)
         {
-            if (Setting.Controlboard == ControlBoardType.Marlin)
+            if (Setting.Controlboard == ControlBoardType.SKR3)
             {
                 return;
             }
@@ -4925,8 +4925,8 @@ namespace LitePlacer
                     MarlinMotors_tabControl.Visible = false;
                     TinyGMotors_tabControl.Visible = true;
                     return;
-                case ControlBoardType.Marlin:
-                    Motors_label.Text = "Axes setup (Duet 3 board):";
+                case ControlBoardType.SKR3:
+                    Motors_label.Text = "Axes setup (SKR 3 board):";
                     TinyGMotors_tabControl.Visible = false;
                     MarlinMotors_tabControl.Visible = true;
                     return;

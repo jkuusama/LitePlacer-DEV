@@ -28,7 +28,7 @@ namespace LitePlacer
 		}
 
 		// ========================================================================================
-		// ClearAll(): Resets TapeNumber positions and pickup/place Z's.
+		// ClearAll(): Resets TapeNumber positions and pickup/place Z's. test
 		public void ClearAll()
 		{
             DialogResult dialogResult = MainForm.ShowMessageBox(
@@ -457,7 +457,7 @@ namespace LitePlacer
             {
                 if ((pos % 2) == 0)
                 {
-                    dL = 0.0;
+                    dL = 2.0 - dL;
                 }
             }
 

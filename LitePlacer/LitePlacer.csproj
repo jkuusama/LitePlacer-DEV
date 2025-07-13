@@ -191,8 +191,8 @@
     <Compile Include="LatchBackoff.Designer.cs">
       <DependentUpon>LatchBackoff.cs</DependentUpon>
     </Compile>
-    <Compile Include="MarlinControl.cs" />
-    <Compile Include="MarlinSettings.cs">
+    <Compile Include="SKR3Control.cs" />
+    <Compile Include="SKR3Settings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NonModalDialog.cs">

@@ -13,13 +13,13 @@ using System.Runtime.InteropServices;
 
 namespace LitePlacer
 {
-    public class Marlinclass
+    public class SKR3class
     {
         FormMain MainForm;
         CNC Cnc;
         SerialComm Com;
 
-        public Marlinclass(FormMain MainF, CNC C, SerialComm ser)
+        public SKR3class(FormMain MainF, CNC C, SerialComm ser)
         {
             MainForm = MainF;
             Cnc = C;
@@ -46,14 +46,7 @@ namespace LitePlacer
 
         public bool JustConnected()
         {
-            Write_m("M555 P6");     // set compatibility mode so that ok comes after command is done
-            if (!MainForm.SetMarlinXmotorParameters()) return false;
-            if (!MainForm.SetMarlinYmotorParameters()) return false;
-            if (!MainForm.SetMarlinZmotorParameters()) return false;
-            if (!MainForm.SetMarlinAmotorParameters()) return false;
-            if (!SetMachineSizeX()) return false;
-            if (!SetMachineSizeY()) return false;
-            Write_m("M453");        // set cnc mode, so G0 is full speed
+            MainForm.DisplayText("SKR3class.JustConnected()");
             return true;
         }
 
@@ -107,7 +100,7 @@ namespace LitePlacer
                 if (i > Timeout)
                 {
                     MainForm.ShowMessageBox(
-                        "Marlin.Write_m: Timeout on command " + cmd,
+                        "SKR3.Write_m: Timeout on command " + cmd,
                         "Timeout",
                         MessageBoxButtons.OK);
                     ClearReceivedLine();
@@ -159,7 +152,7 @@ namespace LitePlacer
                     if (report)
                     {
                         MainForm.ShowMessageBox(
-                            "Marlin.Write_m: Timeout on command " + cmd,
+                            "SKR3.Write_m: Timeout on command " + cmd,
                             "Timeout",
                             MessageBoxButtons.OK);
                     }
@@ -178,18 +171,10 @@ namespace LitePlacer
 
         // ===================================================================
 
-        // Position info is stored here on start of the move, and PositionUpdateRequired
-        // is set. If set, "ok" message updates the UI.
         public void LineReceived(string line)
         {
             // This is called from Cnc.LineReceived (called from SerialComm dataReceived),
             // and runs in a separate thread than UI            
-            if (line== "Z_move_comp")       
-            {
-                // in nanoDLP comm mode, this is received after moves. Discard (for now, notice it, though)
-                MainForm.DisplayText("--");
-                return;
-            }
             MainForm.DisplayText("<== " + line);
             if (line == "ok")
             {
@@ -203,7 +188,7 @@ namespace LitePlacer
             }
             if (!ExpectingResponse)
             {
-                MainForm.DisplayText("*** Marlin() - unsoliticed message", KnownColor.DarkRed, true);
+                MainForm.DisplayText("*** SKR3() - unsoliticed message", KnownColor.DarkRed, true);
             }
         }
 
@@ -239,7 +224,7 @@ namespace LitePlacer
             if (!double.TryParse(pos.Replace(',', '.'), out val))
             {
                 MainForm.ShowMessageBox(
-                    "Marlin.SetXposition() called with bad value " + pos,
+                    "SKR3.SetXposition() called with bad value " + pos,
                     "BUG",
                     MessageBoxButtons.OK);
                 return false;
@@ -248,7 +233,7 @@ namespace LitePlacer
             if (!Write_m("G92 X" + pos))
             {
                 MainForm.ShowMessageBox(
-                    "Marlin G92 X" + pos + " failed",
+                    "SKR3 G92 X" + pos + " failed",
                     "comm err?",
                     MessageBoxButtons.OK);
                 return false;
@@ -262,7 +247,7 @@ namespace LitePlacer
             if (!double.TryParse(pos.Replace(',', '.'), out val))
             {
                 MainForm.ShowMessageBox(
-                    "Marlin.SetYposition() called with bad value " + pos,
+                    "SKR3.SetYposition() called with bad value " + pos,
                     "BUG",
                     MessageBoxButtons.OK);
                 return false;
@@ -271,7 +256,7 @@ namespace LitePlacer
             if (!Write_m("G92 Y" + pos))
             {
                 MainForm.ShowMessageBox(
-                    "Marlin G92 Y" + pos + " failed",
+                    "SKR3 G92 Y" + pos + " failed",
                     "comm err?",
                     MessageBoxButtons.OK);
                 return false;
@@ -285,7 +270,7 @@ namespace LitePlacer
             if (!double.TryParse(pos.Replace(',', '.'), out val))
             {
                 MainForm.ShowMessageBox(
-                    "Marlin.SetZposition() called with bad value " + pos,
+                    "SKR3.SetZposition() called with bad value " + pos,
                     "BUG",
                     MessageBoxButtons.OK);
                 return false;
@@ -294,7 +279,7 @@ namespace LitePlacer
             if (!Write_m("G92 Z" + pos))
             {
                 MainForm.ShowMessageBox(
-                    "Marlin G92 Z" + pos + " failed",
+                    "SKR3 G92 Z" + pos + " failed",
                     "comm err?",
                     MessageBoxButtons.OK);
                 return false;
@@ -308,7 +293,7 @@ namespace LitePlacer
             if (!double.TryParse(pos.Replace(',', '.'), out val))
             {
                 MainForm.ShowMessageBox(
-                    "Marlin.SetAposition() called with bad value " + pos,
+                    "SKR3.SetAposition() called with bad value " + pos,
                     "BUG",
                     MessageBoxButtons.OK);
                 return false;
@@ -317,7 +302,7 @@ namespace LitePlacer
             if (!Write_m("G92 A" + pos))
             {
                 MainForm.ShowMessageBox(
-                    "Marlin G92 A" + pos + " failed",
+                    "SKR3 G92 A" + pos + " failed",
                     "comm err?",
                     MessageBoxButtons.OK);
                 return false;
@@ -350,14 +335,14 @@ namespace LitePlacer
 
         public void CancelJog()
         {
-            MainForm.ShowMessageBox("Unimplemented Marlin function CancelJog", "Unimplemented function", MessageBoxButtons.OK);
+            MainForm.ShowMessageBox("Unimplemented SKR3 function CancelJog", "Unimplemented function", MessageBoxButtons.OK);
         }
 
 
 
         public void Jog(string Speed, string X, string Y, string Z, string A)
         {
-            MainForm.ShowMessageBox("Unimplemented Marlin function Jog", "Unimplemented function", MessageBoxButtons.OK);
+            MainForm.ShowMessageBox("Unimplemented SKR3 function Jog", "Unimplemented function", MessageBoxButtons.OK);
         }
 
         // =================================================================================
@@ -371,17 +356,17 @@ namespace LitePlacer
             switch (axis)
             {
                 case "X":
-                    Speed = MainForm.Setting.Marlin_XHomingSpeed;
+                    Speed = MainForm.Setting.SKR3_XHomingSpeed;
                     size = MainForm.Setting.General_MachineSizeX;
                     break;
 
                 case "Y":
-                    Speed = MainForm.Setting.Marlin_YHomingSpeed;
+                    Speed = MainForm.Setting.SKR3_YHomingSpeed;
                     size = MainForm.Setting.General_MachineSizeY;
                     break;
 
                 case "Z":
-                    Speed = MainForm.Setting.Marlin_ZHomingSpeed;
+                    Speed = MainForm.Setting.SKR3_ZHomingSpeed;
                     size = 100.0;
                     break;
 
@@ -407,22 +392,22 @@ namespace LitePlacer
             switch (axis)
             {
                 case "X":
-                    HomingSpeed = MainForm.Setting.Marlin_XHomingSpeed;
-                    HomingBackoff = MainForm.Setting.Marlin_XHomingBackoff;
+                    HomingSpeed = MainForm.Setting.SKR3_XHomingSpeed;
+                    HomingBackoff = MainForm.Setting.SKR3_XHomingBackoff;
                     MainForm.Update_Xposition();
                     break;
                 case "Y":
-                    HomingSpeed = MainForm.Setting.Marlin_YHomingSpeed;
-                    HomingBackoff = MainForm.Setting.Marlin_YHomingBackoff;
+                    HomingSpeed = MainForm.Setting.SKR3_YHomingSpeed;
+                    HomingBackoff = MainForm.Setting.SKR3_YHomingBackoff;
                     MainForm.Update_Yposition();
                     break;
                 case "Z":
-                    HomingSpeed = MainForm.Setting.Marlin_ZHomingSpeed;
-                    HomingBackoff = MainForm.Setting.Marlin_ZHomingBackoff;
+                    HomingSpeed = MainForm.Setting.SKR3_ZHomingSpeed;
+                    HomingBackoff = MainForm.Setting.SKR3_ZHomingBackoff;
                     MainForm.Update_Zposition();
                     break;
                 default:
-                    MainForm.ShowMessageBox("Unimplemented Marlin function Home_m: axis " + axis,
+                    MainForm.ShowMessageBox("Unimplemented SKR3 function Home_m: axis " + axis,
                         "Unimplemented function", MessageBoxButtons.OK);
                     break;
             }
@@ -463,7 +448,7 @@ namespace LitePlacer
                     res = SetZposition("0.0");
                     break;
                 default:
-                    MainForm.ShowMessageBox("Unimplemented Marlin function Home_m: axis " + axis,
+                    MainForm.ShowMessageBox("Unimplemented SKR3 function Home_m: axis " + axis,
                         "Unimplemented function", MessageBoxButtons.OK);
                     break;
             }
@@ -574,20 +559,20 @@ namespace LitePlacer
 
         public void DisableZswitches()
         {
-            MainForm.ShowMessageBox("Unimplemented Marlin function DisableZswitches", "Unimplemented function", MessageBoxButtons.OK);
+            MainForm.ShowMessageBox("Unimplemented SKR3 function DisableZswitches", "Unimplemented function", MessageBoxButtons.OK);
         }
 
 
 
         public void EnableZswitches()
         {
-            MainForm.ShowMessageBox("Unimplemented Marlin function EnableZswitches", "Unimplemented function", MessageBoxButtons.OK);
+            MainForm.ShowMessageBox("Unimplemented SKR3 function EnableZswitches", "Unimplemented function", MessageBoxButtons.OK);
         }
 
 
         public bool Nozzle_ProbeDown(double backoff)
         {
-            MainForm.ShowMessageBox("Unimplemented Marlin function Nozzle_ProbeDown", "Unimplemented function", MessageBoxButtons.OK);
+            MainForm.ShowMessageBox("Unimplemented SKR3 function Nozzle_ProbeDown", "Unimplemented function", MessageBoxButtons.OK);
             return false;
         }
 
@@ -595,7 +580,7 @@ namespace LitePlacer
 
         public void MotorPowerOn()
         {
-            MainForm.DisplayText("MotorPowerOn(), Marlin");
+            MainForm.DisplayText("MotorPowerOn(), SKR3");
             Write_m("M17");
         }
 
@@ -603,7 +588,7 @@ namespace LitePlacer
 
         public void MotorPowerOff()
         {
-            MainForm.DisplayText("MotorPowerOff(), Marlin");
+            MainForm.DisplayText("MotorPowerOff(), SKR3");
             Write_m("M18");
         }
 
@@ -611,7 +596,7 @@ namespace LitePlacer
 
         public void VacuumOn()
         {
-            MainForm.DisplayText("VacuumOn(), Marlin");
+            MainForm.DisplayText("VacuumOn(), SKR3");
             Write_m("M42 P7 S1");
         }
 
@@ -619,14 +604,14 @@ namespace LitePlacer
 
         public void VacuumOff()
         {
-            MainForm.DisplayText("VacuumOff(), Marlin");
+            MainForm.DisplayText("VacuumOff(), SKR3");
             Write_m("M42 P8 S0");
         }
 
 
         public void PumpOn()
         {
-            MainForm.DisplayText("PumpOn(), Marlin");
+            MainForm.DisplayText("PumpOn(), SKR3");
             Write_m("M42 P7 S1");
         }
 
@@ -634,7 +619,7 @@ namespace LitePlacer
 
         public void PumpOff()
         {
-            MainForm.DisplayText("PumpOff(), Marlin");
+            MainForm.DisplayText("PumpOff(), SKR3");
             Write_m("M42 P7 S0");
         }
 

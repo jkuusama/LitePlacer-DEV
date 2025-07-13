@@ -12,10 +12,10 @@ using System.Windows.Forms;
 namespace LitePlacer
 {
 #pragma warning disable CA1031 // Do not catch general exception types (see MainForm.cs beginning)
-    // This file has things that are related to Duet 3 control board settings, UI, their storage and retrieval.
+    // This file has things that are related to SKR 3 control board settings, UI, their storage and retrieval.
     //
 
-    // For settings, see AppSettings.cs (VS bug prevents having the settings here.
+    // For settings, see AppSettings.cs; VS bug prevents having the settings here.
     public partial class FormMain
     {
         // =================================================================================
@@ -32,7 +32,7 @@ namespace LitePlacer
         public bool SetMarlinXmotorParameters()
         {
             SettingMarlinXmotorParameters = true;    // to not trigger checkbox related events
-            MarlinXspeed_maskedTextBox.Text = Setting.Marlin_Xspeed.ToString();
+            MarlinXspeed_maskedTextBox.Text = Setting.SKR3_Xspeed.ToString();
             if (!SetMarlinXspeed(Setting.Marlin_Xspeed)) return false;
 
             MarlinXacceleration_maskedTextBox.Text = Setting.Marlin_Xacc.ToString();

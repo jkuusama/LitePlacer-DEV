@@ -8,9 +8,11 @@ using System.Windows.Forms;
 /*
 CNC class handles communication with the control board. Most calls are just passed to a supported board.
 (For now, there are only two supported boards, so most routines are
-    - if board is Marlin, call Marlin.routine
+    - if board is SKR3, call SKR3.routine
     - else if board is Tinyg, call TinyG.routine
     - else report and return failure )
+
+SKR3 means SKR 3 EZ board with Trinamic 5160 drivers, running grblHAL firmware.
 
 Here are templates for that:
 
@@ -22,9 +24,9 @@ Here are templates for that:
                 return;
             }
 
-            if (MainForm.Setting.CNC_boardtype == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.CNC_boardtype == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.();
+                SKR3.();
             }
             else if (MainForm.Setting.CNC_boardtype == FormMain.ControlBoardType.TinyG)
             {
@@ -44,9 +46,9 @@ Here are templates for that:
                 return false;
             }
 
-            if (MainForm.Setting.CNC_boardtype == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.CNC_boardtype == FormMain.ControlBoardType.SKR3)
             {
-                if (Marlin.())
+                if (SKR3.())
                 {
                     return true;
                 }
@@ -87,7 +89,7 @@ namespace LitePlacer
     {
         public static FormMain MainForm;
         private TinyGclass TinyG;
-        public Marlinclass Marlin;
+        public SKR3class SKR3;
 
         public bool SlackCompensation { get; set; }
         public double SlackCompensationDistance { get; set; }
@@ -119,7 +121,7 @@ namespace LitePlacer
             SlowA = false;
             Com = new SerialComm(this, MainF);
             TinyG = new TinyGclass(MainForm, this, Com);
-            Marlin = new Marlinclass(MainForm, this, Com);
+            SKR3 = new SKR3class(MainForm, this, Com);
         }
 
         // =================================================================================
@@ -136,7 +138,7 @@ namespace LitePlacer
             {
                 regTimeout = value;
                 TinyG.RegularMoveTimeout = (int)value * 1000;  // in ms
-                Marlin.RegularMoveTimeout = (int)value * 1000;  // in ms
+                SKR3.RegularMoveTimeout = (int)value * 1000;  // in ms
             }
         }
 
@@ -161,7 +163,7 @@ namespace LitePlacer
         // TinyG sends position reports as status info, and updates UI based on those.
         // Duet 3 doesn't, so we need to keeo UI updated ourselves. On some commands, we 
         // can call UI update routines directly. On some, we set temporary position and a flag,
-        // so that Marlin knows to update UI on "ok" message
+        // so that SKR3 knows to update UI on "ok" message
 
         public static double SquareCorrection { get; set; }
 
@@ -196,7 +198,7 @@ namespace LitePlacer
         {
             _trueX = x;
             CurrX = x - CurrY * SquareCorrection;
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
                 MainForm.Update_Xposition();
             }
@@ -221,7 +223,7 @@ namespace LitePlacer
         {
             CurrX = _trueX - y * SquareCorrection;
             CurrY = y;
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
                 MainForm.Update_Yposition();
                 MainForm.Update_Xposition();
@@ -244,7 +246,7 @@ namespace LitePlacer
         public void SetCurrentZ(double z)
         {
             CurrZ = z;
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
                 MainForm.Update_Zposition();
             }
@@ -266,7 +268,7 @@ namespace LitePlacer
         public void SetCurrentA(double a)
         {
             CurrA = a;
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
                 MainForm.Update_Aposition();
             }
@@ -281,9 +283,9 @@ namespace LitePlacer
                 return;
             }
 
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.SetPosition(X, Y, Z, A);
+                SKR3.SetPosition(X, Y, Z, A);
                 MainForm.Update_Xposition();
                 MainForm.Update_Yposition();
                 MainForm.Update_Zposition();
@@ -303,9 +305,9 @@ namespace LitePlacer
 
         public void CancelJog()
         {
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.CancelJog();
+                SKR3.CancelJog();
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
@@ -320,9 +322,9 @@ namespace LitePlacer
 
         public void Jog(string Speed, string X, string Y, string Z, string A)
         {
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.Jog(Speed, X, Y, Z, A);
+                SKR3.Jog(Speed, X, Y, Z, A);
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
@@ -431,8 +433,8 @@ namespace LitePlacer
                 case FormMain.ControlBoardType.TinyG:
                     TinyG.LineReceived(line);
                     return;
-                case FormMain.ControlBoardType.Marlin:
-                    Marlin.LineReceived(line);
+                case FormMain.ControlBoardType.SKR3:
+                    SKR3.LineReceived(line);
                     return;
                 case FormMain.ControlBoardType.unknown: // used in board recognition
                     UnknownBoardLineReceived(line);
@@ -507,8 +509,8 @@ namespace LitePlacer
                         return true;
                     }
                     break;
-                case FormMain.ControlBoardType.Marlin:
-                    if (CheckMarlin())
+                case FormMain.ControlBoardType.SKR3:
+                    if (CheckSKR3())
                     {
                         return true;
                     }
@@ -524,7 +526,7 @@ namespace LitePlacer
 
             if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
-                if (CheckMarlin())
+                if (CheckSKR3())
                 {
                     return true;
                 }
@@ -601,11 +603,11 @@ namespace LitePlacer
         }
 
 
-        private bool CheckMarlin()
+        private bool CheckSKR3()
         {
             if (ErrorState)
             {
-                MainForm.DisplayText("*** CheckMarlin() - error state", KnownColor.DarkRed, true);
+                MainForm.DisplayText("*** CheckSKR3() - error state", KnownColor.DarkRed, true);
                 return false;
             }
             Thread.Sleep(100);  //  wake up delay
@@ -627,14 +629,14 @@ namespace LitePlacer
             }
             if (delay >= 200)
             {
-                MainForm.DisplayText("*** CheckMarlin() - no response", KnownColor.DarkRed, true);
+                MainForm.DisplayText("*** CheckSKR3() - no response", KnownColor.DarkRed, true);
                 return false;
             }
             string resp = ReadLine();
-            if (resp.Contains("FIRMWARE_NAME:Marlin"))
+            if (resp.Contains("FIRMWARE_NAME:SKR3"))
             {
-                MainForm.DisplayText("Marlin board found.");
-                MainForm.Setting.Controlboard = FormMain.ControlBoardType.Marlin;
+                MainForm.DisplayText("SKR3 board found.");
+                MainForm.Setting.Controlboard = FormMain.ControlBoardType.SKR3;
                 ClearReceivedBuffers();     // remove ok
                 return true;
             }
@@ -645,9 +647,9 @@ namespace LitePlacer
         {
             // Called after a control board connection is estabished and board type found.
 
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                if (!Marlin.JustConnected())
+                if (!SKR3.JustConnected())
                 {
                     RaiseError();
                     return false;
@@ -673,9 +675,9 @@ namespace LitePlacer
 
         public bool Write_m(string command, int Timeout = 250)
         {
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                if (Marlin.Write_m(command, Timeout))
+                if (SKR3.Write_m(command, Timeout))
                 {
                     return true;
                 }
@@ -721,9 +723,9 @@ namespace LitePlacer
                 return false;
             }
 
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                if (Marlin.SetMachineSizeX())        // takes value from settings
+                if (SKR3.SetMachineSizeX())        // takes value from settings
                 {
                     return true;
                 }
@@ -763,9 +765,9 @@ namespace LitePlacer
                 return false;
             }
 
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                if (Marlin.SetMachineSizeY())
+                if (SKR3.SetMachineSizeY())
                 {
                     return true;
                 }
@@ -806,9 +808,9 @@ namespace LitePlacer
                 return;
             }
 
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.DisableZswitches();
+                SKR3.DisableZswitches();
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
@@ -829,9 +831,9 @@ namespace LitePlacer
                 return;
             }
 
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.EnableZswitches();
+                SKR3.EnableZswitches();
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
@@ -852,9 +854,9 @@ namespace LitePlacer
                 return false;
             }
 
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                if (Marlin.Nozzle_ProbeDown(backoff))
+                if (SKR3.Nozzle_ProbeDown(backoff))
                 {
                     return true;
                 }
@@ -894,9 +896,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.MotorPowerOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.MotorPowerOn();
+                SKR3.MotorPowerOn();
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
@@ -916,9 +918,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.MotorPowerOff(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.MotorPowerOff();
+                SKR3.MotorPowerOff();
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
             {
@@ -951,9 +953,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.VacuumOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.VacuumOn();
+                SKR3.VacuumOn();
                 VacuumIsOn = true;
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
@@ -976,9 +978,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.VacuumOff(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.VacuumOff();
+                SKR3.VacuumOff();
                 VacuumIsOn = false;
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
@@ -1015,9 +1017,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.PumpOn(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.PumpOn();
+                SKR3.PumpOn();
                 PumpIsOn = true;
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
@@ -1040,9 +1042,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.PumpOff(), board in error state.", KnownColor.DarkRed, true);
                 return;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                Marlin.PumpOff();
+                SKR3.PumpOff();
                 PumpIsOn = false;
             }
             else if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
@@ -1089,9 +1091,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.Home_m(), board in error state.", KnownColor.DarkRed, true);
                 return false;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                if (Marlin.Home_m(axis))
+                if (SKR3.Home_m(axis))
                 {
                     Homing = false;
                     return true;
@@ -1137,9 +1139,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.Execute_XYA(), board in error state.", KnownColor.DarkRed, true);
                 return false;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                if (Marlin.XYA(X, Y, A, speed, MoveType))
+                if (SKR3.XYA(X, Y, A, speed, MoveType))
                 {
                     return true;
                 }
@@ -1178,9 +1180,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.Execute_A(), board in error state.", KnownColor.DarkRed, true);
                 return false;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                if (Marlin.A(A, speed, MoveType))
+                if (SKR3.A(A, speed, MoveType))
                 {
                     return true;
                 }
@@ -1219,9 +1221,9 @@ namespace LitePlacer
                 MainForm.DisplayText("*** Cnc.Execute_Z(), board in error state.", KnownColor.DarkRed, true);
                 return false;
             }
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.Marlin)
+            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.SKR3)
             {
-                if (Marlin.Z(Z, speed, MoveType))
+                if (SKR3.Z(Z, speed, MoveType))
                 {
                     return true;
                 }

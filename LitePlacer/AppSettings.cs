@@ -37,59 +37,59 @@ namespace LitePlacer
         public FormMain MainForm;
 
         // =================================================================================
-        #region Marlin
+        #region SKR3
         /*
-        Marlin_xxx should be in MarlinSettings.cs in a
+        SKR3_xxx should be in SKR3Settings.cs in a
             public partial class MySettings
             {
             }
         block. Visual Studio bug doesn't allow that, so they are here. :-(
         */
-        public double Marlin_Xspeed { get; set; } = 5000; // mm/s
-        public double Marlin_XHomingSpeed { get; set; } = 500; // mm/s
-        public double Marlin_XHomingBackoff { get; set; } = 5; // mm
+        public double SKR3_Xspeed { get; set; } = 5000; // mm/s
+        public double SKR3_XHomingSpeed { get; set; } = 500; // mm/s
+        public double SKR3_XHomingBackoff { get; set; } = 5; // mm
 
-        public double Marlin_Yspeed { get; set; } = 5000; // mm/s
-        public double Marlin_YHomingSpeed { get; set; } = 500; // mm/s
-        public double Marlin_YHomingBackoff { get; set; } = 5; // mm
+        public double SKR3_Yspeed { get; set; } = 5000; // mm/s
+        public double SKR3_YHomingSpeed { get; set; } = 500; // mm/s
+        public double SKR3_YHomingBackoff { get; set; } = 5; // mm
 
-        public double Marlin_Zspeed { get; set; } = 50; // mm/s
-        public double Marlin_ZHomingSpeed { get; set; } = 500; // mm/s
-        public double Marlin_ZHomingBackoff { get; set; } = 5; // mm
+        public double SKR3_Zspeed { get; set; } = 50; // mm/s
+        public double SKR3_ZHomingSpeed { get; set; } = 500; // mm/s
+        public double SKR3_ZHomingBackoff { get; set; } = 5; // mm
 
-        public double Marlin_Aspeed { get; set; } = 200; // mm/s
+        public double SKR3_Aspeed { get; set; } = 200; // mm/s
 
-        public double Marlin_Xacc { get; set; } = 1000; // mm/s^2
-        public double Marlin_Yacc { get; set; } = 1000; // mm/s^2
-        public double Marlin_Zacc { get; set; } = 1000; // mm/s^2
-        public double Marlin_Aacc { get; set; } = 1000; // mm/s^2
+        public double SKR3_Xacc { get; set; } = 1000; // mm/s^2
+        public double SKR3_Yacc { get; set; } = 1000; // mm/s^2
+        public double SKR3_Zacc { get; set; } = 1000; // mm/s^2
+        public double SKR3_Aacc { get; set; } = 1000; // mm/s^2
 
-        public double Marlin_XTravelPerRev { get; set; } = 40;   // mm
-        public double Marlin_YTravelPerRev { get; set; } = 40;   // mm
-        public double Marlin_ZTravelPerRev { get; set; } = 8;    // mm
-        public double Marlin_ATravelPerRev { get; set; } = 160;  // deg
+        public double SKR3_XTravelPerRev { get; set; } = 40;   // mm
+        public double SKR3_YTravelPerRev { get; set; } = 40;   // mm
+        public double SKR3_ZTravelPerRev { get; set; } = 8;    // mm
+        public double SKR3_ATravelPerRev { get; set; } = 160;  // deg
 
-        public double Marlin_XDegPerStep { get; set; } = 0.9;   // mm
-        public double Marlin_YDegPerStep { get; set; } = 0.9;   // mm
-        public double Marlin_ZDegPerStep { get; set; } = 1.8;   // mm
-        public double Marlin_ADegPerStep { get; set; } = 0.9;   // mm
+        public double SKR3_XDegPerStep { get; set; } = 0.9;   // mm
+        public double SKR3_YDegPerStep { get; set; } = 0.9;   // mm
+        public double SKR3_ZDegPerStep { get; set; } = 1.8;   // mm
+        public double SKR3_ADegPerStep { get; set; } = 0.9;   // mm
 
-        public int Marlin_XMicroStep { get; set; } = 16;
-        public int Marlin_YMicroStep { get; set; } = 16;
-        public int Marlin_ZMicroStep { get; set; } = 16;
-        public int Marlin_AMicroStep { get; set; } = 16;
+        public int SKR3_XMicroStep { get; set; } = 16;
+        public int SKR3_YMicroStep { get; set; } = 16;
+        public int SKR3_ZMicroStep { get; set; } = 16;
+        public int SKR3_AMicroStep { get; set; } = 16;
 
-        public bool Marlin_XInterpolate { get; set; } = true;
-        public bool Marlin_YInterpolate { get; set; } = true;
-        public bool Marlin_ZInterpolate { get; set; } = true;
-        public bool Marlin_AInterpolate { get; set; } = true;
+        public bool SKR3_XInterpolate { get; set; } = true;
+        public bool SKR3_YInterpolate { get; set; } = true;
+        public bool SKR3_ZInterpolate { get; set; } = true;
+        public bool SKR3_AInterpolate { get; set; } = true;
 
-        public int Marlin_XCurrent { get; set; } = 1100; //mA
-        public int Marlin_YCurrent { get; set; } = 1200; //mA
-        public int Marlin_ZCurrent { get; set; } = 1300; //mA
-        public int Marlin_ACurrent { get; set; } = 100; //mA
+        public int SKR3_XCurrent { get; set; } = 1100; //mA
+        public int SKR3_YCurrent { get; set; } = 1200; //mA
+        public int SKR3_ZCurrent { get; set; } = 1300; //mA
+        public int SKR3_ACurrent { get; set; } = 100; //mA
         // =================================================================================
-        #endregion Marlin
+        #endregion SKR3
 
         public bool Cam_ShowPixels { get; set; } = false;
         public bool Cameras_KeepActive { get; set; } = false;
