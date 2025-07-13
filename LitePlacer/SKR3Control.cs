@@ -32,18 +32,6 @@ namespace LitePlacer
         // =================================================================================
         #region Communications
 
-        public bool CheckIdentity()
-        {
-            string resp = GetResponse_m("M115", 200, false);
-            if (resp.Contains("Duet 3"))
-            {
-                MainForm.DisplayText("Duet 3 board found.");
-                return true;
-            }
-            return false;
-        }
-
-
         public bool JustConnected()
         {
             MainForm.DisplayText("SKR3class.JustConnected()");
@@ -384,11 +372,16 @@ namespace LitePlacer
 
         public bool Home_m(string axis)
         {
+
+            MainForm.ShowMessageBox("Unimplemented SKR3 function Home_m: axis " + axis,
+                "Unimplemented function", MessageBoxButtons.OK);
+            return false;
+
+/*
             double HomingSpeed = 0;
             double HomingBackoff = 0;
             string BackoffSpeedStr = MainForm.Setting.CNC_SmallMovementSpeed.ToString();
             int timeout;
-
             switch (axis)
             {
                 case "X":
@@ -488,6 +481,27 @@ namespace LitePlacer
             Cnc.SetCurrentY(Y);
             Cnc.SetCurrentA(A);
             return true;
+*/        
+        }
+
+        public bool XYA(double X, double Y, double A, double speed, string MoveType)
+        {
+            string command;
+            if (MoveType == "G1")
+            {
+                command = "G1 F" + speed.ToString() +
+                    " X" + X.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " Y" + Y.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " A" + A.ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                command = "G0 " +
+                    " X" + X.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " Y" + Y.ToString("0.000", CultureInfo.InvariantCulture) +
+                    " A" + A.ToString("0.000", CultureInfo.InvariantCulture);
+            }
+            return Write_m("{\"gc\":\"" + command + "\"}", RegularMoveTimeout);
         }
 
 
@@ -546,14 +560,16 @@ namespace LitePlacer
         {
             int MaxSixe = (int)Math.Round(MainForm.Setting.General_MachineSizeX) + 3;
             int MinSize = (int)Math.Round(MainForm.Setting.General_NegativeX);
-            return Write_m("M208 X-" + MinSize.ToString() + ":" + MaxSixe.ToString());
+            MainForm.DisplayText("SKR3 SetMachineSizeX() not implemented");
+            return true;
         }
 
         public bool SetMachineSizeY()
         {
             int MaxSixe = (int)Math.Round(MainForm.Setting.General_MachineSizeY) + 3;
             int MinSize = (int)Math.Round(MainForm.Setting.General_NegativeY);
-            return Write_m("M208 Y-" + MinSize.ToString() + ":" + MaxSixe.ToString());
+            MainForm.DisplayText("SKR3 SetMachineSizeY() not implemented");
+            return true;
         }
 
 
@@ -566,7 +582,7 @@ namespace LitePlacer
 
         public void EnableZswitches()
         {
-            MainForm.ShowMessageBox("Unimplemented SKR3 function EnableZswitches", "Unimplemented function", MessageBoxButtons.OK);
+            MainForm.DisplayText("SKR3 EnableZswitches() not implemented");
         }
 
 
@@ -580,47 +596,41 @@ namespace LitePlacer
 
         public void MotorPowerOn()
         {
-            MainForm.DisplayText("MotorPowerOn(), SKR3");
-            Write_m("M17");
+            MainForm.DisplayText("SKR3 MotorPowerOn() not implemented");
         }
 
 
 
         public void MotorPowerOff()
         {
-            MainForm.DisplayText("MotorPowerOff(), SKR3");
-            Write_m("M18");
+            MainForm.DisplayText("SKR3 MotorPowerOff() not implemented");
         }
 
 
 
         public void VacuumOn()
         {
-            MainForm.DisplayText("VacuumOn(), SKR3");
-            Write_m("M42 P7 S1");
+            MainForm.DisplayText("SKR3 VacuumOn() not implemented");
         }
 
 
 
         public void VacuumOff()
         {
-            MainForm.DisplayText("VacuumOff(), SKR3");
-            Write_m("M42 P8 S0");
+            MainForm.DisplayText("SKR3 VacuumOff() not implemented");
         }
 
 
         public void PumpOn()
         {
-            MainForm.DisplayText("PumpOn(), SKR3");
-            Write_m("M42 P7 S1");
+            MainForm.DisplayText("SKR3 PumpOn() not implemented");
         }
 
 
 
         public void PumpOff()
         {
-            MainForm.DisplayText("PumpOff(), SKR3");
-            Write_m("M42 P7 S0");
+            MainForm.DisplayText("SKR3 PumpOff() not implemented");
         }
 
         #endregion Features

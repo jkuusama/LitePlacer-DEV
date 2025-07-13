@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -109,7 +110,7 @@ namespace LitePlacer
 
         public bool Homing { get; set; }
 
-        SerialComm Com;
+        public SerialComm Com;
 
 
         // =================================================================================
@@ -498,13 +499,23 @@ namespace LitePlacer
             LineAvailable = false;
         }
 
+        public bool FindBoardType1()
+        {
+            return true;
+        }
+
         public bool FindBoardType()
         {
             // For clean communication, try the board last identified.
             switch (MainForm.Setting.Controlboard)
             {
                 case FormMain.ControlBoardType.TinyG:
+                case FormMain.ControlBoardType.unknown:
                     if (CheckTinyG())
+                    {
+                        return true;
+                    }
+                    if (CheckSKR3())
                     {
                         return true;
                     }
@@ -514,48 +525,18 @@ namespace LitePlacer
                     {
                         return true;
                     }
+                    if (CheckTinyG())
+                    {
+                        return true;
+                    }
                     break;
                 case FormMain.ControlBoardType.other:
                     MainForm.DisplayText("*** Control board type set to \"other\", which is not supported.", KnownColor.DarkRed, true);
-                    break;
-                case FormMain.ControlBoardType.unknown:
                     break;
                 default:
                     break;
             }
 
-            if (MainForm.Setting.Controlboard == FormMain.ControlBoardType.TinyG)
-            {
-                if (CheckSKR3())
-                {
-                    return true;
-                }
-                // Close and reopen port, just in case
-                ClosePort();
-                Thread.Sleep(200);
-                if (!OpenPort(Port))
-                {
-                    MainForm.DisplayText("*** FindBoardType(), port re-open failed", KnownColor.DarkRed, true);
-                    return false;
-                }
-                Connected = true;
-            }
-            else
-            {
-                if (CheckTinyG())
-                {
-                    return true;
-                }
-                // close and reopen port, just in case
-                ClosePort();
-                Thread.Sleep(200);
-                if (!OpenPort(Port))
-                {
-                    MainForm.DisplayText("*** FindBoardType(), port re-open failed", KnownColor.DarkRed, true);
-                    return false;
-                }
-                Connected = true;
-            }
             MainForm.DisplayText("*** Serial port connected, did not find a supported board", KnownColor.DarkRed, true);
             return false;
         }
@@ -610,12 +591,13 @@ namespace LitePlacer
                 MainForm.DisplayText("*** CheckSKR3() - error state", KnownColor.DarkRed, true);
                 return false;
             }
-            Thread.Sleep(100);  //  wake up delay
+            Thread.Sleep(20);  //  wake up delay
+
             ClearReceivedBuffers();
-            MainForm.Setting.Serial_EndCharacters = "\n\r";
-            Com.Write("M115");
+            MainForm.Setting.Serial_EndCharacters = "\r";
+            Com.Write("\x18");   // ctrl-X
             int delay = 0;
-            while (delay < 200)
+            while (delay < 100)
             {
                 if (LineAvailable)
                 {
@@ -627,17 +609,21 @@ namespace LitePlacer
                     delay++;
                 }
             }
-            if (delay >= 200)
+            if (delay >= 100)
             {
                 MainForm.DisplayText("*** CheckSKR3() - no response", KnownColor.DarkRed, true);
                 return false;
             }
-            string resp = ReadLine();
-            if (resp.Contains("FIRMWARE_NAME:SKR3"))
+            string resp="";
+            while (LineAvailable)
+            {
+                resp= resp + ReadLine();
+            }
+            if (resp.Contains("GrblHAL"))
             {
                 MainForm.DisplayText("SKR3 board found.");
                 MainForm.Setting.Controlboard = FormMain.ControlBoardType.SKR3;
-                ClearReceivedBuffers();     // remove ok
+                ClearReceivedBuffers();
                 return true;
             }
             return false;

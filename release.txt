@@ -9,7 +9,7 @@ New Features, significant changes
 
 Bug Fixes 
 
-* Sometimes, TinyG uses wromg parameter for A axis. This is now checked at startup,
+* Sometimes, TinyG uses wrong parameter for A axis. This is now checked at startup,
   and changed, if needed.
 * Max delay in camera setup no longer cause a crash
 * Homing acceleration control was accidentally disabled

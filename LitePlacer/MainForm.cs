@@ -224,7 +224,7 @@ namespace LitePlacer
             // At design time, I can't draw items on top of each other. I draw them at a convenient location; this
             // moves motor control boxes to correct place
             TinyGMotors_tabControl.Location = new System.Drawing.Point(6, 191);
-            MarlinMotors_tabControl.Location = new System.Drawing.Point(6, 191);
+            SKR3Motors_tabControl.Location = new System.Drawing.Point(6, 191);
 
             labelSerialPortStatus.ForeColor = Color.Red;
             labelSerialPortStatus.Text = "Starting up";
@@ -4648,7 +4648,7 @@ namespace LitePlacer
 
             AutoPark_checkBox.Checked = Setting.General_Autopark;
             OptimizeA_TinyG_checkBox.Checked = Setting.CNC_OptimizeA;
-            OptimizeA_Marlin_checkBox.Checked = Setting.CNC_OptimizeA;
+            OptimizeA_SKR3_checkBox.Checked = Setting.CNC_OptimizeA;
 
             SizeXMax_textBox.Text = Setting.General_MachineSizeX.ToString(CultureInfo.InvariantCulture);
             SizeYMax_textBox.Text = Setting.General_MachineSizeY.ToString(CultureInfo.InvariantCulture);
@@ -4840,7 +4840,7 @@ namespace LitePlacer
         {
             Motors_label.Text = "Control board not connected.";
             TinyGMotors_tabControl.Visible = false;
-            MarlinMotors_tabControl.Visible = false;
+            SKR3Motors_tabControl.Visible = false;
 
 
             // When first starting, there is no default port. Trying to connect to a random port is 
@@ -4922,28 +4922,28 @@ namespace LitePlacer
             {
                 case ControlBoardType.TinyG:
                     Motors_label.Text = "Axes setup (TinyG board):";
-                    MarlinMotors_tabControl.Visible = false;
+                    SKR3Motors_tabControl.Visible = false;
                     TinyGMotors_tabControl.Visible = true;
                     return;
                 case ControlBoardType.SKR3:
                     Motors_label.Text = "Axes setup (SKR 3 board):";
                     TinyGMotors_tabControl.Visible = false;
-                    MarlinMotors_tabControl.Visible = true;
+                    SKR3Motors_tabControl.Visible = true;
                     return;
                 case ControlBoardType.unknown:
                     Motors_label.Text = "Connected to unknown board";
                     TinyGMotors_tabControl.Visible = false;
-                    MarlinMotors_tabControl.Visible = false;
+                    SKR3Motors_tabControl.Visible = false;
                     return;
                 case ControlBoardType.other:            // should not happen
                     Motors_label.Text = "Connected to \"other\" type board";
                     TinyGMotors_tabControl.Visible = false;
-                    MarlinMotors_tabControl.Visible = false;
+                    SKR3Motors_tabControl.Visible = false;
                     return;
                 default:            // should not happen
                     Motors_label.Text = "Connected to unknown (default) board";
                     TinyGMotors_tabControl.Visible = false;
-                    MarlinMotors_tabControl.Visible = false;
+                    SKR3Motors_tabControl.Visible = false;
                     return;        // should not happen
             }
 
@@ -14091,7 +14091,7 @@ namespace LitePlacer
 
         private void OptimizeA_checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            Setting.CNC_OptimizeA = OptimizeA_Marlin_checkBox.Checked;
+            Setting.CNC_OptimizeA = OptimizeA_SKR3_checkBox.Checked;
         }
 
         private void HoleTest_maskedTextBox_TextChanged(object sender, EventArgs e)
@@ -14232,6 +14232,11 @@ namespace LitePlacer
         {
             Setting.Upcam_Mirror = UpcamMirror_checkBox.Checked;
             UpCamera.Mirror = Setting.Upcam_Mirror;
+        }
+
+        private void Test_button1_Click(object sender, EventArgs e)
+        {
+            Cnc.Com.Write("\x18");
         }
     }	// end of: 	public partial class FormMain : Form
 
