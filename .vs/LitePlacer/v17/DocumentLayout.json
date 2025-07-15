@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\liteplacer\\skr3settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|solutionrelative:liteplacer\\skr3settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|c:\\users\\juha_000\\onedrive - liteplacer oy\\liteplacer v2\\software\\liteplacer main\\liteplacer\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|solutionrelative:liteplacer\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,7 +15,7 @@
       "RelativeMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|solutionrelative:liteplacer\\cnc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|c:\\users\\juha_000\\onedrive - liteplacer oy\\liteplacer v2\\software\\liteplacer main\\liteplacer\\skr3control.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\liteplacer\\skr3control.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|solutionrelative:liteplacer\\skr3control.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -23,11 +27,7 @@
       "RelativeMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|solutionrelative:liteplacer\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|c:\\users\\juha_000\\onedrive - liteplacer oy\\liteplacer v2\\software\\liteplacer main\\liteplacer\\skr3settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|solutionrelative:liteplacer\\skr3settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|c:\\users\\juha_000\\onedrive - liteplacer oy\\liteplacer v2\\software\\liteplacer main\\liteplacer\\appsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\liteplacer\\appsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{69B205A1-16AF-4E8A-B751-EA5F5E4FCB4E}|LitePlacer\\LitePlacer.csproj|solutionrelative:liteplacer\\appsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -38,37 +38,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 1000,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MainForm.cs",
               "DocumentMoniker": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\LitePlacer\\MainForm.cs",
               "RelativeDocumentMoniker": "LitePlacer\\MainForm.cs",
               "ToolTip": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\LitePlacer\\MainForm.cs",
               "RelativeToolTip": "LitePlacer\\MainForm.cs",
-              "ViewState": "AgIAAE0BAAAAAAAAAAAAAG4BAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAACoAAAAAAAAAAAAuwE0AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-13T13:27:09.155Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "SKR3Settings.cs",
               "DocumentMoniker": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\LitePlacer\\SKR3Settings.cs",
               "RelativeDocumentMoniker": "LitePlacer\\SKR3Settings.cs",
               "ToolTip": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\LitePlacer\\SKR3Settings.cs",
               "RelativeToolTip": "LitePlacer\\SKR3Settings.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAAB4AAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAqwDAAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-13T11:01:15.008Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "SKR3Control.cs",
               "DocumentMoniker": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\LitePlacer\\SKR3Control.cs",
               "RelativeDocumentMoniker": "LitePlacer\\SKR3Control.cs",
@@ -76,12 +76,11 @@
               "RelativeToolTip": "LitePlacer\\SKR3Control.cs",
               "ViewState": "AgIAAGwAAAAAAAAAAAAAAIMAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-13T10:45:02.456Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-13T10:45:02.456Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "CNC.cs",
               "DocumentMoniker": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\LitePlacer\\CNC.cs",
               "RelativeDocumentMoniker": "LitePlacer\\CNC.cs",
@@ -89,20 +88,18 @@
               "RelativeToolTip": "LitePlacer\\CNC.cs",
               "ViewState": "AgIAABICAAAAAAAAAAAAAEICAABPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-05T12:52:50.995Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-05T12:52:50.995Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "MainForm.cs [Design]",
               "DocumentMoniker": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\LitePlacer\\MainForm.cs",
               "RelativeDocumentMoniker": "LitePlacer\\MainForm.cs",
               "ToolTip": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\LitePlacer\\MainForm.cs [Design]",
               "RelativeToolTip": "LitePlacer\\MainForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-05T12:52:51.634Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-04-05T12:52:51.634Z"
             }
           ]
         },
@@ -120,12 +117,11 @@
               "RelativeToolTip": "LitePlacer\\AppSettings.cs",
               "ViewState": "AgIAACIAAAAAAAAAAAAAACcAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-05T12:52:52.082Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-05T12:52:52.082Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "release.txt",
               "DocumentMoniker": "C:\\Users\\juha_000\\OneDrive - LitePlacer Oy\\LitePlacer V2\\Software\\LitePlacer main\\release.txt",
               "RelativeDocumentMoniker": "release.txt",

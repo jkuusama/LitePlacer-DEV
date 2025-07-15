@@ -67,3 +67,5 @@ LitePlacer/MainForm\.prog
 LitePlacer/Needle.cs
 
 *.vsidx
+/.vs/LitePlacer/CopilotIndices
+/.vs
