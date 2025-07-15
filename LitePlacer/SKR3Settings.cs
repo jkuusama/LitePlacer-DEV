@@ -46,7 +46,7 @@ namespace LitePlacer
             if (!MaskedTextBox_GetValue(SKR3Aacceleration_maskedTextBox))
                 return;
         }
-
+// test if git sees this change...
         private bool MaskedTextBox_GetValue(MaskedTextBox Box)
         {
             string response = Cnc.SKR3.GetResponse_m("$" + Box.Tag);
