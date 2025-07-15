@@ -379,8 +379,10 @@ namespace LitePlacer
             }
             else
             {
-                Setting.Controlboard = ControlBoardType.other;
-                DisplayText("Unknown control board.");
+                ShowMessageBox(
+                  "Unknown control board",
+                  "Unknown control board, hp value = " + value,
+                  MessageBoxButtons.OK);
             }
         }
 

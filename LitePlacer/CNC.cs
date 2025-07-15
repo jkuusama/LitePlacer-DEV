@@ -437,11 +437,9 @@ namespace LitePlacer
                 case FormMain.ControlBoardType.SKR3:
                     SKR3.LineReceived(line);
                     return;
-                case FormMain.ControlBoardType.unknown: // used in board recognition
+                case FormMain.ControlBoardType.unknown:
                     UnknownBoardLineReceived(line);
                     return;
-                case FormMain.ControlBoardType.other:
-                    return;        // should not happen
                 default:
                     return;        // should not happen
             }
@@ -506,11 +504,13 @@ namespace LitePlacer
 
         public bool FindBoardType()
         {
+            FormMain.ControlBoardType save = MainForm.Setting.Controlboard;
             // For clean communication, try the board last identified.
             switch (MainForm.Setting.Controlboard)
             {
                 case FormMain.ControlBoardType.TinyG:
                 case FormMain.ControlBoardType.unknown:
+                    MainForm.Setting.Controlboard = FormMain.ControlBoardType.unknown;
                     if (CheckTinyG())
                     {
                         return true;
@@ -521,6 +521,7 @@ namespace LitePlacer
                     }
                     break;
                 case FormMain.ControlBoardType.SKR3:
+                    MainForm.Setting.Controlboard = FormMain.ControlBoardType.unknown;
                     if (CheckSKR3())
                     {
                         return true;
@@ -530,26 +531,25 @@ namespace LitePlacer
                         return true;
                     }
                     break;
-                case FormMain.ControlBoardType.other:
-                    MainForm.DisplayText("*** Control board type set to \"other\", which is not supported.", KnownColor.DarkRed, true);
-                    break;
                 default:
                     break;
             }
 
             MainForm.DisplayText("*** Serial port connected, did not find a supported board", KnownColor.DarkRed, true);
+            MainForm.Setting.Controlboard = save;
             return false;
         }
 
 
         private bool CheckTinyG()
         {
-            MainForm.Setting.Controlboard = FormMain.ControlBoardType.unknown;
             if (ErrorState)
             {
                 MainForm.DisplayText("*** CheckTinyG() - error state", KnownColor.DarkRed, true);
                 return false;
             }
+
+            MainForm.DisplayText("Checking for TinyG board.");
             MainForm.Setting.Serial_EndCharacters = "\n";
             Thread.Sleep(200);  // TinyG wake up delay
             ClearReceivedBuffers();
@@ -591,11 +591,11 @@ namespace LitePlacer
                 MainForm.DisplayText("*** CheckSKR3() - error state", KnownColor.DarkRed, true);
                 return false;
             }
-            Thread.Sleep(20);  //  wake up delay
 
+            MainForm.DisplayText("Checking for SKR 3 board.");
             ClearReceivedBuffers();
-            MainForm.Setting.Serial_EndCharacters = "\r";
-            Com.Write("\x18");   // ctrl-X
+            MainForm.Setting.Serial_EndCharacters = "\n";
+            Com.Write("\n\x18");   // ctrl-X
             int delay = 0;
             while (delay < 100)
             {

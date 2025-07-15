@@ -146,7 +146,6 @@ namespace LitePlacer
         // The DataReceived() routine is called when a charater is received from the serial port.
         // The data is assumed to be ASCII, terminated with \n or \n\r
         // When \n received, calls Cnc.LineReceived(), without termination character
-        // the \r is 
 
         void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {

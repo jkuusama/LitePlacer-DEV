@@ -35,6 +35,7 @@ namespace LitePlacer
         public bool JustConnected()
         {
             MainForm.DisplayText("SKR3class.JustConnected()");
+            MainForm.SKR3Settings_Load();
             return true;
         }
 
@@ -104,7 +105,7 @@ namespace LitePlacer
         // Writes a command, returns a response. Failed write returns empty response.
         public string GetResponse_m(string cmd, int Timeout = 250, bool report = true)
         {
-            string line;
+            string line="";
 
             if (!Com.IsOpen)
             {
@@ -140,7 +141,7 @@ namespace LitePlacer
                     if (report)
                     {
                         MainForm.ShowMessageBox(
-                            "SKR3.Write_m: Timeout on command " + cmd,
+                            "Cnc.SKR3.Write_m: Timeout on command " + cmd,
                             "Timeout",
                             MessageBoxButtons.OK);
                     }
@@ -151,7 +152,8 @@ namespace LitePlacer
             lock (ReceivedLine)
             {
                 line = ReceivedLine;
-                ExpectingResponse=false;
+                ClearReceivedLine();
+                ExpectingResponse = false;
             }
             return line;
         }
@@ -162,7 +164,11 @@ namespace LitePlacer
         public void LineReceived(string line)
         {
             // This is called from Cnc.LineReceived (called from SerialComm dataReceived),
-            // and runs in a separate thread than UI            
+            // and runs in a separate thread than UI
+            // The response can be multiline, but we get only one line at a time.
+            // I don't want to break TinyG communications, so I add lines here if needed.
+            // Not too elegant, but works.
+
             MainForm.DisplayText("<== " + line);
             if (line == "ok")
             {
@@ -171,7 +177,14 @@ namespace LitePlacer
             }
             lock (ReceivedLine)
             {
-                ReceivedLine = line;
+                if (ReceivedLine=="")
+                {
+                    ReceivedLine = line;
+                }
+                else
+                {                     
+                    ReceivedLine += MainForm.Setting.Serial_EndCharacters + line;
+                }
                 LineAvailable = true;
             }
             if (!ExpectingResponse)
@@ -338,6 +351,7 @@ namespace LitePlacer
 
         private bool HomingTimeout_m(out int TimeOut, string axis)
         {
+            /*
             double Speed;
             double size;
             TimeOut = 0;
@@ -349,7 +363,7 @@ namespace LitePlacer
                     break;
 
                 case "Y":
-                    Speed = MainForm.Setting.SKR3_YHomingSpeed;
+                    // Speed = MainForm.Setting.SKR3_YHomingSpeed;
                     size = MainForm.Setting.General_MachineSizeY;
                     break;
 
@@ -366,6 +380,8 @@ namespace LitePlacer
             Double MaxTime = (size / Speed) * 1.2 + 4;
             // in seconds for the machine size and some (1.2 to allow acceleration, + 4 for the operarations at end stop
             TimeOut = (int)MaxTime * 1000;  // to ms
+            */
+            TimeOut = 1;
             return true;
         }
 

@@ -62,7 +62,7 @@ namespace LitePlacer
     public partial class FormMain : Form
     {
         public CNC Cnc { get; set; }
-        public enum ControlBoardType { TinyG, SKR3, other, unknown };
+        public enum ControlBoardType { TinyG, SKR3, unknown};
 
         Camera DownCamera;
         Camera UpCamera;
@@ -4929,16 +4929,6 @@ namespace LitePlacer
                     Motors_label.Text = "Axes setup (SKR 3 board):";
                     TinyGMotors_tabControl.Visible = false;
                     SKR3Motors_tabControl.Visible = true;
-                    return;
-                case ControlBoardType.unknown:
-                    Motors_label.Text = "Connected to unknown board";
-                    TinyGMotors_tabControl.Visible = false;
-                    SKR3Motors_tabControl.Visible = false;
-                    return;
-                case ControlBoardType.other:            // should not happen
-                    Motors_label.Text = "Connected to \"other\" type board";
-                    TinyGMotors_tabControl.Visible = false;
-                    SKR3Motors_tabControl.Visible = false;
                     return;
                 default:            // should not happen
                     Motors_label.Text = "Connected to unknown (default) board";
@@ -14236,8 +14226,10 @@ namespace LitePlacer
 
         private void Test_button1_Click(object sender, EventArgs e)
         {
-            Cnc.Com.Write("\x18");
+            string test = decimal.Parse("20044.2").ToString("G29");
+            DisplayText("Test_button1: " + test, KnownColor.DarkGreen, true);
         }
+
     }	// end of: 	public partial class FormMain : Form
 
 
